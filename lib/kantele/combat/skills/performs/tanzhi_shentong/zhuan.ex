@@ -32,13 +32,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     improve = 0
     n = 0
     m = 0
-
-    ap =
-      Stats.skill(stats, "finger") + Stats.skill(stats, "qimen-wuxing") +
-        Stats.skill(stats, "tanzhi-shentong")
-
+    ap = ((Stats.skill(stats, "finger") + Stats.skill(stats, "qimen-wuxing")) + Stats.skill(stats, "tanzhi-shentong"))
     count = Stats.skill(stats, "mathematics")
-    damage = ap + Engine.rand(rng, ap)
+    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -46,9 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -119,7 +113,6 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -161,25 +154,15 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-
-    result =
-      if hit,
-        do: Messages.interpolate("霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
+    result = if hit, do: Messages.interpolate("霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
 你听到“噗”的一声，身上竟然溅到几滴脑浆！
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
-        else:
-          Messages.interpolate("$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

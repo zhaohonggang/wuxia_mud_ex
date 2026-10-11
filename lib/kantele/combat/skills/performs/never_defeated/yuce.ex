@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -105,7 +103,6 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "御策诀只能在战斗中对对手使用。\n"}
       true -> :ok
     end
@@ -121,8 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn =
-      Broadcast.publish(conn, "$N手指一合一弹，只听呼啸破空声起，有若龙吟，一base_unit如蛟龙般打向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手指一合一弹，只听呼啸破空声起，有若龙吟，一base_unit如蛟龙般打向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -149,16 +145,10 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.wound(vitals, :qi, div(skill, 2) + Engine.rand(rng, div(skill, 2)))
+        vitals = Vitals.wound(vitals, :qi, (div(skill, 2) + Engine.rand(rng, div(skill, 2))))
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 1)
-
-    result =
-      Messages.interpolate("只见那去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("只见那去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

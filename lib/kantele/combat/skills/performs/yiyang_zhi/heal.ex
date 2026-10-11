@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -107,11 +105,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你必须激发一种内功才能施展\n"}
       false -> {:error, "你所学的外功中没有这种功能。\n"}
       false -> {:error, "你无法给\n"}
       false -> {:error, "你要用真气为谁疗伤？\n"}
-      false -> {:error, "对方没有受伤，不需要接受治疗。\n"}
       false -> {:error, "战斗中无法运功疗伤。\n"}
       true -> :ok
     end
@@ -152,7 +148,6 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 800, 10)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

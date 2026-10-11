@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "lingshe-quan")
-    ap = Stats.skill(stats, "cuff") + Stats.skill(stats, "training")
+    ap = (Stats.skill(stats, "cuff") + Stats.skill(stats, "training"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -108,7 +106,6 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
 
     cond do
       false -> {:error, "「柔字诀」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -153,13 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      Messages.interpolate("只见$n大吃一惊，仓皇之下不及闪躲，被$N一拳打了个正中，闷哼一声，连退数步！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("只见$n大吃一惊，仓皇之下不及闪躲，被$N一拳打了个正中，闷哼一声，连退数步！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

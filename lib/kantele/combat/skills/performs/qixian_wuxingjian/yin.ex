@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     lvl = Stats.skill(stats, "qixian-wuxingjian")
     skill = Stats.skill(stats, "qixian-wuxingjian")
     ap = Stats.skill(stats, "force")
-    damage = ap + skill
+    damage = (ap + skill)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
 
     cond do
       vitals.max_neili < 10 -> {:error, "你现在的真气不够，难以施展\n"}
-      vitals.neili < 600 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.neili < 600 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -111,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "你七弦无形剑修为有限，难以施展\n"}
       false -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
@@ -121,9 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你七弦无形剑修为有限，难以施展\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -166,28 +163,14 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, damage)
-      vitals = Vitals.wound(vitals, :jing, div(damage, 3))
+          vitals = Vitals.damage(vitals, :jing, damage)
+          vitals = Vitals.wound(vitals, :jing, div(damage, 3))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 2)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

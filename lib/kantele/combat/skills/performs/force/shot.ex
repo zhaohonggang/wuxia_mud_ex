@@ -33,8 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -57,7 +56,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
         {:error, "你所学的内功中没有这种功能。\n"}
 
       Stats.mapped(stats, "force") != "huagong-dafa" ->
-        {:error, "TODO(migrate) 未激发/未准备 huagong-dafa。\n"}
+        {:error, "你的内功修为不够。\n"}
 
       Stats.mapped(stats, "force") != "huaxue-shengong" ->
         {:error, "TODO(migrate) 未激发/未准备 huaxue-shengong。\n"}
@@ -77,25 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "你得先准备(hand)好毒药再说。\n"}
-      false -> {:error, "你想攻击谁？\n"}
-      false -> {:error, "你手中所拿的\n"}
-      false -> {:error, "你的内功修为不够。\n"}
-      false -> {:error, "在这里不能攻击他人。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "将\n"}
-      false -> {:error, "比武的时候最好是正大光明的较量。\n"}
-      false -> {:error, "这个人正被官府保护着，还是别去招惹。\n"}
+      vitals.neili < 300 -> {:error, "你得先准备(hand)好毒药再说。\n"}
       true -> :ok
     end
   end

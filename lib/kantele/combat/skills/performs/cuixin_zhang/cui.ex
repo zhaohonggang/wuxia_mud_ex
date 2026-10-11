@@ -29,10 +29,10 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "cuixin-zhang")
-    ap = Stats.skill(stats, "strike") + Stats.skill(stats, "force")
+    ap = (Stats.skill(stats, "strike") + Stats.skill(stats, "force"))
     count = div(lvl, 8)
     dp = 1
-    damage = div(ap, 2) + Engine.rand(rng, ap)
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -102,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
 
     cond do
       false -> {:error, "你必须是空手才能使用！\n"}
+      false -> {:error, "你的催心掌还不够纯熟，无法施展\n"}
       true -> :ok
     end
   end
@@ -112,9 +111,6 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
 
     cond do
       false -> {:error, "你使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的催心掌还不够纯熟，无法施展\n"}
-      false -> {:error, "对方已经招架涣散，放胆攻击吧。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,9 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -159,21 +153,13 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 260, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name),
-        else:
-          Messages.interpolate("$p见$P来势汹涌，踉踉跄跄的躲开了这致命的一击！", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P来势汹涌，踉踉跄跄的躲开了这致命的一击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

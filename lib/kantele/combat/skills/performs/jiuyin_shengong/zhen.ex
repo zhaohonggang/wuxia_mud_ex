@@ -29,12 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhen do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyin-shengong")
-
-    ap =
-      Stats.skill(stats, "whip") + Stats.skill(stats, "force") +
-        Stats.skill(stats, "martial-cognize")
-
-    damage = ap + Engine.rand(rng, div(ap, 2))
+    ap = ((Stats.skill(stats, "whip") + Stats.skill(stats, "force")) + Stats.skill(stats, "martial-cognize"))
+    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -125,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhen do
 
     cond do
       false -> {:error, "你使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -140,9 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhen do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N诡异的一笑，手中犹如一条银龙猛然飞向$n，正是九阴真经中的绝招「真·天诛龙蛟诀」！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N诡异的一笑，手中犹如一条银龙猛然飞向$n，正是九阴真经中的绝招「真·天诛龙蛟诀」！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -170,23 +161,13 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhen do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("结果$n一声惨叫，未能看破$N的企图，被这一鞭硬击在胸口，鲜血飞溅，皮肉绽开！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$p飞身一跃而起，躲避开了$P的攻击！", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("msg", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p飞身一跃而起，躲避开了$P的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

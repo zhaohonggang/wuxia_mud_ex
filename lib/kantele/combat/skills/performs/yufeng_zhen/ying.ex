@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -107,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "你手中没有针，无法施展\n"}
       false -> {:error, "你现在手中并没有拿着针，怎么施展\n"}
       true -> :ok
     end
@@ -118,8 +117,6 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你手中没有针，无法施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -158,13 +155,10 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.wound(vitals, :qi, skill + Engine.rand(rng, div(skill, 3)))
+        vitals = Vitals.wound(vitals, :qi, (skill + Engine.rand(rng, div(skill, 3))))
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-
-    result =
-      Messages.interpolate("结果$p反应不及，中了$P一base_unit！", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("结果$p反应不及，中了$P一base_unit！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

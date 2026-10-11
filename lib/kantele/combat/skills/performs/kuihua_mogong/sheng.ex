@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
-    ap = div(Stats.skill(stats, "kuihua-mogong") * 3, 2) + Stats.skill(stats, "martial-cognize")
+    ap = (div((Stats.skill(stats, "kuihua-mogong") * 3), 2) + Stats.skill(stats, "martial-cognize"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -108,7 +106,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -150,7 +147,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
     result = Messages.interpolate("结果$p只能紧守门户，不敢妄自出击！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

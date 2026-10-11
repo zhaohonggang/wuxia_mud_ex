@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bagua-biao")
-    ap = Stats.skill(stats, "strike") + Stats.skill(stats, "throwing")
-    damage = div(ap, 3) + Engine.rand(rng, div(ap, 2))
+    ap = (Stats.skill(stats, "strike") + Stats.skill(stats, "throwing"))
+    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -123,7 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -138,8 +135,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn =
-      Broadcast.publish(conn, "突然只听$N喝道：“$n看招！”说完单手一扬，袖底顿时窜出一道金光，直射$n而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "突然只听$N喝道：“$n看招！”说完单手一扬，袖底顿时窜出一道金光，直射$n而去！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -167,24 +163,14 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-
-    result =
-      if hit,
-        do: Messages.interpolate("可只见$n哈哈一笑，身子一矮，躲了过去。
-哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。", n1: attacker.name, n2: character.name),
-        else:
-          Messages.interpolate("可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("可只见$n哈哈一笑，身子一矮，躲了过去。
+哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

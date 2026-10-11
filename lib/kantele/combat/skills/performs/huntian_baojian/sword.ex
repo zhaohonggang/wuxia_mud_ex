@@ -53,6 +53,7 @@ defmodule Kantele.Combat.Skills.Performs.HuntianBaojian.Sword do
 
     cond do
       false -> {:error, "你手中已经有武器了。\n"}
+      false -> {:error, "你身上已经有一束剑气了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +63,6 @@ defmodule Kantele.Combat.Skills.Performs.HuntianBaojian.Sword do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你身上已经有一束剑气了。\n"}
       false -> {:error, "呵气成剑只能对自己使用。\n"}
       true -> :ok
     end

@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -70,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -109,17 +106,6 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
 
     cond do
       false -> {:error, "你才用过截脉封穴，没法接着就出招。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "你的金蛇锥法修为有限，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "截脉封穴只能在战斗中使用。\n"}
       true -> :ok
     end
@@ -162,10 +148,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      Messages.interpolate("$p微微一楞，已被$N点中要穴，顿时瘫软无力，缓缓瘫倒。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$p微微一楞，已被$N点中要穴，顿时瘫软无力，缓缓瘫倒。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

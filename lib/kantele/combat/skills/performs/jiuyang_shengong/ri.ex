@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -150,10 +148,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 5)
-
-    result =
-      Messages.interpolate("只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("(  )", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

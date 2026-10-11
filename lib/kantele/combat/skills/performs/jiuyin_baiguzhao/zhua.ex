@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyin-baiguzhao")
     ap = Stats.skill(stats, "claw")
-    damage = -1
+    damage = (-1)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -110,7 +108,6 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -152,24 +149,13 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("“啪”的一声$N正抓在$n的天灵盖上，结果震得“哇哇”怪叫了两声！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插入$n的，$n一声惨叫，血射五步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

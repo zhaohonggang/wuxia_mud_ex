@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -120,7 +118,6 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -163,24 +160,13 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只见$N剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$n猛地向前一跃，跳出了$N的攻击范围。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("只见$N剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n猛地向前一跃，跳出了$N的攻击范围。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

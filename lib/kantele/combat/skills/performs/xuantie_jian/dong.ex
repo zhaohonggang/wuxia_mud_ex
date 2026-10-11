@@ -35,9 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -76,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展\n"}
-      Stats.skill(stats, "xuantie-jian") < 200 -> {:error, "你的玄铁剑法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你手中的\n"}
+      Stats.skill(stats, "xuantie-jian") < 200 -> {:error, "你的内功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -116,8 +114,6 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你手中的\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -158,10 +154,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-
-    result =
-      Messages.interpolate("结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

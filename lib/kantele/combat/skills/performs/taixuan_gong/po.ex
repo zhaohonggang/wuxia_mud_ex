@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -120,13 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(
-        conn,
-        "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「乘风破浪」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「乘风破浪」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,10 +143,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 5)
-
-    result =
-      Messages.interpolate("只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("(  )", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -30,8 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenghuo-ling")
     skill = Stats.skill(stats, "shenghuo-ling")
-    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "force")
-    damage = ap + Engine.rand(rng, div(ap, 2))
+    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "force"))
+    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -92,6 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
 
     cond do
       false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -102,8 +101,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,9 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N猛吸一口气，使出圣火令法之「光华令」，手中御驾如飞，幻出无数道金芒，将$n笼罩起来！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N猛吸一口气，使出圣火令法之「光华令」，手中御驾如飞，幻出无数道金芒，将$n笼罩起来！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -148,27 +143,13 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -79,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     cond do
       Stats.skill(stats, "dodge") < 150 -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
       Stats.skill(stats, "force") < 150 -> {:error, "你的蛇行狸翻等级不够，难以施展此项绝技！\n"}
-      Stats.skill(stats, "shexing-lifan") < 150 -> {:error, "你的轻功修为不够，不会使用此项绝技！\n"}
+      Stats.skill(stats, "shexing-lifan") < 150 -> {:error, "你的身法不够使用「九阴归元」绝技！\n"}
       true -> :ok
     end
   end
@@ -100,7 +98,6 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
 
     cond do
       false -> {:error, "你已经运起「九阴归元」了。\n"}
-      false -> {:error, "你的身法不够使用「九阴归元」绝技！\n"}
       true -> :ok
     end
   end
@@ -113,9 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -141,7 +136,6 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

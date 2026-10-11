@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Mie do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -96,7 +94,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Mie do
 
     cond do
       false -> {:error, "五阴焚灭只能在战斗中对对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,13 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Mie do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-
-    result =
-      Messages.interpolate("这一招完全超出了$n的想象，被$N结结实实的抓中了气海穴，浑身真气登时涣散！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("msg", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "wuxiang-zhi")
-    ap = Stats.skill(stats, "finger") + Stats.skill(stats, "force")
-    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+    ap = (Stats.skill(stats, "finger") + Stats.skill(stats, "force"))
+    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -98,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
         {:error, "你现在没有激发少林内功为内功，难以施展「无色无相」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
         {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
@@ -134,7 +132,6 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     cond do
       false -> {:error, "「无色无相」只能在战斗中对对手使用。\n"}
       false -> {:error, "你还没有受过高人指点，无法施展「无色无相」。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -149,9 +146,7 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N聚起全身功力，汇聚于右指，纵身而上，向$n扑去，同时一指划出，如同流星一般击向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N聚起全身功力，汇聚于右指，纵身而上，向$n扑去，同时一指划出，如同流星一般击向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -179,27 +174,13 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

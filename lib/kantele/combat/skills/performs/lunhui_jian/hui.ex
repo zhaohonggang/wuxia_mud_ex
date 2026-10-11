@@ -28,7 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "lunhui-jian")
-    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "buddhism")
+    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "buddhism"))
     damage = Stats.skill(stats, "lunhui-jian")
 
     with :ok <- check_perform_known(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -102,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
     cond do
       vitals.max_neili < 7500 -> {:error, "你现在真气不够，难以施展\n"}
       vitals.neili < 1000 -> {:error, "你的内力修为不够，难以施展\n"}
-      vitals.qi < 0 -> {:error, "TODO(migrate) qi 不足。\n"}
+      vitals.qi < 0 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -155,24 +152,12 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 300,
-                                           (: attack1, me, target, damage :))",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$n收敛心神，奋力招架，将剑招卸于无形。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n只觉心头一阵凄苦，竟忍不住要落下泪来，喉咙一甜，呕出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n收敛心神，奋力招架，将剑招卸于无形。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

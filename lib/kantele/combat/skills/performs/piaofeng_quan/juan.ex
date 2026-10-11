@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -95,7 +93,6 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -108,11 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "只见$N右拳直出，中途猛地一转，突然发力，身法陡快，将$n笼罩， 正是飘风拳法绝招「卷字决」。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "只见$N右拳直出，中途猛地一转，突然发力，身法陡快，将$n笼罩， 正是飘风拳法绝招「卷字决」。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -137,13 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 1)
-
-    result =
-      Messages.interpolate("结果$p运力招架，一时却觉得内力不济，被$P抢住手腕一拉，顿时立足不稳，滴溜溜打了两个圈子。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("结果$p运力招架，一时却觉得内力不济，被$P抢住手腕一拉，顿时立足不稳，滴溜溜打了两个圈子。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

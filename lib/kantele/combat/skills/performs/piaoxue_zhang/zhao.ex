@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,23 +85,12 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "emei-jiuyang" ->
-        {:error, "你没有激发内功为九阳神功，无法施展\n"}
-
-      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "你没有激发飘雪穿云掌，无法施展\n"}
-
-      Stats.mapped(stats, "force") != "shaolin-jiuyang" ->
-        {:error, "你没有准备飘雪穿云掌，无法施展\n"}
-
-      Stats.mapped(stats, "force") != "wudang-jiuyang" ->
-        {:error, "TODO(migrate) 未激发/未准备 wudang-jiuyang。\n"}
-
-      Stats.mapped(stats, "strike") != "piaoxue-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备 piaoxue-zhang。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "emei-jiuyang" -> {:error, "你没有激发内功为九阳神功，无法施展\n"}
+      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你没有激发飘雪穿云掌，无法施展\n"}
+      Stats.mapped(stats, "force") != "shaolin-jiuyang" -> {:error, "你必须将全身功力尽数提起才能施展\n"}
+      Stats.mapped(stats, "force") != "wudang-jiuyang" -> {:error, "你没有准备飘雪穿云掌，无法施展\n"}
+      Stats.mapped(stats, "strike") != "piaoxue-zhang" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
     end
   end
 
@@ -132,9 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你必须将全身功力尽数提起才能施展\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -180,7 +165,6 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     Performs.feedback(attacker, 600, 4)
     result = Messages.interpolate("只听轰然一声巨响，$n被$N一招正中，身子便如稻草般平平飞出，重
 重摔在地下，呕出一大口鲜血，动也不动。", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

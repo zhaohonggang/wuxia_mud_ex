@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -115,7 +113,6 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "血刀刀法「幻影」只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -154,13 +151,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-
-    result =
-      Messages.interpolate("$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tougu-zhen")
-    ap = Stats.skill(stats, "finger") + Stats.skill(stats, "force")
-    damage = ap + Engine.rand(rng, div(ap, 2))
+    ap = (Stats.skill(stats, "finger") + Stats.skill(stats, "force"))
+    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,7 +99,6 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -116,9 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -146,24 +141,13 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 65,
-                                           (: final, me, target, lvl :))",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$n急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n急忙退闪，连消带打躲开了这一击。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

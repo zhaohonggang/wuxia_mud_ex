@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Zha do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tianlei-dao")
     ap = Stats.skill(stats, "blade")
-    damage = ap + Engine.rand(rng, div(ap, 2))
+    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Zha do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Zha do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,9 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Zha do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N一声怒喝，内劲瀑涨，施展出绝招「春雷炸空」手中出神般的挥舞而出，威力惊人，有如神助一般。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声怒喝，内劲瀑涨，施展出绝招「春雷炸空」手中出神般的挥舞而出，威力惊人，有如神助一般。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -165,23 +160,13 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Zha do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 240, 2)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n见$N来势凶猛，刀光闪烁，惊骇间肩膀已中一刀，一股鲜血喷涌而出。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("然而$n以快制快，侧身一跳，躲过这招。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n见$N来势凶猛，刀光闪烁，惊骇间肩膀已中一刀，一股鲜血喷涌而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n以快制快，侧身一跳，躲过这招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

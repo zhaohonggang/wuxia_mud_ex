@@ -32,8 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
     improve = 0
     n = 0
     m = 0
-    ap = Stats.skill(stats, "xiantian-gong") + Stats.skill(stats, "sword")
-    damage = div(ap, 2) + Engine.rand(rng, ap)
+    ap = (Stats.skill(stats, "xiantian-gong") + Stats.skill(stats, "sword"))
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
     count = div(Stats.skill(stats, "xiantian-gong"), 2)
     i = 0
 
@@ -43,9 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -128,7 +126,6 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -170,23 +167,13 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("顿时只听$n一声惨叫，剑气及身，身上接连射出数道血柱。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$N见$n在这一击之下破绽迭出，顿时身形前跃，唰唰唰又是三剑。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

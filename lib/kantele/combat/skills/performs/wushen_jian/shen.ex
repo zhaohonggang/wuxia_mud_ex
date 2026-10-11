@@ -29,11 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "wushen-jian")
-    ap = Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "martial-cognize")
-
-    damage =
-      Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "force") +
-        Stats.skill(stats, "martial-cognize")
+    ap = (Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "martial-cognize"))
+    damage = ((Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "force")) + Stats.skill(stats, "martial-cognize"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -126,7 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -141,13 +135,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N一声怒喝，内劲暴涨，手中变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N一声怒喝，内劲暴涨，手中变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -175,24 +163,13 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("然而$n以快对快，飞身一跳已然躲过$N这一招。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n以快对快，飞身一跳已然躲过$N这一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

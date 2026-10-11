@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -118,8 +116,6 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
 
     cond do
       false -> {:error, "「三板斧」只能在战斗中使用。\n"}
-      false -> {:error, "你现在的臂力不够，目前不能使用「三板斧」！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -160,16 +156,10 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-
-    result =
-      Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

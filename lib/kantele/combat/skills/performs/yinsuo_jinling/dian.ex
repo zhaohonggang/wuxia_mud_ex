@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -117,7 +115,6 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,11 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 120}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N单手一抖，手中疾颤三下，分点$n脸上「迎香」、「承泣」、「人中」三个穴道，这三下点穴出手之快、认位之准，实是武林罕见！",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N单手一抖，手中疾颤三下，分点$n脸上「迎香」、「承泣」、「人中」三个穴道，这三下点穴出手之快、认位之准，实是武林罕见！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -158,7 +151,6 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     Performs.feedback(attacker, 120, 1)
     result = Messages.interpolate("$n只听$N发出玎玎声响，声虽不大，却是十分怪异，入耳荡心摇魄，一不
 留神，被这招点个正着，全身瘫软无力，动弹不得！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

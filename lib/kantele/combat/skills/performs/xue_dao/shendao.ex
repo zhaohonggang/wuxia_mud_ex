@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -98,9 +96,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1200 -> {:error, "你现在真气不够，无法将「祭血神刀」使完！\n"}
-      vitals.neili < 400 -> {:error, "你的内力修为不足，无法运足内力。\n"}
-      vitals.qi < 100 -> {:error, "你还敢使这招？找死啊！\n"}
+      vitals.max_neili < 1200 -> {:error, "你为人不够凶残，还无法领会「祭血神刀」的奥妙。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，无法将「祭血神刀」使完！\n"}
+      vitals.qi < 100 -> {:error, "你的内力修为不足，无法运足内力。\n"}
       true -> :ok
     end
   end
@@ -121,9 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
 
     cond do
       false -> {:error, "「祭血神刀」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你为人不够凶残，还无法领会「祭血神刀」的奥妙。\n"}
       false -> {:error, "你还不会使用「祭血神刀」！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -137,9 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，", n1: character.name)
+    conn = Broadcast.publish(conn, "$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，", n1: character.name)
 
     conn
     |> put_character(character)
@@ -165,16 +159,10 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 2)
-
-    result =
-      Messages.interpolate("$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenghuo-ling")
     skill = Stats.skill(stats, "shenghuo-ling")
-    damage = div(skill, 2) + Engine.rand(rng, skill)
+    damage = (div(skill, 2) + Engine.rand(rng, skill))
     ap = Stats.skill(stats, "sword")
 
     with :ok <- check_perform_known(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -102,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
 
     cond do
       false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
       true -> :ok
     end
   end
@@ -112,8 +111,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,9 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中忽伸忽缩，招式诡异无比。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中忽伸忽缩，招式诡异无比。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -158,30 +153,15 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, div(damage, 2))
-      vitals = Vitals.wound(vitals, :jing, div(damage, 4))
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
+          vitals = Vitals.wound(vitals, :jing, div(damage, 4))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK,                
-                       damage, 0, (: final, me, target, damage :))",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
 
     cond do
       false -> {:error, "你要取哪只虫的毒液练药？\n"}
-      false -> {:error, "看来你是弄不出什么毒液来了。\n"}
       false -> {:error, "看清楚些，那可不是毒虫。\n"}
       false -> {:error, "那只虫还精神着呢，你找死啊。\n"}
       true -> :ok

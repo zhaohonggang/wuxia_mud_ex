@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenzhaojing") < 50 -> {:error, "你的神照经神功修为不够。\n"}
+      Stats.skill(stats, "shenzhaojing") < 50 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Shield do
 
     cond do
       false -> {:error, "你只能用神照经神功来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

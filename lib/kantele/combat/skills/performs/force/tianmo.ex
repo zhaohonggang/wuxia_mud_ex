@@ -68,7 +68,6 @@ defmodule Kantele.Combat.Skills.Performs.Force.Tianmo do
 
     cond do
       false -> {:error, "你已经在运功中了。\n"}
-      false -> {:error, "你还没有入魔，无法使用\n"}
       true -> :ok
     end
   end

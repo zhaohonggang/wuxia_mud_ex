@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -108,7 +106,6 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,9 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N身形一转，已飘至$n身后，陡然施出一招「背心钉」，单手作锥，直插$n背心要穴！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形一转，已飘至$n身后，陡然施出一招「背心钉」，单手作锥，直插$n背心要穴！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,16 +146,10 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      Messages.interpolate("结果$p闪避不及，被$P这招插中，掌劲顿时透胸而过，口喷鲜血，几乎摔倒！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("结果$p闪避不及，被$P这招插中，掌劲顿时透胸而过，口喷鲜血，几乎摔倒！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

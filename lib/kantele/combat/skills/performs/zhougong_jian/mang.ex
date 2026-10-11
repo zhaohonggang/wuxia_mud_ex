@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "zhougong-jian")
     ap = Stats.skill(stats, "sword")
-    damage = div(ap, 4) + Engine.rand(rng, div(ap, 4))
+    damage = (div(ap, 4) + Engine.rand(rng, div(ap, 4)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,9 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N一声清啸，手中凌空划出，剑尖陡然生出半尺吞吐不定的青芒，一道剑气破空径直划向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中凌空划出，剑尖陡然生出半尺吞吐不定的青芒，一道剑气破空径直划向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -161,23 +156,13 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n强忍全身的痛楚，飞身一跃，避开了$N这强大的杀着。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

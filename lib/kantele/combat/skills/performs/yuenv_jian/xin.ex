@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -112,7 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -156,7 +153,6 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     Performs.feedback(attacker, 180, 1)
     result = Messages.interpolate("$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？
 只听$p一声惨叫，胸口已经被剑气所伤！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

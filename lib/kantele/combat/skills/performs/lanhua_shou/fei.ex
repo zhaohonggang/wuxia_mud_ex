@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -86,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "lanhua-shou" -> {:error, "你没有激发兰花拂穴手，难以施展\n"}
+      Stats.mapped(stats, "hand") != "lanhua-shou" -> {:error, "你没有准备兰花拂穴手，难以施展\n"}
       true -> :ok
     end
   end
@@ -106,8 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fei do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你没有准备兰花拂穴手，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -142,10 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-
-    result =
-      Messages.interpolate("$n顿时觉得眼花缭乱，全然分辨不清真伪，只得拼命运动抵挡。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n顿时觉得眼花缭乱，全然分辨不清真伪，只得拼命运动抵挡。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

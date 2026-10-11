@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     lvl = Stats.skill(stats, "taiji-quan")
     skill = Stats.skill(stats, "taiji-quan")
     ap = Stats.skill(stats, "unarmed")
-    damage = div(ap, 8) + Engine.rand(rng, div(ap, 8))
+    damage = (div(ap, 8) + Engine.rand(rng, div(ap, 8)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -111,7 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,9 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N双手一圈，施出「引」字诀，如抱太极，一股雄浑无比的力道组成了一个旋涡，圈向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手一圈，施出「引」字诀，如抱太极，一股雄浑无比的力道组成了一个旋涡，圈向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,27 +152,13 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     cond do
       vitals.max_neili < 3000 -> {:error, "你现在的真气不够，难以施展\n"}
       vitals.neili < 0 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.neili < 800 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -112,7 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -154,28 +151,14 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, div(damage * 4, 3))
-      vitals = Vitals.wound(vitals, :jing, div(damage, 3))
+          vitals = Vitals.damage(vitals, :jing, div((damage * 4), 3))
+          vitals = Vitals.wound(vitals, :jing, div(damage, 3))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n只觉$N指风袭体，随即上体一阵冰凉，顿感真气涣散几欲晕厥。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p防守严密，紧守门户，顿时令$P的攻势化为乌有。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n只觉$N指风袭体，随即上体一阵冰凉，顿感真气涣散几欲晕厥。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p防守严密，紧守门户，顿时令$P的攻势化为乌有。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

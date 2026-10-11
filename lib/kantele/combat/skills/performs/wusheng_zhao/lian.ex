@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     lvl = Stats.skill(stats, "wusheng-zhao")
     skill = Stats.skill(stats, "wusheng-zhao")
     ap = Stats.skill(stats, "claw")
-    damage = 60 + div(ap, 5) + Engine.rand(rng, div(ap, 5))
+    damage = ((60 + div(ap, 5)) + Engine.rand(rng, div(ap, 5)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,6 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
 
     cond do
       false -> {:error, "你必须空手才能使用\n"}
+      false -> {:error, "你的五圣毒爪等级不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -111,8 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的五圣毒爪等级不够，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,9 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N身形一展，扑至$n跟前，猛然施展「夺命连环」，双爪幻作数道金光，直琐$n各处要脉！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形一展，扑至$n跟前，猛然施展「夺命连环」，双爪幻作数道金光，直琐$n各处要脉！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,27 +152,13 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$p奋力抵抗，结果还是连中$P数抓，登时鲜血飞溅，无法反击！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$p奋力抵抗，结果还是连中$P数抓，登时鲜血飞溅，无法反击！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

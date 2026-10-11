@@ -55,8 +55,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 220 -> {:error, "你的正两仪剑法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "zhengliangyi-jian") < 160 -> {:error, "你的轻功火候不足，难以施展\n"}
+      Stats.skill(stats, "dodge") < 220 -> {:error, "你现在身法太差，难以施展\n"}
+      Stats.skill(stats, "zhengliangyi-jian") < 160 -> {:error, "你的正两仪剑法不够娴熟，难以施展\n"}
       true -> :ok
     end
   end
@@ -96,11 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你打算攻击自己？\n"}
-      false -> {:error, "你现在身法太差，难以施展\n"}
       false -> {:error, "在这里不能攻击他人。\n"}
-      false -> {:error, "对方正被官府保护着呢，还是别去招惹。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "比武的时候最好是正大光明的较量。\n"}
       true -> :ok
     end
   end

@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -115,9 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你天蟾掌法不够纯熟，难以施展\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -160,13 +156,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-
-    result =
-      Messages.interpolate("只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

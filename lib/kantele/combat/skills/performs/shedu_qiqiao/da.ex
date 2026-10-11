@@ -44,8 +44,7 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,15 +74,6 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
 
     cond do
       false -> {:error, "你要打哪条蛇？\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
       false -> {:error, "看清楚些，那不是蛇，你瞎打什么？\n"}
       false -> {:error, "那条蛇暂时不会动弹了，你不必再打了。\n"}
       true -> :ok

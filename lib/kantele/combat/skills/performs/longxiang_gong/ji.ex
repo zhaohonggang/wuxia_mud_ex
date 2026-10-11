@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "longxiang-gong")
     layer = 13
-    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
+    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -110,7 +108,6 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -155,13 +152,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 4)
-
-    result =
-      Messages.interpolate("$N罡气涌至，竟然激起层层气浪，顿时将$n的护体真气摧毁得荡然无存！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N罡气涌至，竟然激起层层气浪，顿时将$n的护体真气摧毁得荡然无存！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

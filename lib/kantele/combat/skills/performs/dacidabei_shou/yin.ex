@@ -35,9 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -65,8 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,9 +72,9 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "buddhism") < 200 -> {:error, "你的佛法修为不足，无法施展该绝招！\n"}
-      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
-      Stats.skill(stats, "hand") < 180 -> {:error, "你的大慈大悲手不够娴熟，不会使用「大手印」！\n"}
+      Stats.skill(stats, "buddhism") < 200 -> {:error, "「大手印」只能在战斗中对对手使用。\n"}
+      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的佛法修为不足，无法施展该绝招！\n"}
+      Stats.skill(stats, "hand") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
       true -> :ok
     end
   end
@@ -98,17 +95,6 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
 
     cond do
       false -> {:error, "你必须空手使用「大手印」！\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "「大手印」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你的臂力不够强，不能使用「大手印」！\n"}
       true -> :ok
     end
   end
@@ -148,7 +134,6 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

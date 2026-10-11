@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "douzhuan-xingyi")
-    ap = Stats.skill(stats, "douzhuan-xingyi") + div(Stats.skill(stats, "zihui-xinfa"), 2)
+    ap = (Stats.skill(stats, "douzhuan-xingyi") + div(Stats.skill(stats, "zihui-xinfa"), 2))
     der = 0
     i = 0
 
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -112,7 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     cond do
       false -> {:error, "「斗转星移」只能对战斗中的对手使用。\n"}
       false -> {:error, "你还不会使用斗转星移。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -156,13 +153,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-
-    result =
-      Messages.interpolate("结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

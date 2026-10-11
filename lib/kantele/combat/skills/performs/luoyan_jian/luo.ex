@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -119,7 +117,6 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,11 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -160,10 +153,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-
-    result =
-      Messages.interpolate("$n见$P剑势汹涌，寒意顿生，竟被逼得连连后退，狼狈不已。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n见$P剑势汹涌，寒意顿生，竟被逼得连连后退，狼狈不已。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

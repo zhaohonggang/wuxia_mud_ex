@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -119,7 +117,6 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,9 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N长啸一声，疼空而起，施出绝招「开天辟地」，手中犹如长龙般龙吟不定，临空而下，罩向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N长啸一声，疼空而起，施出绝招「开天辟地」，手中犹如长龙般龙吟不定，临空而下，罩向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -165,13 +160,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 220, 4)
-
-    result =
-      Messages.interpolate("但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

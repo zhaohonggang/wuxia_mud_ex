@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -67,8 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -110,16 +107,6 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
-  end
-
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -153,10 +140,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-
-    result =
-      Messages.interpolate("$n只觉风声萧萧，眼前万千鞭影，顿感手脚无措，惊慌不已。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n只觉风声萧萧，眼前万千鞭影，顿感手脚无措，惊慌不已。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

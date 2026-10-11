@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "liangyi-jian")
     ap = Stats.skill(stats, "sword")
-    damage = div(ap * 4, 3)
+    damage = div((ap * 4), 3)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -165,27 +162,13 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n疾忙左转，却发现$N的疾往左转，登时穿胸而过，血如泉涌。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p轻轻一笑，侧身右转，躲开了$P左转的剑式，毫发未伤。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n疾忙左转，却发现$N的疾往左转，登时穿胸而过，血如泉涌。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p轻轻一笑，侧身右转，躲开了$P左转的剑式，毫发未伤。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

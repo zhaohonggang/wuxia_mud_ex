@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "weituo-chu")
-    damage = Stats.skill(stats, "weituo-chu") + Stats.skill(stats, "buddhism")
+    damage = (Stats.skill(stats, "weituo-chu") + Stats.skill(stats, "buddhism"))
     club = div(Stats.skill(stats, "staff"), 3)
 
     with :ok <- check_perform_known(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -89,6 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "你刚使完「即世即空」，目前气血翻涌，无法再次运用！\n"}
       false -> {:error, "你手中无杵，怎能运用「即世即空」？！\n"}
       true -> :ok
     end
@@ -100,7 +99,6 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
 
     cond do
       false -> {:error, "「即世即空」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你刚使完「即世即空」，目前气血翻涌，无法再次运用！\n"}
       false -> {:error, "你还不会使用「即世即空」!\n"}
       true -> :ok
     end
@@ -139,7 +137,6 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

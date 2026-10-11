@@ -35,9 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -94,7 +92,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
 
     cond do
       false -> {:error, "唱仙法吼字决只能在战斗中对对手使用。\n"}
-      false -> {:error, "在这里不能攻击他人。\n"}
       true -> :ok
     end
   end
@@ -129,7 +126,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

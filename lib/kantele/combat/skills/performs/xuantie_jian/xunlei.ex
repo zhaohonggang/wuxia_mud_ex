@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -123,8 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
 
     cond do
       false -> {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
-      false -> {:error, "你的膂力还不够，使不出「迅雷击」。\n"}
-      false -> {:error, "你的身法还不够，使不出「迅雷击」。\n"}
       true -> :ok
     end
   end
@@ -163,7 +159,6 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

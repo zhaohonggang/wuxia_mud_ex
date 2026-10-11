@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你的真气不够！\n"}
+      vitals.neili < 100 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -52,7 +52,6 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Powerup do
 
     cond do
       false -> {:error, "你只能用易筋锻骨内功提升自己的战斗力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

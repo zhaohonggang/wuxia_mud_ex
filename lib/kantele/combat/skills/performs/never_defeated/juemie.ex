@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,7 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
 
     cond do
       false -> {:error, "天地绝灭只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -148,13 +145,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 70, 2)
-
-    result =
-      Messages.interpolate("$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -29,11 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yuxiao-jian")
     skill = Stats.skill(stats, "yuxiao-jian")
-
-    ap =
-      Stats.skill(stats, "yuxiao-jian") + Stats.skill(stats, "bibo-shengong") +
-        Stats.skill(stats, "chuixiao-jifa")
-
+    ap = ((Stats.skill(stats, "yuxiao-jian") + Stats.skill(stats, "bibo-shengong")) + Stats.skill(stats, "chuixiao-jifa"))
     damage = 0
 
     with :ok <- check_perform_known(character),
@@ -42,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -115,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
 
     cond do
       false -> {:error, "你手里没有拿萧，难以施展\n"}
+      false -> {:error, "你玉箫剑法等级不够, 难以施展\n"}
       true -> :ok
     end
   end
@@ -125,8 +120,6 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你玉箫剑法等级不够, 难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -136,13 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(
-        conn,
-        "只见$N手按玉箫，脚踏八卦四方之位，奏出一曲「碧海潮生按玉箫」。便听得那箫声如鸣琴击玉，轻轻发了几声，接着悠悠扬扬，飘下清亮柔和的洞箫声来。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "只见$N手按玉箫，脚踏八卦四方之位，奏出一曲「碧海潮生按玉箫」。便听得那箫声如鸣琴击玉，轻轻发了几声，接着悠悠扬扬，飘下清亮柔和的洞箫声来。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -170,22 +157,14 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, damage)
-      vitals = Vitals.wound(vitals, :jing, div(damage * 2, 3))
+          vitals = Vitals.damage(vitals, :jing, damage)
+          vitals = Vitals.wound(vitals, :jing, div((damage * 2), 3))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n只感心头一震，脸上情不自禁的露出了一丝微笑。", n1: attacker.name, n2: character.name),
-        else:
-          Messages.interpolate("$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

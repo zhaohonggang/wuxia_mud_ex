@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tianlong-jian")
     ap = Stats.skill(stats, "sword")
-    damage = div(ap, 3) + Engine.rand(rng, div(ap, 2))
+    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -159,23 +156,13 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n招架不住，哧地一声，$N手中的顿时破体钻入，鲜血四溅！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$n奋力格挡，终于架开了$N的这一剑。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n急忙抽身后退，可只见$N剑芒一漾，胸口便喷出一股血柱！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n凝神聚气，飞身一跃而起，避开了$N的杀着。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

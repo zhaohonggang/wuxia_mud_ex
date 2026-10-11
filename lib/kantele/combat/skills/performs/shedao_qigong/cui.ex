@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -107,7 +105,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     cond do
       false -> {:error, "「摧心断肠」只能对战斗中的对手使用。\n"}
       false -> {:error, "你现在还不会使用摧心断肠！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -151,13 +148,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      Messages.interpolate("$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

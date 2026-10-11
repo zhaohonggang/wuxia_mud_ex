@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,7 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "百花错乱只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -145,7 +142,6 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     Performs.feedback(attacker, 300, 1)
     result = Messages.interpolate("$n只感到头晕目眩，只见$N或掌、或爪、或拳、或指铺天盖地的向自己各个部位袭来！
 只一瞬间，全身竟已多了数十出伤痕，鲜血狂泻不止！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

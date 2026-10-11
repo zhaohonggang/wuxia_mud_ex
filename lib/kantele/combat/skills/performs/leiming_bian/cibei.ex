@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -91,6 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
 
     cond do
       false -> {:error, "你手中没有兵器如何使用慈悲字诀。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -103,7 +102,6 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
       false -> {:error, "你使用的外功中没有这个功能。\n"}
       false -> {:error, "你的禅宗心法等级不够，怎能支持慈悲字诀？\n"}
       false -> {:error, "你的雷鸣鞭法修为太差,还不能使用慈悲字诀！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "［慈悲字诀］只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -141,12 +139,11 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
-    vitals = Vitals.wound(vitals, :qi, div(damage, 3))
+        vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.wound(vitals, :qi, div(damage, 3))
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

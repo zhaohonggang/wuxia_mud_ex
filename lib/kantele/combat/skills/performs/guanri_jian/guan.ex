@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     ap = Stats.skill(stats, "sword")
-    damage = ap + Engine.rand(rng, ap)
+    damage = (ap + Engine.rand(rng, ap))
     count = Stats.skill(stats, "sword")
     i = 0
     lvl = Stats.skill(stats, "guanri-jian")
@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -123,7 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -166,24 +163,14 @@ $n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 150,
-                                           (: final, me, target, damage :))",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入剑身直奔
+$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

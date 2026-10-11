@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     lvl = Stats.skill(stats, "panlong-zhao")
     skill = Stats.skill(stats, "panlong-zhao")
     ap = Stats.skill(stats, "claw")
-    damage = 60 + div(ap, 3) + Engine.rand(rng, div(ap, 3))
+    damage = ((60 + div(ap, 3)) + Engine.rand(rng, div(ap, 3)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,6 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
 
     cond do
       false -> {:error, "你必须空手才能使用\n"}
+      false -> {:error, "你的越空盘龙爪等级不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -111,8 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的越空盘龙爪等级不够，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -155,27 +152,13 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

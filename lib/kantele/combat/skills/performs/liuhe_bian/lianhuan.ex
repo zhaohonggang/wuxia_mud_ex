@@ -28,14 +28,11 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-
-    skill =
-      Stats.skill(stats, "force") + Stats.skill(stats, "liuhe-bian") + Stats.skill(stats, "dodge")
-
+    skill = ((Stats.skill(stats, "force") + Stats.skill(stats, "liuhe-bian")) + Stats.skill(stats, "dodge"))
     lvl = Stats.skill(stats, "liuhe-bian")
-    ap = skill + Engine.rand(rng, skill)
+    ap = (skill + Engine.rand(rng, skill))
     i = 1
-    tm = 5 + Engine.rand(rng, 5)
+    tm = (5 + Engine.rand(rng, 5))
     hurt = div(skill, 3)
     damage = div(hurt, i)
 
@@ -45,9 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -111,7 +106,6 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
       false -> {:error, "你刚刚使用过六合连环诀，内力还未平复！\n"}
       false -> {:error, "你所用的外功中没有这个功能!\n"}
       false -> {:error, "六合连环诀只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -153,24 +147,13 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 2)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("【天合】，$N舞动手中瞬息击向$n的额头，啪的一声轻响，顿时一条血印。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n不慌不忙，以快打快，将$N的招式完全化去。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("【人合】，$N与合为一体急射向$n，$n措手不急被打的吐血不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不慌不忙，以快打快，将$N的招式完全化去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

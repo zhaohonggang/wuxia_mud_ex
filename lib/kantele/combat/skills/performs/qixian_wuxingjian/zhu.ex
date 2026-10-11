@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -81,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功的修为不够，现在无法使用\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的七弦无形剑修为有限，现在无法使用\n"}
       true -> :ok
     end
   end
@@ -120,8 +118,6 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的七弦无形剑修为有限，现在无法使用\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -159,10 +155,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 1)
-
-    result =
-      Messages.interpolate("$p只感到$P内力澎湃，汹涌而至，霎时心神惧碎，呆立当场！", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$p只感到$P内力澎湃，汹涌而至，霎时心神惧碎，呆立当场！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

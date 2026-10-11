@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
     ap = Stats.skill(stats, "kuihua-mogong")
-    ap1 = Stats.skill(stats, "kuihua-mogong") + Stats.skill(stats, "dodge")
-    damage = div(ap, 2) + Engine.rand(rng, ap)
+    ap1 = (Stats.skill(stats, "kuihua-mogong") + Stats.skill(stats, "dodge"))
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,9 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     vitals = %{vitals | neili: vitals.neili - 60}
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -163,23 +158,13 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("$n知道来招不善，急忙闪避，没出一点差错。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("msg", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大吃一惊，连忙退后，居然侥幸躲开着这一招！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

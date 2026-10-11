@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -95,7 +93,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
 
     cond do
       false -> {:error, "你现在手中并没有拿着箭，怎么施展百步穿杨？\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "百步穿杨只能在战斗中对对手使用。\n"}
       false -> {:error, "至少要有一支箭你才能施展百步穿杨。\n"}
       true -> :ok
@@ -140,11 +137,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.wound(vitals, :qi, div(skill, 3) + Engine.rand(rng, div(skill, 3)))
+        vitals = Vitals.wound(vitals, :qi, (div(skill, 3) + Engine.rand(rng, div(skill, 3))))
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
     result = Messages.interpolate("结果$p反应不及，中了$P一箭！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

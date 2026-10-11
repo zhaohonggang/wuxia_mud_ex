@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -108,7 +106,6 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,11 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N运转真气，将内力注于掌风之中，双掌猛然拍向$n，掌风凌厉无比，气势凌人，直可惊天地，泣鬼神，正是绝情谷绝学「魂飞魄散」。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N运转真气，将内力注于掌风之中，双掌猛然拍向$n，掌风凌厉无比，气势凌人，直可惊天地，泣鬼神，正是绝情谷绝学「魂飞魄散」。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,13 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-
-    result =
-      Messages.interpolate("但见$N双掌拍来，掌风作响，当真气势凌人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("但见$N双掌拍来，掌风作响，当真气势凌人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

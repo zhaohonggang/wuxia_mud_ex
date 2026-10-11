@@ -28,7 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "daojian-guizhen")
-    ap = div(Stats.skill(stats, "daojian-guizhen") * 3, 2) + Stats.skill(stats, "martial-cognize")
+    ap = (div((Stats.skill(stats, "daojian-guizhen") * 3), 2) + Stats.skill(stats, "martial-cognize"))
     count = div(ap, 12)
     i = 0
 
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -69,8 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -100,16 +97,6 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
 
     cond do
       false -> {:error, "你所使用的武器不对，难以施展\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -147,13 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-
-    result =
-      Messages.interpolate("$n只见无数刀光剑影向自己逼来，顿感眼花缭乱，心底寒意油然而生。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n只见无数刀光剑影向自己逼来，顿感眼花缭乱，心底寒意油然而生。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

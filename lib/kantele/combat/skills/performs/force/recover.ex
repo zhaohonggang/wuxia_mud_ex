@@ -40,7 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Recover do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 20 -> {:error, "你的内力不够。\n"}
+      vitals.neili < 20 -> {:error, "你现在气力充沛。\n"}
       true -> :ok
     end
   end
@@ -51,7 +51,6 @@ defmodule Kantele.Combat.Skills.Performs.Force.Recover do
 
     cond do
       false -> {:error, "你只能用内功调匀自己的气息。\n"}
-      false -> {:error, "你现在气力充沛。\n"}
       true -> :ok
     end
   end

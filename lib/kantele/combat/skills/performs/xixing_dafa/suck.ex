@@ -52,7 +52,7 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
 
     cond do
       vitals.max_neili < 1 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
-      vitals.max_neili < 100 -> {:error, "TODO(migrate) max_neili 不足。\n"}
+      vitals.max_neili < 100 -> {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
       vitals.neili < 100 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
@@ -65,7 +65,6 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     cond do
       false -> {:error, "你刚刚吸取过丹元！\n"}
       false -> {:error, "你只能吸取战斗中的对手的丹元！\n"}
-      false -> {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
       false -> {:error, "在这里不能攻击他人。\n"}
       false -> {:error, "搞错了！只有活着的生物才能有丹元！\n"}
       true -> :ok

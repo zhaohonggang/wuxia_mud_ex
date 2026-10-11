@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     lvl = Stats.skill(stats, "sanwu-shou")
     ap = Stats.skill(stats, "whip")
     count = 0
-    damage = ap + Engine.rand(rng, ap)
+    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -122,7 +120,6 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -136,11 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N一声长啸，内劲暴涨，施出绝招「无孔不入」手中哧哧作响，龙吟不定，$N猛然腾空而起，挥舞着手中的，凌空直下，涌向$n。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N一声长啸，内劲暴涨，施出绝招「无孔不入」手中哧哧作响，龙吟不定，$N猛然腾空而起，挥舞着手中的，凌空直下，涌向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -168,27 +161,13 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 220, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

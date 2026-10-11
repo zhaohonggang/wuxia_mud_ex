@@ -30,8 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "liumai-shenjian")
     skill = Stats.skill(stats, "liumai-shenjian")
-    ap = Stats.skill(stats, "liumai-shenjian") + Stats.skill(stats, "jingluo-xue")
-    damage = div(ap * 3, 2) + Engine.rand(rng, ap)
+    ap = (Stats.skill(stats, "liumai-shenjian") + Stats.skill(stats, "jingluo-xue"))
+    damage = (div((ap * 3), 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -102,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
 
     cond do
       false -> {:error, "你必须是空手才能施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -112,8 +111,6 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的六脉神剑修为有限，无法使用\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,11 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -161,24 +154,13 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 800, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n使出浑身解数，终于将$N这一指架开，丝毫无损。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

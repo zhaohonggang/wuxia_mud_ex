@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.Longxiang.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "longxiang") < 60 -> {:error, "你的龙象般若功修为不够。\n"}
+      Stats.skill(stats, "longxiang") < 60 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.Longxiang.Shield do
 
     cond do
       false -> {:error, "你只能用龙象般若功来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

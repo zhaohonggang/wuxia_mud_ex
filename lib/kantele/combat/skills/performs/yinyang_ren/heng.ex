@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yinyang-ren")
     ap = Stats.skill(stats, "blade")
-    damage = div(ap, 2) + Engine.rand(rng, ap)
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -91,14 +89,9 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yinyang-ren" ->
-        {:error, "你没有激发阴阳刃法，难以施展\n"}
-
-      Stats.mapped(stats, "sword") != "yinyang-ren" ->
-        {:error, "TODO(migrate) 未激发/未准备 yinyang-ren。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
     end
   end
 
@@ -128,7 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -139,11 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 240}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "只见$N手中斜指苍天，猛然间招式突变，“呼呼”作响，一式「横空出世」，力劈虚空，气压群山，犹如风卷残云般地袭向$n。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "只见$N手中斜指苍天，猛然间招式突变，“呼呼”作响，一式「横空出世」，力劈虚空，气压群山，犹如风卷残云般地袭向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -171,24 +159,13 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 240, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

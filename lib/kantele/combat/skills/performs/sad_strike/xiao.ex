@@ -27,7 +27,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
+    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
     lvl = Stats.skill(stats, "sad-strike")
     n = 6
     count = 0
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -100,7 +98,6 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,13 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-
-    result =
-      Messages.interpolate("$n见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

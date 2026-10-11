@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -117,7 +115,6 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
 
     cond do
       false -> {:error, "云龙三现只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -162,7 +159,6 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     Performs.feedback(attacker, 180, 4)
     result = Messages.interpolate("只见$N手中剑光幻作一条金龙，腾空而起倏的罩向$n，
 $p只觉一股大力铺天盖地般压来，登时眼前一花，两耳轰鸣，哇的喷出一口鲜血！！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

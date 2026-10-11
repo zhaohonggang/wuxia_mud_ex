@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xiantian-gong")
-    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
-    damage = div(ap, 2) + Engine.rand(rng, ap)
+    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -111,7 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -157,24 +154,13 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-
-    result =
-      if hit,
-        do: Messages.interpolate("便在$n微微一愣间，$N罡风已然及体，$p一声哀嚎，全身骼络尽数断裂。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)", n1: attacker.name, n2: character.name),
-        else:
-          Messages.interpolate("可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("只听“轰”的一声闷响，$n身着的在$N内力激荡下应声而碎，化成一块块碎片。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -107,7 +105,6 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
 
     cond do
       false -> {:error, "「群山叠影」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,11 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N稳稳使出须弥山掌掌的绝招「群山叠影」，双掌平平向$n推去，$n顿时觉得一股排山倒海的内力向自己涌来。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N稳稳使出须弥山掌掌的绝招「群山叠影」，双掌平平向$n推去，$n顿时觉得一股排山倒海的内力向自己涌来。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -146,10 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-
-    result =
-      Messages.interpolate("$n顿时觉得呼吸不畅，全然被这股力道所制，只得拼命运动抵挡。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n顿时觉得呼吸不畅，全然被这股力道所制，只得拼命运动抵挡。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

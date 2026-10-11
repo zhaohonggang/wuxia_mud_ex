@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.Sougu.Muyeyingyang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -95,7 +93,6 @@ defmodule Kantele.Combat.Skills.Performs.Sougu.Muyeyingyang do
 
     cond do
       false -> {:error, "你臂力不够,不能使用牧野鹰扬！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "牧野鹰扬只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -135,7 +132,6 @@ defmodule Kantele.Combat.Skills.Performs.Sougu.Muyeyingyang do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 4)
     result = Messages.interpolate("结果$p被$P点中要穴，立时动弹不得！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

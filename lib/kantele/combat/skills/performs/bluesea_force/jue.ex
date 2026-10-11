@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Jue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -94,7 +92,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Jue do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "绝仙决只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -137,13 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Jue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 75, 2)
-
-    result =
-      Messages.interpolate("$n竭力腾挪躲闪，却听“啪”的一声被$P结结实实的打在了胸前，登时吐血不止！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n竭力腾挪躲闪，却听“啪”的一声被$P结结实实的打在了胸前，登时吐血不止！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

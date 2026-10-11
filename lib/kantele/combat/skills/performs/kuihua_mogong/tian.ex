@@ -28,7 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
-    i = 6 + Engine.rand(rng, 5)
+    i = (6 + Engine.rand(rng, 5))
     count = 0
 
     with :ok <- check_perform_known(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -119,7 +117,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -147,13 +144,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-
-    result =
-      Messages.interpolate("$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

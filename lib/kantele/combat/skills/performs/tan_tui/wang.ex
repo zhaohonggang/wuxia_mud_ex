@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -110,7 +108,6 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -153,27 +150,13 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("却听$n一声惨嚎，已被$P单腿正中前胸，顿时心脉受震，喷出一大口鲜血。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("却听$n一声惨嚎，已被$P单腿正中前胸，顿时心脉受震，喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -86,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "chongyang-shenzhang" -> {:error, "你没有激发重阳神掌，难以施展\n"}
+      Stats.mapped(stats, "strike") != "chongyang-shenzhang" -> {:error, "你没有准备重阳神掌，难以施展\n"}
       true -> :ok
     end
   end
@@ -106,8 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你没有准备重阳神掌，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -142,13 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.ChongyangShenzhang.Lian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-
-    result =
-      Messages.interpolate("$N大喝一声，施出「重阳连环掌」，顿时双掌纷飞，向$n猛攻而去。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N大喝一声，施出「重阳连环掌」，顿时双掌纷飞，向$n猛攻而去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

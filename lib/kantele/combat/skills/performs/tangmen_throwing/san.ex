@@ -29,9 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tangmen-throwing")
-    ap = Stats.skill(stats, "throwing") + Stats.skill(stats, "force")
+    ap = (Stats.skill(stats, "throwing") + Stats.skill(stats, "force"))
     n = 10
-    damage = div(Stats.skill(stats, "throwing") * 3, 5)
+    damage = div((Stats.skill(stats, "throwing") * 3), 5)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -77,9 +75,6 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     cond do
       false -> {:error, "你现在手中没有拿着暗器散花天女，难以施展\n"}
       false -> {:error, "你现在手中没有足够的暗器，难以施展\n"}
-      false -> {:error, "你现在真气不足，难以施展\n"}
-      false -> {:error, "你的内力修为不足，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,10 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-
-    result =
-      Messages.interpolate("结果$p一声惨嚎，连中了$P发出的十base_unit。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("( $n )", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

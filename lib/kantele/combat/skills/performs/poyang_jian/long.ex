@@ -33,9 +33,9 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
     m = 0
     neili = 300
     hit_point = 80
-    time = 3 + Engine.rand(rng, 4)
+    time = (3 + Engine.rand(rng, 4))
     ap = Stats.skill(stats, "sword")
-    damage = div(ap, 2) + Engine.rand(rng, ap)
+    damage = (div(ap, 2) + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -43,9 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -128,7 +126,6 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -167,24 +164,13 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

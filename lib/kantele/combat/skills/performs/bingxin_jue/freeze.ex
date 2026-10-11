@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
 
     cond do
       false -> {:error, "你只能用寒气攻击战斗中的对手。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

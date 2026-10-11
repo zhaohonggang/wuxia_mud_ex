@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -100,6 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
 
     cond do
       false -> {:error, "你使用的武器不对，难以施展\n"}
+      false -> {:error, "你的神门十三剑等级不够，难以施展\n"}
       false -> {:error, "对方没有使用兵器，难以施展\n"}
       true -> :ok
     end
@@ -111,8 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的神门十三剑等级不够，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -153,10 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-
-    result =
-      Messages.interpolate("$n只觉手腕一阵刺痛，手中再也拿捏不住，脱手而飞。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n只觉手腕一阵刺痛，手中再也拿捏不住，脱手而飞。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

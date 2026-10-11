@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -163,13 +160,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-
-    result =
-      Messages.interpolate("$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

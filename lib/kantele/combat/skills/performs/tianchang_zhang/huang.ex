@@ -30,9 +30,9 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tianchang-zhang")
     skill = Stats.skill(stats, "tianchang-zhang")
-    ap = div(Stats.skill(stats, "strike"), 2) + skill
+    ap = (div(Stats.skill(stats, "strike"), 2) + skill)
     dp = 1
-    damage = skill + Engine.rand(rng, div(skill, 3))
+    damage = (skill + Engine.rand(rng, div(skill, 3)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -112,8 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
 
     cond do
       false -> {:error, "「地老天荒」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你的天长掌法修为有限，不能使用「地老天荒」！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,11 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -160,24 +152,13 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("然而$n内功深湛，丝毫不为$N的掌风所动，若无其事", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n内功深湛，丝毫不为$N的掌风所动，若无其事", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

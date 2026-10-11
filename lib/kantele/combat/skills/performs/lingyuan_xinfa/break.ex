@@ -32,8 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.LingyuanXinfa.Break do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -57,26 +56,12 @@ defmodule Kantele.Combat.Skills.Performs.LingyuanXinfa.Break do
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
-  end
-
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N沉肩滑步，自丹田中升起一股阴柔之气顺着血脉经络传至双手劳宫穴，接着这股阴柔之气就激射而出，喷向$n手中的兵刃！",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N沉肩滑步，自丹田中升起一股阴柔之气顺着血脉经络传至双手劳宫穴，接着这股阴柔之气就激射而出，喷向$n手中的兵刃！", n1: character.name)
 
     conn
     |> put_character(character)

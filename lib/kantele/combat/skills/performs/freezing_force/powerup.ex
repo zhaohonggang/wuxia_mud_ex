@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.FreezingForce.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够。\n"}
+      vitals.neili < 200 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -52,7 +52,6 @@ defmodule Kantele.Combat.Skills.Performs.FreezingForce.Powerup do
 
     cond do
       false -> {:error, "你只能提升自己的战斗力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

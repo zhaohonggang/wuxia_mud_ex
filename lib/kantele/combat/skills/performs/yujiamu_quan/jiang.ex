@@ -30,9 +30,9 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yujiamu-quan")
     skill = Stats.skill(stats, "yujiamu-quan")
-    ap = div(Stats.skill(stats, "cuff"), 2) + skill
+    ap = (div(Stats.skill(stats, "cuff"), 2) + skill)
     dp = 1
-    damage = 10 + div(skill, 3) + Engine.rand(rng, div(skill, 2))
+    damage = ((10 + div(skill, 3)) + Engine.rand(rng, div(skill, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -112,7 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -155,27 +152,13 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p并未被这气势所慑，轻移脚步，躲开了$P的攻击。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p并未被这气势所慑，轻移脚步，躲开了$P的攻击。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -117,7 +115,6 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,9 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N右手支颐，左袖轻轻挥出，长叹一声，使出古墓派绝学「古墓幽居」，一脸尽现寂寥之意。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N右手支颐，左袖轻轻挥出，长叹一声，使出古墓派绝学「古墓幽居」，一脸尽现寂寥之意。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -161,13 +156,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-
-    result =
-      Messages.interpolate("但见$N双拳袭来，柔中带刚，迅猛无比，其间仿佛蕴藏着无穷的威力，$n正迟疑间， $N却已中拳，闷哼一声，倒退几步，一口鲜血喷出。",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("但见$N双拳袭来，柔中带刚，迅猛无比，其间仿佛蕴藏着无穷的威力，$n正迟疑间， $N却已中拳，闷哼一声，倒退几步，一口鲜血喷出。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

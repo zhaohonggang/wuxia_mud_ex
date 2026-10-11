@@ -29,11 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "liuyang-zhang")
-
-    ap =
-      Stats.skill(stats, "force") + Stats.skill(stats, "throwing") + Stats.skill(stats, "medical")
-
-    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+    ap = ((Stats.skill(stats, "force") + Stats.skill(stats, "throwing")) + Stats.skill(stats, "medical"))
+    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -114,7 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -152,25 +146,14 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.wound(vitals, :jing, 10 + Engine.rand(rng, 5))
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.wound(vitals, :jing, (10 + Engine.rand(rng, 5)))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只见$n被$N一掌拍中，紧接着身子一颤，$P那枚生死符已种入$p体内！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p内力激荡，将$P那枚生死符硬生生震出体外。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("只见$n被$N一掌拍中，紧接着身子一颤，$P那枚生死符已种入$p体内！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p内力激荡，将$P那枚生死符硬生生震出体外。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

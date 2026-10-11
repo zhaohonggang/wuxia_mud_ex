@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -93,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
         {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
         {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
@@ -119,7 +117,6 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
 
     cond do
       false -> {:error, "你已经运起「一苇渡江」了。\n"}
-      false -> {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
       true -> :ok
     end
   end
@@ -132,9 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -160,7 +155,6 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

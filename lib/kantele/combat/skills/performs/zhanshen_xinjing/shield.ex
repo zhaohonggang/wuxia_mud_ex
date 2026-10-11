@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhanshenXinjing.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhanshen-xinjing") < 50 -> {:error, "你的战神心经修为不够。\n"}
+      Stats.skill(stats, "zhanshen-xinjing") < 50 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.ZhanshenXinjing.Shield do
 
     cond do
       false -> {:error, "你只能用战神心经来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

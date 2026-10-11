@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taixuan-gong") < 40 -> {:error, "你的太玄功等级不够。\n"}
+      Stats.skill(stats, "taixuan-gong") < 40 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Shield do
 
     cond do
       false -> {:error, "你只能用太玄功来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

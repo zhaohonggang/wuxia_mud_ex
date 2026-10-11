@@ -43,10 +43,10 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
 
     cond do
       Stats.mapped(stats, "dodge") != "shexing-lifan" ->
-        {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
+        {:error, "你已经在运功中了。\n"}
 
       Stats.mapped(stats, "unarmed") != "dafumo-quan" ->
-        {:error, "TODO(migrate) 未激发/未准备 dafumo-quan。\n"}
+        {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
 
       Stats.mapped(stats, "whip") != "yinlong-bian" ->
         {:error, "TODO(migrate) 未激发/未准备 yinlong-bian。\n"}
@@ -71,8 +71,6 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
 
     cond do
       false -> {:error, "你只能用易筋锻骨来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
-      false -> {:error, "你的小九阴神功修为不够。\n"}
       true -> :ok
     end
   end

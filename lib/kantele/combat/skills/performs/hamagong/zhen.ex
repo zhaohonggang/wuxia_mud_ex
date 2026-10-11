@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -122,7 +120,6 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
 
     cond do
       false -> {:error, "你的蛤蟆功修为不够精深，不能使用\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "蛤蟆功\n"}
       true -> :ok
     end
@@ -155,26 +152,12 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$n发觉一股微风扑面而来，却已被逼得呼吸不畅，情知不妙，连忙跃开数尺。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n不料$N会使出如此诡异招式，慌忙伸掌抵挡，结果$N蛤蟆功内劲不断袭入，$n全身顿时感到一阵撕裂般的痛苦。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n喘息未定，又觉一股劲风扑面而来，连忙跃开数尺，狼狈地避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

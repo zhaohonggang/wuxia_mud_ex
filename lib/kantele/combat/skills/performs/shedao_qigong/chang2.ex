@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -74,7 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "你的蛇岛奇功不够娴熟，不会使用唱仙法。\n"}
+      Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "你已经唱得太久了，不能再唱了。\n"}
       true -> :ok
     end
   end
@@ -84,7 +82,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你已经唱得太久了，不能再唱了。\n"}
       false -> {:error, "唱仙法只能在战斗中使用。\n"}
       true -> :ok
     end
@@ -122,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

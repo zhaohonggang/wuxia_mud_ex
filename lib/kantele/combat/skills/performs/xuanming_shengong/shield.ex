@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingShengong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanming-shengong") < 100 -> {:error, "你的玄冥神功修为不够。\n"}
+      Stats.skill(stats, "xuanming-shengong") < 100 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingShengong.Shield do
 
     cond do
       false -> {:error, "你只能用玄冥神功来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

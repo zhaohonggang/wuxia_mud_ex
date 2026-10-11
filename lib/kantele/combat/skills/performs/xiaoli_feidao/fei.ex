@@ -35,9 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -144,7 +142,6 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
     result = Messages.interpolate("忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！
 
 一股鲜血从$n咽喉中喷出……", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

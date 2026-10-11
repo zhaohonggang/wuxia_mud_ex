@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "pixie-jian")
-    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "dodge")
-    damage = ap + Engine.rand(rng, ap)
+    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "dodge"))
+    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -121,8 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方现在什么也看不见，放胆攻击吧。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -165,28 +161,13 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("= COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, 30,
-                                          (: final, me, target, damage :))",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n情急智生，抬手也向$N的右眼刺去，迫得$P回剑跃开。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$N一声阴笑，揉身而上，左手两指并拢，手臂暴长，迅捷异常分刺$n的双目！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n情急智生，抬手也向$N的右眼刺去，迫得$P回剑跃开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

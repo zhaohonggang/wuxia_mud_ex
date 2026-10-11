@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "lingshe-zhangfa")
     ap = Stats.skill(stats, "staff")
-    damage = ap + Engine.rand(rng, div(ap, 4))
+    damage = (ap + Engine.rand(rng, div(ap, 4)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -120,7 +118,6 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
     cond do
       false -> {:error, "「千蛇万噬」只能对战斗中的对手使用。\n"}
       false -> {:error, "你还不会使用「千蛇万噬」这一绝技。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -159,30 +156,15 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, div(damage, 4))
-      vitals = Vitals.wound(vitals, :jing, div(damage, 8))
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :jing, div(damage, 4))
+          vitals = Vitals.wound(vitals, :jing, div(damage, 8))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("= COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 50,
-                                           (: final, me, target, damage, weapon :))",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p看破了$P的企图，一缩胸，急退三步，避开了这一招。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，一缩胸，急退三步，避开了这一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -41,8 +41,8 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "你的先天根骨不足，无法施展\n"}
-      vitals.neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
+      vitals.max_neili < 2200 -> {:error, "你现在尚未曾运功，难以施展\n"}
+      vitals.neili < 1000 -> {:error, "你的先天根骨不足，无法施展\n"}
       true -> :ok
     end
   end
@@ -53,9 +53,7 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
 
     cond do
       false -> {:error, "你所学的内功中没有这种功能。\n"}
-      false -> {:error, "你现在尚未曾运功，难以施展\n"}
       false -> {:error, "你现在正在施展\n"}
-      false -> {:error, "你的寒冰真气不够，难以施展\n"}
       true -> :ok
     end
   end

@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyin-shengong")
     ap = Stats.skill(stats, "cuff")
-    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -70,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -101,16 +98,6 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
 
     cond do
       false -> {:error, "此招只能空手施展！\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -152,23 +139,13 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 90, 2)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

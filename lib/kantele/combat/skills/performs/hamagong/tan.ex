@@ -51,7 +51,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在内力不足，不能弹射毒药。\n"}
+      vitals.neili < 500 -> {:error, "你得先准备(hand)好毒药再说。\n"}
       true -> :ok
     end
   end
@@ -61,9 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你得先准备(hand)好毒药再说。\n"}
       false -> {:error, "你想攻击谁？\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "比武的时候最好是正大光明的较量。\n"}
       false -> {:error, "这里不能战斗，你不可以使用毒技伤人。\n"}
       true -> :ok

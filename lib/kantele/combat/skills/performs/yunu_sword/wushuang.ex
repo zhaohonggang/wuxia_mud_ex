@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -86,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的内力不够。\n"}
+      vitals.neili < 300 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -106,8 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你已经在运功中了。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "无双无对只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -150,13 +146,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-
-    result =
-      Messages.interpolate("$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

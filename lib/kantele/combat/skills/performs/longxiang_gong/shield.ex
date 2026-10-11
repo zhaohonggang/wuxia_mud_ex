@@ -41,7 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Shield do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你目前的真气不够。\n"}
+      vitals.neili < 500 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -52,7 +52,6 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Shield do
 
     cond do
       false -> {:error, "你只能提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       false -> {:error, "你龙象般若功修为不够，难以运功。\n"}
       true -> :ok
     end

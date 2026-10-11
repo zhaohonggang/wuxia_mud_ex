@@ -28,7 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiechen-dao")
-    i = div(Stats.skill(stats, "force"), 2) * (3 + Engine.rand(rng, 4))
+    i = (div(Stats.skill(stats, "force"), 2) * (3 + Engine.rand(rng, 4)))
     count = 4
 
     with :ok <- check_perform_known(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -121,7 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
 
     cond do
       false -> {:error, "「修罗焰」攻击只能对战斗中的对手使用。\n"}
-      false -> {:error, "你的身体还不够强壮，强使「修罗焰」绝技是引火自焚！\n"}
       true -> :ok
     end
   end
@@ -156,7 +153,6 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

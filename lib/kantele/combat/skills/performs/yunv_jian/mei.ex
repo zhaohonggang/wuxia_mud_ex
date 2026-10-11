@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -118,7 +116,6 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,13 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N陡然间姿态万千，身法飘逸，犹如一个婀娜多姿的女子在随歌漫舞一样。但是$N手中却跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉害的招式。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N陡然间姿态万千，身法飘逸，犹如一个婀娜多姿的女子在随歌漫舞一样。但是$N手中却跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉害的招式。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -163,7 +154,6 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

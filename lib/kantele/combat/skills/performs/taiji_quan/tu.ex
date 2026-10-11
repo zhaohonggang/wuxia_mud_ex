@@ -32,12 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     improve = 0
     n = 0
     m = 0
-
-    ap =
-      Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan") +
-        Stats.skill(stats, "taiji-shengong")
-
-    damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
+    ap = ((Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan")) + Stats.skill(stats, "taiji-shengong"))
+    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 3)))
     flag = 1
 
     with :ok <- check_perform_known(character),
@@ -46,9 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -154,10 +148,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-
-    result =
-      Messages.interpolate("只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("(  )", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

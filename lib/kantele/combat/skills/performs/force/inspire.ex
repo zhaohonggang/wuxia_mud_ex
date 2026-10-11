@@ -52,7 +52,6 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
 
     cond do
       false -> {:error, "你所学的内功中没有这种功能。\n"}
-      false -> {:error, "你现在精神饱满，有什么好激励的？\n"}
       false -> {:error, "先激发你的特殊内功。\n"}
       false -> {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
       true -> :ok

@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -105,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
 
     cond do
       vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展\n"}
-      vitals.neili < 850 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 850 -> {:error, "你太玄功火候不够，难以施展\n"}
       true -> :ok
     end
   end
@@ -125,9 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你太玄功火候不够，难以施展\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -160,15 +156,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-
-    result =
-      Messages.interpolate(
-        "COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80 + random(10),
-                                         (: final1, me, target, damage, weapon, lvl :))",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，已穿透$n的胸膛，鲜血不断涌出。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

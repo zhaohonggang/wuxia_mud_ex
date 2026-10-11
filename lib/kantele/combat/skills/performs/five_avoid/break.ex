@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     cond do
       vitals.neili < 20 -> {:error, "你的气不够，无法施展「五遁绝杀」！\n"}
       vitals.qi < 20 -> {:error, "你的真气不够，无法施展「五遁绝杀」！\n"}
-      vitals.qi < 70 -> {:error, "TODO(migrate) qi 不足。\n"}
+      vitals.qi < 70 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -98,7 +96,6 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
 
     cond do
       false -> {:error, "「五遁绝杀」只能在战斗中使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -137,7 +134,6 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 10, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

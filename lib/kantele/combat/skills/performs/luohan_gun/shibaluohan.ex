@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -68,8 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -111,17 +108,8 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你要和谁组成棍阵?\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
-
-    cond do
       false -> {:error, "你已经在和对方打架，使用\n"}
+      false -> {:error, "你要和谁组成棍阵?\n"}
       true -> :ok
     end
   end
@@ -155,12 +143,11 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :jingli, 100)
-    vitals = Vitals.damage(vitals, :neili, 300)
+        vitals = Vitals.damage(vitals, :jingli, 100)
+        vitals = Vitals.damage(vitals, :neili, 300)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -35,9 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -117,8 +115,6 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你未将全身功力尽数提起，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -156,13 +152,7 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 1)
-
-    result =
-      Messages.interpolate("$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

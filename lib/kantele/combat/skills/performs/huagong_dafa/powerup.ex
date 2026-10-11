@@ -40,7 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Powerup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你的真气不够！\n"}
+      vitals.neili < 100 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -51,7 +51,6 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Powerup do
 
     cond do
       false -> {:error, "你只能用化功大法提升自己的战斗力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

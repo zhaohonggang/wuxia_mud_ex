@@ -30,8 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yingzhua-gong")
     skill = Stats.skill(stats, "yingzhua-gong")
-    ap = Stats.skill(stats, "force") + Stats.skill(stats, "claw")
-    damage = div(ap, 2) + Engine.rand(rng, div(ap, 4))
+    ap = (Stats.skill(stats, "force") + Stats.skill(stats, "claw"))
+    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 4)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,7 +99,6 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     cond do
       false -> {:error, "「荡妖除魔」只能在战斗中对对手使用。\n"}
       false -> {:error, "你的鹰爪功等级不够，不会使用「荡妖除魔」！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -144,27 +141,13 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("不知怎么的，$p却偏偏躲不开$P这一抓，结果被抓了个正中，不由得闷哼一声，退了几步。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p没有轻视$P这一抓，连忙招架，顺势跃开，没有被$P得手。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("不知怎么的，$p却偏偏躲不开$P这一抓，结果被抓了个正中，不由得闷哼一声，退了几步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p没有轻视$P这一抓，连忙招架，顺势跃开，没有被$P得手。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

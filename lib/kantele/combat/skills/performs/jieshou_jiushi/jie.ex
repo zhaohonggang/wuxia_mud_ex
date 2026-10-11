@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jieshou-jiushi")
     skill = Stats.skill(stats, "jieshou-jiushi")
-    damage = div(skill, 2) + Engine.rand(rng, div(skill, 3))
+    damage = (div(skill, 2) + Engine.rand(rng, div(skill, 3)))
     ap = Stats.skill(stats, "hand")
 
     with :ok <- check_perform_known(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -112,7 +110,6 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,9 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "$N身形一展，陡然跃至$n跟前，十指箕张，直锁$n要穴，正是截手九式绝技「截筋断脉」。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形一展，陡然跃至$n跟前，十指箕张，直锁$n要穴，正是截手九式绝技「截筋断脉」。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,31 +152,17 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, damage)
-      vitals = Vitals.wound(vitals, :jing, damage)
-      vitals = Vitals.damage(vitals, :qi, div(damage * 3, 2))
-      vitals = Vitals.wound(vitals, :qi, div(damage * 3, 2))
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :jing, damage)
+          vitals = Vitals.wound(vitals, :jing, damage)
+          vitals = Vitals.damage(vitals, :qi, div((damage * 3), 2))
+          vitals = Vitals.wound(vitals, :qi, div((damage * 3), 2))
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

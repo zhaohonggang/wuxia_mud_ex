@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "你的葵花魔功修为不够。\n"}
+      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Shield do
 
     cond do
       false -> {:error, "你只能用葵花魔功来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

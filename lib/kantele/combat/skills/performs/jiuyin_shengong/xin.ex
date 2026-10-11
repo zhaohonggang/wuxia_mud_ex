@@ -28,8 +28,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyin-shengong")
-    ap = Stats.skill(stats, "jiuyin-shengong") + Stats.skill(stats, "force")
-    times = 8 + Engine.rand(rng, 7)
+    ap = (Stats.skill(stats, "jiuyin-shengong") + Stats.skill(stats, "force"))
+    times = (8 + Engine.rand(rng, 7))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -116,7 +114,6 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,11 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N猛然间尖啸一声，施展出九阴神功中的「摄心大法」。只见$N各种招式千奇百怪、变化多端，脸上喜怒哀乐，怪状百出。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N猛然间尖啸一声，施展出九阴神功中的「摄心大法」。只见$N各种招式千奇百怪、变化多端，脸上喜怒哀乐，怪状百出。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -158,28 +151,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :jing, div(ap, 2) + Engine.rand(rng, div(ap, 4)))
-      vitals = Vitals.wound(vitals, :jing, div(ap, 2) + Engine.rand(rng, div(ap, 8)))
+          vitals = Vitals.damage(vitals, :jing, (div(ap, 2) + Engine.rand(rng, div(ap, 4))))
+          vitals = Vitals.wound(vitals, :jing, (div(ap, 2) + Engine.rand(rng, div(ap, 8))))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

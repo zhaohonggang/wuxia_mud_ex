@@ -28,8 +28,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "sad-strike")
-    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
-    damage = ap + Engine.rand(rng, div(ap, 2))
+    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -98,11 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你刚刚施展完\n"}
       false -> {:error, "你感情早已不纯，哪里还能领略到那种黯然销魂的感觉？\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你没有妻子，体会不到这种万念俱灰的感觉。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -113,13 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -147,23 +136,13 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else: Messages.interpolate("可是$p小心应付、奋力招架，挡开了这一招。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p小心应付、奋力招架，挡开了这一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

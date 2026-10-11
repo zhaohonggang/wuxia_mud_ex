@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -120,7 +118,6 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,11 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    conn =
-      Broadcast.publish(conn, "$N将手中立于胸前，施出绝招「五雷连闪」，$N身法陡然加快，手中连续砍出五刀，刀法之精妙，令人匪夷所思。",
-        n1: character.name
-      )
+    conn = Broadcast.publish(conn, "$N将手中立于胸前，施出绝招「五雷连闪」，$N身法陡然加快，手中连续砍出五刀，刀法之精妙，令人匪夷所思。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -161,10 +154,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-
-    result =
-      Messages.interpolate("$n见$P这招来势汹涌，势不可挡，被$N攻得连连后退。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n见$P这招来势汹涌，势不可挡，被$N攻得连连后退。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

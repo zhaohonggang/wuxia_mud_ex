@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.BeimingShengong.Shield do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "beiming-shengong") < 50 -> {:error, "你的北冥神功修为不够。\n"}
+      Stats.skill(stats, "beiming-shengong") < 50 -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end
@@ -62,7 +62,6 @@ defmodule Kantele.Combat.Skills.Performs.BeimingShengong.Shield do
 
     cond do
       false -> {:error, "你只能用北冥神功来提升自己的防御力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

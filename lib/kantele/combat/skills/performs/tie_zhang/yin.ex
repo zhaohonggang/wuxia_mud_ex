@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -109,7 +107,6 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -147,14 +144,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-
-    result =
-      Messages.interpolate("= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 55,
-                                           (: finala, me, target :))",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

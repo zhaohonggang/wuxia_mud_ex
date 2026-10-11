@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Huan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "wudu-shenzhang")
-    ap = Stats.skill(stats, "wudu-shenzhang") + div(Stats.skill(stats, "dodge"), 2)
+    ap = (Stats.skill(stats, "wudu-shenzhang") + div(Stats.skill(stats, "dodge"), 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Huan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -98,7 +96,6 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Huan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -141,10 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Huan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-
-    result =
-      Messages.interpolate("$n只见$N双掌飘忽不定，毫无破绽，竟被困在$N的掌风之中。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n只见$N双掌飘忽不定，毫无破绽，竟被困在$N的掌风之中。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

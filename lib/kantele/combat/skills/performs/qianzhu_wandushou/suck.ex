@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -77,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
     cond do
       vitals.neili < 200 -> {:error, "你快不行了，再练会送命的！\n"}
       vitals.qi < 200 -> {:error, "你的内力不够，不足以对抗毒气，别把小命送掉。\n"}
-      vitals.qi < 50 -> {:error, "你看清楚点，那东西像是毒虫吗？\n"}
+      vitals.qi < 50 -> {:error, "你的千蛛万毒手火候太浅，不能用来吸取毒素！\n"}
       true -> :ok
     end
   end
@@ -88,6 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
     cond do
       false -> {:error, "你必须空手才能修炼千蛛万毒手！\n"}
+      false -> {:error, "你正在修炼中！\n"}
+      false -> {:error, "你正忙着呢！\n"}
+      false -> {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
+      false -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
+      false -> {:error, "毒虫正忙着呢，不能和你配合！\n"}
       true -> :ok
     end
   end
@@ -98,14 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你正在修炼中！\n"}
-      false -> {:error, "你正忙着呢！\n"}
-      false -> {:error, "你的千蛛万毒手火候太浅，不能用来吸取毒素！\n"}
-      false -> {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
-      false -> {:error, "你看清楚点，那东西像是毒虫吗？\n"}
       false -> {:error, "你要吸取什么毒虫的毒素？\n"}
-      false -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
-      false -> {:error, "毒虫正忙着呢，不能和你配合！\n"}
       false -> {:error, "这里太嘈杂，你不能静下心来修炼。\n"}
       true -> :ok
     end
@@ -135,10 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.wound(vitals, :qi, 5)
+        vitals = Vitals.wound(vitals, :qi, 5)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -66,7 +66,6 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
       false -> {:error, "你所学的内功中没有这种功能。\n"}
       false -> {:error, "你无法给\n"}
       false -> {:error, "你要用真气为谁疗伤？\n"}
-      false -> {:error, "对方没有受伤，不需要接受治疗。\n"}
       false -> {:error, "战斗中无法运功疗伤。\n"}
       true -> :ok
     end

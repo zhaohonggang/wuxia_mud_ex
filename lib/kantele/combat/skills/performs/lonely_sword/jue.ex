@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,6 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
 
     cond do
       false -> {:error, "你必须先去找一把剑。\n"}
+      false -> {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
       true -> :ok
     end
   end
@@ -97,8 +96,6 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
 
     cond do
       false -> {:error, "「总诀式」不能在战斗中演练。\n"}
-      false -> {:error, "你的实战经验不够，无法体会「总诀式」！\n"}
-      false -> {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
       false -> {:error, "这里太嘈杂，你不能静下心来演练。\n"}
       true -> :ok
     end
@@ -128,7 +125,6 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

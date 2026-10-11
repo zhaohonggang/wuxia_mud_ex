@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,7 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -142,7 +139,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

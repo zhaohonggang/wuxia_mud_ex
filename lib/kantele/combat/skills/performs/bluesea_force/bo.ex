@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bluesea-force")
-    ap = div(Stats.skill(stats, "bluesea-force") * 3, 2) + Stats.skill(stats, "martial-cognize")
+    ap = (div((Stats.skill(stats, "bluesea-force") * 3), 2) + Stats.skill(stats, "martial-cognize"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -86,7 +84,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "碧海清波只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -125,7 +122,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
     result = Messages.interpolate("结果$p被$P逼得施展不开半点招式！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

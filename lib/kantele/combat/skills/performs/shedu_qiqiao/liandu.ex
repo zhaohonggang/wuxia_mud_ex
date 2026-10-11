@@ -73,7 +73,6 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Liandu do
 
     cond do
       false -> {:error, "你要取哪条蛇的毒液练药？\n"}
-      false -> {:error, "看来你是弄不出什么毒液来了。\n"}
       false -> {:error, "看清楚些，那不是蛇，你瞎搞什么？\n"}
       false -> {:error, "那条蛇还精神着呢，你找死啊。\n"}
       true -> :ok

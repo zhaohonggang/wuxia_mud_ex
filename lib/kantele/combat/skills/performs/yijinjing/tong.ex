@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yijinjing") < 100 -> {:error, "你的易筋经等级不够。\n"}
+      Stats.skill(stats, "yijinjing") < 100 -> {:error, "你伤势很轻，不用激励易筋经至高绝学。\n"}
       true -> :ok
     end
   end
@@ -63,7 +63,6 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
 
     cond do
       false -> {:error, "你不是少林弟子，无法使用“易筋通脉”。\n"}
-      false -> {:error, "你伤势很轻，不用激励易筋经至高绝学。\n"}
       false -> {:error, "你只能用易筋经来为自己易筋通脉。\n"}
       false -> {:error, "你所学的内功中没有这种功能。\n"}
       true -> :ok

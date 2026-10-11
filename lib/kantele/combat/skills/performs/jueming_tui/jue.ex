@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -105,7 +103,6 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -148,10 +145,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-
-    result =
-      Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "mantian-xing")
-    n = 2 + Engine.rand(rng, 2)
+    n = (2 + Engine.rand(rng, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,6 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
 
     cond do
       false -> {:error, "你现在手中没有拿着暗器，难以施展\n"}
+      false -> {:error, "至少要有十五枚暗器才能施展\n"}
       true -> :ok
     end
   end
@@ -109,9 +108,6 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方已经中了你的绝招，现在是废人一个，赶快进攻吧！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "至少要有十五枚暗器才能施展\n"}
       true -> :ok
     end
   end
@@ -152,15 +148,14 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, 150)
-    vitals = Vitals.wound(vitals, :qi, 50)
-    vitals = Vitals.damage(vitals, :qi, 100)
-    vitals = Vitals.wound(vitals, :qi, 40)
+        vitals = Vitals.damage(vitals, :qi, 150)
+        vitals = Vitals.wound(vitals, :qi, 50)
+        vitals = Vitals.damage(vitals, :qi, 100)
+        vitals = Vitals.wound(vitals, :qi, 40)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
     result = Messages.interpolate("$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
 霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -41,9 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -112,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
 
     cond do
       false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令\n"}
       true -> :ok
     end
   end
@@ -122,8 +121,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -158,13 +155,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-
-    result =
-      Messages.interpolate("$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

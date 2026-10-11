@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -118,7 +116,6 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
 
     cond do
       false -> {:error, "双剑合璧只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -162,7 +159,6 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     Performs.feedback(attacker, 350, 3)
     result = Messages.interpolate("$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
 一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

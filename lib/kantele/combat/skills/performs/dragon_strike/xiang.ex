@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -110,7 +108,6 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
 
     cond do
       false -> {:error, "「龙翔九天」只能在战斗中对对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -146,10 +143,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-
-    result =
-      Messages.interpolate("$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。", n1: attacker.name, n2: character.name)
-
+    result = Messages.interpolate("$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

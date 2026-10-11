@@ -376,6 +376,7 @@ class TranslatePerform:
         """Extract notify_fail messages and associate with gate types by context.
         
         Scans text linearly, tracking the most recent gate condition before each notify_fail.
+        Multiple notify_fail for the same gate are all collected.
         Returns dict: gate_type -> list of cleaned messages.
         """
         gate_msgs = {
@@ -387,14 +388,14 @@ class TranslatePerform:
             'other': [],
         }
         
-        # Current context gate type
+        # Current context gate type - only changes when a NEW gate condition is seen
         current_gate = 'other'
         lines = text.split('\n')
         
         for line in lines:
             stripped = line.strip()
             
-            # Detect gate conditions
+            # Detect gate conditions - these SET the current gate for subsequent notify_fail
             if 'query_skill(' in stripped and '<' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'level'
             elif 'query_skill_mapped(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
@@ -409,13 +410,13 @@ class TranslatePerform:
             elif 'query_temp("weapon")' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'weapon'
             
-            # Extract notify_fail
+            # Extract notify_fail - associate with current gate, DON'T reset gate after
             for m in self.notify_fail_re.finditer(stripped):
                 msg = m.group(1)
                 clean = self._clean_message_fragment(msg)
                 if clean:
                     gate_msgs[current_gate].append(clean)
-                current_gate = 'other'  # Reset after consume
+                # NOTE: current_gate is NOT reset here - multiple notify_fail for same gate are kept
         
         # Deduplicate
         for k in gate_msgs:
@@ -426,12 +427,12 @@ class TranslatePerform:
     def extract_hit_miss_messages(self, text: str) -> Dict[str, List[str]]:
         """Extract hit/miss messages from msg construction in hit check block.
         
-        Looks for the main combat if (ap > dp) block and extracts msg += in each branch.
+        Looks for all combat if (ap > dp) blocks and extracts msg += in each branch.
         Uses balanced brace/paren matching to handle nested structures.
         """
         messages = {'hit': [], 'miss': []}
         
-        # Find the hit check if statement (ap > dp) - search for 'if' followed by condition with ap and dp
+        # Find ALL hit check if statements (ap > dp)
         if_pos = text.find('if (')
         while if_pos != -1:
             # Check if this if statement contains ap and dp with >
@@ -439,7 +440,7 @@ class TranslatePerform:
             if paren_start != -1:
                 condition = text[paren_start:paren_end+1]
                 if 'ap' in condition and 'dp' in condition and '>' in condition:
-                    # Found the hit check!
+                    # Found a hit check!
                     # Find opening brace after the condition
                     brace_pos = text.find('{', paren_end)
                     if brace_pos != -1:
@@ -458,29 +459,37 @@ class TranslatePerform:
                                         miss_block = text[miss_start + 1:miss_end]
                             
                             # Extract msg += from hit branch
+                            hit_msgs = []
                             for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', hit_block):
                                 clean = self._clean_message_fragment(m.group(1))
-                                if clean:
-                                    messages['hit'].append(clean)
+                                if clean and not self._is_function_call(clean):
+                                    hit_msgs.append(clean)
                             
                             # Extract msg += from miss branch
+                            miss_msgs = []
                             if miss_block:
                                 for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', miss_block):
                                     clean = self._clean_message_fragment(m.group(1))
-                                    if clean:
-                                        messages['miss'].append(clean)
+                                    if clean and not self._is_function_call(clean):
+                                        miss_msgs.append(clean)
                             
                             # Also check for message_combatd in hit branch (final message)
                             for m in re.finditer(r'message_combatd\s*\(([^)]+)\)', hit_block):
                                 msg_arg = m.group(1).split(',')[0].strip()
                                 clean = self._clean_message_fragment(msg_arg)
-                                if clean and clean not in messages['hit']:
-                                    messages['hit'].append(clean)
+                                if clean and clean not in hit_msgs:
+                                    hit_msgs.append(clean)
                             
-                            return messages
+                            # Add to messages (extend, not replace)
+                            messages['hit'].extend(hit_msgs)
+                            messages['miss'].extend(miss_msgs)
             
             # Try next 'if ('
             if_pos = text.find('if (', if_pos + 1)
+        
+        # Deduplicate
+        messages['hit'] = self.dedup(messages['hit'])
+        messages['miss'] = self.dedup(messages['miss'])
         
         return messages
 
@@ -524,6 +533,22 @@ class TranslatePerform:
                     return i + 1
             i += 1
         return -1
+
+    def _is_function_call(self, text: str) -> bool:
+        """Check if a cleaned message fragment is actually a function call
+        (like COMBAT_D->do_damage or message_combatd) rather than a user message."""
+        # Common function call patterns in msg assignments
+        func_patterns = [
+            'COMBAT_D->do_damage',
+            'message_combatd',
+            'message_vision',
+            'tell_object',
+            'tell_room',
+        ]
+        for pattern in func_patterns:
+            if pattern in text:
+                return True
+        return False
 
     def _find_balanced_braces(self, text: str, start: int) -> Tuple[int, int]:
         """Find matching { ... } pair starting from `start` (which should be at '{').

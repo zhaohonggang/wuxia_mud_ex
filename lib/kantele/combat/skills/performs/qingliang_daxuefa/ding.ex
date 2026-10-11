@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     lvl = Stats.skill(stats, "qingliang-daxuefa")
     skill = Stats.skill(stats, "qingliang-daxuefa")
     ap = Stats.skill(stats, "dagger")
-    damage = 100 + div(ap, 3) + Engine.rand(rng, div(ap, 3))
+    damage = ((100 + div(ap, 3)) + Engine.rand(rng, div(ap, 3)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -100,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你清凉打穴法修为有限，难以施展\n"}
       true -> :ok
     end
   end
@@ -121,8 +119,6 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你清凉打穴法修为有限，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -165,27 +161,13 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("顿时只听得“噗嗤”一声，$n胸口被$N这一招刺中，溅出一柱鲜血。",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！",
-            n1: attacker.name,
-            n2: character.name
-          )
-
+    result = if hit, do: Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

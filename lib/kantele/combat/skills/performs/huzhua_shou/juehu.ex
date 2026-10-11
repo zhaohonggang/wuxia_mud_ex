@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -118,7 +116,6 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -159,16 +156,10 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-
-    result =
-      Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

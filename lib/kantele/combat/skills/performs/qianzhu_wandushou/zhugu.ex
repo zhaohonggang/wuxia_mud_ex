@@ -32,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     n = 0
     m = 0
     lvl = Stats.skill(stats, "hand")
-    damage = lvl + Engine.rand(rng, div(lvl, 2))
+    damage = (lvl + Engine.rand(rng, div(lvl, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,9 +40,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -154,16 +152,10 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
+        vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-
-    result =
-      Messages.interpolate("$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！",
-        n1: attacker.name,
-        n2: character.name
-      )
-
+    result = Messages.interpolate("$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -36,9 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,9 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对手已经不在这里了！\n"}
-      false -> {:error, "对手已经不能再战斗了。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "无双无对只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -152,7 +147,6 @@ $N手中化做无双剑影攻向$n。", n1: character.name)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

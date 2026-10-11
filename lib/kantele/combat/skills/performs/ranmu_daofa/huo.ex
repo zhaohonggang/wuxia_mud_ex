@@ -28,8 +28,8 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "ranmu-daofa")
-    ap = Stats.skill(stats, "ranmu-daofa") + Stats.skill(stats, "force")
-    damage = ap + Engine.rand(rng, ap)
+    ap = (Stats.skill(stats, "ranmu-daofa") + Stats.skill(stats, "force"))
+    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -97,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
         {:error, "你现在没有激发少林内功为内功，难以施展「火麒蚀月」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
         {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
@@ -133,7 +131,6 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
 
     cond do
       false -> {:error, "「火麒蚀月」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -172,24 +169,13 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

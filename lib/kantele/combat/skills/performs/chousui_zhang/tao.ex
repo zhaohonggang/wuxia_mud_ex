@@ -28,8 +28,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "chousui-zhang")
-    damage = 1500 + Engine.rand(rng, lvl * 3)
-    ap = div(Stats.skill(stats, "poison"), 2) + Stats.skill(stats, "force, 1")
+    damage = (1500 + Engine.rand(rng, (lvl * 3)))
+    ap = (div(Stats.skill(stats, "poison"), 2) + Stats.skill(stats, "force, 1"))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,10 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
 
     cond do
       false -> {:error, "你只能对战斗中的对手施展\n"}
-      false -> {:error, "你必须将全身功力尽数提起才能施展\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你首先要拿着(hand)一些毒药作为引子。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -147,23 +142,17 @@ $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.damage(vitals, :qi, damage * 2)
-      vitals = Vitals.damage(vitals, :jing, div(damage, 2))
+          vitals = Vitals.damage(vitals, :qi, (damage * 2))
+          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-
-    result =
-      if hit,
-        do: Messages.interpolate("只见$N双目血红，头发散乱，猛地仰天发出一声悲啸。
+    result = if hit, do: Messages.interpolate("只见$N双目血红，头发散乱，猛地仰天发出一声悲啸。
 
 $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿时只见空气中血雾弥漫，腥臭无比，随即又
 听$N骨骼“噼里啪啦”一阵爆响，双臂顺着喷出的血柱一推，刹那间一座丈来高的奇毒火墙拔地而起，带
-着排山倒海之势向$n涌去！", n1: attacker.name, n2: character.name),
-        else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
-
+着排山倒海之势向$n涌去！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

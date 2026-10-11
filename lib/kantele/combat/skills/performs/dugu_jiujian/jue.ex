@@ -37,9 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -76,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 85 -> {:error, "你现在真气不足，难以演练\n"}
+      vitals.neili < 85 -> {:error, "你实战经验不足，难以演练\n"}
       true -> :ok
     end
   end
@@ -87,6 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
 
     cond do
       false -> {:error, "你使用的武器不对，难以演练\n"}
+      false -> {:error, "你的独孤九剑等级不够，难以演练\n"}
       true -> :ok
     end
   end
@@ -97,9 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
 
     cond do
       false -> {:error, "你周围过于嘈杂，难以演练\n"}
-      false -> {:error, "你实战经验不足，难以演练\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的独孤九剑等级不够，难以演练\n"}
       true -> :ok
     end
   end
@@ -128,7 +125,6 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
-
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

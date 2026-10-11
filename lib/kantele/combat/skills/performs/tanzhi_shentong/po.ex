@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tanzhi-shentong")
-    ap = Stats.skill(stats, "finger") + Stats.skill(stats, "throwing")
-    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+    ap = (Stats.skill(stats, "finger") + Stats.skill(stats, "throwing"))
+    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{
-          attacker: ref(character),
-          perform_id: @perform_id,
+        data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -122,7 +120,6 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -136,9 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    conn =
-      Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一base_unit由指尖弹出，疾速射向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一base_unit由指尖弹出，疾速射向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -166,24 +161,13 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-
     if hit do
-      vitals = Vitals.wound(vitals, :qi, damage)
+          vitals = Vitals.wound(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-
-    result =
-      if hit,
-        do:
-          Messages.interpolate("只见那base_unit来势迅猛之极，$n根本无暇闪避，被这招击个正中！",
-            n1: attacker.name,
-            n2: character.name
-          ),
-        else:
-          Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: attacker.name, n2: character.name)
-
+    result = if hit, do: Messages.interpolate("$n手腕一麻，手中不由脱手而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
