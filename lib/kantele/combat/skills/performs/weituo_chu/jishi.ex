@@ -66,7 +66,13 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_levels(character)
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_levels(character) do
     stats = character.meta.stats
@@ -74,6 +80,28 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     cond do
       Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为火候未到，施展只会伤及自身！\n"}
       Stats.skill(stats, "weituo-chu") < 120 -> {:error, "你韦陀杵修为还不够，还未能使用「即世即空」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你手中无杵，怎能运用「即世即空」？！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「即世即空」只能对战斗中的对手使用。\n"}
+      false -> {:error, "你刚使完「即世即空」，目前气血翻涌，无法再次运用！\n"}
+      false -> {:error, "你还不会使用「即世即空」!\n"}
       true -> :ok
     end
   end

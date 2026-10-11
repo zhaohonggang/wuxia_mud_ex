@@ -63,7 +63,13 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
@@ -72,6 +78,35 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
       vitals.neili < 200 -> {:error, "你快不行了，再练会送命的！\n"}
       vitals.qi < 200 -> {:error, "你的内力不够，不足以对抗毒气，别把小命送掉。\n"}
       vitals.qi < 50 -> {:error, "你看清楚点，那东西像是毒虫吗？\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你必须空手才能修炼千蛛万毒手！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "你正在修炼中！\n"}
+      false -> {:error, "你正忙着呢！\n"}
+      false -> {:error, "你的千蛛万毒手火候太浅，不能用来吸取毒素！\n"}
+      false -> {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
+      false -> {:error, "你看清楚点，那东西像是毒虫吗？\n"}
+      false -> {:error, "你要吸取什么毒虫的毒素？\n"}
+      false -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
+      false -> {:error, "毒虫正忙着呢，不能和你配合！\n"}
+      false -> {:error, "这里太嘈杂，你不能静下心来修炼。\n"}
       true -> :ok
     end
   end

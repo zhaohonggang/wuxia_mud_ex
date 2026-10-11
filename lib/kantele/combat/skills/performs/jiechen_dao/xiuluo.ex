@@ -67,7 +67,9 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -99,6 +101,27 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
     cond do
       vitals.max_neili < 3000 -> {:error, "以你目前的内力来看，这「修罗焰」绝技不用也罢。\n"}
       vitals.neili < 1000 -> {:error, "你的内力修为不够，这「修罗焰」绝技不用也罢。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你先找把刀再说吧！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「修罗焰」攻击只能对战斗中的对手使用。\n"}
+      false -> {:error, "你的身体还不够强壮，强使「修罗焰」绝技是引火自焚！\n"}
       true -> :ok
     end
   end

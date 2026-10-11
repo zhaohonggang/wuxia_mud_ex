@@ -68,7 +68,13 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
@@ -76,6 +82,28 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     cond do
       vitals.max_neili < 1500 -> {:error, "你的内力不够，不能使用圣火令法之\n"}
       vitals.neili < 340 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

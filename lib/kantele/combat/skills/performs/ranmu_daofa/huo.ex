@@ -69,7 +69,9 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -111,6 +113,27 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     cond do
       vitals.max_neili < 3000 -> {:error, "你现在内力太弱，不能使用火麒蚀月。\n"}
       vitals.neili < 600 -> {:error, "你的内力修为太弱，不能使用火麒蚀月。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「火麒蚀月」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

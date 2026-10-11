@@ -28,7 +28,19 @@ defmodule Kantele.Combat.Skills.Performs.Force.Regenerate do
     end
   end
 
-  defp check_gates(_character), do: :ok
+  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  defp check_gates(character), do: check_other(character)
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你只能用内功恢复自己的精力。\n"}
+      false -> {:error, "你现在精气旺盛。\n"}
+      true -> :ok
+    end
+  end
 
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播

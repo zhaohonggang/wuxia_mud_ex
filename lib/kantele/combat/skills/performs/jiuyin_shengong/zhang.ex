@@ -66,7 +66,13 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_levels(character)
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_levels(character) do
     stats = character.meta.stats
@@ -74,6 +80,27 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang do
     cond do
       Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功不够深厚，不会使用\n"}
       Stats.skill(stats, "strike") < 220 -> {:error, "你的基本掌法修为不够，不会使用\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "此招只能空手施展！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

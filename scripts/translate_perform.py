@@ -672,7 +672,15 @@ class TranslatePerform:
                     dmg_expr = args[3] if len(args) > 3 else '';
                     if dmg_expr:
                         results.append({'kind': 'damage', 'part': 'qi', 'formula': dmg_expr})
-        return results
+        # Deduplicate by (kind, part, formula)
+        seen = set()
+        deduped = []
+        for r in results:
+            key = (r['kind'], r['part'], r['formula'])
+            if key not in seen:
+                seen.add(key)
+                deduped.append(r)
+        return deduped
 
     def extract_call_outs(self, text: str) -> List[Dict[str, Any]]:
         """Extract delayed callbacks:
@@ -1034,12 +1042,44 @@ class TranslatePerform:
         return ("check_resources", body)
 
     def _emit_weapon_check(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
-        # NOTE: intentionally NOT auto-generated. `weapon_type`/`weapon_forbidden`
-        # extraction is ambiguous (a required `query("skill_type")` and a
-        # forbidden one can both land here, and "must be unarmed" cases look
-        # like a required throwing type). Emitting a wrong gate is worse than a
-        # TODO, so weapon rules stay in the reference comment for manual porting.
-        return None
+        # Use extracted weapon gate messages if available
+        gate_msgs = data.get('gate_messages', {}).get('weapon', [])
+        if not gate_msgs:
+            return None
+        # Weapon checks are ambiguous, but we can at least use the messages
+        # for manual review. Generate a placeholder check.
+        clauses = []
+        for i, msg in enumerate(gate_msgs):
+            clauses.append((f'false', f'{{:error, "{msg}\\n"}}'))
+        if not clauses:
+            return None
+        clauses.append(('true', ':ok'))
+        body = (
+            "    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）\n"
+            "    stats = character.meta.stats\n\n"
+            "    cond do\n"
+            f"{self._render_cond(clauses)}\n"
+            "    end"
+        )
+        return ("check_weapon", body)
+
+    def _emit_other_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
+        """Emit checks for notify_fail messages that couldn't be categorized."""
+        gate_msgs = data.get('gate_messages', {}).get('other', [])
+        if not gate_msgs:
+            return None
+        clauses = []
+        for i, msg in enumerate(gate_msgs):
+            clauses.append((f'false', f'{{:error, "{msg}\\n"}}'))
+        clauses.append(('true', ':ok'))
+        body = (
+            "    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）\n"
+            "    stats = character.meta.stats\n\n"
+            "    cond do\n"
+            f"{self._render_cond(clauses)}\n"
+            "    end"
+        )
+        return ("check_other", body)
 
     def _emit_check_gates(self, data: Dict[str, Any]) -> Tuple[str, bool]:
         """Return (code, uses_stats)."""
@@ -1047,6 +1087,8 @@ class TranslatePerform:
             self._emit_level_checks(data),
             self._emit_map_checks(data),
             self._emit_resource_checks(data),
+            self._emit_weapon_check(data),
+            self._emit_other_checks(data),
         ) if h]
 
         uses_stats = any(name in ('check_levels', 'check_mapped') for name, _ in helpers)

@@ -32,7 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -53,6 +54,20 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
       vitals.max_neili < 1 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
       vitals.max_neili < 100 -> {:error, "TODO(migrate) max_neili 不足。\n"}
       vitals.neili < 100 -> {:error, "TODO(migrate) neili 不足。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你刚刚吸取过丹元！\n"}
+      false -> {:error, "你只能吸取战斗中的对手的丹元！\n"}
+      false -> {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
+      false -> {:error, "在这里不能攻击他人。\n"}
+      false -> {:error, "搞错了！只有活着的生物才能有丹元！\n"}
       true -> :ok
     end
   end

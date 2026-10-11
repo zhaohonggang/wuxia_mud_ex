@@ -68,7 +68,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -100,6 +102,29 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     cond do
       vitals.max_neili < 2000 -> {:error, "你现在内力太弱，使不出「迅雷击」。\n"}
       vitals.neili < 900 -> {:error, "你现在真气太弱，使不出「迅雷击」。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
+      false -> {:error, "你必须在使用剑时才能使出「迅雷击」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
+      false -> {:error, "你的膂力还不够，使不出「迅雷击」。\n"}
+      false -> {:error, "你的身法还不够，使不出「迅雷击」。\n"}
       true -> :ok
     end
   end

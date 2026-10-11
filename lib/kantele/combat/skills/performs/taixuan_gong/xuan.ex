@@ -69,7 +69,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -108,6 +110,28 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     cond do
       vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出\n"}
       vitals.neili < 800 -> {:error, "你的真气不够，无法施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对，无法施展\n"}
+      false -> {:error, "你还没有学会如何利用太玄功驾御兵器，这招只能空手施展！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

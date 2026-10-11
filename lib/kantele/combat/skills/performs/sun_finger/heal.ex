@@ -63,7 +63,12 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
@@ -73,6 +78,21 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
       vitals.max_neili < 1500 -> {:error, "你的气现在不够，不要贸然行功。\n"}
       vitals.neili < 1000 -> {:error, "你的真气现在不够，不能贸然行功。\n"}
       vitals.neili < 200 -> {:error, "你的精现在不够，不要贸然行功。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你不能给\n"}
+      false -> {:error, "你只能替别人疗伤。\n"}
+      false -> {:error, "你必须激发一种内功才能运功疗伤。\n"}
+      false -> {:error, "你要用真气为谁疗伤？\n"}
+      false -> {:error, "对方没有受伤，不需要接受治疗。\n"}
+      false -> {:error, "战斗中无法运功疗伤！\n"}
       true -> :ok
     end
   end

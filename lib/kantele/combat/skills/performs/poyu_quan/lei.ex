@@ -65,13 +65,30 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Lei do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
       vitals.neili < 500 -> {:error, "你现在的真气不够。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你已经在运功中了。\n"}
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "你的劈石破玉拳修为不够，无法施展\n"}
       true -> :ok
     end
   end

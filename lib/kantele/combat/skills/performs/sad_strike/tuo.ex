@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -88,6 +89,20 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
 
     cond do
       vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你刚刚施展完\n"}
+      false -> {:error, "你感情早已不纯，哪里还能领略到那种黯然销魂的感觉？\n"}
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "你没有妻子，体会不到这种万念俱灰的感觉。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -90,6 +91,20 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     cond do
       vitals.max_neili < 3000 -> {:error, "你现在内息不足，无法用内力施展\n"}
       vitals.neili < 3000 -> {:error, "你的内力修为不足，无法用内力施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你只能对战斗中的对手施展\n"}
+      false -> {:error, "你必须将全身功力尽数提起才能施展\n"}
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "你首先要拿着(hand)一些毒药作为引子。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

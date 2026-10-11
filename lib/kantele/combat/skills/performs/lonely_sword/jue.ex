@@ -64,13 +64,42 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
       vitals.neili < 50 -> {:error, "你现在太累了，无法集中精神演练「总诀式」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你必须先去找一把剑。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「总诀式」不能在战斗中演练。\n"}
+      false -> {:error, "你的实战经验不够，无法体会「总诀式」！\n"}
+      false -> {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
+      false -> {:error, "这里太嘈杂，你不能静下心来演练。\n"}
       true -> :ok
     end
   end

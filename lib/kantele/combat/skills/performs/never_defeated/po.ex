@@ -67,13 +67,41 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
       vitals.neili < 150 -> {:error, "你现在真气不够！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你必须手持兵刃才能施展破字诀！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你的不败神功等级不够，无法施展破字诀！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      false -> {:error, "破字诀只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end

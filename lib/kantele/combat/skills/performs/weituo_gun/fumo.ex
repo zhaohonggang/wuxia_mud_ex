@@ -70,7 +70,9 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -99,6 +101,28 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
 
     cond do
       vitals.neili < 800 -> {:error, "你正气不足，难以理解韦陀伏魔的精髓。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「韦陀伏魔」只能在战斗中对对手使用。\n"}
+      false -> {:error, "你还没有受过高人指点，无法施展「韦陀伏魔」。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

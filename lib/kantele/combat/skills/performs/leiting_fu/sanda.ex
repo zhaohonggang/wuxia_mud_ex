@@ -67,7 +67,9 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -96,6 +98,28 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
 
     cond do
       vitals.neili < 500 -> {:error, "你的真气不足！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「三板斧」只能在战斗中使用。\n"}
+      false -> {:error, "你现在的臂力不够，目前不能使用「三板斧」！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -136,8 +160,6 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-    vitals = Vitals.damage(vitals, :qi, damage)
-    vitals = Vitals.damage(vitals, :qi, damage)
     vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)

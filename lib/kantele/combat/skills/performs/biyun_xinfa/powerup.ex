@@ -29,7 +29,20 @@ defmodule Kantele.Combat.Skills.Performs.BiyunXinfa.Powerup do
     end
   end
 
-  defp check_gates(_character), do: :ok
+  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  defp check_gates(character), do: check_other(character)
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你只能用碧云心法来提升自己的战斗力。\n"}
+      false -> {:error, "你已经在运功中了。\n"}
+      false -> {:error, "你的内力不够。\n"}
+      true -> :ok
+    end
+  end
 
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播

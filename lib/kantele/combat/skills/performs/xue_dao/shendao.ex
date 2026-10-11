@@ -68,7 +68,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -99,6 +101,29 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
       vitals.max_neili < 1200 -> {:error, "你现在真气不够，无法将「祭血神刀」使完！\n"}
       vitals.neili < 400 -> {:error, "你的内力修为不足，无法运足内力。\n"}
       vitals.qi < 100 -> {:error, "你还敢使这招？找死啊！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "装备刀才能使用「祭血神刀」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「祭血神刀」只能对战斗中的对手使用。\n"}
+      false -> {:error, "你为人不够凶残，还无法领会「祭血神刀」的奥妙。\n"}
+      false -> {:error, "你还不会使用「祭血神刀」！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

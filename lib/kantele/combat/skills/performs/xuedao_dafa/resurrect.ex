@@ -32,7 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -52,6 +53,16 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
     cond do
       vitals.max_neili < 1000 -> {:error, "你现在的真气不够，难以施展\n"}
       vitals.neili < 200 -> {:error, "你的内力修为不足，难以施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所学的内功中没有这种功能。\n"}
       true -> :ok
     end
   end

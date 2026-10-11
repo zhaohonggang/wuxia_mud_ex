@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -108,6 +109,17 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     cond do
       vitals.max_neili < 1000 -> {:error, "你此时的内力不足！\n"}
       vitals.neili < 250 -> {:error, "你的内力修为不够使用「一苇渡江」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你已经运起「一苇渡江」了。\n"}
+      false -> {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
       true -> :ok
     end
   end

@@ -65,7 +65,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -84,6 +85,19 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
 
     cond do
       vitals.neili < 100 -> {:error, "你内力不够了。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你现在手中并没有拿着箭，怎么施展百步穿杨？\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      false -> {:error, "百步穿杨只能在战斗中对对手使用。\n"}
+      false -> {:error, "至少要有一支箭你才能施展百步穿杨。\n"}
       true -> :ok
     end
   end

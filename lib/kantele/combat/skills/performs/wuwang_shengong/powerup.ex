@@ -30,13 +30,29 @@ defmodule Kantele.Combat.Skills.Performs.WuwangShengong.Powerup do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
       vitals.neili < 100 -> {:error, "你的内力不够。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你只能用无妄神功提升自己的战斗力。\n"}
+      false -> {:error, "你已经在运功中了。\n"}
       true -> :ok
     end
   end

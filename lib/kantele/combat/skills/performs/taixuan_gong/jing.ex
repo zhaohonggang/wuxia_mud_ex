@@ -66,7 +66,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -108,6 +110,28 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     end
   end
 
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对，难以施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你太玄功火候不够，难以施展\n"}
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
+    end
+  end
+
   defp apply_effect(conn, character) do
     conn
     |> put_character(character)
@@ -128,9 +152,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
   #   target->receive_damage("jing", damage / 2)  # UNSUPPORTED: unknown ident damage
   #   target->receive_wound("jing", damage / 4)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
   #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
 
   @impl true

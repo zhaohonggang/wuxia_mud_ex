@@ -67,7 +67,9 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -105,6 +107,29 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
 
     cond do
       vitals.neili < 500 -> {:error, "你的真气不足！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「八仙醉打」只能在战斗中使用。\n"}
+      false -> {:error, "你已经在运功中了。\n"}
+      false -> {:error, "你已经运起内功提升战力了，不能再使用「八仙醉打」。\n"}
+      false -> {:error, "你现在的臂力不够，目前不能使用「八仙醉打」！\n"}
       true -> :ok
     end
   end

@@ -64,7 +64,9 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -86,6 +88,26 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
       vitals.max_neili < 5000 -> {:error, "你现在内力不够。\n"}
       vitals.neili < 150 -> {:error, "你的内力修为太弱，无法灵活的御驾内力。\n"}
       vitals.neili < 1500 -> {:error, "TODO(migrate) neili 不足。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你使用的武器不对。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "御剑飞升只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end
@@ -116,7 +138,6 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
   end
 
   # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
   #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
 
   @impl true

@@ -32,7 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -52,6 +53,19 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     cond do
       vitals.max_neili < 500 -> {:error, "你内伤太重，无法激励易筋经至高绝学。\n"}
       vitals.max_qi < 10 -> {:error, "你的真气不够。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你不是少林弟子，无法使用“易筋通脉”。\n"}
+      false -> {:error, "你伤势很轻，不用激励易筋经至高绝学。\n"}
+      false -> {:error, "你只能用易筋经来为自己易筋通脉。\n"}
+      false -> {:error, "你所学的内功中没有这种功能。\n"}
       true -> :ok
     end
   end

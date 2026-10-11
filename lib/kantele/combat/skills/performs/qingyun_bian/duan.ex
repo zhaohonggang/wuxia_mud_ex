@@ -63,7 +63,12 @@ defmodule Kantele.Combat.Skills.Performs.QingyunBian.Duan do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_levels(character)
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_levels(character) do
     stats = character.meta.stats
@@ -71,6 +76,17 @@ defmodule Kantele.Combat.Skills.Performs.QingyunBian.Duan do
     cond do
       Stats.skill(stats, "force") < 100 -> {:error, "你的基本内功火候未到，无法施展断云决！\n"}
       Stats.skill(stats, "whip") < 100 -> {:error, "断云决需要精湛的青云鞭法方能有效施展！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "[断云决]只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

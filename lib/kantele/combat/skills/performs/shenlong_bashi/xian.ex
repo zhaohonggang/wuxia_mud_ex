@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -95,6 +96,17 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
 
     cond do
       vitals.neili < 150 -> {:error, "你现在真气不够，不能使用神龙初现。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      false -> {:error, "神龙初现只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end

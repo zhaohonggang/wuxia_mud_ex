@@ -29,7 +29,12 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
@@ -37,6 +42,19 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
     cond do
       vitals.neili < 100 -> {:error, "你的真气不够。\n"}
       vitals.neili < 200 -> {:error, "你的精损伤太重，现在难以振奋自己。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所学的内功中没有这种功能。\n"}
+      false -> {:error, "你现在精神饱满，有什么好激励的？\n"}
+      false -> {:error, "先激发你的特殊内功。\n"}
+      false -> {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
       true -> :ok
     end
   end

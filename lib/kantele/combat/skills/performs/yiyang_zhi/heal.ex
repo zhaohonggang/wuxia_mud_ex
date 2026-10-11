@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -97,6 +98,21 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
       vitals.jing < 100 -> {:error, "你现在的状态不佳，难以施展\n"}
       vitals.max_neili < 1500 -> {:error, "你现在的真气不足，难以施展\n"}
       vitals.neili < 1000 -> {:error, "你的内力修为太浅，难以施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你必须激发一种内功才能施展\n"}
+      false -> {:error, "你所学的外功中没有这种功能。\n"}
+      false -> {:error, "你无法给\n"}
+      false -> {:error, "你要用真气为谁疗伤？\n"}
+      false -> {:error, "对方没有受伤，不需要接受治疗。\n"}
+      false -> {:error, "战斗中无法运功疗伤。\n"}
       true -> :ok
     end
   end

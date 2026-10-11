@@ -70,7 +70,9 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -99,6 +101,28 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
 
     cond do
       vitals.neili < 300 -> {:error, "你现在的真气不够，无法使用「横行无忌」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "运用「横行无忌」必须手中持杖！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「横行无忌」只能对战斗中的对手使用。\n"}
+      false -> {:error, "你还不会使用「横行无忌」。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

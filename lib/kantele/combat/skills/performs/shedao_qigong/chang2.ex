@@ -63,13 +63,29 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_levels(character)
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
       Stats.skill(stats, "shedao-qigong") < 80 -> {:error, "你的蛇岛奇功不够娴熟，不会使用唱仙法。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你已经唱得太久了，不能再唱了。\n"}
+      false -> {:error, "唱仙法只能在战斗中使用。\n"}
       true -> :ok
     end
   end

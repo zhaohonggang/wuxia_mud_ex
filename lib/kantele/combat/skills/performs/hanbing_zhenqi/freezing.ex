@@ -30,7 +30,12 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
@@ -38,6 +43,19 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
     cond do
       vitals.max_neili < 2200 -> {:error, "你的先天根骨不足，无法施展\n"}
       vitals.neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所学的内功中没有这种功能。\n"}
+      false -> {:error, "你现在尚未曾运功，难以施展\n"}
+      false -> {:error, "你现在正在施展\n"}
+      false -> {:error, "你的寒冰真气不够，难以施展\n"}
       true -> :ok
     end
   end

@@ -67,7 +67,9 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -100,6 +102,26 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     cond do
       vitals.jingli < 200 -> {:error, "TODO(migrate) jingli 不足。\n"}
       vitals.neili < 1500 -> {:error, "TODO(migrate) neili 不足。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你要和谁组成棍阵?\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你已经在和对方打架，使用\n"}
       true -> :ok
     end
   end

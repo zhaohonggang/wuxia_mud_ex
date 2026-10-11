@@ -67,7 +67,8 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -89,6 +90,17 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     cond do
       vitals.max_neili < 1000 -> {:error, "你此时的内力不足！\n"}
       vitals.neili < 250 -> {:error, "你的内力修为不够使用「九阴归元」！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你已经运起「九阴归元」了。\n"}
+      false -> {:error, "你的身法不够使用「九阴归元」绝技！\n"}
       true -> :ok
     end
   end

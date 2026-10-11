@@ -32,7 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -82,6 +83,17 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
     cond do
       vitals.jing < 1 -> {:error, "你的真气不够。\n"}
       vitals.neili < 800 -> {:error, "TODO(migrate) neili 不足。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你的内功修为不够。\n"}
+      false -> {:error, "在这里不能攻击他人。\n"}
       true -> :ok
     end
   end

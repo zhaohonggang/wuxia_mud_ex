@@ -29,13 +29,32 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
       vitals.neili < 50 -> {:error, "你已经受伤过重，只怕一运真气便有生命危险！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你现在气血充盈，不需要疗伤。\n"}
+      false -> {:error, "先激发你的特殊内功。\n"}
+      false -> {:error, "天魔解体状态不能运功疗伤！\n"}
+      false -> {:error, "战斗中运功疗伤？找死吗？\n"}
+      false -> {:error, "等你忙完了手头的事情再说！\n"}
       true -> :ok
     end
   end

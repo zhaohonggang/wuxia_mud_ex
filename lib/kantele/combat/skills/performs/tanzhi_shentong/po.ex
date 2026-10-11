@@ -70,7 +70,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -100,6 +102,27 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     cond do
       vitals.max_neili < 2400 -> {:error, "你现在的真气不够，难以施展\n"}
       vitals.neili < 500 -> {:error, "你的内力修为不足，难以施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你手中没有拿着暗器，难以施展\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
