@@ -71,4 +71,11 @@ defmodule Kantele.Combat.Skills.PikongZhang do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "dai" => Kantele.Combat.Skills.Performs.PikongZhang.Dai
+    }
+  end
 end

@@ -68,4 +68,20 @@ defmodule Kantele.Combat.Skills.Shenzhaojing do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "wu" => Kantele.Combat.Skills.Performs.Shenzhaojing.Wu,
+      "ying" => Kantele.Combat.Skills.Performs.Shenzhaojing.Ying
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.Shenzhaojing.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.Shenzhaojing.Shield
+    }
+  end
 end

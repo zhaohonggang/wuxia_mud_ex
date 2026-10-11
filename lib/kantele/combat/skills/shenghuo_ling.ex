@@ -91,4 +91,14 @@ defmodule Kantele.Combat.Skills.ShenghuoLing do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "can" => Kantele.Combat.Skills.Performs.ShenghuoLing.Can,
+      "hua" => Kantele.Combat.Skills.Performs.ShenghuoLing.Hua,
+      "lian" => Kantele.Combat.Skills.Performs.ShenghuoLing.Lian,
+      "xi" => Kantele.Combat.Skills.Performs.ShenghuoLing.Xi
+    }
+  end
 end

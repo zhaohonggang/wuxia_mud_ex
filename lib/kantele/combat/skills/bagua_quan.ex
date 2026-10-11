@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.BaguaQuan do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "gua" => Kantele.Combat.Skills.Performs.BaguaQuan.Gua
+    }
+  end
 end

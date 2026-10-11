@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.ZuiGun do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "zuida" => Kantele.Combat.Skills.Performs.ZuiGun.Zuida
+    }
+  end
 end

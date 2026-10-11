@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.TanTui do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "wang" => Kantele.Combat.Skills.Performs.TanTui.Wang
+    }
+  end
 end

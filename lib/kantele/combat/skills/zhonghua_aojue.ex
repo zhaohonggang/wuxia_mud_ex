@@ -28,4 +28,12 @@ defmodule Kantele.Combat.Skills.ZhonghuaAojue do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.ZhonghuaAojue.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.ZhonghuaAojue.Shield
+    }
+  end
 end

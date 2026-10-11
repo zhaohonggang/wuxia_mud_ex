@@ -97,4 +97,11 @@ defmodule Kantele.Combat.Skills.BiyanDao do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "luo" => Kantele.Combat.Skills.Performs.BiyanDao.Luo
+    }
+  end
 end

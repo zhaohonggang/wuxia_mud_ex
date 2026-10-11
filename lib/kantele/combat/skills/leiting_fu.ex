@@ -152,4 +152,11 @@ defmodule Kantele.Combat.Skills.LeitingFu do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "sanda" => Kantele.Combat.Skills.Performs.LeitingFu.Sanda
+    }
+  end
 end

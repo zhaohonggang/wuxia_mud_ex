@@ -108,4 +108,11 @@ defmodule Kantele.Combat.Skills.RuyingSuixingtui do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "ruying" => Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying
+    }
+  end
 end

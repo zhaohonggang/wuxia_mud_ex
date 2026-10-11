@@ -27,4 +27,11 @@ defmodule Kantele.Combat.Skills.QiankunDanuoyi do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "nuoyi" => Kantele.Combat.Skills.Performs.QiankunDanuoyi.Nuoyi
+    }
+  end
 end

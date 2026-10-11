@@ -128,4 +128,13 @@ defmodule Kantele.Combat.Skills.QianzhuWandushou do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "suck" => Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck,
+      "wan" => Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan,
+      "zhugu" => Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu
+    }
+  end
 end

@@ -91,4 +91,13 @@ defmodule Kantele.Combat.Skills.XuantieJian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "dong" => Kantele.Combat.Skills.Performs.XuantieJian.Dong,
+      "juan" => Kantele.Combat.Skills.Performs.XuantieJian.Juan,
+      "xunlei" => Kantele.Combat.Skills.Performs.XuantieJian.Xunlei
+    }
+  end
 end

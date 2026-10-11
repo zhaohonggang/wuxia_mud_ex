@@ -97,4 +97,11 @@ defmodule Kantele.Combat.Skills.YinyangZhang do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "qian" => Kantele.Combat.Skills.Performs.YinyangZhang.Qian
+    }
+  end
 end

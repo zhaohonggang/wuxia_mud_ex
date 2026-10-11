@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.WeituoGun do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "fumo" => Kantele.Combat.Skills.Performs.WeituoGun.Fumo
+    }
+  end
 end

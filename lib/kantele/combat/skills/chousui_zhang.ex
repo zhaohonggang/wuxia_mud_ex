@@ -101,7 +101,11 @@ defmodule Kantele.Combat.Skills.ChousuiZhang do
 
   @impl true
   def perform_list() do
-    %{"dan" => Kantele.Combat.Skills.Performs.ChousuiZhang.Dan}
+    %{
+      "dan" => Kantele.Combat.Skills.Performs.ChousuiZhang.Dan,
+      "shi" => Kantele.Combat.Skills.Performs.ChousuiZhang.Shi,
+      "tao" => Kantele.Combat.Skills.Performs.ChousuiZhang.Tao
+    }
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"

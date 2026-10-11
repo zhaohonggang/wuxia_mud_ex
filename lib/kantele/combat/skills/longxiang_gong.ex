@@ -139,4 +139,14 @@ defmodule Kantele.Combat.Skills.LongxiangGong.Shield do
         "$N暗聚龙象般若功第#{layer}层功力，顿时一股白雾蒸腾而起，瞬间笼罩$N全身！\n"
       end
     }
+
+  @impl true
+  def perform_list() do
+    %{
+      "die" => Kantele.Combat.Skills.Performs.LongxiangGong.Die,
+      "ji" => Kantele.Combat.Skills.Performs.LongxiangGong.Ji,
+      "tun" => Kantele.Combat.Skills.Performs.LongxiangGong.Tun,
+      "zhen" => Kantele.Combat.Skills.Performs.LongxiangGong.Zhen
+    }
+  end
 end

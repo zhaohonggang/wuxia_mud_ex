@@ -28,4 +28,24 @@ defmodule Kantele.Combat.Skills.NeverDefeated do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "juemie" => Kantele.Combat.Skills.Performs.NeverDefeated.Juemie,
+      "lei" => Kantele.Combat.Skills.Performs.NeverDefeated.Lei,
+      "po" => Kantele.Combat.Skills.Performs.NeverDefeated.Po,
+      "tianhua" => Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua,
+      "wanli" => Kantele.Combat.Skills.Performs.NeverDefeated.Wanli,
+      "yuce" => Kantele.Combat.Skills.Performs.NeverDefeated.Yuce
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.NeverDefeated.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.NeverDefeated.Shield
+    }
+  end
 end

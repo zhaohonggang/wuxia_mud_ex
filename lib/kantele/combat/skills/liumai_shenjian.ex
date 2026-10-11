@@ -273,4 +273,13 @@ defmodule Kantele.Combat.Skills.LiumaiShenjian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "qi" => Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi,
+      "six" => Kantele.Combat.Skills.Performs.LiumaiShenjian.Six,
+      "zong" => Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong
+    }
+  end
 end

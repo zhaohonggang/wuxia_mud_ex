@@ -121,4 +121,11 @@ defmodule Kantele.Combat.Skills.HeishaZhang do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "cui" => Kantele.Combat.Skills.Performs.HeishaZhang.Cui
+    }
+  end
 end

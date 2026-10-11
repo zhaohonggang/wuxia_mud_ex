@@ -152,4 +152,11 @@ defmodule Kantele.Combat.Skills.PiliShou do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "hun" => Kantele.Combat.Skills.Performs.PiliShou.Hun
+    }
+  end
 end

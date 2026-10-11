@@ -229,4 +229,12 @@ defmodule Kantele.Combat.Skills.SadStrike do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "tuo" => Kantele.Combat.Skills.Performs.SadStrike.Tuo,
+      "xiao" => Kantele.Combat.Skills.Performs.SadStrike.Xiao
+    }
+  end
 end

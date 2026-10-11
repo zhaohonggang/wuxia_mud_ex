@@ -354,6 +354,8 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   @impl true
   def perform_list() do
     %{
+      "jue" => Kantele.Combat.Skills.Performs.DuguJiujian.Jue,
+      "po" => Kantele.Combat.Skills.Performs.DuguJiujian.Po,
       "qi" => Kantele.Combat.Skills.Performs.DuguJiujian.Qi,
       "yi" => Kantele.Combat.Skills.Performs.DuguJiujian.Yi
     }

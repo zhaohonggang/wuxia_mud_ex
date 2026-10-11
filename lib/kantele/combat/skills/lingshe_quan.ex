@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.LingsheQuan do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "rou" => Kantele.Combat.Skills.Performs.LingsheQuan.Rou
+    }
+  end
 end

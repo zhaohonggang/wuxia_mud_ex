@@ -152,4 +152,11 @@ defmodule Kantele.Combat.Skills.XiuluoDao do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "suoming" => Kantele.Combat.Skills.Performs.XiuluoDao.Suoming
+    }
+  end
 end

@@ -174,4 +174,11 @@ defmodule Kantele.Combat.Skills.JinsheZhang do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "fugu" => Kantele.Combat.Skills.Performs.JinsheZhang.Fugu
+    }
+  end
 end

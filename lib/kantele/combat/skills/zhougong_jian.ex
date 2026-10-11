@@ -161,4 +161,11 @@ defmodule Kantele.Combat.Skills.ZhougongJian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "mang" => Kantele.Combat.Skills.Performs.ZhougongJian.Mang
+    }
+  end
 end

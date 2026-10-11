@@ -108,4 +108,11 @@ defmodule Kantele.Combat.Skills.LuoyanJian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "luo" => Kantele.Combat.Skills.Performs.LuoyanJian.Luo
+    }
+  end
 end

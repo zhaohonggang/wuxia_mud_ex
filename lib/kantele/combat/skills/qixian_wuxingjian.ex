@@ -30,4 +30,13 @@ defmodule Kantele.Combat.Skills.QixianWuxingjian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "shan" => Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan,
+      "yin" => Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin,
+      "zhu" => Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu
+    }
+  end
 end

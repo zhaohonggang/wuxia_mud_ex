@@ -138,4 +138,12 @@ defmodule Kantele.Combat.Skills.HuntianBaojian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.HuntianBaojian.Powerup,
+      "sword" => Kantele.Combat.Skills.Performs.HuntianBaojian.Sword
+    }
+  end
 end

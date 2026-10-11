@@ -94,4 +94,11 @@ defmodule Kantele.Combat.Skills.LeimingBian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "cibei" => Kantele.Combat.Skills.Performs.LeimingBian.Cibei
+    }
+  end
 end

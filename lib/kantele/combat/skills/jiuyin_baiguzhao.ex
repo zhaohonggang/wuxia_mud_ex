@@ -108,4 +108,12 @@ defmodule Kantele.Combat.Skills.JiuyinBaiguzhao do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "duo" => Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo,
+      "zhua" => Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua
+    }
+  end
 end

@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.SanyinShou do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "sun" => Kantele.Combat.Skills.Performs.SanyinShou.Sun
+    }
+  end
 end

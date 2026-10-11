@@ -108,4 +108,11 @@ defmodule Kantele.Combat.Skills.KunlunJian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "fanyin" => Kantele.Combat.Skills.Performs.KunlunJian.Fanyin
+    }
+  end
 end

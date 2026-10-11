@@ -31,6 +31,9 @@ defmodule Kantele.Combat.Skills.DuanjiaSword do
 
   @impl true
   def perform_list() do
-    %{"jing" => Kantele.Combat.Skills.Performs.DuanjiaSword.Jing}
+    %{
+      "jing" => Kantele.Combat.Skills.Performs.DuanjiaSword.Jing,
+      "jue" => Kantele.Combat.Skills.Performs.DuanjiaSword.Jue
+    }
   end
 end

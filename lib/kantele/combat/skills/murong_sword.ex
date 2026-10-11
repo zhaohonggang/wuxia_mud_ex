@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.MurongSword do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "qixing" => Kantele.Combat.Skills.Performs.MurongSword.Qixing
+    }
+  end
 end

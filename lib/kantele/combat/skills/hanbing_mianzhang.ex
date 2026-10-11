@@ -152,4 +152,11 @@ defmodule Kantele.Combat.Skills.HanbingMianzhang do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "jue" => Kantele.Combat.Skills.Performs.HanbingMianzhang.Jue
+    }
+  end
 end

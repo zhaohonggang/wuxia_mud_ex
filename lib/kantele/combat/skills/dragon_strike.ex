@@ -211,4 +211,14 @@ defmodule Kantele.Combat.Skills.DragonStrike do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "hui" => Kantele.Combat.Skills.Performs.DragonStrike.Hui,
+      "lei" => Kantele.Combat.Skills.Performs.DragonStrike.Lei,
+      "qin" => Kantele.Combat.Skills.Performs.DragonStrike.Qin,
+      "xiang" => Kantele.Combat.Skills.Performs.DragonStrike.Xiang
+    }
+  end
 end

@@ -81,4 +81,11 @@ defmodule Kantele.Combat.Skills.YunzhouFufa do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "feng" => Kantele.Combat.Skills.Performs.YunzhouFufa.Feng
+    }
+  end
 end

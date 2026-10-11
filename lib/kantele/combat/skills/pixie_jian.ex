@@ -171,4 +171,14 @@ defmodule Kantele.Combat.Skills.PixieJian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "duo" => Kantele.Combat.Skills.Performs.PixieJian.Duo,
+      "gui" => Kantele.Combat.Skills.Performs.PixieJian.Gui,
+      "pi" => Kantele.Combat.Skills.Performs.PixieJian.Pi,
+      "po" => Kantele.Combat.Skills.Performs.PixieJian.Po
+    }
+  end
 end

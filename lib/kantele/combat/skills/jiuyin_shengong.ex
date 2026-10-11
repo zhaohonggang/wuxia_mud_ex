@@ -28,4 +28,26 @@ defmodule Kantele.Combat.Skills.JiuyinShengong do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "quan" => Kantele.Combat.Skills.Performs.JiuyinShengong.Quan,
+      "shou" => Kantele.Combat.Skills.Performs.JiuyinShengong.Shou,
+      "xin" => Kantele.Combat.Skills.Performs.JiuyinShengong.Xin,
+      "zhang" => Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang,
+      "zhen" => Kantele.Combat.Skills.Performs.JiuyinShengong.Zhen,
+      "zhi" => Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi,
+      "zhua" => Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.JiuyinShengong.Powerup,
+      "roar" => Kantele.Combat.Skills.Performs.JiuyinShengong.Roar,
+      "shield" => Kantele.Combat.Skills.Performs.JiuyinShengong.Shield
+    }
+  end
 end

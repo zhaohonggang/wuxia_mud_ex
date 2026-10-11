@@ -119,4 +119,13 @@ defmodule Kantele.Combat.Skills.YinsuoJinling do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "dian" => Kantele.Combat.Skills.Performs.YinsuoJinling.Dian,
+      "feng" => Kantele.Combat.Skills.Performs.YinsuoJinling.Feng,
+      "kai" => Kantele.Combat.Skills.Performs.YinsuoJinling.Kai
+    }
+  end
 end

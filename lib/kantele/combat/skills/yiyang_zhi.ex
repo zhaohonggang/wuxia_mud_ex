@@ -30,4 +30,15 @@ defmodule Kantele.Combat.Skills.YiyangZhi do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "dian" => Kantele.Combat.Skills.Performs.YiyangZhi.Dian,
+      "die" => Kantele.Combat.Skills.Performs.YiyangZhi.Die,
+      "heal" => Kantele.Combat.Skills.Performs.YiyangZhi.Heal,
+      "jian" => Kantele.Combat.Skills.Performs.YiyangZhi.Jian,
+      "qian" => Kantele.Combat.Skills.Performs.YiyangZhi.Qian
+    }
+  end
 end

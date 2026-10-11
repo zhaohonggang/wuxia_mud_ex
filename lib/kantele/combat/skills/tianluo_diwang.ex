@@ -91,4 +91,11 @@ defmodule Kantele.Combat.Skills.TianluoDiwang do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "wang" => Kantele.Combat.Skills.Performs.TianluoDiwang.Wang
+    }
+  end
 end

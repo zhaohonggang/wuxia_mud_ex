@@ -38,6 +38,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong do
   def exert_list() do
     %{
       "powerup" => Kantele.Combat.Skills.BeimingShengong.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.BeimingShengong.Shield,
       "suck" => Kantele.Combat.Skills.BeimingShengong.Suck
     }
   end

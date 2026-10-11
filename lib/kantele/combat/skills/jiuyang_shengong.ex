@@ -27,4 +27,24 @@ defmodule Kantele.Combat.Skills.JiuyangShengong do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "hun" => Kantele.Combat.Skills.Performs.JiuyangShengong.Hun,
+      "jiu" => Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu,
+      "pi" => Kantele.Combat.Skills.Performs.JiuyangShengong.Pi,
+      "po" => Kantele.Combat.Skills.Performs.JiuyangShengong.Po,
+      "ri" => Kantele.Combat.Skills.Performs.JiuyangShengong.Ri
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.JiuyangShengong.Powerup,
+      "roar" => Kantele.Combat.Skills.Performs.JiuyangShengong.Roar,
+      "shield" => Kantele.Combat.Skills.Performs.JiuyangShengong.Shield
+    }
+  end
 end

@@ -97,4 +97,11 @@ defmodule Kantele.Combat.Skills.TouguZhen do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "feng" => Kantele.Combat.Skills.Performs.TouguZhen.Feng
+    }
+  end
 end

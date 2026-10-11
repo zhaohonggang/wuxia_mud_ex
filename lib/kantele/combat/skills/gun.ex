@@ -41,4 +41,11 @@ defmodule Kantele.Combat.Skills.Gun do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "she" => Kantele.Combat.Skills.Performs.Gun.She
+    }
+  end
 end

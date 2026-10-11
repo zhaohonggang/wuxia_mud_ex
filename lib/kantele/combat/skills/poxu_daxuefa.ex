@@ -97,4 +97,11 @@ defmodule Kantele.Combat.Skills.PoxuDaxuefa do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "tong" => Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong
+    }
+  end
 end

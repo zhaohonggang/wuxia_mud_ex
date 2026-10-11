@@ -31,6 +31,9 @@ defmodule Kantele.Combat.Skills.PanlongSuo do
 
   @impl true
   def perform_list() do
-    %{"chan" => Kantele.Combat.Skills.Performs.PanlongSuo.Chan}
+    %{
+      "chan" => Kantele.Combat.Skills.Performs.PanlongSuo.Chan,
+      "sha" => Kantele.Combat.Skills.Performs.PanlongSuo.Sha
+    }
   end
 end

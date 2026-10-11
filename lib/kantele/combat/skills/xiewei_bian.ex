@@ -81,4 +81,11 @@ defmodule Kantele.Combat.Skills.XieweiBian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "teng" => Kantele.Combat.Skills.Performs.XieweiBian.Teng
+    }
+  end
 end

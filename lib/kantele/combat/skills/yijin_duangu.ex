@@ -47,7 +47,10 @@ defmodule Kantele.Combat.Skills.YijinDuangu do
 
   @impl true
   def exert_list() do
-    %{"powerup" => Kantele.Combat.Skills.YijinDuangu.Powerup}
+    %{
+      "powerup" => Kantele.Combat.Skills.YijinDuangu.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.YijinDuangu.Shield
+    }
   end
 end
 

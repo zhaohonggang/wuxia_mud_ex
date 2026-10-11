@@ -97,4 +97,11 @@ defmodule Kantele.Combat.Skills.JifengCixuefa do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "cang" => Kantele.Combat.Skills.Performs.JifengCixuefa.Cang
+    }
+  end
 end

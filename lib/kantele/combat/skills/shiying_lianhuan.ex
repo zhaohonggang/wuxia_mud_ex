@@ -141,4 +141,11 @@ defmodule Kantele.Combat.Skills.ShiyingLianhuan do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "sha" => Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha
+    }
+  end
 end

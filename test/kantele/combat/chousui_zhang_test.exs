@@ -82,7 +82,7 @@ defmodule Kantele.Combat.ChousuiZhangTest do
     end
 
     test "perform_list 含炼心弹" do
-      assert ChousuiZhang.perform_list() == %{"dan" => Dan}
+      assert %{"dan" => Dan} = ChousuiZhang.perform_list()
     end
 
     test "query_action 取静态招式（源用 dmage，已修正为 damage）" do

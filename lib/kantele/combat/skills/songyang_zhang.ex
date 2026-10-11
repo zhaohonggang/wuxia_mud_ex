@@ -141,4 +141,11 @@ defmodule Kantele.Combat.Skills.SongyangZhang do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "ying" => Kantele.Combat.Skills.Performs.SongyangZhang.Ying
+    }
+  end
 end

@@ -28,4 +28,25 @@ defmodule Kantele.Combat.Skills.BlueseaForce do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "bo" => Kantele.Combat.Skills.Performs.BlueseaForce.Bo,
+      "jue" => Kantele.Combat.Skills.Performs.BlueseaForce.Jue,
+      "lu" => Kantele.Combat.Skills.Performs.BlueseaForce.Lu,
+      "mie" => Kantele.Combat.Skills.Performs.BlueseaForce.Mie,
+      "xuan" => Kantele.Combat.Skills.Performs.BlueseaForce.Xuan,
+      "zhan" => Kantele.Combat.Skills.Performs.BlueseaForce.Zhan,
+      "zhu" => Kantele.Combat.Skills.Performs.BlueseaForce.Zhu
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.BlueseaForce.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.BlueseaForce.Shield
+    }
+  end
 end

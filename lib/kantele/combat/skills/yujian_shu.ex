@@ -118,4 +118,11 @@ defmodule Kantele.Combat.Skills.YujianShu do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "yujian" => Kantele.Combat.Skills.Performs.YujianShu.Yujian
+    }
+  end
 end

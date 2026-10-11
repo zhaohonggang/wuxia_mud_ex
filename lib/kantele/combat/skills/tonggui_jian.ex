@@ -71,4 +71,11 @@ defmodule Kantele.Combat.Skills.TongguiJian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "fen" => Kantele.Combat.Skills.Performs.TongguiJian.Fen
+    }
+  end
 end

@@ -33,7 +33,8 @@ defmodule Kantele.Combat.Skills.BaguaDao do
   def perform_list() do
     %{
       "mang" => Kantele.Combat.Skills.Performs.BaguaDao.Mang,
-      "sha" => Kantele.Combat.Skills.Performs.BaguaDao.Sha
+      "sha" => Kantele.Combat.Skills.Performs.BaguaDao.Sha,
+      "tian" => Kantele.Combat.Skills.Performs.BaguaDao.Tian
     }
   end
 end

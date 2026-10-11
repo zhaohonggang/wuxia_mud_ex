@@ -81,4 +81,11 @@ defmodule Kantele.Combat.Skills.FiveAvoid do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "break" => Kantele.Combat.Skills.Performs.FiveAvoid.Break
+    }
+  end
 end

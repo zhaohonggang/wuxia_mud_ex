@@ -30,4 +30,11 @@ defmodule Kantele.Combat.Skills.WaiBagua do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "zhen" => Kantele.Combat.Skills.Performs.WaiBagua.Zhen
+    }
+  end
 end

@@ -68,4 +68,22 @@ defmodule Kantele.Combat.Skills.Hamagong do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "zhen" => Kantele.Combat.Skills.Performs.Hamagong.Zhen
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "hui" => Kantele.Combat.Skills.Performs.Hamagong.Hui,
+      "powerup" => Kantele.Combat.Skills.Performs.Hamagong.Powerup,
+      "reserve" => Kantele.Combat.Skills.Performs.Hamagong.Reserve,
+      "tan" => Kantele.Combat.Skills.Performs.Hamagong.Tan,
+      "tui" => Kantele.Combat.Skills.Performs.Hamagong.Tui
+    }
+  end
 end

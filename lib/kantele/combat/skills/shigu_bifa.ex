@@ -130,4 +130,12 @@ defmodule Kantele.Combat.Skills.ShiguBifa do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "feng" => Kantele.Combat.Skills.Performs.ShiguBifa.Feng,
+      "shiyi" => Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi
+    }
+  end
 end

@@ -31,6 +31,9 @@ defmodule Kantele.Combat.Skills.XiyangJian do
 
   @impl true
   def perform_list() do
-    %{"ci" => Kantele.Combat.Skills.Performs.XiyangJian.Ci}
+    %{
+      "ci" => Kantele.Combat.Skills.Performs.XiyangJian.Ci,
+      "lian" => Kantele.Combat.Skills.Performs.XiyangJian.Lian
+    }
   end
 end

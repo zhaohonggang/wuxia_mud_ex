@@ -131,4 +131,11 @@ defmodule Kantele.Combat.Skills.YuenvJian do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "xin" => Kantele.Combat.Skills.Performs.YuenvJian.Xin
+    }
+  end
 end

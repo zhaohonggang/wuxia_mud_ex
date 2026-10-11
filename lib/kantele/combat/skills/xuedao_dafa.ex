@@ -127,4 +127,22 @@ defmodule Kantele.Combat.Skills.XuedaoDafa do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "chi" => Kantele.Combat.Skills.Performs.XuedaoDafa.Chi,
+      "shi" => Kantele.Combat.Skills.Performs.XuedaoDafa.Shi,
+      "xue" => Kantele.Combat.Skills.Performs.XuedaoDafa.Xue,
+      "ying" => Kantele.Combat.Skills.Performs.XuedaoDafa.Ying
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.XuedaoDafa.Powerup,
+      "resurrect" => Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect
+    }
+  end
 end

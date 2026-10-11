@@ -268,4 +268,13 @@ defmodule Kantele.Combat.Skills.LonelySword do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "jue" => Kantele.Combat.Skills.Performs.LonelySword.Jue,
+      "po" => Kantele.Combat.Skills.Performs.LonelySword.Po,
+      "yi" => Kantele.Combat.Skills.Performs.LonelySword.Yi
+    }
+  end
 end

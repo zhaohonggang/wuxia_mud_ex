@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.QingliangDaxuefa do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "ding" => Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding
+    }
+  end
 end

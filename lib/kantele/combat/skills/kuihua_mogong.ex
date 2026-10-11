@@ -28,4 +28,24 @@ defmodule Kantele.Combat.Skills.KuihuaMogong do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "bian" => Kantele.Combat.Skills.Performs.KuihuaMogong.Bian,
+      "qiong" => Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong,
+      "sheng" => Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng,
+      "tian" => Kantele.Combat.Skills.Performs.KuihuaMogong.Tian,
+      "wswd" => Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.KuihuaMogong.Powerup,
+      "roar" => Kantele.Combat.Skills.Performs.KuihuaMogong.Roar,
+      "shield" => Kantele.Combat.Skills.Performs.KuihuaMogong.Shield
+    }
+  end
 end

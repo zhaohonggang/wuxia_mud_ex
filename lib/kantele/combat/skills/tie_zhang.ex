@@ -141,4 +141,15 @@ defmodule Kantele.Combat.Skills.TieZhang do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "dao" => Kantele.Combat.Skills.Performs.TieZhang.Dao,
+      "juesha" => Kantele.Combat.Skills.Performs.TieZhang.Juesha,
+      "lei" => Kantele.Combat.Skills.Performs.TieZhang.Lei,
+      "long" => Kantele.Combat.Skills.Performs.TieZhang.Long,
+      "yin" => Kantele.Combat.Skills.Performs.TieZhang.Yin
+    }
+  end
 end

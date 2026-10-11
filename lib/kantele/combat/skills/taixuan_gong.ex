@@ -27,4 +27,22 @@ defmodule Kantele.Combat.Skills.TaixuanGong do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "hun" => Kantele.Combat.Skills.Performs.TaixuanGong.Hun,
+      "jing" => Kantele.Combat.Skills.Performs.TaixuanGong.Jing,
+      "po" => Kantele.Combat.Skills.Performs.TaixuanGong.Po,
+      "xuan" => Kantele.Combat.Skills.Performs.TaixuanGong.Xuan
+    }
+  end
+
+  @impl true
+  def exert_list() do
+    %{
+      "powerup" => Kantele.Combat.Skills.Performs.TaixuanGong.Powerup,
+      "shield" => Kantele.Combat.Skills.Performs.TaixuanGong.Shield
+    }
+  end
 end

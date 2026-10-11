@@ -273,4 +273,14 @@ defmodule Kantele.Combat.Skills.SixFinger do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "qi" => Kantele.Combat.Skills.Performs.SixFinger.Qi,
+      "six" => Kantele.Combat.Skills.Performs.SixFinger.Six,
+      "zong" => Kantele.Combat.Skills.Performs.SixFinger.Zong,
+      "zongheng" => Kantele.Combat.Skills.Performs.SixFinger.Zongheng
+    }
+  end
 end

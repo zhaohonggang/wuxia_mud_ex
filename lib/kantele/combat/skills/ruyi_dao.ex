@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.RuyiDao do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "ruyi" => Kantele.Combat.Skills.Performs.RuyiDao.Ruyi
+    }
+  end
 end

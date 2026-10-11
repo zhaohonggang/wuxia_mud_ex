@@ -114,12 +114,15 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
 
     test "perform_list 映射正确" do
       assert CibeiDao.perform_list() == %{"sheshen" => Kantele.Combat.Skills.Performs.CibeiDao.Sheshen}
-      assert DamoJian.perform_list() == %{"qingxin" => Kantele.Combat.Skills.Performs.DamoJian.Qingxin, "sanjue" => Kantele.Combat.Skills.Performs.DamoJian.Sanjue}
+      assert %{
+               "qingxin" => Kantele.Combat.Skills.Performs.DamoJian.Qingxin,
+               "sanjue" => Kantele.Combat.Skills.Performs.DamoJian.Sanjue
+             } = DamoJian.perform_list()
       assert FanliangyiDao.perform_list() == %{"makearray" => Kantele.Combat.Skills.Performs.FanliangyiDao.Makearray, "san" => Kantele.Combat.Skills.Performs.FanliangyiDao.San}
       assert JingangBuhuaiti.perform_list() == %{"jingang" => Kantele.Combat.Skills.Performs.JingangBuhuaiti.Jingang}
       assert JinzhongZhao.perform_list() == %{"zhao" => Kantele.Combat.Skills.Performs.JinzhongZhao.Zhao}
       assert LingboWeibu.perform_list() == %{"ling" => Kantele.Combat.Skills.Performs.LingboWeibu.Ling}
-      assert KuangfengJian.perform_list() == %{"sao" => Kantele.Combat.Skills.Performs.KuangfengJian.Sao}
+      assert %{"sao" => Kantele.Combat.Skills.Performs.KuangfengJian.Sao} = KuangfengJian.perform_list()
       assert Map.has_key?(HuashanJian.perform_list(), "lian")
     end
   end

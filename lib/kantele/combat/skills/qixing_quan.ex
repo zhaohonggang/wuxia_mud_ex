@@ -119,4 +119,11 @@ defmodule Kantele.Combat.Skills.QixingQuan do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "zhai" => Kantele.Combat.Skills.Performs.QixingQuan.Zhai
+    }
+  end
 end

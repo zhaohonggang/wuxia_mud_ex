@@ -97,4 +97,11 @@ defmodule Kantele.Combat.Skills.YinfengDao do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "jue" => Kantele.Combat.Skills.Performs.YinfengDao.Jue
+    }
+  end
 end

@@ -111,4 +111,11 @@ defmodule Kantele.Combat.Skills.PoshuiZhang do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @impl true
+  def perform_list() do
+    %{
+      "tai" => Kantele.Combat.Skills.Performs.PoshuiZhang.Tai
+    }
+  end
 end

@@ -86,4 +86,11 @@ defmodule Kantele.Combat.Skills.QuemenJian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "can" => Kantele.Combat.Skills.Performs.QuemenJian.Can
+    }
+  end
 end

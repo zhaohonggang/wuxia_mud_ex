@@ -374,7 +374,14 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
 
   @impl true
   def perform_list() do
-    %{"extreme" => Kantele.Combat.Skills.TaijiQuan.Extreme}
+    %{
+      "extreme" => Kantele.Combat.Skills.TaijiQuan.Extreme,
+      "ji" => Kantele.Combat.Skills.Performs.TaijiQuan.Ji,
+      "tu" => Kantele.Combat.Skills.Performs.TaijiQuan.Tu,
+      "yin" => Kantele.Combat.Skills.Performs.TaijiQuan.Yin,
+      "zhan" => Kantele.Combat.Skills.Performs.TaijiQuan.Zhan,
+      "zhen" => Kantele.Combat.Skills.Performs.TaijiQuan.Zhen
+    }
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"

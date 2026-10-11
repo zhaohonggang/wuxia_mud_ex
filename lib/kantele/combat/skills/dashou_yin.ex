@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.DashouYin do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "yin" => Kantele.Combat.Skills.Performs.DashouYin.Yin
+    }
+  end
 end

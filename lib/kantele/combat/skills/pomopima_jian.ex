@@ -130,4 +130,11 @@ defmodule Kantele.Combat.Skills.PomopimaJian do
     end
   end
 
+
+  @impl true
+  def perform_list() do
+    %{
+      "zui" => Kantele.Combat.Skills.Performs.PomopimaJian.Zui
+    }
+  end
 end

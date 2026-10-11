@@ -31,6 +31,10 @@ defmodule Kantele.Combat.Skills.SunFinger do
 
   @impl true
   def perform_list() do
-    %{"dian" => Kantele.Combat.Skills.Performs.SunFinger.Dian}
+    %{
+      "dian" => Kantele.Combat.Skills.Performs.SunFinger.Dian,
+      "heal" => Kantele.Combat.Skills.Performs.SunFinger.Heal,
+      "qiankun" => Kantele.Combat.Skills.Performs.SunFinger.Qiankun
+    }
   end
 end
