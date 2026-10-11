@@ -105,24 +105,18 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你必须在使用剑时才能使出「迅雷击」！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你必须在使用剑时才能使出「迅雷击」！\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
+    #   {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -133,9 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将手中的缓缓向$n一压，忽然剑光一闪， 一剑幻为三剑，宛如奔雷掣电攻向$n！
-
-weaponweaponweaponneiliapply/strapply/attack", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将手中的缓缓向$n一压，忽然剑光一闪， 一剑幻为三剑，宛如奔雷掣电攻向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -156,6 +148,8 @@ weaponweaponweaponneiliapply/strapply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

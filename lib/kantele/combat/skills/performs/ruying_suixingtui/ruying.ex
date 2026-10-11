@@ -101,24 +101,20 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "使用「如影随形」时双手必须空着！\n"}
+      combat.weapon != nil -> {:error, "使用「如影随形」时双手必须空着！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「如影随形」只能在战斗中对对手使用。\n"}
+    #   {:error, "你所使用的外功中没有这样的功能。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「如影随形」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你所使用的外功中没有这样的功能。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,10 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 500}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "你猛吸一口真气，体内劲力瞬时爆发！
-apply/strengthapply/dexerityapply/attackapply/damagecombat_expcombat_expforceforce$N忽然跃起，左脚一勾一弹，霎时之间踢出一招「如」字诀的穿心腿，直袭$n前胸！weapon紧接着$N左腿勾回，将腰身一扭，那右腿的一招「影」字诀便紧随而至，飞向$n！weapon只见$N右脚劲力未消，便凌空一转，左腿顺势扫出一招「随」字诀，如影而至！weapon半空中$N脚未后撤，已经运起「形」字诀，内劲直透脚尖，在$n胸腹处连点了数十下！weapon这时$N双臂展动，带起一股强烈的旋风，双腿霎时齐并，「如影随形」一击重炮轰在$n胸膛之上！weapon$N忽然跃起，左脚一勾一弹，霎时之间踢出一招「如」字诀的穿心腿，直袭$n前胸！weapon紧接着$N左腿勾回，将腰身一扭，那右腿的一招「影」字诀便紧随而至，飞向$n！weapon只见$N右脚劲力未消，便凌空一转，左腿顺势扫出一招「随」字诀，如影而至！weapon半空中$N脚未后撤，已经运起「形」字诀，内劲直透脚尖，在$n胸腹处连点了数十下！weapon
-你连环飞腿使完，全身一转，稳稳落在地上。
-neiliapply/dexerityapply/damageapply/strengthapply/attack", n1: character.name)
+    conn = Broadcast.publish(conn, "你猛吸一口真气，体内劲力瞬时爆发！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,6 +144,8 @@ neiliapply/dexerityapply/damageapply/strengthapply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

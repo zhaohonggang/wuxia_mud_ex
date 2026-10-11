@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用「修罗绝命指」！\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用「修罗绝命指」！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「修罗绝命指」只能在战斗中对对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「修罗绝命指」只能在战斗中对对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -136,11 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N忽然面露凶光，身形变的异常飘渺，在$n的四周游走
 个不停，$n正迷茫时，$N突然近身，毫无声息的一指戳
-出！
-fingerforcedodgeparryneili只见$n一声惨叫，已被$N击中要害部位，只觉眼前一片
-漆黑，身体摇摇欲坠！
-neili可是$n看破了$N的企图，轻轻向后飘出数丈，躲过了这
-一致命的一击！", n1: character.name)
+出！", n1: character.name)
 
     conn
     |> put_character(character)

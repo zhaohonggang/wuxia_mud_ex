@@ -93,25 +93,19 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你使用的武器不对，难以施展\n"}
+    #   {:error, "你的辟邪剑法不够娴熟，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
-      false -> {:error, "你的辟邪剑法不够娴熟，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -119,8 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N身形忽然变快，蓦的冲向$n，幻作数道虚影，顿时无数星光一齐射向$n！
-dodgedodgeapply/attackapply/damageapply/unarmed_damagepixie-jian/hit_msgneiliapply/attackapply/damageapply/unarmed_damagepixie-jian/hit_msg", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形忽然变快，蓦的冲向$n，幻作数道虚影，顿时无数星光一齐射向$n！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -64,6 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -80,6 +81,14 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -90,24 +99,20 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "百花错乱须是空手才能施展。\n"}
+      combat.weapon != nil -> {:error, "百花错乱须是空手才能施展。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "百花错乱只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "百花错乱只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -116,12 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "只见$N使出百花错拳的精妙百花错乱，擒拿手中夹着鹰爪功，左手查拳，右手绵掌。攻
-出去是八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，只令$n眼花缭乱。
-
-parry$n只感到头晕目眩，只见$N或掌、或爪、或拳、或指铺天盖地的向自己各个部位袭来！
-只一瞬间，全身竟已多了数十出伤痕，鲜血狂泻不止！
-baihua-quanapply/attack$n只见$N运拳如奔，快拳缤纷递出，连忙振作精神勉强抵挡。
-neiliapply/attack", n1: character.name)
+出去是八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，只令$n眼花缭乱。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -142,6 +142,8 @@ neiliapply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

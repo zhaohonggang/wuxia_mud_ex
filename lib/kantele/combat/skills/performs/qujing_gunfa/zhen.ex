@@ -95,10 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
         {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
+        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
 
       true ->
         :ok
@@ -117,24 +117,20 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -143,10 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N将手中缓缓压向$n，棍体隐隐带着风雷之劲，正是取经棍法杀着「震雷乾坤」！
-电光火石间，棍端竟全被紫电所笼罩，幻作千百根相似，奔雷掣电般向$n席卷而去。
-clubparry$n被$N气势所撼，完全不知该如何招架，竟而呆立当场！
-apply/attackapply/damage$n见$N气势如虹，心下凛然，急忙凝神聚气，小心应付！
-neiliapply/attackapply/damage", n1: character.name)
+电光火石间，棍端竟全被紫电所笼罩，幻作千百根相似，奔雷掣电般向$n席卷而去。", n1: character.name)
 
     conn
     |> put_character(character)

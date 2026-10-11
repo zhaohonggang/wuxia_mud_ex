@@ -101,24 +101,20 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,9 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然身法奇快，剑法灵动无比，手中犹如脱手飞旋一般，将$n周身笼罩。
-swordneilidodge$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！
-可是$N镇定自若，小心拆招，没有被$n招式所困。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然身法奇快，剑法灵动无比，手中犹如脱手飞旋一般，将$n周身笼罩。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -152,6 +146,8 @@ swordneilidodge$N看不出$n招式中的虚实，连忙护住自己全身，一�
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

@@ -96,10 +96,10 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
         {:error, "你现在没有激发少林内功为内功，难以施展「无色无相」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
+        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
 
       true ->
         :ok
@@ -116,25 +116,21 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用「无色无相」！\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用「无色无相」！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「无色无相」只能在战斗中对对手使用。\n"}
+    #   {:error, "你还没有受过高人指点，无法施展「无色无相」。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「无色无相」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你还没有受过高人指点，无法施展「无色无相」。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -147,9 +143,7 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N聚起全身功力，汇聚于右指，纵身而上，向$n扑去，同时一指划出，如同流星一般击向$n！
-fingerforcedodgeparryneili只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！
-neili可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N聚起全身功力，汇聚于右指，纵身而上，向$n扑去，同时一指划出，如同流星一般击向$n！", n1: character.name)
 
     conn
     |> put_character(character)

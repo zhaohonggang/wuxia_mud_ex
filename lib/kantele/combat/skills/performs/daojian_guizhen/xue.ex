@@ -93,23 +93,19 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -118,10 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N手中蓦地一抖，将「胡家刀法」并「苗家剑法」连环施出。霎时寒
-光点点，犹如夜陨划空，铺天盖地罩向$n，正是一招「天下有血」。
-daojian-guizhenmartial-cognizeparrymartial-cognize$n只见无数刀光剑影向自己逼来，顿感眼花缭乱，心底寒意油然而生。
-daojian-guizhen/max_pfm$n突然发现自己四周皆被刀光剑影所包围，心知不妙，急忙小心招架。
-neiliapply/attackapply/damageapply/attackapply/damagedaojian-guizhen/max_pfm", n1: character.name)
+光点点，犹如夜陨划空，铺天盖地罩向$n，正是一招「天下有血」。", n1: character.name)
 
     conn
     |> put_character(character)

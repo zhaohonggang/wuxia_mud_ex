@@ -105,25 +105,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
-      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令\n"}
+      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -131,10 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！
-combat_expswordparry$n完全无法看透$N招中虚实，不由得心生惧意，招式一滞，登时破绽百出。
-shenghuo-lingshenghuo-ling/max_hit$n见$N来势汹涌，心底一惊，打起精神小心接招。
-neiliapply/attackapply/attackshenghuo-ling/max_hit", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -155,6 +147,8 @@ neiliapply/attackapply/attackshenghuo-ling/max_hit", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

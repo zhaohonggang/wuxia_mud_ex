@@ -102,24 +102,20 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你的兵器不对。\n"}
+      combat.weapon == nil -> {:error, "你的兵器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「八卦阵芒」只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「八卦阵芒」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,11 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，手中的刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！
-
-bladeparry$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！
-zijinbagua-dao$n心底微微一惊，打起精神小心接招。
-neiliapply/attackapply/attack", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，手中的刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -152,6 +144,8 @@ neiliapply/attackapply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

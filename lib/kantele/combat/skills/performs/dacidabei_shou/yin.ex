@@ -62,6 +62,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -80,6 +81,14 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -91,23 +100,19 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手使用「大手印」！\n"}
+      combat.weapon != nil -> {:error, "你必须空手使用「大手印」！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「大手印」只能在战斗中对对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「大手印」只能在战斗中对对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,8 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "( $n )
-neilidodgedodgeneili", n1: character.name)
+    conn = Broadcast.publish(conn, "( $n )", n1: character.name)
 
     conn
     |> put_character(character)
@@ -134,18 +138,24 @@ neilidodgedodgeneili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("qi", damage/3)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.wound(vitals, :qi, div(damage, 3))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

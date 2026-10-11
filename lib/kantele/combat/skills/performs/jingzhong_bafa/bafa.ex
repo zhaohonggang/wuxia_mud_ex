@@ -101,23 +101,19 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "手中没刀还使什么井中八法。\n"}
+      combat.weapon == nil -> {:error, "手中没刀还使什么井中八法。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "井中八法只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "井中八法只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,10 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中的将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！
-bladeparry$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！
-jingzhong-bafa)$n心底微微一惊，打起精神小心接招。
-neiliapply/attackapply/attack", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中的将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -149,6 +142,8 @@ neiliapply/attackapply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

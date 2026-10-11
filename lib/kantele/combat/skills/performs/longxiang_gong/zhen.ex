@@ -102,14 +102,11 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Zhen do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -122,26 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Zhen do
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N仰天一声怒嚎，将龙象般若功提运至极限，全身顿时罡劲迸发，真气蒸腾而出，笼罩$N
-四方！电光火石间，$N双拳已携着雷霆万钧之势崩击而出，卷起万里尘埃，正是密宗绝学：
-
-        般      般般般           若        若           极    极极极极极极
-    般般般般    般  般       若若若若若若若若若若       极       极    极
-    般    般    般  般           若        若       极极极极极  极    极
-    般 般 般 般般    般般          若                 极极极  极极极 极极极
-  般般般般般般             若若若若若若若若若若若若  极 极 极  极极     极
-    般    般   般般般般         若                   极 极 极  极 极   极
-    般 般 般    般  般        若 若若若若若若若      极 极 极 极   极极
-    般    般     般般       若   若          若         极   极     极
-   般    般   般般  般般         若若若若若若若         极  极  极极极极极
-
-$N一道掌力打出，接着便涌出了第二道、第三道掌力，掌势连绵不绝，气势如虹！直到$N
-第十三道掌力打完，四周所笼罩着的罡劲方才慢慢消退！而$n此时却已是避无可避！
-
-unarmedconparrydexmax_neilimax_neilimax_neili$n全然无力阻挡，竟被$N一下击得飞起，重重的跌落在地上。
-neilijiali$n不及闪避，顿被$N一下击中，尽伤三焦六脉。
-$n被$N罡劲所逼，一时无力作出抵挡，竟呆立当场。
-$n见$N来势迅猛之极，甚难防备，连忙振作精神，小心抵挡。
-apply/attackneiliapply/attack", n1: character.name)
+四方！电光火石间，$N双拳已携着雷霆万钧之势崩击而出，卷起万里尘埃，正是密宗绝学：", n1: character.name)
 
     conn
     |> put_character(character)
@@ -159,17 +137,23 @@ apply/attackneiliapply/attack", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    result = Messages.interpolate("$n不及闪避，顿被$N一下击中，尽伤三焦六脉。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n不及闪避，顿被$N一下击中，尽伤三焦六脉。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N来势迅猛之极，甚难防备，连忙振作精神，小心抵挡。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

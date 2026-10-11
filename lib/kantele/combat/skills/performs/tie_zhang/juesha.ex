@@ -103,25 +103,21 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "「九穹绝刹掌」只能空手使用。\n"}
+      combat.weapon != nil -> {:error, "「九穹绝刹掌」只能空手使用。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「九穹绝刹掌」只能在战斗中对对手使用。\n"}
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「九穹绝刹掌」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -131,11 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     vitals = %{vitals | qi: vitals.qi - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N一声怒喝，猛然施出铁掌掌法绝技「九穹绝刹掌」！体内天雷真气急速运转，双臂陡然
-暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！
-
-strikestrparrydex$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。
-$n凝神应战，竭尽所能化解$P这几掌。
-apply/attackneiliqiapply/attack", n1: character.name)
+暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -156,6 +148,8 @@ apply/attackneiliqiapply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

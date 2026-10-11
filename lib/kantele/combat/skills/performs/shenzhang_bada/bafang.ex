@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用「威镇八方」！\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用「威镇八方」！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「威镇八方」只能在战斗中对对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「威镇八方」只能在战斗中对对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -134,8 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深的吸了一口气，大喝一声，全身衣袍无风自鼓，然后提气往上一纵，居高临下，双掌奋力击下，刹那间，内劲犹如旋风般击向$n！
-strikeshenzhang-badadodgeparryneilineili可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深的吸了一口气，大喝一声，全身衣袍无风自鼓，然后提气往上一纵，居高临下，双掌奋力击下，刹那间，内劲犹如旋风般击向$n！", n1: character.name)
 
     conn
     |> put_character(character)

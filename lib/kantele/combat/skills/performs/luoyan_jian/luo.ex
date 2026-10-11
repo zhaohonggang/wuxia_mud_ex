@@ -102,24 +102,20 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,9 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。sworddodge$n见$P剑势汹涌，寒意顿生，竟被逼得连连后退，狼狈不已。
-luoyan-jian$n见$N这几剑来势迅猛无比，毫无破绽，只得小心应付。
-neiliapply/attackapply/attack", n1: character.name)
+    conn = Broadcast.publish(conn, "$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。", n1: character.name)
 
     conn
     |> put_character(character)

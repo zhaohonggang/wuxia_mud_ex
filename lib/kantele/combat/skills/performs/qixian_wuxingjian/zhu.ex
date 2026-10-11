@@ -103,24 +103,18 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你不能使用这种兵器施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你不能使用这种兵器施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,12 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
     vitals = %{vitals | neili: vitals.neili - 250}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "只见$N双目微闭，单手在上轻轻拨动，顿时只听“啵啵啵”破空之声连续不断，数股破
-体无形剑气激射而出，直奔$n而去。
-只见$N双目微闭，双手轻轻舞弄，陡然间十指一并箕张，顿时只听“啵啵啵”破空之声连续不
-断，数股破体无形剑气激射而出，直奔$n而去。
-forcemax_neilimax_neili$p只感到$P内力澎湃，汹涌而至，霎时心神惧碎，呆立当场！
-apply/attack$n只感到$P内力澎湃，汹涌而至，急忙凝神聚气，小心应付。
-apply/attackneiliapply/attack", n1: character.name)
+体无形剑气激射而出，直奔$n而去。", n1: character.name)
 
     conn
     |> put_character(character)

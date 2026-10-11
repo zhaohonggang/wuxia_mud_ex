@@ -100,25 +100,20 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
-      false -> {:error, "你破阳冷光剑不够娴熟，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -131,8 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N长啸一声，使出破阳冷光剑绝招「神光再现」，手中光芒瀑涨，刺眼眩目，犹如神光降世，刹那间只觉得天地为之失辉，光芒已盖向$n
-。neilidodge$n被耀眼的光芒所惑，心中惊疑不定，一时间不知如何应对！
-可是$n看破了$N的企图，一丝不乱，应对自若。", n1: character.name)
+。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -153,6 +147,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
