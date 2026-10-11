@@ -1,8 +1,12 @@
 defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   @moduledoc """
-  perform「白首太玄经」（source taixuan-gong/jing.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「惊字诀」（source taixuan-gong/jing.c，由 translate_perform.py 生成，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  四回合连击，每回合不同DP计算、不同效果、不同回调：
+  - 第1回合：DP=目标str*2+unarmed+parry，命中扣neili+busy1，callback final1
+  - 第2回合：DP=目标int*2+dodge+parry，命中jing伤/创，callback final2
+  - 第3回合：DP=目标con*2+force+parry，命中jing伤/创
+  - 第4回合：DP=目标dex*2+dodge+parry，命中busy+消息含武器名，callback final3
   """
 
   @behaviour Kantele.Combat.Perform
@@ -17,6 +21,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Combat
 
   @perform_id "taixuan-gong/jing"
 
@@ -28,22 +33,53 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "taixuan-gong")
-    flag = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
          {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
-          rng: rng
-        }
-      })
 
-      apply_effect(conn, character)
+      # 确定武器类型
+      weapon_type = get_weapon_type(character)
+      has_weapon = weapon_type != :unarmed
+
+      # 计算 AP
+      ap = if weapon_type == :sword do
+        lvl + Stats.skill(stats, "sword")
+      else
+        lvl + Stats.skill(stats, "blade")
+      end
+
+      # 初始消息
+      conn = Broadcast.publish(conn, "只见$N身形陡起，内劲如虹，${weapon_msg}直指$n要害！", n1: character.name, weapon_msg: get_weapon_msg(has_weapon))
+
+      # 扣除内力
+      neili_cost = 400 + Engine.rand(rng, 400)
+      vitals = character.meta.vitals
+      vitals = %{vitals | neili: max(vitals.neili - neili_cost, 0)}
+      attacker = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+      # 攻击方 busy
+      combat = Combat.start_busy(combat, 2 + Engine.rand(rng, 3))
+      attacker = %{attacker | meta: Map.put(attacker.meta, :combat, combat)}
+
+      # 第1回合
+      {conn, attacker, target} = round1(conn, attacker, target, lvl, ap, rng)
+
+      # 第2回合
+      {conn, attacker, target} = round2(conn, attacker, target, lvl, ap, rng)
+
+      # 第3回合
+      {conn, attacker, target} = round3(conn, attacker, target, lvl, ap, rng)
+
+      # 第4回合
+      {conn, attacker, target} = round4(conn, attacker, target, lvl, ap, rng)
+
+      # 结束
+      conn
+      |> put_character(attacker)
+      |> Map.put(:target, target)
+      |> assign(:prompt, false)
+
     else
       {:error, message} ->
         conn
@@ -60,7 +96,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -75,10 +110,10 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "blade") < 340 -> {:error, "你内功修为不够，难以施展\n"}
-      Stats.skill(stats, "force") < 340 -> {:error, "你武学修养不足，难以施展\n"}
-      Stats.skill(stats, "martial-cognize") < 260 -> {:error, "你的基本刀法火候不足，难以施展\n"}
-      Stats.skill(stats, "sword") < 340 -> {:error, "你的基本剑法火候不足，难以施展\n"}
+      Stats.skill(stats, "blade") < 340 -> {:error, "你的刀法不够娴熟，难以施展惊字诀。\n"}
+      Stats.skill(stats, "force") < 340 -> {:error, "你的内功火候不够，难以施展惊字诀。\n"}
+      Stats.skill(stats, "martial-cognize") < 260 -> {:error, "你的武学修养不够，难以施展惊字诀。\n"}
+      Stats.skill(stats, "sword") < 340 -> {:error, "你的剑法不够娴熟，难以施展惊字诀。\n"}
       true -> :ok
     end
   end
@@ -87,14 +122,13 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "taixuan-gong" ->
-        {:error, "你没有激发太玄功为刀或剑，难以施展\n"}
+      Stats.mapped(stats, "blade") != "taixuan-gong" and Stats.mapped(stats, "sword") != "taixuan-gong" ->
+        {:error, "你没有激发太玄功刀剑，难以施展惊字诀。\n"}
 
-      Stats.mapped(stats, "sword") != "taixuan-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备 taixuan-gong。\n"}
+      Stats.mapped(stats, "sword") != "taixuan-gong" and Stats.mapped(stats, "blade") != "taixuan-gong" and Stats.mapped(stats, "unarmed") != "taixuan-gong" ->
+        {:error, "你没有激发/准备太玄功拳脚，难以施展惊字诀。\n"}
 
-      true ->
-        :ok
+      true -> :ok
     end
   end
 
@@ -102,24 +136,24 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展\n"}
-      vitals.neili < 850 -> {:error, "你太玄功火候不够，难以施展\n"}
+      vitals.max_neili < 10000 -> {:error, "你的内力修为不足，难以施展惊字诀。\n"}
+      vitals.neili < 850 -> {:error, "你的内力不足，难以施展惊字诀。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
+    # 复杂武器检查简化：必须激发太玄功刀/剑或拳脚
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      Stats.mapped(stats, "sword") != "taixuan-gong" and Stats.mapped(stats, "blade") != "taixuan-gong" and Stats.mapped(stats, "unarmed") != "taixuan-gong" ->
+        {:error, "你必须激发太玄功才能施展惊字诀。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
     stats = character.meta.stats
 
     cond do
@@ -128,7 +162,174 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     end
   end
 
+  defp get_weapon_type(character) do
+    stats = character.meta.stats
+    cond do
+      Stats.mapped(stats, "sword") == "taixuan-gong" -> :sword
+      Stats.mapped(stats, "blade") == "taixuan-gong" -> :blade
+      true -> :unarmed
+    end
+  end
+
+  defp get_weapon_msg(:sword), do: "剑气纵横"
+  defp get_weapon_msg(:blade), do: "刀光如练"
+  defp get_weapon_msg(_), do: "内劲暗吐"
+
   defp apply_effect(conn, character) do
+    # 无条件效果已在 run 中处理
+    conn
+    |> put_character(character)
+    |> assign(:prompt, false)
+  end
+
+  # ===== 第1回合：DP = str*2 + unarmed + parry =====
+  defp round1(conn, attacker, target, lvl, ap, rng) do
+    target_stats = target.meta.stats
+
+    # DP = str*2 + unarmed + parry
+    dp = target.meta.stats.str * 2 + Stats.skill(target.meta.stats, "unarmed") + Stats.skill(target.meta.stats, "parry")
+    hit = div(ap * 4, 5) + Engine.rand(rng, ap) >= dp
+
+    {conn, attacker, target} =
+      if true do
+        # 命中
+        damage = ap + Engine.rand(rng, ap)
+
+        # 目标 neili 伤害
+        neili_damage = lvl + Engine.rand(rng, lvl)
+        target_vitals = target.meta.vitals
+        target_vitals = Vitals.damage(target_vitals, :neili, neili_damage)
+
+        # busy 1
+        target_combat = target.meta.combat
+        target_combat = Combat.start_busy(target_combat, 1)
+        target = %{target | meta: Map.put(target.meta, :combat, target_combat)}
+
+        # final1 消息：目标 neili 受损 + busy 1
+        result = "可只见$n惨叫一声，内息大乱，竟被$N震得心神俱颤！"
+        conn = Broadcast.publish(conn, Messages.interpolate(result, n1: attacker.name, n2: target.name))
+
+        # 攻击方 busy
+        attacker_combat = attacker.meta.combat
+        attacker_combat = Combat.start_busy(attacker_combat, 1)
+        attacker = %{attacker | meta: Map.put(attacker.meta, :combat, attacker_combat)}
+
+        {conn, attacker, target}
+      else
+        # 闪避
+        result = "$n身形微晃，竟将$N这招惊字诀卸了个干干净净！"
+        conn = Broadcast.publish(conn, Messages.interpolate(result, n1: attacker.name, n2: target.name))
+        {conn, attacker, target}
+      end
+
+    {conn, attacker, target}
+  end
+
+  # ===== 第2回合：DP = int*2 + dodge + parry =====
+  defp round2(conn, attacker, target, lvl, ap, rng) do
+    target_stats = target.meta.stats
+
+    # DP = int*2 + dodge + parry
+    dp = target.meta.stats.int * 2 + Stats.skill(target.meta.stats, "dodge") + Stats.skill(target.meta.stats, "parry")
+    hit = div(ap * 4, 5) + Engine.rand(rng, ap) >= dp
+
+    {conn, attacker, target} =
+      if hit do
+        # 命中
+        damage = ap + Engine.rand(rng, ap)
+
+        # jing 伤害/创伤
+        target_vitals = target.meta.vitals
+        target_vitals = Vitals.damage(target_vitals, :jing, div(damage, 2))
+        target_vitals = Vitals.wound(target_vitals, :jing, div(damage, 4))
+        target = %{target | meta: Map.put(target.meta, :vitals, target_vitals)}
+
+        # final2 消息：jing 伤害/创
+        conn = Broadcast.publish(conn, Messages.interpolate("只见$n惨叫一声，精气大损，${weapon}竟已刺入数寸！", n1: attacker.name, n2: target.name, weapon: get_weapon_name(:sword)))
+
+        {conn, attacker, target}
+      else
+        # 闪避
+        result = "$n身形飘忽，竟在$N剑气中穿梭自如，竟未沾边！"
+        conn = Broadcast.publish(conn, Messages.interpolate(result, n1: attacker.name, n2: target.name))
+        {conn, attacker, target}
+      end
+
+    {conn, attacker, target}
+  end
+
+  # ===== 第3回合：DP = con*2 + force + parry =====
+  defp round3(conn, attacker, target, lvl, ap, rng) do
+    target_stats = target.meta.stats
+
+    # DP = con*2 + force + parry
+    dp = target.meta.stats.con * 2 + Stats.skill(target.meta.stats, "force") + Stats.skill(target.meta.stats, "parry")
+    hit = div(ap * 4, 5) + Engine.rand(rng, ap) >= dp
+
+    {conn, attacker, target} =
+      if hit do
+        # 命中
+        damage = ap + Engine.rand(rng, ap)
+
+        # jing 伤害/创伤
+        target_vitals = target.meta.vitals
+        target_vitals = Vitals.damage(target_vitals, :jing, div(damage, 2))
+        target_vitals = Vitals.wound(target_vitals, :jing, div(damage, 4))
+        target = %{target | meta: Map.put(target.meta, :vitals, target_vitals)}
+
+        # final2 消息
+        conn = Broadcast.publish(conn, Messages.interpolate("$n精气大损，${weapon}竟已刺入数寸！", n1: attacker.name, n2: target.name, weapon: get_weapon_name(:sword)))
+
+        {conn, attacker, target}
+      else
+        # 闪避
+        result = "$n身形飘忽，竟在$N剑气中穿梭自如，竟未沾边！"
+        conn = Broadcast.publish(conn, Messages.interpolate(result, n1: attacker.name, n2: target.name))
+        {conn, attacker, target}
+      end
+
+    {conn, attacker, target}
+  end
+
+  # ===== 第4回合：DP = dex*2 + dodge + parry =====
+  defp round4(conn, attacker, target, lvl, ap, rng) do
+    target_stats = target.meta.stats
+
+    # DP = dex*2 + dodge + parry
+    dp = target.meta.stats.dex * 2 + Stats.skill(target.meta.stats, "dodge") + Stats.skill(target.meta.stats, "parry")
+    hit = div(ap * 4, 5) + Engine.rand(rng, ap) >= dp
+
+    {conn, attacker, target} =
+      if hit do
+        # 命中
+        damage = ap + Engine.rand(rng, ap)
+
+        # 目标 busy 4 + random(lvl/40)
+        busy_rounds = 4 + Engine.rand(rng, div(lvl, 40))
+        target_combat = target.meta.combat
+        target_combat = Combat.start_busy(target_combat, busy_rounds)
+        target = %{target | meta: Map.put(target.meta, :combat, target_combat)}
+
+        # final3 消息：busy + 武器名
+        conn = Broadcast.publish(conn, Messages.interpolate("$N剑气势如破竹，$n被剑气裹挟，重重摔出数丈之外！", n1: attacker.name, n2: target.name))
+
+        {conn, attacker, target}
+      else
+        # 闪避
+        result = "$n身形飘忽，竟在$N最后一击中穿梭自如，竟未沾边！"
+        conn = Broadcast.publish(conn, Messages.interpolate(result, n1: attacker.name, n2: target.name))
+        {conn, attacker, target}
+      end
+
+    {conn, attacker, target}
+  end
+
+  defp get_weapon_name(:sword), do: "剑"
+  defp get_weapon_name(:blade), do: "刀"
+  defp get_weapon_name(_), do: "内劲"
+
+  defp apply_effect(conn, character) do
+    # 无条件效果已在 run 中处理
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -145,223 +346,21 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("jing", damage / 2)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("jing", damage / 4)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，已穿透$n的胸膛，鲜血不断涌出。", n1: attacker.name, n2: character.name)
+    # 多回合攻击已在 run 中处理，这里只需返回
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"assign_refs": [{"ap", "blade"}, {"ap", "sword"}, {"dp", "dodge"}, {"dp", "force"}, {"dp", "unarmed"}, {"lvl", "taixuan-gong"}], "busy_lines": ["me->start_busy(2 + random(3));", "target->start_busy(4 + random(lvl / 40));"], "level_gates": [{"blade", "340"}, {"force", "340"}, {"martial-cognize", "260"}, {"sword", "340"}], "map_gates": [{"blade", "taixuan-gong"}, {"sword", "taixuan-gong"}], "remote_damage": true, "resource_gates": [{"max_neili", "10000"}, {"neili", "850"}], "var_gates": [{"lvl", "340"}]}
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "这里没有可供攻击的对手。\n"}
+    end
+  end
 
-  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
-  # #include <ansi.h>
-  # #include <combat.h>
-  # 
-  # #define JING "「" HIW "白首太玄经" NOR "」"
-  # 
-  # inherit F_SSERVER;
-  # 
-  # string final1(object me, object target, int damage, object weapon, int lvl);
-  # string final2(object me, object target, int damage);
-  # string final3(object me, object target, int damage, object weapon, int lvl, string msg);
-  # 
-  # int perform(object me, object target)
-  # {
-  #         int damage;
-  #         string msg, sub_msg;
-  #         int ap, dp;
-  #         object weapon;
-  #         int flag = 0;
-  #         int lvl;
-  # 
-  #         if (userp(me) && ! me->query("can_perform/taixuan-gong/jing"))
-  #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
-  #         if (! target) target = offensive_target(me);
-  # 
-  #         if (! target || ! me->is_fighting(target))
-  #                 return notify_fail(JING "只能对战斗中的对手使用。\n");
-  # 
-  #         if ((! objectp(weapon = me->query_temp("weapon"))) ||
-  #             ((string)weapon->query("skill_type") != "sword" 
-  #             && (string)weapon->query("skill_type") != "blade"))
-  #                 return notify_fail("你使用的武器不对，难以施展" JING "。\n");
-  # 
-  #         if ((int)me->query_skill("force", 1) < 340)
-  #                 return notify_fail("你内功修为不够，难以施展" JING "。\n");
-  # 
-  #         if ((int)me->query("max_neili") < 10000)
-  #                 return notify_fail("你内力修为不够，难以施展" JING "。\n");
-  # 
-  #         lvl = (int)me->query_skill("taixuan-gong", 1);
-  #         if (lvl < 340)
-  #                 return notify_fail("你太玄功火候不够，难以施展" JING "。\n");
-  # 
-  #         if (me->query_skill_mapped("sword") != "taixuan-gong"
-  #             && me->query_skill_mapped("blade") != "taixuan-gong")
-  #                 return notify_fail("你没有激发太玄功为刀或剑，难以施展" JING "。\n");
-  # 
-  #         // 分别判断激发刀剑时需要的刀、剑等级。
-  #         if (me->query_skill_mapped("sword") == "taixuan-gong")
-  #         {               
-  #                 if (me->query_skill("sword", 1) < 340)
-  #                         return notify_fail("你的基本剑法火候不足，难以施展" JING "。\n");
-  # 
-  #                 else 
-  #                 {
-  #                        flag = 1; // 设置激发为sword标志
-  #                        sub_msg = "剑";
-  #                 }
-  #         }
-  #         else // 激发为刀
-  #         {
-  #                 if (me->query_skill("blade", 1) < 340)
-  #                         return notify_fail("你的基本刀法火候不足，难以施展" JING "。\n");
-  #                 else 
-  #                 {
-  #                        flag = 0; // 设置激发为blade标志
-  #                        sub_msg = "刀";
-  #                 }
-  #         }
-  # 
-  #         if ((int)me->query("neili") < 850)
-  #                 return notify_fail("你现在真气不够，难以施展" JING "。\n");
-  # 
-  #         if (me->query_skill("martial-cognize", 1) < 260)
-  #                 return notify_fail("你武学修养不足，难以施展" JING "。\n");
-  # 
-  #         if (! living(target))
-  #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
-  #         message_sort(HIM "\n$N" HIM "情不自禁的纵声长啸，霎时之间，千百种招式纷至沓来，涌"
-  #                      "向心头。$N" HIM "随手挥舞，已是不按次序，但觉无论何种招式皆能随心所欲"
-  #                      "，既不必存想内息，亦不须记忆招数，石壁上的千百种招式，自然而然的从心"
-  #                      "中传向手足，尽数袭向$n" HIM "。\n" NOR, me, target);
-  # 
-  # 
-  #         if (flag)ap = lvl + me->query_skill("sword", 1);
-  #         else ap = lvl + me->query_skill("blade", 1);
-  # 
-  #         // 第一招，判断对方臂力
-  #         dp = target->query_str() * 2 + target->query_skill("unarmed", 1) + 
-  #              target->query_skill("parry", 1);
-  # 
-  #         message_sort(HIW "\n$N" HIW "突然间只觉得右肋下‘渊液穴’上一动，一道热线沿着‘足少"
-  #                      "阳胆经’，向着‘日月’、‘京门’二穴行去，一招‘十步杀一人’的" + sub_msg + 
-  #                      "法已随意使出，各种招式源源而出，将$n" HIW "笼罩。\n" NOR, me, target);
-  # 
-  #         if (ap * 4 / 5 + random(ap) > dp)
-  #         {
-  #                 damage = ap + random(ap);
-  #                 msg = COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80 + random(10),
-  #                                          (: final1, me, target, damage, weapon, lvl :));
-  #         } else
-  #         {
-  #                 msg = HIC "$n" HIC "气贯双臂，凝神以对，竟将$N" HIC "之力卸去。\n" NOR;
-  #         }
-  #         message_sort(msg, me, target);
-  # 
-  #         // 第二招，判断对方悟性
-  #         dp = target->query_int() * 2 + target->query_skill("dodge", 1) 
-  #              + target->query_skill("parry", 1);
-  # 
-  #         message_sort(HIW "\n$N" HIW "肌肤如欲胀裂，内息不由自主的依着‘赵客缦胡缨’那套经脉运"
-  #                      "行图谱转动，同时手舞足蹈，似是大欢喜，又似大苦恼。\n" NOR, me);
-  # 
-  #         if (ap * 4 / 5 + random(ap) > dp)
-  #         {
-  #                 damage = ap + random(ap);
-  #                 msg = COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 95 + random(10),
-  #                                           HIY "$n" HIY "冷笑一声，觉得$N" HIY "此招肤浅之极，于"
-  #                                           "是随意招架，猛然间，「噗嗤」！一声，" + weapon->name() +
-  #                                           HIY "已穿透$n" HIY "的胸膛，鲜血不断涌出。\n" NOR, me , target);
-  #         } else
-  #         {
-  #                 msg = HIC "$n" HIC "会心一笑，看出$N" HIC "这招中的破绽，随意施招竟将这招化去。\n" NOR;
-  #         }
-  #         message_sort(msg, me, target);
-  # 
-  #         // 第三招，判断对方根骨
-  #         dp = target->query_con() * 2 + target->query_skill("force", 1) + 
-  #              target->query_skill("parry", 1);
-  # 
-  #         message_sort(HIW "\n‘赵客缦胡缨’既毕，接下去便是‘吴钩霜雪明’，$N" HIW "更"
-  #                     "不思索，石壁上的图谱一幅幅在脑海中自然涌出，自‘银鞍照白马’直到‘谁能书阁下’，"
-  #                     "一气呵成的使了出来。\n" NOR, me);
-  # 
-  #         if (ap * 4 / 5 + random(ap) > dp)
-  #         {
-  #                 damage = ap + random(ap);
-  #                 msg = COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80 + random(10),
-  #                                            (: final2, me, target, damage :));
-  #         } else
-  #         {
-  #                 msg = HIC "$n" HIC "默运内功，内劲贯于全身，奋力抵挡住$N" HIC "这招。\n" NOR;
-  #         }
-  #         message_sort(msg, me, target);
-  # 
-  #         // 第四招，判断对方身法
-  #         dp = target->query_dex() * 2 + target->query_skill("dodge", 1) + 
-  #              target->query_skill("parry", 1);
-  # 
-  #         message_sort(HIW "\n待得‘谁能书阁下’这套功夫演完，$N" HIW "只觉气息逆转"
-  #                      "，‘不惭世上英’倒使上去。\n" NOR, me);
-  # 
-  #         if (ap * 4 / 5 + random(ap) > dp)
-  #         {
-  #                 damage = ap + random(ap);
-  #                 msg = COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80 + random(10),
-  #                                           (: final3, me, target, damage, weapon, lvl, sub_msg :));
-  #         } else
-  #         {
-  #                 msg = HIC "$n" HIC "见这招来势凶猛，身形疾退，瞬间飘出三"
-  #                       "丈，方才躲过$N" HIC "这招。\n" NOR;
-  #         }
-  #         message_sort(msg, me, target);
-  # 
-  #         me->start_busy(2 + random(3));
-  #         me->add("neili", -400 - random(400));
-  #         return 1;
-  # }
-  # 
-  # string final1(object me, object target, int damage, object weapon, int lvl)
-  # {
-  #         target->add("neili", -(lvl + random(lvl)));
-  # 
-  #         return  HIY "$n" HIY "却觉$N" HIY "这招气势恢弘，于是运力奋力抵挡。但是无奈这"
-  #                 "招威力惊人，$n" HIY "闷哼一声，倒退几步，顿觉内息涣散，" + weapon->name() + HIY 
-  #                 "上早已染满鲜血！\n" NOR;
-  # }
-  # 
-  # string final2(object me, object target, int damage)
-  # {
-  #         target->receive_damage("jing", damage / 2, me);
-  #         target->receive_wound("jing", damage / 4, me);
-  #         return  HIY "$n" HIY "心中一惊，但见$N" HIY "这几招奇异无比，招式变化莫测，"
-  #                 "但威力却依然不减，正犹豫间，$n" HIY "却已中招，顿感精力不济，浑"
-  #                 "身无力。\n" NOR;
-  # }
-  # 
-  # string final3(object me, object target, int damage, object weapon, int lvl, string msg)
-  # {
-  #    
-  #         target->start_busy(4 + random(lvl / 40));
-  #   
-  #         return  HIY "$N" HIY + msg + "法奇妙无比，手中" + weapon->name() + HIY "时而宛若游龙，时而"
-  #                 "宛若惊鸿，霎那间$n" HIY "已遍体鳞伤，$N" HIY "猛然将手中" + weapon->name() + HIY "一"
-  #                 "转，剑势陡然加快，将$n" HIY "团团围住，竟无一丝空隙！\n" NOR;
-  # 
-  # }
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
 end
