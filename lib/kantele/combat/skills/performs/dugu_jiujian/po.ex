@@ -81,25 +81,21 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，无法施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "你的独孤九剑等级不够，无法施展\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的独孤九剑等级不够，无法施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -107,12 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随意挥洒手中的，招招从出其不意的方位直指$n中的破绽。
-$n大吃一惊，慌乱之下破绽迭出，$N唰唰唰唰连攻剑！
-pin$n觉得眼前眼花缭乱，手中的一时竟然拿捏不住，脱手而出！
-$n略得空隙喘息，一时间却也无力反击。
-$n连忙抵挡，一时间不禁手忙脚乱，无暇反击。
-$N拿着手中的，东戳西指，不过$n防守的异常严密，$N一时竟然无法找到破绽。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随意挥洒手中的某物，招招从出其不意的方位直指$n中的破绽。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -133,11 +124,13 @@ $N拿着手中的，东戳西指，不过$n防守的异常严密，$N一时竟�
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("$N随意挥洒手中的，招招从出其不意的方位直指$n中的破绽。", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$N随意挥洒手中的某物，招招从出其不意的方位直指$n中的破绽。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

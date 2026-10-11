@@ -122,7 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 220}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N轻舒猿臂，施出「战八方藏刀式」，手中的吞吞吐吐，变化莫测，笼罩了$n周身要害！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N轻舒猿臂，施出「战八方藏刀式」，手中的某物吞吞吐吐，变化莫测，笼罩了$n周身要害！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -91,14 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「五遁绝杀」只能在战斗中使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「五遁绝杀」只能在战斗中使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -109,11 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出五行遁中的「五遁绝杀」，身法陡然间变得变幻莫测！
-five-avoidqineili$N的身形倏地一转，收身停住了脚步。
-$N的身影在$n身旁时隐时现 ...
-但是$N始终没有找到机会出手！
-qineili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出五行遁中的「五遁绝杀」，身法陡然间变得变幻莫测！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -134,6 +127,8 @@ qineili", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

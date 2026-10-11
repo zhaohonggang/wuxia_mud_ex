@@ -111,24 +111,20 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -136,11 +132,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中横扫而出，施出绝招「天外玉龙」，剑势纵横，犹如一条长龙蜿蜒而出，刺向$n
-。
-但见$N手中自半空中横过，剑身似曲似直，便如一件活物一般，正是破阳冷光剑的精髓「天外玉龙」，一柄死剑被$N使得如灵蛇，如神龙，猛然剑刺向$n
-。swordparryneili$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。
-neili可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中某物横扫而出，施出绝招「天外玉龙」，剑势纵横，犹如一条长龙蜿蜒而出，刺向$n
+。", n1: character.name)
 
     conn
     |> put_character(character)

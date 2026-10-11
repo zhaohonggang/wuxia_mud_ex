@@ -103,24 +103,18 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "无剑如何运用剑意？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "无剑如何运用剑意？\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能对战斗中的对手使用绝招。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能对战斗中的对手使用绝招。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -133,12 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Yi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一剑刺出，连自已也不知道要刺往何处。
-$N随手挥洒手中的，漫无目的，不成任何招式。
-$N斜斜刺出一剑，准头之差，令人匪夷所思。
-swordparrymartial-cognizelonely-swordneili$n全然无法领会$P这莫名其妙的招数，一个疏神，登时受创！
-$n淡然处之，并没有将$P此招放在心上，随手架开，不漏半点破绽。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一剑刺出，连自已也不知道要刺往何处。", n1: character.name)
 
     conn
     |> put_character(character)

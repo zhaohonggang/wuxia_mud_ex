@@ -101,24 +101,20 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "双剑合璧只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "双剑合璧只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -130,10 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N左手以全真剑法剑意，右手化玉女剑法剑招，双剑合璧同时刺出。
-forceforceswordquanzhen-jianyunv-jianneili$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
-一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！
-可是$p看破了$P的企图，将自己的全身上下护得密不透风，令$P无计可施。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N左手以全真剑法剑意，右手化玉女剑法剑招，双剑合璧同时刺出。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,18 +144,24 @@ forceforceswordquanzhen-jianyunv-jianneili$n看到$N双剑飞舞，招式中所�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
-    result = Messages.interpolate("$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
-一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
+一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

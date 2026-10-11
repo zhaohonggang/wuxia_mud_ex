@@ -104,25 +104,19 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "运用「横行无忌」必须手中持杖！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "运用「横行无忌」必须手中持杖！\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「横行无忌」只能对战斗中的对手使用。\n"}
+    #   {:error, "你还不会使用「横行无忌」。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「横行无忌」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你还不会使用「横行无忌」。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,10 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷笑，手中的忽然变得如同活物一般，时上时下，忽左忽右，不知攻向$n何处！
-staffparryneili$n实在无法捕捉到$P的实招，接连挡空，连中数招，登时吐了一口鲜血！
-$n奋力招架，总算抵挡住了$P的攻击！
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷笑，手中的某物忽然变得如同活物一般，时上时下，忽左忽右，不知攻向$n何处！", n1: character.name)
 
     conn
     |> put_character(character)

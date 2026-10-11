@@ -51,25 +51,25 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
         {:error, "在这里不能攻击他人。\n"}
 
       Stats.mapped(stats, "force") != "jiuyin-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备 jiuyin-shengong。\n"}
+        {:error, "TODO(migrate) 未激发 jiuyin-shengong。\n"}
 
       Stats.mapped(stats, "force") != "kuihua-mogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 kuihua-mogong。\n"}
+        {:error, "TODO(migrate) 未激发 kuihua-mogong。\n"}
 
       Stats.mapped(stats, "force") != "longxiang-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备 longxiang-gong。\n"}
+        {:error, "TODO(migrate) 未激发 longxiang-gong。\n"}
 
       Stats.mapped(stats, "force") != "tianhuan-shenjue" ->
-        {:error, "TODO(migrate) 未激发/未准备 tianhuan-shenjue。\n"}
+        {:error, "TODO(migrate) 未激发 tianhuan-shenjue。\n"}
 
       Stats.mapped(stats, "force") != "xixing-dafa" ->
-        {:error, "TODO(migrate) 未激发/未准备 xixing-dafa。\n"}
+        {:error, "TODO(migrate) 未激发 xixing-dafa。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
+        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
 
       Stats.mapped(stats, "force") != "zhanshen-xinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 zhanshen-xinjing。\n"}
+        {:error, "TODO(migrate) 未激发 zhanshen-xinjing。\n"}
 
       true ->
         :ok
@@ -95,19 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转真气，面无表情，歌声如梵唱般贯入众人耳中。
-huntian-qigong$N深深吸入一囗气，运足内力发出一阵长啸，音传百里，慑人心神。
-jiuyang-shengong$N仰天长啸，声音绵泊不绝，众人无不听得心驰神摇。
-jiuyin-shengong$N气凝丹田，猛然一声断喝，声音远远的传了开去，激荡不止。
-kuihua-mogong$N蓦地极嘶长呼，声音凄厉之极，令人毛骨悚然。
-yijinjinghunyuan-gong$N深深吸入一囗气，运起金刚禅狮子吼，发出惊天动地的一声巨吼。
-$N深深吸入一囗气，体内真气急剧迸发，陡然一声巨啸。
-
-condie_guardmax_neilijingneilijing突然间你只觉两耳一阵轰鸣，眼前金星乱冒，整个头便是要裂开一般。
-突然只见两手抱头，双目凸出，嘴角泛出些许白沫，喉咙咯咯作响。
-顿时听得一声惨叫，两眼发直，全身不住颤抖，蓦地呕出一口鲜血。
-却见竟摔倒在地，发出声声哀嚎，双目双耳及鼻孔均渗出丝丝鲜血。
-visionjingeff_jingjingeff_jing", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转真气，面无表情，歌声如梵唱般贯入众人耳中。", n1: character.name)
 
     conn
     |> put_character(character)

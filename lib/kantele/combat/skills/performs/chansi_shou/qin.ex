@@ -94,24 +94,18 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你缠丝擒拿手等级不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你缠丝擒拿手等级不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -124,10 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N悄然贴近$n，施出缠丝擒拿，双手忽折忽扭，或抓或甩，直琐$p各处要脉。
-handparryneili可是$n的看破了$N的招式，巧妙的招架拆解，没露半点破绽。
-neili却见$n奋力抵抗，可终究无法摆脱$N的攻势，连中数掌，难以反击。
-鲜血狂喷。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N悄然贴近$n，施出缠丝擒拿，双手忽折忽扭，或抓或甩，直琐$p各处要脉。", n1: character.name)
 
     conn
     |> put_character(character)

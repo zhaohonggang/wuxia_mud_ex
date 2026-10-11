@@ -91,24 +91,18 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "「来去若无形」必须用剑才能施展。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「来去若无形」必须用剑才能施展。\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「来去若无形」只能在战斗中使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「来去若无形」只能在战斗中使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -119,14 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身行突变，瞬间犹如分出无数身影闪电般的向$n攻去！
-neili  来字决！
-weapon    去字决！
-weapon      若字决！
-weapon        无字决！
-weapon          形字决！
-weapon            来去若无形    幻化无真境 
-apply/attackapply/damage", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身行突变，瞬间犹如分出无数身影闪电般的向$n攻去！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -149,14 +136,19 @@ apply/attackapply/damage", n1: character.name)
     _stats = character.meta.stats
     level = Map.get(data, :level, 0)
     skill = Map.get(data, :skill, 0)
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, skill)
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, skill)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -57,15 +57,12 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你要取哪只虫的毒液练药？\n"}
+    #   {:error, "看清楚些，那可不是毒虫。\n"}
+    #   {:error, "那只虫还精神着呢，你找死啊。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你要取哪只虫的毒液练药？\n"}
-      false -> {:error, "看清楚些，那可不是毒虫。\n"}
-      false -> {:error, "那只虫还精神着呢，你找死啊。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -73,17 +70,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N伸出食指，点在腹部，默运内力迫出毒液练药。
-worm_poison看来你是弄不出什么毒液来了。
-poisonwudu-qishuxiuluo-yinshagonglevelremainremainlevelremainlevelpoison-supply$N挤了半天，结果啥也没有挤出来，算是白忙活了。
-
-$N挤了一点毒液出来。
-可惜这点毒液连炼一颗毒药都不够。
-
-$N将的毒液逼出，在内力的作用下化成了一颗晶莹剔透的药丸。
-你炼制了一颗虫毒药丸。
-
-poisonwudu-qishuwudu-qishuxiuluo-yinshagongxiuluo-yinshagong/clone/misc/chongdupoisonlevelididname虫毒duration", n1: character.name)
+    conn = Broadcast.publish(conn, "$N伸出食指，点在某人腹部，默运内力迫出毒液练药。", n1: character.name)
 
     conn
     |> put_character(character)

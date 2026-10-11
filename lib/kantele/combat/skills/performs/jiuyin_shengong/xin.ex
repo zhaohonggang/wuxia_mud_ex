@@ -109,14 +109,11 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,10 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N猛然间尖啸一声，施展出九阴神功中的「摄心大法」。只见$N各种招式千奇百怪、变化多端，脸上喜怒哀乐，怪状百出。
-jiuyin-shengongforcemartial-cognizeforce$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。
-neilijingjingeff/jiuyin-shengong/xinmartial-cognizemartial-cognizemartial-cognizemartial-cognizemartial-cognizemartial-cognizemartial-cognizemartial-cognizemartial-cognizeremove_effsremove_effs$n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。
-neilieff/jiuyin-shengong/xineff/jiuyin-shengong/xin猛然间你气血上冲，头昏胀痛之感顿然消去，精力逐渐集中起来。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N猛然间尖啸一声，施展出九阴神功中的「摄心大法」。只见$N各种招式千奇百怪、变化多端，脸上喜怒哀乐，怪状百出。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -162,7 +156,7 @@ neilieff/jiuyin-shengong/xineff/jiuyin-shengong/xin猛然间你气血上冲，�
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n登时觉得胸口苦闷之极，心神难以自制，喜怒哀乐竟全随着$N而变。顷刻之间，$n顿觉精力不济，头晕目眩。", n1: attacker.name, n2: character.name), else: Messages.interpolate("= $n怒喝道：“尔等妖法，休想迷惑我！”。猛然间，招式陡快，竟将$N这招破去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

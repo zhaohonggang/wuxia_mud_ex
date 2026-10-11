@@ -70,24 +70,18 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你要打哪条蛇？\n"}
+    #   {:error, "看清楚些，那不是蛇，你瞎打什么？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你要打哪条蛇？\n"}
-      false -> {:error, "看清楚些，那不是蛇，你瞎打什么？\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "那条蛇暂时不会动弹了，你不必再打了。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "那条蛇暂时不会动弹了，你不必再打了。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -98,16 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N舞动手中的，朝着的七寸打了过去。
-
-$N伸出双指，出指如风，迅疾无比的朝着的七寸点了过去。
-shedu-qiqiaododgecombat_exp结果只听“啪”的一声，正打在的七寸上。
-forcecombat_exp只见身子轻轻晃动几下，就不再动弹了。
-哪里想到挨了这一击，竟然若无其事，顿时一个翻身，直扑向$N！
-
-然而身子一闪，躲了过去。
-
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N舞动手中的某物，朝着某人的七寸打了过去。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -133,7 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 240}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中斜指苍天，猛然间招式突变，“呼呼”作响，一式「横空出世」，力劈虚空，气压群山，犹如风卷残云般地袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中某物斜指苍天，猛然间招式突变，某物“呼呼”作响，一式「横空出世」，力劈虚空，气压群山，犹如风卷残云般地袭向$n。", n1: character.name)
 
     conn
     |> put_character(character)

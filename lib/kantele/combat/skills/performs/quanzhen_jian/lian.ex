@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
         {:error, "你没有激发全真的掌法，难以施展\n"}
 
       Stats.mapped(stats, "sword") != "quanzhen-jian" ->
-        {:error, "TODO(migrate) 未激发/未准备 quanzhen-jian。\n"}
+        {:error, "TODO(migrate) 未激发 quanzhen-jian。\n"}
 
       true ->
         :ok
@@ -112,24 +112,18 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手中无剑，如何施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你手中无剑，如何施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -142,11 +136,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。
-swordunarmedparry$N身法一变，唰地一腿，贴地向$n横扫而出，只带得地上尘土飞扬。
-只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。
-neili$n见此招来势凶猛，向后一跃，轻巧地躲了开去。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。", n1: character.name)
 
     conn
     |> put_character(character)

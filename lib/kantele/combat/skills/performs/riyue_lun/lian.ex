@@ -124,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 250}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，施展出日月轮法「五轮连转」神技，蓦地将手中飞掷
+    conn = Broadcast.publish(conn, "$N嗔目大喝，施展出日月轮法「五轮连转」神技，蓦地将手中某物飞掷
 而出，幻作数道光芒，相互盘旋着压向$n，招术煞为精奇！", n1: character.name)
 
     conn

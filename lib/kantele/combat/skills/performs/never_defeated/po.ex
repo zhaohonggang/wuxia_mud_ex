@@ -83,24 +83,20 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须手持兵刃才能施展破字诀！\n"}
+      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展破字诀！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "破字诀只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "破字诀只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -108,12 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N手中一抖，犹如夜雨流星，铺天盖地的攻向$n，没有半点规矩可循。
-$n见来招即巧又拙，不同于人间任何招式，不禁大为慌乱，一时破绽迭出，$N见状连出招！
-weapontypepin$n觉得眼前眼花缭乱，手中的一时竟然拿捏不住，脱手而出！
-$n竭力抵挡，一时间再也无力反击。
-$n只办了个勉力遮挡，全然无法反击。
-不过$n一丝不苟，严守门户，没有露出半点破绽。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手中某物一抖，犹如夜雨流星，铺天盖地的攻向$n，没有半点规矩可循。", n1: character.name)
 
     conn
     |> put_character(character)

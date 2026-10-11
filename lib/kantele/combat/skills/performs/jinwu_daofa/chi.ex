@@ -127,7 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuDaofa.Chi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝神聚气，将全身之力注入刀身顺势劈下，顿时一股凌厉的刀芒直贯$n而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝神聚气，将全身之力注入某物刀身顺势劈下，顿时一股凌厉的刀芒直贯$n而去。", n1: character.name)
 
     conn
     |> put_character(character)

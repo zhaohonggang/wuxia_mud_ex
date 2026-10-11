@@ -122,7 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然间$N猛的猱身扑上，手中某物急转，便似不要命般地向$n猛攻过去。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -149,7 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-    result = Messages.interpolate("突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("突然间$N猛的猱身扑上，手中某物急转，便似不要命般地向$n猛攻过去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

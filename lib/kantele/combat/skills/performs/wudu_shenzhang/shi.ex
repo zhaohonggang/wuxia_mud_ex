@@ -68,6 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
@@ -84,6 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -94,14 +103,11 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -109,9 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将体内真气运于双掌之间，只见双掌微微泛出紫光，猛地拍向$n。
-strikeforceshengender女性neili可是$p眼明手快，侧身一跳$P已躲过$N这招。
-strikeshengender女性wudu_shenzhangleveljialijialiididdurationjing只见$n被$N一掌拍中，倒退几步，却见脸色已微微泛黑。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将体内真气运于双掌之间，只见双掌微微泛出紫光，猛地拍向$n。", n1: character.name)
 
     conn
     |> put_character(character)

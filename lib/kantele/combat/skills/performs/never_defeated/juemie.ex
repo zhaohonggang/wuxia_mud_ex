@@ -89,24 +89,20 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须手持兵刃才能施展天地绝灭！\n"}
+      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展天地绝灭！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "天地绝灭只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "天地绝灭只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -118,9 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随便走了几步，忽然一荡手中的，迅捷无比的扫向$n，变化复杂之极，不可思议！
-never-defeatedintmartial-cognizedodgedexmartial-cognizeneili只见$n并不慌张，只是轻轻一闪，就躲过了$N这一击！
-neili$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随便走了几步，忽然一荡手中的某物，迅捷无比的扫向$n，变化复杂之极，不可思议！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -138,17 +132,23 @@ neili$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 70, 2)
-    result = Messages.interpolate("$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

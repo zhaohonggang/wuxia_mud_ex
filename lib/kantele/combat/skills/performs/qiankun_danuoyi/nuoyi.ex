@@ -90,14 +90,11 @@ defmodule Kantele.Combat.Skills.Performs.QiankunDanuoyi.Nuoyi do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「大挪移」只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「大挪移」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -108,11 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.QiankunDanuoyi.Nuoyi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N招数忽然的一变，摹可明方，内力四处回旋，无形中牵引着$n的招式！
-forceforcedodgematrial-cognizeneili结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。
-max_qiqiqi然而$p内功深厚，并没有被$P这巧妙的劲力所带动。
-结果$p的招式莫名其妙的变了方向，竟然控制不住！幸好身边没有别人，没有酿成大祸。
-另一个结果$p发出的招式不由自主的变了方向，突然攻向，不禁令大吃一惊，招架不迭！weapon", n1: character.name)
+    conn = Broadcast.publish(conn, "$N招数忽然的一变，摹可明方，内力四处回旋，无形中牵引着$n的招式！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -130,18 +123,24 @@ max_qiqiqi然而$p内功深厚，并没有被$P这巧妙的劲力所带动。
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage / 2)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("qi", damage / 2)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, div(damage, 2))
+          vitals = Vitals.wound(vitals, :qi, div(damage, 2))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 2)
-    result = Messages.interpolate("结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$p内功深厚，并没有被$P这巧妙的劲力所带动。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

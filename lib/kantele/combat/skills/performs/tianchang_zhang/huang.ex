@@ -95,24 +95,20 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "必须空手才能施展「地老天荒」。\n"}
+      combat.weapon != nil -> {:error, "必须空手才能施展「地老天荒」。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「地老天荒」只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「地老天荒」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,9 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。
-strikeforceneili$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。
-neili然而$n内功深湛，丝毫不为$N的掌风所动，若无其事", n1: character.name)
+    conn = Broadcast.publish(conn, "$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。", n1: character.name)
 
     conn
     |> put_character(character)

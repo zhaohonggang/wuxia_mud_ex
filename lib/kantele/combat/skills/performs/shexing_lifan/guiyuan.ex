@@ -93,13 +93,10 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你已经运起「九阴归元」了。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你已经运起「九阴归元」了。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -110,8 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。
-shexing-lifandrunkstrdexgui_yuanremove_effectneiligui_yuanstrdexgui_yuan你的「九阴归元」运功完毕，将内力收回丹田。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -132,6 +128,8 @@ shexing-lifandrunkstrdexgui_yuanremove_effectneiligui_yuanstrdexgui_yuan你的�
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

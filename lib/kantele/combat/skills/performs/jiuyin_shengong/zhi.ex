@@ -65,10 +65,19 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_mapped(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
+    end
+  end
+
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
     end
   end
 
@@ -82,24 +91,18 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你的九阴神功等级不够，无法施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你的九阴神功等级不够，无法施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -107,12 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N出手成指，随意点戳，似乎看尽了$n招式中的破绽。
-$n见来指玄幻无比，全然无法抵挡，慌乱之下破绽迭出，$N随手连出指！
-weapontypepin$n觉得眼前眼花缭乱，手中的一时竟然拿捏不住，脱手而出！
-$n勉力抵挡，一时间再也无力反击。
-$n不及多想，连忙抵挡，全然无法反击。
-不过$n紧守门户，不露半点破绽。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N出手成指，随意点戳，似乎看尽了$n招式中的破绽。", n1: character.name)
 
     conn
     |> put_character(character)

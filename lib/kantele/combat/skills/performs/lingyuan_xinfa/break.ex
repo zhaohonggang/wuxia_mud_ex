@@ -47,14 +47,11 @@ defmodule Kantele.Combat.Skills.Performs.LingyuanXinfa.Break do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能对战斗中的对手使用「以柔破钢」。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能对战斗中的对手使用「以柔破钢」。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -62,10 +59,7 @@ defmodule Kantele.Combat.Skills.Performs.LingyuanXinfa.Break do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N沉肩滑步，自丹田中升起一股阴柔之气顺着血脉经络传至双手劳宫穴，接着这股阴柔之气就激射而出，喷向$n手中的兵刃！
-weaponsecondary_weaponcombat_expcombat_exp结果$p手中的name与这股阴柔之气一碰竟被震落在地上！
-lingyuan-xinfa可是$p急急拆招，躲了开去，使$P的计谋没有得逞。
-目前是空手，没什么必要施展「以柔破钢」。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N沉肩滑步，自丹田中升起一股阴柔之气顺着血脉经络传至双手劳宫穴，接着这股阴柔之气就激射而出，喷向$n手中的兵刃！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.HeishaZhang.Cui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -132,9 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.HeishaZhang.Cui do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N冷笑数声，单掌陡然一振，催魂般悄然拍至$n前胸，不着半点力道。
-heisha-zhangstrikeforceneilisha_poisonleveljialijialiididduration$n只觉$N掌劲穿胸而过，一时说不出的难受，呕出一大口黑血。
-$n见$N来势汹涌，奋力格挡，终于化解开来。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N冷笑数声，单掌陡然一振，催魂般悄然拍至$n前胸，不着半点力道。", n1: character.name)
 
     conn
     |> put_character(character)

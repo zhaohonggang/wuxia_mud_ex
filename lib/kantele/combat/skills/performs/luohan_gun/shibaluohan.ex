@@ -85,11 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "luohan-gun" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-gun。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "club") != "luohan-gun" -> {:error, "TODO(migrate) 未激发 luohan-gun。\n"}
+      true -> :ok
     end
   end
 
@@ -104,14 +101,11 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你已经在和对方打架，使用\n"}
+    #   {:error, "你要和谁组成棍阵?\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你已经在和对方打架，使用\n"}
-      false -> {:error, "你要和谁组成棍阵?\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -139,15 +133,20 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :jingli, 100)
-        vitals = Vitals.damage(vitals, :neili, 300)
+    if hit do
+          vitals = Vitals.damage(vitals, :jingli, 100)
+          vitals = Vitals.damage(vitals, :neili, 300)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

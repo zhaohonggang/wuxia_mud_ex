@@ -80,25 +80,19 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你必须先去找一把剑。\n"}
+    #   {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你必须先去找一把剑。\n"}
-      false -> {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「总诀式」不能在战斗中演练。\n"}
+    #   {:error, "这里太嘈杂，你不能静下心来演练。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「总诀式」不能在战斗中演练。\n"}
-      false -> {:error, "这里太嘈杂，你不能静下心来演练。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,6 +115,8 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

@@ -58,13 +58,10 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所学的内功中没有这种功能。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所学的内功中没有这种功能。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -72,8 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，顿时气脉通畅，脸色渐渐的变得平和。
-neilineiliqiqineili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，顿时气脉通畅，脸色渐渐的变得平和。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -106,24 +106,20 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,11 +131,8 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入剑身直奔
-$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。
-swordforceneili可是$n看破了$N的企图，斜跃避开。
-swordapply/attackapply/damage紧跟着$N一声冷笑，身形蓦地前跃丈许，手中「唰唰唰」连出九剑。
-apply/attackapply/damageguanri-jianzhurong_jianlevelididduration只听$p一声惨嚎，几柱鲜血射出，剑伤处竟腾起一道烈火，烧得嗤嗤作响。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入某物剑身直奔
+$n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -173,7 +166,7 @@ apply/attackapply/damageguanri-jianzhurong_jianlevelididduration只听$p一声�
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 3)
-    result = if hit, do: Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入剑身直奔
+    result = if hit, do: Messages.interpolate("$N施出观日剑法之「天洪地炉观日神诀」，将内力尽数注入某物剑身直奔
 $n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾一般。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

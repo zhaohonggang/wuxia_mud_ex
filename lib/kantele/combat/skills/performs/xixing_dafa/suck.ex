@@ -59,16 +59,13 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你刚刚吸取过丹元！\n"}
+    #   {:error, "你只能吸取战斗中的对手的丹元！\n"}
+    #   {:error, "在这里不能攻击他人。\n"}
+    #   {:error, "搞错了！只有活着的生物才能有丹元！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你刚刚吸取过丹元！\n"}
-      false -> {:error, "你只能吸取战斗中的对手的丹元！\n"}
-      false -> {:error, "在这里不能攻击他人。\n"}
-      false -> {:error, "搞错了！只有活着的生物才能有丹元！\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

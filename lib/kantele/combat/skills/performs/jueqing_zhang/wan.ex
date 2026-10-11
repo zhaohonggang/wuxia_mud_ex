@@ -101,14 +101,11 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Wan do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,10 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Wan do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声长啸，声音震耳欲聋，悲痛欲绝，顿感万念俱灰，猛然间双掌疯狂般的拍向$n，看似杂乱无章，但内中却隐藏无限杀机。
-$n心神惧裂，一时间竟无从应对，竟被困在$N的掌风之中。
-neili$n看破$N毫无攻击之意，于是大胆反攻，将$N这招尽数化解。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长啸，声音震耳欲聋，悲痛欲绝，顿感万念俱灰，猛然间双掌疯狂般的拍向$n，看似杂乱无章，但内中却隐藏无限杀机。", n1: character.name)
 
     conn
     |> put_character(character)

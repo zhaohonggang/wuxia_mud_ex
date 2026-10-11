@@ -124,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒啸一声，施展出绝招「天绝锁」将手中挥舞得密不透风，猛然间风声大作，竟将$n笼罩在刀风之下。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怒啸一声，施展出绝招「天绝锁」将手中某物挥舞得密不透风，猛然间风声大作，竟将$n笼罩在刀风之下。", n1: character.name)
 
     conn
     |> put_character(character)

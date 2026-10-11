@@ -115,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Kun do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N轻叹一声，手中犹如金蛇般的缠向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N轻叹一声，手中某物犹如金蛇般的缠向$n。", n1: character.name)
 
     conn
     |> put_character(character)

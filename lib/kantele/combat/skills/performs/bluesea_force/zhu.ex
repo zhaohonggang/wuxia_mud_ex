@@ -88,14 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhu do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "诛仙决只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "诛仙决只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -107,9 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随手拍出一掌，疾若奔马，如箭一般飞向$n速度快的不可思议！
-bluesea-forceconmartial-cognizeparryintmartial-cognizeneili然而$n看破了$N的掌势，不慌不忙的躲过了这一击！
-neili$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的一声，$n吐血三尺！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随手拍出一掌，疾若奔马，如箭一般飞向$n速度快的不可思议！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -127,17 +122,23 @@ neili$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 75, 2)
-    result = Messages.interpolate("$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的一声，$n吐血三尺！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的一声，$n吐血三尺！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

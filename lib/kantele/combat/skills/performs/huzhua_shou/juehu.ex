@@ -101,24 +101,20 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -131,9 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！
-clawparryhuzhua-shou结果$p一声惨嚎，没能招架住$P凌厉的攻势，被抓得皮肉分离，鲜血飞溅！
-neilishenneilishen可是$p看破了$N的企图，躲开了这招杀着。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -154,15 +148,20 @@ neilishenneilishen可是$p看破了$N的企图，躲开了这招杀着。", n1: 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

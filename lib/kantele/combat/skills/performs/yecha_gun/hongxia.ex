@@ -93,15 +93,12 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "你的夜叉棍法等级不够，难以施展\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的夜叉棍法等级不够，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,10 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形曼妙，手中铁棍虚虚实实，舞出无数的棍影宛若满天的红霞，将$n重重包围。
-neiliclubparryneili$n只觉$N棍影重重，无所不在，自己无处躲闪，顿时身上连中数棍，被攻了个措手不及。
-$n只见$N看破了棍法中的虚实，凝神化解开来。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形曼妙，手中铁棍虚虚实实，舞出无数的棍影宛若满天的红霞，将$n重重包围。", n1: character.name)
 
     conn
     |> put_character(character)

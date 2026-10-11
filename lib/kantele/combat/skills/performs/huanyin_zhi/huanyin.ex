@@ -99,16 +99,13 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "幻阴神指只能对对手使用。\n"}
+    #   {:error, "看清楚，那不是活人。\n"}
+    #   {:error, "这里不能攻击别人!\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "幻阴神指只能对对手使用。\n"}
-      false -> {:error, "看清楚，那不是活人。\n"}
-      false -> {:error, "这里不能攻击别人!\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,10 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深的吸了一口气，缓缓的刺出一指，挟带一股寒气逼向$n。
-fingerhuanyin-zhiforce$p急忙后退，然而这指何等玄妙，正好点中$p胸前，$p不禁打了一个冷战。
-huanyin_poisonlevelididdurationneili可是$p运足内力，以深厚的内功化解了这一指的阴寒内力。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深的吸了一口气，缓缓的刺出一指，挟带一股寒气逼向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -142,17 +136,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，以深厚的内功化解了这一指的阴寒内力。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

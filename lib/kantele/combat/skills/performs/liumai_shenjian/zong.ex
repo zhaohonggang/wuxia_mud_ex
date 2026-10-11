@@ -68,6 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -84,6 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -95,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须是空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须是空手才能施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -126,29 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！
-fingerforceparryforcejingluo-xuedodgeneili但见$n会心一笑，轻拂衣袖，轻易的躲过这一招！
-neili只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！
-neili$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。
-fingerliumai-shenjianliumai-shenjianjingluo-xueparryjingluo-xue$N双手拇指同时捺出，嗤嗤两声急响，「少商剑」有如石破天惊、风雨大至。
-$n奋力抵挡，却哪里招架得住，被$N这一指戳得鲜血迸流！
-$n使出浑身解数，终于将$N这一指架开，丝毫无损。
-liumai-shenjianjingluo-xueparryjingluo-xue接着$N拇指一屈，食指随即点出，嗤嗤两声急响，「商阳剑」激射刺出。
-$n试图抵挡，只听哧的一声，无形剑气已破体而入，透体而出！
-$n使出浑身解数，终于将$N这一指架开，丝毫无损。
-liumai-shenjianjingluo-xuedodgejingluo-xue只见$N右手中指一竖，「中冲剑」向前刺出。真气鼓荡，嗤然声响，无形剑气直指$n。 
-$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！
-$n使出浑身解数，终于将$N这一指架开，丝毫无损。
-liumai-shenjianjingluo-xuedodgejingluo-xue$N无名指轻轻一挥，「嗤啦」一声，拙滞古朴的「关冲剑」剑气向$n直射而出。
-$n躲闪不及，被戳了碗口大个血窟窿，鲜血喷涌而出！
-$n左闪右跳，终于将$N这一指避开，丝毫无损。
-liumai-shenjianjingluo-xueforcejingluo-xue忽见$N左手小指一伸，一条气流从少冲穴中激射而出，一股「少泽剑」登时射向$n。
-$n运气抵挡，只觉得一股透体凉意袭了上来，一个激凌，丹田立刻变得空空荡荡！
-$n运气抵挡，硬生生接下了$N这一指。
-liumai-shenjianjingluo-xueforcejingluo-xue最后$N右手小指一挥，一招「少冲剑」点点刺刺破空刺出，宛如雕花刺画一般。
-$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束....
-$n运气抵挡，终于接下了$N这一指，已是狼狈不堪。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！", n1: character.name)
 
     conn
     |> put_character(character)

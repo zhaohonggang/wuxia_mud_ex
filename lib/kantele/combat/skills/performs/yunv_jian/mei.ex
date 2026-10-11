@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然间姿态万千，身法飘逸，犹如一个婀娜多姿的女子在随歌漫舞一样。但是$N手中却跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉害的招式。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然间姿态万千，身法飘逸，犹如一个婀娜多姿的女子在随歌漫舞一样。但是$N手中某物却跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉害的招式。", n1: character.name)
 
     conn
     |> put_character(character)

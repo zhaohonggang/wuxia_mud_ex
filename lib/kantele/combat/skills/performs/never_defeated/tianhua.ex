@@ -81,24 +81,20 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须手持兵刃才能施展天花乱坠！\n"}
+      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展天花乱坠！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "天花乱坠只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "天花乱坠只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -106,9 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N手中的一勾一划，简单明了的压向$n！
-never-defeatedmartial-cognizeparrymartial-cognize结果$p被$P逼得施展不开半点招式！
-可是$p看破了$P的招数，镇定自若，应对自如。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手中的某物一勾一划，简单明了的压向$n！", n1: character.name)
 
     conn
     |> put_character(character)

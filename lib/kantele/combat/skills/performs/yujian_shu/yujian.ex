@@ -91,23 +91,19 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "御剑飞升只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "御剑飞升只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -116,19 +112,8 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 1000}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声巨喝，聚气入腕，只听破空声一响，手中携着隐隐风雷之劲向$n澎湃贯
-出，疾若电闪，势如雷霆。
-swordforceparrymartial-cognizejueji/sword/feishengend_perform2forceforceneili$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！
-perform2perform2可是$p看破了$P的企图，斜跃避开。
-neiliperform2perform2你运转内力，仰天一声清啸，剑在空中盘旋了一圈，又飞回了你的手中。
-end_perform2weaponskill_typesword你停止使用「御剑飞升」绝技。
-end_perform2neili你剑至中途，可怎奈内息不足，只好停止御剑。
-end_perform2
-$N手中御剑凌驾如飞，宛若游龙，灵转千变，一道道凌厉剑气疾射而出。
-forceforceswordforceparrymartial-cognizeneili只听「嗤啦」一声，无形剑气竟在$n上身刺出一个血洞，数股血柱疾射而出！
-perform2perform2可是$p看破了$P的企图，斜跃避开。
-neiliperform2perform2jueji/sword/feishengjueji/sword/feisheng
-你经过调气养息，又可以继续使用「御剑飞升」了。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声巨喝，聚气入腕，只听破空声一响，手中某物携着隐隐风雷之劲向$n澎湃贯
+出，疾若电闪，势如雷霆。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -146,17 +131,23 @@ neiliperform2perform2jueji/sword/feishengjueji/sword/feisheng
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 1000, 1)
-    result = Messages.interpolate("$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

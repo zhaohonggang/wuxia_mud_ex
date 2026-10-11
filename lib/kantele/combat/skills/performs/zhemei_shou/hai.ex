@@ -103,14 +103,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -122,9 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N挥手疾舞，施出逍遥折梅手「海渊式」，手法缥缈，虚虚实实罩向$n要害。
-neilihanddodgezhemei-shouneili霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！
-可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N挥手疾舞，施出逍遥折梅手「海渊式」，手法缥缈，虚虚实实罩向$n要害。", n1: character.name)
 
     conn
     |> put_character(character)

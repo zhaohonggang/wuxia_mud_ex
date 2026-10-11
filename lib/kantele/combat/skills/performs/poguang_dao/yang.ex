@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.PoguangDao.Yang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声怒喝，内劲瀑涨，施展出绝招「破阳刀」手中出神般的挥舞而出，虽然招式看似简单，但其中却蕴藏着无穷的威力，有如神助一般。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声怒喝，内劲瀑涨，施展出绝招「破阳刀」手中某物出神般的挥舞而出，虽然招式看似简单，但其中却蕴藏着无穷的威力，有如神助一般。", n1: character.name)
 
     conn
     |> put_character(character)

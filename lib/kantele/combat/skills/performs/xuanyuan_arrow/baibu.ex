@@ -88,16 +88,13 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你现在手中并没有拿着箭，怎么施展百步穿杨？\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "百步穿杨只能在战斗中对对手使用。\n"}
+    #   {:error, "至少要有一支箭你才能施展百步穿杨。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你现在手中并没有拿着箭，怎么施展百步穿杨？\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "百步穿杨只能在战斗中对对手使用。\n"}
-      false -> {:error, "至少要有一支箭你才能施展百步穿杨。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -111,9 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
     conn = Broadcast.publish(conn, "突然间，$N几个筋斗倒翻而去，已在$n数丈之外。$n正待追击，$N忽然转身，好一个「百步穿杨」！
-说时迟，那时快，已带着破空之声，直射$n面门！
-combat_expcombat_exp结果$p反应不及，中了$P一箭！
-qijiali可是$p从容不迫，轻巧的闪过了$P这一箭。", n1: character.name)
+说时迟，那时快，某物已带着破空之声，直射$n面门！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -136,14 +131,19 @@ qijiali可是$p从容不迫，轻巧的闪过了$P这一箭。", n1: character.n
     _stats = character.meta.stats
     level = Map.get(data, :level, 0)
     skill = Map.get(data, :skill, 0)
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.wound(vitals, :qi, (div(skill, 3) + Engine.rand(rng, div(skill, 3))))
+    if hit do
+          vitals = Vitals.wound(vitals, :qi, (div(skill, 3) + Engine.rand(rng, div(skill, 3))))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-    result = Messages.interpolate("结果$p反应不及，中了$P一箭！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果$p反应不及，中了$P一箭！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

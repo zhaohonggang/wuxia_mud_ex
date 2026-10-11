@@ -57,14 +57,11 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能用寒气攻击战斗中的对手。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能用寒气攻击战斗中的对手。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -75,9 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。
-forceforceqiqineilineilineili$n忽然觉得一阵透骨寒意，霎时间浑身的血液几乎都要凝固了。
-$n感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。", n1: character.name)
 
     conn
     |> put_character(character)

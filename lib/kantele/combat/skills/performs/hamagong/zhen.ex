@@ -105,25 +105,21 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你的蛤蟆功修为不够精深，不能使用\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "蛤蟆功\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你的蛤蟆功修为不够精深，不能使用\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "蛤蟆功\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

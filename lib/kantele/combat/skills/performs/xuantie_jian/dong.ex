@@ -99,24 +99,20 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -126,13 +122,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N暗自凝神，顿时一股气劲由身后澎湃迸发，接着单手一振，手中
-随即横空卷出，激得周围尘沙腾起，所施正是玄铁剑法「大江东去」。
-swordforceweaponskill_typehammer$n只觉得一股大力传来，手中再也拿持不住，脱手而出！
-neilino_wield已经碎掉了，没法装备了。
-碎掉的valuecharacter光明磊落character国土无双neili结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！
-可是$n看破了$N的企图，急忙斜跃避开。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N暗自凝神，顿时一股气劲由身后澎湃迸发，接着单手一振，手中某物
+随即横空卷出，激得周围尘沙腾起，所施正是玄铁剑法「大江东去」。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,17 +141,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = Messages.interpolate("结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，急忙斜跃避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -46,17 +46,14 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你现在气血充盈，不需要疗伤。\n"}
+    #   {:error, "先激发你的特殊内功。\n"}
+    #   {:error, "天魔解体状态不能运功疗伤！\n"}
+    #   {:error, "战斗中运功疗伤？找死吗？\n"}
+    #   {:error, "等你忙完了手头的事情再说！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你现在气血充盈，不需要疗伤。\n"}
-      false -> {:error, "先激发你的特殊内功。\n"}
-      false -> {:error, "天魔解体状态不能运功疗伤！\n"}
-      false -> {:error, "战斗中运功疗伤？找死吗？\n"}
-      false -> {:error, "等你忙完了手头的事情再说！\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

@@ -66,6 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -82,6 +83,14 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -93,25 +102,21 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须是空手才能施展万蛊噬天。\n"}
+      combat.weapon != nil -> {:error, "你必须是空手才能施展万蛊噬天。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「万蛊噬天」只能对战斗中的对手使用。\n"}
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「万蛊噬天」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -120,9 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N仰天一声长啸，强催内劲，全身竟浮现出隐隐碧绿之色。喝道：“万蛊噬天”,双掌猛
-然拍出，登时幻出漫天碧绿色掌影，毒气弥漫，笼罩$n全身！
-
-neilifamily/family_name五毒教apply/parryapply/dodgeapply/unarmed_damageapply/parryapply/dodgeapply/unarmed_damage", n1: character.name)
+然拍出，登时幻出漫天碧绿色掌影，毒气弥漫，笼罩$n全身！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -143,6 +146,8 @@ neilifamily/family_name五毒教apply/parryapply/dodgeapply/unarmed_damageapply/
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

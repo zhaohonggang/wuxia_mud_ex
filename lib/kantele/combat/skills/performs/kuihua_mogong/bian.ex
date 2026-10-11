@@ -104,25 +104,19 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手里拿的不是剑，怎么施\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你手里拿的不是剑，怎么施\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方现在已经无法控制真气，放胆攻击吧。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方现在已经无法控制真气，放胆攻击吧。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,13 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声尖啸，身体猛然旋转不定，顿时化成无数气流，犹如千万根银针，齐齐卷向$n！
-kuihua-mogongdodgemartial-cognizedodgeneili$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。
-neilino_performbian_end$n只觉眼前无数寒光闪过，随即全身一阵刺痛，几股血柱自身上射出。
-$p陡然间一提真气，竟发现周身力道竟似涣散一般，全然无法控制。
-no_perform$N深深吸入一口气，脸色由白转红，看起来好多了。
-你感到被扰乱的真气慢慢平静了下来。
-no_perform", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声尖啸，身体猛然旋转不定，某物顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -175,7 +163,7 @@ no_perform", n1: character.name)
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$N一声尖啸，身体猛然旋转不定，顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N一声尖啸，身体猛然旋转不定，某物顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

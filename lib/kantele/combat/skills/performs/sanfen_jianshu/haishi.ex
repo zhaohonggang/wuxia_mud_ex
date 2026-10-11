@@ -94,25 +94,21 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「海市蜃楼」只能在战斗中对对手使用。\n"}
+    #   {:error, "你不会使用「海市蜃楼」这一绝技！\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「海市蜃楼」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你不会使用「海市蜃楼」这一绝技！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -120,13 +116,8 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N狂喝一声，手中将到之际，突然圈转，使出三分剑术的独得之秘「海市蜃楼」，一招之中
-又另蕴涵三招，招式繁复狠辣，剑招虚虚实实，霍霍剑光径直逼向$n！
-
-neilisworddodge$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。
-
-$N见$n重创之下不禁破绽迭出，冷笑一声，手中挥洒，又攻出一剑，正中$p胸口。
-$n见状身形急退，避开了$N凌厉的攻击！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N狂喝一声，手中某物将到之际，突然圈转，使出三分剑术的独得之秘「海市蜃楼」，一招之中
+又另蕴涵三招，招式繁复狠辣，剑招虚虚实实，霍霍剑光径直逼向$n！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -90,24 +90,20 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "无双无对只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "无双无对只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -119,8 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手握起，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n冲刺！
-swordparryswordneili$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！可是$p看破了$P的企图，向旁一跃，躲了开去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手握起某物，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n冲刺！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -138,17 +133,23 @@ swordparryswordneili$n看到$N这一剑妙到毫巅，全然无法抵挡，一�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-    result = Messages.interpolate("$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -105,24 +105,18 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手中没有拿着暗器，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你手中没有拿着暗器，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -134,11 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一base_unit由指尖弹出，疾速射向$n。
-fingerthrowingdodgeparry只见那base_unit来势迅猛之极，$n根本无暇闪避，被这招击个正中！
-qijialiweapon$n手腕一麻，手中不由脱手而出！
-qimax_qi( $n )
-可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: character.name)
+    conn = Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一某物由指尖弹出，疾速射向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -172,7 +162,7 @@ qimax_qi( $n )
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$n手腕一麻，手中不由脱手而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n手腕一麻，手中某物不由脱手而出！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

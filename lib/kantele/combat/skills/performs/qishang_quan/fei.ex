@@ -67,6 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
@@ -83,6 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -94,14 +103,11 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -114,10 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深吸一口起，将真气运于双拳之上，施出绝招「魂魄飞扬」，右拳平平一拳直出，但见普通一拳之中蕴涵了无穷的力量，拳未到风先至，猛然间袭向$n。
-cuffforceforceparryneili只听“砰”地一声，$N一拳正好打中$n胸口，$n怪叫一声，吐出一口淤血！
-可是$p奋力招架，硬生生的挡开了$P这一招。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深吸一口起，将真气运于双拳之上，施出绝招「魂魄飞扬」，右拳平平一拳直出，但见普通一拳之中蕴涵了无穷的力量，拳未到风先至，猛然间袭向$n。", n1: character.name)
 
     conn
     |> put_character(character)

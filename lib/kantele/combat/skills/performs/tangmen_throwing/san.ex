@@ -69,14 +69,11 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你现在手中没有拿着暗器散花天女，难以施展\n"}
+    #   {:error, "你现在手中没有足够的暗器，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你现在手中没有拿着暗器散花天女，难以施展\n"}
-      false -> {:error, "你现在手中没有足够的暗器，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -92,18 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N手中扣住一枚，不理敌人的攻击，身体急速旋转起来，犹如一道呼啸的旋风！
-突然从旋风中飞出无数点寒星，划出一道道长虹闪电般的飞向$n的身体！
-throwingforceparrydodgedugu-jiujian
-你急忙屏气凝神，希望能够招架这致命的一击。
-idsanhua tianyuthrowingjiali结果$p一声惨嚎，连中了$P发出的十base_unit。
-jialiqiqiqimax_qi( $n )
-忽然那无数的光影一闪而没，$n身行一顿，喷出一口鲜血，仰天而倒。
-你只觉得胸口一阵钻心的疼痛。低头一看只见那无数枚暗器已经深深的嵌在你的心口。
-血迹中隐约有几个小字[散化天雨...]。
-jialiqi忽然那无数的光影一闪而没，你心中一惊急忙运内力于全身。
-$n双臂急舞，衣袖带起破风之声。只听当的一声轻响，竟将那无数枚暗器磕飞开去。
-neilineilineili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手中扣住一枚某物，不理敌人的攻击，身体急速旋转起来，犹如一道呼啸的旋风！
+突然从旋风中飞出无数点寒星，划出一道道长虹闪电般的飞向$n的身体！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -108,14 +108,11 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,13 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将全身功力聚于一指，指劲按照二十八宿方位云贯而出，正是桃花岛「转乾坤」绝技。
-combat_expfingerqimen-wuxingtanzhi-shentongforceparryqimen-wuxingmathematicsmax_neilimax_neili霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
-你听到“噗”的一声，身上竟然溅到几滴脑浆！
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-neili霎那间$n只见寒芒一闪，$N食指已钻入$p胸堂半尺，指劲顿时破体而入。
-你听到“嗤”的一声，身上竟然溅到几滴鲜血！
-neili$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将全身功力聚于一指，指劲按照二十八宿方位云贯而出，正是桃花岛「转乾坤」绝技。", n1: character.name)
 
     conn
     |> put_character(character)

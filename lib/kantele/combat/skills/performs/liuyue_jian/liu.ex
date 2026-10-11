@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.LiuyueJian.Liu do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -134,9 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyueJian.Liu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清啸，剑法忽变，手中轻轻划出，带出一条无比绚丽的剑芒，遥指$n而去。
-swordparryneili$n顿时目瞪口呆，一个不慎，被$N精妙的剑招刺中，鲜血飞溅！
-neili可是$p并不慌乱，收敛心神，轻轻格挡开了$P的剑招。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，剑法忽变，手中某物轻轻划出，带出一条无比绚丽的剑芒，遥指$n而去。", n1: character.name)
 
     conn
     |> put_character(character)

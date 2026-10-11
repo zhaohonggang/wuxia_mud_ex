@@ -126,7 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长啸，手中某物一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -153,7 +153,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    result = Messages.interpolate("$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$N一声长啸，手中某物一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

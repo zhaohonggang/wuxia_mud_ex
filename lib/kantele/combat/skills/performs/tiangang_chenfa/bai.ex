@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -133,9 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "但见$N手中name窜动不已，接连变幻了数种招式，分袭$n各处要害。
-whipparry$n急忙躲闪，却发现$N的已然拂中胸前要穴，顿感气血上涌，难受之极。
-neili可是$p看破了$P招中虚实，当即纵身而起，躲避开来。", n1: character.name)
+    conn = Broadcast.publish(conn, "但见$N手中某人窜动不已，接连变幻了数种招式，分袭$n各处要害。", n1: character.name)
 
     conn
     |> put_character(character)

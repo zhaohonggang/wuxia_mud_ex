@@ -131,7 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Hua do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出阴阳刃法「日月无华」，手中光芒瀑涨，刺眼眩目，日月为之失辉，刹那间光芒已盖向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出阴阳刃法「日月无华」，手中某物光芒瀑涨，刺眼眩目，日月为之失辉，刹那间光芒已盖向$n。", n1: character.name)
 
     conn
     |> put_character(character)

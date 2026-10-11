@@ -95,24 +95,18 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你的截手九式等级不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你的截手九式等级不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,9 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.JieshouJiushi.Jie do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形一展，陡然跃至$n跟前，十指箕张，直锁$n要穴，正是截手九式绝技「截筋断脉」。
-handparryneilijingjingqiqi$n奋力格挡，可还是被$N截住腕部要穴，只觉眼前一黑，几欲晕倒。
-neili$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形一展，陡然跃至$n跟前，十指箕张，直锁$n要穴，正是截手九式绝技「截筋断脉」。", n1: character.name)
 
     conn
     |> put_character(character)

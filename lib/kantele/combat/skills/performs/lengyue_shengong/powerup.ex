@@ -46,13 +46,10 @@ defmodule Kantele.Combat.Skills.Performs.LengyueShengong.Powerup do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能用冷月神功提升自己的战斗力。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能用冷月神功提升自己的战斗力。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

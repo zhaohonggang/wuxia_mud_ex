@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -132,9 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝神聚气，运转手中，刹那间犹如狂风骤起，风声萧萧，猛地卷向$n。
-sworddodgeparrydodgeneili$n看得目瞪口呆，只觉一阵狂风吹过，却已透胸而过。
-neili可是$n微微一笑，轻轻格躲开了$N的剑招。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝神聚气，运转手中某物，刹那间犹如狂风骤起，风声萧萧，某物猛地卷向$n。", n1: character.name)
 
     conn
     |> put_character(character)

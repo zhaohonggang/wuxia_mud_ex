@@ -95,24 +95,18 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你金刚瑜迦母拳修为不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你金刚瑜迦母拳修为不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,10 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
-$N大喝一声，面色赤红，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！
-cuffdodgeneili结果$p无法抵挡$P这雷霆一击，登时被打退数步，摇晃不定。
-neili可是$p并未被这气势所慑，轻移脚步，躲开了$P的攻击。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！", n1: character.name)
 
     conn
     |> put_character(character)

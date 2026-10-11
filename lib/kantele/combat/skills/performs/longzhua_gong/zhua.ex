@@ -93,15 +93,12 @@ defmodule Kantele.Combat.Skills.Performs.LongzhuaGong.Zhua do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「神龙抓」只能在战斗中对对手使用。\n"}
+    #   {:error, "你的龙爪功等级不够，不会使用「神龙抓」！\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「神龙抓」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你的龙爪功等级不够，不会使用「神龙抓」！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -114,10 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.LongzhuaGong.Zhua do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，飞身扑至$n面前，随即伸手抓向$p的要害！
-forceclawparrydodgeneili$p见来势凶猛，难以躲避，只好勉强化解，谁知$P的手好像长了眼睛一般，扑哧一下正抓中$p的要害，登时鲜血飞溅！
-可是$p的看破了$P的招式，连消带打，全然化解了$P的攻势。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，飞身扑至$n面前，随即伸手抓向$p的要害！", n1: character.name)
 
     conn
     |> put_character(character)

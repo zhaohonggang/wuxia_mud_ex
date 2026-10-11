@@ -113,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N身形忽然变快，蓦的冲向$n，幻作数道虚影，顿时无数星光一齐射向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形忽然变快，蓦的冲向$n，某物幻作数道虚影，顿时无数星光一齐射向$n！", n1: character.name)
 
     conn
     |> put_character(character)

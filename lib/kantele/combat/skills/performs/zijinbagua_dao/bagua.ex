@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，手中的刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，手中的某物刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！", n1: character.name)
 
     conn
     |> put_character(character)

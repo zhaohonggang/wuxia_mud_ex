@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Fen do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -134,9 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Fen do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转内力，陡然一势「焚阳剑」划出，手中携着一股热流卷向$n全身。
-swordforceneili可是$n看破了$N的企图，斜跃避开。
-neiliguanri-jianzhurong_jianlevelididduration只听$n一声惨嚎，几柱鲜血射出，剑伤处腾起一道烈火，烧得嗤嗤作响。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转内力，陡然一势「焚阳剑」划出，手中某物携着一股热流卷向$n全身。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -170,7 +164,7 @@ neiliguanri-jianzhurong_jianlevelididduration只听$n一声惨嚎，几柱鲜血
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = if hit, do: Messages.interpolate("$N运转内力，陡然一势「焚阳剑」划出，手中携着一股热流卷向$n全身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N运转内力，陡然一势「焚阳剑」划出，手中某物携着一股热流卷向$n全身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n看破了$N的企图，斜跃避开。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

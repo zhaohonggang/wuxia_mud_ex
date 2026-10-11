@@ -102,24 +102,20 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -132,12 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中幻作一道白芒，撩向$n所持的。neili$n只见眼前白芒暴涨，登时右手一轻，竟脱手飞出。
-可是$n看破$N剑法中的虚招，镇定自如，从容应对。
-
-$N剑法陡然变快，施展出「烟云锁身剑」，手中剑光夺目，欲将$n笼罩在剑光之中。neili
-$n惊慌不定，顿时乱了阵脚，竟被困于$N的剑光当中。
-可是$n看破$N剑法中的虚招，镇定自如，从容应对。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中某物幻作一道白芒，撩向$n所持的某物。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -164,7 +155,7 @@ $n惊慌不定，顿时乱了阵脚，竟被困于$N的剑光当中。
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 2)
-    result = Messages.interpolate("$n只见眼前白芒暴涨，登时右手一轻，竟脱手飞出。", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n只见眼前白芒暴涨，登时右手一轻，某物竟脱手飞出。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

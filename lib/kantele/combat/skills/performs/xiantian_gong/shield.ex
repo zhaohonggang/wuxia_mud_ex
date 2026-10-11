@@ -63,8 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Shield do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深吸了一口气，双臂一振，一股浑厚的气劲登时盘旋在身边四周。
-apply/armorshieldremove_effectneilishieldapply/armorshield你先天无极劲运转完一个周天，将内力收回丹田。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深吸了一口气，双臂一振，一股浑厚的气劲登时盘旋在身边四周。", n1: character.name)
 
     conn
     |> put_character(character)

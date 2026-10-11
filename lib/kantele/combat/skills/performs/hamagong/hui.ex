@@ -32,13 +32,10 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你并没有倒转经脉啊。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你并没有倒转经脉啊。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -46,8 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: 0}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，脸色变了变，阴阳不定。
-apply/dodgeapply/parryapply/armorapply/dispel_poisonhmg_dzjmneili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，脸色变了变，阴阳不定。", n1: character.name)
 
     conn
     |> put_character(character)

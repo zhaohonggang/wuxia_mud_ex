@@ -106,24 +106,20 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -136,12 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "一道金光划过，$N消失得无影无踪，猛然间只见一条金蛇从天而下，已将$n笼罩。
-jinshe-jianmartial-cognizedodgemartial-cognizejinshe-jianforcemartial-cognize$n见$N一道金光闪过，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。
-neili$n见$N金光划过，心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。
-neili
-然而$n以快对快，飞身一跳已然躲过$N这一招。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "一道金光划过，$N消失得无影无踪，猛然间只见一条金蛇从天而下，某物已将$n笼罩。", n1: character.name)
 
     conn
     |> put_character(character)

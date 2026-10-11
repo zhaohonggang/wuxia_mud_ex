@@ -47,15 +47,12 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所学的内功中没有这种功能。\n"}
+    #   {:error, "先激发你的特殊内功。\n"}
+    #   {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所学的内功中没有这种功能。\n"}
-      false -> {:error, "先激发你的特殊内功。\n"}
-      false -> {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

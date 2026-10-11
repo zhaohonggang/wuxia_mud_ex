@@ -70,6 +70,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -87,6 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -98,24 +107,20 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -123,32 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 6)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N十指分摊，霎时破空声骤响，数股剑气至指尖激射而出，朝$n径直奔去！
-fingerliumai-shenjian
-但见$n斜斜一指点出，指出如风，剑气纵横，嗤然作响，竟将$N的剑气全部折回，反向自己射去！
-你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
-qiqimax_qi( $N)
-
-顿时只听“嗤啦”的一声，$n躲闪不及，剑气顿时穿胸而过，带出一蓬血雨。
-
-$n见$N来势汹涌，急忙飞身一跃而起，避开了这一击。
-fingerforcefingerliumai-shenjian
-忽见$n左手小指一伸，一招「少泽剑」至指尖透出，真气鼓荡，轻灵迅速，顿将$N剑气逼回！
-你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
-qiqimax_qi( $N)
-
-只听$n一声惨嚎，被$N的剑气刺中了要害，血肉模糊，鲜血迸流不止。
-
-$n见$N来势汹涌，急忙飞身一跃而起，避开了这一击。
-fingerparryfingerliumai-shenjian
-可电光火石之间，$n猛然翻掌，右手陡然探出，中指「中冲剑」向$N一竖，登将参合剑气化于无形！
-你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
-qiqimax_qi( $N)
-
-$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。
-
-$n见$N来势汹涌，急忙飞身一跃而起，避开了这一击。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N十指分摊，霎时破空声骤响，数股剑气至指尖激射而出，朝$n径直奔去！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -104,14 +104,11 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,14 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "只见$N双目精光四射，双掌陡然一振，将体内积蓄的先天真气云贯推出，顿时呼啸
-声大作，先天劲道层层叠叠，宛如涛浪般涌向$n。
-unarmedforceparryforcemax_neilimax_neili便在$n微微一愣间，$N罡风已然及体，$p一声哀嚎，全身骼络尽数断裂。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-neili$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。
-weaponstable只听“锵”的一声脆响，$n手中的在$N内力激荡下应声而碎，脱手跌落在地上。
-neiliconsistencearmor/armorstable只听“轰”的一声闷响，$n身着的在$N内力激荡下应声而裂，化成一块块碎片。
-neiliconsistencearmor/clothstable只听“轰”的一声闷响，$n身着的在$N内力激荡下应声而碎，化成一块块碎片。
-neiliconsistenceneili可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。", n1: character.name)
+声大作，先天劲道层层叠叠，宛如涛浪般涌向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -168,7 +158,7 @@ neiliconsistenceneili可是$p知道$P这招的厉害，不敢硬接，当即斜�
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    result = if hit, do: Messages.interpolate("$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("只听“轰”的一声闷响，$n身着的在$N内力激荡下应声而碎，化成一块块碎片。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("只听“轰”的一声闷响，$n身着的某物在$N内力激荡下应声而碎，化成一块块碎片。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

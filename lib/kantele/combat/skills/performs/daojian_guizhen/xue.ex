@@ -113,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N手中蓦地一抖，将「胡家刀法」并「苗家剑法」连环施出。霎时寒
+    conn = Broadcast.publish(conn, "$N手中某物蓦地一抖，将「胡家刀法」并「苗家剑法」连环施出。霎时寒
 光点点，犹如夜陨划空，铺天盖地罩向$n，正是一招「天下有血」。", n1: character.name)
 
     conn

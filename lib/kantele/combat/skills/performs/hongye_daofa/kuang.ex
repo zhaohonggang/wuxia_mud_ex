@@ -89,23 +89,19 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能对战斗中的对手使用\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能对战斗中的对手使用\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,10 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N淡然一笑，本就快捷绝伦的刀法骤然变得更加凌厉！
 就在这一瞬之间，$N已快速劈出六刀！刀夹杂着风，风里含着刀影！
-$n只觉得心跳都停止了！$N从左面劈出两刀！
-weaponweapon$N紧跟$n从右面劈出两刀！
-weaponweapon$N竟然又从上面劈出两刀！
-weaponweapon", n1: character.name)
+$n只觉得心跳都停止了！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -139,6 +132,8 @@ weaponweapon", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

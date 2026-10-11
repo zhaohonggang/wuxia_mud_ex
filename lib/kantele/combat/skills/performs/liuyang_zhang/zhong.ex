@@ -104,14 +104,11 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -119,9 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N逆运真气，化空气中的水露为寒冰，凝于掌中，继而掌出如风，轻飘飘地向$n拍落。
-forcethrowingmedicalforcemedicaljialijing只见$n被$N一掌拍中，紧接着身子一颤，$P那枚生死符已种入$p体内！
-ss_poisonlevelididduration可是$p内力激荡，将$P那枚生死符硬生生震出体外。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N逆运真气，化空气中的水露为寒冰，凝于掌中，继而掌出如风，轻飘飘地向$n拍落。", n1: character.name)
 
     conn
     |> put_character(character)

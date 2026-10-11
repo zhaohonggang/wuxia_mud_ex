@@ -98,14 +98,11 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -118,13 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。
-$N蓦地大喝一声，单腿猛踢而出，直踹$n腰际，招式极为迅猛。
-突然只见$N双腿连环踢出，挟着嚯嚯风声，以千钧之势扫向$n。
-unarmedstrdodgedexparrystr可是$n身子一晃，硬生生架住了$N这一腿。
-neili却见$n镇定的向后一纵，闪开了$N这一腿。
-neili$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -142,17 +133,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    result = Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

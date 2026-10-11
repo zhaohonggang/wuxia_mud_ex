@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -134,9 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N诡异的一笑，手中犹如一条银龙猛然飞向$n，正是九阴真经中的绝招「天诛龙蛟诀」！
-whipforceforceparryneili结果$n一声惨叫，未能看破$N的企图，被这一鞭硬击在胸口，鲜血飞溅，皮肉绽开！
-neili可是$p飞身一跃而起，躲避开了$P的攻击！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N诡异的一笑，手中某物犹如一条银龙猛然飞向$n，正是九阴真经中的绝招「天诛龙蛟诀」！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -170,7 +164,7 @@ neili可是$p飞身一跃而起，躲避开了$P的攻击！", n1: character.nam
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("msg", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p飞身一跃而起，躲避开了$P的攻击！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果$n一声惨叫，未能看破$N的企图，被这一鞭硬击在胸口，鲜血飞溅，皮肉绽开！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p飞身一跃而起，躲避开了$P的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

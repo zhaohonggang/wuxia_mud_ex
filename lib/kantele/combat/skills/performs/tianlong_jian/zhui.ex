@@ -104,24 +104,20 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,14 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.TianlongJian.Zhui do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 350}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中急速旋转，剑尖作锥，剑身顿时腾起一股旋风，向$n钻去。
-$n招架不住，哧地一声，$N手中的顿时破体钻入，鲜血四溅！
-可是$n奋力格挡，终于架开了$N的这一剑。
-
-$N随即抽剑回转，撩下劈上，手中剑尖一颤，又激荡出一股旋涡劲钻向$n。
-$n急忙抽身后退，可只见$N剑芒一漾，胸口便喷出一股血柱！
-可是$n凝神聚气，飞身一跃而起，避开了$N的杀着。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中某物急速旋转，剑尖作锥，剑身顿时腾起一股旋风，向$n钻去。", n1: character.name)
 
     conn
     |> put_character(character)

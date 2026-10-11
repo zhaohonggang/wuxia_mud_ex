@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出衡山五神剑「回峰蜿蜒势」，手中猛然反转，剑势迂回诡异，连连袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出衡山五神剑「回峰蜿蜒势」，手中某物猛然反转，剑势迂回诡异，连连袭向$n。", n1: character.name)
 
     conn
     |> put_character(character)

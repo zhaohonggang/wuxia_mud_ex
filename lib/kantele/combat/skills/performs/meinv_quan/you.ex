@@ -100,24 +100,20 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,9 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N右手支颐，左袖轻轻挥出，长叹一声，使出古墓派绝学「古墓幽居」，一脸尽现寂寥之意。
-forceforceunarmedneili但见$N双拳袭来，柔中带刚，迅猛无比，其间仿佛蕴藏着无穷的威力，$n正迟疑间， $N却已中拳，闷哼一声，倒退几步，一口鲜血喷出。
-可是$p看破了$P的企图，稳如泰山，抬手一架格开了$P这一拳。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N右手支颐，左袖轻轻挥出，长叹一声，使出古墓派绝学「古墓幽居」，一脸尽现寂寥之意。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -149,17 +143,23 @@ forceforceunarmedneili但见$N双拳袭来，柔中带刚，迅猛无比，其�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = Messages.interpolate("但见$N双拳袭来，柔中带刚，迅猛无比，其间仿佛蕴藏着无穷的威力，$n正迟疑间， $N却已中拳，闷哼一声，倒退几步，一口鲜血喷出。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("但见$N双拳袭来，柔中带刚，迅猛无比，其间仿佛蕴藏着无穷的威力，$n正迟疑间， $N却已中拳，闷哼一声，倒退几步，一口鲜血喷出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

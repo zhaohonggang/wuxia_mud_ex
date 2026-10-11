@@ -102,14 +102,11 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Zhuo do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,9 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Zhuo do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N手腕一探，平平推出一掌，顿时掌风激进，尘沙四起，直刮得$n面庞隐隐生疼。
-neilistrikeparry$n见$N掌风凌厉，慌忙招架，顿时便失了先机。
-guzhuo-zhang可是$n不慌不忙，看破了$N此招虚实，并没有受到半点影响。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手腕一探，平平推出一掌，顿时掌风激进，尘沙四起，直刮得$n面庞隐隐生疼。", n1: character.name)
 
     conn
     |> put_character(character)

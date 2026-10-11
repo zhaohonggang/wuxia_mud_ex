@@ -130,7 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N手中的豪光绽放，嗡嗡作响，刀锋顿时迸出一道寒芒向$n砍落！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中的某物豪光绽放，嗡嗡作响，刀锋顿时迸出一道寒芒向$n砍落！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Ying do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声狞笑，将手中的舞动如轮，刀锋激起层层血浪紧逼$n而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声狞笑，将手中的某物舞动如轮，刀锋激起层层血浪紧逼$n而去。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -152,7 +152,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Ying do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("$N一声狞笑，将手中的舞动如轮，刀锋激起层层血浪紧逼$n而去。", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$N一声狞笑，将手中的某物舞动如轮，刀锋激起层层血浪紧逼$n而去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

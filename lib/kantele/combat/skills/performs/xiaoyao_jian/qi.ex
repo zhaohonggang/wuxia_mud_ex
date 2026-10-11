@@ -105,24 +105,20 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -134,10 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将斜指长空，猛地飞身跃起，忽左忽右，飘忽不定，猛然间破空长响，直指向$n咽喉。这正是逍遥剑法之「奇剑诀」，当真是招招精奇，神妙无比。
-sworddodgeparrydodge$n只见一道电光从半空袭来，心中惊骇不已，但鲜血已从$n胸口喷出。
-neili然而$n眼明手快，侧身一跳躲过$N这一剑。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将某物斜指长空，猛地飞身跃起，某物忽左忽右，飘忽不定，猛然间破空长响，某物直指向$n咽喉。这正是逍遥剑法之「奇剑诀」，当真是招招精奇，神妙无比。", n1: character.name)
 
     conn
     |> put_character(character)

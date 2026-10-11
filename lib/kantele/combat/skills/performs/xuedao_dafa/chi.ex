@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N嗔目大喝，手中某物一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,7 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = Messages.interpolate("$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$N嗔目大喝，手中某物一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -63,6 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
@@ -78,6 +79,14 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -88,14 +97,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -106,9 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "猛然间$N双掌不断拍向$n出，风声呼呼，攻到途中忽又左手虚出右手作势欲发，虚虚实实，飘渺不定，正是华山绝招「飞絮飘渺」。 顷刻剑$n已被$N掌风笼罩。
-neilicuffforce结果$p一时无法辨别其中虚实，竟无法施招。
-strike可是$n看破其中虚实，更不理会。", n1: character.name)
+    conn = Broadcast.publish(conn, "猛然间$N双掌不断拍向$n出，风声呼呼，攻到途中忽又左手虚出右手作势欲发，虚虚实实，飘渺不定，正是华山绝招「飞絮飘渺」。 顷刻剑$n已被$N掌风笼罩。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -129,6 +133,8 @@ strike可是$n看破其中虚实，更不理会。", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

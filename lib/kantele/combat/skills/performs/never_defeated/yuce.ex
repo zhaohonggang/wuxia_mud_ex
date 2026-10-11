@@ -89,24 +89,18 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你现在手中并没有拿着暗器，怎么施展御策诀？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你现在手中并没有拿着暗器，怎么施展御策诀？\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "御策诀只能在战斗中对对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "御策诀只能在战斗中对对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -119,9 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N手指一合一弹，只听呼啸破空声起，有若龙吟，一base_unit如蛟龙般打向$n。
-combat_expcombat_exp只见那去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。
-qijiali可是$p急忙一闪，躲过了$P发出的。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手指一合一弹，只听呼啸破空声起，有若龙吟，一某物如蛟龙般打向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -144,14 +136,19 @@ qijiali可是$p急忙一闪，躲过了$P发出的。", n1: character.name)
     _stats = character.meta.stats
     level = Map.get(data, :level, 0)
     skill = Map.get(data, :skill, 0)
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.wound(vitals, :qi, (div(skill, 2) + Engine.rand(rng, div(skill, 2))))
+    if hit do
+          vitals = Vitals.wound(vitals, :qi, (div(skill, 2) + Engine.rand(rng, div(skill, 2))))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 1)
-    result = Messages.interpolate("只见那去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("= HIR只见那某物去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

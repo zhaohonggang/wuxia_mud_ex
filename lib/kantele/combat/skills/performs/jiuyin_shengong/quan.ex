@@ -67,6 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -84,6 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -94,23 +103,19 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "此招只能空手施展！\n"}
+      combat.weapon != nil -> {:error, "此招只能空手施展！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -122,9 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，握拳击出，招式雄浑，难擢其威！
-unarmedcuffcuffmartial-cognizedodgedexmartial-cognizeneili只见$n不慌不忙，轻轻一闪，躲过了$N这一击！
-neili$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷哼，握拳击出，招式雄浑，难擢其威！", n1: character.name)
 
     conn
     |> put_character(character)

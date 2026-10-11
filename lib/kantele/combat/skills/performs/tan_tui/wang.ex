@@ -103,14 +103,11 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -123,9 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N拔地跃起，凌空一个翻滚，陡然间双腿便如流星般向$n连续踢至。
-neiliunarmedforceunarmedneili却听$n一声惨嚎，已被$P单腿正中前胸，顿时心脉受震，喷出一大口鲜血。
-可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N拔地跃起，凌空一个翻滚，陡然间双腿便如流星般向$n连续踢至。", n1: character.name)
 
     conn
     |> put_character(character)

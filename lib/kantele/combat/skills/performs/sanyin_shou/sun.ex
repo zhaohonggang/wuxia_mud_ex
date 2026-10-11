@@ -94,15 +94,12 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "你的三阴手等级不够，难以施展\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你的三阴手等级不够，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,9 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N悄然游走至$n跟前，陡然使出三阴手绝技「损筋诀」，单掌轻轻拂过$n太阳穴，不着半点力道。
-handparryneilijingjing$n稍不留神，已被$N单掌拂中，只觉眼前一黑，几欲晕倒。
-neili$n见状大吃一惊，急忙向后猛退数步，终于避开了$N这一击。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N悄然游走至$n跟前，陡然使出三阴手绝技「损筋诀」，单掌轻轻拂过$n太阳穴，不着半点力道。", n1: character.name)
 
     conn
     |> put_character(character)

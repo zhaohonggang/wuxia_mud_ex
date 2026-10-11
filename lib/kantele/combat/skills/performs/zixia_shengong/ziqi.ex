@@ -47,13 +47,10 @@ defmodule Kantele.Combat.Skills.Performs.ZixiaShengong.Ziqi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你没有剑.怎么用紫气东来呀?\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你没有剑.怎么用紫气东来呀?\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

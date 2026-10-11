@@ -95,10 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
         {:error, "你现在没有激发少林内功为内功，难以施展「火麒蚀月」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
+        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
 
       true ->
         :ok
@@ -116,24 +116,20 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「火麒蚀月」只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「火麒蚀月」只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -142,10 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！
-ranmu-daofaforceforceneili只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！
-$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中某物一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！", n1: character.name)
 
     conn
     |> put_character(character)

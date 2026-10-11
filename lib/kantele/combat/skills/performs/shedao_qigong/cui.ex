@@ -89,25 +89,19 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你使用的兵器不对，怎么使用「摧心断肠」！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你使用的兵器不对，怎么使用「摧心断肠」！\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「摧心断肠」只能对战斗中的对手使用。\n"}
+    #   {:error, "你现在还不会使用摧心断肠！\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「摧心断肠」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你现在还不会使用摧心断肠！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,12 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，双掌一起击出，霎时间飞砂走石，$n只觉得几乎窒息。
-sword$N一声暴喝，手中直劈而下，只听呼啸声大作，地上的尘土受内力所激纷纷飞扬而起。
-staff$N一声暴喝，手中横扫荡出，一时间尘土飞扬，$n登时觉得呼吸不畅。
-forcedodgeneili可是$n内功深厚，奋力接下$N这一招，丝毫无损。
-neili$n哈哈一笑，飘身跃开，让$N这一招全然落空。
-neili$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，双掌一起击出，霎时间飞砂走石，$n只觉得几乎窒息。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -144,17 +133,23 @@ neili$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

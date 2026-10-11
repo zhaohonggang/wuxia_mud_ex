@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N长啸一声，使出破阳冷光剑绝招「神光再现」，手中光芒瀑涨，刺眼眩目，犹如神光降世，刹那间只觉得天地为之失辉，光芒已盖向$n
+    conn = Broadcast.publish(conn, "$N长啸一声，使出破阳冷光剑绝招「神光再现」，手中某物光芒瀑涨，刺眼眩目，犹如神光降世，刹那间只觉得天地为之失辉，光芒已盖向$n
 。", n1: character.name)
 
     conn

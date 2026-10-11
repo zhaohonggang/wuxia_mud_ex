@@ -100,14 +100,11 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -120,9 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N聚力于掌，平平推出，顿时掌风澎湃，掌力携着雷霆万钧之势猛贯向$n而去！
-strikeparrybenlei-zhang结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。
-neilineili可是$p看破了$N的企图，躲开了这招杀着。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N聚力于掌，平平推出，顿时掌风澎湃，掌力携着雷霆万钧之势猛贯向$n而去！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -143,15 +138,20 @@ neilineili可是$p看破了$N的企图，躲开了这招杀着。", n1: characte
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = Messages.interpolate("结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

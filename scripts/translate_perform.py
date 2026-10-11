@@ -511,9 +511,14 @@ class TranslatePerform:
                                     if clean and not self._is_function_call(clean):
                                         miss_msgs.append(clean)
                             
-                            # Also check for message_combatd in hit branch (final message)
+                            # Also check for message_combatd in hit branch (final message).
+                            # Skip `message_combatd(msg, me, target)` -- a bare
+                            # variable argument just re-emits the accumulated
+                            # msg buffer, it is not a literal message.
                             for m in re.finditer(r'message_combatd\s*\(([^)]+)\)', hit_block):
                                 msg_arg = m.group(1).split(',')[0].strip()
+                                if not re.search(r'"', msg_arg):
+                                    continue
                                 clean = self._clean_message_fragment(msg_arg)
                                 if clean and clean not in hit_msgs:
                                     hit_msgs.append(clean)
@@ -1067,26 +1072,159 @@ class TranslatePerform:
 
     def _clean_message_fragment(self, frag: str) -> str:
         """Extract readable text from LPC message fragment.
+
         Input like: 'HIY "突然只听$N" HIY "喝道："'
         Output: '突然只听$N喝道：' (color codes stripped, $N/$n/$p preserved)
-        Also handles plain text (already extracted from quotes).
+
+        Also handles C string-concatenation expressions that mix literals with
+        function calls, e.g.
+            HIY "但见$N" HIY "手中" + weapon->query("name") + HIY "窜动不"
+        Only the *top-level* string literals are message text.  A function-call
+        operand such as `weapon->query("name")` must NOT contribute its inner
+        `"name"` argument -- doing so leaked the literal identifier into the
+        broadcast (tiangang-chenfa/bai, never-defeated/yuce, ...).  Such
+        operands are replaced with a runtime marker so the text reads
+        naturally instead of containing a stray ASCII token.
         """
         if not frag:
             return ''
-        # Extract content from double-quoted strings
+        operands = self._split_concat_operands(frag)
         parts = []
-        for m in re.finditer(r'"([^"]*)"', frag):
-            parts.append(m.group(1))
-        if parts:
-            joined = ''.join(parts)
-        else:
-            # No quoted strings found - treat as plain text
-            joined = frag
+        for op in operands:
+            op = op.strip()
+            if not op:
+                continue
+            # Pure string literal(s): keep their contents.
+            if self._is_string_operand(op):
+                for m in re.finditer(r'"([^"]*)"', op):
+                    parts.append(m.group(1))
+                continue
+            # A bare variable (`name`) or an accessor call whose only argument
+            # is a bare identifier (`query("name")`) is a *runtime value*, not
+            # message text -- emit a placeholder and drop the inner literal.
+            if self._is_bare_runtime_ref(op):
+                parts.append(self._placeholder_for_call(op))
+                continue
+            # Otherwise (e.g. `do_damage(me, target, ..., HIR "结果$p" ...)`)
+            # the operand wraps real message literals: keep them.
+            found = re.findall(r'"([^"]*)"', op)
+            if found:
+                parts.extend(found)
+            elif not re.search(r'[A-Za-z_]\w*\s*\(', op):
+                parts.append(op)
+        if not parts:
+            # No quoted strings / operands found - treat as plain text.
+            parts = [frag]
+        joined = ''.join(parts)
+        # Collapse runs of the same placeholder introduced by adjacent call
+        # operands (e.g. weapon->query("base_unit") + weapon->name() -> 某物)
+        for ph in ('某人', '某物'):
+            joined = re.sub(ph + r'(?:' + ph + r')+', ph, joined)
         # Strip color codes (HIR, HIC, HIY, HIG, HIB, HIW, NOR, CYN, RED, GRN, YEL, BLU, MAG, WHT)
         joined = re.sub(r'\b(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)\b', '', joined)
         # Normalize escaped newlines
         joined = joined.replace('\\n', '\n').strip()
         return joined
+
+    @staticmethod
+    def _placeholder_for_call(op: str) -> str:
+        """Pick a readable Chinese placeholder for a runtime reference.
+
+        Only *person*-name lookups read as a person (`me->name()`,
+        `query("couple/name")`).  Object lookups -- `weapon->name()`,
+        `query("base_unit")` -- read as an object even though the accessor is
+        named `name`, so a weapon becomes 某物, not 某人.
+        """
+        # You / the actor / a person-specific field.
+        if re.search(r'\b(?:me|target|obj|who|player)\s*->\s*name\s*\(', op):
+            return '某人'
+        if re.search(r'query\s*\(\s*"(?:[^"]*/)?name"\s*\)', op):
+            return '某人'
+        return '某物'
+
+    # A color-code token list shared by the operand classifiers.
+    _COLOR_TOKENS = r'\b(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)\b'
+
+    def _is_string_operand(self, op: str) -> bool:
+        """True when the operand is only color codes + string literals
+        (no function call, no bare identifier)."""
+        stripped = re.sub(self._COLOR_TOKENS, '', op)
+        # Remove all quoted literals, then check nothing meaningful remains.
+        leftover = re.sub(r'"(?:[^"\\]|\\.)*"', '', stripped).strip()
+        return leftover == ''
+
+    def _is_bare_runtime_ref(self, op: str) -> bool:
+        """True when the operand is a runtime *value* reference rather than an
+        expression that merely wraps message text.
+
+        Matches:
+          - a plain variable / member chain: `name`, `me`, `a->b`
+          - an accessor call with a single bare-identifier argument:
+            `query("name")`, `weapon->query("base_unit")`, `obj->name()`
+        Deliberately does NOT match calls that carry real message literals as
+        arguments (e.g. `do_damage(..., HIR "结果$p" ...)`), so those keep
+        their text.
+        """
+        stripped = re.sub(self._COLOR_TOKENS, '', op).strip()
+        if not stripped:
+            return False
+        # Plain variable / member chain (no parentheses at all).
+        if re.fullmatch(r'[A-Za-z_]\w*(?:\s*(?:\.|->)\s*[A-Za-z_]\w*)*', stripped):
+            return True
+        # `...query("x")` / `...name()` style: exactly one call, its arguments
+        # (if any) are bare identifiers only, and there is no other literal.
+        call = re.fullmatch(
+            r'[A-Za-z_]\w*(?:\s*(?:\.|->)\s*[A-Za-z_]\w*)*\s*\(([^()]*)\)\s*',
+            stripped,
+        )
+        if call:
+            args = call.group(1).strip()
+            if args == '':
+                return True
+            # Args must be only quoted bare identifiers / numbers, no color
+            # codes, no CJK, no nested message text.
+            if re.fullmatch(r'(?:"[A-Za-z0-9_/]*"\s*,?\s*)+', args):
+                return True
+        return False
+
+    @staticmethod
+    def _split_concat_operands(frag: str) -> List[str]:
+        """Split a C expression on top-level `+` (ignoring `+` inside strings
+        and parentheses).  Returns the operand substrings in order."""
+        operands = []
+        buf = []
+        in_str = False
+        depth = 0
+        i = 0
+        while i < len(frag):
+            ch = frag[i]
+            if in_str:
+                buf.append(ch)
+                if ch == '\\' and i + 1 < len(frag):
+                    buf.append(frag[i + 1])
+                    i += 2
+                    continue
+                if ch == '"':
+                    in_str = False
+                i += 1
+                continue
+            if ch == '"':
+                in_str = True
+                buf.append(ch)
+            elif ch == '(':
+                depth += 1
+                buf.append(ch)
+            elif ch == ')':
+                depth = max(0, depth - 1)
+                buf.append(ch)
+            elif ch == '+' and depth == 0:
+                operands.append(''.join(buf))
+                buf = []
+            else:
+                buf.append(ch)
+            i += 1
+        operands.append(''.join(buf))
+        return operands
 
     def _render_cond(self, clauses) -> str:
         """Render `cond` arms (list of (expr, body)) in the exact form the

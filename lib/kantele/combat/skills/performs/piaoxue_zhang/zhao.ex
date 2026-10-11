@@ -92,13 +92,13 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
         {:error, "你没有激发飘雪穿云掌，无法施展\n"}
 
       Stats.mapped(stats, "force") != "shaolin-jiuyang" ->
-        {:error, "你必须将全身功力尽数提起才能施展\n"}
+        {:error, "TODO(migrate) 未激发 shaolin-jiuyang。\n"}
 
       Stats.mapped(stats, "force") != "wudang-jiuyang" ->
-        {:error, "你没有准备飘雪穿云掌，无法施展\n"}
+        {:error, "TODO(migrate) 未激发 wudang-jiuyang。\n"}
 
       Stats.mapped(stats, "strike") != "piaoxue-zhang" ->
-        {:error, "TODO(migrate) 未激发/未准备 piaoxue-zhang。\n"}
+        {:error, "TODO(migrate) 未激发 piaoxue-zhang。\n"}
 
       true ->
         :ok
@@ -116,24 +116,20 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -147,12 +143,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N运起全身功力，顿时真气迸发，全身骨骼噼啪作响，猛然一掌向$n
-全力拍出，力求一击毙敌，正是一招「佛光普照」。
-strikeforcestrdodgeforceconforcejiuyang-shengongneili只听轰然一声巨响，$n已被一招正中，可$N只觉全身内力犹如江河入
-海，又如水乳交融，登时消失得无影无踪。
-neili只听轰然一声巨响，$n被$N一招正中，身子便如稻草般平平飞出，重
-重摔在地下，呕出一大口鲜血，动也不动。
-neili可是$p内力深厚，及时摆脱了$P内力的牵扯，躲开了这一击！", n1: character.name)
+全力拍出，力求一击毙敌，正是一招「佛光普照」。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -170,18 +161,24 @@ neili可是$p内力深厚，及时摆脱了$P内力的牵扯，躲开了这一�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 4)
-    result = Messages.interpolate("只听轰然一声巨响，$n被$N一招正中，身子便如稻草般平平飞出，重
-重摔在地下，呕出一大口鲜血，动也不动。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("只听轰然一声巨响，$n被$N一招正中，身子便如稻草般平平飞出，重
+重摔在地下，呕出一大口鲜血，动也不动。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p内力深厚，及时摆脱了$P内力的牵扯，躲开了这一击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

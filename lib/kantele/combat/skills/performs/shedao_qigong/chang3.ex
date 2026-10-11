@@ -87,13 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "唱仙法吼字决只能在战斗中对对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "唱仙法吼字决只能在战斗中对对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -113,19 +110,25 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("jing", damage)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("jing", damage / 8)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("qi", damage / 8)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :jing, damage)
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.wound(vitals, :jing, div(damage, 8))
+          vitals = Vitals.wound(vitals, :qi, div(damage, 8))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

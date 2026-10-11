@@ -81,30 +81,26 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能修炼千蛛万毒手！\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能修炼千蛛万毒手！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "你正在修炼中！\n"}
+    #   {:error, "你正忙着呢！\n"}
+    #   {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
+    #   {:error, "你要吸取什么毒虫的毒素？\n"}
+    #   {:error, "战斗中无法修炼千蛛万毒手！\n"}
+    #   {:error, "毒虫正忙着呢，不能和你配合！\n"}
+    #   {:error, "这里太嘈杂，你不能静下心来修炼。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你正在修炼中！\n"}
-      false -> {:error, "你正忙着呢！\n"}
-      false -> {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
-      false -> {:error, "你要吸取什么毒虫的毒素？\n"}
-      false -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
-      false -> {:error, "毒虫正忙着呢，不能和你配合！\n"}
-      false -> {:error, "这里太嘈杂，你不能静下心来修炼。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,13 +123,18 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.wound(vitals, :qi, 5)
+    if hit do
+          vitals = Vitals.wound(vitals, :qi, 5)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n被$N击中！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

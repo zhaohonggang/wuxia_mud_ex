@@ -101,25 +101,19 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手中没有针，无法施展\n"}
+    #   {:error, "你现在手中并没有拿着针，怎么施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你手中没有针，无法施展\n"}
-      false -> {:error, "你现在手中并没有拿着针，怎么施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,10 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N身不慌，足不移，手掌只是轻轻一抖，只见一点寒光闪过，闪电般的射向$n！
-throwingdodge结果$p反应不及，中了$P一base_unit！
-qijialiqimax_qi( $n )
-可是$p从容不迫，轻巧的闪过了$P发出的。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身不慌，足不移，手掌只是轻轻一抖，只见一点寒光闪过，闪电般的射向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -155,14 +146,19 @@ qijialiqimax_qi( $n )
     _stats = character.meta.stats
     level = Map.get(data, :level, 0)
     skill = Map.get(data, :skill, 0)
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.wound(vitals, :qi, (skill + Engine.rand(rng, div(skill, 3))))
+    if hit do
+          vitals = Vitals.wound(vitals, :qi, (skill + Engine.rand(rng, div(skill, 3))))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("结果$p反应不及，中了$P一base_unit！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果$p反应不及，中了$P一某物！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

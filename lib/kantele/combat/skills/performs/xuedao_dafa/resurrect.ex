@@ -58,13 +58,10 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所学的内功中没有这种功能。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所学的内功中没有这种功能。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -75,9 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深吸入一口气，脸色由红转白，复又由白翻红，伤势恢复了不少。
-neilineiliqiqineili由于你过度的催动真元，导致你的内力有所损耗。
-max_neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深吸入一口气，脸色由红转白，复又由白翻红，伤势恢复了不少。", n1: character.name)
 
     conn
     |> put_character(character)

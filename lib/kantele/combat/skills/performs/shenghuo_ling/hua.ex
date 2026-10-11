@@ -85,25 +85,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
-      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
+      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -116,10 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N猛吸一口气，使出圣火令法之「光华令」，手中御驾如飞，幻出无数道金芒，将$n笼罩起来！
-swordforceparryforceneili$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！
-可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N猛吸一口气，使出圣火令法之「光华令」，手中某物御驾如飞，幻出无数道金芒，将$n笼罩起来！", n1: character.name)
 
     conn
     |> put_character(character)

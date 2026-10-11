@@ -138,8 +138,8 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N将手中缓缓压向$n，棍体隐隐带着风雷之劲，正是取经棍法杀着「震雷乾坤」！
-电光火石间，棍端竟全被紫电所笼罩，幻作千百根相似，奔雷掣电般向$n席卷而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将手中某物缓缓压向$n，棍体隐隐带着风雷之劲，正是取经棍法杀着「震雷乾坤」！
+电光火石间，棍端竟全被紫电所笼罩，某物幻作千百根相似，奔雷掣电般向$n席卷而去。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -101,24 +101,20 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -126,10 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N身形猛转，霎那间双腿流星般连环踢出，足带风尘，腿影将$n团团笼罩。
-neiliforceunarmedforce$n见无数腿影向自己袭来，全然分辨不清真伪，只得拼命运动抵挡。
-apply/attack可是$n凝神顿气，奋力抵挡，丝毫不受腿影的干扰，。
-apply/attack", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N身形猛转，霎那间双腿流星般连环踢出，足带风尘，腿影将$n团团笼罩。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,6 +143,8 @@ apply/attack", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

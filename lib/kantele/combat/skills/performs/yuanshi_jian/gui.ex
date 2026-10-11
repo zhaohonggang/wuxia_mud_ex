@@ -103,24 +103,20 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -133,10 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转内劲，手中顿时青光闪烁，出剑嗤然有声，朝$n电射而去！
-swordforceneili只见$N剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。
-可是$n猛地向前一跃，跳出了$N的攻击范围。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转内劲，手中某物顿时青光闪烁，出剑嗤然有声，朝$n电射而去！", n1: character.name)
 
     conn
     |> put_character(character)

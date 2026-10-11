@@ -90,10 +90,10 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
         {:error, "你现在没有激发少林内功为内功，难以施展「八仙醉打」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
+        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
+        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
 
       true ->
         :ok
@@ -110,26 +110,19 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
-      false -> {:error, "你已经运起内功提升战力了，不能再使用「八仙醉打」。\n"}
-      false -> {:error, "你现在的臂力不够，目前不能使用「八仙醉打」！\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「八仙醉打」只能在战斗中使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「八仙醉打」只能在战斗中使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -140,8 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出少林醉棍的绝技「八仙醉打」，臂力陡然增加, 身法陡然加快！
-zui-gundrunkstrdexstrdexzg_zuidaremove_effectneilizg_zuidastrdexzg_zuida你的「八仙醉打」运功完毕，将内力收回丹田。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出少林醉棍的绝技「八仙醉打」，臂力陡然增加, 身法陡然加快！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -162,6 +154,8 @@ zui-gundrunkstrdexstrdexzg_zuidaremove_effectneilizg_zuidastrdexzg_zuida你的�
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

@@ -100,24 +100,18 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "只有空手才能施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "只有空手才能施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,14 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 500}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声断喝，双掌施出五斗米神功「归去来兮」绝技，顿时掌劲澎湃，涌向$n。
-$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！
-$p见$P来势汹涌，不敢硬接，只得小巧腾挪，躲闪开来。
-forcecondodgedex
-紧接着只见$N双手陡然回圈，竟使已袭出的掌劲倒回，从$n身后再度席卷而归。
-$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！
-$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声断喝，双掌施出五斗米神功「归去来兮」绝技，顿时掌劲澎湃，涌向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,17 +137,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 1)
-    result = Messages.interpolate("$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

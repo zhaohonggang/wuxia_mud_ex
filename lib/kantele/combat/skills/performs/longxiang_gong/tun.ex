@@ -102,14 +102,11 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -123,10 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N双臂左右分张，形若龙嘴，所施正是龙象般若功绝学「龙吞势」。霎时呼
-啸声大作，但见一股澎湃无比的罡劲至$N双掌间涌出，云贯向$n而去。
-long_tunremove_effectunarmedforceparryforceforce$n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。
-neilineili可是$n见$N此招来势非凡，急忙向后横移数尺，终于躲避开来。
-long_tunlong_tun你经过调气养息，又可以继续施展了。", n1: character.name)
+啸声大作，但见一股澎湃无比的罡劲至$N双掌间涌出，云贯向$n而去。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -144,19 +138,23 @@ long_tunlong_tun你经过调气养息，又可以继续施展了。", n1: charac
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    result = Messages.interpolate("$n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n见$N此招来势非凡，急忙向后横移数尺，终于躲避开来。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -104,16 +104,13 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "你要对谁施展蛛蛊决？\n"}
+    #   {:error, "看清楚，那不是活人。\n"}
+    #   {:error, "这里不能攻击别人！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "你要对谁施展蛛蛊决？\n"}
-      false -> {:error, "看清楚，那不是活人。\n"}
-      false -> {:error, "这里不能攻击别人！\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -126,10 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N施出蛛蛊决，只见一缕黑气从指尖透出，只一闪就没入了$n的眉心！
-combat_expfamily/family_name五毒教handpoisonforce$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！
-qianzhu_wandushoulevelididdurationneili可是$p运足内力，以深厚的内功化解了这一指的毒劲。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出蛛蛊决，只见一缕黑气从指尖透出，只一闪就没入了$n的眉心！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,15 +144,20 @@ neili", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = Messages.interpolate("$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p运足内力，以深厚的内功化解了这一指的毒劲。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -103,24 +103,20 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -128,9 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N将手中立于胸前，施出绝招「五雷连闪」，$N身法陡然加快，手中连续砍出五刀，刀法之精妙，令人匪夷所思。
-bladedodgeneili$n见$P这招来势汹涌，势不可挡，被$N攻得连连后退。
-$n见$N这几刀来势迅猛无比，毫无破绽，只得小心应付。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将手中某物立于胸前，施出绝招「五雷连闪」，$N身法陡然加快，手中某物连续砍出五刀，刀法之精妙，令人匪夷所思。", n1: character.name)
 
     conn
     |> put_character(character)

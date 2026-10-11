@@ -105,24 +105,20 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,9 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中化做千万柄利刃，笼罩$n周身。sworddodgeneili$n眼剑已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。
-neilizhurong-jianzhurong_jianlevelididduration只见$N这一招疾如电、猛如火，$n心中惊疑不定，电光火石间，
-已被$N划中剑，剑伤处嗤嗤作响，鲜血从外衣渗出。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中某物化做千万柄利刃，笼罩$n周身。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -171,7 +165,7 @@ neilizhurong-jianzhurong_jianlevelididduration只见$N这一招疾如电、猛�
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = if hit, do: Messages.interpolate("$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中化做千万柄利刃，笼罩$n周身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n眼剑已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中某物化做千万柄利刃，笼罩$n周身。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n眼剑某物已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

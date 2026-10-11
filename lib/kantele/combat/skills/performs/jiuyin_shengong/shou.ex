@@ -67,6 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -83,6 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -93,24 +102,20 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "此招只能空手施展！\n"}
+      combat.weapon != nil -> {:error, "此招只能空手施展！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -120,11 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 60}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N“哈”的一声吐出了一口气，手势奇特，软绵绵的奔向$n的要穴！
-jiuyin-shengongcombat_expneilijiuyin-shengongforceparrydodge$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。
-neili$n知道来招不善，小心应对，没出一点差错。
-这一招完全超出了$n的想象，被$N结结实实的打中了檀中大穴，浑身真气登时涣散！
-neili$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N“哈”的一声吐出了一口气，手势奇特，软绵绵的奔向$n的要穴！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然身法奇快，剑法灵动无比，手中犹如脱手飞旋一般，将$n周身笼罩。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然身法奇快，剑法灵动无比，手中某物犹如脱手飞旋一般，将$n周身笼罩。", n1: character.name)
 
     conn
     |> put_character(character)

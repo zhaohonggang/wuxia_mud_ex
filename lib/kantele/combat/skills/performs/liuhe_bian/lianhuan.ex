@@ -99,16 +99,13 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你刚刚使用过六合连环诀，内力还未平复！\n"}
+    #   {:error, "你所用的外功中没有这个功能!\n"}
+    #   {:error, "六合连环诀只能对战斗中的对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你刚刚使用过六合连环诀，内力还未平复！\n"}
-      false -> {:error, "你所用的外功中没有这个功能!\n"}
-      false -> {:error, "六合连环诀只能对战斗中的对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -120,28 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，口中轻轻念诵佛经，手中霍霍，招招连环，快如电闪！
-
-lianhuanapply/damageremove_effectneili
-【天合】，$N舞动手中瞬息击向$n的额头，啪的一声轻响，顿时一条血印。
-
-【地合】，$N一个横扫打向$n的下盘，$n未能看破企图，一声惨嚎，鞭端已没入小腿半寸，登时连退数步！
-
-【人合】，$N与合为一体急射向$n，$n措手不急被打的吐血不止！
-
-【神合】，$N手中似有灵性一般死追着$n而去。
-
-【鬼合】，$N突然面如死灰，动作僵硬，然后杀气却更胜一筹，发出灵异的光芒，$n几乎看到了死亡的颜色。
-
-【六合】，$N口中高唱佛号，手中连环击出，鞭影重重，$n再也支持不住，身上被拉出一条条豁口。
-$n不慌不忙，以快打快，将$N的招式完全化去。
-neililiuhe-bianlianhuan
-$N将内力收回丹田，手上招数也逐渐慢了下来。
-
-
-你的内功运行完毕，将内力缓缓收回丹田。
-
-apply/damage", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，口中轻轻念诵佛经，手中某物霍霍，招招连环，快如电闪！", n1: character.name)
 
     conn
     |> put_character(character)

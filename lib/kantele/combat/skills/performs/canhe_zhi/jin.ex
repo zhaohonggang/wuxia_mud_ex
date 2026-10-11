@@ -67,6 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -83,6 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -94,24 +103,20 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -124,10 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手合十，微微一笑，颇得拈花之意。食指并中指轻轻一弹，顿时一屡罡气电射而出，朝$n袭去。
-canhe-zhiforcebuddhismforcebuddhismneili但见$n也即脸露笑容，衣袖轻轻一拂，顺势裹上，顿将$N的指力消逝殆尽。
-neilineili$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。
-jingjing只听“噗嗤”一声，指力竟在$n胸前穿了一个血肉模糊的大洞，透体而入。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手合十，微微一笑，颇得拈花之意。食指并中指轻轻一弹，顿时一屡罡气电射而出，朝$n袭去。", n1: character.name)
 
     conn
     |> put_character(character)

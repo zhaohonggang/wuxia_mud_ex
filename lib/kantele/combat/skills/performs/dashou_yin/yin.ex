@@ -95,24 +95,18 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你的大手印修为不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你的大手印修为不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,9 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N面容庄重，单手携着劲风朝$n猛然拍出，正是密宗绝学「金刚印」。
-handlamaismparryneili结果$p招架不及，被$P这一下打得七窍生烟，吐血连连。
-neili可是$p不慌不忙，巧妙的架开了$P的金刚印。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N面容庄重，单手携着劲风朝$n猛然拍出，正是密宗绝学「金刚印」。", n1: character.name)
 
     conn
     |> put_character(character)

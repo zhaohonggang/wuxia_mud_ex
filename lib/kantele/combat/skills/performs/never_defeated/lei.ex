@@ -90,24 +90,20 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Lei do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须手持兵刃才能施展天打雷劈！\n"}
+      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展天打雷劈！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "天打雷劈只能在战斗中对对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "天打雷劈只能在战斗中对对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,10 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Lei do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 60}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，手中的长劈而下，看似简单，竟然封住了$n所有的退路！
-never-defeatedcombat_expneili$n使出平生所学，奋力化解，没出一点差错。
-$n平生何曾见过这样的招数，全然无法化解，顿时被击中数处要害，颓然倒地！
-$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，手中的某物长劈而下，看似简单，竟然封住了$n所有的退路！", n1: character.name)
 
     conn
     |> put_character(character)

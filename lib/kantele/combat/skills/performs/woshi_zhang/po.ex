@@ -102,25 +102,21 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用「碎石破玉」！\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用「碎石破玉」！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「碎石破玉」只能在战斗中对对手使用。\n"}
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「碎石破玉」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -132,9 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N聚力于掌，猛然间怒喝一声，一掌破空而至，正是握石掌的一招「开碑碎石」，破空劈向$n而去！
-strikeparrywoshi-zhang结果只听$n一声惨嚎，胸口已被$N掌劲结结实实的轰中，“哇”的喷出一大口鲜血。
-neilineili可是$p看破了$N的企图，躲开了这招杀着。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N聚力于掌，猛然间怒喝一声，一掌破空而至，正是握石掌的一招「开碑碎石」，破空劈向$n而去！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -155,15 +149,20 @@ neilineili可是$p看破了$N的企图，躲开了这招杀着。", n1: characte
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 2)
-    result = Messages.interpolate("结果只听$n一声惨嚎，胸口已被$N掌劲结结实实的轰中，“哇”的喷出一大口鲜血。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果只听$n一声惨嚎，胸口已被$N掌劲结结实实的轰中，“哇”的喷出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

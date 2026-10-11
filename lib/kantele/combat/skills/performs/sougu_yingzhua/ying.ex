@@ -88,15 +88,12 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你臂力不够,不能使用牧野鹰扬！\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "牧野鹰扬只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你臂力不够,不能使用牧野鹰扬！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "牧野鹰扬只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -107,9 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出搜骨鹰爪功绝技「牧野鹰扬」，双爪蓦地抓向$n的全身要穴。
-combat_expcombat_exp结果$p被$P点中要穴，立时动弹不得！
-sougu-yingzhuaneili可是$p看破了$P的企图，并没有上当。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出搜骨鹰爪功绝技「牧野鹰扬」，双爪蓦地抓向$n的全身要穴。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -130,6 +125,8 @@ sougu-yingzhuaneili可是$p看破了$P的企图，并没有上当。", n1: chara
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

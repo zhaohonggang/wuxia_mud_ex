@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的吸入掌中。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的某物吸入掌中。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -152,7 +152,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = Messages.interpolate("$n只觉周围气流涌动，手中竟然拿捏不住，向$N掌心脱手飞去。", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n只觉周围气流涌动，手中某物竟然拿捏不住，向$N掌心脱手飞去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

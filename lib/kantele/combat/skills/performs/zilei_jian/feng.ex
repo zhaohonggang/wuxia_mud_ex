@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将横于胸前，内力贯于剑身，猛然间如一条长龙般挥出，霎时狂沙满天，令人匪夷所思。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将某物横于胸前，内力贯于剑身，猛然间某物如一条长龙般挥出，霎时狂沙满天，令人匪夷所思。", n1: character.name)
 
     conn
     |> put_character(character)

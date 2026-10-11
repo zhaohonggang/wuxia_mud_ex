@@ -105,25 +105,19 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你七弦无形剑修为有限，难以施展\n"}
+    #   {:error, "你使用的武器不对，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你七弦无形剑修为有限，难以施展\n"}
-      false -> {:error, "你使用的武器不对，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,15 +129,8 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N一声冷哼，以内劲催动，激荡出无形琴音，铮然大响，只听“啵”的
-一声破空之响，一束无形剑气澎湃射出，直贯$n而去。
-只见$N一声冷哼，狂催内劲激荡出无形琴音，铮然大响，只听“啵”的一声破空之
-响，一束无形剑气澎湃射出，直贯$n而去。
-forceforcemax_neili$N这一招施出，可是$n竟像没事一般，丝毫无损。
-neilimax_neilimax_neili可是$n内力深厚，轻而易举受下$N这一招，丝毫无损。
-neili可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。
-neilijingjing$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N一声冷哼，以内劲催动某物，激荡出无形琴音，铮然大响，只听“啵”的
+一声破空之响，一束无形剑气澎湃射出，直贯$n而去。", n1: character.name)
 
     conn
     |> put_character(character)

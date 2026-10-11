@@ -89,14 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Mie do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "五阴焚灭只能在战斗中对对手使用。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "五阴焚灭只能在战斗中对对手使用。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -104,10 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Mie do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 60}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N暴喝一声，变掌为爪，迅捷无比的袭向$n！
-bluesea-forcecombat_expneili$n知道来招不善，小心应对，没出一点差错。
-这一招完全超出了$n的想象，被$N结结实实的抓中了气海穴，浑身真气登时涣散！
-$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N暴喝一声，变掌为爪，迅捷无比的袭向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -134,7 +128,7 @@ $n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-    result = Messages.interpolate("msg", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("这一招完全超出了$n的想象，被$N结结实实的抓中了气海穴，浑身真气登时涣散！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

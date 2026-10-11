@@ -87,17 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "你现在没有激发少林内功为内功，难以施展\n"}
-
-      Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
-
-      Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
-
-      true ->
-        :ok
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "TODO(migrate) 未激发 yijinjing。\n"}
+      true -> :ok
     end
   end
 
@@ -112,13 +105,10 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你已经运起「一苇渡江」了。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你已经运起「一苇渡江」了。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,8 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。
-yiwei-dujiangdexdujiangremove_effectneilidujiangdexdujiang你的「一苇渡江」运功完毕，将内力收回丹田。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,6 +140,8 @@ yiwei-dujiangdexdujiangremove_effectneilidujiangdexdujiang你的「一苇渡江�
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

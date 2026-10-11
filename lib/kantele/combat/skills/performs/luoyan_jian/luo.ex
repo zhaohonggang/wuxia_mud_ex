@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyanJian.Luo do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N蓦的一声清啸，施出衡山派绝学「一剑落九雁」，手中某物青光荡漾。霎时间回风落雁剑剑招连绵涌出，有如神助，剑气笼罩$n四方。", n1: character.name)
 
     conn
     |> put_character(character)

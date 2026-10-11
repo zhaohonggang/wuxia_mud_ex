@@ -104,14 +104,11 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,15 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N默运玄冥神功，展出绝招「惊涛骇浪」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！
-xuanming-zhangstrikeforcedodgeforce
-$N右掌向内一转，忽又向前，猛然间直袭$n面门。
-neili$n看见$N来势汹涌，急忙提气跃开。
-neili
-$N长舒一口气，左掌紧跟而出，风到掌到，正拍向$n胸口。
-neili$n看见$N来势汹涌，急忙提气跃开。
-neilixuanming_poisonleveljialiididduration$n正欲闪躲，却见$N突然绕到$p身后，$n心中一惊，背后中掌，顿觉脊梁处一股寒气升起，尽损三焦六脉。
-xuanming_poisonleveljialiididduration$n但见$N右掌已攻出，正欲反击。突然间胸口一震，不禁暗暗叫苦，顿感胸口处一股寒气升起，尽损三焦六脉。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N默运玄冥神功，展出绝招「惊涛骇浪」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！", n1: character.name)
 
     conn
     |> put_character(character)

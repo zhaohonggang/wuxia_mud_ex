@@ -121,7 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中的将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中的某物将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！", n1: character.name)
 
     conn
     |> put_character(character)

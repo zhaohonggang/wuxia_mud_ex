@@ -107,14 +107,11 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -122,11 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 380}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。
-combat_expneiliforcestrikeforceparryfamily/family_name灵鹫宫max_neilimax_neili顿时只听“噗”的一声，$N一掌将$n头骨拍得粉碎，脑浆四溅，当即瘫了下去。
-( $n受伤过重，已经有如风中残烛，随时都可能断气。)
-$n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。
-:内伤@?$p见$P掌劲澎湃，决计抵挡不住，当即身子向后横丈许，躲闪开来。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -91,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
         {:error, "你没有激发太玄功为刀或剑，难以施展\n"}
 
       Stats.mapped(stats, "sword") != "taixuan-gong" ->
-        {:error, "TODO(migrate) 未激发/未准备 taixuan-gong。\n"}
+        {:error, "TODO(migrate) 未激发 taixuan-gong。\n"}
 
       true ->
         :ok
@@ -109,24 +109,18 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你使用的武器不对，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -146,18 +140,24 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("jing", damage / 2)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("jing", damage / 4)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
+          vitals = Vitals.wound(vitals, :jing, div(damage, 4))
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，已穿透$n的胸膛，鲜血不断涌出。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，已穿透$n的胸膛，鲜血不断涌出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n会心一笑，看出$N这招中的破绽，随意施招竟将这招化去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

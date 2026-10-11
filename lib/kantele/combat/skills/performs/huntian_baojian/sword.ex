@@ -48,24 +48,18 @@ defmodule Kantele.Combat.Skills.Performs.HuntianBaojian.Sword do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手中已经有武器了。\n"}
+    #   {:error, "你身上已经有一束剑气了。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你手中已经有武器了。\n"}
-      false -> {:error, "你身上已经有一束剑气了。\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "呵气成剑只能对自己使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "呵气成剑只能对自己使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

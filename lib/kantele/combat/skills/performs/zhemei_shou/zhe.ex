@@ -102,24 +102,18 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你的逍遥折梅手等级不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你的逍遥折梅手等级不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -131,9 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N合逍遥折梅手诸多变化为一式，随手轻轻挥出，虚虚实实笼罩$n全身诸处要穴。
-handparryneilineili$n心头一颤，想不出破解之法，急忙后退数步，一时间无法反击。
-可是$p的看破了$P的企图，丝毫不为所动，让$P的虚招没有起得任何作用。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N合逍遥折梅手诸多变化为一式，随手轻轻挥出，虚虚实实笼罩$n全身诸处要穴。", n1: character.name)
 
     conn
     |> put_character(character)

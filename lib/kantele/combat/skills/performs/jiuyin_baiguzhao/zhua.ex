@@ -67,6 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
@@ -83,6 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -93,24 +102,20 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用九阴神抓！\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用九阴神抓！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -122,11 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N冷笑一声，眼露凶光，右手成爪，三盘两旋虚虚实实的向$n的头顶抓了下来。
-neiliclawdodgeneilimax_neilimax_neiliforceforce“啪”的一声$N正抓在$n的天灵盖上，结果震得“哇哇”怪叫了两声！
-max_neilimax_neili“扑哧”一声，$N五指正插入$n的天灵盖，$n一声惨叫，软绵绵的瘫了下去。
-forcelimbs要害$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插入$n的，$n一声惨叫，血射五步。
-可是$p看破了$P的企图，身形急动，躲开了这一抓。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N冷笑一声，眼露凶光，右手成爪，三盘两旋虚虚实实的向$n的头顶抓了下来。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -160,7 +161,7 @@ forcelimbs要害$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-    result = if hit, do: Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插入$n的，$n一声惨叫，血射五步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，$N五指正插入$n的某物，$n一声惨叫，血射五步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，身形急动，躲开了这一抓。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

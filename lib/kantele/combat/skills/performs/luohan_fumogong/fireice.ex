@@ -58,15 +58,12 @@ defmodule Kantele.Combat.Skills.Performs.LuohanFumogong.Fireice do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能用\n"}
+    #   {:error, "你所学的内功中没有这种功能。\n"}
+    #   {:error, "你现在正在施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能用\n"}
-      false -> {:error, "你所学的内功中没有这种功能。\n"}
-      false -> {:error, "你现在正在施展\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

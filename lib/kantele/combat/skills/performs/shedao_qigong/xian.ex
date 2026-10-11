@@ -89,25 +89,19 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你使用的兵器不对，怎么使用「神龙再现」！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你使用的兵器不对，怎么使用「神龙再现」！\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「神龙再现」只能对战斗中的对手使用。\n"}
+    #   {:error, "你现在还不会使用神龙再现！\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「神龙再现」只能对战斗中的对手使用。\n"}
-      false -> {:error, "你现在还不会使用神龙再现！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,12 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。
-sword$N足不点地，飘然欺身上前，一剑刺出，直指$n腰间。staff$N手中吞吞吐吐，虚虚实实，化作一团光影，斜斜扫向$n腰间。
-parrydodgeneili$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。
-neili$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
-一招正中$p，直打了个鲜血四下飞溅。
-neili$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -144,18 +133,24 @@ neili$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    result = Messages.interpolate("$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
-一招正中$p，直打了个鲜血四下飞溅。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
+一招正中$p，直打了个鲜血四下飞溅。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

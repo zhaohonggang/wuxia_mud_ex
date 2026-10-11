@@ -105,24 +105,18 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Ding do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "对方现在已经无法控制真气，放胆攻击吧。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方现在已经无法控制真气，放胆攻击吧。\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,14 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Ding do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N合指轻弹，顿时只听“飕”的一声，一缕若有若无的罡气已朝$n电射而去。
-fingerparry$n只觉胁下一麻，已被$P指气射中，全身酸软无力，呆立当场。
-neili可是$p看破了$P的企图，轻轻一跃，跳了开去。
-neilino_performding_end$n只觉眼前寒芒一闪而过，随即全身一阵刺痛，几股血柱自身上射出。
-$p陡然间一提真气，竟发现周身力道竟似涣散一般，全然无法控制。
-no_perform$N深深吸入一口气，脸色由白转红，看起来好多了。
-你感到被扰乱的真气慢慢平静了下来。
-no_perform", n1: character.name)
+    conn = Broadcast.publish(conn, "$N合指轻弹，顿时只听“飕”的一声，一缕若有若无的罡气已朝$n电射而去。", n1: character.name)
 
     conn
     |> put_character(character)

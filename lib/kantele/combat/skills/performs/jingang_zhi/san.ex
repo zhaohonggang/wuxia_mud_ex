@@ -93,10 +93,10 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
         {:error, "你现在没有激发少林内功为内功，难以施展\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "你没有准备大力金刚指，难以施展\n"}
+        {:error, "TODO(migrate) 未激发 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
+        {:error, "TODO(migrate) 未激发 yijinjing。\n"}
 
       true ->
         :ok
@@ -114,14 +114,11 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -129,10 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 800}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "突然间$N凝气于指，「一指点三脉」点出，顿时一股纯阳的内力直袭$n胸口！
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-可是$p镇定自如，全力化解了$P这精妙的一指。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "突然间", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,19 +144,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 800, 1)
-    result = Messages.interpolate("结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p镇定自如，全力化解了$P这精妙的一指。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

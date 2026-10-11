@@ -99,14 +99,11 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -114,10 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出五罗轻烟掌绝技，单掌轻轻一抖，登时化出五道掌影，轻飘飘向$n拍去。
-neiliforcestrikeforce$n顿时觉得眼花缭乱，全然分辨不清真伪，只得拼命运动抵挡。
-apply/attackapply/unarmed_damage可是$n凝神顿气，奋力抵挡，丝毫不受掌影的干扰，。
-apply/attackapply/unarmed_damage", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出五罗轻烟掌绝技，单掌轻轻一抖，登时化出五道掌影，轻飘飘向$n拍去。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -138,6 +132,8 @@ apply/attackapply/unarmed_damage", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

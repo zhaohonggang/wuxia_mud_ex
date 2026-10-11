@@ -65,6 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
@@ -81,6 +82,14 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     end
   end
 
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      true -> :ok
+    end
+  end
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
@@ -91,14 +100,11 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -110,10 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N腾空而起，施展出绝招「孤雁出群」，犹如一只大雁临空而下，双掌猛地拍向$n。
-strike但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。 
-neili$n见$N这掌拍来，内力充盈，只得向后一纵，才躲过这一掌。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N腾空而起，施展出绝招「孤雁出群」，犹如一只大雁临空而下，双掌猛地拍向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -131,19 +134,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = Messages.interpolate("但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n见$N这掌拍来，内力充盈，只得向后一纵，才躲过这一掌。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

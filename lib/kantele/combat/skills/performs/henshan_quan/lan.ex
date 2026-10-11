@@ -100,14 +100,11 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -116,9 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 30}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N双拳挥出，施一招「青天揽日月」，拳速极快，部位极准，分袭$n面门和胸口。henshan-quan$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。
-neili$n不慌不忙，以快打快，将$N这招化去。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双拳挥出，施一招「青天揽日月」，拳速极快，部位极准，分袭$n面门和胸口。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -136,19 +131,23 @@ neili", n1: character.name)
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 1)
-    result = Messages.interpolate("$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n不慌不忙，以快打快，将$N这招化去。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -133,7 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.QiankunJian.Ni do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中一振，将乾坤剑法逆行施展，顿时剑影重重，万道光华直追$n而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中某物一振，将乾坤剑法逆行施展，顿时剑影重重，万道光华直追$n而去！", n1: character.name)
 
     conn
     |> put_character(character)

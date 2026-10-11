@@ -66,13 +66,10 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你现在手中没有拿着暗器心有千千结，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你现在手中没有拿着暗器心有千千结，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -85,15 +82,8 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N突然身行一止，从怀中摸出一条，有无数个结，一扬手向$n 掷去。
-只见$n的周身飞舞着无数的光影，一条天网从空罩下。
-throwingdodgedugu-jiujian
-你急忙屏气凝神，希望能够躲开这致命的。
-忽然那无数的光影一闪而没，$n身行一顿，给这缠上，仰天而倒。
-你只觉得全身被这越缠越紧，低头一看只见那已经深深的嵌在你的皮肉中。
-jialiidqianqian jie忽然那无数的光影一闪而没，你心中一惊急忙提神运气于足间。
-$n急忙向旁边一纵，躲开着致命的，但已显得狼狈不堪。
-neilineilineili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N突然身行一止，从怀中摸出一条某物，有无数个结，一扬手向$n 掷去。
+只见$n的周身飞舞着无数的光影，一条天网从空罩下。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -120,7 +110,7 @@ neilineilineili", n1: character.name)
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    result = Messages.interpolate("msg", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("忽然那无数的光影一闪而没，$n身行一顿，给这某物缠上，仰天而倒。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -104,23 +104,17 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你先找把刀再说吧！\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你先找把刀再说吧！\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「修罗焰」攻击只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「修罗焰」攻击只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -148,6 +142,8 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}

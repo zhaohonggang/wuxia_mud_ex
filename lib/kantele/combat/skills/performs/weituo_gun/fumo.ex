@@ -104,25 +104,21 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "「韦陀伏魔」只能在战斗中对对手使用。\n"}
+    #   {:error, "你还没有受过高人指点，无法施展「韦陀伏魔」。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "「韦陀伏魔」只能在战斗中对对手使用。\n"}
-      false -> {:error, "你还没有受过高人指点，无法施展「韦陀伏魔」。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,11 +131,8 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的轻旋，恍惚中显出佛家韦陀神像，
-神光四射，笼罩住$n！
-shen$n平日作恶不少，见了此情此景，心中不禁颤然！
-clubforceneili结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！
-neili可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的某物轻旋，恍惚中显出佛家韦陀神像，
+神光四射，笼罩住$n！", n1: character.name)
 
     conn
     |> put_character(character)

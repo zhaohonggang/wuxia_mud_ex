@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Qianshe do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，扑身上前，手中的化作万道光芒，一齐射向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，扑身上前，手中的某物化作万道光芒，一齐射向$n！", n1: character.name)
 
     conn
     |> put_character(character)

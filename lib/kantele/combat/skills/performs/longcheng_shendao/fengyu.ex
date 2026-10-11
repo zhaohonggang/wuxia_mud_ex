@@ -113,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.LongchengShendao.Fengyu do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 120}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，手中的如雨点一般向$n打去，$n如同小舟一般在刀雨中漂泊不定。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，手中的某物如雨点一般向$n打去，$n如同小舟一般在刀雨中漂泊不定。", n1: character.name)
 
     conn
     |> put_character(character)

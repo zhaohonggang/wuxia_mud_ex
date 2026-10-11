@@ -105,24 +105,20 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -136,9 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N撤剑转身向后一纵，似欲逃走，$n乘机挺剑上前，眼见$n即
-将得手，不料$N凌空回身反刺，直指$n。zigai-jiandodge$n心中一惊，虽知中计，但突如其来迅捷无比，已然闪避不及。
-neili然而$n眼见已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。
-neili", n1: character.name)
+将得手，不料$N凌空回身反刺，某物直指$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -172,7 +166,7 @@ neili", n1: character.name)
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = if hit, do: Messages.interpolate("$n心中一惊，虽知中计，但突如其来迅捷无比，已然闪避不及。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n眼见已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n心中一惊，虽知中计，但突如其来迅捷无比，已然闪避不及。", n1: attacker.name, n2: character.name), else: Messages.interpolate("然而$n眼见某物已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

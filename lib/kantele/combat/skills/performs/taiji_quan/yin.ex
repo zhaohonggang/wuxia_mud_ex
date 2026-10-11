@@ -94,24 +94,18 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你的太极拳等级不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你的太极拳等级不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,10 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手一圈，施出「引」字诀，如抱太极，一股雄浑无比的力道组成了一个旋涡，圈向$n。
-neiliunarmedparryneili$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。
-$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手一圈，施出「引」字诀，如抱太极，一股雄浑无比的力道组成了一个旋涡，圈向$n。", n1: character.name)
 
     conn
     |> put_character(character)

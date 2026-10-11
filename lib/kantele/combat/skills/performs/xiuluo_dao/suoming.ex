@@ -130,7 +130,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoDao.Suoming do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N脸上杀气大盛，一振手中的，唰唰数刀将$n团团裹住！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N脸上杀气大盛，一振手中的某物，唰唰数刀将$n团团裹住！", n1: character.name)
 
     conn
     |> put_character(character)

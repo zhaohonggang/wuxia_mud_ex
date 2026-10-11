@@ -122,7 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 250}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N双目微闭，单手在上轻轻拨动，顿时只听“啵啵啵”破空之声连续不断，数股破
+    conn = Broadcast.publish(conn, "只见$N双目微闭，单手在某物上轻轻拨动，顿时只听“啵啵啵”破空之声连续不断，数股破
 体无形剑气激射而出，直奔$n而去。", n1: character.name)
 
     conn

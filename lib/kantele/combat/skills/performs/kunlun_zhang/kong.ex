@@ -94,25 +94,19 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你两只手都拿着武器，怎么施展\n"}
+    #   {:error, "你昆仑掌法等级不够，难以施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你两只手都拿着武器，怎么施展\n"}
-      false -> {:error, "你昆仑掌法等级不够，难以施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,10 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然施出昆仑掌法绝技「日入空山」，一掌猛然拍出，掌影重重叠叠，笼罩$n四面八方。
-strikeparryneili$n只见$P的无数掌影向自己压来，一时不知该如何抵挡，顿时连中数招，无暇反击。
-可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。
-neili", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然施出昆仑掌法绝技「日入空山」，一掌猛然拍出，掌影重重叠叠，笼罩$n四面八方。", n1: character.name)
 
     conn
     |> put_character(character)

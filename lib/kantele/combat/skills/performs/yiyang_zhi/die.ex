@@ -107,14 +107,11 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -125,26 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     vitals = %{vitals | neili: vitals.neili - 80}
     vitals = %{vitals | neili: 0}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "突然间weapon$N单指一扬，径点$n持着的手腕上「腕骨」、「阳谷」、「养老」三穴。
-fingerforce霎时间$n只觉得手腕一麻，手中再也拿持不住，脱手掉在地上。
-
-紧接着neili可是$n将手中转动如轮，终于化解了这一招。
-
-紧接着neili$N凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭$n胸口！
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-yiyang-zhi/die可是$p镇定自如，全力化解了$P这精妙的一指。
-fingerdodge
-接着$N踏前一步，体内真气迸发，隔空一指劲点$n而去，指气纵横，嗤然作响！
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-yiyang-zhi/die可是$p镇定自如，全力化解了$P这精妙的一指。
-fingerforce
-最后$N一声猛喝，单指“嗤”的一声点出，纯阳指力同时笼罩$n全身诸多要穴！
-结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
-yiyang-zhi/die可是$p镇定自如，全力化解了$P这精妙的一指。
-yiyang-zhi/dieneili
-$n被$N三指连中，全身真气涣散，宛如黄河决堤，内力登时狂泻而出。
-
-neilineiliyiyang-zhi/dieneili你只觉丹田内竟似空空如也，一时说不出的难受。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然间", n1: character.name)
 
     conn
     |> put_character(character)
@@ -178,7 +156,7 @@ neilineiliyiyang-zhi/dieneili你只觉丹田内竟似空空如也，一时说不
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = if hit, do: Messages.interpolate("结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n将手中转动如轮，终于化解了这一招。
+    result = if hit, do: Messages.interpolate("结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$n将手中某物转动如轮，终于化解了这一招。
 
 紧接着", n1: attacker.name, n2: character.name)
     conn

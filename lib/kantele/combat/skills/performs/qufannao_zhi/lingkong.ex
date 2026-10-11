@@ -90,23 +90,19 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,12 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N默念佛经，只见手指微动，几道指气急射向$n，意欲以指力击晕$n。
-forcefingerqufannao-zhineiliforcedodgeparryqufannao-zhiqiqineili$n受到$N的指力透击，闷哼一声，看上去很是疲惫。
-$n被$N的指力反击，只觉得胸中烦闷，只想好好休息休息。
-$n被$N以指力一震，脑中嗡嗡作响，意识开始模糊起来！
-$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！
-可是$p看破了$P的企图，并没有上当。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N默念佛经，只见手指微动，几道指气急射向$n，意欲以指力击晕$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -138,18 +129,24 @@ $n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事�
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-  #   target->receive_wound("qi", damage / 6)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
-    _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+          vitals = Vitals.wound(vitals, :qi, div(damage, 6))
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 4)
-    result = Messages.interpolate("$n受到$N的指力透击，闷哼一声，看上去很是疲惫。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n受到$N的指力透击，闷哼一声，看上去很是疲惫。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的企图，并没有上当。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

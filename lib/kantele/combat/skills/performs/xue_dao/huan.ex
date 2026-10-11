@@ -99,24 +99,20 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对。\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "血刀刀法「幻影」只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "血刀刀法「幻影」只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,9 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！
-neilicombat_expcombat_exp结果$p被$P闹个手忙脚乱，只能紧守门户，不敢擅动！
-blade可是$p看破了$P的企图，并不慌张，应对自如。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出血刀刀法绝技，把手中的某物舞得飞快，幻起层层刀影逼向$n！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,11 +144,13 @@ blade可是$p看破了$P的企图，并不慌张，应对自如。", n1: charact
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    result = Messages.interpolate("$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$N使出血刀刀法绝技，把手中的某物舞得飞快，幻起层层刀影逼向$n！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

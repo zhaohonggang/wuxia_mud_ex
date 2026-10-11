@@ -33,15 +33,12 @@ defmodule Kantele.Combat.Skills.Performs.BiyunXinfa.Powerup do
   defp check_gates(character), do: check_other(character)
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能用碧云心法来提升自己的战斗力。\n"}
+    #   {:error, "你已经在运功中了。\n"}
+    #   {:error, "你的内力不够。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能用碧云心法来提升自己的战斗力。\n"}
-      false -> {:error, "你已经在运功中了。\n"}
-      false -> {:error, "你的内力不够。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

@@ -83,26 +83,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
-      false -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之\n"}
-      false -> {:error, "对方没有使用武器，不能使用圣火令法之\n"}
+      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -115,9 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "突然$N诡异的一笑，使出圣火令法之吸焰令，手中幻出数个小圈，将$n的紧紧缠住。
-swordparryneili$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中已被$N纳入怀中！
-neili可是$n看破$N的企图，将手中兵刃挥舞得密不透风，使得$N无从下手。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然$N诡异的一笑，使出圣火令法之吸焰令，手中某物幻出数个小圈，将$n的某物紧紧缠住。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -144,7 +136,7 @@ neili可是$n看破$N的企图，将手中兵刃挥舞得密不透风，使得$N
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 240, 4)
-    result = Messages.interpolate("$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中已被$N纳入怀中！", n1: attacker.name, n2: character.name)
+    result = Messages.interpolate("$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中某物已被$N纳入怀中！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -104,25 +104,21 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方现在什么也看不见，放胆攻击吧。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方现在什么也看不见，放胆攻击吧。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -135,13 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声阴笑，揉身而上，左手两指并拢，手臂暴长，迅捷异常分刺$n的双目！
-$N一声阴笑，揉身而上，手中一振，剑尖一点暴长，分刺$n左右双目！
-sworddodgeparrydodgeneili$n情急智生，抬手也向$N的右眼刺去，迫得$P回剑跃开。
-neiliblock_msg/allcimu_end$n只觉双目一阵剧痛，眼前一黑，就什么也看不见了，顿时长声痛极而呼。
-block_msg/all$N抹了抹流着的鲜血，终于能看见了。
-你终于抹掉了眼前的鲜血，能看见了。
-block_msg/all", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声阴笑，揉身而上，左手两指并拢，手臂暴长，迅捷异常分刺$n的双目！", n1: character.name)
 
     conn
     |> put_character(character)

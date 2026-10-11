@@ -91,24 +91,20 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你必须手持兵刃才能施展晴空万里！\n"}
+      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展晴空万里！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    #   {:error, "晴空万里只能对战斗中的对手使用。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      false -> {:error, "晴空万里只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -120,9 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怀抱，一圈圈的划向$n，将$p卷在当中！
-neilinever-defeatedmartial-cognizeparrymartial-cognizeneiliforcelimbs要害$n连忙腾挪躲闪，然而“扑哧”一声，正好击中$p的，$p一声惨叫，连退数步。
-可是$p看破了$P的变化，见招拆招，没有受到任何伤害。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怀抱某物，一圈圈的划向$n，将$p卷在当中！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -140,19 +134,23 @@ neilinever-defeatedmartial-cognizeparrymartial-cognizeneiliforcelimbs要害$n连
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  # TODO(migrate) 目标侧结算：命中/闪避/伤害公式与文案需按原始源码（见文末）补齐。
-  #   target->receive_damage("qi", damage)  # UNSUPPORTED: unknown ident damage
-
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, damage)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 20, 2)
-    result = Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，正好击中$p的，$p一声惨叫，连退数步。", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，某物正好击中$p的某物，$p一声惨叫，连退数步。", n1: attacker.name, n2: character.name), else: Messages.interpolate("可是$p看破了$P的变化，见招拆招，没有受到任何伤害。", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

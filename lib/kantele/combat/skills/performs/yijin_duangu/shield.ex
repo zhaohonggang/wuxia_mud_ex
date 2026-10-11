@@ -49,7 +49,7 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
         {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
 
       Stats.mapped(stats, "whip") != "yinlong-bian" ->
-        {:error, "TODO(migrate) 未激发/未准备 yinlong-bian。\n"}
+        {:error, "TODO(migrate) 未激发 yinlong-bian。\n"}
 
       true ->
         :ok
@@ -66,13 +66,10 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你只能用易筋锻骨来提升自己的防御力。\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你只能用易筋锻骨来提升自己的防御力。\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do

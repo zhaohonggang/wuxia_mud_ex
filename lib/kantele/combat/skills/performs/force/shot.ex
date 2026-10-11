@@ -60,13 +60,13 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
         {:error, "你的内功修为不够。\n"}
 
       Stats.mapped(stats, "force") != "huaxue-shengong" ->
-        {:error, "TODO(migrate) 未激发/未准备 huaxue-shengong。\n"}
+        {:error, "TODO(migrate) 未激发 huaxue-shengong。\n"}
 
       Stats.mapped(stats, "force") != "shennong-xinjing" ->
-        {:error, "TODO(migrate) 未激发/未准备 shennong-xinjing。\n"}
+        {:error, "TODO(migrate) 未激发 shennong-xinjing。\n"}
 
       Stats.mapped(stats, "force") != "xiuluo-yinshagong" ->
-        {:error, "TODO(migrate) 未激发/未准备 xiuluo-yinshagong。\n"}
+        {:error, "TODO(migrate) 未激发 xiuluo-yinshagong。\n"}
 
       true ->
         :ok
@@ -83,13 +83,10 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -99,10 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N一声冷笑，默运内劲，手指粘住对准$n「嗖」的弹射了出去。
-neilimax_neilineilimax_neilineili然而$n全然不放在心上，轻轻一抖，已将$N射来的毒素尽数震落。
-forcepoisonthrowingdodgeparrymartial-cognize$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。
-poison_typepoison可是$n见势不妙，急忙腾挪身形，终于避开了$N的弹毒攻击。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷笑，默运内劲，手指粘住某物对准$n「嗖」的弹射了出去。", n1: character.name)
 
     conn
     |> put_character(character)

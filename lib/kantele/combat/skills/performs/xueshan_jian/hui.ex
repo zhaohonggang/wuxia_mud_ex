@@ -102,24 +102,20 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    combat = character.meta.combat
 
     cond do
-      false -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -130,9 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N回剑旋舞，一式「风回雪舞」施出，剑势连绵不绝，呼啸而至，欲图将$n缠裹其中。
-neili$n只觉重重剑影铺天盖地向自己撒来，顿被攻了个手忙脚乱，不知如何应对。
-可是$p看破了$P的企图，镇定逾恒，全神应对自如。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N回剑旋舞，一式「风回雪舞」施出，剑势连绵不绝，呼啸而至，欲图将$n缠裹其中。", n1: character.name)
 
     conn
     |> put_character(character)

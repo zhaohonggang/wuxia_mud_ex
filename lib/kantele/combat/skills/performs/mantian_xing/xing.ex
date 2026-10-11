@@ -92,25 +92,19 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你现在手中没有拿着暗器，难以施展\n"}
+    #   {:error, "至少要有十五枚暗器才能施展\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你现在手中没有拿着暗器，难以施展\n"}
-      false -> {:error, "至少要有十五枚暗器才能施展\n"}
-      true -> :ok
-    end
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
-    stats = character.meta.stats
+    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：
+    #   {:error, "你所使用的外功中没有这种功能。\n"}
+    #   {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    :ok
 
-    cond do
-      false -> {:error, "你所使用的外功中没有这种功能。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
-    end
   end
 
   defp apply_effect(conn, character) do
@@ -123,18 +117,8 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
-霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！
-combat_expcombat_expparrythrowing结果$n一声惨叫，同时中了$Pbase_unit，直感两耳轰鸣，目不视物。
-jialifeixingapply/attackapply/dodgeapply/parryqiqiqimax_qi( $n )
-你现在要穴受到重损，乃至全身乏力，提不上半点力道！
-你心知刚才这招已打中对方要寒，不禁暗自冷笑。
-back$n集中生智，双手画圈回旋挥舞，拨弄开了要害处的杀着，可还是受了点轻伤。
-qiqiqimax_qi( $n )
-你只觉全身几处一阵刺痛，知道自己虽被击中，但却是避开了要穴。
-可是$n小巧腾挪，好不容易避开了$N铺天盖地的攻击。
-apply/attackapply/dodgeapply/parry渐渐的你觉得力气一丝丝的恢复了。
-feixing", n1: character.name)
+    conn = Broadcast.publish(conn, "$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中某物尽数凌空射出。
+霎时破空声骤响，某物便如同陨星飞坠一般，笼罩$n各处大穴！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -155,18 +139,23 @@ feixing", n1: character.name)
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, 150)
-        vitals = Vitals.wound(vitals, :qi, 50)
-        vitals = Vitals.damage(vitals, :qi, 100)
-        vitals = Vitals.wound(vitals, :qi, 40)
+    if hit do
+          vitals = Vitals.damage(vitals, :qi, 150)
+          vitals = Vitals.wound(vitals, :qi, 50)
+          vitals = Vitals.damage(vitals, :qi, 100)
+          vitals = Vitals.wound(vitals, :qi, 40)
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    result = Messages.interpolate("$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
-霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！", n1: attacker.name, n2: character.name)
+    result = if hit, do: Messages.interpolate("$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中某物尽数凌空射出。
+霎时破空声骤响，某物便如同陨星飞坠一般，笼罩$n各处大穴！", n1: attacker.name, n2: character.name), else: Messages.interpolate("$n躲过了$N的攻击！", n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
