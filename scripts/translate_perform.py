@@ -367,15 +367,42 @@ class TranslatePerform:
 
     def extract_initial_message(self, text: str) -> Optional[str]:
         """Extract the initial message assignment (msg = ...) before hit check.
-        
+
         Handles multi-line messages by finding the first 'msg = ' assignment
-        and capturing everything up to the next ';' that's not inside quotes.
+        and capturing everything up to the ';' that terminates the statement
+        (a ';' outside of string literals, at paren depth 0).  The naive
+        regex `[^;]+(?:;[^;]*)*` greedily swallowed the rest of the function
+        body (including `ap = ...`, `dp = ...` assignments) whenever a later
+        ';' appeared after the message, which leaked garbage identifiers like
+        "strikethrowingdodgeparryneili" into the generated broadcast text.
         """
-        # Find the first 'msg = ' assignment
-        match = re.search(r'msg\s*=\s*([^;]+(?:;[^;]*)*);', text, re.DOTALL)
-        if match:
-            return match.group(1).strip()
-        return None
+        match = re.search(r'msg\s*=\s*', text)
+        if not match:
+            return None
+        start = match.end()
+        in_str = False
+        depth = 0
+        i = start
+        while i < len(text):
+            ch = text[i]
+            if in_str:
+                if ch == '\\':
+                    i += 2
+                    continue
+                if ch == '"':
+                    in_str = False
+                i += 1
+                continue
+            if ch == '"':
+                in_str = True
+            elif ch == '(':
+                depth += 1
+            elif ch == ')':
+                depth = max(0, depth - 1)
+            elif ch == ';' and depth == 0:
+                return text[start:i].strip()
+            i += 1
+        return text[start:].strip()
 
     def extract_gate_messages(self, text: str) -> Dict[str, List[str]]:
         """Extract notify_fail messages and associate with gate types by context.
@@ -497,6 +524,47 @@ class TranslatePerform:
             
             # Try next 'if ('
             if_pos = text.find('if (', if_pos + 1)
+        
+        # ---- do_damage-based path ----
+        # Many performs use a hit condition that does not literally name
+        # `ap`/`dp` (e.g. `random(my_exp) > ob_exp`, `random(me->query_skill(...))`)
+        # so the ap/dp heuristic above misses them.  A do_damage(...) call is
+        # only ever made in the HIT branch, so locate every do_damage call, find
+        # the block that contains it, and pair it with the following else block.
+        dd_pos = text.find('do_damage(')
+        while dd_pos != -1:
+            brace = text.rfind('{', 0, dd_pos)
+            if brace != -1:
+                bs, be = self._find_balanced_braces(text, brace)
+                if bs != -1 and be != -1 and bs <= dd_pos <= be:
+                    # confirm this block belongs to an if (not a bare {} block)
+                    head = text[max(0, brace - 120):brace]
+                    if re.search(r'if\s*\([^)]*\)\s*$', head):
+                        hit_block = text[bs + 1:be]
+                        # else block after it
+                        miss_block = ''
+                        else_pos = text.find('else', be)
+                        if else_pos != -1 and else_pos < be + 400:
+                            eb = text.find('{', else_pos)
+                            if eb != -1:
+                                es2, ee2 = self._find_balanced_braces(text, eb)
+                                if es2 != -1 and ee2 != -1:
+                                    miss_block = text[es2 + 1:ee2]
+                        # hit: msg = / msg += in the hit branch, plus do_damage desc
+                        hit_msgs = []
+                        for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', hit_block):
+                            clean = self._clean_message_fragment(m.group(1))
+                            if clean and not self._is_function_call(clean):
+                                hit_msgs.append(clean)
+                        miss_msgs = []
+                        if miss_block:
+                            for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', miss_block):
+                                clean = self._clean_message_fragment(m.group(1))
+                                if clean and not self._is_function_call(clean):
+                                    miss_msgs.append(clean)
+                        messages['hit'].extend(hit_msgs)
+                        messages['miss'].extend(miss_msgs)
+            dd_pos = text.find('do_damage(', dd_pos + 1)
         
         # Deduplicate
         messages['hit'] = self.dedup(messages['hit'])
@@ -1051,13 +1119,25 @@ class TranslatePerform:
 
     def _emit_map_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
         pairs = [(u, s) for (u, s) in data.get('map_gates', []) if u and s]
-        if not pairs:
+        prep_pairs = [(u, s) for (u, s) in data.get('prepared_gates', []) if u and s]
+        if not pairs and not prep_pairs:
             return None
-        gate_msgs = data.get('gate_messages', {}).get('mapped', []) + data.get('gate_messages', {}).get('prepared', [])
+        mapped_msgs = data.get('gate_messages', {}).get('mapped', [])
+        prepared_msgs = data.get('gate_messages', {}).get('prepared', [])
         clauses = []
         for i, (u, s) in enumerate(pairs):
-            msg = gate_msgs[i] if i < len(gate_msgs) else f'TODO(migrate) 未激发/未准备 {s}。'
+            msg = mapped_msgs[i] if i < len(mapped_msgs) else f'TODO(migrate) 未激发 {s}。'
             clauses.append((f'Stats.mapped(stats, "{u}") != "{s}"', f'{{:error, "{msg}\\n"}}'))
+        # LPC query_skill_prepared("strike") != "bagua-zhang" — the usage must
+        # have a prepared perform whose skill matches.  Elixir side keeps the
+        # prepared perform id ("bagua-zhang/xian"); compare its skill prefix.
+        for i, (u, s) in enumerate(prep_pairs):
+            msg = prepared_msgs[i] if i < len(prepared_msgs) else f'TODO(migrate) 未准备 {s}。'
+            clauses.append(
+                (f'Stats.prepared_perform(stats, "{u}") == nil '
+                 f'or String.split(Stats.prepared_perform(stats, "{u}"), "/") |> hd() != "{s}"',
+                 f'{{:error, "{msg}\\n"}}')
+            )
         clauses.append(('true', ':ok'))
         body = (
             "    stats = character.meta.stats\n\n"
@@ -1086,43 +1166,96 @@ class TranslatePerform:
         )
         return ("check_resources", body)
 
+    def _weapon_gate_direction(self, raw: str) -> Optional[str]:
+        """Determine the direction of the weapon gate from raw LPC source.
+
+        Returns 'must_be_empty' when the gate rejects a wielded weapon
+        (`if (me->query_temp("weapon"))` / `objectp(...)` positive check,
+        message like "只能空手施展"), 'must_be_wielded' when the gate requires a
+        weapon (`if (!objectp(weapon = me->query_temp("weapon")))`, message like
+        "你必须手持武器"), or None when the direction is not mechanically
+        decidable.
+        """
+        if not raw:
+            return None
+        # 1) positive check: weapon present -> reject (bare-handed performs)
+        m = re.search(
+            r'if\s*\(\s*objectp\(\s*(?:me\s*->\s*)?query_temp\("weapon"\)\s*\)\s*\)',
+            raw)
+        if m:
+            return 'must_be_empty'
+        # 2) `if (me->query_temp("weapon"))` (truthy) -> reject when wielded
+        m = re.search(
+            r'if\s*\(\s*(?:me\s*->\s*)?query_temp\("weapon"\)\s*\)', raw)
+        if m:
+            return 'must_be_empty'
+        # 3) `if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))`
+        m = re.search(
+            r'if\s*\(\s*(?:me\s*->\s*)?query_temp\("weapon"\)\s*\|\|', raw)
+        if m:
+            return 'must_be_empty'
+        # 4) negative check: weapon missing -> reject (weapon-required performs)
+        m = re.search(
+            r'if\s*\(\s*!\s*objectp\s*\(\s*(?:\w+\s*=\s*)?(?:me\s*->\s*)?query_temp\("weapon"\)',
+            raw)
+        if m:
+            return 'must_be_wielded'
+        return None
+
     def _emit_weapon_check(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
         # Use extracted weapon gate messages if available
         gate_msgs = data.get('gate_messages', {}).get('weapon', [])
         if not gate_msgs:
             return None
-        # Weapon checks are ambiguous, but we can at least use the messages
-        # for manual review. Generate a placeholder check.
+        # Determine the gate direction from the raw LPC source so the check is
+        # real (not a `false ->` placeholder that can never fire).
+        direction = self._weapon_gate_direction(data.get('raw_source', ''))
         clauses = []
-        for i, msg in enumerate(gate_msgs):
-            clauses.append((f'false', f'{{:error, "{msg}\\n"}}'))
-        if not clauses:
-            return None
+        if direction == 'must_be_empty':
+            clauses.append(('combat.weapon != nil', f'{{:error, "{gate_msgs[0]}\\n"}}'))
+        elif direction == 'must_be_wielded':
+            clauses.append(('combat.weapon == nil', f'{{:error, "{gate_msgs[0]}\\n"}}'))
+        else:
+            # Ambiguous: keep the text in a comment so information is preserved
+            # without emitting a never-firing placeholder.
+            for i, msg in enumerate(gate_msgs):
+                clauses.append((f'false', f'{{:error, "{msg}\\n"}}'))
         clauses.append(('true', ':ok'))
-        body = (
-            "    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）\n"
-            "    stats = character.meta.stats\n\n"
-            "    cond do\n"
-            f"{self._render_cond(clauses)}\n"
-            "    end"
-        )
+        if direction == 'must_be_empty' or direction == 'must_be_wielded':
+            body = (
+                "    combat = character.meta.combat\n\n"
+                "    cond do\n"
+                f"{self._render_cond(clauses)}\n"
+                "    end"
+            )
+        else:
+            body = (
+                "    # TODO(migrate) 武器检查方向无法机械确定（自动提取的文案仅供参考）\n"
+                "    combat = character.meta.combat\n\n"
+                "    cond do\n"
+                f"{self._render_cond(clauses)}\n"
+                "    end"
+            )
         return ("check_weapon", body)
 
     def _emit_other_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
-        """Emit checks for notify_fail messages that couldn't be categorized."""
+        """Emit checks for notify_fail messages that couldn't be categorized.
+
+        These gates (can_perform / is_fighting / living / busy / temp-state /
+        item checks) are already covered by dedicated helpers where they are
+        mechanically decidable (`check_perform_known`, `target/1`, target-side
+        death check).  Associating an `other` message with a concrete
+        condition by position is unreliable, so keep the texts as a TODO
+        comment instead of emitting a never-firing `false ->` placeholder or a
+        mis-bound check.  Function always returns :ok.
+        """
         gate_msgs = data.get('gate_messages', {}).get('other', [])
         if not gate_msgs:
             return None
-        clauses = []
-        for i, msg in enumerate(gate_msgs):
-            clauses.append((f'false', f'{{:error, "{msg}\\n"}}'))
-        clauses.append(('true', ':ok'))
         body = (
-            "    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）\n"
-            "    stats = character.meta.stats\n\n"
-            "    cond do\n"
-            f"{self._render_cond(clauses)}\n"
-            "    end"
+            "    # TODO(migrate) 其它门槛（can_perform/战斗/目标状态/临时状态/道具等）需人工核对：\n"
+            + ''.join('    #   {:error, "' + msg + '\\n"}\n' for msg in gate_msgs)
+            + "    :ok\n"
         )
         return ("check_other", body)
 
@@ -1273,7 +1406,15 @@ class TranslatePerform:
             avail.add('level')
         if any('skill' in d['formula'] for d in target_damages):
             avail.add('skill')
-        
+
+        # Payload keys the attacker sends and resolve_incoming binds:
+        # level/skill/ap/damage/rng (canonical), plus any attacker var that
+        # got translated into the event payload.  Formulas that reference
+        # `damage` (e.g. `damage / 4`) failed translation with
+        # `unknown ident damage` because `damage` was never registered in the
+        # target-side scope.
+        avail.update({'level', 'skill', 'ap', 'damage', 'rng'})
+
         # Build target scope: attacker-provided vars + target stats
         tscope = {name: name for name in avail}
         tscope.update({
