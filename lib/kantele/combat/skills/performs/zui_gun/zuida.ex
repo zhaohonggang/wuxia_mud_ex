@@ -140,7 +140,8 @@ defmodule Kantele.Combat.Skills.Performs.ZuiGun.Zuida do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出少林醉棍的绝技「八仙醉打」，臂力陡然增加, 身法陡然加快！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出少林醉棍的绝技「八仙醉打」，臂力陡然增加, 身法陡然加快！
+zui-gundrunkstrdexstrdexzg_zuidaremove_effectneilizg_zuidastrdexzg_zuida你的「八仙醉打」运功完毕，将内力收回丹田。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     cond do
       false -> {:error, "「海市蜃楼」只能在战斗中对对手使用。\n"}
       false -> {:error, "你不会使用「海市蜃楼」这一绝技！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,12 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N狂喝一声，手中将到之际，突然圈转，使出三分剑术的独得之秘「海市蜃楼」，一招之中
-又另蕴涵三招，招式繁复狠辣，剑招虚虚实实，霍霍剑光径直逼向$n！", n1: character.name)
+又另蕴涵三招，招式繁复狠辣，剑招虚虚实实，霍霍剑光径直逼向$n！
+
+neilisworddodge$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。
+
+$N见$n重创之下不禁破绽迭出，冷笑一声，手中挥洒，又攻出一剑，正中$p胸口。
+$n见状身形急退，避开了$N凌厉的攻击！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,11 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Fen do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N体内先天真气急速运转，单掌一抖，掌心顿时升起一个气团，朝$n猛拍而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N体内先天真气急速运转，单掌一抖，掌心顿时升起一个气团，朝$n猛拍而去。
+unarmedforceparryforcemax_neilimax_neili$n正直诧异间，$N一掌已正中$p脑门，先天真气登时贯脑而入。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)
+neili结果$N这掌正中$n胸口，先天真气登时透体而入，接连喷出数口鲜血。
+neili可是$p识破了$P这一招，斜斜一跃躲避开来。", n1: character.name)
 
     conn
     |> put_character(character)

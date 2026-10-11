@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N蓦地将往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N蓦地将往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。
+swordforceforceneili可是$n内力深厚，使得$P这一招没有起到任何作用。
+neilidamo-jiandamo_zheyuanlevelididdurationjingjing突然$n只觉丹田忽然一热，随即变得冷冰冰，不禁大惊失色。", n1: character.name)
 
     conn
     |> put_character(character)

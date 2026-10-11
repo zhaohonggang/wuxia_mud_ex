@@ -114,6 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,9 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出软红蛛索「盘鹰」诀，手腕轻轻一抖，顿时鞭影重重，完全笼罩$n四周！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出软红蛛索「盘鹰」诀，手腕轻轻一抖，顿时鞭影重重，完全笼罩$n四周！
+combat_expcombat_exp$n微作诧异，一时勘破不透$N招中奥妙，顿被攻了个措手不及！
+ruanhong-zhusuo可是$p看破了$P的企图，小心应对，并没有上当。", n1: character.name)
 
     conn
     |> put_character(character)

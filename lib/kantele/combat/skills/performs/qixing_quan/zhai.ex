@@ -95,6 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,10 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 30}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N双拳挥出，施出绝招「摘星式」，刚劲有力，部位极准，分袭$n面门和胸口。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双拳挥出，施出绝招「摘星式」，刚劲有力，部位极准，分袭$n面门和胸口。
+qixing-quan$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。
+neili$n不慌不忙，以快打快，将$N这招化去。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

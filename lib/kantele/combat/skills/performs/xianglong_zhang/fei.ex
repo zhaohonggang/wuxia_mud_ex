@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -115,7 +116,10 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出降龙十八掌「飞龙在天」，双掌翻滚，宛如一条神龙攀蜒于九天之上。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出降龙十八掌「飞龙在天」，双掌翻滚，宛如一条神龙攀蜒于九天之上。
+strikestrparrydex$n面对$N这排山倒海般的攻势，完全无法抵挡，招架散乱，连连退后。
+$n心底微微一惊，心知不妙，急忙凝聚心神，竭尽所能化解$N数道掌力。
+apply/attackapply/unarmed_damageneiliapply/attackapply/unarmed_damage", n1: character.name)
 
     conn
     |> put_character(character)

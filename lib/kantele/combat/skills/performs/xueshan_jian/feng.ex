@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Feng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Feng do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只听$N一声清啸，手中龙吟不止，迸出万道光华，疾闪而过，无数劲风席卷$n而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "只听$N一声清啸，手中龙吟不止，迸出万道光华，疾闪而过，无数劲风席卷$n而去！
+swordforcedodgeparryneili$n只感寒风袭体，全身一阵冰凉，已被$N剑气所伤。顿时喉咙一甜，喷出一大口鲜血。
+neili可是$n看破$N的招数，飞身跃开丈许，终于将这阴寒剑气驱于无形。", n1: character.name)
 
     conn
     |> put_character(character)

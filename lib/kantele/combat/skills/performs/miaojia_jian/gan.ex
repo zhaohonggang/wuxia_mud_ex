@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -134,7 +135,11 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Gan do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝聚内力，手中迸出万道光华，蓦然间破空声骤响，竟离手射出，流星般向$n奔去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝聚内力，手中迸出万道光华，蓦然间破空声骤响，竟离手射出，流星般向$n奔去！
+sworddodge$n顿时大惊失色，只觉胸口处一凉，那柄竟然已经穿胸透过，带出一蓬血雨！
+neili$n见来势汹涌，心知绝不可挡，当即向后横移数尺，终于躲闪开来。
+neilimiaojia-jian只见余势不尽，又向前飞出数丈，方才没入土中。
+然而$N身形一展，登时跃出数丈，掌出如风，将射出的又抄回手中。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     cond do
       false -> {:error, "「韦陀伏魔」只能在战斗中对对手使用。\n"}
       false -> {:error, "你还没有受过高人指点，无法施展「韦陀伏魔」。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,7 +136,10 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的轻旋，恍惚中显出佛家韦陀神像，
-神光四射，笼罩住$n！", n1: character.name)
+神光四射，笼罩住$n！
+shen$n平日作恶不少，见了此情此景，心中不禁颤然！
+clubforceneili结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！
+neili可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,8 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双掌齐出，幻化出无数掌影，将$n团团笼罩。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双掌齐出，幻化出无数掌影，将$n团团笼罩。neilidodge结果$p被$P压制的难以反击，只能竭力抵挡！
+可是$p身形一闪，跃出$P的掌力所及的范围。", n1: character.name)
 
     conn
     |> put_character(character)

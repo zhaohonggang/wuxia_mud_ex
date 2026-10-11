@@ -53,6 +53,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tui do
 
     cond do
       false -> {:error, "你的蛤蟆功修为不够精深，不能使用「推天式」！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "蛤蟆功「推天式」只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -69,7 +70,11 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N蹲在地上，“嗝”的一声大叫，双手弯与肩齐，平推而出，一股极大的力道如同排山倒海一般奔向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N蹲在地上，“嗝”的一声大叫，双手弯与肩齐，平推而出，一股极大的力道如同排山倒海一般奔向$n。
+forcemax_neiliforcemax_neiliyiyang-zhineili$n奋力低档，但是$P的来势何等浩大，$p登时觉得气血不畅，“哇”的吐出了一口鲜血。
+yiyang-zhineili然而$p哈哈一笑，随手一指刺出，正是一阳指的精妙招数，轻易的化解了$P的攻势。
+neili可是$n将内力运到双臂上，接下了$P这一推之式，只听“蓬”的一声，震得四周尘土飞扬。
+neilineilineili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,9 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深吸了一口气，提起全身的功力于双掌猛力拍出，只听得骨骼一阵爆响！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深吸了一口气，提起全身的功力于双掌猛力拍出，只听得骨骼一阵爆响！
+strikeforcelinji-zhuangjinding-zhang只见漫天掌影飘忽不定的罩向$n全身各个部位，$n顿时接连中了数掌！
+neili可是$p猛地向后一跃，跳出了$P的攻击范围。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -63,7 +63,8 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -72,9 +73,9 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "buddhism") < 200 -> {:error, "「大手印」只能在战斗中对对手使用。\n"}
-      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的佛法修为不足，无法施展该绝招！\n"}
-      Stats.skill(stats, "hand") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
+      Stats.skill(stats, "buddhism") < 200 -> {:error, "你的佛法修为不足，无法施展该绝招！\n"}
+      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
+      Stats.skill(stats, "hand") < 180 -> {:error, "你的大慈大悲手不够娴熟，不会使用「大手印」！\n"}
       true -> :ok
     end
   end
@@ -99,12 +100,23 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     end
   end
 
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "「大手印」只能在战斗中对对手使用。\n"}
+      true -> :ok
+    end
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "( $n )", n1: character.name)
+    conn = Broadcast.publish(conn, "( $n )
+neilidodgedodgeneili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -118,7 +118,26 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「乘风破浪」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「乘风破浪」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。
+forceunarmedmartial-cognizetaixuan-gongconneiliforcemartial-cognizecon你只觉眼前风沙飞扬，周围风声萧萧，一股内劲已经穿体而过。
+你只觉眼前风沙飞扬，周围风沙狂舞，猛然间只觉千万股内劲已穿体而过。
+qiqijingjingqimax_qi只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。
+(  )
+
+只见向后飞出丈远，重重的跌落在地上，衣衫破烂，再也无法站起来。
+(  )
+
+只见歪歪斜斜倒退几步，伏倒在地，痛苦不堪。。
+(  )
+
+狂风卷过，只见，飞沙狂舞，却动也动不了忽然间，却瘫软在地。
+(  )
+
+急忙飞身而起，却猛然坠地，伤痕遍体，鲜血不止。
+(  )
+
+visionneili你只觉风沙狂起，顿时运力抵抗，方才挡住这招。
+neilineili风沙骤停，却没有任何人受伤。", n1: character.name)
 
     conn
     |> put_character(character)

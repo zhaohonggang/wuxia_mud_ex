@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,8 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将横于胸前，内力贯于剑身，猛然间如一条长龙般挥出，霎时狂沙满天，令人匪夷所思。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将横于胸前，内力贯于剑身，猛然间如一条长龙般挥出，霎时狂沙满天，令人匪夷所思。swordneilidodge$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！
+可是$N镇定自若，小心拆招，没有被$n招式所困。", n1: character.name)
 
     conn
     |> put_character(character)

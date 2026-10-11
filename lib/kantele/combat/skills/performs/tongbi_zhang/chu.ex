@@ -96,6 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -109,7 +110,10 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N腾空而起，施展出绝招「孤雁出群」，犹如一只大雁临空而下，双掌猛地拍向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N腾空而起，施展出绝招「孤雁出群」，犹如一只大雁临空而下，双掌猛地拍向$n。
+strike但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。 
+neili$n见$N这掌拍来，内力充盈，只得向后一纵，才躲过这一掌。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

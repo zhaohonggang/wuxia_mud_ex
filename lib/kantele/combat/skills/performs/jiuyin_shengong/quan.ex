@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -102,6 +103,16 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     end
   end
 
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
+    end
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -111,7 +122,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，握拳击出，招式雄浑，难擢其威！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷哼，握拳击出，招式雄浑，难擢其威！
+unarmedcuffcuffmartial-cognizedodgedexmartial-cognizeneili只见$n不慌不忙，轻轻一闪，躲过了$N这一击！
+neili$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！", n1: character.name)
 
     conn
     |> put_character(character)

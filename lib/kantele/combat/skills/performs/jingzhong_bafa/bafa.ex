@@ -125,7 +125,10 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中的将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中的将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！
+bladeparry$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！
+jingzhong-bafa)$n心底微微一惊，打起精神小心接招。
+neiliapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

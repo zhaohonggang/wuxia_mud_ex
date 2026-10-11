@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Zhen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Zhen do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出太极拳「震」字诀，左手高，右手低，陡然回圈，企图以内力震伤$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出太极拳「震」字诀，左手高，右手低，陡然回圈，企图以内力震伤$n。
+neiliforceforceforce只见$N这一拳变化无方，气劲封了$n所有的退路，一拳正好命中。
+:内伤@?可是$p看破了$P的企图，并没有上当。", n1: character.name)
 
     conn
     |> put_character(character)

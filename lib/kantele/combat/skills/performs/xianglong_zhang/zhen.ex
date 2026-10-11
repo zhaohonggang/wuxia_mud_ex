@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Zhen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +120,10 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Zhen do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N施出降龙十八掌之「震惊百里」，全身真气鼓动，双掌如排山倒海般压向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出降龙十八掌之「震惊百里」，全身真气鼓动，双掌如排山倒海般压向$n。
+strikestrdodgedex$n只觉一股罡风涌至，根本不及躲避，$N双掌正中前胸，鲜血如箭般喷出。
+neili$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

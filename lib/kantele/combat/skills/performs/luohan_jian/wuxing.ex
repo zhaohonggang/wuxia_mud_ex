@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
 
     cond do
       false -> {:error, "「来去若无形」只能在战斗中使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,14 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身行突变，瞬间犹如分出无数身影闪电般的向$n攻去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身行突变，瞬间犹如分出无数身影闪电般的向$n攻去！
+neili  来字决！
+weapon    去字决！
+weapon      若字决！
+weapon        无字决！
+weapon          形字决！
+weapon            来去若无形    幻化无真境 
+apply/attackapply/damage", n1: character.name)
 
     conn
     |> put_character(character)

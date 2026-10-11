@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -113,7 +114,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N使出桃花岛狂风绝技，身法飘忽不定，足带风尘，掌携万钧，有若天仙！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出桃花岛狂风绝技，身法飘忽不定，足带风尘，掌携万钧，有若天仙！
+neilixuanfeng-tuifamily/family_name桃花岛apply/attackapply/unarmed_damageapply/attackapply/unarmed_damage", n1: character.name)
 
     conn
     |> put_character(character)

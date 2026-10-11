@@ -99,6 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你的百花错拳等级不够，难以施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,10 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N顿步沉身，双掌朝$n交错打出，掌锋拳影重重叠叠，正是一招「百花错乱」。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N顿步沉身，双掌朝$n交错打出，掌锋拳影重重叠叠，正是一招「百花错乱」。
+neiliunarmedparryneili$n只觉$N拳影重重，顿时眼花缭乱，连中数拳，被攻了个措手不及。
+$n只见$N拳势汹涌，不敢轻视，急忙凝神聚气，奋力化解开来。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

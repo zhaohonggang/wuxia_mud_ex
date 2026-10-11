@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,10 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N脚踏八卦四方之位，身形在全场游走不定，双掌随后紧拍而出，紧紧缠绕着$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N脚踏八卦四方之位，身形在全场游走不定，双掌随后紧拍而出，紧紧缠绕着$n。
+neiliforceyoushen-zhangforce$n顿时觉得呼吸不畅，全然被$N这股奇怪的力道所制，只得拼命运动抵挡。
+apply/attack$n深吸一口气，凝神抵挡，但见周围$N掌影重重，$p却是临危不乱，镇定拆招。
+apply/attack", n1: character.name)
 
     conn
     |> put_character(character)

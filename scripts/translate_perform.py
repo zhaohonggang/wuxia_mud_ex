@@ -366,8 +366,13 @@ class TranslatePerform:
             return messages
 
     def extract_initial_message(self, text: str) -> Optional[str]:
-        """Extract the initial message assignment (msg = ...) before hit check."""
-        match = self.msg_initial_re.search(text)
+        """Extract the initial message assignment (msg = ...) before hit check.
+        
+        Handles multi-line messages by finding the first 'msg = ' assignment
+        and capturing everything up to the next ';' that's not inside quotes.
+        """
+        # Find the first 'msg = ' assignment
+        match = re.search(r'msg\s*=\s*([^;]+(?:;[^;]*)*);', text, re.DOTALL)
         if match:
             return match.group(1).strip()
         return None

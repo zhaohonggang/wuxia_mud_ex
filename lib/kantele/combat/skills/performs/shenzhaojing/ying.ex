@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,10 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N倏然跃近，无声无影击出一拳，去势快极，拳影重重叠叠，直袭$n而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N倏然跃近，无声无影击出一拳，去势快极，拳影重重叠叠，直袭$n而去。
+shenzhaojingforceconforceconneilishenzhaoleveljialijialiididduration$n见拳势变换莫测，只是微微一愣，已被$N一拳正中胸口，神照经内劲顿
+时便如山洪爆发一般，透体而入。
+$n见$N来势汹涌，急忙提气跃开。", n1: character.name)
 
     conn
     |> put_character(character)

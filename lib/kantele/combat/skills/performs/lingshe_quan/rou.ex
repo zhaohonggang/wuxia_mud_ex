@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
 
     cond do
       false -> {:error, "「柔字诀」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,10 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一拳打出，半途中手臂忽然不可思议的转了个圈子，打向$n，令$p防不胜防。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一拳打出，半途中手臂忽然不可思议的转了个圈子，打向$n，令$p防不胜防。
+cufftrainingdodgeforcecuffneili只见$n大吃一惊，仓皇之下不及闪躲，被$N一拳打了个正中，闷哼一声，连退数步！
+可是$p见机的快，连忙施展身法，避开了拳。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

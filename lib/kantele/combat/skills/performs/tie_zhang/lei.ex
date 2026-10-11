@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +120,10 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转真气施出「掌心雷」绝技，双掌翻红，有如火烧，朝$n猛然拍出。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转真气施出「掌心雷」绝技，双掌翻红，有如火烧，朝$n猛然拍出。
+strikestrparrycon结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。
+neili$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

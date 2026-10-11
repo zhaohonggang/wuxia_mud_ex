@@ -100,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "突然$N诡异的一笑，使出圣火令法之吸焰令，手中幻出数个小圈，将$n的紧紧缠住。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然$N诡异的一笑，使出圣火令法之吸焰令，手中幻出数个小圈，将$n的紧紧缠住。
+swordparryneili$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中已被$N纳入怀中！
+neili可是$n看破$N的企图，将手中兵刃挥舞得密不透风，使得$N无从下手。", n1: character.name)
 
     conn
     |> put_character(character)

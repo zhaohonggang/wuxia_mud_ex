@@ -99,6 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -108,7 +109,9 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将体内真气运于双掌之间，只见双掌微微泛出紫光，猛地拍向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将体内真气运于双掌之间，只见双掌微微泛出紫光，猛地拍向$n。
+strikeforceshengender女性neili可是$p眼明手快，侧身一跳$P已躲过$N这招。
+strikeshengender女性wudu_shenzhangleveljialijialiididdurationjing只见$n被$N一掌拍中，倒退几步，却见脸色已微微泛黑。", n1: character.name)
 
     conn
     |> put_character(character)

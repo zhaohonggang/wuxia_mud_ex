@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,9 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N双手回圈，慢慢的引动气流，正当$n吃惊间，$P双拳已陡然破空贯出。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N双手回圈，慢慢的引动气流，正当$n吃惊间，$P双拳已陡然破空贯出。
+neiliforceforcexuangong-quan$n急忙抽身躲避，可已然不及，被$N双拳捶个正中。
+:内伤@?可是$p看破了$P的企图，并没有上当。", n1: character.name)
 
     conn
     |> put_character(character)

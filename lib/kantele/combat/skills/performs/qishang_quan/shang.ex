@@ -100,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,11 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒喝一声，施出绝招「伤字诀」，双拳迅猛无比的袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怒喝一声，施出绝招「伤字诀」，双拳迅猛无比的袭向$n。
+cuffforceforceparryqishang-quanmax_neilijiuyang-shengongbuddhismmax_neiliqi七伤拳的反噬愈来愈强！
+neiliqi只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！
+可是$p奋力招架，硬生生的挡开了$P这一招。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

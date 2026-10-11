@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.XiangmoChu.Zhen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,8 @@ defmodule Kantele.Combat.Skills.Performs.XiangmoChu.Zhen do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声断喝，施出「镇魂舞」绝技，宝相庄严，气度万千。手中朝$n连续砸下。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声断喝，施出「镇魂舞」绝技，宝相庄严，气度万千。手中朝$n连续砸下。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，猛然间腾空而起，手中从天而降，气势惊人，犹如泰山压顶般地袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，猛然间腾空而起，手中从天而降，气势惊人，犹如泰山压顶般地袭向$n。
+staffparry$n完全无法看清招中虚实，只听「砰砰砰」几声，已被$N击中数杖。
+neili可是$n奋力招架，左闪右避，好不容易抵挡住了$N的攻击。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

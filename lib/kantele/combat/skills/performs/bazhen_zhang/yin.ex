@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.BazhenZhang.Yin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,9 @@ defmodule Kantele.Combat.Skills.Performs.BazhenZhang.Yin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝神沉履，积聚全身功力于一掌，携着雷霆之势奋力向$n胸前拍落。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝神沉履，积聚全身功力于一掌，携着雷霆之势奋力向$n胸前拍落。
+strikeparrystrikeneili结果$p招架不及，被$P一掌印在胸口，接连断了数根肋骨，喷出一大口鲜血！
+neili可是$p奋力招架，不露半点破绽，将$P这一招驱之于无形。", n1: character.name)
 
     conn
     |> put_character(character)

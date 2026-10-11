@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N桀桀怪笑，手指微微弯曲，倏的冲$n头顶抓下。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N桀桀怪笑，手指微微弯曲，倏的冲$n头顶抓下。
+阴险奸诈$N冷笑数声，手指微微弯曲成爪，飞向$n头顶抓下。
+光明磊落$N扬声吐气，手指微微弯曲成爪，奋力向$n头顶抓下。
+$N手指微微弯曲成爪，浑不经意的向$n头顶抓下。
+neiliclawparryforce$p急忙闪头，然而$N这招来得好快，正插中$p肩头，登时鲜血淋漓。
+neili$p暗叫不好，急忙闪头，可是$N手臂咔咔作响，忽然暴长，迅论无比的抓向$p。
+dodge$n哪里料到$N竟有如此变招，不及躲闪，肩头被$P抓了个鲜血淋漓。
+$n不及多想，急切间飘然而退，让$P这一招无功而返。", n1: character.name)
 
     conn
     |> put_character(character)

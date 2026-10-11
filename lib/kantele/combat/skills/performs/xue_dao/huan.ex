@@ -113,6 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "血刀刀法「幻影」只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -126,7 +127,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出血刀刀法绝技，把手中的舞得飞快，幻起层层刀影逼向$n！
+neilicombat_expcombat_exp结果$p被$P闹个手忙脚乱，只能紧守门户，不敢擅动！
+blade可是$p看破了$P的企图，并不慌张，应对自如。", n1: character.name)
 
     conn
     |> put_character(character)

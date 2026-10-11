@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
 
     cond do
       false -> {:error, "「三板斧」只能在战斗中使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,18 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     vitals = %{vitals | neili: vitals.neili - 70}
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N喝道：劈脑袋！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N喝道：劈脑袋！
+$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
+neili$p冷静非凡，丝毫不为这奇幻的招数所动，凝神抵挡，不漏半点破绽！
+neilidexparrydex
+$N喝道：鬼剔牙！
+$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
+neili$p冷静非凡，丝毫不为这奇幻的招数所动，凝神抵挡，不漏半点破绽！
+neilicondodgecon
+$N喝道：掏耳朵！
+$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
+neili$p冷静非凡，丝毫不为这奇幻的招数所动，凝神抵挡，不漏半点破绽！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

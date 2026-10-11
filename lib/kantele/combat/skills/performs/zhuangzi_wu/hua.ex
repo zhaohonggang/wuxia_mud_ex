@@ -111,7 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清啸，身形一展，舞步宛如行云流水、彩碟飞扬，速度变得异常敏捷。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，身形一展，舞步宛如行云流水、彩碟飞扬，速度变得异常敏捷。
+
+zhuangzi-wudrunkdexhua_dieremove_effectneilihua_diedexhua_die你的运行完毕，将内力收回丹田。", n1: character.name)
 
     conn
     |> put_character(character)

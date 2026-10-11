@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N长啸一声，使出破阳冷光剑绝招「神光再现」，手中光芒瀑涨，刺眼眩目，犹如神光降世，刹那间只觉得天地为之失辉，光芒已盖向$n
-。", n1: character.name)
+。neilidodge$n被耀眼的光芒所惑，心中惊疑不定，一时间不知如何应对！
+可是$n看破了$N的企图，一丝不乱，应对自若。", n1: character.name)
 
     conn
     |> put_character(character)

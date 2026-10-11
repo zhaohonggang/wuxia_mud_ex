@@ -89,9 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展\n"}
-      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.mapped(stats, "blade") != "yinyang-ren" ->
+        {:error, "你没有激发阴阳刃法，难以施展\n"}
+
+      Stats.mapped(stats, "sword") != "yinyang-ren" ->
+        {:error, "TODO(migrate) 未激发/未准备 yinyang-ren。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -120,6 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Huan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

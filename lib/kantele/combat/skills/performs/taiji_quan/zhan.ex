@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Zhan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,10 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Zhan do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N连消带打，双手成圆形击出，这正是太极拳「圆转不断」四字的精意。只
 见$N随即平圈、立圈、正圈、斜圈，一个跟着一个，一个个太极圆圈顿时笼
-罩$n四面八方。", n1: character.name)
+罩$n四面八方。
+unarmedparryneili$n登时便被套得跌跌撞撞，身不由主的立足不稳，犹如中酒昏迷。
+可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

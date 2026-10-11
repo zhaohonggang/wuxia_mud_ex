@@ -89,9 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展\n"}
-      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.mapped(stats, "blade") != "yinyang-ren" ->
+        {:error, "你没有激发阴阳刃法，难以施展\n"}
+
+      Stats.mapped(stats, "sword") != "yinyang-ren" ->
+        {:error, "TODO(migrate) 未激发/未准备 yinyang-ren。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -121,6 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +137,9 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 240}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中斜指苍天，猛然间招式突变，“呼呼”作响，一式「横空出世」，力劈虚空，气压群山，犹如风卷残云般地袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中斜指苍天，猛然间招式突变，“呼呼”作响，一式「横空出世」，力劈虚空，气压群山，犹如风卷残云般地袭向$n。
+swordyinyang-renswordbladeparryneili$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。
+neili可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: character.name)
 
     conn
     |> put_character(character)

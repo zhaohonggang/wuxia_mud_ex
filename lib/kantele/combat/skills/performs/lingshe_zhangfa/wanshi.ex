@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
     cond do
       false -> {:error, "「千蛇万噬」只能对战斗中的对手使用。\n"}
       false -> {:error, "你还不会使用「千蛇万噬」这一绝技。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,10 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 350}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N手持，直捣$n中宫。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手持，直捣$n中宫。
+staffparryneilipoison_applied/d/baituo/obj/lingshezhangsnake_poisonpoison_applied可是$p看破了$P的企图，一缩胸，急退三步，避开了这一招。
+neilijingjing哪知突然拐弯，绕到$p背后，重重地击在了$p的颈脖子上！
+$p“噗”地吐出一口鲜血，随即只觉脖颈一阵麻痒。", n1: character.name)
 
     conn
     |> put_character(character)

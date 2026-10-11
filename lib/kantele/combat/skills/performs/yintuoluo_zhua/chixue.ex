@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -132,7 +133,11 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转少林真气，双手忽成爪行，施出绝招「赤血连环爪」，迅猛无比地抓向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转少林真气，双手忽成爪行，施出绝招「赤血连环爪」，迅猛无比地抓向$n。
+max_neilimax_neilineili$n全身一颤，立足不稳，被$N这一爪抓得跌落在地上。
+neilieff_qieff_jing但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。
+neili$n奋力招架，竟将$N这招化解。
+neiliapply/attackapply/unarmed_damageapply/attackapply/unarmed_damage", n1: character.name)
 
     conn
     |> put_character(character)

@@ -88,10 +88,17 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展\n"}
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用\n"}
-      true -> :ok
+      Stats.mapped(stats, "blade") != "taixuan-gong" ->
+        {:error, "你还没有激发太玄功，无法施展\n"}
+
+      Stats.mapped(stats, "sword") != "taixuan-gong" ->
+        {:error, "你没有准备太玄功，无法使用\n"}
+
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" ->
+        {:error, "TODO(migrate) 未激发/未准备 taixuan-gong。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -122,6 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +139,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 600}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "霎时间$N只觉思绪狂涌，当即闭上双眼，再不理睬$n如何招架，只管施招攻出！此时侠客岛石壁上的千百种招式，转眼已从$N心底传向手足，尽数向$n袭去！", n1: character.name)
+    conn = Broadcast.publish(conn, "霎时间$N只觉思绪狂涌，当即闭上双眼，再不理睬$n如何招架，只管施招攻出！此时侠客岛石壁上的千百种招式，转眼已从$N心底传向手足，尽数向$n袭去！
+neilitaixuan-gong, 1dodgeapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

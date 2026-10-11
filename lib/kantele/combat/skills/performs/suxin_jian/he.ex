@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
 
     cond do
       false -> {:error, "双剑合璧只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +130,10 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N左手以全真剑法剑意，右手化玉女剑法剑招，双剑合璧同时刺出。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N左手以全真剑法剑意，右手化玉女剑法剑招，双剑合璧同时刺出。
+forceforceswordquanzhen-jianyunv-jianneili$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
+一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！
+可是$p看破了$P的企图，将自己的全身上下护得密不透风，令$P无计可施。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Kun do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +120,9 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Kun do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N轻叹一声，手中犹如金蛇般的缠向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N轻叹一声，手中犹如金蛇般的缠向$n。
+neilidodge一道金光闪过，$n已被$N攻的目不暇接，手忙脚乱！
+可是$n看破了$N的企图，镇定解招，一丝不乱。", n1: character.name)
 
     conn
     |> put_character(character)

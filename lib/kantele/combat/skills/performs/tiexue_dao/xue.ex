@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N杀气大盛，手中一振，顿时一道血光从刀锋闪过，将$n团团裹住。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N杀气大盛，手中一振，顿时一道血光从刀锋闪过，将$n团团裹住。
+bladeparry只听$n一声惨嚎，嗤啦一声，一股血柱自血色刀影中激射而出。
+neili可是$n眼明手快，奋力招架，将$N的招式全部挡开。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

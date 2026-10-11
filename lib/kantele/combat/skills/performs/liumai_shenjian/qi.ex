@@ -99,6 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -111,7 +112,13 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N中指一按，一股凌厉无伦的无形剑气直奔$n胸前射去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N中指一按，一股凌厉无伦的无形剑气直奔$n胸前射去。
+fingerforceweaponneiliskill_typepin$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！
+damageskill_typehammer$n横试图招架，怎奈这股剑气如此犀利，透过直震得$n狂吐鲜血，五脏六腑都要翻转过来！
+$n横转，挡在胸前，只听啪啦一声，碎成数截，激飞上天！
+$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。
+no_wield已经碎掉了，没法装备了。
+碎掉的value可是$p内功颇为深厚，轻轻将这道剑气化解于无形。", n1: character.name)
 
     conn
     |> put_character(character)

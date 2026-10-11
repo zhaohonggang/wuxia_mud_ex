@@ -111,7 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.SixiangBufa.Fei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N足尖轻点地面，凌空跃起，身形顿时变得飘忽不定，难以捉摸。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N足尖轻点地面，凌空跃起，身形顿时变得飘忽不定，难以捉摸。
+
+sixiang-bufadrunkdexfei_tianremove_effectneilifei_tiandexfei_tian你的运行完毕，将内力收回丹田。", n1: character.name)
 
     conn
     |> put_character(character)

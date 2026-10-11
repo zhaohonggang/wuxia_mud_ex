@@ -99,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
 
     cond do
       vitals.max_neili < 10 -> {:error, "你现在的真气不够，难以施展\n"}
-      vitals.neili < 600 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 600 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,7 +136,14 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "只见$N一声冷哼，以内劲催动，激荡出无形琴音，铮然大响，只听“啵”的
-一声破空之响，一束无形剑气澎湃射出，直贯$n而去。", n1: character.name)
+一声破空之响，一束无形剑气澎湃射出，直贯$n而去。
+只见$N一声冷哼，狂催内劲激荡出无形琴音，铮然大响，只听“啵”的一声破空之
+响，一束无形剑气澎湃射出，直贯$n而去。
+forceforcemax_neili$N这一招施出，可是$n竟像没事一般，丝毫无损。
+neilimax_neilimax_neili可是$n内力深厚，轻而易举受下$N这一招，丝毫无损。
+neili可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。
+neilijingjing$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

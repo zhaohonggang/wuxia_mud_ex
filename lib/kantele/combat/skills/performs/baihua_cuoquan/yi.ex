@@ -96,6 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,7 +107,11 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N大喝一声，双掌纷飞，擒拿手中夹着鹰爪功，左手查拳，右手绵掌。攻出去是
-八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，铺天盖地向$n狂涌而去。", n1: character.name)
+八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，铺天盖地向$n狂涌而去。
+
+unarmedstrparrydex$n只见$N运拳如奔，快拳缤纷递出，顿感头晕目眩，不知该如何抵挡。
+$n只见$N运拳如奔，快拳缤纷递出，连忙振作精神勉强抵挡。
+apply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

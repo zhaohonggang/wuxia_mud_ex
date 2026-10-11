@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.MurongJian.Xing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,8 @@ defmodule Kantele.Combat.Skills.Performs.MurongJian.Xing do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 210}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N使出慕容家绝技「剑转七星」，手中暗合北斗七星方位，忽伸忽缩，变化莫测！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出慕容家绝技「剑转七星」，手中暗合北斗七星方位，忽伸忽缩，变化莫测！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

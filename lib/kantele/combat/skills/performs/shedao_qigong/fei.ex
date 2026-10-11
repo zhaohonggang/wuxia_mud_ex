@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
 
     cond do
       false -> {:error, "你现在还不会使用飞仙术！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "蛇岛飞仙术只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -116,7 +117,10 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N怪叫一声，手中的一晃，化作数道光影飞向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怪叫一声，手中的一晃，化作数道光影飞向$n！
+$N口中念念有词，手中的越使越快，渐渐形成一团光芒，笼罩了$n！
+$N怪笑两声，欺身近来，步法极其怪异，手中的忽然击出，一连数招逼向$n！
+neilishedao-qigongapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

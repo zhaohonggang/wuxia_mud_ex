@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,14 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝聚一阳指诀功力，陡然点出一指，变化多端，巧逼$n诸处大穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝聚一阳指诀功力，陡然点出一指，变化多端，巧逼$n诸处大穴。
+fingerparry结果$p被$P逼得招架不迭，一时无法反击！
+fingerneili可是$p看破了$P的变化，小心招架，挡住了$P的进击。
+neilino_performdian_end$n只觉眼前寒芒一闪而过，随即全身一阵刺痛，几股血柱自身上射出。
+$p陡然间一提真气，竟发现周身力道竟似涣散一般，全然无法控制。
+no_perform$N深深吸入一口气，脸色由白转红，看起来好多了。
+你感到被扰乱的真气慢慢平静了下来。
+no_perform", n1: character.name)
 
     conn
     |> put_character(character)

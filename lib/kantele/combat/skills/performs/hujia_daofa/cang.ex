@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,10 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 220}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N轻舒猿臂，施出「战八方藏刀式」，手中的吞吞吐吐，变化莫测，笼罩了$n周身要害！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N轻舒猿臂，施出「战八方藏刀式」，手中的吞吞吐吐，变化莫测，笼罩了$n周身要害！
+bladeparry$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！
+hujia-daofa$n心底微微一惊，打起精神小心接招。
+neiliapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,17 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
     conn = Broadcast.publish(conn, "$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
-霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！", n1: character.name)
+霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！
+combat_expcombat_expparrythrowing结果$n一声惨叫，同时中了$Pbase_unit，直感两耳轰鸣，目不视物。
+jialifeixingapply/attackapply/dodgeapply/parryqiqiqimax_qi( $n )
+你现在要穴受到重损，乃至全身乏力，提不上半点力道！
+你心知刚才这招已打中对方要寒，不禁暗自冷笑。
+back$n集中生智，双手画圈回旋挥舞，拨弄开了要害处的杀着，可还是受了点轻伤。
+qiqiqimax_qi( $n )
+你只觉全身几处一阵刺痛，知道自己虽被击中，但却是避开了要穴。
+可是$n小巧腾挪，好不容易避开了$N铺天盖地的攻击。
+apply/attackapply/dodgeapply/parry渐渐的你觉得力气一丝丝的恢复了。
+feixing", n1: character.name)
 
     conn
     |> put_character(character)

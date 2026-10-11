@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,10 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N身不慌，足不移，手掌只是轻轻一抖，只见一点寒光闪过，闪电般的射向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身不慌，足不移，手掌只是轻轻一抖，只见一点寒光闪过，闪电般的射向$n！
+throwingdodge结果$p反应不及，中了$P一base_unit！
+qijialiqimax_qi( $n )
+可是$p从容不迫，轻巧的闪过了$P发出的。", n1: character.name)
 
     conn
     |> put_character(character)

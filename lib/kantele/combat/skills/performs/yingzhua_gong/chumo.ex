@@ -99,6 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     cond do
       false -> {:error, "「荡妖除魔」只能在战斗中对对手使用。\n"}
       false -> {:error, "你的鹰爪功等级不够，不会使用「荡妖除魔」！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -113,7 +114,10 @@ defmodule Kantele.Combat.Skills.Performs.YingzhuaGong.Chumo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N微微一笑，双掌缓缓的向$n抓出，此招看上去也平平无奇，并无多少精妙变化！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N微微一笑，双掌缓缓的向$n抓出，此招看上去也平平无奇，并无多少精妙变化！
+forceclawparrydodgeneili不知怎么的，$p却偏偏躲不开$P这一抓，结果被抓了个正中，不由得闷哼一声，退了几步。
+可是$p没有轻视$P这一抓，连忙招架，顺势跃开，没有被$P得手。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

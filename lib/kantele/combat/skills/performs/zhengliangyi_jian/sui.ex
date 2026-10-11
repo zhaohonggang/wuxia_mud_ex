@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -134,7 +135,17 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     combat = Combat.start_busy(combat, 6)
     combat = Combat.start_busy(combat, 8)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N仰天一声惨笑，将剑尖指向自己胸口，剑柄斜斜向外，连人带剑电射而出，直扑$n而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N仰天一声惨笑，将剑尖指向自己胸口，剑柄斜斜向外，连人带剑电射而出，直扑$n而去！
+max_neiliswordforceneilimax_neilimax_neilimax_neili可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。
+只听“喀嚓”一声，$n那掌正好打在$N头顶，$N哀嚎一声，软软的瘫倒。
+die_reason使用一招玉碎昆冈，拼命不成，反被击毙max_neilimax_neili$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。
+只听“噗嗤”一声，已然透过$n前胸而入，喷出一股血雨。
+die_reason被使一招玉碎昆冈刺死了$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击
+向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，已然透过$n前胸，喷出一股血雨。
+同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。
+die_reason使用一招玉碎昆冈与同归于尽了die_reason被使一招玉碎昆冈，两人一块去见了黑白无常forcelimbs要害$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
+柄已然刺穿，喷出一股血雨。
+可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。", n1: character.name)
 
     conn
     |> put_character(character)

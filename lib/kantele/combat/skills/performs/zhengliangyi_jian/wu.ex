@@ -97,6 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你打算攻击自己？\n"}
       false -> {:error, "在这里不能攻击他人。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -109,7 +110,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声阴笑，突然使出一招「无声无色」，疾向$n背后刺去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声阴笑，突然使出一招「无声无色」，疾向$n背后刺去。
+neiliswordparry可是$p看破了$P的企图，飞身一跃而起，将$P这招化解于无形。
+weapon结果$n并没有察觉$N的杀意，丝毫没把这一招放在心上，只
+是身子略微的向前一倾。
+霎时只见$N招数一紧，顿时只听“嗤啦”一声破空之响，$n
+一声惨嚎，剑身已透背而入。", n1: character.name)
 
     conn
     |> put_character(character)

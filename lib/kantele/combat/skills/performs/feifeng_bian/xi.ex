@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.FeifengBian.Xi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,8 @@ defmodule Kantele.Combat.Skills.Performs.FeifengBian.Xi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N力贯鞭梢，手中急舞，画出一个又一个的圈子缠向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N力贯鞭梢，手中急舞，画出一个又一个的圈子缠向$n！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

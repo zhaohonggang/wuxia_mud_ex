@@ -46,7 +46,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: 0}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，脸色变了变，阴阳不定。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，脸色变了变，阴阳不定。
+apply/dodgeapply/parryapply/armorapply/dispel_poisonhmg_dzjmneili", n1: character.name)
 
     conn
     |> put_character(character)

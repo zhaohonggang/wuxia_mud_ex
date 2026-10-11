@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "附骨缠身只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -116,7 +117,9 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，缠身而上左手一探刁住$n手腕，右掌猛下杀手！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，缠身而上左手一探刁住$n手腕，右掌猛下杀手！
+strikeparryneili结果$n被$N的左手所制，在「附骨缠身」下，一时竟然无法还手！
+可是$p识破了$P这一招，手肘一送，摆脱了对方控制。", n1: character.name)
 
     conn
     |> put_character(character)

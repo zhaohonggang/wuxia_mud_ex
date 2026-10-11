@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N长啸一声，施出绝招「如影相随」，双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n笼罩。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N长啸一声，施出绝招「如影相随」，双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n笼罩。
+$n顿觉寒气避人，一时间无从应对，竟被困在$N的掌风之中。
+neili$n看破$N毫无攻击之意，于是大胆反攻，将$N这招尽数化解。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

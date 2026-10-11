@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你破虚打穴法等级不够，无法施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,11 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N翻转，接连变化数种打穴手法，一式「破元通虚」直捣$n胸前要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N翻转，接连变化数种打穴手法，一式「破元通虚」直捣$n胸前要穴。
+poxu-daxuefaforceneili可是$n早已看破$N招中虚实，单手一挥，登将这招化于无形。
+neilino_exertpoqi_end$n只觉胸口一麻，已被$N点中要穴，登时全身真气阻滞，苦不堪言！
+no_exert$N深深吸入一口气，脸色由白转红，看起来好多了。
+no_exert你感到被扰乱的真气慢慢平静了下来。", n1: character.name)
 
     conn
     |> put_character(character)

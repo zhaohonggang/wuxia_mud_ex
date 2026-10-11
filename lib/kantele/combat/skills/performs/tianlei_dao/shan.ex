@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,7 +128,9 @@ defmodule Kantele.Combat.Skills.Performs.TianleiDao.Shan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N将手中立于胸前，施出绝招「五雷连闪」，$N身法陡然加快，手中连续砍出五刀，刀法之精妙，令人匪夷所思。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将手中立于胸前，施出绝招「五雷连闪」，$N身法陡然加快，手中连续砍出五刀，刀法之精妙，令人匪夷所思。
+bladedodgeneili$n见$P这招来势汹涌，势不可挡，被$N攻得连连后退。
+$n见$N这几刀来势迅猛无比，毫无破绽，只得小心应付。", n1: character.name)
 
     conn
     |> put_character(character)

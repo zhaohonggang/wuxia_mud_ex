@@ -119,6 +119,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方现在已经无法控制真气，放胆攻击吧。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +135,13 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声尖啸，身体猛然旋转不定，顿时化成无数气流，犹如千万根银针，齐齐卷向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声尖啸，身体猛然旋转不定，顿时化成无数气流，犹如千万根银针，齐齐卷向$n！
+kuihua-mogongdodgemartial-cognizedodgeneili$n大惊之下全然无法招架，急忙抽身急退数尺，躲开了这一招。
+neilino_performbian_end$n只觉眼前无数寒光闪过，随即全身一阵刺痛，几股血柱自身上射出。
+$p陡然间一提真气，竟发现周身力道竟似涣散一般，全然无法控制。
+no_perform$N深深吸入一口气，脸色由白转红，看起来好多了。
+你感到被扰乱的真气慢慢平静了下来。
+no_perform", n1: character.name)
 
     conn
     |> put_character(character)

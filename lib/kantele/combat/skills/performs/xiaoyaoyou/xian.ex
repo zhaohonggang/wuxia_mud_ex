@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +120,10 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身子微晃，施出「仙游诀」满场游走，步法洋洋洒洒，甚为飘逸。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身子微晃，施出「仙游诀」满场游走，步法洋洋洒洒，甚为飘逸。
+dodgeparry$n只见无数人影奔来，不由大惊失色，攻势顿为缓滞。
+neili可是$n看破了$P的身法，并没有受到任何影响。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

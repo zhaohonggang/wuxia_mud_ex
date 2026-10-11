@@ -126,6 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -139,7 +140,10 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Hua do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声长吟，将内力全然运到剑上，剑脊顿时紫芒闪耀，化作数道剑气劲逼$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长吟，将内力全然运到剑上，剑脊顿时紫芒闪耀，化作数道剑气劲逼$n。
+combat_expxiantian-gongswordforceparryneili顿时只听$n一声惨叫，剑气及身，身上接连射出数道血柱。
+xiantian-gongapply/attack$N见$n在这一击之下破绽迭出，顿时身形前跃，唰唰唰又是三剑。
+apply/attack可是$n看破了$N的企图，斜跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

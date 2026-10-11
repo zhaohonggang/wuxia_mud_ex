@@ -118,7 +118,10 @@ defmodule Kantele.Combat.Skills.Performs.ShouYin.Jie do
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | qi: vitals.qi - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，双手猛然翻滚，刹那间只见无数的手印铺天盖地蜂拥而出，气势恢弘，无与伦比。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，双手猛然翻滚，刹那间只见无数的手印铺天盖地蜂拥而出，气势恢弘，无与伦比。
+strikestrparrydex$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。
+$n凝神应战，竭尽所能化解$P这几掌。
+apply/attackneiliqiapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

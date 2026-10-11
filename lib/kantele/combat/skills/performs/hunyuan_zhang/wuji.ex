@@ -100,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你的混元掌等级不够, 不能施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -113,7 +114,9 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒喝一声，潜运「混元无极」，双拳挟着隐隐的风雷之声向$n击去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怒喝一声，潜运「混元无极」，双拳挟着隐隐的风雷之声向$n击去。
+strikeforceneili$n只觉得胸前一阵剧痛，“哇”的一声喷出一口鲜血！
+neili只见$n不慌不忙，轻轻一闪，躲过了$N的必杀一击！", n1: character.name)
 
     conn
     |> put_character(character)

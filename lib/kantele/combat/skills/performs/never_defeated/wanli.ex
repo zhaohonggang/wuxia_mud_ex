@@ -96,7 +96,6 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
 
     cond do
       false -> {:error, "你必须手持兵刃才能施展晴空万里！\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "晴空万里只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -120,7 +120,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怀抱，一圈圈的划向$n，将$p卷在当中！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怀抱，一圈圈的划向$n，将$p卷在当中！
+neilinever-defeatedmartial-cognizeparrymartial-cognizeneiliforcelimbs要害$n连忙腾挪躲闪，然而“扑哧”一声，正好击中$p的，$p一声惨叫，连退数步。
+可是$p看破了$P的变化，见招拆招，没有受到任何伤害。", n1: character.name)
 
     conn
     |> put_character(character)

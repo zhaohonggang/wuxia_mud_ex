@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.HuaQuan.Juan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,9 @@ defmodule Kantele.Combat.Skills.Performs.HuaQuan.Juan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N身形疾转，双拳聚力齐发，一式「风卷霹雳上九天」携着隐隐风雷之势贯向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N身形疾转，双拳聚力齐发，一式「风卷霹雳上九天」携着隐隐风雷之势贯向$n！
+cuffdodgecuffneili结果$n闪避不及，被$P双拳贯中，凄然一声惨嚎，口喷鲜血，身子向后飞出丈许。
+neili$p见$P拳势汹涌，不敢硬作抵挡，当即斜斜一跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

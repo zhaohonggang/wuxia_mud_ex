@@ -93,6 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanQuan.Song do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -107,7 +108,10 @@ defmodule Kantele.Combat.Skills.Performs.HuashanQuan.Song do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒喝一声，右拳直出，刚猛有力，正是华山绝技「苍松式」，拳风呼响，袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怒喝一声，右拳直出，刚猛有力，正是华山绝技「苍松式」，拳风呼响，袭向$n。
+cuffforceneili只见$P一拳直出，$p正欲挡格，却已不及，一拳重重地打在身上！
+可是$p奋力招架，硬生生的挡开了$P这一招。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

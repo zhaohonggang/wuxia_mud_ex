@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
 
     cond do
       false -> {:error, "「连环剑」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,8 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N狂喝一声，只见上一剑、下一剑、左一剑、右一剑、当中一剑，一起刺向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N狂喝一声，只见上一剑、下一剑、左一剑、右一剑、当中一剑，一起刺向$n！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

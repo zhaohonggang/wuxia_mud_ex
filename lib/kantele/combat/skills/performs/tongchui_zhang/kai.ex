@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,10 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N右掌暗聚力道，十指分张，蓦地一招「五丁开山」向$n背心拍去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N右掌暗聚力道，十指分张，蓦地一招「五丁开山」向$n背心拍去。
+strikedodgestrike结果$n闪避不及，顿被$N这掌击个正中，五脏六腑翻腾不已。
+neili可是$n毫不慌张，当即向后轻轻一跃，闪避开来。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

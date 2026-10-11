@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.FengmoZhang.Luan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,8 @@ defmodule Kantele.Combat.Skills.Performs.FengmoZhang.Luan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N眼中杀气大盛，施出疯魔杖「群魔乱舞」绝技，手中接二连三朝$n挥去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N眼中杀气大盛，施出疯魔杖「群魔乱舞」绝技，手中接二连三朝$n挥去。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -107,6 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -116,7 +117,13 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。
+strikestrparrycondodgedexcombat_exp$n见$N掌出如风，心知此招后着极是凌厉，当即斜跳闪开。
+
+紧接着$N右掌一振，掌风过处，竟席卷起一股热浪，向$n胸前猛然拍落。
+$n忽闻呼啸声大至，眼见$N掌势如虹，急忙纵跃躲避开来。
+neilistriketiezhang_yinleveljialijialiididduration霎那间$n已被$N阴寒掌劲拂中要害，不由得浑身一颤，难受之极。
+striketiezhang_yangleveljialijialiididduration只听嗤的一声，$N右掌如击败革，正中$n胸口，震断了数根肋骨。", n1: character.name)
 
     conn
     |> put_character(character)

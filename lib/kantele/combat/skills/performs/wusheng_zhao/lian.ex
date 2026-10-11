@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,10 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形一展，扑至$n跟前，猛然施展「夺命连环」，双爪幻作数道金光，直琐$n各处要脉！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形一展，扑至$n跟前，猛然施展「夺命连环」，双爪幻作数道金光，直琐$n各处要脉！
+clawparryneili$p奋力抵抗，结果还是连中$P数抓，登时鲜血飞溅，无法反击！
+可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

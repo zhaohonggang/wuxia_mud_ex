@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,9 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形急转，宛若鬼魅，悄然施出蓝砂手绝技「破靛神砂」，朝$n胸前大穴抓落！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形急转，宛若鬼魅，悄然施出蓝砂手绝技「破靛神砂」，朝$n胸前大穴抓落！
+lansha-shouhandforceneili$n见$N来势汹涌，奋力格挡，终于化解开来。
+lansha-shousha_poisonleveljialijialiididduration$n闪避不及，登被$N抓出五道血痕，伤口竟渗出黑血，隐隐发着磷光。", n1: character.name)
 
     conn
     |> put_character(character)

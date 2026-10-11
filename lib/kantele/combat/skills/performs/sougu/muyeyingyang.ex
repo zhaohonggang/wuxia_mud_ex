@@ -93,6 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.Sougu.Muyeyingyang do
 
     cond do
       false -> {:error, "你臂力不够,不能使用牧野鹰扬！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "牧野鹰扬只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -106,7 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.Sougu.Muyeyingyang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出搜骨鹰爪功绝技「牧野鹰扬」，双爪蓦地抓向$n的全身要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出搜骨鹰爪功绝技「牧野鹰扬」，双爪蓦地抓向$n的全身要穴。
+combat_expcombat_exp结果$p被$P点中要穴，立时动弹不得！
+souguneili可是$p看破了$P的企图，并没有上当。", n1: character.name)
 
     conn
     |> put_character(character)

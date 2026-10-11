@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
 
     cond do
       false -> {:error, "你的蛤蟆功修为不够精深，不能使用\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "蛤蟆功\n"}
       true -> :ok
     end

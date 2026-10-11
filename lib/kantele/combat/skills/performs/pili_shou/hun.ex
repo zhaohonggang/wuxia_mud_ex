@@ -100,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliShou.Hun do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你的混元霹雳手等级不够, 不能施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -113,7 +114,9 @@ defmodule Kantele.Combat.Skills.Performs.PiliShou.Hun do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒喝一声，施出绝招「天地混元」，双掌交错袭向$n，掌风凌厉，隐隐带有风雷之势。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怒喝一声，施出绝招「天地混元」，双掌交错袭向$n，掌风凌厉，隐隐带有风雷之势。
+handforceforceparryneili$n只觉得胸前一阵剧痛，“哇”的一声喷出一口鲜血！
+neili只见$n不慌不忙，轻轻一闪，躲过了$N的必杀一击！", n1: character.name)
 
     conn
     |> put_character(character)

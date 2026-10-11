@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -134,7 +135,9 @@ defmodule Kantele.Combat.Skills.Performs.LiangyiJian.Ren do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N手中剑芒跃动，剑光暴长，剑尖颤动似乎分左右刺向$n，$n看到剑
-光偏左，疾侧身右转，但只这一刹，剑光刹时袭向右首！", n1: character.name)
+光偏左，疾侧身右转，但只这一刹，剑光刹时袭向右首！
+swordparry$n疾忙左转，却发现$N的疾往左转，登时穿胸而过，血如泉涌。
+neilineili可是$p轻轻一笑，侧身右转，躲开了$P左转的剑式，毫发未伤。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "无双无对只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -118,7 +119,8 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手握起，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n冲刺！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手握起，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n冲刺！
+swordparryswordneili$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！可是$p看破了$P的企图，向旁一跃，躲了开去。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声长啸，内劲暴涨，施出绝招「无孔不入」手中哧哧作响，龙吟不定，$N猛然腾空而起，挥舞着手中的，凌空直下，涌向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长啸，内劲暴涨，施出绝招「无孔不入」手中哧哧作响，龙吟不定，$N猛然腾空而起，挥舞着手中的，凌空直下，涌向$n。
+但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。
+neili$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

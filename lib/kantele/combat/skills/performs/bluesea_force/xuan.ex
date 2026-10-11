@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Xuan do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "玄黄连环掌只能对战斗中的对手使用。\n"}
       true -> :ok
     end

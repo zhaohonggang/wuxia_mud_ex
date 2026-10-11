@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -106,6 +107,16 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
 
     cond do
       false -> {:error, "你才用过截脉封穴，没法接着就出招。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "截脉封穴只能在战斗中使用。\n"}
       true -> :ok
     end
@@ -121,7 +132,10 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N飞身一跃而起，贴至$n跟前，点向$n要穴！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N飞身一跃而起，贴至$n跟前，点向$n要穴！
+throwingforce$p微微一楞，已被$N点中要穴，顿时瘫软无力，缓缓瘫倒。
+neilijinshe/fengfeng_endapply/damageapply/dodgeapply/parryapply/forceapply/armorapply/defense可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！
+neilijinshe/feng", n1: character.name)
 
     conn
     |> put_character(character)

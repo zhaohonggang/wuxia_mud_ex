@@ -95,6 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,7 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
     vitals = %{vitals | neili: vitals.neili - 30}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N右掌高举，施一招「破山斧」，掌速极快，犹如一把利斧从天而下，劈向$n
-。", n1: character.name)
+。songshan-zhang$N出手既快，方位又奇，$n闪避不及，却已中掌。
+neili$n不慌不忙，以快打快，将$N这招化去。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

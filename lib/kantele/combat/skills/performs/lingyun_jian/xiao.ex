@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.LingyunJian.Xiao do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.LingyunJian.Xiao do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N长叹一声，语调宛然，忽然右手斜指长空，手中寒光闪闪，猛然间使出绝招「剑气冲霄」，刹时间剑风凌厉，以直冲云霄之势，斩向$n
-。", n1: character.name)
+。swordparry$n只见一道金光闪过，心中惊骇不已，但鲜血已从$n胸口喷出。
+neili然而$n眼明手快，侧身一跳躲过$N这一剑。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

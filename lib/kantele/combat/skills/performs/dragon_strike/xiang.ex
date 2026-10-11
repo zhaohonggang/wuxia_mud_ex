@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
 
     cond do
       false -> {:error, "「龙翔九天」只能在战斗中对对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,11 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | qi: vitals.qi - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N深吸一口气，跨前一步，双掌猛然翻滚，缤纷而出，宛如一条神龙攀蜒于九天之上！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深吸一口气，跨前一步，双掌猛然翻滚，缤纷而出，宛如一条神龙攀蜒于九天之上！
+
+strikestrparrydex$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。
+$n凝神应战，竭尽所能化解$P这几掌。
+apply/attackneiliqiapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

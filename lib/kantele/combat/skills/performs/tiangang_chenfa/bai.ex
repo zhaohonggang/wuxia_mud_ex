@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -132,7 +133,9 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "但见$N手中name窜动不已，接连变幻了数种招式，分袭$n各处要害。", n1: character.name)
+    conn = Broadcast.publish(conn, "但见$N手中name窜动不已，接连变幻了数种招式，分袭$n各处要害。
+whipparry$n急忙躲闪，却发现$N的已然拂中胸前要穴，顿感气血上涌，难受之极。
+neili可是$p看破了$P招中虚实，当即纵身而起，躲避开来。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N猛然间飞身而起，半空中一声长啸，内力源源不绝地涌入，刹那间刀芒夺目，自天而下，劈向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N猛然间飞身而起，半空中一声长啸，内力源源不绝地涌入，刹那间刀芒夺目，自天而下，劈向$n！
+neilibladeforceparryforceneili可是$n看透$P此招之中的破绽，镇定逾恒，全神应对自如。
+neilineili$n只觉刀芒夺目，正犹豫间到刀芒已穿透$n身体，顿时鲜血狂涌，内息散乱。", n1: character.name)
 
     conn
     |> put_character(character)

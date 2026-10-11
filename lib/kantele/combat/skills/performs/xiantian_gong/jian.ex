@@ -112,6 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Jian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -121,7 +122,11 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Jian do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 600}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "霎时只见$N逆运先天真气，化为纯阳内劲聚于指尖，以一阳指诀手法疾点$n全身诸多要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "霎时只见$N逆运先天真气，化为纯阳内劲聚于指尖，以一阳指诀手法疾点$n全身诸多要穴。
+forcefingerunarmedforceparrydodge$n只觉全身一热，$P「先天功乾阳剑气」顿时破体而入，便似身置洪炉，喷出一口鲜血。
+$n见$N这指来势汹涌，不敢轻易招架，当即飞身纵跃闪开。
+紧接着$N十指纷飞，接连弹出数道无形剑气，$n四面八方皆被剑气所笼罩。
+apply/attackapply/attackneili", n1: character.name)
 
     conn
     |> put_character(character)

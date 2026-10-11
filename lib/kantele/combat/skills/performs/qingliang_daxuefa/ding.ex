@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N侧身将手中斜刺而出，一式「透骨钉」卷带着呼呼风声，将$n包围紧裹。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N侧身将手中斜刺而出，一式「透骨钉」卷带着呼呼风声，将$n包围紧裹。
+daggerparryneili顿时只听得“噗嗤”一声，$n胸口被$N这一招刺中，溅出一柱鲜血。
+可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

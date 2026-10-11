@@ -92,6 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhu do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "诛仙决只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -106,7 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Zhu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随手拍出一掌，疾若奔马，如箭一般飞向$n速度快的不可思议！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随手拍出一掌，疾若奔马，如箭一般飞向$n速度快的不可思议！
+bluesea-forceconmartial-cognizeparryintmartial-cognizeneili然而$n看破了$N的掌势，不慌不忙的躲过了这一击！
+neili$n正在思虑这一掌的后势，掌力已至胸前，只听“噗”的一声，$n吐血三尺！", n1: character.name)
 
     conn
     |> put_character(character)

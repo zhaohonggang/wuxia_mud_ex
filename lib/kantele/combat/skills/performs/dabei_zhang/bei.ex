@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.DabeiZhang.Bei do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,10 @@ defmodule Kantele.Combat.Skills.Performs.DabeiZhang.Bei do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N凄然一声长啸，施出「万里鲸涛大悲神诀」，双掌翻滚出漫天掌影，尽数拍向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凄然一声长啸，施出「万里鲸涛大悲神诀」，双掌翻滚出漫天掌影，尽数拍向$n。
+strikeintforceint$n勘破不透掌中虚实，$N双掌正中$p前胸，“喀嚓喀嚓”接连断了数根肋骨。
+$n见$N这掌来势非凡，不敢轻易招架，当即飞身纵跃闪开。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

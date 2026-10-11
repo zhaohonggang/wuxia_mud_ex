@@ -33,7 +33,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -81,6 +82,16 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     end
   end
 
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛检查需人工核对（自动提取的文案仅供参考）
+    stats = character.meta.stats
+
+    cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
+    end
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -88,7 +99,10 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N一声冷笑，默运内劲，手指粘住对准$n「嗖」的弹射了出去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷笑，默运内劲，手指粘住对准$n「嗖」的弹射了出去。
+neilimax_neilineilimax_neilineili然而$n全然不放在心上，轻轻一抖，已将$N射来的毒素尽数震落。
+forcepoisonthrowingdodgeparrymartial-cognize$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。
+poison_typepoison可是$n见势不妙，急忙腾挪身形，终于避开了$N的弹毒攻击。", n1: character.name)
 
     conn
     |> put_character(character)

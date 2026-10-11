@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaSword.Jue do
 
     cond do
       false -> {:error, "你现在还不会使用五绝剑！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "段家五绝剑只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -115,7 +116,8 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaSword.Jue do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N深吸一口气，脚下步步进击，稳重之极，手中的使得犹如飞龙一般，缠绕向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深吸一口气，脚下步步进击，稳重之极，手中的使得犹如飞龙一般，缠绕向$n！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

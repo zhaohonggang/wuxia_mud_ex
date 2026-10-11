@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,9 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出阴风刀「绝 杀」绝技，掌劲幻出一片片切骨寒气如飓风般裹向$n全身！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出阴风刀「绝 杀」绝技，掌劲幻出一片片切骨寒气如飓风般裹向$n全身！
+yinfeng-daostrikeforceparrydodgeneili可是$n急忙退闪，连消带打躲开了这一击。
+neiliyinfeng_daoleveljialijialiididduration结果只听$n一声惨嚎，全身几处要穴同时被阴风寒劲砍中，疼若刮骨，鲜血狂泄而出！", n1: character.name)
 
     conn
     |> put_character(character)

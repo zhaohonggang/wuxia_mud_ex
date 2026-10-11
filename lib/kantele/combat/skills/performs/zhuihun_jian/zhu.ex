@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -132,7 +133,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "突然$N一声冷哼，一个跨步，手中中攻直进，如闪电一般刺向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "突然$N一声冷哼，一个跨步，手中中攻直进，如闪电一般刺向$n！
+neilizhuihun-jianswordparryneilimax_neilimax_neili只见$N这一剑来势好快，便听“嗤啦”一声，剑尖已没入$n咽喉半尺，$n咯咯叫了两声，软绵绵的瘫了下去。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)
+weaponforceparry只听“嗤啦”一声，$n腕部已被$N对穿而过，手中再也捉拿不住，脱手而飞！
+forcelimbs要害$n飞身躲闪，然而只听“嗤啦”一声，$N已没入$n半寸，鲜血狂溅而出。
+可是$p看破了$P的企图，避开了这一招。", n1: character.name)
 
     conn
     |> put_character(character)

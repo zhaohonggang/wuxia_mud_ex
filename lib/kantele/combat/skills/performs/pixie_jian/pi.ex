@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,8 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N身形忽然变快，蓦的冲向$n，幻作数道虚影，顿时无数星光一齐射向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身形忽然变快，蓦的冲向$n，幻作数道虚影，顿时无数星光一齐射向$n！
+dodgedodgeapply/attackapply/damageapply/unarmed_damagepixie-jian/hit_msgneiliapply/attackapply/damageapply/unarmed_damagepixie-jian/hit_msg", n1: character.name)
 
     conn
     |> put_character(character)

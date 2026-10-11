@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
     cond do
       false -> {:error, "「碎石破玉」只能在战斗中对对手使用。\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,9 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N聚力于掌，猛然间怒喝一声，一掌破空而至，正是握石掌的一招「开碑碎石」，破空劈向$n而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N聚力于掌，猛然间怒喝一声，一掌破空而至，正是握石掌的一招「开碑碎石」，破空劈向$n而去！
+strikeparrywoshi-zhang结果只听$n一声惨嚎，胸口已被$N掌劲结结实实的轰中，“哇”的喷出一大口鲜血。
+neilineili可是$p看破了$N的企图，躲开了这招杀着。", n1: character.name)
 
     conn
     |> put_character(character)

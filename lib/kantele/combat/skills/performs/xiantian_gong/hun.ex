@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -115,7 +116,10 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 280}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出天地混元，全身真气急速运转，引得周围气流波动不已，层层叠叠涌向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出天地混元，全身真气急速运转，引得周围气流波动不已，层层叠叠涌向$n！
+unarmedconparrydex$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。
+$n见$p来势迅猛之极，甚难防备，连忙振作精神，小心抵挡。
+apply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

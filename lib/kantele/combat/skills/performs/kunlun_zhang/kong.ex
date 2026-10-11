@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,10 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然施出昆仑掌法绝技「日入空山」，一掌猛然拍出，掌影重重叠叠，笼罩$n四面八方。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然施出昆仑掌法绝技「日入空山」，一掌猛然拍出，掌影重重叠叠，笼罩$n四面八方。
+strikeparryneili$n只见$P的无数掌影向自己压来，一时不知该如何抵挡，顿时连中数招，无暇反击。
+可是$p的看破了$P的企图，巧妙的拆招，没露半点破绽。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

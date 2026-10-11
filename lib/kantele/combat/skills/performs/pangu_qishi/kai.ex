@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.PanguQishi.Kai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +130,9 @@ defmodule Kantele.Combat.Skills.Performs.PanguQishi.Kai do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声断喝，手中如山岳巍峙，携着开天辟地之势向$n猛劈而下！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声断喝，手中如山岳巍峙，携着开天辟地之势向$n猛劈而下！
+hammerstrforceconneili$n躲避不及，被$N这锤正中胸口，顿时一声闷响，稻草般向后横飞出去。
+neili可是$n真气鼓荡，$N雷霆般的劲力竟如中败絮，登时被解于无形。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然使出「一指乾坤」绝技，单指劲点$n檀中要穴，招式变化精奇之极！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然使出「一指乾坤」绝技，单指劲点$n檀中要穴，招式变化精奇之极！
+fingerforceparryforce$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。
+neili可是$n看破了$N的招数，连消带打挡开了这一指。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

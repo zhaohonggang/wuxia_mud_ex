@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,10 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N伸出两掌，朝$n拍去，待掌至中途，却变掌为爪，幻作两道金光袭向$n各处要脉！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N伸出两掌，朝$n拍去，待掌至中途，却变掌为爪，幻作两道金光袭向$n各处要脉！
+clawparryneili$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！
+可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

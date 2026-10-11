@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,13 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深吸进一口气，单手挥出，掌缘顿时霞光万道，漾出七色虹彩向$n席卷而至。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深吸进一口气，单手挥出，掌缘顿时霞光万道，漾出七色虹彩向$n席卷而至。
+combat_expdodgehanddodgeparryzhemei-shoumax_neilimax_neili只听$n一声尖啸，$N的七色掌劲已尽数注入$p体内，顿时将$p化为一滩血水。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)
+neiliapply/unarmed_damageqiqijingjingqimax_qi$n只是微微一愣，$N的七色掌劲已破体而入，$p便犹如身置洪炉一般，连呕数口鲜血。
+( $n )
+neili$p见状大惊失色，完全勘破不透$P招中奥秘，当即飞身跃起丈许，躲闪开来。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

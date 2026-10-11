@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,8 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声叱喝，手中连环五刺，招数层出不穷，闪电般朝$n射去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声叱喝，手中连环五刺，招数层出不穷，闪电般朝$n射去！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,10 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长啸，手中一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！
+combat_expswordparry$n完全无法看透$N招中虚实，不由得心生惧意，招式一滞，登时破绽百出。
+shenghuo-lingshenghuo-ling/max_hit$n见$N来势汹涌，心底一惊，打起精神小心接招。
+neiliapply/attackapply/attackshenghuo-ling/max_hit", n1: character.name)
 
     conn
     |> put_character(character)

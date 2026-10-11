@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,14 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 500}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声断喝，双掌施出五斗米神功「归去来兮」绝技，顿时掌劲澎湃，涌向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声断喝，双掌施出五斗米神功「归去来兮」绝技，顿时掌劲澎湃，涌向$n。
+$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！
+$p见$P来势汹涌，不敢硬接，只得小巧腾挪，躲闪开来。
+forcecondodgedex
+紧接着只见$N双手陡然回圈，竟使已袭出的掌劲倒回，从$n身后再度席卷而归。
+$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！
+$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

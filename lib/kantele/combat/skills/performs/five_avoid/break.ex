@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     cond do
       vitals.neili < 20 -> {:error, "你的气不够，无法施展「五遁绝杀」！\n"}
       vitals.qi < 20 -> {:error, "你的真气不够，无法施展「五遁绝杀」！\n"}
-      vitals.qi < 70 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.qi < 70 -> {:error, "TODO(migrate) qi 不足。\n"}
       true -> :ok
     end
   end
@@ -96,6 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
 
     cond do
       false -> {:error, "「五遁绝杀」只能在战斗中使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -108,7 +109,11 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出五行遁中的「五遁绝杀」，身法陡然间变得变幻莫测！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出五行遁中的「五遁绝杀」，身法陡然间变得变幻莫测！
+five-avoidqineili$N的身形倏地一转，收身停住了脚步。
+$N的身影在$n身旁时隐时现 ...
+但是$N始终没有找到机会出手！
+qineili", n1: character.name)
 
     conn
     |> put_character(character)

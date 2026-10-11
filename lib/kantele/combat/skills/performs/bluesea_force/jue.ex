@@ -92,6 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Jue do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "绝仙决只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -106,7 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Jue do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N哈哈大笑，一掌挥出，变化出满天掌影，封住了$n所有的退路！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N哈哈大笑，一掌挥出，变化出满天掌影，封住了$n所有的退路！
+bluesea-forceconmartial-cognizeparrydexmartial-cognizeneili然而$n看破了$N的掌势，不慌不忙的躲过了这一击！
+neili$n竭力腾挪躲闪，却听“啪”的一声被$P结结实实的打在了胸前，登时吐血不止！", n1: character.name)
 
     conn
     |> put_character(character)

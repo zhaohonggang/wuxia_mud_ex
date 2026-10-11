@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     cond do
       false -> {:error, "「摧心断肠」只能对战斗中的对手使用。\n"}
       false -> {:error, "你现在还不会使用摧心断肠！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,12 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，双掌一起击出，霎时间飞砂走石，$n只觉得几乎窒息。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，双掌一起击出，霎时间飞砂走石，$n只觉得几乎窒息。
+sword$N一声暴喝，手中直劈而下，只听呼啸声大作，地上的尘土受内力所激纷纷飞扬而起。
+staff$N一声暴喝，手中横扫荡出，一时间尘土飞扬，$n登时觉得呼吸不畅。
+forcedodgeneili可是$n内功深厚，奋力接下$N这一招，丝毫无损。
+neili$n哈哈一笑，飘身跃开，让$N这一招全然落空。
+neili$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。", n1: character.name)
 
     conn
     |> put_character(character)

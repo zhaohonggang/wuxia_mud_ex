@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,12 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中幻作一道白芒，撩向$n所持的。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中幻作一道白芒，撩向$n所持的。neili$n只见眼前白芒暴涨，登时右手一轻，竟脱手飞出。
+可是$n看破$N剑法中的虚招，镇定自如，从容应对。
+
+$N剑法陡然变快，施展出「烟云锁身剑」，手中剑光夺目，欲将$n笼罩在剑光之中。neili
+$n惊慌不定，顿时乱了阵脚，竟被困于$N的剑光当中。
+可是$n看破$N剑法中的虚招，镇定自如，从容应对。", n1: character.name)
 
     conn
     |> put_character(character)

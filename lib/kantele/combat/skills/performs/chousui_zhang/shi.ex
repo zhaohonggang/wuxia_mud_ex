@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,9 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随手抓起，将「腐尸毒」毒质运于其上，朝$n猛掷而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随手抓起，将「腐尸毒」毒质运于其上，朝$n猛掷而去。
+strikepoisonpoisondodgemartial-cognizedodgeparryparryneili可是$n见势不妙，急忙腾挪身形，终于避开了$N掷来的尸体。
+neilipoisonpoisoncorpse_poisonlevelididdurationjingjing$n只闻一股恶臭传来，大惊之下难以招架，顿被尸体击个正中。", n1: character.name)
 
     conn
     |> put_character(character)

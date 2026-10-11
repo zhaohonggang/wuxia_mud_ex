@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     cond do
       false -> {:error, "「祭血神刀」只能对战斗中的对手使用。\n"}
       false -> {:error, "你还不会使用「祭血神刀」！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，", n1: character.name)
+    conn = Broadcast.publish(conn, "$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，
+bladeforcebladecharacter心狠手辣neili$n疾忙侧身避让，但血刀疾闪，只觉眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！
+可是$n侧身避让，不慌不忙，躲过了$N的必杀一刀。
+neiliqi", n1: character.name)
 
     conn
     |> put_character(character)

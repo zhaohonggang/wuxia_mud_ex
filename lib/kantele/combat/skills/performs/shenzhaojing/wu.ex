@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -126,7 +127,10 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，将神照功功力聚之于拳，携着雷霆万钧之势向$n连环攻出。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，将神照功功力聚之于拳，携着雷霆万钧之势向$n连环攻出。
+forcecondodgedex$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。
+$n微一凝神，面对$N这排山倒海的攻势却丝毫不乱，小心招架。
+apply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

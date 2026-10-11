@@ -114,6 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,10 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷笑，聚气于掌，飞身一跃而起，一招携满剧毒的「毒蟾掌」对着$n凌空拍下！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷笑，聚气于掌，飞身一跃而起，一招携满剧毒的「毒蟾掌」对着$n凌空拍下！
+strikeparryneilitianchan_zhangleveljialijialiididduration只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。
+$p见$P来势汹涌，急忙纵身一跃而起，躲开了这一击！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

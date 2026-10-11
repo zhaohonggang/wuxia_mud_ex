@@ -114,6 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -126,7 +127,12 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N暗自凝神，顿时一股气劲由身后澎湃迸发，接着单手一振，手中
-随即横空卷出，激得周围尘沙腾起，所施正是玄铁剑法「大江东去」。", n1: character.name)
+随即横空卷出，激得周围尘沙腾起，所施正是玄铁剑法「大江东去」。
+swordforceweaponskill_typehammer$n只觉得一股大力传来，手中再也拿持不住，脱手而出！
+neilino_wield已经碎掉了，没法装备了。
+碎掉的valuecharacter光明磊落character国土无双neili结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！
+可是$n看破了$N的企图，急忙斜跃避开。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

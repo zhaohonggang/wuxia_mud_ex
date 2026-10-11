@@ -75,7 +75,9 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Resurrect do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深吸入一口气，脸色由红转白，复又由白翻红，伤势恢复了不少。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深吸入一口气，脸色由红转白，复又由白翻红，伤势恢复了不少。
+neilineiliqiqineili由于你过度的催动真元，导致你的内力有所损耗。
+max_neili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,13 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N幽幽一声长叹，手中的就如闪电般刺向$n的胸口。
-但见剑招轻盈灵动，优美华丽，就连杀人间也不带一丝尘俗之气。", n1: character.name)
+但见剑招轻盈灵动，优美华丽，就连杀人间也不带一丝尘俗之气。
+$n只觉得$N眼神中隐然透出一股冰冷的寒意，心中不禁一颤。
+combat_expneilisworddodgedodge$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？
+只听$p一声惨叫，胸口已经被剑气所伤！
+$n重创之下不禁破绽迭出，$P见状随手刺出，又是一剑！
+就听$p又是一声惨叫，痛苦不堪。
+$n见状身形急退，避开了$N的无形剑气的凌厉一击！", n1: character.name)
 
     conn
     |> put_character(character)

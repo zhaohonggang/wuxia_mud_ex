@@ -126,6 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -136,7 +137,10 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "只见$N手中横扫而出，施出绝招「天外玉龙」，剑势纵横，犹如一条长龙蜿蜒而出，刺向$n
-。", n1: character.name)
+。
+但见$N手中自半空中横过，剑身似曲似直，便如一件活物一般，正是破阳冷光剑的精髓「天外玉龙」，一柄死剑被$N使得如灵蛇，如神龙，猛然剑刺向$n
+。swordparryneili$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。
+neili可却见$n猛的拔地而起，避开了$N来势凶猛的一招。", n1: character.name)
 
     conn
     |> put_character(character)

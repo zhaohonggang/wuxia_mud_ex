@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.PoguangDao.Yang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -132,7 +133,9 @@ defmodule Kantele.Combat.Skills.Performs.PoguangDao.Yang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声怒喝，内劲瀑涨，施展出绝招「破阳刀」手中出神般的挥舞而出，虽然招式看似简单，但其中却蕴藏着无穷的威力，有如神助一般。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声怒喝，内劲瀑涨，施展出绝招「破阳刀」手中出神般的挥舞而出，虽然招式看似简单，但其中却蕴藏着无穷的威力，有如神助一般。bladeparry$n见$N来势凶猛，刀光闪烁，惊骇间肩膀已中一刀，一股鲜血喷涌而出。
+neili然而$n以快制快，侧身一跳，躲过这招。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

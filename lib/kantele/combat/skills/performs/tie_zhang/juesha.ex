@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     cond do
       false -> {:error, "「九穹绝刹掌」只能在战斗中对对手使用。\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,11 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     vitals = %{vitals | qi: vitals.qi - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N一声怒喝，猛然施出铁掌掌法绝技「九穹绝刹掌」！体内天雷真气急速运转，双臂陡然
-暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！", n1: character.name)
+暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！
+
+strikestrparrydex$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。
+$n凝神应战，竭尽所能化解$P这几掌。
+apply/attackneiliqiapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

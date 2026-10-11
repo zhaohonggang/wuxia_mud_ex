@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的吸入掌中。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的吸入掌中。
+strikestrparryintneili$n只觉周围气流涌动，手中竟然拿捏不住，向$N掌心脱手飞去。
+neili$n只觉周围气流涌动，慌忙中连将手中挥舞得密不透风，使得$N无从下手。", n1: character.name)
 
     conn
     |> put_character(character)

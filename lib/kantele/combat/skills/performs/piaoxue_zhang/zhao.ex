@@ -85,12 +85,23 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "emei-jiuyang" -> {:error, "你没有激发内功为九阳神功，无法施展\n"}
-      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你没有激发飘雪穿云掌，无法施展\n"}
-      Stats.mapped(stats, "force") != "shaolin-jiuyang" -> {:error, "你必须将全身功力尽数提起才能施展\n"}
-      Stats.mapped(stats, "force") != "wudang-jiuyang" -> {:error, "你没有准备飘雪穿云掌，无法施展\n"}
-      Stats.mapped(stats, "strike") != "piaoxue-zhang" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "emei-jiuyang" ->
+        {:error, "你没有激发内功为九阳神功，无法施展\n"}
+
+      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
+        {:error, "你没有激发飘雪穿云掌，无法施展\n"}
+
+      Stats.mapped(stats, "force") != "shaolin-jiuyang" ->
+        {:error, "你必须将全身功力尽数提起才能施展\n"}
+
+      Stats.mapped(stats, "force") != "wudang-jiuyang" ->
+        {:error, "你没有准备飘雪穿云掌，无法施展\n"}
+
+      Stats.mapped(stats, "strike") != "piaoxue-zhang" ->
+        {:error, "TODO(migrate) 未激发/未准备 piaoxue-zhang。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -120,6 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,7 +147,12 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N运起全身功力，顿时真气迸发，全身骨骼噼啪作响，猛然一掌向$n
-全力拍出，力求一击毙敌，正是一招「佛光普照」。", n1: character.name)
+全力拍出，力求一击毙敌，正是一招「佛光普照」。
+strikeforcestrdodgeforceconforcejiuyang-shengongneili只听轰然一声巨响，$n已被一招正中，可$N只觉全身内力犹如江河入
+海，又如水乳交融，登时消失得无影无踪。
+neili只听轰然一声巨响，$n被$N一招正中，身子便如稻草般平平飞出，重
+重摔在地下，呕出一大口鲜血，动也不动。
+neili可是$p内力深厚，及时摆脱了$P内力的牵扯，躲开了这一击！", n1: character.name)
 
     conn
     |> put_character(character)

@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -132,7 +133,10 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转内劲，手中顿时青光闪烁，出剑嗤然有声，朝$n电射而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转内劲，手中顿时青光闪烁，出剑嗤然有声，朝$n电射而去！
+swordforceneili只见$N剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。
+可是$n猛地向前一跃，跳出了$N的攻击范围。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

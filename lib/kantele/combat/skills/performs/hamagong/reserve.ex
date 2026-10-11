@@ -63,7 +63,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Reserve do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N忽地双手撑地倒立，逆运经脉，顿时内息暗生，防御力大增。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N忽地双手撑地倒立，逆运经脉，顿时内息暗生，防御力大增。
+apply/dodgeapply/parryapply/armorapply/dispel_poisonhmg_dzjmneili", n1: character.name)
 
     conn
     |> put_character(character)

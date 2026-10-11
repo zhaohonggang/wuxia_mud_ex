@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出空明拳「空空如也」，拳劲虚虚实实，变化莫测，让$n一时难以捕捉。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出空明拳「空空如也」，拳劲虚虚实实，变化莫测，让$n一时难以捕捉。
+neiliunarmedparryforce$n无法窥测$N拳中奥秘，被这一拳击中要害，登时呕出一大口鲜血！
+:内伤@?可是$p识破了$P的拳招中的变化，精心应对，并没有吃亏。", n1: character.name)
 
     conn
     |> put_character(character)

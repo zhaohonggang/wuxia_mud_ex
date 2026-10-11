@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,9 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N面容庄重，单手携着劲风朝$n猛然拍出，正是密宗绝学「金刚印」。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N面容庄重，单手携着劲风朝$n猛然拍出，正是密宗绝学「金刚印」。
+handlamaismparryneili结果$p招架不及，被$P这一下打得七窍生烟，吐血连连。
+neili可是$p不慌不忙，巧妙的架开了$P的金刚印。", n1: character.name)
 
     conn
     |> put_character(character)

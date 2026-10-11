@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "神龙初现只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -117,7 +118,10 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N脚下轻浮，踉踉跄跄，似倒非倒，跌跌撞撞的冲向$n，同时伸手就是一招，诡秘之极。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N脚下轻浮，踉踉跄跄，似倒非倒，跌跌撞撞的冲向$n，同时伸手就是一招，诡秘之极。
+handparryforceneili$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。
+可是$p看破了$P的企图，巧妙的挡住了$P的进攻。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

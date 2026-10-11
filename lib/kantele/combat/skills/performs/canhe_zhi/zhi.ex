@@ -97,6 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你的参合指修为有限，难以施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -110,7 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，右手中食两指并拢，斜斜指出，朝$n凌空虚点七下。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷哼，右手中食两指并拢，斜斜指出，朝$n凌空虚点七下。
+neilifingerparry结果只听“噗噗噗”数声，$p竟被$P以指力封住穴道，动弹不得。
+可是$p看破了$P的企图，轻轻一跃，躲开了这一招。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
 
     cond do
       false -> {:error, "「佛光普照」只能在战斗中对对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,9 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N纵声长笑，挥动手中的，如泰山一般压向$n，令人叹为观止！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N纵声长笑，挥动手中的，如泰山一般压向$n，令人叹为观止！
+staffmax_neiliforcemax_neilimax_neilimax_neilistaffneili只见$p闷哼一声，连叫都叫不出来，身子飞跌出去，重重的摔倒在地上！
+neili可是$p运足内力，奋力挡住了$P这惊天动地的一击！", n1: character.name)
 
     conn
     |> put_character(character)

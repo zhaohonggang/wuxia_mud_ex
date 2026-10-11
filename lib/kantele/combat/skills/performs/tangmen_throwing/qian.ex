@@ -86,7 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N突然身行一止，从怀中摸出一条，有无数个结，一扬手向$n 掷去。
-只见$n的周身飞舞着无数的光影，一条天网从空罩下。", n1: character.name)
+只见$n的周身飞舞着无数的光影，一条天网从空罩下。
+throwingdodgedugu-jiujian
+你急忙屏气凝神，希望能够躲开这致命的。
+忽然那无数的光影一闪而没，$n身行一顿，给这缠上，仰天而倒。
+你只觉得全身被这越缠越紧，低头一看只见那已经深深的嵌在你的皮肉中。
+jialiidqianqian jie忽然那无数的光影一闪而没，你心中一惊急忙提神运气于足间。
+$n急忙向旁边一纵，躲开着致命的，但已显得狼狈不堪。
+neilineilineili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
 
     cond do
       false -> {:error, "天地绝灭只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随便走了几步，忽然一荡手中的，迅捷无比的扫向$n，变化复杂之极，不可思议！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随便走了几步，忽然一荡手中的，迅捷无比的扫向$n，变化复杂之极，不可思议！
+never-defeatedintmartial-cognizedodgedexmartial-cognizeneili只见$n并不慌张，只是轻轻一闪，就躲过了$N这一击！
+neili$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", n1: character.name)
 
     conn
     |> put_character(character)

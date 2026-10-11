@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,10 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手合十，微微一笑，颇得拈花之意。食指并中指轻轻一弹，顿时一屡罡气电射而出，朝$n袭去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手合十，微微一笑，颇得拈花之意。食指并中指轻轻一弹，顿时一屡罡气电射而出，朝$n袭去。
+canhe-zhiforcebuddhismforcebuddhismneili但见$n也即脸露笑容，衣袖轻轻一拂，顺势裹上，顿将$N的指力消逝殆尽。
+neilineili$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。
+jingjing只听“噗嗤”一声，指力竟在$n胸前穿了一个血肉模糊的大洞，透体而入。", n1: character.name)
 
     conn
     |> put_character(character)

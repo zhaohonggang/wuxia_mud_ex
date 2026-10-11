@@ -101,7 +101,6 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Jia do
       false -> {:error, "你使用的武器不对，难以施展\n"}
       false -> {:error, "你的太极剑法等级不够，难以施展\n"}
       false -> {:error, "对方没有使用兵器，难以施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -112,6 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Jia do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +128,10 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Jia do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "只见$N收摄心神，以剑意运剑，手中每剑均以弧形刺出，弧形收回，每发一招都似放
-出一条细丝，要去缠在$n的之上。", n1: character.name)
+出一条细丝，要去缠在$n的之上。
+neiliswordparryneili却见$n手中被缠住后不断增加重量，招数顿见涩滞，真力不由狂泻而出。
+$n不禁大惊失色，急忙跃开数步，方才摆脱$N的力道。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

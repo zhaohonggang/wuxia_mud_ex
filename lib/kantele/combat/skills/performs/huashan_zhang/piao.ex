@@ -93,6 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,9 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "猛然间$N双掌不断拍向$n出，风声呼呼，攻到途中忽又左手虚出右手作势欲发，虚虚实实，飘渺不定，正是华山绝招「飞絮飘渺」。 顷刻剑$n已被$N掌风笼罩。", n1: character.name)
+    conn = Broadcast.publish(conn, "猛然间$N双掌不断拍向$n出，风声呼呼，攻到途中忽又左手虚出右手作势欲发，虚虚实实，飘渺不定，正是华山绝招「飞絮飘渺」。 顷刻剑$n已被$N掌风笼罩。
+neilicuffforce结果$p一时无法辨别其中虚实，竟无法施招。
+strike可是$n看破其中虚实，更不理会。", n1: character.name)
 
     conn
     |> put_character(character)

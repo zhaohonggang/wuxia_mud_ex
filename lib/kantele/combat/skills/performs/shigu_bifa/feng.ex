@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N飞身一跃而起，贴至$n跟前，手中大起大落，气势恢弘，幻出一道闪电直射$n要穴！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N飞身一跃而起，贴至$n跟前，手中大起大落，气势恢弘，幻出一道闪电直射$n要穴！
+daggerparryneili$p微微一楞，只觉胸口一麻，已被$N点中要穴，整个上半身顿时瘫软无力，缓缓瘫倒。
+可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

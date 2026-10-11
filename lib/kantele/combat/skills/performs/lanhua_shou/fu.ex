@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +120,9 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N反手轻轻伸出三指，婉转如一朵盛开的兰花，轻点$n胁下要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N反手轻轻伸出三指，婉转如一朵盛开的兰花，轻点$n胁下要穴。
+handparry$p只觉胁下一麻，已被$P点个正着，顿时全身酸软，呆立当场。
+neili可是$p看破了$P的企图，轻轻一跃，跳了开去。", n1: character.name)
 
     conn
     |> put_character(character)

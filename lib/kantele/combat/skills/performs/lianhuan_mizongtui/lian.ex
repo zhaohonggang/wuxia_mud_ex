@@ -97,6 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,7 +107,10 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "陡见$N全身飞速旋转，双腿忽前忽后，接连贯出数腿，流星般疾射$n胸口。", n1: character.name)
+    conn = Broadcast.publish(conn, "陡见$N全身飞速旋转，双腿忽前忽后，接连贯出数腿，流星般疾射$n胸口。
+neilidodgeunarmedparry$n顿时觉得眼花缭乱，无数条腿向自己奔来，只得拼命运动抵挡。
+apply/attack可是$n凝神顿气，奋力抵挡，丝毫不受腿影的干扰，。
+apply/attack", n1: character.name)
 
     conn
     |> put_character(character)

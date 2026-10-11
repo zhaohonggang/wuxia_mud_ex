@@ -119,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.ChuncanZhang.Jian do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝聚内力，掌劲吞吐，顿时双掌掀起一层气劲，护住周身经脉。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝聚内力，掌劲吞吐，顿时双掌掀起一层气劲，护住周身经脉。
+
+chuncan-zhangapply/attackapply/dodgeccz_jianremove_effectneiliccz_jianapply/attackapply/dodgeccz_jian你的运行完毕，将内力收回丹田。", n1: character.name)
 
     conn
     |> put_character(character)

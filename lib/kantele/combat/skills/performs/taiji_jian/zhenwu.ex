@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,11 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N跨前一步，平平挥出一剑，横扫$n而去，毫无半点花巧可言。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N跨前一步，平平挥出一剑，横扫$n而去，毫无半点花巧可言。
+combat_expneiliswordparry可是$n看透$P招后更有杀着，镇定逾恒，全神应对自如。
+jingjing结果$n却丝毫未把这招放在眼里，随手应了一招，却见$N剑势
+忽然一变，气象万千，变幻无穷，极具王者风范！
+$n顿时惊慌失措，被$P这一剑击中要害，鲜血崩流，惨不忍睹！", n1: character.name)
 
     conn
     |> put_character(character)

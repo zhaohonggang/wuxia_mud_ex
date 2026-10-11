@@ -97,6 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Gui do
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
       false -> {:error, "你的辟邪剑法不够娴熟，难以施展\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -110,7 +111,10 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Gui do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身子忽进忽退，宛若鬼魅，身形诡秘异常，在$n身边飘忽不定。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身子忽进忽退，宛若鬼魅，身形诡秘异常，在$n身边飘忽不定。
+pixie-jianparry$p霎时只觉眼花缭乱，只能紧守门户，不敢妄自出击！
+可是$p看破了$P的身法，并没有受到任何影响。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

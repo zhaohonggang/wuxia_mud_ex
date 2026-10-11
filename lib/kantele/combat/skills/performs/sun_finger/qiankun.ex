@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
 
     cond do
       false -> {:error, "「一指乾坤」只能在战斗中使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,10 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Qiankun do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出一阳指绝技「一指乾坤」，攻向$n的要穴，招式变化精奇之极！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出一阳指绝技「一指乾坤」，攻向$n的要穴，招式变化精奇之极！
+fingerforceparryforce结果$p没能避开$P这一指，正被点中檀中大穴，浑身气血登时倒流，哇哇连吐几口鲜血！
+neili可是$p看破了$P急忙退闪，连消带打躲开了这一击。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

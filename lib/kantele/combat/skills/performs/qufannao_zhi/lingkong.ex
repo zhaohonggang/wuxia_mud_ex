@@ -115,7 +115,12 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N默念佛经，只见手指微动，几道指气急射向$n，意欲以指力击晕$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N默念佛经，只见手指微动，几道指气急射向$n，意欲以指力击晕$n。
+forcefingerqufannao-zhineiliforcedodgeparryqufannao-zhiqiqineili$n受到$N的指力透击，闷哼一声，看上去很是疲惫。
+$n被$N的指力反击，只觉得胸中烦闷，只想好好休息休息。
+$n被$N以指力一震，脑中嗡嗡作响，意识开始模糊起来！
+$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！
+可是$p看破了$P的企图，并没有上当。", n1: character.name)
 
     conn
     |> put_character(character)

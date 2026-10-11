@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.JinyuanGun.Qian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -134,7 +135,9 @@ defmodule Kantele.Combat.Skills.Performs.JinyuanGun.Qian do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N大步上前，怒吼一声，手中急速舞动，霎时间飞沙走石，罡气激荡。
-便在狂沙飓风中，$N忽然高高跃起，迎头一棒朝$n劈落！", n1: character.name)
+便在狂沙飓风中，$N忽然高高跃起，迎头一棒朝$n劈落！
+clubdodgeneili$n浑身被劲风笼罩，登感窒息，“哇”的吐出一口鲜血，仰面便倒！
+neili$n不敢有丝毫大意，急忙纵身后跃，躲开这足以断金裂石的一击。", n1: character.name)
 
     conn
     |> put_character(character)

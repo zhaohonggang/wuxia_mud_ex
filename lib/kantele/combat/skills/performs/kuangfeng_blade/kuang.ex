@@ -93,6 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengBlade.Kuang do
 
     cond do
       false -> {:error, "你只能对战斗中的对手使用「狂风二十一式」。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,7 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengBlade.Kuang do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N淡然一笑，本就快捷绝伦的刀法骤然变得更加凌厉！就在这一瞬之间，$N已劈出二十一刀！
-刀夹杂着风，风里含着刀影！$n只觉得心跳都停止了！", n1: character.name)
+刀夹杂着风，风里含着刀影！$n只觉得心跳都停止了！
+combat_expcombat_expblade只见$n已被$N切得体无完肤，血如箭般由全身喷射而出！
+可是$p急忙抽身躲开，使$P这招没有得逞。", n1: character.name)
 
     conn
     |> put_character(character)

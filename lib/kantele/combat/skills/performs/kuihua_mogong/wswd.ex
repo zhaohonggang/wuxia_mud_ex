@@ -104,6 +104,9 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对手已经不在这里了！\n"}
+      false -> {:error, "对手已经不能再战斗了。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "无双无对只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -118,7 +121,20 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N突然身形一转眨眼间使出葵花魔功的终极绝招----之
 $N眼神莹然有光，似乎进入了魔境之中。
-$N手中化做无双剑影攻向$n。", n1: character.name)
+$N手中化做无双剑影攻向$n。
+然而$n抵挡得法，将$N的攻势化解。
+neilineili$n只觉得已经跌入了万劫魔域之中，$N手中如同地狱中的鬼火般，从各个方位刺了过来，避无可避！
+can_perform/kuihua-mogong/wdperform2check_wd对手已经不在这里了！
+对手已经不能再战斗了。
+neili你待要再出，却发现自己的内力不够了！
+kuihua-mogongdexmartial-cognizeparrydexmartial-cognize说时迟那时快，$N身形逆转使出了之式，刹那间天空阴云密布，
+$n的心脏几乎停止了跳动，呆呆的望着$N
+这时$n屏住呼吸抵挡得法，将$N的攻势一一化解。
+neilineili$n只觉身上如同万剑穿心一般，$N如同死神一般，势必要取$n性命！
+int
+你突然若有所悟，对刚才使用过的葵花魔功之式反复琢磨，
+对了，这样也可以耶！你学会了之式！
+can_perform/kuihua-mogong/wd", n1: character.name)
 
     conn
     |> put_character(character)

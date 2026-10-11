@@ -115,7 +115,10 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N淡然一笑，本就快捷绝伦的刀法骤然变得更加凌厉！
 就在这一瞬之间，$N已快速劈出六刀！刀夹杂着风，风里含着刀影！
-$n只觉得心跳都停止了！", n1: character.name)
+$n只觉得心跳都停止了！$N从左面劈出两刀！
+weaponweapon$N紧跟$n从右面劈出两刀！
+weaponweapon$N竟然又从上面劈出两刀！
+weaponweapon", n1: character.name)
 
     conn
     |> put_character(character)

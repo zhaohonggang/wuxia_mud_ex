@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,10 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N默运内功，施展出，全身急速转动起来，越来越快，就
-犹如一股旋风，骤然间，$N已卷向正看得发呆的$n。", n1: character.name)
+犹如一股旋风，骤然间，$N已卷向正看得发呆的$n。
+strikestrdodgedexneili$p只见一阵旋风影中陡然现出$P的双拳，根本来不及躲避，被重重击中，
+五脏六腑翻腾不休，口中鲜血如箭般喷出！
+可是$p看破了$P的企图，没有受到迷惑，闪在了一边。", n1: character.name)
 
     conn
     |> put_character(character)

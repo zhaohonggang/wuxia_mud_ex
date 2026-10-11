@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,7 +136,9 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N撤剑转身向后一纵，似欲逃走，$n乘机挺剑上前，眼见$n即
-将得手，不料$N凌空回身反刺，直指$n。", n1: character.name)
+将得手，不料$N凌空回身反刺，直指$n。zigai-jiandodge$n心中一惊，虽知中计，但突如其来迅捷无比，已然闪避不及。
+neili然而$n眼见已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

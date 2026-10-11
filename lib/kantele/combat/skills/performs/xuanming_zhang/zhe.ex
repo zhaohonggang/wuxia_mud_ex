@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施展出绝招「只手遮天」，携带着万古至毒至寒之气的掌劲攻向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施展出绝招「只手遮天」，携带着万古至毒至寒之气的掌劲攻向$n！
+xuanming-zhangstrikeforcedodgeforceneilimax_neilimax_neili$N一掌打在$n身上，猛然间气血翻腾，一股阴寒之气竟反噬回来，$N抵御不住，寒毒侵入体内。$N闷哼一声，一口淤血吐出，脸色顿时发紫。
+qijialijialiqimax_qi( $N )
+
+xuanming_poisonleveljialijialiididduration$n看见$N来势汹涌，急忙提气跃开。
+neilixuanming_poisonleveljialiididduration$n只见眼前紫影晃动，突然间胸口一震，已知大势不妙，只感胸口处一股寒气升起，尽损三焦六脉。", n1: character.name)
 
     conn
     |> put_character(character)

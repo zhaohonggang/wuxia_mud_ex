@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,9 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N施出越爪功「弑元诀」绝技，右手一横，直直抓向$n破绽所在。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出越爪功「弑元诀」绝技，右手一横，直直抓向$n破绽所在。
+neiliclawdodgeyuezhao-gongneili只听$n一声惨嚎，竟被$N的五指抓破气门，鲜血登时四处飞溅！
+可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。", n1: character.name)
 
     conn
     |> put_character(character)

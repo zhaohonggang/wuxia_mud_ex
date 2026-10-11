@@ -110,7 +110,8 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。
+shexing-lifandrunkstrdexgui_yuanremove_effectneiligui_yuanstrdexgui_yuan你的「九阴归元」运功完毕，将内力收回丹田。", n1: character.name)
 
     conn
     |> put_character(character)

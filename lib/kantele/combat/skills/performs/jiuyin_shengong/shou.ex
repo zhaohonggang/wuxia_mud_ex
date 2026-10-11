@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +120,11 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 60}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N“哈”的一声吐出了一口气，手势奇特，软绵绵的奔向$n的要穴！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N“哈”的一声吐出了一口气，手势奇特，软绵绵的奔向$n的要穴！
+jiuyin-shengongcombat_expneilijiuyin-shengongforceparrydodge$n只觉此招，阴柔无比，诡异莫测，心中一惊，却猛然间觉得一股阴风透骨而过。
+neili$n知道来招不善，小心应对，没出一点差错。
+这一招完全超出了$n的想象，被$N结结实实的打中了檀中大穴，浑身真气登时涣散！
+neili$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", n1: character.name)
 
     conn
     |> put_character(character)

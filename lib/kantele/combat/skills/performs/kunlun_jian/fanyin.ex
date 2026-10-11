@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.KunlunJian.Fanyin do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,7 +136,9 @@ defmodule Kantele.Combat.Skills.Performs.KunlunJian.Fanyin do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N微微一笑，左手横握剑柄，右手五指对准剑脊轻轻弹拨，剑身微颤，声若龙吟。
-顿时发出一阵清脆的琴音……", n1: character.name)
+顿时发出一阵清脆的琴音……
+kunlun-jianswordforceneiliswordtanqin-jifa$n顿时只觉琴音犹如两柄利剑一般刺进双耳，刹那间头晕目眩，全身刺痛！
+neili可是$n赶忙宁心静气，收敛心神，丝毫不受$N琴音的干扰。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,10 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 800}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "突然间", n1: character.name)
+    conn = Broadcast.publish(conn, "突然间$N凝气于指，「一指点三脉」点出，顿时一股纯阳的内力直袭$n胸口！
+结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。
+可是$p镇定自如，全力化解了$P这精妙的一指。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

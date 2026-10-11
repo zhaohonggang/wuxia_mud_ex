@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,10 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。
+whipparry$n卒不及防，登时手忙脚乱，招架疏散，慌忙中难以抵挡。
+whip$n心底一惊，连忙全神应对，不敢有丝毫大意。
+neiliapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

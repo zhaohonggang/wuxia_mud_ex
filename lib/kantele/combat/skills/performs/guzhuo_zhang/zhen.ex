@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Zhen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,12 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Zhen do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "陡然间$N施出「璞」字诀，双掌向$n平平推去，招数朴实无华，毫无半点花巧可言。", n1: character.name)
+    conn = Broadcast.publish(conn, "陡然间$N施出「璞」字诀，双掌向$n平平推去，招数朴实无华，毫无半点花巧可言。
+strikestrforceint$n勘破不透掌中虚实，$N双掌正中$p前胸，“喀嚓喀嚓”接连断了数根肋骨。
+$n见$N这掌来势非凡，不敢轻易招架，当即飞身纵跃闪开。
+
+紧接着$N变招「真」字诀，霎时只见$N双掌纷飞，化出漫天掌影笼罩$n四面八方。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

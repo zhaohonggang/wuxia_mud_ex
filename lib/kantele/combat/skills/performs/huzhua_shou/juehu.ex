@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，变掌为爪，双爪化出漫天爪影，如狂风骤雨一般向$n的要害抓去！
+clawparryhuzhua-shou结果$p一声惨嚎，没能招架住$P凌厉的攻势，被抓得皮肉分离，鲜血飞溅！
+neilishenneilishen可是$p看破了$N的企图，躲开了这招杀着。", n1: character.name)
 
     conn
     |> put_character(character)

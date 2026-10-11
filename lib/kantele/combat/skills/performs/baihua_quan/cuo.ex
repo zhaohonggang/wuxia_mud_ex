@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "百花错乱只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -115,7 +116,12 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "只见$N使出百花错拳的精妙百花错乱，擒拿手中夹着鹰爪功，左手查拳，右手绵掌。攻
-出去是八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，只令$n眼花缭乱。", n1: character.name)
+出去是八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，只令$n眼花缭乱。
+
+parry$n只感到头晕目眩，只见$N或掌、或爪、或拳、或指铺天盖地的向自己各个部位袭来！
+只一瞬间，全身竟已多了数十出伤痕，鲜血狂泻不止！
+baihua-quanapply/attack$n只见$N运拳如奔，快拳缤纷递出，连忙振作精神勉强抵挡。
+neiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

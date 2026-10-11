@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
 
     cond do
       vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展\n"}
-      vitals.neili < 300 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 300 -> {:error, "看样子对方真气并不充沛，无需运用\n"}
       true -> :ok
     end
   end
@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,9 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N手中的倏的刺出，卷起一阵阵气旋，不住的往里收缩。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手中的倏的刺出，卷起一阵阵气旋，不住的往里收缩。
+swordforcechuixiao-jiafaforceneili$p顿觉$P的内力隐藏在一个个气旋中，难以捉摸去处，只能强运内力抵消。
+neilineilineilineili可是$p心神安定，丝毫没有受到困惑。", n1: character.name)
 
     conn
     |> put_character(character)

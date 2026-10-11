@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Shang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Shang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将手中轻轻一振，剑脊叮叮作响，无形剑气直指$n气海要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将手中轻轻一振，剑脊叮叮作响，无形剑气直指$n气海要穴。
+swordforceforceneili可是$n内力深厚，使得$P这一招没有起到任何作用。
+neilidamo-jiandamo_shangshenlevelididdurationjingjing结果$n只觉气海穴上一痛，眼前一团黑，阵阵晕眩，难以继续战斗。", n1: character.name)
 
     conn
     |> put_character(character)

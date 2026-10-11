@@ -76,7 +76,6 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
 
     cond do
       false -> {:error, "你使用的武器不对。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -87,6 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
 
     cond do
       false -> {:error, "你的独孤九剑等级不够，练好了再来！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "独孤九剑只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -97,7 +97,14 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N随意挥洒手中的，招招从出其不意的方位直指$n中的破绽。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N随意挥洒手中的，招招从出其不意的方位直指$n中的破绽。
+$n大吃一惊，慌乱之下破绽迭出，$N唰唰连攻剑！
+pin
+$n觉得眼前眼花缭乱，手中的一时竟然拿捏不住，脱手而出！
+
+$n略得空隙喘息，一时间却也无力反击。
+$n连忙抵挡，一时间不禁手忙脚乱，无暇反击。
+$N拿着手中的，东戳西指，不过$n防守的异常严密，$N一时竟然无法找到破绽。", n1: character.name)
 
     conn
     |> put_character(character)

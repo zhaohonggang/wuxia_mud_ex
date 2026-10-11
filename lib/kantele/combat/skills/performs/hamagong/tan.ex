@@ -62,6 +62,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
 
     cond do
       false -> {:error, "你想攻击谁？\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "比武的时候最好是正大光明的较量。\n"}
       false -> {:error, "这里不能战斗，你不可以使用毒技伤人。\n"}
       true -> :ok
@@ -73,7 +74,11 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N运转内力，轻轻悬起一些对准$n弹了过去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转内力，轻轻悬起一些对准$n弹了过去。
+neilineilineilineili然而$n轻轻一抖，将$N射过来的悉数震开。
+poisonforcedodge$n见势不妙，急忙腾挪身形，避开了$N的攻击。
+$n连忙躲闪，结果仍然觉得微微一阵酸麻。
+poison_typepoison", n1: character.name)
 
     conn
     |> put_character(character)

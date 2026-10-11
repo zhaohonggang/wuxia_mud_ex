@@ -121,7 +121,25 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N淡然一笑，双手轻轻划了数个圈子，顿时四周的气流波动，源源不断的被牵引进来。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N淡然一笑，双手轻轻划了数个圈子，顿时四周的气流波动，源源不断的被牵引进来。
+
+combat_expneilijinglitaoismtaiji-quantaiji-shengongforcetaoism恍惚之间你似乎回到了过去的世界，竟然再无法控制自我，忽然眼前的一切
+又全然不见，你心头一乱，浑身一阵剧痛，内力紊乱难以控制！
+你眼前一切渐渐的模糊起来，好像是到了仙境，然而你却觉得内息越来越乱，
+四肢一阵酸痛，几乎要站立不住。
+你耳边忽然响起一个霹雳，眼见雷神挥舞电锤向你打来，你不禁大吃一惊，
+浑身上下都不听使唤，只有高声呼救。
+qiqijingjingqimax_qi只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！
+(  )
+
+却见容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！
+(  )
+
+呆立当场，一动不动，有如中邪，七窍都迸出鲜血来。
+(  )
+
+visionneili你发现眼前的景物似幻似真，连忙默运内功，不受困扰。
+neilineilineili然而没有任何人受了$N的影响。", n1: character.name)
 
     conn
     |> put_character(character)

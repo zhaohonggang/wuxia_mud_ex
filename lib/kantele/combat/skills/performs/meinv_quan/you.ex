@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,9 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N右手支颐，左袖轻轻挥出，长叹一声，使出古墓派绝学「古墓幽居」，一脸尽现寂寥之意。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N右手支颐，左袖轻轻挥出，长叹一声，使出古墓派绝学「古墓幽居」，一脸尽现寂寥之意。
+forceforceunarmedneili但见$N双拳袭来，柔中带刚，迅猛无比，其间仿佛蕴藏着无穷的威力，$n正迟疑间， $N却已中拳，闷哼一声，倒退几步，一口鲜血喷出。
+可是$p看破了$P的企图，稳如泰山，抬手一架格开了$P这一拳。", n1: character.name)
 
     conn
     |> put_character(character)

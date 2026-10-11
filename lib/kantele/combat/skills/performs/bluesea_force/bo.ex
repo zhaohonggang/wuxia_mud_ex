@@ -84,6 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "碧海清波只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -94,7 +95,9 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N掌力忽左忽右，形成一个个气旋，如波浪一般接连向$n逼去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N掌力忽左忽右，形成一个个气旋，如波浪一般接连向$n逼去！
+bluesea-forcemartial-cognizeparrymartial-cognize结果$p被$P逼得施展不开半点招式！
+可是$p看破了$P的掌势来路，镇定自若，应对自如。", n1: character.name)
 
     conn
     |> put_character(character)

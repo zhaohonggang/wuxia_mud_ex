@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Luo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -132,7 +133,9 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Luo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将斜指长空，猛地飞身跃起，长响一声，寒光闪闪，犹如一道闪电劈空而下，一招「落雷式」已使出，以千军不可挡之势袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将斜指长空，猛地飞身跃起，长响一声，寒光闪闪，犹如一道闪电劈空而下，一招「落雷式」已使出，以千军不可挡之势袭向$n。swordparry$n只见一道电光从半空袭来，心中惊骇不已，但鲜血已从$n胸口喷出。
+neili然而$n眼明手快，侧身一跳躲过$N这一剑。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

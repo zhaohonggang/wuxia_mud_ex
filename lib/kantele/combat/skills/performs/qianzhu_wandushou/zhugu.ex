@@ -126,7 +126,10 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Zhugu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N施出蛛蛊决，只见一缕黑气从指尖透出，只一闪就没入了$n的眉心！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出蛛蛊决，只见一缕黑气从指尖透出，只一闪就没入了$n的眉心！
+combat_expfamily/family_name五毒教handpoisonforce$p只觉得一股如山的劲力顺指尖猛攻过来，只觉得全身毒气狂窜，“哇”的一声吐出一口黑血！
+qianzhu_wandushoulevelididdurationneili可是$p运足内力，以深厚的内功化解了这一指的毒劲。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

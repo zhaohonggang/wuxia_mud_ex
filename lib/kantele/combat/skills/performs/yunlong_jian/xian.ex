@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
 
     cond do
       false -> {:error, "云龙三现只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +130,11 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N微微一笑，猛吸一口气，以气驭剑攻击虚虚实实的攻向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N微微一笑，猛吸一口气，以气驭剑攻击虚虚实实的攻向$n！
+forceforceforceneili只见$N手中剑光幻作一条金龙，腾空而起倏的罩向$n，
+$p只觉一股大力铺天盖地般压来，登时眼前一花，两耳轰鸣，哇的喷出一口鲜血！！
+可是$p猛地向前一跃，跳出了$P的攻击范围。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

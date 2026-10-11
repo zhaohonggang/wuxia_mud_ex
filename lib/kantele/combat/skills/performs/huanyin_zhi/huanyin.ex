@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "幻阴神指只能对对手使用。\n"}
       false -> {:error, "看清楚，那不是活人。\n"}
       false -> {:error, "这里不能攻击别人!\n"}
@@ -120,7 +121,10 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深的吸了一口气，缓缓的刺出一指，挟带一股寒气逼向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深深的吸了一口气，缓缓的刺出一指，挟带一股寒气逼向$n。
+fingerhuanyin-zhiforce$p急忙后退，然而这指何等玄妙，正好点中$p胸前，$p不禁打了一个冷战。
+huanyin_poisonlevelididdurationneili可是$p运足内力，以深厚的内功化解了这一指的阴寒内力。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

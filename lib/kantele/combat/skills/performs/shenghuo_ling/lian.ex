@@ -111,6 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中忽伸忽缩，招式诡异无比。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中忽伸忽缩，招式诡异无比。
+swordparryneilineili$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。
+jingjing$n只见眼前寒光颤动，突然$N双手出现在自己眼前，两处太阳穴顿时一阵剧痛。", n1: character.name)
 
     conn
     |> put_character(character)

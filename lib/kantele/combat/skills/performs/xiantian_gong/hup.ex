@@ -72,7 +72,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，顿时气脉通畅，脸色渐渐的变得平和。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，顿时气脉通畅，脸色渐渐的变得平和。
+neilineiliqiqineili", n1: character.name)
 
     conn
     |> put_character(character)

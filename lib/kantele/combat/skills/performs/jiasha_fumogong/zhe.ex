@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，施出绝招「避云遮日」，顿时真气迸发，衣衫鼓动，双手猛然如闪电般地拍向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，施出绝招「避云遮日」，顿时真气迸发，衣衫鼓动，双手猛然如闪电般地拍向$n。
+unarmedconparryconmax_neilimax_neilineili$n全身一颤，立足不稳，被$N这招击得飞起，重重的跌落在地上。
+neilieff_qieff_jingapply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

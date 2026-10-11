@@ -107,6 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,10 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N双臂左右分张，形若龙嘴，所施正是龙象般若功绝学「龙吞势」。霎时呼
-啸声大作，但见一股澎湃无比的罡劲至$N双掌间涌出，云贯向$n而去。", n1: character.name)
+啸声大作，但见一股澎湃无比的罡劲至$N双掌间涌出，云贯向$n而去。
+long_tunremove_effectunarmedforceparryforceforce$n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。
+neilineili可是$n见$N此招来势非凡，急忙向后横移数尺，终于躲避开来。
+long_tunlong_tun你经过调气养息，又可以继续施展了。", n1: character.name)
 
     conn
     |> put_character(character)

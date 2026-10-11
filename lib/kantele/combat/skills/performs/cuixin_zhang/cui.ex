@@ -111,6 +111,8 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
 
     cond do
       false -> {:error, "你使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方已经招架涣散，放胆攻击吧。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +127,12 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N聚气于掌，仰天一声狂啸，刹那间双掌交错，一招「夺命催心」带着阴毒内劲直贯$n！
+strikeforceparryforce只听$n惨叫一声，只感两耳轰鸣，目不视物，软软瘫倒。
+cuixin_zhangleveljialijialiididdurationneili$p见$P来势汹涌，踉踉跄跄的躲开了这致命的一击！
+neilicuixinapply/parrycuixin_endcuixin$N的视力和听力逐渐恢复了知觉。
+你感到被扰乱的真气慢慢平静了下来。
+cuixinapply/parry", n1: character.name)
 
     conn
     |> put_character(character)

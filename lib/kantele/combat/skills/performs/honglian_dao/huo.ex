@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.HonglianDao.Huo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,8 @@ defmodule Kantele.Combat.Skills.Performs.HonglianDao.Huo do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出红莲刀法绝技，手中运转如飞，激起层层热浪席卷$n周身！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出红莲刀法绝技，手中运转如飞，激起层层热浪席卷$n周身！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -129,7 +129,8 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。
+yiwei-dujiangdexdujiangremove_effectneilidujiangdexdujiang你的「一苇渡江」运功完毕，将内力收回丹田。", n1: character.name)
 
     conn
     |> put_character(character)

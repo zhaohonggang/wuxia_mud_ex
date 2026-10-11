@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.YizhiChan.Jingmo do
 
     cond do
       false -> {:error, "「惊魔一指」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,10 @@ defmodule Kantele.Combat.Skills.Performs.YizhiChan.Jingmo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，中指按出，一股锐利的杀气攻向$n，气势恢宏之极！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，中指按出，一股锐利的杀气攻向$n，气势恢宏之极！
+fingerdodge只见$p躲闪不及，被$P这一指正戳在胸前，不由得连声惨叫，胸口鲜血直流！
+neili可是$p急忙跃开，躲开了$P这一指。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

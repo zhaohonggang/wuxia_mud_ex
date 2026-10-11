@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,13 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     vitals = %{vitals | neili: vitals.neili - 250}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N嗔目大喝，施展出日月轮法「五轮连转」神技，蓦地将手中飞掷
-而出，幻作数道光芒，相互盘旋着压向$n，招术煞为精奇！", n1: character.name)
+而出，幻作数道光芒，相互盘旋着压向$n，招术煞为精奇！
+longxiang-gongforcelongxiang-gongapply/attackapply/damageidriyue jinlun突然间锡轮从日月金轮中分离开来，化作一道灰芒朝$n砸去。
+突然间铁轮从日月金轮中分离开来，化作一道红芒朝$n砸去。
+突然间铜轮从日月金轮中分离开来，化作一道黄芒朝$n砸去。
+突然间银轮从日月金轮中分离开来，化作一道银芒朝$n砸去。
+突然间金轮从日月金轮中分离开来，化作一道金芒朝$n砸去。
+neiliapply/attackapply/damage", n1: character.name)
 
     conn
     |> put_character(character)

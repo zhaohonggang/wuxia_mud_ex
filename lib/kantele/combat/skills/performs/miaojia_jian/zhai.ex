@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,9 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清哮，剑势舒张，吞吐不定，瞬间向$n连刺数剑，企图扰乱$n的攻势。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清哮，剑势舒张，吞吐不定，瞬间向$n连刺数剑，企图扰乱$n的攻势。
+neiliparry结果$p只见$P剑招精妙，全然辨不清招中虚实，攻势登时一紧！
+可是$p看破了$P剑势的来路，径自出招，丝毫不为所动。", n1: character.name)
 
     conn
     |> put_character(character)

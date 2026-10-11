@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -115,7 +116,9 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N桀桀奸笑，手中的就像影子一般袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N桀桀奸笑，手中的就像影子一般袭向$n。
+staffdodge结果$n被$N吓得惊慌失措，一时间手忙脚乱，难以应对！
+staff可是$n看破了$N的企图，轻轻一退，闪去了$N的追击。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Lei do
 
     cond do
       false -> {:error, "天打雷劈只能在战斗中对对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,10 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Lei do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 60}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，手中的长劈而下，看似简单，竟然封住了$n所有的退路！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，手中的长劈而下，看似简单，竟然封住了$n所有的退路！
+never-defeatedcombat_expneili$n使出平生所学，奋力化解，没出一点差错。
+$n平生何曾见过这样的招数，全然无法化解，顿时被击中数处要害，颓然倒地！
+$n大吃一惊，连忙胡乱抵挡，居然没有一点伤害，侥幸得脱！", n1: character.name)
 
     conn
     |> put_character(character)

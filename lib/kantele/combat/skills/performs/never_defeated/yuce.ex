@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "御策诀只能在战斗中对对手使用。\n"}
       true -> :ok
     end
@@ -118,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Yuce do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "$N手指一合一弹，只听呼啸破空声起，有若龙吟，一base_unit如蛟龙般打向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手指一合一弹，只听呼啸破空声起，有若龙吟，一base_unit如蛟龙般打向$n。
+combat_expcombat_exp只见那去势恰如神光闪电！$n不及闪避，被打了个正中，惨叫一声，退了几步。
+qijiali可是$p急忙一闪，躲过了$P发出的。", n1: character.name)
 
     conn
     |> put_character(character)

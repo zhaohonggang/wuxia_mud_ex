@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手合十，双目微闭，太玄奥义自心底涌出，猛然间，$N双手向前推出，一股强劲的气流袭向$n 。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双手合十，双目微闭，太玄奥义自心底涌出，猛然间，$N双手向前推出，一股强劲的气流袭向$n 。
+taixuan-gongconmartial-cognizeforceconmartial-cognizeneili然而$n全力抵挡，终于将$N发出的气流挡住。
+neilineilitaixuan-gongtaixuan-gongjingjing$n急忙飞身后退，可是气流射得更快，只听$p一声惨叫，一股气流已经透体而过，鲜血飞溅！$n顿觉精力涣散，无法集中。", n1: character.name)
 
     conn
     |> put_character(character)

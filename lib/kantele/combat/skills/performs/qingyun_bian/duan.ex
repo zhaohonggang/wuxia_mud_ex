@@ -84,6 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.QingyunBian.Duan do
 
     cond do
       false -> {:error, "[断云决]只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenzhang.Zhuan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.LuoyingShenzhang.Zhuan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N掌势陡然一变，施出落英神剑掌「奇门五转」绝技，虚虚实实的攻向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N掌势陡然一变，施出落英神剑掌「奇门五转」绝技，虚虚实实的攻向$n。
+luoying-shenzhangqimen-wuxingforceintdodgeparryqimen-wuxingintneiliforcestrike$n大吃一惊，登时接连中掌，狂喷出一口鲜血，身子急转个不停。
+可是$p看破了$P的企图，连消带打，避开了$P这一击。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -93,6 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,9 @@ defmodule Kantele.Combat.Skills.Performs.PiaofengQuan.Juan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N右拳直出，中途猛地一转，突然发力，身法陡快，将$n笼罩， 正是飘风拳法绝招「卷字决」。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N右拳直出，中途猛地一转，突然发力，身法陡快，将$n笼罩， 正是飘风拳法绝招「卷字决」。
+neilicuffforce结果$p运力招架，一时却觉得内力不济，被$P抢住手腕一拉，顿时立足不稳，滴溜溜打了两个圈子。
+cuff可是$p奋力一架，硬生生格开了$P这一拳。", n1: character.name)
 
     conn
     |> put_character(character)

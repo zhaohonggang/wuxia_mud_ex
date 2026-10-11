@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -115,7 +116,10 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，顿时一股浩荡无比的真气至体内迸发，双掌猛然翻滚，朝$n闪电般拍去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，顿时一股浩荡无比的真气至体内迸发，双掌猛然翻滚，朝$n闪电般拍去。
+unarmedconparrycon$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。
+$n只见$N无数气团向自己袭来，连忙强振精神，勉强抵挡。
+apply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

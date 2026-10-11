@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,10 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，一掌重重击向$n，$p正欲格挡，忽然只见眼前金光一闪，一股劲风已由$N掌中激射而出！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，一掌重重击向$n，$p正欲格挡，忽然只见眼前金光一闪，一股劲风已由$N掌中激射而出！
+strikethrowingdodgeparry$n果真始料不及，$N那base_unit正好打在$p要穴上，顿时血气上涌，连退数步！
+qiqiqimax_qijiali( $n )
+可是$p早料得$P有此一着，哈哈一笑，斜跳闪开。", n1: character.name)
 
     conn
     |> put_character(character)

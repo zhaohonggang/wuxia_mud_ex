@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,11 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一base_unit由指尖弹出，疾速射向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一base_unit由指尖弹出，疾速射向$n。
+fingerthrowingdodgeparry只见那base_unit来势迅猛之极，$n根本无暇闪避，被这招击个正中！
+qijialiweapon$n手腕一麻，手中不由脱手而出！
+qimax_qi( $n )
+可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。", n1: character.name)
 
     conn
     |> put_character(character)

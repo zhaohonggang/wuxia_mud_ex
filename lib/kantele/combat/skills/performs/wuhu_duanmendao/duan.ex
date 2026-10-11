@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,7 +128,10 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N猛然伏地，使出五虎断门刀「断」字决，顿时一片白光向前直滚而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N猛然伏地，使出五虎断门刀「断」字决，顿时一片白光向前直滚而去！
+bladeparrycombat_expapply/attackapply/parryapply/damageweaponapply/attackapply/parryapply/damageapply/attackapply/parryapply/damage$N从左面劈出第四刀！
+weaponapply/attackapply/parryapply/damageapply/attackapply/parryapply/damage$N从右面劈出第五刀！
+weaponapply/attackapply/parryapply/damageneili", n1: character.name)
 
     conn
     |> put_character(character)

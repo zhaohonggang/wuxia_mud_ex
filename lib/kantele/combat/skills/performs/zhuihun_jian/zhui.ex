@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，手中一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷哼，手中一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！
+neilisworddodge可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。
+只听$n一声惨叫，被这一剑穿胸而入，顿时鲜血四处飞溅。", n1: character.name)
 
     conn
     |> put_character(character)

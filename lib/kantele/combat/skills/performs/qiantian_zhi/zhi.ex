@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,9 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然使出一招「乾阳神指」，双指齐施，同时朝$n面门及胸口处点去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N陡然使出一招「乾阳神指」，双指齐施，同时朝$n面门及胸口处点去。
+fingerparryfingerneili结果$p躲闪不及，登时被$P一指点中，内息不由得一滞，难受之极。
+neili可是$p识破了$P这一招，斜斜一跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

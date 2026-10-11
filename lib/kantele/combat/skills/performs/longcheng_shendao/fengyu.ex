@@ -107,6 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.LongchengShendao.Fengyu do
     cond do
       false -> {:error, "「风雨交加」只能对战斗中的对手使用。\n"}
       false -> {:error, "你不会使用「风雨交加」。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -116,7 +117,10 @@ defmodule Kantele.Combat.Skills.Performs.LongchengShendao.Fengyu do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 120}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，手中的如雨点一般向$n打去，$n如同小舟一般在刀雨中漂泊不定。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，手中的如雨点一般向$n打去，$n如同小舟一般在刀雨中漂泊不定。
+parry这阵刀势变化莫测，$n顿时觉得眼花缭乱，无法抵挡。
+apply/attack$n不禁心中凛然，不敢有半点小觑，使出浑身解数抵挡。
+neiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -134,7 +135,10 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N挥刀向左肩一勒，血珠顿时溅满刀面，紧接着右臂抡出一片血光向$n当头劈落。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N挥刀向左肩一勒，血珠顿时溅满刀面，紧接着右臂抡出一片血光向$n当头劈落。
+neili$n只见血刀疾闪，眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！
+可是$n侧身避让，不慌不忙，躲过了$N的必杀一刀。
+neiliqi", n1: character.name)
 
     conn
     |> put_character(character)

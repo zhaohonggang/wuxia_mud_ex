@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
 
     cond do
       false -> {:error, "「纵横」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N一声轻笑，十指纷弹，剑气如奔，连绵无尽的缕缕剑气豁然贯向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N一声轻笑，十指纷弹，剑气如奔，连绵无尽的缕缕剑气豁然贯向$n！
+six-fingerfingerforce结果$p被这纵横交错的剑气逼得手忙脚乱，应接不暇！
+可是$p并不慌张，运起内功将$P的剑气尽数化解。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -114,6 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -126,7 +127,10 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出云龙鞭法「缠」字诀，连挥企图把$n的全身缠住。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出云龙鞭法「缠」字诀，连挥企图把$n的全身缠住。
+whipparry结果$p顿时被$P的鞭势牢牢缠住，攻得措手不及！
+whip可是$p看破了$P的企图，并没有上当。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

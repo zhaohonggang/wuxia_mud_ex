@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
 
     cond do
       false -> {:error, "「血雨」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,8 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，手腕一抖，如闪电一般砍向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N嗔目大喝，手腕一抖，如闪电一般砍向$n！
+neilibladeapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

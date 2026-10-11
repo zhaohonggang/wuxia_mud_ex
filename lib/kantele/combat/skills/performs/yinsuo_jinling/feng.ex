@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,18 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中暮地一抖，幻出无数鞭影，霎时破风声骤起，携着风雷之势扫向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中暮地一抖，幻出无数鞭影，霎时破风声骤起，携着风雷之势扫向$n！
+$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！
+可是$p镇定自如，丝毫不为这变幻莫测的招式所动，凝神抵挡，化解开来！
+whipdodge
+紧接着$N一声娇喝，猛地向后一撤，顿时化作一道长虹，已从$n背后袭出！
+$n稍一迟疑，突然感到后背一阵刮骨之痛，已被这招打得血肉模糊！
+$p一声冷哼，早预料$N有此一着，凝神聚气，将这招轻轻格开！
+weapon
+$N眉头微皱，手腕轻轻一振，只听“飕”的一声，又攻出一招，如流星般弹向$n腕部！
+whipforce只听“当”的一声，正打在$p上，$p手腕一麻，再也拿持不住，脱手掉在地上。
+neili可是$p看破了$P的企图，急忙斜跳躲开！
+neilineili", n1: character.name)
 
     conn
     |> put_character(character)

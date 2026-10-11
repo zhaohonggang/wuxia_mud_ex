@@ -107,6 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,12 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷笑，蓦地拔地而起，右手一招「铁爪锁喉」直取$n颈部。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声冷笑，蓦地拔地而起，右手一招「铁爪锁喉」直取$n颈部。
+neiliclawdodgemax_neilimax_neili霎时只听「喀嚓」一声脆响，$N五指竟将$n的喉结捏个粉碎。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)
+neiliforcelimbs要害$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的。
+neili可是$n看破了$P的企图，身形急动，躲开了这一抓。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

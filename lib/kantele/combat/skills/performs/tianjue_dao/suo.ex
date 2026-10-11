@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -127,7 +128,8 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒啸一声，施展出绝招「天绝锁」将手中挥舞得密不透风，猛然间风声大作，竟将$n笼罩在刀风之下。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N怒啸一声，施展出绝招「天绝锁」将手中挥舞得密不透风，猛然间风声大作，竟将$n笼罩在刀风之下。tianjue-daoneilidodge$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！
+可是$N镇定自若，小心拆招，没有被$n招式所困。", n1: character.name)
 
     conn
     |> put_character(character)

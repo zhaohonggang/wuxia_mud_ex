@@ -89,7 +89,6 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
 
     cond do
       false -> {:error, "你手中没有兵器如何使用慈悲字诀。\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -102,6 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
       false -> {:error, "你使用的外功中没有这个功能。\n"}
       false -> {:error, "你的禅宗心法等级不够，怎能支持慈悲字诀？\n"}
       false -> {:error, "你的雷鸣鞭法修为太差,还不能使用慈悲字诀！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       false -> {:error, "［慈悲字诀］只能对战斗中的对手使用。\n"}
       true -> :ok
     end
@@ -113,7 +113,14 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N喃喃自语道：慈悲为怀，手中的仿佛如来出世般倒卷向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N喃喃自语道：慈悲为怀，手中的仿佛如来出世般倒卷向$n。
+combat_expleiming-biancombat_expdodgeshen$n不禁被$N的无边佛法打动，猛的后退，脸上没有一丝血色...
+qiqiqimax_qi( $n )
+weapon
+紧接着$N手中的连续晃动，竟然不知道有多少击。
+leiming-bianleiming-bianapply/attackapply/damageweaponapply/attackapply/damageneili
+$n左躲右闪，强$N的攻击完全化于无形！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

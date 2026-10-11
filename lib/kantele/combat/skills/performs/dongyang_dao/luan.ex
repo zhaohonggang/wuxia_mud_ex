@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Luan do
 
     cond do
       false -> {:error, "「乱刀诀」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,8 @@ defmodule Kantele.Combat.Skills.Performs.DongyangDao.Luan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嘿嘿一声冷笑，手中的左突右伸，刀刀都从意想不到的地方砍向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N嘿嘿一声冷笑，手中的左突右伸，刀刀都从意想不到的地方砍向$n！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

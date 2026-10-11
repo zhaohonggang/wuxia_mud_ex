@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -126,7 +127,10 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。
+bladeparry霎时间$n只觉周围四处杀气弥漫，全身气血翻滚，甚难招架。
+xuedao-dafa霎时间$n只觉周围四处杀气弥漫，心底微微一惊，连忙奋力招架。
+apply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

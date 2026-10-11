@@ -96,6 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
 
     cond do
       false -> {:error, "天花乱坠只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N手中的一勾一划，简单明了的压向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手中的一勾一划，简单明了的压向$n！
+never-defeatedmartial-cognizeparrymartial-cognize结果$p被$P逼得施展不开半点招式！
+可是$p看破了$P的招数，镇定自若，应对自如。", n1: character.name)
 
     conn
     |> put_character(character)

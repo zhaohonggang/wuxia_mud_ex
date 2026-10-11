@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +130,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出衡山五神剑「回峰蜿蜒势」，手中猛然反转，剑势迂回诡异，连连袭向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出衡山五神剑「回峰蜿蜒势」，手中猛然反转，剑势迂回诡异，连连袭向$n。neilidodge剑势迂回间$N招式陡然变快，$n已被$N攻的目不暇接，手忙脚乱！
+可是$n看破了$N的企图，镇定解招，一丝不乱。", n1: character.name)
 
     conn
     |> put_character(character)

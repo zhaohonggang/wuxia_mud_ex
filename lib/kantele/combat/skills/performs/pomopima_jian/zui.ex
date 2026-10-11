@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声长吟，手中连划三个圆圈，幻作三个光圈，便如是有形之物，缓缓向$n身前移去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长吟，手中连划三个圆圈，幻作三个光圈，便如是有形之物，缓缓向$n身前移去！
+swordparryneili$n只觉剑气满室，寒风袭体，微微一楞，已连中三剑，鲜血飞溅！
+neili可是$p见来势迅猛，飞身一跃，闪开了$P这凌厉的几剑。", n1: character.name)
 
     conn
     |> put_character(character)

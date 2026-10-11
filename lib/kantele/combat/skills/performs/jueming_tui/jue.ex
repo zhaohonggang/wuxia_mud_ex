@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,13 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: character.name)
+    conn = Broadcast.publish(conn, "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。
+$N蓦地大喝一声，单腿猛踢而出，直踹$n腰际，招式极为迅猛。
+突然只见$N双腿连环踢出，挟着嚯嚯风声，以千钧之势扫向$n。
+unarmedstrdodgedexparrystr可是$n身子一晃，硬生生架住了$N这一腿。
+neili却见$n镇定的向后一纵，闪开了$N这一腿。
+neili$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

@@ -99,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     cond do
       vitals.max_neili < 3000 -> {:error, "你现在的真气不够，难以施展\n"}
       vitals.neili < 0 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 800 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 800 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "突然间$N指锋一转，力聚指尖“嗤”的弹出一道紫芒，直袭$n气海大穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然间$N指锋一转，力聚指尖“嗤”的弹出一道紫芒，直袭$n气海大穴。
+fingerforcejingjingneilineilineili$n只觉$N指风袭体，随即上体一阵冰凉，顿感真气涣散几欲晕厥。
+可是$p防守严密，紧守门户，顿时令$P的攻势化为乌有。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -120,7 +120,9 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N仰天一声长啸，强催内劲，全身竟浮现出隐隐碧绿之色。喝道：“万蛊噬天”,双掌猛
-然拍出，登时幻出漫天碧绿色掌影，毒气弥漫，笼罩$n全身！", n1: character.name)
+然拍出，登时幻出漫天碧绿色掌影，毒气弥漫，笼罩$n全身！
+
+neilifamily/family_name五毒教apply/parryapply/dodgeapply/unarmed_damageapply/parryapply/dodgeapply/unarmed_damage", n1: character.name)
 
     conn
     |> put_character(character)

@@ -117,7 +117,18 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     vitals = %{vitals | neili: vitals.neili - 1000}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "$N一声巨喝，聚气入腕，只听破空声一响，手中携着隐隐风雷之劲向$n澎湃贯
-出，疾若电闪，势如雷霆。", n1: character.name)
+出，疾若电闪，势如雷霆。
+swordforceparrymartial-cognizejueji/sword/feishengend_perform2forceforceneili$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！
+perform2perform2可是$p看破了$P的企图，斜跃避开。
+neiliperform2perform2你运转内力，仰天一声清啸，剑在空中盘旋了一圈，又飞回了你的手中。
+end_perform2weaponskill_typesword你停止使用「御剑飞升」绝技。
+end_perform2neili你剑至中途，可怎奈内息不足，只好停止御剑。
+end_perform2
+$N手中御剑凌驾如飞，宛若游龙，灵转千变，一道道凌厉剑气疾射而出。
+forceforceswordforceparrymartial-cognizeneili只听「嗤啦」一声，无形剑气竟在$n上身刺出一个血洞，数股血柱疾射而出！
+perform2perform2可是$p看破了$P的企图，斜跃避开。
+neiliperform2perform2jueji/sword/feishengjueji/sword/feisheng
+你经过调气养息，又可以继续使用「御剑飞升」了。", n1: character.name)
 
     conn
     |> put_character(character)

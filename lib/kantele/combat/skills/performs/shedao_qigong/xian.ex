@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     cond do
       false -> {:error, "「神龙再现」只能对战斗中的对手使用。\n"}
       false -> {:error, "你现在还不会使用神龙再现！\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,12 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。
+sword$N足不点地，飘然欺身上前，一剑刺出，直指$n腰间。staff$N手中吞吞吐吐，虚虚实实，化作一团光影，斜斜扫向$n腰间。
+parrydodgeneili$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。
+neili$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
+一招正中$p，直打了个鲜血四下飞溅。
+neili$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "突然$N一声冷哼，手中中攻直进，直刺$n拿着的的手腕。", n1: character.name)
+    conn = Broadcast.publish(conn, "突然$N一声冷哼，手中中攻直进，直刺$n拿着的的手腕。
+swordparryneili$n只觉手腕一阵刺痛，手中再也拿捏不住，脱手而飞。
+neili可是$n看破了$N的企图，将手中兵刃挥舞得密不透风，挡开了$N的兵器。", n1: character.name)
 
     conn
     |> put_character(character)

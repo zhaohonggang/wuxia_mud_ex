@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Luan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Luan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N回转剑锋，手中紫光荡漾，如作龙吟，无形剑气笼罩$n全身。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N回转剑锋，手中紫光荡漾，如作龙吟，无形剑气笼罩$n全身。
+swordforceforceneili可是$n内力深厚，使得$P这一招没有起到任何作用。
+neilidamo-jiandamo_luanqilevelididduration霎时$n心头一阵迷惑，体内的真气登时不听使唤，四处游走。", n1: character.name)
 
     conn
     |> put_character(character)

@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Qianshe do
     cond do
       false -> {:error, "「千蛇出洞」只能对战斗中的对手使用。\n"}
       false -> {:error, "你还不会使用「千蛇出洞」。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -126,7 +127,9 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Qianshe do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，扑身上前，手中的化作万道光芒，一齐射向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，扑身上前，手中的化作万道光芒，一齐射向$n！
+parry$n见$N把使得活灵活现，犹如真物一般，实在是难以抵挡，只有后退。
+apply/attackneiliapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -125,7 +126,18 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出上清剑法「清流剑」绝技，手中随即一颤，对准$n连攻数剑，招式凌厉无比！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N施出上清剑法「清流剑」绝技，手中随即一颤，对准$n连攻数剑，招式凌厉无比！
+$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！
+$p凝神聚气，硬声声将$P这一剑架开，丝毫无损。
+sworddodge
+却见$N跨步上前，手中剑招陡变，又攻出一剑，剑尖顿闪出数道剑光，笼罩$n全身！
+$p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！
+可是$p丝毫不为$P华丽的剑光所动，稳稳将这一剑架开。
+swordforce
+$N随即一声大喝，身外化身，剑外化剑，手中顿时漾起一道青芒，再次攻向$n而去！
+$p运气抵挡，可只觉一股无形剑气透体而过，难受之极，喷出数口鲜血！
+$p一口气自丹田运了上来，$P附体剑芒虽然厉害，却未能伤$p分毫。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

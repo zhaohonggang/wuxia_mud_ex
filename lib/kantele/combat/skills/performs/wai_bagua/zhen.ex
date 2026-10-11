@@ -94,6 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -106,7 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深吸一口气，双掌交错，一招「八卦震」平平拍出，企图以内力震伤$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N深吸一口气，双掌交错，一招「八卦震」平平拍出，企图以内力震伤$n。
+neiliforceforcewai-bagua结果$n微微一楞，没有看破招中奥妙，$N双掌正好拍在胸前。
+:内伤@?可是$p看破了$P的企图，并没有上当。", n1: character.name)
 
     conn
     |> put_character(character)

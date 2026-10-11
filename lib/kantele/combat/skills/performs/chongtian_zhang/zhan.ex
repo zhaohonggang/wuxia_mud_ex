@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,9 @@ defmodule Kantele.Combat.Skills.Performs.ChongtianZhang.Zhan do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N双臂舒张，掌缘微微颤动，身形一展，已移至$n跟前，双掌交叉奋力劈下，正是
-白鹤冲天掌「翅展九州」绝技，空气中顿时爆响出一阵尖锐的破空声。", n1: character.name)
+白鹤冲天掌「翅展九州」绝技，空气中顿时爆响出一阵尖锐的破空声。
+neilistrikeforcestrikeneili$n躲闪不得，只能硬挡下双掌，顿时被$P双掌砍中双肩两侧，吐血不止！
+可是$p奋力招架，终于将$P这双掌架开，没有受到任何伤害。", n1: character.name)
 
     conn
     |> put_character(character)

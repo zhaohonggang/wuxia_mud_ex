@@ -123,7 +123,27 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "只见$N双目微闭，单手托天。掌心顿时腾起一个无比刺眼的气团，正是奥
 义「魔光日无极」。霎时金光万道，尘沙四起，空气炽热，几欲沸腾。$N
-随即收拢掌心，气团爆裂开来，向四周电射而出，光芒足以和日月争辉。", n1: character.name)
+随即收拢掌心，气团爆裂开来，向四周电射而出，光芒足以和日月争辉。
+
+neiliforceunarmedmartial-cognizejiuyang-shengongconforcemartial-cognizecon你只觉眼前金光万道，周围空气几欲沸腾，光芒便如利箭一般透体而入。
+你只觉眼前金光万道，周围空气几欲沸腾，光芒便如千万细针一齐扎入身体般。
+qiqijingjingqimax_qi只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。
+(  )
+
+只见向后飞出丈远，重重的跌落在地上，衣衫烧焦，再也没力气站起。
+(  )
+
+只见跌跌撞撞向后连退数步，伏倒在地。须眉、衣衫都发出一股焦臭。
+(  )
+
+光芒闪过，却是呆立当场，动也不动，七窍流血，神情扭曲，煞是恐怖。
+(  )
+
+急忙抽身后退，可只见眼前光芒暴涨，一闪而过。全身已多了数个伤口，鲜血飞溅。
+(  )
+
+visionneili你只觉眼前金光万道，周围空气几欲沸腾，大惊之下连忙急运内功，抵御开来。
+neilineili只见光芒顿敛，却没有任何人被$N这招击中。", n1: character.name)
 
     conn
     |> put_character(character)

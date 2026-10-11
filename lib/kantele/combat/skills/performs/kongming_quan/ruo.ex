@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Ruo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -115,7 +116,9 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Ruo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出空明拳「空明若玄」，双手吞吐不定，运转如意，试图扰乱$n的攻势。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N使出空明拳「空明若玄」，双手吞吐不定，运转如意，试图扰乱$n的攻势。
+neiliparry结果$n被$N的拳招所牵制，招架不迭，全然无法反击！
+可是$p看破了$P的企图，镇定逾恒，全神应对自如。", n1: character.name)
 
     conn
     |> put_character(character)

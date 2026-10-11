@@ -86,11 +86,6 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
     cond do
       false -> {:error, "你必须空手才能修炼千蛛万毒手！\n"}
-      false -> {:error, "你正在修炼中！\n"}
-      false -> {:error, "你正忙着呢！\n"}
-      false -> {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
-      false -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
-      false -> {:error, "毒虫正忙着呢，不能和你配合！\n"}
       true -> :ok
     end
   end
@@ -101,7 +96,12 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "你正在修炼中！\n"}
+      false -> {:error, "你正忙着呢！\n"}
+      false -> {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
       false -> {:error, "你要吸取什么毒虫的毒素？\n"}
+      false -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
+      false -> {:error, "毒虫正忙着呢，不能和你配合！\n"}
       false -> {:error, "这里太嘈杂，你不能静下心来修炼。\n"}
       true -> :ok
     end

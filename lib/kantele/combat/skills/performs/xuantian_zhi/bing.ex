@@ -116,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N默运玄天无极功，顿时一层寒霜笼罩全身，一声冷笑，聚力于指，直戳$n要穴！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N默运玄天无极功，顿时一层寒霜笼罩全身，一声冷笑，聚力于指，直戳$n要穴！
+xuantian-zhifingerconforceconneilixuantian_zhileveljialijialiididduration$n稍不留神，已被$P一指点中，阴寒之劲顿时侵入三焦六脉。
+$n见$N来势汹涌，急忙提气跃开。", n1: character.name)
 
     conn
     |> put_character(character)

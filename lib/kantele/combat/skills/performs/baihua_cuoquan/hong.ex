@@ -113,6 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +130,11 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     combat = Combat.start_busy(combat, 4)
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声怒嚎，将战神心经提运极至，双拳顿时携着雷霆万钧之势猛贯向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声怒嚎，将战神心经提运极至，双拳顿时携着雷霆万钧之势猛贯向$n。
+combat_expunarmedforceparrydodgemax_neilimax_neilineili只见$N一拳轰至，便将$n震得心脉俱碎，仰天喷出一口鲜血，软软瘫倒。
+( $n受伤过重，已经有如风中残烛，随时都可能断气。)
+neili结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。
+neili可是$p识破了$P这一招，斜斜一跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

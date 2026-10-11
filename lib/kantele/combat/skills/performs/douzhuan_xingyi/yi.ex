@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     cond do
       false -> {:error, "「斗转星移」只能对战斗中的对手使用。\n"}
       false -> {:error, "你还不会使用斗转星移。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,11 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起紫徽心法，内力自气海穴出，经由任督二脉奔流而出，巧妙的牵引着$n的招式！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运起紫徽心法，内力自气海穴出，经由任督二脉奔流而出，巧妙的牵引着$n的招式！
+douzhuan-xingyizihui-xinfaforceneili结果$p一招击出，正好打在自己的要害上，不禁一声惨叫，摔跌开去。
+max_qiqiqi然而$p内功深厚，并没有被$P这巧妙的劲力所带动。
+结果$p的招式莫名其妙的变了方向，竟然控制不住！幸好身边没有别人，没有酿成大祸。
+另一个结果$p发出的招式不由自主的变了方向，突然攻向，不禁令大吃一惊，招架不迭！weapon", n1: character.name)
 
     conn
     |> put_character(character)

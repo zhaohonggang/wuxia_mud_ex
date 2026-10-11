@@ -109,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,10 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清啸，双掌纷飞贯出，掌影重重叠叠，虚实难辨，全全笼罩$n全身。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，双掌纷飞贯出，掌影重重叠叠，虚实难辨，全全笼罩$n全身。
+strikeparryneili$n一时无法勘破这玄奇的掌法，接连中了数招，身陷其中，无法自拔。
+可是$p的看破了$P的掌法，巧妙的拆招，没露半点破绽。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

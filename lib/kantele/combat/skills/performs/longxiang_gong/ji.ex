@@ -108,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -122,7 +123,10 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N运转龙象般若功第层功力，双拳携着『十龙十象』之力朝$n崩击
-而出，拳锋过处，竟卷起万里尘埃，正是密宗绝学「般若极」。", n1: character.name)
+而出，拳锋过处，竟卷起万里尘埃，正是密宗绝学「般若极」。
+unarmedforceparryforceshieldapply/armorapply/armorshield$N罡气涌至，竟然激起层层气浪，顿时将$n的护体真气摧毁得荡然无存！
+jiali$n不及闪避，顿被$N双拳击个正中，般若罡劲破体而入，尽伤三焦六脉。
+neilineili可是$p识破了$P这一招，斜斜一跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

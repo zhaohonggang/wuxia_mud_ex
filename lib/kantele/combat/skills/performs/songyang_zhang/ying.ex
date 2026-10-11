@@ -96,6 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.SongyangZhang.Ying do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -110,7 +111,10 @@ defmodule Kantele.Combat.Skills.Performs.SongyangZhang.Ying do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声长啸，施出绝招「无影掌」双掌不断拍出，掌风作响，划破长空，将$n团团围住。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声长啸，施出绝招「无影掌」双掌不断拍出，掌风作响，划破长空，将$n团团围住。
+$n心神惧裂，一时间竟无从应对，竟被困在$N的掌风之中。
+neili$n看破$N毫无攻击之意，于是大胆反攻，将$N这招尽数化解。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

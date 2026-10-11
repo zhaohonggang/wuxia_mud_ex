@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N回转手中施出「无痕杀」绝技，刀身顿时漾起一道血色刀芒，直斩$n而去！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N回转手中施出「无痕杀」绝技，刀身顿时漾起一道血色刀芒，直斩$n而去！
+bladedodgeneili只听“嗤啦”一声，$n被$N的刀芒划中气门，登时痛声长呼，几欲晕倒。
+neili$n见$P来势汹涌，连忙飞身向后挪移数尺，躲闪开来。", n1: character.name)
 
     conn
     |> put_character(character)

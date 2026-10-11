@@ -90,7 +90,18 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N手中突然多了一支花，美得妖艳，$n觉得有点痴了，
 $N向$n一笑，一扬手向$n抛去。
-只见那花开了，五瓣齐舒，中央花心吐蕊，煞是好看。", n1: character.name)
+只见那花开了，五瓣齐舒，中央花心吐蕊，煞是好看。
+throwingparrydodgedugu-jiujian
+你急忙伸出手去接，但突地，你发现有异，那是一朵铁花，纵身一跃。
+reborn/timesidtang huathrowingjiali结果$p一声惨嚎，连中了$P发出的一base_unit。
+jialiqiqiqimax_qi( $n )
+那花越开越艳，$n不知不觉中已痴迷了，身形一慢,微笑着倒下了，那花也谢了。
+
+你看到那花，果真是一朵铁花。
+你慢慢的伸出手想摘下它，但那花好象变的越来越多了，依稀中你记得那上面有一个小小的“唐”字。
+jialiqiidtang hua果真是唐花，唐门中的唐花。你运足全身的内力，身形掠的更急。
+$n 身形飘忽，那花划空而过。只听当的一声轻响，那花谢了，轻轻地砸在地面上。
+neilineilineili", n1: character.name)
 
     conn
     |> put_character(character)

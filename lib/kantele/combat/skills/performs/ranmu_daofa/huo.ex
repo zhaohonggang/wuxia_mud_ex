@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
         {:error, "你现在没有激发少林内功为内功，难以施展「火麒蚀月」。\n"}
 
       Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+        {:error, "TODO(migrate) 未激发/未准备 luohan-fumogong。\n"}
 
       Stats.mapped(stats, "force") != "yijinjing" ->
         {:error, "TODO(migrate) 未激发/未准备 yijinjing。\n"}
@@ -131,6 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
 
     cond do
       false -> {:error, "「火麒蚀月」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -141,7 +142,10 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！
+ranmu-daofaforceforceneili只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！
+$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

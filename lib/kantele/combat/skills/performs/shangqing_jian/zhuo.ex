@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Zhuo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -133,7 +134,9 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Zhuo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N手中一抖，施出上清剑法「浊流剑」，霎时无数剑光罩向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手中一抖，施出上清剑法「浊流剑」，霎时无数剑光罩向$n！
+swordparryneili$n只感剑光夺目，顿时眼花缭乱，被$N一剑刺中，鲜血飞溅。
+neili可是$n看破$N的招数，飞身一纵，避开了这一剑。", n1: character.name)
 
     conn
     |> put_character(character)

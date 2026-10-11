@@ -103,6 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -112,7 +113,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "霎时间只见$N身形一展，双爪疾攻而上，爪影笼罩$n全身各处要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "霎时间只见$N身形一展，双爪疾攻而上，爪影笼罩$n全身各处要穴。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

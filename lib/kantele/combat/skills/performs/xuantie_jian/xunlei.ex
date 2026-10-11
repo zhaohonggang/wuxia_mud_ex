@@ -109,7 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     stats = character.meta.stats
 
     cond do
-      false -> {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
       false -> {:error, "你必须在使用剑时才能使出「迅雷击」！\n"}
       true -> :ok
     end
@@ -120,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     stats = character.meta.stats
 
     cond do
+      false -> {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
       false -> {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
       true -> :ok
     end
@@ -133,7 +133,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将手中的缓缓向$n一压，忽然剑光一闪， 一剑幻为三剑，宛如奔雷掣电攻向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N将手中的缓缓向$n一压，忽然剑光一闪， 一剑幻为三剑，宛如奔雷掣电攻向$n！
+
+weaponweaponweaponneiliapply/strapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

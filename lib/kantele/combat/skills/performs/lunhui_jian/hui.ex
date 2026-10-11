@@ -100,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
     cond do
       vitals.max_neili < 7500 -> {:error, "你现在真气不够，难以施展\n"}
       vitals.neili < 1000 -> {:error, "你的内力修为不够，难以施展\n"}
-      vitals.qi < 0 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.qi < 0 -> {:error, "TODO(migrate) qi 不足。\n"}
       true -> :ok
     end
   end
@@ -121,6 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end

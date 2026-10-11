@@ -98,6 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     cond do
       false -> {:error, "你感情早已不纯，哪里还能领略到那种黯然销魂的感觉？\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -108,7 +109,10 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。
+
+只见$N没精打采的挥袖卷出，面无表情，随意拍出一掌，正是黯然销魂掌中的「拖泥带水」。
+neili只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。 last_perform/sad-strike/tuoneili可是$p小心应付、奋力招架，挡开了这一招。", n1: character.name)
 
     conn
     |> put_character(character)

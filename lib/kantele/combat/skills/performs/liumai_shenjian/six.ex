@@ -99,7 +99,6 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Six do
 
     cond do
       false -> {:error, "你必须是空手才能施展\n"}
-      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -110,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Six do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -119,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Six do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N摊开双手，手指连弹，霎时间空气炙热，几欲沸腾，六道剑气分自六穴，一起冲向$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N摊开双手，手指连弹，霎时间空气炙热，几欲沸腾，六道剑气分自六穴，一起冲向$n！
+fingerforce$n见此剑气纵横，微一愣神，不禁心萌退意。
+neiliapply/parryapply/dodgeliumai-shenjian/hit_msgapply/parryapply/dodgeliumai-shenjian/hit_msg", n1: character.name)
 
     conn
     |> put_character(character)

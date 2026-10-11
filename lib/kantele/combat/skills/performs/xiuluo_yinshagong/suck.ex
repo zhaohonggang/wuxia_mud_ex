@@ -73,7 +73,17 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N伸出食指，点在腹部，默运内力迫出毒液练药。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N伸出食指，点在腹部，默运内力迫出毒液练药。
+worm_poison看来你是弄不出什么毒液来了。
+poisonwudu-qishuxiuluo-yinshagonglevelremainremainlevelremainlevelpoison-supply$N挤了半天，结果啥也没有挤出来，算是白忙活了。
+
+$N挤了一点毒液出来。
+可惜这点毒液连炼一颗毒药都不够。
+
+$N将的毒液逼出，在内力的作用下化成了一颗晶莹剔透的药丸。
+你炼制了一颗虫毒药丸。
+
+poisonwudu-qishuwudu-qishuxiuluo-yinshagongxiuluo-yinshagong/clone/misc/chongdupoisonlevelididname虫毒duration", n1: character.name)
 
     conn
     |> put_character(character)

@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaQuan.Kuai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -116,7 +117,9 @@ defmodule Kantele.Combat.Skills.Performs.HujiaQuan.Kuai do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N纵步上前，拳招迭出，疾如奔雷，霎时已向$n攻出数拳。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N纵步上前，拳招迭出，疾如奔雷，霎时已向$n攻出数拳。
+neilicombat_expcombat_exp结果$n无法分清$N招式中的虚实，不由手忙脚乱。
+cuff可是$p看破了$P的虚招，轻轻一闪，避开了这骤雨般的拳影。", n1: character.name)
 
     conn
     |> put_character(character)

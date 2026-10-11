@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
 
     cond do
       false -> {:error, "「修罗绝命指」只能在战斗中对对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -135,7 +136,11 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoZhi.Jueming do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N忽然面露凶光，身形变的异常飘渺，在$n的四周游走
 个不停，$n正迷茫时，$N突然近身，毫无声息的一指戳
-出！", n1: character.name)
+出！
+fingerforcedodgeparryneili只见$n一声惨叫，已被$N击中要害部位，只觉眼前一片
+漆黑，身体摇摇欲坠！
+neili可是$n看破了$N的企图，轻轻向后飘出数丈，躲过了这
+一致命的一击！", n1: character.name)
 
     conn
     |> put_character(character)

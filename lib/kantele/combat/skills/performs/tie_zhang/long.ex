@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,10 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双掌交错，施出铁掌绝技「龙影掌」，旋起层层残影，笼罩$n四方。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N双掌交错，施出铁掌绝技「龙影掌」，旋起层层残影，笼罩$n四方。
+strikestrparrydex残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！
+neili可是$n看破了$N的企图，镇定解招，一丝不乱。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

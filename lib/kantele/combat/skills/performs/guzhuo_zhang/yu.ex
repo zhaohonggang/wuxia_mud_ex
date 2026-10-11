@@ -105,6 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Yu do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -117,7 +118,9 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Yu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N体内真气迸发，大喝一声，双掌向$n平平推去，招数朴实无华，毫无半点花巧可言。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N体内真气迸发，大喝一声，双掌向$n平平推去，招数朴实无华，毫无半点花巧可言。
+strikestrforceintneili$n勘破不透掌中虚实，$N双掌正中$p前胸，“喀嚓喀嚓”接连断了数根肋骨。
+$n见$N这掌来势非凡，不敢轻易招架，当即飞身纵跃闪开。", n1: character.name)
 
     conn
     |> put_character(character)

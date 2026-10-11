@@ -120,6 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -129,7 +130,22 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手按玉箫，脚踏八卦四方之位，奏出一曲「碧海潮生按玉箫」。便听得那箫声如鸣琴击玉，轻轻发了几声，接着悠悠扬扬，飘下清亮柔和的洞箫声来。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N手按玉箫，脚踏八卦四方之位，奏出一曲「碧海潮生按玉箫」。便听得那箫声如鸣琴击玉，轻轻发了几声，接着悠悠扬扬，飘下清亮柔和的洞箫声来。
+$n只感心头一震，脸上情不自禁的露出了一丝微笑。
+$n暗暗凝神守一，对这箫声自是应付裕如。
+
+突然又听那洞箫声情致飘忽，缠绵宛转，便似一个女子一会儿叹息，一会儿又似呻吟，一会儿却又软语温存或柔声叫唤。
+$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。
+$n暗暗凝神守一，对这箫声自是应付裕如。
+
+那箫声清亮宛如大海浩淼，万里无波，远处潮水缓缓推近，渐近渐快，其后洪涛汹涌，白浪连山，而潮水中鱼跃鲸浮，海面风啸鸥飞，水妖海怪群魔弄潮，极尽变幻之能事。
+霎时间$n只感心头滚热，喉干舌燥，说不出的难受。
+$n暗暗凝神守一，对这箫声自是应付裕如。
+
+时至最后，却听那箫声愈来愈细，几乎难以听闻，便尤如大海潮退后水平如镜一般，但海底却又是暗流湍急，汹涌澎湃。
+此时$n已身陷绝境，全身气血逆流，再也无法脱身。
+$n暗暗凝神守一，对这箫声自是应付裕如。
+jingjingneili", n1: character.name)
 
     conn
     |> put_character(character)

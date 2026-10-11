@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.HaotianZhang.Ju do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,9 @@ defmodule Kantele.Combat.Skills.Performs.HaotianZhang.Ju do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，合身向$n扑上，双掌同时击出，正是一招「三花聚顶」。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，合身向$n扑上，双掌同时击出，正是一招「三花聚顶」。
+forceforceneilistrike结果$p被$P的气势所摄，慌忙后退，却被$P一掌击个正中，吐血不止！
+neili可是$p识破了$P这一招，斜斜一跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

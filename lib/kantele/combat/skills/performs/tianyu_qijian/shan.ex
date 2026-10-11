@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,10 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身子微动，手腕一探，顿时一道剑光至剑尖透出，疾电般射向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N身子微动，手腕一探，顿时一道剑光至剑尖透出，疾电般射向$n。
+neiliswordparry$n大吃一惊，慌忙招架，这一下便失了先机。
+tianyu-qijian可是$p不慌不忙，看破了此招虚实，并没有受到半点影响。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

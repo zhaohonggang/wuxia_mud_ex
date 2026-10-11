@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 80 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 80 -> {:error, "TODO(migrate) neili 不足。\n"}
       true -> :ok
     end
   end
@@ -115,6 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,8 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，全场四处游动，$n只看到$N化做数团身影，漫天刀光席卷而来！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N大喝一声，全场四处游动，$n只看到$N化做数团身影，漫天刀光席卷而来！
+neili", n1: character.name)
 
     conn
     |> put_character(character)

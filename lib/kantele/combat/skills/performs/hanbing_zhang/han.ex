@@ -96,6 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhang.Han do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -110,7 +111,10 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhang.Han do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转真气，将内力注于掌上，施出绝招「极天寒掌」，双掌猛然拍向$n，掌风阴寒无比，透出阵阵寒气，犹如置身冰天雪地中一般，令人不寒而栗。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N运转真气，将内力注于掌上，施出绝招「极天寒掌」，双掌猛然拍向$n，掌风阴寒无比，透出阵阵寒气，犹如置身冰天雪地中一般，令人不寒而栗。
+hanbing-zhang但见$N双掌拍来，掌风作响，寒气逼人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。 
+neili$n见$N这掌拍来，内力充盈，气势凌人，只得奋力向后一纵，才躲过这一掌。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

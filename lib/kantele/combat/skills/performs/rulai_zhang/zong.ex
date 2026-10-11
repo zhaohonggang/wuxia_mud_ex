@@ -107,6 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,14 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N当下更不耽搁，高呼佛号，轻飘飘拍出一掌，招式甚为寻常。但掌到中途，忽然微微摇晃，登时一掌变两掌，两掌变四掌，四掌变八掌！铺天盖地拍向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N当下更不耽搁，高呼佛号，轻飘飘拍出一掌，招式甚为寻常。但掌到中途，忽然微微摇晃，登时一掌变两掌，两掌变四掌，四掌变八掌！铺天盖地拍向$n。strikestrparrydexmax_neilimax_neilineili随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。
+
+$n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。
+eff_qieff_jingapply/attackrulai-zhang/hit_msgapply/attackrulai-zhang/hit_msg
+$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。
+
+$n见掌势层层叠叠，有如海潮，连忙振作精神，勉强抵挡。
+apply/attackrulai-zhang/hit_msgneiliapply/attackrulai-zhang/hit_msg", n1: character.name)
 
     conn
     |> put_character(character)

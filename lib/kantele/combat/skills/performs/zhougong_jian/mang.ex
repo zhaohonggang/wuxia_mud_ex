@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -128,7 +129,14 @@ defmodule Kantele.Combat.Skills.Performs.ZhougongJian.Mang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中凌空划出，剑尖陡然生出半尺吞吐不定的青芒，一道剑气破空径直划向$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声清啸，手中凌空划出，剑尖陡然生出半尺吞吐不定的青芒，一道剑气破空径直划向$n。
+$n一声惨叫，凌厉的剑气已划过气门，在身上刺出数个血洞，鲜血如泉水般涌出！
+可是$n看破了$N的企图，斜跃避开。
+
+$N见$n应接不暇，一声冷笑，兵刃挥洒而出，一记更加凌厉的剑芒由剑尖弹射而出，凌空直射$n。
+只听“噗嗤”一声，剑气正中$n胸口，留下一个碗口大的血洞！$n哀嚎一声，再也无法站起。
+$n强忍全身的痛楚，飞身一跃，避开了$N这强大的杀着。
+neili", n1: character.name)
 
     conn
     |> put_character(character)

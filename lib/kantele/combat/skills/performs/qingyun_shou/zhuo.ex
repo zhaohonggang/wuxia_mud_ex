@@ -106,6 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.QingyunShou.Zhuo do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,9 @@ defmodule Kantele.Combat.Skills.Performs.QingyunShou.Zhuo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N划身错步，单手拂过，手影虚虚实实，难辨真伪，完全笼罩$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N划身错步，单手拂过，手影虚虚实实，难辨真伪，完全笼罩$n。
+handdodgehandneili$p一时辨别不清虚实，被$P手影划过气门，气血翻滚，几乎窒息。
+neili可是$p识破了$P这一招，斜斜一跃避开。", n1: character.name)
 
     conn
     |> put_character(character)

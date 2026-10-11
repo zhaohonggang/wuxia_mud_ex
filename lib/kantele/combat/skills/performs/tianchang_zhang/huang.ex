@@ -110,6 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
 
     cond do
       false -> {:error, "「地老天荒」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,9 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N“嚯”的一声震喝，提起掌来，只见掌心一片血红，倏的凌空拍出，一股热风登时袭向$n的胸前大穴。
+strikeforceneili$n一时间只觉得气血上涌，浑身如遭火焚，气息大乱，不由得吐了一口鲜血。
+neili然而$n内功深湛，丝毫不为$N的掌风所动，若无其事", n1: character.name)
 
     conn
     |> put_character(character)

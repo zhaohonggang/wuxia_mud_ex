@@ -100,6 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     cond do
       false -> {:error, "你只能对战斗中的对手施展\n"}
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -114,7 +115,14 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
 
 $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿时只见空气中血雾弥漫，腥臭无比，随即又
 听$N骨骼“噼里啪啦”一阵爆响，双臂顺着喷出的血柱一推，刹那间一座丈来高的奇毒火墙拔地而起，带
-着排山倒海之势向$n涌去！", n1: character.name)
+着排山倒海之势向$n涌去！
+neilimax_neilichousui-zhangmax_neilimax_neilimax_neili$n见状连忙提运内力，双臂猛的推出，掌风澎湃，强大的气流顿时将火浪刮得倒转，竟然掉头向$N扑去。
+
+$N一声惨笑，长叹一声，眼前一黑，倒在了地上。
+
+max_neiliunconcious_meunconcious_mepoisonforce, 1forcedodge$n见势不妙，急忙腾挪身形，避开了$N的攻击。
+max_neili$n见滔天热浪扑面涌来，只觉眼前一片通红，已被卷入火浪，毒焰席卷全身，连骨头都要烤焦一般。
+max_neilifire_poisonleveljialijialiididdurationqijing", n1: character.name)
 
     conn
     |> put_character(character)

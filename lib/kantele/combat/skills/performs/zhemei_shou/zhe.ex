@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N合逍遥折梅手诸多变化为一式，随手轻轻挥出，虚虚实实笼罩$n全身诸处要穴。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N合逍遥折梅手诸多变化为一式，随手轻轻挥出，虚虚实实笼罩$n全身诸处要穴。
+handparryneilineili$n心头一颤，想不出破解之法，急忙后退数步，一时间无法反击。
+可是$p的看破了$P的企图，丝毫不为所动，让$P的虚招没有起得任何作用。", n1: character.name)
 
     conn
     |> put_character(character)

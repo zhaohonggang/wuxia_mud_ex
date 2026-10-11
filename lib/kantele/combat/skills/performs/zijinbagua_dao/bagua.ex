@@ -117,6 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
 
     cond do
       false -> {:error, "「八卦阵芒」只能对战斗中的对手使用。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -126,7 +127,11 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，手中的刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！", n1: character.name)
+    conn = Broadcast.publish(conn, "$N一声暴喝，手中的刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！
+
+bladeparry$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！
+zijinbagua-dao$n心底微微一惊，打起精神小心接招。
+neiliapply/attackapply/attack", n1: character.name)
 
     conn
     |> put_character(character)

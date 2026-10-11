@@ -118,6 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuDaofa.Chi do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,11 @@ defmodule Kantele.Combat.Skills.Performs.JinwuDaofa.Chi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝神聚气，将全身之力注入刀身顺势劈下，顿时一股凌厉的刀芒直贯$n而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凝神聚气，将全身之力注入刀身顺势劈下，顿时一股凌厉的刀芒直贯$n而去。
+neilibladeparryweaponskill_typeswordswordxueshan-jian$n慌忙中忙以雪山剑法作出抵挡，哪知$N刀法竟似雪山剑法克星般，焰芒霎时
+又暴涨数倍，完全封锁$n的所有剑招！
+可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。
+只听$n一声惨叫，被这一刀劈个正中，伤口深可见骨，鲜血四处飞溅。", n1: character.name)
 
     conn
     |> put_character(character)

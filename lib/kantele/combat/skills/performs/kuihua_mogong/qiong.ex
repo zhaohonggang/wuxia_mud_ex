@@ -119,6 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -130,7 +131,11 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     vitals = %{vitals | neili: vitals.neili - 60}
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。
+kuihua-mogongcombat_expneilikuihua-mogongdodgedodgemartial-cognize这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。
+neili$n知道来招不善，急忙闪避，没出一点差错。
+这一招速度之快完全超出了$n的想象，被$N这一招正好击中了丹田要害，浑身真气登时涣散！
+neili$n大吃一惊，连忙退后，居然侥幸躲开着这一招！", n1: character.name)
 
     conn
     |> put_character(character)

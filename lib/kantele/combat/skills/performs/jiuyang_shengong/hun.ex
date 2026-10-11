@@ -104,6 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
 
     cond do
       false -> {:error, "你所使用的外功中没有这种功能。\n"}
+      false -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -118,7 +119,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N跨前一步，双手回圈，颇得太极之意。掌心顿时闪出一个气团，向$n电射而去。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N跨前一步，双手回圈，颇得太极之意。掌心顿时闪出一个气团，向$n电射而去。
+jiuyang-shengongconmartial-cognizeforceconmartial-cognizeneili然而$n全力抵挡，终于将$N发出的气团拨开。
+neili$n急忙抽身后退，可是气团射得更快，只听$p一声惨叫，鲜血飞溅！", n1: character.name)
 
     conn
     |> put_character(character)
