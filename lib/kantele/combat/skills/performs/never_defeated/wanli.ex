@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "never-defeated")
-    ap = (div((Stats.skill(stats, "never-defeated") * 3), 2) + Stats.skill(stats, "martial-cognize"))
+    ap = div(Stats.skill(stats, "never-defeated") * 3, 2) + Stats.skill(stats, "martial-cognize")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -89,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     vitals = %{vitals | neili: vitals.neili - 20}
@@ -97,9 +99,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N怀抱，一圈圈的划向$n，将$p卷在当中！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -127,7 +129,13 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 20, 2)
-    result = Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，正好击中$p的，$p一声惨叫，连退数步。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n连忙腾挪躲闪，然而“扑哧”一声，正好击中$p的，$p一声惨叫，连退数步。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

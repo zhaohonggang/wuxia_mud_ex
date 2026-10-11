@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Stats
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,13 +31,13 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: 0}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，脸色变了变，阴阳不定。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end

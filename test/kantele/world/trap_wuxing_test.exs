@@ -23,29 +23,29 @@ defmodule Kantele.World.Trap.WuxingTest do
     end
 
     test "五行都是 1 -> 成立" do
-      temp = t([{"wuxing/金", 1}, {"wuxing/木", 1}, {"wuxing/水", 1},
-                {"wuxing/火", 1}, {"wuxing/土", 1}])
+      temp =
+        t([{"wuxing/金", 1}, {"wuxing/木", 1}, {"wuxing/水", 1}, {"wuxing/火", 1}, {"wuxing/土", 1}])
 
       assert Wuxing.check_out?(temp)
     end
 
     test "五行都是 3 -> 成立" do
-      temp = t([{"wuxing/金", 3}, {"wuxing/木", 3}, {"wuxing/水", 3},
-                {"wuxing/火", 3}, {"wuxing/土", 3}])
+      temp =
+        t([{"wuxing/金", 3}, {"wuxing/木", 3}, {"wuxing/水", 3}, {"wuxing/火", 3}, {"wuxing/土", 3}])
 
       assert Wuxing.check_out?(temp)
     end
 
     test "有一个不等 -> 不成立" do
-      temp = t([{"wuxing/金", 2}, {"wuxing/木", 2}, {"wuxing/水", 2},
-                {"wuxing/火", 2}, {"wuxing/土", 1}])
+      temp =
+        t([{"wuxing/金", 2}, {"wuxing/木", 2}, {"wuxing/水", 2}, {"wuxing/火", 2}, {"wuxing/土", 1}])
 
       refute Wuxing.check_out?(temp)
     end
 
     test "缺一行（该行算 0）-> 不成立" do
-      temp = t([{"wuxing/金", 0}, {"wuxing/木", 0}, {"wuxing/水", 1},
-                {"wuxing/火", 0}, {"wuxing/土", 0}])
+      temp =
+        t([{"wuxing/金", 0}, {"wuxing/木", 0}, {"wuxing/水", 1}, {"wuxing/火", 0}, {"wuxing/土", 0}])
 
       refute Wuxing.check_out?(temp)
     end
@@ -72,15 +72,15 @@ defmodule Kantele.World.Trap.WuxingTest do
   describe "往北：凑齐五行则脱困" do
     test "金木火土都是 1、水也是 1 -> 这次往北凑成 2，仍不等，放行" do
       # 水原本就是 1，往北后变 2，和其它 1 不等
-      temp = t([{"wuxing/金", 1}, {"wuxing/木", 1}, {"wuxing/水", 1},
-                {"wuxing/火", 1}, {"wuxing/土", 1}])
+      temp =
+        t([{"wuxing/金", 1}, {"wuxing/木", 1}, {"wuxing/水", 1}, {"wuxing/火", 1}, {"wuxing/土", 1}])
 
       assert {:allow, [{:set_temp, "wuxing/水", 2}]} = Wuxing.evaluate(temp, "north", "wuxing0")
     end
 
     test "金木火土都是 2、水为 1 -> 往北后五行都是 2 -> 脱困" do
-      temp = t([{"wuxing/金", 2}, {"wuxing/木", 2}, {"wuxing/水", 1},
-                {"wuxing/火", 2}, {"wuxing/土", 2}])
+      temp =
+        t([{"wuxing/金", 2}, {"wuxing/木", 2}, {"wuxing/水", 1}, {"wuxing/火", 2}, {"wuxing/土", 2}])
 
       assert {:block, msg, effects} = Wuxing.evaluate(temp, "north", "wuxing0")
 
@@ -117,8 +117,8 @@ defmodule Kantele.World.Trap.WuxingTest do
     end
 
     test "即使五行已凑齐，东/南也不该脱困（脱困只由往北触发）" do
-      temp = t([{"wuxing/金", 2}, {"wuxing/木", 2}, {"wuxing/水", 2},
-                {"wuxing/火", 2}, {"wuxing/土", 2}])
+      temp =
+        t([{"wuxing/金", 2}, {"wuxing/木", 2}, {"wuxing/水", 2}, {"wuxing/火", 2}, {"wuxing/土", 2}])
 
       assert {:allow, []} = Wuxing.evaluate(temp, "east", "wuxing0")
       assert {:allow, []} = Wuxing.evaluate(temp, "south", "wuxing0")
@@ -217,8 +217,13 @@ defmodule Kantele.World.Trap.WuxingTest do
     test "脱困会清空计数，所以重新开始时五行不齐、走不出去" do
       # 模拟「已经凑齐过一次」的状态（其实真实路径里脱困那一步就清空了，
       # 这里是想确认：一旦五行不等，往北就只是普通累加，不会脱困）
-      temp = %{"wuxing/金" => 1, "wuxing/木" => 1, "wuxing/水" => 1,
-               "wuxing/火" => 1, "wuxing/土" => 1}
+      temp = %{
+        "wuxing/金" => 1,
+        "wuxing/木" => 1,
+        "wuxing/水" => 1,
+        "wuxing/火" => 1,
+        "wuxing/土" => 1
+      }
 
       # 往北把水加到 2 -> 五行不等 -> 不脱困
       assert {:allow, [{:set_temp, "wuxing/水", 2}]} = Wuxing.evaluate(temp, "north", "wuxing0")
@@ -227,8 +232,13 @@ defmodule Kantele.World.Trap.WuxingTest do
     test "真正的脱困那一步会同时发 set_temp + delete_prefix + force_move" do
       # 只差金：北向房间 wuxing0 把水加到 2 后五行才全等 —— 所以先造一个
       # 「往北加完水就齐」的状态
-      temp = %{"wuxing/金" => 2, "wuxing/木" => 2, "wuxing/火" => 2,
-               "wuxing/土" => 2, "wuxing/水" => 1}
+      temp = %{
+        "wuxing/金" => 2,
+        "wuxing/木" => 2,
+        "wuxing/火" => 2,
+        "wuxing/土" => 2,
+        "wuxing/水" => 1
+      }
 
       assert {:block, msg, effects} = Wuxing.evaluate(temp, "north", "wuxing0")
       assert msg == "你顺利地走出了五行迷宫。"
@@ -260,8 +270,12 @@ defmodule Kantele.World.Trap.WuxingTest do
       # 模拟角色执行 delete_prefix 后的 temp
       temp =
         Enum.reduce(effects, %{}, fn
-          {:delete_prefix, prefix}, acc -> Enum.reject(Map.to_list(acc), fn {k, _} -> String.starts_with?(k, prefix) end) |> Map.new()
-          _, acc -> acc
+          {:delete_prefix, prefix}, acc ->
+            Enum.reject(Map.to_list(acc), fn {k, _} -> String.starts_with?(k, prefix) end)
+            |> Map.new()
+
+          _, acc ->
+            acc
         end)
 
       assert temp == %{}

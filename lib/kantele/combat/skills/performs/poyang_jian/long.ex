@@ -33,9 +33,9 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
     m = 0
     neili = 300
     hit_point = 80
-    time = (3 + Engine.rand(rng, 4))
+    time = 3 + Engine.rand(rng, 4)
     ap = Stats.skill(stats, "sword")
-    damage = (div(ap, 2) + Engine.rand(rng, ap))
+    damage = div(ap, 2) + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -43,7 +43,9 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -109,13 +111,14 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "只见$N手中横扫而出，施出绝招「天外玉龙」，剑势纵横，犹如一条长龙蜿蜒而出，刺向$n
+。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -141,13 +144,23 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Long do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    result = if hit, do: Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      if hit,
+        do:
+          Messages.interpolate("$n见此招来势凶猛， 阻挡不及， 顿时被所伤，苦不堪言。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

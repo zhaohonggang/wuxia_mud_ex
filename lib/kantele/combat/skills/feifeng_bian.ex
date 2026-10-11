@@ -108,7 +108,6 @@ defmodule Kantele.Combat.Skills.FeifengBian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

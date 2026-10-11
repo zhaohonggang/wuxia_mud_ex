@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 40}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -95,8 +97,10 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(conn, "只见$N左掌虚探，右拳飕的一声从掌风中猛穿过来，正是劈石破玉拳法的绝招之一「封闭手」。", n1: character.name)
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -119,7 +123,13 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 40, 1)
-    result = Messages.interpolate("结果$p运力招架，一时却觉得内力不济，被$P抢住手腕一拉，顿时立足不稳，滴溜溜打了两个圈子。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p运力招架，一时却觉得内力不济，被$P抢住手腕一拉，顿时立足不稳，滴溜溜打了两个圈子。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

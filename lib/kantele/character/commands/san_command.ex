@@ -83,9 +83,14 @@ defmodule Kantele.Character.SanCommand do
 
   defp do_execute_san(conn, character, item, instance, craft_meta, player_meta) do
     new_meta = Craft.do_san(craft_meta, player_meta)
-    new_attrs = Map.put(instance.meta || %{}, "craft", denormalize_craft_meta_from_craft(new_meta))
+
+    new_attrs =
+      Map.put(instance.meta || %{}, "craft", denormalize_craft_meta_from_craft(new_meta))
+
     new_instance = %{instance | meta: new_attrs}
-    new_inventory = Enum.map(character.inventory, fn i -> if i.id == instance.id, do: new_instance, else: i end)
+
+    new_inventory =
+      Enum.map(character.inventory, fn i -> if i.id == instance.id, do: new_instance, else: i end)
 
     new_character = %{character | inventory: new_inventory}
     Records.save(new_character)
@@ -100,6 +105,7 @@ defmodule Kantele.Character.SanCommand do
   defp normalize_craft_meta_for_craft(craft_meta) do
     magic = craft_meta["magic"] || craft_meta[:magic] || %{}
     owner = craft_meta["owner"] || craft_meta[:owner] || %{}
+
     %{
       magic: %{
         do_san: magic["do_san"] || magic[:do_san] || %{},

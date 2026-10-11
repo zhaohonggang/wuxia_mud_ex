@@ -32,9 +32,7 @@ defmodule Kantele.Character.DetailView do
 
         _ ->
           "╠══════════ 携带物品 ══════════╣\n" <>
-            IO.iodata_to_binary(
-              InventoryView.render("_items", %{item_instances: assigns.items})
-            )
+            IO.iodata_to_binary(InventoryView.render("_items", %{item_instances: assigns.items}))
       end
 
     IO.iodata_to_binary([

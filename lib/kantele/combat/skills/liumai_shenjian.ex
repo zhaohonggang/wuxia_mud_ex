@@ -273,7 +273,6 @@ defmodule Kantele.Combat.Skills.LiumaiShenjian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

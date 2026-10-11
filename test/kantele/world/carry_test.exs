@@ -25,8 +25,7 @@ defmodule Kantele.World.CarryTest do
 
   describe "loader 侧：carry 被解引用并存进 meta" do
     test "大多数 NPC 都有 carry", %{world: world} do
-      with_carry =
-        Enum.filter(world.characters, &(Map.get(&1.meta, :carry) || []) != [])
+      with_carry = Enum.filter(world.characters, &((Map.get(&1.meta, :carry) || []) != []))
 
       assert length(with_carry) > 2000,
              "应有 2000+ 个 NPC 带 carry，实际 #{length(with_carry)}"
@@ -46,8 +45,10 @@ defmodule Kantele.World.CarryTest do
       # **真缺口**（转换时这些物品就没解析出来，多为区特有的衣物/饰物），
       # 不是本次改动能修的。钉住当前水位，防止悄悄退化。
       assert length(resolved) > 0, "应该有一部分 carry 能解引用"
+
       assert length(unresolved) < total,
              "carry 引用全都解不出来，说明 resolve_goods 没接上"
+
       assert length(unresolved) < div(total, 2),
              "未解引用过半（#{length(unresolved)}/#{total}），比预期退化"
     end
@@ -96,11 +97,13 @@ defmodule Kantele.World.CarryTest do
     test "NPC 出生时 equipped 初始为空（equip 在 spawn 时发生，不在 load 时）", %{world: world} do
       # 这是本次改动的关键约束：load 出来的 NPC **不能**已经穿好装备，
       # 因为那时 Items cache 还没就绪。装备在 SpawnController.init/1 里做。
-      c = Enum.find(world.characters, &(Map.get(&1.meta, :carry) || []) != [])
+      c = Enum.find(world.characters, &((Map.get(&1.meta, :carry) || []) != []))
 
       assert c
+
       assert map_size(eq(c)) == 0,
              "load 阶段不应装备（Items cache 未就绪），实际 equipped=#{inspect(eq(c))}"
+
       assert c.inventory == [], "load 阶段背包也应为空"
     end
   end

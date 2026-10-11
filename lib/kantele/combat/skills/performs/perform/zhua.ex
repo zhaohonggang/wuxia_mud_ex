@@ -26,36 +26,36 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Zhua do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "claw"},
-      #       {"ap", "unarmed"},
-      #       {"damage", "force"},
-      #       {"dp", "parry"}
-      #     ],
-      #     level_gates: [{"jiuyin-shengong", "280"}],
-      #     map_gates: [],
-      #     prepared_gates: [{"claw", "jiuyin-shengong"}, {"unarmed", "jiuyin-shengong"}],
-      #     resource_gates: [{"neili", "300"}],
-      #     var_gates: [{"damage", "0"}]
-      #   }
+  #   %{
+  #     assign_refs: [
+  #       {"ap", "claw"},
+  #       {"ap", "unarmed"},
+  #       {"damage", "force"},
+  #       {"dp", "parry"}
+  #     ],
+  #     level_gates: [{"jiuyin-shengong", "280"}],
+  #     map_gates: [],
+  #     prepared_gates: [{"claw", "jiuyin-shengong"}, {"unarmed", "jiuyin-shengong"}],
+  #     resource_gates: [{"neili", "300"}],
+  #     var_gates: [{"damage", "0"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-180"}, {"neili", "-20"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2);", "target->start_busy(1 + random(3));",
-      #      "me->start_busy(2);"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(2);
-      #   - target->start_busy(1 + random(3));
-      #   - me->start_busy(2);
+    #   %{
+    #     add_costs: [{"neili", "-180"}, {"neili", "-20"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(2);", "target->start_busy(1 + random(3));",
+    #      "me->start_busy(2);"],
+    #     remote_damage: true,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(2);
+    #   - target->start_busy(1 + random(3));
+    #   - me->start_busy(2);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

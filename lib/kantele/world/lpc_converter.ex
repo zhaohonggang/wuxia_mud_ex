@@ -97,11 +97,15 @@ defmodule Kantele.World.LPCConverter do
     try do
       # Try GBK first (common for Chinese MUD files)
       case :unicode.characters_to_binary(binary, :gbk) do
-        {:ok, utf8} -> utf8
+        {:ok, utf8} ->
+          utf8
+
         {:error, _, _} ->
           # If GBK conversion fails, try UTF-8 (file might already be UTF-8)
           case :unicode.characters_to_binary(binary, :utf8) do
-            {:ok, utf8} -> utf8
+            {:ok, utf8} ->
+              utf8
+
             {:error, _, _} ->
               # Last resort: replace invalid bytes with Unicode replacement char
               :unicode.characters_to_binary(binary, :utf8, replacement: 0xFFFD)
@@ -114,7 +118,8 @@ defmodule Kantele.World.LPCConverter do
         try do
           :unicode.characters_to_binary(binary, :utf8, replacement: 0xFFFD)
         rescue
-          _ -> binary  # ultimate fallback
+          # ultimate fallback
+          _ -> binary
         end
     end
   end
@@ -179,16 +184,18 @@ defmodule Kantele.World.LPCConverter do
     # Extract key components from cleaned LPC
     create_fn = parse_create_function(content, create_body)
     function_calls = parse_function_calls(create_body || find_create_body(content))
-    
+
     # Collect handled function names to identify unhandled functions
-    handled_functions = MapSet.new(["create", "init", "greeting", "accept_object", "permit_pass", "valid_leave"])
+    handled_functions =
+      MapSet.new(["create", "init", "greeting", "accept_object", "permit_pass", "valid_leave"])
+
     other_fns = parse_other_functions(content)
-    other_fn_names = Enum.map(other_fns, &(&1.name)) |> MapSet.new()
+    other_fn_names = Enum.map(other_fns, & &1.name) |> MapSet.new()
     unhandled_fns = MapSet.difference(other_fn_names, handled_functions)
-    
+
     # Extract unhandled content: global variables, complex mappings, switch statements, etc.
     unhandled = extract_unhandled_content(content, unhandled_fns)
-    
+
     inherits = parse_inherits(content)
     inherit_files = parse_inherit_files(content, source_path)
     globals = parse_globals(content)
@@ -202,7 +209,7 @@ defmodule Kantele.World.LPCConverter do
     guard = extract_guard(content)
     IO.puts("DEBUG: extract_engage")
     engage = extract_engage(content)
-    
+
     %{
       inherits: inherits,
       inherit_files: inherit_files,
@@ -232,16 +239,21 @@ defmodule Kantele.World.LPCConverter do
   def extract_create_body(content) do
     # Find void create() { ... } and extract the body
     case Regex.run(~r/void\s+create\s*\(\s*\)\s*\{/, content) do
-      nil -> ""
+      nil ->
+        ""
+
       [match] ->
         parts = String.split(content, match, parts: 2)
+
         case parts do
           [before, _rest] ->
             open_brace_pos = String.length(before) + String.length(match) - 1
+
             case find_matching_brace(content, open_brace_pos) do
               nil -> ""
               body -> body
             end
+
           _ ->
             ""
         end
@@ -278,8 +290,8 @@ defmodule Kantele.World.LPCConverter do
           value = Map.get(defines, token)
 
           cond do
-            capture_group(~r/^\s*__DIR__\s*["']([^"']+)["']\s*$/, value) != nil
-            -> capture_group(~r/^\s*__DIR__\s*["']([^"']+)["']\s*$/, value)
+            capture_group(~r/^\s*__DIR__\s*["']([^"']+)["']\s*$/, value) != nil ->
+              capture_group(~r/^\s*__DIR__\s*["']([^"']+)["']\s*$/, value)
 
             Regex.match?(~r/^["']([^"']+)["']\s*$/, value) ->
               value |> String.replace(~r/^["']|["']$/, "") |> String.trim()
@@ -330,6 +342,7 @@ defmodule Kantele.World.LPCConverter do
 
   def parse_create_function(content, create_body \\ nil) do
     body = create_body || find_create_body(content)
+
     case body do
       nil -> %{}
       body -> parse_create_body(body)
@@ -339,15 +352,19 @@ defmodule Kantele.World.LPCConverter do
   def find_create_body(content) do
     # Find "void create() {" 
     case Regex.run(~r/void\s+create\s*\(\s*\)\s*\{/, content) do
-      nil -> nil
+      nil ->
+        nil
+
       [match] ->
         # Find the position of the match using split
         parts = String.split(content, match, parts: 2)
+
         case parts do
           [before, _after] ->
             start_pos = String.length(before)
             # Find matching closing brace
             find_matching_brace(content, start_pos + String.length(match) - 1)
+
           _ ->
             nil
         end
@@ -364,9 +381,11 @@ defmodule Kantele.World.LPCConverter do
       nil
     else
       char = String.at(content, i)
+
       cond do
         char == "{" ->
           find_matching_brace_loop(content, start_index, brace_count + 1, i + 1)
+
         char == "}" ->
           if brace_count - 1 == 0 do
             # Return the body between the braces
@@ -374,11 +393,13 @@ defmodule Kantele.World.LPCConverter do
           else
             find_matching_brace_loop(content, start_index, brace_count - 1, i + 1)
           end
+
         char == "\"" ->
           case find_quote_end(content, i + 1) do
             nil -> nil
             new_i -> find_matching_brace_loop(content, start_index, brace_count, new_i)
           end
+
         true ->
           find_matching_brace_loop(content, start_index, brace_count, i + 1)
       end
@@ -407,8 +428,13 @@ defmodule Kantele.World.LPCConverter do
 
   defp parse_set_name(body) do
     # Match: set_name("name", ({ "alias1", "alias2" })) or set_name(HIB "name" NOR, ({ ... }))
-    case Regex.run(~r/set_name\s*\(\s*(?:[A-Z_]+)?\s*(["'])([^"']+)\1\s*(?:[A-Z_]+)?\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;/, body) do
-      nil -> %{}
+    case Regex.run(
+           ~r/set_name\s*\(\s*(?:[A-Z_]+)?\s*(["'])([^"']+)\1\s*(?:[A-Z_]+)?\s*,\s*\(\s*\{([^}]+)\}\s*\)\s*\)\s*;/,
+           body
+         ) do
+      nil ->
+        %{}
+
       [_, _, name, aliases_str] ->
         aliases =
           aliases_str
@@ -424,16 +450,23 @@ defmodule Kantele.World.LPCConverter do
   def parse_heredocs_from_raw(content) do
     # Match: set("long", @LONG ... LONG); in raw content (with newlines preserved)
     heredocs =
-      Regex.scan(~r/set\s*\(\s*(["'])([^"']+)\1\s*,\s*@(\w+)\s*\n([\s\S]*?)\n\3\s*\)\s*;/, content)
+      Regex.scan(
+        ~r/set\s*\(\s*(["'])([^"']+)\1\s*,\s*@(\w+)\s*\n([\s\S]*?)\n\3\s*\)\s*;/,
+        content
+      )
       |> Enum.map(fn [_, _, key, delimiter, content] ->
         # 清理 heredoc 末尾可能泄露的 LPC 字符串结束符（如 \n"、\n'、";、';）
-        cleaned = content
-        |> String.trim()
-        |> String.replace(~r/\\?[\"\']\s*$/, "")   # 末尾的 " 或 '（可能前带转义）
-        |> String.replace(~r/;+\s*$/, "")          # 末尾的分号
-        |> String.trim()
-        # 将 heredoc 内容中的字面 " 替换为 '，避免 UCL 转义为 \" 后跟非 ASCII 字符导致 elias 解析报错
-        |> String.replace("\"", "'")
+        cleaned =
+          content
+          |> String.trim()
+          # 末尾的 " 或 '（可能前带转义）
+          |> String.replace(~r/\\?[\"\']\s*$/, "")
+          # 末尾的分号
+          |> String.replace(~r/;+\s*$/, "")
+          |> String.trim()
+          # 将 heredoc 内容中的字面 " 替换为 '，避免 UCL 转义为 \" 后跟非 ASCII 字符导致 elias 解析报错
+          |> String.replace("\"", "'")
+
         {key, %{type: :heredoc, delimiter: delimiter, content: cleaned}}
       end)
       |> Enum.into(%{})
@@ -453,7 +486,7 @@ defmodule Kantele.World.LPCConverter do
     %{assigns: assigns}
   end
 
-defp parse_function_calls(body) do
+  defp parse_function_calls(body) do
     # Match function calls: func_name(arg1, arg2, ...);
     # Also handle chained calls like carry_object(...)->wear()
     Regex.scan(~r/(\w+)\s*\(([^)]*)\)\s*(?:->\s*\w+\s*\(\s*\))?\s*;/, body)
@@ -485,7 +518,7 @@ defp parse_function_calls(body) do
     |> Enum.into(%{})
   end
 
-defp extract_unhandled_content(content, unhandled_fn_names) do
+  defp extract_unhandled_content(content, unhandled_fn_names) do
     try do
       unhandled = %{
         functions: [],
@@ -499,11 +532,12 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         raw_code_blocks: []
       }
 
-# 1. Unhandled functions (not create/init/greeting/accept_object/permit_pass/valid_leave)
-    unhandled = Enum.reduce(unhandled_fn_names, unhandled, fn fn_name, acc ->
-      # Always record the function name for manual review, even if body extraction fails
-      Map.update(acc, :functions, [fn_name], fn acc -> [fn_name | acc] end)
-    end)
+      # 1. Unhandled functions (not create/init/greeting/accept_object/permit_pass/valid_leave)
+      unhandled =
+        Enum.reduce(unhandled_fn_names, unhandled, fn fn_name, acc ->
+          # Always record the function name for manual review, even if body extraction fails
+          Map.update(acc, :functions, [fn_name], fn acc -> [fn_name | acc] end)
+        end)
 
       # 2. Global variables not parsed by parse_globals (complex initializers)
       simple_globals =
@@ -515,6 +549,7 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         Regex.scan(~r/(int|string|mapping|object|mixed)\s+(\w+)\s*=\s*[^;]+;/, content)
         |> Enum.map(fn [_, type, name] -> %{name: name, type: type} end)
         |> Enum.filter(fn %{name: name} -> not Map.has_key?(simple_globals, name) end)
+
       unhandled = Map.put(unhandled, :globals, complex_globals)
 
       # 3. Complex mappings with nested structures
@@ -522,6 +557,7 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         Regex.scan(~r/\(\s*\[[^]]*\[[^]]*\]/, content)
         |> Enum.map(fn [m] -> m end)
         |> Enum.uniq()
+
       unhandled = Map.put(unhandled, :complex_mappings, complex_mappings)
 
       # 4. Switch statements：分三种
@@ -561,24 +597,31 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
             chains -> Map.put(acc, name, chains)
           end
         end)
+
       unhandled = Map.put(unhandled, :conditional_branches, conditional_branches)
 
       # 6. Complex conditionals (nested if/else)
       complex_ifs =
         Regex.scan(~r/if\s*\([^)]+\)\s*\{[\s\S]*?\}\s*else\s*\{[\s\S]*?\}/m, content)
         |> Enum.map(fn [stmt] -> String.trim(stmt) end)
+
       unhandled = Map.put(unhandled, :complex_conditionals, complex_ifs)
 
       # 6. Raw code blocks (heartbeat, reset, clean_up)
       raw_blocks =
-        Regex.scan(~r/(void|int)\s+(heart_beat|reset|clean_up)\s*\([^)]*\)\s*\{([\s\S]*?)\}/m, content)
+        Regex.scan(
+          ~r/(void|int)\s+(heart_beat|reset|clean_up)\s*\([^)]*\)\s*\{([\s\S]*?)\}/m,
+          content
+        )
         |> Enum.map(fn [_, _, name, body] -> %{name: name, body: String.trim(body)} end)
+
       unhandled = Map.put(unhandled, :raw_code_blocks, raw_blocks)
 
       unhandled
     rescue
       e ->
         IO.puts("WARNING: extract_unhandled_content failed: #{Exception.message(e)}")
+
         %{
           functions: [],
           globals: [],
@@ -719,7 +762,12 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
             {cond, after_paren} ->
               case read_block(chars, after_paren) do
                 {body, after_idx} ->
-                  branch = %{kind: :elif, cond: cond, actions: branch_actions(List.to_string(body))}
+                  branch = %{
+                    kind: :elif,
+                    cond: cond,
+                    actions: branch_actions(List.to_string(body))
+                  }
+
                   collect_else(chars, after_idx, acc ++ [branch])
 
                 nil ->
@@ -790,7 +838,7 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
         do_read_statement(chars, i + 1, [?( | acc], depth + 1)
 
       ?) ->
-        do_read_statement(chars, i + 1, [?)| acc], max(depth - 1, 0))
+        do_read_statement(chars, i + 1, [?) | acc], max(depth - 1, 0))
 
       _ ->
         do_read_statement(chars, i + 1, [char_at(chars, i) | acc], depth)
@@ -841,13 +889,13 @@ defp extract_unhandled_content(content, unhandled_fn_names) do
             k = skip_string(chars, j)
             if is_nil(k), do: nil, else: {"<str>", j, k}
 
-c ->
-        if is_ident(c) do
-          {w, k} = read_ident(chars, j)
-          {List.to_string(w), j, k}
-        else
-          {"", j, j + 1}
-        end
+          c ->
+            if is_ident(c) do
+              {w, k} = read_ident(chars, j)
+              {List.to_string(w), j, k}
+            else
+              {"", j, j + 1}
+            end
         end
     end
   end
@@ -967,28 +1015,38 @@ c ->
 
   @doc """
   Parse valid_leave function to extract guard exit behavior.
-  
+
   Matches pattern:
     int valid_leave(object me, string dir) {
       if (objectp(guarder = present("guard name", this_object())) && dir == "direction")
         return guarder->permit_pass(me, dir);
       return 1;
     }
-  
+
   Returns map with: guard_npc, direction, permit_module, permit_function
   """
   defp parse_valid_leave(content) do
     # Find valid_leave function body
     case Regex.run(~r/int\s+valid_leave\s*\([^)]*\)\s*\{/, content) do
-      nil -> nil
+      nil ->
+        nil
+
       [match] ->
         parts = String.split(content, match, parts: 2)
+
         case parts do
           [_, rest] ->
             # Find matching brace for function body
-            body = find_matching_brace(content, String.length(match) + String.length(parts |> List.first()))
+            body =
+              find_matching_brace(
+                content,
+                String.length(match) + String.length(parts |> List.first())
+              )
+
             parse_valid_leave_body(body)
-          _ -> nil
+
+          _ ->
+            nil
         end
     end
   end
@@ -1002,6 +1060,7 @@ c ->
       nil
     else
       char = String.at(content, i)
+
       cond do
         char == "\\" -> find_quote_end_loop(content, i + 2)
         char == "\"" -> i + 1
@@ -1036,6 +1095,7 @@ c ->
           permit_module: "Kantele.Npc.Guarder",
           permit_function: "permit_pass"
         }
+
       true ->
         nil
     end
@@ -1146,8 +1206,15 @@ c ->
 
         if j && char_at(chars, j) == ?( do
           case match_delim(chars, j + 1, ?(, ?), 1) do
-            nil -> {:cont, acc}
-            close -> {:halt, %{text: collapse_ws(List.to_string(Enum.slice(chars, j + 1, close - j - 1))), close: close}}
+            nil ->
+              {:cont, acc}
+
+            close ->
+              {:halt,
+               %{
+                 text: collapse_ws(List.to_string(Enum.slice(chars, j + 1, close - j - 1))),
+                 close: close
+               }}
           end
         else
           {:cont, acc}
@@ -1169,22 +1236,35 @@ c ->
 
   # ---- 功能函数抽取：init / greeting / accept_object ----
 
-# 按函数名抽取函数体（不含外层大括号）。找不到返回 nil。
+  # 按函数名抽取函数体（不含外层大括号）。找不到返回 nil。
   defp extract_function_body(content, name) do
     # Match function signature with optional newline before opening brace
     try do
-      case Regex.run(~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\n*\s*\{/, content) do
+      case Regex.run(
+             ~r/(?:int|string|void|mixed|mapping|object|protected)\s+#{name}\s*\([^)]*\)\s*\n*\s*\{/,
+             content
+           ) do
         nil ->
           IO.puts("DEBUG extract_function_body: no match for #{name}")
           nil
+
         [match] ->
           parts = String.split(content, match, parts: 2)
+
           case parts do
             [before, _rest] ->
               brace_pos = String.length(before) + String.length(match) - 1
-              IO.puts("DEBUG extract_function_body: name=#{name}, brace_pos=#{brace_pos}, char=#{String.at(content, brace_pos)}")
+
+              IO.puts(
+                "DEBUG extract_function_body: name=#{name}, brace_pos=#{brace_pos}, char=#{
+                  String.at(content, brace_pos)
+                }"
+              )
+
               find_matching_brace(content, brace_pos)
-            _ -> nil
+
+            _ ->
+              nil
           end
       end
     rescue
@@ -1260,6 +1340,7 @@ c ->
         "\"" <> rest ->
           # 去掉首尾引号（保留内部转义原样）
           inner = String.slice(rest, 0, max(String.length(rest) - 1, 0))
+
           inner =
             inner
             |> String.replace("\\n", "\n")
@@ -1318,7 +1399,10 @@ c ->
   defp parse_guard_body(body) do
     # 提取 family：me->query("family/family_name") == "门派名"
     family =
-      case Regex.run(~r|query\s*\(\s*["']family/family_name["']\s*\)\s*==\s*["']([^"']+)["']|, body) do
+      case Regex.run(
+             ~r|query\s*\(\s*["']family/family_name["']\s*\)\s*==\s*["']([^"']+)["']|,
+             body
+           ) do
         [_, fam] -> fam
         _ -> nil
       end
@@ -1332,7 +1416,9 @@ c ->
           |> String.replace("$N", "{npc}")
           |> String.replace("$n", "{name}")
           |> String.trim()
-        _ -> nil
+
+        _ ->
+          nil
       end
 
     if is_nil(family) and is_nil(refuse_msg) do
@@ -1472,7 +1558,8 @@ c ->
             _ -> nil
           end
 
-        msg = Map.get(accept_dialogues, :money) || List.first(Map.get(accept_dialogues, :default, []))
+        msg =
+          Map.get(accept_dialogues, :money) || List.first(Map.get(accept_dialogues, :default, []))
 
         %{kind: "money", min: min, msg: msg}
       end
@@ -1482,20 +1569,29 @@ c ->
     item_id_rules =
       Regex.scan(~r/(\w+->)?query\s*\(\s*["']id["']\s*\)\s*==\s*["']([^"']+)["']/, body)
       |> Enum.map(fn [_, _, id] ->
-        %{kind: "item_id", id: id, msg: Map.get(accept_dialogues, :"item_id_#{id}") || Map.get(accept_dialogues, :default)}
+        %{
+          kind: "item_id",
+          id: id,
+          msg: Map.get(accept_dialogues, :"item_id_#{id}") || Map.get(accept_dialogues, :default)
+        }
       end)
 
     item_name_rules =
       Regex.scan(~r/(\w+->)?query\s*\(\s*["']name["']\s*\)\s*==\s*["']([^"']+)["']/, body)
       |> Enum.map(fn [_, _, name] ->
-        %{kind: "item_name", name: name, msg: Map.get(accept_dialogues, :"item_name_#{name}") || Map.get(accept_dialogues, :default)}
+        %{
+          kind: "item_name",
+          name: name,
+          msg:
+            Map.get(accept_dialogues, :"item_name_#{name}") || Map.get(accept_dialogues, :default)
+        }
       end)
 
     has_return_0 = Regex.match?(~r/return\s+0\s*;/, body)
     has_return_1 = Regex.match?(~r/return\s+1\s*;/, body)
 
     # 判斷是否有具體的接受規則（money/item_id/item_name）
-    has_specific_rules = (money_rule != nil) or (item_id_rules != []) or (item_name_rules != [])
+    has_specific_rules = money_rule != nil or item_id_rules != [] or item_name_rules != []
 
     # 檢查函數最後一個 return 語句是 0 還是 1
     last_return = get_last_return(body)
@@ -1533,7 +1629,8 @@ c ->
         default_rule
       end
 
-    rules = Enum.reject([money_rule] ++ item_id_rules ++ item_name_rules ++ [default_rule], &is_nil/1)
+    rules =
+      Enum.reject([money_rule] ++ item_id_rules ++ item_name_rules ++ [default_rule], &is_nil/1)
 
     if rules == [], do: nil, else: rules
   end
@@ -1544,9 +1641,18 @@ c ->
     all_strings = extract_all_strings_with_context(body)
 
     # 启发式分配：按出现顺序和上下文关键字分配
-    money_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:tell_object, :money] end) |> Enum.map(&elem(&1, 1))
-    default_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx in [:command_say, :say, :message_vision, :command_other, :default] end) |> Enum.map(&elem(&1, 1))
-    reject_msgs = Enum.filter(all_strings, fn {ctx, _} -> ctx == :reject end) |> Enum.map(&elem(&1, 1))
+    money_msgs =
+      Enum.filter(all_strings, fn {ctx, _} -> ctx in [:tell_object, :money] end)
+      |> Enum.map(&elem(&1, 1))
+
+    default_msgs =
+      Enum.filter(all_strings, fn {ctx, _} ->
+        ctx in [:command_say, :say, :message_vision, :command_other, :default]
+      end)
+      |> Enum.map(&elem(&1, 1))
+
+    reject_msgs =
+      Enum.filter(all_strings, fn {ctx, _} -> ctx == :reject end) |> Enum.map(&elem(&1, 1))
 
     money_msg = List.first(money_msgs) || List.first(default_msgs)
     # default 保留完整台词池（对应 LPC switch(random(N)) 随机台词）。
@@ -1555,6 +1661,7 @@ c ->
       default_msgs
       |> Enum.reject(&String.starts_with?(&1, "say "))
       |> Enum.uniq()
+
     # reject 保留完整 notify_fail 台词池（拒绝理由），供 fail_msg 展示
     reject_msgs = reject_msgs |> Enum.uniq()
 
@@ -1581,7 +1688,7 @@ c ->
       Regex.scan(~r/command\s*\(\s*["']say\s+([^"']+)["']\s*\)/, body)
       |> Enum.map(fn [_, msg] -> {:command_say, process_literal_string(msg)} end)
 
-# message_vision / message_sort / say / notify_fail / write 台词抽取。
+    # message_vision / message_sort / say / notify_fail / write 台词抽取。
     # 统一用括号配对提取完整调用，再拼接调用内全部字符串字面量，
     # 避免 [^)]*["']...["'] 在多个语句间跨行抓取产生乱码。
     mv = extract_pool_calls(body, ~r/message_(?:vision|sort)\s*\(/, :message_vision)
@@ -1672,8 +1779,11 @@ c ->
     # 從後往前找最後一個 return 0; 或 return 1;
     # 忽略大括號內容，只看頂層的 return
     matches = Regex.scan(~r/return\s+([01])\s*;/, body)
+
     case matches do
-      [] -> nil
+      [] ->
+        nil
+
       matches ->
         # 取最後一個匹配
         [_, last] = List.last(matches)
@@ -1695,7 +1805,9 @@ c ->
       :no_match
     end
     |> case do
-      {:string, s} -> {:string, s}
+      {:string, s} ->
+        {:string, s}
+
       :no_match ->
         cond do
           # String (possibly concatenated "a" "b")
@@ -1782,6 +1894,7 @@ c ->
       case String.split(pair, ":", parts: 2) do
         [key, value] ->
           {parse_lpc_value(String.trim(key)), parse_lpc_value(String.trim(value))}
+
         _ ->
           {parse_lpc_value(String.trim(pair)), {:var, "nil"}}
       end
@@ -1820,13 +1933,17 @@ c ->
       case obj_type do
         :room ->
           [generate_room_ucl(merged, zone_id)]
+
         :npc ->
           # 非 room 类沿用原文件属性（避免父层 room 类 set 误入）
           [generate_npc_ucl(ast, zone_id)]
+
         :item ->
           [generate_item_ucl(ast, zone_id)]
+
         :skill ->
           [generate_skill_ucl(ast, zone_id)]
+
         _ ->
           [generate_generic_ucl(ast, zone_id)]
       end
@@ -1843,15 +1960,14 @@ c ->
         ""
       end
 
-    inherit_prefix =
-      if inherit_comments != "", do: inherit_comments <> "\n\n", else: ""
+    inherit_prefix = if inherit_comments != "", do: inherit_comments <> "\n\n", else: ""
 
     # UCL content: header + actual UCL sections (generic 文件不产生任何 UCL 段)
     ucl_content =
       if obj_type == :generic do
         ""
       else
-        (if include_header, do: header, else: "") <> Enum.join(new_sections, "\n\n")
+        if(include_header, do: header, else: "") <> Enum.join(new_sections, "\n\n")
       end
 
     # Comments content: header + generic marker + inherit comments + unhandled comments
@@ -1864,12 +1980,10 @@ c ->
             []
           end
 
-        inherit_parts =
-          if inherit_comments != "", do: [inherit_comments], else: []
+        inherit_parts = if inherit_comments != "", do: [inherit_comments], else: []
 
         unhandled_text = generate_unhandled_comments(ast.unhandled)
-        unhandled_parts =
-          if unhandled_text != "", do: [unhandled_text], else: []
+        unhandled_parts = if unhandled_text != "", do: [unhandled_text], else: []
 
         extra = (generic_marker ++ inherit_parts ++ unhandled_parts) |> Enum.join("\n\n")
         if extra == "", do: "", else: header <> extra <> "\n"
@@ -1908,31 +2022,37 @@ c ->
       finalize_merged(ast, child_vals, child_vals)
     else
       base_vals =
-        Enum.reduce(parents, %{
-          inherits: [],
-          sets: %{},
-          set_name: %{},
-          heredocs: %{},
-          exit_vetoes: [],
-          valid_leave: nil
-        }, fn parent_ref, acc ->
-          path = parent_ref <> ".c"
+        Enum.reduce(
+          parents,
+          %{
+            inherits: [],
+            sets: %{},
+            set_name: %{},
+            heredocs: %{},
+            exit_vetoes: [],
+            valid_leave: nil
+          },
+          fn parent_ref, acc ->
+            path = parent_ref <> ".c"
 
-          case File.read(path) do
-            {:ok, content} ->
-              case parse_lpc(content, path, Path.dirname(path)) do
-                {:ok, parent_ast} ->
-                  parent_vals = child_of(merge_inherit_level(parent_ast, MapSet.put(visited, source)))
-                  merge_vals(acc, parent_vals)
+            case File.read(path) do
+              {:ok, content} ->
+                case parse_lpc(content, path, Path.dirname(path)) do
+                  {:ok, parent_ast} ->
+                    parent_vals =
+                      child_of(merge_inherit_level(parent_ast, MapSet.put(visited, source)))
 
-                _ ->
-                  acc
-              end
+                    merge_vals(acc, parent_vals)
 
-            _ ->
-              acc
+                  _ ->
+                    acc
+                end
+
+              _ ->
+                acc
+            end
           end
-        end)
+        )
 
       merged_vals = merge_vals(base_vals, child_vals)
 
@@ -1955,14 +2075,15 @@ c ->
     end
   end
 
-  defp child_of(ast), do: %{
-    inherits: ast.inherits || [],
-    sets: Map.get(ast.create_fn || %{}, :sets, %{}),
-    set_name: Map.get(ast.create_fn || %{}, :set_name, %{}),
-    heredocs: Map.get(ast.heredocs || %{}, :heredocs, %{}),
-    exit_vetoes: ast.exit_vetoes || [],
-    valid_leave: ast.valid_leave
-  }
+  defp child_of(ast),
+    do: %{
+      inherits: ast.inherits || [],
+      sets: Map.get(ast.create_fn || %{}, :sets, %{}),
+      set_name: Map.get(ast.create_fn || %{}, :set_name, %{}),
+      heredocs: Map.get(ast.heredocs || %{}, :heredocs, %{}),
+      exit_vetoes: ast.exit_vetoes || [],
+      valid_leave: ast.valid_leave
+    }
 
   defp merge_vals(base, newer) do
     %{
@@ -1970,18 +2091,21 @@ c ->
       sets: Map.merge(base.sets, newer.sets),
       set_name: Map.merge(base.set_name, newer.set_name),
       heredocs: Map.merge(base.heredocs, newer.heredocs),
-      exit_vetoes: newer.exit_vetoes, # 顶层 child 才处理回退，这里原样携带
+      # 顶层 child 才处理回退，这里原样携带
+      exit_vetoes: newer.exit_vetoes,
       valid_leave: newer.valid_leave
     }
   end
 
   defp finalize_merged(ast, vals, _child_vals) do
-    %{ast |
-      inherits: vals.inherits,
-      create_fn: %{sets: vals.sets, set_name: vals.set_name},
-      heredocs: %{heredocs: vals.heredocs},
-      exit_vetoes: vals.exit_vetoes,
-      valid_leave: vals.valid_leave}
+    %{
+      ast
+      | inherits: vals.inherits,
+        create_fn: %{sets: vals.sets, set_name: vals.set_name},
+        heredocs: %{heredocs: vals.heredocs},
+        exit_vetoes: vals.exit_vetoes,
+        valid_leave: vals.valid_leave
+    }
   end
 
   defp generate_unhandled_comments(unhandled) do
@@ -1989,7 +2113,9 @@ c ->
       [
         # Unhandled functions
         if unhandled[:functions] != [] do
-          fn_list = Enum.map(unhandled[:functions], fn name -> "  # UNHANDLED FUNCTION: #{name}" end)
+          fn_list =
+            Enum.map(unhandled[:functions], fn name -> "  # UNHANDLED FUNCTION: #{name}" end)
+
           ["# ==== UNHANDLED FUNCTIONS ====" | fn_list]
         else
           []
@@ -1997,9 +2123,11 @@ c ->
 
         # Unhandled globals
         if unhandled[:globals] != [] do
-          global_list = Enum.map(unhandled[:globals], fn %{name: name, type: type} ->
-            "  # UNHANDLED GLOBAL: #{type} #{name}"
-          end)
+          global_list =
+            Enum.map(unhandled[:globals], fn %{name: name, type: type} ->
+              "  # UNHANDLED GLOBAL: #{type} #{name}"
+            end)
+
           ["# ==== UNHANDLED GLOBAL VARIABLES ====" | global_list]
         else
           []
@@ -2007,9 +2135,11 @@ c ->
 
         # Complex mappings
         if unhandled[:complex_mappings] != [] do
-          mapping_list = Enum.map(unhandled[:complex_mappings], fn m ->
-            "  # COMPLEX MAPPING: #{String.trim(m)}"
-          end)
+          mapping_list =
+            Enum.map(unhandled[:complex_mappings], fn m ->
+              "  # COMPLEX MAPPING: #{String.trim(m)}"
+            end)
+
           ["# ==== COMPLEX MAPPINGS ====" | mapping_list]
         else
           []
@@ -2024,8 +2154,7 @@ c ->
 
               row_lines =
                 Enum.map(rows, fn %{key: key, cols: cols} ->
-                  cols_str =
-                    Enum.map_join(cols, " ", fn {v, val} -> "#{v}=#{val}" end)
+                  cols_str = Enum.map_join(cols, " ", fn {v, val} -> "#{v}=#{val}" end)
 
                   "  #   #{key}: #{cols_str}"
                 end)
@@ -2041,11 +2170,14 @@ c ->
 
         # Switch statement pools（random 台词池）
         if unhandled[:switch_pools] != [] do
-          pool_list = Enum.map(unhandled[:switch_pools], fn stmt ->
-            lines = String.split(stmt, "\n")
-            Enum.map(lines, fn l -> "  # SWITCH POOL: #{String.trim(l)}" end)
-            |> Enum.join("\n")
-          end)
+          pool_list =
+            Enum.map(unhandled[:switch_pools], fn stmt ->
+              lines = String.split(stmt, "\n")
+
+              Enum.map(lines, fn l -> "  # SWITCH POOL: #{String.trim(l)}" end)
+              |> Enum.join("\n")
+            end)
+
           ["# ==== SWITCH POOLS ====" | pool_list]
         else
           []
@@ -2053,11 +2185,14 @@ c ->
 
         # Switch statements（命令分发/状态机，原文保留）
         if unhandled[:switch_statements] != [] do
-          switch_list = Enum.map(unhandled[:switch_statements], fn stmt ->
-            lines = String.split(stmt, "\n")
-            Enum.map(lines, fn l -> "  # SWITCH: #{String.trim(l)}" end)
-            |> Enum.join("\n")
-          end)
+          switch_list =
+            Enum.map(unhandled[:switch_statements], fn stmt ->
+              lines = String.split(stmt, "\n")
+
+              Enum.map(lines, fn l -> "  # SWITCH: #{String.trim(l)}" end)
+              |> Enum.join("\n")
+            end)
+
           ["# ==== SWITCH STATEMENTS ====" | switch_list]
         else
           []
@@ -2097,11 +2232,14 @@ c ->
 
         # Complex conditionals
         if unhandled[:complex_conditionals] != [] do
-          cond_list = Enum.map(unhandled[:complex_conditionals], fn stmt ->
-            lines = String.split(stmt, "\n")
-            Enum.map(lines, fn l -> "  # COMPLEX IF: #{String.trim(l)}" end)
-            |> Enum.join("\n")
-          end)
+          cond_list =
+            Enum.map(unhandled[:complex_conditionals], fn stmt ->
+              lines = String.split(stmt, "\n")
+
+              Enum.map(lines, fn l -> "  # COMPLEX IF: #{String.trim(l)}" end)
+              |> Enum.join("\n")
+            end)
+
           ["# ==== COMPLEX CONDITIONALS ====" | cond_list]
         else
           []
@@ -2109,11 +2247,13 @@ c ->
 
         # Raw code blocks (heartbeat, reset, etc.)
         if unhandled[:raw_code_blocks] != [] do
-          block_list = Enum.map(unhandled[:raw_code_blocks], fn %{name: name, body: body} ->
-            lines = String.split(body, "\n")
-            comment_lines = Enum.map(lines, fn l -> "  # #{name}: #{String.trim(l)}" end)
-            Enum.join(["  # RAW BLOCK: #{name}", comment_lines | []], "\n")
-          end)
+          block_list =
+            Enum.map(unhandled[:raw_code_blocks], fn %{name: name, body: body} ->
+              lines = String.split(body, "\n")
+              comment_lines = Enum.map(lines, fn l -> "  # #{name}: #{String.trim(l)}" end)
+              Enum.join(["  # RAW BLOCK: #{name}", comment_lines | []], "\n")
+            end)
+
           ["# ==== RAW CODE BLOCKS ====" | block_list]
         else
           []
@@ -2122,7 +2262,9 @@ c ->
       |> List.flatten()
 
     if sections != [] do
-      header = "\n\n# ========================================\n# UNHANDLED CONTENT (for manual review)\n# ========================================\n"
+      header =
+        "\n\n# ========================================\n# UNHANDLED CONTENT (for manual review)\n# ========================================\n"
+
       body = Enum.reverse(sections) |> Enum.join("\n")
       footer = "\n# ========================================\n"
       header <> body <> footer
@@ -2179,11 +2321,41 @@ c ->
   # 真实 corpus 里的类型五花八门，因此这里只列已知大类，其余走 item_like? 兜底。
   defp is_item_inherit?(inherit) do
     Enum.any?(
-      ["WEAPON", "SWORD", "BLADE", "DAGGER", "STAFF", "CLUB", "HAMMER", "AXE",
-       "THROWING", "WHIP", "FORCE ?", "ARMOR", "CLOTH", "BOOTS", "FINGER",
-       "HANDS", "HEAD", "HELMET", "NECK", "RING", "SHIELD", "SURCOAT",
-       "WAIST", "WRIST", "ARMOR ?", "ITEM", "MONEY", "CONTAINER", "FOOD",
-       "MEDICINE", "BOOK", "GOLD", "SILVER"],
+      [
+        "WEAPON",
+        "SWORD",
+        "BLADE",
+        "DAGGER",
+        "STAFF",
+        "CLUB",
+        "HAMMER",
+        "AXE",
+        "THROWING",
+        "WHIP",
+        "FORCE ?",
+        "ARMOR",
+        "CLOTH",
+        "BOOTS",
+        "FINGER",
+        "HANDS",
+        "HEAD",
+        "HELMET",
+        "NECK",
+        "RING",
+        "SHIELD",
+        "SURCOAT",
+        "WAIST",
+        "WRIST",
+        "ARMOR ?",
+        "ITEM",
+        "MONEY",
+        "CONTAINER",
+        "FOOD",
+        "MEDICINE",
+        "BOOK",
+        "GOLD",
+        "SILVER"
+      ],
       fn kw -> String.contains?(inherit, kw) end
     )
   end
@@ -2240,37 +2412,42 @@ c ->
     arrive_room = if is_river, do: Map.get(sets, "arrive_room"), else: nil
 
     room_block = """
-    rooms "#{room_id}" {
-      name = #{ucl_string(extract_string(Map.get(sets, "short"), "Room"))}
-      description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
-"""
+        rooms "#{room_id}" {
+          name = #{ucl_string(extract_string(Map.get(sets, "short"), "Room"))}
+          description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
+    """
 
     # Coordinates (default to origin; Loader requires x/y/z)
     coords_block = """
-  x = #{coord_of(sets["x"])}
-  y = #{coord_of(sets["y"])}
-  z = #{coord_of(sets["z"])}
-"""
+      x = #{coord_of(sets["x"])}
+      y = #{coord_of(sets["y"])}
+      z = #{coord_of(sets["z"])}
+    """
 
     # Flags
     flags = build_room_flags(sets)
+
     flags_block =
       if flags != [] do
         """
           flags = [
-        """ <> Enum.map_join(flags, "\n", &"            \"#{&1}\"") <> """
-          ]
-        """
+        """ <>
+          Enum.map_join(flags, "\n", &"            \"#{&1}\"") <>
+          """
+            ]
+          """
       else
         ""
       end
 
-room_block = room_block <> coords_block <> flags_block
+    room_block = room_block <> coords_block <> flags_block
 
-# Behavior from valid_leave (guarded exits)
+    # Behavior from valid_leave (guarded exits)
     behavior_block =
       case ast.valid_leave do
-        nil -> ""
+        nil ->
+          ""
+
         vl ->
           """
           behavior = "guarded_exit"
@@ -2301,7 +2478,9 @@ room_block = room_block <> coords_block <> flags_block
         ""
       end
 
-    room_block = room_block <> behavior_block <> item_desc_block <> exit_vetoes_block <> river_actions_block <> "    }"
+    room_block =
+      room_block <>
+        behavior_block <> item_desc_block <> exit_vetoes_block <> river_actions_block <> "    }"
 
     # Exits -> room_exits block
     exits_block =
@@ -2325,14 +2504,18 @@ room_block = room_block <> coords_block <> flags_block
               ""
             end
 
-          all_exit_lines = if river_exit != "", do: exit_lines <> "\n" <> river_exit, else: exit_lines
+          all_exit_lines =
+            if river_exit != "", do: exit_lines <> "\n" <> river_exit, else: exit_lines
 
           """
-          room_exits "#{room_id}" {
-            room_id = rooms.#{room_id}.id
-        """ <> all_exit_lines <> """
-          }
-        """
+            room_exits "#{room_id}" {
+              room_id = rooms.#{room_id}.id
+          """ <>
+            all_exit_lines <>
+            """
+              }
+            """
+
         _ ->
           # Always emit a room_exits block; river rooms may only have a river exit
           river_exit =
@@ -2344,11 +2527,13 @@ room_block = room_block <> coords_block <> flags_block
             end
 
           """
-          room_exits "#{room_id}" {
-            room_id = rooms.#{room_id}.id
-        """ <> river_exit <> """
-          }
-        """
+            room_exits "#{room_id}" {
+              room_id = rooms.#{room_id}.id
+          """ <>
+            river_exit <>
+            """
+              }
+            """
       end
 
     objects_block = generate_room_objects(room_id, Map.get(sets, "objects"))
@@ -2388,9 +2573,9 @@ room_block = room_block <> coords_block <> flags_block
         """ <>
           Enum.join(char_links, ",\n") <>
           """
-            ]
-          }
-        """
+              ]
+            }
+          """
       else
         ""
       end
@@ -2404,9 +2589,9 @@ room_block = room_block <> coords_block <> flags_block
         """ <>
           Enum.join(item_links, ",\n") <>
           """
-            ]
-          }
-        """
+              ]
+            }
+          """
       else
         ""
       end
@@ -2454,7 +2639,7 @@ room_block = room_block <> coords_block <> flags_block
     |> String.downcase()
   end
 
-defp exit_key({:string, s}), do: strip_exit_c_comments(s)
+  defp exit_key({:string, s}), do: strip_exit_c_comments(s)
   defp exit_key({:int, n}), do: to_string(n)
   defp exit_key({:var, v}), do: strip_exit_c_comments(v)
   defp exit_key(s) when is_binary(s), do: strip_exit_c_comments(s)
@@ -2465,6 +2650,7 @@ defp exit_key({:string, s}), do: strip_exit_c_comments(s)
     |> String.replace(~r/\/\*[\s\S]*?\*\//, "")
     |> String.trim()
   end
+
   defp strip_exit_c_comments(_), do: "unknown"
 
   defp get_string(value) do
@@ -2503,7 +2689,7 @@ defp exit_key({:string, s}), do: strip_exit_c_comments(s)
     Enum.reverse(flags)
   end
 
-defp get_heredoc_or_set(heredocs, sets, key, default) do
+  defp get_heredoc_or_set(heredocs, sets, key, default) do
     case Map.get(sets, key) do
       {:string, s} when s != "" -> escape_set_string(s)
       {:string, ""} -> get_heredoc(heredocs, key, default)
@@ -2523,7 +2709,7 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     end
   end
 
-# Heredoc content is raw LPC text (real newlines, real quotes).
+  # Heredoc content is raw LPC text (real newlines, real quotes).
   # elias（UCL 解析器）的字符串规则：
   #   - 字符串内真实换行会崩 → 换为空格
   #   - 字面 \n \t \r（反斜杠+字母）可接受、保留为字面文本
@@ -2576,10 +2762,10 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     aliases = Map.get(set_name, "aliases", [])
 
     ucl = """
-    characters "#{npc_id}" {
-      name = #{ucl_string(name)}
-      description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
-"""
+        characters "#{npc_id}" {
+          name = #{ucl_string(name)}
+          description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
+    """
 
     # Basic attributes from set()
     basic_attrs = []
@@ -2596,7 +2782,8 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
       basic_attrs = ["  aliases = [#{Enum.map_join(aliases, ", ", &"\"#{&1}\"")}]" | basic_attrs]
     end
 
-    basic_block = if basic_attrs != [], do: Enum.join(Enum.reverse(basic_attrs), "\n") <> "\n", else: ""
+    basic_block =
+      if basic_attrs != [], do: Enum.join(Enum.reverse(basic_attrs), "\n") <> "\n", else: ""
 
     # Brain reference (from inherit or default)
     brain = infer_brain(ast.inherits)
@@ -2626,19 +2813,30 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     guarder_block = build_guarder_ucl(ast.guard)
     engage_block = build_engage_ucl(ast.engage)
 
-    ucl <> basic_block <> brain_line <>
-      (if combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
-      (if goods != [], do: "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n", else: "") <>
-      (if goods_comments != [], do: "\n" <> Enum.map_join(goods_comments, "\n", &("  # " <> &1)) <> "\n", else: "") <>
-      (if inquiries != %{}, do: "\n  inquiries = [\n" <> generate_inquiries(inquiries) <> "\n  ]\n", else: "") <>
-      (if chat != nil, do: "\n  #{chat}\n", else: "") <>
-      (if skills_block != "", do: "\n#{skills_block}\n", else: "") <>
-      (if carry_block != "", do: "\n#{carry_block}\n", else: "") <>
-      (if init_block != "", do: "\n#{init_block}\n", else: "") <>
-      (if greetings_block != "", do: "\n#{greetings_block}\n", else: "") <>
-      (if accept_block != "", do: "\n#{accept_block}\n", else: "") <>
-      (if guarder_block != "", do: "\n#{guarder_block}\n", else: "") <>
-      (if engage_block != "", do: "\n#{engage_block}\n", else: "") <>
+    ucl <>
+      basic_block <>
+      brain_line <>
+      if(combat != "", do: "\n  combat = {\n#{combat}\n  }\n", else: "") <>
+      if(goods != [],
+        do: "\n  goods = [\n" <> Enum.map_join(goods, "\n", &"    { id = #{&1} }") <> "\n  ]\n",
+        else: ""
+      ) <>
+      if(goods_comments != [],
+        do: "\n" <> Enum.map_join(goods_comments, "\n", &("  # " <> &1)) <> "\n",
+        else: ""
+      ) <>
+      if(inquiries != %{},
+        do: "\n  inquiries = [\n" <> generate_inquiries(inquiries) <> "\n  ]\n",
+        else: ""
+      ) <>
+      if(chat != nil, do: "\n  #{chat}\n", else: "") <>
+      if(skills_block != "", do: "\n#{skills_block}\n", else: "") <>
+      if(carry_block != "", do: "\n#{carry_block}\n", else: "") <>
+      if(init_block != "", do: "\n#{init_block}\n", else: "") <>
+      if(greetings_block != "", do: "\n#{greetings_block}\n", else: "") <>
+      if(accept_block != "", do: "\n#{accept_block}\n", else: "") <>
+      if(guarder_block != "", do: "\n#{guarder_block}\n", else: "") <>
+      if(engage_block != "", do: "\n#{engage_block}\n", else: "") <>
       "    }"
   end
 
@@ -2651,40 +2849,47 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
 
     "  init = {\n" <>
       "    greet_delay = #{greet_delay}\n" <>
-      (if heartbeat > 0, do: "    heartbeat = #{heartbeat}\n", else: "") <>
-      (if add_actions != [], do: "    add_actions = [#{Enum.map_join(add_actions, ", ", &"\"#{&1}\"")}]\n", else: "") <>
+      if(heartbeat > 0, do: "    heartbeat = #{heartbeat}\n", else: "") <>
+      if(add_actions != [],
+        do: "    add_actions = [#{Enum.map_join(add_actions, ", ", &"\"#{&1}\"")}]\n",
+        else: ""
+      ) <>
       "  }"
   end
 
   defp build_greetings_ucl(nil), do: ""
+
   defp build_greetings_ucl(lines) when is_list(lines) and lines != [] do
     "  greetings = [\n" <>
       Enum.map_join(lines, ",\n", fn line ->
         "    { line = \"#{escape_heredoc_content(line)}\" }"
       end) <> "\n  ]"
   end
+
   defp build_greetings_ucl(_), do: ""
 
   defp build_accept_ucl(nil), do: ""
+
   defp build_accept_ucl(rules) when is_list(rules) and rules != [] do
     "  accept = [\n" <>
       Enum.map_join(rules, ",\n", fn rule ->
         "    { kind = \"#{rule.kind}\"" <>
-          (if rule[:min], do: " min = #{rule.min}", else: "") <>
-          (if rule[:id], do: " id = \"#{rule.id}\"", else: "") <>
-          (if rule[:name], do: " name = \"#{rule.name}\"", else: "") <>
-          (if rule[:accept] != nil, do: " accept = #{rule.accept}", else: " accept = true") <>
-          (case render_accept_msg(Map.get(rule, :msg)) do
-             nil -> ""
-             rendered -> " msg = #{rendered}"
-           end) <>
-          (case render_accept_msg(Map.get(rule, :fail_msg)) do
-             nil -> ""
-             rendered -> " fail_msg = #{rendered}"
-           end) <>
+          if(rule[:min], do: " min = #{rule.min}", else: "") <>
+          if(rule[:id], do: " id = \"#{rule.id}\"", else: "") <>
+          if(rule[:name], do: " name = \"#{rule.name}\"", else: "") <>
+          if(rule[:accept] != nil, do: " accept = #{rule.accept}", else: " accept = true") <>
+          case render_accept_msg(Map.get(rule, :msg)) do
+            nil -> ""
+            rendered -> " msg = #{rendered}"
+          end <>
+          case render_accept_msg(Map.get(rule, :fail_msg)) do
+            nil -> ""
+            rendered -> " fail_msg = #{rendered}"
+          end <>
           " }"
       end) <> "\n  ]"
   end
+
   defp build_accept_ucl(_), do: ""
 
   # msg 支持单条字符串或台词池（列表）
@@ -2696,6 +2901,7 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
   defp render_accept_msg(_), do: nil
 
   defp build_guarder_ucl(nil), do: ""
+
   defp build_guarder_ucl(guard) when is_map(guard) do
     family = Map.get(guard, :family)
     refuse_other = Map.get(guard, :refuse_other)
@@ -2705,12 +2911,16 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     else
       "  meta = {\n" <>
         "    guarder = {\n" <>
-          "      family = \"#{family}\"\n" <>
-          (if refuse_other, do: "      msgs = { refuse_other = \"#{escape_set_string(refuse_other)}\" }\n", else: "") <>
+        "      family = \"#{family}\"\n" <>
+        if(refuse_other,
+          do: "      msgs = { refuse_other = \"#{escape_set_string(refuse_other)}\" }\n",
+          else: ""
+        ) <>
         "    }\n" <>
-      "  }"
+        "  }"
     end
   end
+
   defp build_guarder_ucl(_), do: ""
 
   # accept_fight/accept_hit/accept_kill：UCL engage 块
@@ -2727,9 +2937,12 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
           accept ->
             "    #{kind} = {" <>
               " accept = #{accept}" <>
-              (if rule[:msg], do: " msg = \"#{escape_set_string(rule.msg)}\"", else: "") <>
-              (if rule[:retaliate], do: " retaliate = true", else: "") <>
-              (if rule[:spawn] != [], do: " spawn = [#{Enum.map_join(rule.spawn, ", ", &"\"#{&1}\"")}]", else: "") <>
+              if(rule[:msg], do: " msg = \"#{escape_set_string(rule.msg)}\"", else: "") <>
+              if(rule[:retaliate], do: " retaliate = true", else: "") <>
+              if(rule[:spawn] != [],
+                do: " spawn = [#{Enum.map_join(rule.spawn, ", ", &"\"#{&1}\"")}]",
+                else: ""
+              ) <>
               " }"
         end
       end)
@@ -2749,32 +2962,43 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     map_skills = Map.get(calls, "map_skill", [])
 
     cond do
-      skills == [] and map_skills == [] -> ""
+      skills == [] and map_skills == [] ->
+        ""
+
       true ->
         skill_lines =
           Enum.map(skills, fn
-            [{:string, skill}, {:int, level}] -> "    { skill = \"#{skill}\" level = #{level} }"
-            [{:string, skill}, {:string, level}] -> "    { skill = \"#{skill}\" level = #{level} }"
-            _ -> nil
+            [{:string, skill}, {:int, level}] ->
+              "    { skill = \"#{skill}\" level = #{level} }"
+
+            [{:string, skill}, {:string, level}] ->
+              "    { skill = \"#{skill}\" level = #{level} }"
+
+            _ ->
+              nil
           end)
           |> Enum.filter(&(&1 != nil))
 
         map_lines =
           Enum.map(map_skills, fn
-            [{:string, type}, {:string, skill}] -> "    { type = \"#{type}\" skill = \"#{skill}\" }"
-            _ -> nil
+            [{:string, type}, {:string, skill}] ->
+              "    { type = \"#{type}\" skill = \"#{skill}\" }"
+
+            _ ->
+              nil
           end)
           |> Enum.filter(&(&1 != nil))
 
         all_lines = skill_lines ++ map_lines
+
         if all_lines == [] do
           ""
         else
           """
-  skills = [
-#{Enum.join(all_lines, ",\n")}
-  ]
-"""
+            skills = [
+          #{Enum.join(all_lines, ",\n")}
+            ]
+          """
         end
     end
   end
@@ -2783,7 +3007,9 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     carry_objects = Map.get(calls, "carry_object", [])
 
     cond do
-      carry_objects == [] -> ""
+      carry_objects == [] ->
+        ""
+
       true ->
         items =
           Enum.map(carry_objects, fn
@@ -2793,10 +3019,10 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
           end)
 
         """
-  carry = [
-#{Enum.map_join(items, ",\n", &"    { id = #{&1} }")}
-  ]
-"""
+          carry = [
+        #{Enum.map_join(items, ",\n", &"    { id = #{&1} }")}
+          ]
+        """
     end
   end
 
@@ -2925,12 +3151,15 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
   defp build_inquiries(sets) do
     # Look for inquiry-like mappings (LPC uses "inquiry", we normalize to "inquiries")
     inquiry_data = Map.get(sets, "inquiry") || Map.get(sets, "inquiries")
+
     case inquiry_data do
       {:mapping, pairs} ->
         Enum.into(pairs, %{}, fn {k, v} ->
           {get_string(k), get_string(v)}
         end)
-      _ -> %{}
+
+      _ ->
+        %{}
     end
   end
 
@@ -2962,6 +3191,7 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
           nil
         else
           rendered = Enum.map_join(chat_lines, ",\n", &"    \"#{escape_set_string(&1)}\"")
+
           """
           chat_chance = #{c}
           chats = [
@@ -2987,21 +3217,27 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
       |> Path.rootname()
       |> String.replace("-", "_")
 
-    name = case Map.get(set_name, "name") do
-      {:string, s} -> s
-      s when is_binary(s) -> s
-      nil -> case Map.get(sets, "name") do
-        {:string, s} -> s
-        s when is_binary(s) -> s
-        _ -> "Item"
+    name =
+      case Map.get(set_name, "name") do
+        {:string, s} ->
+          s
+
+        s when is_binary(s) ->
+          s
+
+        nil ->
+          case Map.get(sets, "name") do
+            {:string, s} -> s
+            s when is_binary(s) -> s
+            _ -> "Item"
+          end
       end
-    end
 
     ucl = """
-    items "#{item_id}" {
-      name = #{ucl_string(name)}
-      description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
-"""
+        items "#{item_id}" {
+          name = #{ucl_string(name)}
+          description = #{ucl_string(get_heredoc_or_set(heredocs, sets, "long", ""))}
+    """
 
     # Verbs
     verbs = infer_verbs(ast.inherits, sets)
@@ -3009,18 +3245,22 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     # Meta
     meta = build_item_meta(sets, ast.inherits)
 
-    ucl <> "  verbs = [\n" <> Enum.map_join(verbs, ",\n", &"    \"#{&1}\"") <> "\n  ]\n" <>
-      (if meta != %{}, do: "\n  meta = {\n" <> generate_meta(meta) <> "\n  }\n", else: "") <>
-(if Map.has_key?(sets, "wield_msg") or Map.has_key?(sets, "unwield_msg") do
-         wield_str = escape_set_string(extract_string(Map.get(sets, "wield_msg"), ""))
-         unwield_str = escape_set_string(extract_string(Map.get(sets, "unwield_msg"), ""))
-         "\n  messages = {\n" <>
-           (if wield_str != "", do: "    wield = \"#{wield_str}\"\n", else: "") <>
-           (if unwield_str != "", do: "    unwield = \"#{unwield_str}\"\n", else: "") <>
-           "  }\n"
-       else
-         ""
-       end) <>
+    ucl <>
+      "  verbs = [\n" <>
+      Enum.map_join(verbs, ",\n", &"    \"#{&1}\"") <>
+      "\n  ]\n" <>
+      if(meta != %{}, do: "\n  meta = {\n" <> generate_meta(meta) <> "\n  }\n", else: "") <>
+      if Map.has_key?(sets, "wield_msg") or Map.has_key?(sets, "unwield_msg") do
+        wield_str = escape_set_string(extract_string(Map.get(sets, "wield_msg"), ""))
+        unwield_str = escape_set_string(extract_string(Map.get(sets, "unwield_msg"), ""))
+
+        "\n  messages = {\n" <>
+          if(wield_str != "", do: "    wield = \"#{wield_str}\"\n", else: "") <>
+          if(unwield_str != "", do: "    unwield = \"#{unwield_str}\"\n", else: "") <>
+          "  }\n"
+      else
+        ""
+      end <>
       "    }"
   end
 
@@ -3028,16 +3268,25 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
     base = ["get", "drop"]
 
     cond do
-      Enum.any?(inherits, &String.contains?(&1, "WEAPON") or String.contains?(&1, "SWORD") or String.contains?(&1, "BLADE")) ->
+      Enum.any?(
+        inherits,
+        &(String.contains?(&1, "WEAPON") or String.contains?(&1, "SWORD") or
+              String.contains?(&1, "BLADE"))
+      ) ->
         base ++ ["wield", "unwield"]
+
       Enum.any?(inherits, &String.contains?(&1, "ARMOR")) ->
         base ++ ["wear", "remove"]
-      Enum.any?(inherits, &String.contains?(&1, "FOOD") or String.contains?(&1, "EDIBLE")) ->
+
+      Enum.any?(inherits, &(String.contains?(&1, "FOOD") or String.contains?(&1, "EDIBLE"))) ->
         base ++ ["eat"]
+
       Map.has_key?(sets, "wield_msg") ->
         base ++ ["wield", "unwield"]
+
       Map.has_key?(sets, "wear_msg") ->
         base ++ ["wear", "remove"]
+
       true ->
         base
     end
@@ -3083,19 +3332,44 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
 
   defp infer_skill_type(inherits) do
     cond do
-      Enum.any?(inherits, &String.contains?(&1, "SWORD")) -> "sword"
-      Enum.any?(inherits, &String.contains?(&1, "BLADE") or String.contains?(&1, "DAO")) -> "blade"
-      Enum.any?(inherits, &String.contains?(&1, "STAFF") or String.contains?(&1, "GUN")) -> "staff"
-      Enum.any?(inherits, &String.contains?(&1, "WHIP") or String.contains?(&1, "BIAN")) -> "whip"
-      Enum.any?(inherits, &String.contains?(&1, "DAGGER") or String.contains?(&1, "DAGGER")) -> "dagger"
-      Enum.any?(inherits, &String.contains?(&1, "THROWING")) -> "throwing"
-      Enum.any?(inherits, &String.contains?(&1, "HAMMER")) -> "hammer"
-      Enum.any?(inherits, &String.contains?(&1, "AXE")) -> "axe"
-      Enum.any?(inherits, &String.contains?(&1, "FIST") or String.contains?(&1, "UNARMED")) -> "unarmed"
-      Enum.any?(inherits, &String.contains?(&1, "FINGER")) -> "finger"
-      Enum.any?(inherits, &String.contains?(&1, "CLAW")) -> "claw"
-      Enum.any?(inherits, &String.contains?(&1, "PALM") or String.contains?(&1, "STRIKE")) -> "strike"
-      true -> "sword"
+      Enum.any?(inherits, &String.contains?(&1, "SWORD")) ->
+        "sword"
+
+      Enum.any?(inherits, &(String.contains?(&1, "BLADE") or String.contains?(&1, "DAO"))) ->
+        "blade"
+
+      Enum.any?(inherits, &(String.contains?(&1, "STAFF") or String.contains?(&1, "GUN"))) ->
+        "staff"
+
+      Enum.any?(inherits, &(String.contains?(&1, "WHIP") or String.contains?(&1, "BIAN"))) ->
+        "whip"
+
+      Enum.any?(inherits, &(String.contains?(&1, "DAGGER") or String.contains?(&1, "DAGGER"))) ->
+        "dagger"
+
+      Enum.any?(inherits, &String.contains?(&1, "THROWING")) ->
+        "throwing"
+
+      Enum.any?(inherits, &String.contains?(&1, "HAMMER")) ->
+        "hammer"
+
+      Enum.any?(inherits, &String.contains?(&1, "AXE")) ->
+        "axe"
+
+      Enum.any?(inherits, &(String.contains?(&1, "FIST") or String.contains?(&1, "UNARMED"))) ->
+        "unarmed"
+
+      Enum.any?(inherits, &String.contains?(&1, "FINGER")) ->
+        "finger"
+
+      Enum.any?(inherits, &String.contains?(&1, "CLAW")) ->
+        "claw"
+
+      Enum.any?(inherits, &(String.contains?(&1, "PALM") or String.contains?(&1, "STRIKE"))) ->
+        "strike"
+
+      true ->
+        "sword"
     end
   end
 
@@ -3110,18 +3384,22 @@ defp get_heredoc_or_set(heredocs, sets, key, default) do
   defp format_meta_value({:int, i}), do: to_string(i)
   defp format_meta_value({:float, f}), do: to_string(f)
   defp format_meta_value({:bool, b}), do: if(b, do: "true", else: "false")
+
   defp format_meta_value({:array, arr}) do
     "[\n" <> Enum.map_join(arr, ",\n", &format_meta_value/1) <> "\n    ]"
   end
+
   defp format_meta_value({:mapping, pairs}) do
-    "{\n" <> Enum.map_join(pairs, ",\n", fn {k, v} ->
-      "      #{format_meta_value(k)} = #{format_meta_value(v)}"
-    end) <> "\n    }"
+    "{\n" <>
+      Enum.map_join(pairs, ",\n", fn {k, v} ->
+        "      #{format_meta_value(k)} = #{format_meta_value(v)}"
+      end) <> "\n    }"
   end
+
   defp format_meta_value({:var, v}), do: v
   defp format_meta_value(_), do: "nil"
 
-defp sanitize_comment_text(text) do
+  defp sanitize_comment_text(text) do
     text
     |> String.replace("\\", "\\\\")
     |> String.replace("\"", "'")
@@ -3158,12 +3436,13 @@ defp sanitize_comment_text(text) do
           end)
           |> Enum.reject(fn {key, text} -> key == "" or text == "" end)
 
-if entries == [] do
-           ""
-         else
-           rendered = Enum.map_join(entries, ",\n", fn {keyword, text} ->
-             " #{normalize_item_keyword(keyword)} = \"#{escape_set_string(text)}\""
-           end)
+        if entries == [] do
+          ""
+        else
+          rendered =
+            Enum.map_join(entries, ",\n", fn {keyword, text} ->
+              " #{normalize_item_keyword(keyword)} = \"#{escape_set_string(text)}\""
+            end)
 
           """
           item_desc = {

@@ -107,7 +107,10 @@ defmodule Kantele.League do
   end
 
   def add_league_fame(%{league_name: fname}, delta), do: add_league_fame(fname, delta)
-  def add_league_fame(%{meta: %{league: %{league_name: fname}}}, delta), do: add_league_fame(fname, delta)
+
+  def add_league_fame(%{meta: %{league: %{league_name: fname}}}, delta),
+    do: add_league_fame(fname, delta)
+
   def add_league_fame(_, _), do: :ok
 
   @doc "查询同盟仇恨表"
@@ -302,7 +305,10 @@ defmodule Kantele.League do
               if new_lvl <= 0 do
                 :ets.insert(@table, {kfam, %{record | hatred: Map.delete(hatred, vid)}})
               else
-                :ets.insert(@table, {kfam, %{record | hatred: Map.put(hatred, vid, [name_of(killer), new_lvl])}})
+                :ets.insert(
+                  @table,
+                  {kfam, %{record | hatred: Map.put(hatred, vid, [name_of(killer), new_lvl])}}
+                )
               end
 
               fame_delta

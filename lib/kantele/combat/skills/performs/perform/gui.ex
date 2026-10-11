@@ -26,34 +26,34 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Gui do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "force"},
-      #       {"ap", "force"},
-      #       {"damage", "wudoumi-shengong"},
-      #       {"dp", "dodge"},
-      #       {"dp", "dodge"}
-      #     ],
-      #     level_gates: [{"force", "200"}, {"wudoumi-shengong", "140"}],
-      #     map_gates: [{"force", "wudoumi-shengong"}, {"unarmed", "wudoumi-shengong"}],
-      #     prepared_gates: [{"unarmed", "wudoumi-shengong"}],
-      #     resource_gates: [{"neili", "800"}],
-      #     var_gates: []
-      #   }
+  #   %{
+  #     assign_refs: [
+  #       {"ap", "force"},
+  #       {"ap", "force"},
+  #       {"damage", "wudoumi-shengong"},
+  #       {"dp", "dodge"},
+  #       {"dp", "dodge"}
+  #     ],
+  #     level_gates: [{"force", "200"}, {"wudoumi-shengong", "140"}],
+  #     map_gates: [{"force", "wudoumi-shengong"}, {"unarmed", "wudoumi-shengong"}],
+  #     prepared_gates: [{"unarmed", "wudoumi-shengong"}],
+  #     resource_gates: [{"neili", "800"}],
+  #     var_gates: []
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-500"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2 + random(3));"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(2 + random(3));
+    #   %{
+    #     add_costs: [{"neili", "-500"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(2 + random(3));"],
+    #     remote_damage: true,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(2 + random(3));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

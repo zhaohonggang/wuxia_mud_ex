@@ -185,7 +185,6 @@ defmodule Kantele.Combat.Skills.MeinvQuan do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

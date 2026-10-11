@@ -77,11 +77,16 @@ defmodule Kantele.Combat.Skills.Force.Lifeheal do
 
       conn
       |> Broadcast.publish(
-        "$N坐了下来运起#{force_name}，将手掌贴在#{target.name}背心，缓缓地将真气输入#{target.name}体内....\n过了不久，$N额头上冒出豆大的汗珠，#{target.name}吐出一口瘀血，脸色看起来红润多了。\n",
+        "$N坐了下来运起#{force_name}，将手掌贴在#{target.name}背心，缓缓地将真气输入#{target.name}体内....\n过了不久，$N额头上冒出豆大的汗珠，#{
+          target.name
+        }吐出一口瘀血，脸色看起来红润多了。\n",
         n1: character.name,
         n2: target.name
       )
-      |> put_character(%{character | meta: %{character.meta | vitals: %{vitals | neili: vitals.neili - 150}}})
+      |> put_character(%{
+        character
+        | meta: %{character.meta | vitals: %{vitals | neili: vitals.neili - 150}}
+      })
       |> assign(:prompt, false)
     else
       {:error, message} ->
@@ -139,6 +144,7 @@ defmodule Kantele.Combat.Skills.Force.Lifeheal do
   defp gate_force_level(stats) do
     force_name = Map.get(stats.mapped, "force")
     force_lvl = Stats.skill(stats, force_name)
+
     if force_lvl >= 50 do
       {:ok, force_lvl}
     else
@@ -166,6 +172,7 @@ defmodule Kantele.Combat.Skills.Force.Lifeheal do
     case combat.enemies do
       [target | _] when target.busy == 0 ->
         {:ok, target}
+
       _ ->
         {:error, "这里没有需要你救助的人。\n"}
     end

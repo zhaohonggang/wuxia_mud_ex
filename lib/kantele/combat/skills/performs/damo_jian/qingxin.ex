@@ -122,8 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Qingxin do
 
     result =
       if not Combat.buff_active?(character.meta.combat, "powerup") do
-        {character.meta.combat,
-         "可是$p看来似乎并没有运用真气提升战力，$P这一招没有起到任何作用。\n"}
+        {character.meta.combat, "可是$p看来似乎并没有运用真气提升战力，$P这一招没有起到任何作用。\n"}
       else
         if div(ap, 2) + Engine.rand(rng, ap) > dp do
           ainc = Map.get(character.meta.combat.temp, :attack, 0)

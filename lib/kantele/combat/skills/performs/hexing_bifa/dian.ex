@@ -134,9 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.HexingBifa.Dian do
       combat = Combat.start_busy(combat, div(level, 22) + 2)
 
       conn
-      |> Broadcast.publish(
-        Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings)
-      )
+      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
       |> put_character(put_combat(character, combat))
     else
       text =
@@ -159,18 +157,16 @@ defmodule Kantele.Combat.Skills.Performs.HexingBifa.Dian do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+
   @doc "声明式规格（用于 prepare_skill 门槛校验）"
   def spec() do
     %Kantele.Combat.Performs.Spec{
       id: "hexing-bifa/dian",
       kind: :perform,
-      gates: [
-      ],
+      gates: [],
       costs: %{},
       effects: [],
       busy: 0
     }
   end
-
-
 end

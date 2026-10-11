@@ -47,18 +47,20 @@ defmodule Kantele.World.AnalectaService do
   @impl true
   def handle_call({:query_list, year}, _from, state) do
     # 简单方案：获取所有后过滤（数据量小的情况下可接受）
-    all_analectas = Repo.all(from a in Analecta,
-      order_by: [desc: a.time],
-      select: %{
-        subject: a.subject,
-        author_name: a.author_name,
-        author_id: a.author_id,
-        time: a.time,
-        board: a.board,
-        id: a.id,
-        year: a.year
-      }
-    )
+    all_analectas =
+      Repo.all(
+        from a in Analecta,
+          order_by: [desc: a.time],
+          select: %{
+            subject: a.subject,
+            author_name: a.author_name,
+            author_id: a.author_id,
+            time: a.time,
+            board: a.board,
+            id: a.id,
+            year: a.year
+          }
+      )
 
     filtered = Enum.filter(all_analectas, fn a -> a.year == year end)
 
@@ -82,6 +84,7 @@ defmodule Kantele.World.AnalectaService do
     case Repo.insert(analecta) do
       {:ok, _analecta} ->
         {:reply, :ok, state}
+
       {:error, changeset} ->
         {:reply, {:error, changeset.errors}, state}
     end

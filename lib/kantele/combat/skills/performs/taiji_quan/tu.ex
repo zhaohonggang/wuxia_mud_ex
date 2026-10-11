@@ -32,8 +32,12 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     improve = 0
     n = 0
     m = 0
-    ap = ((Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan")) + Stats.skill(stats, "taiji-shengong"))
-    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 3)))
+
+    ap =
+      Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan") +
+        Stats.skill(stats, "taiji-shengong")
+
+    damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
     flag = 1
 
     with :ok <- check_perform_known(character),
@@ -42,7 +46,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -110,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | jingli: vitals.jingli - 1000}
     vitals = %{vitals | neili: vitals.neili - 1000}
@@ -121,9 +127,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N淡然一笑，双手轻轻划了数个圈子，顿时四周的气流波动，源源不断的被牵引进来。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -151,6 +157,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     result = Messages.interpolate("只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！
 却见容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！
 呆立当场，一动不动，有如中邪，七窍都迸出鲜血来。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

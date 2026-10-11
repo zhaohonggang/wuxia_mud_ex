@@ -71,7 +71,12 @@ defmodule Kantele.Combat.Skills.Force.Heal do
 
     force_lvl = Stats.skill(stats, Map.get(stats.mapped, "force") || "force")
     cure = 10 + div(force_lvl, 3)
-    cure = if SpecialSkills.owned?(char.attributes, "divine"), do: cure + Stats.query_con(stats) * 2, else: cure
+
+    cure =
+      if SpecialSkills.owned?(char.attributes, "divine"),
+        do: cure + Stats.query_con(stats) * 2,
+        else: cure
+
     cure = if SpecialSkills.owned?(char.attributes, "breakup"), do: cure * 3, else: cure
 
     new_max = min(vitals.max_qi + cure, vitals.base_qi)

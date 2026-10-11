@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -107,8 +109,12 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(conn, "$N双手合十，双目微闭，太玄奥义自心底涌出，猛然间，$N双手向前推出，一股强劲的气流袭向$n 。",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -137,6 +143,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Hun do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
     result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

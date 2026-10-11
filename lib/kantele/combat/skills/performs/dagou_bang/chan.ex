@@ -113,15 +113,14 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Chan do
     if character.meta.combat.busy > 0 do
       conn
     else
-      if div(level, 2) + Engine.rand(rng, max(level, 1)) > Stats.skill(character.meta.stats, "dodge") do
+      if div(level, 2) + Engine.rand(rng, max(level, 1)) >
+           Stats.skill(character.meta.stats, "dodge") do
         combat = Combat.start_busy(character.meta.combat, div(level, 18) + 2)
         character = %{character | meta: %{character.meta | combat: combat}}
         Performs.feedback(attacker, 50, 1)
 
         conn
-        |> Broadcast.publish(
-          Messages.interpolate("棒影窜动间$n招式陡然一紧，已被$N攻的蹦跳不停，手忙脚乱！\n", bindings)
-        )
+        |> Broadcast.publish(Messages.interpolate("棒影窜动间$n招式陡然一紧，已被$N攻的蹦跳不停，手忙脚乱！\n", bindings))
         |> put_character(character)
       else
         Performs.feedback(attacker, 50, 2)

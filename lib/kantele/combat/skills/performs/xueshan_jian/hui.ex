@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -100,16 +102,16 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 30}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N回剑旋舞，一式「风回雪舞」施出，剑势连绵不绝，呼啸而至，欲图将$n缠裹其中。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -134,7 +136,13 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 2)
-    result = Messages.interpolate("$n只觉重重剑影铺天盖地向自己撒来，顿被攻了个手忙脚乱，不知如何应对。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉重重剑影铺天盖地向自己撒来，顿被攻了个手忙脚乱，不知如何应对。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

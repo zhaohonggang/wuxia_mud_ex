@@ -11,8 +11,10 @@ defmodule Kantele.T5PreparedGatesTest do
     # The @type gate in Spec includes {:prepared, usage :: String.t(), String.t()}
 
     # 2. Test Stats module prepare/unprepare functionality
-    stats = Kantele.Character.Stats.new()
+    stats =
+      Kantele.Character.Stats.new()
       |> Kantele.Character.Stats.learn_perform("huashan-jian/jie")
+
     {:ok, stats} = Kantele.Character.Stats.prepare_perform(stats, "sword", "huashan-jian/jie")
 
     # Verify it was stored
@@ -25,9 +27,11 @@ defmodule Kantele.T5PreparedGatesTest do
     assert Kantele.Character.Stats.prepared?(stats, "sword") == false
 
     # Test multiple usages
-    stats = Kantele.Character.Stats.new()
+    stats =
+      Kantele.Character.Stats.new()
       |> Kantele.Character.Stats.learn_perform("huashan-jian/jie")
       |> Kantele.Character.Stats.learn_perform("taiji-quan/chan")
+
     {:ok, stats} = Kantele.Character.Stats.prepare_perform(stats, "sword", "huashan-jian/jie")
     {:ok, stats} = Kantele.Character.Stats.prepare_perform(stats, "unarmed", "taiji-quan/chan")
 

@@ -13,10 +13,13 @@ defmodule Kantele.World.Invasion do
   alias Kantele.World.ZoneCache
   alias Kantele.World.Story.Gift
 
-  @default_start_delay 600_000       # 10 min after boot
-  @default_wave_interval 3_600_000   # 1 hour between waves
+  # 10 min after boot
+  @default_start_delay 600_000
+  # 1 hour between waves
+  @default_wave_interval 3_600_000
   @total_invaders 24
-  @idle_timeout 600_000              # 10 min idle → despawn
+  # 10 min idle → despawn
+  @idle_timeout 600_000
 
   # LPC level distribution: 1×L5, 2×L4, 3×L3, 6×L2, 12×L1
   @level_distribution [
@@ -37,7 +40,8 @@ defmodule Kantele.World.Invasion do
     %{
       wave_number: 0,
       wave_pid: nil,
-      invaders: %{},       # number => %{pid, room_id, level, nation, born_time, alive: true}
+      # number => %{pid, room_id, level, nation, born_time, alive: true}
+      invaders: %{},
       total_killed: 0,
       all_killed: false,
       timer_ref: nil,
@@ -126,6 +130,7 @@ defmodule Kantele.World.Invasion do
           # 通知延迟到最后一个 NPC spawn 后发送（见 handle_info {:spawn_one_invader}）
           schedule_next_wave(new_state)
           {:noreply, new_state}
+
         {:error, _} ->
           schedule_next_wave(state)
           {:noreply, state}
@@ -150,14 +155,22 @@ defmodule Kantele.World.Invasion do
     cond do
       invader && invader.alive ->
         new_invader = %{invader | alive: false}
-        new_state = %{state | invaders: Map.put(state.invaders, number, new_invader), total_killed: state.total_killed + 1}
+
+        new_state = %{
+          state
+          | invaders: Map.put(state.invaders, number, new_invader),
+            total_killed: state.total_killed + 1
+        }
 
         # 击杀奖励（按级 + 强者减奖）在 CombatEvent.die 里已给 exp/potential/威望/阅历
         # 这里只做广播与全歼判定
         killer_name = killer_name(killer)
         nation_title = invader_nation_title(invader.nation, invader.level)
+
         announce(
-          "{color foreground=\"magenta\"}【 入  侵 】{/color} #{killer_name} 在 #{invader.room_id} 击杀了 #{nation_title}#{invader.name}！\n"
+          "{color foreground=\"magenta\"}【 入  侵 】{/color} #{killer_name} 在 #{invader.room_id} 击杀了 #{
+            nation_title
+          }#{invader.name}！\n"
         )
 
         # 单击杀奖励：额外掉落玄铁令（已在 NPC loot 里），击杀者自动拾取
@@ -167,10 +180,10 @@ defmodule Kantele.World.Invasion do
 
         if new_state.total_killed >= @total_invaders do
           new_state = %{new_state | all_killed: true, wave_active: false}
-          
+
           # 全歼大奖：在最后击杀房间掉落入侵徽记
           drop_invasion_badge(invader.room_id, killer_info)
-          
+
           announce(
             "{color foreground=\"magenta\"}【 入  侵 】{/color} 本波入侵者已被全歼！#{killer_name} 获得「入侵徽记」一枚！\n"
           )
@@ -203,7 +216,9 @@ defmodule Kantele.World.Invasion do
           Process.exit(invader.pid, :shutdown)
 
           announce(
-            "{color foreground=\"magenta\"}【 入  侵 】{/color} #{invader_nation_title(invader.nation, invader.level)}#{invader.name} 久候不遇，悻悻撤退了。\n"
+            "{color foreground=\"magenta\"}【 入  侵 】{/color} #{
+              invader_nation_title(invader.nation, invader.level)
+            }#{invader.name} 久候不遇，悻悻撤退了。\n"
           )
 
           {:noreply, new_state}
@@ -249,6 +264,7 @@ defmodule Kantele.World.Invasion do
     if ref = state.timer_ref do
       :erlang.cancel_timer(ref)
     end
+
     state
   end
 
@@ -262,7 +278,12 @@ defmodule Kantele.World.Invasion do
     # 为了避免瞬间并发压力，分批 50ms 启动
     Enum.each(entries, fn {level, nation, number} ->
       room_id = Enum.random(room_ids)
-      Process.send_after(self(), {:spawn_one_invader, {level, nation, number, room_id}}, 50 * number)
+
+      Process.send_after(
+        self(),
+        {:spawn_one_invader, {level, nation, number, room_id}},
+        50 * number
+      )
     end)
 
     state
@@ -290,6 +311,7 @@ defmodule Kantele.World.Invasion do
           alive: true,
           name: invader.name
         }
+
         new_state = %{state | invaders: Map.put(state.invaders, number, invader_info)}
 
         # 最后一个启动后发送广播与闲置定时器
@@ -297,6 +319,7 @@ defmodule Kantele.World.Invasion do
           announce(
             "{color foreground=\"magenta\"}【 入  侵 】{/color} 第 #{new_state.wave_number} 波外族入侵开始！24 名入侵者已散落各地。\n"
           )
+
           # 闲置定时器发给自己（Invasion 进程），到时检查并清理
           Enum.each(new_state.invaders, fn {n, %{alive: true}} ->
             Process.send_after(self(), {:npc_idle, n}, @idle_timeout)
@@ -306,7 +329,10 @@ defmodule Kantele.World.Invasion do
         {:noreply, new_state}
 
       {:error, reason} ->
-        Logger.warn("invasion spawn invader #{number} (#{nation} L#{level}) failed - #{inspect(reason)}")
+        Logger.warn(
+          "invasion spawn invader #{number} (#{nation} L#{level}) failed - #{inspect(reason)}"
+        )
+
         {:noreply, state}
     end
   end
@@ -322,11 +348,12 @@ defmodule Kantele.World.Invasion do
       nil ->
         # 兜底：仅中央广场
         ["liuxi:guangchang"]
+
       %Kantele.World.Zone{rooms: rooms} ->
         rooms
         |> Enum.filter(fn room ->
-             room.flags && not Enum.member?(room.flags, "no_fight")
-           end)
+          room.flags && not Enum.member?(room.flags, "no_fight")
+        end)
         |> Enum.map(& &1.id)
     end
   end
@@ -337,8 +364,8 @@ defmodule Kantele.World.Invasion do
 
     @level_distribution
     |> Enum.flat_map(fn {level, count} ->
-         Enum.map(1..count, fn _ -> {level, Enum.random(nations)} end)
-       end)
+      Enum.map(1..count, fn _ -> {level, Enum.random(nations)} end)
+    end)
     |> Enum.shuffle()
     |> Enum.with_index(1)
     |> Enum.map(fn {{level, nation}, number} -> {level, nation, number} end)
@@ -346,7 +373,11 @@ defmodule Kantele.World.Invasion do
 
   # 全歼大奖：在击杀房间掉落入侵徽记
   defp drop_invasion_badge(room_id, _killer_info) do
-    case Kantele.World.Story.Gift.drop_to_room(room_id, "liuxi:misc/invasion-badge", "一枚入侵徽记落在地上，泛着寒光。\n") do
+    case Kantele.World.Story.Gift.drop_to_room(
+           room_id,
+           "liuxi:misc/invasion-badge",
+           "一枚入侵徽记落在地上，泛着寒光。\n"
+         ) do
       :ok -> :ok
       {:error, _reason, _player} -> :ok
     end

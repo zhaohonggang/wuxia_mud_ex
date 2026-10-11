@@ -55,8 +55,7 @@ defmodule Kantele.World.QuestDaemonTest do
     test "deliver 生成合法任务定义（真实缓存取将）" do
       {_officer, _zone} = seed_world()
 
-      assert {:ok, quest} =
-               Generator.generate("deliver", zone_id: "test", item_id: "test:baozi")
+      assert {:ok, quest} = Generator.generate("deliver", zone_id: "test", item_id: "test:baozi")
 
       assert quest.id == quest.file
       assert quest.type == "deliver"

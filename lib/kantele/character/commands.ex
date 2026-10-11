@@ -591,46 +591,57 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("northwest", :northwest, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("southeast", :southeast, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("southwest", :southwest, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("northup", :northup, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("southup", :southup, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("eastup", :eastup, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("westup", :westup, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("northdown", :northdown, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("southdown", :southdown, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("eastdown", :eastdown, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("westdown", :westdown, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
@@ -641,14 +652,17 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("西北", :northwest, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("东南", :southeast, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("西南", :southwest, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
@@ -659,30 +673,37 @@ defmodule Kantele.Character.Commands do
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("out", :out, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("in", :go_in, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("climb", :climb, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("爬", :climb, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("进入", :enter, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("出去", :out, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
     end)
+
     parse("进去", :go_in, [], fn command ->
       command
       |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
@@ -1492,7 +1513,13 @@ defmodule Kantele.Character.Commands do
 
   module(DrugCommand) do
     parse("drug", :run, fn command ->
-      command |> spaces() |> word(:poison) |> spaces() |> string("in") |> spaces() |> word(:target)
+      command
+      |> spaces()
+      |> word(:poison)
+      |> spaces()
+      |> string("in")
+      |> spaces()
+      |> word(:target)
     end)
   end
 
@@ -1540,7 +1567,13 @@ defmodule Kantele.Character.Commands do
 
   module(StealCommand) do
     parse("steal", :run, fn command ->
-      command |> spaces() |> word(:item) |> spaces() |> string("from") |> spaces() |> word(:target)
+      command
+      |> spaces()
+      |> word(:item)
+      |> spaces()
+      |> string("from")
+      |> spaces()
+      |> word(:target)
     end)
   end
 
@@ -1560,7 +1593,13 @@ defmodule Kantele.Character.Commands do
 
   module(PourCommand) do
     parse("pour", :run, fn command ->
-      command |> spaces() |> word(:poison) |> spaces() |> string("in") |> spaces() |> word(:target)
+      command
+      |> spaces()
+      |> word(:poison)
+      |> spaces()
+      |> string("in")
+      |> spaces()
+      |> word(:target)
     end)
   end
 
@@ -1645,7 +1684,13 @@ defmodule Kantele.Character.Commands do
 
   module(DaubCommand) do
     parse("daub", :run, fn command ->
-      command |> spaces() |> word(:poison) |> spaces() |> string("on") |> spaces() |> text(:target)
+      command
+      |> spaces()
+      |> word(:poison)
+      |> spaces()
+      |> string("on")
+      |> spaces()
+      |> text(:target)
     end)
   end
 

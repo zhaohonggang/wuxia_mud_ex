@@ -31,11 +31,13 @@ defmodule Kantele.Character.SurrenderCommandTest do
     }
 
     combat = Kantele.Character.Combat.new()
-    combat = if Keyword.get(opts, :fighting, false) do
-      %{combat | enemies: [%{pid: self(), name: "对手"}]}
-    else
-      combat
-    end
+
+    combat =
+      if Keyword.get(opts, :fighting, false) do
+        %{combat | enemies: [%{pid: self(), name: "对手"}]}
+      else
+        combat
+      end
 
     %Kalevala.Character{
       id: Keyword.get(opts, :id, "player-1"),

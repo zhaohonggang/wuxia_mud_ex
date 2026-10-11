@@ -21,6 +21,7 @@ defmodule Kantele.Character.WizlistCommand do
     wizards = Characters.all_wizards()
 
     text = build_output(wizards)
+
     conn
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
@@ -36,7 +37,9 @@ defmodule Kantele.Character.WizlistCommand do
       grouped
       |> Enum.map(fn {level, chars} ->
         title = Map.get(@level_titles, level, "Level #{level}")
-        names = chars |> Enum.map(& &1.name) |> Enum.map(&String.pad_trailing(&1, 10)) |> Enum.join("")
+
+        names =
+          chars |> Enum.map(& &1.name) |> Enum.map(&String.pad_trailing(&1, 10)) |> Enum.join("")
 
         "#{String.pad_trailing(title, 12)}: #{names}\n"
       end)

@@ -145,21 +145,22 @@ defmodule Kantele.Combat.Skills.Force.Roar do
               %{t_vitals | jing: new_jing, max_jing: new_eff_jing}
             end
 
-            character = %{character | meta: %{character.meta | vitals: new_vitals}}
+          character = %{character | meta: %{character.meta | vitals: new_vitals}}
 
-           text = case :rand.uniform(3) do
-             1 -> "突然只见$n两手抱头，双目凸出，嘴角泛出些许白沫，喉咙咯咯作响。\n"
-             2 -> "顿时听得$n一声惨叫，两眼发直，全身不住颤抖，蓦地呕出一口鲜血。\n"
-             _ -> "却见$n竟摔倒在地，发出声声哀嚎，双目双耳及鼻孔均渗出丝丝鲜血。\n"
-           end
-           |> Messages.interpolate(bindings)
+          text =
+            case :rand.uniform(3) do
+              1 -> "突然只见$n两手抱头，双目凸出，嘴角泛出些许白沫，喉咙咯咯作响。\n"
+              2 -> "顿时听得$n一声惨叫，两眼发直，全身不住颤抖，蓦地呕出一口鲜血。\n"
+              _ -> "却见$n竟摔倒在地，发出声声哀嚎，双目双耳及鼻孔均渗出丝丝鲜血。\n"
+            end
+            |> Messages.interpolate(bindings)
 
-           conn =
-             Broadcast.publish(conn, text)
-             |> put_character(character)
+          conn =
+            Broadcast.publish(conn, text)
+            |> put_character(character)
 
-           Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
-           conn
+          Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
+          conn
         else
           conn
         end
@@ -185,6 +186,7 @@ defmodule Kantele.Combat.Skills.Force.Roar do
 
   defp gate_room_ok(character) do
     room_config = Map.get(character.meta, :room, %{})
+
     if Map.get(room_config, :no_fight, false) or Map.get(room_config, :skybook, false) do
       {:error, "在这里不能攻击他人。\n"}
     else

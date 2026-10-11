@@ -152,7 +152,6 @@ defmodule Kantele.Combat.Skills.LiuyueJian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

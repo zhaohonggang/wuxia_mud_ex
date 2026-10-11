@@ -21,7 +21,8 @@ defmodule Kantele.Combat.Skills.ZixiaShengong do
   def valid_enable(usage), do: usage == "force"
 
   @impl true
-  def valid_force(force), do: force in ["hunyuan-yiqi", "taiji-shengong", "wudang-xinfa", "shaolin-xinfa"]
+  def valid_force(force),
+    do: force in ["hunyuan-yiqi", "taiji-shengong", "wudang-xinfa", "shaolin-xinfa"]
 
   @impl true
   def valid_learn(stats) do

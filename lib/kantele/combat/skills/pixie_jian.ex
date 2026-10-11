@@ -171,7 +171,6 @@ defmodule Kantele.Combat.Skills.PixieJian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

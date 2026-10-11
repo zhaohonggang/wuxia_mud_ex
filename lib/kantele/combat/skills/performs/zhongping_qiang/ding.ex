@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -102,7 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -128,6 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$N身形一转，施出中平枪法绝技「定岳七方」，手中接连七刺，枪枪不离$n要害！
 $n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -140,5 +140,4 @@ defmodule Kantele.Combat.Skills.WudangZhang do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

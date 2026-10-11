@@ -27,16 +27,17 @@ defmodule Kantele.World.Story.Sun do
       "后羿弯弓搭箭，「嗖」的一声，射落其中一枚火弹，余火残光洒落人间。",
       "火光收歇，/$N脚边的焦土里，却透出一点温润的光。",
       "你俯身看去，竟是一颗被烈火淬炼过的丹药。",
-      {:action, fn ->
-        if :rand.uniform(2) == 1 do
-          case Gift.drop_to_room(inner[:room_id], "gift/str2", "\n“啪”的一声一颗仙丹掉到你面前。\n\n") do
-            :ok -> "烈阳余烬里，一颗淬火丹药滚到$N面前。"
-            _other -> nil
-          end
-        else
-          "那一点微光转眼便被热浪蒸干，什么都未曾留下。"
-        end
-      end}
+      {:action,
+       fn ->
+         if :rand.uniform(2) == 1 do
+           case Gift.drop_to_room(inner[:room_id], "gift/str2", "\n“啪”的一声一颗仙丹掉到你面前。\n\n") do
+             :ok -> "烈阳余烬里，一颗淬火丹药滚到$N面前。"
+             _other -> nil
+           end
+         else
+           "那一点微光转眼便被热浪蒸干，什么都未曾留下。"
+         end
+       end}
     ]
 
     Lines.step_lines(lines, index, inner)

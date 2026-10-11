@@ -33,11 +33,13 @@ defmodule Kantele.Character.EngageCommandTest do
     spouse = Keyword.get(opts, :spouse, nil)
 
     combat = Kantele.Character.Combat.new()
-    combat = if Keyword.get(opts, :fighting, false) do
-      %{combat | enemies: ["some-enemy"]}
-    else
-      combat
-    end
+
+    combat =
+      if Keyword.get(opts, :fighting, false) do
+        %{combat | enemies: ["some-enemy"]}
+      else
+        combat
+      end
 
     temp = Keyword.get(opts, :temp, %{})
 
@@ -107,7 +109,15 @@ defmodule Kantele.Character.EngageCommandTest do
     end
 
     test "取消求婚成功" do
-      p = player(temp: %{"pending/engage" => "李四", "pending/engage_target_id" => "player-2", "pending/engage_promise" => "真心"})
+      p =
+        player(
+          temp: %{
+            "pending/engage" => "李四",
+            "pending/engage_target_id" => "player-2",
+            "pending/engage_promise" => "真心"
+          }
+        )
+
       conn = EngageCommand.run(build_conn(p), %{"arg" => "cancel"})
       assert output_text(conn) =~ "打消了求婚的念头"
     end

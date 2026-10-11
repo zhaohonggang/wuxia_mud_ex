@@ -11,11 +11,16 @@ defmodule Kantele.World.Story.ChallengerTest do
     on_exit(fn ->
       # 收掉摆擂 NPC 进程与登记，房间由 start_supervised 自动回收
       case Process.whereis(@server) do
-        nil -> :ok
+        nil ->
+          :ok
+
         _pid ->
           case Challenger.current(nil, @server) do
-            nil -> :ok
-            %{pid: npc_pid} -> if is_pid(npc_pid) and Process.alive?(npc_pid), do: Process.exit(npc_pid, :shutdown)
+            nil ->
+              :ok
+
+            %{pid: npc_pid} ->
+              if is_pid(npc_pid) and Process.alive?(npc_pid), do: Process.exit(npc_pid, :shutdown)
           end
 
           Challenger.despawn(@server)

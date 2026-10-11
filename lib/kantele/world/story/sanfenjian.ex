@@ -27,12 +27,13 @@ defmodule Kantele.World.Story.Sanfenjian do
       "骆冰笑着点住余鱼同的剑锋：这一招叫三分，可以传人，你得记住了。",
       "$N恰在湖畔画舫中听得真切，那三分剑术的要诀一字一句落入耳中。",
       "传闻自此，红花会的三分剑术便有了流传出来的源头，江湖上人人向往。",
-      {:action, fn ->
-        case Gift.drop_to_room(inner[:room_id], "gift/str2", "\n“啪”的一声，一枚仙丹落到你面前。\n\n") do
-          :ok -> "据说练成三分剑术的弟子，逢敌不过三剑。"
-          _other -> nil
-        end
-      end}
+      {:action,
+       fn ->
+         case Gift.drop_to_room(inner[:room_id], "gift/str2", "\n“啪”的一声，一枚仙丹落到你面前。\n\n") do
+           :ok -> "据说练成三分剑术的弟子，逢敌不过三剑。"
+           _other -> nil
+         end
+       end}
     ]
 
     Lines.step_lines(lines, index, inner)

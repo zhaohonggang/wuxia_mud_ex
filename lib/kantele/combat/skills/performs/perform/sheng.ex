@@ -26,32 +26,32 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Sheng do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "kuihua-mogong"}, {"dp", "dodge"}],
-      #     level_gates: [{"kuihua-mogong", "200"}],
-      #     map_gates: [{"dodge", "kuihua-mogong"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "3000"}, {"neili", "200"}],
-      #     var_gates: []
-      #   }
+  #   %{
+  #     assign_refs: [{"ap", "kuihua-mogong"}, {"dp", "dodge"}],
+  #     level_gates: [{"kuihua-mogong", "200"}],
+  #     map_gates: [{"dodge", "kuihua-mogong"}],
+  #     prepared_gates: [],
+  #     resource_gates: [{"max_neili", "3000"}, {"neili", "200"}],
+  #     var_gates: []
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-120"}, {"neili", "-80"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["if (target->is_busy())", "target->start_busy(ap / 30 + 2);",
-      #      "me->start_busy(1);", "me->start_busy(1 + random(2));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - if (target->is_busy())
-      #   - target->start_busy(ap / 30 + 2);
-      #   - me->start_busy(1);
-      #   - me->start_busy(1 + random(2));
+    #   %{
+    #     add_costs: [{"neili", "-120"}, {"neili", "-80"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["if (target->is_busy())", "target->start_busy(ap / 30 + 2);",
+    #      "me->start_busy(1);", "me->start_busy(1 + random(2));"],
+    #     remote_damage: false,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - if (target->is_busy())
+    #   - target->start_busy(ap / 30 + 2);
+    #   - me->start_busy(1);
+    #   - me->start_busy(1 + random(2));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

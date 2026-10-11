@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -65,7 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 1000}
@@ -74,9 +76,10 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N突然身行一止，从怀中摸出一条，有无数个结，一扬手向$n 掷去。
+只见$n的周身飞舞着无数的光影，一条天网从空罩下。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -105,6 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
 只见$n的周身飞舞着无数的光影，一条天网从空罩下。
 忽然那无数的光影一闪而没，$n身行一顿，给这缠上，仰天而倒。
 $n急忙向旁边一纵，躲开着致命的，但已显得狼狈不堪。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

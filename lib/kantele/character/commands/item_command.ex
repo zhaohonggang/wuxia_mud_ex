@@ -317,7 +317,8 @@ defmodule Kantele.Character.ItemCommand do
   end
 
   defp get_room(conn) do
-    Map.get(conn, :room) || conn.private.room || Kantele.World.Room.snapshot(conn.character.room_id)
+    Map.get(conn, :room) || conn.private.room ||
+      Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp render_error(conn, message) do

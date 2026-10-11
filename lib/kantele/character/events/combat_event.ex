@@ -455,48 +455,61 @@ defmodule Kantele.Character.CombatEvent do
   defp coagent_pid(_), do: nil
 
   # 决斗结算（败者端）：若角色死在 competitor 手下，清掉指向胜者的 competitor，
-# 胜负文案由胜者端 announce_duel_victory 广播。
-defp announce_duel_result(conn, %{meta: %Kantele.Character.PlayerMeta{} = meta} = character, killer) do
-  attack = PlayerMeta.attack_state(meta)
-  competitor_id = attack.competitor
+  # 胜负文案由胜者端 announce_duel_victory 广播。
+  defp announce_duel_result(
+         conn,
+         %{meta: %Kantele.Character.PlayerMeta{} = meta} = character,
+         killer
+       ) do
+    attack = PlayerMeta.attack_state(meta)
+    competitor_id = attack.competitor
 
-  if not is_nil(competitor_id) and not is_nil(killer) and killer.id == competitor_id do
-    clean_duel_competitor(conn, character, killer)
-  else
-    conn
+    if not is_nil(competitor_id) and not is_nil(killer) and killer.id == competitor_id do
+      clean_duel_competitor(conn, character, killer)
+    else
+      conn
+    end
   end
-end
 
-defp announce_duel_result(conn, _character, _killer), do: conn
+  defp announce_duel_result(conn, _character, _killer), do: conn
 
-# 决斗结算（胜者端）：被杀的目标曾是我的 competitor，则广播胜负文案
-defp announce_duel_victory(conn, %{meta: %Kantele.Character.PlayerMeta{} = meta} = character, enemy_id, enemy_name) do
-  attack = PlayerMeta.attack_state(meta)
+  # 决斗结算（胜者端）：被杀的目标曾是我的 competitor，则广播胜负文案
+  defp announce_duel_victory(
+         conn,
+         %{meta: %Kantele.Character.PlayerMeta{} = meta} = character,
+         enemy_id,
+         enemy_name
+       ) do
+    attack = PlayerMeta.attack_state(meta)
 
-  if attack.competitor == enemy_id do
-    conn
-    |> Broadcast.publish("$N武艺更胜一筹，胜了与$n的一番较量。\n",
-      n1: character.name,
-      n2: enemy_name || "对手"
-    )
-  else
-    conn
+    if attack.competitor == enemy_id do
+      conn
+      |> Broadcast.publish("$N武艺更胜一筹，胜了与$n的一番较量。\n",
+        n1: character.name,
+        n2: enemy_name || "对手"
+      )
+    else
+      conn
+    end
   end
-end
 
-defp announce_duel_victory(conn, _character, _enemy_id, _enemy_name), do: conn
+  defp announce_duel_victory(conn, _character, _enemy_id, _enemy_name), do: conn
 
-# 清掉指向某 competitor 的状态（败者端将自己清空）
-defp clean_duel_competitor(conn, %{meta: %Kantele.Character.PlayerMeta{} = meta} = character, killer) do
-  new_meta =
-    PlayerMeta.update_attack(meta, fn attack ->
-      if attack.competitor == killer.id, do: %{attack | competitor: nil}, else: attack
-    end)
+  # 清掉指向某 competitor 的状态（败者端将自己清空）
+  defp clean_duel_competitor(
+         conn,
+         %{meta: %Kantele.Character.PlayerMeta{} = meta} = character,
+         killer
+       ) do
+    new_meta =
+      PlayerMeta.update_attack(meta, fn attack ->
+        if attack.competitor == killer.id, do: %{attack | competitor: nil}, else: attack
+      end)
 
-  put_character(conn, %{character | meta: new_meta})
-end
+    put_character(conn, %{character | meta: new_meta})
+  end
 
-defp clean_duel_competitor(conn, _character, _killer), do: conn
+  defp clean_duel_competitor(conn, _character, _killer), do: conn
 
   # ---- 死亡与重生 ----
 
@@ -568,7 +581,9 @@ defp clean_duel_competitor(conn, _character, _killer), do: conn
         case character.meta do
           %Kantele.Character.PlayerMeta{} = meta ->
             new_meta =
-              PlayerMeta.update_attack(meta, fn attack -> %{attack | killer: [], want_kills: []} end)
+              PlayerMeta.update_attack(meta, fn attack ->
+                %{attack | killer: [], want_kills: []}
+              end)
 
             %{character | meta: new_meta}
 
@@ -855,7 +870,12 @@ defp clean_duel_competitor(conn, _character, _killer), do: conn
   # kill/aggressive 开战即互记意图：攻击方把对手加入 killer，防守方把攻击者加入
   # want_kills（宣告"有人想杀我"）。fight/touxi 不记意图（点到为止类）。
   # duel 则双方互为 competitor（F_ATTACK 决斗，LPC duel 命令：败者倒下分出胜负）。
-  defp record_combat_intent(%{meta: %Kantele.Character.PlayerMeta{}} = character, enemy, initiator_id, type) do
+  defp record_combat_intent(
+         %{meta: %Kantele.Character.PlayerMeta{}} = character,
+         enemy,
+         initiator_id,
+         type
+       ) do
     character =
       case type do
         t when t in ["kill", "aggressive", "duel"] ->

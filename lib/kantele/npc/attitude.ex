@@ -94,25 +94,31 @@ defmodule Kantele.Npc.Attitude do
     end
   end
 
-@doc """
-`accept_hit/5`：被非致命打了一下。
+  @doc """
+  `accept_hit/5`：被非致命打了一下。
 
-LPC 里对 `aggressive` / `killer` / 默认 分支有一层**概率翻脸**：
+  LPC 里对 `aggressive` / `killer` / 默认 分支有一层**概率翻脸**：
 
-    case "aggressive":  if (random(t) > 8)  { say; kill_ob; return 1; }  say "接招！"
-    case "killer":     if (random(t) > 2)  { say; kill_ob; return 1; }  say "接招吧！"
-    default:           if (random(t) > 7)  { say; kill_ob; return 1; }  say "且慢！"
+      case "aggressive":  if (random(t) > 8)  { say; kill_ob; return 1; }  say "接招！"
+      case "killer":     if (random(t) > 2)  { say; kill_ob; return 1; }  say "接招吧！"
+      default:           if (random(t) > 7)  { say; kill_ob; return 1; }  say "且慢！"
 
-`random(t) > N` 在 t=1（第一次被打）时几乎总是成立，所以**第一次挨打就翻脸杀人**
-是常态；t 越大（挨得越多）越难触发。
+  `random(t) > N` 在 t=1（第一次被打）时几乎总是成立，所以**第一次挨打就翻脸杀人**
+  是常态；t 越大（挨得越多）越难触发。
 
-我们没有 LPC 的 `attempt_hit` 计数，参数 `attempt` 由宿主传入，默认 1
-（即"第一次挨打"这个 LPC 常态）。`random(t)` 用确定性伪随机代替，
-保证可测 —— 生产环境换成真随机也不影响语义。
+  我们没有 LPC 的 `attempt_hit` 计数，参数 `attempt` 由宿主传入，默认 1
+  （即"第一次挨打"这个 LPC 常态）。`random(t)` 用确定性伪随机代替，
+  保证可测 —— 生产环境换成真随机也不影响语义。
 
-返回 `{:engage | :kill, msg}`（accept_hit 不会拒战 —— 挨了打一定还手）。
-"""
-  @spec decide_hit(String.t() | nil, non_neg_integer(), non_neg_integer(), pos_integer(), String.t()) ::
+  返回 `{:engage | :kill, msg}`（accept_hit 不会拒战 —— 挨了打一定还手）。
+  """
+  @spec decide_hit(
+          String.t() | nil,
+          non_neg_integer(),
+          non_neg_integer(),
+          pos_integer(),
+          String.t()
+        ) ::
           {atom(), String.t()}
   def decide_hit(att, qi_pct, jing_pct, attempt \\ 1, who \\ "你")
 

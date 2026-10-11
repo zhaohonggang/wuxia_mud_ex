@@ -22,8 +22,8 @@ defmodule Kantele.Quest.TutorialStepWiringTest do
   defp item_ids(world), do: MapSet.new(world.items, & &1.id)
 
   defp obtainable_ids(world) do
-    from_goods = world.characters |> Enum.flat_map(&((&1.meta.goods || [])))
-    from_loot = world.characters |> Enum.flat_map(&((&1.meta.loot || [])))
+    from_goods = world.characters |> Enum.flat_map(&(&1.meta.goods || []))
+    from_loot = world.characters |> Enum.flat_map(&(&1.meta.loot || []))
     MapSet.new(from_goods ++ from_loot)
   end
 
@@ -85,7 +85,9 @@ defmodule Kantele.Quest.TutorialStepWiringTest do
     end
 
     test "七步链数据接线全通：逐步发放、链式解锁、末步周不通收官", %{world: world} do
-      step_specs = Enum.map(@steps, fn {_file, fragment, _item} -> char(world, fragment).meta.quest end)
+      step_specs =
+        Enum.map(@steps, fn {_file, fragment, _item} -> char(world, fragment).meta.quest end)
+
       butong_spec = char(world, "Butong").meta.quest
 
       result =

@@ -94,7 +94,6 @@ defmodule Kantele.Combat.Skills.SanyinWugongzhao do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

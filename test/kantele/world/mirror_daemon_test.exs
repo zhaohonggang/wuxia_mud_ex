@@ -94,6 +94,7 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
 
         foreman = :sys.get_state(info.pid)
         expected_item_id = "#{zone_id}:task/#{name}"
+
         assert [%Kalevala.World.Item.Instance{item_id: ^expected_item_id}] =
                  foreman.character.inventory
       end)
@@ -120,7 +121,8 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
       end
 
       wait_until(fn ->
-        %{all_completed: true, total_completed: 2, round_active: false} = GenServer.call(daemon, :status)
+        %{all_completed: true, total_completed: 2, round_active: false} =
+          GenServer.call(daemon, :status)
       end)
     end
 
@@ -150,7 +152,16 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
       register_task_items(all_no_fight_zone_id, [{"t3", "王五", "wang"}])
 
       no_room_daemon = :"mirror_daemon_nf_#{System.unique_integer([:positive])}"
-      start_supervised!({MirrorDaemon, [name: no_room_daemon, zone_id: all_no_fight_zone_id, total_tasks: 30, round_interval: 3_600_000]})
+
+      start_supervised!(
+        {MirrorDaemon,
+         [
+           name: no_room_daemon,
+           zone_id: all_no_fight_zone_id,
+           total_tasks: 30,
+           round_interval: 3_600_000
+         ]}
+      )
 
       assert {:ok, state} = GenServer.call(no_room_daemon, :start_round)
       assert state.tasks == %{}
@@ -163,7 +174,11 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
       register_task_items(ghost_zone, [{"g1", "赵六", "zhao"}])
 
       ghost_daemon = :"mirror_daemon_ghost_#{System.unique_integer([:positive])}"
-      start_supervised!({MirrorDaemon, [name: ghost_daemon, zone_id: ghost_zone, total_tasks: 30, round_interval: 3_600_000]})
+
+      start_supervised!(
+        {MirrorDaemon,
+         [name: ghost_daemon, zone_id: ghost_zone, total_tasks: 30, round_interval: 3_600_000]}
+      )
 
       assert {:ok, state} = GenServer.call(ghost_daemon, :start_round)
       assert state.tasks == %{}
@@ -307,8 +322,12 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
     on_exit(fn ->
       # 收掉本 zone 监督树下的任务载体（全球名未注册时静默跳过）
       case :global.whereis_name({Kalevala.World.CharacterSupervisor, zone_id}) do
-        nil -> :ok
-        :undefined -> :ok
+        nil ->
+          :ok
+
+        :undefined ->
+          :ok
+
         sup ->
           sup
           |> DynamicSupervisor.which_children()
@@ -352,7 +371,9 @@ defmodule Kantele.World.MirrorDaemonTaskCarrierTest do
           wait_until(fun, tries - 1)
         end
       rescue
-        _e -> Process.sleep(20); wait_until(fun, tries - 1)
+        _e ->
+          Process.sleep(20)
+          wait_until(fun, tries - 1)
       end
     end
   end

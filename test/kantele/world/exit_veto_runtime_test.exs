@@ -183,6 +183,7 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
       assert veto.all_dirs
 
       items = Map.get(room, :item_instances, []) || []
+
       assert Enum.any?(items, fn i -> Map.get(i, :item_id) =~ "xisuijing" end),
              "房里应有 items.xisuijing（LPC 的 xisui jing 别名）"
 
@@ -225,11 +226,19 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
       assert msg =~ "孟婆"
 
       # 方向不对 -> 放行（这正是补回守卫的意义：原来这条会拦所有方向）
-      assert :allow = @handler.check_exit_vetoes(room, context_with(room, [mengpo], weak), weak, "south")
+      assert :allow =
+               @handler.check_exit_vetoes(room, context_with(room, [mengpo], weak), weak, "south")
 
       # 内力够 -> 放行
       strong = player_with_skill(600)
-      assert :allow = @handler.check_exit_vetoes(room, context_with(room, [mengpo], strong), strong, "north")
+
+      assert :allow =
+               @handler.check_exit_vetoes(
+                 room,
+                 context_with(room, [mengpo], strong),
+                 strong,
+                 "north"
+               )
     end
 
     @tag :world_data
@@ -274,10 +283,14 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
 
       joined = Enum.join(unscoped, " | ")
 
-      assert joined =~ "kediandayuan"  # 依赖**目的地房间**内容，条件语言表达不了
-      assert joined =~ "bingqifang"    # 需要按 id 统计背包数量（转换残留 j > 1）
-      assert joined =~ "nantian"       # 裸标识符 mengzhu
-      assert joined =~ "xxh6"          # marks/花 那条：无人设置该标记，加守卫会封死 xiaoyao
+      # 依赖**目的地房间**内容，条件语言表达不了
+      assert joined =~ "kediandayuan"
+      # 需要按 id 统计背包数量（转换残留 j > 1）
+      assert joined =~ "bingqifang"
+      # 裸标识符 mengzhu
+      assert joined =~ "nantian"
+      # marks/花 那条：无人设置该标记，加守卫会封死 xiaoyao
+      assert joined =~ "xxh6"
       refute joined =~ "qunyulou", "已补守卫，不该再出现在未限定清单里"
     end
   end
@@ -289,6 +302,4 @@ defmodule Kantele.World.ExitVetoRuntimeTest do
   defp player_with_skill(force) do
     %{pid: self(), name: "测试玩家", meta: %{temp: %{}, stats: %{skills: %{"force" => force}}}}
   end
-
-
 end

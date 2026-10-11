@@ -82,7 +82,8 @@ defmodule Kantele.Combat.T1TailTest do
   end
 
   defp perform(opts, move) do
-    opts = Keyword.put_new(opts, :mapped, Keyword.get(opts, :mapped, %{"force" => "lingyuan-xinfa"}))
+    opts =
+      Keyword.put_new(opts, :mapped, Keyword.get(opts, :mapped, %{"force" => "lingyuan-xinfa"}))
 
     mapped = Keyword.fetch!(opts, :mapped)["force"]
     opts = Keyword.put_new(opts, :performs, MapSet.new(["#{mapped}/#{move}"]))
@@ -115,7 +116,10 @@ defmodule Kantele.Combat.T1TailTest do
     test "无目标被拒" do
       conn =
         perform(
-          [skills: %{"lingyuan-xinfa" => 160, "force" => 200}, mapped: %{"force" => "lingyuan-xinfa"}],
+          [
+            skills: %{"lingyuan-xinfa" => 160, "force" => 200},
+            mapped: %{"force" => "lingyuan-xinfa"}
+          ],
           "break"
         )
 
@@ -124,6 +128,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "等级不足被拒" do
       target = enemy(combat: weapon_combat())
+
       conn =
         perform(
           [
@@ -139,6 +144,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "目标忙乱被拒" do
       target = %{id: "mob-1", pid: self(), name: "鸠摩智", room_id: @room, busy: 2}
+
       conn =
         perform(
           [
@@ -154,6 +160,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "目标已死被拒" do
       target = enemy(combat: %{Combat.new() | dead: true})
+
       conn =
         perform(
           [
@@ -169,6 +176,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "目标空手被拒" do
       target = enemy()
+
       conn =
         perform(
           [
@@ -184,6 +192,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "成功放招：busy 2、投递目标侧事件" do
       target = enemy(combat: weapon_combat())
+
       conn =
         perform(
           [
@@ -209,7 +218,13 @@ defmodule Kantele.Combat.T1TailTest do
     test "命中：兵刃震落（卸下 weapon 槽）、目标忙乱 skill/20" do
       target = enemy(combat: weapon_combat())
       target_conn = build_conn(target)
-      data = %{perform_id: "lingyuan-xinfa/break", skill: 160, combat_exp: 100_000, rng: fn _ -> 10_000 end}
+
+      data = %{
+        perform_id: "lingyuan-xinfa/break",
+        skill: 160,
+        combat_exp: 100_000,
+        rng: fn _ -> 10_000 end
+      }
 
       conn = incoming(target_conn, data)
 
@@ -218,17 +233,28 @@ defmodule Kantele.Combat.T1TailTest do
       assert updated.meta.combat.busy == 8
       assert published_text(conn) =~ "震落"
 
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 0}
+      }
     end
 
     test "失手：目标拆招闪开，兵刃保留" do
-      combat = weapon_combat() |> Map.put(:equipped, %{weapon: %{name: "秋水剑", skill_type: "sword"}})
+      combat =
+        weapon_combat() |> Map.put(:equipped, %{weapon: %{name: "秋水剑", skill_type: "sword"}})
+
       target = enemy(combat: combat)
 
       # 攻击方 combat_exp 低、目标 combat_exp 高 → 判定失败
       target = %{target | meta: %{target.meta | stats: struct(Stats.new(), combat_exp: 100_000)}}
       target_conn = build_conn(target)
-      data = %{perform_id: "lingyuan-xinfa/break", skill: 150, combat_exp: 100, rng: fn _ -> 1 end}
+
+      data = %{
+        perform_id: "lingyuan-xinfa/break",
+        skill: 150,
+        combat_exp: 100,
+        rng: fn _ -> 1 end
+      }
 
       conn = incoming(target_conn, data)
 
@@ -240,7 +266,13 @@ defmodule Kantele.Combat.T1TailTest do
     test "目标忙乱则忽略" do
       target = enemy(combat: %{Combat.new() | busy: 3})
       target_conn = build_conn(target)
-      data = %{perform_id: "lingyuan-xinfa/break", skill: 150, combat_exp: 100_000, rng: fn _ -> 100 end}
+
+      data = %{
+        perform_id: "lingyuan-xinfa/break",
+        skill: 150,
+        combat_exp: 100_000,
+        rng: fn _ -> 100 end
+      }
 
       conn = incoming(target_conn, data)
       assert conn.private.update_character == nil
@@ -252,7 +284,10 @@ defmodule Kantele.Combat.T1TailTest do
   describe "roar（黯然吟，攻击方门槛）" do
     test "等级不足被拒" do
       assert Map.has_key?(Skills.get("surge-force").exert_list(), "roar")
-      conn = perform([skills: %{"surge-force" => 99}, mapped: %{"force" => "surge-force"}], "roar")
+
+      conn =
+        perform([skills: %{"surge-force" => 99}, mapped: %{"force" => "surge-force"}], "roar")
+
       assert output_text(conn) =~ "吓跑了几只老鼠"
     end
 
@@ -272,12 +307,15 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "no_fight 房间被拒" do
       room = %{Combat.new() | enemies: [enemy()]}
-      character = build_character(
-        skills: %{"surge-force" => 120, "force" => 120},
-        mapped: %{"force" => "surge-force"},
-        vitals: %{@vitals | neili: 200},
-        combat: room
-      )
+
+      character =
+        build_character(
+          skills: %{"surge-force" => 120, "force" => 120},
+          mapped: %{"force" => "surge-force"},
+          vitals: %{@vitals | neili: 200},
+          combat: room
+        )
+
       character = %{character | meta: Map.put(character.meta, :room, %{no_fight: true})}
       conn = ExertCommand.run(build_conn(character), %{"function" => "roar"})
       assert output_text(conn) =~ "不能攻击别人"
@@ -288,6 +326,7 @@ defmodule Kantele.Combat.T1TailTest do
         %{enemy() | id: "mob-1", name: "恶人1"},
         %{enemy() | id: "mob-2", name: "恶人2"}
       ]
+
       combat = Combat.new() |> Map.put(:enemies, enemies)
 
       conn =
@@ -311,6 +350,7 @@ defmodule Kantele.Combat.T1TailTest do
         topic: "combat/perform-incoming",
         data: %{perform_id: "surge-force/roar", skill: 200}
       }
+
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
         data: %{perform_id: "surge-force/roar", skill: 200}
@@ -320,7 +360,15 @@ defmodule Kantele.Combat.T1TailTest do
 
   describe "roar（黯然吟，目标侧结算）" do
     test "内力对抗成功：目标受精力伤害，可昏迷" do
-      target_vitals = %{Vitals.new() | jing: 120, max_jing: 120, base_jing: 120, neili: 100, max_neili: 500}
+      target_vitals = %{
+        Vitals.new()
+        | jing: 120,
+          max_jing: 120,
+          base_jing: 120,
+          neili: 100,
+          max_neili: 500
+      }
+
       target = enemy(vitals: target_vitals, skills: %{"con" => 10})
       target_conn = build_conn(target)
       data = %{perform_id: "surge-force/roar", skill: 200, rng: fn _ -> 100 end}
@@ -331,7 +379,10 @@ defmodule Kantele.Combat.T1TailTest do
       assert updated.meta.vitals.jing == 1
       assert updated.meta.vitals.max_jing == 1
 
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 0}
+      }
     end
 
     test "内力对抗失败：目标无事" do
@@ -341,7 +392,11 @@ defmodule Kantele.Combat.T1TailTest do
 
       conn = incoming(target_conn, data)
       assert conn.private.update_character == nil
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 0}
+      }
     end
 
     test "目标忙乱/官府保护则忽略" do
@@ -356,7 +411,11 @@ defmodule Kantele.Combat.T1TailTest do
       target2_conn = build_conn(target2, %{"conditions" => %{"die_guard" => true}})
       data2 = %{perform_id: "surge-force/roar", skill: 200, rng: fn _ -> 100 end}
 
-      conn2 = CombatEvent.perform_incoming(target2_conn, %{data: Map.merge(%{attacker: attacker()}, data2)})
+      conn2 =
+        CombatEvent.perform_incoming(target2_conn, %{
+          data: Map.merge(%{attacker: attacker()}, data2)
+        })
+
       assert conn2.private.update_character == nil
     end
   end
@@ -367,7 +426,11 @@ defmodule Kantele.Combat.T1TailTest do
     test "未习得被拒" do
       conn =
         perform(
-          [skills: %{"taiji-shengong" => 120}, mapped: %{"force" => "taiji-shengong"}, performs: MapSet.new()],
+          [
+            skills: %{"taiji-shengong" => 120},
+            mapped: %{"force" => "taiji-shengong"},
+            performs: MapSet.new()
+          ],
           "dian"
         )
 
@@ -463,10 +526,25 @@ defmodule Kantele.Combat.T1TailTest do
 
   describe "dian（疗伤，目标侧结算）" do
     test "命中：目标 max_qi/qi 与 max_jing/jing 回复，busy 2" do
-      target_vitals = %{Vitals.new() | qi: 50, max_qi: 80, base_qi: 150, jing: 40, max_jing: 60, base_jing: 120}
+      target_vitals = %{
+        Vitals.new()
+        | qi: 50,
+          max_qi: 80,
+          base_qi: 150,
+          jing: 40,
+          max_jing: 60,
+          base_jing: 120
+      }
+
       target = enemy(vitals: target_vitals)
       target_conn = build_conn(target)
-      data = %{perform_id: "taiji-shengong/dian", force_lvl: 200, taiji_lvl: 120, rng: fn _ -> 1 end}
+
+      data = %{
+        perform_id: "taiji-shengong/dian",
+        force_lvl: 200,
+        taiji_lvl: 120,
+        rng: fn _ -> 1 end
+      }
 
       conn = incoming(target_conn, data)
 
@@ -480,14 +558,32 @@ defmodule Kantele.Combat.T1TailTest do
       assert updated.meta.combat.busy == 2
       assert published_text(conn) =~ "吐出瘀血"
 
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 0}
+      }
     end
 
     test "目标无伤则忽略" do
-      target_vitals = %{Vitals.new() | qi: 150, max_qi: 150, base_qi: 150, jing: 120, max_jing: 120, base_jing: 120}
+      target_vitals = %{
+        Vitals.new()
+        | qi: 150,
+          max_qi: 150,
+          base_qi: 150,
+          jing: 120,
+          max_jing: 120,
+          base_jing: 120
+      }
+
       target = enemy(vitals: target_vitals)
       target_conn = build_conn(target)
-      data = %{perform_id: "taiji-shengong/dian", force_lvl: 200, taiji_lvl: 120, rng: fn _ -> 1 end}
+
+      data = %{
+        perform_id: "taiji-shengong/dian",
+        force_lvl: 200,
+        taiji_lvl: 120,
+        rng: fn _ -> 1 end
+      }
 
       conn = incoming(target_conn, data)
       assert conn.private.update_character == nil
@@ -496,7 +592,13 @@ defmodule Kantele.Combat.T1TailTest do
     test "目标忙乱则忽略" do
       target = enemy(combat: %{Combat.new() | busy: 2})
       target_conn = build_conn(target)
-      data = %{perform_id: "taiji-shengong/dian", force_lvl: 200, taiji_lvl: 120, rng: fn _ -> 1 end}
+
+      data = %{
+        perform_id: "taiji-shengong/dian",
+        force_lvl: 200,
+        taiji_lvl: 120,
+        rng: fn _ -> 1 end
+      }
 
       conn = incoming(target_conn, data)
       assert conn.private.update_character == nil
@@ -564,6 +666,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "成功放招：扣 50 内力、投递目标侧事件" do
       target = enemy()
+
       conn =
         perform(
           [
@@ -595,11 +698,21 @@ defmodule Kantele.Combat.T1TailTest do
     test "目标非毒虫（无 worm_poison）则放弃" do
       target = enemy()
       target_conn = build_conn(target)
-      data = %{perform_id: "xiuluo-yinshagong/suck", poison_lvl: 100, wudu_lvl: 120, xiuluo_lvl: 120}
+
+      data = %{
+        perform_id: "xiuluo-yinshagong/suck",
+        poison_lvl: 100,
+        wudu_lvl: 120,
+        xiuluo_lvl: 120
+      }
 
       conn = incoming(target_conn, data)
       assert conn.private.update_character == nil
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 0}
+      }
     end
 
     test "毒虫目标：remain 扣减、上 poison-supply 条件、炼成药丸文案" do
@@ -607,7 +720,13 @@ defmodule Kantele.Combat.T1TailTest do
       meta = Map.put(worm.meta, :worm_poison, %{level: 10, remain: 100})
       worm = %{worm | meta: meta}
       target_conn = build_conn(worm)
-      data = %{perform_id: "xiuluo-yinshagong/suck", poison_lvl: 100, wudu_lvl: 120, xiuluo_lvl: 120}
+
+      data = %{
+        perform_id: "xiuluo-yinshagong/suck",
+        poison_lvl: 100,
+        wudu_lvl: 120,
+        xiuluo_lvl: 120
+      }
 
       conn = incoming(target_conn, data)
 
@@ -622,7 +741,13 @@ defmodule Kantele.Combat.T1TailTest do
       meta = Map.put(worm.meta, :worm_poison, %{level: 1, remain: 1})
       worm = %{worm | meta: meta}
       target_conn = build_conn(worm)
-      data = %{perform_id: "xiuluo-yinshagong/suck", poison_lvl: 100, wudu_lvl: 120, xiuluo_lvl: 120}
+
+      data = %{
+        perform_id: "xiuluo-yinshagong/suck",
+        poison_lvl: 100,
+        wudu_lvl: 120,
+        xiuluo_lvl: 120
+      }
 
       conn = incoming(target_conn, data)
       assert conn.private.update_character != nil
@@ -636,7 +761,11 @@ defmodule Kantele.Combat.T1TailTest do
     test "未习得被拒" do
       conn =
         perform(
-          [skills: %{"yijinjing" => 150}, mapped: %{"force" => "yijinjing"}, performs: MapSet.new()],
+          [
+            skills: %{"yijinjing" => 150},
+            mapped: %{"force" => "yijinjing"},
+            performs: MapSet.new()
+          ],
           "tong"
         )
 
@@ -646,7 +775,11 @@ defmodule Kantele.Combat.T1TailTest do
     test "易筋经等级不足被拒" do
       conn =
         perform(
-          [skills: %{"yijinjing" => 99}, mapped: %{"force" => "yijinjing"}, performs: MapSet.new(["yijinjing/tong"])],
+          [
+            skills: %{"yijinjing" => 99},
+            mapped: %{"force" => "yijinjing"},
+            performs: MapSet.new(["yijinjing/tong"])
+          ],
           "tong"
         )
 
@@ -717,6 +850,7 @@ defmodule Kantele.Combat.T1TailTest do
 
     test "成功：耗 skill*4 内力、扣 max_neili skill/4、eff_qi 回复 skill*8 并重置 qi" do
       base = %{@vitals | max_neili: 1000, neili: 2000, max_qi: 100, base_qi: 150, qi: 60}
+
       conn =
         perform(
           [
@@ -740,6 +874,7 @@ defmodule Kantele.Combat.T1TailTest do
     test "战斗中成功：busy 4" do
       base = %{@vitals | max_neili: 1000, neili: 2000, max_qi: 100, base_qi: 150, qi: 60}
       combat = %{Combat.new() | enemies: [enemy()]}
+
       conn =
         perform(
           [

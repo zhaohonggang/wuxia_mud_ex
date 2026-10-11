@@ -94,6 +94,7 @@ defmodule Kantele.World.Weather do
   """
   def step(ctx, game_localtime) do
     new_season = game_localtime.season
+
     {new_weather, table_key} =
       if new_season != ctx.season do
         w = pick_weather()
@@ -108,7 +109,9 @@ defmodule Kantele.World.Weather do
       cond do
         new_season != ctx.season ->
           [
-            "【天象】#{@season_names[new_season]}季已至，天色转为#{@weather_names[new_weather]}天：#{phase.time_msg}。"
+            "【天象】#{@season_names[new_season]}季已至，天色转为#{@weather_names[new_weather]}天：#{
+              phase.time_msg
+            }。"
           ]
 
         phase.hour != ctx.phase.hour ->
@@ -137,6 +140,7 @@ defmodule Kantele.World.Weather do
     :rand.seed(:exsss, default_seed(seed))
 
     game_lt = GameTime.game_localtime()
+
     {ctx, _announcements} =
       step(
         %__MODULE__{
@@ -186,8 +190,7 @@ defmodule Kantele.World.Weather do
   # ---- 内部 ----
 
   defp advance(state) do
-    {new_state, announcements} =
-      step(state, GameTime.game_localtime())
+    {new_state, announcements} = step(state, GameTime.game_localtime())
 
     Enum.each(announcements, &announce(state, &1))
     new_state
@@ -206,9 +209,10 @@ defmodule Kantele.World.Weather do
   end
 
   defp render_phase(%{time_msg: time_msg, desc_msg: desc_msg, outcolor: outcolor}) do
-    IO.iodata_to_binary(
-      [~s({color foreground="#{outcolor}"}[#{time_msg}]#{desc_msg}{/color}), "\n"]
-    )
+    IO.iodata_to_binary([
+      ~s({color foreground="#{outcolor}"}[#{time_msg}]#{desc_msg}{/color}),
+      "\n"
+    ])
   end
 
   defp render_phase(_), do: nil

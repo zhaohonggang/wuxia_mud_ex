@@ -57,13 +57,31 @@ defmodule Kantele.Character.SynCommandTest do
 
   describe "syn 命令" do
     test "无参数时提示" do
-      p = player(neili: 10000, jingli: 2000, qi: 5000, max_neili: 10000, max_jingli: 2000, max_qi: 5000)
+      p =
+        player(
+          neili: 10000,
+          jingli: 2000,
+          qi: 5000,
+          max_neili: 10000,
+          max_jingli: 2000,
+          max_qi: 5000
+        )
+
       conn = SynCommand.run(build_conn(p), %{})
       assert output_text(conn) =~ "与什么物品融合"
     end
 
     test "内力不足时拒绝" do
-      p = player(neili: 1000, jingli: 2000, qi: 5000, max_neili: 10000, max_jingli: 2000, max_qi: 5000)
+      p =
+        player(
+          neili: 1000,
+          jingli: 2000,
+          qi: 5000,
+          max_neili: 10000,
+          max_jingli: 2000,
+          max_qi: 5000
+        )
+
       conn = SynCommand.run(build_conn(p), %{"arg" => "剑"})
       assert output_text(conn) =~ "内力并不充沛"
     end

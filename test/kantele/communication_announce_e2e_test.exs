@@ -76,9 +76,14 @@ defmodule Kantele.Communication.AnnounceE2ETest do
       inventory: [],
       meta: %PlayerMeta{
         vitals: %Kantele.Character.Vitals{
-          base_qi: 150, qi: 150, max_qi: 150,
-          base_jing: 120, jing: 120, max_jing: 120,
-          neili: 100, max_neili: 100
+          base_qi: 150,
+          qi: 150,
+          max_qi: 150,
+          base_jing: 120,
+          jing: 120,
+          max_jing: 120,
+          neili: 100,
+          max_neili: 100
         },
         stats: %Kantele.Character.Stats{con: 20},
         combat: Kantele.Character.Combat.new(),
@@ -184,7 +189,9 @@ defmodule Kantele.Communication.AnnounceE2ETest do
         }
       }
 
-      assert Communication.publish(ctx.channel, event, character: %Character{room_id: ctx.room_id}) == :ok
+      assert Communication.publish(ctx.channel, event, character: %Character{room_id: ctx.room_id}) ==
+               :ok
+
       assert alive?(ctx.channel)
     end
   end

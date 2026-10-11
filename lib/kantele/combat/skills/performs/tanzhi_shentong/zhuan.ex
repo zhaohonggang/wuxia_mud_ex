@@ -32,9 +32,13 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     improve = 0
     n = 0
     m = 0
-    ap = ((Stats.skill(stats, "finger") + Stats.skill(stats, "qimen-wuxing")) + Stats.skill(stats, "tanzhi-shentong"))
+
+    ap =
+      Stats.skill(stats, "finger") + Stats.skill(stats, "qimen-wuxing") +
+        Stats.skill(stats, "tanzhi-shentong")
+
     count = Stats.skill(stats, "mathematics")
-    damage = (ap + Engine.rand(rng, ap))
+    damage = ap + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,7 +46,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -110,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -118,9 +124,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N将全身功力聚于一指，指劲按照二十八宿方位云贯而出，正是桃花岛「转乾坤」绝技。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -146,18 +152,24 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    result = if hit, do: Messages.interpolate("$N将全身功力聚于一指，指劲按照二十八宿方位云贯而出，正是桃花岛「转乾坤」绝技。
+
+    result =
+      if hit,
+        do: Messages.interpolate("$N将全身功力聚于一指，指劲按照二十八宿方位云贯而出，正是桃花岛「转乾坤」绝技。
 霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。
 你听到“噗”的一声，身上竟然溅到几滴脑浆！
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
 霎那间$n只见寒芒一闪，$N食指已钻入$p胸堂半尺，指劲顿时破体而入。
-你听到“嗤”的一声，身上竟然溅到几滴鲜血！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+你听到“嗤”的一声，身上竟然溅到几滴鲜血！", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

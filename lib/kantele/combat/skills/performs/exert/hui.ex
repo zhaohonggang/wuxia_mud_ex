@@ -26,27 +26,27 @@ defmodule Kantele.Combat.Skills.Performs.Exert.Hui do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [],
-      #     level_gates: [],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [],
-      #     var_gates: []
-      #   }
+  #   %{
+  #     assign_refs: [],
+  #     level_gates: [],
+  #     map_gates: [],
+  #     prepared_gates: [],
+  #     resource_gates: [],
+  #     var_gates: []
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [],
-      #     affect_by: [],
-      #     apply_adds: ["armor", "dispel_poison", "dodge", "parry"],
-      #     busy_lines: [],
-      #     remote_damage: false,
-      #     set_flags: [{"neili", "0"}],
-      #     temp_set: []
-      #   }
+    #   %{
+    #     add_costs: [],
+    #     affect_by: [],
+    #     apply_adds: ["armor", "dispel_poison", "dodge", "parry"],
+    #     busy_lines: [],
+    #     remote_damage: false,
+    #     set_flags: [{"neili", "0"}],
+    #     temp_set: []
+    #   }
 
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)

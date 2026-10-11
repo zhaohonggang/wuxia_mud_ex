@@ -56,7 +56,7 @@ defmodule Kantele.Character.PrepareCommand do
     unarmed_text = "你目前没有组合任何特殊拳术技能。\n使用 `prepare ?` 查看可组合种类。\n"
 
     # 显示绝招预备状态
-    prepare_text = 
+    prepare_text =
       if map_size(Stats.prepared(stats)) == 0 do
         "当前没有预备任何绝招。\n"
       else
@@ -77,9 +77,11 @@ defmodule Kantele.Character.PrepareCommand do
 
   defp clear_all_preparation(conn) do
     stats = conn.character.meta.stats
-    new_stats = Enum.reduce(Map.keys(Stats.prepared(stats)), stats, fn usage, s ->
-      Stats.unprepare_perform(s, usage)
-    end)
+
+    new_stats =
+      Enum.reduce(Map.keys(Stats.prepared(stats)), stats, fn usage, s ->
+        Stats.unprepare_perform(s, usage)
+      end)
 
     conn
     |> put_character(%{conn.character | meta: %{conn.character.meta | stats: new_stats}})
@@ -187,9 +189,13 @@ defmodule Kantele.Character.PrepareCommand do
                 case Stats.prepare_perform(conn.character.meta.stats, usage, "#{skill}/#{arg2}") do
                   {:ok, new_stats} ->
                     conn
-                    |> put_character(%{conn.character | meta: %{conn.character.meta | stats: new_stats}})
+                    |> put_character(%{
+                      conn.character
+                      | meta: %{conn.character.meta | stats: new_stats}
+                    })
                     |> render(CommandView, "text", %{text: "预备成功：#{usage} -> #{arg2}\n"})
                     |> prompt(CommandView, "prompt", %{})
+
                   {:error, reason} ->
                     error(conn, reason)
                 end
@@ -242,7 +248,9 @@ defmodule Kantele.Character.PrepareCommand do
 
   defp infer_usage_from_skill(skill) do
     case Skills.get(skill) do
-      nil -> "sword"
+      nil ->
+        "sword"
+
       module ->
         case Enum.find(@usages, &valid_enable?(module, &1)) do
           nil -> "sword"

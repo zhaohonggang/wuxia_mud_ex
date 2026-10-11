@@ -93,21 +93,49 @@ defmodule Kantele.Character.ItemCommandTest do
   describe "drop validation" do
     test "装备中的物品不能丢弃" do
       combat = %{Combat.new() | equipped: %{weapon: %{instance_id: @sword_id}}}
-      p = player(inventory: [%Kalevala.World.Item.Instance{id: @sword_id, item_id: @sword_id}], combat: combat)
+
+      p =
+        player(
+          inventory: [%Kalevala.World.Item.Instance{id: @sword_id, item_id: @sword_id}],
+          combat: combat
+        )
+
       conn = build_item_conn(p)
 
       conn = ItemCommand.drop(conn, %{"item_name" => @sword_id})
-      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
       assert text =~ "必须脱下来才能丢掉"
     end
 
     test "正在骑乘的物品不能丢弃" do
       riding = %Kalevala.World.Item.Instance{id: @sword_id, item_id: @sword_id}
-      p = player(inventory: [%Kalevala.World.Item.Instance{id: @sword_id, item_id: @sword_id}], riding: riding)
+
+      p =
+        player(
+          inventory: [%Kalevala.World.Item.Instance{id: @sword_id, item_id: @sword_id}],
+          riding: riding
+        )
+
       conn = build_item_conn(p)
 
       conn = ItemCommand.drop(conn, %{"item_name" => @sword_id})
-      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
       assert text =~ "正在骑乘"
     end
 
@@ -116,7 +144,15 @@ defmodule Kantele.Character.ItemCommandTest do
       conn = build_item_conn(p)
 
       conn = ItemCommand.drop(conn, %{"item_name" => @sword_id})
-      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
       assert text =~ "你身上没有这样东西"
     end
 
@@ -136,7 +172,15 @@ defmodule Kantele.Character.ItemCommandTest do
       conn = build_item_conn(p, items: [])
 
       conn = ItemCommand.get(conn, %{"item_name" => @normal_item_id})
-      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
       assert text =~ "附近没有"
     end
 
@@ -145,18 +189,39 @@ defmodule Kantele.Character.ItemCommandTest do
       conn = build_conn(p)
 
       conn = ItemCommand.get(conn, %{"item_name" => @normal_item_id})
-      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
       assert text =~ "附近没有"
     end
 
     test "背包已满时拒绝" do
       inst = %Kalevala.World.Item.Instance{id: @normal_item_id, item_id: @normal_item_id}
-      full_inventory = Enum.map(1..80, fn i -> %Kalevala.World.Item.Instance{id: "item-#{i}", item_id: @normal_item_id} end)
+
+      full_inventory =
+        Enum.map(1..80, fn i ->
+          %Kalevala.World.Item.Instance{id: "item-#{i}", item_id: @normal_item_id}
+        end)
+
       p = player(inventory: full_inventory)
       conn = build_item_conn(p, items: [inst])
 
       conn = ItemCommand.get(conn, %{"item_name" => @normal_item_id})
-      text = conn.output |> Enum.flat_map(fn %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]; _ -> [] end) |> Enum.join("")
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
       assert text =~ "太多了"
     end
 

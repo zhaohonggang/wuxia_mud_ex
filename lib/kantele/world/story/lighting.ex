@@ -26,16 +26,17 @@ defmodule Kantele.World.Story.Lighting do
       "$N只觉得天旋地转，一道闪电直直劈向身前三步之处！",
       "雷光过处，焦黑的地上竟嵌着一块其貌不扬的石头，隐隐有雷纹流转。",
       "你走近细看，那分明是一颗被雷洗练过的丹药。",
-      {:action, fn ->
-        if :rand.uniform(2) == 1 do
-          case Gift.drop_to_room(inner[:room_id], "gift/con2", "\n“啪”的一声一颗仙丹掉到你面前。\n\n") do
-            :ok -> "雷神打了个响鼻，留下这颗铸骨丹，霜落人间。"
-            _other -> nil
-          end
-        else
-          "雷光一散，地上空空如也，仿佛方才只是一场幻梦。"
-        end
-      end}
+      {:action,
+       fn ->
+         if :rand.uniform(2) == 1 do
+           case Gift.drop_to_room(inner[:room_id], "gift/con2", "\n“啪”的一声一颗仙丹掉到你面前。\n\n") do
+             :ok -> "雷神打了个响鼻，留下这颗铸骨丹，霜落人间。"
+             _other -> nil
+           end
+         else
+           "雷光一散，地上空空如也，仿佛方才只是一场幻梦。"
+         end
+       end}
     ]
 
     Lines.step_lines(lines, index, inner)

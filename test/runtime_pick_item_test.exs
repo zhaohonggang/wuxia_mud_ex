@@ -74,6 +74,7 @@ defmodule RuntimePickItemTest do
            "expected 4 wuji instances, got #{inspect(wuji)}"
 
     ids = Enum.map(wuji, & &1.item_id) |> Enum.sort()
+
     assert ids == ["clone_lib:wuji1", "clone_lib:wuji2", "clone_lib:wuji3", "clone_lib:wuji4"],
            "item_ids should be the 4 wuji variants, got #{inspect(ids)}"
   end

@@ -85,5 +85,4 @@ defmodule Kantele.Combat.Skills.HuashanQuanfa do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

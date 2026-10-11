@@ -127,21 +127,21 @@ defmodule Kantele.Npc.Dealer do
   end
 
   @doc """
-`do_buy` 的前置检查（LPC `dealer.c:337-364`）。
+  `do_buy` 的前置检查（LPC `dealer.c:337-364`）。
 
-LPC 在算价**之前**有 4 道检查，`do_buy/4` 只保留了「一次最多 100 件」，
-其余 3 道在这里补上。返回 `{:ok, nil}` 表示放行。
+  LPC 在算价**之前**有 4 道检查，`do_buy/4` 只保留了「一次最多 100 件」，
+  其余 3 道在这里补上。返回 `{:ok, nil}` 表示放行。
 
-- `carried_count`：玩家身上**未装备**的物品数，对应 LPC 的 `MAX_ITEM_CARRIED`
-- `opts[:current_room]` / `opts[:start_room]`：跑偏自愈用
-- `opts[:busy?]`：上一次交易的 1 秒冷却
+  - `carried_count`：玩家身上**未装备**的物品数，对应 LPC 的 `MAX_ITEM_CARRIED`
+  - `opts[:current_room]` / `opts[:start_room]`：跑偏自愈用
+  - `opts[:busy?]`：上一次交易的 1 秒冷却
 
-## 跑偏自愈（LPC:338-357）
+  ## 跑偏自愈（LPC:338-357）
 
-NPC 不卖「背包里带着的货」（`carried_goods`）时，如果自己不在 `startroom`
-里了，就会说一句「咦？我怎么跑到这儿来了？」然后**要么传送回去、要么自杀**。
-这是防 NPC 被拖走 / 走丢后的自愈机制，和 `walker` 的 15 分钟自杀同类。
-"""
+  NPC 不卖「背包里带着的货」（`carried_goods`）时，如果自己不在 `startroom`
+  里了，就会说一句「咦？我怎么跑到这儿来了？」然后**要么传送回去、要么自杀**。
+  这是防 NPC 被拖走 / 走丢后的自愈机制，和 `walker` 的 15 分钟自杀同类。
+  """
   def check_buy_preconditions(opts) do
     carried = Map.get(opts, :carried_count, 0)
     max_carried = Map.get(opts, :max_item_carried, @max_item_carried)
@@ -214,7 +214,7 @@ NPC 不卖「背包里带着的货」（`carried_goods`）时，如果自己不�
     val_factor = Map.get(opts, :val_factor, 10)
 
     cond do
-not is_integer(amount) or amount < 1 or amount > 100 ->
+      not is_integer(amount) or amount < 1 or amount > 100 ->
         {:reject, "慢慢来，一次最多买一百件。"}
 
       Map.get(item, :money_id) ->

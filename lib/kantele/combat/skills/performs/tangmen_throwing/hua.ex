@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tangmen-throwing")
-    ap = (Stats.skill(stats, "throwing") * 2)
-    damage = div((Stats.skill(stats, "throwing") * 2), 3)
+    ap = Stats.skill(stats, "throwing") * 2
+    damage = div(Stats.skill(stats, "throwing") * 2, 3)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -67,7 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 1000}
@@ -77,9 +79,11 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N手中突然多了一支花，美得妖艳，$n觉得有点痴了，
+$N向$n一笑，一扬手向$n抛去。
+只见那花开了，五瓣齐舒，中央花心吐蕊，煞是好看。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -110,6 +114,7 @@ $N向$n一笑，一扬手向$n抛去。
 结果$p一声惨嚎，连中了$P发出的一base_unit。
 那花越开越艳，$n不知不觉中已痴迷了，身形一慢,微笑着倒下了，那花也谢了。
 $n 身形飘忽，那花划空而过。只听当的一声轻响，那花谢了，轻轻地砸在地面上。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

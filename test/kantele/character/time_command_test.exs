@@ -61,7 +61,7 @@ defmodule Kantele.Character.TimeCommandTest do
       conn = TimeCommand.run(build_conn(p), %{})
       text = output_text(conn)
       assert text =~ "现在北京时间是"
-      assert text =~ "20" 
+      assert text =~ "20"
     end
 
     test "路由解析" do

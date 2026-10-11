@@ -27,7 +27,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
     lvl = Stats.skill(stats, "sad-strike")
     n = 6
     count = 0
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -93,7 +95,6 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -117,7 +118,13 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    result = Messages.interpolate("$N一声长吟：“黯然销魂者，唯别而已矣！”，顿时心如止水，黯然神伤，于不经意中随手使出了『黯然销魂』！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$N一声长吟：“黯然销魂者，唯别而已矣！”，顿时心如止水，黯然神伤，于不经意中随手使出了『黯然销魂』！",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

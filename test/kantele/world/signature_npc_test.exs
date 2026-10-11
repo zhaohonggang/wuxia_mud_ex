@@ -58,7 +58,7 @@ defmodule Kantele.World.SignatureNpcTest do
 
       assert yu.meta.apprentice.family == "武当派"
       assert yu.meta.apprentice.min_shen == 20000
-      assert yu.meta.apprentice.min_exp == 150000
+      assert yu.meta.apprentice.min_exp == 150_000
       assert yu.meta.apprentice.min_skills == %{"wudang-xinfa" => 80, "taoism" => 80}
       assert yu.meta.apprentice.class == "taoist"
 
@@ -66,7 +66,7 @@ defmodule Kantele.World.SignatureNpcTest do
       assert grant["perform_id"] == "huzhua-shou/juehu"
       assert grant["skill"] == "huzhua-shou"
       assert grant["min_gongxian"] == 400
-      assert grant["min_shen"] == 100000
+      assert grant["min_shen"] == 100_000
       assert grant["cost_gongxian"] == 400
       assert grant["min_levels"] == %{"force" => 180, "huzhua-shou" => 120}
     end
@@ -97,8 +97,15 @@ defmodule Kantele.World.SignatureNpcTest do
       guangchang = Enum.find(world.rooms, &(&1.id == "liuxi:guangchang"))
       yinyi = Enum.find(world.rooms, &(&1.id == "signature:yinyi"))
 
-      assert Enum.any?(guangchang.exits, &(&1.exit_name == "north" and &1.end_room_id == "signature:yinyi"))
-      assert Enum.any?(yinyi.exits, &(&1.exit_name == "north" and &1.end_room_id == "liuxi:guangchang"))
+      assert Enum.any?(
+               guangchang.exits,
+               &(&1.exit_name == "north" and &1.end_room_id == "signature:yinyi")
+             )
+
+      assert Enum.any?(
+               yinyi.exits,
+               &(&1.exit_name == "north" and &1.end_room_id == "liuxi:guangchang")
+             )
     end
 
     test "签名 NPC 落位正确房间", %{world: world} do

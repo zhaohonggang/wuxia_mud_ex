@@ -18,12 +18,13 @@ defmodule Kantele.World.Story.Challenge do
       "擂台之上，剑气纵横，围观的武林人士挤得水泄不通。",
       "一夜之间，接连三拨江湖好手败下阵来，台下鸦雀无声。",
       "那挑战者环视四围，抱拳朗声道：还有哪位英雄，愿与某家一试身手？",
-      {:action, fn ->
-        case Challenger.spawn_random() do
-          {:ok, _challenger} -> "神秘挑战者当前就守在那里，等候天下英雄。"
-          {:error, _reason} -> "擂台摆好了，却迟迟无人现身，围观众人渐渐散去。"
-        end
-      end},
+      {:action,
+       fn ->
+         case Challenger.spawn_random() do
+           {:ok, _challenger} -> "神秘挑战者当前就守在那里，等候天下英雄。"
+           {:error, _reason} -> "擂台摆好了，却迟迟无人现身，围观众人渐渐散去。"
+         end
+       end},
       "围观的江湖人士有人心动，有人踌躇，不知谁愿第一个上台。",
       "据说只要键入 accept，便可应战。"
     ]

@@ -130,7 +130,6 @@ defmodule Kantele.Combat.Skills.QixingShou do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

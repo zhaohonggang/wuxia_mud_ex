@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 180}
@@ -107,9 +109,9 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N微微一笑，猛吸一口气，以气驭剑攻击虚虚实实的攻向$n！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -137,6 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
     Performs.feedback(attacker, 180, 4)
     result = Messages.interpolate("只见$N手中剑光幻作一条金龙，腾空而起倏的罩向$n，
 $p只觉一股大力铺天盖地般压来，登时眼前一花，两耳轰鸣，哇的喷出一口鲜血！！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

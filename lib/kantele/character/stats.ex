@@ -168,7 +168,6 @@ defmodule Kantele.Character.Stats do
     %{stats | performs: MapSet.put(stats.performs, perform_id)}
   end
 
-  
   @doc """
   D4: 预备某用法的绝招（对应 LPC `prepare <skill>`）
 
@@ -181,7 +180,7 @@ defmodule Kantele.Character.Stats do
   - 必须未激活对应用法的特技（mapped/2 返回特技 ID）
   - 特技的用法集合（valid_enable）必须包含该用法
   """
-    def prepare_perform(%__MODULE_{} = stats, usage, perform_id) do
+  def prepare_perform(%__MODULE_{} = stats, usage, perform_id) do
     cond do
       not perform_known?(stats, perform_id) ->
         {:error, "你尚未学会 #{perform_id}。\n"}
@@ -203,7 +202,7 @@ defmodule Kantele.Character.Stats do
     %{stats | prepared: Map.delete(prepared(stats), usage)}
   end
 
-@doc """
+  @doc """
   取得所有预备的绝招映射
   """
   def prepared(%__MODULE__{} = stats) do
@@ -213,8 +212,9 @@ defmodule Kantele.Character.Stats do
       %{}
     end
   end
-  
+
   def prepared(nil), do: %{}
+
   @doc """
   查询某用法当前预备的绝招。如 "sword" -> "huashan-jian/jie"。
   """
@@ -229,7 +229,7 @@ defmodule Kantele.Character.Stats do
     Map.has_key?(prepared(stats), usage)
   end
 
-@doc """
+  @doc """
   根据 combat_exp 计算技能上限（对应 LPC skill.c sadjust：上限 = combat_exp^3/10）
   """
   def skill_limit(exp) when is_integer(exp) and exp >= 0 do

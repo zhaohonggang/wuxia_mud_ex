@@ -76,6 +76,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
       {:ok, {ucl, comments}} ->
         # Determine output filename
         base_name = Path.basename(lpc_path, ".c")
+
         # 输出侧 ID 统一做 "-" → "_" 规范化（见 lpc_converter.ex 的 npc_id/room_id/item_id），
         # 去重检查必须用规范化名，否则连字符文件名（如 worker-liu.c）每次运行都会重复追加
         ucl_name = String.replace(base_name, "-", "_")
@@ -95,12 +96,16 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
           existing = File.read!(output_file)
           # Check if already exists
           if String.contains?(existing, "# Generated from #{lpc_path} by LPCConverter") or
-             String.contains?(existing, "rooms \"#{ucl_name}\"") or
-             String.contains?(existing, "characters \"#{ucl_name}\"") or
-             String.contains?(existing, "items \"#{ucl_name}\"") do
+               String.contains?(existing, "rooms \"#{ucl_name}\"") or
+               String.contains?(existing, "characters \"#{ucl_name}\"") or
+               String.contains?(existing, "items \"#{ucl_name}\"") do
             Mix.shell().info("#{base_name} already exists in #{output_file}, skipping append")
           else
-            File.write!(output_file, String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl_utf8) <> "\n")
+            File.write!(
+              output_file,
+              String.trim_trailing(existing) <> "\n\n" <> String.trim_trailing(ucl_utf8) <> "\n"
+            )
+
             Mix.shell().info("Appended to #{output_file}")
           end
         else
@@ -110,6 +115,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
           }
 
           """
+
           File.write!(output_file, zone_header <> String.trim_trailing(ucl_utf8) <> "\n")
           Mix.shell().info("Created #{output_file}")
         end
@@ -158,6 +164,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
     # 系统 / 杀毒扫描触发 EINVAL；整体覆盖也天然消除跨运行重复追加
     # entries 已是逆序，先 reverse 恢复 wildcard 顺序，再去重保留首次出现
     entries_in_order = Enum.reverse(entries)
+
     deduped =
       entries_in_order
       |> Enum.reduce({[], MapSet.new()}, fn {ucl_name, ucl, comments}, {acc, seen} ->
@@ -182,6 +189,7 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
       deduped
       |> Enum.filter(fn {_ucl_name, ucl, _comments} -> String.trim(ucl) != "" end)
       |> Enum.map_join("\n\n", fn {_ucl_name, ucl, _comments} -> String.trim_trailing(ucl) end)
+
     if body == "" do
       File.write!(output_file, zone_header)
     else
@@ -189,12 +197,19 @@ defmodule Mix.Tasks.Kantele.ConvertLpc do
     end
 
     # Write comments to separate .txt file
-    comments_body = Enum.map_join(deduped, "\n\n", fn {_ucl_name, _ucl, comments} -> String.trim_trailing(comments) end)
+    comments_body =
+      Enum.map_join(deduped, "\n\n", fn {_ucl_name, _ucl, comments} ->
+        String.trim_trailing(comments)
+      end)
+
     File.write!(comments_file, comments_body <> "\n")
 
     Mix.shell().info("Wrote #{length(deduped)} objects to #{output_file}")
     Mix.shell().info("Wrote comments to #{comments_file}")
-    if failures != [], do: Mix.shell().error("Failed on #{length(failures)} files: #{inspect(failures)}")
+
+    if failures != [],
+      do: Mix.shell().error("Failed on #{length(failures)} files: #{inspect(failures)}")
+
     Mix.shell().info("Done.")
   end
 

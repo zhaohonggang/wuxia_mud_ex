@@ -133,8 +133,7 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi.Freezing do
     do: ctx.character.meta.stats.con >= 34
 
   defp gate_powerup(ctx),
-    do:
-      ctx.character.meta.combat.buffs |> Enum.any?(&(&1.key == "powerup"))
+    do: ctx.character.meta.combat.buffs |> Enum.any?(&(&1.key == "powerup"))
 
   defp effect_freezing(state) do
     char = state.character

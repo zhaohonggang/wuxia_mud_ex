@@ -96,5 +96,4 @@ defmodule Kantele.Combat.Skills.TaishanSword do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

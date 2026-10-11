@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 150}
@@ -96,9 +98,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N桀桀怪笑，手指微微弯曲，倏的冲$n头顶抓下。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -131,6 +133,7 @@ $N扬声吐气，手指微微弯曲成爪，奋力向$n头顶抓下。
 $N手指微微弯曲成爪，浑不经意的向$n头顶抓下。
 $p急忙闪头，然而$N这招来得好快，正插中$p肩头，登时鲜血淋漓。
 $n哪里料到$N竟有如此变招，不及躲闪，肩头被$P抓了个鲜血淋漓。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

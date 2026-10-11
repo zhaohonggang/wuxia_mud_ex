@@ -28,9 +28,12 @@ defmodule Kantele.Bot.Registry do
 
   @doc "全部隐藏机器人的角色名集合"
   def hidden_names do
-    gen_server_call_else(fn ->
-      GenServer.call(__MODULE__, :hidden_names, 5_000)
-    end, MapSet.new())
+    gen_server_call_else(
+      fn ->
+        GenServer.call(__MODULE__, :hidden_names, 5_000)
+      end,
+      MapSet.new()
+    )
   end
 
   @doc "启动一个已配置的机器人（按配置 key）"

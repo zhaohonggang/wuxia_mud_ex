@@ -38,8 +38,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan do
       busy: {:if_fighting, 2},
       duration: {:skill, "ranmu-daofa"},
       expire_message: "你经过调气养息，又可以继续施展「燃木真焰」了。\n",
-      message:
-        "$N双手持刀，对天咆哮，所施正是燃木刀法绝学「燃木真焰」。霎时呼啸声大作，但见一股澎湃无比的罡劲自$N刀尖涌出。\n"
+      message: "$N双手持刀，对天咆哮，所施正是燃木刀法绝学「燃木真焰」。霎时呼啸声大作，但见一股澎湃无比的罡劲自$N刀尖涌出。\n"
     }
 
   alias Kantele.Character.Combat

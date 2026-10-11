@@ -40,7 +40,9 @@ defmodule Kantele.NPC.Xiaoer do
   def greet, do: Enum.random(@greetings)
 
   @doc "判断是否为店小二 NPC（有 goods 且是商人）"
-  def is_xiaoer?(%{meta: %{goods: goods}} = character) when is_list(goods) and goods != [], do: true
+  def is_xiaoer?(%{meta: %{goods: goods}} = character) when is_list(goods) and goods != [],
+    do: true
+
   def is_xiaoer?(_), do: false
 
   @doc "获取租金标准"
@@ -107,7 +109,9 @@ defmodule Kantele.NPC.Xiaoer do
   def greet, do: Enum.random(@greetings)
 
   @doc "判断是否为店小二 NPC（有 goods 且是商人）"
-  def is_xiaoer?(%{meta: %{goods: goods}} = character) when is_list(goods) and goods != [], do: true
+  def is_xiaoer?(%{meta: %{goods: goods}} = character) when is_list(goods) and goods != [],
+    do: true
+
   def is_xiaoer?(_), do: false
 
   # --- 心跳清理 ---
@@ -135,6 +139,7 @@ defmodule Kantele.NPC.Xiaoer do
     # 清理房间内尸体
     Enum.each(room_snapshot.private.item_instances, fn item_instance ->
       item = Items.get!(item_instance.item_id)
+
       if Kantele.Item.is_corpse?(item) do
         IO.puts("[Xiaoer] 清理了 #{item.name}。")
       end

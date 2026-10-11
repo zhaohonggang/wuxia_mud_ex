@@ -107,5 +107,4 @@ defmodule Kantele.Combat.Skills.QixingZhi do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

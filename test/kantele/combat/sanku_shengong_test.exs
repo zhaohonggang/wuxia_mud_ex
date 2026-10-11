@@ -85,10 +85,10 @@ defmodule Kantele.Combat.SankuShengongTest do
 
     test "exert_list 含 powerup/dispel/roar" do
       assert SankuShengong.exert_list() == %{
-        "powerup" => Powerup,
-        "dispel" => Dispel,
-        "roar" => Roar
-      }
+               "powerup" => Powerup,
+               "dispel" => Dispel,
+               "roar" => Roar
+             }
     end
   end
 
@@ -96,7 +96,11 @@ defmodule Kantele.Combat.SankuShengongTest do
     test "扣 100 内力并挂 powerup buff" do
       conn =
         exert(
-          [skills: %{"force" => 120}, mapped: %{"force" => "sanku-shengong"}, vitals: %{@vitals | neili: 500}],
+          [
+            skills: %{"force" => 120},
+            mapped: %{"force" => "sanku-shengong"},
+            vitals: %{@vitals | neili: 500}
+          ],
           "powerup"
         )
 
@@ -109,7 +113,16 @@ defmodule Kantele.Combat.SankuShengongTest do
     end
 
     test "neili<80 被拒" do
-      conn = exert([skills: %{"force" => 120}, mapped: %{"force" => "sanku-shengong"}, vitals: %{@vitals | neili: 50}], "powerup")
+      conn =
+        exert(
+          [
+            skills: %{"force" => 120},
+            mapped: %{"force" => "sanku-shengong"},
+            vitals: %{@vitals | neili: 50}
+          ],
+          "powerup"
+        )
+
       assert output_text(conn) =~ "你的内力不够"
     end
 
@@ -131,19 +144,32 @@ defmodule Kantele.Combat.SankuShengongTest do
 
   describe "dispel（排除异常·自我）" do
     test "neili<100 被拒" do
-      conn = exert([skills: %{"force" => 100}, mapped: %{"force" => "sanku-shengong"}, vitals: %{@vitals | neili: 50}], "dispel")
+      conn =
+        exert(
+          [
+            skills: %{"force" => 100},
+            mapped: %{"force" => "sanku-shengong"},
+            vitals: %{@vitals | neili: 50}
+          ],
+          "dispel"
+        )
+
       assert output_text(conn) =~ "内力不足"
     end
 
     test "清除自身 conditions" do
-      character = build_character(
-        skills: %{"force" => 100},
-        mapped: %{"force" => "sanku-shengong"},
-        vitals: %{@vitals | neili: 500}
-      )
+      character =
+        build_character(
+          skills: %{"force" => 100},
+          mapped: %{"force" => "sanku-shengong"},
+          vitals: %{@vitals | neili: 500}
+        )
 
       conn =
-        build_conn(character, %{"conditions" => %{"poison" => %{level: 10}}, "cond_applyer" => %{}})
+        build_conn(character, %{
+          "conditions" => %{"poison" => %{level: 10}},
+          "cond_applyer" => %{}
+        })
         |> ExertCommand.run(%{"function" => "dispel"})
 
       updated = conn.private.update_character
@@ -153,7 +179,16 @@ defmodule Kantele.Combat.SankuShengongTest do
     end
 
     test "busy 1~2 轮" do
-      conn = exert([skills: %{"force" => 100}, mapped: %{"force" => "sanku-shengong"}, vitals: %{@vitals | neili: 500}], "dispel")
+      conn =
+        exert(
+          [
+            skills: %{"force" => 100},
+            mapped: %{"force" => "sanku-shengong"},
+            vitals: %{@vitals | neili: 500}
+          ],
+          "dispel"
+        )
+
       busy = conn.private.update_character.meta.combat.busy
       assert busy >= 1 and busy <= 2
     end
@@ -170,29 +205,30 @@ defmodule Kantele.Combat.SankuShengongTest do
           ],
           "roar"
         )
+
       assert output_text(conn) =~ "吓走了几只老鼠"
     end
 
     test "成功放招：扣 150 内力、受损 10 qi、busy 1、发 perform-incoming" do
-      target =
-        %Kalevala.Character{
-          id: "mob-1",
-          name: "李四",
-          pid: self(),
-          room_id: @room,
-          meta: %Kantele.Character.NonPlayerMeta{
-            vitals: %{@vitals | qi: 500},
-            stats: struct(Stats.new(), %{"force" => 50}),
-            combat: Combat.new()
-          }
+      target = %Kalevala.Character{
+        id: "mob-1",
+        name: "李四",
+        pid: self(),
+        room_id: @room,
+        meta: %Kantele.Character.NonPlayerMeta{
+          vitals: %{@vitals | qi: 500},
+          stats: struct(Stats.new(), %{"force" => 50}),
+          combat: Combat.new()
         }
+      }
 
-      character = build_character(
-        skills: %{"sanku-shengong" => 60, "force" => 100},
-        mapped: %{"force" => "sanku-shengong"},
-        vitals: %{@vitals | neili: 600, qi: 500},
-        combat: %{Combat.new() | enemies: [target]}
-      )
+      character =
+        build_character(
+          skills: %{"sanku-shengong" => 60, "force" => 100},
+          mapped: %{"force" => "sanku-shengong"},
+          vitals: %{@vitals | neili: 600, qi: 500},
+          combat: %{Combat.new() | enemies: [target]}
+        )
 
       conn = ExertCommand.run(build_conn(character), %{"function" => "roar"})
 
@@ -202,7 +238,10 @@ defmodule Kantele.Combat.SankuShengongTest do
       assert updated.meta.combat.busy == 1
       assert published_text(conn) =~ "巨吼"
 
-      assert_receive %Kalevala.Event{topic: "combat/perform-incoming", data: %{perform_id: "sanku-shengong/roar"}}
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-incoming",
+        data: %{perform_id: "sanku-shengong/roar"}
+      }
     end
   end
 
@@ -223,7 +262,9 @@ defmodule Kantele.Combat.SankuShengongTest do
     end
 
     test "con 对抗失败：受 jing 伤害" do
-      character = target_character(skills: %{"con" => 10}, vitals: %{@vitals | max_neili: 100, jing: 100})
+      character =
+        target_character(skills: %{"con" => 10}, vitals: %{@vitals | max_neili: 100, jing: 100})
+
       data = %{perform_id: "sanku-shengong/roar", skill: 100, rng: fn _ -> 100 end}
 
       conn = incoming(build_conn(character), data)

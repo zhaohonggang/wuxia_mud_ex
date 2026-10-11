@@ -51,7 +51,7 @@ defmodule Kantele.Character.HideCommand do
 
   defp insufficient_energy?(character) do
     vitals = character.meta.vitals
-    jing = is_map(vitals) && Map.get(vitals, :jing, 0) || 0
+    jing = (is_map(vitals) && Map.get(vitals, :jing, 0)) || 0
     jing < @jingli_cost
   end
 

@@ -26,31 +26,31 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Jiu do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "unarmed"}, {"dp", "parry"}],
-      #     level_gates: [{"jiuyang-shengong", "200"}],
-      #     map_gates: [{"force", "jiuyang-shengong"}, {"unarmed", "jiuyang-shengong"}],
-      #     prepared_gates: [{"unarmed", "jiuyang-shengong"}],
-      #     resource_gates: [{"max_neili", "4000"}, {"neili", "500"}],
-      #     var_gates: [{"i", "9"}]
-      #   }
+  #   %{
+  #     assign_refs: [{"ap", "unarmed"}, {"dp", "parry"}],
+  #     level_gates: [{"jiuyang-shengong", "200"}],
+  #     map_gates: [{"force", "jiuyang-shengong"}, {"unarmed", "jiuyang-shengong"}],
+  #     prepared_gates: [{"unarmed", "jiuyang-shengong"}],
+  #     resource_gates: [{"max_neili", "4000"}, {"neili", "500"}],
+  #     var_gates: [{"i", "9"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-300"}],
-      #     affect_by: [],
-      #     apply_adds: ["attack"],
-      #     busy_lines: ["if (random(5) < 2 && ! target->is_busy())",
-      #      "target->start_busy(1);", "me->start_busy(1 + random(8));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - if (random(5) < 2 && ! target->is_busy())
-      #   - target->start_busy(1);
-      #   - me->start_busy(1 + random(8));
+    #   %{
+    #     add_costs: [{"neili", "-300"}],
+    #     affect_by: [],
+    #     apply_adds: ["attack"],
+    #     busy_lines: ["if (random(5) < 2 && ! target->is_busy())",
+    #      "target->start_busy(1);", "me->start_busy(1 + random(8));"],
+    #     remote_damage: false,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - if (random(5) < 2 && ! target->is_busy())
+    #   - target->start_busy(1);
+    #   - me->start_busy(1 + random(8));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

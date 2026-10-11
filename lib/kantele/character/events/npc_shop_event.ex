@@ -228,9 +228,18 @@ defmodule Kantele.Character.NpcAskEvent do
         # 一问多态：inquire 值可为文本（直接回话）、脚本化 map（Q6 数据驱动
         # 事件）或 atom（交给各 NPC 专属应答）
         case answer do
-          script when is_map(script) -> handle_scripted_answer(conn, Map.merge(data, %{reply_to: reply_to, asker_id: asker_id}), script)
-          a when is_atom(a) -> handle_special_answer(conn, data, a)
-          text -> publish_tell(conn, asker_id, text)
+          script when is_map(script) ->
+            handle_scripted_answer(
+              conn,
+              Map.merge(data, %{reply_to: reply_to, asker_id: asker_id}),
+              script
+            )
+
+          a when is_atom(a) ->
+            handle_special_answer(conn, data, a)
+
+          text ->
+            publish_tell(conn, asker_id, text)
         end
 
       turn_in = conn.character.meta.turn_in ->
@@ -397,7 +406,11 @@ defmodule Kantele.Character.NpcAskEvent do
   #   learn_skill -> npc/learn   传授技能
   #   family      -> npc/faction 拜入门派（gongxian 一并发放）
   # 各效果以事件送回玩家进程，由玩家侧 NpcScriptEvent 落盘并渲染。
-  defp handle_scripted_answer(conn, %{reply_to: reply_to, asker_id: asker_id, keyword: keyword} = data, script) do
+  defp handle_scripted_answer(
+         conn,
+         %{reply_to: reply_to, asker_id: asker_id, keyword: keyword} = data,
+         script
+       ) do
     npc_name = conn.character.name
 
     case Map.get(script, "reply") do
@@ -456,9 +469,15 @@ defmodule Kantele.Character.NpcAskEvent do
 
       register_item = Map.get(script, "register_summon") ->
         keyword = Map.get(data, "keyword", "")
+
         send(reply_to, %Kalevala.Event{
           topic: "npc/register_summon",
-          data: %{npc_name: npc_name, item_id: register_item, asker_id: asker_id, keyword: keyword}
+          data: %{
+            npc_name: npc_name,
+            item_id: register_item,
+            asker_id: asker_id,
+            keyword: keyword
+          }
         })
 
         conn

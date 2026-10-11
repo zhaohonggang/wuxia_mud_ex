@@ -21,7 +21,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
   use ExUnit.Case, async: false
 
   alias Kantele.World.Loader
-alias Kantele.World.LpcCondition
+  alias Kantele.World.LpcCondition
 
   setup_all do
     world = Loader.load()
@@ -54,10 +54,10 @@ alias Kantele.World.LpcCondition
     %{world: world, cap: cap, parse_aliases: parse_aliases, definitions: definitions}
   end
 
-
   # present() 的第二个参数决定判据：environment(me) / this_object() 要在场，me 不要
   defp room_ref(alias, cond) do
     re = ~r/present\('#{Regex.escape(alias)}'\s*,\s*([^)]+)\)/
+
     case Regex.run(re, cond) do
       [_, second] -> second =~ "environment" or second =~ "this_object"
       _ -> false
@@ -157,8 +157,7 @@ alias Kantele.World.LpcCondition
       # `present(x, me)` 是「玩家自己身上」，只要物品有定义即可。
       # 不区分这两者会把 qilin xue / jingang zhao / rice / tea 误判成
       # 「不在房里」——它们本来就是玩家携带的物品。
-      {in_room_refs, on_player} =
-        Enum.split_with(presents, fn a -> room_ref(a, c) end)
+      {in_room_refs, on_player} = Enum.split_with(presents, fn a -> room_ref(a, c) end)
 
       undefined_player = Enum.reject(on_player, &MapSet.member?(ctx.definitions, &1))
       undefined_room = Enum.reject(in_room_refs, &MapSet.member?(ctx.definitions, &1))
@@ -282,6 +281,7 @@ alias Kantele.World.LpcCondition
     # 的 `{count + 1, room_id}`），这里不断言房间是哪个。
     assert {2, _room} = probe[{"z", :item, "items.probe.id"}],
            "同一 ref 被两个房间引用时，次数应累加"
+
     Kantele.World.Loader.reset_unresolved_warnings()
 
     # 别写死阈值。之前写的是 > 1000，那时总数 1235；后来陆续补齐了
@@ -317,14 +317,14 @@ alias Kantele.World.LpcCondition
     # 数字变大说明数据退化了（或者又漏了一个区）。
     assert total_refs <= 20, "悬空引用不该变多，当前 #{total_refs}（上限 20）"
 
-# 头部现在只剩 clone_tong_ren/adm_zixu 两个跨区引用（静态分析不跨区，仍显示悬空；
+    # 头部现在只剩 clone_tong_ren/adm_zixu 两个跨区引用（静态分析不跨区，仍显示悬空；
     # 运行时经 clone_lib 回退可解析）。其余 cheng/liang/liao/qi/mujiang 已补齐本区定义。
     for id <- ~w(clone_tong_ren adm_zixu) do
       assert Enum.any?(seen, fn
-                   {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
-                   _ -> false
-                 end),
-              "#{id} 还应被记录在悬空里（若已补齐，请从这里移除并下调上面的上限）"
+               {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
+               _ -> false
+             end),
+             "#{id} 还应被记录在悬空里（若已补齐，请从这里移除并下调上面的上限）"
     end
 
     Kantele.World.Loader.reset_unresolved_warnings()
@@ -452,8 +452,13 @@ alias Kantele.World.LpcCondition
     end
 
     # 抽查放置：白驼山的蛇园 / 草原、洛阳城外等
-    for rid <- ["baituo:cao2", "baituo:sheyuan", "city:jiaowai5",
-                "hengyang:zigai1", "xiyu:btshan"] do
+    for rid <- [
+          "baituo:cao2",
+          "baituo:sheyuan",
+          "city:jiaowai5",
+          "hengyang:zigai1",
+          "xiyu:btshan"
+        ] do
       snakes = Enum.filter(ctx.world.characters, fn c -> c.room_id == rid end)
       assert snakes != [], "#{rid} 应有蛇"
     end
@@ -526,7 +531,7 @@ alias Kantele.World.LpcCondition
 
     snake =
       Enum.filter(ctx.world.characters, fn c ->
-        "xuanbing chimang" in [c.name | (c.meta.aliases || [])]
+        "xuanbing chimang" in [c.name | c.meta.aliases || []]
       end)
 
     assert length(snake) == 1,
@@ -631,9 +636,17 @@ alias Kantele.World.LpcCondition
     #   * 多数写进了 room_items（当成物品），而它们其实是 characters
     #   * luoyang/jingzhou 写进了 room_characters，但本区没有该定义
     #   * jingzhou/npc/jing.c 的名字被写倒成「凌思退」，别名成了 ling situi
-    for fixed <- ["mang she", "guan bing", "jia ding", "miao renfeng",
-                  "ren woxing", "he hongyao", "daoming", "wuchen daozhang",
-                  "ling tuisi"] do
+    for fixed <- [
+          "mang she",
+          "guan bing",
+          "jia ding",
+          "miao renfeng",
+          "ren woxing",
+          "he hongyao",
+          "daoming",
+          "wuchen daozhang",
+          "ling tuisi"
+        ] do
       refute MapSet.member?(missing, fixed),
              "#{fixed} 已补进 data/world，不该再报「未定义 / 不在房里」"
     end

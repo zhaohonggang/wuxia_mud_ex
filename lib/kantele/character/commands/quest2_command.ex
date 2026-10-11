@@ -100,7 +100,7 @@ defmodule Kantele.Character.Quest2Command do
             "需求：\n" <>
             kill_str <>
             item_str <>
-            (if kill_str == "" and item_str == "", do: "  （无具体击杀/收集要求）\n", else: "") <>
+            if(kill_str == "" and item_str == "", do: "  （无具体击杀/收集要求）\n", else: "") <>
             "任务奖励：完成任务后返回任务发布人处领取。\n"
 
         render_msg(conn, text)

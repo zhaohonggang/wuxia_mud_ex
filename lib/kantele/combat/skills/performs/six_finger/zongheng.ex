@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "six-finger")
-    ap = (Stats.skill(stats, "six-finger") + div(Stats.skill(stats, "finger"), 2))
+    ap = Stats.skill(stats, "six-finger") + div(Stats.skill(stats, "finger"), 2)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -99,13 +101,13 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "只见$N一声轻笑，十指纷弹，剑气如奔，连绵无尽的缕缕剑气豁然贯向$n！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -130,7 +132,10 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zongheng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 2)
-    result = Messages.interpolate("结果$p被这纵横交错的剑气逼得手忙脚乱，应接不暇！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p被这纵横交错的剑气逼得手忙脚乱，应接不暇！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

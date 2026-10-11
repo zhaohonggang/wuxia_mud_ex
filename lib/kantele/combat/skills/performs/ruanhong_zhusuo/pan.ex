@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -97,13 +99,13 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N使出软红蛛索「盘鹰」诀，手腕轻轻一抖，顿时鞭影重重，完全笼罩$n四周！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -126,7 +128,10 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Pan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
-    result = Messages.interpolate("$n微作诧异，一时勘破不透$N招中奥妙，顿被攻了个措手不及！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n微作诧异，一时勘破不透$N招中奥妙，顿被攻了个措手不及！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -23,7 +23,8 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     stats =
       struct(
         Stats.new(),
-        Keyword.take(opts, [:skills, :mapped, :performs]) |> Keyword.put_new(:performs, MapSet.new())
+        Keyword.take(opts, [:skills, :mapped, :performs])
+        |> Keyword.put_new(:performs, MapSet.new())
       )
 
     %Kalevala.Character{
@@ -75,14 +76,18 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
   defp published_text(conn) do
     conn.private.channel_changes
     |> Enum.flat_map(fn
-      {:publish, _channel, %Kalevala.Event{topic: Kalevala.Event.Message, data: data}, _, _} -> [data.text]
-      _ -> []
+      {:publish, _channel, %Kalevala.Event{topic: Kalevala.Event.Message, data: data}, _, _} ->
+        [data.text]
+
+      _ ->
+        []
     end)
     |> Enum.join("")
   end
 
   defp perform(opts, skill_id, move, skill_type) do
     opts = Keyword.put_new(opts, :performs, MapSet.new(["#{skill_id}/#{move}"]))
+
     PerformCommand.run(build_conn(fighter(opts, skill_type)), %{"action" => "#{skill_id}.#{move}"})
   end
 
@@ -111,13 +116,24 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     end
 
     test "perform_list 映射正确" do
-      assert BanruoZhang.perform_list() == %{"feng" => Kantele.Combat.Skills.Performs.BanruoZhang.Feng}
-      assert LongxingJian.perform_list() == %{"xian" => Kantele.Combat.Skills.Performs.LongxingJian.Xian, "kong" => Kantele.Combat.Skills.Performs.LongxingJian.Kong}
-      assert %{"zhenyan" => Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan} = RanmuDaofa.perform_list()
+      assert BanruoZhang.perform_list() == %{
+               "feng" => Kantele.Combat.Skills.Performs.BanruoZhang.Feng
+             }
+
+      assert LongxingJian.perform_list() == %{
+               "xian" => Kantele.Combat.Skills.Performs.LongxingJian.Xian,
+               "kong" => Kantele.Combat.Skills.Performs.LongxingJian.Kong
+             }
+
+      assert %{"zhenyan" => Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan} =
+               RanmuDaofa.perform_list()
+
       assert %{"yuan" => Kantele.Combat.Skills.Performs.RiyueLun.Yuan} = RiyueLun.perform_list()
+
       assert ShenxingBaibian.perform_list() == %{
                "piao" => Kantele.Combat.Skills.Performs.ShenxingBaibian.Piao
              }
+
       assert %{
                "sui" => Kantele.Combat.Skills.Performs.TaijiJian.Sui,
                "chan" => Kantele.Combat.Skills.Performs.TaijiJian.Chan,
@@ -128,7 +144,14 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
 
   describe "般若掌·封魔" do
     test "未学会被拒" do
-      conn = perform([skills: %{"banruo-zhang" => 60}, performs: MapSet.new()], "banruo-zhang", "feng", "staff")
+      conn =
+        perform(
+          [skills: %{"banruo-zhang" => 60}, performs: MapSet.new()],
+          "banruo-zhang",
+          "feng",
+          "staff"
+        )
+
       assert output_text(conn) =~ "外功中没有这种功能"
     end
 
@@ -171,7 +194,11 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     end
 
     test "未战斗中不忙乱" do
-      character = build_character(skills: %{"banruo-zhang" => 120}, performs: MapSet.new(["banruo-zhang/feng"]))
+      character =
+        build_character(
+          skills: %{"banruo-zhang" => 120},
+          performs: MapSet.new(["banruo-zhang/feng"])
+        )
 
       conn = PerformCommand.run(build_conn(character), %{"action" => "banruo-zhang.feng"})
       assert conn.private.update_character.meta.combat.busy == 0
@@ -181,7 +208,12 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
   describe "龙形剑法·神龙再现" do
     test "未学会被拒" do
       conn =
-        perform([skills: %{"longxing-jian" => 150}, performs: MapSet.new()], "longxing-jian", "xian", "sword")
+        perform(
+          [skills: %{"longxing-jian" => 150}, performs: MapSet.new()],
+          "longxing-jian",
+          "xian",
+          "sword"
+        )
 
       assert output_text(conn) =~ "外功中没有这种功能"
     end
@@ -198,12 +230,26 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     end
 
     test "剑法不足被拒" do
-      conn = perform([skills: %{"longxing-jian" => 149, "buddhism" => 150}], "longxing-jian", "xian", "sword")
+      conn =
+        perform(
+          [skills: %{"longxing-jian" => 149, "buddhism" => 150}],
+          "longxing-jian",
+          "xian",
+          "sword"
+        )
+
       assert output_text(conn) =~ "不够娴熟"
     end
 
     test "佛法不足被拒" do
-      conn = perform([skills: %{"longxing-jian" => 150, "buddhism" => 149}], "longxing-jian", "xian", "sword")
+      conn =
+        perform(
+          [skills: %{"longxing-jian" => 150, "buddhism" => 149}],
+          "longxing-jian",
+          "xian",
+          "sword"
+        )
+
       assert output_text(conn) =~ "佛法修为不够"
     end
 
@@ -221,7 +267,13 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     end
 
     test "成功：三属性微加成/计数 +1/扣内力/忙乱 1" do
-      conn = perform([skills: %{"longxing-jian" => 150, "buddhism" => 150}], "longxing-jian", "xian", "sword")
+      conn =
+        perform(
+          [skills: %{"longxing-jian" => 150, "buddhism" => 150}],
+          "longxing-jian",
+          "xian",
+          "sword"
+        )
 
       updated = conn.private.update_character
       assert updated.meta.vitals.neili == 1900
@@ -330,7 +382,12 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     test "已运功则拒绝" do
       character =
         fighter(
-          [skills: %{"ranmu-daofa" => 180}, mapped: %{"blade" => "ranmu-daofa", "force" => "hunyuan-yiqi"}, performs: MapSet.new(["ranmu-daofa/zhenyan"]), team: nil],
+          [
+            skills: %{"ranmu-daofa" => 180},
+            mapped: %{"blade" => "ranmu-daofa", "force" => "hunyuan-yiqi"},
+            performs: MapSet.new(["ranmu-daofa/zhenyan"]),
+            team: nil
+          ],
           "blade"
         )
         |> with_buff("zhen_yan")
@@ -372,7 +429,10 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     test "未激发日月轮法被拒" do
       conn =
         perform(
-          [skills: %{"riyue-lun" => 120}, mapped: %{"hammer" => "longxing-jian", "force" => "longxiang-gong"}],
+          [
+            skills: %{"riyue-lun" => 120},
+            mapped: %{"hammer" => "longxing-jian", "force" => "longxiang-gong"}
+          ],
           "riyue-lun",
           "yuan",
           "hammer"
@@ -384,7 +444,10 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     test "未激发龙象般若功被拒" do
       conn =
         perform(
-          [skills: %{"riyue-lun" => 120}, mapped: %{"hammer" => "riyue-lun", "force" => "hunyuan-yiqi"}],
+          [
+            skills: %{"riyue-lun" => 120},
+            mapped: %{"hammer" => "riyue-lun", "force" => "hunyuan-yiqi"}
+          ],
           "riyue-lun",
           "yuan",
           "hammer"
@@ -446,7 +509,12 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
   describe "神行百变·虚无缥缈" do
     test "未学会被拒" do
       conn =
-        perform([skills: %{"shenxing-baibian" => 60}, performs: MapSet.new()], "shenxing-baibian", "piao", "staff")
+        perform(
+          [skills: %{"shenxing-baibian" => 60}, performs: MapSet.new()],
+          "shenxing-baibian",
+          "piao",
+          "staff"
+        )
 
       assert output_text(conn) =~ "外功中没有这种功能"
     end
@@ -471,7 +539,11 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"shenxing-baibian" => 60}, mapped: %{"dodge" => "shenxing-baibian"}, vitals: %{@vitals | neili: 59}],
+          [
+            skills: %{"shenxing-baibian" => 60},
+            mapped: %{"dodge" => "shenxing-baibian"},
+            vitals: %{@vitals | neili: 59}
+          ],
           "shenxing-baibian",
           "piao",
           "staff"
@@ -574,7 +646,12 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
 
     test "成功：防御增/攻击减/扣内力/战斗中忙乱 3" do
       conn =
-        perform([skills: %{"taiji-jian" => 60}, mapped: %{"sword" => "taiji-jian"}], "taiji-jian", "sui", "sword")
+        perform(
+          [skills: %{"taiji-jian" => 60}, mapped: %{"sword" => "taiji-jian"}],
+          "taiji-jian",
+          "sui",
+          "sword"
+        )
 
       updated = conn.private.update_character
       assert updated.meta.vitals.neili == 1900

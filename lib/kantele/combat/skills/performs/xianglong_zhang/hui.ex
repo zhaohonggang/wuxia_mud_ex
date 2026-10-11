@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -103,7 +105,6 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -133,6 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     result = Messages.interpolate("$P身形一闪，竟已晃至$p跟前，$p躲闪不及，顿被击个正中。
 $p一声惨嚎，被$P这一掌击中胸前，喀嚓喀嚓断了几根肋骨。
 结果$p躲闪不及，$P掌劲顿时穿胸而过，顿时口中鲜血狂喷。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

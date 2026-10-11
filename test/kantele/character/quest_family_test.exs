@@ -159,7 +159,10 @@ defmodule Kantele.Character.QuestFamilyTest do
       p = player(stats: [shen: 100, combat_exp: 1_000])
 
       conn =
-        FamilyEvent.result(build_conn(p), %Event{topic: "family/result", data: pending_recruit_data()})
+        FamilyEvent.result(build_conn(p), %Event{
+          topic: "family/result",
+          data: pending_recruit_data()
+        })
 
       assert conn.private.update_character == nil
       assert output_text(conn) =~ "杀气不足"
@@ -169,7 +172,10 @@ defmodule Kantele.Character.QuestFamilyTest do
       p = player(stats: [shen: 30_000, combat_exp: 200_000])
 
       conn =
-        FamilyEvent.result(build_conn(p), %Event{topic: "family/result", data: pending_recruit_data()})
+        FamilyEvent.result(build_conn(p), %Event{
+          topic: "family/result",
+          data: pending_recruit_data()
+        })
 
       updated = conn.private.update_character || conn.character
       assert updated.meta.family.name == "柳溪派"
@@ -330,7 +336,14 @@ defmodule Kantele.Character.QuestFamilyTest do
     end
 
     test "report：接任务但击杀未达标时拒绝结算" do
-      {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "shaolin-disciple", type: "kill", level: 3, kill: ["yezhu"]})
+      {:ok, quests} =
+        Quest.set_todo(Quest.new(), %{
+          file: "shaolin-disciple",
+          type: "kill",
+          level: 3,
+          kill: ["yezhu"]
+        })
+
       p = %{player() | meta: PlayerMeta.put_quests(player().meta, quests)}
 
       conn =
@@ -349,9 +362,16 @@ defmodule Kantele.Character.QuestFamilyTest do
     end
 
     test "report：击杀达标后结算（类型/难度联动奖励 + 连续计数 + 已解 + 门派贡献）" do
-      {:ok, quests} = Quest.set_todo(Quest.new(), %{file: "shaolin-disciple", type: "kill", level: 3, kill: ["yezhu"]})
+      {:ok, quests} =
+        Quest.set_todo(Quest.new(), %{
+          file: "shaolin-disciple",
+          type: "kill",
+          level: 3,
+          kill: ["yezhu"]
+        })
 
-      {:ok, quests} = Quest.add_killed(quests, %{file: "shaolin-disciple", kill: ["yezhu"]}, "yezhu", 2)
+      {:ok, quests} =
+        Quest.add_killed(quests, %{file: "shaolin-disciple", kill: ["yezhu"]}, "yezhu", 2)
 
       p = %{player() | meta: PlayerMeta.put_quests(player().meta, quests)}
 

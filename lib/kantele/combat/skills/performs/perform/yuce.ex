@@ -26,28 +26,28 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Yuce do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"skill", "never-defeated"}],
-      #     level_gates: [{"never-defeated", "100"}],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "150"}],
-      #     var_gates: []
-      #   }
+  #   %{
+  #     assign_refs: [{"skill", "never-defeated"}],
+  #     level_gates: [{"never-defeated", "100"}],
+  #     map_gates: [],
+  #     prepared_gates: [],
+  #     resource_gates: [{"neili", "150"}],
+  #     var_gates: []
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-120"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(1);"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(1);
+    #   %{
+    #     add_costs: [{"neili", "-120"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(1);"],
+    #     remote_damage: false,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(1);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

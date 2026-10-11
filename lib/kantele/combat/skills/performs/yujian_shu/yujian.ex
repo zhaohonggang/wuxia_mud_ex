@@ -35,7 +35,9 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -89,14 +91,15 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 1000}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N一声巨喝，聚气入腕，只听破空声一响，手中携着隐隐风雷之劲向$n澎湃贯
+出，疾若电闪，势如雷霆。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -125,6 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     Performs.feedback(attacker, 1000, 1)
     result = Messages.interpolate("$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！
 只听「嗤啦」一声，无形剑气竟在$n上身刺出一个血洞，数股血柱疾射而出！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -77,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 240}
@@ -86,9 +88,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "突然$N诡异的一笑，使出圣火令法之吸焰令，手中幻出数个小圈，将$n的紧紧缠住。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -114,6 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 240, 4)
     result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

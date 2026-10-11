@@ -32,6 +32,7 @@ defmodule Kantele.Character.NewsCommand do
 
         "discard " <> rest ->
           id_str = String.trim(rest)
+
           case Integer.parse(id_str) do
             {id, _} -> discard_news(conn, id)
             :error -> show_news_help(conn)
@@ -39,6 +40,7 @@ defmodule Kantele.Character.NewsCommand do
 
         "del " <> rest ->
           id_str = String.trim(rest)
+
           case Integer.parse(id_str) do
             {id, _} -> discard_news(conn, id)
             :error -> show_news_help(conn)
@@ -54,18 +56,22 @@ defmodule Kantele.Character.NewsCommand do
 
         "search " <> rest ->
           search_str = String.trim(rest)
+
           case Regex.run(~r/^(title|author|document)\s+(.+)$/, rest) do
             [_full, field, keyword] ->
               search_news(conn, field, keyword)
+
             _ ->
               show_news_help(conn)
           end
 
         "find " <> rest ->
           search_str = String.trim(rest)
+
           case Regex.run(~r/^(title|author|document)\s+(.+)$/, rest) do
             [_full, field, keyword] ->
               search_news(conn, field, keyword)
+
             _ ->
               show_news_help(conn)
           end
@@ -103,10 +109,10 @@ defmodule Kantele.Character.NewsCommand do
     case NewsService.show_news(show_all) do
       news_list when is_list(news_list) and news_list != [] ->
         msg = build_news_list_msg(news_list)
+
         conn
         |> render(CommandView, "text", %{text: msg})
         |> prompt(CommandView, "prompt", %{})
-
 
       _ ->
         conn
@@ -119,6 +125,7 @@ defmodule Kantele.Character.NewsCommand do
     case NewsService.show_news(false) do
       [latest | _] ->
         show_news_detail(conn, latest)
+
       _ ->
         conn
         |> render(CommandView, "text", %{text: "暂无最新新闻。\n"})
@@ -130,6 +137,7 @@ defmodule Kantele.Character.NewsCommand do
     case NewsService.read_news(id) do
       {:ok, news} ->
         show_news_detail(conn, news)
+
       {:error, reason} ->
         conn
         |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -184,7 +192,6 @@ defmodule Kantele.Character.NewsCommand do
           |> render(CommandView, "text", %{text: "新闻已删除。\n"})
           |> prompt(CommandView, "prompt", %{})
 
-
         {:error, reason} ->
           conn
           |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -196,17 +203,17 @@ defmodule Kantele.Character.NewsCommand do
   defp search_news(conn, field, keyword) do
     case NewsService.do_search(field, keyword) do
       results when is_list(results) and results != [] ->
-        msg = Enum.with_index(results, 1)
-        |> Enum.map(fn {n, i} ->
-          time_str = DateTime.from_unix!(n.time) |> DateTime.to_string("m-d H:M")
-          "[#{n.id}] #{n.title}  #{n.author_name}  #{time_str}"
-        end)
-        |> Enum.join("\n")
+        msg =
+          Enum.with_index(results, 1)
+          |> Enum.map(fn {n, i} ->
+            time_str = DateTime.from_unix!(n.time) |> DateTime.to_string("m-d H:M")
+            "[#{n.id}] #{n.title}  #{n.author_name}  #{time_str}"
+          end)
+          |> Enum.join("\n")
 
         conn
         |> render(CommandView, "text", %{text: "搜索结果：\n#{msg}\n"})
         |> prompt(CommandView, "prompt", %{})
-
 
       _ ->
         conn
@@ -232,12 +239,13 @@ defmodule Kantele.Character.NewsCommand do
   defp build_news_list_msg(news_list) do
     header = "游戏新闻：\n" <> String.duplicate("-", 60) <> "\n"
 
-    list = Enum.with_index(news_list, 1)
-    |> Enum.map(fn {n, i} ->
-      time_str = DateTime.from_unix!(n.time) |> DateTime.to_string("m-d H:M")
-      "[#{n.id}] #{n.title}  #{n.author_name}  #{time_str}"
-    end)
-    |> Enum.join("\n")
+    list =
+      Enum.with_index(news_list, 1)
+      |> Enum.map(fn {n, i} ->
+        time_str = DateTime.from_unix!(n.time) |> DateTime.to_string("m-d H:M")
+        "[#{n.id}] #{n.title}  #{n.author_name}  #{time_str}"
+      end)
+      |> Enum.join("\n")
 
     header <> list <> "\n"
   end

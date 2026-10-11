@@ -21,37 +21,60 @@ defmodule Kantele.Character.CombineCommand do
     # 镇狱惊天丸
     ["/clone/fam/max/xuanhuang-1", "/clone/fam/max/longjia-1"] => "/clone/fam/max/zhenyu",
     # 子午龙甲丹
-    ["/clone/fam/pill/dimai-1", "/clone/fam/pill/renshen4-1", "/clone/fam/etc/lv7d-1"] => "/clone/fam/max/longjia",
+    ["/clone/fam/pill/dimai-1", "/clone/fam/pill/renshen4-1", "/clone/fam/etc/lv7d-1"] =>
+      "/clone/fam/max/longjia",
     # 玄黄紫箐丹
-    ["/clone/fam/pill/yulu-1", "/clone/fam/pill/lingzhi4-1", "/clone/fam/etc/lv7a-1"] => "/clone/fam/max/xuanhuang",
+    ["/clone/fam/pill/yulu-1", "/clone/fam/pill/lingzhi4-1", "/clone/fam/etc/lv7a-1"] =>
+      "/clone/fam/max/xuanhuang",
     # 地脉血泉
-    ["/clone/fam/pill/puti2-1", "/clone/fam/pill/sheli3-1", "/clone/fam/etc/lv7b-1"] => "/clone/fam/pill/dimai",
+    ["/clone/fam/pill/puti2-1", "/clone/fam/pill/sheli3-1", "/clone/fam/etc/lv7b-1"] =>
+      "/clone/fam/pill/dimai",
     # 天香玉露
-    ["/clone/fam/pill/sheli2-1", "/clone/fam/pill/puti3-1", "/clone/fam/etc/lv7c-1"] => "/clone/fam/pill/yulu",
+    ["/clone/fam/pill/sheli2-1", "/clone/fam/pill/puti3-1", "/clone/fam/etc/lv7c-1"] =>
+      "/clone/fam/pill/yulu",
     # 菩提子
-    ["/clone/fam/pill/puti1-1", "/clone/fam/pill/puti2-1", "/clone/fam/pill/puti3-1"] => "/clone/fam/pill/puti4",
+    ["/clone/fam/pill/puti1-1", "/clone/fam/pill/puti2-1", "/clone/fam/pill/puti3-1"] =>
+      "/clone/fam/pill/puti4",
     # 忘情天书
-    ["/clone/fam/gift/str3-1", "/clone/fam/gift/int3-1", "/clone/fam/gift/dex3-1", "/clone/fam/gift/con3-1"] => "/clone/fam/max/tianshu1",
+    [
+      "/clone/fam/gift/str3-1",
+      "/clone/fam/gift/int3-1",
+      "/clone/fam/gift/dex3-1",
+      "/clone/fam/gift/con3-1"
+    ] => "/clone/fam/max/tianshu1",
     # 无字天书
-    ["/clone/fam/gift/str1-1", "/clone/fam/gift/int1-1", "/clone/fam/gift/con1-1", "/clone/fam/gift/dex1-1"] => "/clone/fam/max/tianshu2",
+    [
+      "/clone/fam/gift/str1-1",
+      "/clone/fam/gift/int1-1",
+      "/clone/fam/gift/con1-1",
+      "/clone/fam/gift/dex1-1"
+    ] => "/clone/fam/max/tianshu2",
     # 三个钻石碎片合并成一个钻石
-    ["/clone/gift/cdiamond-1", "/clone/gift/cdiamond-2", "/clone/gift/cdiamond-3"] => "/clone/gift/diamond",
+    ["/clone/gift/cdiamond-1", "/clone/gift/cdiamond-2", "/clone/gift/cdiamond-3"] =>
+      "/clone/gift/diamond",
     # 三个钻石合并成一个精美钻石
-    ["/clone/gift/diamond-1", "/clone/gift/diamond-2", "/clone/gift/diamond-3"] => "/clone/gift/fdiamond",
+    ["/clone/gift/diamond-1", "/clone/gift/diamond-2", "/clone/gift/diamond-3"] =>
+      "/clone/gift/fdiamond",
     # 三个精美钻石合并成为一个神之钻石
-    ["/clone/gift/fdiamond-1", "/clone/gift/fdiamond-2", "/clone/gift/fdiamond-3"] => "/clone/gift/mdiamond",
+    ["/clone/gift/fdiamond-1", "/clone/gift/fdiamond-2", "/clone/gift/fdiamond-3"] =>
+      "/clone/gift/mdiamond",
     # 三个玛瑙碎片合并成为一个玛瑙
-    ["/clone/gift/cagate-1", "/clone/gift/cagate-2", "/clone/gift/cagate-3"] => "/clone/gift/agate",
+    ["/clone/gift/cagate-1", "/clone/gift/cagate-2", "/clone/gift/cagate-3"] =>
+      "/clone/gift/agate",
     # 三个玛瑙合并成为一个精美玛瑙
     ["/clone/gift/agate-1", "/clone/gift/agate-2", "/clone/gift/agate-3"] => "/clone/gift/fagate",
     # 三个精美玛瑙合并成为一个神之玛瑙
-    ["/clone/gift/fagate-1", "/clone/gift/fagate-2", "/clone/gift/fagate-3"] => "/clone/gift/magate",
+    ["/clone/gift/fagate-1", "/clone/gift/fagate-2", "/clone/gift/fagate-3"] =>
+      "/clone/gift/magate",
     # 三个水晶碎片合并成为一个水晶
-    ["/clone/gift/ccrystal-1", "/clone/gift/ccrystal-2", "/clone/gift/ccrystal-3"] => "/clone/gift/crystal",
+    ["/clone/gift/ccrystal-1", "/clone/gift/ccrystal-2", "/clone/gift/ccrystal-3"] =>
+      "/clone/gift/crystal",
     # 三个水晶合并成为一个精美水晶
-    ["/clone/gift/crystal-1", "/clone/gift/crystal-2", "/clone/gift/crystal-3"] => "/clone/gift/fcrystal",
+    ["/clone/gift/crystal-1", "/clone/gift/crystal-2", "/clone/gift/crystal-3"] =>
+      "/clone/gift/fcrystal",
     # 三个精美水晶合并成为一个神之水晶
-    ["/clone/gift/fcrystal-1", "/clone/gift/fcrystal-2", "/clone/gift/fcrystal-3"] => "/clone/gift/mcrystal",
+    ["/clone/gift/fcrystal-1", "/clone/gift/fcrystal-2", "/clone/gift/fcrystal-3"] =>
+      "/clone/gift/mcrystal",
     # 三个翡翠碎片合并成为一个翡翠
     ["/clone/gift/cjade-1", "/clone/gift/cjade-2", "/clone/gift/cjade-3"] => "/clone/gift/jade",
     # 三个翡翠合并成为一个精美翡翠
@@ -59,13 +82,25 @@ defmodule Kantele.Character.CombineCommand do
     # 三个精美翡翠合并成为一个神之翡翠
     ["/clone/gift/fjade-1", "/clone/gift/fjade-2", "/clone/gift/fjade-3"] => "/clone/gift/mjade",
     # 乾坤圣水
-    ["/clone/fam/gift/int3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] => "/clone/fam/item/bless_water",
-    ["/clone/fam/gift/con3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] => "/clone/fam/item/bless_water",
-    ["/clone/fam/gift/dex3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] => "/clone/fam/item/bless_water",
-    ["/clone/fam/gift/str3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] => "/clone/fam/item/bless_water",
+    ["/clone/fam/gift/int3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] =>
+      "/clone/fam/item/bless_water",
+    ["/clone/fam/gift/con3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] =>
+      "/clone/fam/item/bless_water",
+    ["/clone/fam/gift/dex3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] =>
+      "/clone/fam/item/bless_water",
+    ["/clone/fam/gift/str3-1", "/clone/fam/etc/lv7a-1", "/clone/fam/item/stone5-1"] =>
+      "/clone/fam/item/bless_water",
     # 许愿无花果
-    ["/clone/fam/gift/str3-1", "/clone/fam/gift/int3-1", "/clone/fam/gift/con3-1", "/clone/fam/gift/dex3-1",
-      "/clone/fam/gift/str2-1", "/clone/fam/gift/int2-1", "/clone/fam/gift/con2-1", "/clone/fam/gift/dex2-1"] => "/clone/fam/obj/guo"
+    [
+      "/clone/fam/gift/str3-1",
+      "/clone/fam/gift/int3-1",
+      "/clone/fam/gift/con3-1",
+      "/clone/fam/gift/dex3-1",
+      "/clone/fam/gift/str2-1",
+      "/clone/fam/gift/int2-1",
+      "/clone/fam/gift/con2-1",
+      "/clone/fam/gift/dex2-1"
+    ] => "/clone/fam/obj/guo"
   }
 
   def run(conn, %{"arg" => arg}) do
@@ -149,8 +184,7 @@ defmodule Kantele.Character.CombineCommand do
               bname = inst.item_id
 
               # Build name list like C: bname + "-" + same_count
-              same_count =
-                Enum.count(character.inventory, fn i -> i.item_id == bname end)
+              same_count = Enum.count(character.inventory, fn i -> i.item_id == bname end)
 
               name_entry = "#{bname}-#{same_count}"
               {:cont, {:ok, [inst | acc_inst], [name_entry | acc_names]}}
@@ -192,6 +226,7 @@ defmodule Kantele.Character.CombineCommand do
           # Attempt to create result item
           if Items.known?(result_id) do
             result_item = Items.get(result_id)
+
             result_instance = %Kalevala.World.Item.Instance{
               id: Kalevala.World.Item.Instance.generate_id(),
               item_id: result_id,

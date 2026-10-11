@@ -7,8 +7,7 @@ defmodule Kantele.World.LpcConditionTest do
 
   describe "parse/1" do
     test "方向比较" do
-      assert {:ok, {:cmp, "==", {:var, "dir"}, {:str, "north"}}} =
-               Cond.parse("dir == \"north\"")
+      assert {:ok, {:cmp, "==", {:var, "dir"}, {:str, "north"}}} = Cond.parse("dir == \"north\"")
     end
 
     test "无空格也能切" do
@@ -26,7 +25,9 @@ defmodule Kantele.World.LpcConditionTest do
 
     test "赋值 + 后续引用" do
       assert {:ok, _} =
-               Cond.parse("objectp(ob = present(\"ao bai\", environment(me))) && living(ob) && dir == \"north\"")
+               Cond.parse(
+                 "objectp(ob = present(\"ao bai\", environment(me))) && living(ob) && dir == \"north\""
+               )
     end
 
     test "单引号字面量（数据侧的实际存法）" do
@@ -34,13 +35,17 @@ defmodule Kantele.World.LpcConditionTest do
     end
 
     test "取反与括号" do
-      assert {:ok, _} = Cond.parse("! me->query_temp(\"marks/x\") && (dir == \"up\" || dir == \"down\")")
+      assert {:ok, _} =
+               Cond.parse("! me->query_temp(\"marks/x\") && (dir == \"up\" || dir == \"down\")")
     end
   end
 
   describe "enforceable?/1" do
     test "支持形态可执行" do
-      assert Cond.enforceable?("dir == \"north\" && objectp(present(\"shi wei\", environment(me)))")
+      assert Cond.enforceable?(
+               "dir == \"north\" && objectp(present(\"shi wei\", environment(me)))"
+             )
+
       assert Cond.enforceable?("(int)me->query_skill(\"force\") < 100")
       assert Cond.enforceable?("!me->query_temp(\"rent_paid\") && dir == \"up\"")
     end
@@ -182,15 +187,21 @@ defmodule Kantele.World.LpcConditionTest do
     end
 
     test "dir 不匹配 -> 假", %{ctx: ctx} do
-      assert {:ok, false} = Cond.evaluate("dir == \"north\" && objectp(present(\"守卫\", environment(me)))", %{ctx | dir: "south"})
+      assert {:ok, false} =
+               Cond.evaluate("dir == \"north\" && objectp(present(\"守卫\", environment(me)))", %{
+                 ctx
+                 | dir: "south"
+               })
     end
 
     test "房里有人且方向对 -> 真", %{ctx: ctx} do
-      assert {:ok, true} = Cond.evaluate("dir == 'north' && objectp(present('守卫',environment(me)))", ctx)
+      assert {:ok, true} =
+               Cond.evaluate("dir == 'north' && objectp(present('守卫',environment(me)))", ctx)
     end
 
     test "房里没人 -> 假", %{ctx: ctx} do
-      assert {:ok, false} = Cond.evaluate("dir == 'north' && objectp(present('不存在',environment(me)))", ctx)
+      assert {:ok, false} =
+               Cond.evaluate("dir == 'north' && objectp(present('不存在',environment(me)))", ctx)
     end
 
     test "query_temp 真假", %{ctx: ctx} do
@@ -213,7 +224,8 @@ defmodule Kantele.World.LpcConditionTest do
     end
 
     test "求值器缺构件时不抛异常（按 0 处理，与 LPC「查不到即 0」一致）" do
-      assert {:ok, _} = Cond.evaluate("me->query_skill('force') < 100", %{dir: "n", resolver: %{}})
+      assert {:ok, _} =
+               Cond.evaluate("me->query_skill('force') < 100", %{dir: "n", resolver: %{}})
     end
   end
 
@@ -265,7 +277,8 @@ defmodule Kantele.World.LpcConditionTest do
 
       unsupported = Enum.reject(with_cond, fn {_id, v} -> Cond.enforceable?(v.condition) end)
 
-      shapes = unsupported |> Enum.map(fn {_id, v} -> v.condition end) |> Enum.uniq() |> Enum.sort()
+      shapes =
+        unsupported |> Enum.map(fn {_id, v} -> v.condition end) |> Enum.uniq() |> Enum.sort()
 
       assert shapes == ["check_dirs(me,dir)", "check_out(me)", "ob->refuse(me)"]
 
@@ -282,7 +295,10 @@ defmodule Kantele.World.LpcConditionTest do
 
   describe "direction_scoped?/1" do
     test "提到 dir 即视为方向限定" do
-      assert Cond.direction_scoped?("dir == 'east' && objectp(present('shi wei',environment(me)))")
+      assert Cond.direction_scoped?(
+               "dir == 'east' && objectp(present('shi wei',environment(me)))"
+             )
+
       assert Cond.direction_scoped?("dir != \"north\"")
     end
 

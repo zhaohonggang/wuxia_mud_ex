@@ -217,5 +217,4 @@ defmodule Kantele.Combat.Skills.ChixinJian do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

@@ -27,16 +27,17 @@ defmodule Kantele.World.Story.Feng do
       "狂风怒号，黄沙蔽日，风伯路过烟尘儿，卷起的风沙呼啸而出，街市上行人纷纷躲避。",
       "风声渐歇，风沙散去，天地复归清明。",
       "你低头一看，沙堆里居然埋着一样亮晶晶的东西。",
-      {:action, fn ->
-        if :rand.uniform(2) == 1 do
-          case Gift.drop_to_room(inner[:room_id], "gift/dex2", "\n“啪”的一声一颗仙丹掉到你面前。\n\n") do
-            :ok -> "风过处，遗下一枚仙丹，据说吃了身法如风。"
-            _other -> nil
-          end
-        else
-          "风伯打了个喷嚏，仙丹不知吹去了哪里。"
-        end
-      end}
+      {:action,
+       fn ->
+         if :rand.uniform(2) == 1 do
+           case Gift.drop_to_room(inner[:room_id], "gift/dex2", "\n“啪”的一声一颗仙丹掉到你面前。\n\n") do
+             :ok -> "风过处，遗下一枚仙丹，据说吃了身法如风。"
+             _other -> nil
+           end
+         else
+           "风伯打了个喷嚏，仙丹不知吹去了哪里。"
+         end
+       end}
     ]
 
     Lines.step_lines(lines, index, inner)

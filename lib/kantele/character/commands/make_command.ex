@@ -80,6 +80,7 @@ defmodule Kantele.Character.MakeCommand do
       |> prompt(CommandView, "prompt", %{})
     else
       names = Map.keys(known) |> Enum.map(&@recipes[&1].name) |> Enum.join("、")
+
       conn
       |> render(CommandView, "text", %{text: "你现在已经会制#{names}了。\n"})
       |> prompt(CommandView, "prompt", %{})
@@ -105,13 +106,15 @@ defmodule Kantele.Character.MakeCommand do
         lines = lines ++ ["#{get_skill_name(skill)}: #{level}级"]
       end)
 
-      lines = lines ++ [
-        "精力消耗: #{recipe.jing}",
-        "内力消耗: #{recipe.neili}",
-        "精力(精力值)消耗: #{recipe.jingli}",
-        "最低制药等级: #{recipe.min_level}",
-        "炼制时间: #{recipe.time} 步"
-      ]
+      lines =
+        lines ++
+          [
+            "精力消耗: #{recipe.jing}",
+            "内力消耗: #{recipe.neili}",
+            "精力(精力值)消耗: #{recipe.jingli}",
+            "最低制药等级: #{recipe.min_level}",
+            "炼制时间: #{recipe.time} 步"
+          ]
 
       conn
       |> render(CommandView, "text", %{text: Enum.join(lines, "\n") <> "\n"})
@@ -134,19 +137,19 @@ defmodule Kantele.Character.MakeCommand do
            :ok <- check_jing(character, recipe),
            :ok <- check_skills(character, recipe),
            :ok <- check_herbs(character, recipe) do
-
         # 消耗药材
         {new_inventory, msg} = consume_herbs(character.inventory, recipe)
 
         # 设置炼制状态
-        new_state = character
-        |> put_in([:meta, :temp, "making/medicine"], med_key)
-        |> put_in([:meta, :temp, "making/step"], 0)
-        |> put_in([:meta, :temp, "making/time"], recipe.time)
-        |> put_in([:meta, :temp, "making/require"], recipe)
-        |> put_in([:meta, :temp, "making/container"], "mortar")
-        |> put_in([:meta, :temp, "pending/making"], 0)
-        |> put_in([:meta, :short_desc], "正在专心致志的炼制药物。")
+        new_state =
+          character
+          |> put_in([:meta, :temp, "making/medicine"], med_key)
+          |> put_in([:meta, :temp, "making/step"], 0)
+          |> put_in([:meta, :temp, "making/time"], recipe.time)
+          |> put_in([:meta, :temp, "making/require"], recipe)
+          |> put_in([:meta, :temp, "making/container"], "mortar")
+          |> put_in([:meta, :temp, "pending/making"], 0)
+          |> put_in([:meta, :short_desc], "正在专心致志的炼制药物。")
 
         # 消耗药材后的背包
         new_character = %{character | inventory: new_inventory, meta: new_state}
@@ -198,8 +201,15 @@ defmodule Kantele.Character.MakeCommand do
   defp check_skills(character, recipe) do
     Enum.reduce_while(recipe.skills, :ok, fn {skill, req_level}, _ ->
       skill_level = character.meta.stats.skills[skill] || 0
+
       if skill_level < req_level do
-        {:halt, {:error, "你的#{get_skill_name(skill)}水平不够，还无法调剂#{@recipes[Map.keys(@recipes) |> Enum.find(fn k -> @recipes[k].skills == recipe.skills end)].name}。"}}
+        {:halt,
+         {:error,
+          "你的#{get_skill_name(skill)}水平不够，还无法调剂#{
+            @recipes[
+              Map.keys(@recipes) |> Enum.find(fn k -> @recipes[k].skills == recipe.skills end)
+            ].name
+          }。"}}
       else
         {:cont, :ok}
       end
@@ -208,10 +218,11 @@ defmodule Kantele.Character.MakeCommand do
 
   defp check_herbs(character, recipe) do
     Enum.reduce_while(recipe.herbs, :ok, fn {herb, count}, _ ->
-      inst = Enum.find(character.inventory, fn inst ->
-        item = Items.get!(inst.item_id)
-        item.callback_module.matches?(item, herb)
-      end)
+      inst =
+        Enum.find(character.inventory, fn inst ->
+          item = Items.get!(inst.item_id)
+          item.callback_module.matches?(item, herb)
+        end)
 
       if inst && (inst.amount || 1) >= count do
         {:cont, :ok}
@@ -226,17 +237,20 @@ defmodule Kantele.Character.MakeCommand do
     msg_parts = []
 
     Enum.each(recipe.herbs, fn {herb, count} ->
-      new_inv = Enum.map(new_inv, fn inst ->
-        item = Items.get!(inst.item_id)
-        if item.callback_module.matches?(item, herb) do
-          %{
+      new_inv =
+        Enum.map(new_inv, fn inst ->
+          item = Items.get!(inst.item_id)
+
+          if item.callback_module.matches?(item, herb) do
+            %{
+              inst
+              | amount: (inst.amount || 1) - count
+            }
+          else
             inst
-            | amount: (inst.amount || 1) - count
-          }
-        else
-          inst
-        end
-      end)
+          end
+        end)
+
       msg_parts = msg_parts ++ ["#{count}#{get_herb_unit(herb)}#{get_herb_name(herb)}"]
     end)
 

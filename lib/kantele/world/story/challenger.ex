@@ -209,8 +209,7 @@ defmodule Kantele.World.Story.Challenger do
     %Kalevala.Character{
       id: "challenge-#{System.unique_integer([:positive])}",
       name: Keyword.get(opts, :name, @default_name),
-      description:
-        "一个黑衣蒙面的神秘人，双目沉静，气息绵长，显然不是易与之辈。",
+      description: "一个黑衣蒙面的神秘人，双目沉静，气息绵长，显然不是易与之辈。",
       brain: %Kalevala.Brain{root: %Kalevala.Brain.NullNode{}},
       room_id: room_id,
       meta: %NonPlayerMeta{

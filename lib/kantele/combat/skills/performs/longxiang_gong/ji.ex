@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "longxiang-gong")
     layer = 13
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -107,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 600}
@@ -115,9 +117,10 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N运转龙象般若功第层功力，双拳携着『十龙十象』之力朝$n崩击
+而出，拳锋过处，竟卷起万里尘埃，正是密宗绝学「般若极」。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -148,6 +151,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     result = Messages.interpolate("$N运转龙象般若功第层功力，双拳携着『十龙十象』之力朝$n崩击
 而出，拳锋过处，竟卷起万里尘埃，正是密宗绝学「般若极」。
 $n不及闪避，顿被$N双拳击个正中，般若罡劲破体而入，尽伤三焦六脉。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

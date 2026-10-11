@@ -14,7 +14,8 @@ defmodule Kantele.Character.SleepCommand do
 
   def run(conn, _params) do
     character = conn.character
-    room = get_room(conn)  # 从实时快照/注入获取房间信息
+    # 从实时快照/注入获取房间信息
+    room = get_room(conn)
 
     cond do
       not can_sleep_here?(character, room) ->
@@ -60,9 +61,11 @@ defmodule Kantele.Character.SleepCommand do
 
   defp can_sleep_here?(character, room) do
     is_gaibang = (character.attributes["family"] || %{})["family_name"] == "丐帮"
-    has_sleepbag = Enum.any?(character.inventory, fn inst ->
-      Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
-    end)
+
+    has_sleepbag =
+      Enum.any?(character.inventory, fn inst ->
+        Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
+      end)
 
     room_sleep = Map.get(room, :attrs, %{})["sleep_room"] == true
     room_no_sleep = Map.get(room, :attrs, %{})["no_sleep_room"] == true
@@ -101,13 +104,17 @@ defmodule Kantele.Character.SleepCommand do
   defp start_sleep(conn, character, room) do
     room_attrs = Map.get(room, :attrs, %{})
     is_hotel = room_attrs["hotel"] == true
-    has_sleepbag = Enum.any?(character.inventory, fn inst ->
-      Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
-    end)
+
+    has_sleepbag =
+      Enum.any?(character.inventory, fn inst ->
+        Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
+      end)
+
     room_sleep = room_attrs["sleep_room"] == true
 
     # 设置睡眠状态
-    new_temp = character.meta.temp
+    new_temp =
+      character.meta.temp
       |> Map.put("block_msg/all", 1)
       |> Map.put("sleeped", true)
       |> Map.put("no_get", 1)
@@ -131,8 +138,10 @@ defmodule Kantele.Character.SleepCommand do
       cond do
         room_attrs["sleep_room"] == true ->
           "你往床上一躺，开始睡觉。\n不一会儿，你就进入了梦乡。\n"
+
         has_sleepbag ->
           "你展开一个睡袋，钻了进去，开始睡觉。\n不一会儿，你就进入了梦乡。\n"
+
         true ->
           "你往地下角落一躺，开始睡觉。\n不一会儿，你就进入了梦乡。\n"
       end
@@ -145,7 +154,8 @@ defmodule Kantele.Character.SleepCommand do
   end
 
   defp delay_wakeup(conn, character_id) do
-    delay_ms = 10000 + :rand.uniform(5000)  # 10-15秒
+    # 10-15秒
+    delay_ms = 10000 + :rand.uniform(5000)
     delay_event(conn, delay_ms, "sleep/wakeup", %{character_id: character_id})
   end
 

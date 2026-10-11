@@ -51,7 +51,7 @@ defmodule Kantele.Combat.Skills.HuagongDafa do
   @impl true
   def practice_cost(), do: nil
 
-@impl true
+  @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1) do
     %{}
   end
@@ -169,6 +169,7 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
         else
           {:error, "你要化谁的内力？\n"}
         end
+
       [] ->
         {:error, "你要化谁的内力？\n"}
     end
@@ -223,6 +224,7 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
   defp check_target_not_stronger(character, target) do
     my_max = character.meta.vitals.max_neili
     tg_max = target.meta.vitals.max_neili
+
     if tg_max <= my_max * 4 / 3 do
       :ok
     else
@@ -257,7 +259,8 @@ defmodule Kantele.Combat.Skills.HuagongDafa.Hua do
         attacker: ref(character),
         perform_id: @perform_id,
         level: Stats.skill(character.meta.stats, "huagong-dafa"),
-        attacker_force: Stats.skill(character.meta.stats, "force") + Stats.skill(character.meta.stats, "dodge"),
+        attacker_force:
+          Stats.skill(character.meta.stats, "force") + Stats.skill(character.meta.stats, "dodge"),
         rng: &:rand.uniform/1
       }
     })

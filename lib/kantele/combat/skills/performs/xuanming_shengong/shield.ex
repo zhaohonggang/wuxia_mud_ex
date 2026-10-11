@@ -56,7 +56,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingShengong.Shield do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -65,7 +65,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingShengong.Shield do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -75,47 +74,47 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingShengong.Shield do
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // shield.c 护体神功
-  # 
+  #
   # #include <ansi.h>
-  # 
+  #
   # inherit F_CLEAN_UP;
-  # 
+  #
   # void remove_effect(object me, int amount);
-  # 
+  #
   # int exert(object me, object target)
   # {
   #         int skill;
-  # 
+  #
   #         if (target != me)
   #                 return notify_fail("你只能用玄冥神功来提升自己的防御力。\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 100)
   #                 return notify_fail("你的内力不够。\n");
-  # 
+  #
   #         if ((int)me->query_skill("xuanming-shengong", 1) < 100)
   #                 return notify_fail("你的玄冥神功修为不够。\n");
-  # 
+  #
   #         if ((int)me->query_temp("shield"))
   #                 return notify_fail("你已经在运功中了。\n");
-  # 
+  #
   #         skill = me->query_skill("xuanming-shengong", 1);
   #         me->add("neili", -100);
   #         me->receive_damage("qi", 0);
-  # 
+  #
   #         message_combatd(HIW "$N" HIW "深深吸了一口气，缓缓吐出，一股白烟"
   #                         "冉冉透体而出，盘旋笼罩了全身。\n" NOR, me);
-  # 
+  #
   #         me->add_temp("apply/armor", skill / 2);
   #         me->add_temp("apply/strike", skill / 8);
   #         me->set_temp("shield", 1);
-  # 
+  #
   #         me->start_call_out((: call_other, __FILE__, "remove_effect", me, skill / 2 :), skill);
-  # 
+  #
   #         if (me->is_fighting()) me->start_busy(2);
-  # 
+  #
   #         return 1;
   # }
-  # 
+  #
   # void remove_effect(object me, int amount)
   # {
   #         if (me->query_temp("shield"))

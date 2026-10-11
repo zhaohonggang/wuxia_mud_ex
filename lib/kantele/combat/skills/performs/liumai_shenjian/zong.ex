@@ -30,8 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "liumai-shenjian")
     skill = Stats.skill(stats, "liumai-shenjian")
-    ap = (Stats.skill(stats, "liumai-shenjian") + Stats.skill(stats, "jingluo-xue"))
-    damage = (div((ap * 3), 2) + Engine.rand(rng, ap))
+    ap = Stats.skill(stats, "liumai-shenjian") + Stats.skill(stats, "jingluo-xue")
+    damage = div(ap * 3, 2) + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -93,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 600}
@@ -104,8 +106,12 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -131,26 +137,32 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 800, 4)
-    result = if hit, do: Messages.interpolate("只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！
+
+    result =
+      if hit,
+        do: Messages.interpolate("只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！
 $n奋力抵挡，却哪里招架得住，被$N这一指戳得鲜血迸流！
 接着$N拇指一屈，食指随即点出，嗤嗤两声急响，「商阳剑」激射刺出。
 $n试图抵挡，只听哧的一声，无形剑气已破体而入，透体而出！
 $n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！
 $n躲闪不及，被戳了碗口大个血窟窿，鲜血喷涌而出！
 $n运气抵挡，只觉得一股透体凉意袭了上来，一个激凌，丹田立刻变得空空荡荡！
-$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束....", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束....", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

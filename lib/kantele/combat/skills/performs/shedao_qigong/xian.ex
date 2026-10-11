@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 150}
@@ -97,9 +99,9 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -129,6 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     result = Messages.interpolate("$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。
 $n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
 一招正中$p，直打了个鲜血四下飞溅。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

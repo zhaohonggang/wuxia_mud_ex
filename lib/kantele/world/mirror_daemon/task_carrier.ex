@@ -16,15 +16,15 @@ defmodule Kantele.World.MirrorDaemon.TaskCarrier do
   @liuxi_zone "liuxi"
 
   @level_stats %{
-    1  => %{qi: 8_000,  sk_lvl: 200, apply_mult: 1},
-    2  => %{qi: 10_000, sk_lvl: 250, apply_mult: 1},
-    3  => %{qi: 12_000, sk_lvl: 300, apply_mult: 1},
-    4  => %{qi: 14_000, sk_lvl: 350, apply_mult: 1},
-    5  => %{qi: 16_000, sk_lvl: 400, apply_mult: 1},
-    6  => %{qi: 18_000, sk_lvl: 450, apply_mult: 1},
-    7  => %{qi: 20_000, sk_lvl: 500, apply_mult: 1},
-    8  => %{qi: 22_000, sk_lvl: 550, apply_mult: 1},
-    9  => %{qi: 24_000, sk_lvl: 600, apply_mult: 1},
+    1 => %{qi: 8_000, sk_lvl: 200, apply_mult: 1},
+    2 => %{qi: 10_000, sk_lvl: 250, apply_mult: 1},
+    3 => %{qi: 12_000, sk_lvl: 300, apply_mult: 1},
+    4 => %{qi: 14_000, sk_lvl: 350, apply_mult: 1},
+    5 => %{qi: 16_000, sk_lvl: 400, apply_mult: 1},
+    6 => %{qi: 18_000, sk_lvl: 450, apply_mult: 1},
+    7 => %{qi: 20_000, sk_lvl: 500, apply_mult: 1},
+    8 => %{qi: 22_000, sk_lvl: 550, apply_mult: 1},
+    9 => %{qi: 24_000, sk_lvl: 600, apply_mult: 1},
     10 => %{qi: 26_000, sk_lvl: 650, apply_mult: 1},
     11 => %{qi: 28_000, sk_lvl: 700, apply_mult: 1},
     12 => %{qi: 30_000, sk_lvl: 750, apply_mult: 1},
@@ -96,12 +96,14 @@ defmodule Kantele.World.MirrorDaemon.TaskCarrier do
         combat_config: %NPCConfig{
           attitude: "passive",
           spawn_room_id: room_id,
-          respawn_delay: 0,           # 任务 NPC 死后不重生
+          # 任务 NPC 死后不重生
+          respawn_delay: 0,
           no_kill: false,
           apply: %{"attack" => sk_lvl, "damage" => sk_lvl, "armor" => div(sk_lvl, 3)}
         },
         combat: Combat.new(),
-        loot: [],                     # 任务物品在背包里，给予后销毁，无额外掉落
+        # 任务物品在背包里，给予后销毁，无额外掉落
+        loot: [],
         goods: nil,
         inquiries: nil,
         teach: nil,

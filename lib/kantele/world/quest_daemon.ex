@@ -24,11 +24,11 @@ defmodule Kantele.World.QuestDaemon do
   @default_max_active 3
 
   defstruct quests: %{},
-          cycle_ms: @default_cycle_ms,
-          max_active: @default_max_active,
-          kind_cursor: 0,
-          zone_id: nil,
-          item_id: nil
+            cycle_ms: @default_cycle_ms,
+            max_active: @default_max_active,
+            kind_cursor: 0,
+            zone_id: nil,
+            item_id: nil
 
   @doc false
   def child_spec(opts) do
@@ -180,24 +180,24 @@ defmodule Kantele.World.QuestDaemon do
 
   # 生成一个任务并入池；新任务返回 {:ok, quest}，无候选 {:error, reason}
   defp generate_one(state, kind) do
-  result =
-    try do
-      Generator.generate(to_string(kind), generator_opts(state))
-    rescue
-      _ -> {:error, :generate_failed}
+    result =
+      try do
+        Generator.generate(to_string(kind), generator_opts(state))
+      rescue
+        _ -> {:error, :generate_failed}
+      end
+
+    case result do
+      {:ok, quest} ->
+        {state, quest} = {register(state, quest), quest}
+        announce(quest)
+        Logger.info("QuestDaemon 生成开放任务 #{quest.id}（#{quest.type}，委员 #{quest.officer_npc}）")
+        {state, {:ok, quest}}
+
+      {:error, reason} ->
+        {state, {:error, reason}}
     end
-
-  case result do
-    {:ok, quest} ->
-      {state, quest} = {register(state, quest), quest}
-      announce(quest)
-      Logger.info("QuestDaemon 生成开放任务 #{quest.id}（#{quest.type}，委员 #{quest.officer_npc}）")
-      {state, {:ok, quest}}
-
-    {:error, reason} ->
-      {state, {:error, reason}}
   end
-end
 
   defp register(state, quest) do
     now = :os.system_time(:second)
@@ -230,7 +230,9 @@ end
     count = length(list)
 
     case count do
-      0 -> []
+      0 ->
+        []
+
       _ ->
         shift = rem(offset, count)
         {a, b} = Enum.split(list, shift)

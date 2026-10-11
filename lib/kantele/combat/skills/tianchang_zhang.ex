@@ -163,7 +163,6 @@ defmodule Kantele.Combat.Skills.TianchangZhang do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

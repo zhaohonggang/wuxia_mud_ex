@@ -105,12 +105,19 @@ defmodule Kantele.Combat.BoyunSuowuTest do
 
   describe "云雾暗点（攻击方门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"boyun-suowu" => 100, "biyun-xinfa" => 100}, performs: MapSet.new()], "dian")
+      conn =
+        perform(
+          [skills: %{"boyun-suowu" => 100, "biyun-xinfa" => 100}, performs: MapSet.new()],
+          "dian"
+        )
+
       assert output_text(conn) =~ "外功中没有这种功能"
     end
 
     test "持械被拒" do
-      conn = perform([skills: %{"boyun-suowu" => 100, "biyun-xinfa" => 100}], "dian", &armed_fighter/1)
+      conn =
+        perform([skills: %{"boyun-suowu" => 100, "biyun-xinfa" => 100}], "dian", &armed_fighter/1)
+
       assert output_text(conn) =~ "只能空手使用"
     end
 
@@ -127,7 +134,10 @@ defmodule Kantele.Combat.BoyunSuowuTest do
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"boyun-suowu" => 100, "biyun-xinfa" => 100}, vitals: %{@vitals | neili: 799}],
+          [
+            skills: %{"boyun-suowu" => 100, "biyun-xinfa" => 100},
+            vitals: %{@vitals | neili: 799}
+          ],
           "dian"
         )
 
@@ -157,7 +167,11 @@ defmodule Kantele.Combat.BoyunSuowuTest do
 
       assert conn.private.update_character.meta.combat.busy == div(300, 100) + 2
       assert published_text(conn) =~ "不能动弹"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 500, busy: 0}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 500, busy: 0}
+      }
     end
 
     test "失手：攻击方回执 -500，目标不动" do
@@ -166,7 +180,11 @@ defmodule Kantele.Combat.BoyunSuowuTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "侧身一让"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 500, busy: 0}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 500, busy: 0}
+      }
     end
 
     test "目标忙乱则忽略" do
@@ -182,12 +200,19 @@ defmodule Kantele.Combat.BoyunSuowuTest do
 
   describe "回梦（攻击方门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130}, performs: MapSet.new()], "meng")
+      conn =
+        perform(
+          [skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130}, performs: MapSet.new()],
+          "meng"
+        )
+
       assert output_text(conn) =~ "外功中没有这种功能"
     end
 
     test "持械被拒" do
-      conn = perform([skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130}], "meng", &armed_fighter/1)
+      conn =
+        perform([skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130}], "meng", &armed_fighter/1)
+
       assert output_text(conn) =~ "空手才能使用"
     end
 
@@ -204,7 +229,10 @@ defmodule Kantele.Combat.BoyunSuowuTest do
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130}, vitals: %{@vitals | neili: 299}],
+          [
+            skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130},
+            vitals: %{@vitals | neili: 299}
+          ],
           "meng"
         )
 
@@ -212,7 +240,8 @@ defmodule Kantele.Combat.BoyunSuowuTest do
     end
 
     test "成功放招投递目标侧事件且带 ap" do
-      conn = perform([skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130, "hand" => 220}], "meng")
+      conn =
+        perform([skills: %{"boyun-suowu" => 140, "biyun-xinfa" => 130, "hand" => 220}], "meng")
 
       assert published_text(conn) =~ "意欲以内力震晕"
 
@@ -231,7 +260,11 @@ defmodule Kantele.Combat.BoyunSuowuTest do
       assert conn.private.update_character.meta.vitals.qi < Vitals.new().qi
       assert conn.private.update_character.meta.vitals.max_qi < Vitals.new().max_qi
       assert published_text(conn) =~ "眼前一黑"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 300, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 300, busy: 2}
+      }
     end
 
     test "失手：攻击方回执 0/3，目标不动" do
@@ -240,7 +273,11 @@ defmodule Kantele.Combat.BoyunSuowuTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "并没有上当"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 3}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 3}
+      }
     end
   end
 end

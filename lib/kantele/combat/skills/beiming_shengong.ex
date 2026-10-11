@@ -147,6 +147,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
         else
           {:error, "你要吸取谁的丹元？\n"}
         end
+
       [] ->
         {:error, "你要吸取谁的丹元？\n"}
     end
@@ -179,6 +180,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
   defp check_can_absorb_more(character) do
     my_max = character.meta.vitals.max_neili
     limit = Map.get(character.meta.stats, :max_neili_limit) || my_max * 2
+
     if my_max < limit do
       :ok
     else
@@ -197,6 +199,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
   defp check_target_not_weak(character, target) do
     my_max = character.meta.vitals.max_neili
     tg_max = target.meta.vitals.max_neili
+
     if tg_max >= div(my_max, 5) do
       :ok
     else

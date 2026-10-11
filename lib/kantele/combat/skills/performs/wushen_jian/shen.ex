@@ -29,8 +29,11 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "wushen-jian")
-    ap = (Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "martial-cognize"))
-    damage = ((Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "force")) + Stats.skill(stats, "martial-cognize"))
+    ap = Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "martial-cognize")
+
+    damage =
+      Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "force") +
+        Stats.skill(stats, "martial-cognize")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +41,9 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -104,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 200}
@@ -114,8 +119,14 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声怒喝，内劲暴涨，手中变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -141,16 +152,27 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$N一声怒喝，内劲暴涨，手中变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。
 
-$n见$N五道剑光缤纷洒落，交错纵横，呼啸着向自己袭来。心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+    result =
+      if hit,
+        do:
+          Messages.interpolate(
+            "$N一声怒喝，内劲暴涨，手中变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。
+
+$n见$N五道剑光缤纷洒落，交错纵横，呼啸着向自己袭来。心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

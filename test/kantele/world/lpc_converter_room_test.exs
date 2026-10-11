@@ -152,12 +152,15 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "位于 npc/ 子目录下的普通文件 → 按 npc 转换" do
-      dir =
-        Path.join(System.tmp_dir!(), "lpc_npc_dir_#{System.unique_integer([:positive])}")
+      dir = Path.join(System.tmp_dir!(), "lpc_npc_dir_#{System.unique_integer([:positive])}")
 
       File.mkdir_p!(Path.join(dir, "npc"))
       path = Path.join(dir, "npc/xiaofan.c")
-      File.write!(path, "inherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"xiaofan\"})); }")
+
+      File.write!(
+        path,
+        "inherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"xiaofan\"})); }"
+      )
 
       try do
         {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
@@ -172,7 +175,11 @@ defmodule Kantele.World.LPCConverterRoomTest do
       dir = Path.join(System.tmp_dir!(), "lpc_knower2_#{System.unique_integer([:positive])}")
       File.mkdir_p!(dir)
       path = Path.join(dir, "xs.c")
-      File.write!(path, "inherit KNOWER;\ninherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"x\"})); }")
+
+      File.write!(
+        path,
+        "inherit KNOWER;\ninherit F_DEALER;\n\nvoid create() { set_name(\"小贩\", ({\"x\"})); }"
+      )
 
       try do
         {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
@@ -188,7 +195,11 @@ defmodule Kantele.World.LPCConverterRoomTest do
       dir = Path.join(System.tmp_dir!(), "lpc_goods_#{System.unique_integer([:positive])}")
       File.mkdir_p!(Path.join(dir, "npc"))
       path = Path.join(dir, "npc/x.c")
-      File.write!(path, "inherit KNOWER;\nvoid create() {\n  set(\"vendor_goods\", ({ \"/d/xiyu/obj/nang\", \"/d/xiyu/obj/hu\" }));\n}")
+
+      File.write!(
+        path,
+        "inherit KNOWER;\nvoid create() {\n  set(\"vendor_goods\", ({ \"/d/xiyu/obj/nang\", \"/d/xiyu/obj/hu\" }));\n}"
+      )
 
       try do
         {:ok, {ucl, _comments}} = LPCConverter.convert_file(path)
@@ -236,8 +247,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "合成链：子类 set 覆盖父类，父类独有属性透传" do
-      dir =
-        Path.join(System.tmp_dir!(), "lpc_inherit_#{System.unique_integer([:positive])}")
+      dir = Path.join(System.tmp_dir!(), "lpc_inherit_#{System.unique_integer([:positive])}")
 
       File.mkdir_p!(dir)
 
@@ -249,8 +259,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
         "#define ROOM_DIR __DIR__\"parent\"\ninherit ROOM_DIR;\ninherit ROOM;\nvoid create() {\n" <>
           "  set(\"short\", \"模板房间\");\n  set(\"item_desc\", ([\"paizi\":\"模板牌子\"]));\n}\n"
 
-      child =
-        "inherit \"/parent\";\nvoid create() {\n  set(\"short\", \"子房间\");\n}\n"
+      child = "inherit \"/parent\";\nvoid create() {\n  set(\"short\", \"子房间\");\n}\n"
 
       File.write!(Path.join(dir, "parent.c"), parent)
       File.write!(Path.join(dir, "template.c"), template)
@@ -273,8 +282,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
     end
 
     test "互指循环继承（twoc→twin→twoc）不无限递归，仍判为 room" do
-      dir =
-        Path.join(System.tmp_dir!(), "lpc_cycle_#{System.unique_integer([:positive])}")
+      dir = Path.join(System.tmp_dir!(), "lpc_cycle_#{System.unique_integer([:positive])}")
 
       File.mkdir_p!(dir)
 
@@ -282,8 +290,7 @@ defmodule Kantele.World.LPCConverterRoomTest do
         "#define TWIN __DIR__\"twin\"\ninherit TWIN;\nvoid create() {\n" <>
           "  set(\"short\", \"双子\");\n}\n"
 
-      twin =
-        "#define OTHER __DIR__\"twoc\"\ninherit OTHER;\ninherit ROOM;\nvoid create() { }\n"
+      twin = "#define OTHER __DIR__\"twoc\"\ninherit OTHER;\ninherit ROOM;\nvoid create() { }\n"
 
       File.write!(Path.join(dir, "twoc.c"), twoc)
       File.write!(Path.join(dir, "twin.c"), twin)

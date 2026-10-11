@@ -32,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     improve = 0
     n = 0
     m = 0
-    damage = (Stats.skill(stats, "finger") + Stats.skill(stats, "force"))
+    damage = Stats.skill(stats, "finger") + Stats.skill(stats, "force")
     ap = Stats.skill(stats, "finger")
 
     with :ok <- check_perform_known(character),
@@ -41,7 +41,9 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -96,13 +98,13 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 6)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "只见$N十指分摊，霎时破空声骤响，数股剑气至指尖激射而出，朝$n径直奔去！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -128,15 +130,19 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 6)
-    result = if hit, do: Messages.interpolate("但见$n斜斜一指点出，指出如风，剑气纵横，嗤然作响，竟将$N的剑气全部折回，反向自己射去！
+
+    result =
+      if hit,
+        do: Messages.interpolate("但见$n斜斜一指点出，指出如风，剑气纵横，嗤然作响，竟将$N的剑气全部折回，反向自己射去！
 你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
 
 顿时只听“嗤啦”的一声，$n躲闪不及，剑气顿时穿胸而过，带出一蓬血雨。
@@ -149,7 +155,9 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
 可电光火石之间，$n猛然翻掌，右手陡然探出，中指「中冲剑」向$N一竖，登将参合剑气化于无形！
 你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！
 
-$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+$n奋力招架，仍是不敌，$N的无形剑气已透体而入，鲜血飞射，无力再战。", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

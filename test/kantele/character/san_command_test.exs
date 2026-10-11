@@ -113,8 +113,18 @@ defmodule Kantele.Character.SanCommandTest do
     end
 
     test "圣化成功" do
-      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
-      p = player([sword], neili: 9000, max_neili: 10000, jingli: 1900, max_jingli: 2000, skills: %{"force" => 350})
+      sword =
+        instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+
+      p =
+        player([sword],
+          neili: 9000,
+          max_neili: 10000,
+          jingli: 1900,
+          max_jingli: 2000,
+          skills: %{"force" => 350}
+        )
+
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
       text = output_text(conn)
@@ -122,24 +132,54 @@ defmodule Kantele.Character.SanCommandTest do
     end
 
     test "内力不足时拒绝" do
-      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
-      p = player([sword], neili: 1000, max_neili: 10000, jingli: 1900, max_jingli: 2000, skills: %{"force" => 350})
+      sword =
+        instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+
+      p =
+        player([sword],
+          neili: 1000,
+          max_neili: 10000,
+          jingli: 1900,
+          max_jingli: 2000,
+          skills: %{"force" => 350}
+        )
+
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
       assert output_text(conn) =~ "内力"
     end
 
     test "精力不足时拒绝" do
-      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
-      p = player([sword], neili: 9000, max_neili: 10000, jingli: 100, max_jingli: 2000, skills: %{"force" => 350})
+      sword =
+        instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+
+      p =
+        player([sword],
+          neili: 9000,
+          max_neili: 10000,
+          jingli: 100,
+          max_jingli: 2000,
+          skills: %{"force" => 350}
+        )
+
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
       assert output_text(conn) =~ "精力"
     end
 
     test "内功根基不够时拒绝" do
-      sword = instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
-      p = player([sword], neili: 9000, max_neili: 10000, jingli: 1900, max_jingli: 2000, skills: %{"force" => 100})
+      sword =
+        instance("santest:sword", "sword-1", %{"craft" => %{"owner" => %{"player-1" => "张三"}}})
+
+      p =
+        player([sword],
+          neili: 9000,
+          max_neili: 10000,
+          jingli: 1900,
+          max_jingli: 2000,
+          skills: %{"force" => 100}
+        )
+
       conn = SanCommand.run(build_conn(p), %{"arg" => "铁剑"})
 
       assert output_text(conn) =~ "内功"

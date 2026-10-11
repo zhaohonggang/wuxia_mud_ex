@@ -150,7 +150,7 @@ defmodule Kantele.Character.GiveCommandTest do
           }
         })
 
-updated = conn.private.update_character || conn.character
+      updated = conn.private.update_character || conn.character
       assert [%Item.Instance{item_id: "test:baozi"}] = updated.inventory
       assert output_text(conn) =~ "张三给你包子"
 
@@ -216,7 +216,11 @@ updated = conn.private.update_character || conn.character
           %Event{
             topic: "characters/give",
             data: %{
-              item_instance: %Item.Instance{id: "inst-yu", item_id: "test:yupai", created_at: DateTime.utc_now()},
+              item_instance: %Item.Instance{
+                id: "inst-yu",
+                item_id: "test:yupai",
+                created_at: DateTime.utc_now()
+              },
               item_name: "玉牌",
               from_name: "张三",
               from_id: "player-1",
@@ -235,7 +239,11 @@ updated = conn.private.update_character || conn.character
           %Event{
             topic: "characters/give",
             data: %{
-              item_instance: %Item.Instance{id: "inst-yu", item_id: "test:yupai", created_at: DateTime.utc_now()},
+              item_instance: %Item.Instance{
+                id: "inst-yu",
+                item_id: "test:yupai",
+                created_at: DateTime.utc_now()
+              },
               item_name: "玉牌",
               from_name: "张三",
               from_id: "player-1",
@@ -269,7 +277,12 @@ updated = conn.private.update_character || conn.character
     test "any 规则接受多余物品" do
       _conn =
         GiveEvent.receive(
-          build_conn(npc_with_accept([%{kind: "item_id", id: "test:yupai", accept: true}, %{kind: "any", accept: true}])),
+          build_conn(
+            npc_with_accept([
+              %{kind: "item_id", id: "test:yupai", accept: true},
+              %{kind: "any", accept: true}
+            ])
+          ),
           %Event{
             topic: "characters/give",
             data: %{

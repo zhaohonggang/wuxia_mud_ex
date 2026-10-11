@@ -1,4 +1,4 @@
-#!/usr/bin/env elixir
+#! /usr/bin/env elixir
 # Usage: mix run batch_classify.exs <file_list>
 
 file_list = List.first(System.argv())
@@ -16,6 +16,7 @@ Enum.each(files, fn f ->
         String.contains?(ucl, "skills \"") -> :ok
         true -> IO.puts("UNHANDLED: #{f}")
       end
+
     {:error, e} ->
       IO.puts("ERROR: #{f} - #{inspect(e)}")
   end

@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -100,13 +102,12 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -129,11 +130,12 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :jingli, 100)
-        vitals = Vitals.damage(vitals, :neili, 300)
+    vitals = Vitals.damage(vitals, :jingli, 100)
+    vitals = Vitals.damage(vitals, :neili, 300)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
     result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

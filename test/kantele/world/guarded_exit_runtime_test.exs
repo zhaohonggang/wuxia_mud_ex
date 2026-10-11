@@ -52,7 +52,7 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
           {"xiyu:xxroad5", "chuchen zi"},
           {"xuedao:shandong2", "bao xiang"},
           {"xuedao:sroad9", "sheng di"},
-          {"huashan:square", "gao genming"},
+          {"huashan:square", "gao genming"}
         ],
         fn {rid, _guard} ->
           room = Enum.find(world.rooms, &(&1.id == rid))
@@ -176,7 +176,10 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
       denied =
         Enum.reject(room.exits, &(&1.exit_name == "south"))
         |> Enum.map(fn e ->
-          match?({:abort, _, {:guarder_denied, _}}, move(room, occupants, mover(nil), e.exit_name))
+          match?(
+            {:abort, _, {:guarder_denied, _}},
+            move(room, occupants, mover(nil), e.exit_name)
+          )
         end)
 
       assert denied != [], "buwei1 至少应有一个方向被拦"
@@ -327,6 +330,7 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
 
         guards = Enum.filter(occupants, &Map.get(&1.meta, :guarder))
         assert guards != [], "#{rid} 里没有带 meta.guardert 的 NPC"
+
         assert Enum.all?(guards, &(Map.get(&1.meta.guarder, :family) == family)),
                "#{rid} 的守卫门派应全是 #{family}"
       end
@@ -408,8 +412,7 @@ defmodule Kantele.World.GuardedExitRuntimeTest do
           if Map.get(c.meta, :guarder), do: put_in(c.meta.combat.dead, true), else: c
         end)
 
-      guarded_dir =
-        room.exits |> Enum.map(& &1.exit_name) |> Enum.find(&(&1 != "west"))
+      guarded_dir = room.exits |> Enum.map(& &1.exit_name) |> Enum.find(&(&1 != "west"))
 
       assert {:proceed, _event, _exit} = move(room, dead, mover(nil), guarded_dir)
     end

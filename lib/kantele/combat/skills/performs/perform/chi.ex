@@ -26,31 +26,31 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Chi do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"count", "xuedao-dafa"}],
-      #     level_gates: [{"force", "220"}, {"xuedao-dafa", "160"}],
-      #     map_gates: [{"blade", "xuedao-dafa"}, {"force", "xuedao-dafa"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"neili", "300"}],
-      #     var_gates: [{"i", "6"}]
-      #   }
+  #   %{
+  #     assign_refs: [{"count", "xuedao-dafa"}],
+  #     level_gates: [{"force", "220"}, {"xuedao-dafa", "160"}],
+  #     map_gates: [{"blade", "xuedao-dafa"}, {"force", "xuedao-dafa"}],
+  #     prepared_gates: [],
+  #     resource_gates: [{"neili", "300"}],
+  #     var_gates: [{"i", "6"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-150"}],
-      #     affect_by: [],
-      #     apply_adds: ["attack"],
-      #     busy_lines: ["if (random(3) == 1 && ! target->is_busy())",
-      #      "target->start_busy(1);", "me->start_busy(1 + random(6));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - if (random(3) == 1 && ! target->is_busy())
-      #   - target->start_busy(1);
-      #   - me->start_busy(1 + random(6));
+    #   %{
+    #     add_costs: [{"neili", "-150"}],
+    #     affect_by: [],
+    #     apply_adds: ["attack"],
+    #     busy_lines: ["if (random(3) == 1 && ! target->is_busy())",
+    #      "target->start_busy(1);", "me->start_busy(1 + random(6));"],
+    #     remote_damage: false,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - if (random(3) == 1 && ! target->is_busy())
+    #   - target->start_busy(1);
+    #   - me->start_busy(1 + random(6));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

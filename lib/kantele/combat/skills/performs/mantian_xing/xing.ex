@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "mantian-xing")
-    n = (2 + Engine.rand(rng, 2))
+    n = 2 + Engine.rand(rng, 2)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -90,16 +92,19 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
+    #   query_amount()
+    conn = Broadcast.publish(conn, "$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
+霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -122,16 +127,17 @@ defmodule Kantele.Combat.Skills.Performs.MantianXing.Xing do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, 150)
-        vitals = Vitals.wound(vitals, :qi, 50)
-        vitals = Vitals.damage(vitals, :qi, 100)
-        vitals = Vitals.wound(vitals, :qi, 40)
+    vitals = Vitals.damage(vitals, :qi, 150)
+    vitals = Vitals.wound(vitals, :qi, 50)
+    vitals = Vitals.damage(vitals, :qi, 100)
+    vitals = Vitals.wound(vitals, :qi, 40)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
     result = Messages.interpolate("$N蓦地飞身跃起，十指箕张，施出「穹外飞星」将手中尽数凌空射出。
 霎时破空声骤响，便如同陨星飞坠一般，笼罩$n各处大穴！
 结果$n一声惨叫，同时中了$Pbase_unit，直感两耳轰鸣，目不视物。
 $n集中生智，双手画圈回旋挥舞，拨弄开了要害处的杀着，可还是受了点轻伤。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

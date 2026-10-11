@@ -152,7 +152,6 @@ defmodule Kantele.Combat.Skills.XuanmingZhang do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

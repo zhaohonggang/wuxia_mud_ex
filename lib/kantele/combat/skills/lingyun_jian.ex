@@ -97,7 +97,6 @@ defmodule Kantele.Combat.Skills.LingyunJian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

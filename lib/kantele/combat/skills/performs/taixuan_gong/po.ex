@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 500}
     vitals = %{vitals | neili: 0}
@@ -108,8 +110,14 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(
+        conn,
+        "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「乘风破浪」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -137,6 +145,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
 只见歪歪斜斜倒退几步，伏倒在地，痛苦不堪。。
 狂风卷过，只见，飞沙狂舞，却动也动不了忽然间，却瘫软在地。
 急忙飞身而起，却猛然坠地，伤痕遍体，鲜血不止。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

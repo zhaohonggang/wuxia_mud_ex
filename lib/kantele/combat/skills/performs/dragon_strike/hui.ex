@@ -35,7 +35,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,7 +101,6 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -130,6 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
 :内伤@?只听$p一声惨嚎，被$P一掌击中胸前，“喀嚓喀嚓”断了几根肋骨。
 :内伤@?结果$p躲闪不及，$P的掌劲顿时穿胸而过，“哇”的喷出一大口鲜血。
 :内伤@?", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

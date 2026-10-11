@@ -80,6 +80,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
 
     test "valid_learn 需 force>=100" do
       assert ZixiaShengong.valid_learn(%{"force" => 100}) == :ok
+
       case ZixiaShengong.valid_learn(%{"force" => 99}) do
         {:error, _} -> :ok
         _ -> flunk("expected {:error, _}")
@@ -95,7 +96,11 @@ defmodule Kantele.Combat.ZixiaShengongTest do
     test "扣 100 内力并挂 powerup buff" do
       conn =
         exert(
-          [skills: %{"zixia-shengong" => 120}, mapped: %{"force" => "zixia-shengong"}, vitals: %{@vitals | neili: 500}],
+          [
+            skills: %{"zixia-shengong" => 120},
+            mapped: %{"force" => "zixia-shengong"},
+            vitals: %{@vitals | neili: 500}
+          ],
           "powerup"
         )
 
@@ -114,6 +119,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           mapped: %{"force" => "zixia-shengong"},
           vitals: %{@vitals | neili: 500}
         )
+
       combat = %{Combat.new() | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: @room}]}
       character = %{character | meta: %{character.meta | combat: combat}}
 
@@ -134,6 +140,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           ],
           "ziqi"
         )
+
       assert output_text(conn) =~ "没有剑"
     end
 
@@ -147,6 +154,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           ],
           "ziqi"
         )
+
       assert output_text(conn) =~ "修为不够"
     end
 
@@ -160,6 +168,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           ],
           "ziqi"
         )
+
       assert output_text(conn) =~ "内力还不够"
     end
 
@@ -173,6 +182,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           ],
           "ziqi"
         )
+
       # Note: In Simple.perform, if gate fails, no costs are deducted
       # The LPC behavior is different (still consumes neili/busy on qi check fail)
       # Our implementation follows the gate pattern: qi check is a gate
@@ -186,6 +196,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           mapped: %{"force" => "zixia-shengong"},
           vitals: %{@vitals | neili: 500, qi: 500, max_qi: 500}
         )
+
       character = with_sword(character)
       combat = %{character.meta.combat | buffs: [%Combat.Buff{key: "ziqi", applies: []}]}
       character = %{character | meta: %{character.meta | combat: combat}}
@@ -201,6 +212,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           mapped: %{"force" => "zixia-shengong"},
           vitals: %{@vitals | neili: 500, qi: 500, max_qi: 500}
         )
+
       character = with_sword(character)
 
       conn = ExertCommand.run(build_conn(character), %{"function" => "ziqi"})
@@ -221,6 +233,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
           mapped: %{"force" => "zixia-shengong"},
           vitals: %{@vitals | neili: 500, qi: 500, max_qi: 500}
         )
+
       character = with_sword(character)
 
       conn = ExertCommand.run(build_conn(character), %{"function" => "ziqi"})
@@ -228,6 +241,7 @@ defmodule Kantele.Combat.ZixiaShengongTest do
 
       buff = Enum.find(updated.meta.combat.buffs, &(&1.key == "ziqi"))
       assert buff.applies == %{damage: -20, sword: -20}
+
       # duration = skill 200 秒，到期投递逻辑由 Simple.schedule_expire 覆盖（simple_test）
     end
   end

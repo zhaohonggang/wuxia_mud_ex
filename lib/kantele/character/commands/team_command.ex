@@ -339,7 +339,12 @@ defmodule Kantele.Character.TeamCommand do
     conn = put_character(conn, %{character | meta: meta})
     save(conn)
 
-    notify_all(team, character.pid, "team/swear", %{leader_name: leader_name, leader_id: leader_id, name: name})
+    notify_all(team, character.pid, "team/swear", %{
+      leader_name: leader_name,
+      leader_id: leader_id,
+      name: name
+    })
+
     render_text(conn, "你们结义成盟，共立「#{name}」！\n")
   end
 

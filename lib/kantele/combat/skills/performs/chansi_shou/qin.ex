@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     lvl = Stats.skill(stats, "chansi-shou")
     skill = Stats.skill(stats, "chansi-shou")
     ap = Stats.skill(stats, "hand")
-    damage = ((50 + div(ap, 6)) + Engine.rand(rng, div(ap, 6)))
+    damage = 50 + div(ap, 6) + Engine.rand(rng, div(ap, 6))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -92,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 20}
     vitals = %{vitals | neili: vitals.neili - 80}
@@ -101,9 +103,9 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N悄然贴近$n，施出缠丝擒拿，双手忽折忽扭，或抓或甩，直琐$p各处要脉。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -129,13 +131,23 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = if hit, do: Messages.interpolate("却见$n奋力抵抗，可终究无法摆脱$N的攻势，连中数掌，", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      if hit,
+        do:
+          Messages.interpolate("却见$n奋力抵抗，可终究无法摆脱$N的攻势，连中数掌，",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

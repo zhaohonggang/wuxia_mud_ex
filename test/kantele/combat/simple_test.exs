@@ -41,10 +41,11 @@ defmodule Kantele.Combat.SimpleTest.ScaledExert do
       id: "test/scaled",
       costs: %{neili: 100},
       effects: [
-        {:buff, "scaled", %{
-          attack: {:div, {:skill, "force"}, 2},
-          defense: {:div, {:mul, {:skill, "force"}, 2}, 5}
-        }},
+        {:buff, "scaled",
+         %{
+           attack: {:div, {:skill, "force"}, 2},
+           defense: {:div, {:mul, {:skill, "force"}, 2}, 5}
+         }},
         {:add, :neili, {:random, -5, -1}}
       ],
       busy: {:if_fighting, {:random, 1, 3}},
@@ -195,7 +196,8 @@ defmodule Kantele.Combat.SimpleTest do
     end
 
     test "非战斗 busy 不生效；战斗中 busy +3" do
-      assert BuffExert.run(build_conn(player(neili: 9000))).private.update_character.meta.combat.busy == 0
+      assert BuffExert.run(build_conn(player(neili: 9000))).private.update_character.meta.combat.busy ==
+               0
 
       conn = BuffExert.run(build_conn(player(neili: 9000, combat: combat_fight())))
       assert conn.private.update_character.meta.combat.busy == 3
@@ -221,7 +223,13 @@ defmodule Kantele.Combat.SimpleTest do
     end
 
     test "random busy 由 rng 决定；非战斗不计" do
-      conn = Simple.run(build_conn(player(neili: 9000, combat: combat_fight())), ScaledExert.spec(), fn _n -> 3 end)
+      conn =
+        Simple.run(
+          build_conn(player(neili: 9000, combat: combat_fight())),
+          ScaledExert.spec(),
+          fn _n -> 3 end
+        )
+
       assert conn.private.update_character.meta.combat.busy == 3
 
       conn = Simple.run(build_conn(player(neili: 9000)), ScaledExert.spec(), fn _n -> 3 end)
@@ -269,7 +277,7 @@ defmodule Kantele.Combat.SimpleTest do
       assert output_text(conn) =~ "你尚未预备任何剑术绝招"
       assert is_nil(conn.private.update_character)
 
-stats =
+      stats =
         Kantele.Character.Stats.new()
         |> Kantele.Character.Stats.learn_perform("liuxin-jian/liu")
         |> prepare_sword_liu()

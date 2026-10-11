@@ -337,11 +337,13 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
       dp = div(Map.get(victim.skills, "parry", 0), 2) + taiji_lvl
 
       if div(ap, 2) + :rand.uniform(ap) < dp do
-        msg = case :rand.uniform(3) do
-          1 -> "$n面含微笑，双手齐出，划出了一个圆圈，竟然让$N的攻击全不着力。\n"
-          2 -> "$n左右格档，使出四两拨千斤的手法，化解$N的攻势于无形。\n"
-          _ -> "$n慢慢出拳，动作虽然缓慢，却让$N感到浑身粘滞，甚不舒畅。\n"
-        end
+        msg =
+          case :rand.uniform(3) do
+            1 -> "$n面含微笑，双手齐出，划出了一个圆圈，竟然让$N的攻击全不着力。\n"
+            2 -> "$n左右格档，使出四两拨千斤的手法，化解$N的攻势于无形。\n"
+            _ -> "$n慢慢出拳，动作虽然缓慢，却让$N感到浑身粘滞，甚不舒畅。\n"
+          end
+
         {0, msg}
       else
         {damage, nil}

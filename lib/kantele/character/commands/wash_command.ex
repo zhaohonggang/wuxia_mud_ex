@@ -24,10 +24,13 @@ defmodule Kantele.Character.WashCommand do
         case find_wash_target(character, target_name) do
           {:ok, :hand, _} ->
             wash_hand(conn, character)
+
           {:ok, :weapon, equip_item, equip_instance} ->
             wash_equipment(conn, character, equip_item, equip_instance, :weapon)
+
           {:ok, :armor, equip_item, equip_instance} ->
             wash_equipment(conn, character, equip_item, equip_instance, :armor)
+
           {:error, reason} ->
             conn
             |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -67,7 +70,9 @@ defmodule Kantele.Character.WashCommand do
         item.callback_module.matches?(item, name)
       end)
       |> case do
-        nil -> {:error, "你身上没有这样装备。"}
+        nil ->
+          {:error, "你身上没有这样装备。"}
+
         instance ->
           item = Items.get!(instance.item_id)
           attrs = Map.get(item, :attrs, %{}) || %{}
@@ -75,11 +80,15 @@ defmodule Kantele.Character.WashCommand do
           type = attrs["type"]
 
           cond do
-            Kalevala.Meta.get(meta, "daub") == nil -> {:error, "这#{item.name}上没有毒。"}
+            Kalevala.Meta.get(meta, "daub") == nil ->
+              {:error, "这#{item.name}上没有毒。"}
+
             type in ["weapon", "sword", "blade", "axe", "hammer", "staff"] ->
               {:ok, :weapon, item, instance}
+
             type in ["armor", "cloth", "surcoat", "boots"] ->
               {:ok, :armor, item, instance}
+
             true ->
               {:error, "这不是可清洗的武器或防具。"}
           end
@@ -114,9 +123,10 @@ defmodule Kantele.Character.WashCommand do
       new_equip_attrs = Map.delete(equip_attrs, "poisoned")
       updated_equip = Map.put(Map.put(equip_item, :meta, new_equip_meta), :attrs, new_equip_attrs)
 
-      new_inventory = Enum.map(character.inventory, fn inst ->
-        if inst.id == equip_instance.id, do: updated_equip, else: inst
-      end)
+      new_inventory =
+        Enum.map(character.inventory, fn inst ->
+          if inst.id == equip_instance.id, do: updated_equip, else: inst
+        end)
 
       new_character = %{character | inventory: new_inventory}
       new_conn = put_character(conn, new_character)

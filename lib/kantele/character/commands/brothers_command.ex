@@ -73,8 +73,9 @@ defmodule Kantele.Character.BrothersCommand do
 
           conn
           |> render(CommandView, "text", %{
-            text: "你确定要和这位朋友(#{name})割袍断义吗？\n" <>
-                    "如果你确定，请再输入一次这条命令。\n"
+            text:
+              "你确定要和这位朋友(#{name})割袍断义吗？\n" <>
+                "如果你确定，请再输入一次这条命令。\n"
           })
           |> prompt(CommandView, "prompt", %{})
         end

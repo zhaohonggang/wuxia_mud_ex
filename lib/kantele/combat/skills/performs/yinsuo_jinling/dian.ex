@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -98,13 +100,17 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 120}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
+    conn =
+      Broadcast.publish(conn, "$N单手一抖，手中疾颤三下，分点$n脸上「迎香」、「承泣」、「人中」三个穴道，这三下点穴出手之快、认位之准，实是武林罕见！",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -129,6 +135,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     Performs.feedback(attacker, 120, 1)
     result = Messages.interpolate("$n只听$N发出玎玎声响，声虽不大，却是十分怪异，入耳荡心摇魄，一不
 留神，被这招点个正着，全身瘫软无力，动弹不得！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

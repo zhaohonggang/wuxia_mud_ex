@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -90,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 80}
@@ -98,9 +100,9 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N腾空而起，施展出绝招「孤雁出群」，犹如一只大雁临空而下，双掌猛地拍向$n。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -128,7 +130,13 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 4)
-    result = Messages.interpolate("但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -99,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 50}
@@ -108,9 +110,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N猛提内劲，聚力于掌一拳挥出，气势有如石破天惊，携着呼啸之声向$n直贯而去！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -134,10 +136,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
+    vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("结果$p闪避不及，被$P这招打了个正中，拳力掌劲顿时透体而入，顿时口喷鲜血，连退数步。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p闪避不及，被$P这招打了个正中，拳力掌劲顿时透体而入，顿时口喷鲜血，连退数步。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

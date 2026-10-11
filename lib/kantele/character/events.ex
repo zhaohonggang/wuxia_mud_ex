@@ -246,18 +246,18 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("combat/buff-expire", :buff_expire)
       event("combat/respawn", :respawn)
       event("vitals/regen", :regen)
-end
+    end
 
-     module(FanliangyiEvent) do
-       event("array/fanliangyi-dao", :array)
-     end
+    module(FanliangyiEvent) do
+      event("array/fanliangyi-dao", :array)
+    end
 
-     module(ConditionEvent) do
-       event("poison/apply", :apply)
-       event("condition/tick", :tick)
-     end
+    module(ConditionEvent) do
+      event("poison/apply", :apply)
+      event("condition/tick", :tick)
+    end
 
-     module(FleeEvent) do
+    module(FleeEvent) do
       event("room/flee", :run)
     end
 

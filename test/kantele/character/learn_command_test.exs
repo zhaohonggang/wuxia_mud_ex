@@ -63,10 +63,11 @@ defmodule Kantele.Character.LearnCommandTest do
     test "无效技能时提示" do
       p = player()
       conn = PracticeCommand.run(build_conn(p), %{"skill" => "nonexistent"})
+
       assert Enum.any?(conn.output, fn
-        %Kalevala.Character.Conn.Text{data: data} -> IO.iodata_to_binary(data) =~ "没有这项武功"
-        _ -> false
-      end)
+               %Kalevala.Character.Conn.Text{data: data} -> IO.iodata_to_binary(data) =~ "没有这项武功"
+               _ -> false
+             end)
     end
 
     test "路由解析" do

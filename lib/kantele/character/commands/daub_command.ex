@@ -27,7 +27,16 @@ defmodule Kantele.Character.DaubCommand do
         {:ok, poison_item, poison_instance} ->
           case find_daub_target(character, target_name) do
             {:ok, target_type, target_item, target_instance} ->
-              daub_target(conn, character, poison_item, poison_instance, target_type, target_item, target_instance)
+              daub_target(
+                conn,
+                character,
+                poison_item,
+                poison_instance,
+                target_type,
+                target_item,
+                target_instance
+              )
+
             {:error, reason} ->
               conn
               |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -54,10 +63,13 @@ defmodule Kantele.Character.DaubCommand do
       item.callback_module.matches?(item, name)
     end)
     |> case do
-      nil -> {:error, "你身上没有这样毒药。"}
+      nil ->
+        {:error, "你身上没有这样毒药。"}
+
       instance ->
         item = Items.get!(instance.item_id)
         attrs = item.meta || %{}
+
         if attrs["can_daub"] == true && attrs["poison_type"] do
           {:ok, item, instance}
         else
@@ -79,7 +91,9 @@ defmodule Kantele.Character.DaubCommand do
         item.callback_module.matches?(item, name)
       end)
       |> case do
-        nil -> {:error, "你身上没有这样武器或防具。"}
+        nil ->
+          {:error, "你身上没有这样武器或防具。"}
+
         instance ->
           item = Items.get!(instance.item_id)
           attrs = item.meta || %{}
@@ -88,8 +102,10 @@ defmodule Kantele.Character.DaubCommand do
           cond do
             type in ["weapon", "sword", "blade", "axe", "hammer", "staff"] ->
               {:ok, :weapon, item, instance}
+
             type in ["armor", "cloth", "surcoat", "boots"] ->
               {:ok, :armor, item, instance}
+
             true ->
               {:error, "这不是可涂毒的武器或防具。"}
           end
@@ -108,9 +124,25 @@ defmodule Kantele.Character.DaubCommand do
     end
   end
 
-  defp daub_target(conn, character, poison_item, poison_instance, :weapon, weapon_item, weapon_instance) do
+  defp daub_target(
+         conn,
+         character,
+         poison_item,
+         poison_instance,
+         :weapon,
+         weapon_item,
+         weapon_instance
+       ) do
     if can_apply_poison_to_weapon?(character, poison_item, weapon_item) do
-      apply_poison_to_equipment(conn, character, poison_item, poison_instance, weapon_item, weapon_instance, :weapon)
+      apply_poison_to_equipment(
+        conn,
+        character,
+        poison_item,
+        poison_instance,
+        weapon_item,
+        weapon_instance,
+        :weapon
+      )
     else
       conn
       |> render(CommandView, "text", %{text: "你的毒技不够纯熟，无法给武器涂毒。\n"})
@@ -118,9 +150,25 @@ defmodule Kantele.Character.DaubCommand do
     end
   end
 
-  defp daub_target(conn, character, poison_item, poison_instance, :armor, armor_item, armor_instance) do
+  defp daub_target(
+         conn,
+         character,
+         poison_item,
+         poison_instance,
+         :armor,
+         armor_item,
+         armor_instance
+       ) do
     if can_apply_poison_to_armor?(character, poison_item, armor_item) do
-      apply_poison_to_equipment(conn, character, poison_item, poison_instance, armor_item, armor_instance, :armor)
+      apply_poison_to_equipment(
+        conn,
+        character,
+        poison_item,
+        poison_instance,
+        armor_item,
+        armor_instance,
+        :armor
+      )
     else
       conn
       |> render(CommandView, "text", %{text: "你的毒技不够纯熟，无法给防具涂毒。\n"})
@@ -199,7 +247,15 @@ defmodule Kantele.Character.DaubCommand do
     end
   end
 
-  defp apply_poison_to_equipment(conn, character, poison_item, poison_instance, equip_item, equip_instance, equip_type) do
+  defp apply_poison_to_equipment(
+         conn,
+         character,
+         poison_item,
+         poison_instance,
+         equip_item,
+         equip_instance,
+         equip_type
+       ) do
     instance_meta = equip_instance.meta || %{}
 
     merged =
@@ -230,9 +286,10 @@ defmodule Kantele.Character.DaubCommand do
     new_equip_instance = %{equip_instance | meta: new_instance_meta}
 
     # 更新背包
-    new_inventory = Enum.map(character.inventory, fn inst ->
-      if inst.id == equip_instance.id, do: new_equip_instance, else: inst
-    end)
+    new_inventory =
+      Enum.map(character.inventory, fn inst ->
+        if inst.id == equip_instance.id, do: new_equip_instance, else: inst
+      end)
 
     # 移除毒药
     new_inventory = Enum.reject(new_inventory, &(&1.id == poison_instance.id))

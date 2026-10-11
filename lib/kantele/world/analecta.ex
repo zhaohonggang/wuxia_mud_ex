@@ -18,7 +18,17 @@ defmodule Kantele.World.Analecta do
 
   def changeset(analecta, attrs) do
     analecta
-    |> cast(attrs, [:year, :subject, :author_name, :author_id, :content, :board, :time, :source_board, :source_note_index])
+    |> cast(attrs, [
+      :year,
+      :subject,
+      :author_name,
+      :author_id,
+      :content,
+      :board,
+      :time,
+      :source_board,
+      :source_note_index
+    ])
     |> validate_required([:year, :subject, :author_name, :author_id, :content, :board, :time])
   end
 end

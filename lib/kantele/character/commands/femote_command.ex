@@ -19,6 +19,7 @@ defmodule Kantele.Character.FemoteCommand do
       |> prompt(CommandView, "prompt", %{})
     else
       text = format_results(keyword, results)
+
       conn
       |> render(CommandView, "text", %{text: text})
       |> prompt(CommandView, "prompt", %{})
@@ -65,7 +66,10 @@ defmodule Kantele.Character.FemoteCommand do
       end)
       |> Enum.join()
 
-    footer = "------------------------------------------------------------\n在武林外传中，包含\"#{keyword}\"的 emote 共有 #{count} 个。\n"
+    footer =
+      "------------------------------------------------------------\n在武林外传中，包含\"#{keyword}\"的 emote 共有 #{
+        count
+      } 个。\n"
 
     header <> items <> footer
   end

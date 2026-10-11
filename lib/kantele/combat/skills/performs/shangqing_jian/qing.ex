@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -99,13 +101,13 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N施出上清剑法「清流剑」绝技，手中随即一颤，对准$n连攻数剑，招式凌厉无比！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -138,6 +140,7 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     result = Messages.interpolate("$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！
 $p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！
 $p运气抵挡，可只觉一股无形剑气透体而过，难受之极，喷出数口鲜血！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

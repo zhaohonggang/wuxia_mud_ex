@@ -27,7 +27,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenxingBaibian.Piao do
       busy: 0,
       duration: {:div, {:skill, "shenxing-baibian"}, 10},
       expire_message: "你的「虚无缥缈」运功完毕，将内力收回丹田。\n",
-      message:
-        "$N将全身的内力旋转震动，身形东一溜，西一晃，忽又左右摇摆作势欲发，虚虚实实，飘渺不定。\n"
+      message: "$N将全身的内力旋转震动，身形东一溜，西一晃，忽又左右摇摆作势欲发，虚虚实实，飘渺不定。\n"
     }
 end

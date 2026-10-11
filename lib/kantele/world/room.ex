@@ -1539,7 +1539,11 @@ defmodule Kantele.World.Room.StealRequestEvent do
   end
 
   defp handle_steal_success(context, requester, victim, stolen_item) do
-    updated_victim = %{victim | inventory: Enum.reject(victim.inventory, &(&1.id == stolen_item.id))}
+    updated_victim = %{
+      victim
+      | inventory: Enum.reject(victim.inventory, &(&1.id == stolen_item.id))
+    }
+
     updated_requester = %{requester | inventory: [stolen_item | requester.inventory]}
 
     context =
@@ -1562,7 +1566,10 @@ defmodule Kantele.World.Room.StealRequestEvent do
     context =
       context
       |> render(requester.pid, CommandView, "text", %{
-        text: "糟糕！你失手了！\n\n#{victim.name}一回头，正好发现你的手正抓在自己的#{_stolen_item.name || "东西"}之上。\n\n#{victim.name}喝道：小贼，干什么！\n"
+        text:
+          "糟糕！你失手了！\n\n#{victim.name}一回头，正好发现你的手正抓在自己的#{_stolen_item.name || "东西"}之上。\n\n#{
+            victim.name
+          }喝道：小贼，干什么！\n"
       })
 
     if victim.is_npc do
@@ -1620,14 +1627,17 @@ defmodule Kantele.World.Room.GuardRequestEvent do
 
         target_char ->
           # 在目标的 meta.temp.guarded 中加入请求者
-          new_temp = Map.update(target_char.meta.temp, "guarded", [requester.id], fn list ->
-            if requester.id in list, do: list, else: [requester.id | list]
-          end)
+          new_temp =
+            Map.update(target_char.meta.temp, "guarded", [requester.id], fn list ->
+              if requester.id in list, do: list, else: [requester.id | list]
+            end)
 
           new_target = %{target_char | meta: Map.put(target_char.meta, :temp, new_temp)}
           context = update_character_in_context(context, target_char.id, new_target)
 
-          render(context, requester.pid, CommandView, "text", %{text: "你开始守护#{target_char.name}。\n"})
+          render(context, requester.pid, CommandView, "text", %{
+            text: "你开始守护#{target_char.name}。\n"
+          })
       end
     else
       context
@@ -1765,7 +1775,7 @@ defmodule Kantele.World.Room.CheckRequestEvent do
           })
 
         # 计算成功率
-        sp = (checking_skill * 10) + (jing * 3)
+        sp = checking_skill * 10 + jing * 3
         dp = (Map.get(target.attributes, "jing", 1) || 1) * 2
 
         if :rand.uniform(sp + dp) < :rand.uniform(dp) do
@@ -1794,7 +1804,8 @@ defmodule Kantele.World.Room.CheckRequestEvent do
 
             context
             |> render(requester.pid, CommandView, "text", %{
-              text: "#{npc.name}悄悄告诉你：#{target.name}修炼过#{chinese_skill_name}，估计修炼到#{level_text}级了吧。\n"
+              text:
+                "#{npc.name}悄悄告诉你：#{target.name}修炼过#{chinese_skill_name}，估计修炼到#{level_text}级了吧。\n"
             })
           end
         end
@@ -1827,9 +1838,13 @@ defmodule Kantele.World.Room.CheckRequestEvent do
   end
 
   defp render_to_room_except(exclude_pid, context, view, template, data) do
-    Enum.reduce(context.characters -- Enum.filter(context.characters, fn c -> c.pid == exclude_pid end), context, fn character, acc ->
-      render(acc, character.pid, view, template, data)
-    end)
+    Enum.reduce(
+      context.characters -- Enum.filter(context.characters, fn c -> c.pid == exclude_pid end),
+      context,
+      fn character, acc ->
+        render(acc, character.pid, view, template, data)
+      end
+    )
   end
 
   defp chinese_number(n) when n > 0 do
@@ -2053,7 +2068,7 @@ defmodule Kantele.World.Room.SwearAnswerEvent do
         from = if requester, do: requester.pid, else: answerer.pid
 
         render(context, from, CommandView, "text", %{
-          text: (if requester, do: "#{answerer.name}拒绝了你的结拜请求。", else: "这人没有向你提出什么要求啊？") <> "\n"
+          text: if(requester, do: "#{answerer.name}拒绝了你的结拜请求。", else: "这人没有向你提出什么要求啊？") <> "\n"
         })
     end
   end
@@ -2480,9 +2495,9 @@ defmodule Kantele.World.Room.CombatEvent do
   alias Kantele.Character.CharacterView
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CommandView
-alias Kantele.Npc.Attitude
-alias Kantele.Npc.EngageRule
-alias Kantele.Npc.Guarder
+  alias Kantele.Npc.Attitude
+  alias Kantele.Npc.EngageRule
+  alias Kantele.Npc.Guarder
 
   def call(context, event) do
     attacker = Enum.find(context.characters, &(&1.pid == event.from_pid))
@@ -2588,7 +2603,7 @@ alias Kantele.Npc.Guarder
   # ---- LPC `inherit/char/npc.c` 的 attitude 分支 ----
   #
   # attitude 决定的是「被挑战/攻击/杀时接不接、说什么」，**不决定主动攻击**
-  #（后者来自 attack() / 心跳 / chat_msg）。
+  # （后者来自 attack() / 心跳 / chat_msg）。
   #
   # LPC 的优先顺序（npc.c 的 accept_* 开头）：
   #   1. 守卫      -> check_enemy（已由上面的 guarder_* 分支处理）
@@ -2680,11 +2695,9 @@ alias Kantele.Npc.Guarder
   end
 
   defp touxi_messages(context, attacker, target) do
-    render(context, attacker.pid, CommandView, "text",
-      text: "\n你猛的飞身纵起，直扑#{target.name}而去。\n")
+    render(context, attacker.pid, CommandView, "text", text: "\n你猛的飞身纵起，直扑#{target.name}而去。\n")
 
-    render(context, target.pid, CommandView, "text",
-      text: "\n#{attacker.name}忽然向你扑来，来势甚为迅猛。\n")
+    render(context, target.pid, CommandView, "text", text: "\n#{attacker.name}忽然向你扑来，来势甚为迅猛。\n")
 
     context
   end
@@ -2782,12 +2795,12 @@ alias Kantele.Npc.Guarder
 
   defp engage(context, initiator, target), do: engage(context, initiator, target, "fight")
 
-defp engage(context, initiator, target, type) do
-  context
-  |> start_combat(target, initiator, type)
-  |> start_combat(initiator, target, type)
-  |> maybe_summon_coagents(initiator, target, type)
-end
+  defp engage(context, initiator, target, type) do
+    context
+    |> start_combat(target, initiator, type)
+    |> start_combat(initiator, target, type)
+    |> maybe_summon_coagents(initiator, target, type)
+  end
 
   # LPC feature/attack.c:104-108 —— 唯一的 kill_enemy 调用点：
   #
@@ -2829,11 +2842,11 @@ end
   # 帮手所在处先广播 LPC 的「大家快来帮忙啊」，再交由 Coagent.start_help 决策。
   defp notify_coagent(context, helper, guarder) do
     case event(context, self(), self(), "coagent/summon", %{
-             guarder_id: guarder.id,
-             coagent_id: Map.get(helper, :id),
-             startroom: Map.get(helper, :startroom),
-             target_id: Map.get(helper, :target_id)
-           }) do
+           guarder_id: guarder.id,
+           coagent_id: Map.get(helper, :id),
+           startroom: Map.get(helper, :startroom),
+           target_id: Map.get(helper, :target_id)
+         }) do
       ctx -> ctx
     end
   end

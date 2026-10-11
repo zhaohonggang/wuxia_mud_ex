@@ -117,9 +117,10 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "幽灵状态" do
-      conn = HideCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
-        "item" => "青云剑"
-      })
+      conn =
+        HideCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
+          "item" => "青云剑"
+        })
 
       assert output_text(conn) =~ "等你还了阳再说吧"
     end
@@ -161,9 +162,9 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
       conn = HideCommand.run(build_conn(attrs), %{"item" => "青云剑"})
 
       assert Enum.any?(conn.events, fn
-        %Kalevala.Event{topic: "item/hide", data: %{item_instance: ^instance}} -> true
-        _ -> false
-      end)
+               %Kalevala.Event{topic: "item/hide", data: %{item_instance: ^instance}} -> true
+               _ -> false
+             end)
 
       assert updated(conn).meta.vitals.jing == 20
     end
@@ -211,9 +212,10 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "负荷过重" do
-      conn = RidetoCommand.run(build_conn(player(%{attributes: %{"carry_weight" => 101}})), %{
-        "place" => "shaolin"
-      })
+      conn =
+        RidetoCommand.run(build_conn(player(%{attributes: %{"carry_weight" => 101}})), %{
+          "place" => "shaolin"
+        })
 
       assert output_text(conn) =~ "你的负荷过重"
     end
@@ -233,9 +235,10 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "幽灵状态" do
-      conn = RidetoCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
-        "place" => "shaolin"
-      })
+      conn =
+        RidetoCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
+          "place" => "shaolin"
+        })
 
       assert output_text(conn) =~ "等你还了阳再说吧"
     end
@@ -275,9 +278,10 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "幽灵状态" do
-      conn = TouxiCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
-        "name" => "阿飞"
-      })
+      conn =
+        TouxiCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
+          "name" => "阿飞"
+        })
 
       assert output_text(conn) =~ "你这个样子有什么好偷袭的"
     end
@@ -311,9 +315,10 @@ defmodule Kantele.Character.PlayerMiscCommandsTest do
     end
 
     test "幽灵状态" do
-      conn = FeedCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
-        "name" => "小狗"
-      })
+      conn =
+        FeedCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{
+          "name" => "小狗"
+        })
 
       assert output_text(conn) =~ "先照顾好自己"
     end

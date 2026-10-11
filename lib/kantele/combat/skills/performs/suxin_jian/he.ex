@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 350}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -107,9 +109,9 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N左手以全真剑法剑意，右手化玉女剑法剑招，双剑合璧同时刺出。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -137,6 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     Performs.feedback(attacker, 350, 3)
     result = Messages.interpolate("$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
 一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

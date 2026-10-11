@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 125}
     vitals = %{vitals | neili: vitals.neili - 30}
@@ -107,8 +109,10 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(conn, "$N脚下轻浮，踉踉跄跄，似倒非倒，跌跌撞撞的冲向$n，同时伸手就是一招，诡秘之极。", n1: character.name)
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -134,7 +138,13 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 2)
-    result = Messages.interpolate("$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

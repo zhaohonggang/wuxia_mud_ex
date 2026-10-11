@@ -119,7 +119,6 @@ defmodule Kantele.Combat.Skills.SheduQiqiao do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

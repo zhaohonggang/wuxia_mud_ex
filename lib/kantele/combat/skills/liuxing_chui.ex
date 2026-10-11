@@ -96,5 +96,4 @@ defmodule Kantele.Combat.Skills.LiuxingChui do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

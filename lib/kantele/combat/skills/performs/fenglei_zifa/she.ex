@@ -90,7 +90,8 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
         {:error, "你现在手中并没有拿着暗器，无法施展#{@name}。\n"}
 
       dart ->
-        if Map.get(dart.meta, :skill_type) == "throwing" && (Map.get(dart.meta, :amount) || 1) >= 1 do
+        if Map.get(dart.meta, :skill_type) == "throwing" &&
+             (Map.get(dart.meta, :amount) || 1) >= 1 do
           {:ok, dart}
         else
           {:error, "你现在手中并没有拿着暗器，无法施展#{@name}。\n"}

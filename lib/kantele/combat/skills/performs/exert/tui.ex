@@ -26,32 +26,32 @@ defmodule Kantele.Combat.Skills.Performs.Exert.Tui do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "force"}, {"dp", "force"}, {"skill", "hamagong"}],
-      #     level_gates: [],
-      #     map_gates: [],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "4000"}, {"neili", "1000"}],
-      #     var_gates: [{"dp", "1"}, {"skill", "240"}]
-      #   }
+  #   %{
+  #     assign_refs: [{"ap", "force"}, {"dp", "force"}, {"skill", "hamagong"}],
+  #     level_gates: [],
+  #     map_gates: [],
+  #     prepared_gates: [],
+  #     resource_gates: [{"max_neili", "4000"}, {"neili", "1000"}],
+  #     var_gates: [{"dp", "1"}, {"skill", "240"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-200"}, {"neili", "-300"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2);", "me->start_busy(2);", "me->start_busy(3);",
-      #      "target->start_busy(1);"],
-      #     remote_damage: true,
-      #     set_flags: [{"neili", "0"}],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(2);
-      #   - me->start_busy(2);
-      #   - me->start_busy(3);
-      #   - target->start_busy(1);
+    #   %{
+    #     add_costs: [{"neili", "-200"}, {"neili", "-300"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(2);", "me->start_busy(2);", "me->start_busy(3);",
+    #      "target->start_busy(1);"],
+    #     remote_damage: true,
+    #     set_flags: [{"neili", "0"}],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(2);
+    #   - me->start_busy(2);
+    #   - me->start_busy(3);
+    #   - target->start_busy(1);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

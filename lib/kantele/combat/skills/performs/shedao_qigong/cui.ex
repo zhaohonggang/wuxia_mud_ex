@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 220}
@@ -97,9 +99,9 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N一声暴喝，双掌一起击出，霎时间飞砂走石，$n只觉得几乎窒息。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -125,7 +127,13 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    result = Messages.interpolate("$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n只觉得$N内力犹如排山倒海一般，怎能抵挡？“哇”的一下吐出一大口鲜血。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

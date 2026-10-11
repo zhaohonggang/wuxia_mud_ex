@@ -27,12 +27,13 @@ defmodule Kantele.World.Story.Huanyin do
       "这一日黄昏，$N正与众人茶楼闲谈，忽一灰袍人抛下一卷旧书，道：有缘者得之。",
       "$N展开书卷，指尖竟丝丝发凉，那书上赫然写着四个字：幻阴指法。",
       "你抬起头时，那灰袍人已消失在人海之中。",
-      {:action, fn ->
-        case Gift.drop_to_room(inner[:room_id], "book/guigu", "\n“啪”的一声，一本书掉到你面前。\n\n") do
-          :ok -> "江湖传言，幻阴指法的残卷终于又现人间，无数门派弟子闻风而动。"
-          _other -> nil
-        end
-      end}
+      {:action,
+       fn ->
+         case Gift.drop_to_room(inner[:room_id], "book/guigu", "\n“啪”的一声，一本书掉到你面前。\n\n") do
+           :ok -> "江湖传言，幻阴指法的残卷终于又现人间，无数门派弟子闻风而动。"
+           _other -> nil
+         end
+       end}
     ]
 
     Lines.step_lines(lines, index, inner)

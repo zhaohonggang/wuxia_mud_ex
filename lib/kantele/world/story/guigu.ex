@@ -28,12 +28,13 @@ defmodule Kantele.World.Story.Guigu do
       "寂寞天星之道，幽幽千古，几多禁令皆在这本书间化作泡影。",
       "据说得到此书的$N，只要潜心诵读，便可窥见天机，占卜算命样样精通。",
       "据说此书经百年沧海桑田、群雄冶炼，方成为如今这本通体清光流转的奇书。",
-      {:action, fn ->
-        case Gift.drop_to_room(inner[:room_id], "book/guigu", "\n“啪”的一声，一本古书掉到你面前。\n\n") do
-          :ok -> "那一夜无星无月，枯骨之旁多了一本书，遥对九霄。"
-          _other -> nil
-        end
-      end},
+      {:action,
+       fn ->
+         case Gift.drop_to_room(inner[:room_id], "book/guigu", "\n“啪”的一声，一本古书掉到你面前。\n\n") do
+           :ok -> "那一夜无星无月，枯骨之旁多了一本书，遥对九霄。"
+           _other -> nil
+         end
+       end},
       "所谓世外高人，大约就是这般，把奇书随手赠人，飘然而去。"
     ]
 

@@ -32,7 +32,8 @@ defmodule Kantele.Quest.RewardTest do
   end
 
   test "final：任务在办中按类型/难度/连续放大并叠加 turn_rewards" do
-    {:ok, state} = Quest.set_todo(Quest.new(), %{file: "kill-quest", type: "kill", level: 3, kill: ["yezhu"]})
+    {:ok, state} =
+      Quest.set_todo(Quest.new(), %{file: "kill-quest", type: "kill", level: 3, kill: ["yezhu"]})
 
     final = Reward.final(state, "kill-quest", %{coins: 100})
 
@@ -45,7 +46,8 @@ defmodule Kantele.Quest.RewardTest do
   test "final：quest_count 影响连续放大" do
     state = %{Quest.new() | quest_count: 9}
 
-    {:ok, state} = Quest.set_todo(state, %{file: "kill-quest", type: "kill", level: 1, kill: ["yezhu"]})
+    {:ok, state} =
+      Quest.set_todo(state, %{file: "kill-quest", type: "kill", level: 1, kill: ["yezhu"]})
 
     # streak+1 = 10 → +50%；level 1 → +10% → factor 1.6；exp 300*1.6 = 480
     assert Reward.final(state, "kill-quest", %{}) == %{
@@ -67,7 +69,8 @@ defmodule Kantele.Quest.RewardTest do
   test "final：连续完成命中里程碑时叠加 milestone_bonus" do
     state = %{Quest.new() | quest_count: 29}
 
-    {:ok, state} = Quest.set_todo(state, %{file: "kill-quest", type: "kill", level: 1, kill: ["yezhu"]})
+    {:ok, state} =
+      Quest.set_todo(state, %{file: "kill-quest", type: "kill", level: 1, kill: ["yezhu"]})
 
     final = Reward.final(state, "kill-quest", %{})
 

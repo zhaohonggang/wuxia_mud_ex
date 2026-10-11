@@ -88,7 +88,7 @@ defmodule Kantele.Character.SummonCommand do
 
   defp attempt_summon(conn, character, _item_id, item_template) do
     vitals = character.meta.vitals
-    jingli = is_map(vitals) && Map.get(vitals, :jingli, 0) || 0
+    jingli = (is_map(vitals) && Map.get(vitals, :jingli, 0)) || 0
 
     if jingli < @jingli_cost do
       conn

@@ -5,7 +5,10 @@ defmodule Kantele.World.RoomTest do
 
   defp fresh_room_channel() do
     room_id = "t0-room-#{System.unique_integer([:positive])}"
-    :ok = Kantele.Communication.register("rooms:#{room_id}", Kantele.RoomChannel, room_id: room_id)
+
+    :ok =
+      Kantele.Communication.register("rooms:#{room_id}", Kantele.RoomChannel, room_id: room_id)
+
     room_id
   end
 

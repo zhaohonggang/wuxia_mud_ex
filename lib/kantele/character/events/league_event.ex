@@ -14,7 +14,9 @@ defmodule Kantele.Character.LeagueEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
 
-  def joined(conn, %{data: %{league_name: league_name, leader_id: leader_id, leader_name: leader_name}}) do
+  def joined(conn, %{
+        data: %{league_name: league_name, leader_id: leader_id, leader_name: leader_name}
+      }) do
     character = conn.character
 
     league = %{
@@ -37,7 +39,8 @@ defmodule Kantele.Character.LeagueEvent do
     character = conn.character
 
     meta =
-      if PlayerMeta.league(character.meta) && PlayerMeta.league(character.meta)[:league_name] == league_name do
+      if PlayerMeta.league(character.meta) &&
+           PlayerMeta.league(character.meta)[:league_name] == league_name do
         PlayerMeta.put_league(character.meta, nil)
       else
         character.meta
@@ -53,7 +56,8 @@ defmodule Kantele.Character.LeagueEvent do
     character = conn.character
 
     meta =
-      if PlayerMeta.league(character.meta) && PlayerMeta.league(character.meta)[:league_name] == league_name do
+      if PlayerMeta.league(character.meta) &&
+           PlayerMeta.league(character.meta)[:league_name] == league_name do
         PlayerMeta.put_league(character.meta, nil)
       else
         character.meta

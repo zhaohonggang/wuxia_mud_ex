@@ -169,6 +169,7 @@ defmodule Kantele.Combat.Skills.SankuShengong.Roar do
       # 全房间 AoE 退化为对战斗敌人发 perform-incoming（与 jie/dan 一致；
       # LPC 全房间广播差异记 TODO(migrate)）。
       room_chars = combat.enemies
+
       Enum.each(room_chars, fn target ->
         if not target.meta.combat.dead do
           send(target.pid, %Event{
@@ -216,8 +217,13 @@ defmodule Kantele.Combat.Skills.SankuShengong.Roar do
           new_max_jing = max(new_max_jing - damage, 0)
         end
 
-        new_character =
-          %{character | meta: %{character.meta | vitals: %{character.meta.vitals | jing: new_jing, max_jing: new_max_jing}}}
+        new_character = %{
+          character
+          | meta: %{
+              character.meta
+              | vitals: %{character.meta.vitals | jing: new_jing, max_jing: new_max_jing}
+            }
+        }
 
         conn
         |> put_character(new_character)
@@ -233,7 +239,8 @@ defmodule Kantele.Combat.Skills.SankuShengong.Roar do
   end
 
   defp gate_requirements(%{character: character}) do
-    if character.meta.vitals.neili >= 500 && Stats.skill(character.meta.stats, "sanku-shengong") >= 50 do
+    if character.meta.vitals.neili >= 500 &&
+         Stats.skill(character.meta.stats, "sanku-shengong") >= 50 do
       :ok
     else
       {:error, "你鼓足真气\"喵\"的吼了一声, 结果吓走了几只老鼠。\n"}
@@ -248,4 +255,3 @@ defmodule Kantele.Combat.Skills.SankuShengong.Roar do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 end
-

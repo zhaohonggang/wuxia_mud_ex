@@ -22,7 +22,8 @@ defmodule Kantele.World.SharedNpcRestTest do
     "wujiang" => ~w(chengdu fuzhou guanwai huanghe kunlun luoyang shaolin suzhou zhongzhou),
     "kid1" => ~w(heimuya jingzhou lanzhou lingjiu luoyang suzhou tulong zhongzhou),
     "xunbu" => ~w(changan city jingzhou kunming lanzhou luoyang quanzhen zhongzhou),
-    "xiaoer2" => ~w(baituo huashan jingzhou kaifeng kunming lingxiao luoyang suzhou wudang zhongzhou),
+    "xiaoer2" =>
+      ~w(baituo huashan jingzhou kaifeng kunming lingxiao luoyang suzhou wudang zhongzhou),
     "guest" => ~w(fuzhou tianlongsi xuedao xueshan),
     "duke" => ~w(city luoyang)
   }
@@ -108,7 +109,7 @@ defmodule Kantele.World.SharedNpcRestTest do
              "jingzhou 的流氓应是 beijing 版（exp 10000）"
     end
 
-test "xiaoer2 认得 buy / list 两个命令", %{world: world} do
+    test "xiaoer2 认得 buy / list 两个命令", %{world: world} do
       # 注意要限定在本轮补的区里 —— 别的区（changan / beijing …）本来就有
       # xiaoer2 / duke，是各自 LPC 源转出来的，brain / goods 未必一样。
       c =
@@ -122,7 +123,7 @@ test "xiaoer2 认得 buy / list 两个命令", %{world: world} do
       assert Enum.any?(c.meta.greetings, &(&1 =~ "进来喝杯茶"))
     end
 
-  test "duke 会骂人（LPC 的 chat_msg 转成了 ChatChance 闲聊节点）", %{world: world} do
+    test "duke 会骂人（LPC 的 chat_msg 转成了 ChatChance 闲聊节点）", %{world: world} do
       c =
         Enum.find(world.characters, fn x ->
           x.name == "赌客" and x.meta.zone_id == "city"
@@ -135,7 +136,10 @@ test "xiaoer2 认得 buy / list 两个命令", %{world: world} do
       chat =
         Enum.find(nodes, fn
           %Kalevala.Brain.ConditionalSelector{nodes: inner} ->
-            Enum.any?(inner, &match?(%Kalevala.Brain.Condition{type: Kantele.Brain.Conditions.ChatChance}, &1))
+            Enum.any?(
+              inner,
+              &match?(%Kalevala.Brain.Condition{type: Kantele.Brain.Conditions.ChatChance}, &1)
+            )
 
           _ ->
             false
@@ -144,7 +148,10 @@ test "xiaoer2 认得 buy / list 两个命令", %{world: world} do
       assert chat, "赌客的 brain 里应有 ChatChance 闲聊节点"
 
       action =
-        Enum.find(chat.nodes, &match?(%Kalevala.Brain.Action{type: Kantele.Character.ChatAction}, &1))
+        Enum.find(
+          chat.nodes,
+          &match?(%Kalevala.Brain.Action{type: Kantele.Character.ChatAction}, &1)
+        )
 
       assert Enum.any?(action.data.lines, &(&1 =~ "手气")),
              "应保留 LPC 那句「今天爷的手气怎么那么不顺」"

@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 1000}
     vitals = %{vitals | neili: vitals.neili - 500}
@@ -115,9 +117,11 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "只见$N双目微闭，单手托天。掌心顿时腾起一个无比刺眼的气团，正是奥
+义「魔光日无极」。霎时金光万道，尘沙四起，空气炽热，几欲沸腾。$N
+随即收拢掌心，气团爆裂开来，向四周电射而出，光芒足以和日月争辉。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -145,6 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
 只见跌跌撞撞向后连退数步，伏倒在地。须眉、衣衫都发出一股焦臭。
 光芒闪过，却是呆立当场，动也不动，七窍流血，神情扭曲，煞是恐怖。
 急忙抽身后退，可只见眼前光芒暴涨，一闪而过。全身已多了数个伤口，鲜血飞溅。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

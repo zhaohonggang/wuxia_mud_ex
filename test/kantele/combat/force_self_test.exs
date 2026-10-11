@@ -31,7 +31,7 @@ defmodule Kantele.Combat.ForceSelfTest do
   defp build_test_conn(opts \\ []) do
     # Accept both keyword lists and maps
     opts = if is_list(opts), do: Enum.into(opts, %{}), else: opts
-    
+
     # Allow passing a pre-built stats struct, or build from individual params
     base_stats = Map.get(opts, :base_stats, nil)
     skills = Map.get(opts, :skills, %{"force" => 300})
@@ -65,6 +65,7 @@ defmodule Kantele.Combat.ForceSelfTest do
       combat: combat,
       temp: temp
     }
+
     meta = Map.put(meta, :conditions, meta_conditions)
 
     attributes = %{"special_skills" => Enum.into(special_skills, %{}, fn s -> {s, true} end)}
@@ -96,6 +97,7 @@ defmodule Kantele.Combat.ForceSelfTest do
     |> Enum.flat_map(fn
       {:publish, _channel, %Kalevala.Event{topic: Kalevala.Event.Message, data: data}, _, _} ->
         [data.text]
+
       _ ->
         []
     end)
@@ -113,6 +115,7 @@ defmodule Kantele.Combat.ForceSelfTest do
       skills: %{"force" => 60},
       special_skills: []
     }
+
     Map.merge(base, Enum.into(opts, %{}))
   end
 
@@ -123,25 +126,35 @@ defmodule Kantele.Combat.ForceSelfTest do
       skills: %{"force" => 300},
       special_skills: ["breakup"]
     }
+
     Map.merge(base, Enum.into(opts, %{}))
   end
 
   # Helper: base character that passes all tianmo gates except the one being tested
   defp tianmo_ready(opts \\ []) do
-    base_stats = struct(Stats.new(), %{
-      str: 35,
-      con: 35,
-      int: 30,
-      dex: 30,
-      shen: -20000000,
-      skills: %{"force" => 400, "martial-cognize" => 400, "dodge" => 100, "parry" => 100}
-    })
+    base_stats =
+      struct(Stats.new(), %{
+        str: 35,
+        con: 35,
+        int: 30,
+        dex: 30,
+        shen: -20_000_000,
+        skills: %{"force" => 400, "martial-cognize" => 400, "dodge" => 100, "parry" => 100}
+      })
+
     base_vitals = %{@vitals | neili: 10000, qi: 1000, max_qi: 1000, jing: 1000, max_jing: 1000}
+
     base = %{
-      base_stats: struct(base_stats, skills: base_stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new()),
+      base_stats:
+        struct(base_stats,
+          skills: base_stats.skills,
+          mapped: %{"force" => "force"},
+          performs: MapSet.new()
+        ),
       vitals: base_vitals,
       skills: base_stats.skills
     }
+
     Map.merge(base, Enum.into(opts, %{}))
   end
 
@@ -177,7 +190,12 @@ defmodule Kantele.Combat.ForceSelfTest do
     end
 
     test "成功清空 conditions 并扣内力" do
-      conn = exert(build_test_conn(vitals: %{@vitals | neili: 500}, conditions: %{poison: 10, blind: 5}), "dispel")
+      conn =
+        exert(
+          build_test_conn(vitals: %{@vitals | neili: 500}, conditions: %{poison: 10, blind: 5}),
+          "dispel"
+        )
+
       updated = conn.private.update_character
 
       assert updated.meta.vitals.neili == 400
@@ -197,7 +215,11 @@ defmodule Kantele.Combat.ForceSelfTest do
 
   describe "heal (疗伤)" do
     test "战斗中被拒" do
-      combat = %{Combat.new() | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]}
+      combat = %{
+        Combat.new()
+        | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]
+      }
+
       conn = exert(build_test_conn(heal_ready(combat: combat)), "heal")
       assert output_text(conn) =~ "战斗中运功疗伤"
     end
@@ -232,19 +254,38 @@ defmodule Kantele.Combat.ForceSelfTest do
     end
 
     test "内力不足被拒" do
-      conn = exert(build_test_conn(heal_ready(vitals: %{@vitals | max_qi: 500, base_qi: 1000, neili: 30, qi: 400})), "heal")
+      conn =
+        exert(
+          build_test_conn(
+            heal_ready(vitals: %{@vitals | max_qi: 500, base_qi: 1000, neili: 30, qi: 400})
+          ),
+          "heal"
+        )
+
       assert output_text(conn) =~ "真气不够"
     end
 
     test "重伤且无 divine 被拒" do
       vitals = %{@vitals | max_qi: 100, base_qi: 1000, neili: 200}
-      conn = exert(build_test_conn(vitals: vitals, skills: %{"force" => 60}, special_skills: []), "heal")
+
+      conn =
+        exert(
+          build_test_conn(vitals: vitals, skills: %{"force" => 60}, special_skills: []),
+          "heal"
+        )
+
       assert output_text(conn) =~ "受伤过重"
     end
 
     test "重伤但有 divine 可用" do
       vitals = %{@vitals | max_qi: 100, base_qi: 1000, neili: 200}
-      conn = exert(build_test_conn(vitals: vitals, skills: %{"force" => 60}, special_skills: ["divine"]), "heal")
+
+      conn =
+        exert(
+          build_test_conn(vitals: vitals, skills: %{"force" => 60}, special_skills: ["divine"]),
+          "heal"
+        )
+
       updated = conn.private.update_character
       assert updated.meta.vitals.max_qi > 100
       assert updated.meta.vitals.neili == 150
@@ -263,7 +304,11 @@ defmodule Kantele.Combat.ForceSelfTest do
 
   describe "inspire (振奋精神)" do
     test "战斗中被拒" do
-      combat = %{Combat.new() | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]}
+      combat = %{
+        Combat.new()
+        | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]
+      }
+
       conn = exert(build_test_conn(inspire_ready(combat: combat)), "inspire")
       assert output_text(conn) =~ "正在战斗中"
     end
@@ -280,18 +325,39 @@ defmodule Kantele.Combat.ForceSelfTest do
 
     test "精力充盈被拒" do
       vitals = %{@vitals | max_jing: 1000, base_jing: 1000, neili: 300}
-      conn = exert(build_test_conn(vitals: vitals, skills: %{"force" => 300}, special_skills: ["breakup"]), "inspire")
+
+      conn =
+        exert(
+          build_test_conn(vitals: vitals, skills: %{"force" => 300}, special_skills: ["breakup"]),
+          "inspire"
+        )
+
       assert output_text(conn) =~ "精神饱满"
     end
 
     test "内力不足被拒" do
-      conn = exert(build_test_conn(inspire_ready(vitals: %{@vitals | max_jing: 500, base_jing: 1000, neili: 100, jing: 400})), "inspire")
+      conn =
+        exert(
+          build_test_conn(
+            inspire_ready(
+              vitals: %{@vitals | max_jing: 500, base_jing: 1000, neili: 100, jing: 400}
+            )
+          ),
+          "inspire"
+        )
+
       assert output_text(conn) =~ "真气不够"
     end
 
     test "精损伤太重被拒" do
       vitals = %{@vitals | max_jing: 200, base_jing: 1000, neili: 300}
-      conn = exert(build_test_conn(vitals: vitals, skills: %{"force" => 300}, special_skills: ["breakup"]), "inspire")
+
+      conn =
+        exert(
+          build_test_conn(vitals: vitals, skills: %{"force" => 300}, special_skills: ["breakup"]),
+          "inspire"
+        )
+
       assert output_text(conn) =~ "精损伤太重"
     end
 
@@ -330,8 +396,18 @@ defmodule Kantele.Combat.ForceSelfTest do
 
     test "战斗中 busy 1" do
       vitals = %{@vitals | max_qi: 1000, qi: 500, neili: 5000}
-      combat = %{Combat.new() | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]}
-      conn = exert(build_test_conn(vitals: vitals, skills: %{"force" => 200}, combat: combat), "recover")
+
+      combat = %{
+        Combat.new()
+        | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]
+      }
+
+      conn =
+        exert(
+          build_test_conn(vitals: vitals, skills: %{"force" => 200}, combat: combat),
+          "recover"
+        )
+
       updated = conn.private.update_character
 
       assert updated.meta.combat.busy == 1
@@ -370,8 +446,18 @@ defmodule Kantele.Combat.ForceSelfTest do
 
     test "战斗中 busy 1" do
       vitals = %{@vitals | max_jing: 1000, jing: 500, neili: 5000}
-      combat = %{Combat.new() | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]}
-      conn = exert(build_test_conn(vitals: vitals, skills: %{"force" => 200}, combat: combat), "regenerate")
+
+      combat = %{
+        Combat.new()
+        | enemies: [%{id: "e1", pid: self(), name: "敌", room_id: "test:room"}]
+      }
+
+      conn =
+        exert(
+          build_test_conn(vitals: vitals, skills: %{"force" => 200}, combat: combat),
+          "regenerate"
+        )
+
       updated = conn.private.update_character
 
       assert updated.meta.combat.busy == 1
@@ -390,18 +476,30 @@ defmodule Kantele.Combat.ForceSelfTest do
       stats = %{
         Stats.new()
         | str: 20,
-        con: 20,
-        shen: -20000000,
-        skills: %{"force" => 400, "martial-cognize" => 400}
+          con: 20,
+          shen: -20_000_000,
+          skills: %{"force" => 400, "martial-cognize" => 400}
       }
-      stats = struct(stats, skills: stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new())
+
+      stats =
+        struct(stats, skills: stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new())
+
       vitals = %{@vitals | neili: 10000}
       conn = exert(build_test_conn(base_stats: stats, vitals: vitals), "tianmo")
       assert output_text(conn) =~ "资质不适合"
     end
 
     test "内力不足被拒" do
-      conn = exert(build_test_conn(tianmo_ready(vitals: %{@vitals | neili: 7000, qi: 1000, max_qi: 1000, jing: 1000, max_jing: 1000})), "tianmo")
+      conn =
+        exert(
+          build_test_conn(
+            tianmo_ready(
+              vitals: %{@vitals | neili: 7000, qi: 1000, max_qi: 1000, jing: 1000, max_jing: 1000}
+            )
+          ),
+          "tianmo"
+        )
+
       assert output_text(conn) =~ "内力不够"
     end
 
@@ -409,11 +507,14 @@ defmodule Kantele.Combat.ForceSelfTest do
       stats = %{
         Stats.new()
         | str: 35,
-        con: 35,
-        shen: -100,
-        skills: %{"force" => 400, "martial-cognize" => 400}
+          con: 35,
+          shen: -100,
+          skills: %{"force" => 400, "martial-cognize" => 400}
       }
-      stats = struct(stats, skills: stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new())
+
+      stats =
+        struct(stats, skills: stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new())
+
       vitals = %{@vitals | neili: 10000}
       conn = exert(build_test_conn(base_stats: stats, vitals: vitals), "tianmo")
       assert output_text(conn) =~ "还没有入魔"
@@ -423,11 +524,14 @@ defmodule Kantele.Combat.ForceSelfTest do
       stats = %{
         Stats.new()
         | str: 35,
-        con: 35,
-        shen: -20000000,
-        skills: %{"force" => 200, "martial-cognize" => 400}
+          con: 35,
+          shen: -20_000_000,
+          skills: %{"force" => 200, "martial-cognize" => 400}
       }
-      stats = struct(stats, skills: stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new())
+
+      stats =
+        struct(stats, skills: stats.skills, mapped: %{"force" => "force"}, performs: MapSet.new())
+
       vitals = %{@vitals | neili: 10000}
       conn = exert(build_test_conn(base_stats: stats, vitals: vitals), "tianmo")
       assert output_text(conn) =~ "修行还不够"

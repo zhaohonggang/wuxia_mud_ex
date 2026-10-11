@@ -70,6 +70,7 @@ defmodule CrossZoneWiringTest do
       exit = Enum.find(room.exits, &(&1.exit_name == dir))
 
       assert exit != nil, "#{room_id} has no #{dir} exit"
+
       assert exit.end_room_id == want,
              "#{room_id} -#{dir}-> should be #{want}, got #{inspect(exit.end_room_id)}"
     end
@@ -87,6 +88,7 @@ defmodule CrossZoneWiringTest do
     for dir <- ["west", "south"] do
       exit = Enum.find(cao1.exits, &(&1.exit_name == dir))
       assert exit != nil, "cao1 lost its #{dir} self-loop"
+
       assert exit.end_room_id == "baituo:cao1",
              "cao1 -#{dir}-> should return to baituo:cao1, got #{inspect(exit.end_room_id)}"
     end
@@ -130,9 +132,7 @@ defmodule CrossZoneWiringTest do
 
     unreachable = MapSet.difference(all, seen)
 
-    IO.puts(
-      "\nreachable from city:guangchang: #{MapSet.size(seen)}/#{MapSet.size(all)} rooms"
-    )
+    IO.puts("\nreachable from city:guangchang: #{MapSet.size(seen)}/#{MapSet.size(all)} rooms")
 
     IO.puts("unreachable: #{inspect(MapSet.to_list(unreachable))}")
 
@@ -268,9 +268,11 @@ defmodule CrossZoneWiringTest do
   @tag :world_data
   test "two-way cross-zone edges use the opposite direction name" do
     w = world()
-    known_asym = Enum.flat_map(@asymmetric, fn {src, pairs} ->
-      for {dir, _back} <- pairs, do: {src, dir}
-    end)
+
+    known_asym =
+      Enum.flat_map(@asymmetric, fn {src, pairs} ->
+        for {dir, _back} <- pairs, do: {src, dir}
+      end)
 
     wrong =
       for {src, dir, tgt} <- cross_zone_edges(w),

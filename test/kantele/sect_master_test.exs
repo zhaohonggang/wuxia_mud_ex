@@ -17,10 +17,19 @@ defmodule Kantele.SectMasterTest do
           family_name: "武当派",
           teach: %{
             family: "武当派",
-            teach_skills: %{"sword" => %{max: 40, gongxian: 2}, "force" => %{max: 30, gongxian: 2}},
+            teach_skills: %{
+              "sword" => %{max: 40, gongxian: 2},
+              "force" => %{max: 30, gongxian: 2}
+            },
             no_teach: []
           },
-          apprentice: %{family: "武当派", min_shen: 20_000, min_exp: 300_000, min_skills: %{}, no_recruit: []},
+          apprentice: %{
+            family: "武当派",
+            min_shen: 20_000,
+            min_exp: 300_000,
+            min_skills: %{},
+            no_recruit: []
+          },
           stats: %{combat_exp: 300_000, shen: 20_000, skills: %{"sword" => 40, "force" => 30}}
         }
       },
@@ -76,7 +85,11 @@ defmodule Kantele.SectMasterTest do
 
     student_family_map = %{name: "武当派", master_id: nil, master_name: nil}
 
-    assert Kantele.SectMaster.teachable?(npc_teacher, %{meta: %{family: student_family_map}}, "taiji-quan") ==
+    assert Kantele.SectMaster.teachable?(
+             npc_teacher,
+             %{meta: %{family: student_family_map}},
+             "taiji-quan"
+           ) ==
              {:error, "你已入别派，老夫不便传授。\n"}
   end
 
@@ -114,7 +127,10 @@ defmodule Kantele.SectMasterTest do
       })
 
     weak_student = %{
-      meta: %{family: %{name: "武当派"}, stats: %{combat_exp: 100_000, shen: 100, skills: %{"force" => 20}}}
+      meta: %{
+        family: %{name: "武当派"},
+        stats: %{combat_exp: 100_000, shen: 100, skills: %{"force" => 20}}
+      }
     }
 
     assert {:error, "你根基尚浅，这几样本事还未练成，先回去打好基础再来吧。\n"} =
@@ -122,11 +138,9 @@ defmodule Kantele.SectMasterTest do
   end
 
   test "detach_penalty?/2：同门派叛师惩罚（family map 入参）" do
-    assert {:penalty, _msg} =
-             Kantele.SectMaster.detach_penalty?(%{name: "武当派"}, %{name: "武当派"})
+    assert {:penalty, _msg} = Kantele.SectMaster.detach_penalty?(%{name: "武当派"}, %{name: "武当派"})
 
-    assert {:noop} =
-             Kantele.SectMaster.detach_penalty?(%{name: "武当派"}, %{name: "峨眉派"})
+    assert {:noop} = Kantele.SectMaster.detach_penalty?(%{name: "武当派"}, %{name: "峨眉派"})
   end
 
   defp teacher_student do

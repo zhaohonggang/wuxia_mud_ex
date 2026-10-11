@@ -165,7 +165,11 @@ defmodule Kantele.Character.LearnTimesTest do
       combat: Kantele.Character.Combat.new()
     })
     |> Map.update!(:meta, fn meta ->
-      Map.put(meta, :teach, %{family: "武当派", teach_skills: %{"sword" => %{max: 40, gongxian: 2}}, no_teach: []})
+      Map.put(meta, :teach, %{
+        family: "武当派",
+        teach_skills: %{"sword" => %{max: 40, gongxian: 2}},
+        no_teach: []
+      })
     end)
   end
 

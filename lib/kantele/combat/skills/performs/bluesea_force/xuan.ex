@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Xuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,7 +101,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Xuan do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -122,6 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Xuan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

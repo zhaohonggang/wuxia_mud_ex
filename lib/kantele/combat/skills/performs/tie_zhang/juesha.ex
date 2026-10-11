@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,14 +108,15 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | qi: vitals.qi - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N一声怒喝，猛然施出铁掌掌法绝技「九穹绝刹掌」！体内天雷真气急速运转，双臂陡然
+暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -138,6 +141,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     Performs.feedback(attacker, 300, 1)
     result = Messages.interpolate("$N一声怒喝，猛然施出铁掌掌法绝技「九穹绝刹掌」！体内天雷真气急速运转，双臂陡然
 暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

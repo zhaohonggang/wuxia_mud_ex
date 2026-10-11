@@ -87,7 +87,7 @@ defmodule Kantele.Combat.FurongJinzhenTest do
 
   describe "金针现影（攻击方门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"furong-jinzhen" => 80, "force" => 120}, performs: MapSet.new()])
+      conn = perform(skills: %{"furong-jinzhen" => 80, "force" => 120}, performs: MapSet.new())
       assert output_text(conn) =~ "外功中没有这种功能"
     end
 
@@ -120,19 +120,20 @@ defmodule Kantele.Combat.FurongJinzhenTest do
     end
 
     test "芙蓉金针不足被拒" do
-      conn = perform([skills: %{"furong-jinzhen" => 79, "force" => 120}])
+      conn = perform(skills: %{"furong-jinzhen" => 79, "force" => 120})
       assert output_text(conn) =~ "芙蓉金针不够娴熟"
     end
 
     test "内功不足被拒" do
-      conn = perform([skills: %{"furong-jinzhen" => 80, "force" => 119}])
+      conn = perform(skills: %{"furong-jinzhen" => 80, "force" => 119})
       assert output_text(conn) =~ "内功火候不够"
     end
 
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"furong-jinzhen" => 80, "force" => 120}, vitals: %{@vitals | neili: 149}]
+          skills: %{"furong-jinzhen" => 80, "force" => 120},
+          vitals: %{@vitals | neili: 149}
         )
 
       assert output_text(conn) =~ "内力不够"
@@ -140,11 +141,12 @@ defmodule Kantele.Combat.FurongJinzhenTest do
 
     test "成功放招投递目标侧事件并扣暗器数量" do
       conn =
-        perform([
+        perform(
           skills: %{"furong-jinzhen" => 80, "force" => 120, "throwing" => 60, "dodge" => 40}
-        ])
+        )
 
       assert published_text(conn) =~ "金光一闪"
+
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
         data: %{
@@ -189,7 +191,11 @@ defmodule Kantele.Combat.FurongJinzhenTest do
       assert updated.meta.vitals.qi == Vitals.new().qi - 71
       assert updated.meta.vitals.max_qi == Vitals.new().max_qi - 35
       assert published_text(conn) =~ "正中要穴"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 2}
+      }
     end
 
     test "命中文案带暗器名与量词" do
@@ -211,7 +217,11 @@ defmodule Kantele.Combat.FurongJinzhenTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "躲闪开来"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 2}
+      }
     end
 
     test "目标忙乱则忽略" do

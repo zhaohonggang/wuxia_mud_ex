@@ -49,12 +49,18 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Tian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform, ap: ap, level: Stats.skill(stats, "dagou-bang")}
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform,
+          ap: ap,
+          level: Stats.skill(stats, "dagou-bang")
+        }
       })
 
       conn
       |> Broadcast.publish(
-        "$N手中" <> (weapon && Map.get(weapon, :name)) <>
+        "$N手中" <>
+          (weapon && Map.get(weapon, :name)) <>
           "一卷，带起阵阵风声，犹若千百根相似，层层叠叠将$n笼罩其中。\n",
         n1: character.name,
         n2: target.name
@@ -69,7 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Tian do
   end
 
   defp ap(stats) do
-    Stats.skill(stats, "dagou-bang") + Stats.skill(stats, "begging") + Stats.skill(stats, "martial-cognize")
+    Stats.skill(stats, "dagou-bang") + Stats.skill(stats, "begging") +
+      Stats.skill(stats, "martial-cognize")
   end
 
   defp known(stats) do
@@ -121,7 +128,9 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Tian do
     bindings = [n1: attacker.name, n2: character.name]
     stats = character.meta.stats
 
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "count") + Stats.skill(stats, "martial-cognize")
+    dp =
+      Stats.skill(stats, "dodge") + Stats.skill(stats, "count") +
+        Stats.skill(stats, "martial-cognize")
 
     {attack_time, count, hit} =
       if div(ap, 2) + Engine.rand(rng, ap) > dp do

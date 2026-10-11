@@ -61,7 +61,7 @@ defmodule Kantele.World.ExitVetoContext do
   defp scope_is_room?(%{__struct__: _} = scope), do: match?(%{exits: _}, scope)
   defp scope_is_room?(_), do: false
 
-defp find_in_room(context, room, id) do
+  defp find_in_room(context, room, id) do
     # 优先用上下文的角色表（运行时就是该房间在场的人），退回房间自身的 characters
     characters =
       case Map.get(context, :characters) do

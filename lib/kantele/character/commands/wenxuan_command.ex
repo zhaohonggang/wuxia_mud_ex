@@ -19,7 +19,13 @@ defmodule Kantele.Character.WenxuanCommand do
         show_wenxuan_list(conn)
 
       arg == "new" ->
-        show_wenxuan_new(conn, :os.system_time(:second) |> DateTime.from_unix!() |> DateTime.to_date() |> Map.get(:year))
+        show_wenxuan_new(
+          conn,
+          :os.system_time(:second)
+          |> DateTime.from_unix!()
+          |> DateTime.to_date()
+          |> Map.get(:year)
+        )
 
       String.starts_with?(arg, "new ") ->
         year = String.trim(String.slice(arg, 4..-1)) |> String.to_integer()
@@ -30,6 +36,7 @@ defmodule Kantele.Character.WenxuanCommand do
         case Regex.run(~r/^add\s+(\d+)\s+from\s+(.+)$/, arg) do
           [_full, idx, board_name] ->
             add_from_board(conn, String.to_integer(idx), board_name)
+
           _ ->
             show_wenxuan_help(conn)
         end
@@ -39,6 +46,7 @@ defmodule Kantele.Character.WenxuanCommand do
         case Regex.run(~r/^del\s+(\d+)\s+(\d+)$/, arg) do
           [_full, year, idx] ->
             delete_analecta(conn, String.to_integer(year), String.to_integer(idx))
+
           _ ->
             show_wenxuan_help(conn)
         end
@@ -66,15 +74,16 @@ defmodule Kantele.Character.WenxuanCommand do
   end
 
   defp show_wenxuan_list(conn) do
-    year = :os.system_time(:second) |> DateTime.from_unix!() |> DateTime.to_date() |> Map.get(:year)
+    year =
+      :os.system_time(:second) |> DateTime.from_unix!() |> DateTime.to_date() |> Map.get(:year)
 
     case AnalectaService.query_analecta_list(year) do
       analectas when is_list(analectas) and analectas != [] ->
         msg = build_list_msg(analectas, year)
+
         conn
         |> render(CommandView, "text", %{text: msg})
         |> prompt(CommandView, "prompt", %{})
-
 
       _ ->
         conn
@@ -87,10 +96,10 @@ defmodule Kantele.Character.WenxuanCommand do
     case AnalectaService.query_analecta_list(year) do
       analectas when is_list(analectas) and analectas != [] ->
         msg = build_list_msg(analectas, year)
+
         conn
         |> render(CommandView, "text", %{text: msg})
         |> prompt(CommandView, "prompt", %{})
-
 
       _ ->
         conn
@@ -104,9 +113,11 @@ defmodule Kantele.Character.WenxuanCommand do
       analectas when is_list(analectas) and analectas != [] ->
         # 按时间倒序，取最新一篇
         analecta = List.first(analectas)
+
         case AnalectaService.get_analecta(year, analecta.id) do
           {:ok, analecta} ->
             show_analecta(conn, analecta, year, 1)
+
           _ ->
             conn
             |> render(CommandView, "text", %{text: "获取文选失败。\n"})
@@ -124,6 +135,7 @@ defmodule Kantele.Character.WenxuanCommand do
     case AnalectaService.get_analecta(year, index) do
       {:ok, analecta} ->
         show_analecta(conn, analecta, year, index)
+
       {:error, reason} ->
         conn
         |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -165,12 +177,13 @@ defmodule Kantele.Character.WenxuanCommand do
   defp build_list_msg(analectas, year) do
     header = "江湖文选 #{year} 年度选集：\n" <> String.duplicate("=", 60) <> "\n"
 
-    list = Enum.with_index(analectas, 1)
-    |> Enum.map(fn {a, i} ->
-      time_str = DateTime.from_unix!(a.time) |> DateTime.to_string("m-d H:M")
-      "#{i}. #{a.subject}  [#{a.author_name}]  #{time_str}  [#{a.board}]"
-    end)
-    |> Enum.join("\n")
+    list =
+      Enum.with_index(analectas, 1)
+      |> Enum.map(fn {a, i} ->
+        time_str = DateTime.from_unix!(a.time) |> DateTime.to_string("m-d H:M")
+        "#{i}. #{a.subject}  [#{a.author_name}]  #{time_str}  [#{a.board}]"
+      end)
+      |> Enum.join("\n")
 
     header <> list <> "\n"
   end

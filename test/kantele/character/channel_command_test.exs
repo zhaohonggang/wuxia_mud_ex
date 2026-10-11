@@ -54,9 +54,10 @@ defmodule Kantele.Character.ChannelCommandTest do
       p = player()
       conn = ChannelCommand.general(build_conn(p), %{"text" => "大家好"})
 
-      changes = Enum.filter(conn.private.channel_changes, fn change ->
-        elem(change, 0) == :publish && elem(change, 1) == "general"
-      end)
+      changes =
+        Enum.filter(conn.private.channel_changes, fn change ->
+          elem(change, 0) == :publish && elem(change, 1) == "general"
+        end)
 
       assert length(changes) == 1
     end

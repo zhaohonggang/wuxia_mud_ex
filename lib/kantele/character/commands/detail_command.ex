@@ -203,27 +203,27 @@ defmodule Kantele.Character.DetailCommand do
     Map.get(character.meta, :vitals, Kantele.Character.Vitals.new())
   end
 
-defp item_instances(character) do
-  character
-  |> Map.get(:inventory, [])
-  |> normalize_inventory()
-  |> Enum.flat_map(fn item_instance ->
-    case item_instance.item do
-      %Kalevala.World.Item.ItemNotLoaded{} ->
-        case safe_item(item_instance) do
-          nil -> []
-          item -> [%{item_instance | item: item}]
-        end
+  defp item_instances(character) do
+    character
+    |> Map.get(:inventory, [])
+    |> normalize_inventory()
+    |> Enum.flat_map(fn item_instance ->
+      case item_instance.item do
+        %Kalevala.World.Item.ItemNotLoaded{} ->
+          case safe_item(item_instance) do
+            nil -> []
+            item -> [%{item_instance | item: item}]
+          end
 
-      item ->
-        [%{item_instance | item: item}]
-    end
-  end)
-end
+        item ->
+          [%{item_instance | item: item}]
+      end
+    end)
+  end
 
-defp normalize_inventory(items) when is_list(items), do: items
+  defp normalize_inventory(items) when is_list(items), do: items
 
-defp normalize_inventory(_other), do: []
+  defp normalize_inventory(_other), do: []
 
   defp safe_item(instance) do
     Items.get!(instance.item_id)

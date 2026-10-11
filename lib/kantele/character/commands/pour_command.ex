@@ -25,7 +25,15 @@ defmodule Kantele.Character.PourCommand do
         {:ok, poison_item, poison_instance} ->
           case find_liquid_container(character, target_name) do
             {:ok, container_item, container_instance} ->
-              pour_liquid(conn, character, poison_item, poison_instance, container_item, container_instance)
+              pour_liquid(
+                conn,
+                character,
+                poison_item,
+                poison_instance,
+                container_item,
+                container_instance
+              )
+
             {:error, reason} ->
               conn
               |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -52,10 +60,13 @@ defmodule Kantele.Character.PourCommand do
       item.callback_module.matches?(item, name)
     end)
     |> case do
-      nil -> {:error, "你身上没有这样毒药。"}
+      nil ->
+        {:error, "你身上没有这样毒药。"}
+
       instance ->
         item = Items.get!(instance.item_id)
         attrs = Map.get(item, :attrs, %{}) || %{}
+
         if attrs["can_pour"] == true && attrs["poison_type"] do
           {:ok, item, instance}
         else
@@ -70,11 +81,15 @@ defmodule Kantele.Character.PourCommand do
       item.callback_module.matches?(item, name)
     end)
     |> case do
-      nil -> {:error, "你身上没有这样容器。"}
+      nil ->
+        {:error, "你身上没有这样容器。"}
+
       instance ->
         item = Items.get!(instance.item_id)
         attrs = Map.get(item, :attrs, %{}) || %{}
-        if attrs["liquid"] == true && is_integer(attrs["liquid/remaining"]) && attrs["liquid/remaining"] > 0 do
+
+        if attrs["liquid"] == true && is_integer(attrs["liquid/remaining"]) &&
+             attrs["liquid/remaining"] > 0 do
           {:ok, item, instance}
         else
           {:error, "这不是装有液体的容器。"}
@@ -82,7 +97,14 @@ defmodule Kantele.Character.PourCommand do
     end
   end
 
-  defp pour_liquid(conn, character, poison_item, poison_instance, container_item, container_instance) do
+  defp pour_liquid(
+         conn,
+         character,
+         poison_item,
+         poison_instance,
+         container_item,
+         container_instance
+       ) do
     container_meta = container_item.meta || %{}
     container_attrs = Map.get(container_item, :attrs, %{}) || %{}
 
@@ -109,17 +131,27 @@ defmodule Kantele.Character.PourCommand do
 
       # 从背包移除毒药
       new_inventory = Enum.reject(character.inventory, &(&1.id == poison_instance.id))
-      new_inventory = Enum.map(new_inventory, fn inst ->
-        if inst.id == container_instance.id, do: updated_container, else: inst
-      end)
+
+      new_inventory =
+        Enum.map(new_inventory, fn inst ->
+          if inst.id == container_instance.id, do: updated_container, else: inst
+        end)
 
       # 扣除毒药使用次数或直接移除
       poison_attrs = Map.get(poison_item, :attrs, %{}) || %{}
+
       if poison_attrs["remaining_uses"] && poison_attrs["remaining_uses"] > 1 do
-        new_poison = Map.put(poison_item, :attrs, Map.put(poison_attrs, "remaining_uses", poison_attrs["remaining_uses"] - 1))
-        new_inventory = Enum.map(new_inventory, fn inst ->
-          if inst.id == poison_instance.id, do: new_poison, else: inst
-        end)
+        new_poison =
+          Map.put(
+            poison_item,
+            :attrs,
+            Map.put(poison_attrs, "remaining_uses", poison_attrs["remaining_uses"] - 1)
+          )
+
+        new_inventory =
+          Enum.map(new_inventory, fn inst ->
+            if inst.id == poison_instance.id, do: new_poison, else: inst
+          end)
       end
 
       new_character = %{character | inventory: new_inventory}

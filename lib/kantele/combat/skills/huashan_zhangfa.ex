@@ -151,5 +151,4 @@ defmodule Kantele.Combat.Skills.HuashanZhangfa do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

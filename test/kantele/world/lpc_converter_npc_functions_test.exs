@@ -23,7 +23,12 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
   describe "init() 抽取" do
     test "xiaoer：add_action 注册命令与 greeting 延迟" do
       ast = parse(@xiaoer_path)
-      assert ast.enter == %{greet_delay: 1, add_actions: ["drop", "exchange", "duihuan"], heartbeat: 0}
+
+      assert ast.enter == %{
+               greet_delay: 1,
+               add_actions: ["drop", "exchange", "duihuan"],
+               heartbeat: 0
+             }
     end
 
     test "worker-liu：只声明 set_heart_beat" do
@@ -75,8 +80,11 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "xiaoer：build_accept_ucl 台词池输出 msg 列表" do
-      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@xiaoer_path),
-        base_path: "test_minimal_world_v2_modified/npc")
+      {:ok, {ucl, _comments}} =
+        LPCConverter.convert_string(File.read!(@xiaoer_path),
+          base_path: "test_minimal_world_v2_modified/npc"
+        )
+
       assert ucl =~ "msg = [\"好！好！\", \"不需要的东西全给我！\"]"
     end
 
@@ -111,17 +119,22 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
       any = Enum.find(ast.accept, &(&1.kind == "any"))
 
       assert any.accept == true
+
       assert any.msg == [
                "金花抹了把眼泪，不好意思道：这位见笑了。我实在没什么东西报答你，不过我知道山贼头有个钱箱藏在床下。我这就搬出来给你。",
                "{npc}帮金花从床下搬出来一只钱箱，迫不及待地打开一看，里面竟然搁着一大堆白银。{npc}毫不客气地把白银装进衣服里。",
                "金花双手捧着绣花鞋，泪如雨下道：娘，您还挂着女儿啊。"
              ]
+
       assert any.fail_msg == ["你没有这件东西。", "金花说道：你给我这个东西干嘛？", "金花说道：我已经有绣花鞋了。"]
     end
 
     test "jinhua：build_accept_ucl 输出 fail_msg 台词池" do
-      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@jinhua_path),
-        base_path: "test_minimal_world_v2_modified/npc")
+      {:ok, {ucl, _comments}} =
+        LPCConverter.convert_string(File.read!(@jinhua_path),
+          base_path: "test_minimal_world_v2_modified/npc"
+        )
+
       assert ucl =~ "fail_msg = [\"你没有这件东西。\", \"金花说道：你给我这个东西干嘛？\", \"金花说道：我已经有绣花鞋了。\"]"
     end
   end
@@ -133,6 +146,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
 
       assert sets["chat_chance"] == {:int, 5}
       assert {:array, lines} = sets["chat_msg"]
+
       assert Enum.map(lines, &elem(&1, 1)) == [
                "金花哭泣着：我的命怎么这么苦哟。\\n",
                "金花抹着眼泪：娘呀，我好想你呀！\\n",
@@ -141,8 +155,11 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "jinhua：build_chat 输出 chat_chance + chats 列表" do
-      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@jinhua_path),
-        base_path: "test_minimal_world_v2_modified/npc")
+      {:ok, {ucl, _comments}} =
+        LPCConverter.convert_string(File.read!(@jinhua_path),
+          base_path: "test_minimal_world_v2_modified/npc"
+        )
+
       assert ucl =~ "chat_chance = 5"
       assert ucl =~ "\"金花哭泣着：我的命怎么这么苦哟。\""
       assert ucl =~ "\"金花抹着眼泪：娘呀，我好想你呀！\""
@@ -219,8 +236,10 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
     end
 
     test "generate_npc_ucl：engage 块输出完整" do
-      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(@shouwei_path),
-        base_path: "test_minimal_world_v2_modified/npc")
+      {:ok, {ucl, _comments}} =
+        LPCConverter.convert_string(File.read!(@shouwei_path),
+          base_path: "test_minimal_world_v2_modified/npc"
+        )
 
       assert String.contains?(ucl, "engage = {")
       assert String.contains?(ucl, "fight = { accept = false")
@@ -242,6 +261,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
 
       [table] = u[:switch_tables]
       assert table.expr == "arg"
+
       assert [%{key: "血菩提", cols: [{"cost", "5"}, {"ob", "new (\"/clone/fam/pill/puti1\")"}]} | _] =
                table.rows
     end
@@ -270,6 +290,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
 
       # 无 else 的独立 if 独立成链
       isolated = Enum.find(cb["update_condition"], fn c -> length(c) == 1 end)
+
       assert {isolated |> hd() |> Map.fetch!(:kind), isolated |> hd() |> Map.fetch!(:cond)} ==
                {:if, ~s{me->query("food") > 0 && me->query("water") > 0}}
 
@@ -291,12 +312,19 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
 
     test "UCL 注释含 CONDITIONAL BRANCHES 节" do
       path = "test_minimal_world_v2_modified/condition/hunger.c"
-      {:ok, {ucl, _comments}} = LPCConverter.convert_string(File.read!(path),
-        base_path: "test_minimal_world_v2_modified/condition")
+
+      {:ok, {ucl, _comments}} =
+        LPCConverter.convert_string(File.read!(path),
+          base_path: "test_minimal_world_v2_modified/condition"
+        )
 
       assert String.contains?(_comments, "# ==== CONDITIONAL BRANCHES ====")
       assert String.contains?(_comments, "# ==== CONDITIONAL BRANCHES (update_condition) ====")
-      assert String.contains?(_comments, "if (me->query(\"food\") > 0 && me->query(\"water\") > 0)")
+
+      assert String.contains?(
+               _comments,
+               "if (me->query(\"food\") > 0 && me->query(\"water\") > 0)"
+             )
     end
   end
 end

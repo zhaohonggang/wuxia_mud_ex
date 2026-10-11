@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,16 +101,17 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N默运内功，施展出，全身急速转动起来，越来越快，就
+犹如一股旋风，骤然间，$N已卷向正看得发呆的$n。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -136,6 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Lei do
     Performs.feedback(attacker, 400, 3)
     result = Messages.interpolate("$p只见一阵旋风影中陡然现出$P的双拳，根本来不及躲避，被重重击中，
 五脏六腑翻腾不休，口中鲜血如箭般喷出！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

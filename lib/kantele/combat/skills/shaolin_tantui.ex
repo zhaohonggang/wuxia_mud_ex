@@ -151,5 +151,4 @@ defmodule Kantele.Combat.Skills.ShaolinTantui do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

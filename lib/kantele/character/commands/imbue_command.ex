@@ -22,7 +22,14 @@ defmodule Kantele.Character.ImbueCommand do
         {:ok, special_name, weapon_name} ->
           case find_items(character, special_name, weapon_name) do
             {:ok, special_item, special_instance, weapon_item, weapon_instance} ->
-              check_and_imbue(conn, character, special_item, special_instance, weapon_item, weapon_instance)
+              check_and_imbue(
+                conn,
+                character,
+                special_item,
+                special_instance,
+                weapon_item,
+                weapon_instance
+              )
 
             {:error, reason} ->
               fail(conn, reason <> "\n")
@@ -83,20 +90,43 @@ defmodule Kantele.Character.ImbueCommand do
     end
   end
 
-  defp check_and_imbue(conn, character, special_item, special_instance, weapon_item, weapon_instance) do
+  defp check_and_imbue(
+         conn,
+         character,
+         special_item,
+         special_instance,
+         weapon_item,
+         weapon_instance
+       ) do
     weapon_meta = get_craft_meta(weapon_instance)
     special_meta = get_item_meta(special_instance)
 
     case Craft.can_imbue?(weapon_meta, %{}, special_meta) do
       :ok ->
-        execute_imbue(conn, character, special_item, special_instance, weapon_item, weapon_instance, weapon_meta)
+        execute_imbue(
+          conn,
+          character,
+          special_item,
+          special_instance,
+          weapon_item,
+          weapon_instance,
+          weapon_meta
+        )
 
       {:error, reason} ->
         fail(conn, reason <> "\n")
     end
   end
 
-  defp execute_imbue(conn, character, special_item, special_instance, weapon_item, weapon_instance, weapon_meta) do
+  defp execute_imbue(
+         conn,
+         character,
+         special_item,
+         special_instance,
+         weapon_item,
+         weapon_instance,
+         weapon_meta
+       ) do
     {:ok, new_meta} = Craft.do_imbue(weapon_meta)
 
     new_attrs = Map.put(instance_attrs(weapon_instance), "craft", new_meta)
@@ -111,7 +141,9 @@ defmodule Kantele.Character.ImbueCommand do
     new_conn = put_character(conn, new_character)
 
     new_conn
-    |> render(CommandView, "text", %{text: "你把#{special_item.name}浸入了#{weapon_item.name}，#{weapon_item.name}泛起了一阵微光。\n"})
+    |> render(CommandView, "text", %{
+      text: "你把#{special_item.name}浸入了#{weapon_item.name}，#{weapon_item.name}泛起了一阵微光。\n"
+    })
     |> prompt(CommandView, "prompt", %{})
     |> Records.save(new_character)
   end

@@ -47,6 +47,7 @@ defmodule Kantele.Feature.Attack do
   @doc "是否标记为要杀目标（killer 列表）"
   def killing?(character, ob) do
     id = if is_binary(ob), do: ob, else: Map.get(ob, :id)
+
     if id == nil do
       length(killers(character)) > 0
     else
@@ -280,7 +281,11 @@ defmodule Kantele.Feature.Attack do
           0
         )
       else
-        set_action(character, fn _ -> Kantele.Combat.Skills.query_action(skill, 1, &:rand.uniform/1) end, 0)
+        set_action(
+          character,
+          fn _ -> Kantele.Combat.Skills.query_action(skill, 1, &:rand.uniform/1) end,
+          0
+        )
       end
     else
       if weapon do

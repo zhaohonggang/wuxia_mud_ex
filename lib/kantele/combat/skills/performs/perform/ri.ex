@@ -26,29 +26,29 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Ri do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "force"}, {"dp", "force"}],
-      #     level_gates: [{"jiuyang-shengong", "250"}],
-      #     map_gates: [{"force", "jiuyang-shengong"}, {"unarmed", "jiuyang-shengong"}],
-      #     prepared_gates: [{"unarmed", "jiuyang-shengong"}],
-      #     resource_gates: [{"max_neili", "8000"}, {"neili", "0"}, {"neili", "2000"}],
-      #     var_gates: []
-      #   }
+  #   %{
+  #     assign_refs: [{"ap", "force"}, {"dp", "force"}],
+  #     level_gates: [{"jiuyang-shengong", "250"}],
+  #     map_gates: [{"force", "jiuyang-shengong"}, {"unarmed", "jiuyang-shengong"}],
+  #     prepared_gates: [{"unarmed", "jiuyang-shengong"}],
+  #     resource_gates: [{"max_neili", "8000"}, {"neili", "0"}, {"neili", "2000"}],
+  #     var_gates: []
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-1000"}, {"neili", "-500"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(5);", "obs[i]->start_busy(1);"],
-      #     remote_damage: false,
-      #     set_flags: [{"neili", "0"}],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(5);
-      #   - obs[i]->start_busy(1);
+    #   %{
+    #     add_costs: [{"neili", "-1000"}, {"neili", "-500"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(5);", "obs[i]->start_busy(1);"],
+    #     remote_damage: false,
+    #     set_flags: [{"neili", "0"}],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(5);
+    #   - obs[i]->start_busy(1);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

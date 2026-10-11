@@ -40,7 +40,9 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -93,16 +95,17 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N幽幽一声长叹，手中的就如闪电般刺向$n的胸口。
+但见剑招轻盈灵动，优美华丽，就连杀人间也不带一丝尘俗之气。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -133,6 +136,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 只听$p一声惨叫，胸口已经被剑气所伤！
 $n重创之下不禁破绽迭出，$P见状随手刺出，又是一剑！
 就听$p又是一声惨叫，痛苦不堪。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

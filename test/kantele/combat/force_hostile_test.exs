@@ -35,7 +35,17 @@ defmodule Kantele.Combat.ForceHostileTest do
   end
 
   defp enemy(opts \\ []) do
-    vitals = Keyword.get(opts, :vitals, %{Vitals.new() | qi: 150, max_qi: 150, jing: 120, max_jing: 120, neili: 500, max_neili: 500})
+    vitals =
+      Keyword.get(opts, :vitals, %{
+        Vitals.new()
+        | qi: 150,
+          max_qi: 150,
+          jing: 120,
+          max_jing: 120,
+          neili: 500,
+          max_neili: 500
+      })
+
     stats = struct(Stats.new(), Keyword.take(opts, [:skills]))
     inventory = Keyword.get(opts, :inventory, [])
 
@@ -95,7 +105,10 @@ defmodule Kantele.Combat.ForceHostileTest do
   defp incoming(target_opts, data) do
     session = Keyword.get(target_opts, :session, %{})
     target_conn = build_conn(build_character(target_opts), session)
-    CombatEvent.perform_incoming(target_conn, %{data: Map.merge(%{attacker: attacker_ref()}, data)})
+
+    CombatEvent.perform_incoming(target_conn, %{
+      data: Map.merge(%{attacker: attacker_ref()}, data)
+    })
   end
 
   # ============== 疗伤（force/lifeheal）攻击方门槛 ==============
@@ -106,43 +119,66 @@ defmodule Kantele.Combat.ForceHostileTest do
   end
 
   test "lifeheal: 内功等级不足被拒" do
-    conn = exert([skills: %{"hunyuan-yiqi" => 49}, mapped: %{"force" => "hunyuan-yiqi"}], "lifeheal")
+    conn =
+      exert([skills: %{"hunyuan-yiqi" => 49}, mapped: %{"force" => "hunyuan-yiqi"}], "lifeheal")
+
     assert output_text(conn) =~ "内功等级不够"
   end
 
   test "lifeheal: 内力修为不足被拒" do
-    conn = exert([
-      skills: %{"hunyuan-yiqi" => 60},
-      mapped: %{"force" => "hunyuan-yiqi"},
-      vitals: %{@vitals | max_neili: 299}
-    ], "lifeheal")
+    conn =
+      exert(
+        [
+          skills: %{"hunyuan-yiqi" => 60},
+          mapped: %{"force" => "hunyuan-yiqi"},
+          vitals: %{@vitals | max_neili: 299}
+        ],
+        "lifeheal"
+      )
+
     assert output_text(conn) =~ "内力修为不够"
   end
 
   test "lifeheal: 真气不足被拒" do
-    conn = exert([
-      skills: %{"hunyuan-yiqi" => 60},
-      mapped: %{"force" => "hunyuan-yiqi"},
-      vitals: %{@vitals | neili: 149}
-    ], "lifeheal")
+    conn =
+      exert(
+        [
+          skills: %{"hunyuan-yiqi" => 60},
+          mapped: %{"force" => "hunyuan-yiqi"},
+          vitals: %{@vitals | neili: 149}
+        ],
+        "lifeheal"
+      )
+
     assert output_text(conn) =~ "真气不够"
   end
 
   test "lifeheal: 战斗中被拒" do
     combat = Combat.new() |> Map.put(:enemies, [enemy_ref()])
-    conn = exert([
-      skills: %{"hunyuan-yiqi" => 60},
-      mapped: %{"force" => "hunyuan-yiqi"},
-      combat: combat
-    ], "lifeheal")
+
+    conn =
+      exert(
+        [
+          skills: %{"hunyuan-yiqi" => 60},
+          mapped: %{"force" => "hunyuan-yiqi"},
+          combat: combat
+        ],
+        "lifeheal"
+      )
+
     assert output_text(conn) =~ "战斗中无法运功疗伤"
   end
 
   test "lifeheal: 无可用目标被拒" do
-    conn = exert([
-      skills: %{"hunyuan-yiqi" => 60},
-      mapped: %{"force" => "hunyuan-yiqi"}
-    ], "lifeheal")
+    conn =
+      exert(
+        [
+          skills: %{"hunyuan-yiqi" => 60},
+          mapped: %{"force" => "hunyuan-yiqi"}
+        ],
+        "lifeheal"
+      )
+
     assert output_text(conn) =~ "没有需要你救助的人"
   end
 
@@ -162,7 +198,10 @@ defmodule Kantele.Combat.ForceHostileTest do
     assert updated.meta.vitals.max_qi == 140
     assert updated.meta.vitals.qi == 80
 
-    assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+    assert_receive %Kalevala.Event{
+      topic: "combat/perform-feedback",
+      data: %{neili_cost: 0, busy: 0}
+    }
   end
 
   test "lifeheal目标: 目标忙乱则忽略" do
@@ -177,7 +216,9 @@ defmodule Kantele.Combat.ForceHostileTest do
   # ============== 狮子吼（force/roar）攻击方门槛 ==============
 
   test "roar: 非允许内功被拒" do
-    conn = exert([skills: %{"taiji-shengong" => 200}, mapped: %{"force" => "taiji-shengong"}], "roar")
+    conn =
+      exert([skills: %{"taiji-shengong" => 200}, mapped: %{"force" => "taiji-shengong"}], "roar")
+
     assert output_text(conn) =~ "没有这种功能"
   end
 
@@ -187,11 +228,16 @@ defmodule Kantele.Combat.ForceHostileTest do
   end
 
   test "roar: 真气不足被拒" do
-    conn = exert([
-      skills: %{"hunyuan-gong" => 200, "force" => 200},
-      mapped: %{"force" => "hunyuan-gong"},
-      vitals: %{@vitals | neili: 799}
-    ], "roar")
+    conn =
+      exert(
+        [
+          skills: %{"hunyuan-gong" => 200, "force" => 200},
+          mapped: %{"force" => "hunyuan-gong"},
+          vitals: %{@vitals | neili: 799}
+        ],
+        "roar"
+      )
+
     assert output_text(conn) =~ "真气不够"
   end
 
@@ -200,14 +246,19 @@ defmodule Kantele.Combat.ForceHostileTest do
       %{enemy_ref() | id: "mob-1", name: "恶人1"},
       %{enemy_ref() | id: "mob-2", name: "恶人2", pid: self()}
     ]
+
     combat = Combat.new() |> Map.put(:enemies, enemies)
 
-    conn = exert([
-      skills: %{"hunyuan-gong" => 200, "force" => 200},
-      mapped: %{"force" => "hunyuan-gong"},
-      vitals: %{@vitals | neili: 1000, max_neili: 1000},
-      combat: combat
-    ], "roar")
+    conn =
+      exert(
+        [
+          skills: %{"hunyuan-gong" => 200, "force" => 200},
+          mapped: %{"force" => "hunyuan-gong"},
+          vitals: %{@vitals | neili: 1000, max_neili: 1000},
+          combat: combat
+        ],
+        "roar"
+      )
 
     updated = conn.private.update_character
     assert updated.meta.vitals.neili == 200
@@ -218,6 +269,7 @@ defmodule Kantele.Combat.ForceHostileTest do
       topic: "combat/perform-incoming",
       data: %{perform_id: "force/roar", skill: 200}
     }
+
     assert_receive %Kalevala.Event{
       topic: "combat/perform-incoming",
       data: %{perform_id: "force/roar", skill: 200}
@@ -235,7 +287,10 @@ defmodule Kantele.Combat.ForceHostileTest do
     assert updated.meta.vitals.jing == 1
     assert updated.meta.vitals.max_jing == 1
 
-    assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+    assert_receive %Kalevala.Event{
+      topic: "combat/perform-feedback",
+      data: %{neili_cost: 0, busy: 0}
+    }
   end
 
   test "roar目标: 内力对抗失败：目标无事" do
@@ -244,7 +299,11 @@ defmodule Kantele.Combat.ForceHostileTest do
     conn = incoming([vitals: target_vitals, skills: %{"con" => 200}], data)
 
     assert conn.private.update_character == nil
-    assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+
+    assert_receive %Kalevala.Event{
+      topic: "combat/perform-feedback",
+      data: %{neili_cost: 0, busy: 0}
+    }
   end
 
   test "roar目标: 目标忙乱则忽略" do
@@ -260,7 +319,9 @@ defmodule Kantele.Combat.ForceHostileTest do
     target_vitals = %{Vitals.new() | jing: 120, max_jing: 120, max_neili: 100}
     data = %{perform_id: "force/roar", skill: 200, rng: fn _ -> 1 end}
 
-    conn = incoming([vitals: target_vitals, session: %{"conditions" => %{"die_guard" => true}}], data)
+    conn =
+      incoming([vitals: target_vitals, session: %{"conditions" => %{"die_guard" => true}}], data)
+
     assert conn.private.update_character == nil
   end
 
@@ -279,50 +340,96 @@ defmodule Kantele.Combat.ForceHostileTest do
         handing: true
       }
     }
+
     {:ok, du: du}
   end
 
   test "shot: 非允许内功被拒", %{du: du} do
-    conn = exert([skills: %{"taiji-shengong" => 200}, mapped: %{"force" => "taiji-shengong"}], "shot")
+    conn =
+      exert([skills: %{"taiji-shengong" => 200}, mapped: %{"force" => "taiji-shengong"}], "shot")
+
     assert output_text(conn) =~ "没有这种功能"
   end
 
   test "shot: 内功等级不足被拒", %{du: du} do
-    conn = exert([skills: %{"xiuluo-yinshagong" => 200, "force" => 149}, mapped: %{"force" => "xiuluo-yinshagong"}], "shot")
+    conn =
+      exert(
+        [
+          skills: %{"xiuluo-yinshagong" => 200, "force" => 149},
+          mapped: %{"force" => "xiuluo-yinshagong"}
+        ],
+        "shot"
+      )
+
     assert output_text(conn) =~ "内功修为不够"
   end
 
   test "shot: 毒技/暗器不足被拒", %{du: du} do
-    conn = exert([
-      skills: %{"xiuluo-yinshagong" => 200, "force" => 200, "poison" => 99, "throwing" => 100},
-      mapped: %{"force" => "xiuluo-yinshagong"}
-    ], "shot")
+    conn =
+      exert(
+        [
+          skills: %{"xiuluo-yinshagong" => 200, "force" => 200, "poison" => 99, "throwing" => 100},
+          mapped: %{"force" => "xiuluo-yinshagong"}
+        ],
+        "shot"
+      )
+
     assert output_text(conn) =~ "基本毒技/暗器火候不够"
   end
 
   test "shot: 真气不足被拒", %{du: du} do
-    conn = exert([
-      skills: %{"xiuluo-yinshagong" => 200, "force" => 200, "poison" => 100, "throwing" => 100},
-      mapped: %{"force" => "xiuluo-yinshagong"},
-      vitals: %{@vitals | neili: 299}
-    ], "shot")
+    conn =
+      exert(
+        [
+          skills: %{
+            "xiuluo-yinshagong" => 200,
+            "force" => 200,
+            "poison" => 100,
+            "throwing" => 100
+          },
+          mapped: %{"force" => "xiuluo-yinshagong"},
+          vitals: %{@vitals | neili: 299}
+        ],
+        "shot"
+      )
+
     assert output_text(conn) =~ "真气不够"
   end
 
   test "shot: 手中无毒药被拒", %{du: du} do
-    conn = exert([
-      skills: %{"xiuluo-yinshagong" => 200, "force" => 200, "poison" => 100, "throwing" => 100},
-      mapped: %{"force" => "xiuluo-yinshagong"}
-    ], "shot")
+    conn =
+      exert(
+        [
+          skills: %{
+            "xiuluo-yinshagong" => 200,
+            "force" => 200,
+            "poison" => 100,
+            "throwing" => 100
+          },
+          mapped: %{"force" => "xiuluo-yinshagong"}
+        ],
+        "shot"
+      )
+
     assert Regex.match?(~r/准备.*毒药/, output_text(conn))
   end
 
   test "shot: 无目标被拒", %{du: du} do
-    conn = exert([
-      skills: %{"xiuluo-yinshagong" => 200, "force" => 200, "poison" => 100, "throwing" => 100},
-      mapped: %{"force" => "xiuluo-yinshagong"},
-      inventory: [du]
-    ], "shot")
+    conn =
+      exert(
+        [
+          skills: %{
+            "xiuluo-yinshagong" => 200,
+            "force" => 200,
+            "poison" => 100,
+            "throwing" => 100
+          },
+          mapped: %{"force" => "xiuluo-yinshagong"},
+          inventory: [du]
+        ],
+        "shot"
+      )
+
     assert output_text(conn) =~ "想攻击谁"
   end
 
@@ -330,13 +437,22 @@ defmodule Kantele.Combat.ForceHostileTest do
     enemies = [enemy_ref()]
     combat = Combat.new() |> Map.put(:enemies, enemies)
 
-    conn = exert([
-      skills: %{"xiuluo-yinshagong" => 200, "poison" => 120, "throwing" => 120, "force" => 200},
-      mapped: %{"force" => "xiuluo-yinshagong"},
-      vitals: %{@vitals | neili: 500, max_neili: 500},
-      combat: combat,
-      inventory: [du]
-    ], "shot")
+    conn =
+      exert(
+        [
+          skills: %{
+            "xiuluo-yinshagong" => 200,
+            "poison" => 120,
+            "throwing" => 120,
+            "force" => 200
+          },
+          mapped: %{"force" => "xiuluo-yinshagong"},
+          vitals: %{@vitals | neili: 500, max_neili: 500},
+          combat: combat,
+          inventory: [du]
+        ],
+        "shot"
+      )
 
     updated = conn.private.update_character
     assert updated.meta.vitals.neili == 400
@@ -356,6 +472,7 @@ defmodule Kantele.Combat.ForceHostileTest do
   test "shot目标: 内力对抗失败：目标震落毒药", %{du: du} do
     target_vitals = %{Vitals.new() | max_neili: 1000, neili: 1000}
     attacker_vitals = %{Vitals.new() | max_neili: 500, neili: 100}
+
     data = %{
       perform_id: "force/shot",
       force_lvl: 200,
@@ -364,17 +481,31 @@ defmodule Kantele.Combat.ForceHostileTest do
       du: du,
       rng: fn n -> max(1, div(n, 2)) end
     }
-    conn = incoming([vitals: target_vitals], Map.put(data, :attacker, Map.put(attacker_ref(attacker_vitals), :meta, %{vitals: attacker_vitals})))
+
+    conn =
+      incoming(
+        [vitals: target_vitals],
+        Map.put(
+          data,
+          :attacker,
+          Map.put(attacker_ref(attacker_vitals), :meta, %{vitals: attacker_vitals})
+        )
+      )
 
     assert published_text(conn) =~ "震落"
     assert conn.private.update_character == nil
-    assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+
+    assert_receive %Kalevala.Event{
+      topic: "combat/perform-feedback",
+      data: %{neili_cost: 0, busy: 0}
+    }
   end
 
   test "shot目标: 内力对抗成功但招架闪避：目标避开", %{du: du} do
     target_vitals = %{Vitals.new() | max_neili: 200, neili: 100}
     attacker_vitals = %{Vitals.new() | max_neili: 500, neili: 100}
     target_stats = %{"dodge" => 500, "parry" => 500, "martial-cognize" => 500}
+
     data = %{
       perform_id: "force/shot",
       force_lvl: 200,
@@ -383,18 +514,31 @@ defmodule Kantele.Combat.ForceHostileTest do
       du: du,
       rng: fn _ -> 100 end
     }
-    conn = incoming([vitals: target_vitals, skills: target_stats],
-      Map.put(data, :attacker, Map.put(attacker_ref(attacker_vitals), :meta, %{vitals: attacker_vitals})))
+
+    conn =
+      incoming(
+        [vitals: target_vitals, skills: target_stats],
+        Map.put(
+          data,
+          :attacker,
+          Map.put(attacker_ref(attacker_vitals), :meta, %{vitals: attacker_vitals})
+        )
+      )
 
     assert published_text(conn) =~ "避开"
     assert conn.private.update_character == nil
-    assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+
+    assert_receive %Kalevala.Event{
+      topic: "combat/perform-feedback",
+      data: %{neili_cost: 0, busy: 0}
+    }
   end
 
   test "shot目标: 命中：目标中毒+busy 2、攻击方回执", %{du: du} do
     target_vitals = %{Vitals.new() | max_neili: 200, neili: 100}
     attacker_vitals = %{Vitals.new() | max_neili: 500, neili: 100}
     target_stats = %{"dodge" => 0, "parry" => 0, "martial-cognize" => 0}
+
     data = %{
       perform_id: "force/shot",
       force_lvl: 200,
@@ -403,21 +547,33 @@ defmodule Kantele.Combat.ForceHostileTest do
       du: du,
       rng: fn _ -> 100 end
     }
-    conn = incoming([vitals: target_vitals, skills: target_stats],
-      Map.put(data, :attacker, Map.put(attacker_ref(attacker_vitals), :meta, %{vitals: attacker_vitals})))
+
+    conn =
+      incoming(
+        [vitals: target_vitals, skills: target_stats],
+        Map.put(
+          data,
+          :attacker,
+          Map.put(attacker_ref(attacker_vitals), :meta, %{vitals: attacker_vitals})
+        )
+      )
 
     updated = conn.private.update_character
     assert Map.has_key?(conn.session["conditions"], "snake_poison")
     assert updated.meta.combat.busy == 2
     assert published_text(conn) =~ "麻痹"
 
-    assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 0}}
+    assert_receive %Kalevala.Event{
+      topic: "combat/perform-feedback",
+      data: %{neili_cost: 0, busy: 0}
+    }
   end
 
   test "shot目标: 目标忙乱则忽略", %{du: du} do
     target_vitals = %{Vitals.new() | max_neili: 200, neili: 100}
     attacker_vitals = %{Vitals.new() | max_neili: 500, neili: 100}
     combat = %{Combat.new() | busy: 3}
+
     data = %{
       perform_id: "force/shot",
       force_lvl: 200,
@@ -426,8 +582,12 @@ defmodule Kantele.Combat.ForceHostileTest do
       du: du,
       rng: fn _ -> 100 end
     }
-    conn = incoming([vitals: target_vitals, combat: combat],
-      Map.put(data, :attacker, %{attacker_ref() | meta: %{vitals: attacker_vitals}}))
+
+    conn =
+      incoming(
+        [vitals: target_vitals, combat: combat],
+        Map.put(data, :attacker, %{attacker_ref() | meta: %{vitals: attacker_vitals}})
+      )
 
     assert conn.private.update_character == nil
   end

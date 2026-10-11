@@ -108,7 +108,12 @@ defmodule Kantele.World.MirrorZixuTest do
     end
 
     test "已持有宝镜再领被拒" do
-      mirror = %Item.Instance{id: "inst-m", item_id: "liuxi:item/mirror", created_at: DateTime.utc_now()}
+      mirror = %Item.Instance{
+        id: "inst-m",
+        item_id: "liuxi:item/mirror",
+        created_at: DateTime.utc_now()
+      }
+
       conn = MirrorEvent.give_result(build_conn(player([mirror])), give_event())
 
       assert conn.private.update_character == nil
@@ -172,7 +177,9 @@ defmodule Kantele.World.MirrorZixuTest do
         meta: %Kantele.Character.NonPlayerMeta{}
       }
 
-      conn = build_conn(player_with_task()) |> Map.put(:room, %{id: "test:room", private: %{characters: [other]}})
+      conn =
+        build_conn(player_with_task())
+        |> Map.put(:room, %{id: "test:room", private: %{characters: [other]}})
 
       conn = GiveCommand.run(conn, %{"rest" => "测试 inst-task"})
 
@@ -183,7 +190,13 @@ defmodule Kantele.World.MirrorZixuTest do
 
     test "第 100 个里程碑：随机掉镜礼不崩溃" do
       for id <- ["liuxi:gift/perwan", "liuxi:gift/kardan", "liuxi:etc/prize4", "liuxi:etc/prize5"] do
-        Items.put(id, %Item{id: id, name: "里程碑礼", verbs: [], callback_module: Kantele.World.Item, meta: %Meta{unit: "颗"}})
+        Items.put(id, %Item{
+          id: id,
+          name: "里程碑礼",
+          verbs: [],
+          callback_module: Kantele.World.Item,
+          meta: %Meta{unit: "颗"}
+        })
       end
 
       p = player_with_task()
@@ -250,7 +263,12 @@ defmodule Kantele.World.MirrorZixuTest do
   end
 
   defp player_with_task() do
-    instance = %Item.Instance{id: "inst-task", item_id: "liuxi:task/test", created_at: DateTime.utc_now()}
+    instance = %Item.Instance{
+      id: "inst-task",
+      item_id: "liuxi:task/test",
+      created_at: DateTime.utc_now()
+    }
+
     player([instance])
   end
 

@@ -38,7 +38,7 @@ defmodule Kantele.Character.LocalcmdsCommand do
             |> prompt(CommandView, "prompt", %{})
 
           dirs ->
-            lines = Enum.map_join(dirs, "\n", &(format_dir(&1)))
+            lines = Enum.map_join(dirs, "\n", &format_dir(&1))
 
             conn
             |> render(CommandView, "text", %{
@@ -64,7 +64,7 @@ defmodule Kantele.Character.LocalcmdsCommand do
       {:ok, zone} ->
         room = Enum.find(Map.get(zone, :rooms, []), &(&1.id == room_id))
 
-        (Map.get(room || %{}, :exits, []))
+        Map.get(room || %{}, :exits, [])
         |> Enum.map(fn exit -> exit.exit_name end)
 
       _ ->

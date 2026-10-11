@@ -96,8 +96,7 @@ defmodule Kantele.Combat.HuashanJianTest do
     test "未学会被拒" do
       character = fighter(skills: %{"huashan-jian" => 60})
 
-      conn =
-        PerformCommand.run(build_conn(character), %{"action" => "huashan-jian.jie"})
+      conn = PerformCommand.run(build_conn(character), %{"action" => "huashan-jian.jie"})
 
       assert conn.private.update_character == nil
       assert output_text(conn) =~ "外功中没有这种功能"
@@ -133,14 +132,16 @@ defmodule Kantele.Combat.HuashanJianTest do
     end
 
     test "等级不足被拒" do
-      character = fighter(skills: %{"huashan-jian" => 29}, performs: MapSet.new(["huashan-jian/jie"]))
+      character =
+        fighter(skills: %{"huashan-jian" => 29}, performs: MapSet.new(["huashan-jian/jie"]))
 
       conn = PerformCommand.run(build_conn(character), %{"action" => "huashan-jian.jie"})
       assert output_text(conn) =~ "不够娴熟"
     end
 
     test "未激发华山剑法被拒" do
-      character = fighter(skills: %{"huashan-jian" => 60}, performs: MapSet.new(["huashan-jian/jie"]))
+      character =
+        fighter(skills: %{"huashan-jian" => 60}, performs: MapSet.new(["huashan-jian/jie"]))
 
       conn = PerformCommand.run(build_conn(character), %{"action" => "huashan-jian.jie"})
       assert output_text(conn) =~ "没有激发华山剑法"

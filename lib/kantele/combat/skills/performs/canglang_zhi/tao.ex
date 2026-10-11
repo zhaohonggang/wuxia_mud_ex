@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -100,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     vitals = %{vitals | neili: vitals.neili - 80}
@@ -109,9 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N陡然施出一势「碧浪滔天」，十指纷翻，指气嗤然作响，全全笼罩$n。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -135,10 +137,13 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
+    vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    result = Messages.interpolate("结果$n躲闪不及，被$N一指命中，全身气血翻腾不已。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$n躲闪不及，被$N一指命中，全身气血翻腾不已。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

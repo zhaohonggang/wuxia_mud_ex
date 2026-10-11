@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -101,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | neili: vitals.neili - 500}
@@ -110,8 +112,14 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N当下更不耽搁，高呼佛号，轻飘飘拍出一掌，招式甚为寻常。但掌到中途，忽然微微摇晃，登时一掌变两掌，两掌变四掌，四掌变八掌！铺天盖地拍向$n。",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -134,11 +142,18 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 3)
-    result = Messages.interpolate("随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。
+
+    result =
+      Messages.interpolate(
+        "随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。
 
 $n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。
 
-$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。", n1: attacker.name, n2: character.name)
+$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

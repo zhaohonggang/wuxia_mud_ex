@@ -30,7 +30,13 @@ defmodule Kantele.Character.PrepareCommandTest do
   end
 
   defp learned_player() do
-    %{player() | meta: %{player().meta | stats: Stats.learn_perform(player().meta.stats, "liuxin-jian/liu")}}
+    %{
+      player()
+      | meta: %{
+          player().meta
+          | stats: Stats.learn_perform(player().meta.stats, "liuxin-jian/liu")
+        }
+    }
   end
 
   defp output_text(conn) do

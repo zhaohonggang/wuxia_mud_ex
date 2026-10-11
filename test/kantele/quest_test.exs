@@ -11,7 +11,14 @@ defmodule Kantele.QuestTest do
     test "登记成功，killed 按 spec.kill 预填 0（v2 带 meta/accepted_at/limit）" do
       {:ok, s} = Quest.set_todo(Quest.new(), spec(), now: 1000)
       assert Quest.get_size(s) == 1
-      assert Quest.get_todo(s, "q1") == %{killed: %{"怪a" => 0, "怪b" => 0}, item: %{}, meta: %{}, accepted_at: 1000, limit: 0}
+
+      assert Quest.get_todo(s, "q1") == %{
+               killed: %{"怪a" => 0, "怪b" => 0},
+               item: %{},
+               meta: %{},
+               accepted_at: 1000,
+               limit: 0
+             }
     end
 
     test "无效任务被拒 (:invalid)" do
@@ -164,10 +171,27 @@ defmodule Kantele.QuestTest do
 
   describe "set_todo v2 前置条件（chain/mutex/repeatable/meta）" do
     test "meta 收割 type/level/master/place" do
-      spec = %{file: "shimen", kill: ["dadao"], type: "kill", level: 5, master_name: "杨掌门", master_id: "yang", place: "少林"}
+      spec = %{
+        file: "shimen",
+        kill: ["dadao"],
+        type: "kill",
+        level: 5,
+        master_name: "杨掌门",
+        master_id: "yang",
+        place: "少林"
+      }
+
       {:ok, s} = Quest.set_todo(Quest.new(), spec, now: 100)
       task = Quest.get_todo(s, "shimen")
-      assert task.meta == %{type: "kill", level: 5, master_name: "杨掌门", master_id: "yang", place: "少林"}
+
+      assert task.meta == %{
+               type: "kill",
+               level: 5,
+               master_name: "杨掌门",
+               master_id: "yang",
+               place: "少林"
+             }
+
       assert task.accepted_at == 100
       assert task.limit == 0
     end
@@ -190,7 +214,10 @@ defmodule Kantele.QuestTest do
 
     test "mutex 互斥在办中防接 (:mutex_blocked)，移除后可接" do
       {:ok, s} = Quest.set_todo(Quest.new(), %{file: "trade_b", kill: []})
-      assert Quest.set_todo(s, %{file: "trade_a", kill: [], mutex: ["trade_b"]}) == {:error, :mutex_blocked}
+
+      assert Quest.set_todo(s, %{file: "trade_a", kill: [], mutex: ["trade_b"]}) ==
+               {:error, :mutex_blocked}
+
       s = Quest.del_todo(s, "trade_b")
       assert {:ok, _s} = Quest.set_todo(s, %{file: "trade_a", kill: [], mutex: ["trade_b"]})
     end
@@ -254,7 +281,10 @@ defmodule Kantele.QuestTest do
 
     test "kill 扣威望/贡献/阅历，level 10 系数 1" do
       {:ok, s} = Quest.set_todo(Quest.new(), %{file: "shimen", kill: [], type: "kill", level: 10})
-      assert {:ok, s, %{weiwang: w, gongxian: g, score: sc}} = Quest.cancel_with_penalty(s, "shimen")
+
+      assert {:ok, s, %{weiwang: w, gongxian: g, score: sc}} =
+               Quest.cancel_with_penalty(s, "shimen")
+
       assert {w, g, sc} == {10, 5, 50}
       assert Quest.get_size(s) == 0
     end
@@ -286,7 +316,9 @@ defmodule Kantele.QuestTest do
     end
 
     test "物品门槛：数量不足 :item_insufficient，足够 :ok", %{spec: spec, s: state} do
-      assert Quest.accept_check(state, spec, %{kind: :item, item: "刀", count: 2}) == {:error, :item_insufficient}
+      assert Quest.accept_check(state, spec, %{kind: :item, item: "刀", count: 2}) ==
+               {:error, :item_insufficient}
+
       {:ok, s2} = Quest.add_item(state, spec, "刀", 2)
       assert Quest.accept_check(s2, spec, %{kind: :item, item: "刀", count: 2}) == :ok
     end

@@ -55,7 +55,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.He do
 
       conn
       |> Broadcast.publish(
-        "$N将手中的" <> (weapon && Map.get(weapon, :name)) <>
+        "$N将手中的" <>
+          (weapon && Map.get(weapon, :name)) <>
           "一抖，使出日月鞭法「合」字诀，舞起漫天鞭影！\n",
         n1: character.name,
         n2: target.name

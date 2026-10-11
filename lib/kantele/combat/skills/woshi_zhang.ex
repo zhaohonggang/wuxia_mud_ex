@@ -130,7 +130,6 @@ defmodule Kantele.Combat.Skills.WoshiZhang do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

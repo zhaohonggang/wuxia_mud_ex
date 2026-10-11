@@ -134,7 +134,9 @@ defmodule Kantele.Combat.FengleiZifaTest do
     defp attacker, do: %{id: "player-1", pid: self(), name: "张三", room_id: @room}
 
     defp incoming(character, data) do
-      CombatEvent.perform_incoming(build_conn(character), %{data: Map.merge(%{attacker: attacker()}, data)})
+      CombatEvent.perform_incoming(build_conn(character), %{
+        data: Map.merge(%{attacker: attacker()}, data)
+      })
     end
 
     test "命中：造成创伤并回执 -80/2" do
@@ -145,7 +147,11 @@ defmodule Kantele.Combat.FengleiZifaTest do
 
       assert conn.private.update_character.meta.vitals.max_qi < Vitals.new().max_qi
       assert published_text(conn) =~ "闪避不及"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 80, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 80, busy: 2}
+      }
     end
 
     test "失手：回执 -80/2，目标不动" do
@@ -156,7 +162,11 @@ defmodule Kantele.Combat.FengleiZifaTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "轻轻一纵"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 80, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 80, busy: 2}
+      }
     end
   end
 end

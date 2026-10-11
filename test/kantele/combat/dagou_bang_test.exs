@@ -83,12 +83,12 @@ defmodule Kantele.Combat.DagouBangTest do
 
     test "perform_list 含五诀" do
       assert DagouBang.perform_list() == %{
-        "chan" => Chan,
-        "feng" => Feng,
-        "tian" => Tian,
-        "ban" => Kantele.Combat.Skills.Performs.DagouBang.Ban,
-        "chuo" => Kantele.Combat.Skills.Performs.DagouBang.Chuo
-      }
+               "chan" => Chan,
+               "feng" => Feng,
+               "tian" => Tian,
+               "ban" => Kantele.Combat.Skills.Performs.DagouBang.Ban,
+               "chuo" => Kantele.Combat.Skills.Performs.DagouBang.Chuo
+             }
     end
   end
 
@@ -99,7 +99,13 @@ defmodule Kantele.Combat.DagouBangTest do
     end
 
     test "武器不对被拒" do
-      conn = perform([skills: %{"dagou-bang" => 60}, mapped: %{"staff" => "dagou-bang"}], "chan", "sword")
+      conn =
+        perform(
+          [skills: %{"dagou-bang" => 60}, mapped: %{"staff" => "dagou-bang"}],
+          "chan",
+          "sword"
+        )
+
       assert output_text(conn) =~ "武器不对"
     end
 
@@ -116,7 +122,11 @@ defmodule Kantele.Combat.DagouBangTest do
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"dagou-bang" => 66, "force" => 100}, mapped: %{"staff" => "dagou-bang"}, vitals: %{@vitals | neili: 99}],
+          [
+            skills: %{"dagou-bang" => 66, "force" => 100},
+            mapped: %{"staff" => "dagou-bang"},
+            vitals: %{@vitals | neili: 99}
+          ],
           "chan"
         )
 
@@ -124,7 +134,12 @@ defmodule Kantele.Combat.DagouBangTest do
     end
 
     test "成功放招投递目标侧事件" do
-      conn = perform([skills: %{"dagou-bang" => 66, "force" => 100}, mapped: %{"staff" => "dagou-bang"}], "chan")
+      conn =
+        perform(
+          [skills: %{"dagou-bang" => 66, "force" => 100}, mapped: %{"staff" => "dagou-bang"}],
+          "chan"
+        )
+
       assert published_text(conn) =~ "缠"
 
       assert_receive %Kalevala.Event{
@@ -152,7 +167,11 @@ defmodule Kantele.Combat.DagouBangTest do
 
       assert conn.private.update_character.meta.combat.busy == div(180, 18) + 2
       assert published_text(conn) =~ "手忙脚乱"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 50, busy: 1}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 50, busy: 1}
+      }
     end
 
     test "失手：攻击方回执 -50/2，目标不动" do
@@ -161,7 +180,11 @@ defmodule Kantele.Combat.DagouBangTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "镇定解招"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 50, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 50, busy: 2}
+      }
     end
 
     test "目标忙乱则忽略" do
@@ -178,7 +201,11 @@ defmodule Kantele.Combat.DagouBangTest do
     test "扣 150 内力并挂 parry buff" do
       conn =
         perform(
-          [skills: %{"dagou-bang" => 120, "force" => 180}, mapped: %{"staff" => "dagou-bang"}, vitals: %{@vitals | neili: 500}],
+          [
+            skills: %{"dagou-bang" => 120, "force" => 180},
+            mapped: %{"staff" => "dagou-bang"},
+            vitals: %{@vitals | neili: 500}
+          ],
           "feng"
         )
 
@@ -208,7 +235,12 @@ defmodule Kantele.Combat.DagouBangTest do
 
   describe "天下无狗（攻击方门槛）" do
     test "等级不足被拒" do
-      conn = perform([skills: %{"dagou-bang" => 219, "force" => 300}, mapped: %{"staff" => "dagou-bang"}], "tian")
+      conn =
+        perform(
+          [skills: %{"dagou-bang" => 219, "force" => 300}, mapped: %{"staff" => "dagou-bang"}],
+          "tian"
+        )
+
       assert output_text(conn) =~ "不够娴熟"
     end
 
@@ -216,7 +248,12 @@ defmodule Kantele.Combat.DagouBangTest do
       conn =
         perform(
           [
-            skills: %{"dagou-bang" => 300, "force" => 300, "begging" => 100, "martial-cognize" => 50},
+            skills: %{
+              "dagou-bang" => 300,
+              "force" => 300,
+              "begging" => 100,
+              "martial-cognize" => 50
+            },
             mapped: %{"staff" => "dagou-bang"},
             vitals: %{@vitals | neili: 2000, max_neili: 2000}
           ],
@@ -240,10 +277,16 @@ defmodule Kantele.Combat.DagouBangTest do
       data = %{perform_id: "dagou-bang/tian", ap: 450, rng: fn _ -> 1 end}
 
       conn =
-        CombatEvent.perform_incoming(build_conn(character), %{data: Map.merge(%{attacker: attacker()}, data)})
+        CombatEvent.perform_incoming(build_conn(character), %{
+          data: Map.merge(%{attacker: attacker()}, data)
+        })
 
       assert conn.private.update_character.meta.vitals.qi < Vitals.new().qi
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 150, busy: 1}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 150, busy: 1}
+      }
     end
   end
 end

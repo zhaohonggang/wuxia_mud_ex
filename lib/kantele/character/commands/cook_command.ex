@@ -79,7 +79,15 @@ defmodule Kantele.Character.CookCommand do
               new_inventory = Enum.reject(character.inventory, &(&1.id == cailiao_instance.id))
 
               # 创建菜肴
-              dish = create_dish(dish_name, menu[dish_name], cooking_skill, skill_level, character.id, character.name)
+              dish =
+                create_dish(
+                  dish_name,
+                  menu[dish_name],
+                  cooking_skill,
+                  skill_level,
+                  character.id,
+                  character.name
+                )
 
               new_inventory = [dish | new_inventory]
               new_character = %{character | inventory: new_inventory}
@@ -110,31 +118,40 @@ defmodule Kantele.Character.CookCommand do
     # 简化：根据技能返回固定菜单
     # 实际应从 SKILL_D(skill)->query_menu() 获取
     case skill_name do
-      "chuan_cuisine" -> %{
-        "回锅肉" => "四川",
-        "麻婆豆腐" => "四川",
-        "宫保鸡丁" => "四川"
-      }
-      "yue_cuisine" -> %{
-        "白切鸡" => "广东",
-        "烧鹅" => "广东",
-        "虾饺" => "广东"
-      }
-      "lu_cuisine" -> %{
-        "糖醋鲤鱼" => "山东",
-        "九转大肠" => "山东",
-        "葱烧海参" => "山东"
-      }
-      "su_cuisine" -> %{
-        "松鼠鱼" => "江苏",
-        "狮子头" => "江苏",
-        "扬州炒饭" => "江苏"
-      }
-      _ -> %{
-        "白切鸡" => "广东",
-        "红烧肉" => "浙江",
-        "蒸鱼" => "江浙"
-      }
+      "chuan_cuisine" ->
+        %{
+          "回锅肉" => "四川",
+          "麻婆豆腐" => "四川",
+          "宫保鸡丁" => "四川"
+        }
+
+      "yue_cuisine" ->
+        %{
+          "白切鸡" => "广东",
+          "烧鹅" => "广东",
+          "虾饺" => "广东"
+        }
+
+      "lu_cuisine" ->
+        %{
+          "糖醋鲤鱼" => "山东",
+          "九转大肠" => "山东",
+          "葱烧海参" => "山东"
+        }
+
+      "su_cuisine" ->
+        %{
+          "松鼠鱼" => "江苏",
+          "狮子头" => "江苏",
+          "扬州炒饭" => "江苏"
+        }
+
+      _ ->
+        %{
+          "白切鸡" => "广东",
+          "红烧肉" => "浙江",
+          "蒸鱼" => "江浙"
+        }
     end
   end
 
@@ -144,7 +161,9 @@ defmodule Kantele.Character.CookCommand do
       item.callback_module.matches?(item, "cai liao") || item.id == "cai_liao"
     end)
     |> case do
-      nil -> {:error, "你现在手头没有菜料，没法做菜。"}
+      nil ->
+        {:error, "你现在手头没有菜料，没法做菜。"}
+
       inst ->
         if Map.get(inst, :amount, 1) >= 1 do
           item = Items.get!(inst.item_id)
@@ -157,7 +176,7 @@ defmodule Kantele.Character.CookCommand do
 
   defp create_dish(name, cuisine, skill, level, by_id, by_name) do
     %{
-      id: "dish_#{:rand.uniform(100000)}",
+      id: "dish_#{:rand.uniform(100_000)}",
       name: name,
       type: "food",
       verb: "eat",

@@ -162,6 +162,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
         else
           {:error, "你只能吸取战斗中的对手的丹元！\n"}
         end
+
       [] ->
         {:error, "你只能吸取战斗中的对手的丹元！\n"}
     end
@@ -192,6 +193,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
   defp check_can_absorb_more(character) do
     my_max = character.meta.vitals.max_neili
     limit = Map.get(character.meta.stats, :max_neili_limit) || my_max * 2
+
     if my_max < limit do
       :ok
     else
@@ -210,6 +212,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
   defp check_target_not_weak(character, target) do
     my_max = character.meta.vitals.max_neili
     tg_max = target.meta.vitals.max_neili
+
     if tg_max >= div(my_max, 5) do
       :ok
     else
@@ -239,13 +242,14 @@ defmodule Kantele.Combat.Skills.XixingDafa.Suck do
 
     message =
       if Map.get(character.meta.combat.equipped || %{}, :weapon) do
-        "$N把手中的#{Map.get(character.meta.combat.equipped, :weapon).name}一扬，慢慢的逼向#{target.name}，#{target.name}连忙架住。\n"
+        "$N把手中的#{Map.get(character.meta.combat.equipped, :weapon).name}一扬，慢慢的逼向#{target.name}，#{
+          target.name
+        }连忙架住。\n"
       else
         "$N探出右手，平平的拍在#{target.name}的胸前，似乎没有半点力道。\n"
       end
 
-    conn =
-      Broadcast.publish(conn, message, n1: character.name, n2: target.name)
+    conn = Broadcast.publish(conn, message, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
@@ -399,6 +403,7 @@ defmodule Kantele.Combat.Skills.XixingDafa.Sangong do
     char = state.character
     new_vitals = %{char.meta.vitals | max_neili: max(char.meta.vitals.max_neili - 1, 0)}
     new_char = %{char | meta: %{char.meta | vitals: new_vitals}}
+
     state
     |> Map.put(:character, new_char)
     |> Map.put(:message, "你默默的按照吸星大法的诀窍将内力散入奇经八脉。\n")

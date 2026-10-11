@@ -46,6 +46,7 @@ defmodule Kantele.RoomChannelPublishTest do
       sys = Kantele.Communication.system_character()
 
       assert is_map(sys)
+
       refute Map.has_key?(sys, :room_id),
              "system_character 是裸 map，没有 room_id —— 这就是之前会崩的原因"
     end
@@ -58,13 +59,24 @@ defmodule Kantele.RoomChannelPublishTest do
   describe "玩家自己发消息时仍按房间判定" do
     test "在本房间 -> 放行" do
       character = %Kalevala.Character{room_id: "shaolin:bagua5"}
-      assert RoomChannel.publish_request("rooms:shaolin:bagua5", message_event(), [character: character], @config) == :ok
+
+      assert RoomChannel.publish_request(
+               "rooms:shaolin:bagua5",
+               message_event(),
+               [character: character],
+               @config
+             ) == :ok
     end
 
     test "不在本房间 -> {:error, :not_in_room}（这条语义不能被上面的改动放宽）" do
       character = %Kalevala.Character{room_id: "shaolin:bagua0"}
 
-      assert RoomChannel.publish_request("rooms:shaolin:bagua5", message_event(), [character: character], @config) ==
+      assert RoomChannel.publish_request(
+               "rooms:shaolin:bagua5",
+               message_event(),
+               [character: character],
+               @config
+             ) ==
                {:error, :not_in_room}
     end
   end

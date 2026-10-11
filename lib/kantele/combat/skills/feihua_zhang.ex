@@ -75,7 +75,6 @@ defmodule Kantele.Combat.Skills.FeihuaZhang do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

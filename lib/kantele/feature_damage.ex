@@ -33,9 +33,11 @@ defmodule Kantele.Feature.Damage do
 
   defp get_temp(character, key), do: PlayerMeta.get_temp(character.meta, key)
 
-  defp put_temp(character, key, value), do: %{character | meta: PlayerMeta.put_temp(character.meta, key, value)}
+  defp put_temp(character, key, value),
+    do: %{character | meta: PlayerMeta.put_temp(character.meta, key, value)}
 
-  defp delete_temp(character, key), do: %{character | meta: PlayerMeta.delete_temp(character.meta, key)}
+  defp delete_temp(character, key),
+    do: %{character | meta: PlayerMeta.delete_temp(character.meta, key)}
 
   # ---------------------------------------------------------------------------
 
@@ -220,8 +222,9 @@ defmodule Kantele.Feature.Damage do
   defp handle_unconcious(character) do
     competitor = query_competitor(character)
 
-    character = character
-    |> put_damage_defeated_by(competitor)
+    character =
+      character
+      |> put_damage_defeated_by(competitor)
 
     # DPS 记录
     if competitor && is_player?(character) && killing?(character, competitor.id) do
@@ -231,11 +234,12 @@ defmodule Kantele.Feature.Damage do
     character = clear_enemies(character)
 
     # 封印状态
-    character = character
-    |> put_damage_block_msg_all(1)
-    |> disable_player()
-    |> put_vitals(%{character.meta.vitals | qi: 0, jing: 0})
-    |> put_temp("block_msg/all", 1)
+    character =
+      character
+      |> put_damage_block_msg_all(1)
+      |> disable_player()
+      |> put_vitals(%{character.meta.vitals | qi: 0, jing: 0})
+      |> put_temp("block_msg/all", 1)
 
     # 自动复活延迟：30 + random(100 - con) 秒
     delay = 30 + :rand.uniform(100 - character.meta.stats.con)
@@ -287,16 +291,18 @@ defmodule Kantele.Feature.Damage do
         end).()
 
     unless quiet do
-      character = character
-      |> put_damage_defeated_by(nil)
+      character =
+        character
+        |> put_damage_defeated_by(nil)
 
       announce(character, "revive")
       send_message(character, "Slowly you regain consciousness...")
     end
 
     # 清除上次伤害记录
-    character = character
-    |> put_damage_last_damage(nil)
+    character =
+      character
+      |> put_damage_last_damage(nil)
 
     {:ok, character}
   end
@@ -399,13 +405,14 @@ defmodule Kantele.Feature.Damage do
 
   @doc "复活/重生（对应 LPC reincarnate/2）"
   def reincarnate(character) do
-    character = character
-    |> put_damage_ghost(false)
-    |> put_vitals(%{
-      character.meta.vitals
-      | eff_jing: character.meta.vitals.max_jing,
-        eff_qi: character.meta.vitals.max_qi
-    })
+    character =
+      character
+      |> put_damage_ghost(false)
+      |> put_vitals(%{
+        character.meta.vitals
+        | eff_jing: character.meta.vitals.max_jing,
+          eff_qi: character.meta.vitals.max_qi
+      })
 
     {:ok, character}
   end
@@ -576,12 +583,13 @@ defmodule Kantele.Feature.Damage do
 
   defp announce(character, event) do
     # 使用 Communication.announce 向房间广播
-    msg = case event do
-      "unconcious" -> "#{character.name}晕倒了。"
-      "revive" -> "#{character.name}慢慢醒了过来。"
-      "dead" -> "#{character.name}倒下了。"
-      _ -> "#{character.name}状态变更。"
-    end
+    msg =
+      case event do
+        "unconcious" -> "#{character.name}晕倒了。"
+        "revive" -> "#{character.name}慢慢醒了过来。"
+        "dead" -> "#{character.name}倒下了。"
+        _ -> "#{character.name}状态变更。"
+      end
 
     # 房间广播
     Kantele.Communication.announce("rooms:#{character.room_id}", msg)

@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -97,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 30}
@@ -106,9 +108,9 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -138,6 +140,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
 $N蓦地大喝一声，单腿猛踢而出，直踹$n腰际，招式极为迅猛。
 突然只见$N双腿连环踢出，挟着嚯嚯风声，以千钧之势扫向$n。
 $n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

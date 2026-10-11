@@ -12,17 +12,41 @@ defmodule Kantele.Character.DriveCommand do
   alias Kantele.Item.Transport
 
   @direction_map %{
-    "n" => "north", "s" => "south", "e" => "east", "w" => "west",
-    "nu" => "northup", "su" => "southup", "eu" => "eastup", "wu" => "westup",
-    "nd" => "northdown", "sd" => "southdown", "ed" => "eastdown", "wd" => "westdown",
-    "ne" => "northeast", "nw" => "northwest", "se" => "southeast", "sw" => "southwest"
+    "n" => "north",
+    "s" => "south",
+    "e" => "east",
+    "w" => "west",
+    "nu" => "northup",
+    "su" => "southup",
+    "eu" => "eastup",
+    "wu" => "westup",
+    "nd" => "northdown",
+    "sd" => "southdown",
+    "ed" => "eastdown",
+    "wd" => "westdown",
+    "ne" => "northeast",
+    "nw" => "northwest",
+    "se" => "southeast",
+    "sw" => "southwest"
   }
 
   @direction_chinese %{
-    "north" => "北", "south" => "南", "east" => "东", "west" => "西",
-    "northup" => "北边", "southup" => "南边", "eastup" => "东边", "westup" => "西边",
-    "northdown" => "北边", "southdown" => "南边", "eastdown" => "东边", "westdown" => "西边",
-    "northeast" => "东北", "northwest" => "西北", "southeast" => "东南", "southwest" => "西南"
+    "north" => "北",
+    "south" => "南",
+    "east" => "东",
+    "west" => "西",
+    "northup" => "北边",
+    "southup" => "南边",
+    "eastup" => "东边",
+    "westup" => "西边",
+    "northdown" => "北边",
+    "southdown" => "南边",
+    "eastdown" => "东边",
+    "westdown" => "西边",
+    "northeast" => "东北",
+    "northwest" => "西北",
+    "southeast" => "东南",
+    "southwest" => "西南"
   }
 
   def run(conn, %{"vehicle" => vehicle, "direction" => direction}) do
@@ -68,8 +92,11 @@ defmodule Kantele.Character.DriveCommand do
 
               if :rand.uniform(driving_skill + 100) < 50 do
                 conn
-                |> render(CommandView, "text", %{text: "#{character.name}手忙脚乱的折腾了半天，可是#{vehicle_item.name}一动不动。\n"})
+                |> render(CommandView, "text", %{
+                  text: "#{character.name}手忙脚乱的折腾了半天，可是#{vehicle_item.name}一动不动。\n"
+                })
                 |> prompt(CommandView, "prompt", %{})
+
                 # busy 1 秒（简化）
               else
                 # 尝试移动
@@ -88,6 +115,7 @@ defmodule Kantele.Character.DriveCommand do
                     end
 
                     new_conn
+
                   {:error, reason} ->
                     conn
                     |> render(CommandView, "text", %{text: reason <> "\n"})
@@ -95,7 +123,6 @@ defmodule Kantele.Character.DriveCommand do
                 end
               end
             end
-
           else
             conn
             |> render(CommandView, "text", %{text: "你看清楚了，这不是能驱使的车辆！\n"})
@@ -116,7 +143,9 @@ defmodule Kantele.Character.DriveCommand do
       item.callback_module.matches?(item, name)
     end)
     |> case do
-      nil -> {:error, "这里没有这样东西让你赶啊！"}
+      nil ->
+        {:error, "这里没有这样东西让你赶啊！"}
+
       instance ->
         item = Items.get!(instance.item_id)
         {:ok, item, instance}
@@ -163,22 +192,22 @@ defmodule Kantele.Character.DriveCommand do
     put_character(conn, new_character)
   end
 
-defp show_move_messages(conn, character, vehicle_item, direction) do
+  defp show_move_messages(conn, character, vehicle_item, direction) do
     cdir = @direction_chinese[direction] || direction
     reverse_dir = get_reverse_direction(direction)
     rdir = @direction_chinese[reverse_dir] || reverse_dir
 
     msgs = [
-      {:msg_leave, "$N一声吆喝，赶着$n向" <> cdir <> "驶去。",
-       :msg_arrival, "只听一声吆喝，$N赶着$n从" <> rdir <> "驶来。"},
-      {:msg_leave, "$N一言不发，只是赶着$n向" <> cdir <> "驶去。",
-       :msg_arrival, "只见$N闷头闷脑的赶着$n从" <> rdir <> "驶了过来。"},
-      {:msg_leave, "$N喝道：\"让开了！让开了\"，只见人和$n已经滚滚朝着" <> cdir <> "去了。",
-       :msg_arrival, "远远的只听一阵喝声，紧接着就见$N赶着$n滚滚的从" <> rdir <> "驶了过来。"},
-      {:msg_leave, "$N抹了抹汗，继续赶着$n往" <> cdir <> "去了。",
-       :msg_arrival, "只见$N一边抹汗，一边赶着$n从" <> rdir <> "驶了过来。"},
-      {:msg_leave, "只听隆隆声响，就见$N急冲冲的赶着$n奔" <> cdir <> "去了。",
-       :msg_arrival, "只听隆隆声响，就见$N急冲冲的赶着$n从" <> rdir <> "驶来。"}
+      {:msg_leave, "$N一声吆喝，赶着$n向" <> cdir <> "驶去。", :msg_arrival,
+       "只听一声吆喝，$N赶着$n从" <> rdir <> "驶来。"},
+      {:msg_leave, "$N一言不发，只是赶着$n向" <> cdir <> "驶去。", :msg_arrival,
+       "只见$N闷头闷脑的赶着$n从" <> rdir <> "驶了过来。"},
+      {:msg_leave, "$N喝道：\"让开了！让开了\"，只见人和$n已经滚滚朝着" <> cdir <> "去了。", :msg_arrival,
+       "远远的只听一阵喝声，紧接着就见$N赶着$n滚滚的从" <> rdir <> "驶了过来。"},
+      {:msg_leave, "$N抹了抹汗，继续赶着$n往" <> cdir <> "去了。", :msg_arrival,
+       "只见$N一边抹汗，一边赶着$n从" <> rdir <> "驶了过来。"},
+      {:msg_leave, "只听隆隆声响，就见$N急冲冲的赶着$n奔" <> cdir <> "去了。", :msg_arrival,
+       "只听隆隆声响，就见$N急冲冲的赶着$n从" <> rdir <> "驶来。"}
     ]
 
     {_, msg_leave, _, msg_arrival} = Enum.random(msgs)
@@ -189,7 +218,9 @@ defp show_move_messages(conn, character, vehicle_item, direction) do
 
     conn
     |> render(CommandView, "text", %{text: leave_msg <> "\n"})
-    |> render(CommandView, "text", %{text: "你赶着#{vehicle_item.name}到了#{Map.get(room, :attrs, %{})["short"] || "某处"}。\n"})
+    |> render(CommandView, "text", %{
+      text: "你赶着#{vehicle_item.name}到了#{Map.get(room, :attrs, %{})["short"] || "某处"}。\n"
+    })
   end
 
   defp interpolate(template, [character, vehicle]) do

@@ -86,7 +86,6 @@ defmodule Kantele.Combat.Skills.HuashanQuan do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

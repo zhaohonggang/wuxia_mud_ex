@@ -27,6 +27,7 @@ defmodule Kantele.Character.PiqueCommand do
 
       {:ok, pts} when is_integer(pts) and pts >= 0 ->
         max_pts = query_max_craze(character)
+
         if pts > max_pts do
           fail(conn, "你最多只能用#{max_pts}点愤怒值伤敌。\n")
         else

@@ -143,7 +143,10 @@ defmodule Kantele.F4SkillExtractorTest do
         assert is_list(data.actions)
         assert is_integer(data.dynamic_actions) and data.dynamic_actions >= 0
         assert is_list(data.valid_enable)
-        assert (data.practice_cost == nil) or (is_map(data.practice_cost) and map_size(data.practice_cost) > 0)
+
+        assert data.practice_cost == nil or
+                 (is_map(data.practice_cost) and map_size(data.practice_cost) > 0)
+
         assert is_list(data.flags)
 
         # 每个静态招式必须包含必要字段
@@ -170,7 +173,8 @@ defmodule Kantele.F4SkillExtractorTest do
         skel = TranslateSkill.render_skeleton(data)
 
         assert String.valid?(skel)
-        refute skel =~ <<0xEF, 0xBF, 0xBD>> # 无替换字符
+        # 无替换字符
+        refute skel =~ <<0xEF, 0xBF, 0xBD>>
         assert skel =~ "defmodule Kantele.Combat.Skills.Generated."
         assert skel =~ ~s{def id(), do: "#{skill}"}
         assert skel =~ "def valid_enable"
@@ -185,6 +189,7 @@ defmodule Kantele.F4SkillExtractorTest do
       stats = TranslateSkill.run(@fixtures, out)
 
       assert stats.count == length(@all_fixtures)
+
       Enum.each(@all_fixtures, fn skill ->
         snake = String.replace(skill, "-", "_")
         assert "#{snake}.ex" in stats.written

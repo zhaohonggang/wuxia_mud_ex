@@ -52,7 +52,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.Shang do
 
       conn
       |> Broadcast.publish(
-        "$N嘿然冷笑，手中的" <> (weapon && Map.get(weapon, :name)) <>
+        "$N嘿然冷笑，手中的" <>
+          (weapon && Map.get(weapon, :name)) <>
           "一振，霎时变得笔直，如同流星一般飞刺向$n！\n",
         n1: character.name,
         n2: target.name

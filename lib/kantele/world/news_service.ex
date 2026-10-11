@@ -88,6 +88,7 @@ defmodule Kantele.World.NewsService do
     case Repo.insert(news) do
       {:ok, news} ->
         {:reply, {:ok, news.id}, state}
+
       {:error, changeset} ->
         {:reply, {:error, changeset.errors}, state}
     end
@@ -110,16 +111,21 @@ defmodule Kantele.World.NewsService do
   @impl true
   def handle_call({:search, field, keyword}, _from, state) do
     pattern = "%#{keyword}%"
-    results = case field do
-      "title" ->
-        Repo.all(from n in News, where: like(n.title, ^pattern), order_by: [desc: n.time])
-      "author" ->
-        Repo.all(from n in News, where: like(n.author_name, ^pattern), order_by: [desc: n.time])
-      "document" ->
-        Repo.all(from n in News, where: like(n.content, ^pattern), order_by: [desc: n.time])
-      _ ->
-        []
-    end
+
+    results =
+      case field do
+        "title" ->
+          Repo.all(from n in News, where: like(n.title, ^pattern), order_by: [desc: n.time])
+
+        "author" ->
+          Repo.all(from n in News, where: like(n.author_name, ^pattern), order_by: [desc: n.time])
+
+        "document" ->
+          Repo.all(from n in News, where: like(n.content, ^pattern), order_by: [desc: n.time])
+
+        _ ->
+          []
+      end
 
     {:reply, results, state}
   end

@@ -29,9 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tangmen-throwing")
-    ap = (Stats.skill(stats, "throwing") + Stats.skill(stats, "force"))
+    ap = Stats.skill(stats, "throwing") + Stats.skill(stats, "force")
     n = 10
-    damage = div((Stats.skill(stats, "throwing") * 3), 5)
+    damage = div(Stats.skill(stats, "throwing") * 3, 5)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -68,7 +70,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 1000}
@@ -78,9 +80,12 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
+    #   query_amount()
+    conn = Broadcast.publish(conn, "$N手中扣住一枚，不理敌人的攻击，身体急速旋转起来，犹如一道呼啸的旋风！
+突然从旋风中飞出无数点寒星，划出一道道长虹闪电般的飞向$n的身体！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -108,6 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.San do
     result = Messages.interpolate("结果$p一声惨嚎，连中了$P发出的十base_unit。
 忽然那无数的光影一闪而没，$n身行一顿，喷出一口鲜血，仰天而倒。
 $n双臂急舞，衣袖带起破风之声。只听当的一声轻响，竟将那无数枚暗器磕飞开去。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

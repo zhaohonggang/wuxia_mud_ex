@@ -67,7 +67,11 @@ defmodule Kantele.Character.TrapEventTest do
 
   defp with_combat_exp(conn, value) do
     meta = conn.character.meta
-    %{conn | character: %{conn.character | meta: %{meta | stats: %{meta.stats | combat_exp: value}}}}
+
+    %{
+      conn
+      | character: %{conn.character | meta: %{meta | stats: %{meta.stats | combat_exp: value}}}
+    }
   end
 
   describe "force_move：必须是真的移动" do
@@ -91,11 +95,9 @@ defmodule Kantele.Character.TrapEventTest do
       data = queued_event_data(conn)
 
       # MoveView "leave" / "enter" 各一段（data 已经是 Movement 结构体本身）
-      leave? =
-        Enum.any?(data, &match?(%Kalevala.Event.Movement{direction: :from}, &1))
+      leave? = Enum.any?(data, &match?(%Kalevala.Event.Movement{direction: :from}, &1))
 
-      enter? =
-        Enum.any?(data, &match?(%Kalevala.Event.Movement{direction: :to}, &1))
+      enter? = Enum.any?(data, &match?(%Kalevala.Event.Movement{direction: :to}, &1))
 
       assert leave?, "应有 :from（离开原房间）事件"
       assert enter?, "应有 :to（进入目标房间）事件"
@@ -162,7 +164,6 @@ defmodule Kantele.Character.TrapEventTest do
     end
   end
 
-
   describe "连续副作用不能互相覆盖" do
     # put_character/2 只暂存到 private.update_character。若每条副作用都读
     # conn.character（旧的），后一条就会把前面的成果覆盖掉 —— 五行迷宫脱困
@@ -170,8 +171,13 @@ defmodule Kantele.Character.TrapEventTest do
     test "三步全都在最终角色上生效" do
       conn =
         player_conn()
-        |> with_temp(%{"wuxing/金" => 2, "wuxing/水" => 2, "wuxing/木" => 2,
-                       "wuxing/火" => 2, "wuxing/土" => 2})
+        |> with_temp(%{
+          "wuxing/金" => 2,
+          "wuxing/水" => 2,
+          "wuxing/木" => 2,
+          "wuxing/火" => 2,
+          "wuxing/土" => 2
+        })
         |> run([
           {:set_temp, "wuxing/水", 3},
           {:delete_prefix, "wuxing/"},

@@ -37,15 +37,15 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     stats = character.meta.stats
     combat = character.meta.combat
 
-with :ok <- check_perform_known(stats),
-          {:ok, target} <- check_target(combat),
-          {:ok, lvl} <- check_chousui(stats),
-          {:ok, lvp} <- check_poison(stats),
-          :ok <- check_throwing(stats),
-          :ok <- check_mapped(stats),
-          :ok <- check_max_neili(character),
-          :ok <- check_neili(character),
-          :ok <- check_handing(character) do
+    with :ok <- check_perform_known(stats),
+         {:ok, target} <- check_target(combat),
+         {:ok, lvl} <- check_chousui(stats),
+         {:ok, lvp} <- check_poison(stats),
+         :ok <- check_throwing(stats),
+         :ok <- check_mapped(stats),
+         :ok <- check_max_neili(character),
+         :ok <- check_neili(character),
+         :ok <- check_handing(character) do
       apply_perform(conn, character, target, lvl, lvp)
     else
       {:error, message} ->
@@ -158,12 +158,14 @@ with :ok <- check_perform_known(stats),
     # 消耗手中毒药（若有）
     temp = Map.get(character.meta, :temp, %{})
     handing = Map.get(temp, "handing")
+
     new_inventory =
       if handing && is_map(handing) do
         Enum.reject(character.inventory, &(&1.id == handing.id))
       else
         character.inventory
       end
+
     new_temp = Map.put(temp, "handing", nil)
     new_meta = Map.put(character.meta, :temp, new_temp)
     new_character = %{character | inventory: new_inventory, meta: new_meta}
@@ -253,8 +255,7 @@ with :ok <- check_perform_known(stats),
           # 由末尾 put_character/2 落账；同时取得命中文案所用护具名。
           {character, armor_name} = wear_armor(character)
 
-          wound_text =
-            "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
+          wound_text = "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
 
           Performs.feedback(attacker, 220, 2)
 
@@ -320,9 +321,9 @@ with :ok <- check_perform_known(stats),
   defp armor_stable?(snapshot), do: Map.get(snapshot, :stable, 1) >= 100
 
   defp ref(character),
-do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
 
-defp check_handing(character) do
+  defp check_handing(character) do
     handing =
       character.meta
       |> Map.get(:temp, %{})
@@ -346,4 +347,4 @@ defp check_handing(character) do
         end
     end
   end
- end
+end

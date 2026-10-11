@@ -108,7 +108,6 @@ defmodule Kantele.Combat.Skills.LuoyanJian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

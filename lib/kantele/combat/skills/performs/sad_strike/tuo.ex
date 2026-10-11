@@ -28,8 +28,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "sad-strike")
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
+    damage = ap + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -91,14 +93,20 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -124,14 +132,25 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 1)
-    result = if hit, do: Messages.interpolate("$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。
-只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      if hit,
+        do:
+          Messages.interpolate(
+            "$N心下万念俱灰，凄然间回想到自己的妻子couple/name，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。
+只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。",
+            n1: attacker.name,
+            n2: character.name
+          ),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

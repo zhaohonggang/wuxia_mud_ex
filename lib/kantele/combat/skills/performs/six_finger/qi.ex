@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "six-finger")
     ap = Stats.skill(stats, "finger")
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    damage = ap + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -93,16 +95,16 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N中指一按，一股凌厉无伦的无形剑气直奔$n胸前射去。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -137,6 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
 $n横试图招架，怎奈这股剑气如此犀利，透过直震得$n狂吐鲜血，五脏六腑都要翻转过来！
 $n横转，挡在胸前，只听啪啦一声，碎成数截，激飞上天！
 $n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

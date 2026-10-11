@@ -24,7 +24,7 @@ defmodule Kantele.Bot do
   @kill_cooldown_ms 2_500
   @learn_grace_ticks 3
 
-defstruct [
+  defstruct [
     :config,
     :foreman,
     seq: 0,
@@ -170,7 +170,7 @@ defstruct [
               decide(st, cfg, state)
           end
 
-state =
+        state =
           case action do
             nil ->
               state
@@ -188,15 +188,16 @@ state =
                 teacher = Enum.take(rest, 2) |> Enum.join(" ") |> String.trim()
                 times = parse_learn_times(line)
 
-                %{state |
-                  pending_learn: %{
-                    skill: skill,
-                    teacher: teacher,
-                    times: times,
-                    line: line,
-                    level_before: Stats.skill(st.stats, skill),
-                    since: state.seq
-                  }
+                %{
+                  state
+                  | pending_learn: %{
+                      skill: skill,
+                      teacher: teacher,
+                      times: times,
+                      line: line,
+                      level_before: Stats.skill(st.stats, skill),
+                      since: state.seq
+                    }
                 }
               else
                 state
@@ -205,7 +206,7 @@ state =
 
         schedule_tick(cfg.tick_ms)
         {:noreply, state}
-      end
+    end
   end
 
   defp save_due?(state, cfg, st) do
@@ -242,7 +243,7 @@ state =
 
   # ---- 决策（返回 {更新的 state, 动作命令 或 nil}）----
 
-defp decide(st, cfg, state) do
+  defp decide(st, cfg, state) do
     cond do
       in_combat?(st) and ratio(st.vitals.qi, st.vitals.max_qi) < cfg.flee_qi ->
         {state, "逃跑"}
@@ -276,11 +277,17 @@ defp decide(st, cfg, state) do
       # 2. Hunt if potential < threshold (default to train_potential) and target available
       true ->
         potential = Stats.available_potential(st.stats)
-        threshold = if cfg.hunt_potential_threshold > 0, do: cfg.hunt_potential_threshold, else: cfg.train_potential
+
+        threshold =
+          if cfg.hunt_potential_threshold > 0,
+            do: cfg.hunt_potential_threshold,
+            else: cfg.train_potential
+
         if potential < threshold do
           case hunt_target(st, cfg, state) do
             target when is_binary(target) ->
               {%{state | last_kill_at: now_ms()}, "kill " <> target}
+
             nil ->
               {state, march_action} = march_step(st, cfg, state, :hunt)
               {state, march_action}
@@ -313,7 +320,6 @@ defp decide(st, cfg, state) do
     if cfg.train != [] and
          Stats.available_potential(st.stats) >= cfg.train_potential and
          ratio(st.vitals.jing, st.vitals.max_jing) >= cfg.train_jing do
-
       # 过滤掉已失败的 learn 命令
       available_cmds =
         cfg.train
@@ -321,7 +327,8 @@ defp decide(st, cfg, state) do
           if is_learn_cmd(cmd) do
             not MapSet.member?(state.failed_train_commands, cmd)
           else
-            true  # 非 learn 命令不过滤
+            # 非 learn 命令不过滤
+            true
           end
         end)
 
@@ -403,8 +410,7 @@ defp decide(st, cfg, state) do
         |> Enum.reject(fn {_dir, dest} -> is_nil(dest) or MapSet.member?(visited, dest) end)
         |> Enum.uniq_by(fn {_dir, dest} -> dest end)
 
-      visited =
-        Enum.reduce(neighbors, visited, fn {_dir, dest}, acc -> MapSet.put(acc, dest) end)
+      visited = Enum.reduce(neighbors, visited, fn {_dir, dest}, acc -> MapSet.put(acc, dest) end)
 
       queue = queue ++ Enum.map(neighbors, fn {dir, dest} -> {dest, path ++ [dir]} end)
       bfs_path(queue, visited, goal_ids)
@@ -508,7 +514,7 @@ defp decide(st, cfg, state) do
     :ok
   end
 
-# 清空 protocol 输出邮箱（learn-result 事件在 foreman 内部消费，不会到达这里）
+  # 清空 protocol 输出邮箱（learn-result 事件在 foreman 内部消费，不会到达这里）
   defp drain_mailbox do
     collect_events([])
   end
@@ -532,11 +538,27 @@ defp decide(st, cfg, state) do
 
         cond do
           now > pending.level_before ->
-            Logger.info("bot #{state.config.name} learn success: #{pending.skill} (#{pending.level_before}->#{now})")
-            %{state | pending_learn: nil, train_fallback: false, failed_train_commands: MapSet.new(), failed_train_count: 0}
+            Logger.info(
+              "bot #{state.config.name} learn success: #{pending.skill} (#{pending.level_before}->#{
+                now
+              })"
+            )
+
+            %{
+              state
+              | pending_learn: nil,
+                train_fallback: false,
+                failed_train_commands: MapSet.new(),
+                failed_train_count: 0
+            }
 
           state.seq - pending.since >= @learn_grace_ticks ->
-            Logger.warning("bot #{state.config.name} learn failed: no progress for #{pending.skill} (cmd: #{pending.line})")
+            Logger.warning(
+              "bot #{state.config.name} learn failed: no progress for #{pending.skill} (cmd: #{
+                pending.line
+              })"
+            )
+
             failed = MapSet.put(state.failed_train_commands, pending.line)
             failed_count = state.failed_train_count + 1
 
@@ -544,12 +566,13 @@ defp decide(st, cfg, state) do
             all_failed = Enum.all?(learn_cmds, &MapSet.member?(failed, &1))
             force_fallback = failed_count >= 5
 
-            %{state |
-              pending_learn: nil,
-              failed_train_commands: failed,
-              failed_train_count: failed_count,
-              train_index: 0,
-              train_fallback: all_failed or force_fallback
+            %{
+              state
+              | pending_learn: nil,
+                failed_train_commands: failed,
+                failed_train_count: failed_count,
+                train_index: 0,
+                train_fallback: all_failed or force_fallback
             }
 
           true ->

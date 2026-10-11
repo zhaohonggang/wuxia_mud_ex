@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -106,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | max_neili: vitals.max_neili - 50}
     vitals = %{vitals | neili: 0}
@@ -116,8 +118,10 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     combat = Combat.start_busy(combat, 8)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(conn, "$N仰天一声惨笑，将剑尖指向自己胸口，剑柄斜斜向外，连人带剑电射而出，直扑$n而去！", n1: character.name)
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -143,13 +147,17 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 8)
-    result = if hit, do: Messages.interpolate("可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。
+
+    result =
+      if hit,
+        do: Messages.interpolate("可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。
 只听“喀嚓”一声，$n那掌正好打在$N头顶，$N哀嚎一声，软软的瘫倒。
 $n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。
 只听“噗嗤”一声，已然透过$n前胸而入，喷出一股血雨。
@@ -157,7 +165,9 @@ $n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于�
 向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，已然透过$n前胸，喷出一股血雨。
 同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。
 $n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄已然刺穿，喷出一股血雨。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+柄已然刺穿，喷出一股血雨。", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

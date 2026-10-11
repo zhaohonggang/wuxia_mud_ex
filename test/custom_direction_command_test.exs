@@ -27,8 +27,7 @@ defmodule CustomDirectionCommandTest do
     end
 
     test "柳溪 is an alias of the liuxi direction" do
-      assert {:ok, %ParsedCommand{module: LiuxiCommand, function: :run}} =
-               Commands.parse("柳溪")
+      assert {:ok, %ParsedCommand{module: LiuxiCommand, function: :run}} = Commands.parse("柳溪")
     end
   end
 

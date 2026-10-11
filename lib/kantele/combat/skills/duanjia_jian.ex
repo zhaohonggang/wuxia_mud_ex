@@ -31,7 +31,8 @@ defmodule Kantele.Combat.Skills.DuanjiaJian do
       Stats.skill(stats, "force") < 100 ->
         {:error, "你的基本内功火候还不够。\n"}
 
-      Stats.skill(stats, "duanjia-jian") > 0 && Stats.skill(stats, "force") < Stats.skill(stats, "duanjia-jian") ->
+      Stats.skill(stats, "duanjia-jian") > 0 &&
+          Stats.skill(stats, "force") < Stats.skill(stats, "duanjia-jian") ->
         {:error, "你的基本内功水平不够，难以修炼更深厚的段家剑法。\n"}
 
       true ->

@@ -56,7 +56,8 @@ defmodule Kantele.World.Item do
   把随机标题/描述挂在这里。这样 `get` / `study` / `detail` / 房间 look 按标题
   匹配与展示都一致（LPC present/get 同时认书名与 id 别名，见 `matches?/2`）。
   """
-  def instance_item(%{item: %Kalevala.World.Item{} = item} = _instance) when not is_nil(item.id) do
+  def instance_item(%{item: %Kalevala.World.Item{} = item} = _instance)
+      when not is_nil(item.id) do
     item
   end
 

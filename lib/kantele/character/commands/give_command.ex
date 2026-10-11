@@ -148,7 +148,8 @@ defmodule Kantele.Character.GiveCommand do
   end
 
   defp get_room(conn) do
-    Map.get(conn, :room) || conn.private.room || Kantele.World.Room.snapshot(conn.character.room_id)
+    Map.get(conn, :room) || conn.private.room ||
+      Kantele.World.Room.snapshot(conn.character.room_id)
   end
 
   defp valid_task_target?(item, npc) do
@@ -168,19 +169,21 @@ defmodule Kantele.Character.GiveCommand do
 
     exp = (100 + :rand.uniform(100)) * new_count
 
-    pot = cond do
-      new_count > 20 -> 2000 + :rand.uniform(2000)
-      new_count > 10 -> 1000 + :rand.uniform(1000)
-      new_count > 5  -> 500 + :rand.uniform(500)
-      true -> 100 + :rand.uniform(100)
-    end
+    pot =
+      cond do
+        new_count > 20 -> 2000 + :rand.uniform(2000)
+        new_count > 10 -> 1000 + :rand.uniform(1000)
+        new_count > 5 -> 500 + :rand.uniform(500)
+        true -> 100 + :rand.uniform(100)
+      end
 
-    pot = case new_count do
-      10 -> pot + 1000
-      20 -> pot + 4000
-      30 -> pot + 10000
-      _  -> pot
-    end
+    pot =
+      case new_count do
+        10 -> pot + 1000
+        20 -> pot + 4000
+        30 -> pot + 10000
+        _ -> pot
+      end
 
     kar = Map.get(character.meta.stats, :kar, 20)
     score = 10 + :rand.uniform(kar)
@@ -202,9 +205,10 @@ defmodule Kantele.Character.GiveCommand do
     # 6. 广播
     conn
     |> render(CommandView, "text", %{
-      text: "你将#{item.name}交给了#{target_npc.name}。\n" <>
-            "获得#{exp}点经验、#{pot}点潜能、#{score}点阅历、10两白银。\n" <>
-            "这是你这一轮完成的第#{new_count}个宝镜任务。\n"
+      text:
+        "你将#{item.name}交给了#{target_npc.name}。\n" <>
+          "获得#{exp}点经验、#{pot}点潜能、#{score}点阅历、10两白银。\n" <>
+          "这是你这一轮完成的第#{new_count}个宝镜任务。\n"
     })
     |> prompt(CommandView, "prompt", %{})
   end
@@ -240,7 +244,10 @@ defmodule Kantele.Character.GiveCommand do
 
   defp give_silver(conn, amount) do
     character = current_character(conn)
-    new_stats = Map.put(character.meta.stats, :silver, (Map.get(character.meta.stats, :silver, 0) + amount))
+
+    new_stats =
+      Map.put(character.meta.stats, :silver, Map.get(character.meta.stats, :silver, 0) + amount)
+
     conn |> put_character(%{character | meta: %{character.meta | stats: new_stats}})
   end
 
@@ -251,14 +258,37 @@ defmodule Kantele.Character.GiveCommand do
   end
 
   defp check_milestone_reward(conn, count) do
-    gift_id = case count do
-      100 -> random_gift(["liuxi:gift/perwan", "liuxi:gift/kardan", "liuxi:etc/prize4", "liuxi:etc/prize5"])
-      200 -> random_gift(["liuxi:gift/str2", "liuxi:gift/int2", "liuxi:gift/con2", "liuxi:gift/dex2"])
-      300 -> random_gift(["liuxi:gift/str3", "liuxi:gift/int3", "liuxi:gift/con3", "liuxi:gift/dex3"])
-      400 -> random_gift(["liuxi:item/xuantie", "liuxi:etc/bipo", "liuxi:etc/huanshi", "liuxi:etc/binghuozhu", "liuxi:etc/leishenzhu"])
-      500 -> random_gift(["liuxi:obj/guo", "liuxi:max/xuanhuang", "liuxi:max/longjia"])
-      _ -> nil
-    end
+    gift_id =
+      case count do
+        100 ->
+          random_gift([
+            "liuxi:gift/perwan",
+            "liuxi:gift/kardan",
+            "liuxi:etc/prize4",
+            "liuxi:etc/prize5"
+          ])
+
+        200 ->
+          random_gift(["liuxi:gift/str2", "liuxi:gift/int2", "liuxi:gift/con2", "liuxi:gift/dex2"])
+
+        300 ->
+          random_gift(["liuxi:gift/str3", "liuxi:gift/int3", "liuxi:gift/con3", "liuxi:gift/dex3"])
+
+        400 ->
+          random_gift([
+            "liuxi:item/xuantie",
+            "liuxi:etc/bipo",
+            "liuxi:etc/huanshi",
+            "liuxi:etc/binghuozhu",
+            "liuxi:etc/leishenzhu"
+          ])
+
+        500 ->
+          random_gift(["liuxi:obj/guo", "liuxi:max/xuanhuang", "liuxi:max/longjia"])
+
+        _ ->
+          nil
+      end
 
     if gift_id do
       case Kantele.World.Story.Gift.drop_to_random_room(

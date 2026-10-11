@@ -26,43 +26,43 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Jing do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "blade"},
-      #       {"ap", "sword"},
-      #       {"dp", "dodge"},
-      #       {"dp", "dodge"},
-      #       {"dp", "force"},
-      #       {"dp", "unarmed"},
-      #       {"lvl", "taixuan-gong"}
-      #     ],
-      #     level_gates: [
-      #       {"blade", "340"},
-      #       {"force", "340"},
-      #       {"martial-cognize", "260"},
-      #       {"sword", "340"}
-      #     ],
-      #     map_gates: [{"blade", "taixuan-gong"}, {"sword", "taixuan-gong"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "10000"}, {"neili", "850"}],
-      #     var_gates: [{"lvl", "340"}]
-      #   }
+  #   %{
+  #     assign_refs: [
+  #       {"ap", "blade"},
+  #       {"ap", "sword"},
+  #       {"dp", "dodge"},
+  #       {"dp", "dodge"},
+  #       {"dp", "force"},
+  #       {"dp", "unarmed"},
+  #       {"lvl", "taixuan-gong"}
+  #     ],
+  #     level_gates: [
+  #       {"blade", "340"},
+  #       {"force", "340"},
+  #       {"martial-cognize", "260"},
+  #       {"sword", "340"}
+  #     ],
+  #     map_gates: [{"blade", "taixuan-gong"}, {"sword", "taixuan-gong"}],
+  #     prepared_gates: [],
+  #     resource_gates: [{"max_neili", "10000"}, {"neili", "850"}],
+  #     var_gates: [{"lvl", "340"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(2 + random(3));",
-      #      "target->start_busy(4 + random(lvl / 40));"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(2 + random(3));
-      #   - target->start_busy(4 + random(lvl / 40));
+    #   %{
+    #     add_costs: [],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(2 + random(3));",
+    #      "target->start_busy(4 + random(lvl / 40));"],
+    #     remote_damage: true,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(2 + random(3));
+    #   - target->start_busy(4 + random(lvl / 40));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

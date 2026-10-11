@@ -52,5 +52,4 @@ defmodule Kantele.Combat.Skills.ShaochongSword do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

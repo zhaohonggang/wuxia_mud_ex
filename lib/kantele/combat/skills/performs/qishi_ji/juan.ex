@@ -134,9 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Juan do
       combat = Combat.start_busy(combat, div(level, 22) + 2)
 
       conn
-      |> Broadcast.publish(
-        Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings)
-      )
+      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
       |> put_character(put_combat(character, combat))
     else
       text =

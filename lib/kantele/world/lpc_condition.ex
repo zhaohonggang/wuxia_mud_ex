@@ -70,7 +70,7 @@ defmodule Kantele.World.LpcCondition do
   #
   # 以后再往这张名单加字段时，务必同时评估**恒假 / 恒真两个方向**：
   # 像 `!= '女性'` 这种条件恒真是「变成拦人的门禁」，比「不生效」严重得多。
-@unsupported_fields []
+  @unsupported_fields []
 
   def supported?(expr) when is_binary(expr) do
     not Enum.any?(@unsupported_fields, &String.contains?(expr, &1))
@@ -285,7 +285,8 @@ defmodule Kantele.World.LpcCondition do
     Enum.reduce(args, ctx, &seed_vars(&1, &2, acc))
   end
 
-  defp seed_vars({:func, _name, args}, ctx, acc), do: Enum.reduce(args, ctx, &seed_vars(&1, &2, acc))
+  defp seed_vars({:func, _name, args}, ctx, acc),
+    do: Enum.reduce(args, ctx, &seed_vars(&1, &2, acc))
 
   defp seed_vars(list, ctx, acc) when is_list(list),
     do: Enum.reduce(list, ctx, &seed_vars(&1, &2, acc))
@@ -357,8 +358,31 @@ defmodule Kantele.World.LpcCondition do
   # **字符串**列表，与 charlist 比较会永远不相等 —— 踩过一次。
 
   # 运算符按长度降序，避免 `->` 被切成 `-`、`&&` 被切成 `&`
-  @ops ["->", "==", "!=", "<=", ">=", "&&", "||", "(", ")", "[", "]",
-        ",", "!", "~", "<", ">", "&", "|", "=", "+", "-", "?", ":"]
+  @ops [
+    "->",
+    "==",
+    "!=",
+    "<=",
+    ">=",
+    "&&",
+    "||",
+    "(",
+    ")",
+    "[",
+    "]",
+    ",",
+    "!",
+    "~",
+    "<",
+    ">",
+    "&",
+    "|",
+    "=",
+    "+",
+    "-",
+    "?",
+    ":"
+  ]
 
   defp tokenize(src), do: src |> String.to_charlist() |> tok([])
 
@@ -420,7 +444,9 @@ defmodule Kantele.World.LpcCondition do
   defp read_ident([], buf), do: {List.to_string(Enum.reverse(buf)), []}
 
   defp read_ident([c | rest] = chars, buf) do
-    if ident_char?(c), do: read_ident(rest, [c | buf]), else: {List.to_string(Enum.reverse(buf)), chars}
+    if ident_char?(c),
+      do: read_ident(rest, [c | buf]),
+      else: {List.to_string(Enum.reverse(buf)), chars}
   end
 
   # ---------- 语法 ----------
@@ -552,7 +578,8 @@ defmodule Kantele.World.LpcCondition do
 
   defp eval({:and, l, r}, ctx), do: if(truthy?(eval(l, ctx)), do: eval(r, ctx), else: false)
 
-  defp eval({:or, l, r}, ctx), do: if(truthy?(eval(l, ctx)), do: true, else: truthy?(eval(r, ctx)))
+  defp eval({:or, l, r}, ctx),
+    do: if(truthy?(eval(l, ctx)), do: true, else: truthy?(eval(r, ctx)))
 
   defp eval({:not, ast}, ctx), do: !truthy?(eval(ast, ctx))
   defp eval({:cmp, op, l, r}, ctx), do: compare(op, eval(l, ctx), eval(r, ctx))

@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -99,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 110}
     vitals = %{vitals | neili: vitals.neili - 140}
@@ -108,9 +110,9 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     vitals = %{vitals | neili: vitals.neili - 70}
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N喝道：劈脑袋！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -134,14 +136,15 @@ defmodule Kantele.Combat.Skills.Performs.LeitingFu.Sanda do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-        vitals = Vitals.damage(vitals, :qi, damage)
-        vitals = Vitals.damage(vitals, :qi, damage)
-        vitals = Vitals.damage(vitals, :qi, damage)
+    vitals = Vitals.damage(vitals, :qi, damage)
+    vitals = Vitals.damage(vitals, :qi, damage)
+    vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
     result = Messages.interpolate("$p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
 $p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。
 $p一楞，只见$P身形一闪，已晃至自己跟前，躲闪不及，被这招击个正中。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -106,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | neili: vitals.neili - 50}
@@ -114,9 +116,9 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N蓦地收回双掌，施出密宗绝学「象跌势」，双臂再度横移，猛贯向$n！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -141,6 +143,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Die do
     Performs.feedback(attacker, 50, 1)
     result = Messages.interpolate("$n全然无力阻挡，竟被$N一拳击得飞起，重重的跌落在地上。
 $n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

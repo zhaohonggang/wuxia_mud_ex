@@ -10,10 +10,14 @@ defmodule Kantele.Character.AssistEvent do
   def request(conn, %{data: %{from_id: from_id, from_name: from_name}}) do
     # 存储待处理协助请求
     meta =
-      Map.put(conn.character.meta, :temp, Map.put(conn.character.meta.temp || %{}, "pending_assist_request", %{
-        id: from_id,
-        name: from_name
-      }))
+      Map.put(
+        conn.character.meta,
+        :temp,
+        Map.put(conn.character.meta.temp || %{}, "pending_assist_request", %{
+          id: from_id,
+          name: from_name
+        })
+      )
 
     character = %{conn.character | meta: meta}
 

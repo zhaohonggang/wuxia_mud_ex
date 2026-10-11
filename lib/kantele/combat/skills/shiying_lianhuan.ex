@@ -141,7 +141,6 @@ defmodule Kantele.Combat.Skills.ShiyingLianhuan do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

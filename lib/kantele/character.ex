@@ -355,6 +355,7 @@ defmodule Kantele.Character.NonPlayerMeta do
       Map.take(meta, [:vitals, :stats, :guarder, :aliases])
     end
   end
+
   defimpl Kalevala.Meta.Access do
     def get(meta, key), do: Map.get(meta, key)
 

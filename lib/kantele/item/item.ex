@@ -150,6 +150,7 @@ defmodule Kantele.Item do
   def is_exchange_item?(%Kalevala.World.Item{} = item) do
     item.id in @xiaoer_exchange_ids
   end
+
   def is_exchange_item?(_), do: false
 
   @doc "获取货币数量（从 meta.amount 读取，默认 1）"

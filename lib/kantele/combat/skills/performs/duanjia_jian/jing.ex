@@ -152,9 +152,7 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaJian.Jing do
       Performs.feedback(attacker, 100, 3)
 
       conn
-      |> Broadcast.publish(
-        Messages.interpolate("可是$p猛地向边上一跃，跳出了$P的攻击范围。\n", bindings)
-      )
+      |> Broadcast.publish(Messages.interpolate("可是$p猛地向边上一跃，跳出了$P的攻击范围。\n", bindings))
     end
   end
 

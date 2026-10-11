@@ -174,7 +174,6 @@ defmodule Kantele.Combat.Skills.WuchangZhang do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

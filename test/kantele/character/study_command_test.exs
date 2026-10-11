@@ -49,7 +49,15 @@ defmodule Kantele.Character.StudyCommandTest do
       combat_exp: Keyword.get(opts, :combat_exp, 5000),
       potential: Keyword.get(opts, :potential, 100),
       learned_points: Keyword.get(opts, :learned_points, 0),
-      skills: Keyword.get(opts, :skills, %{"unarmed" => 60, "sword" => 60, "dodge" => 60, "parry" => 60, "force" => 20, "literate" => 10}),
+      skills:
+        Keyword.get(opts, :skills, %{
+          "unarmed" => 60,
+          "sword" => 60,
+          "dodge" => 60,
+          "parry" => 60,
+          "force" => 20,
+          "literate" => 10
+        }),
       mapped: %{},
       performs: MapSet.new(),
       score: 0,
@@ -134,7 +142,15 @@ defmodule Kantele.Character.StudyCommandTest do
     end
 
     test "读书次数超限" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 100, exp_required: 0, jing_cost: 5, difficulty: 10}
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 100,
+        exp_required: 0,
+        jing_cost: 5,
+        difficulty: 10
+      }
+
       p = player(inventory: [book_instance(@book_id, book_meta)])
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法 x200"})
       assert output_text(conn) =~ "最多"
@@ -143,7 +159,15 @@ defmodule Kantele.Character.StudyCommandTest do
 
   describe "study 文盲检查" do
     test "无 literate 技能" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 100, exp_required: 0, jing_cost: 5, difficulty: 10}
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 100,
+        exp_required: 0,
+        jing_cost: 5,
+        difficulty: 10
+      }
+
       p = player(inventory: [book_instance(@book_id, book_meta)], skills: %{"force" => 20})
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法"})
       assert output_text(conn) =~ "文盲"
@@ -152,22 +176,56 @@ defmodule Kantele.Character.StudyCommandTest do
 
   describe "study 技能等级检查" do
     test "实战经验不足" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 100, exp_required: 5000, jing_cost: 5, difficulty: 10}
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 100,
+        exp_required: 5000,
+        jing_cost: 5,
+        difficulty: 10
+      }
+
       p = player(inventory: [book_instance(@book_id, book_meta)], combat_exp: 100)
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法"})
       assert output_text(conn) =~ "实战经验不足"
     end
 
     test "技能已超过书籍上限" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 80, exp_required: 0, jing_cost: 5, difficulty: 10}
-      p = player(inventory: [book_instance(@book_id, book_meta)], skills: %{"literate" => 10, "liuxin-jian" => 90})
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 80,
+        exp_required: 0,
+        jing_cost: 5,
+        difficulty: 10
+      }
+
+      p =
+        player(
+          inventory: [book_instance(@book_id, book_meta)],
+          skills: %{"literate" => 10, "liuxin-jian" => 90}
+        )
+
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法"})
       assert output_text(conn) =~ "太浅"
     end
 
     test "技能低于书籍下限" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 30, max_skill: 100, exp_required: 0, jing_cost: 5, difficulty: 10}
-      p = player(inventory: [book_instance(@book_id, book_meta)], skills: %{"literate" => 10, "liuxin-jian" => 10})
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 30,
+        max_skill: 100,
+        exp_required: 0,
+        jing_cost: 5,
+        difficulty: 10
+      }
+
+      p =
+        player(
+          inventory: [book_instance(@book_id, book_meta)],
+          skills: %{"literate" => 10, "liuxin-jian" => 10}
+        )
+
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法"})
       assert output_text(conn) =~ "理解还太浅"
     end
@@ -175,13 +233,22 @@ defmodule Kantele.Character.StudyCommandTest do
 
   describe "study 研读成功" do
     test "成功研读并提升技能" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 100, exp_required: 0, jing_cost: 50, difficulty: 10}
-      p = player(
-        inventory: [book_instance(@book_id, book_meta)],
-        skills: %{"literate" => 10, "liuxin-jian" => 0, "force" => 20},
-        jing: 2000,
-        potential: 50
-      )
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 100,
+        exp_required: 0,
+        jing_cost: 50,
+        difficulty: 10
+      }
+
+      p =
+        player(
+          inventory: [book_instance(@book_id, book_meta)],
+          skills: %{"literate" => 10, "liuxin-jian" => 0, "force" => 20},
+          jing: 2000,
+          potential: 50
+        )
 
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法"})
       text = output_text(conn)
@@ -195,13 +262,22 @@ defmodule Kantele.Character.StudyCommandTest do
 
     test "精气不足时中途停止" do
       # jing_cost=5000 → jing_cost_effective = max((5000*20+10-20)/20,10) = 4999 > jing(3000) → 0 iterations
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 100, exp_required: 0, jing_cost: 5000, difficulty: 10}
-      p = player(
-        inventory: [book_instance(@book_id, book_meta)],
-        skills: %{"literate" => 10, "liuxin-jian" => 0, "force" => 20},
-        jing: 3000,
-        potential: 100
-      )
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 100,
+        exp_required: 0,
+        jing_cost: 5000,
+        difficulty: 10
+      }
+
+      p =
+        player(
+          inventory: [book_instance(@book_id, book_meta)],
+          skills: %{"literate" => 10, "liuxin-jian" => 0, "force" => 20},
+          jing: 3000,
+          potential: 100
+        )
 
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法 x3"})
       text = output_text(conn)
@@ -209,13 +285,22 @@ defmodule Kantele.Character.StudyCommandTest do
     end
 
     test "指定次数 x3 格式" do
-      book_meta = %Book{skill: "liuxin-jian", min_skill: 0, max_skill: 100, exp_required: 0, jing_cost: 1000, difficulty: 10}
-      p = player(
-        inventory: [book_instance(@book_id, book_meta)],
-        skills: %{"literate" => 10, "liuxin-jian" => 0, "force" => 20},
-        jing: 3000,
-        potential: 50
-      )
+      book_meta = %Book{
+        skill: "liuxin-jian",
+        min_skill: 0,
+        max_skill: 100,
+        exp_required: 0,
+        jing_cost: 1000,
+        difficulty: 10
+      }
+
+      p =
+        player(
+          inventory: [book_instance(@book_id, book_meta)],
+          skills: %{"literate" => 10, "liuxin-jian" => 0, "force" => 20},
+          jing: 3000,
+          potential: 50
+        )
 
       conn = StudyCommand.run(build_conn(p), %{"parse" => "柳心剑法 x3"})
 

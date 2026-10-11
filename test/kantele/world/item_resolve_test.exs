@@ -111,7 +111,12 @@ defmodule Kantele.World.ItemResolveTest do
     test "带 skills 候选列表时随机定一支（技能与标题都来自候选）" do
       rolled =
         for _ <- 1..30 do
-          instance = %Instance{id: "wuji-inst", item_id: "test:wuji", item: %Item.ItemNotLoaded{}, meta: %{}}
+          instance = %Instance{
+            id: "wuji-inst",
+            item_id: "test:wuji",
+            item: %Item.ItemNotLoaded{},
+            meta: %{}
+          }
 
           WorldItem.materialize_book(instance, book_item(%Book{skills: @wuji_skills}))
         end
@@ -129,12 +134,26 @@ defmodule Kantele.World.ItemResolveTest do
     end
 
     test "只挂普通 book 时把共享书籍元数据拷进实例" do
-      book = %Book{skill: "luohan-quan", min_skill: 0, max_skill: 99, exp_required: 10000, jing_cost: 30, difficulty: 25}
-      instance = %Instance{id: "plain-inst", item_id: "test:book", item: %Item.ItemNotLoaded{}, meta: %{}}
+      book = %Book{
+        skill: "luohan-quan",
+        min_skill: 0,
+        max_skill: 99,
+        exp_required: 10000,
+        jing_cost: 30,
+        difficulty: 25
+      }
+
+      instance = %Instance{
+        id: "plain-inst",
+        item_id: "test:book",
+        item: %Item.ItemNotLoaded{},
+        meta: %{}
+      }
 
       rolled = WorldItem.materialize_book(instance, book_item(book))
 
       assert rolled.meta.book == book
+
       # 普通书没有随机标题，实例字段原样不动（仍由共享定义 resolve 出名字）
       assert rolled.item == instance.item
       assert rolled.id == "plain-inst"
@@ -150,13 +169,23 @@ defmodule Kantele.World.ItemResolveTest do
         meta: %{unit: "个"}
       }
 
-      instance = %Instance{id: "baozi-inst", item_id: @real, item: %Item.ItemNotLoaded{}, meta: %{}}
+      instance = %Instance{
+        id: "baozi-inst",
+        item_id: @real,
+        item: %Item.ItemNotLoaded{},
+        meta: %{}
+      }
 
       assert WorldItem.materialize_book(instance, baozi) == instance
     end
 
     test "定义缺失时原样返回不抛异常" do
-      instance = %Instance{id: "gone-inst", item_id: @gone, item: %Item.ItemNotLoaded{}, meta: %{}}
+      instance = %Instance{
+        id: "gone-inst",
+        item_id: @gone,
+        item: %Item.ItemNotLoaded{},
+        meta: %{}
+      }
 
       assert WorldItem.materialize_book(instance) == instance
     end

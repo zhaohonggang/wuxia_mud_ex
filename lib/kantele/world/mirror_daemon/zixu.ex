@@ -14,7 +14,8 @@ defmodule Kantele.World.MirrorDaemon.Zixu do
   alias Kantele.World.Items
 
   @liuxi_zone "liuxi"
-  @mirror_item "liuxi:item/mirror"  # 待定义
+  # 待定义
+  @mirror_item "liuxi:item/mirror"
 
   @doc "构建子虚道人 NPC 角色结构（zone_id 可注入，测试用独立 zone 避免抢占 liuxi 监督树）"
   def build_zixu(zone_id \\ @liuxi_zone) do

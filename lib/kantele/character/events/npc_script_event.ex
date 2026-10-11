@@ -120,7 +120,8 @@ defmodule Kantele.Character.NpcScriptEvent do
 
       true ->
         # 从关键词提取物品名（格式：登记 <物品名>）
-        target_name = keyword
+        target_name =
+          keyword
           |> String.replace(~r/登记[召唤]?\s*/, "")
           |> String.trim()
 
@@ -132,12 +133,14 @@ defmodule Kantele.Character.NpcScriptEvent do
           |> prompt(CommandView, "prompt", %{})
         else
           # 查找背包中匹配的物品
-          item_instance = Enum.find(character.inventory, fn inst ->
-            item = Items.get!(inst.item_id)
-            item.name == target_name ||
-            String.contains?(item.name, target_name) ||
-            String.contains?(inst.item_id, target_name)
-          end)
+          item_instance =
+            Enum.find(character.inventory, fn inst ->
+              item = Items.get!(inst.item_id)
+
+              item.name == target_name ||
+                String.contains?(item.name, target_name) ||
+                String.contains?(inst.item_id, target_name)
+            end)
 
           if is_nil(item_instance) do
             conn
@@ -149,7 +152,9 @@ defmodule Kantele.Character.NpcScriptEvent do
             item = Items.get!(item_instance.item_id)
             item_path = item.id
 
-            can_summon = Map.put(character.attributes["can_summon"] || %{}, item_instance.item_id, item_path)
+            can_summon =
+              Map.put(character.attributes["can_summon"] || %{}, item_instance.item_id, item_path)
+
             attributes = Map.put(character.attributes, "can_summon", can_summon)
             character = %{character | attributes: attributes}
             Records.save(character)

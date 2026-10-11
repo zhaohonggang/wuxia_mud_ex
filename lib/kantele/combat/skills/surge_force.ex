@@ -246,6 +246,7 @@ defmodule Kantele.Combat.Skills.SurgeForce.Roar do
 
   defp gate_room_ok(character) do
     room_config = Map.get(character.meta, :room, %{})
+
     if Map.get(room_config, :no_fight, false) do
       {:error, "这里不能攻击别人! \n"}
     else

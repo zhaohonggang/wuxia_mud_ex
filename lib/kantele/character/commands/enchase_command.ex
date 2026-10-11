@@ -22,7 +22,14 @@ defmodule Kantele.Character.EnchaseCommand do
         {:ok, tessera_name, weapon_name} ->
           case find_items(character, tessera_name, weapon_name) do
             {:ok, tessera_item, tessera_instance, weapon_item, weapon_instance} ->
-              check_and_enchase(conn, character, tessera_item, tessera_instance, weapon_item, weapon_instance)
+              check_and_enchase(
+                conn,
+                character,
+                tessera_item,
+                tessera_instance,
+                weapon_item,
+                weapon_instance
+              )
 
             {:error, reason} ->
               fail(conn, reason <> "\n")
@@ -83,21 +90,44 @@ defmodule Kantele.Character.EnchaseCommand do
     end
   end
 
-  defp check_and_enchase(conn, character, tessera_item, tessera_instance, weapon_item, weapon_instance) do
+  defp check_and_enchase(
+         conn,
+         character,
+         tessera_item,
+         tessera_instance,
+         weapon_item,
+         weapon_instance
+       ) do
     weapon_meta = get_craft_meta(weapon_instance)
     player_meta = player_meta_for_craft(character)
     tessera_meta = get_tessera_meta(tessera_instance)
 
     case Craft.can_enchase?(weapon_meta, player_meta, tessera_meta) do
       :ok ->
-        execute_enchase(conn, character, tessera_item, tessera_instance, weapon_item, weapon_instance, weapon_meta)
+        execute_enchase(
+          conn,
+          character,
+          tessera_item,
+          tessera_instance,
+          weapon_item,
+          weapon_instance,
+          weapon_meta
+        )
 
       {:error, reason} ->
         fail(conn, reason <> "\n")
     end
   end
 
-  defp execute_enchase(conn, character, tessera_item, tessera_instance, weapon_item, weapon_instance, weapon_meta) do
+  defp execute_enchase(
+         conn,
+         character,
+         tessera_item,
+         tessera_instance,
+         weapon_item,
+         weapon_instance,
+         weapon_meta
+       ) do
     new_meta = Craft.do_enchase(weapon_meta, get_tessera_meta(tessera_instance))
 
     new_attrs = Map.put(instance_attrs(weapon_instance), "craft", new_meta)
@@ -112,7 +142,12 @@ defmodule Kantele.Character.EnchaseCommand do
     new_conn = put_character(conn, new_character)
 
     new_conn
-    |> render(CommandView, "text", %{text: "你把#{tessera_item.name}镶嵌到了#{weapon_item.name}上，#{weapon_item.name}泛起了一阵#{Craft.chinese_s(Map.get(new_meta, :type))}的光芒！\n"})
+    |> render(CommandView, "text", %{
+      text:
+        "你把#{tessera_item.name}镶嵌到了#{weapon_item.name}上，#{weapon_item.name}泛起了一阵#{
+          Craft.chinese_s(Map.get(new_meta, :type))
+        }的光芒！\n"
+    })
     |> prompt(CommandView, "prompt", %{})
     |> Records.save(new_character)
   end
@@ -123,6 +158,7 @@ defmodule Kantele.Character.EnchaseCommand do
 
   defp get_tessera_meta(instance) do
     item = Items.get!(instance.item_id)
+
     %{
       name: item.name,
       can_be_enchased: true,

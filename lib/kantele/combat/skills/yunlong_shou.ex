@@ -161,5 +161,4 @@ defmodule Kantele.Combat.Skills.YunlongShou do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

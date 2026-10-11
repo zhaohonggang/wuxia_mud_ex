@@ -72,11 +72,13 @@ defmodule Kantele.Meta.TrimContractTest do
 
     trimmed = Kalevala.Meta.trim(meta)
 
-    assert Kantele.Npc.Guarder.is_guarder?(struct(Kalevala.Character, %{
-             name: "守卫",
-             pid: self(),
-             meta: trimmed
-           }))
+    assert Kantele.Npc.Guarder.is_guarder?(
+             struct(Kalevala.Character, %{
+               name: "守卫",
+               pid: self(),
+               meta: trimmed
+             })
+           )
   end
 
   @tag :world_data

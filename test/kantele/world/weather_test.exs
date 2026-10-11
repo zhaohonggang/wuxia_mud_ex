@@ -18,9 +18,21 @@ defmodule Kantele.World.WeatherTest do
     Enum.each(tables, fn {key, rows} ->
       assert length(rows) == 8
       assert Enum.map(rows, & &1.hour) == [0, 3, 6, 9, 12, 15, 18, 21]
-      assert key in [:spring_rain, :summer_rain, :autumn_rain, :winter_rain,
-        :spring_sun, :summer_sun, :autumn_sun, :winter_sun,
-        :spring_wind, :summer_wind, :autumn_wind, :winter_wind]
+
+      assert key in [
+               :spring_rain,
+               :summer_rain,
+               :autumn_rain,
+               :winter_rain,
+               :spring_sun,
+               :summer_sun,
+               :autumn_sun,
+               :winter_sun,
+               :spring_wind,
+               :summer_wind,
+               :autumn_wind,
+               :winter_wind
+             ]
 
       Enum.each(rows, fn row ->
         assert is_integer(row.hour)
@@ -50,8 +62,7 @@ defmodule Kantele.World.WeatherTest do
   end
 
   test "step：时段变化播报（同季节同天气）" do
-    {new_ctx, [ann]} =
-      Weather.step(ctx(), %{season: :winter, hour: 5, month: 2})
+    {new_ctx, [ann]} = Weather.step(ctx(), %{season: :winter, hour: 5, month: 2})
 
     assert new_ctx.phase.hour == 3
     assert String.starts_with?(ann, "【天象】")
@@ -76,7 +87,9 @@ defmodule Kantele.World.WeatherTest do
 
   describe "GenServer（匿名实例，接真实时钟）" do
     setup do
-      {:ok, server} = Weather.start_link(name: :anonymous, seed: 1, announce: false, cycle_ms: 500)
+      {:ok, server} =
+        Weather.start_link(name: :anonymous, seed: 1, announce: false, cycle_ms: 500)
+
       %{server: server}
     end
 

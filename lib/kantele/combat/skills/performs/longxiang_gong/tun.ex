@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "longxiang-gong")
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -106,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 300}
@@ -115,9 +117,10 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N双臂左右分张，形若龙嘴，所施正是龙象般若功绝学「龙吞势」。霎时呼
+啸声大作，但见一股澎湃无比的罡劲至$N双掌间涌出，云贯向$n而去。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -148,6 +151,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Tun do
     result = Messages.interpolate("$N双臂左右分张，形若龙嘴，所施正是龙象般若功绝学「龙吞势」。霎时呼
 啸声大作，但见一股澎湃无比的罡劲至$N双掌间涌出，云贯向$n而去。
 $n一声哀嚎，被$N的罡气划中气门，真气在体内四处乱窜，惨不堪言。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

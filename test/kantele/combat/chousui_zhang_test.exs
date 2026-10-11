@@ -201,6 +201,7 @@ defmodule Kantele.Combat.ChousuiZhangTest do
       conn = incoming(build_conn(character), data)
 
       assert published_text(conn) =~ "震灭"
+
       assert_receive %Kalevala.Event{
         topic: "combat/perform-feedback",
         data: %{neili_cost: 150, busy: 3}
@@ -216,6 +217,7 @@ defmodule Kantele.Combat.ChousuiZhangTest do
 
       assert conn.private.update_character.meta.vitals.jing == jing - div(60, 2)
       assert published_text(conn) =~ "嗤嗤作响"
+
       assert_receive %Kalevala.Event{
         topic: "combat/perform-feedback",
         data: %{neili_cost: 220, busy: 2}
@@ -273,6 +275,7 @@ defmodule Kantele.Combat.ChousuiZhangTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "避开了"
+
       assert_receive %Kalevala.Event{
         topic: "combat/perform-feedback",
         data: %{neili_cost: 100, busy: 3}

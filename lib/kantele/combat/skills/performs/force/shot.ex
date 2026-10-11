@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @impl true
@@ -81,13 +82,15 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
+    #   query_amount()
+    conn = Broadcast.publish(conn, "$N一声冷笑，默运内劲，手指粘住对准$n「嗖」的弹射了出去。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end

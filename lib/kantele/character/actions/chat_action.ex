@@ -22,8 +22,12 @@ defmodule Kantele.Character.ChatAction do
         # Stamp the cooldown BEFORE publishing.  Publishing feeds the room
         # channel this NPC is subscribed to, so the brain runs again on our own
         # message; the stamp has to be visible to that very next run.
-        conn = put_session(conn, Kantele.Brain.Conditions.ChatChance.session_key(),
-                            System.monotonic_time(:millisecond))
+        conn =
+          put_session(
+            conn,
+            Kantele.Brain.Conditions.ChatChance.session_key(),
+            System.monotonic_time(:millisecond)
+          )
 
         publish_message(
           conn,

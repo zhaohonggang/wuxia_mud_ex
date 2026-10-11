@@ -17,14 +17,14 @@ defmodule Kantele.World.ChatRuntimeTest do
 
   setup do
     :ok =
-      Communication.subscribe("rooms:#{@room_id}", [
+      Communication.subscribe("rooms:#{@room_id}",
         character: %Kalevala.Character{id: "chat-sub", room_id: @room_id}
-      ])
+      )
 
     on_exit(fn ->
-      Communication.unsubscribe("rooms:#{@room_id}", [
+      Communication.unsubscribe("rooms:#{@room_id}",
         character: %Kalevala.Character{id: "chat-sub", room_id: @room_id}
-      ])
+      )
     end)
 
     :ok
@@ -227,6 +227,7 @@ defmodule Kantele.World.ChatRuntimeTest do
 
   defp contains_chat_action?(%Kalevala.Brain{root: root}), do: contains_chat_action?(root)
   defp contains_chat_action?(%Kalevala.Brain.Action{type: Kantele.Character.ChatAction}), do: true
+
   defp contains_chat_action?(%{nodes: nodes}) when is_list(nodes),
     do: Enum.any?(nodes, &contains_chat_action?/1)
 

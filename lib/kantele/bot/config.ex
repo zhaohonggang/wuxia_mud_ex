@@ -58,9 +58,12 @@ defmodule Kantele.BotConfig do
         |> Enum.flat_map(fn file ->
           full = Path.join([path, file])
           content = File.read!(full)
+
           case Elias.parse(content) do
             %{bots: bots} when is_map(bots) ->
-              Enum.map(bots, fn {key, data} -> {to_string(key), from_parsed(to_string(key), data)} end)
+              Enum.map(bots, fn {key, data} ->
+                {to_string(key), from_parsed(to_string(key), data)}
+              end)
 
             _ ->
               []

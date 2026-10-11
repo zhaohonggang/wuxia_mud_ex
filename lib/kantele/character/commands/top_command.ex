@@ -14,14 +14,29 @@ defmodule Kantele.Character.TopCommand do
   def run(conn, %{"category" => category}) do
     msg =
       case category do
-        "exp" -> "排行榜暂未开放。\n"
-        "lv" -> "排行榜暂未开放。\n"
-        "qi" -> "排行榜暂未开放。\n"
-        "age" -> "排行榜暂未开放。\n"
-        "kill" -> "排行榜暂未开放。\n"
-        "die" -> "排行榜暂未开放。\n"
-        "league" -> league_ranking()
-        _ -> "目前只提供等级(top lv)/经验(top exp)/气血(top hp)/年龄(top age)/杀敌(top kill)/帮派(top league)等全服排行。\n"
+        "exp" ->
+          "排行榜暂未开放。\n"
+
+        "lv" ->
+          "排行榜暂未开放。\n"
+
+        "qi" ->
+          "排行榜暂未开放。\n"
+
+        "age" ->
+          "排行榜暂未开放。\n"
+
+        "kill" ->
+          "排行榜暂未开放。\n"
+
+        "die" ->
+          "排行榜暂未开放。\n"
+
+        "league" ->
+          league_ranking()
+
+        _ ->
+          "目前只提供等级(top lv)/经验(top exp)/气血(top hp)/年龄(top age)/杀敌(top kill)/帮派(top league)等全服排行。\n"
       end
 
     conn

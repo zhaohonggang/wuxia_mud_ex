@@ -25,8 +25,7 @@ defmodule Kantele.Character.EngageEvent do
 
     put_character(conn, %{character | meta: meta})
     |> render(CommandView, "text", %{
-      text:
-        "#{from_name}向你求婚，承诺是：「#{promise}」。若你愿意，就用 accede #{promise} 来答应。\n"
+      text: "#{from_name}向你求婚，承诺是：「#{promise}」。若你愿意，就用 accede #{promise} 来答应。\n"
     })
     |> prompt(CommandView, "prompt", %{})
     |> save()

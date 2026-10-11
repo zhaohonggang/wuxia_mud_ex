@@ -31,7 +31,9 @@ defmodule Kantele.Character.CloneCommand do
             }
 
             conn
-            |> render(CommandView, "text", %{text: "克隆 #{item_template.name} 成功，ID: #{instance.id}\n"})
+            |> render(CommandView, "text", %{
+              text: "克隆 #{item_template.name} 成功，ID: #{instance.id}\n"
+            })
             |> prompt(CommandView, "prompt", %{})
         end
     end

@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     vitals = %{vitals | neili: vitals.neili - 70}
@@ -95,9 +97,9 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N随便走了几步，忽然一荡手中的，迅捷无比的扫向$n，变化复杂之极，不可思议！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -123,7 +125,13 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 70, 2)
-    result = Messages.interpolate("$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

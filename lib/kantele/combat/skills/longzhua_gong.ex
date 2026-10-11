@@ -174,7 +174,6 @@ defmodule Kantele.Combat.Skills.LongzhuaGong do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

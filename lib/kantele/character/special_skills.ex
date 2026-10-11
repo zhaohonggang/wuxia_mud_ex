@@ -67,6 +67,7 @@ defmodule Kantele.Character.SpecialSkills do
     table()
     |> Map.put(skill_id, module)
     |> put_table()
+
     :ok
   end
 
@@ -75,6 +76,7 @@ defmodule Kantele.Character.SpecialSkills do
     table()
     |> Map.delete(skill_id)
     |> put_table()
+
     :ok
   end
 

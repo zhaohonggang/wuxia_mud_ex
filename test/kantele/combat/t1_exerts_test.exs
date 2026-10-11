@@ -67,7 +67,7 @@ defmodule Kantele.Combat.T1ExertsTest do
     {"xiuluo-yinshagong", "powerup", "xiuluo-yinshagong", %{attack: 33, defense: 33},
      "你的内力不够。\n"},
     {"xixing-dafa", "powerup", "xixing-dafa", %{attack: 33, defense: 33}, "你的内力不够。\n"},
-{"surge-force", "powerup", "surge-force", %{attack: 40, defense: 40, unarmed_damage: 20},
+    {"surge-force", "powerup", "surge-force", %{attack: 40, defense: 40, unarmed_damage: 20},
      "你的内力不够。\n"},
     {"shenlong-xinfa", "powerup", "force", %{attack: 33, dodge: 33}, "你的内力不够!"},
     {"lengyue-shengong", "powerup", "lengyue-shengong", %{attack: 33, defense: 33}, "你的真气不够！"},

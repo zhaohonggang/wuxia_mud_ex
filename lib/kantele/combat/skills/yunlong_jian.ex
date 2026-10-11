@@ -185,7 +185,6 @@ defmodule Kantele.Combat.Skills.YunlongJian do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

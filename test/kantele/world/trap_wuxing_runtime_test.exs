@@ -220,6 +220,7 @@ defmodule Kantele.World.TrapWuxingRuntimeTest do
         move(room, player(%{}), dir)
 
         assert_received %Event{topic: "trap/effect", data: %{effects: effects}}
+
         assert effects == [{:set_temp, "wuxing/#{element}", 1}],
                "#{id} 往 #{dir} 应累加 #{element}"
       end

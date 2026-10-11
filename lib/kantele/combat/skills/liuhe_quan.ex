@@ -118,5 +118,4 @@ defmodule Kantele.Combat.Skills.LiuheQuan do
       action -> Map.get(action, "skill_name")
     end
   end
-
 end

@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.LiuyunZhang.Pai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -100,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyunZhang.Pai do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 200}
@@ -110,8 +112,12 @@ defmodule Kantele.Combat.Skills.Performs.LiuyunZhang.Pai do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
+    conn =
+      Broadcast.publish(conn, "$N运转真气，将内力注于掌风之中，双掌猛然拍向$n，雄浑有力，气势磅礴，毫无滞带，正是衡山派绝学「排山倒海」。",
+        n1: character.name
+      )
+
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -139,7 +145,13 @@ defmodule Kantele.Combat.Skills.Performs.LiuyunZhang.Pai do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    result = Messages.interpolate("但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("但见$N双掌拍来，掌风作响，当真迅捷无比。$n顿觉心惊胆战，毫无招架之力，微作迟疑间$N这掌已正中$n胸口，顿将$p震退数步。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

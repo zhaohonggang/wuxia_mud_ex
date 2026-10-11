@@ -79,24 +79,23 @@ defmodule Kantele.Combat.Skills.Force.Tianmo do
 
     str = stats.str || 0
 
+    applies = %{
+      str: str,
+      int: stats.int || 0,
+      con: stats.con || 0,
+      dex: stats.dex || 0,
+      attack: count,
+      damage: str * 3,
+      unarmed_damage: str * 3
+    }
+
     applies =
-      %{
-        str: str,
-        int: stats.int || 0,
-        con: stats.con || 0,
-        dex: stats.dex || 0,
-        attack: count,
-        damage: str * 3,
-        unarmed_damage: str * 3
-      }
+      Enum.reduce(skills, applies, fn skill_id, acc -> Map.put(acc, skill_id, div(count, 2)) end)
 
-    applies = Enum.reduce(skills, applies, fn skill_id, acc -> Map.put(acc, skill_id, div(count, 2)) end)
-
-    buff =
-      %Buff{
-        key: "tianmo",
-        applies: Enum.reduce(applies, %{}, fn {key, value}, acc -> Map.put(acc, key, -value) end)
-      }
+    buff = %Buff{
+      key: "tianmo",
+      applies: Enum.reduce(applies, %{}, fn {key, value}, acc -> Map.put(acc, key, -value) end)
+    }
 
     new_combat =
       combat

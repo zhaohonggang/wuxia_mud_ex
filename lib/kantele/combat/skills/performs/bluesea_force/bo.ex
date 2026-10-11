@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bluesea-force")
-    ap = (div((Stats.skill(stats, "bluesea-force") * 3), 2) + Stats.skill(stats, "martial-cognize"))
+    ap = div(Stats.skill(stats, "bluesea-force") * 3, 2) + Stats.skill(stats, "martial-cognize")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -75,13 +77,13 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N掌力忽左忽右，形成一个个气旋，如波浪一般接连向$n逼去！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -107,6 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 1)
     result = Messages.interpolate("结果$p被$P逼得施展不开半点招式！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

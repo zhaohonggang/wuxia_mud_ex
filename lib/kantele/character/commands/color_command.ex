@@ -12,6 +12,7 @@ defmodule Kantele.Character.ColorCommand do
 
   def run(conn, _params) do
     header = "\e[35m·\e[33m色彩精灵向您报告\e[35m★\n\n\e[1m色彩对照表：\n"
+
     swatches = [
       "  黑色  BLK                \e[30m■■\e[0m    BBLK  \e[1;30m■■\e[0m\n",
       "  红色  RED                \e[31m■■\e[0m    HIR   \e[1;31m■■\e[0m\n",

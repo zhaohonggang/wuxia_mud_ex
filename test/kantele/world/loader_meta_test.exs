@@ -381,6 +381,7 @@ defmodule Kantele.World.LoaderMetaTest do
     cave = Enum.find(world.rooms, &(&1.id == "test:cave"))
 
     assert cave != nil
+
     assert cave.exit_vetoes == [
              %{
                direction: "in",

@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -36,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -98,13 +101,15 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
+    #   query_amount()
+    conn = Broadcast.publish(conn, "$N身不慌，足不移，手掌只是轻轻一抖，只见一点寒光闪过，闪电般的射向$n！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -129,10 +134,13 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     vitals = character.meta.vitals
-        vitals = Vitals.wound(vitals, :qi, (skill + Engine.rand(rng, div(skill, 3))))
+    vitals = Vitals.wound(vitals, :qi, skill + Engine.rand(rng, div(skill, 3)))
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    result = Messages.interpolate("结果$p反应不及，中了$P一base_unit！", n1: attacker.name, n2: character.name)
+
+    result =
+      Messages.interpolate("结果$p反应不及，中了$P一base_unit！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

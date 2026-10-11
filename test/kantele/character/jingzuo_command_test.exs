@@ -35,7 +35,8 @@ defmodule Kantele.Character.JingzuoCommandTest do
 
     combat = Kantele.Character.Combat.new()
 
-    family = Keyword.get(opts, :family, %{name: "峨嵋派", master_id: "wang_chongjiu", master_name: "王重九"})
+    family =
+      Keyword.get(opts, :family, %{name: "峨嵋派", master_id: "wang_chongjiu", master_name: "王重九"})
 
     meta = %PlayerMeta{
       vitals: vitals,
@@ -44,11 +45,12 @@ defmodule Kantele.Character.JingzuoCommandTest do
       family: family
     }
 
-    meta = if opts[:jingzuo_time] do
-      Map.put(meta, :jingzuo_time, opts[:jingzuo_time])
-    else
-      meta
-    end
+    meta =
+      if opts[:jingzuo_time] do
+        Map.put(meta, :jingzuo_time, opts[:jingzuo_time])
+      else
+        meta
+      end
 
     %Kalevala.Character{
       id: "player-1",

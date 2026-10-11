@@ -41,8 +41,7 @@ defmodule Kantele.Character.ConditionFlowTest do
 
   describe "condition/tick 心跳（经 Events 路由）" do
     test "中毒每跳扣 jing/qi，remain 归零到期自动清除" do
-      character =
-        poisoned_player(vitals: [jing: 2000, qi: 5000, max_jing: 2000, max_qi: 5000])
+      character = poisoned_player(vitals: [jing: 2000, qi: 5000, max_jing: 2000, max_qi: 5000])
 
       tick1 = tick(apply_poison(character))
 

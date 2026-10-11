@@ -56,7 +56,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Shield do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -65,7 +65,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Shield do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end

@@ -28,7 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
-    i = (6 + Engine.rand(rng, 5))
+    i = 6 + Engine.rand(rng, 5)
     count = 0
 
     with :ok <- check_perform_known(character),
@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -101,7 +103,6 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -125,6 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate("$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！
 $n只觉得眼前一花，发现四周都是$N的身影，不由暗生惧意，接连后退。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

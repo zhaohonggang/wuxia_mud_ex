@@ -18,6 +18,7 @@ defmodule Kantele.Character.MudinfoCommand do
 
   def run(conn, _params) do
     text = build_info()
+
     conn
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})

@@ -84,6 +84,7 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
       for r <- ctx.bagua do
         conds = r.exit_vetoes |> Enum.map(& &1.condition) |> Enum.reject(&is_nil/1)
+
         assert Enum.any?(conds, &String.contains?(&1, "check_dirs(")),
                "#{r.id} 应有 check_dirs 条件"
       end
@@ -239,7 +240,7 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
     @tag :world_data
     test "八个房间的出口名都是汉字（LPC 原样）", ctx do
       for r <- ctx.bagua do
-        han = r.exits |> Enum.map(& &1.exit_name) |> Enum.filter(&String.length(&1) == 1)
+        han = r.exits |> Enum.map(& &1.exit_name) |> Enum.filter(&(String.length(&1) == 1))
 
         # 每个八卦房至少 8 个单字出口
         assert length(han) >= 8,
@@ -259,10 +260,14 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
 
       # 指令侧汉字与拼音都注册了，且指向同一个 MoveCommand 函数
       for {han, pinyin, fn_name} <- [
-            {"乾", "qian", :qian}, {"兑", "dui", :dui},
-            {"坎", "kan", :kan}, {"坤", "kun", :kun},
-            {"巽", "xun", :xun}, {"离", "li", :li},
-            {"艮", "gen", :gen}, {"震", "zhen", :zhen}
+            {"乾", "qian", :qian},
+            {"兑", "dui", :dui},
+            {"坎", "kan", :kan},
+            {"坤", "kun", :kun},
+            {"巽", "xun", :xun},
+            {"离", "li", :li},
+            {"艮", "gen", :gen},
+            {"震", "zhen", :zhen}
           ] do
         assert {:ok, p1} = Kantele.Character.Commands.parse(han),
                "#{han} 应当能作为移动指令"
@@ -271,6 +276,7 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
                "#{pinyin} 应当仍能作为移动指令"
 
         assert p1.function == fn_name
+
         assert p2.function == fn_name,
                "#{pinyin} 应当和 #{han} 指向同一个函数（实际 #{p2.function}）"
       end
@@ -279,16 +285,28 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
     @tag :world_data
     test "陷阱对汉字与拼音的行为完全一致", _ctx do
       assert Bagua.evaluate(%{}, "坎") == Bagua.evaluate(%{}, "kan")
-      assert Bagua.evaluate(%{"bagua/count" => 2}, "震") == Bagua.evaluate(%{"bagua/count" => 2}, "zhen")
-      assert Bagua.evaluate(%{"bagua/count" => 3}, "坤") == Bagua.evaluate(%{"bagua/count" => 3}, "kun")
+
+      assert Bagua.evaluate(%{"bagua/count" => 2}, "震") ==
+               Bagua.evaluate(%{"bagua/count" => 2}, "zhen")
+
+      assert Bagua.evaluate(%{"bagua/count" => 3}, "坤") ==
+               Bagua.evaluate(%{"bagua/count" => 3}, "kun")
     end
 
     @tag :world_data
     test "Trap.Bagua 的 han/1 两种写法都返回同一个汉字", _ctx do
-      for {pinyin, han} <- [{"qian", "乾"}, {"dui", "兑"}, {"kan", "坎"},
-                            {"kun", "坤"}, {"xun", "巽"}, {"li", "离"},
-                            {"gen", "艮"}, {"zhen", "震"}] do
+      for {pinyin, han} <- [
+            {"qian", "乾"},
+            {"dui", "兑"},
+            {"kan", "坎"},
+            {"kun", "坤"},
+            {"xun", "巽"},
+            {"li", "离"},
+            {"gen", "艮"},
+            {"zhen", "震"}
+          ] do
         assert Kantele.World.Trap.Bagua.han(pinyin) == han
+
         assert Kantele.World.Trap.Bagua.han(han) == han,
                "汉字输入也应原样返回 #{han}"
       end
@@ -301,9 +319,16 @@ defmodule Kantele.World.TrapBaguaRuntimeTest do
     # 纯逻辑测试当时全绿（它们直接传拼音），所以没能发现。
     @tag :world_data
     test "八个卦名的汉字都能归一到拼音，且归一后行为与拼音一致", _ctx do
-      for {han, pinyin} <- [{"乾", "qian"}, {"坤", "kun"}, {"坎", "kan"},
-                            {"离", "li"}, {"艮", "gen"}, {"震", "zhen"},
-                            {"巽", "xun"}, {"兑", "dui"}] do
+      for {han, pinyin} <- [
+            {"乾", "qian"},
+            {"坤", "kun"},
+            {"坎", "kan"},
+            {"离", "li"},
+            {"艮", "gen"},
+            {"震", "zhen"},
+            {"巽", "xun"},
+            {"兑", "dui"}
+          ] do
         assert Bagua.normalize_dir(han) == pinyin,
                "#{han} 应当归一到 #{pinyin}（实际 #{inspect(Bagua.normalize_dir(han))}）"
       end

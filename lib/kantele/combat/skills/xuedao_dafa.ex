@@ -127,7 +127,6 @@ defmodule Kantele.Combat.Skills.XuedaoDafa do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

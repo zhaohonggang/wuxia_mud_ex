@@ -19,8 +19,17 @@ defmodule Kantele.Character.MoveGreetTest do
   end
 
   setup do
-    :ok = Communication.subscribe("rooms:#{@room_id}", [character: %Kalevala.Character{id: "greet-sub", room_id: @room_id}])
-    on_exit(fn -> Communication.unsubscribe("rooms:#{@room_id}", [character: %Kalevala.Character{id: "greet-sub", room_id: @room_id}]) end)
+    :ok =
+      Communication.subscribe("rooms:#{@room_id}",
+        character: %Kalevala.Character{id: "greet-sub", room_id: @room_id}
+      )
+
+    on_exit(fn ->
+      Communication.unsubscribe("rooms:#{@room_id}",
+        character: %Kalevala.Character{id: "greet-sub", room_id: @room_id}
+      )
+    end)
+
     :ok
   end
 
@@ -78,6 +87,7 @@ defmodule Kantele.Character.MoveGreetTest do
 
   test "玩家进程（player:*）不触发欢迎" do
     p = player()
+
     move = %Event{
       from_pid: self(),
       topic: Event.Movement.Notice,

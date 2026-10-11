@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,13 +101,13 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -130,6 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongSuo.Sha do
     Performs.feedback(attacker, 180, 1)
     result = Messages.interpolate("突然间$N猛的猱身扑上，手中急转，便似不要命般地向$n猛攻过去。
 $n卒不及防，登时手忙脚乱，招架疏散，慌忙中难以抵挡。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

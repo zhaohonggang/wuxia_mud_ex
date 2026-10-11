@@ -137,7 +137,7 @@ defmodule Kantele.Character.LeagueCommand do
 
   defp member(conn, arg) do
     character = conn.character
-    fname = arg || (character.meta |> PlayerMeta.league() |> key_or("league_name", ""))
+    fname = arg || character.meta |> PlayerMeta.league() |> key_or("league_name", "")
 
     cond do
       fname == "" ->
@@ -190,7 +190,10 @@ defmodule Kantele.Character.LeagueCommand do
             "  #{i}. #{name}(#{id})  仇恨度 #{lvl}\n"
           end)
 
-        render_msg(conn, "目前#{fname}在江湖上的仇敌都有\n--------------------------------\n#{rows}--------------------------------\n")
+        render_msg(
+          conn,
+          "目前#{fname}在江湖上的仇敌都有\n--------------------------------\n#{rows}--------------------------------\n"
+        )
       end
     end
   end
@@ -252,7 +255,11 @@ defmodule Kantele.Character.LeagueCommand do
         send(target.pid, %Event{
           from_pid: self(),
           topic: "league/joined",
-          data: %{league_name: fname, leader_id: league.leader_id, leader_name: league.leader_name}
+          data: %{
+            league_name: fname,
+            leader_id: league.leader_id,
+            leader_name: league.leader_name
+          }
         })
 
         League.add_league_fame(fname, target.meta.stats.weiwang || 0)
@@ -369,7 +376,11 @@ defmodule Kantele.Character.LeagueCommand do
 
     # 通知被踢者清除 meta.league
     if kicked do
-      send(kicked.pid, %Event{from_pid: self(), topic: "league/removed", data: %{league_name: fname}})
+      send(kicked.pid, %Event{
+        from_pid: self(),
+        topic: "league/removed",
+        data: %{league_name: fname}
+      })
     end
 
     render_msg(conn, "你开除了#{id}。\n")
@@ -394,7 +405,11 @@ defmodule Kantele.Character.LeagueCommand do
         (League.query_members(fname) || [])
         |> Enum.each(fn id ->
           if member = find_player(id) do
-            send(member.pid, %Event{from_pid: self(), topic: "league/dismissed", data: %{league_name: fname}})
+            send(member.pid, %Event{
+              from_pid: self(),
+              topic: "league/dismissed",
+              data: %{league_name: fname}
+            })
           end
         end)
 
@@ -513,7 +528,8 @@ defmodule Kantele.Character.LeagueCommand do
         render_msg(conn, "你没有足够权限号召同盟成员参与战斗！\n")
 
       true ->
-        target = Enum.find(Presence.characters(), &(&1.id == arg or String.starts_with?(&1.name, arg)))
+        target =
+          Enum.find(Presence.characters(), &(&1.id == arg or String.starts_with?(&1.name, arg)))
 
         if is_nil(target) do
           render_msg(conn, "你想攻击谁？\n")
@@ -634,7 +650,10 @@ defmodule Kantele.Character.LeagueCommand do
   defp key_or(_map, _key, default), do: default
 
   defp league_set(nil), do: %{no_kill: 0, weiwang: 0, follow: 0}
-  defp league_set(%{set: set}) when is_map(set), do: Map.merge(%{no_kill: 0, weiwang: 0, follow: 0}, set)
+
+  defp league_set(%{set: set}) when is_map(set),
+    do: Map.merge(%{no_kill: 0, weiwang: 0, follow: 0}, set)
+
   defp league_set(_), do: %{no_kill: 0, weiwang: 0, follow: 0}
 
   defp find_player(name) do

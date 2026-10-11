@@ -144,7 +144,7 @@ defmodule Kantele.Combat.Skills.LingyuanXinfa.Break do
         conn
 
       weapon ->
-        t_exp = (character.meta.stats.combat_exp || 0)
+        t_exp = character.meta.stats.combat_exp || 0
 
         if Engine.rand(rng, max(att_exp, 1)) > div(t_exp, 3) do
           t_combat =

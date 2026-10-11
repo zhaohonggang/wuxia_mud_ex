@@ -169,20 +169,21 @@ defmodule Kantele.Character.GiveEvent do
     end
   end
 
-defp take_message(%{msg: msg} = _rule, item) when is_list(msg) and msg != [],
-  do: Enum.random(msg)
+  defp take_message(%{msg: msg} = _rule, item) when is_list(msg) and msg != [],
+    do: Enum.random(msg)
 
-defp take_message(_rule, item), do: "你给了#{item.name}。"
+  defp take_message(_rule, item), do: "你给了#{item.name}。"
 
-# 拒绝文案：优先使用规则 fail_msg 台词池，缺省回退泛化拒绝语
-defp failure_message(%{fail_msg: fail_msg} = rule, item) when is_list(fail_msg) and fail_msg != [],
-  do: Enum.random(fail_msg)
+  # 拒绝文案：优先使用规则 fail_msg 台词池，缺省回退泛化拒绝语
+  defp failure_message(%{fail_msg: fail_msg} = rule, item)
+       when is_list(fail_msg) and fail_msg != [],
+       do: Enum.random(fail_msg)
 
-defp failure_message(%{kind: "any"} = rule, _item), do: refuse_message(nil)
-defp failure_message(_rule, item), do: refuse_message(item)
+  defp failure_message(%{kind: "any"} = rule, _item), do: refuse_message(nil)
+  defp failure_message(_rule, item), do: refuse_message(item)
 
-defp refuse_message(nil), do: "对方不肯收下。"
-defp refuse_message(item), do: "对方不收#{item.name}。"
+  defp refuse_message(nil), do: "对方不肯收下。"
+  defp refuse_message(item), do: "对方不收#{item.name}。"
   defp from_drop_message(), do: "物品不在房间中。"
 
   defp handle_normal_give(conn, character, item_instance, data, from_name) do
@@ -245,7 +246,9 @@ defp refuse_message(item), do: "对方不收#{item.name}。"
         # NPC 即时回应
         conn
         |> put_character(conn.character)
-        |> render(CommandView, "text", %{text: "店小二接过#{Xiaoer.item_name(item_instance)}，正在为您办理...\n"})
+        |> render(CommandView, "text", %{
+          text: "店小二接过#{Xiaoer.item_name(item_instance)}，正在为您办理...\n"
+        })
         |> prompt(CommandView, "prompt", %{})
 
       {:error, msg} ->
@@ -347,7 +350,11 @@ defp refuse_message(item), do: "对方不收#{item.name}。"
               created_at: DateTime.utc_now()
             }
 
-            new_character = %{new_character | inventory: [item_instance | new_character.inventory]}
+            new_character = %{
+              new_character
+              | inventory: [item_instance | new_character.inventory]
+            }
+
             Kantele.Character.Records.save(new_character)
 
             {:ok, new_character, "兑换成功！您获得了 #{exchange.name}。"}

@@ -44,7 +44,12 @@ defmodule Kantele.Combat.Skills.Force.Regenerate do
     force_lvl = max(Stats.skill(stats, "force"), 1)
 
     neili_cost = div(heal * 60, force_lvl)
-    neili_cost = if SpecialSkills.owned?(char.attributes, "breakup"), do: div(neili_cost * 7, 10), else: neili_cost
+
+    neili_cost =
+      if SpecialSkills.owned?(char.attributes, "breakup"),
+        do: div(neili_cost * 7, 10),
+        else: neili_cost
+
     neili_cost = if neili_cost < 20, do: 20, else: neili_cost
 
     {neili_cost, heal} =
@@ -56,7 +61,11 @@ defmodule Kantele.Combat.Skills.Force.Regenerate do
 
     neili_cost = if neili_cost < 20, do: 20, else: neili_cost
 
-    new_vitals = %{vitals | neili: vitals.neili - neili_cost, jing: min(vitals.jing + heal, vitals.max_jing)}
+    new_vitals = %{
+      vitals
+      | neili: vitals.neili - neili_cost,
+        jing: min(vitals.jing + heal, vitals.max_jing)
+    }
 
     %{state | character: %{char | meta: %{char.meta | vitals: new_vitals}}}
   end

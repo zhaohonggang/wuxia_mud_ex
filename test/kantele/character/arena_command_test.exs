@@ -65,9 +65,14 @@ defmodule Kantele.Character.ArenaCommandTest do
           # vitals/stats（渲染状态栏）。PlayerMeta 这两个字段默认是 nil，
           # 不给就会在 `nil.qi/0` 上炸 —— 夹具问题，不是被测代码问题。
           vitals: %Kantele.Character.Vitals{
-            base_qi: 150, qi: 150, max_qi: 150,
-            base_jing: 120, jing: 120, max_jing: 120,
-            neili: 100, max_neili: 100
+            base_qi: 150,
+            qi: 150,
+            max_qi: 150,
+            base_jing: 120,
+            jing: 120,
+            max_jing: 120,
+            neili: 100,
+            max_neili: 100
           },
           stats: %Kantele.Character.Stats{},
           combat: Kantele.Character.Combat.new(),

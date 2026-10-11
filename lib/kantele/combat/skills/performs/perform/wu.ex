@@ -26,31 +26,31 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Wu do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"ap", "force"}, {"dp", "dodge"}],
-      #     level_gates: [{"shenzhaojing", "200"}, {"unarmed", "200"}],
-      #     map_gates: [{"unarmed", "shenzhaojing"}],
-      #     prepared_gates: [{"unarmed", "shenzhaojing"}],
-      #     resource_gates: [{"max_neili", "5000"}, {"neili", "500"}],
-      #     var_gates: [{"i", "6"}]
-      #   }
+  #   %{
+  #     assign_refs: [{"ap", "force"}, {"dp", "dodge"}],
+  #     level_gates: [{"shenzhaojing", "200"}, {"unarmed", "200"}],
+  #     map_gates: [{"unarmed", "shenzhaojing"}],
+  #     prepared_gates: [{"unarmed", "shenzhaojing"}],
+  #     resource_gates: [{"max_neili", "5000"}, {"neili", "500"}],
+  #     var_gates: [{"i", "6"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-200"}],
-      #     affect_by: [],
-      #     apply_adds: ["attack"],
-      #     busy_lines: ["if (random(3) == 0 && ! target->is_busy())",
-      #      "target->start_busy(1);", "me->start_busy(1 + random(5));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - if (random(3) == 0 && ! target->is_busy())
-      #   - target->start_busy(1);
-      #   - me->start_busy(1 + random(5));
+    #   %{
+    #     add_costs: [{"neili", "-200"}],
+    #     affect_by: [],
+    #     apply_adds: ["attack"],
+    #     busy_lines: ["if (random(3) == 0 && ! target->is_busy())",
+    #      "target->start_busy(1);", "me->start_busy(1 + random(5));"],
+    #     remote_damage: false,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - if (random(3) == 0 && ! target->is_busy())
+    #   - target->start_busy(1);
+    #   - me->start_busy(1 + random(5));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

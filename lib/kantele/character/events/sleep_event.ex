@@ -24,7 +24,8 @@ defmodule Kantele.Character.SleepEvent do
       conn
     else
       # 清除睡眠状态
-      new_temp = character.meta.temp
+      new_temp =
+        character.meta.temp
         |> Map.delete("block_msg/all")
         |> Map.delete("sleeped")
         |> Map.delete("no_get")
@@ -38,7 +39,8 @@ defmodule Kantele.Character.SleepEvent do
 
       if now - last_sleep >= cooldown do
         # 完全恢复
-        new_vitals = character.meta.vitals
+        new_vitals =
+          character.meta.vitals
           |> Map.put(:qi, Map.get(character.meta.vitals, :max_qi, 100))
           |> Map.put(:jing, Map.get(character.meta.vitals, :max_jing, 100))
 
@@ -52,10 +54,17 @@ defmodule Kantele.Character.SleepEvent do
         # 更新 last_sleep
         new_attrs = Map.put(character.attributes, "last_sleep", :os.system_time(:second))
 
-        new_meta = character.meta
+        new_meta =
+          character.meta
           |> Map.put(:vitals, new_vitals)
           |> Map.put(:attributes, new_attrs)
-          |> Map.put(:temp, Map.delete(character.meta.temp, "sleeped") |> Map.delete("block_msg/all") |> Map.delete("no_get") |> Map.delete("no_get_from"))
+          |> Map.put(
+            :temp,
+            Map.delete(character.meta.temp, "sleeped")
+            |> Map.delete("block_msg/all")
+            |> Map.delete("no_get")
+            |> Map.delete("no_get_from")
+          )
 
         new_character = %{character | meta: new_meta, attributes: new_attrs}
         new_conn = put_character(conn, new_character)
@@ -66,7 +75,12 @@ defmodule Kantele.Character.SleepEvent do
         |> save()
       else
         # 冷却未满，仅醒来不恢复
-        new_temp = Map.delete(character.meta.temp, "sleeped") |> Map.delete("block_msg/all") |> Map.delete("no_get") |> Map.delete("no_get_from")
+        new_temp =
+          Map.delete(character.meta.temp, "sleeped")
+          |> Map.delete("block_msg/all")
+          |> Map.delete("no_get")
+          |> Map.delete("no_get_from")
+
         new_meta = Map.put(character.meta, :temp, new_temp)
         new_character = %{character | meta: new_meta}
         new_conn = put_character(conn, new_character)

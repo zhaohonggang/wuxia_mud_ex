@@ -152,7 +152,8 @@ defmodule Kantele.Character.StudyCommand do
         end
       end)
 
-    new_meta = character.meta
+    new_meta =
+      character.meta
       |> Map.put(:stats, stats)
       |> Map.put(:vitals, vitals)
 

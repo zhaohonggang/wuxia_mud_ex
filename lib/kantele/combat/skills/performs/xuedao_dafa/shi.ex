@@ -40,7 +40,9 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -105,7 +107,6 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -133,6 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
     result = Messages.interpolate("$N陡然施出「噬血穹苍」，手中腾起无边杀意，携着风雷之势向$n劈斩而去！
 $n只觉眼前一蓬血雨喷洒而出，已被$N这一刀劈了个正中。
 霎时间$n只觉周围杀气弥漫，全身气血翻滚，甚难招架。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

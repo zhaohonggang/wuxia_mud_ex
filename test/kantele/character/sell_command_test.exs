@@ -94,9 +94,12 @@ defmodule Kantele.Character.SellCommandTest do
 
   test "xN 变卖多件" do
     conn =
-      Kantele.Character.SellCommand.sell(build_conn(player(["selltest:sword", "selltest:sword"])), %{
-        "item_name" => "长剑 x2"
-      })
+      Kantele.Character.SellCommand.sell(
+        build_conn(player(["selltest:sword", "selltest:sword"])),
+        %{
+          "item_name" => "长剑 x2"
+        }
+      )
 
     assert output_text(conn) =~ "×2"
     assert output_text(conn) =~ "六两白银"

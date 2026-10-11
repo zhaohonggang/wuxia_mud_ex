@@ -111,9 +111,9 @@ defmodule Kantele.Combat.Skills.Force.Shot do
         | meta: %{
             character.meta
             | vitals: vitals,
-            combat: Combat.start_busy(combat, busy)
+              combat: Combat.start_busy(combat, busy)
           },
-        inventory: new_inventory
+          inventory: new_inventory
       }
 
       conn
@@ -144,17 +144,20 @@ defmodule Kantele.Combat.Skills.Force.Shot do
       dn = character.meta.vitals.max_neili + div(character.meta.vitals.neili, 2)
 
       if div(an, 2) + Engine.rand(rng, max(an, 1)) < dn * 2 / 3 do
-        text = "然而$n全然不放在心上，轻轻一抖，已将$N射来的毒素尽数震落。\n"
-               |> Messages.interpolate(bindings)
+        text =
+          "然而$n全然不放在心上，轻轻一抖，已将$N射来的毒素尽数震落。\n"
+          |> Messages.interpolate(bindings)
 
         conn = Broadcast.publish(conn, text)
         Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
         conn
       else
         ap = force_lvl + poison_skill + throwing_skill
-        dp = Stats.skill(character.meta.stats, "dodge") +
-             Stats.skill(character.meta.stats, "parry") +
-             Stats.skill(character.meta.stats, "martial-cognize")
+
+        dp =
+          Stats.skill(character.meta.stats, "dodge") +
+            Stats.skill(character.meta.stats, "parry") +
+            Stats.skill(character.meta.stats, "martial-cognize")
 
         if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
           poison_type = du.meta.poison_type
@@ -165,6 +168,7 @@ defmodule Kantele.Combat.Skills.Force.Shot do
           conditions = Map.put(prev, poison_type, poison_data)
 
           combat = character.meta.combat
+
           combat =
             if not Combat.busy?(combat) do
               Combat.start_busy(combat, 2)
@@ -182,8 +186,9 @@ defmodule Kantele.Combat.Skills.Force.Shot do
 
           conn = conn |> Kalevala.Character.Conn.put_session("conditions", conditions)
 
-          text = "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。\n"
-                 |> Messages.interpolate(bindings)
+          text =
+            "$n急忙飞身躲避，可已然不及，霎时绿光闪过，$p顿感一阵麻痹。\n"
+            |> Messages.interpolate(bindings)
 
           conn =
             Broadcast.publish(conn, text)
@@ -191,9 +196,10 @@ defmodule Kantele.Combat.Skills.Force.Shot do
 
           Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
           conn
-         else
-           text = "可是$n见势不妙，急忙腾挪身形，终于避开了$N的弹毒攻击。\n"
-                  |> Messages.interpolate(bindings)
+        else
+          text =
+            "可是$n见势不妙，急忙腾挪身形，终于避开了$N的弹毒攻击。\n"
+            |> Messages.interpolate(bindings)
 
           conn = Broadcast.publish(conn, text)
           Performs.feedback(attacker, %{neili_cost: 0, busy: 0})
@@ -229,6 +235,7 @@ defmodule Kantele.Combat.Skills.Force.Shot do
 
   defp gate_room_ok(character) do
     room_config = Map.get(character.meta, :room, %{})
+
     if Map.get(room_config, :no_fight, false) or Map.get(room_config, :skybook, false) do
       {:error, "在这里不能攻击他人。\n"}
     else
@@ -246,6 +253,7 @@ defmodule Kantele.Combat.Skills.Force.Shot do
 
   defp gate_handing_poison(character) do
     du = character.inventory |> Enum.find(&(&1.meta && &1.meta.handing))
+
     if du && du.meta && du.meta.poison do
       {:ok, du}
     else
@@ -264,6 +272,7 @@ defmodule Kantele.Combat.Skills.Force.Shot do
         else
           {:error, "你想攻击谁？\n"}
         end
+
       _ ->
         {:error, "你想攻击谁？\n"}
     end

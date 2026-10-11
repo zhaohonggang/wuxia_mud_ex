@@ -28,21 +28,36 @@ defmodule Kantele.World.Invasion.NPC do
     japanese: %{
       weapon: "liuxi:weapon/jpn-dao",
       armor: "liuxi:cloth/cloth",
-      skills: %{"force" => :fushang_neigong, "dodge" => :renshu, "parry" => :dongyang_dao, "blade" => :dongyang_dao},
+      skills: %{
+        "force" => :fushang_neigong,
+        "dodge" => :renshu,
+        "parry" => :dongyang_dao,
+        "blade" => :dongyang_dao
+      },
       skill_names: %{"force" => "扶桑内功", "dodge" => "忍术", "parry" => "东阳刀", "blade" => "东阳刀"},
       nickname: "倭寇刀客"
     },
     english: %{
       weapon: "liuxi:weapon/qishiji",
       armor: "liuxi:cloth/yinjia",
-      skills: %{"force" => :xiyang_neigong, "dodge" => :xiyang_boji, "parry" => :qishi_ji, "club" => :qishi_ji},
+      skills: %{
+        "force" => :xiyang_neigong,
+        "dodge" => :xiyang_boji,
+        "parry" => :qishi_ji,
+        "club" => :qishi_ji
+      },
       skill_names: %{"force" => "西洋内功", "dodge" => "西洋拨击", "parry" => "骑士技", "club" => "骑士技"},
       nickname: "英夷棍僧"
     },
     european: %{
       weapon: "liuxi:weapon/xiyang-sword",
       armor: "liuxi:cloth/cloth",
-      skills: %{"force" => :xiyang_neigong, "dodge" => :xiyang_boji, "parry" => :xiyang_jian, "sword" => :xiyang_jian},
+      skills: %{
+        "force" => :xiyang_neigong,
+        "dodge" => :xiyang_boji,
+        "parry" => :xiyang_jian,
+        "sword" => :xiyang_jian
+      },
       skill_names: %{"force" => "西洋内功", "dodge" => "西洋拨击", "parry" => "西洋剑", "sword" => "西洋剑"},
       nickname: "西洋剑士"
     }
@@ -82,7 +97,11 @@ defmodule Kantele.World.Invasion.NPC do
 
     # 初始事件：延迟 1 秒后自动装备
     initial_events = [
-      %InitialEvent{topic: "invasion/equip", delay: 1_000, data: %{weapon_id: weapon_id, armor_id: armor_id}}
+      %InitialEvent{
+        topic: "invasion/equip",
+        delay: 1_000,
+        data: %{weapon_id: weapon_id, armor_id: armor_id}
+      }
     ]
 
     meta =
@@ -201,6 +220,7 @@ defmodule Kantele.World.Invasion.NPC do
       if slot == expected_slot or (expected_slot == :weapon and slot == :weapon) do
         # 直接操作 combat.equipped（绕过命令流程）
         snapshot = build_snapshot(item, slot)
+
         combat =
           character.meta.combat
           |> Combat.equip(slot, snapshot)
@@ -247,6 +267,7 @@ defmodule Kantele.World.Invasion.NPC do
 
   defp apply_item_prop(combat, :weapon, item) do
     prop = Map.get(item.meta, :weapon_prop)
+
     if prop do
       Combat.apply_temp(combat, Kantele.Item.Equip.wield_state(%{}, prop))
     else

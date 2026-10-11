@@ -27,11 +27,10 @@ defmodule Kantele.Character.FanliangyiEvent do
     combat = character.meta.combat
 
     if valid?(character, combat) do
-      buff =
-        %Combat.Buff{
-          key: @array_key,
-          applies: %{attack: -n, defense: -n, damage: -n, armor: -n}
-        }
+      buff = %Combat.Buff{
+        key: @array_key,
+        applies: %{attack: -n, defense: -n, damage: -n, armor: -n}
+      }
 
       combat =
         combat

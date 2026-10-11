@@ -68,7 +68,10 @@ defmodule Kantele.Combat.DuanjiaJianTest do
 
   defp perform(opts, move, skill_type \\ "sword") do
     opts = Keyword.put_new(opts, :performs, MapSet.new(["duanjia-jian/#{move}"]))
-    PerformCommand.run(build_conn(fighter(opts, skill_type)), %{"action" => "duanjia-jian.#{move}"})
+
+    PerformCommand.run(build_conn(fighter(opts, skill_type)), %{
+      "action" => "duanjia-jian.#{move}"
+    })
   end
 
   describe "段家剑法（技能表）" do
@@ -103,7 +106,9 @@ defmodule Kantele.Combat.DuanjiaJianTest do
     end
 
     test "等级不足被拒" do
-      conn = perform([skills: %{"duanjia-jian" => 119}, mapped: %{"sword" => "duanjia-jian"}], "lian")
+      conn =
+        perform([skills: %{"duanjia-jian" => 119}, mapped: %{"sword" => "duanjia-jian"}], "lian")
+
       assert output_text(conn) =~ "不够娴熟"
     end
 
@@ -159,11 +164,12 @@ defmodule Kantele.Combat.DuanjiaJianTest do
     end
 
     test "命中：五击全中伤敌，目标忙乱 1，攻击方回执 -100/1" do
-      conn = incoming(build_conn(target(%{"dodge" => 0})), %{
-        perform_id: "duanjia-jian/lian",
-        level: 120,
-        rng: fn _ -> 1 end
-      })
+      conn =
+        incoming(build_conn(target(%{"dodge" => 0})), %{
+          perform_id: "duanjia-jian/lian",
+          level: 120,
+          rng: fn _ -> 1 end
+        })
 
       updated = conn.private.update_character
       # per_hit = div(120,15) == 8；5 击全中，每击 8+random(8)=8
@@ -171,21 +177,30 @@ defmodule Kantele.Combat.DuanjiaJianTest do
       # 首击 random(5)==0 → 目标忙乱 1
       assert updated.meta.combat.busy == 1
       assert published_text(conn) =~ "节节败退"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 1}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 1}
+      }
     end
 
     test "失手：目标不动，攻击方回执 -100/3" do
-      conn = incoming(build_conn(target(%{"dodge" => 400})), %{
-        perform_id: "duanjia-jian/lian",
-        level: 120,
-        rng: fn _ -> 3 end
-      })
+      conn =
+        incoming(build_conn(target(%{"dodge" => 400})), %{
+          perform_id: "duanjia-jian/lian",
+          level: 120,
+          rng: fn _ -> 3 end
+        })
 
       updated = conn.private.update_character
       assert updated.meta.vitals.qi == Vitals.new().qi
       assert updated.meta.combat.busy == 0
       assert published_text(conn) =~ "左闪右避"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 3}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 3}
+      }
     end
   end
 
@@ -277,32 +292,42 @@ defmodule Kantele.Combat.DuanjiaJianTest do
 
   describe "惊天一剑（目标侧结算）" do
     test "命中：造成伤害并回执扣内力" do
-      conn = incoming(build_conn(target(%{"force" => 0})), %{
-        perform_id: "duanjia-jian/jing",
-        force: 300,
-        sword: 60,
-        rng: & &1
-      })
+      conn =
+        incoming(build_conn(target(%{"force" => 0})), %{
+          perform_id: "duanjia-jian/jing",
+          force: 300,
+          sword: 60,
+          rng: & &1
+        })
 
       updated = conn.private.update_character
       # damage = div(360,5)=72 + random(72)=71 → 143；创伤 div(143,2)=71
       assert updated.meta.vitals.qi == max(Vitals.new().qi - 143, 0)
       assert updated.meta.vitals.max_qi < Vitals.new().max_qi
       assert published_text(conn) =~ "人剑合一"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 143, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 143, busy: 2}
+      }
     end
 
     test "失手：目标不动，攻击方回执 -100/3" do
-      conn = incoming(build_conn(target(%{"force" => 400})), %{
-        perform_id: "duanjia-jian/jing",
-        force: 300,
-        sword: 60,
-        rng: fn _ -> 1 end
-      })
+      conn =
+        incoming(build_conn(target(%{"force" => 400})), %{
+          perform_id: "duanjia-jian/jing",
+          force: 300,
+          sword: 60,
+          rng: fn _ -> 1 end
+        })
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "跳出了"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 3}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 3}
+      }
     end
   end
 end

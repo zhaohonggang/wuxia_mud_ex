@@ -49,8 +49,7 @@ defmodule Kantele.World.AttitudeWiringTest do
              "应有 2000+ 个 NPC 带 attitude，实际 #{length(with_att)}"
 
       # friendly / peaceful 最多，aggressive / killer 少
-      counts =
-        Enum.frequencies(Enum.map(with_att, &Map.get(&1.meta.combat_config, :attitude)))
+      counts = Enum.frequencies(Enum.map(with_att, &Map.get(&1.meta.combat_config, :attitude)))
 
       assert Map.get(counts, "peaceful", 0) > 0
       assert Map.get(counts, "friendly", 0) > 0

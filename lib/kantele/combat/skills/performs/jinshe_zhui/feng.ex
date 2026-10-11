@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -100,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 50}
@@ -109,9 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N飞身一跃而起，贴至$n跟前，点向$n要穴！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -138,6 +140,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     Performs.feedback(attacker, 50, 3)
     result = Messages.interpolate("$N飞身一跃而起，贴至$n跟前，点向$n要穴！
 $p微微一楞，已被$N点中要穴，顿时瘫软无力，缓缓瘫倒。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

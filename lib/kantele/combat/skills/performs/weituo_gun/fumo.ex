@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "weituo-gun")
     ap = 0
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -102,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 300}
@@ -111,9 +113,10 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的轻旋，恍惚中显出佛家韦陀神像，
+神光四射，笼罩住$n！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -139,14 +142,20 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    result = if hit, do: Messages.interpolate("$n平日作恶不少，见了此情此景，心中不禁颤然！
-结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
+    result =
+      if hit,
+        do: Messages.interpolate("$n平日作恶不少，见了此情此景，心中不禁颤然！
+结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -26,34 +26,34 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Wswd do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [
-      #       {"ap", "kuihua-mogong"},
-      #       {"ap", "kuihua-mogong"},
-      #       {"dp", "parry"},
-      #       {"dp", "parry"}
-      #     ],
-      #     level_gates: [{"kuihua-mogong", "400"}],
-      #     map_gates: [{"sword", "kuihua-mogong"}],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "7000"}, {"neili", "1000"}, {"neili", "1000"}],
-      #     var_gates: []
-      #   }
+  #   %{
+  #     assign_refs: [
+  #       {"ap", "kuihua-mogong"},
+  #       {"ap", "kuihua-mogong"},
+  #       {"dp", "parry"},
+  #       {"dp", "parry"}
+  #     ],
+  #     level_gates: [{"kuihua-mogong", "400"}],
+  #     map_gates: [{"sword", "kuihua-mogong"}],
+  #     prepared_gates: [],
+  #     resource_gates: [{"max_neili", "7000"}, {"neili", "1000"}, {"neili", "1000"}],
+  #     var_gates: []
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-300"}, {"neili", "-500"}, {"neili", "-600"}],
-      #     affect_by: [],
-      #     apply_adds: [],
-      #     busy_lines: ["me->start_busy(busy);", "me->start_busy(busy);"],
-      #     remote_damage: true,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - me->start_busy(busy);
-      #   - me->start_busy(busy);
+    #   %{
+    #     add_costs: [{"neili", "-300"}, {"neili", "-500"}, {"neili", "-600"}],
+    #     affect_by: [],
+    #     apply_adds: [],
+    #     busy_lines: ["me->start_busy(busy);", "me->start_busy(busy);"],
+    #     remote_damage: true,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - me->start_busy(busy);
+    #   - me->start_busy(busy);
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -99,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 300}
@@ -108,9 +110,9 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的吸入掌中。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -135,6 +137,7 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Qin do
     Performs.feedback(attacker, 300, 3)
     result = Messages.interpolate("$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的吸入掌中。
 $n只觉周围气流涌动，手中竟然拿捏不住，向$N掌心脱手飞去。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

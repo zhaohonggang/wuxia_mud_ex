@@ -71,7 +71,13 @@ defmodule Kantele.Character.AssistCommand do
     pending = conn.character.meta.temp["pending_assist"]
 
     if pending do
-      meta = Map.put(conn.character.meta, :temp, Map.delete(conn.character.meta.temp, "pending_assist"))
+      meta =
+        Map.put(
+          conn.character.meta,
+          :temp,
+          Map.delete(conn.character.meta.temp, "pending_assist")
+        )
+
       character = %{conn.character | meta: meta}
 
       conn
@@ -95,7 +101,12 @@ defmodule Kantele.Character.AssistCommand do
       |> prompt(CommandView, "prompt", %{})
     else
       # 清除待处理请求
-      meta = Map.put(conn.character.meta, :temp, Map.delete(conn.character.meta.temp, "pending_assist_request"))
+      meta =
+        Map.put(
+          conn.character.meta,
+          :temp,
+          Map.delete(conn.character.meta.temp, "pending_assist_request")
+        )
 
       # 记录正在协助对方
       meta = Map.put(meta, :assisting, pending)
@@ -119,7 +130,13 @@ defmodule Kantele.Character.AssistCommand do
       |> render(CommandView, "text", %{text: "现在没有人请求你协助。\n"})
       |> prompt(CommandView, "prompt", %{})
     else
-      meta = Map.put(conn.character.meta, :temp, Map.delete(conn.character.meta.temp, "pending_assist_request"))
+      meta =
+        Map.put(
+          conn.character.meta,
+          :temp,
+          Map.delete(conn.character.meta.temp, "pending_assist_request")
+        )
+
       character = %{conn.character | meta: meta}
 
       conn

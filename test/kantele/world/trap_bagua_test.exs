@@ -179,10 +179,24 @@ defmodule Kantele.World.Trap.BaguaTest do
     test "从 count=0 出发的正确路径" do
       # 由匹配表推导：count -> 下一个该走的方向
       path = [
-        {0, "kan"}, {1, "li"}, {2, "zhen"}, {3, "gen"}, {4, "gen"},
-        {5, "dui"}, {6, "xun"}, {7, "zhen"}, {8, "qian"}, {9, "zhen"},
-        {10, "dui"}, {11, "xun"}, {12, "li"}, {13, "kan"}, {14, "dui"},
-        {15, "gen"}, {16, "dui"}, {17, "kan"}
+        {0, "kan"},
+        {1, "li"},
+        {2, "zhen"},
+        {3, "gen"},
+        {4, "gen"},
+        {5, "dui"},
+        {6, "xun"},
+        {7, "zhen"},
+        {8, "qian"},
+        {9, "zhen"},
+        {10, "dui"},
+        {11, "xun"},
+        {12, "li"},
+        {13, "kan"},
+        {14, "dui"},
+        {15, "gen"},
+        {16, "dui"},
+        {17, "kan"}
       ]
 
       # 每一步都应该是「踩对」

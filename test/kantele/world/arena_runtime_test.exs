@@ -117,7 +117,8 @@ defmodule Kantele.World.ArenaRuntimeTest do
       Arena.close(@leitai, %{name: "grant"})
 
       for e <- ctx.underlt.exits do
-        assert {:proceed, _event, _exit} = move(ctx.underlt, player(0, "city:underlt"), e.exit_name),
+        assert {:proceed, _event, _exit} =
+                 move(ctx.underlt, player(0, "city:underlt"), e.exit_name),
                "#{e.exit_name} 不该被拦（underlt 没有擂台出口）"
       end
     end
@@ -166,7 +167,7 @@ defmodule Kantele.World.ArenaRuntimeTest do
       move(ctx.wudao1, player(0), "leitai")
 
       refute_received %Event{topic: "trap/effect"},
-                     "擂台拦截只读状态，不该下发任何副作用"
+                      "擂台拦截只读状态，不该下发任何副作用"
     end
   end
 
@@ -201,6 +202,7 @@ defmodule Kantele.World.ArenaRuntimeTest do
 
         e ->
           out = Trap.dispatch(other, player(0, other.id), e.exit_name)
+
           assert {:block, _msg, []} = out,
                  "目标房间被关闭时应当拒绝，实际 #{inspect(out)}"
       end

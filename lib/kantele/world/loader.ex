@@ -6,8 +6,8 @@ defmodule Kantele.World.Loader do
   alias Kalevala.Character
   alias Kalevala.World.Item
   alias Kalevala.World.Room.Feature
-alias Kantele.Character.Stats
-alias Kantele.World.LoaderError
+  alias Kantele.Character.Stats
+  alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
 
@@ -202,13 +202,16 @@ alias Kantele.World.LoaderError
     case data do
       %{__struct__: _} = struct ->
         struct
+
       map when is_map(map) ->
         map
         |> Enum.into(%{}, fn {k, v} ->
           {key_to_atom(k), string_keys_to_atoms(v)}
         end)
+
       list when is_list(list) ->
         Enum.map(list, &string_keys_to_atoms/1)
+
       other ->
         other
     end
@@ -395,9 +398,9 @@ alias Kantele.World.LoaderError
           # `all_dirs = true` 表示这条条件在 LPC 里本来就拦所有方向
           # （例如厨房里端着汤不许走）。缺这个标记而条件里又没有 dir 时，
           # 按「转换器丢了外层守卫」处理，运行时跳过 —— 宁可少拦，不能锁死玩家。
-# 注意：Elias 把 UCL 里的 `true` 解析成**字符串** "true"（不是布尔、也不是原子），
-      # 三种形态都接受，避免以后有人手改数据时静默失效。
-      all_dirs: Map.get(veto, :all_dirs) in [true, :true, "true"]
+          # 注意：Elias 把 UCL 里的 `true` 解析成**字符串** "true"（不是布尔、也不是原子），
+          # 三种形态都接受，避免以后有人手改数据时静默失效。
+          all_dirs: Map.get(veto, :all_dirs) in [true, true, "true"]
         }
 
       _ ->
@@ -413,7 +416,7 @@ alias Kantele.World.LoaderError
   defp to_veto_dir(dir), do: to_string(dir)
 
   defp to_string_or_nil(nil), do: nil
-  defp to_string_or_nil(:nil), do: nil
+  defp to_string_or_nil(nil), do: nil
   defp to_string_or_nil(v), do: to_string(v)
 
   defp keyword_to_string(key) when is_atom(key), do: Atom.to_string(key)
@@ -539,7 +542,6 @@ alias Kantele.World.LoaderError
   end
 
   def parse_carry(_), do: []
-
 
   defp build_brain(character_data, brains) do
     brain = Kantele.Brain.process(Map.get(character_data, :brain), brains)
@@ -704,7 +706,9 @@ alias Kantele.World.LoaderError
       case item do
         %{key: key, value: value} ->
           Map.put(acc, to_string(key), parse_inquiry_value(value))
-        _ -> acc
+
+        _ ->
+          acc
       end
     end)
   end
@@ -808,6 +812,7 @@ alias Kantele.World.LoaderError
       nil
     else
       parsed_msgs = if is_map(msgs), do: msgs, else: %{}
+
       %{
         family: family,
         msgs: parsed_msgs
@@ -869,9 +874,11 @@ alias Kantele.World.LoaderError
   defp parse_engage_accept(false), do: false
   defp parse_engage_accept("true"), do: true
   defp parse_engage_accept("false"), do: false
+
   defp parse_engage_accept(value) when value in [1, "1", 0, "0"] do
     value == 1 or value == "1"
   end
+
   defp parse_engage_accept(_), do: nil
 
   defp numeric_or_nil(v) when is_integer(v), do: v
@@ -885,10 +892,12 @@ alias Kantele.World.LoaderError
   # accept 规则台词：单条字符串或台词池（列表）→ 统一归一为台词池；空池为 nil
   defp accept_msg(nil), do: nil
   defp accept_msg(v) when is_binary(v), do: [v]
+
   defp accept_msg(v) when is_list(v) do
     v = Enum.reject(v, &(not is_binary(&1) or &1 == ""))
     if v == [], do: nil, else: v
   end
+
   defp accept_msg(_), do: nil
 
   defp to_bool(v) when v in [true, "true", 1, "1"], do: true
@@ -1028,8 +1037,7 @@ alias Kantele.World.LoaderError
 
     extra =
       quest
-      |> Map.take([:type, :level, :limit, :repeatable, :master_name, :master_id,
-        :chain, :mutex])
+      |> Map.take([:type, :level, :limit, :repeatable, :master_name, :master_id, :chain, :mutex])
       |> Map.update(:chain, [], fn
         nil -> []
         chain -> List.wrap(chain) |> Enum.map(&to_string/1)
@@ -1229,8 +1237,10 @@ alias Kantele.World.LoaderError
 
     item_meta = %{
       item_meta
-      | aliases: Enum.uniq((item_meta.aliases || []) ++ parse_aliases(Map.get(item_data, :aliases)))
+      | aliases:
+          Enum.uniq((item_meta.aliases || []) ++ parse_aliases(Map.get(item_data, :aliases)))
     }
+
     item = %Item{
       id: "#{zone.id}:#{key}",
       name: item_data.name,
@@ -1297,11 +1307,13 @@ alias Kantele.World.LoaderError
   # wuji 类书籍的候选列表（`clone/book/wuji*.c` 的 titles[]/skills[]）：
   # `[ { name = "罗汉拳法" skill = "luohan-quan" }, ... ]`，实例化时掷一次骰。
   defp parse_book_skills(nil), do: nil
+
   defp parse_book_skills(skills) when is_list(skills) do
     Enum.map(skills, fn skill ->
       %{name: Map.get(skill, :name), skill: Map.get(skill, :skill)}
     end)
   end
+
   defp parse_book_skills(_), do: nil
 
   @doc """
@@ -1505,7 +1517,7 @@ alias Kantele.World.LoaderError
   # `dereference/3` 里已经会对 characters/rooms/items 统一回退到 clone_lib，
   # 这里补的是**拿到 id 之后按 id 找定义**的那一步 —— 之前只在 `zone.characters`
   # 里找，clone_lib 的 id 匹配不上，于是共享角色仍被当成悬空丢掉。
-defp find_character_for_room(zones, zone, reference) do
+  defp find_character_for_room(zones, zone, reference) do
     character_id = dereference(zones, zone, reference)
 
     case Enum.find(zone.characters, &match_character(&1, character_id)) do
@@ -1780,11 +1792,11 @@ defp find_character_for_room(zones, zone, reference) do
     |> Map.put(:rooms, [])
   end
 
-@doc """
-Dereference a variable to it's value
+  @doc """
+  Dereference a variable to it's value
 
-If a known key is found, use the current zone
-"""
+  If a known key is found, use the current zone
+  """
   def dereference(zones, zone, reference) do
     [key | reference] = String.split(reference, ".")
 

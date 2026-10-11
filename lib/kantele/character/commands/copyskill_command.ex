@@ -71,8 +71,10 @@ defmodule Kantele.Character.CopyskillCommand do
         int: src.int || 0
     }
 
-    combat =
-      %{character.meta.combat | jiali: (source.meta.combat && source.meta.combat.jiali) || 0}
+    combat = %{
+      character.meta.combat
+      | jiali: (source.meta.combat && source.meta.combat.jiali) || 0
+    }
 
     %{character | meta: %{character.meta | stats: stats, combat: combat}}
   end

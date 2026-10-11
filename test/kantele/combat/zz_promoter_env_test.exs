@@ -110,7 +110,7 @@ defmodule Kantele.Combat.PromoterEnvTest do
 
     updated = conn.private.update_character
     assert updated.meta.vitals.neili == 900
-    assert published_text(conn) =~ "未移植文案"
+    assert published_text(conn) =~ "突然只听张三"
   end
 
   test "perform bagua-biao.xian：等级不足时拒绝" do

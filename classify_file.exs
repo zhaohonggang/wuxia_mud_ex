@@ -1,4 +1,4 @@
-#!/usr/bin/env elixir
+#! /usr/bin/env elixir
 # Usage: mix run classify_file.exs <path>
 
 path = List.first(System.argv())
@@ -13,6 +13,7 @@ case Kantele.World.LPCConverter.convert_file(path) do
       String.contains?(ucl, "skills \"") -> IO.puts("SKILL")
       true -> IO.puts("UNHANDLED")
     end
+
   {:error, e} ->
     IO.puts("ERROR: #{inspect(e)}")
 end

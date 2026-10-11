@@ -60,9 +60,10 @@ defmodule Kantele.Poison do
       {:expire}
     else
       # 每 tick 减少 remain 和 duration
-      new_cond = cond
-      |> Map.put("remain", max(cond["remain"] - 1, 0))
-      |> Map.put("duration", max(cond["duration"] - 1, 0))
+      new_cond =
+        cond
+        |> Map.put("remain", max(cond["remain"] - 1, 0))
+        |> Map.put("duration", max(cond["duration"] - 1, 0))
 
       if new_cond["remain"] <= 0 or new_cond["duration"] <= 0 do
         {:expire}
@@ -109,7 +110,11 @@ defmodule Kantele.Poison do
       dis = calculate_dispel_amount(state, cond, cost_neili)
 
       # 扣除内力
-      new_state = put_in(state.attributes["neili"], max(Map.get(state.attributes, "neili", 0) - cost_neili, 0))
+      new_state =
+        put_in(
+          state.attributes["neili"],
+          max(Map.get(state.attributes, "neili", 0) - cost_neili, 0)
+        )
 
       # 减少毒药剩余
       new_cond = Map.put(cond, "remain", max(cond["remain"] - dis, 0))
@@ -127,7 +132,12 @@ defmodule Kantele.Poison do
   @doc "精力伤害公式"
   def jing_damage(cnd) do
     d = cnd["level"]
-    d = if d >= 64, do: 24 + div(d - 64, 8), else: (if d >= 32, do: 16 + div(d - 32, 4), else: div(d, 2))
+
+    d =
+      if d >= 64,
+        do: 24 + div(d - 64, 8),
+        else: if(d >= 32, do: 16 + div(d - 32, 4), else: div(d, 2))
+
     d = max(d, 10)
     div(d, 2) + :rand.uniform(d)
   end
@@ -135,7 +145,7 @@ defmodule Kantele.Poison do
   @doc "气血伤害公式"
   def qi_damage(cnd) do
     d = cnd["level"]
-    d = if d > 300, do: 100 + div(d - 300, 12), else: (if d > 60, do: 60 + div(d - 60, 6), else: d)
+    d = if d > 300, do: 100 + div(d - 300, 12), else: if(d > 60, do: 60 + div(d - 60, 6), else: d)
     d = max(d, 10)
     div(d, 2) + :rand.uniform(d)
   end
@@ -200,7 +210,8 @@ defmodule Kantele.Poison do
   end
 
   defp check_dispel_level(state, _ob, cnd) do
-    target_level = cnd["level"]  # 简化：用毒药等级作为目标等级
+    # 简化：用毒药等级作为目标等级
+    target_level = cnd["level"]
     my_level = Map.get(state.skills, "force", 0) + Map.get(state.skills, "poison", 0)
 
     if my_level >= target_level / 2, do: :ok, else: {:error, "Target too strong"}

@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jinwu-goufa")
-    ap = (Stats.skill(stats, "jinwu-goufa") + div(Stats.skill(stats, "sword"), 2))
-    damage = (-1)
+    ap = Stats.skill(stats, "jinwu-goufa") + div(Stats.skill(stats, "sword"), 2)
+    damage = -1
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -101,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     vitals = %{vitals | neili: vitals.neili - 50}
@@ -109,9 +111,9 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = Broadcast.publish(conn, "突然$N一声冷哼，手中挥出，在空中划出个美丽的弧线，直攻$n的要穴！", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -137,16 +139,22 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
-    result = if hit, do: Messages.interpolate("只见$N这一击来势好快，寒光一闪，正钩中$n的咽喉，$n一声惨叫，软绵绵的瘫了下去。
+
+    result =
+      if hit,
+        do: Messages.interpolate("只见$N这一击来势好快，寒光一闪，正钩中$n的咽喉，$n一声惨叫，软绵绵的瘫了下去。
 ( $n受伤过重，已经有如风中残烛，随时都可能断气。)
 只听“嗤啦”一声，$n手腕被钩个正中，手中再也捉拿不住，脱手而飞！
-$n飞身躲闪，然而只听“嗤啦”一声，$N的正钩在$n上，顿时鲜血狂溅而出。", n1: attacker.name, n2: character.name), else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+$n飞身躲闪，然而只听“嗤啦”一声，$N的正钩在$n上，顿时鲜血狂溅而出。", n1: attacker.name, n2: character.name),
+        else: Messages.interpolate("", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

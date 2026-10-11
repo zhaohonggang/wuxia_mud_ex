@@ -29,7 +29,7 @@ defmodule Kantele.World.GameTime.Calendar do
 
   @doc "真实秒 → 游戏 DateTime（墙钟按 UTC+8 偏移）"
   def datetime(real_now) when is_integer(real_now) do
-    game_seconds(real_now) + @tz_offset_seconds
+    (game_seconds(real_now) + @tz_offset_seconds)
     |> DateTime.from_unix!()
   end
 

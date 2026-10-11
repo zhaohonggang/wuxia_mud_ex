@@ -153,12 +153,14 @@ defmodule Kantele.Character.Combat do
   @doc "对目标造成气血伤害（受击方 vitals 扣 qi，不低于 0）"
   def apply_damage(%__MODULE__{} = combat, damage) when damage >= 0 do
     character = Process.get(:character)
+
     if character do
       vitals = character.meta.vitals
       vitals = Vitals.damage(vitals, :qi, damage)
       character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
       Process.put(:character, character)
     end
+
     combat
   end
 

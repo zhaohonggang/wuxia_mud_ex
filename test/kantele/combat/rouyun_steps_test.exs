@@ -73,17 +73,17 @@ defmodule Kantele.Combat.RouyunStepsTest do
 
   describe "柔云纵（门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"rouyun-steps" => 50}, performs: MapSet.new()])
+      conn = perform(skills: %{"rouyun-steps" => 50}, performs: MapSet.new())
       assert output_text(conn) =~ "外功中没有这种功能"
     end
 
     test "等级不足被拒" do
-      conn = perform([skills: %{"rouyun-steps" => 49}])
+      conn = perform(skills: %{"rouyun-steps" => 49})
       assert output_text(conn) =~ "柔云步法不够熟练"
     end
 
     test "成功：扣无内力、广播起身文案并随机传送" do
-      conn = perform([skills: %{"rouyun-steps" => 60}])
+      conn = perform(skills: %{"rouyun-steps" => 60})
 
       updated = conn.private.update_character
       assert updated.room_id in @destinations

@@ -18,10 +18,44 @@ defmodule Kantele.Character.DaubCommandTest do
   @non_daubable_id "daubtest:bread"
 
   setup_all do
-    Items.put(@poison_id, %Item{id: @poison_id, name: "砒霜", verbs: [], callback_module: Kantele.World.Item, meta: %{"can_daub" => true, "poison_type" => "毒药", "poison_level" => 50, "poison_duration" => 300, "poison_remain" => 10}})
-    Items.put(@weapon_id, %Item{id: @weapon_id, name: "金蛇剑", verbs: [], callback_module: Kantele.World.Item, meta: %{"type" => "sword"}})
-    Items.put(@armor_id, %Item{id: @armor_id, name: "铁甲", verbs: [], callback_module: Kantele.World.Item, meta: %{"type" => "armor"}})
-    Items.put(@non_daubable_id, %Item{id: @non_daubable_id, name: "馒头", verbs: [], callback_module: Kantele.World.Item, meta: %{}})
+    Items.put(@poison_id, %Item{
+      id: @poison_id,
+      name: "砒霜",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %{
+        "can_daub" => true,
+        "poison_type" => "毒药",
+        "poison_level" => 50,
+        "poison_duration" => 300,
+        "poison_remain" => 10
+      }
+    })
+
+    Items.put(@weapon_id, %Item{
+      id: @weapon_id,
+      name: "金蛇剑",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %{"type" => "sword"}
+    })
+
+    Items.put(@armor_id, %Item{
+      id: @armor_id,
+      name: "铁甲",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %{"type" => "armor"}
+    })
+
+    Items.put(@non_daubable_id, %Item{
+      id: @non_daubable_id,
+      name: "馒头",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %{}
+    })
+
     :ok
   end
 
@@ -132,19 +166,23 @@ defmodule Kantele.Character.DaubCommandTest do
 
   describe "daub 武器涂毒" do
     test "技能不足提示" do
-      p = player(
-        inventory: [inst(@poison_id), inst(@weapon_id)],
-        skills: %{"force" => 0, "poison" => 0}
-      )
+      p =
+        player(
+          inventory: [inst(@poison_id), inst(@weapon_id)],
+          skills: %{"force" => 0, "poison" => 0}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "金蛇剑"})
       assert output_text(conn) =~ "你的毒技不够纯熟，无法给武器涂毒"
     end
 
     test "技能足够涂毒成功" do
-      p = player(
-        inventory: [inst(@poison_id), inst(@weapon_id)],
-        skills: %{"force" => 30, "poison" => 30}
-      )
+      p =
+        player(
+          inventory: [inst(@poison_id), inst(@weapon_id)],
+          skills: %{"force" => 30, "poison" => 30}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "金蛇剑"})
       text = output_text(conn)
       assert text =~ "砒霜"
@@ -165,10 +203,12 @@ defmodule Kantele.Character.DaubCommandTest do
         "name" => "鹤顶红"
       }
 
-      p = player(
-        inventory: [inst(@poison_id), inst(@weapon_id, meta: %{"daub" => existing_daub})],
-        skills: %{"force" => 30, "poison" => 30}
-      )
+      p =
+        player(
+          inventory: [inst(@poison_id), inst(@weapon_id, meta: %{"daub" => existing_daub})],
+          skills: %{"force" => 30, "poison" => 30}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "金蛇剑"})
       assert output_text(conn) =~ "砒霜"
 
@@ -183,10 +223,12 @@ defmodule Kantele.Character.DaubCommandTest do
 
   describe "daub 防具涂毒" do
     test "技能足够涂毒成功" do
-      p = player(
-        inventory: [inst(@poison_id), inst(@armor_id)],
-        skills: %{"force" => 20, "poison" => 20}
-      )
+      p =
+        player(
+          inventory: [inst(@poison_id), inst(@armor_id)],
+          skills: %{"force" => 20, "poison" => 20}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "铁甲"})
       text = output_text(conn)
       assert text =~ "砒霜"
@@ -202,10 +244,13 @@ defmodule Kantele.Character.DaubCommandTest do
   describe "daub 手部涂毒" do
     test "技能足够涂毒到手" do
       :rand.seed(:exsss, {42, 42, 42})
-      p = player(
-        inventory: [inst(@poison_id)],
-        skills: %{"force" => 30, "poison" => 30}
-      )
+
+      p =
+        player(
+          inventory: [inst(@poison_id)],
+          skills: %{"force" => 30, "poison" => 30}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "手"})
       text = output_text(conn)
       assert text =~ "砒霜"
@@ -217,19 +262,23 @@ defmodule Kantele.Character.DaubCommandTest do
     end
 
     test "技能不足提示" do
-      p = player(
-        inventory: [inst(@poison_id)],
-        skills: %{"force" => 0, "poison" => 0}
-      )
+      p =
+        player(
+          inventory: [inst(@poison_id)],
+          skills: %{"force" => 0, "poison" => 0}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "手"})
       assert output_text(conn) =~ "你的毒技不够纯熟，无法涂毒手部"
     end
 
     test "自毒检测：低 poison_skill 高概率自毒" do
-      p = player(
-        inventory: [inst(@poison_id)],
-        skills: %{"force" => 30, "poison" => 30}
-      )
+      p =
+        player(
+          inventory: [inst(@poison_id)],
+          skills: %{"force" => 30, "poison" => 30}
+        )
+
       conn = DaubCommand.run(build_conn(p), %{"poison" => "砒霜", "target" => "手"})
       text = output_text(conn)
       # 自毒概率 ~33%（poison_skill=30 → chance=div(100,3)=33），

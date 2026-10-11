@@ -78,10 +78,12 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
 
     test "valid_learn 需 force>=100 且 force>=level" do
       assert HanbingZhenqi.valid_learn(%{"force" => 150, "hanbing-zhenqi" => 100}) == :ok
+
       case HanbingZhenqi.valid_learn(%{"force" => 99}) do
         {:error, _} -> :ok
         _ -> flunk("expected {:error, _}")
       end
+
       case HanbingZhenqi.valid_learn(%{"force" => 100, "hanbing-zhenqi" => 150}) do
         {:error, _} -> :ok
         _ -> flunk("expected {:error, _}")
@@ -97,7 +99,11 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
     test "扣 100 内力并挂 powerup buff" do
       conn =
         exert(
-          [skills: %{"hanbing-zhenqi" => 120}, mapped: %{"force" => "hanbing-zhenqi"}, vitals: %{@vitals | neili: 500}],
+          [
+            skills: %{"hanbing-zhenqi" => 120},
+            mapped: %{"force" => "hanbing-zhenqi"},
+            vitals: %{@vitals | neili: 500}
+          ],
           "powerup"
         )
 
@@ -110,14 +116,32 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
     end
 
     test "neili<150 被拒" do
-      conn = exert([skills: %{"hanbing-zhenqi" => 120}, mapped: %{"force" => "hanbing-zhenqi"}, vitals: %{@vitals | neili: 100}], "powerup")
+      conn =
+        exert(
+          [
+            skills: %{"hanbing-zhenqi" => 120},
+            mapped: %{"force" => "hanbing-zhenqi"},
+            vitals: %{@vitals | neili: 100}
+          ],
+          "powerup"
+        )
+
       assert output_text(conn) =~ "你的内力不够"
     end
   end
 
   describe "freezing（寒冰真气·自我增益）" do
     test "只能对自己使用" do
-      conn = exert([skills: %{"hanbing-zhenqi" => 150}, mapped: %{"force" => "hanbing-zhenqi"}, vitals: %{@vitals | neili: 2000, max_neili: 2500}], "freezing")
+      conn =
+        exert(
+          [
+            skills: %{"hanbing-zhenqi" => 150},
+            mapped: %{"force" => "hanbing-zhenqi"},
+            vitals: %{@vitals | neili: 2000, max_neili: 2500}
+          ],
+          "freezing"
+        )
+
       # The gate_self_only check is against ctx.target which defaults to character
       # This test verifies the gate exists
     end
@@ -132,6 +156,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           ],
           "freezing"
         )
+
       # con is in stats, need to pass con in skills or stats
       # Stats.skill reads from skills map for "con" as well
       # Actually con is in stats.stats, let's check
@@ -148,6 +173,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           ],
           "freezing"
         )
+
       assert output_text(conn) =~ "寒冰真气不够"
     end
 
@@ -161,6 +187,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           ],
           "freezing"
         )
+
       assert output_text(conn) =~ "内力修为不足"
     end
 
@@ -174,6 +201,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           ],
           "freezing"
         )
+
       assert output_text(conn) =~ "尚未曾运功"
     end
 
@@ -184,6 +212,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           mapped: %{"force" => "hanbing-zhenqi"},
           vitals: %{@vitals | neili: 500, max_neili: 2500}
         )
+
       combat = %{Combat.new() | buffs: [%Combat.Buff{key: "powerup", applies: []}]}
       character = %{character | meta: %{character.meta | combat: combat}}
 
@@ -198,7 +227,15 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           mapped: %{"force" => "hanbing-zhenqi"},
           vitals: %{@vitals | neili: 2000, max_neili: 2500}
         )
-      combat = %{Combat.new() | buffs: [%Combat.Buff{key: "powerup", applies: []}, %Combat.Buff{key: "freezing", applies: []}]}
+
+      combat = %{
+        Combat.new()
+        | buffs: [
+            %Combat.Buff{key: "powerup", applies: []},
+            %Combat.Buff{key: "freezing", applies: []}
+          ]
+      }
+
       character = %{character | meta: %{character.meta | combat: combat}}
 
       conn = ExertCommand.run(build_conn(character), %{"function" => "freezing"})
@@ -212,6 +249,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           mapped: %{"force" => "hanbing-zhenqi"},
           vitals: %{@vitals | neili: 2000, max_neili: 2500}
         )
+
       combat = %{Combat.new() | buffs: [%Combat.Buff{key: "powerup", applies: []}]}
       character = %{character | meta: %{character.meta | combat: combat}}
 
@@ -231,6 +269,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
           mapped: %{"force" => "hanbing-zhenqi"},
           vitals: %{@vitals | neili: 2000, max_neili: 2500}
         )
+
       combat = %{Combat.new() | buffs: [%Combat.Buff{key: "powerup", applies: []}]}
       character = %{character | meta: %{character.meta | combat: combat}}
 
@@ -239,6 +278,7 @@ defmodule Kantele.Combat.HanbingZhenqiTest do
 
       buff = Enum.find(updated.meta.combat.buffs, &(&1.key == "freezing"))
       assert buff.applies == %{}
+
       # duration = skill 200 秒，到期投递逻辑由 Simple.schedule_expire 覆盖（simple_test）
     end
   end

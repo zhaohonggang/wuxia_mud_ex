@@ -51,7 +51,6 @@ defmodule Kantele.Character.WizardGuardTest do
     tracked
   end
 
-
   # A goto target is accepted only when its Room process is alive, so the fixture
   # has to start one.  Kantele.World.Kickoff does the same for every room at boot
   # (`Enum.each(world.rooms, &start_room/1)`).
@@ -70,6 +69,7 @@ defmodule Kantele.Character.WizardGuardTest do
     Kantele.World.ZoneCache.cache(zone)
     room_id
   end
+
   defp output_text(conn) do
     conn.output
     |> Enum.flat_map(fn
@@ -221,7 +221,9 @@ defmodule Kantele.Character.WizardGuardTest do
   end
 
   test "summon 幽灵不能召唤" do
-    conn = SummonCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{"item" => "x"})
+    conn =
+      SummonCommand.run(build_conn(player(%{attributes: %{"ghost" => true}})), %{"item" => "x"})
+
     assert output_text(conn) =~ "等你还了阳再召唤吧"
   end
 

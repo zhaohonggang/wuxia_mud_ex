@@ -148,6 +148,7 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
     case combat.enemies do
       [enemy | _] ->
         {:ok, enemy}
+
       [] ->
         {:error, "你只能用寒气攻击战斗中的对手。\n"}
     end
@@ -239,8 +240,9 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
           }
       }
 
-      message = "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
-                "你觉得#{attacker.name}的全身功力如融雪般消失得无影无踪！\n"
+      message =
+        "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
+          "你觉得#{attacker.name}的全身功力如融雪般消失得无影无踪！\n"
 
       conn =
         conn
@@ -254,8 +256,9 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
 
       conn
     else
-      message = "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
-                "你感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"
+      message =
+        "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
+          "你感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"
 
       conn =
         conn

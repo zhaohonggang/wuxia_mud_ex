@@ -125,9 +125,10 @@ defmodule Kantele.World.StoryTest do
       assert Story.start_story(server, "demo") == :ok
 
       assert_receive %Kalevala.Event{
-        topic: Kalevala.Event.Message,
-        data: %{text: text}
-      }, 200
+                       topic: Kalevala.Event.Message,
+                       data: %{text: text}
+                     },
+                     200
 
       assert text =~ "【测试传闻】"
       assert text =~ "一行一"
@@ -135,9 +136,10 @@ defmodule Kantele.World.StoryTest do
       Story.tick(server)
 
       assert_receive %Kalevala.Event{
-        topic: Kalevala.Event.Message,
-        data: %{text: text2}
-      }, 200
+                       topic: Kalevala.Event.Message,
+                       data: %{text: text2}
+                     },
+                     200
 
       assert text2 =~ "一行二"
     end

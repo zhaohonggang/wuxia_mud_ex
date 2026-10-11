@@ -75,7 +75,6 @@ defmodule Kantele.Combat.Skills.PiliQuan do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

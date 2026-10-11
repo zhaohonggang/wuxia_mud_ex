@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -100,13 +102,13 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -131,6 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     Performs.feedback(attacker, 150, 1)
     result = Messages.interpolate("$N嗔目大喝，手中一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。
 霎时间$n只觉周围四处杀气弥漫，全身气血翻滚，甚难招架。", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

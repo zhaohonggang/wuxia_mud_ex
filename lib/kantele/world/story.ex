@@ -69,7 +69,7 @@ defmodule Kantele.World.Story do
 
   @impl true
   def init(opts) do
-    stories = (opts[:stories] || default_stories())
+    stories = opts[:stories] || default_stories()
 
     state = %__MODULE__{
       stories: normalize_stories(stories),

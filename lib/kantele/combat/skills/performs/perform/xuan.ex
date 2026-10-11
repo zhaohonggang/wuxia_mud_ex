@@ -26,36 +26,36 @@ defmodule Kantele.Combat.Skills.Performs.Perform.Xuan do
   end
 
   # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{
-      #     assign_refs: [{"dp", "dodge"}, {"lvl", "taixuan-gong"}],
-      #     level_gates: [{"force", "300"}, {"taixuan-gong", "240"}],
-      #     map_gates: [
-      #       {"blade", "taixuan-gong"},
-      #       {"sword", "taixuan-gong"},
-      #       {"unarmed", "taixuan-gong"},
-      #       {"unarmed", "taixuan-gong"}
-      #     ],
-      #     prepared_gates: [],
-      #     resource_gates: [{"max_neili", "5000"}, {"neili", "800"}],
-      #     var_gates: [{"i", "15"}]
-      #   }
+  #   %{
+  #     assign_refs: [{"dp", "dodge"}, {"lvl", "taixuan-gong"}],
+  #     level_gates: [{"force", "300"}, {"taixuan-gong", "240"}],
+  #     map_gates: [
+  #       {"blade", "taixuan-gong"},
+  #       {"sword", "taixuan-gong"},
+  #       {"unarmed", "taixuan-gong"},
+  #       {"unarmed", "taixuan-gong"}
+  #     ],
+  #     prepared_gates: [],
+  #     resource_gates: [{"max_neili", "5000"}, {"neili", "800"}],
+  #     var_gates: [{"i", "15"}]
+  #   }
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{
-      #     add_costs: [{"neili", "-600"}],
-      #     affect_by: [],
-      #     apply_adds: ["attack"],
-      #     busy_lines: ["if (random(2) == 1 && ! target->is_busy())",
-      #      "target->start_busy(1);", "me->start_busy(1 + random(5));"],
-      #     remote_damage: false,
-      #     set_flags: [],
-      #     temp_set: []
-      #   }
-      #   - if (random(2) == 1 && ! target->is_busy())
-      #   - target->start_busy(1);
-      #   - me->start_busy(1 + random(5));
+    #   %{
+    #     add_costs: [{"neili", "-600"}],
+    #     affect_by: [],
+    #     apply_adds: ["attack"],
+    #     busy_lines: ["if (random(2) == 1 && ! target->is_busy())",
+    #      "target->start_busy(1);", "me->start_busy(1 + random(5));"],
+    #     remote_damage: false,
+    #     set_flags: [],
+    #     temp_set: []
+    #   }
+    #   - if (random(2) == 1 && ! target->is_busy())
+    #   - target->start_busy(1);
+    #   - me->start_busy(1 + random(5));
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)

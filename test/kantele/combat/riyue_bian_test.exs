@@ -95,7 +95,9 @@ defmodule Kantele.Combat.RiyueBianTest do
 
   describe "缠绕「chan」（攻击方门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"whip" => 100, "riyue-bian" => 100}, performs: MapSet.new()], "chan")
+      conn =
+        perform([skills: %{"whip" => 100, "riyue-bian" => 100}, performs: MapSet.new()], "chan")
+
       assert output_text(conn) =~ "外功中没有这种功能"
     end
 
@@ -107,20 +109,34 @@ defmodule Kantele.Combat.RiyueBianTest do
           performs: MapSet.new(["riyue-bian/chan"])
         )
 
-      character = %{character | meta: %{character.meta | combat: Combat.equip(Combat.new(), :weapon, @whip)}}
+      character = %{
+        character
+        | meta: %{character.meta | combat: Combat.equip(Combat.new(), :weapon, @whip)}
+      }
+
       conn = PerformCommand.run(build_conn(character), %{"action" => "riyue-bian.chan"})
       assert output_text(conn) =~ "只能对战斗中的对手使用"
     end
 
     test "武器不对被拒" do
-      conn = perform([skills: %{"whip" => 100, "riyue-bian" => 100}, mapped: %{"whip" => "riyue-bian"}], "chan", "sword")
+      conn =
+        perform(
+          [skills: %{"whip" => 100, "riyue-bian" => 100}, mapped: %{"whip" => "riyue-bian"}],
+          "chan",
+          "sword"
+        )
+
       assert output_text(conn) =~ "没有拿着鞭子"
     end
 
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"whip" => 100, "riyue-bian" => 100}, mapped: %{"whip" => "riyue-bian"}, vitals: %{@vitals | neili: 79}],
+          [
+            skills: %{"whip" => 100, "riyue-bian" => 100},
+            mapped: %{"whip" => "riyue-bian"},
+            vitals: %{@vitals | neili: 79}
+          ],
           "chan"
         )
 
@@ -133,7 +149,12 @@ defmodule Kantele.Combat.RiyueBianTest do
     end
 
     test "成功放招投递目标侧事件" do
-      conn = perform([skills: %{"whip" => 100, "riyue-bian" => 100}, mapped: %{"whip" => "riyue-bian"}], "chan")
+      conn =
+        perform(
+          [skills: %{"whip" => 100, "riyue-bian" => 100}, mapped: %{"whip" => "riyue-bian"}],
+          "chan"
+        )
+
       assert published_text(conn) =~ "缠绕"
 
       assert_receive %Kalevala.Event{
@@ -155,7 +176,11 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert conn.private.update_character.meta.combat.busy == div(100, 20) + 2
       assert published_text(conn) =~ "措手不及"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 1}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 1}
+      }
     end
 
     test "失手：攻击方回执 -0/2，目标不动" do
@@ -164,7 +189,11 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "看破了"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 0, busy: 2}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 0, busy: 2}
+      }
     end
 
     test "目标忙乱则忽略" do
@@ -179,24 +208,41 @@ defmodule Kantele.Combat.RiyueBianTest do
 
   describe "合字诀「he」（攻击方门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"whip" => 120, "riyue-bian" => 120}, performs: MapSet.new()], "he")
+      conn =
+        perform([skills: %{"whip" => 120, "riyue-bian" => 120}, performs: MapSet.new()], "he")
+
       assert output_text(conn) =~ "受过高人指点"
     end
 
     test "武器不对被拒" do
-      conn = perform([skills: %{"whip" => 120, "riyue-bian" => 120}, mapped: %{"whip" => "riyue-bian"}], "he", "sword")
+      conn =
+        perform(
+          [skills: %{"whip" => 120, "riyue-bian" => 120}, mapped: %{"whip" => "riyue-bian"}],
+          "he",
+          "sword"
+        )
+
       assert output_text(conn) =~ "武器不对"
     end
 
     test "等级不足被拒" do
-      conn = perform([skills: %{"whip" => 119, "riyue-bian" => 119}, mapped: %{"whip" => "riyue-bian"}], "he")
+      conn =
+        perform(
+          [skills: %{"whip" => 119, "riyue-bian" => 119}, mapped: %{"whip" => "riyue-bian"}],
+          "he"
+        )
+
       assert output_text(conn) =~ "不够娴熟"
     end
 
     test "内力不足被拒" do
       conn =
         perform(
-          [skills: %{"whip" => 120, "riyue-bian" => 120}, mapped: %{"whip" => "riyue-bian"}, vitals: %{@vitals | neili: 349}],
+          [
+            skills: %{"whip" => 120, "riyue-bian" => 120},
+            mapped: %{"whip" => "riyue-bian"},
+            vitals: %{@vitals | neili: 349}
+          ],
           "he"
         )
 
@@ -209,7 +255,12 @@ defmodule Kantele.Combat.RiyueBianTest do
     end
 
     test "成功放招投递目标侧事件" do
-      conn = perform([skills: %{"whip" => 120, "riyue-bian" => 120}, mapped: %{"whip" => "riyue-bian"}], "he")
+      conn =
+        perform(
+          [skills: %{"whip" => 120, "riyue-bian" => 120}, mapped: %{"whip" => "riyue-bian"}],
+          "he"
+        )
+
       assert published_text(conn) =~ "漫天鞭影"
 
       assert_receive %Kalevala.Event{
@@ -229,7 +280,10 @@ defmodule Kantele.Combat.RiyueBianTest do
       assert updated.meta.vitals.qi < Vitals.new().qi
       assert published_text(conn) =~ "疲于奔命"
       # attack_time = 5 + random(240/45)=0 → 5*20=100，busy = 1+random(5)=1
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 1}}
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 1}
+      }
     end
 
     test "失手：仍按 attack_time=5 折算伤害，文案凝神应付" do
@@ -239,20 +293,32 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert conn.private.update_character.meta.vitals.qi < Vitals.new().qi
       assert published_text(conn) =~ "凝神应付"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 1}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 1}
+      }
     end
   end
 
   describe "伤字诀「shang」（攻击方门槛）" do
     test "未学会被拒" do
-      conn = perform([skills: %{"whip" => 180, "force" => 300, "riyue-bian" => 180}, performs: MapSet.new()], "shang")
+      conn =
+        perform(
+          [skills: %{"whip" => 180, "force" => 300, "riyue-bian" => 180}, performs: MapSet.new()],
+          "shang"
+        )
+
       assert output_text(conn) =~ "受过高人指点"
     end
 
     test "武器不对被拒" do
       conn =
         perform(
-          [skills: %{"whip" => 180, "force" => 300, "riyue-bian" => 180}, mapped: %{"whip" => "riyue-bian"}],
+          [
+            skills: %{"whip" => 180, "force" => 300, "riyue-bian" => 180},
+            mapped: %{"whip" => "riyue-bian"}
+          ],
           "shang",
           "sword"
         )
@@ -263,7 +329,10 @@ defmodule Kantele.Combat.RiyueBianTest do
     test "内功不足被拒" do
       conn =
         perform(
-          [skills: %{"whip" => 180, "force" => 299, "riyue-bian" => 180}, mapped: %{"whip" => "riyue-bian"}],
+          [
+            skills: %{"whip" => 180, "force" => 299, "riyue-bian" => 180},
+            mapped: %{"whip" => "riyue-bian"}
+          ],
           "shang"
         )
 
@@ -273,7 +342,10 @@ defmodule Kantele.Combat.RiyueBianTest do
     test "日月鞭法不足被拒" do
       conn =
         perform(
-          [skills: %{"whip" => 179, "force" => 300, "riyue-bian" => 179}, mapped: %{"whip" => "riyue-bian"}],
+          [
+            skills: %{"whip" => 179, "force" => 300, "riyue-bian" => 179},
+            mapped: %{"whip" => "riyue-bian"}
+          ],
           "shang"
         )
 
@@ -302,7 +374,10 @@ defmodule Kantele.Combat.RiyueBianTest do
     test "成功放招投递目标侧事件" do
       conn =
         perform(
-          [skills: %{"whip" => 180, "force" => 300, "riyue-bian" => 180}, mapped: %{"whip" => "riyue-bian"}],
+          [
+            skills: %{"whip" => 180, "force" => 300, "riyue-bian" => 180},
+            mapped: %{"whip" => "riyue-bian"}
+          ],
           "shang"
         )
 
@@ -323,7 +398,11 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert conn.private.update_character.meta.vitals.qi == 0
       assert published_text(conn) =~ "鲜血飞溅"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 300, busy: 1}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 300, busy: 1}
+      }
     end
 
     test "失手：目标不动、回执 -100 / busy 3" do
@@ -333,7 +412,11 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert conn.private.update_character == nil
       assert published_text(conn) =~ "运足内力"
-      assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 100, busy: 3}}
+
+      assert_receive %Kalevala.Event{
+        topic: "combat/perform-feedback",
+        data: %{neili_cost: 100, busy: 3}
+      }
     end
   end
 end

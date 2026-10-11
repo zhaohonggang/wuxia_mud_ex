@@ -28,17 +28,17 @@ defmodule Kantele.Character.Who3Command do
           characters
           |> Enum.sort_by(fn char -> -wiz_level(char) end)
 
-        lines =
-          Enum.map_join(sorted, "\n", &(line(&1)))
+        lines = Enum.map_join(sorted, "\n", &line(&1))
 
         conn
         |> render(CommandView, "text", %{
-          text: "玩家属性查询 (who3)\n----------------------------------------------\n" <>
-            "玩家      悟性  根骨  身法  膂力  容貌\n" <>
-            "----------------------------------------------\n" <>
-            lines <>
-            "----------------------------------------------\n" <>
-            "#{count} 位使用者连线中。\n"
+          text:
+            "玩家属性查询 (who3)\n----------------------------------------------\n" <>
+              "玩家      悟性  根骨  身法  膂力  容貌\n" <>
+              "----------------------------------------------\n" <>
+              lines <>
+              "----------------------------------------------\n" <>
+              "#{count} 位使用者连线中。\n"
         })
         |> prompt(CommandView, "prompt", %{})
     end
@@ -62,7 +62,9 @@ defmodule Kantele.Character.Who3Command do
     level_marker = if wiz_level(character) > 0, do: "[W#{wiz_level(character)}]", else: "     "
     name = String.pad_trailing(character.name, 10)
 
-    "#{name} #{level_marker} #{base_int}:#{eff_int} #{base_con}:#{eff_con} #{base_dex}:#{eff_dex} #{base_str}:#{eff_str} #{eff_per}\n"
+    "#{name} #{level_marker} #{base_int}:#{eff_int} #{base_con}:#{eff_con} #{base_dex}:#{eff_dex} #{
+      base_str
+    }:#{eff_str} #{eff_per}\n"
   end
 
   defp wiz_level(char) do

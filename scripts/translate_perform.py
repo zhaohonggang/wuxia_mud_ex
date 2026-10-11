@@ -66,6 +66,7 @@ class TranslatePerform:
         self.do_damage_detail_re = re.compile(r'do_damage\([^)]+,\s*([^,]+),\s*([^,]+),\s*([^)]+)\)')
         self.affect_by_detail_re = re.compile(r'affect_by\("([^"]+)",\s*\(\[\s*"level"\s*:\s*([^,]+),\s*"id"\s*:\s*([^,]+),\s*"duration"\s*:\s*([^\]]+)\s*\]\)')
         self.msg_construction_re = re.compile(r'msg\s*[+=]\s*([^;]+);')
+        self.msg_initial_re = re.compile(r'msg\s*=\s*([^;]+);')
         self.color_codes_re = re.compile(r'(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)')
 
         # New patterns for resource / damage / buff / throwing logic (gap analysis)
@@ -148,6 +149,7 @@ class TranslatePerform:
         color_codes = self.extract_color_codes(text)
         callbacks = self.extract_callbacks(text)
         attacker_vars = self._extract_attacker_vars(text)
+        initial_msg = self.extract_initial_message(text)
 
         return {
             'skill': skill,
@@ -185,6 +187,7 @@ class TranslatePerform:
             'messages': messages,
             'color_codes': color_codes,
             'callbacks': callbacks,
+            'initial_message': initial_msg,
             # Gap-analysis additions: resource / damage / buff / throwing
             'receive_damages': self.extract_receive_damages(text),
             'target_damages': self.extract_target_damages(text),
@@ -202,7 +205,7 @@ class TranslatePerform:
             # Audit additions: misc gates / formulas
             'weapon_forbidden': self.dedup(self.skill_type_eq_re.findall(text)),
             'combat_exp_formulas': self.pairs(self.dedup(self.combat_exp_formula_re.findall(text))),
-            'combat_exp_inline': self.dedup(self.combat_exp_inline_re.findall(text)),
+            'combat_exp_inline': self.dedup(self.dedup(self.combat_exp_inline_re.findall(text))),
             'reset_actions': self.reset_action_re.search(text) is not None,
             'wield_actions': self.dedup(self.wield_re.findall(text)),
             'improve_skills': self.dedup(self.improve_skill_re.findall(text)),
@@ -334,21 +337,28 @@ class TranslatePerform:
         return details
 
     def extract_messages(self, text: str) -> Dict[str, List[str]]:
-        """Extract combat messages (success, fail, etc.)."""
-        messages = {'success': [], 'fail': [], 'other': []}
-        
-        # Extract message_combatd calls and msg += patterns
-        msg_lines = re.findall(r'msg\s*[+=]\s*([^;]+);', text)
-        for line in msg_lines:
-            line = line.strip()
-            if 'HIR' in line or '$n' in line and 'HIR' in line:
-                messages['success'].append(line)
-            elif 'CYN' in line and ('内力深厚' in line or '化解' in line or '没有起到任何作用' in line):
-                messages['fail'].append(line)
-            else:
-                messages['other'].append(line)
-                
-        return messages
+            """Extract combat messages (success, fail, etc.)."""
+            messages = {'success': [], 'fail': [], 'other': []}
+
+            # Extract message_combatd calls and msg += patterns
+            msg_lines = re.findall(r'msg\s*[+=]\s*([^;]+);', text)
+            for line in msg_lines:
+                line = line.strip()
+                if 'HIR' in line or '$n' in line and 'HIR' in line:
+                    messages['success'].append(line)
+                elif 'CYN' in line and ('内力深厚' in line or '化解' in line or '没有起到任何作用' in line):
+                    messages['fail'].append(line)
+                else:
+                    messages['other'].append(line)
+
+            return messages
+
+    def extract_initial_message(self, text: str) -> Optional[str]:
+        """Extract the initial message assignment (msg = ...) before hit check."""
+        match = self.msg_initial_re.search(text)
+        if match:
+            return match.group(1).strip()
+        return None
 
     def extract_color_codes(self, text: str) -> List[str]:
         """Extract ANSI color codes used."""
@@ -768,6 +778,24 @@ class TranslatePerform:
         match = re.fullmatch(r'\s*(-?\d+)\s*', expr or '')
         return int(match.group(1)) if match else None
 
+    def _clean_message_fragment(self, frag: str) -> str:
+        """Extract readable text from LPC message fragment.
+        Input like: 'HIY "突然只听$N" HIY "喝道："'
+        Output: '突然只听$N喝道：' (color codes stripped, $N/$n/$p preserved)
+        """
+        if not frag:
+            return ''
+        # Extract content from double-quoted strings
+        parts = []
+        for m in re.finditer(r'"([^"]*)"', frag):
+            parts.append(m.group(1))
+        joined = ''.join(parts)
+        # Strip color codes (HIR, HIC, HIY, HIG, HIB, HIW, NOR, CYN, RED, GRN, YEL, BLU, MAG, WHT)
+        joined = re.sub(r'\b(HIM|HIR|HIC|HIY|HIG|HIB|HIW|NOR|CYN|RED|GRN|YEL|BLU|MAG|WHT)\b', '', joined)
+        # Normalize escaped newlines
+        joined = joined.replace('\\n', '\n').strip()
+        return joined
+
     def _render_cond(self, clauses) -> str:
         """Render `cond` arms (list of (expr, body)) in the exact form the
         Elixir formatter produces: compact when every clause fits, otherwise all
@@ -913,11 +941,14 @@ class TranslatePerform:
 
         busy = dedup_keep([n for n in data.get('busy_self_literals', []) if isinstance(n, int) and n > 0])
 
-        if not ops and not apply_adds and not busy:
+        # Amount changes (throwing weapons, etc.)
+        amounts = data.get('amounts', [])
+
+        if not ops and not apply_adds and not busy and not amounts:
             return ('', False, False)
 
         lines = [
-            "    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）",
+            "    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播",
         ]
 
         if ops:
@@ -940,7 +971,19 @@ class TranslatePerform:
                 lines.append(f"    combat = Combat.start_busy(combat, {rounds})")
             lines.append("    character = %{character | meta: Map.put(character.meta, :combat, combat)}")
 
-        return ('\n'.join(lines) + '\n\n', bool(ops), bool(apply_adds or busy))
+        if amounts:
+            lines.append("    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对")
+            for op, arg in amounts:
+                lines.append(f"    #   {op}({arg})")
+
+        # Initial message broadcast
+        initial_msg = data.get('initial_message')
+        if initial_msg:
+            clean = self._clean_message_fragment(initial_msg)
+            if clean:
+                lines.append(f'    conn = Broadcast.publish(conn, "{clean}", n1: character.name)')
+
+        return ('\n'.join(lines) + '\n\n', bool(ops), bool(apply_adds or busy or amounts))
 
     def _emit_resolve_incoming(self, data: Dict[str, Any]) -> str:
         """Generate executable target-side resolve_incoming/4.
@@ -1123,9 +1166,9 @@ class TranslatePerform:
         is_perform = data['kind'] == 'perform'
 
         gates_str, gates_use_stats = self._emit_check_gates(data)
-        effect_str, _effect_use_vitals, effect_use_combat = self._emit_apply_effect(data)
+        effect_str, effect_use_vitals, effect_use_combat = self._emit_apply_effect(data)
 
-        uses_stats = is_perform or gates_use_stats
+        uses_stats = is_perform or gates_use_stats or effect_use_vitals
 
         target_logic = data.get('target_logic') or {}
         offensive = bool(target_logic.get('uses_offensive_target')) or bool(target_logic.get('requires_fighting'))
@@ -1305,7 +1348,6 @@ class TranslatePerform:
 {gates_str}
   defp apply_effect(conn, character) do
 {effect_str}    conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end

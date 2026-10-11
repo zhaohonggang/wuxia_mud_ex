@@ -273,7 +273,6 @@ defmodule Kantele.Combat.Skills.SixFinger do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

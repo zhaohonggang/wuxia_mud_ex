@@ -55,10 +55,12 @@ defmodule Kantele.Character.ResearchCommand do
     if skill_name == "" do
       :error
     else
-      times = case Integer.parse(times_str) do
-        {n, _} -> n
-        :error -> 1
-      end
+      times =
+        case Integer.parse(times_str) do
+          {n, _} -> n
+          :error -> 1
+        end
+
       {:ok, skill_name, times}
     end
   end
@@ -120,7 +122,8 @@ defmodule Kantele.Character.ResearchCommand do
       fail(conn, "你的潜能不够研究这么多次了。\n")
     else
       {stats, vitals, times_done, _improve} =
-        Enum.reduce_while(1..times, {stats, vitals, 0, improve}, fn _i, {stats, vitals, acc, imp} ->
+        Enum.reduce_while(1..times, {stats, vitals, 0, improve}, fn _i,
+                                                                    {stats, vitals, acc, imp} ->
           jing = vitals.jing
 
           if jing < jing_cost_per do
@@ -142,11 +145,19 @@ defmodule Kantele.Character.ResearchCommand do
 
         times_done < requested_times ->
           text = "你觉得太累了，研究了#{chinese_number(times_done)}次后只好停下来休息。\n"
-          new_conn |> render(CommandView, "text", %{text: text}) |> prompt(CommandView, "prompt", %{}) |> save()
+
+          new_conn
+          |> render(CommandView, "text", %{text: text})
+          |> prompt(CommandView, "prompt", %{})
+          |> save()
 
         true ->
           text = "你研究了一会儿，似乎对「#{chinese_skill(skill_id)}」有些新的领悟。\n"
-          new_conn |> render(CommandView, "text", %{text: text}) |> prompt(CommandView, "prompt", %{}) |> save()
+
+          new_conn
+          |> render(CommandView, "text", %{text: text})
+          |> prompt(CommandView, "prompt", %{})
+          |> save()
       end
     end
   end

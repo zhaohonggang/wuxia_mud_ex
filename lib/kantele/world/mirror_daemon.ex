@@ -14,10 +14,14 @@ defmodule Kantele.World.MirrorDaemon do
 
   @behaviour Behaviour
 
-  @default_start_delay 60_000       # 1 min after boot
-  @default_round_interval 180_000   # 3 min between rounds (LPC 180s)
-  @total_tasks 30                   # UCL 中定义的 task 物品数（可通过 opts 覆盖供测试）
-  @default_zone "liuxi"             # 任务散落区域（可通过 opts 覆盖供测试）
+  # 1 min after boot
+  @default_start_delay 60_000
+  # 3 min between rounds (LPC 180s)
+  @default_round_interval 180_000
+  # UCL 中定义的 task 物品数（可通过 opts 覆盖供测试）
+  @total_tasks 30
+  # 任务散落区域（可通过 opts 覆盖供测试）
+  @default_zone "liuxi"
 
   @impl Behaviour
   def prompt(), do: "{color foreground=\"yellow\"}【 宝  镜 】{/color}"
@@ -26,15 +30,19 @@ defmodule Kantele.World.MirrorDaemon do
   def init_state() do
     %{
       round_number: 0,
-      tasks: %{},           # task_name => %{pid, room_id, npc_name, npc_id, owner, owner_id, alive: true}
+      # task_name => %{pid, room_id, npc_name, npc_id, owner, owner_id, alive: true}
+      tasks: %{},
       total_completed: 0,
       all_completed: false,
       timer_ref: nil,
       round_active: false,
-      spawn_queue: [],      # queue of pending spawns for batched spawning
-      spawn_timer_ref: nil, # timer for spawn_next messages
+      # queue of pending spawns for batched spawning
+      spawn_queue: [],
+      # timer for spawn_next messages
+      spawn_timer_ref: nil,
       total_tasks: @total_tasks,
-      spawn_delay: 50       # ms between each carrier spawn
+      # ms between each carrier spawn
+      spawn_delay: 50
     }
   end
 
@@ -84,7 +92,16 @@ defmodule Kantele.World.MirrorDaemon do
     end)
 
     cancel_timers(state)
-    {:ok, %{state | round_active: false, tasks: %{}, timer_ref: nil, spawn_queue: [], spawn_timer_ref: nil}}
+
+    {:ok,
+     %{
+       state
+       | round_active: false,
+         tasks: %{},
+         timer_ref: nil,
+         spawn_queue: [],
+         spawn_timer_ref: nil
+     }}
   end
 
   @impl Behaviour
@@ -162,8 +179,10 @@ defmodule Kantele.World.MirrorDaemon do
         announce(
           "{color foreground=\"yellow\"}【 宝  镜 】{/color} 第 #{new_state.round_number} 轮宝镜任务重新分布完毕！30 件任务物品已散落各地。\n"
         )
+
         schedule_next_round(new_state)
         {:noreply, new_state}
+
       {:error, _} ->
         schedule_next_round(state)
         {:noreply, state}
@@ -187,19 +206,24 @@ defmodule Kantele.World.MirrorDaemon do
         end
 
         new_task = %{task | alive: false}
-        new_state = %{state | tasks: Map.put(state.tasks, task_name, new_task), total_completed: state.total_completed + 1}
+
+        new_state = %{
+          state
+          | tasks: Map.put(state.tasks, task_name, new_task),
+            total_completed: state.total_completed + 1
+        }
 
         announce(
-          "{color foreground=\"yellow\"}【 宝  镜 】{/color} #{player.name} 将 #{task.owner} 的 #{task_name} 送还，获得丰厚奖赏！\n"
+          "{color foreground=\"yellow\"}【 宝  镜 】{/color} #{player.name} 将 #{task.owner} 的 #{
+            task_name
+          } 送还，获得丰厚奖赏！\n"
         )
 
         # 里程碑奖励在 give_task 命令里已处理
         # 这里只判定全完成
         new_state =
           if new_state.total_completed >= state.total_tasks do
-            announce(
-              "{color foreground=\"yellow\"}【 宝  镜 】{/color} 本轮宝镜任务已全部完成！\n"
-            )
+            announce("{color foreground=\"yellow\"}【 宝  镜 】{/color} 本轮宝镜任务已全部完成！\n")
 
             # 取消所有待定的生成计时器
             cancel_timers(new_state)
@@ -260,9 +284,11 @@ defmodule Kantele.World.MirrorDaemon do
     if ref = state.timer_ref do
       :erlang.cancel_timer(ref)
     end
+
     if ref = state.spawn_timer_ref do
       :erlang.cancel_timer(ref)
     end
+
     state
   end
 
@@ -277,19 +303,25 @@ defmodule Kantele.World.MirrorDaemon do
       state
     else
       # 构建生成队列
-      spawn_queue = Enum.map(task_items, fn {task_name, task_def} ->
-        room_id = Enum.random(room_ids)
-        npc_name = task_def.owner
-        npc_id = task_def.owner_id
-        {task_name, task_def, room_id, npc_name, npc_id}
-      end)
+      spawn_queue =
+        Enum.map(task_items, fn {task_name, task_def} ->
+          room_id = Enum.random(room_ids)
+          npc_name = task_def.owner
+          npc_id = task_def.owner_id
+          {task_name, task_def, room_id, npc_name, npc_id}
+        end)
 
       if sync do
         # 同步模式：立即全部生成（测试用）
-        Enum.reduce(spawn_queue, state, fn {task_name, task_def, room_id, npc_name, npc_id}, acc ->
-          invader = Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
-            task_name, task_def, room_id, state.zone_id
-          )
+        Enum.reduce(spawn_queue, state, fn {task_name, task_def, room_id, npc_name, npc_id},
+                                           acc ->
+          invader =
+            Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
+              task_name,
+              task_def,
+              room_id,
+              state.zone_id
+            )
 
           result = start_carrier(invader)
 
@@ -304,10 +336,14 @@ defmodule Kantele.World.MirrorDaemon do
                 owner_id: task_def.owner_id,
                 alive: true
               }
+
               %{acc | tasks: Map.put(acc.tasks, task_name, task_info)}
 
             {:error, reason} ->
-              Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
+              Logger.warn(
+                "mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}"
+              )
+
               acc
           end
         end)
@@ -326,9 +362,13 @@ defmodule Kantele.World.MirrorDaemon do
 
       [{task_name, task_def, room_id, npc_name, npc_id} | rest] ->
         # 生成当前任务的 carrier
-        invader = Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
-          task_name, task_def, room_id, state.zone_id
-        )
+        invader =
+          Kantele.World.MirrorDaemon.TaskCarrier.build_carrier(
+            task_name,
+            task_def,
+            room_id,
+            state.zone_id
+          )
 
         result = start_carrier(invader)
 
@@ -344,10 +384,14 @@ defmodule Kantele.World.MirrorDaemon do
                 owner_id: task_def.owner_id,
                 alive: true
               }
+
               %{state | tasks: Map.put(state.tasks, task_name, task_info), spawn_queue: rest}
 
             {:error, reason} ->
-              Logger.warn("mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}")
+              Logger.warn(
+                "mirror_daemon spawn task carrier for #{task_name} failed - #{inspect(reason)}"
+              )
+
               %{state | spawn_queue: rest}
           end
 
@@ -370,7 +414,8 @@ defmodule Kantele.World.MirrorDaemon do
     # 若沿用 Foreman 默认 restart: :permanent，会触发大量重启并压垮
     # CharacterSupervisor（max_restarts 超限）。此处以临时子进程启动，
     # 死亡即销毁、不重启。
-    options = config ++ [character: invader, callback_module: Kalevala.Character.Foreman.NonPlayer]
+    options =
+      config ++ [character: invader, callback_module: Kalevala.Character.Foreman.NonPlayer]
 
     spec = %{
       id: {Kalevala.Character.Foreman, invader.id},
@@ -406,6 +451,7 @@ defmodule Kantele.World.MirrorDaemon do
       case Kantele.World.Items.get(id) do
         {:ok, item} ->
           name = String.replace(id, prefix, "")
+
           {
             name,
             %{
@@ -415,7 +461,9 @@ defmodule Kantele.World.MirrorDaemon do
               item_id: id
             }
           }
-        _ -> nil
+
+        _ ->
+          nil
       end
     end)
     |> Enum.filter(&(not is_nil(&1)))
@@ -427,8 +475,8 @@ defmodule Kantele.World.MirrorDaemon do
       {:ok, %Kantele.World.Zone{rooms: rooms}} ->
         rooms
         |> Enum.filter(fn room ->
-             room.flags && not Enum.member?(room.flags, "no_fight")
-           end)
+          room.flags && not Enum.member?(room.flags, "no_fight")
+        end)
         |> Enum.map(& &1.id)
 
       _ ->

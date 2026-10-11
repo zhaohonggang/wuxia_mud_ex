@@ -69,13 +69,23 @@ defmodule Kantele.Character.GenderTest do
 
     defp metadata(gender) do
       %Metadata{
-        str: 20, dex: 20, con: 20, int: 20,
-        combat_exp: 0, potential: 100,
-        skills: %{}, mapped: %{}, performs: [],
-        equipment: %{}, inventory: [],
-        max_neili: 200, max_jingli: 0,
-        coins: 100, bank_coins: 0,
-        family: %{}, gender: gender
+        str: 20,
+        dex: 20,
+        con: 20,
+        int: 20,
+        combat_exp: 0,
+        potential: 100,
+        skills: %{},
+        mapped: %{},
+        performs: [],
+        equipment: %{},
+        inventory: [],
+        max_neili: 200,
+        max_jingli: 0,
+        coins: 100,
+        bank_coins: 0,
+        family: %{},
+        gender: gender
       }
     end
 
@@ -140,28 +150,23 @@ defmodule Kantele.Character.GenderTest do
     end
 
     test "男性：!= '男性' 为假（放行）" do
-      assert {:ok, false} =
-               evaluate("男性", "me->query('gender') != '男性' && dir == 'west'", "west")
+      assert {:ok, false} = evaluate("男性", "me->query('gender') != '男性' && dir == 'west'", "west")
     end
 
     test "男性：!= '女性' 为真（拦人）—— 这正是之前恒真导致误拦的那类" do
-      assert {:ok, true} =
-               evaluate("男性", "me->query('gender') != '女性' && dir == 'west'", "west")
+      assert {:ok, true} = evaluate("男性", "me->query('gender') != '女性' && dir == 'west'", "west")
     end
 
     test "女性：!= '女性' 为假（放行）" do
-      assert {:ok, false} =
-               evaluate("女性", "me->query('gender') != '女性' && dir == 'west'", "west")
+      assert {:ok, false} = evaluate("女性", "me->query('gender') != '女性' && dir == 'west'", "west")
     end
 
     test "女性：== '女性' 为真（放行女性专属方向）" do
-      assert {:ok, true} =
-               evaluate("女性", "me->query('gender') == '女性' && dir == 'east'", "east")
+      assert {:ok, true} = evaluate("女性", "me->query('gender') == '女性' && dir == 'east'", "east")
     end
 
     test "方向不匹配时整条为假（不会误拦其它方向）" do
-      assert {:ok, false} =
-               evaluate("男性", "me->query('gender') != '女性' && dir == 'west'", "east")
+      assert {:ok, false} = evaluate("男性", "me->query('gender') != '女性' && dir == 'west'", "east")
     end
   end
 end

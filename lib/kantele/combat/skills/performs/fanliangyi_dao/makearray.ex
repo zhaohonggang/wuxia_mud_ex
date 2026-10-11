@@ -48,11 +48,10 @@ defmodule Kantele.Combat.Skills.Performs.FanliangyiDao.Makearray do
          :ok <- partner_alive(partner) do
       n = array_level(stats)
 
-      buff =
-        %Combat.Buff{
-          key: @array_key,
-          applies: %{attack: -n, defense: -n, damage: -n, armor: -n}
-        }
+      buff = %Combat.Buff{
+        key: @array_key,
+        applies: %{attack: -n, defense: -n, damage: -n, armor: -n}
+      }
 
       combat =
         combat

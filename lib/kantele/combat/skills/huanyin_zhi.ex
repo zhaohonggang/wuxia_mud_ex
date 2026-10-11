@@ -107,7 +107,6 @@ defmodule Kantele.Combat.Skills.HuanyinZhi do
     end
   end
 
-
   @impl true
   def perform_list() do
     %{

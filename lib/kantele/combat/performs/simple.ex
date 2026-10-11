@@ -249,7 +249,8 @@ defmodule Kantele.Combat.Performs.Simple do
     do: update_vitals(state, &Map.put(&1, vital, eval(value, ctx, rng)))
 
   defp apply_effect({:add, vital, delta}, state, ctx, rng),
-    do: update_vitals(state, &Map.update!(&1, vital, fn value -> value + eval(delta, ctx, rng) end))
+    do:
+      update_vitals(state, &Map.update!(&1, vital, fn value -> value + eval(delta, ctx, rng) end))
 
   defp apply_effect({:message, text}, state, _ctx, _rng),
     do: %{state | messages: state.messages ++ [text]}

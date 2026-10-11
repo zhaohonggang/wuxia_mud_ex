@@ -31,7 +31,6 @@ defmodule Kantele.Combat.Skills.Performs.Force.Xun do
 
   defp apply_effect(conn, character) do
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end

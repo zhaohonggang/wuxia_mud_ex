@@ -35,7 +35,9 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -103,13 +105,13 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
   end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 500}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    conn = Broadcast.publish(conn, "$N一声断喝，双掌施出五斗米神功「归去来兮」绝技，顿时掌劲澎湃，涌向$n。", n1: character.name)
 
     conn
-    |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -141,6 +143,7 @@ $p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震�
 
 紧接着只见$N双手陡然回圈，竟使已袭出的掌劲倒回，从$n身后再度席卷而归。
 $p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！", n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

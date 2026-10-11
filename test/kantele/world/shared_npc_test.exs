@@ -197,15 +197,15 @@ defmodule Kantele.World.SharedNpcTest do
       in_room =
         Enum.filter(shopkeepers, &(&1.meta.combat_config.spawn_room_id == "dali:buxiongbu"))
 
-      assert in_room != [], "dali:buxiongbu 里应有台夷商贩，实际摆在 " <>
-                             "#{inspect(Enum.map(shopkeepers, & &1.meta.combat_config.spawn_room_id))}"
+      assert in_room != [],
+             "dali:buxiongbu 里应有台夷商贩，实际摆在 " <>
+               "#{inspect(Enum.map(shopkeepers, & &1.meta.combat_config.spawn_room_id))}"
     end
 
     test "foshan:street1 放的是家丁", %{world: world} do
       assert zone_defined?(world, "foshan", :characters, "jiading")
 
-      servants =
-        Enum.filter(world.characters, &(&1.meta.zone_id == "foshan" and &1.name == "家丁"))
+      servants = Enum.filter(world.characters, &(&1.meta.zone_id == "foshan" and &1.name == "家丁"))
 
       assert servants != [], "foshan:street1 的家丁应该存在"
     end
@@ -215,7 +215,10 @@ defmodule Kantele.World.SharedNpcTest do
       # 数量对不上（LPC 各只有 1 个）
       for {zone, room} <- [{"dali", "buxiongbu"}, {"foshan", "street1"}] do
         insts =
-          Enum.filter(world.characters, &(&1.meta.combat_config.spawn_room_id == "#{zone}:#{room}"))
+          Enum.filter(
+            world.characters,
+            &(&1.meta.combat_config.spawn_room_id == "#{zone}:#{room}")
+          )
 
         assert length(insts) == 1,
                "#{zone}:#{room} 应恰好 1 个 NPC，实际 #{length(insts)}: " <>
