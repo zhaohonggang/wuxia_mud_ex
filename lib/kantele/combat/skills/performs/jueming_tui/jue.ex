@@ -1,21 +1,48 @@
 defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
   @moduledoc """
-  perform「绝命一踢」（source jueming-tui/jue.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
+  perform「绝命一踢」（source jueming-tui/jue.c，由 translate_perform.py 生成，inherit F_SSERVER）
 
-  TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
-  以上注释行（TODO(migrate)）校对完成后删除。
+  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
+
+  @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
+  alias Kantele.Character.Stats
+  alias Kalevala.Event
+  alias Kantele.Combat.Engine
+  alias Kantele.Character.Vitals
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
 
+  @perform_id "jueming-tui/jue"
+
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
+    combat = character.meta.combat
+    stats = character.meta.stats
+    rng = &:rand.uniform/1
+    lvl = Stats.skill(stats, "jueming-tui")
 
-    with :ok <- check_gates(character) do
+    with :ok <- check_perform_known(character),
+         :ok <- check_gates(character),
+         {:ok, target} <- target(combat) do
+      send(target.pid, %Event{
+        from_pid: self(),
+        topic: "combat/perform-incoming",
+        data: %{attacker: ref(character), perform_id: @perform_id,
+          level: lvl,
+          skill: lvl,
+          rng: rng
+        }
+      })
+
       apply_effect(conn, character)
     else
       {:error, message} ->
@@ -25,117 +52,185 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     end
   end
 
-  # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{"assign_refs": [{"ap", "unarmed"}, {"dp", "dodge"}, {"pp", "parry"}], "level_gates": [{"jueming-tui", "80"}], "map_gates": [{"unarmed", "jueming-tui"}], "prepared_gates": [{"unarmed", "jueming-tui"}], "resource_gates": [{"neili", "200"}], "var_gates": []}
-  # TODO(migrate) 增强提取逻辑：
-      #   %{"all_fail_messages": ["你所使用的外功中没有这种功能。\n", "你绝命腿法不够娴熟，难以施展", "你没有激发绝命腿法，难以施展", "你没有准备绝命腿法，难以施展", "你目前的内力不够，难以施展", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "me->query_skill("unarmed") + me->query("str") * 10", "dp_formula": "target->query_skill("dodge") + target->query("dex") * 10"}, "color_codes": ["CYN", "HIC", "HIR", "NOR"], "combat_messages": %{"fail": [], "other": ["= HIC "可是$n" HIC "身子一晃，硬生生架住了$N" HIC "这一腿。\n" NOR", "= CYN "却见$n" CYN "镇定的向后一纵，闪开了$N" CYN "这一腿。\n" NOR"], "success": ["HIR "只听$N" HIR "一声冷哼，侧身飞踢，右腿横"
-      #                     "扫向$n" HIR "，当真是力不可挡。\n" NOR", "HIR "$N" HIR "蓦地大喝一声，单腿猛踢而出，直"
-      #                     "踹$n" HIR "腰际，招式极为迅猛。\n" NOR", "HIR "突然只见$N" HIR "双腿连环踢出，挟着嚯嚯"
-      #                     "风声，以千钧之势扫向$n" HIR "。\n" NOR", "= COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 60,
-      #                                      HIR "$n" HIR "连忙格挡，却只觉得力道大"
-      #                                          "得出奇，登时被一脚踢得飞起。\n" NOR)"]}, "damage_formula": %{"formula": "ap / 3 + random(ap / 3)"}, "hit_formula": %{"left_side": "ap * 7 / 10 + random(ap)", "operator": "<", "right_side": "dp"}, "resource_adds": [{"neili", "-100"}, {"neili", "-30"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": false}}
-  defp check_gates(_character), do: :ok
+  defp check_perform_known(character) do
+    if Stats.perform_known?(character.meta.stats, @perform_id) do
+      :ok
+    else
+      {:error, "你所使用的外功中没有这种功能。\n"}
+    end
+  end
+
+  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_resources(character) do
+      :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "jueming-tui") < 80 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.mapped(stats, "unarmed") != "jueming-tui" -> {:error, "TODO(migrate) 未激发/未准备相应武功。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_resources(character) do
+    vitals = character.meta.vitals
+
+    cond do
+      vitals.neili < 200 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      true -> :ok
+    end
+  end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{"add_costs": [{"neili", "-100"}, {"neili", "-30"}], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(3);", "me->start_busy(3);", "me->start_busy(2);"], "remote_damage": true, "set_flags": [], "temp_set": []}
-      #   - me->start_busy(3);
-      #   - me->start_busy(3);
-      #   - me->start_busy(2);
+    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    vitals = character.meta.vitals
+    vitals = %{vitals | neili: vitals.neili - 100}
+    vitals = %{vitals | neili: vitals.neili - 30}
+    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 2)
+    combat = Combat.start_busy(combat, 3)
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "这里没有可供攻击的对手。\n"}
+    end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    _stats = character.meta.stats
+    _stats = character.meta.stats
+    vitals = character.meta.vitals
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+    Performs.feedback(attacker, 30, 3)
+    result = Messages.interpolate("只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。
+$N蓦地大喝一声，单腿猛踢而出，直踹$n腰际，招式极为迅猛。
+突然只见$N双腿连环踢出，挟着嚯嚯风声，以千钧之势扫向$n。
+$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", n1: attacker.name, n2: character.name)
+    conn
+    |> Broadcast.publish(result)
+    |> put_character(character)
+  end
+
+  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
+  #   %{"add_costs": [{"neili", "-100"}, {"neili", "-30"}], "assign_refs": [{"ap", "unarmed"}, {"dp", "dodge"}, {"pp", "parry"}], "busy_lines": ["me->start_busy(3);", "me->start_busy(3);", "me->start_busy(2);"], "level_gates": [{"jueming-tui", "80"}], "map_gates": [{"unarmed", "jueming-tui"}], "prepared_gates": [{"unarmed", "jueming-tui"}], "remote_damage": true, "resource_gates": [{"neili", "200"}]}
+
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
-      # #include <ansi.h>
-      # #include <combat.h>
-      # 
-      # #define JUE "「" HIR "绝命一踢" NOR "」"
-      # 
-      # inherit F_SSERVER;
-      # 
-      # int perform(object me, object target)
-      # {
-      #     string msg;
-      #     int ap, dp, pp;
-      #     int damage;
-      # 
-      #     if (userp(me) && !me->query("can_perform/jueming-tui/jue"))
-      #         return notify_fail("你所使用的外功中没有这种功能。\n");
-      # 
-      #     if (!target)
-      #     {
-      #         me->clean_up_enemy();
-      #         target = me->select_opponent();
-      #     }
-      # 
-      #     if (!target || !me->is_fighting(target))
-      #         return notify_fail(JUE "只能对战斗中的对手使用。\n");
-      # 
-      #     if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
-      #         return notify_fail(JUE "只能空手施展。\n");
-      # 
-      #     if (me->query_skill("jueming-tui", 1) < 80)
-      #         return notify_fail("你绝命腿法不够娴熟，难以施展" JUE "。\n");
-      # 
-      #     if (me->query_skill_mapped("unarmed") != "jueming-tui")
-      #         return notify_fail("你没有激发绝命腿法，难以施展" JUE "。\n");
-      # 
-      #     if (me->query_skill_prepared("unarmed") != "jueming-tui")
-      #         return notify_fail("你没有准备绝命腿法，难以施展" JUE "。\n");
-      # 
-      #     if (me->query("neili") < 200)
-      #         return notify_fail("你目前的内力不够，难以施展" JUE "。\n");
-      # 
-      #     if (!living(target))
-      #         return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-      # 
-      #     switch (random(3))
-      #     {
-      #     case 0:
-      #         msg = HIR "只听$N" HIR "一声冷哼，侧身飞踢，右腿横"
-      #                   "扫向$n" HIR "，当真是力不可挡。\n" NOR;
-      #         break;
-      # 
-      #     case 1:
-      #         msg = HIR "$N" HIR "蓦地大喝一声，单腿猛踢而出，直"
-      #                   "踹$n" HIR "腰际，招式极为迅猛。\n" NOR;
-      #         break;
-      # 
-      #     default:
-      #         msg = HIR "突然只见$N" HIR "双腿连环踢出，挟着嚯嚯"
-      #                   "风声，以千钧之势扫向$n" HIR "。\n" NOR;
-      #         break;
-      #     }
-      # 
-      #     ap = me->query_skill("unarmed") + me->query("str") * 10;
-      #     dp = target->query_skill("dodge") + target->query("dex") * 10;
-      #     pp = target->query_skill("parry") + target->query("str") * 10;
-      # 
-      #     if (ap * 7 / 10 + random(ap) < pp)
-      #     {
-      #         msg += HIC "可是$n" HIC "身子一晃，硬生生架住了$N" HIC "这一腿。\n" NOR;
-      #         me->start_busy(3);
-      #         me->add("neili", -30);
-      #     }
-      #     else if (ap * 7 / 10 + random(ap) < dp)
-      #     {
-      #         msg += CYN "却见$n" CYN "镇定的向后一纵，闪开了$N" CYN "这一腿。\n" NOR;
-      #         me->start_busy(3);
-      #         me->add("neili", -30);
-      #     }
-      #     else
-      #     {
-      #         damage = ap / 3 + random(ap / 3);
-      #         msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 60,
-      #                                    HIR "$n" HIR "连忙格挡，却只觉得力道大"
-      #                                        "得出奇，登时被一脚踢得飞起。\n" NOR);
-      #         me->start_busy(2);
-      #         me->add("neili", -100);
-      #     }
-      #     message_combatd(msg, me, target);
-      #     return 1;
-      # }
+  # #include <ansi.h>
+  # #include <combat.h>
+  # 
+  # #define JUE "「" HIR "绝命一踢" NOR "」"
+  # 
+  # inherit F_SSERVER;
+  # 
+  # int perform(object me, object target)
+  # {
+  #     string msg;
+  #     int ap, dp, pp;
+  #     int damage;
+  # 
+  #     if (userp(me) && !me->query("can_perform/jueming-tui/jue"))
+  #         return notify_fail("你所使用的外功中没有这种功能。\n");
+  # 
+  #     if (!target)
+  #     {
+  #         me->clean_up_enemy();
+  #         target = me->select_opponent();
+  #     }
+  # 
+  #     if (!target || !me->is_fighting(target))
+  #         return notify_fail(JUE "只能对战斗中的对手使用。\n");
+  # 
+  #     if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
+  #         return notify_fail(JUE "只能空手施展。\n");
+  # 
+  #     if (me->query_skill("jueming-tui", 1) < 80)
+  #         return notify_fail("你绝命腿法不够娴熟，难以施展" JUE "。\n");
+  # 
+  #     if (me->query_skill_mapped("unarmed") != "jueming-tui")
+  #         return notify_fail("你没有激发绝命腿法，难以施展" JUE "。\n");
+  # 
+  #     if (me->query_skill_prepared("unarmed") != "jueming-tui")
+  #         return notify_fail("你没有准备绝命腿法，难以施展" JUE "。\n");
+  # 
+  #     if (me->query("neili") < 200)
+  #         return notify_fail("你目前的内力不够，难以施展" JUE "。\n");
+  # 
+  #     if (!living(target))
+  #         return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 
+  #     switch (random(3))
+  #     {
+  #     case 0:
+  #         msg = HIR "只听$N" HIR "一声冷哼，侧身飞踢，右腿横"
+  #                   "扫向$n" HIR "，当真是力不可挡。\n" NOR;
+  #         break;
+  # 
+  #     case 1:
+  #         msg = HIR "$N" HIR "蓦地大喝一声，单腿猛踢而出，直"
+  #                   "踹$n" HIR "腰际，招式极为迅猛。\n" NOR;
+  #         break;
+  # 
+  #     default:
+  #         msg = HIR "突然只见$N" HIR "双腿连环踢出，挟着嚯嚯"
+  #                   "风声，以千钧之势扫向$n" HIR "。\n" NOR;
+  #         break;
+  #     }
+  # 
+  #     ap = me->query_skill("unarmed") + me->query("str") * 10;
+  #     dp = target->query_skill("dodge") + target->query("dex") * 10;
+  #     pp = target->query_skill("parry") + target->query("str") * 10;
+  # 
+  #     if (ap * 7 / 10 + random(ap) < pp)
+  #     {
+  #         msg += HIC "可是$n" HIC "身子一晃，硬生生架住了$N" HIC "这一腿。\n" NOR;
+  #         me->start_busy(3);
+  #         me->add("neili", -30);
+  #     }
+  #     else if (ap * 7 / 10 + random(ap) < dp)
+  #     {
+  #         msg += CYN "却见$n" CYN "镇定的向后一纵，闪开了$N" CYN "这一腿。\n" NOR;
+  #         me->start_busy(3);
+  #         me->add("neili", -30);
+  #     }
+  #     else
+  #     {
+  #         damage = ap / 3 + random(ap / 3);
+  #         msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 60,
+  #                                    HIR "$n" HIR "连忙格挡，却只觉得力道大"
+  #                                        "得出奇，登时被一脚踢得飞起。\n" NOR);
+  #         me->start_busy(2);
+  #         me->add("neili", -100);
+  #     }
+  #     message_combatd(msg, me, target);
+  #     return 1;
+  # }
 end

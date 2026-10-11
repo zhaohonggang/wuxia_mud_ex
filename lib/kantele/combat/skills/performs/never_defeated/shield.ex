@@ -1,16 +1,20 @@
 defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Shield do
   @moduledoc """
-  exert「shield」（source never-defeated/shield.c，由 translate_perform.py 骨架生成，inherit F_CLEAN_UP）
+  exert「shield」（source never-defeated/shield.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
 
-  TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
-  以上注释行（TODO(migrate)）校对完成后删除。
+  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
+
+  @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
+  alias Kantele.Character.Stats
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -25,75 +29,99 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Shield do
     end
   end
 
-  # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{"assign_refs": [{"skill", "force"}], "level_gates": [{"never-defeated", "50"}], "map_gates": [], "prepared_gates": [], "resource_gates": [{"neili", "100"}], "var_gates": []}
-  # TODO(migrate) 增强提取逻辑：
-      #   %{"all_fail_messages": ["你只能用不败神功来提升自己的防御力。\n", "你的内力不够。\n", "你的不败神功修为不够。\n", "你已经在运功中了。\n"], "buff_delete": ["shield"], "call_outs": [%{"args": "me, skill / 2", "delay": "skill", "fn": "remove_effect"}], "callback_functions": [%{"body": "if (me->query_temp("shield"))
-      #           {
-      #               me->add_temp("apply/armor", -amount);
-      #               me->delete_temp("shield");
-      #               tell_object(me, "你的不败神功运行完毕，将内力收回丹田。\n");", "name": "remove_effect", "params": "object me, int amount", "return_type": "void"}], "color_codes": ["HIC", "NOR"], "combat_messages": %{"fail": [], "other": [], "success": []}, "receive_damage_calls": [%{"formula": "0", "kind": "damage", "part": "qi", "source": None}], "resource_adds": [{"neili", "-100"}], "resource_queries": ["neili"], "target_logic": %{"requires_fighting": true, "requires_living": false, "uses_offensive_target": false}}
-  defp check_gates(_character), do: :ok
+  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character) do
+      :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "never-defeated") < 50 -> {:error, "TODO(migrate) 门槛不足。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_resources(character) do
+    vitals = character.meta.vitals
+
+    cond do
+      vitals.neili < 100 -> {:error, "TODO(migrate) 气血/内力/精神不足。\n"}
+      true -> :ok
+    end
+  end
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{"add_costs": [{"neili", "-100"}], "affect_by": [], "apply_adds": ["armor"], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "remote_damage": false, "set_flags": [], "temp_set": ["shield"]}
-      #   - if (me->is_fighting()) me->start_busy(2);
+    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    vitals = character.meta.vitals
+    vitals = %{vitals | neili: vitals.neili - 100}
+    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 2)
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
+  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
+  #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["armor"], "assign_refs": [{"skill", "force"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "level_gates": [{"never-defeated", "50"}], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["shield"]}
+
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
-      # // shield.c 护体神功
-      # //
-      # 
-      # #include <ansi.h>
-      # 
-      # inherit F_CLEAN_UP;
-      # 
-      # void remove_effect(object me, int amount);
-      # 
-      # int exert(object me, object target)
-      # {
-      #     int skill;
-      # 
-      #     if (target != me)
-      #         return notify_fail("你只能用不败神功来提升自己的防御力。\n");
-      # 
-      #     if ((int)me->query("neili") < 100)
-      #         return notify_fail("你的内力不够。\n");
-      # 
-      #     if ((int)me->query_skill("never-defeated",1) < 50)
-      #         return notify_fail("你的不败神功修为不够。\n");
-      # 
-      #     if ((int)me->query_temp("shield"))
-      #         return notify_fail("你已经在运功中了。\n");
-      # 
-      #     skill = me->query_skill("force");
-      #     me->add("neili", -100);
-      #     me->receive_damage("qi", 0);
-      # 
-      #     message_combatd(HIC "$N" HIC "双臂轻轻一展，一股劲气登时笼罩全身！\n" NOR, me);
-      # 
-      #     me->add_temp("apply/armor", skill / 2);
-      #     me->set_temp("shield", 1);
-      # 
-      #     me->start_call_out((: call_other, __FILE__, "remove_effect", me, skill / 2 :), skill);
-      # 
-      #     if (me->is_fighting()) me->start_busy(2);
-      # 
-      #     return 1;
-      # }
-      # 
-      # void remove_effect(object me, int amount)
-      # {
-      #         if (me->query_temp("shield"))
-      #         {
-      #             me->add_temp("apply/armor", -amount);
-      #             me->delete_temp("shield");
-      #             tell_object(me, "你的不败神功运行完毕，将内力收回丹田。\n");
-      #         }
-      # }
+  # // shield.c 护体神功
+  # //
+  # 
+  # #include <ansi.h>
+  # 
+  # inherit F_CLEAN_UP;
+  # 
+  # void remove_effect(object me, int amount);
+  # 
+  # int exert(object me, object target)
+  # {
+  #     int skill;
+  # 
+  #     if (target != me)
+  #         return notify_fail("你只能用不败神功来提升自己的防御力。\n");
+  # 
+  #     if ((int)me->query("neili") < 100)
+  #         return notify_fail("你的内力不够。\n");
+  # 
+  #     if ((int)me->query_skill("never-defeated",1) < 50)
+  #         return notify_fail("你的不败神功修为不够。\n");
+  # 
+  #     if ((int)me->query_temp("shield"))
+  #         return notify_fail("你已经在运功中了。\n");
+  # 
+  #     skill = me->query_skill("force");
+  #     me->add("neili", -100);
+  #     me->receive_damage("qi", 0);
+  # 
+  #     message_combatd(HIC "$N" HIC "双臂轻轻一展，一股劲气登时笼罩全身！\n" NOR, me);
+  # 
+  #     me->add_temp("apply/armor", skill / 2);
+  #     me->set_temp("shield", 1);
+  # 
+  #     me->start_call_out((: call_other, __FILE__, "remove_effect", me, skill / 2 :), skill);
+  # 
+  #     if (me->is_fighting()) me->start_busy(2);
+  # 
+  #     return 1;
+  # }
+  # 
+  # void remove_effect(object me, int amount)
+  # {
+  #         if (me->query_temp("shield"))
+  #         {
+  #             me->add_temp("apply/armor", -amount);
+  #             me->delete_temp("shield");
+  #             tell_object(me, "你的不败神功运行完毕，将内力收回丹田。\n");
+  #         }
+  # }
 end

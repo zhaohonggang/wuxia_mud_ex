@@ -1,21 +1,50 @@
 defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
   @moduledoc """
-  perform「po」（source lonely-sword/po.c，由 translate_perform.py 骨架生成，inherit F_SSERVER）
+  perform「po」（source lonely-sword/po.c，由 translate_perform.py 生成，inherit F_SSERVER）
 
-  TODO(migrate): 样本人工校对后，把以下门槛/语义写进 check_* 与 apply_effect。
-  以上注释行（TODO(migrate)）校对完成后删除。
+  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
+
+  @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
+  alias Kantele.Character.Stats
+  alias Kalevala.Event
+  alias Kantele.Combat.Engine
+  alias Kantele.Character.Vitals
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
 
+  @perform_id "lonely-sword/po"
+
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
+    combat = character.meta.combat
+    stats = character.meta.stats
+    rng = &:rand.uniform/1
+    lvl = Stats.skill(stats, "lonely-sword")
+    skill = Stats.skill(stats, "lonely-sword")
+    n = (3 + Engine.rand(rng, 5))
 
-    with :ok <- check_gates(character) do
+    with :ok <- check_perform_known(character),
+         :ok <- check_gates(character),
+         {:ok, target} <- target(combat) do
+      send(target.pid, %Event{
+        from_pid: self(),
+        topic: "combat/perform-incoming",
+        data: %{attacker: ref(character), perform_id: @perform_id,
+          level: lvl,
+          skill: lvl,
+          rng: rng
+        }
+      })
+
       apply_effect(conn, character)
     else
       {:error, message} ->
@@ -25,132 +54,154 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
     end
   end
 
-  # TODO(migrate) 提取器门槛事实（核对后替换为真实查法）：
-      #   %{"assign_refs": [{"ap", "sword"}, {"skill", "lonely-sword"}, {"ss", "lonely-sword"}, {"ss", "never-defeated"}, {"ss", "pixie-jian"}], "level_gates": [], "map_gates": [], "prepared_gates": [], "resource_gates": [], "var_gates": [{"skill", "50"}]}
-  # TODO(migrate) 增强提取逻辑：
-      #   %{"all_fail_messages": ["独孤九剑只能对战斗中的对手使用。\n", "你的独孤九剑等级不够，练好了再来！\n", "你使用的武器不对。\n", "对方都已经这样了，用不着这么费力吧？\n"], "ap_dp_formulas": %{"ap_formula": "skill + me->query_skill("sword", 1) / 2", "dp_formula": "target->query_skill(type, 1) * 2 + ss * 2"}, "color_codes": ["HIC", "HIW", "HIY", "NOR"], "combat_messages": %{"fail": [], "other": ["HIC "$N" HIC "随意挥洒手中的" + weapon->name() + HIC
-      #                         "，招招从出其不意的方位直指$n" HIC +
-      #                         to_chinese(type)[4..<1] + "中的破绽。\n" NOR", "= HIY "$n" HIY "大吃一惊，慌乱之下破绽迭出，$N" HIY "唰唰连攻" +
-      #                                  chinese_number(n) + "剑！\n" NOR", "HIW "\n$n" HIW "觉得眼前眼花缭乱，手中的" + weapon2->name() +
-      #                                         HIW "一时竟然拿捏不住，脱手而出！\n" NOR", "HIY "\n$n略得空隙喘息，一时间却也无力反击。\n" NOR", "= HIY "$n" HIY "连忙抵挡，一时间不禁手忙脚乱，无暇反击。\n" NOR", "HIC "$N" HIC "拿着手中的" + weapon->name() + HIC "，东戳西指，"
-      #                         "不过$n" HIC "防守的异常严密，$N" HIC "一时竟然无法找到破绽。\n" NOR"], "success": []}, "hit_formula": %{"left_side": "ap / 2 + random(ap)", "operator": ">", "right_side": "dp"}, "target_logic": %{"requires_fighting": true, "requires_living": true, "uses_offensive_target": false}, "weapon_type": "sword"}
+  defp check_perform_known(character) do
+    if Stats.perform_known?(character.meta.stats, @perform_id) do
+      :ok
+    else
+      {:error, "你所使用的外功中没有这种功能。\n"}
+    end
+  end
+
   defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
-    # TODO(migrate) 提取器效果事实（含目标侧 busy/remote damage，移植后落库）：
-      #   %{"add_costs": [], "affect_by": [], "apply_adds": [], "busy_lines": ["me->start_busy(1 + random(n));", "if (! target->is_busy() && random(2))", "target->start_busy(1);", "me->start_busy(1);", "target->start_busy(1 + random(skill / 20));", "me->start_busy(3 + random(2));", "target->start_busy(1);"], "remote_damage": false, "set_flags": [], "temp_set": []}
-      #   - me->start_busy(1 + random(n));
-      #   - if (! target->is_busy() && random(2))
-      #   - target->start_busy(1);
-      #   - me->start_busy(1);
-      #   - target->start_busy(1 + random(skill / 20));
-      #   - me->start_busy(3 + random(2));
-      #   - target->start_busy(1);
+    # TODO(migrate) 资源/时序需按原始源码核对（消耗或 busy/apply 加成可能仅在命中分支生效）
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1)
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
     conn
     |> Broadcast.publish("-= TODO(migrate) 未移植文案。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "这里没有可供攻击的对手。\n"}
+    end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    _stats = character.meta.stats
+    _stats = character.meta.stats
+    vitals = character.meta.vitals
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+    Performs.feedback(attacker, 0, 1)
+    result = Messages.interpolate("", n1: attacker.name, n2: character.name)
+    conn
+    |> Broadcast.publish(result)
+    |> put_character(character)
+  end
+
+  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
+  #   %{"assign_refs": [{"ap", "sword"}, {"skill", "lonely-sword"}, {"ss", "lonely-sword"}, {"ss", "never-defeated"}, {"ss", "pixie-jian"}], "busy_lines": ["me->start_busy(1 + random(n));", "if (! target->is_busy() && random(2))", "target->start_busy(1);", "me->start_busy(1);", "target->start_busy(1 + random(skill / 20));", "me->start_busy(3 + random(2));", "target->start_busy(1);"], "remote_damage": false, "var_gates": [{"skill", "50"}]}
+
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
-      # // po.c 独孤九剑
-      # 
-      # #include <ansi.h>
-      # 
-      # inherit F_SSERVER;
-      # 
-      # int perform(object me, object target)
-      # {
-      #         string msg;
-      #         string *learned;
-      #         object weapon, weapon2;
-      #         string type;
-      #         mapping prepare;
-      #         int n;
-      #         int skill, ap, dp, ss;
-      # 
-      #         me->clean_up_enemy();
-      #         if (! target) target = me->select_opponent();
-      # 
-      #         skill = me->query_skill("lonely-sword", 1);
-      # 
-      #         if (! me->is_fighting(target))
-      #                 return notify_fail("独孤九剑只能对战斗中的对手使用。\n");
-      # 
-      #         if (skill < 50)
-      #                 return notify_fail("你的独孤九剑等级不够，练好了再来！\n");
-      # 
-      #         if (! objectp(weapon = me->query_temp("weapon")) ||
-      #             weapon->query("skill_type") != "sword")
-      #                 return notify_fail("你使用的武器不对。\n");
-      # 
-      #        if (! living(target))
-      #               return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-      # 
-      #         weapon2 = target->query_temp("weapon");
-      #         prepare = target->query_skill_prepare();
-      #         if (weapon2) type = weapon2->query("skill_type");
-      #         else if (! prepare || sizeof(prepare) == 0) type = "unarmed";
-      #         else if (sizeof(prepare) == 1) type = (keys(prepare))[0];
-      #         else if (sizeof(prepare) == 2)
-      #                 type = (keys(prepare))[target->query_temp("action_flag")];
-      # 
-      #         ap = skill + me->query_skill("sword", 1) / 2;
-      #         learned = me->query("can_perform/lonely-sword");
-      #         if (arrayp(learned) && member_array(type, learned) != -1)
-      #                 ap *= 2;
-      # 
-      #         ss = target->query_skill("never-defeated", 1) * 11 / 10;
-      #         if (ss < target->query_skill("lonely-sword", 1))
-      #                   ss = target->query_skill("lonely-sword", 1);
-      #         if (ss < target->query_skill("pixie-jian", 1))
-      #                   ss = target->query_skill("pixie-jian", 1);
-      # 
-      #         dp = target->query_skill(type, 1) * 2 + ss * 2;
-      # 
-      #         if (ap / 2 + random(ap) > dp)
-      #         {
-      #                 msg = HIC "$N" HIC "随意挥洒手中的" + weapon->name() + HIC
-      #                       "，招招从出其不意的方位直指$n" HIC +
-      #                       to_chinese(type)[4..<1] + "中的破绽。\n" NOR;
-      #                 n = 3 + random(5);
-      #                 if (ap / 3 + random(ap) > dp)
-      #                 {
-      #                         msg += HIY "$n" HIY "大吃一惊，慌乱之下破绽迭出，$N" HIY "唰唰连攻" +
-      #                                chinese_number(n) + "剑！\n" NOR;
-      #                         message_combatd(msg, me, target);
-      #                         me->start_busy(1 + random(n));
-      #                         while (n-- && me->is_fighting(target))
-      #                         {
-      #                                 if (! target->is_busy() && random(2))
-      #                                         target->start_busy(1);
-      #                                 COMBAT_D->do_attack(me, target, weapon, 0);
-      #                         }
-      # 
-      #                         if (weapon2 && random(ap) > dp && type != "pin")
-      #                         {
-      #                                 msg = HIW "\n$n" HIW "觉得眼前眼花缭乱，手中的" + weapon2->name() +
-      #                                       HIW "一时竟然拿捏不住，脱手而出！\n" NOR;
-      #                                 weapon2->move(environment(me));
-      #                         } else
-      #                         {
-      #                                 msg = HIY "\n$n略得空隙喘息，一时间却也无力反击。\n" NOR;
-      #                         }
-      #                 } else
-      #                 {
-      #                         msg += HIY "$n" HIY "连忙抵挡，一时间不禁手忙脚乱，无暇反击。\n" NOR;
-      #                         me->start_busy(1);
-      #                         target->start_busy(1 + random(skill / 20));
-      #                 }
-      #         } else
-      #         {
-      #                 msg = HIC "$N" HIC "拿着手中的" + weapon->name() + HIC "，东戳西指，"
-      #                       "不过$n" HIC "防守的异常严密，$N" HIC "一时竟然无法找到破绽。\n" NOR;
-      #                 me->start_busy(3 + random(2));
-      #                 target->start_busy(1);
-      #         }
-      # 
-      #         message_combatd(msg, me, target);
-      #         return 1;
-      # }
+  # // po.c 独孤九剑
+  # 
+  # #include <ansi.h>
+  # 
+  # inherit F_SSERVER;
+  # 
+  # int perform(object me, object target)
+  # {
+  #         string msg;
+  #         string *learned;
+  #         object weapon, weapon2;
+  #         string type;
+  #         mapping prepare;
+  #         int n;
+  #         int skill, ap, dp, ss;
+  # 
+  #         me->clean_up_enemy();
+  #         if (! target) target = me->select_opponent();
+  # 
+  #         skill = me->query_skill("lonely-sword", 1);
+  # 
+  #         if (! me->is_fighting(target))
+  #                 return notify_fail("独孤九剑只能对战斗中的对手使用。\n");
+  # 
+  #         if (skill < 50)
+  #                 return notify_fail("你的独孤九剑等级不够，练好了再来！\n");
+  # 
+  #         if (! objectp(weapon = me->query_temp("weapon")) ||
+  #             weapon->query("skill_type") != "sword")
+  #                 return notify_fail("你使用的武器不对。\n");
+  # 
+  #        if (! living(target))
+  #               return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 
+  #         weapon2 = target->query_temp("weapon");
+  #         prepare = target->query_skill_prepare();
+  #         if (weapon2) type = weapon2->query("skill_type");
+  #         else if (! prepare || sizeof(prepare) == 0) type = "unarmed";
+  #         else if (sizeof(prepare) == 1) type = (keys(prepare))[0];
+  #         else if (sizeof(prepare) == 2)
+  #                 type = (keys(prepare))[target->query_temp("action_flag")];
+  # 
+  #         ap = skill + me->query_skill("sword", 1) / 2;
+  #         learned = me->query("can_perform/lonely-sword");
+  #         if (arrayp(learned) && member_array(type, learned) != -1)
+  #                 ap *= 2;
+  # 
+  #         ss = target->query_skill("never-defeated", 1) * 11 / 10;
+  #         if (ss < target->query_skill("lonely-sword", 1))
+  #                   ss = target->query_skill("lonely-sword", 1);
+  #         if (ss < target->query_skill("pixie-jian", 1))
+  #                   ss = target->query_skill("pixie-jian", 1);
+  # 
+  #         dp = target->query_skill(type, 1) * 2 + ss * 2;
+  # 
+  #         if (ap / 2 + random(ap) > dp)
+  #         {
+  #                 msg = HIC "$N" HIC "随意挥洒手中的" + weapon->name() + HIC
+  #                       "，招招从出其不意的方位直指$n" HIC +
+  #                       to_chinese(type)[4..<1] + "中的破绽。\n" NOR;
+  #                 n = 3 + random(5);
+  #                 if (ap / 3 + random(ap) > dp)
+  #                 {
+  #                         msg += HIY "$n" HIY "大吃一惊，慌乱之下破绽迭出，$N" HIY "唰唰连攻" +
+  #                                chinese_number(n) + "剑！\n" NOR;
+  #                         message_combatd(msg, me, target);
+  #                         me->start_busy(1 + random(n));
+  #                         while (n-- && me->is_fighting(target))
+  #                         {
+  #                                 if (! target->is_busy() && random(2))
+  #                                         target->start_busy(1);
+  #                                 COMBAT_D->do_attack(me, target, weapon, 0);
+  #                         }
+  # 
+  #                         if (weapon2 && random(ap) > dp && type != "pin")
+  #                         {
+  #                                 msg = HIW "\n$n" HIW "觉得眼前眼花缭乱，手中的" + weapon2->name() +
+  #                                       HIW "一时竟然拿捏不住，脱手而出！\n" NOR;
+  #                                 weapon2->move(environment(me));
+  #                         } else
+  #                         {
+  #                                 msg = HIY "\n$n略得空隙喘息，一时间却也无力反击。\n" NOR;
+  #                         }
+  #                 } else
+  #                 {
+  #                         msg += HIY "$n" HIY "连忙抵挡，一时间不禁手忙脚乱，无暇反击。\n" NOR;
+  #                         me->start_busy(1);
+  #                         target->start_busy(1 + random(skill / 20));
+  #                 }
+  #         } else
+  #         {
+  #                 msg = HIC "$N" HIC "拿着手中的" + weapon->name() + HIC "，东戳西指，"
+  #                       "不过$n" HIC "防守的异常严密，$N" HIC "一时竟然无法找到破绽。\n" NOR;
+  #                 me->start_busy(3 + random(2));
+  #                 target->start_busy(1);
+  #         }
+  # 
+  #         message_combatd(msg, me, target);
+  #         return 1;
+  # }
 end
