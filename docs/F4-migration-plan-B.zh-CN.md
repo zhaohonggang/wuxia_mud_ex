@@ -61,15 +61,15 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `quemen_jian/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `quemen_jian/can.ex` ← `quemen-jian/can.c`  (miss=8)
+- [x] ✅ `quemen_jian/can.ex` ← `quemen-jian/can.c`  (miss=8→0，PASS；4× do_attack 折算)
 
 ### `qufannao_zhi/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `qufannao_zhi/lingkong.ex` ← `qufannao-zhi/lingkong.c`  (miss=3)
+- [x] ✅ `qufannao_zhi/lingkong.ex` ← `qufannao-zhi/lingkong.c`  (miss=3→0，PASS)
 
 ### `qujing_gunfa/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `qujing_gunfa/zhen.ex` ← `qujing-gunfa/zhen.c`  (miss=11)
+- [x] ✅ `qujing_gunfa/zhen.ex` ← `qujing-gunfa/zhen.c`  (miss=11→0，PASS；10× do_attack 折算)
 
 ### `ranmu_daofa/` （1 个，基线缺失 2 条）
 

@@ -142,6 +142,9 @@ quanzhen_jian/chan.ex
 quanzhen_jian/ding.ex
 quanzhen_jian/hua.ex
 quanzhen_jian/lian.ex
+quemen_jian/can.ex
+qufannao_zhi/lingkong.ex
+qujing_gunfa/zhen.ex
 ranmu_daofa/zhenyan.ex
 raozhi_roujian/chuan.ex
 riyue_bian/chan.ex

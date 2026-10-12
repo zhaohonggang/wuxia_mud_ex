@@ -48,12 +48,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `bagua_quan/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `bagua_quan/gua.ex` ← `bagua-quan/gua.c`  (miss=5)
+- [x] ✅ `bagua_quan/gua.ex` ← `bagua-quan/gua.c`  (miss=5→0，PASS)
 
 ### `bagua_zhang/` （2 个，基线缺失 18 条）
 
-- [ ] ❌ `bagua_zhang/ding.ex` ← `bagua-zhang/ding.c`  (miss=7)
-- [ ] ❌ `bagua_zhang/jia.ex` ← `bagua-zhang/jia.c`  (miss=11)
+- [x] ✅ `bagua_zhang/ding.ex` ← `bagua-zhang/ding.c`  (miss=7→0，PASS)
+- [x] ✅ `bagua_zhang/jia.ex` ← `bagua-zhang/jia.c`  (miss=11→0，PASS)
 
 ### `bahuang_gong/` （2 个，基线缺失 8 条）
 
