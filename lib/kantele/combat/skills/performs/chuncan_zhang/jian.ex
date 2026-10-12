@@ -1,169 +1,52 @@
 defmodule Kantele.Combat.Skills.Performs.ChuncanZhang.Jian do
   @moduledoc """
-  perform「作茧自缚」（source chuncan-zhang/jian.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  perform「作茧自缚」（source chuncan-zhang/jian.c，inherit F_CLEAN_UP + F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  自我增益：门槛（按 .c 顺序）已学此招 → 未在运行本招 → 春蚕掌法>=80 →
+  内功>=120 → 内力上限>=800 → 激发 strike 为春蚕掌法 → 准备春蚕掌法 →
+  真气>=200。扣 150 真气；`attack -skill/4`、`dodge +skill/3`，持续
+  `skill/2` 秒，到期由 `combat/buff-expire` 回收；战斗中忙乱 2。
+
+  差异（TODO(migrate)）：
+  - `.c` 的 `set_temp("ccz_jian")` 临时标记由引擎 buff（key `"ccz_jian"`）承担；
+  - `.c` 的 `remove_effect(me, skill/4, skill/3)` 与施加值互为镜像
+    （attack `-skill/4` ↔ `+skill/4`、dodge `+skill/3` ↔ `-skill/3`），
+    引擎 `Buff.applies` 精确抵消，行为一致；
+  - `.c` 的 `query_skill_prepared("strike") == "chuncan-zhang"` 由
+    `perform` 命令的 D4 预备校验按 `spec.id` 精确把关（本 spec 只校验「已预备」）。
+
+  实现方式：声明式 `Performs.Simple` spec（同 `jingang_buhuaiti/jingang.ex`）。
   """
 
-  @behaviour Kantele.Combat.Perform
+  @move_name "「作茧自缚」"
 
-  import Kalevala.Character.Conn
-
-  alias Kantele.Combat.Broadcast
-  alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
-  alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
-
-  @perform_id "chuncan-zhang/jian"
-
-  @impl true
-  @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
-  def run(conn) do
-    character = conn.character
-    combat = character.meta.combat
-    stats = character.meta.stats
-    rng = &:rand.uniform/1
-    lvl = Stats.skill(stats, "chuncan-zhang")
-    skill = Stats.skill(stats, "chuncan-zhang")
-
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
-          rng: rng
-        }
-      })
-
-      apply_effect(conn, character)
-    else
-      {:error, message} ->
-        conn
-        |> render(CommandView, "text", %{text: message})
-        |> assign(:prompt, false)
-    end
-  end
-
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
-    end
-  end
-
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
-      :ok
-    end
-  end
-
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "chuncan-zhang") < 80 -> {:error, "你的春蚕掌法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "strike") != "chuncan-zhang" ->
-        {:error, "你没有激发春蚕掌法，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "chuncan-zhang" ->
-        {:error, "你没有准备春蚕掌法，难以施展。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.max_neili < 800 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你已经运起了。\n"}
-    :ok
-
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝聚内力，掌劲吞吐，顿时双掌掀起一层气劲，护住周身经脉。", n1: character.name)
-
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
-    end
-  end
-
-  defp ref(character) do
-    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-  end
-
-  @impl true
-  def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 2)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
-  end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-150"}], "apply_adds": ["attack", "dodge"], "assign_refs": [{"skill", "chuncan-zhang"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "level_gates": [{"chuncan-zhang", "80"}, {"force", "120"}], "map_gates": [{"strike", "chuncan-zhang"}], "prepared_gates": [{"strike", "chuncan-zhang"}], "remote_damage": false, "resource_gates": [{"max_neili", "800"}, {"neili", "200"}], "temp_set": ["ccz_jian"]}
+  use Kantele.Combat.Performs.Simple,
+    spec: %Kantele.Combat.Performs.Spec{
+      id: "chuncan-zhang/jian",
+      kind: :perform,
+      gates: [
+        {:perform_known, "chuncan-zhang/jian", "你所使用的外功中没有这种功能。\n"},
+        {:no_buff, "ccz_jian", "你已经运起#{@move_name}了。\n"},
+        {:skill_min, "chuncan-zhang", 80, "你的春蚕掌法不够娴熟，难以施展#{@move_name}。\n"},
+        {:skill_min, "force", 120, "你的内功火候不够，难以施展#{@move_name}。\n"},
+        {:max_neili_min, 800, "你的内力修为不够，难以施展#{@move_name}。\n"},
+        {:mapped, "strike", "chuncan-zhang", "你没有激发春蚕掌法，难以施展#{@move_name}。\n"},
+        {:prepared, "strike", "你没有准备春蚕掌法，难以施展#{@move_name}。\n"},
+        {:neili_min, 200, "你的真气不够，难以施展#{@move_name}。\n"}
+      ],
+      costs: %{neili: 150},
+      effects: [
+        {:buff, "ccz_jian",
+         %{
+           attack: {:sub, 0, {:div, {:skill, "chuncan-zhang"}, 4}},
+           dodge: {:div, {:skill, "chuncan-zhang"}, 3}
+         }}
+      ],
+      busy: {:if_fighting, 2},
+      duration: {:div, {:skill, "chuncan-zhang"}, 2},
+      expire_message: "你的#{@move_name}运行完毕，将内力收回丹田。\n",
+      message: "$N凝聚内力，掌劲吞吐，顿时双掌掀起一层气劲，护住周身经脉。\n\n"
+    }
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
