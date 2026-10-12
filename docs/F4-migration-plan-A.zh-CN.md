@@ -209,7 +209,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `duanjia_sword/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `duanjia_sword/jue.ex` ← `duanjia-sword/jue.c`  (miss=3)
+- [x] ✅ `duanjia_sword/jue.ex` ← `duanjia-sword/jue.c`  (miss→0，PASS)
 
 ### `duanshi_xinfa/` （1 个，基线缺失 4 条）
 
