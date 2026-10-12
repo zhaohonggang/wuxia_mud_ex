@@ -367,13 +367,13 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `huntian_baojian/` （2 个，基线缺失 13 条）
 
-- [ ] ❌ `huntian_baojian/powerup.ex` ← `huntian-baojian/powerup.c`  (miss=9)
-- [ ] ❌ `huntian_baojian/sword.ex` ← `huntian-baojian/sword.c`  (miss=4)
+- [x] ✅ `huntian_baojian/powerup.ex` ← `huntian-baojian/powerup.c`  (miss→0，PASS)
+- [x] ✅ `huntian_baojian/sword.ex` ← `huntian-baojian/sword.c`  (miss→0，PASS)
 
 ### `huntian_qigong/` （2 个，基线缺失 8 条）
 
 - [x] ✅ `huntian_qigong/powerup.ex` ← `huntian-qigong/powerup.c`  (miss→0，PASS)
-- [ ] ❌ `huntian_qigong/shield.ex` ← `huntian-qigong/shield.c`  (miss=4)
+- [x] ✅ `huntian_qigong/shield.ex` ← `huntian-qigong/shield.c`  (miss→0，PASS)
 
 ### `hunyuan_yiqi/` （1 个，基线缺失 4 条）
 
