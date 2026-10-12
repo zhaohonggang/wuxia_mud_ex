@@ -111,13 +111,13 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `bluesea_force/` （9 个，基线缺失 14 条）
 
-- [ ] ❌ `bluesea_force/bo.ex` ← `bluesea-force/bo.c`  (miss=1)
+- [x] ✅ `bluesea_force/bo.ex` ← `bluesea-force/bo.c`  (miss→0，PASS)
 - [x] ✅ `bluesea_force/jue.ex` ← `bluesea-force/jue.c`  (miss=0)
 - [x] ✅ `bluesea_force/lu.ex` ← `bluesea-force/lu.c`  (miss=0)
-- [ ] ❌ `bluesea_force/mie.ex` ← `bluesea-force/mie.c`  (miss=2)
-- [ ] ❌ `bluesea_force/powerup.ex` ← `bluesea-force/powerup.c`  (miss=4)
-- [ ] ❌ `bluesea_force/shield.ex` ← `bluesea-force/shield.c`  (miss=4)
-- [ ] ❌ `bluesea_force/xuan.ex` ← `bluesea-force/xuan.c`  (miss=3)
+- [x] ✅ `bluesea_force/mie.ex` ← `bluesea-force/mie.c`  (miss→0，PASS)
+- [x] ✅ `bluesea_force/powerup.ex` ← `bluesea-force/powerup.c`  (miss→0，PASS)
+- [x] ✅ `bluesea_force/shield.ex` ← `bluesea-force/shield.c`  (miss→0，PASS)
+- [x] ✅ `bluesea_force/xuan.ex` ← `bluesea-force/xuan.c`  (miss→0，PASS)
 - [x] ✅ `bluesea_force/zhan.ex` ← `bluesea-force/zhan.c`  (miss=0)
 - [x] ✅ `bluesea_force/zhu.ex` ← `bluesea-force/zhu.c`  (miss=0)
 

@@ -28,6 +28,11 @@ bingxin_jue/powerup.ex
 biyan_dao/luo.ex
 biyun_xinfa/powerup.ex
 bizhen_qingzhang/pengpai.ex
+bluesea_force/bo.ex
+bluesea_force/mie.ex
+bluesea_force/powerup.ex
+bluesea_force/shield.ex
+bluesea_force/xuan.ex
 boyun_suowu/dian.ex
 boyun_suowu/meng.ex
 caiyan_gong/huan.ex

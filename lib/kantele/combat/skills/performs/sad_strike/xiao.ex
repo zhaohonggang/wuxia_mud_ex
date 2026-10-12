@@ -14,12 +14,12 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "sad-strike/xiao"
+  @move_name "「黯然销魂」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -28,11 +28,10 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
     lvl = Stats.skill(stats, "sad-strike")
-    n = 6
-    count = 0
-    i = 0
+    n = 6 + max(0, div(lvl - 400, 200))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,10 +39,13 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          n: n,
           rng: rng
         }
       })
@@ -79,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sad-strike") < 150 -> {:error, "你的黯然销魂掌火候不够，无法施展。\n"}
-      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为不够，无法施展。\n"}
+      Stats.skill(stats, "sad-strike") < 150 -> {:error, "你的黯然销魂掌火候不够，无法施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -89,8 +91,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "sad-strike" ->
-        {:error, "你现在没有准备使用黯然销魂掌，无法施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "sad-strike" ->
+        {:error, "你现在没有准备使用黯然销魂掌，无法施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -110,15 +113,18 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手使用。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    # 前置广播（neili 消耗 / start_busy / do_attack 次数交由 do_resolve）
+    Broadcast.publish(
+      conn,
+      "一声长吟：“黯然销魂者，唯别而已矣！”，顿时心如止水，黯然神伤，于不经意中随手使出了『黯然销魂』！",
+      n1: character.name
+    )
   end
 
   defp target(combat) do
@@ -142,14 +148,46 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    # LPC: n 次 do_attack；命中时 count = ap/10；neili -70*n；busy 2+random(4)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。"
+    ap = max(Map.get(data, :ap, 0), 1)
+    n = Map.get(data, :n, 6)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "force")
+
+    hit = div(ap, 2) + rng.(ap) > dp
+
+    count = if hit, do: div(ap, 10), else: 0
+
+    damage =
+      Enum.reduce(1..n, 0, fn _, damage_acc ->
+        if ap + count + rng.(ap) > dp do
+          per_hit = max(div(ap, 12), 1)
+          damage_acc + per_hit + rng.(per_hit)
+        else
+          damage_acc
+        end
+      end)
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, 70 * n, 2 + rng.(4))
+
+    msg =
+      if hit do
+        "见$P这一招变化莫测，奇幻无方，不由大吃一惊，慌乱中破绽迭出。"
+      else
+        "不敢小觑的来招，腾挪躲闪，小心招架。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

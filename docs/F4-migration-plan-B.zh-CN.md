@@ -105,7 +105,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `sad_strike/` （2 个，基线缺失 16 条）
 
 - [x] ✅ `sad_strike/tuo.ex` ← `sad-strike/tuo.c`  (miss=10→0，PASS)
-- [ ] ❌ `sad_strike/xiao.ex` ← `sad-strike/xiao.c`  (miss=6)
+- [x] ✅ `sad_strike/xiao.ex` ← `sad-strike/xiao.c`  (miss→0，PASS)
 
 ### `sanfen_jianshu/` （1 个，基线缺失 5 条）
 

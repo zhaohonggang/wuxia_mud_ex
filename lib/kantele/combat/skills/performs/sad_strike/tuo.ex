@@ -11,10 +11,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
@@ -41,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -65,6 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
       {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
+
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_marry(character),
