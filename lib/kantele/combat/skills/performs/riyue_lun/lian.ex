@@ -17,9 +17,9 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "riyue-lun/lian"
+  @move_name "「五轮连转」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,13 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "riyue-lun")
-    count = div(Stats.skill(stats, "longxiang-gong"), 4)
-    i = 0
+
+    count =
+      if Stats.skill(stats, "longxiang-gong") < 90 do
+        div(Stats.skill(stats, "force"), 8)
+      else
+        div(Stats.skill(stats, "longxiang-gong"), 4)
+      end
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,14 +43,18 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: Stats.skill(stats, "strike"),
+          count: count,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -76,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "riyue-lun") < 150 -> {:error, "你日月轮法火候不足，难以施展。\n"}
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "riyue-lun") < 150 -> {:error, "你日月轮法火候不足，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -86,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "你没有激发日月轮法，难以施展。\n"}
+      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "你没有激发日月轮法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -95,28 +104,40 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "hammer" -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
+    # 攻击方消耗/Busy + 前置广播（LPC 的 apply/attack、apply/damage 临时加成折算进 do_resolve 的 ap）
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 250}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，施展出日月轮法「五轮连转」神技，蓦地将手中某物飞掷
-而出，幻作数道光芒，相互盘旋着压向$n，招术煞为精奇！", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(5))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    weapon_name = Combat.weapon(combat).name
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N嗔目大喝，施展出日月轮法「五轮连转」神技，蓦地将手中" <>
+          weapon_name <> "飞掷\n而出，幻作数道光芒，相互盘旋着压向$n，招术煞为精奇！",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -144,17 +165,41 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Lian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    ap = max(Map.get(data, :ap, 0), 1)
+    count = Map.get(data, :count, 0)
+    ap = ap + count
+    stats = character.meta.stats
+    dodge = Stats.skill(stats, "dodge")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: for (i = 0; i < 5; i++) 日月金轮时按轮色发消息 + do_attack(me,target,weapon,30)
+    # 折算：ap 命中判定 + 逐轮彩色消息 + 累计伤害
+    messages = [
+      "突然间锡轮从日月金轮中分离开来，化作一道灰芒朝$n砸去。",
+      "突然间铁轮从日月金轮中分离开来，化作一道红芒朝$n砸去。",
+      "突然间铜轮从日月金轮中分离开来，化作一道黄芒朝$n砸去。",
+      "突然间银轮从日月金轮中分离开来，化作一道银芒朝$n砸去。",
+      "突然间金轮从日月金轮中分离开来，化作一道金芒朝$n砸去。"
+    ]
+
+    {conn, damage} =
+      Enum.reduce(0..4, {conn, 0}, fn i, {conn, damage_acc} ->
+        if ap + Engine.rand(rng, div(ap, 3)) > dodge do
+          result = Messages.interpolate(Enum.at(messages, i), bindings)
+
+          {Broadcast.publish(conn, result, bindings),
+           damage_acc + div(ap, 5) + Engine.rand(rng, div(ap, 5))}
+        else
+          {conn, damage_acc}
+        end
+      end)
+
     vitals = character.meta.vitals
+    vitals = Vitals.damage(vitals, :qi, damage)
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 250, 1)
-    msg = "突然间铁轮从日月金轮中分离开来，化作一道红芒朝$n砸去。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 
