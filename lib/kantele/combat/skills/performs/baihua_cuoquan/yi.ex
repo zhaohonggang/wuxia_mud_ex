@@ -1,8 +1,19 @@
 defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
   @moduledoc """
-  perform「百花错易」（source baihua-cuoquan/yi.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「百花错易」（source baihua-cuoquan/yi.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：未持兵器 → max_neili>=3000 → force>=280 →
+  百花错拳>=150 → 激发 unarmed 的准备招式 → neili>=500 → 目标存活。
+  攻击方发 `perform-incoming`；命中判定 `ap/2 + random(ap)` vs
+  `parry + dex*10`（`ap = unarmed + str*10`），命中时 `apply/attack` 临时
+  加成 `ap/12`；随后连出 6 击，每击 40% 概率令目标忙乱 1 回合。
+  攻击方扣 300 内力并忙乱 `1+random(6)`。
+
+  差异（TODO(migrate)）：
+  - LPC 的 6 次 `COMBAT_D->do_attack`（完整 AP/DP/招架/伤害管线）折算为
+    每击 `level/10` 基础伤害 + 命中判定（命中时 `apply/attack` 加成并入）；
+  - `living(target)` 门槛未实现，由目标侧 `combat/perform-incoming` 兜底；
+  - `me->query_temp("secondary_weapon")` 副兵器检查未实现。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -21,6 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
 
   @perform_id "baihua-cuoquan/yi"
 
+  @move_name "「百花错易」"
+
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -29,8 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "baihua-cuoquan")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "unarmed") + stats.str * 10
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,6 +53,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -62,22 +75,32 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
+      true -> :ok
     end
   end
 
   defp check_levels(character) do
     stats = character.meta.stats
+    vitals = character.meta.vitals
 
     cond do
-      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不足，无法使用。\n"}
-      Stats.skill(stats, "baihua-cuoquan") < 150 -> {:error, "你的百花错拳火候不够，无法使用。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力的修为不够，现在无法使用#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不足，无法使用#{@move_name}。\n"}
+      Stats.skill(stats, "baihua-cuoquan") < 150 -> {:error, "你的百花错拳火候不够，无法使用#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
 
     cond do
       Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "baihua-cuoquan" ->
-        {:error, "你现在没有准备使用百花错拳，无法使用。\n"}
+        {:error, "你现在没有准备使用百花错拳，无法使用#{@move_name}。\n"}
 
       true ->
         :ok
@@ -98,28 +121,20 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法运用。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法运用#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # 无条件攻击方效果（C：message_vision 后 me->add("neili", -300)）
+    # start_busy(1 + random(6)) 位于 6 连击之后，由目标侧 feedback 回执。
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
     conn = Broadcast.publish(conn, "$N大喝一声，双掌纷飞，擒拿手中夹着鹰爪功，左手查拳，右手绵掌。攻出去是
-八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，铺天盖地向$n狂涌而去。", n1: character.name)
+八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，铺天盖地向$n狂涌而去。\n\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -147,15 +162,60 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
+    ap = max(Map.get(data, :ap, 0), 1)
+    level = max(Map.get(data, :level, 0), 1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry") + stats.dex * 10
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: if (ap / 2 + random(ap) > dp) count = ap / 12; else count = 0
+    landed = div(ap, 2) + Engine.rand(rng, ap) > dp
+    count = if landed, do: div(ap, 12), else: 0
+
+    # LPC: for (i = 0; i < 6; i++) { if (random(5) < 2 && ! target->is_busy())
+    #         target->start_busy(1); COMBAT_D->do_attack(me, target, 0, 0); }
+    # 折算：每击 level/10 基础伤害 + 命中判定（apply/attack 加成并入）
+    per_hit = max(div(level, 10), 1)
+    hit_ap = div(ap, 2) + count
+
+    {damage, _hits} =
+      Enum.reduce(1..6, {0, 0}, fn _, {damage_acc, hit_acc} ->
+        if hit_ap + Engine.rand(rng, ap) > dp do
+          {damage_acc + per_hit + Engine.rand(rng, per_hit), hit_acc + 1}
+        else
+          {damage_acc, hit_acc}
+        end
+      end)
+
+    # LPC: 每击前 if (random(5) < 2 && ! target->is_busy()) target->start_busy(1)
+    combat =
+      if character.meta.combat.busy <= 0 and Engine.rand(rng, 5) < 2 do
+        Combat.start_busy(character.meta.combat, 1)
+      else
+        character.meta.combat
+      end
+
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage, 3))
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 1)
-    msg = "$n只见$N运拳如奔，快拳缤纷递出，顿感头晕目眩，不知该如何抵挡。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # 攻击方：6 连击后 start_busy(1 + random(6))（neili -300 已在 apply_effect 扣除）
+    Performs.feedback(attacker, 0, 1 + Engine.rand(rng, 6))
+
+    # 命中/失手各一句（与 .c 一致）
+    msg =
+      if landed,
+        do: "$n只见$N运拳如奔，快拳缤纷递出，顿感头晕目眩，不知该如何抵挡。",
+        else: "$n只见$N运拳如奔，快拳缤纷递出，连忙振作精神勉强抵挡。"
+
+    result = Messages.interpolate(msg, bindings)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
