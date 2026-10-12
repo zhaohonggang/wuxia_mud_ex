@@ -100,11 +100,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `ruying_suixingtui/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `ruying_suixingtui/ruying.ex` ← `ruying-suixingtui/ruying.c`  (miss=11)
+- [x] ✅ `ruying_suixingtui/ruying.ex` ← `ruying-suixingtui/ruying.c`  (miss=11→0，PASS)
 
 ### `sad_strike/` （2 个，基线缺失 16 条）
 
-- [ ] ❌ `sad_strike/tuo.ex` ← `sad-strike/tuo.c`  (miss=10)
+- [x] ✅ `sad_strike/tuo.ex` ← `sad-strike/tuo.c`  (miss=10→0，PASS)
 - [ ] ❌ `sad_strike/xiao.ex` ← `sad-strike/xiao.c`  (miss=6)
 
 ### `sanfen_jianshu/` （1 个，基线缺失 5 条）

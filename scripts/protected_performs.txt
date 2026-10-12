@@ -161,6 +161,8 @@ ruanhong_zhusuo/suo.ex
 ruanhong_zhusuo/teng.ex
 rulai_zhang/zong.ex
 ruyi_dao/ruyi.ex
+ruying_suixingtui/ruying.ex
+sad_strike/tuo.ex
 sanhua_zhang/san.ex
 sanwu_shou/wei.ex
 shangjia_dao/juan.ex
