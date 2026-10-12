@@ -156,8 +156,10 @@ hansha_sheying/zhen.ex
 hanwang_qingdao/ying.ex
 hanxing_bada/lastrisk.ex
 haotian_zhang/ju.ex
+heisha_zhang/cui.ex
 heixue_shenzhen/luo.ex
 henshan_jian/huan.ex
+henshan_quan/lan.ex
 hexing_bifa/dian.ex
 hongye_daofa/leiting.ex
 houquan/zhen.ex

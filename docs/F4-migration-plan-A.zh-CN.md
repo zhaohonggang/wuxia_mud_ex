@@ -314,11 +314,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `heisha_zhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `heisha_zhang/cui.ex` ← `heisha-zhang/cui.c`  (miss=6)
+- [x] ✅ `heisha_zhang/cui.ex` ← `heisha-zhang/cui.c`  (miss→0，PASS)
 
 ### `henshan_quan/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `henshan_quan/lan.ex` ← `henshan-quan/lan.c`  (miss=6)
+- [x] ✅ `henshan_quan/lan.ex` ← `henshan-quan/lan.c`  (miss→0，PASS)
 
 ### `honglian_dao/` （1 个，基线缺失 8 条）
 
