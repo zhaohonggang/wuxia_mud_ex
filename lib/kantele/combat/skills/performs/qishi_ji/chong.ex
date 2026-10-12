@@ -14,12 +14,9 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "qishi-ji/chong"
+  @move_name "「冲刺攻击」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,7 +26,6 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "qishi-ji")
-    i = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,14 +33,16 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -75,8 +73,8 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qishi-ji") < 100 -> {:error, "你圣骑士戟修为不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "qishi-ji") < 100 -> {:error, "你圣骑士戟修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -85,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "qishi-ji" -> {:error, "你没有激发圣骑士戟，难以施展。\n"}
+      Stats.mapped(stats, "club") != "qishi-ji" -> {:error, "你没有激发圣骑士戟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -94,26 +92,39 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "club" -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N狂哮一声，手中某物接连六刺，竟似幻作六道电光，尽数刺向$n！", n1: character.name)
+
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(6))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    weapon_name = Combat.weapon(combat).name
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N狂哮一声，手中" <> weapon_name <> "接连六刺，竟似幻作六道电光，尽数刺向$n！",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -123,7 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「冲刺攻击」只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -140,19 +151,8 @@ defmodule Kantele.Combat.Skills.Performs.QishiJi.Chong do
     end
   end
 
-  defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 100, 1)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+  defp do_resolve_incoming(conn, character, _attacker, _data) do
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

@@ -125,6 +125,7 @@ qiankun_jian/riyue.ex
 qianye_shou/qianye.ex
 qingliang_jian/ming.ex
 qishang_quan/shang.ex
+qishi_ji/chong.ex
 qishi_ji/juan.ex
 qiufeng_chenfa/chan.ex
 qiulin_shiye/wu.ex
