@@ -147,11 +147,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `chongtian_zhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `chongtian_zhang/zhan.ex` ← `chongtian-zhang/zhan.c`  (miss=6)
+- [x] ✅ `chongtian_zhang/zhan.ex` ← `chongtian-zhang/zhan.c`  (miss→0，PASS)
 
 ### `chongyang_shenzhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `chongyang_shenzhang/lian.ex` ← `chongyang-shenzhang/lian.c`  (miss=6)
+- [x] ✅ `chongyang_shenzhang/lian.ex` ← `chongyang-shenzhang/lian.c`  (miss→0，PASS)
 
 ### `chousui_zhang/` （2 个，基线缺失 22 条）
 
