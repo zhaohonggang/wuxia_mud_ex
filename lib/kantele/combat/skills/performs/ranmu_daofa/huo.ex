@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "ranmu-daofa")
-    ap = (Stats.skill(stats, "ranmu-daofa") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, ap))
+    ap = Stats.skill(stats, "ranmu-daofa") + Stats.skill(stats, "force")
+    damage = ap + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -47,7 +49,7 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -78,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "ranmu-daofa") < 180 -> {:error, "你的内力修为太弱，不能使用火麒蚀月。\n"}
-      Stats.skill(stats, "force") < 250 -> {:error, "你现在内力太弱，不能使用火麒蚀月。\n"}
+      Stats.skill(stats, "ranmu-daofa") < 180 -> {:error, "你的燃木刀法不够娴熟，不能使用火麒蚀月。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不够，不能使用火麒蚀月。\n"}
       true -> :ok
     end
   end
@@ -88,10 +90,14 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展「火麒蚀月」。\n"}
-      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你的燃木刀法不够娴熟，不能使用火麒蚀月。\n"}
-      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你的内功火候不够，不能使用火麒蚀月。\n"}
-      true -> :ok
+      not (Stats.mapped(stats, "force") in ["hunyuan-yiqi", "yijinjing", "luohan-fumogong"]) ->
+        {:error, "你现在没有激发少林内功为内功，难以施展「火麒蚀月」。\n"}
+
+      Stats.mapped(stats, "blade") != "ranmu-daofa" ->
+        {:error, "你没有激发燃木刀法，不能施展火麒蚀月。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -99,28 +105,36 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你没有激发燃木刀法，不能施展火麒蚀月。\n"}
-      vitals.neili < 600 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为太弱，不能使用火麒蚀月。\n"}
+      vitals.neili < 600 -> {:error, "你现在内力太弱，不能使用火麒蚀月。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
+      weapon == nil or weapon.skill_type != "blade" -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 400}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中某物一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 攻击方忙乱 2+random(2)；neili 扣除按命中分支在目标侧结算
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 2 + :rand.uniform(2))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    weapon_name = Combat.weapon(combat).name
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "只见$N手中" <> weapon_name <> "一抖，刀身登时腾起滔天烈焰，如浴火麒麟一般席卷$n全身！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -148,25 +162,37 @@ defmodule Kantele.Combat.Skills.Performs.RanmuDaofa.Huo do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "force")
+
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      combat = character.meta.combat
+      combat = Combat.start_busy(combat, 2)
+      character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+      Performs.feedback(attacker, 400, 0)
+    else
+      Performs.feedback(attacker, 200, 0)
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 1)
-    msg = if hit, do: "只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！", else: "$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。"
+    msg =
+      if hit do
+        "只闻一股焦臭从$n处传来，$n已被$P这精深奥妙的一刀击中，鲜血飞溅而出！\n"
+      else
+        "$p见$P来势汹汹，不敢抵挡，急忙斜跃避开。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    conn = Broadcast.publish(conn, result)
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
