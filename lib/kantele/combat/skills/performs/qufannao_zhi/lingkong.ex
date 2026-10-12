@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
   alias Kantele.Combat.Performs
 
   @perform_id "qufannao-zhi/lingkong"
+  @move_name "「凌空指穴」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,6 +30,16 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "qufannao-zhi")
+    # ap = force + finger + qufannao-zhi + neili/50
+    ap =
+      Stats.skill(stats, "force") +
+        Stats.skill(stats, "finger") +
+        Stats.skill(stats, "qufannao-zhi") +
+        div(character.meta.vitals.neili, 50)
+
+    # damage = qufannao-zhi / 2 + random(qufannao-zhi)
+    zhi = Stats.skill(stats, "qufannao-zhi")
+    damage = div(zhi, 2) + Engine.rand(rng, zhi)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +47,13 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -73,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用。\n"}
+      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用#{@move_name}。\n"}
       Stats.skill(stats, "hunyuan-yiqi") < 100 -> {:error, "你的心意气混元功不够高，不能用内力催动指力伤敌。\n"}
       true -> :ok
     end
@@ -83,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用。\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -92,17 +107,13 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用！\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用#{@move_name}！\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # 前置广播：本招无无条件消耗/Busy，命中/未中分支的消耗与忙乱由反馈回传攻击方
     conn = Broadcast.publish(conn, "$N默念佛经，只见手指微动，几道指气急射向$n，意欲以指力击晕$n。", n1: character.name)
 
     conn
@@ -123,26 +134,54 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.wound(vitals, :qi, div(damage, 6))
-    end
+    dp = Stats.skill(stats, "force") + Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = Engine.rand(rng, ap) + Engine.rand(rng, div(ap, 3)) > dp
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 0, 4)
-    msg = if hit, do: Enum.random(["$n受到$N的指力透击，闷哼一声，看上去很是疲惫。", "$n被$N以指力一震，脑中嗡嗡作响，意识开始模糊起来！", "$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！", "$n被$N的指力反击，只觉得胸中烦闷，只想好好休息休息。"]), else: "可是$p看破了$P的企图，并没有上当。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    if hit do
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.wound(vitals, :qi, div(damage, 6))
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      # 攻击方：start_busy(3) + add("neili", -damage/6)
+      Performs.feedback(attacker, div(damage, 6), 3)
+      # 目标：start_busy(random(3))
+      character = %{
+        character
+        | meta:
+            Map.put(
+              character.meta,
+              :combat,
+              Combat.start_busy(character.meta.combat, Engine.rand(rng, 3))
+            )
+      }
+
+      msg =
+        cond do
+          damage < 100 -> "$n受到$N的指力透击，闷哼一声，看上去很是疲惫。"
+          damage < 300 -> "$n被$N的指力反击，只觉得胸中烦闷，只想好好休息休息。"
+          damage < 500 -> "$n被$N以指力一震，脑中嗡嗡作响，意识开始模糊起来！"
+          true -> "$n被$N的指力一震，眼前一黑，向后便倒，眼看就要不醒人事了！"
+        end
+
+      result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+      conn
+      |> Broadcast.publish(result)
+      |> put_character(character)
+    else
+      # 攻击方：start_busy(4)
+      Performs.feedback(attacker, 0, 4)
+      result = Messages.interpolate("可是$p看破了$P的企图，并没有上当。", n1: attacker.name, n2: character.name)
+
+      conn
+      |> Broadcast.publish(result)
+      |> put_character(character)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
