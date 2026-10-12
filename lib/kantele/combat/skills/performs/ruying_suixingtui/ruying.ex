@@ -14,12 +14,12 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "ruying-suixingtui/ruying"
+  @move_name "「如影随形」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -37,9 +37,15 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          i: i,
+          ap: Stats.skill(stats, "unarmed"),
+          combat_exp: stats.combat_exp,
+          force_level: Stats.skill(stats, "force"),
           rng: rng
         }
       })
@@ -57,7 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你所使用的外功中没有这样的功能。\n"}
     end
   end
 
@@ -76,9 +82,17 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "ruying-suixingtui") < 160 -> {:error, "你的如影随形腿不够娴熟，不会使用「如影随形」。\n"}
-      Stats.skill(stats, "force") < 160 -> {:error, "你的内功等级不够，不能使用「如影随形」。\n"}
-      true -> :ok
+      Stats.skill(stats, "ruying-suixingtui") < 160 ->
+        {:error, "你的如影随形腿不够娴熟，不会使用#{@move_name}。\n"}
+
+      Stats.skill(stats, "force") < 160 ->
+        {:error, "你的内功等级不够，不能使用#{@move_name}。\n"}
+
+      Stats.query_dex(stats) < 30 ->
+        {:error, "你的身法不够强，不能使用#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -86,11 +100,13 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" ->
-        {:error, "你的内力修为太弱，不能使用「如影随形」！\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() !=
+            "ruying-suixingtui" ->
+        {:error, "你现在无法使用#{@move_name}进行攻击。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "ruying-suixingtui" ->
-        {:error, "你现在无法使用「如影随形」进行攻击。\n"}
+      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" ->
+        {:error, "你现在无法使用#{@move_name}进行攻击。\n"}
 
       true ->
         :ok
@@ -101,7 +117,8 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你现在内力太少，不能使用「如影随形」。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为太弱，不能使用#{@move_name}！\n"}
+      vitals.neili < 700 -> {:error, "你现在内力太少，不能使用#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -110,22 +127,20 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "使用「如影随形」时双手必须空着！\n"}
+      Combat.weapon(combat) != nil -> {:error, "使用#{@move_name}时双手必须空着！\n"}
       true -> :ok
     end
   end
 
-  defp check_other(character) do
+  defp check_other(_character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所使用的外功中没有这样的功能。\n"}
     :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # 无条件攻击方效果：neili -500 + 前置广播
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 500}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "你猛吸一口真气，体内劲力瞬时爆发！", n1: character.name)
@@ -148,18 +163,68 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    do_resolve_incoming(conn, character, attacker, data)
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    # LPC: 命中判定后 5 连击（未命中 4 连击）；攻击方 start_busy(2+random(2))
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 500, 1)
-    msg = "这时$N双臂展动，带起一股强烈的旋风，双腿霎时齐并，「如影随形」一击重炮轰在$n胸膛之上！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    ap = max(Map.get(data, :ap, 0), 1)
+    combat_exp = Map.get(data, :combat_exp, 0)
+    force_level = Map.get(data, :force_level, 0)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+
+    hit =
+      rng.(max(combat_exp, 1)) > div(stats.combat_exp, 2) and
+        rng.(max(force_level, 1)) > div(Stats.skill(stats, "force"), 2)
+
+    msgs =
+      if hit do
+        [
+          "$N忽然跃起，左脚一勾一弹，霎时之间踢出一招「如」字诀的穿心腿，直袭$n前胸！",
+          "紧接着$N左腿勾回，将腰身一扭，那右腿的一招「影」字诀便紧随而至，飞向$n！",
+          "只见$N右脚劲力未消，便凌空一转，左腿顺势扫出一招「随」字诀，如影而至！",
+          "半空中$N脚未后撤，已经运起「形」字诀，内劲直透脚尖，在$n胸腹处连点了数十下！",
+          "这时$N双臂展动，带起一股强烈的旋风，双腿霎时齐并，「如影随形」一击重炮轰在$n胸膛之上！"
+        ]
+      else
+        [
+          "$N忽然跃起，左脚一勾一弹，霎时之间踢出一招「如」字诀的穿心腿，直袭$n前胸！",
+          "紧接着$N左腿勾回，将腰身一扭，那右腿的一招「影」字诀便紧随而至，飞向$n！",
+          "只见$N右脚劲力未消，便凌空一转，左腿顺势扫出一招「随」字诀，如影而至！",
+          "半空中$N脚未后撤，已经运起「形」字诀，内劲直透脚尖，在$n胸腹处连点了数十下！"
+        ]
+      end
+
+    damage =
+      Enum.reduce(msgs, 0, fn _, damage_acc ->
+        if ap + rng.(ap) > dp do
+          per_hit = max(div(ap, 10), 1)
+          damage_acc + per_hit + rng.(per_hit)
+        else
+          damage_acc
+        end
+      end)
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    conn =
+      Enum.reduce(msgs, conn, fn msg, conn ->
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
+      end)
+
+    conn = Broadcast.publish(conn, "你连环飞腿使完，全身一转，稳稳落在地上。")
+
+    Performs.feedback(attacker, 500, 2 + rng.(2))
+
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
