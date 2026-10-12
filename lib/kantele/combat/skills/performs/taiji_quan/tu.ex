@@ -94,9 +94,17 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "你现在没有激发太极拳，难以施展。\n"}
-      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "你现在没有激发太极神功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "taiji-quan" ->
+        {:error, "你现在没有激发太极拳，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "taiji-shengong" ->
+        {:error, "你现在没有激发太极神功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taiji-quan" ->
+        {:error, "你没有准备使用太极拳，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

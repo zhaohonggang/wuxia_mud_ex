@@ -88,7 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "chilian-shenzhang" ->
+        {:error, "你没有准备赤练神掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

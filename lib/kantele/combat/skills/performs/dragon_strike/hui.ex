@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "dragon-strike" -> {:error, "你没有激发降龙十八掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "dragon-strike" ->
+        {:error, "你没有激发降龙十八掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "dragon-strike" ->
+        {:error, "你没有准备降龙十八掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -86,7 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.DragonStrike.Xiang do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "dragon-strike" ->
+        {:error, "你现在没有准备使用降龙十八掌，无法使用「龙翔九天」！\n"}
+
+      true ->
+        :ok
     end
   end
 

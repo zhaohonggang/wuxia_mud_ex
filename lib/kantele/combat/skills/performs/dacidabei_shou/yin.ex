@@ -85,7 +85,11 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "dacidabei-shou" ->
+        {:error, "你还没有准备大慈大悲手，无法施展「大手印」！\n"}
+
+      true ->
+        :ok
     end
   end
 

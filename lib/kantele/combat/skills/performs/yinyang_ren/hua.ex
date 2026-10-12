@@ -75,6 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Hua do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "yinyang-ren") < 180 -> {:error, "你阴阳刃法不够娴熟，难以施展。\n"}
       Stats.skill(stats, "force") < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end

@@ -85,9 +85,17 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为拳脚，难以施展。\n"}
-      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为内功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" ->
+        {:error, "你现在没有激发九阳神功为拳脚，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
+        {:error, "你现在没有激发九阳神功为内功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiuyang-shengong" ->
+        {:error, "你现在没有准备使用九阳神功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -81,6 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "shenghuo-ling") < 220 -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之。\n"}
       Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，不能使用圣火令法之。\n"}
       true -> :ok
     end

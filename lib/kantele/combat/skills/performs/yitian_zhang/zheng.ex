@@ -85,8 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "yitian-zhang" -> {:error, "你没有激发倚天屠龙掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "yitian-zhang" ->
+        {:error, "你没有激发倚天屠龙掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "yitian-zhang" ->
+        {:error, "你没有准备使用倚天屠龙掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

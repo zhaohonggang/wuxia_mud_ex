@@ -64,11 +64,22 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "dugu-jiujian") < 60 -> {:error, "你所使用的外功中没有这种功能。\n"}
+      Stats.skill(stats, "dugu-jiujian") < 60 -> {:error, "你的独孤九剑等级不够，难以演练。\n"}
+      true -> :ok
     end
   end
 

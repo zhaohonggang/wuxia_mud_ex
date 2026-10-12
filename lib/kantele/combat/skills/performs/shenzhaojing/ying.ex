@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "shenzhaojing" -> {:error, "你没有激发神照经神功为拳脚，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "shenzhaojing" ->
+        {:error, "你没有激发神照经神功为拳脚，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "shenzhaojing" ->
+        {:error, "你现在没有准备使用神照经神功，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

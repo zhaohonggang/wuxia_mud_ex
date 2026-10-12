@@ -85,7 +85,23 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "baihua-quan" ->
+        {:error, "你现在没有准备使用百花错拳，无法施展百花错乱！\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "baihua-quan" ->
+        {:error, "百花错乱须是空手才能施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "baihua-quan" ->
+        {:error, "你的真气不够，无法施展百花错乱。\n"}
+
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "baihua-quan" ->
+        {:error, "你的百花错拳还不够纯熟！\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "baihua-quan" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      true ->
+        :ok
     end
   end
 

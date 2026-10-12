@@ -68,10 +68,20 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "dashou-yin") < 100 -> {:error, "你的大手印修为不够，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -79,8 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "dashou-yin" -> {:error, "你没有激发大手印，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "dashou-yin" ->
+        {:error, "你没有激发大手印，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "dashou-yin" ->
+        {:error, "你没有准备大手印，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -122,7 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「金刚印」只能对战斗中的对手使用。\n"}
     end
   end
 

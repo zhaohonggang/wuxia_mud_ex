@@ -79,6 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliShou.Hun do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "pili-shou") < 140 -> {:error, "你的混元霹雳手等级不够, 不能施展！\n"}
       Stats.skill(stats, "force") < 160 -> {:error, "你内功修为不够，无法施展！\n"}
       true -> :ok
     end
@@ -88,7 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.PiliShou.Hun do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "pili-shou" ->
+        {:error, "你没有准备使用混元霹雳手，无法施展！\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -127,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliShou.Hun do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「天地混元」只能对战斗中的对手使用。\n"}
     end
   end
 

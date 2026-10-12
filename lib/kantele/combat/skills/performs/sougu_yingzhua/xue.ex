@@ -88,8 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "sougu-yingzhua" -> {:error, "你没有激发搜骨鹰爪功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "claw") != "sougu-yingzhua" ->
+        {:error, "你没有激发搜骨鹰爪功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "sougu-yingzhua" ->
+        {:error, "你没有准备搜骨鹰爪功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

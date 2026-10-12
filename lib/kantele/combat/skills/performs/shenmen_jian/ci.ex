@@ -66,10 +66,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenmenJian.Ci do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "shenmen-jian") < 120 -> {:error, "你的神门十三剑等级不够，难以施展。\n"}
+      true -> :ok
     end
   end
 

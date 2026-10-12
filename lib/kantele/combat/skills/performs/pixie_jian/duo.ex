@@ -87,8 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "pixie-jian" ->
+        {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "pixie-jian" ->
+        {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

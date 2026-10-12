@@ -31,9 +31,19 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tui do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "hamagong") < 240 -> {:error, "你的蛤蟆功修为不够精深，不能使用「推天式」！\n"}
+      true -> :ok
     end
   end
 

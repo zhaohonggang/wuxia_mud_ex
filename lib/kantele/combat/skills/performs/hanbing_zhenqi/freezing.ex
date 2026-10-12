@@ -31,10 +31,20 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "hanbing-zhenqi") < 140 -> {:error, "你的寒冰真气不够，难以施展。\n"}
+      true -> :ok
     end
   end
 

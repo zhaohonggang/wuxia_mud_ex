@@ -43,8 +43,9 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "poison") < 100 -> {:error, "在这里不能攻击他人。\n"}
-      Stats.skill(stats, "throwing") < 100 -> {:error, "你的真气不够。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "在这里不能攻击他人。\n"}
+      Stats.skill(stats, "poison") < 100 -> {:error, "你的真气不够。\n"}
+      Stats.skill(stats, "throwing") < 100 -> {:error, "你得先准备(hand)好毒药再说。\n"}
       true -> :ok
     end
   end
@@ -66,7 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你得先准备(hand)好毒药再说。\n"}
+      vitals.neili < 300 -> {:error, "你手中所拿的不是毒药，无法弹射。\n"}
       true -> :ok
     end
   end

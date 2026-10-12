@@ -654,6 +654,26 @@ class TranslatePerform:
                 a1 = g[0] if g else ''
                 a2 = g[1] if len(g) > 1 else ''
                 conds.append((m.start(), kind, a1 or '', a2 or ''))
+        # `local_level`: 先把 `VAR = me->query_skill("X", ...)` 记下来，再匹配
+        # `if (VAR < N)`。LPC 常见写法：
+        #     skill = me->query_skill("baihua-cuoquan", 1);
+        #     ...
+        #     if (skill < 120) return notify_fail("你的百花错拳等级不够，难以施展。\n");
+        # 平铺的 level 正则只认内联 `query_skill(...) < N`，漏掉这种"先赋局部量"的。
+        local_skill = {}
+        for m in re.finditer(
+                r'\b([A-Za-z_]\w*)\s*=\s*(?:\(int\)\s*)?me\s*->\s*'
+                r'query_skill\("([a-z0-9-]+)"[^)]*\)', text):
+            local_skill.setdefault(m.group(1), m.group(2))
+        if local_skill:
+            # 收集 `if (VAR < N)`（含 `!VAR || VAR < N` 变体）
+            for m in re.finditer(
+                    r'\bif\s*\(\s*(?:[^()]*\|\|\s*)?([A-Za-z_]\w*)\s*<\s*(\d+)\s*\)',
+                    text):
+                var, n = m.group(1), m.group(2)
+                skill = local_skill.get(var)
+                if skill:
+                    conds.append((m.start(), 'level', skill, n))
         fails = self.iter_notify_fails(text)
         conds.sort(key=lambda x: x[0])
         fails.sort(key=lambda x: x[0])
@@ -684,8 +704,16 @@ class TranslatePerform:
     #   - 条件可跨行、括号内外有空白
     #   - 可写 `return notify_fail(...)` 或 `return(notify_fail(...))`
     #   - notify_fail 参数可由宏/拼接构成（交给 _expand_macros + LPC_STR_RE）
+    #
+    # 两种条件形态（后者为单条件变体，全集 28+ 处）：
+    #   A. `if (! target || ! me->is_fighting(target))`
+    #   B. `if (! me->is_fighting(target))`
+    # B 形态必须**紧跟** `return notify_fail(...)`：裸 `! me->is_fighting(target)`
+    # 大量出现在循环 `break;` 里，不可一概视为门槛。
     NOT_FIGHTING_TARGET_RE = re.compile(
-        r'!\s*target\b[\s\S]{0,40}?!\s*me\s*->\s*is_fighting\s*\(\s*target\s*\)\s*\)\s*'
+        r'(?:if\s*\(\s*)?'
+        r'(?:!\s*target\b[\s\S]{0,40}?)?'
+        r'!\s*me\s*->\s*is_fighting\s*\(\s*target\s*\)\s*\)\s*'
         r'return\s*\(?\s*notify_fail\s*\(([^;]*)\)', re.S)
 
     def extract_not_fighting_target_msg(self, text: str) -> str:
@@ -1674,12 +1702,12 @@ class TranslatePerform:
         # have a prepared perform whose skill matches.  Elixir side keeps the
         # prepared perform id ("bagua-zhang/xian"); compare its skill prefix.
         #
-        # NOTE: emitted only when KUNGFU_EMIT_PREPARED_GATES=1.  The prepared
-        # gate is a genuine LPC check, but many test fixtures populate `mapped`
-        # without `prepared`, so emitting it unconditionally changes runtime
-        # behaviour for performs that used to cast.  Flip the flag on after
-        # the fixtures/registrations are updated alongside.
-        if os.getenv('KUNGFU_EMIT_PREPARED_GATES', '0') not in ('0', 'false', 'False', 'no'):
+        # Default ON: the prepared gate is a genuine LPC check (186 source
+        # files), and the emission path is live-wired — `check_mapped/1` is
+        # called from `check_gates/1`.  Setting KUNGFU_EMIT_PREPARED_GATES=0
+        # suppresses it (useful for isolating regressions); the fixtures were
+        # updated alongside (see zz_promoter_env_test bagua-biao/xian).
+        if os.getenv('KUNGFU_EMIT_PREPARED_GATES', '1') not in ('0', 'false', 'False', 'no'):
             for i, (u, s) in enumerate(prep_pairs):
                 msg = prepared_msgs[i] if i < len(prepared_msgs) else f'TODO(migrate) 未准备 {s}。'
                 clauses.append(

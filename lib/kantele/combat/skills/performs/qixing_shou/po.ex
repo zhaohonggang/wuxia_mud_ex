@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "qixing-shou" -> {:error, "你没有激发七星分天手，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "qixing-shou" ->
+        {:error, "你没有激发七星分天手，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "qixing-shou" ->
+        {:error, "你没有准备七星分天手，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

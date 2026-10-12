@@ -88,8 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.YuezhaoGong.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "yuezhao-gong" -> {:error, "你没有激发越爪功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "claw") != "yuezhao-gong" ->
+        {:error, "你没有激发越爪功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "yuezhao-gong" ->
+        {:error, "你没有准备越爪功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

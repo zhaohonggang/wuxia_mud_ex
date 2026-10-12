@@ -89,7 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "chousui-zhang" ->
+        {:error, "你还没有准备抽髓掌，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

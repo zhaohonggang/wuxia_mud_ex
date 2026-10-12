@@ -88,8 +88,17 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "你没有准备使用葵花魔功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "kuihua-mogong" ->
+        {:error, "你没有准备使用葵花魔功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "kuihua-mogong" ->
+        {:error, "你并没有准备使用葵花魔功，如何施展？\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "kuihua-mogong" ->
+        {:error, "你没有准备使用葵花魔功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

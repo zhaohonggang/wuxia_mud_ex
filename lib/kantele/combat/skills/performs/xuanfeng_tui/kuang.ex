@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "xuanfeng-tui" -> {:error, "你没有激发旋风扫叶腿，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "xuanfeng-tui" ->
+        {:error, "你没有激发旋风扫叶腿，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuanfeng-tui" ->
+        {:error, "你没有准备旋风扫叶腿，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

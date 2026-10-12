@@ -76,6 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
 
     cond do
       Stats.skill(stats, "force") < 340 -> {:error, "你内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "taixuan-gong") < 340 -> {:error, "你太玄功火候不够，难以施展。\n"}
       Stats.skill(stats, "sword") < 340 -> {:error, "你的基本刀法火候不足，难以施展。\n"}
       Stats.skill(stats, "blade") < 340 -> {:error, "你现在真气不够，难以施展。\n"}
       Stats.skill(stats, "martial-cognize") < 260 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}

@@ -79,6 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "liumai-shenjian") < 220 -> {:error, "你的六脉神剑修为有限，无法使用！\n"}
       Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展！\n"}
       true -> :ok
     end
@@ -88,7 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
+        {:error, "你没有准备使用六脉神剑，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

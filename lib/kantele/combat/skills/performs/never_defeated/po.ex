@@ -67,9 +67,19 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "never-defeated") < 100 -> {:error, "你的不败神功等级不够，无法施展破字诀！\n"}
+      true -> :ok
     end
   end
 
@@ -106,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "破字诀只能对战斗中的对手使用。\n"}
     end
   end
 

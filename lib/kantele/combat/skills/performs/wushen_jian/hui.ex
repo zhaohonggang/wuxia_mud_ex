@@ -75,6 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "wushen-jian") < 180 -> {:error, "你衡山五神剑不够娴熟，难以施展。\n"}
       Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展。\n"}
       true -> :ok
     end

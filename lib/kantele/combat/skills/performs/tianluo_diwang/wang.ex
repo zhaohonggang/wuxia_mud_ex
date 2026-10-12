@@ -84,7 +84,11 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tianluo-diwang" ->
+        {:error, "你没有准备天罗地网掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

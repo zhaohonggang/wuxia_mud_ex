@@ -83,7 +83,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "huashan-zhang" ->
+        {:error, "你没有准备使用华山掌法，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

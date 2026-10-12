@@ -86,7 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Yi do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "baihua-cuoquan" ->
+        {:error, "你现在没有准备使用百花错拳，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

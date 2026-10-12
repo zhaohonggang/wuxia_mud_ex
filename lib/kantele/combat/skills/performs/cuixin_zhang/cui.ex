@@ -80,6 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "cuixin-zhang") < 120 -> {:error, "你的催心掌还不够纯熟，无法施展\n"}
       Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候太低，无法使出。\n"}
       true -> :ok
     end

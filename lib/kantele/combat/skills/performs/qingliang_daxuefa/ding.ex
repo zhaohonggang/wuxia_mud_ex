@@ -80,6 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
 
     cond do
       Stats.skill(stats, "force") < 150 -> {:error, "你现在的真气不足，难以施展。\n"}
+      Stats.skill(stats, "qingliang-daxuefa") < 100 -> {:error, "你没有激发清凉打穴法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "qingliang-daxuefa" -> {:error, "你没有激发清凉打穴法，难以施展。\n"}
+      Stats.mapped(stats, "dagger") != "qingliang-daxuefa" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.QingliangDaxuefa.Ding do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「透骨钉」只能对战斗中的对手使用。\n"}
     end
   end
 

@@ -64,9 +64,19 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "dugu-jiujian") < 150 -> {:error, "你的独孤九剑等级不够，无法施展。\n"}
+      true -> :ok
     end
   end
 
@@ -103,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「总破式」只能对战斗中的对手使用。\n"}
     end
   end
 

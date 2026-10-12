@@ -75,6 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "chousui-zhang") < 140 -> {:error, "你的抽髓掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "poison") < 200 -> {:error, "你对毒技的了解不够，难以施展。\n"}
       Stats.skill(stats, "throwing") < 180 -> {:error, "你暗器手法火候不够，难以施展。\n"}
       true -> :ok
     end
@@ -84,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "chousui-zhang" -> {:error, "你没有激发抽髓掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "chousui-zhang" ->
+        {:error, "你没有激发抽髓掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "chousui-zhang" ->
+        {:error, "你没有准备抽髓掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

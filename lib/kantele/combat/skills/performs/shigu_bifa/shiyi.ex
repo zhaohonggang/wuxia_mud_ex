@@ -77,6 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
 
     cond do
       Stats.skill(stats, "force") < 150 -> {:error, "你的石鼓打穴笔法修为有限，难以施展。\n"}
+      Stats.skill(stats, "shigu-bifa") < 120 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "shigu-bifa" -> {:error, "你没有激发石鼓打穴笔法，难以施展。\n"}
+      Stats.mapped(stats, "dagger") != "shigu-bifa" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -94,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你没有激发石鼓打穴笔法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -123,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「诗意纵横」只能对战斗中的对手使用。\n"}
     end
   end
 

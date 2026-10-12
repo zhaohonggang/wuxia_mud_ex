@@ -63,11 +63,21 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "qianzhu-wandushou") < 100 -> {:error, "你的千蛛万毒手火候太浅，不能用来吸取毒素！\n"}
+      true -> :ok
     end
   end
 

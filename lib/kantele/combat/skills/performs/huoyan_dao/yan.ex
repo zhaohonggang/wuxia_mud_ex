@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "huoyan-dao" -> {:error, "你没有准备火焰刀，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "huoyan-dao" ->
+        {:error, "你没有准备火焰刀，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "huoyan-dao" ->
+        {:error, "施展时火焰刀不宜和密宗大手印互背！\n"}
+
+      true ->
+        :ok
     end
   end
 

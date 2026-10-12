@@ -88,7 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "sad-strike" ->
+        {:error, "你没有准备黯然销魂掌，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

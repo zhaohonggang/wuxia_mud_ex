@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "youshen-zhang" -> {:error, "你没有激发游身八卦掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "youshen-zhang" ->
+        {:error, "你没有激发游身八卦掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "youshen-zhang" ->
+        {:error, "你没有准备游身八卦掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

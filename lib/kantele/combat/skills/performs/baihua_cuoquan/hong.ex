@@ -91,9 +91,17 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "baihua-cuoquan" -> {:error, "你没有激发百花错拳，难以施展。\n"}
-      Stats.mapped(stats, "force") != "zhanshen-xinjing" -> {:error, "你没有激发战神心经，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "baihua-cuoquan" ->
+        {:error, "你没有激发百花错拳，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "zhanshen-xinjing" ->
+        {:error, "你没有激发战神心经，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "baihua-cuoquan" ->
+        {:error, "你没有准备百花错拳，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

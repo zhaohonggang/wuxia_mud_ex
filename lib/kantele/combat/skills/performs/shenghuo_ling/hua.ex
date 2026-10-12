@@ -67,10 +67,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_state(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "shenghuo-ling") < 140 -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之。\n"}
+      true -> :ok
     end
   end
 

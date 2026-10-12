@@ -74,6 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "tianchan-zhang") < 120 -> {:error, "你天蟾掌法不够纯熟，难以施展。\n"}
       Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太低，，难以施展。\n"}
       true -> :ok
     end
@@ -83,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tianchan-zhang" -> {:error, "你没有激发天蟾掌法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "tianchan-zhang" ->
+        {:error, "你没有激发天蟾掌法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tianchan-zhang" ->
+        {:error, "你没有准备使用天蟾掌法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

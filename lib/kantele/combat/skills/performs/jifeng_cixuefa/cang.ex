@@ -78,6 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
     cond do
       Stats.skill(stats, "force") < 120 -> {:error, "你的轻功修为不够，难以施展。\n"}
       Stats.skill(stats, "dodge") < 120 -> {:error, "你的疾风刺穴法修为有限，难以施展。\n"}
+      Stats.skill(stats, "jifeng-cixuefa") < 100 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -86,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "jifeng-cixuefa" -> {:error, "你没有激发疾风刺穴法，难以施展。\n"}
+      Stats.mapped(stats, "dagger") != "jifeng-cixuefa" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -95,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你没有激发疾风刺穴法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -124,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「天蝎藏针」只能对战斗中的对手使用。\n"}
     end
   end
 

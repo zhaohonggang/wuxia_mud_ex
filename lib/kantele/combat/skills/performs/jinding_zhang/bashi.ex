@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.JindingZhang.Bashi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "jinding-zhang" -> {:error, "你没有激发金顶绵掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "jinding-zhang" ->
+        {:error, "你没有激发金顶绵掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "jinding-zhang" ->
+        {:error, "你现在没有准备使用金顶绵掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

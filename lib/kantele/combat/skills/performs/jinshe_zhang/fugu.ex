@@ -83,7 +83,11 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "jinshe-zhang" ->
+        {:error, "你现在没有激发金蛇掌法，无法使用附骨缠身。\n"}
+
+      true ->
+        :ok
     end
   end
 

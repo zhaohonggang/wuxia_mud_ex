@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发心意气内功为内功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
+        {:error, "你现在没有激发心意气内功为内功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "rulai-zhang" ->
+        {:error, "你没有准备千手如来掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

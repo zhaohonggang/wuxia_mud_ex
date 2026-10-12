@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.HenshanQuan.Lan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "henshan-quan" -> {:error, "你没有激发衡山拳法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "henshan-quan" ->
+        {:error, "你没有激发衡山拳法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "henshan-quan" ->
+        {:error, "你没有准备衡山拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -67,10 +67,20 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "pixie-jian") < 120 -> {:error, "你现在的真气不足，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -78,8 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "pixie-jian" ->
+        {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "pixie-jian" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -87,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -115,7 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「群邪辟易」只能对战斗中的对手使用。\n"}
     end
   end
 

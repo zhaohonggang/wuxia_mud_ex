@@ -89,8 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "yiyang-zhi" -> {:error, "你没有激发一阳指诀，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "finger") != "yiyang-zhi" ->
+        {:error, "你没有激发一阳指诀，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "yiyang-zhi" ->
+        {:error, "你没有准备一阳指诀，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -85,8 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "wuluo-zhang" -> {:error, "你没有激发五罗轻烟掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "wuluo-zhang" ->
+        {:error, "你没有激发五罗轻烟掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "wuluo-zhang" ->
+        {:error, "你没有准备五罗轻烟掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

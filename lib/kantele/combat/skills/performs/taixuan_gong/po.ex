@@ -85,8 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "你现在没有激发太玄功为内功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "taixuan-gong" ->
+        {:error, "你现在没有激发太玄功为内功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taixuan-gong" ->
+        {:error, "你现在没有准备使用太玄功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

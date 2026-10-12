@@ -67,10 +67,20 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "sanyin-shou") < 140 -> {:error, "你的三阴手等级不够，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -78,8 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.SanyinShou.Sun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "sanyin-shou" -> {:error, "你没有激发三阴手，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "sanyin-shou" ->
+        {:error, "你没有激发三阴手，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "sanyin-shou" ->
+        {:error, "你现在没有准备使用三阴手，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

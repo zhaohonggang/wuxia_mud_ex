@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jiasha-fumogong" -> {:error, "你现在没有激发袈裟伏魔功为拳脚，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "jiasha-fumogong" ->
+        {:error, "你现在没有激发袈裟伏魔功为拳脚，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiasha-fumogong" ->
+        {:error, "你现在没有准备使用袈裟伏魔功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

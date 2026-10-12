@@ -89,7 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "wudu-shenzhang" ->
+        {:error, "你现在没有准备五毒神掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

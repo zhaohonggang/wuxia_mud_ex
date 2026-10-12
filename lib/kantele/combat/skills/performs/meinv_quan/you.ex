@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "meinv-quan" -> {:error, "你没有激发美女拳法，不能施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "meinv-quan" ->
+        {:error, "你没有激发美女拳法，不能施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "meinv-quan" ->
+        {:error, "你没有准备美女拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

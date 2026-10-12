@@ -65,10 +65,20 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "canhe-zhi") < 120 -> {:error, "你的参合指修为有限，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -76,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "canhe-zhi" -> {:error, "你没有激发参合指, 难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "finger") != "canhe-zhi" ->
+        {:error, "你没有激发参合指, 难以施展。\n"}
+
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "canhe-zhi" ->
+        {:error, "你现在没有准备使用参合指, 难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -115,7 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「七星指穴」只能对战斗中的对手使用。\n"}
     end
   end
 

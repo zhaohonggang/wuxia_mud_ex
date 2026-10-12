@@ -88,7 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "jiuyin-shengong" ->
+        {:error, "你没有准备使用九阴神功，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiuyin-shengong" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -68,10 +68,20 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "yujiamu-quan") < 100 -> {:error, "你金刚瑜迦母拳修为不够，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -79,8 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "yujiamu-quan" -> {:error, "你没有激发金刚瑜迦母拳，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "yujiamu-quan" ->
+        {:error, "你没有激发金刚瑜迦母拳，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "yujiamu-quan" ->
+        {:error, "你没有准备金刚瑜迦母拳，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -122,7 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「修罗降世」只能对战斗中的对手使用。\n"}
     end
   end
 

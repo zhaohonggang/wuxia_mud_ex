@@ -78,6 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
 
     cond do
       Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展。\n"}
+      Stats.skill(stats, "jinshe-zhui") < 100 -> {:error, "你的金蛇锥法修为有限，难以施展。\n"}
       true -> :ok
     end
   end

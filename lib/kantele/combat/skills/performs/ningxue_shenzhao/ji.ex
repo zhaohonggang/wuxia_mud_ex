@@ -77,6 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.NingxueShenzhao.Ji do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "ningxue-shenzhao") < 250 -> {:error, "你的凝血神爪修为有限，无法使用「疾电」！\n"}
       Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，难以施展「疾电」！\n"}
       true -> :ok
     end
@@ -86,7 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.NingxueShenzhao.Ji do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "ningxue-shenzhao" ->
+        {:error, "你没有准备使用凝血神爪，无法施展「疾电」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -131,7 +136,7 @@ defmodule Kantele.Combat.Skills.Performs.NingxueShenzhao.Ji do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「疾电」只能对战斗中的对手使用。\n"}
     end
   end
 

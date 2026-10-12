@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "baisheng-quan" -> {:error, "你没有激发百胜神拳，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "baisheng-quan" ->
+        {:error, "你没有激发百胜神拳，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "baisheng-quan" ->
+        {:error, "你没有准备百胜神拳，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

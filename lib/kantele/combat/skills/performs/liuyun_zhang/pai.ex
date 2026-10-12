@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.LiuyunZhang.Pai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "liuyun-zhang" -> {:error, "你没有激发流云掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "liuyun-zhang" ->
+        {:error, "你没有激发流云掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "liuyun-zhang" ->
+        {:error, "你没有准备流云掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

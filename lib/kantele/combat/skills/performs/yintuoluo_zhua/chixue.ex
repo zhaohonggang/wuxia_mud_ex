@@ -85,11 +85,23 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
-      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "只能空手施展。\n"}
-      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你因陀罗爪不够娴熟，难以施展。\n"}
-      Stats.mapped(stats, "claw") != "yintuoluo-zhua" -> {:error, "你的内功修为不够，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
+        {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "yijinjing" ->
+        {:error, "只能空手施展。\n"}
+
+      Stats.mapped(stats, "force") != "luohan-fumogong" ->
+        {:error, "你因陀罗爪不够娴熟，难以施展。\n"}
+
+      Stats.mapped(stats, "claw") != "yintuoluo-zhua" ->
+        {:error, "你的内功修为不够，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "yintuoluo-zhua" ->
+        {:error, "你现在的真气不够，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

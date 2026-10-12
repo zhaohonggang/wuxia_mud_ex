@@ -66,10 +66,20 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "jiuyin-shengong") < 250 -> {:error, "你的九阴神功等级不够，无法施展！\n"}
+      true -> :ok
     end
   end
 
@@ -77,7 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "jiuyin-shengong" ->
+        {:error, "你没有准备使用九阴神功，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiuyin-shengong" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -114,7 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「九阴神指」只能对战斗中的对手使用。\n"}
     end
   end
 

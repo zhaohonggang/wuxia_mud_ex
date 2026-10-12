@@ -88,7 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "tougu-zhen" ->
+        {:error, "你没有准备使用透骨针，无法使用！\n"}
+
+      true ->
+        :ok
     end
   end
 

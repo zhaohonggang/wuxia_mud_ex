@@ -83,7 +83,11 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "jiuyin-baiguzhao" ->
+        {:error, "你没有准备九阴白骨爪，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

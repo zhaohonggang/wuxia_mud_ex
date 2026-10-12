@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.QiantianZhi.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "qiantian-zhi" -> {:error, "你没有激发乾天指法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "finger") != "qiantian-zhi" ->
+        {:error, "你没有激发乾天指法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "qiantian-zhi" ->
+        {:error, "你没有准备乾天指法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

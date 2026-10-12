@@ -63,10 +63,20 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Kun do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "jinshe-jian") < 140 -> {:error, "你金蛇剑法不够娴熟，难以施展。\n"}
+      true -> :ok
     end
   end
 

@@ -83,8 +83,14 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jueming-tui" -> {:error, "你没有激发绝命腿法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "jueming-tui" ->
+        {:error, "你没有激发绝命腿法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jueming-tui" ->
+        {:error, "你没有准备绝命腿法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

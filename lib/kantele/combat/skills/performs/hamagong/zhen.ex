@@ -80,6 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "hamagong") < 240 -> {:error, "你的蛤蟆功修为不够精深，不能使用！\n"}
       Stats.skill(stats, "strike") < 200 -> {:error, "你的掌法不够娴熟，无法施展！\n"}
       true -> :ok
     end
@@ -89,8 +90,14 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "hamagong" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "hamagong" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "hamagong" ->
+        {:error, "你必须先将蛤蟆功运用于掌法之中，才能运用。\n"}
+
+      true ->
+        :ok
     end
   end
 

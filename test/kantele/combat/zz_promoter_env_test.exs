@@ -100,6 +100,7 @@ defmodule Kantele.Combat.PromoterEnvTest do
         %{
           skills: %{"bagua-biao" => 130, "bagua-zhang" => 130, "force" => 160},
           mapped: %{"strike" => "bagua-zhang", "throwing" => "bagua-biao"},
+          prepared: %{"strike" => "bagua-zhang/xian", "throwing" => "bagua-biao/xian"},
           performs: MapSet.new(["bagua-biao/xian"])
         },
         vitals,

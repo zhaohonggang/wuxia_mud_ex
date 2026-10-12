@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.QingyunShou.Zhuo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "qingyun-shou" -> {:error, "你没有激发青云手，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "qingyun-shou" ->
+        {:error, "你没有激发青云手，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "qingyun-shou" ->
+        {:error, "你现在没有准备使用青云手，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

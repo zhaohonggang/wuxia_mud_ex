@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" -> {:error, "你的内力修为太弱，不能使用「如影随形」！\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "ruying-suixingtui" ->
+        {:error, "你的内力修为太弱，不能使用「如影随形」！\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "ruying-suixingtui" ->
+        {:error, "你现在无法使用「如影随形」进行攻击。\n"}
+
+      true ->
+        :ok
     end
   end
 

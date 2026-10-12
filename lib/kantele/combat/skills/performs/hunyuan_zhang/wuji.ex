@@ -79,6 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "hunyuan-zhang") < 120 -> {:error, "你的混元掌等级不够, 不能施展！\n"}
       Stats.skill(stats, "force") < 120 -> {:error, "你内功修为不够，无法施展！\n"}
       true -> :ok
     end
@@ -88,7 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "hunyuan-zhang" ->
+        {:error, "你没有准备使用混元掌，无法施展！\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -127,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「混元无极」只能对战斗中的对手使用。\n"}
     end
   end
 

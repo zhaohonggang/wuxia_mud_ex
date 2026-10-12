@@ -85,8 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.JinyuQuan.Man do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "jinyu-quan" -> {:error, "你没有激发金玉拳法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "jinyu-quan" ->
+        {:error, "你没有激发金玉拳法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "jinyu-quan" ->
+        {:error, "你没有准备金玉拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

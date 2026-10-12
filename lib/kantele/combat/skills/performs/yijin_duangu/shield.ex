@@ -31,11 +31,21 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "yinlong-bian") < 200 -> {:error, "你的小九阴神功修为不够。\n"}
+      true -> :ok
     end
   end
 
@@ -51,6 +61,12 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
 
       Stats.mapped(stats, "whip") != "yinlong-bian" ->
         {:error, "TODO(migrate) 未激发 yinlong-bian。\n"}
+
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "jiuyin-baiguzhao" ->
+        {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "cuixin-zhang" ->
+        {:error, "你已经在运功中了。\n"}
 
       true ->
         :ok

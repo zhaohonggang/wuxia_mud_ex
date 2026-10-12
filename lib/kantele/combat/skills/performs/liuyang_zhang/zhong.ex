@@ -88,9 +88,17 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "liuyang-zhang" -> {:error, "你没有激发掌法天山六阳掌，难以施展。\n"}
-      Stats.mapped(stats, "throwing") != "liuyang-zhang" -> {:error, "你没有激发暗器天山六阳掌，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "liuyang-zhang" ->
+        {:error, "你没有激发掌法天山六阳掌，难以施展。\n"}
+
+      Stats.mapped(stats, "throwing") != "liuyang-zhang" ->
+        {:error, "你没有激发暗器天山六阳掌，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "liuyang-zhang" ->
+        {:error, "你现在没有准备天山六阳掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「神龙再现」只能对战斗中的对手使用。\n"}
     end
   end
 

@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.PokongQuan.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "pokong-quan" -> {:error, "你没有激发破空拳法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "pokong-quan" ->
+        {:error, "你没有激发破空拳法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "pokong-quan" ->
+        {:error, "你没有准备破空拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

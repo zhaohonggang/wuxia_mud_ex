@@ -80,6 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
 
     cond do
       Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展。\n"}
+      Stats.skill(stats, "shigu-bifa") < 100 -> {:error, "你的石鼓打穴笔法修为有限，难以施展。\n"}
       true -> :ok
     end
   end
@@ -131,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「神笔封穴」只能对战斗中的对手使用。\n"}
     end
   end
 

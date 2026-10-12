@@ -63,10 +63,20 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "xuangong-quan") < 120 -> {:error, "你的无极玄功拳等级不够，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -74,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "xuangong-quan" -> {:error, "你没有激发无极玄功拳，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "xuangong-quan" ->
+        {:error, "你没有激发无极玄功拳，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuangong-quan" ->
+        {:error, "你现在没有准备使用无极玄功拳，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

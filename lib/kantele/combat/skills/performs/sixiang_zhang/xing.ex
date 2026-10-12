@@ -67,10 +67,20 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
+    with :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "sixiang-zhang") < 60 -> {:error, "你的四象掌法等级不够，难以施展。\n"}
+      true -> :ok
     end
   end
 
@@ -78,8 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "sixiang-zhang" -> {:error, "你没有激发四象掌法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "sixiang-zhang" ->
+        {:error, "你没有激发四象掌法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "sixiang-zhang" ->
+        {:error, "你现在没有准备使用四象掌法，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

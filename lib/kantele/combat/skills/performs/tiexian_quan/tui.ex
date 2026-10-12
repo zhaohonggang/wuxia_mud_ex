@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "tiexian-quan" -> {:error, "你没有激发铁线拳法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "tiexian-quan" ->
+        {:error, "你没有激发铁线拳法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "tiexian-quan" ->
+        {:error, "你没有准备铁线拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

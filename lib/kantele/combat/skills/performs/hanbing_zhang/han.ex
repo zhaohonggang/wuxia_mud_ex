@@ -86,7 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhang.Han do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "hanbing-zhang" ->
+        {:error, "你没有准备寒冰掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

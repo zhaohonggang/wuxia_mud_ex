@@ -87,7 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "lianhuan-mizongtui" ->
+        {:error, "你现在没有准备使用连环迷踪腿，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -85,8 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "bluesea-force" -> {:error, "你没有激发南海玄功为掌法，无法施展玄黄连环掌！\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "bluesea-force" ->
+        {:error, "你没有激发南海玄功为掌法，无法施展玄黄连环掌！\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "bluesea-force" ->
+        {:error, "你没有准备好使用南海玄功，无法施展玄黄连环掌！\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -86,7 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tongbi-zhang" ->
+        {:error, "你没有准备通臂六合掌，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

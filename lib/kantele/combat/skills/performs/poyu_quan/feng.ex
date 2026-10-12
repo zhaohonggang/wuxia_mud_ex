@@ -83,7 +83,11 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Feng do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "poyu-quan" ->
+        {:error, "你没有准备使用劈石破玉拳，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

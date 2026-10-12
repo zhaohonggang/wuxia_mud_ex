@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "你没有激发铁掌掌法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "tie-zhang" ->
+        {:error, "你没有激发铁掌掌法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
+        {:error, "你没有准备铁掌掌法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

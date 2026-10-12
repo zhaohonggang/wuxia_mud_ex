@@ -75,6 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyangJian.Xian do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "poyang-jian") < 120 -> {:error, "你破阳冷光剑不够娴熟，难以施展。\n"}
       Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不足，难以施展。\n"}
       true -> :ok
     end

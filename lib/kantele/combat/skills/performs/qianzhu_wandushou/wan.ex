@@ -78,6 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "qianzhu-wandushou") < 220 -> {:error, "你的千蛛万毒手修为有限，无法施展万蛊噬天。\n"}
       Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展万蛊噬天。\n"}
       true -> :ok
     end
@@ -87,7 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "qianzhu-wandushou" ->
+        {:error, "你没有准备使用千蛛万毒手，无法施展万蛊噬天。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -126,7 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「万蛊噬天」只能对战斗中的对手使用。\n"}
     end
   end
 

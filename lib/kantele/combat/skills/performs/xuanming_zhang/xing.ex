@@ -91,8 +91,14 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xuanming-shengong" -> {:error, "你没有激发玄冥神功为内功，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "xuanming-shengong" ->
+        {:error, "你没有激发玄冥神功为内功，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
+        {:error, "你没有准备玄冥神掌，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

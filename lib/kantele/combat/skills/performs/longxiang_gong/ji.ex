@@ -86,9 +86,17 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为拳脚，难以施展。\n"}
-      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为内功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "longxiang-gong" ->
+        {:error, "你没有激发龙象般若功为拳脚，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "longxiang-gong" ->
+        {:error, "你没有激发龙象般若功为内功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "longxiang-gong" ->
+        {:error, "你没有准备使用龙象般若功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

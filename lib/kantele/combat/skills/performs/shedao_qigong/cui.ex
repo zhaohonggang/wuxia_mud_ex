@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Cui do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「摧心断肠」只能对战斗中的对手使用。\n"}
     end
   end
 

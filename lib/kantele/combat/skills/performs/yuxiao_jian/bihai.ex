@@ -79,6 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "yuxiao-jian") < 180 -> {:error, "你玉箫剑法等级不够, 难以施展。\n"}
       Stats.skill(stats, "bibo-shengong") < 180 -> {:error, "你碧波神功修为不够，难以施展。\n"}
       Stats.skill(stats, "bihai-chaosheng") < 180 -> {:error, "你的碧海潮生曲太低，难以施展。\n"}
       true -> :ok

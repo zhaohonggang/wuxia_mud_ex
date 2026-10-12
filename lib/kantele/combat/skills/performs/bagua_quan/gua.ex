@@ -87,8 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "bagua-quan" -> {:error, "你没有激发八卦拳法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "bagua-quan" ->
+        {:error, "你没有激发八卦拳法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "bagua-quan" ->
+        {:error, "你没有准备八卦拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

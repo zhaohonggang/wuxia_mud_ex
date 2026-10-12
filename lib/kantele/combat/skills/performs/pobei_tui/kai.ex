@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "pobei-tui" -> {:error, "你现在没有激发破碑腿，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "pobei-tui" ->
+        {:error, "你现在没有激发破碑腿，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "pobei-tui" ->
+        {:error, "你现在没有准备破碑腿，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

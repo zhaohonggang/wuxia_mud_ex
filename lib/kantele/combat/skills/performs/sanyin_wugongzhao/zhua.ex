@@ -87,8 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "sanyin-wugongzhao" -> {:error, "你没有激发三阴蜈蚣爪，无法使用。\n"}
-      true -> :ok
+      Stats.mapped(stats, "claw") != "sanyin-wugongzhao" ->
+        {:error, "你没有激发三阴蜈蚣爪，无法使用。\n"}
+
+      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "sanyin-wugongzhao" ->
+        {:error, "你没有准备使用三阴蜈蚣爪，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -86,7 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.ShouYin.Jie do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "shou-yin" ->
+        {:error, "你现在没有准备使用手印，无法使用天劫！\n"}
+
+      true ->
+        :ok
     end
   end
 

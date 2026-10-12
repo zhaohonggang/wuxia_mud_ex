@@ -94,10 +94,20 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "beiming-shengong" -> {:error, "你没有激发逍遥折梅手，难以施展。\n"}
-      Stats.mapped(stats, "force") != "xiaowuxiang" -> {:error, "你没有准备逍遥折梅手，难以施展。\n"}
-      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你现在真气不足，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "beiming-shengong" ->
+        {:error, "你没有激发逍遥折梅手，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "xiaowuxiang" ->
+        {:error, "你没有准备逍遥折梅手，难以施展。\n"}
+
+      Stats.mapped(stats, "hand") != "zhemei-shou" ->
+        {:error, "你现在真气不足，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "zhemei-shou" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      true ->
+        :ok
     end
   end
 

@@ -80,6 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
 
     cond do
       Stats.skill(stats, "force") < 300 -> {:error, "你的内功的修为不够，现在无法使用。\n"}
+      Stats.skill(stats, "qixian-wuxingjian") < 180 -> {:error, "你的七弦无形剑修为有限，现在无法使用。\n"}
       true -> :ok
     end
   end
@@ -88,8 +89,14 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "qixian-wuxingjian" -> {:error, "你现在没有准备使用七弦无形剑，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "qixian-wuxingjian" ->
+        {:error, "你现在没有准备使用七弦无形剑，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "qixian-wuxingjian" ->
+        {:error, "你现在没有准备使用七弦无形剑，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -125,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「七弦连环诛」只能对战斗中的对手使用。\n"}
     end
   end
 

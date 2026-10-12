@@ -84,11 +84,23 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "emei-jiuyang" -> {:error, "你没有激发飘雪穿云掌，无法施展。\n"}
-      Stats.mapped(stats, "force") != "wudang-jiuyang" -> {:error, "你没有准备飘雪穿云掌，无法施展。\n"}
-      Stats.mapped(stats, "force") != "shaolin-jiuyang" -> {:error, "你必须将全身功力尽数提起才能施展。\n"}
-      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "emei-jiuyang" ->
+        {:error, "你没有激发飘雪穿云掌，无法施展。\n"}
+
+      Stats.mapped(stats, "force") != "wudang-jiuyang" ->
+        {:error, "你没有准备飘雪穿云掌，无法施展。\n"}
+
+      Stats.mapped(stats, "force") != "shaolin-jiuyang" ->
+        {:error, "你必须将全身功力尽数提起才能施展。\n"}
+
+      Stats.mapped(stats, "force") != "jiuyang-shengong" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "piaoxue-zhang" ->
+        {:error, "你必须将全身功力尽数提起才能施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

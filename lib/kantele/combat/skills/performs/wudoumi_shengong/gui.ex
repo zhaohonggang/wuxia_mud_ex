@@ -84,9 +84,17 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为内功，难以施展。\n"}
-      Stats.mapped(stats, "unarmed") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为拳脚，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "force") != "wudoumi-shengong" ->
+        {:error, "你没有激发五斗米神功为内功，难以施展。\n"}
+
+      Stats.mapped(stats, "unarmed") != "wudoumi-shengong" ->
+        {:error, "你没有激发五斗米神功为拳脚，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "wudoumi-shengong" ->
+        {:error, "你现在没有准备使用五斗米神功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

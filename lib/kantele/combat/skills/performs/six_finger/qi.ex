@@ -88,7 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
+        {:error, "你没有准备六脉神剑，无法使用。\n"}
+
+      true ->
+        :ok
     end
   end
 

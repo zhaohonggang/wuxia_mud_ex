@@ -87,7 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "pili-quan" ->
+        {:error, "你没有准备使用霹雳神拳，无法施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

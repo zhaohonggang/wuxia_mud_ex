@@ -86,9 +86,17 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tie-zhang" -> {:error, "你没有激发铁掌掌法，难以施展「九穹绝刹掌」。\n"}
-      Stats.mapped(stats, "force") != "tianlei-shengong" -> {:error, "你必须激发天雷神功才能施展出「九穹绝刹掌」！\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "tie-zhang" ->
+        {:error, "你没有激发铁掌掌法，难以施展「九穹绝刹掌」。\n"}
+
+      Stats.mapped(stats, "force") != "tianlei-shengong" ->
+        {:error, "你必须激发天雷神功才能施展出「九穹绝刹掌」！\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
+        {:error, "你现在没有准备使用铁掌掌法，难以施展「九穹绝刹掌」。\n"}
+
+      true ->
+        :ok
     end
   end
 

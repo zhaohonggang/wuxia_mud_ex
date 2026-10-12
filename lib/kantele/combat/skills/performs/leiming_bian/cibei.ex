@@ -68,10 +68,21 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
          :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "leiming-bian") < 160 -> {:error, "你的雷鸣鞭法修为太差,还不能使用慈悲字诀！\n"}
+      Stats.skill(stats, "buddhism") < 150 -> {:error, "你的禅宗心法等级不够，怎能支持慈悲字诀？\n"}
+      true -> :ok
     end
   end
 

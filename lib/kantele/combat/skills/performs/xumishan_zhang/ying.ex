@@ -85,7 +85,11 @@ defmodule Kantele.Combat.Skills.Performs.XumishanZhang.Ying do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xumishan-zhang" ->
+        {:error, "你现在没有准备使用须弥山掌，不能使用「群山叠影」。\n"}
+
+      true ->
+        :ok
     end
   end
 

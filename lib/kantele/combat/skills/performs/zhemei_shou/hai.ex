@@ -88,8 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你没有激发逍遥折梅手，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "zhemei-shou" ->
+        {:error, "你没有激发逍遥折梅手，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "zhemei-shou" ->
+        {:error, "你没有准备使用逍遥折梅手，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

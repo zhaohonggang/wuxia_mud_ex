@@ -87,9 +87,17 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "xiantian-gong" -> {:error, "你没有激发先天功为拳脚，难以施展。\n"}
-      Stats.mapped(stats, "force") != "xiantian-gong" -> {:error, "你没有激发先天功为内功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
+        {:error, "你没有激发先天功为拳脚，难以施展。\n"}
+
+      Stats.mapped(stats, "force") != "xiantian-gong" ->
+        {:error, "你没有激发先天功为内功，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xiantian-gong" ->
+        {:error, "你没有准备使用先天功，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

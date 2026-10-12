@@ -77,6 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     stats = character.meta.stats
 
     cond do
+      Stats.skill(stats, "zhemei-shou") < 80 -> {:error, "你的逍遥折梅手等级不够，难以施展。\n"}
       Stats.skill(stats, "force") < 120 -> {:error, "你内功火候不够，难以施展。\n"}
       true -> :ok
     end
@@ -86,8 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你没有激发逍遥折梅手，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "zhemei-shou" ->
+        {:error, "你没有激发逍遥折梅手，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "zhemei-shou" ->
+        {:error, "你没有准备使用逍遥折梅手，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

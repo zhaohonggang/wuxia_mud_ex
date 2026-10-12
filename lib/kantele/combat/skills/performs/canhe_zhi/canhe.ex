@@ -91,7 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "canhe-zhi" ->
+        {:error, "你现在没有准备使用参合指，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

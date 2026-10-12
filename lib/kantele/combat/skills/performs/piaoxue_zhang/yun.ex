@@ -84,8 +84,14 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "piaoxue-zhang" -> {:error, "你没有准备使用飘雪穿云掌，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "piaoxue-zhang" ->
+        {:error, "你没有准备使用飘雪穿云掌，无法施展。\n"}
+
+      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "piaoxue-zhang" ->
+        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+
+      true ->
+        :ok
     end
   end
 

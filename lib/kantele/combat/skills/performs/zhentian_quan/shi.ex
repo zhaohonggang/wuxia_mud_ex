@@ -85,8 +85,14 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "zhentian-quan" -> {:error, "你没有激发震天拳法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "cuff") != "zhentian-quan" ->
+        {:error, "你没有激发震天拳法，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "zhentian-quan" ->
+        {:error, "你现在没有准备使用震天拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

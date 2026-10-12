@@ -114,7 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「来去若无形」只能在战斗中使用。\n"}
     end
   end
 

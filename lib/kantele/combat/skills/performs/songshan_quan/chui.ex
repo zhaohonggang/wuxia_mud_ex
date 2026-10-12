@@ -86,7 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.SongshanQuan.Chui do
     stats = character.meta.stats
 
     cond do
-      true -> :ok
+      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "songshan-quan" ->
+        {:error, "你没有准备嵩山拳法，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 

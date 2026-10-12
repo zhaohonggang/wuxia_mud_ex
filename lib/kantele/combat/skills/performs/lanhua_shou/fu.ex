@@ -86,8 +86,14 @@ defmodule Kantele.Combat.Skills.Performs.LanhuaShou.Fu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "lanhua-shou" -> {:error, "你没有激发兰花拂穴手，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hand") != "lanhua-shou" ->
+        {:error, "你没有激发兰花拂穴手，难以施展。\n"}
+
+      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "lanhua-shou" ->
+        {:error, "你没有准备兰花拂穴手，难以施展。\n"}
+
+      true ->
+        :ok
     end
   end
 
