@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
   alias Kantele.Combat.Performs
 
   @perform_id "tianchan-zhang/chan"
+  @move_name "「毒蟾掌」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -36,14 +37,18 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          strike: Stats.skill(stats, "strike"),
+          poison: Stats.skill(stats, "poison"),
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -74,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianchan-zhang") < 120 -> {:error, "你天蟾掌法不够纯熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太低，，难以施展。\n"}
+      Stats.skill(stats, "tianchan-zhang") < 120 -> {:error, "你天蟾掌法不够纯熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太低，，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -85,10 +90,11 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
 
     cond do
       Stats.mapped(stats, "strike") != "tianchan-zhang" ->
-        {:error, "你没有激发天蟾掌法，难以施展。\n"}
+        {:error, "你没有激发天蟾掌法，难以施展#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tianchan-zhang" ->
-        {:error, "你没有准备使用天蟾掌法，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tianchan-zhang" ->
+        {:error, "你没有准备使用天蟾掌法，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -99,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的内力不够，，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你的内力不够，，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -108,22 +114,18 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能使用#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷笑，聚气于掌，飞身一跃而起，一招携满剧毒的「毒蟾掌」对着$n凌空拍下！", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 前置广播；neili 消耗与忙乱按命中分支在目标侧结算
+    conn =
+      Broadcast.publish(conn, "$N一声冷笑，聚气于掌，飞身一跃而起，一招携满剧毒的「毒蟾掌」对着$n凌空拍下！",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -151,25 +153,36 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    strike = Map.get(data, :strike, 0)
+    poison = Map.get(data, :poison, 0)
+    lvl = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
+    dp = Stats.skill(stats, "parry")
+    ap = strike + Engine.rand(rng, poison)
+    hit = ap + Engine.rand(rng, ap) > dp + Engine.rand(rng, dp)
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      Performs.feedback(attacker, 150, 2)
+
+      damage = div(lvl * 3, 2) + Engine.rand(rng, lvl) + Engine.rand(rng, poison)
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    else
+      Performs.feedback(attacker, 100, 3)
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 3)
-    msg = if hit, do: "只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", else: "$n躲过了$N的攻击！"
+    msg =
+      if hit do
+        "只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。\n"
+      else
+        "$p见$P来势汹涌，急忙纵身一跃而起，躲开了这一击！\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    conn = Broadcast.publish(conn, result)
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
