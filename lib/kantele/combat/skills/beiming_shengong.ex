@@ -55,15 +55,19 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Powerup do
   @moduledoc """
   运功「powerup」（对照 `kungfu/skill/beiming-shengong/powerup.c`）
 
-  需 100 内力，耗 100；attack=defense=北冥/3，持续 北冥 秒；
-  战斗中 busy 3 轮。
+  门槛（按 .c 顺序）：目标为自身 → neili>=500 → 未在运功。
+  扣 100 真气；attack=defense=北冥/3，持续 北冥 秒；
+  战斗中 busy `1+random(3)`；到期回收。
   """
 
   use Kantele.Combat.Performs.Simple,
     spec: %Kantele.Combat.Performs.Spec{
       id: "beiming-shengong/powerup",
       gates: [
-        {:neili_min, 100, "你的内力不够!\n"},
+        # LPC: if (target != me) return notify_fail("你只能用北冥神功提升自己的战斗力。\n");
+        # exert 恒以自身为目标，此门槛恒真，仅保留文案以对齐 .c。
+        {:custom, fn _ -> true end, "你只能用北冥神功提升自己的战斗力。\n"},
+        {:neili_min, 500, "你的内力不够!\n"},
         {:no_buff, "powerup", "你已经在运功中了。\n"}
       ],
       costs: %{neili: 100},
@@ -74,10 +78,10 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Powerup do
            defense: {:div, {:skill, "beiming-shengong"}, 3}
          }}
       ],
-      busy: {:if_fighting, 3},
+      busy: {:if_fighting, {:add, 1, {:random, 1, 3}}},
       duration: {:skill, "beiming-shengong"},
       expire_message: "你的北冥神功运行完毕，将内力收回丹田。\n",
-      message: "$N微一凝神，运起北冥神功，全身真气澎湃，衣衫随之鼓胀。\n"
+      message: "$N将内力运遍浑身诸大要穴，然后收气丹田，双目一睁，登时精光四射！\n"
     }
 end
 
@@ -104,7 +108,6 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
   alias Kantele.Character.Stats
 
   @perform_id "beiming-shengong/suck"
-  @jie "「北冥神功」"
 
   @impl true
   def run(conn) do
@@ -192,7 +195,8 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
     if target.meta.vitals.max_neili >= 100 do
       :ok
     else
-      {:error, "目标丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n"}
+      # LPC: notify_fail(target->name() + "丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n");
+      {:error, "#{target.name}丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n"}
     end
   end
 
@@ -203,7 +207,8 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
     if tg_max >= div(my_max, 5) do
       :ok
     else
-      {:error, "目标的内功修为远不如你，你无法从他体内吸取丹元！\n"}
+      # LPC: notify_fail(target->name() + "的内功修为远不如你，你无法从他体内吸取丹元！\n");
+      {:error, "#{target.name}的内功修为远不如你，你无法从他体内吸取丹元！\n"}
     end
   end
 
@@ -253,7 +258,6 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
 
     sp = Stats.skill(attacker.meta.stats, "force")
@@ -314,7 +318,7 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
             }
         }
 
-        message = "你觉得#{character.name}的丹元自手掌源源不绝地流了进来。\n"
+        message = "你觉得" <> character.name <> "的丹元自手掌源源不绝地流了进来。\n"
 
         conn =
           conn
@@ -338,7 +342,10 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Suck do
           }
       }
 
-      message = "可是#{attacker.name}看破了你的企图，机灵地溜了开去。\n"
+      # LPC: message_combatd(HIY "可是$p" HIY "看破了$P" HIY
+      #                       "的企图，机灵地溜了开去。\n" NOR, me, target);
+      # （$p = target 本人，$P = 攻击方，故目标读到「可是你看破了<攻击方>的企图」）
+      message = "可是你看破了" <> attacker.name <> "的企图，机灵地溜了开去。\n"
 
       conn =
         conn
