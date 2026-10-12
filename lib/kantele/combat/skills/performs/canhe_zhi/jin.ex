@@ -1,25 +1,35 @@
 defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   @moduledoc """
-  perform「金刚剑气」（source canhe-zhi/jin.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「金刚剑气」（source canhe-zhi/jin.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：目标为战斗中的对手 → 已知此招 → 未持兵器 →
+  参合指>=160 → 准备 finger 招式 → 内力上限>=2500 → 真气>=500 → 目标存活。
+  前置广播；ap = `参合指 + 基本内功`，dp = 目标 `佛学 + 基本内功`（目标侧计算）；
+  攻击方先忙乱 3。
+  分支 A（目标佛学>=200 且 `random(5)==1`）：-400 真气、忙乱 4，仅追加文案；
+  分支 B（`ap*2/3 + random(ap) > dp`）：伤害 `ap + random(ap/2)`，
+  -400 真气；`final/3` 另扣目标精气 `damage/6`、创伤 `damage/10`；
+  分支 C（其余）：-200 真气、忙乱 4，仅追加文案。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "canhe-zhi/jin"
+
+  # LPC: #define JIN "「" HIY "金刚剑气" NOR "」"
+  @move_name "「金刚剑气」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,25 +39,31 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "canhe-zhi")
-    ap = (Stats.skill(stats, "canhe-zhi") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    # LPC: ap = me->query_skill("canhe-zhi", 1) + me->query_skill("force");
+    ap = Stats.skill(stats, "canhe-zhi") + Stats.skill(stats, "force")
+
+    with {:ok, target} <- target(combat),
+         :ok <- check_perform_known(stats),
+         :ok <- check_weapon(character),
+         :ok <- check_levels(stats),
+         :ok <- check_prepared(stats),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -56,42 +72,57 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
+  # LPC: if (! target) target = offensive_target(me);
+  #      if (! target || ! me->is_fighting(target))
+  #              return notify_fail(JIN "只能对战斗中的对手使用。\n");
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp check_perform_known(stats) do
+    if Stats.perform_known?(stats, @perform_id) do
       :ok
     else
       {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if (objectp(me->query_temp("weapon")))
+  #         return notify_fail("你必须空手才能使用" JIN "。\n");
+  defp check_weapon(character) do
+    if Combat.weapon(character.meta.combat) != nil do
+      {:error, "你必须空手才能使用#{@move_name}。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
+  defp check_levels(stats) do
     cond do
-      Stats.skill(stats, "canhe-zhi") < 160 -> {:error, "你的参合指修为有限，难以施展。\n"}
+      Stats.skill(stats, "canhe-zhi") < 160 ->
+        {:error, "你的参合指修为有限，难以施展#{@move_name}。\n"}
+
       true -> :ok
     end
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
+  # LPC: if (me->query_skill_prepared("finger") != "canhe-zhi")
+  #         return notify_fail("你现在没有准备使用参合指，难以施展" JIN "。\n");
+  defp check_prepared(stats) do
+    if prepared_canhe?(stats) do
+      :ok
+    else
+      {:error, "你现在没有准备使用参合指，难以施展#{@move_name}。\n"}
+    end
+  end
 
-    cond do
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "canhe-zhi" ->
-        {:error, "你现在没有准备使用参合指，难以施展。\n"}
-
-      true ->
-        :ok
+  defp prepared_canhe?(stats) do
+    case Stats.prepared_perform(stats, "finger") do
+      nil -> false
+      value -> String.split(value, "/") |> hd() == "canhe-zhi"
     end
   end
 
@@ -99,43 +130,46 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2500 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.max_neili < 2500 ->
+        {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+
+      vitals.neili < 500 ->
+        {:error, "你的真气不够，难以施展#{@move_name}。\n"}
+
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用。\n"}
-      true -> :ok
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 敌人列表只存引用快照（%{id,pid,name,room_id}）时无 meta 可查，此时恒判存活，
+  # 由目标侧 combat/perform-incoming 的死亡检查兜底。
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 400}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手合十，微微一笑，颇得拈花之意。食指并中指轻轻一弹，顿时一屡罡气电射而出，朝$n袭去。", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target) do
+    # LPC: msg = HIY "$N" HIY "双手合十，微微一笑，颇得拈花之意。食指并中指"
+    #              "轻轻一弹，顿时一屡罡气电射而出，朝$n" HIY "袭去。\n" NOR;
+    #      message_combatd(msg, me, target);
+    # 攻击方 me->start_busy(3) 与各分支的 neili/busy 由目标侧 Performs.feedback 回执。
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N双手合十，微微一笑，颇得拈花之意。食指并中指轻轻一弹，顿时一屡罡气电射而出，朝$n袭去。\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「金刚剑气」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -145,35 +179,76 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :jing, div(damage, 6))
-          vitals = Vitals.wound(vitals, :jing, div(damage, 10))
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    # LPC: dp = target->query_skill("buddhism", 1) + target->query_skill("force");
+    dp = Stats.skill(stats, "buddhism") + Stats.skill(stats, "force")
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 4)
-    msg = if hit, do: "$n被$N击中！", else: "$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    cond do
+      # LPC: if (target buddhism >= 200 && random(5) == 1) { -400; busy 4; }
+      buddhism_high?(stats) and Engine.rand(rng, 5) == 0 ->
+        Performs.feedback(attacker, 400, 4)
+
+        result =
+          Messages.interpolate(
+            "但见$n也即脸露笑容，衣袖轻轻一拂，顺势裹上，顿将$N的指力消逝殆尽。\n",
+            bindings
+          )
+
+        conn
+        |> Broadcast.publish(result)
+        |> put_character(character)
+
+      # LPC: else if (ap * 2 / 3 + random(ap) > dp) { damage = ap + random(ap/2); -400; }
+      div(ap * 2, 3) + Engine.rand(rng, ap) > dp ->
+        damage = ap + Engine.rand(rng, div(ap, 2))
+
+        # LPC final(): target->receive_damage("jing", damage / 6);
+        #              target->receive_wound("jing", damage / 10);
+        vitals =
+          character.meta.vitals
+          |> Vitals.damage(:jing, div(damage, 6))
+          |> Vitals.wound(:jing, div(damage, 10))
+
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+
+        Performs.feedback(attacker, 400, 3)
+
+        result =
+          Messages.interpolate(
+            "只听“噗嗤”一声，指力竟在$n胸前穿了一个血肉模糊的大洞，透体而入。\n",
+            bindings
+          )
+
+        conn
+        |> Broadcast.publish(result)
+        |> put_character(character)
+
+      true ->
+        Performs.feedback(attacker, 200, 4)
+
+        result =
+          Messages.interpolate(
+            "$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。\n",
+            bindings
+          )
+
+        conn
+        |> Broadcast.publish(result)
+        |> put_character(character)
+    end
   end
+
+  defp buddhism_high?(stats), do: Stats.skill(stats, "buddhism") >= 200
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-200"}, {"neili", "-400"}], "assign_refs": [{"ap", "canhe-zhi"}, {"dp", "buddhism"}], "busy_lines": ["me->start_busy(3);", "me->start_busy(4);", "me->start_busy(4);"], "level_gates": [{"canhe-zhi", "160"}], "prepared_gates": [{"finger", "canhe-zhi"}], "remote_damage": true, "resource_gates": [{"max_neili", "2500"}, {"neili", "500"}]}
@@ -181,52 +256,52 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>
-  # 
+  #
   # #define JIN "「" HIY "金刚剑气" NOR "」"
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # string final(object me, object target, int damage);
-  # 
+  #
   # int perform(object me, object target)
   # {
   #         int damage;
   #         string msg;
   #         int ap, dp;
-  # 
+  #
   #         if (! target) target = offensive_target(me);
-  # 
+  #
   #         if (userp(me) && ! me->query("can_perform/canhe-zhi/jin"))
   #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
+  #
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail(JIN "只能对战斗中的对手使用。\n");
-  # 
+  #
   #         if (objectp(me->query_temp("weapon")))
   #                 return notify_fail("你必须空手才能使用" JIN "。\n");
-  # 
+  #
   #         if ((int)me->query_skill("canhe-zhi", 1) < 160)
   #                 return notify_fail("你的参合指修为有限，难以施展" JIN "。\n");
-  # 
+  #
   #         if (me->query_skill_prepared("finger") != "canhe-zhi")
   #                 return notify_fail("你现在没有准备使用参合指，难以施展" JIN "。\n");
-  # 
+  #
   #         if ((int)me->query("max_neili") < 2500)
   #                 return notify_fail("你的内力修为不足，难以施展" JIN "。\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 500)
   #                 return notify_fail("你的真气不够，难以施展" JIN "。\n");
-  # 
+  #
   #         if (! living(target))
   #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
   #         msg = HIY "$N" HIY "双手合十，微微一笑，颇得拈花之意。食指并中指"
-  #               "轻轻一弹，顿时一屡罡气电射而出，朝$n" HIY "袭去。\n" NOR;  
-  # 
+  #               "轻轻一弹，顿时一屡罡气电射而出，朝$n" HIY "袭去。\n" NOR;
+  #
   #         ap = me->query_skill("canhe-zhi", 1) + me->query_skill("force");
   #         dp = target->query_skill("buddhism", 1) + target->query_skill("force");
   #         me->start_busy(3);
-  # 
+  #
   #         if ((int)target->query_skill("buddhism", 1) >= 200
   #             && random(5) == 1)
   #         {
@@ -236,7 +311,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   #                        "裹上，顿将$N" HIY "的指力消逝殆尽。\n" NOR;
   #         } else
   #         if (ap * 2 / 3 + random(ap) > dp)
-  #         { 
+  #         {
   #                 damage = ap + random(ap / 2);
   #                 me->add("neili", -400);
   #                 msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 75,
@@ -249,10 +324,10 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Jin do
   #                        "招架，急忙提气跃开。\n" NOR;
   #         }
   #         message_combatd(msg, me, target);
-  # 
+  #
   #         return 1;
   # }
-  # 
+  #
   # string final(object me, object target, int damage)
   # {
   #         target->receive_damage("jing", damage / 6, me);

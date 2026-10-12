@@ -38,6 +38,7 @@ boyun_suowu/meng.ex
 caiyan_gong/huan.ex
 canghong_bifa/jing.ex
 canglang_zhi/tao.ex
+canhe_zhi/jin.ex
 chanhun_suo/duo.ex
 chanhun_suo/suo.ex
 chousui_zhang/dan.ex
