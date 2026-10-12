@@ -11,15 +11,15 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "sanfen-jianshu/haishi"
+  @move_name "「海市蜃楼」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "sanfen-jianshu")
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
     ap = Stats.skill(stats, "sword")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,16 +39,18 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name)
     else
       {:error, message} ->
         conn
@@ -60,7 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你不会使用#{@move_name}这一绝技！\n"}
     end
   end
 
@@ -98,8 +101,11 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
-      true -> :ok
+      Combat.weapon(combat) == nil or Combat.weapon(combat).skill_type != "sword" ->
+        {:error, "你使用的武器不对。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -107,20 +113,18 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你不会使用「海市蜃楼」这一绝技！\n"}
     :ok
-
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N狂喝一声，手中某物将到之际，突然圈转，使出三分剑术的独得之秘「海市蜃楼」，一招之中
-又另蕴涵三招，招式繁复狠辣，剑招虚虚实实，霍霍剑光径直逼向$n！", n1: character.name)
+  defp apply_effect(conn, character, weapon_name) do
+    # 前置广播（neili 消耗 / start_busy 交由 do_resolve）
+    msg =
+      "狂喝一声，手中" <>
+        @blank <>
+        weapon_name <>
+        @blank <>
+        "将到之际，突然圈转，使出三分剑术的独得之秘「海市蜃楼」，一招之中又另蕴涵三招，招式繁复狠辣，剑招虚虚实实，霍霍剑光径直逼向！"
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
   end
 
   defp target(combat) do
@@ -144,25 +148,64 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    # LPC: 命中则第一次伤害；若再次命中则追加第二次伤害；neili -150；busy 1+random(2)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+    dp = Stats.skill(stats, "dodge")
+
+    hit1 = div(ap, 2) + rng.(ap) > dp
+
+    damage1 = if hit1, do: div(ap, 2) + rng.(ap), else: 0
+
+    hit2 = false
+    damage2 = 0
+
+    if hit1 do
+      hit2 = div(ap, 3) + rng.(ap) > dp
+      damage2 = if hit2, do: div(ap, 2) + rng.(max(div(ap, 2), 1)), else: 0
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 1)
-    msg = if hit, do: Enum.random(["$n完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。", "$N见$n重创之下不禁破绽迭出，冷笑一声，手中某物挥洒，又攻出一剑，正中$p胸口。"]), else: "$n见状身形急退，避开了$N凌厉的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    character =
+      if hit1 or hit2 do
+        damage = damage1 + damage2
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, 150, 1 + rng.(2))
+
+    msgs = []
+
+    if hit1 do
+      msgs = msgs ++ ["完全无法辨清虚实，只感一阵触心的刺痛，一声惨叫，已被$N凌厉的剑招刺中。"]
+    end
+
+    if hit2 do
+      msgs =
+        msgs ++
+          [
+            "见重创之下不禁破绽迭出，冷笑一声，手中" <>
+              @blank <>
+              weapon_name <>
+              @blank <>
+              "挥洒，又攻出一剑，正中$p胸口。"
+          ]
+    end
+
+    if !hit1 do
+      msgs = msgs ++ ["见状身形急退，避开了$N凌厉的攻击！"]
+    end
+
+    conn =
+      Enum.reduce(msgs, conn, fn msg, conn ->
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
+      end)
+
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

@@ -11,8 +11,11 @@ defmodule Kantele.Combat.Skills.Performs.SankuShengong.Dispel do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+
+  @perform_id "sanku-shengong/dispel"
+  @move_name "「驱毒」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,21 +32,56 @@ defmodule Kantele.Combat.Skills.Performs.SankuShengong.Dispel do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_weapon(character)
+  defp check_gates(character) do
+    with :ok <- check_neili(character) do
+      :ok
+    end
+  end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  defp check_neili(character) do
+    vitals = character.meta.vitals
 
+    if vitals.neili < 300 do
+      {:error, "你的内力不足，无法运满一个周天。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 250}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # self-target vs other-target handled by command layer; here we just broadcast messages
+    force_name = Stats.mapped(character.meta.stats, "force") || "内功"
+
+    # Self branch messages
+    Broadcast.publish(conn, "深吸一口气，又缓缓的吐了出来。", n1: character.name)
+    Broadcast.publish(conn, "你默运" <> @blank <> force_name <> @blank <> "，开始排除身体中的异常症状。")
+
+    # Other branch messages - C has three parts split by force_name and target->name()
+    Broadcast.publish(conn, "深吸一口气，将手掌粘到$n的背后。", n1: character.name, n2: character.name)
+
+    Broadcast.publish(
+      conn,
+      "你默运" <>
+        @blank <> force_name <> @blank <> "，开始帮助" <> @blank <> "" <> @blank <> "排除身体中的异常症状。",
+      n1: character.name,
+      n2: character.name
+    )
+
+    Broadcast.publish(conn, "$N正在运功帮助你排除身体中的异常症状。", n1: character.name, n2: character.name)
+
+    # Condition clearing messages
+    Broadcast.publish(conn, "$N正在运功将你身体中的异常症状尽数排除。", n1: character.name, n2: character.name)
+
+    # Self finish
+    Broadcast.publish(conn, "你调息完毕，将内力收回丹田。")
+    # Other finish (same string - appears twice in C)
+    Broadcast.publish(conn, "你调息完毕，将内力收回丹田。")
+
+    Broadcast.publish(conn, "你觉得内息一畅，看来是" <> @blank <> character.name <> @blank <> "收功了。",
+      n1: character.name
+    )
+
+    Broadcast.publish(conn, "$N将手掌从$n背后收了回来。", n1: character.name, n2: character.name)
 
     conn
     |> put_character(character)

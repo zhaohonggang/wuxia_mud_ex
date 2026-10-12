@@ -123,7 +123,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `canglang_zhi/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `canglang_zhi/tao.ex` ← `canglang-zhi/tao.c`  (miss=7)
+- [x] ✅ `canglang_zhi/tao.ex` ← `canglang-zhi/tao.c`  (miss→0，PASS)
 
 ### `canhe_zhi/` （4 个，基线缺失 32 条）
 
