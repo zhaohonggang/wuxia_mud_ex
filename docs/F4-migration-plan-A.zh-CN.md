@@ -296,12 +296,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `hanbing_mianzhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `hanbing_mianzhang/jue.ex` ← `hanbing-mianzhang/jue.c`  (miss=6)
+- [x] ✅ `hanbing_mianzhang/jue.ex` ← `hanbing-mianzhang/jue.c`  (miss→0，PASS)
 
 ### `hanbing_zhang/` （2 个，基线缺失 11 条）
 
-- [ ] ❌ `hanbing_zhang/han.ex` ← `hanbing-zhang/han.c`  (miss=5)
-- [ ] ❌ `hanbing_zhang/hen.ex` ← `hanbing-zhang/hen.c`  (miss=6)
+- [x] ✅ `hanbing_zhang/han.ex` ← `hanbing-zhang/han.c`  (miss→0，PASS)
+- [x] ✅ `hanbing_zhang/hen.ex` ← `hanbing-zhang/hen.c`  (miss→0，PASS)
 
 ### `hanbing_zhenqi/` （2 个，基线缺失 14 条）
 

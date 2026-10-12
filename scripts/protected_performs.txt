@@ -146,6 +146,9 @@ hamagong/reserve.ex
 hamagong/tan.ex
 hamagong/tui.ex
 hamagong/zhen.ex
+hanbing_mianzhang/jue.ex
+hanbing_zhang/han.ex
+hanbing_zhang/hen.ex
 hanmei_jian/leng.ex
 hansha_sheying/zhen.ex
 hanwang_qingdao/ying.ex
