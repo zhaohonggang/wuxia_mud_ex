@@ -17,9 +17,9 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "wai-bagua/zhen"
+  @move_name "「八卦震」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -36,14 +36,17 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          force: Stats.skill(stats, "force"),
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -73,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展。\n"}
-      Stats.skill(stats, "wai-bagua") < 60 -> {:error, "你的外八卦不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "wai-bagua") < 60 -> {:error, "你的外八卦不够娴熟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -83,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -92,20 +95,25 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
+    # 攻击方消耗/Busy + 前置广播；命中分支结算在目标侧 do_resolve_incoming
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深吸一口气，双掌交错，一招「八卦震」平平拍出，企图以内力震伤$n。", n1: character.name)
+
+    conn =
+      Broadcast.publish(conn, "$N深吸一口气，双掌交错，一招「八卦震」平平拍出，企图以内力震伤$n。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -133,26 +141,34 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    force = Map.get(data, :force, 0)
+    lvl = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
+    tforce = Stats.skill(stats, "force")
+    hit = Engine.rand(rng, max(force, 1)) > div(tforce, 2)
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      combat = character.meta.combat
+      combat = Combat.start_busy(combat, :rand.uniform(3))
+      character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+      damage = div(lvl, 2) + Engine.rand(rng, div(lvl, 2))
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "结果$n微微一楞，没有看破招中奥妙，$N双掌正好拍在胸前。
-:内伤@?", else: "$n躲过了$N的攻击！"
+    msg =
+      if hit do
+        "结果$n微微一楞，没有看破招中奥妙，$N双掌正好拍在胸前。\n:内伤@?"
+      else
+        "可是$p看破了$P的企图，并没有上当。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    conn = Broadcast.publish(conn, result)
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
