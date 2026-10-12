@@ -66,14 +66,18 @@ defmodule Kantele.Combat.Skills.BingxinJue.Powerup do
   @moduledoc """
   运功「powerup」（对照 `kungfu/skill/bingxin-jue/powerup.c`）
 
-  需 300 内力，耗 100；临时提升 attack=defense=冰心/3，持续 冰心 秒；
+  需 300 内力，耗 100；临时提升 attack=defense=基本内功/3，持续 基本内功 秒；
   战斗中 busy 3 轮。
+
+  .c 的 `skill = me->query_skill("force")`，故 buff 数值与持续时间均取
+  基本内功（而非冰心诀自身）。
   """
 
   use Kantele.Combat.Performs.Simple,
     spec: %Kantele.Combat.Performs.Spec{
       id: "bingxin-jue/powerup",
       gates: [
+        {:custom, fn _ -> true end, "你只能用冰心决提升自己的战斗力。\n"},
         {:neili_min, 300, "你的真气不够！"},
         {:no_buff, "powerup", "你已经在运功中了。\n"}
       ],
@@ -81,14 +85,14 @@ defmodule Kantele.Combat.Skills.BingxinJue.Powerup do
       effects: [
         {:buff, "powerup",
          %{
-           attack: {:div, {:skill, "bingxin-jue"}, 3},
-           defense: {:div, {:skill, "bingxin-jue"}, 3}
+           attack: {:div, {:skill, "force"}, 3},
+           defense: {:div, {:skill, "force"}, 3}
          }}
       ],
       busy: {:if_fighting, 3},
-      duration: {:skill, "bingxin-jue"},
+      duration: {:skill, "force"},
       expire_message: "你的冰心诀运行完毕，将内力收回丹田。\n",
-      message: "$N双掌一合，冰心诀真气激荡，周身白雾缭绕，寒气逼人。\n"
+      message: "$N默运冰心决，全身关节一阵爆响，一股至阴的内劲从浑身经脉迸发出来。\n"
     }
 end
 
@@ -97,8 +101,10 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
   寒气「freeze」（对照 `kungfu/skill/bingxin-jue/freeze.c`）
 
   门槛：冰心>=150、neili>=1000、目标存活、在战斗中。
-  ap=force, dp=force 对抗；成功：damage=force/3+random(force/3)，扣目标 qi/劲 qi、
-  扣目标 neili = damage（若目标 neili > damage），busy 1。
+  ap=dp=基本内功（.c 两行均为 `me->query_skill("force")`，故 dp 取攻击方自身）；
+  攻击方忙乱 2（先于判定）。成功：damage=force/3+random(force/3)，
+  目标 qi/劲 qi 各减 damage，目标 neili += damage（目标 neili>damage 时）否则归零，
+  目标忙乱 1。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -111,10 +117,8 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kantele.Character.Vitals
 
   @perform_id "bingxin-jue/freeze"
-  @jie "「冰心诀」"
 
   @impl true
   def run(conn) do
@@ -190,13 +194,15 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{
-        attacker: ref(character),
-        perform_id: @perform_id,
-        level: Stats.skill(character.meta.stats, "bingxin-jue"),
-        ap: Stats.skill(character.meta.stats, "force"),
-        rng: &:rand.uniform/1
-      }
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
+          level: Stats.skill(character.meta.stats, "bingxin-jue"),
+          ap: Stats.skill(character.meta.stats, "force"),
+          # .c: dp = me->query_skill("force")（攻击方自身，非目标侧数值）
+          dp: Stats.skill(character.meta.stats, "force"),
+          rng: &:rand.uniform/1
+        }
     })
 
     conn
@@ -206,12 +212,12 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
 
     # attacker 为瘦引用（ref/1），攻防数值随 perform-incoming data 传递
     ap = Map.get(data, :ap, 0)
-    dp = Stats.skill(character.meta.stats, "force")
+    # .c: dp = me->query_skill("force")（攻击方自身，非目标侧数值）
+    dp = Map.get(data, :dp, 0)
 
     success = div(ap, 2) + rng.(ap) > rng.(dp)
 
@@ -221,9 +227,11 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
       new_t_q = max(character.meta.vitals.qi - damage, 0)
       new_t_eff_q = max(character.meta.vitals.max_qi - damage, 0)
 
+      # .c: if (target->query("neili") > damage) target->add("neili", damage);
+      #      else target->set("neili", 0);
       new_t_neili =
         if character.meta.vitals.neili > damage,
-          do: character.meta.vitals.neili - damage,
+          do: character.meta.vitals.neili + damage,
           else: 0
 
       new_target = %{
@@ -242,7 +250,7 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
 
       message =
         "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
-          "你觉得#{attacker.name}的全身功力如融雪般消失得无影无踪！\n"
+          "$n忽然觉得一阵透骨寒意，霎时间浑身的血液几乎都要凝固了。\n"
 
       conn =
         conn
@@ -257,8 +265,8 @@ defmodule Kantele.Combat.Skills.BingxinJue.Freeze do
       conn
     else
       message =
-        "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
-          "你感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"
+          "$N默运冰心决，一股寒气迎面扑向$n，四周登时雪花飘飘。\n" <>
+          "$n感到一阵寒意自心底泛起，连忙运动抵抗，堪勘无事。\n"
 
       conn =
         conn

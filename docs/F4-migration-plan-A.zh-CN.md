@@ -94,12 +94,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `biluo_zhang/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `biluo_zhang/lian.ex` ← `biluo-zhang/lian.c`  (miss=8)
+- [x] ✅ `biluo_zhang/lian.ex` ← `biluo-zhang/lian.c`  (miss→0，PASS)
 
 ### `bingxin_jue/` （2 个，基线缺失 8 条）
 
-- [ ] ❌ `bingxin_jue/freeze.ex` ← `bingxin-jue/freeze.c`  (miss=4)
-- [ ] ❌ `bingxin_jue/powerup.ex` ← `bingxin-jue/powerup.c`  (miss=4)
+- [x] ✅ `bingxin_jue/freeze.ex` ← `bingxin-jue/freeze.c`  (miss→0，PASS)
+- [x] ✅ `bingxin_jue/powerup.ex` ← `bingxin-jue/powerup.c`  (miss→0，PASS)
 
 ### `biyan_dao/` （1 个，基线缺失 7 条）
 

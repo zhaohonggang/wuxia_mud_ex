@@ -23,6 +23,8 @@ benlei_zhang/lei.ex
 bibo_shengong/powerup.ex
 biluo_zhang/lian.ex
 bingpo_shenzhen/bing.ex
+bingxin_jue/freeze.ex
+bingxin_jue/powerup.ex
 bizhen_qingzhang/pengpai.ex
 boyun_suowu/dian.ex
 boyun_suowu/meng.ex

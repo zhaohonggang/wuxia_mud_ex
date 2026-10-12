@@ -128,7 +128,7 @@ defmodule Kantele.Combat.BingxinJueTest do
       assert updated.meta.combat.temp.attack == 50
       assert updated.meta.combat.temp.defense == 50
       assert Combat.buff_active?(updated.meta.combat, "powerup")
-      assert published_text(conn) =~ "白雾缭绕"
+      assert published_text(conn) =~ "一股至阴的内劲从浑身经脉迸发出来"
     end
 
     test "内力不足被拒" do
@@ -234,19 +234,20 @@ defmodule Kantele.Combat.BingxinJueTest do
   end
 
   describe "freeze（寒气，目标侧结算）" do
-    test "命中：目标 qi/max_qi/neili 减少，busy 1" do
+    test "命中：目标 qi/max_qi 减少，neili 增加，busy 1" do
       target = enemy(vitals: %{Vitals.new() | qi: 500, max_qi: 500, neili: 500})
       target_conn = build_conn(target)
-      data = %{perform_id: "bingxin-jue/freeze", level: 150, ap: 150, rng: fn n -> n end}
+      data = %{perform_id: "bingxin-jue/freeze", level: 150, ap: 150, dp: 150, rng: fn n -> n end}
 
       conn = incoming(target_conn, data)
 
       updated = conn.private.update_character
       assert updated.meta.vitals.qi < 500
       assert updated.meta.vitals.max_qi < 500
-      assert updated.meta.vitals.neili < 500
+      # .c: target->add("neili", damage)（命中按伤害回补目标内力）
+      assert updated.meta.vitals.neili > 500
       assert updated.meta.combat.busy >= 1
-      assert published_text(conn) =~ "融雪般消失"
+      assert published_text(conn) =~ "透骨寒意"
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-feedback",
