@@ -164,7 +164,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `cuixin_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `cuixin_zhang/cui.ex` ← `cuixin-zhang/cui.c`  (miss=7)
+- [x] ✅ `cuixin_zhang/cui.ex` ← `cuixin-zhang/cui.c`  (miss→0，PASS)
 
 ### `dabei_zhang/` （1 个，基线缺失 7 条）
 
