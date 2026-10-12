@@ -95,6 +95,8 @@ dugu_jiujian/jue.ex
 dugu_jiujian/po.ex
 dugu_jiujian/qi.ex
 dugu_jiujian/yi.ex
+dulong_shenzhua/bao.ex
+dulong_shenzhua/ju.ex
 duoluoye_zhi/jimie.ex
 duoming_jinhua/hua.ex
 emei_jian/xian.ex

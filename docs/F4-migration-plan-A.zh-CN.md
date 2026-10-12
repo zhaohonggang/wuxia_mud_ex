@@ -222,8 +222,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `dulong_shenzhua/` （2 个，基线缺失 13 条）
 
-- [ ] ❌ `dulong_shenzhua/bao.ex` ← `dulong-shenzhua/bao.c`  (miss=7)
-- [ ] ❌ `dulong_shenzhua/ju.ex` ← `dulong-shenzhua/ju.c`  (miss=6)
+- [x] ✅ `dulong_shenzhua/bao.ex` ← `dulong-shenzhua/bao.c`  (miss→0，PASS)
+- [x] ✅ `dulong_shenzhua/ju.ex` ← `dulong-shenzhua/ju.c`  (miss→0，PASS)
 
 ### `feifeng_bian/` （1 个，基线缺失 7 条）
 
