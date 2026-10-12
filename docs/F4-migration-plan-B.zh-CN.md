@@ -78,11 +78,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `riyue_lun/` （2 个，基线缺失 22 条）
 
 - [x] ✅ `riyue_lun/lian.ex` ← `riyue-lun/lian.c`  (miss=12→0，PASS)
-- [ ] ❌ `riyue_lun/po.ex` ← `riyue-lun/po.c`  (miss=10)
+- [x] ✅ `riyue_lun/po.ex` ← `riyue-lun/po.c`  (miss=10→0，PASS)
 
 ### `rouyun_jian/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `rouyun_jian/tao.ex` ← `rouyun-jian/tao.c`  (miss=5)
+- [x] ✅ `rouyun_jian/tao.ex` ← `rouyun-jian/tao.c`  (miss=5→0，PASS)
 
 ### `ruanhong_zhusuo/` （3 个，基线缺失 21 条）
 

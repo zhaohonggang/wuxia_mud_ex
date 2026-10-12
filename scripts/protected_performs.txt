@@ -151,7 +151,9 @@ riyue_bian/chan.ex
 riyue_bian/he.ex
 riyue_bian/shang.ex
 riyue_lun/lian.ex
+riyue_lun/po.ex
 riyue_lun/yuan.ex
+rouyun_jian/tao.ex
 rouyun_steps/zong.ex
 ruanhong_zhusuo/teng.ex
 sanhua_zhang/san.ex
