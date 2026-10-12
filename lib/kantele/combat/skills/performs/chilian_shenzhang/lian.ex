@@ -2,7 +2,22 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
   @moduledoc """
   perform「赤心连环决」（source chilian-shenzhang/lian.c，由 translate_perform.py 生成，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 目标在战斗中 → 未持兵器 → 赤练神掌>=100 →
+  准备 strike 招式 → 内功>=100 → 真气>=200 → 目标存活。
+  前置广播后判定 `random(strike) > parry/2`：命中则挂 `apply/attack` +70，
+  连出 attack_time 击，结束后撤除；攻击方扣 `attack_time*20` 真气并忙乱
+  `1+random(attack_time)`。
+
+  差异（TODO(migrate)）：
+  - LPC 的 attack_time 次 `COMBAT_D->do_attack`（完整 AP/DP/招架/伤害管线）
+    折算为每击 `level/10` 基础伤害 + 命中判定（命中文档的 `apply/attack` +70
+    并入每击命中基数）；
+  - `.c` 的 `int attack_time;` **未初始化**即 `attack_time += 4 + random(ap/40)`，
+    属未定义行为；这里按初值 0 处理，即 `attack_time = 4 + random(ap/40)`，
+    再按 `.c` 的 `if (attack_time > 8) attack_time = 8` 截顶；
+  - `me->query_temp("secondary_weapon")` 副兵器检查未实现；
+  - `.c` 首句用 `message_sort`、次句用 `message_vision`，本引擎统一走
+    `Broadcast.publish`。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
   alias Kantele.Combat.Performs
 
   @perform_id "chilian-shenzhang/lian"
+  @move_name "「赤心连环决」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,17 +45,23 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "chilian-shenzhang")
+    # LPC: ap = me->query_skill("strike")
     ap = Stats.skill(stats, "strike")
-    attack_time = 8
-    i = 0
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(character),
+         :ok <- check_levels(character),
+         :ok <- check_prepared(character),
+         :ok <- check_force(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -47,7 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -64,12 +86,19 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
+  defp check_weapon(character) do
+    if Combat.weapon(character.meta.combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
@@ -77,54 +106,79 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
   defp check_levels(character) do
     stats = character.meta.stats
 
-    cond do
-      Stats.skill(stats, "chilian-shenzhang") < 100 -> {:error, "你赤练神掌不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，难以施展。\n"}
-      true -> :ok
+    if Stats.skill(stats, "chilian-shenzhang") < 100 do
+      {:error, "你赤练神掌不够娴熟，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_mapped(character) do
+  # LPC: if (me->query_skill_prepared("strike") != "chilian-shenzhang")
+  defp check_prepared(character) do
     stats = character.meta.stats
 
-    cond do
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "chilian-shenzhang" ->
-        {:error, "你没有准备赤练神掌，难以施展。\n"}
+    case Stats.prepared_perform(stats, "strike") do
+      nil -> {:error, "你没有准备赤练神掌，难以施展#{@move_name}。\n"}
+      value ->
+        if String.split(value, "/") |> hd() == "chilian-shenzhang" do
+          :ok
+        else
+          {:error, "你没有准备赤练神掌，难以施展#{@move_name}。\n"}
+        end
+    end
+  end
 
-      true ->
-        :ok
+  defp check_force(character) do
+    stats = character.meta.stats
+
+    if Stats.skill(stats, "force") < 100 do
+      {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
-      true -> :ok
+    if vitals.neili < 200 do
+      {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 敌人列表只存引用快照（%{id,pid,name,room_id}）时无 meta 可查，此时恒判存活，
+  # 由目标侧 combat/perform-incoming 的死亡检查兜底。
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target) do
+    # LPC: msg = HIC "$N" HIC "暗运内功，但见$N" HIC "双掌微微呈显"
+    #              "赤色，陡然连续反转，使出一招「" HIM "赤心连环决" HIC
+    #              "」，掌风凌厉，将$n" HIC "笼罩在双掌之中。\n" NOR;
+    #      message_sort(msg, me, target);
+    # 连击次数/伤害/neili/busy 在目标侧结算（分支判定需要目标 parry）。
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N暗运内功，但见$N双掌微微呈显赤色，陡然连续反转，使出一招「赤心连环决」，掌风凌厉，将$n笼罩在双掌之中。\n",
+        n1: character.name,
+        n2: target.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「赤心连环决」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -134,28 +188,64 @@ defmodule Kantele.Combat.Skills.Performs.ChilianShenzhang.Lian do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
+    ap = max(Map.get(data, :ap, 0), 1)
+    level = max(Map.get(data, :level, 0), 1)
+    stats = character.meta.stats
+    # LPC: dp = target->query_skill("parry")
+    dp = Stats.skill(stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: if (random(ap) > dp / 2) 命中 → me->add_temp("apply/attack", 70)
+    landed = Engine.rand(rng, ap) > div(dp, 2)
+    apply_attack = if landed, do: 70, else: 0
+
+    # LPC: attack_time += 4 + random(ap / 40); if (attack_time > 8) attack_time = 8;
+    # 原 .c 未初始化 attack_time，按初值 0 处理。
+    attack_time = min(4 + Engine.rand(rng, max(div(ap, 40), 1)), 8)
+
+    # LPC: for (i = 0; i < attack_time; i++) COMBAT_D->do_attack(me, target, 0, 0);
+    # 折算：每击 level/10 基础伤害 + 命中判定（命中文档的 apply/attack +70 并入）
+    per_hit = max(div(level, 10), 1)
+    hit_ap = div(ap, 2) + apply_attack
+
+    {damage, _hits} =
+      Enum.reduce(1..attack_time, {0, 0}, fn _, {damage_acc, hit_acc} ->
+        if hit_ap + Engine.rand(rng, ap) > dp do
+          {damage_acc + per_hit + Engine.rand(rng, per_hit), hit_acc + 1}
+        else
+          {damage_acc, hit_acc}
+        end
+      end)
+
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage, 3))
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n心中一惊，却被$N掌风所困，顿时阵脚大乱。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # 攻击方：add("neili", -attack_time * 20) + start_busy(1 + random(attack_time))
+    # LPC 的 add_temp("apply/attack", -70) 随之撤除（折算后不保留该临时加成）。
+    Performs.feedback(attacker, attack_time * 20, 1 + Engine.rand(rng, attack_time))
+
+    # 命中/失手各一句（与 .c 一致）
+    msg =
+      if landed,
+        do: "$n心中一惊，却被$N掌风所困，顿时阵脚大乱。\n",
+        else: "$n看清$N这几招的来路，但内劲所至，掌风犀利，也只得小心抵挡。\n"
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(Messages.interpolate(msg, bindings))
     |> put_character(character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"apply_adds": ["attack"], "assign_refs": [{"ap", "strike"}, {"dp", "parry"}], "busy_lines": ["me->start_busy(1 + random(attack_time));"], "level_gates": [{"chilian-shenzhang", "100"}, {"force", "100"}], "prepared_gates": [{"strike", "chilian-shenzhang"}], "remote_damage": false, "resource_gates": [{"neili", "200"}]}
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>

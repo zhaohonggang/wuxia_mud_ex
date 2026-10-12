@@ -47,6 +47,7 @@ changsheng_jue/shield.ex
 chanhun_suo/duo.ex
 chanhun_suo/suo.ex
 chansi_shou/qin.ex
+chilian_shenzhang/lian.ex
 chousui_zhang/dan.ex
 chuangwang_dao/xiong.ex
 chuanxin_zhang/zhui.ex

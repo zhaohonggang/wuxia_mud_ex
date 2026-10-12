@@ -143,7 +143,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `chilian_shenzhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `chilian_shenzhang/lian.ex` ← `chilian-shenzhang/lian.c`  (miss=7)
+- [x] ✅ `chilian_shenzhang/lian.ex` ← `chilian-shenzhang/lian.c`  (miss→0，PASS)
 
 ### `chongtian_zhang/` （1 个，基线缺失 6 条）
 
