@@ -150,6 +150,7 @@ raozhi_roujian/chuan.ex
 riyue_bian/chan.ex
 riyue_bian/he.ex
 riyue_bian/shang.ex
+riyue_lun/lian.ex
 riyue_lun/yuan.ex
 rouyun_steps/zong.ex
 ruanhong_zhusuo/teng.ex
@@ -169,5 +170,7 @@ taiji_jian/zhuan.ex
 tangmen_throwing/biao.ex
 tiangang_zhi/ling.ex
 wudang_jian/sheng.ex
+xiangmo_chu/zhen.ex
 xiyang_jian/ci.ex
 yunhe_jian/chong.ex
+yunlong_bian/chan.ex
