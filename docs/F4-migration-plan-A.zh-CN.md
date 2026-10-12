@@ -103,7 +103,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `biyan_dao/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `biyan_dao/luo.ex` ← `biyan-dao/luo.c`  (miss=7)
+- [x] ✅ `biyan_dao/luo.ex` ← `biyan-dao/luo.c`  (miss→0，PASS)
 
 ### `biyun_xinfa/` （1 个，基线缺失 5 条）
 
