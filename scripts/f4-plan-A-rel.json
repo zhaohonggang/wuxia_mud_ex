@@ -1,6 +1,4 @@
 [
-"bagua_biao/xian.ex",
-"bagua_dao/tian.ex",
 "bagua_quan/gua.ex",
 "bagua_zhang/ding.ex",
 "bagua_zhang/jia.ex",
@@ -283,7 +281,5 @@
 "qingliang_daxuefa/ding.ex",
 "qingyun_bian/duan.ex",
 "qingyun_shou/zhuo.ex",
-"qishang_quan/fei.ex",
-"qishang_quan/shang.ex",
-"qishi_ji/chong.ex"
+"qishang_quan/fei.ex"
 ]
