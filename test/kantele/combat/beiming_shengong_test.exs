@@ -138,7 +138,7 @@ defmodule Kantele.Combat.BeimingShengongTest do
       assert updated.meta.combat.temp.attack == 40
       assert updated.meta.combat.temp.defense == 40
       assert Combat.buff_active?(updated.meta.combat, "powerup")
-      assert published_text(conn) =~ "真气澎湃"
+      assert published_text(conn) =~ "将内力运遍浑身诸大要穴"
     end
   end
 
