@@ -90,7 +90,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `bibo_shengong/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `bibo_shengong/powerup.ex` ← `bibo-shengong/powerup.c`  (miss=4)
+- [x] ✅ `bibo_shengong/powerup.ex` ← `bibo-shengong/powerup.c`  (miss→0，PASS)
 
 ### `biluo_zhang/` （1 个，基线缺失 8 条）
 
