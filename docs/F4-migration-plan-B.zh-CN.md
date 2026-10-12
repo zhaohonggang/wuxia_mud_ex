@@ -48,7 +48,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `qishang_quan/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `qishang_quan/shang.ex` ← `qishang-quan/shang.c`  (miss=5)
+- [x] ✅ `qishang_quan/shang.ex` ← `qishang-quan/shang.c`  (miss=5)
 
 ### `qishi_ji/` （1 个，基线缺失 7 条）
 

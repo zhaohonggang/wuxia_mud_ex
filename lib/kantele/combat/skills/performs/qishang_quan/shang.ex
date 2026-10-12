@@ -11,15 +11,14 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "qishang-quan/shang"
+  @move_name "「伤字诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -28,9 +27,14 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    ap = (Stats.skill(stats, "cuff") + Stats.skill(stats, "force"))
+    ap = Stats.skill(stats, "cuff") + Stats.skill(stats, "force")
     lvl = Stats.skill(stats, "qishang-quan")
-    damage = (ap + Engine.rand(rng, div(ap, 3)))
+    damage = ap + Engine.rand(rng, div(ap, 3))
+
+    recoil =
+      character.meta.vitals.max_neili < 8000 and
+        Stats.skill(stats, "jiuyang-shengong") == 0 and
+        Stats.skill(stats, "buddhism") < 400
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,16 +42,19 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
           damage: damage,
+          recoil: recoil,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -78,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qishang-quan") < 220 -> {:error, "你的七伤拳不够娴熟，无法施展。\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功修为还不够，无法施展\n"}
+      Stats.skill(stats, "qishang-quan") < 220 -> {:error, "你的七伤拳不够娴熟，无法施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功修为还不够，无法施展#{@move_name}\n"}
       true -> :ok
     end
   end
@@ -88,8 +95,9 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "qishang-quan" ->
-        {:error, "你没有准备使用七伤拳，无法施展。\n"}
+      Stats.prepared_perform(stats, "cuff") == nil or
+          String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "qishang-quan" ->
+        {:error, "你没有准备使用七伤拳，无法施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -100,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -108,20 +116,17 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 120}
-    vitals = %{vitals | neili: vitals.neili - 260}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒喝一声，施出绝招「伤字诀」，双拳迅猛无比的袭向$n。", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 前置广播；消耗/Busy 依命中结果在 do_resolve_incoming 中反馈
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N怒喝一声，施出绝招「伤字诀」，双拳迅猛无比的袭向$n。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -131,7 +136,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「伤字诀」只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -149,25 +154,37 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Shang do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
+    recoil = Map.get(data, :recoil, false)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    dp = Stats.skill(stats, "force") + Stats.skill(stats, "parry")
+    hit = div(ap * 2, 3) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 260, 3)
-    msg = if hit, do: "只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！", else: "可是$p奋力招架，硬生生的挡开了$P这一招。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    {conn, character} =
+      if hit do
+        if recoil do
+          # 七伤拳反噬：不加内力，自身受创（此处以受伤文案呈现）
+          conn = Broadcast.publish(conn, "七伤拳的反噬愈来愈强！", bindings)
+          Performs.feedback(attacker, 0, 2)
+          {conn, character}
+        else
+          vitals = Vitals.damage(vitals, :qi, damage)
+          character = %{character | meta: %{character.meta | vitals: vitals}}
+          conn = Broadcast.publish(conn, "只见$P这一拳把$p飞了出去，重重的摔在地上，吐血不止！", bindings)
+          Performs.feedback(attacker, 260, 2)
+          {conn, character}
+        end
+      else
+        conn = Broadcast.publish(conn, "可是$p奋力招架，硬生生的挡开了$P这一招。", bindings)
+        Performs.feedback(attacker, 120, 3)
+        {conn, character}
+      end
+
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
