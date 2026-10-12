@@ -61,6 +61,7 @@ cibei_dao/sheshen.ex
 cuixin_zhang/cui.ex
 dabei_zhang/bei.ex
 dacheng_fosuo/chanrao.ex
+dacidabei_shou/yin.ex
 dagou_bang/ban.ex
 dagou_bang/chan.ex
 dagou_bang/chuo.ex

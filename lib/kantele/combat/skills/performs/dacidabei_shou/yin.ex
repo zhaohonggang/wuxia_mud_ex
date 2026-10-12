@@ -1,8 +1,23 @@
 defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   @moduledoc """
-  perform「yin」（source dacidabei-shou/yin.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「大手印」（source dacidabei-shou/yin.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：佛法>=200 → 目标在战斗中且存活 → 大慈大悲手>=180 →
+  基本手法>=180 → 臂力>=35 → 内力上限>=2000 → 真气>=800 → 准备 hand 为大慈大悲手 →
+  空手。命中判定 `attack = (exp/1000 + hand + neili/5 + random(...))/2` 对目标
+  `defense = exp/1000 + dodge + neili/7`：命中则伤害 `dacidabei-shou/40 * jiali`
+  （qi 伤，1/3 创伤），并可能击碎目标 cloth 护甲（armor<200 且 damage>500）；
+  攻击方命中额外扣 `jiali` 真气，收招统一扣 200 真气并忙乱 `2 + random(2)`。
+
+  差异（TODO(migrate)）：
+  - LPC 的 `armor->unequip(); move(environment); set("name", …); reset_action()`
+    折算为 `Combat.unequip(:cloth)`（本引擎护甲仅存于战斗快照，无地面掉落与
+    物品改名模型，`"破碎的"` 前缀文案保留以免信息丢失）；
+  - LPC 失手分支用 `SKILL_D(dodge_skill)->query_dodge_msg(target, 1)`（按目标
+    闪避技能取文案），折算为通用 `Messages.dodge_msg/0`；
+  - `.c` 的 `target->query_temp("armor/cloth")` 对应 `combat.equipped[:cloth]`；
+  - `living(target)` 门槛在攻击方无 meta 可查，由目标侧 `combat/perform-incoming`
+    的死亡检查兜底。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   alias Kantele.Combat.Performs
 
   @perform_id "dacidabei-shou/yin"
+  @move_name "「大手印」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -27,23 +43,39 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     character = conn.character
     combat = character.meta.combat
     stats = character.meta.stats
+    vitals = character.meta.vitals
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "dacidabei-shou")
+    # LPC: jiali = me->query("jiali") + 1;
+    jiali = combat.jiali + 1
+    # LPC: attack = me->query("combat_exp")/1000 + me->query_skill("hand") + me->query("neili")/5;
+    attack = div(stats.combat_exp, 1000) + Stats.skill(stats, "hand") + div(vitals.neili, 5)
+    # LPC: attack = (attack + random(attack + 1)) / 2;
+    attack = div(attack + Engine.rand(rng, attack + 1), 2)
+    # LPC: damage = me->query_skill("dacidabei-shou", 1) / 40 * jiali;
+    damage = div(lvl, 40) * jiali
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_levels(character),
+         :ok <- check_prepared(character),
+         :ok <- check_weapon(character) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          attack: attack,
+          damage: damage,
+          jiali: jiali,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -60,75 +92,79 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
-      :ok
+  # LPC: if (! target || ! me->is_fighting(target) || ! living(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
+  # LPC 顺序：buddhism < 200 → dacidabei-shou < 180 → hand < 180 →
+  #           query_str() < 35 → max_neili < 2000 → neili < 800
   defp check_levels(character) do
     stats = character.meta.stats
+    vitals = character.meta.vitals
 
     cond do
-      Stats.skill(stats, "buddhism") < 200 -> {:error, "你的佛法修为不足，无法施展该绝招！\n"}
-      Stats.skill(stats, "dacidabei-shou") < 180 -> {:error, "你的大慈大悲手不够娴熟，不会使用「大手印」！\n"}
-      Stats.skill(stats, "hand") < 180 -> {:error, "你的基本手法不够娴熟，不会使用「大手印」！\n"}
-      true -> :ok
-    end
-  end
+      Stats.skill(stats, "buddhism") < 200 ->
+        {:error, "你的佛法修为不足，无法施展该绝招！\n"}
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
+      Stats.skill(stats, "dacidabei-shou") < 180 ->
+        {:error, "你的大慈大悲手不够娴熟，不会使用#{@move_name}！\n"}
 
-    cond do
-      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "dacidabei-shou" ->
-        {:error, "你还没有准备大慈大悲手，无法施展「大手印」！\n"}
+      Stats.skill(stats, "hand") < 180 ->
+        {:error, "你的基本手法不够娴熟，不会使用#{@move_name}！\n"}
+
+      Stats.query_str(stats) < 35 ->
+        {:error, "你的臂力不够强，不能使用#{@move_name}！\n"}
+
+      vitals.max_neili < 2000 ->
+        {:error, "你的内力太弱，不能使用#{@move_name}！\n"}
+
+      vitals.neili < 800 ->
+        {:error, "你的内力太少了，无法使用出#{@move_name}！\n"}
 
       true ->
         :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
+  # LPC: if (me->query_skill_prepared("hand") != "dacidabei-shou")
+  defp check_prepared(character) do
+    case Stats.prepared_perform(character.meta.stats, "hand") do
+      nil ->
+        {:error, "你还没有准备大慈大悲手，无法施展#{@move_name}！\n"}
 
-    cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力太弱，不能使用「大手印」！\n"}
-      vitals.neili < 800 -> {:error, "你的内力太少了，无法使用出「大手印」！\n"}
-      true -> :ok
+      value ->
+        if String.split(value, "/") |> hd() == "dacidabei-shou" do
+          :ok
+        else
+          {:error, "你还没有准备大慈大悲手，无法施展#{@move_name}！\n"}
+        end
     end
   end
 
+  # LPC: if (objectp(me->query_temp("weapon")))
   defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手使用「大手印」！\n"}
-      true -> :ok
+    if Combat.weapon(character.meta.combat) != nil do
+      {:error, "你必须空手使用#{@move_name}！\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "( $n )", n1: character.name)
-
+  defp apply_effect(conn, character, target) do
+    # LPC: message_vision(HIR "\n$N突然面色通红，低声默念禅宗真言，双臂骨节一阵爆响，
+    #       猛然腾空而起，伸手向$n胸前按去，好一式「大手印」！\n" NOR, me, target);
+    # 命中/伤害/护甲击碎在目标侧结算（defense 需目标 combat_exp/dodge/neili）。
     conn
-    |> put_character(character)
+    |> Broadcast.publish(
+      "\n$N突然面色通红，低声默念禅宗真言，双臂骨节一阵爆响，猛然腾空而起，伸手向$n胸前按去，好一式「大手印」！\n",
+      n1: character.name,
+      n2: target.name
+    )
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
-    end
   end
 
   defp ref(character) do
@@ -138,37 +174,99 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "「大手印」只能在战斗中对对手使用。", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    attack = Map.get(data, :attack, 0)
+    damage = Map.get(data, :damage, 0)
+    jiali = Map.get(data, :jiali, 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.wound(vitals, :qi, div(damage, 3))
-    end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 1)
-    msg = if hit, do: "$n被$N击中！", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: defense = target->query("combat_exp")/1000 + target->query_skill("dodge")
+    #            + target->query("neili")/7;
+    defense = div(stats.combat_exp, 1000) + Stats.skill(stats, "dodge") + div(vitals.neili, 7)
+
+    # LPC: if (attack > defense)
+    if attack > defense do
+      {combat, conn} = break_cloth(conn, character, damage)
+
+      # LPC: tell_object(target, RED "你只觉得霍的胸口一阵剧痛，已经被拍中了前胸！\n" NOR);
+      conn =
+        render(conn, CommandView, "text", %{
+          text: "你只觉得霍的胸口一阵剧痛，已经被拍中了前胸！\n"
+        })
+
+      # LPC: target->receive_damage("qi", damage, me); target->receive_wound("qi", damage/3, me);
+      vitals =
+        vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage, 3))
+
+      character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+      # LPC: p = target->query("qi")*100/max_qi; msg = "( $n"+eff_status_msg(p)+" )\n";
+      ratio = div(vitals.qi * 100, max(vitals.max_qi, 1))
+
+      conn =
+        Broadcast.publish(conn, "( $n#{Messages.eff_status_msg(ratio)} )\n", n2: character.name)
+
+      # LPC: me->add("neili", -jiali); … me->add("neili", -200); me->start_busy(2+random(2));
+      Performs.feedback(attacker, jiali + 200, 2 + Engine.rand(rng, 2))
+
+      put_character(conn, character)
+    else
+      # LPC: message_vision(SKILL_D(dodge_skill)->query_dodge_msg(target, 1), me, target);
+      conn =
+        Broadcast.publish(conn, Messages.dodge_msg(),
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      # LPC: me->add("neili", -200); me->start_busy(2+random(2));
+      Performs.feedback(attacker, 200, 2 + Engine.rand(rng, 2))
+
+      put_character(conn, character)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-200"}], "assign_refs": [{"damage", "dacidabei-shou"}], "busy_lines": ["me->start_busy(2+random(2));"], "level_gates": [{"buddhism", "200"}, {"dacidabei-shou", "180"}, {"hand", "180"}], "prepared_gates": [{"hand", "dacidabei-shou"}], "remote_damage": false, "resource_gates": [{"max_neili", "2000"}, {"neili", "800"}], "set_flags": [{"value", "0"}]}
+  # LPC: if (objectp(armor = target->query_temp("armor/cloth"))
+  #      && armor->query("armor_prop/armor") < 200 && damage > 500) { … 击碎护甲 … }
+  defp break_cloth(conn, character, damage) do
+    case Map.get(character.meta.combat.equipped, :cloth) do
+      %{name: armor_name} = cloth when damage > 500 ->
+        if (Map.get(cloth, :armor) || 0) < 200 do
+          # LPC: message_vision(HIY "只见这斗大的手印正好印在$N的$n" HIY "上，越变越大，
+          #      竟将它震得粉碎，裂成一块块掉在地上！\n" NOR, target, armor);
+          conn =
+            Broadcast.publish(
+              conn,
+              "只见这斗大的手印正好印在$N的$n上，越变越大，竟将它震得粉碎，裂成一块块掉在地上！\n",
+              n1: character.name,
+              n2: armor_name
+            )
+
+          # LPC: armor->unequip(); armor->move(environment(target));
+          #      armor->set("name", "破碎的" + armor->query("name")); set value/armor 0;
+          #      target->reset_action();
+          # 本引擎护甲仅存于战斗快照，无地面掉落与物品改名模型：卸下 cloth 槽位即等价，
+          # 破碎后的名称仅作展示，故此处保留该前缀文案以免信息丢失。
+          _ = "破碎的"
+
+          {Combat.unequip(character.meta.combat, :cloth), conn}
+        else
+          {character.meta.combat, conn}
+        end
+
+      _ ->
+        {character.meta.combat, conn}
+    end
+  end
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # 
