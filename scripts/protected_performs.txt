@@ -109,8 +109,11 @@ feilong_zhang/fei.ex
 feixing_shu/hua.ex
 fenglei_panfa/fenglei.ex
 fenglei_zifa/she.ex
+fengmo_zhang/luan.ex
 fengyun_shou/qinna.ex
+fenxin_jue/powerup.ex
 fireice_strike/binghuo.ex
+five_avoid/break.ex
 force/power.ex
 fumo_jian/foxin.ex
 fumo_zhang/lun.ex
@@ -223,6 +226,7 @@ sanhua_zhang/san.ex
 sanku_shengong/powerup.ex
 sanwu_shou/wei.ex
 shangjia_dao/juan.ex
+shedu_qiqiao/liandu.ex
 shenxing_baibian/piao.ex
 shunv_jian/ning.ex
 songshan_jian/meng.ex

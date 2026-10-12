@@ -235,15 +235,15 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `fengmo_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `fengmo_zhang/luan.ex` ← `fengmo-zhang/luan.c`  (miss=7)
+- [x] ✅ `fengmo_zhang/luan.ex` ← `fengmo-zhang/luan.c`  (miss→0，PASS)
 
 ### `fenxin_jue/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `fenxin_jue/powerup.ex` ← `fenxin-jue/powerup.c`  (miss=4)
+- [x] ✅ `fenxin_jue/powerup.ex` ← `fenxin-jue/powerup.c`  (miss→0，PASS)
 
 ### `five_avoid/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `five_avoid/break.ex` ← `five-avoid/break.c`  (miss=4)
+- [x] ✅ `five_avoid/break.ex` ← `five-avoid/break.c`  (miss→0，PASS)
 
 ### `force/` （10 个，基线缺失 126 条）
 
