@@ -9,6 +9,8 @@ bagua_zhang/jia.ex
 bahuang_gong/powerup.ex
 bahuang_gong/shield.ex
 baibian_daxue/dian.ex
+baihua_cuoquan/luan.ex
+baihua_cuoquan/yi.ex
 baisheng_daofa/heng.ex
 banruo_zhang/feng.ex
 baxian_jian/dian.ex

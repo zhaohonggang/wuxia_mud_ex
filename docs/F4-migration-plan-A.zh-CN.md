@@ -63,8 +63,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `baihua_cuoquan/` （3 个，基线缺失 20 条）
 
 - [x] ✅ `baihua_cuoquan/hong.ex` ← `baihua-cuoquan/hong.c`  (miss=9→0，PASS；ap improve + 即死分支)
-- [ ] ❌ `baihua_cuoquan/luan.ex` ← `baihua-cuoquan/luan.c`  (miss=4)
-- [ ] ❌ `baihua_cuoquan/yi.ex` ← `baihua-cuoquan/yi.c`  (miss=7)
+- [x] ✅ `baihua_cuoquan/luan.ex` ← `baihua-cuoquan/luan.c`  (miss→0，PASS)
+- [x] ✅ `baihua_cuoquan/yi.ex` ← `baihua-cuoquan/yi.c`  (miss→0，PASS)
 
 ### `baihua_quan/` （1 个，基线缺失 4 条）
 
