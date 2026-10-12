@@ -14,12 +14,12 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "rulai-zhang/zong"
+  @move_name "「万佛朝宗」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,6 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "rulai-zhang")
-    i = 0
-    count = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,14 +36,18 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: Stats.skill(stats, "strike"),
+          max_neili: character.meta.vitals.max_neili,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不足，难以施展。\n"}
-      Stats.skill(stats, "rulai-zhang") < 150 -> {:error, "你千手如来掌火候不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不足，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "rulai-zhang") < 150 -> {:error, "你千手如来掌火候不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
 
     cond do
       Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "你现在没有激发心意气内功为内功，难以施展。\n"}
+        {:error, "你现在没有激发心意气内功为内功，难以施展#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "rulai-zhang" ->
-        {:error, "你没有准备千手如来掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "rulai-zhang" ->
+        {:error, "你没有准备千手如来掌，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -101,35 +104,28 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展#{@move_name}。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+    if Combat.weapon(character.meta.combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 300}
-    vitals = %{vitals | neili: vitals.neili - 500}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N当下更不耽搁，高呼佛号，轻飘飘拍出一掌，招式甚为寻常。但掌到中途，忽然微微摇晃，登时一掌变两掌，两掌变四掌，四掌变八掌！铺天盖地拍向$n。", n1: character.name)
-
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+  defp apply_effect(conn, character, target) do
+    # 前置广播（neili 消耗 / start_busy / do_attack 次数依赖命中与内力分支，交由 do_resolve）
+    Broadcast.publish(
+      conn,
+      "$N当下更不耽搁，高呼佛号，轻飘飘拍出一掌，招式甚为寻常。但掌到中途，忽然微微摇晃，登时一掌变两掌，两掌变四掌，四掌变八掌！铺天盖地拍向$n。",
+      n1: character.name,
+      n2: target.name
+    )
   end
 
   defp target(combat) do
@@ -153,20 +149,82 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 500, 3)
-    msg = Enum.random(["$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。", "随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。
+    ap = max(Map.get(data, :ap, 0), 1)
+    max_neili = Map.get(data, :max_neili, 0)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry") + Stats.query_dex(stats) * 10
+    enemy_max = character.meta.vitals.max_neili
 
-$n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。"])
+    hit = div(ap, 2) + rng.(ap) > dp
+
+    # LPC: 命中且 me->max_neili > target->max_neili * 2 时进入"万佛朝宗"断念斩杀分支
+    special = hit and max_neili > enemy_max * 2
+
+    {character, feedback} =
+      cond do
+        special ->
+          # set("eff_qi", 0); set("eff_jing", 0); neili -500; start_busy(3); 9× do_attack
+          vitals = %{character.meta.vitals | qi: 0, jing: 0}
+
+          {apply_hits(
+             %{character | meta: %{character.meta | vitals: vitals}},
+             ap,
+             dp,
+             9,
+             ap,
+             rng
+           ), {500, 3}}
+
+        hit ->
+          # count = ap / 9; neili -300; start_busy(1 + random(6)); 6× do_attack
+          {apply_hits(character, ap, dp, 6, div(ap, 9), rng), {300, 1 + rng.(6)}}
+
+        true ->
+          # count = 0; neili -300; start_busy(1 + random(6)); 6× do_attack
+          {apply_hits(character, ap, dp, 6, 0, rng), {300, 1 + rng.(6)}}
+      end
+
+    {cost, busy} = feedback
+    Performs.feedback(attacker, cost, busy)
+
+    msg =
+      cond do
+        special ->
+          "随即又听$N高声喝道：「我佛如来」顷刻间，但见$N八掌又变为十六掌，进而再幻化为三十二掌，掌势层层叠叠，波澜壮阔，气势磅礴，荡气回肠。如海潮般向$n涌去。\n\n$n面对这无穷无尽的掌势，竟然放弃了抵抗，面如死灰坐以待毙。"
+
+        hit ->
+          "\n$n见掌势层层叠叠，有如海潮，一时只觉头晕目眩，难作抵挡。"
+
+        true ->
+          "\n$n见掌势层层叠叠，有如海潮，连忙振作精神，勉强抵挡。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  # 折算 n 次 do_attack：逐次命中累计伤害（apply/attack 加成 bonus 并入判定）
+  defp apply_hits(character, ap, dp, n, bonus, rng) do
+    damage =
+      Enum.reduce(1..n, 0, fn _, damage_acc ->
+        if ap + bonus + rng.(ap) > dp do
+          per_hit = max(div(ap, 12), 1)
+          damage_acc + per_hit + rng.(per_hit)
+        else
+          damage_acc
+        end
+      end)
+
+    if damage > 0 do
+      vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+      %{character | meta: %{character.meta | vitals: vitals}}
+    else
+      character
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
