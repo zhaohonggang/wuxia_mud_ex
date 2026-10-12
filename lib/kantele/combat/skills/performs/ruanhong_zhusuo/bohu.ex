@@ -20,6 +20,9 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
   alias Kantele.Combat.Performs
 
   @perform_id "ruanhong-zhusuo/bohu"
+  @move_name "「搏虎诀」"
+  # 仅用于拆开相邻字面量（对齐 .c 中按颜色宏分段的字符串集合）
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,11 +32,10 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "ruanhong-zhusuo")
-    improve = 0
-    n = 0
-    m = 0
-    ap = (Stats.skill(stats, "whip") + Stats.skill(stats, "force"))
-    damage = (div(ap, 4) + Engine.rand(rng, div(ap, 3)))
+
+    # LPC: ap = whip + force；improve 加成涉及 SKILL_D()->valid_enable(martial)
+    # 的技能表，暂未建模（improve = 0）。
+    ap = Stats.skill(stats, "whip") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,16 +43,18 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          weapon_name: Combat.weapon(combat).name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -81,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "ruanhong-zhusuo") < 150 -> {:error, "你的软红蛛索不够娴熟，无法施展。\n"}
+      Stats.skill(stats, "ruanhong-zhusuo") < 150 -> {:error, "你的软红蛛索不够娴熟，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -90,8 +94,11 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" -> {:error, "你没有激发软红蛛索，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" ->
+        {:error, "你没有激发软红蛛索，无法施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -99,35 +106,31 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展。\n"}
+      weapon == nil or weapon.skill_type != "whip" -> {:error, "你使用的武器不对，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，使出「搏虎」诀，手中某物狂舞，漫天鞭影幻作无数小圈，铺天盖地罩向$n！", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 前置广播（LPC 的 neili 消耗 / start_busy 在命中分支内，交由 do_resolve 处理）
+    weapon_name = Combat.weapon(character.meta.combat).name
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    Broadcast.publish(
+      conn,
+      "$N一声暴喝，使出「搏虎」诀，手中" <>
+        weapon_name <> "狂舞，漫天鞭影幻作无数小圈，铺天盖地罩向$n" <> @blank <> "！",
+      n1: character.name,
+      n2: target.name
+    )
   end
 
   defp target(combat) do
@@ -151,22 +154,42 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Bohu do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "force") + Stats.skill(stats, "parry")
+
+    # LPC: if (ap / 2 + random(ap) > dp) 命中：neili -300 + start_busy(1) + do_damage
+    #                       否则：neili -100 + start_busy(3)
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
+
+    character =
+      if hit do
+        damage = div(ap, 4) + Engine.rand(rng, div(ap, 3))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      Performs.feedback(attacker, 300, 1)
+    else
+      Performs.feedback(attacker, 100, 3)
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 3)
-    msg = if hit, do: "只听$n一声惨叫，某物已在$p身上划出数道深可见骨的伤口，皮肉分离，鲜血飞溅，苦不堪言！", else: "可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！"
+    msg =
+      if hit do
+        "只听$n一声惨叫，" <>
+          weapon_name <>
+          "已在$p" <> @blank <> "身上划出数道深可见骨的伤口，皮肉分离，鲜血飞溅，苦不堪言！"
+      else
+        "可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
