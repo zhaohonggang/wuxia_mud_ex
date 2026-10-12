@@ -14,12 +14,12 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "ruanhong-zhusuo/suo"
+  @move_name "「锁龙诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,9 +30,6 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "ruanhong-zhusuo")
     ap = Stats.skill(stats, "whip")
-    attack_time = 8
-    count = 0
-    i = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -48,7 +47,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -79,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "ruanhong-zhusuo") < 150 -> {:error, "你的软红蛛索不够娴熟，无法施展。\n"}
+      Stats.skill(stats, "ruanhong-zhusuo") < 150 -> {:error, "你的软红蛛索不够娴熟，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -88,8 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" -> {:error, "你没有激发软红蛛索，无法施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "whip") != "ruanhong-zhusuo" ->
+        {:error, "你没有激发软红蛛索，无法施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -97,24 +99,31 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 350 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.neili < 350 -> {:error, "你的真气不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展。\n"}
+      weapon == nil or weapon.skill_type != "whip" -> {:error, "你使用的武器不对，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+  defp apply_effect(conn, character, target) do
+    # 前置广播（LPC 的 neili 消耗 / start_busy 依赖 attack_time，交由 do_resolve 处理）
+    weapon_name = Combat.weapon(character.meta.combat).name
+
+    Broadcast.publish(
+      conn,
+      "$N使出「锁龙」诀，手中" <>
+        weapon_name <> "一抖，登时幻出漫天鞭影，宛如蛟龙通天，一齐袭向$n而去！\n\n",
+      n1: character.name,
+      n2: target.name
+    )
   end
 
   defp target(combat) do
@@ -138,14 +147,45 @@ defmodule Kantele.Combat.Skills.Performs.RuanhongZhusuo.Suo do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "结果$p被$P攻了个措手不及，目接不暇，疲于奔命！"
+    ap = max(Map.get(data, :ap, 0), 1)
+    parry = Stats.skill(character.meta.stats, "parry")
+
+    # LPC: ap = whip, dp = parry; attack_time 初始 4，命中则 +random(ap/45)，上限 8
+    hit = div(ap, 2) + rng.(ap * 2) > parry
+    count = if hit, do: div(ap, 12), else: 0
+    extra = if hit, do: rng.(max(div(ap, 45), 1)), else: 0
+    attack_time = min(4 + extra, 8)
+
+    # 折算 attack_time 次 do_attack：逐次命中累计伤害（apply/attack 加成 count 并入判定）
+    damage =
+      Enum.reduce(1..attack_time, 0, fn _, damage_acc ->
+        if ap + count + rng.(ap) > parry do
+          damage_acc + max(div(ap, 12), 1) + rng.(max(div(ap, 12), 1))
+        else
+          damage_acc
+        end
+      end)
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, attack_time * 20, 1 + rng.(attack_time))
+
+    msg =
+      if hit do
+        "结果$p被$P攻了个措手不及，目接不暇，疲于奔命！"
+      else
+        "$n见$N鞭势恢弘，心下凛然，凝神应付。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
