@@ -190,7 +190,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `dashou_yin/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `dashou_yin/yin.ex` ← `dashou-yin/yin.c`  (miss=5)
+- [x] ✅ `dashou_yin/yin.ex` ← `dashou-yin/yin.c`  (miss→0，PASS)
 
 ### `dongyang_dao/` （1 个，基线缺失 3 条）
 
