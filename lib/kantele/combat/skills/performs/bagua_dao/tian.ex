@@ -224,8 +224,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Tian do
 
     character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
 
-    # me->add("neili", -250); me->start_busy(1 + random(8))
-    Performs.feedback(attacker, 250, 1 + Engine.rand(rng, 8))
+    # me->add("neili", -250) 已在 apply_effect（攻击方本地）立即扣除，
+    # 此处回执仅负责忙乱 `me->start_busy(1 + random(8))`，故 neili_cost 传 0。
+    Performs.feedback(attacker, 0, 1 + Engine.rand(rng, 8))
 
     conn
     |> maybe_publish_hit(hit?)
