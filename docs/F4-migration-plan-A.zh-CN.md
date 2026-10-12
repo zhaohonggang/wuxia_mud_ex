@@ -127,10 +127,10 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `canhe_zhi/` （4 个，基线缺失 32 条）
 
-- [ ] ❌ `canhe_zhi/canhe.ex` ← `canhe-zhi/canhe.c`  (miss=14)
+- [x] ✅ `canhe_zhi/canhe.ex` ← `canhe-zhi/canhe.c`  (miss→0，PASS)
 - [x] ✅ `canhe_zhi/jin.ex` ← `canhe-zhi/jin.c`  (miss→0，PASS)
-- [ ] ❌ `canhe_zhi/you.ex` ← `canhe-zhi/you.c`  (miss=6)
-- [ ] ❌ `canhe_zhi/zhi.ex` ← `canhe-zhi/zhi.c`  (miss=5)
+- [x] ✅ `canhe_zhi/you.ex` ← `canhe-zhi/you.c`  (miss→0，PASS)
+- [x] ✅ `canhe_zhi/zhi.ex` ← `canhe-zhi/zhi.c`  (miss→0，PASS)
 
 ### `changsheng_jue/` （2 个，基线缺失 8 条）
 

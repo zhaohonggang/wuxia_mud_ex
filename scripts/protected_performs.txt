@@ -38,7 +38,10 @@ boyun_suowu/meng.ex
 caiyan_gong/huan.ex
 canghong_bifa/jing.ex
 canglang_zhi/tao.ex
+canhe_zhi/canhe.ex
 canhe_zhi/jin.ex
+canhe_zhi/you.ex
+canhe_zhi/zhi.ex
 chanhun_suo/duo.ex
 chanhun_suo/suo.ex
 chousui_zhang/dan.ex
@@ -185,6 +188,7 @@ ruyi_dao/ruyi.ex
 ruying_suixingtui/ruying.ex
 sad_strike/tuo.ex
 sanhua_zhang/san.ex
+sanku_shengong/powerup.ex
 sanwu_shou/wei.ex
 shangjia_dao/juan.ex
 shenxing_baibian/piao.ex

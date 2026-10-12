@@ -314,6 +314,7 @@ defmodule Kantele.Character.CombatEvent do
   # 攻击方回执：按目标结算的分支扣内力/回复并进入忙乱（dan.c 的 me->add/start_busy）
   # 可选 `:gain_neili` / `:gain_qi` / `:gain_jing` 供吸取类绝招回补攻击方。
   # 可选 `:gain_max_neili` 供吸取类绝招永久增加攻击方 max_neili（受 max_neili_limit 约束）。
+  # 可选 `:wound_qi` 供"被目标反伤"类绝招（canhe-zhi/canhe.c 的格反分支）对攻击方造成外伤。
   def perform_feedback(conn, %{data: data}) do
     neili_cost = Map.get(data, :neili_cost, 0)
     busy = Map.get(data, :busy, 0)
@@ -321,6 +322,7 @@ defmodule Kantele.Character.CombatEvent do
     gain_qi = Map.get(data, :gain_qi, 0)
     gain_jing = Map.get(data, :gain_jing, 0)
     gain_max_neili = Map.get(data, :gain_max_neili, 0)
+    wound_qi = Map.get(data, :wound_qi, 0)
 
     character = conn.character
 
@@ -332,6 +334,7 @@ defmodule Kantele.Character.CombatEvent do
       vitals = Vitals.heal(vitals, :neili, gain_neili)
       vitals = Vitals.heal(vitals, :qi, gain_qi)
       vitals = Vitals.heal(vitals, :jing, gain_jing)
+      vitals = Vitals.wound(vitals, :qi, wound_qi)
 
       if gain_max_neili > 0 do
         limit = character.meta.stats.max_neili_limit || vitals.base_neili * 2
