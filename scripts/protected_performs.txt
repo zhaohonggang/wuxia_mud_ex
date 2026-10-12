@@ -141,7 +141,7 @@ shangjia_dao/juan.ex
 shenxing_baibian/piao.ex
 shunv_jian/ning.ex
 songshan_jian/meng.ex
-sougu/veyingyang.ex
+sougu/muyeyingyang.ex
 sun_finger/dian.ex
 suqin_beijian/can.ex
 suxin_jian/lian.ex

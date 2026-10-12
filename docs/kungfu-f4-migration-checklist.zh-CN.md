@@ -242,7 +242,7 @@
 - [ ] `six-finger/zongheng` perform「zongheng」 门槛: level:six-finger>=120; assign:ap=six-finger,dp=force; map:finger=six-finger; res:neili>=100 | 效果: busy | 依赖: 无
 - [ ] `sixiang-bufa/fei` perform「飞天神行」 门槛: level:dodge>=150,force>=150,sixiang-bufa>=150; assign:skill=sixiang-bufa; res:max_neili>=1000,neili>=250 | 效果: add:neili -200; temp:fei_tian; busy | 依赖: 无
 - [x] `songshan-jian/meng` perform「如梦如幻」 门槛: level:songshan-jian>=40; assign:level=songshan-jian; map:sword=songshan-jian; res:neili>=120 | 效果: add:neili -80; busy | 依赖: 无
-- [ ] `sougu/muyeyingyang` perform「muyeyingyang」 门槛: level:sougu>=150; res:neili>=800 | 效果: add:neili -150; busy | 依赖: 无
+- [x] `sougu/muyeyingyang` perform「muyeyingyang」 门槛: level:sougu>=150; res:neili>=800 | 效果: add:neili -150; busy | 依赖: 无
 - [ ] `sougu-yingzhua/ying` perform「ying」 门槛: level:sougu-yingzhua>=150; res:neili>=800 | 效果: add:neili -150; busy | 依赖: 无
 - [ ] `sun-finger/dian` perform「dian」 门槛: level:sun-finger>=80; assign:ap=finger,dp=parry; map:finger=sun-finger | 效果: busy | 依赖: 无
 - [ ] `sun-finger/heal` perform「heal」 门槛: res:jing>=100,max_neili>=1500,neili>=1000,neili>=200 | 效果: add:neili -1000; set:jing=1,qi=1; busy | 依赖: 无
