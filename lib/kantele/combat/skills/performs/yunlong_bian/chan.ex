@@ -14,12 +14,10 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "yunlong-bian/chan"
+  @move_name "「缠字诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -36,14 +34,17 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          whip: Stats.skill(stats, "whip"),
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -74,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yunlong-bian") < 50 -> {:error, "你云龙鞭法火候太浅，难以施展。\n"}
+      Stats.skill(stats, "yunlong-bian") < 50 -> {:error, "你云龙鞭法火候太浅，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -83,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yunlong-bian" -> {:error, "你没有激发云龙鞭法，难以施展。\n"}
+      Stats.mapped(stats, "whip") != "yunlong-bian" -> {:error, "你没有激发云龙鞭法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -92,29 +93,38 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 50 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "whip" -> {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
+    # 攻击方消耗/Busy + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 30}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出云龙鞭法「缠」字诀，连挥某物企图把$n的全身缠住。", n1: character.name)
+
+    weapon_name = Combat.weapon(combat).name
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N使出云龙鞭法「缠」字诀，连挥" <> weapon_name <> "企图把$n的全身缠住。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -137,23 +147,37 @@ defmodule Kantele.Combat.Skills.Performs.YunlongBian.Chan do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    whip = Map.get(data, :whip, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 30, 2)
-    msg = "结果$p顿时被$P的鞭势牢牢缠住，攻得措手不及！"
+    parry = Stats.skill(character.meta.stats, "parry")
+
+    hit = rng.(whip) > div(parry, 2)
+
+    if hit do
+      combat = character.meta.combat
+      combat = Combat.start_busy(combat, div(whip, 22) + 1)
+      character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    end
+
+    msg =
+      if hit do
+        "结果$p顿时被$P的鞭势牢牢缠住，攻得措手不及！"
+      else
+        "可是$p看破了$P的企图，并没有上当。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
