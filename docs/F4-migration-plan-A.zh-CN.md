@@ -260,11 +260,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `freezing_force/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `freezing_force/powerup.ex` ← `freezing-force/powerup.c`  (miss=4)
+- [x] ✅ `freezing_force/powerup.ex` ← `freezing-force/powerup.c`  (miss→0，PASS)
 
 ### `fushang_neigong/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `fushang_neigong/powerup.ex` ← `fushang-neigong/powerup.c`  (miss=4)
+- [x] ✅ `fushang_neigong/powerup.ex` ← `fushang-neigong/powerup.c`  (miss→0，PASS)
 
 ### `guanri_jian/` （2 个，基线缺失 20 条）
 

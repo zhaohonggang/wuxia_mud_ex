@@ -125,10 +125,12 @@ force/roar.ex
 force/shot.ex
 force/tianmo.ex
 force/xun.ex
+freezing_force/powerup.ex
 fumo_jian/foxin.ex
 fumo_zhang/lun.ex
 furong_jian/luan.ex
 furong_jinzhen/xian.ex
+fushang_neigong/powerup.ex
 guxing_jian/lian.ex
 guyue_chan/jing.ex
 hanmei_jian/leng.ex
