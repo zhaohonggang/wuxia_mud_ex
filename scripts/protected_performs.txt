@@ -78,6 +78,7 @@ danding_dao/kou.ex
 daojian_guizhen/daojian.ex
 daojian_guizhen/xue.ex
 dashou_yin/yin.ex
+dongyang_dao/luan.ex
 dongyang_dao/zhan.ex
 duanjia_jian/jing.ex
 duanjia_jian/lian.ex

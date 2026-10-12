@@ -194,7 +194,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `dongyang_dao/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `dongyang_dao/luan.ex` ← `dongyang-dao/luan.c`  (miss=3)
+- [x] ✅ `dongyang_dao/luan.ex` ← `dongyang-dao/luan.c`  (miss→0，PASS)
 
 ### `douzhuan_xingyi/` （1 个，基线缺失 7 条）
 
