@@ -161,6 +161,8 @@ heixue_shenzhen/luo.ex
 henshan_jian/huan.ex
 henshan_quan/lan.ex
 hexing_bifa/dian.ex
+honglian_dao/huo.ex
+hongye_daofa/kuang.ex
 hongye_daofa/leiting.ex
 houquan/zhen.ex
 huashan_jian/jie.ex

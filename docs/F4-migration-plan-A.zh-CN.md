@@ -322,11 +322,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `honglian_dao/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `honglian_dao/huo.ex` ← `honglian-dao/huo.c`  (miss=8)
+- [x] ✅ `honglian_dao/huo.ex` ← `honglian-dao/huo.c`  (miss→0，PASS)
 
 ### `hongye_daofa/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `hongye_daofa/kuang.ex` ← `hongye-daofa/kuang.c`  (miss=4)
+- [x] ✅ `hongye_daofa/kuang.ex` ← `hongye-daofa/kuang.c`  (miss→0，PASS)
 
 ### `hua_quan/` （1 个，基线缺失 7 条）
 
