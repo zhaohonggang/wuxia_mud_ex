@@ -96,7 +96,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `ruyi_dao/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `ruyi_dao/ruyi.ex` ← `ruyi-dao/ruyi.c`  (miss=5)
+- [x] ✅ `ruyi_dao/ruyi.ex` ← `ruyi-dao/ruyi.c`  (miss=5→0，PASS)
 
 ### `ruying_suixingtui/` （1 个，基线缺失 11 条）
 
