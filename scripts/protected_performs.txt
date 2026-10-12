@@ -81,6 +81,10 @@ dashou_yin/yin.ex
 dongyang_dao/luan.ex
 dongyang_dao/zhan.ex
 douzhuan_xingyi/yi.ex
+dragon_strike/hui.ex
+dragon_strike/lei.ex
+dragon_strike/qin.ex
+dragon_strike/xiang.ex
 duanjia_jian/jing.ex
 duanjia_jian/lian.ex
 duanjia_sword/jing.ex

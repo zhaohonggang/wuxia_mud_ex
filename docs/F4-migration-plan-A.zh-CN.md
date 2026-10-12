@@ -202,10 +202,10 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `dragon_strike/` （4 个，基线缺失 41 条）
 
-- [ ] ❌ `dragon_strike/hui.ex` ← `dragon-strike/hui.c`  (miss=17)
-- [ ] ❌ `dragon_strike/lei.ex` ← `dragon-strike/lei.c`  (miss=9)
-- [ ] ❌ `dragon_strike/qin.ex` ← `dragon-strike/qin.c`  (miss=14)
-- [ ] ❌ `dragon_strike/xiang.ex` ← `dragon-strike/xiang.c`  (miss=1)
+- [x] ✅ `dragon_strike/hui.ex` ← `dragon-strike/hui.c`  (miss→0，PASS)
+- [x] ✅ `dragon_strike/lei.ex` ← `dragon-strike/lei.c`  (miss→0，PASS)
+- [x] ✅ `dragon_strike/qin.ex` ← `dragon-strike/qin.c`  (miss→0，PASS)
+- [x] ✅ `dragon_strike/xiang.ex` ← `dragon-strike/xiang.c`  (miss→0，PASS)
 
 ### `duanjia_sword/` （1 个，基线缺失 3 条）
 
