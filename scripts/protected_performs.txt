@@ -153,3 +153,6 @@ tiangang_zhi/ling.ex
 wudang_jian/sheng.ex
 xiyang_jian/ci.ex
 yunhe_jian/chong.ex
+qixian_wuxingjian/shan.ex
+qixian_wuxingjian/yin.ex
+qixian_wuxingjian/zhu.ex

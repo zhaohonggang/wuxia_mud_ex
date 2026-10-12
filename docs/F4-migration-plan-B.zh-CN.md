@@ -6,7 +6,13 @@
 ## 目标
 
 把本组每个 `performs/<skill>/<move>.ex` 的**代码部分（不含注释）**改到与对应 LPC 源
-`C:/files/git/mud/kungfu/skill/<lpc-rel>.c` 的**代码部分（不含注释）**中的中文文案**语义等价**。
+`C:/files/git/mud/kungfu/skill/<lpc-rel>.c` 的**代码部分（不含注释）**中的中文文案**逐条字面一致**。
+
+> **判据不模糊（2026-10-12 决策）**：不做「语义等价/同义改写」的宽松判定。
+> `.c` 里怎么写，`.ex` 就怎么写：`难以施展`≠`无法施展`、`修为不够`≠`不够娴熟`、`真气不够`≠`真气不足`。
+> 名字插在字符串中间时（如 `"…手中" + weapon->name() + "，发出…"`），
+> `.ex` 必须**同样拆段**（`"…手中" <> weapon_name <> "，发出…"`），不得合并成单字面量；
+> 中文弯引号 `“”‘’` 按 `.c` 原样保留。
 
 具体包括（LPC → Elixir）：
 
@@ -52,9 +58,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `qixian_wuxingjian/` （3 个，基线缺失 32 条）
 
-- [ ] ❌ `qixian_wuxingjian/shan.ex` ← `qixian-wuxingjian/shan.c`  (miss=11)
-- [ ] ❌ `qixian_wuxingjian/yin.ex` ← `qixian-wuxingjian/yin.c`  (miss=11)
-- [ ] ❌ `qixian_wuxingjian/zhu.ex` ← `qixian-wuxingjian/zhu.c`  (miss=10)
+- [x] ✅ `qixian_wuxingjian/shan.ex` ← `qixian-wuxingjian/shan.c`  (miss=11)
+- [x] ✅ `qixian_wuxingjian/yin.ex` ← `qixian-wuxingjian/yin.c`  (miss=11)
+- [x] ✅ `qixian_wuxingjian/zhu.ex` ← `qixian-wuxingjian/zhu.c`  (miss=10)
 
 ### `qixing_quan/` （1 个，基线缺失 5 条）
 

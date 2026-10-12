@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
   alias Kantele.Combat.Performs
 
   @perform_id "qixian-wuxingjian/shan"
+  @move_name "「七弦黄龙闪」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -31,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
     lvl = Stats.skill(stats, "qixian-wuxingjian")
     skill = Stats.skill(stats, "qixian-wuxingjian")
     ap = Stats.skill(stats, "force")
-    damage = (ap + skill)
+    damage = ap + skill
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,16 +40,19 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
           damage: damage,
+          max_neili: character.meta.vitals.max_neili,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -79,55 +83,70 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qixian-wuxingjian") < 160 -> {:error, "你的七弦无形剑修为有限，难以施展。\n"}
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展。\n"}
-      true -> :ok
-    end
-  end
+      Stats.skill(stats, "qixian-wuxingjian") < 160 ->
+        {:error, "你的七弦无形剑修为有限，难以施展#{@move_name}。\n"}
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "sword") != "qixian-wuxingjian" ->
-        {:error, "你没有准备七弦无形剑，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "qixian-wuxingjian" ->
-        {:error, "你没有准备七弦无形剑，难以施展。\n"}
+      Stats.skill(stats, "force") < 250 ->
+        {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
+  defp check_mapped(character) do
+    weapon = Combat.weapon(character.meta.combat)
+    stats = character.meta.stats
+
+    cond do
+      weapon && Stats.mapped(stats, "sword") != "qixian-wuxingjian" ->
+        {:error, "你没有准备七弦无形剑，难以施展#{@move_name}。\n"}
+
+      not weapon &&
+          prepared_unarmed(Stats.prepared_perform(stats, "unarmed")) != "qixian-wuxingjian" ->
+        {:error, "你没有准备七弦无形剑，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp prepared_unarmed(nil), do: nil
+  defp prepared_unarmed(prepared), do: prepared |> String.split("/") |> hd()
+
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 600 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 600 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，难以施展。\n"}
-    #   {:error, "你的七弦无形剑修为有限，难以施展。\n"}
-    :ok
+    weapon = Combat.weapon(character.meta.combat)
 
+    if weapon && Map.get(weapon, :skill_type) != "sword" do
+      {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N一声暴喝，单手迅速在某物上拨动数下，顿时琴音铮铮大响，只听“啵”的
-一声破空之响，一束无形剑气澎湃射出，直贯$n而去。", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 前置广播：攻击方文案；内力消耗/忙乱由目标侧结算后经 perform-feedback 回执
+    weapon = Combat.weapon(character.meta.combat)
+
+    msg =
+      if weapon do
+        "只见$N一声暴喝，单手迅速在" <>
+          (Map.get(weapon, :name) || "某物") <>
+          "上拨动数下，顿时琴音铮铮大响，只听“啵”的一声破空之响，一束无形剑气澎湃射出，直贯$n而去。"
+      else
+        "只见$N一声暴喝，陡然间十指一并箕张，顿时琴音铮铮大响，只听“啵”的一声破空之响，一束无形剑气澎湃射出，直贯$n而去。"
+      end
+
+    conn = Broadcast.publish(conn, msg, n1: character.name, n2: target.name)
 
     conn
     |> put_character(character)
@@ -155,25 +174,45 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(stats, "force")
+    attacker_max_neili = Map.get(data, :max_neili, 0)
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 2)
-    msg = if hit, do: "$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。", else: "可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    cond do
+      vitals.max_neili < 10 ->
+        Performs.feedback(attacker, 100, 2)
+        Broadcast.publish(conn, Messages.interpolate("$N这一招施出，可是$n竟像没事一般，丝毫无损。", bindings))
+
+      Kantele.Character.is_player?(character) && vitals.max_neili + 500 > attacker_max_neili ->
+        Performs.feedback(attacker, 100, 2)
+        Broadcast.publish(conn, Messages.interpolate("可是$n内力深厚，轻而易举受下$N这一招，丝毫无损。", bindings))
+
+      div(ap, 2) + Engine.rand(rng, ap) < dp ->
+        Performs.feedback(attacker, 100, 2)
+
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("可是$n急忙凝神聚气，努力使自己不受琴音的干扰，终于化解了这一招。", bindings)
+        )
+
+      true ->
+        vitals = Vitals.damage(vitals, :qi, damage)
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        Performs.feedback(attacker, 300, 2)
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate("$n只觉得$N内力激荡，琴音犹如一柄利剑穿透鼓膜，“哇”的喷出一口鲜血。", bindings)
+          )
+
+        put_character(conn, character)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
