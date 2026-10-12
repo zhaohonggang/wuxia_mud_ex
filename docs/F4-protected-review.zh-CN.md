@@ -4,10 +4,10 @@
 
 ## 背景
 
-`scripts/protected_performs.txt` 当前共 **162** 条受保护 perform。
+`scripts/protected_performs.txt` 当前共 **173** 条受保护 perform。
 用**严格判据**（`.ex` 代码内中文文案 vs `.c` 代码内中文文案，**逐条字面一致，不做模糊等价**）复核：
 
-- **PASS = 9**，**FAIL = 153**，MISSING 合计 **1481** 条（均 9.7/文件）。
+- **PASS = 20**，**FAIL = 153**，MISSING 合计 **1481** 条。
 - 判据 = `check_one`：`Counter(norm(src)) - Counter(norm(tgt))` 为空才 PASS（MISSING 必须为空；EXTRA 不判错）。
 - 本计划**独立于 A/B 号计划**，可并行执行；A/B 只处理非受保护文件。
 
@@ -15,12 +15,23 @@
 
 - `bagua_biao/xian.ex`
 - `bagua_dao/tian.ex`
+- `bagua_quan/gua.ex`
+- `bagua_zhang/ding.ex`
+- `bagua_zhang/jia.ex`
+- `bahuang_gong/powerup.ex`
+- `bahuang_gong/shield.ex`
 - `banruo_zhang/feng.ex`
+- `qishang_quan/shang.ex`
 - `qixian_wuxingjian/shan.ex`
 - `qixian_wuxingjian/yin.ex`
 - `qixian_wuxingjian/zhu.ex`
 - `qixing_quan/zhai.ex`
 - `qixing_shou/po.ex`
+- `quanzhen_jian/hua.ex`
+- `quanzhen_jian/lian.ex`
+- `quemen_jian/can.ex`
+- `qufannao_zhi/lingkong.ex`
+- `qujing_gunfa/zhen.ex`
 - `sougu/muyeyingyang.ex`
 
 ## 待复核 / 待修订
@@ -197,4 +208,3 @@
 | 文件 | 理由 | 处理 |
 |---|---|---|
 | （待填） | | |
-
