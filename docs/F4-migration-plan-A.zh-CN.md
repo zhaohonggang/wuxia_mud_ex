@@ -250,13 +250,13 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 - [ ] ❌ `force/dispel.ex` ← `force/dispel.c`  (miss=30)
 - [ ] ❌ `force/heal.ex` ← `force/heal.c`  (miss=19)
 - [ ] ❌ `force/inspire.ex` ← `force/inspire.c`  (miss=19)
-- [ ] ❌ `force/lifeheal.ex` ← `force/lifeheal.c`  (miss=10)
-- [ ] ❌ `force/recover.ex` ← `force/recover.c`  (miss=3)
-- [ ] ❌ `force/regenerate.ex` ← `force/regenerate.c`  (miss=4)
+- [x] ✅ `force/lifeheal.ex` ← `force/lifeheal.c`  (miss→0，PASS)
+- [x] ✅ `force/recover.ex` ← `force/recover.c`  (miss→0，PASS)
+- [x] ✅ `force/regenerate.ex` ← `force/regenerate.c`  (miss→0，PASS)
 - [ ] ❌ `force/roar.ex` ← `force/roar.c`  (miss=14)
 - [ ] ❌ `force/shot.ex` ← `force/shot.c`  (miss=14)
-- [ ] ❌ `force/tianmo.ex` ← `force/tianmo.c`  (miss=6)
-- [ ] ❌ `force/xun.ex` ← `force/xun.c`  (miss=7)
+- [x] ✅ `force/tianmo.ex` ← `force/tianmo.c`  (miss→0，PASS)
+- [x] ✅ `force/xun.ex` ← `force/xun.c`  (miss→0，PASS)
 
 ### `freezing_force/` （1 个，基线缺失 4 条）
 

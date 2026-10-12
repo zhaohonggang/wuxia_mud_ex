@@ -114,7 +114,12 @@ fengyun_shou/qinna.ex
 fenxin_jue/powerup.ex
 fireice_strike/binghuo.ex
 five_avoid/break.ex
+force/lifeheal.ex
 force/power.ex
+force/recover.ex
+force/regenerate.ex
+force/tianmo.ex
+force/xun.ex
 fumo_jian/foxin.ex
 fumo_zhang/lun.ex
 furong_jian/luan.ex
