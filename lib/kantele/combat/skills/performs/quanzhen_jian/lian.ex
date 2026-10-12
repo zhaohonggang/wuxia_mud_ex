@@ -16,10 +16,10 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "quanzhen-jian/lian"
+  @move_name "「三连环」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "quanzhen-jian")
-    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "unarmed"))
-    damage = (div(ap, 2) + Engine.rand(rng, ap))
+    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "unarmed")
+    damage = div(ap, 2) + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -47,7 +49,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -64,7 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC 门槛顺序：无剑 → quanzhen-jian<180 → mapped(sword) → mapped(strike∈{haotian-zhang,chongyang-shenzhang}) → neili<400
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -78,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "quanzhen-jian") < 180 -> {:error, "你全真剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "quanzhen-jian") < 180 -> {:error, "你全真剑法不够娴熟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,10 +89,15 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "quanzhen-jian" -> {:error, "你没有激发全真剑法，难以施展。\n"}
-      Stats.mapped(stats, "strike") != "haotian-zhang" -> {:error, "你没有激发全真的掌法，难以施展。\n"}
-      Stats.mapped(stats, "strike") != "chongyang-shenzhang" -> {:error, "你现在的真气不足，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "quanzhen-jian" ->
+        {:error, "你没有激发全真剑法，难以施展#{@move_name}。\n"}
+
+      Stats.mapped(stats, "strike") != "haotian-zhang" and
+          Stats.mapped(stats, "strike") != "chongyang-shenzhang" ->
+        {:error, "你没有激发全真的掌法，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -98,29 +105,29 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 400 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中无剑，如何施展绝技。\n"}
-    :ok
+    weapon = Combat.weapon(character.meta.combat)
 
+    cond do
+      weapon == nil or weapon.skill_type != "sword" -> {:error, "你手中无剑，如何施展#{@move_name}绝技。\n"}
+      true -> :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    vitals = %{vitals | neili: vitals.neili - 60}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的绝招。", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 前置广播；消耗/Busy 依命中结果在 do_resolve_incoming 中反馈
+    conn =
+      Broadcast.publish(
+        conn,
+        "拆得数招，$N左剑平刺，右掌正击，同时左腿横扫而出，正是全真派中的#{@move_name}绝招。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -130,7 +137,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「三连环」只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -148,25 +155,34 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    dp = Stats.skill(stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 60, 3)
-    msg = if hit, do: "只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N身法一变，唰地一腿，贴地向$n横扫而出，只带得地上尘土飞扬。",
+        bindings
+      )
+
+    if Engine.rand(rng, ap) > div(dp, 2) do
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      Performs.feedback(attacker, 210, 3)
+      conn = Broadcast.publish(conn, "只见$n躲闪不及，已经被$N一腿扫中，惨叫声中，向后跌出丈许。", bindings)
+      put_character(conn, character)
+    else
+      Performs.feedback(attacker, 110, 3)
+
+      conn
+      |> Broadcast.publish("$n见此招来势凶猛，向后一跃，轻巧地躲了开去。", bindings)
+      |> put_character(character)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

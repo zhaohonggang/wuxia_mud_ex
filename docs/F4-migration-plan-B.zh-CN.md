@@ -56,8 +56,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `quanzhen_jian/` （2 个，基线缺失 18 条）
 
-- [ ] ❌ `quanzhen_jian/hua.ex` ← `quanzhen-jian/hua.c`  (miss=10)
-- [ ] ❌ `quanzhen_jian/lian.ex` ← `quanzhen-jian/lian.c`  (miss=8)
+- [x] ✅ `quanzhen_jian/hua.ex` ← `quanzhen-jian/hua.c`  (miss=10)
+- [x] ✅ `quanzhen_jian/lian.ex` ← `quanzhen-jian/lian.c`  (miss=8)
 
 ### `quemen_jian/` （1 个，基线缺失 8 条）
 

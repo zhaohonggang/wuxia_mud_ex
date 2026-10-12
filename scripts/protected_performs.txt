@@ -139,6 +139,7 @@ qixing_shou/po.ex
 quanzhen_jian/chan.ex
 quanzhen_jian/ding.ex
 quanzhen_jian/hua.ex
+quanzhen_jian/lian.ex
 ranmu_daofa/zhenyan.ex
 raozhi_roujian/chuan.ex
 riyue_bian/chan.ex
