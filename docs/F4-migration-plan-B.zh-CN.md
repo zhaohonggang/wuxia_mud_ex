@@ -86,8 +86,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `ruanhong_zhusuo/` （3 个，基线缺失 21 条）
 
-- [ ] ❌ `ruanhong_zhusuo/bohu.ex` ← `ruanhong-zhusuo/bohu.c`  (miss=9)
-- [ ] ❌ `ruanhong_zhusuo/pan.ex` ← `ruanhong-zhusuo/pan.c`  (miss=5)
+- [x] ✅ `ruanhong_zhusuo/bohu.ex` ← `ruanhong-zhusuo/bohu.c`  (miss=9→0，PASS)
+- [x] ✅ `ruanhong_zhusuo/pan.ex` ← `ruanhong-zhusuo/pan.c`  (miss=5→0，PASS)
 - [ ] ❌ `ruanhong_zhusuo/suo.ex` ← `ruanhong-zhusuo/suo.c`  (miss=7)
 
 ### `rulai_zhang/` （1 个，基线缺失 8 条）

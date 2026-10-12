@@ -155,6 +155,8 @@ riyue_lun/po.ex
 riyue_lun/yuan.ex
 rouyun_jian/tao.ex
 rouyun_steps/zong.ex
+ruanhong_zhusuo/bohu.ex
+ruanhong_zhusuo/pan.ex
 ruanhong_zhusuo/teng.ex
 sanhua_zhang/san.ex
 sanwu_shou/wei.ex
