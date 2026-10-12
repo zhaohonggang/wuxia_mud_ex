@@ -16,10 +16,9 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "rouyun-jian/tao"
+  @move_name "「三环套月」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -36,14 +35,17 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: Stats.skill(stats, "strike"),
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -74,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "rouyun-jian") < 140 -> {:error, "你的柔云剑法修为不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 180 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "rouyun-jian") < 140 -> {:error, "你的柔云剑法修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "dodge") < 180 -> {:error, "你的轻功修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -85,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "rouyun-jian" -> {:error, "你没有激发柔云剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "rouyun-jian" -> {:error, "你没有激发柔云剑法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -94,26 +96,36 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
+      weapon == nil or weapon.skill_type != "sword" -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
+    # 攻击方消耗/Busy + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N使出柔云剑法「三环套月」，一招之中另蕴三招，铺天盖地罩向$n！", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(3))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N使出柔云剑法「三环套月」，一招之中另蕴三招，铺天盖地罩向$n！",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -140,18 +152,36 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     end
   end
 
-  defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+  defp do_resolve_incoming(conn, character, _attacker, data) do
+    # LPC: 3 次 do_attack，逐次累加 apply/attack(+40/+60/+80) 与 apply/damage(+10/+30/+50)
+    # 折算：三次攻击命中累计伤害（附加攻击/伤害加成并入每次判定）
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 1)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    ap = max(Map.get(data, :ap, 0), 1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    attack_bonus = [40, 100, 180]
+    damage_bonus = [10, 40, 90]
+
+    damage =
+      Enum.reduce(0..2, 0, fn i, damage_acc ->
+        hit_ap = ap + Enum.at(attack_bonus, i)
+
+        if hit_ap + Engine.rand(rng, ap) > dp do
+          damage_acc + ap + Enum.at(damage_bonus, i) + Engine.rand(rng, ap)
+        else
+          damage_acc
+        end
+      end)
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 
