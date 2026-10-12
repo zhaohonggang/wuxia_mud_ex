@@ -20,6 +20,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   alias Kantele.Combat.Performs
 
   @perform_id "sad-strike/tuo"
+  @move_name "「拖泥带水」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +31,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "sad-strike")
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
+    special = rng.(5) == 1 and character.meta.vitals.max_neili > 5000
+    ap = if special, do: ap + div(ap * 10, 100), else: ap
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,12 +45,11 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, special)
     else
       {:error, message} ->
         conn
@@ -63,13 +65,22 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
       {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
-
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
+    with :ok <- check_marry(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_prepared(character),
+         :ok <- check_couple(character),
+         :ok <- check_cooldown(character) do
+      :ok
+    end
+  end
+
+  defp check_marry(character) do
+    if Map.get(character.meta, :marry, 0) > 1 do
+      {:error, "你感情早已不纯，哪里还能领略到那种黯然销魂的感觉？\n"}
+    else
       :ok
     end
   end
@@ -78,21 +89,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 360 -> {:error, "你的内功火候不够，使不出。\n"}
-      Stats.skill(stats, "sad-strike") < 180 -> {:error, "你的黯然销魂掌不够熟练，不会使用。\n"}
+      Stats.skill(stats, "force") < 360 -> {:error, "你的内功火候不够，使不出#{@move_name}。\n"}
+      Stats.skill(stats, "sad-strike") < 180 -> {:error, "你的黯然销魂掌不够熟练，不会使用#{@move_name}。\n"}
       true -> :ok
-    end
-  end
-
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "sad-strike" ->
-        {:error, "你没有准备黯然销魂掌，无法使用。\n"}
-
-      true ->
-        :ok
     end
   end
 
@@ -100,28 +99,56 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你的真气不够，无法使用。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  defp check_prepared(character) do
+    stats = character.meta.stats
 
+    if Stats.prepared_perform(stats, "unarmed") == nil or
+         String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "sad-strike" do
+      {:error, "你没有准备黯然销魂掌，无法使用#{@move_name}。\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 400}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N心下万念俱灰，凄然间回想到自己的妻子某人，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。", n1: character.name)
+  defp check_couple(character) do
+    case character.meta.spouse do
+      %{id: _} -> :ok
+      _ -> {:error, "你没有妻子，体会不到这种万念俱灰的感觉。\n"}
+    end
+  end
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+  defp check_cooldown(character) do
+    last = Map.get(character.meta.temp, "last_perform/sad-strike/tuo", 0)
+
+    if :os.system_time(:second) - last < 60 do
+      {:error, "你刚刚施展完#{@move_name}，现在心情没有那么郁闷了。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp apply_effect(conn, character, special) do
+    # 前置广播（neili 消耗 / start_busy 依赖命中分支，交由 do_resolve）
+    couple_name =
+      case character.meta.spouse do
+        %{name: name} -> name
+        _ -> ""
+      end
+
+    msg =
+      if special do
+        "心下万念俱灰，凄然间回想到自己的妻子" <>
+          @blank <> couple_name <> @blank <> "，心中暗道：“别了！你自己保重。”当下失魂落魄，随手一招，恰好使出了黯然销魂掌中的「拖泥带水」。"
+      else
+        "只见$N没精打采的挥袖卷出，面无表情，随意拍出一掌，正是黯然销魂掌中的「拖泥带水」。"
+      end
+
+    Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
   end
 
   defp target(combat) do
@@ -145,22 +172,34 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    # LPC: dp = target parry + force；命中则 neili -400（否则 -200），start_busy(2+random(2))
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "force")
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 1)
-    msg = if hit, do: "只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。", else: "可是$p小心应付、奋力招架，挡开了这一招。"
+    hit = div(ap * 3, 5) + rng.(ap) > dp
+
+    character =
+      if hit do
+        damage = ap + rng.(max(div(ap, 2), 1))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, if(hit, do: 400, else: 200), 2 + rng.(2))
+
+    msg =
+      if hit do
+        "只听$n一声闷哼，“噗”的一声，这一掌正好击在$p肩头。"
+      else
+        "可是$p小心应付、奋力招架，挡开了这一招。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
