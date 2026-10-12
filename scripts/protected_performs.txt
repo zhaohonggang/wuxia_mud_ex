@@ -21,6 +21,7 @@ beiming_shengong/shield.ex
 beiming_shengong/suck.ex
 benlei_zhang/lei.ex
 bibo_shengong/powerup.ex
+biluo_zhang/lian.ex
 bingpo_shenzhen/bing.ex
 bizhen_qingzhang/pengpai.ex
 boyun_suowu/dian.ex
