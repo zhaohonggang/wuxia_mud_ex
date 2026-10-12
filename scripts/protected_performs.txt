@@ -91,6 +91,8 @@ duanjia_sword/jing.ex
 duanjia_sword/jue.ex
 duanshi_xinfa/powerup.ex
 duanyun_fu/tiaoyan.ex
+dugu_jiujian/jue.ex
+dugu_jiujian/po.ex
 dugu_jiujian/qi.ex
 dugu_jiujian/yi.ex
 duoluoye_zhi/jimie.ex

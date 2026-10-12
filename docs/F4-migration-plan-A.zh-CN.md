@@ -217,8 +217,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `dugu_jiujian/` （2 个，基线缺失 24 条）
 
-- [ ] ❌ `dugu_jiujian/jue.ex` ← `dugu-jiujian/jue.c`  (miss=11)
-- [ ] ❌ `dugu_jiujian/po.ex` ← `dugu-jiujian/po.c`  (miss=13)
+- [x] ✅ `dugu_jiujian/jue.ex` ← `dugu-jiujian/jue.c`  (miss→0，PASS)
+- [x] ✅ `dugu_jiujian/po.ex` ← `dugu-jiujian/po.c`  (miss→0，PASS)
 
 ### `dulong_shenzhua/` （2 个，基线缺失 13 条）
 
