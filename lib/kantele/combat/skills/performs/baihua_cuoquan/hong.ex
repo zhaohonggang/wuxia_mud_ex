@@ -1,8 +1,16 @@
 defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
   @moduledoc """
-  perform「战神轰天诀」（source baihua-cuoquan/hong.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「战神轰天诀」（对照 `kungfu/skill/baihua-cuoquan/hong.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛：空手、baihua-cuoquan>=250、zhanshen-xinjing>=250、max_neili>=5000、
+  neili>=800、激发 unarmed 为 baihua-cuoquan 且 force 为 zhanshen-xinjing、
+  准备 unarmed 为 baihua-cuoquan、目标存活且战斗中。
+
+  攻击方发 `perform-incoming`；先按拳法/内功（含多技能加成 `improve`）算 ap：
+  - 命中且 `max_neili > 2*目标 max_neili`：直接重创致死（`damage = -1` → `target->die`）；
+  - 命中否则：`damage = ap*2/3 + random(ap)`；
+  - 未命中：无伤害。
+  攻击方消耗/忙乱随分支不同（命中重创 100/忙2；命中普通 400/忙4；未命中 150/忙5）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
   alias Kantele.Combat.Performs
 
   @perform_id "baihua-cuoquan/hong"
+  @move_name "「战神轰天诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,11 +38,21 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "baihua-cuoquan")
-    improve = 0
-    n = 0
-    m = 0
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
-    damage = (div((ap * 2), 3) + Engine.rand(rng, ap))
+
+    # ap = (unarmed + force) * (1 + improve)
+    # improve ≈ 取战斗经验等级 lvls，累加前 5 项拳法类技能等级再折算
+    lvls = trunc(:math.pow(max(stats.combat_exp, 1) * 10, 1 / 3) * 4 / 5)
+    skill_sum =
+      stats.skills
+      |> Map.values()
+      |> Enum.sort(:desc)
+      |> Enum.take(5)
+      |> Enum.sum()
+
+    improve = skill_sum * 4 / (100 * max(lvls, 1))
+    base = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
+    ap = trunc(base * (1 + improve))
+    damage = div(ap * 2, 3) + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,11 +60,14 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
           damage: damage,
+          attacker_max_neili: character.meta.vitals.max_neili,
           rng: rng
         }
       })
@@ -69,10 +91,10 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_mapped(character) do
       :ok
     end
   end
@@ -81,8 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "baihua-cuoquan") < 250 -> {:error, "你的百花错拳不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "zhanshen-xinjing") < 250 -> {:error, "你的战神心经修为不够，难以施展。\n"}
+      Stats.skill(stats, "baihua-cuoquan") < 250 -> {:error, "你的百花错拳不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "zhanshen-xinjing") < 250 -> {:error, "你的战神心经修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -92,13 +114,13 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
 
     cond do
       Stats.mapped(stats, "unarmed") != "baihua-cuoquan" ->
-        {:error, "你没有激发百花错拳，难以施展。\n"}
+        {:error, "你没有激发百花错拳，难以施展#{@move_name}。\n"}
 
       Stats.mapped(stats, "force") != "zhanshen-xinjing" ->
-        {:error, "你没有激发战神心经，难以施展。\n"}
+        {:error, "你没有激发战神心经，难以施展#{@move_name}。\n"}
 
       Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "baihua-cuoquan" ->
-        {:error, "你没有准备百花错拳，难以施展。\n"}
+        {:error, "你没有准备百花错拳，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -109,8 +131,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 800 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -119,23 +141,13 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 400}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 4)
-    combat = Combat.start_busy(combat, 5)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # 前置广播：本招无无条件消耗/Busy（消耗与忙乱随命中分支不同，由反馈回传攻击方）
     conn = Broadcast.publish(conn, "$N一声怒嚎，将战神心经提运极至，双拳顿时携着雷霆万钧之势猛贯向$n。", n1: character.name)
 
     conn
@@ -164,25 +176,55 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Hong do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    attacker_max_neili = Map.get(data, :attacker_max_neili, 0)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit = div(ap * 3, 5) + Engine.rand(rng, ap) > dp
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 5)
-    msg = if hit, do: "结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。", else: "可是$p识破了$P这一招，斜斜一跃避开。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    if hit do
+      # 命中且修为碾压：直接重创致死（LPC damage = -1 → target->die）
+      if attacker_max_neili > character.meta.vitals.max_neili * 2 do
+        vitals = character.meta.vitals
+        vitals = %{vitals | qi: 0}
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        Performs.feedback(attacker, 100, 2)
+
+        msg =
+          "只见$N一拳轰至，便将$n震得心脉俱碎，仰天喷出一口鲜血，软软瘫倒。\n" <>
+            "( $n受伤过重，已经有如风中残烛，随时都可能断气。)\n"
+
+        result = Messages.interpolate(msg, bindings)
+
+        conn
+        |> Broadcast.publish(result)
+        |> put_character(character)
+      else
+        vitals = character.meta.vitals
+        vitals = Vitals.damage(vitals, :qi, damage)
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        Performs.feedback(attacker, 400, 4)
+
+        msg = "结果$p闪避不及，$P的拳力掌劲顿时透体而入，口中鲜血狂喷，连退数步。"
+        result = Messages.interpolate(msg, bindings)
+
+        conn
+        |> Broadcast.publish(result)
+        |> put_character(character)
+      end
+    else
+      Performs.feedback(attacker, 150, 5)
+      msg = "可是$p识破了$P这一招，斜斜一跃避开。"
+      result = Messages.interpolate(msg, bindings)
+
+      conn
+      |> Broadcast.publish(result)
+      |> put_character(character)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
