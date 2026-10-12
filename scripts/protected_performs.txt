@@ -149,10 +149,13 @@ hamagong/zhen.ex
 hanbing_mianzhang/jue.ex
 hanbing_zhang/han.ex
 hanbing_zhang/hen.ex
+hanbing_zhenqi/freezing.ex
+hanbing_zhenqi/powerup.ex
 hanmei_jian/leng.ex
 hansha_sheying/zhen.ex
 hanwang_qingdao/ying.ex
 hanxing_bada/lastrisk.ex
+haotian_zhang/ju.ex
 heixue_shenzhen/luo.ex
 henshan_jian/huan.ex
 hexing_bifa/dian.ex

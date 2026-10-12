@@ -305,12 +305,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `hanbing_zhenqi/` （2 个，基线缺失 14 条）
 
-- [ ] ❌ `hanbing_zhenqi/freezing.ex` ← `hanbing-zhenqi/freezing.c`  (miss=10)
-- [ ] ❌ `hanbing_zhenqi/powerup.ex` ← `hanbing-zhenqi/powerup.c`  (miss=4)
+- [x] ✅ `hanbing_zhenqi/freezing.ex` ← `hanbing-zhenqi/freezing.c`  (miss→0，PASS)
+- [x] ✅ `hanbing_zhenqi/powerup.ex` ← `hanbing-zhenqi/powerup.c`  (miss→0，PASS)
 
 ### `haotian_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `haotian_zhang/ju.ex` ← `haotian-zhang/ju.c`  (miss=7)
+- [x] ✅ `haotian_zhang/ju.ex` ← `haotian-zhang/ju.c`  (miss→0，PASS)
 
 ### `heisha_zhang/` （1 个，基线缺失 6 条）
 
