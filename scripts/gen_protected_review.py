@@ -18,6 +18,7 @@ import perf_acceptance as pa
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "F4-protected-review.zh-CN.md"
+EXC = ROOT / "scripts" / "f4_exceptions.tsv"
 
 
 def main() -> int:
@@ -104,12 +105,29 @@ def main() -> int:
     lines.append("")
     lines.append("| 文件 | 理由 | 处理 |")
     lines.append("|---|---|---|")
-    lines.append("| （待填） | | |")
+    for row in load_exceptions():
+        lines.append("| " + " | ".join(row) + " |")
     lines.append("")
 
     OUT.write_text("\n".join(lines), encoding="utf-8")
     print(f"wrote {OUT} : PASS={len(passed)} FAIL={len(failed)} MISSING={missing_total}")
     return 0
+
+
+def load_exceptions():
+    """读取 scripts/f4_exceptions.tsv（三列 TSV，无表头，# 开头为注释）。"""
+    if not EXC.exists():
+        return [("（待填）", "", "")]
+    rows = []
+    # utf-8-sig：容忍编辑器写入的 BOM
+    for line in EXC.read_text(encoding="utf-8-sig").splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        cols = [c.strip() for c in line.split("\t")]
+        while len(cols) < 3:
+            cols.append("")
+        rows.append(tuple(cols[:3]))
+    return rows or [("（待填）", "", "")]
 
 
 if __name__ == "__main__":

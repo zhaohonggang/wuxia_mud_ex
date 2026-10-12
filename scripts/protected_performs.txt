@@ -16,6 +16,9 @@ baisheng_daofa/heng.ex
 baisheng_quan/kai.ex
 banruo_zhang/feng.ex
 baxian_jian/dian.ex
+beiming_shengong/powerup.ex
+beiming_shengong/shield.ex
+beiming_shengong/suck.ex
 bingpo_shenzhen/bing.ex
 bizhen_qingzhang/pengpai.ex
 boyun_suowu/dian.ex

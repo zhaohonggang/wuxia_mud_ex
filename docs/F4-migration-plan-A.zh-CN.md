@@ -76,13 +76,13 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `bazhen_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `bazhen_zhang/yin.ex` ← `bazhen-zhang/yin.c`  (miss=7)
+- [x] ✅ `bazhen_zhang/yin.ex` ← `bazhen-zhang/yin.c`  (miss→0，PASS)
 
 ### `beiming_shengong/` （3 个，基线缺失 23 条）
 
-- [ ] ❌ `beiming_shengong/powerup.ex` ← `beiming-shengong/powerup.c`  (miss=4)
-- [ ] ❌ `beiming_shengong/shield.ex` ← `beiming-shengong/shield.c`  (miss=4)
-- [ ] ❌ `beiming_shengong/suck.ex` ← `beiming-shengong/suck.c`  (miss=15)
+- [x] ✅ `beiming_shengong/powerup.ex` ← `beiming-shengong/powerup.c`  (miss→0，PASS)
+- [x] ✅ `beiming_shengong/shield.ex` ← `beiming-shengong/shield.c`  (miss→0，PASS)
+- [x] ✅ `beiming_shengong/suck.ex` ← `beiming-shengong/suck.c`  (miss→0，PASS；1 条 .c 乱码字节例外)
 
 ### `benlei_zhang/` （1 个，基线缺失 6 条）
 
