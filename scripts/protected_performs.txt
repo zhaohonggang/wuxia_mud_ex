@@ -76,6 +76,7 @@ damo_jian/shang.ex
 damo_jian/zhe.ex
 danding_dao/kou.ex
 daojian_guizhen/daojian.ex
+daojian_guizhen/xue.ex
 dongyang_dao/zhan.ex
 duanjia_jian/jing.ex
 duanjia_jian/lian.ex
