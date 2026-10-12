@@ -54,7 +54,10 @@ defmodule Kantele.Combat.Skills.ChangshengJue.Powerup do
   运功「powerup」（对照 `kungfu/skill/changsheng-jue/powerup.c`）
 
   加成取**基本内功 force** 等级：attack=parry=dodge=force*2/5，耗 100 内力，
-  持续 长生决 秒；战斗中 busy 3 轮。
+  持续 force 秒；战斗中 busy 3 轮。
+
+  `.c` 的 `start_call_out` 延迟与加成同取 `skill`（`query_skill("force")`），
+  故 duration 亦为 force（早期误写 changsheng-jue，已按 .c 修正）。
   """
 
   use Kantele.Combat.Performs.Simple,
@@ -74,7 +77,7 @@ defmodule Kantele.Combat.Skills.ChangshengJue.Powerup do
          }}
       ],
       busy: {:if_fighting, 3},
-      duration: {:skill, "changsheng-jue"},
+      duration: {:skill, "force"},
       expire_message: "你的长生决运行完毕，将内力收回丹田。\n",
       message: "$N微一凝神，运起长生决，将真气凝聚在丹田之中，沿奇经八脉遍布全身！\n"
     }
@@ -84,7 +87,7 @@ defmodule Kantele.Combat.Skills.ChangshengJue.Shield do
   @moduledoc """
   运功「shield」（对照 `kungfu/skill/changsheng-jue/shield.c`）
 
-  加成取**基本内功 force** 等级：armor=force*3，耗 100 内力，持续 长生决 秒；
+  加成取**基本内功 force** 等级：armor=force*3，耗 100 内力，持续 force 秒；
   战斗中 busy 2 轮。
 
   差异：LPC `remove_effect` 实扣 `skill*2`（与施加的 `skill*3` 不对称，会残留
@@ -103,7 +106,7 @@ defmodule Kantele.Combat.Skills.ChangshengJue.Shield do
         {:buff, "shield", %{armor: {:mul, {:skill, "force"}, 3}}}
       ],
       busy: {:if_fighting, 2},
-      duration: {:skill, "changsheng-jue"},
+      duration: {:skill, "force"},
       expire_message: "你的长生决运行完毕，将内力收回丹田。\n",
       message: "$N双手平举过顶，运起长生决内劲，全身笼罩在劲气之中！\n"
     }

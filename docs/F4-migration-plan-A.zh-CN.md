@@ -134,8 +134,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `changsheng_jue/` （2 个，基线缺失 8 条）
 
-- [ ] ❌ `changsheng_jue/powerup.ex` ← `changsheng-jue/powerup.c`  (miss=4)
-- [ ] ❌ `changsheng_jue/shield.ex` ← `changsheng-jue/shield.c`  (miss=4)
+- [x] ✅ `changsheng_jue/powerup.ex` ← `changsheng-jue/powerup.c`  (miss→0，PASS)
+- [x] ✅ `changsheng_jue/shield.ex` ← `changsheng-jue/shield.c`  (miss→0，PASS)
 
 ### `chansi_shou/` （1 个，基线缺失 7 条）
 

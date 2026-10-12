@@ -42,6 +42,8 @@ canhe_zhi/canhe.ex
 canhe_zhi/jin.ex
 canhe_zhi/you.ex
 canhe_zhi/zhi.ex
+changsheng_jue/powerup.ex
+changsheng_jue/shield.ex
 chanhun_suo/duo.ex
 chanhun_suo/suo.ex
 chousui_zhang/dan.ex
