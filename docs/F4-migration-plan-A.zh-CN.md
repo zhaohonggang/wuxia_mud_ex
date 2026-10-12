@@ -213,7 +213,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `duanshi_xinfa/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `duanshi_xinfa/powerup.ex` ← `duanshi-xinfa/powerup.c`  (miss=4)
+- [x] ✅ `duanshi_xinfa/powerup.ex` ← `duanshi-xinfa/powerup.c`  (miss→0，PASS)
 
 ### `dugu_jiujian/` （2 个，基线缺失 24 条）
 

@@ -89,6 +89,7 @@ duanjia_jian/jing.ex
 duanjia_jian/lian.ex
 duanjia_sword/jing.ex
 duanjia_sword/jue.ex
+duanshi_xinfa/powerup.ex
 duanyun_fu/tiaoyan.ex
 dugu_jiujian/qi.ex
 dugu_jiujian/yi.ex
