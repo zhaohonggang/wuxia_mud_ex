@@ -1,8 +1,18 @@
 defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
   @moduledoc """
-  perform「天残剑诀」（source quemen-jian/can.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「天残剑诀」（对照 `kungfu/skill/quemen-jian/can.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛：剑类武器、force>=120、quemen-jian>=80、max_neili>=800、neili>=100、
+  激发 sword 为 quemen-jian、目标存活且战斗中。
+
+  攻击方发 `perform-incoming`；连出 4 剑（LPC 4× `COMBAT_D->do_attack`），
+  攻击方扣 80 内力并忙乱 `1+random(4)`（由目标侧 `combat/perform-feedback` 回执）。
+
+  差异（TODO(migrate)）：
+  - LPC 的 4 次 `COMBAT_D->do_attack`（完整 AP/DP/招架/伤害管线）折算为
+    每击 `level/10` 基础伤害 + 与「缠字诀」同构的命中判定
+    （`level/2 + random(level)` vs `dodge`）；
+  - `living(target)` 门槛未实现，由目标侧 `combat/perform-incoming` 兜底。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -13,13 +23,13 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "quemen-jian/can"
+  @move_name "「天残剑诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,7 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "quemen-jian")
-    i = 0
+    ap = Stats.skill(stats, "sword")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,14 +47,17 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -75,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "quemen-jian") < 80 -> {:error, "你缺门剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "quemen-jian") < 80 -> {:error, "你缺门剑法不够娴熟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -85,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "quemen-jian" -> {:error, "你没有激发缺门剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "quemen-jian" -> {:error, "你没有激发缺门剑法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -94,27 +107,40 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 800 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.max_neili < 800 -> {:error, "你的内力修为不够，难以施展#{@move_name}。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "sword" -> {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
+    # 无条件攻击方效果：消耗/Busy + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出缺门剑法天残剑诀，手中某物唰唰唰唰连续四剑，笼罩$n周身！", n1: character.name)
+
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(4))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    weapon_name = Combat.weapon(combat).name
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N施出缺门剑法天残剑诀，手中" <> weapon_name <> "唰唰唰唰连续四剑，笼罩$n周身！",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -124,7 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「天残剑诀」只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -142,15 +168,39 @@ defmodule Kantele.Combat.Skills.Performs.QuemenJian.Can do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
+    level = max(Map.get(data, :level, 0), 1)
+    stats = character.meta.stats
+    dodge = Stats.skill(stats, "dodge")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: for (i = 0; i < 4; i++) COMBAT_D->do_attack(me, target, weapon, 0);
+    # 折算：每击 level/10 基础伤害 + 命中判定（level/2 + random(level) vs dodge）
+    per_hit = max(div(level, 10), 1)
+
+    {damage, hits} =
+      Enum.reduce(1..4, {0, 0}, fn _, {damage_acc, hit_acc} ->
+        if div(level, 2) + Engine.rand(rng, level) > dodge do
+          {damage_acc + per_hit + Engine.rand(rng, per_hit), hit_acc + 1}
+        else
+          {damage_acc, hit_acc}
+        end
+      end)
+
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage, 3))
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 80, 1)
-    msg = "$N施出缺门剑法天残剑诀，手中某物唰唰唰唰连续四剑，笼罩$n周身！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    result =
+      if hits > 0 do
+        Messages.interpolate("$n被$N的连续四剑罩住，身上连中数剑，节节败退！\n", bindings)
+      else
+        Messages.interpolate("可是$n左闪右避，堪堪避开了$N的连续四剑。\n", bindings)
+      end
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
