@@ -26,6 +26,7 @@ bingpo_shenzhen/bing.ex
 bingxin_jue/freeze.ex
 bingxin_jue/powerup.ex
 biyan_dao/luo.ex
+biyun_xinfa/powerup.ex
 bizhen_qingzhang/pengpai.ex
 boyun_suowu/dian.ex
 boyun_suowu/meng.ex

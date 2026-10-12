@@ -107,7 +107,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `biyun_xinfa/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `biyun_xinfa/powerup.ex` ← `biyun-xinfa/powerup.c`  (miss=5)
+- [x] ✅ `biyun_xinfa/powerup.ex` ← `biyun-xinfa/powerup.c`  (miss→0，PASS)
 
 ### `bluesea_force/` （9 个，基线缺失 14 条）
 

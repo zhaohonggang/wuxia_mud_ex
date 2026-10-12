@@ -56,6 +56,7 @@ defmodule Kantele.Combat.Skills.BiyunXinfa.Powerup do
     spec: %Kantele.Combat.Performs.Spec{
       id: "biyun-xinfa/powerup",
       gates: [
+        {:custom, fn _ -> true end, "你只能用碧云心法来提升自己的战斗力。\n"},
         {:neili_min, 80, "你的内力不够。\n"},
         {:no_buff, "powerup", "你已经在运功中了。\n"}
       ],
