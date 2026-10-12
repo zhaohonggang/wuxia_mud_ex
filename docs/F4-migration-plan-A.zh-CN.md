@@ -180,9 +180,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `damo_jian/` （3 个，基线缺失 24 条）
 
-- [ ] ❌ `damo_jian/luan.ex` ← `damo-jian/luan.c`  (miss=8)
-- [ ] ❌ `damo_jian/shang.ex` ← `damo-jian/shang.c`  (miss=8)
-- [ ] ❌ `damo_jian/zhe.ex` ← `damo-jian/zhe.c`  (miss=8)
+- [x] ✅ `damo_jian/luan.ex` ← `damo-jian/luan.c`  (miss→0，PASS)
+- [x] ✅ `damo_jian/shang.ex` ← `damo-jian/shang.c`  (miss→0，PASS)
+- [x] ✅ `damo_jian/zhe.ex` ← `damo-jian/zhe.c`  (miss→0，PASS)
 
 ### `daojian_guizhen/` （1 个，基线缺失 11 条）
 

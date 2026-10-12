@@ -69,8 +69,11 @@ dagou_bang/feng.ex
 dagou_bang/tian.ex
 dahai_wuliang/powerup.ex
 dali_chu/hong.ex
+damo_jian/luan.ex
 damo_jian/qingxin.ex
 damo_jian/sanjue.ex
+damo_jian/shang.ex
+damo_jian/zhe.ex
 danding_dao/kou.ex
 daojian_guizhen/daojian.ex
 dongyang_dao/zhan.ex

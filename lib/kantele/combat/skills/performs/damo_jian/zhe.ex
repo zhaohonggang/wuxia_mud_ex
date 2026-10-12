@@ -1,8 +1,24 @@
 defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
   @moduledoc """
-  perform「达摩折元剑」（source damo-jian/zhe.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「达摩折元剑」（source damo-jian/zhe.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 目标在战斗中 → 持剑（`skill_type == "sword"`）→
+  达摩剑法>=200 → 激发 sword 为达摩剑法 → 内力上限>=2000 → 真气>=300 → 目标存活。
+  命中判定 `ap/2 + random(ap)`（`ap = sword + force`）对目标 `force * 2`：命中则
+  `damage = ap/3 + random(ap/3)`、按 50% 计 qi 伤，额外 `damage/3` 精伤（1/6 创伤），
+  并给目标挂 `damo_zheyuan` 毒；攻击方扣 200 真气并忙乱 2。未命中扣 100 真气并忙乱 4。
+
+  差异（TODO(migrate)）：
+  - `do_damage(..., WEAPON_ATTACK, damage, 50, (: final, me, target, damage :))`
+    折算为命中分支内的 `Vitals.damage(:qi, …)` / `Vitals.wound(:qi, div(damage * 50, 100))`，
+    `final` 里的 `receive_damage("jing", damage/3)` / `receive_wound("jing", damage/6)`
+    折算为 `Vitals.damage(:jing, …)` / `Vitals.wound(:jing, …)`；
+  - `target->affect_by("damo_zheyuan", …)` 折算为 `ConditionEvent.apply_poison/2`
+    （补 `"name"` 供显示；`.c` 未给中文名）；
+  - `.c` 文案 `"…蓦地将" + weapon->name() + "往前一送…"` 在 E 侧用 `<>` 拆成两段
+    字面量，保持 C 侧两条消息的粒度（不得写成单段插值字符串）；
+  - `living(target)` 门槛在攻击方无 meta 可查，由目标侧 `combat/perform-incoming`
+    的死亡检查兜底。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -12,6 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.ConditionEvent
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -20,6 +37,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
   alias Kantele.Combat.Performs
 
   @perform_id "damo-jian/zhe"
+  @move_name "「达摩折元剑」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -28,26 +46,31 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "force"))
-    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 3)))
     lvl = Stats.skill(stats, "damo-jian")
+    # LPC: ap = me->query_skill("sword") + me->query_skill("force");
+    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         {:ok, weapon} <- weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, weapon)
     else
       {:error, message} ->
         conn
@@ -64,31 +87,37 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
-      :ok
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")) ||
+  #          (string)weapon->query("skill_type") != "sword")
+  defp weapon(combat) do
+    case Combat.weapon(combat) do
+      %{skill_type: "sword"} = weapon -> {:ok, weapon}
+      _ -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
     end
   end
 
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "damo-jian") < 200 -> {:error, "你达摩剑法不够娴熟，难以施展。\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "damo-jian") < 200 do
+      {:error, "你达摩剑法不够娴熟，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("sword") != "damo-jian")
   defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "sword") != "damo-jian" -> {:error, "你没有激发达摩剑法，难以施展。\n"}
-      true -> :ok
+    if Stats.mapped(character.meta.stats, "sword") == "damo-jian" do
+      :ok
+    else
+      {:error, "你没有激发达摩剑法，难以施展#{@move_name}。\n"}
     end
   end
 
@@ -96,43 +125,37 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为不够，难以施展#{@move_name}。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
-      true -> :ok
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 敌人列表只存引用快照（%{id,pid,name,room_id}）时无 meta 可查，此时恒判存活，
+  # 由目标侧 combat/perform-incoming 的死亡检查兜底。
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 200}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N蓦地将某物往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
+  defp apply_effect(conn, character, target, weapon) do
+    # LPC: msg = HIR "$N" HIR "蓦地将" + weapon->name() +
+    #            HIR "往前一送，顿时一道光华自剑上亮起，直逼$n" HIR "丹田而去。\n" NOR;
+    # 命中/伤害/中毒在目标侧结算（dp 需目标 force）。
     conn
-    |> put_character(character)
+    |> Broadcast.publish(
+      "$N蓦地将" <> Map.get(weapon, :name) <> "往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。\n",
+      n1: character.name,
+      n2: target.name
+    )
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「达摩折元剑」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -142,38 +165,75 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Zhe do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    lvl = Map.get(data, :level, 0)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :jing, div(damage, 3))
-          vitals = Vitals.wound(vitals, :jing, div(damage, 6))
-          vitals = Vitals.damage(vitals, :qi, damage)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: dp = target->query_skill("force") * 2;
+    dp = Stats.skill(stats, "force") * 2
+
+    # LPC: if (ap / 2 + random(ap) > dp)
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: damage = ap / 3 + random(ap / 3);
+      damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
+
+      # LPC: target->affect_by("damo_zheyuan", ([ "level" : lvl + random(lvl),
+      #        "id" : me->query("id"), "duration" : 5 + random(lvl / 20) ]));
+      poison_level = lvl + Engine.rand(rng, lvl)
+      poison_duration = 5 + Engine.rand(rng, div(lvl, 20))
+
+      conn =
+        ConditionEvent.apply_poison(conn, %{
+          "level" => poison_level,
+          "duration" => poison_duration,
+          "remain" => poison_duration,
+          "id" => attacker.id,
+          "name" => "达摩折元"
+        })
+
+      # LPC: do_damage(..., WEAPON_ATTACK, damage, 50, ...) → qi 伤 + 50% 创伤；
+      #      final() 追加 receive_damage("jing", damage / 3) + receive_wound("jing", damage / 6)
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 50, 100))
+        |> Vitals.damage(:jing, div(damage, 3))
+        |> Vitals.wound(:jing, div(damage, 6))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      # LPC: me->start_busy(2); me->add("neili", -200);
+      Performs.feedback(attacker, 200, 2)
+
+      # LPC final(): return HIR "突然$n" HIR "只觉丹田忽然一热，随即变得冷" "冰冰，不禁大惊失色。\n" NOR;
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "突然$n只觉丹田忽然一热，随即变得冷冰冰，不禁大惊失色。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: me->start_busy(4); me->add("neili", -100);
+      Performs.feedback(attacker, 100, 4)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate("可是$n内力深厚，使得$P这一招没有起到任何作用。\n", bindings)
+      )
+      |> put_character(character)
     end
-
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 4)
-    msg = if hit, do: "$N蓦地将某物往前一送，顿时一道光华自剑上亮起，直逼$n丹田而去。", else: "可是$n内力深厚，使得$P这一招没有起到任何作用。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}, {"neili", "-200"}], "affect_by": ["damo_zheyuan"], "assign_refs": [{"ap", "sword"}, {"dp", "force"}, {"lvl", "damo-jian"}], "busy_lines": ["me->start_busy(2);", "me->start_busy(4);"], "level_gates": [{"damo-jian", "200"}], "map_gates": [{"sword", "damo-jian"}], "remote_damage": true, "resource_gates": [{"max_neili", "2000"}, {"neili", "300"}]}
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
