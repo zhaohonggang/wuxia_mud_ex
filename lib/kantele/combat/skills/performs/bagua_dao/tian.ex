@@ -1,8 +1,15 @@
 defmodule Kantele.Combat.Skills.Performs.BaguaDao.Tian do
   @moduledoc """
-  perform「天刀八势」（source bagua-dao/tian.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  天刀八势「tian」（对照 `kungfu/skill/bagua-dao/tian.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  八卦刀法连击：持刀、`bagua-dao/wai-bagua/nei-bagua>=200`、`max_neili>=3000`、
+  `neili>=500`、`mapped("blade")=="bagua-dao"`。
+
+  攻击方广播起手式后连击 8 次（`COMBAT_D->do_attack`），期间以 `apply/attack`
+  临时提升命中、随机使目标 `start_busy(1)`，收招后攻击方 `start_busy(1+random(8))`。
+
+  攻击/目标分处两进程，命中结算交由目标侧 `resolve_incoming/4`：
+  攻击方把每次连击的 `ap/damage` 随事件下发，目标侧做 `ap/2 + rand(ap) > dp` 判定。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +27,10 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Tian do
   alias Kantele.Combat.Performs
 
   @perform_id "bagua-dao/tian"
+  @move_name "「天刀八势」"
+
+  # LPC: for (i = 0; i < 8; i++) { ... COMBAT_D->do_attack(me, target, weapon, 0); }
+  @strikes 8
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,23 +40,34 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Tian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bagua-dao")
-    count = div(Stats.skill(stats, "bagua-dao"), 6)
-    i = 0
+    count = div(lvl, 6)
+    ap = Stats.skill(stats, "blade")
+    damage = count
+    weapon_name = weapon_name(combat)
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    with :ok <- check_perform_known(stats),
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(character),
+         :ok <- check_levels(stats),
+         :ok <- check_resources(character),
+         :ok <- check_mapped(stats) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          count: count,
+          strikes: @strikes,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, weapon_name)
     else
       {:error, message} ->
         conn
@@ -54,78 +76,101 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Tian do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
+  defp check_perform_known(stats) do
+    if Stats.perform_known?(stats, @perform_id) do
       :ok
     else
       {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
+    end
+  end
+
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("skill_type") != "blade")
+  #     return notify_fail("你所使用的武器不对，难以施展" TIAN "。\n");
+  defp check_weapon(character) do
+    if weapon_name(character.meta.combat) == nil do
+      {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
+  # if (query_skill("bagua-dao",1) < 200) ... "你的八卦刀法不够娴熟，难以施展" TIAN "。\n"
+  #     (wai-bagua < 200)                 ... "你的外八卦神功不够娴熟，难以施展" TIAN "。\n"
+  #     (nei-bagua < 200)                 ... "你的内八卦神功不够娴熟，难以施展" TIAN "。\n"
+  defp check_levels(stats) do
     cond do
-      Stats.skill(stats, "bagua-dao") < 200 -> {:error, "你的八卦刀法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "wai-bagua") < 200 -> {:error, "你的外八卦神功不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "nei-bagua") < 200 -> {:error, "你的内八卦神功不够娴熟，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "bagua-dao") < 200 ->
+        {:error, "你的八卦刀法不够娴熟，难以施展#{@move_name}。\n"}
+
+      Stats.skill(stats, "wai-bagua") < 200 ->
+        {:error, "你的外八卦神功不够娴熟，难以施展#{@move_name}。\n"}
+
+      Stats.skill(stats, "nei-bagua") < 200 ->
+        {:error, "你的内八卦神功不够娴熟，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "blade") != "bagua-dao" -> {:error, "你没有激发八卦刀法，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
+  # if (query("max_neili") < 3000) ... "你的内功修为不足，难以施展" TIAN "。\n"
+  #     (query("neili") < 500)     ... "你现在真气不够，难以施展" TIAN "。\n"
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内功修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内功修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 500 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
-      true -> :ok
+  # if (me->query_skill_mapped("blade") != "bagua-dao")
+  #     return notify_fail("你没有激发八卦刀法，难以施展" TIAN "。\n");
+  defp check_mapped(stats) do
+    if Stats.mapped(stats, "blade") == "bagua-dao" do
+      :ok
+    else
+      {:error, "你没有激发八卦刀法，难以施展#{@move_name}。\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target, weapon_name) do
+    # LPC:
+    #   message_combatd(HIY "$N蓦地一振手中" + weapon->name() + HIY
+    #                   "，发出万千龙吟，霎时刀光滚滚，向四面涌出，笼罩$n全身。\n" NOR, me, target);
+    #   me->add("neili", -250); me->add_temp("apply/attack", count);
+    #   for (i=0;i<8;i++){ ... do_attack ... }
+    #   me->add_temp("apply/attack", -count); me->start_busy(1 + random(8));
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 250}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    # 按 LPC 的字符串拼接结构拆分：`"…手中" + weapon->name() + "，发出…"`
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N蓦地一振手中" <> weapon_name <> "，发出万千龙吟，霎时刀光滚滚，向四面涌出，笼罩$n全身。\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「天刀八势」只能在战斗中对对手使用。\n"}
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
     end
   end
 
@@ -136,29 +181,59 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Tian do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    # LPC 连击 8 次，每次 `COMBAT_D->do_attack(me, target, weapon, 0)`；
+    # 命中期间随机 `target->start_busy(1)`。此处按 LPC 的 ap/dp 判定合并结算。
     ap = Map.get(data, :ap, 0)
+    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 250, 1)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    {vitals, combat, hit?, busy?} =
+      Enum.reduce(1..@strikes, {character.meta.vitals, character.meta.combat, false, false}, fn _,
+                                                                                               {v, c,
+                                                                                                hit?,
+                                                                                                busy?} ->
+        if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
+          v = Vitals.damage(v, :qi, damage)
+          {v, c, true, busy?}
+        else
+          # if (random(3) == 1 && ! target->is_busy()) target->start_busy(1);
+          {v, c, hit?, busy?}
+        end
+      end)
+
+    # 目标侧忙乱（LPC `target->start_busy(1)`，random(3)==1 时）
+    combat =
+      if Engine.rand(rng, 3) == 1 and not Combat.busy?(combat) do
+        Combat.start_busy(combat, 1)
+      else
+        combat
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+    # me->add("neili", -250); me->start_busy(1 + random(8))
+    Performs.feedback(attacker, 250, 1 + Engine.rand(rng, 8))
+
     conn
-    |> Broadcast.publish(result)
+    |> maybe_publish_hit(hit?)
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-250"}], "apply_adds": ["attack"], "assign_refs": [{"count", "bagua-dao"}], "busy_lines": ["if (random(3) == 1 && ! target->is_busy())", "target->start_busy(1);", "me->start_busy(1 + random(8));"], "level_gates": [{"bagua-dao", "200"}, {"nei-bagua", "200"}, {"wai-bagua", "200"}], "map_gates": [{"blade", "bagua-dao"}], "remote_damage": false, "resource_gates": [{"max_neili", "3000"}, {"neili", "500"}], "var_gates": [{"i", "8"}]}
+  defp maybe_publish_hit(conn, true), do: Broadcast.publish(conn, "被击中！")
+  defp maybe_publish_hit(conn, false), do: conn
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>

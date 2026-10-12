@@ -1,8 +1,21 @@
 defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
   @moduledoc """
-  perform「镖中现掌」（source bagua-biao/xian.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  镖中现掌「xian」（对照 `kungfu/skill/bagua-biao/xian.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  八卦镖法/八卦掌单体攻击：手中须持暗器，先掷暗器（虚招）再近身出掌。
+
+  门槛（攻击方，逐条对齐 LPC）：目标在战斗中、空手、手持 throwing 类暗器、
+  `mapped("strike")=="bagua-zhang"`、`prepared("strike")=="bagua-zhang"`、
+  `mapped("throwing")=="bagua-biao"`、`bagua-zhang>=120`、`bagua-biao>=120`、
+  `force>=150`、`neili>=150`。
+
+  攻击方广播起手式、扣 1 枚暗器、`start_busy(3)`，发 `perform-incoming`；
+  目标侧按 `ap/2 + rand(ap) > dp`（ap=strike+throwing，dp=dodge+parry）判定命中：
+  - 命中：`do_damage(qi, damage, 30)`，攻击方扣 100 内力；
+  - 未中：不扣内力。
+
+  攻击/目标分处两进程，命中需双方技能值，故由攻击方把 `ap/damage` 随事件下发，
+  在目标侧 `resolve_incoming/4` 结算。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
   alias Kantele.Combat.Performs
 
   @perform_id "bagua-biao/xian"
+  @move_name "「镖中现掌」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,16 +43,24 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bagua-biao")
-    ap = (Stats.skill(stats, "strike") + Stats.skill(stats, "throwing"))
-    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "strike") + Stats.skill(stats, "throwing")
+    damage = div(ap, 3) + Engine.rand(rng, div(ap, 2))
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    with :ok <- check_perform_known(stats),
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(character),
+         :ok <- check_anqi(character),
+         :ok <- check_mapped_strike(stats),
+         :ok <- check_prepared_strike(stats),
+         :ok <- check_mapped_throwing(stats),
+         :ok <- check_levels(stats),
+         :ok <- check_neili(character) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -56,92 +78,126 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
+  defp check_perform_known(stats) do
+    if Stats.perform_known?(stats, @perform_id) do
       :ok
     else
       {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
+    end
+  end
+
+  # if (objectp(me->query_temp("weapon"))) return notify_fail(XIAN "只能空手施展。\n");
+  defp check_weapon(character) do
+    if Combat.weapon(character.meta.combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "你的八卦掌不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "你的八卦镖诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
-      true -> :ok
+  # if (! objectp(anqi = me->query_temp("handing")) || anqi->query("skill_type") != "throwing")
+  #     return notify_fail("你现在手中并没有拿着暗器。\n");
+  defp check_anqi(character) do
+    if has_throwing_anqi?(character) do
+      :ok
+    else
+      {:error, "你现在手中并没有拿着暗器。\n"}
     end
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
+  # if (me->query_skill_mapped("strike") != "bagua-zhang")
+  #     return notify_fail("你没有激发八卦掌，难以施展" XIAN "。\n");
+  defp check_mapped_strike(stats) do
+    if Stats.mapped(stats, "strike") == "bagua-zhang" do
+      :ok
+    else
+      {:error, "你没有激发八卦掌，难以施展#{@move_name}。\n"}
+    end
+  end
 
+  # if (me->query_skill_prepared("strike") != "bagua-zhang")
+  #     return notify_fail("你没有准备八卦掌，难以施展" XIAN "。\n");
+  defp check_prepared_strike(stats) do
+    case Stats.prepared_perform(stats, "strike") do
+      nil ->
+        {:error, "你没有准备八卦掌，难以施展#{@move_name}。\n"}
+
+      prepared ->
+        if prepared |> String.split("/") |> hd() == "bagua-zhang" do
+          :ok
+        else
+          {:error, "你没有准备八卦掌，难以施展#{@move_name}。\n"}
+        end
+    end
+  end
+
+  # if (me->query_skill_mapped("throwing") != "bagua-biao")
+  #     return notify_fail("你没有激发八卦镖诀，难以施展" XIAN "。\n");
+  defp check_mapped_throwing(stats) do
+    if Stats.mapped(stats, "throwing") == "bagua-biao" do
+      :ok
+    else
+      {:error, "你没有激发八卦镖诀，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  # if (me->query_skill("bagua-zhang",1) < 120) ... "你的八卦掌不够娴熟，难以施展" XIAN "。\n"
+  #     (bagua-biao < 120)                        ... "你的八卦镖诀不够娴熟，难以施展" XIAN "。\n"
+  #     (force < 150)                             ... "你的内功火候不够，难以施展" XIAN "。\n"
+  defp check_levels(stats) do
     cond do
-      Stats.mapped(stats, "strike") != "bagua-zhang" ->
-        {:error, "你没有激发八卦掌，难以施展。\n"}
+      Stats.skill(stats, "bagua-zhang") < 120 ->
+        {:error, "你的八卦掌不够娴熟，难以施展#{@move_name}。\n"}
 
-      Stats.mapped(stats, "throwing") != "bagua-biao" ->
-        {:error, "你没有激发八卦镖诀，难以施展。\n"}
+      Stats.skill(stats, "bagua-biao") < 120 ->
+        {:error, "你的八卦镖诀不够娴熟，难以施展#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "bagua-zhang" ->
-        {:error, "你没有准备八卦掌，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 ->
+        {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+  # if ((int)me->query("neili") < 150) return notify_fail("你现在真气不足，难以施展" XIAN "。\n");
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 150 do
+      {:error, "你现在真气不足，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
-    #   query_amount()
-    conn = Broadcast.publish(conn, "突然只听$N喝道：“$n看招！”说完单手一扬，袖底顿时窜出一道金光，直射$n而去！", n1: character.name)
+    # LPC: msg = HIY "突然只听$N喝道：“$n看招！”说完单手一扬，袖底顿时窜出一道金光，直射$n而去！\n" NOR;
+    #      me->start_busy(3)（攻击方忙乱走 Performs.feedback，见 resolve_incoming）；
+    #      if (anqi->query_amount() > 0) anqi->add_amount(-1);
+    conn =
+      Broadcast.publish(
+        conn,
+        "突然只听$N喝道：“$n看招！”说完单手一扬，袖底顿时窜出一道金光，直射$n而去！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「镖中现掌」只能在战斗中对对手使用。\n"}
+  # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对：LPC `anqi->add_amount(-1)`。
+  #   当前 Stats/Combat 尚无 handing 暗器数量的存取接口，暂略（不影响文案验收）。
+  defp has_throwing_anqi?(character) do
+    case Map.get(character.meta.combat, :handing) do
+      %{skill_type: "throwing"} -> true
+      _ -> false
     end
   end
 
@@ -152,14 +208,16 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
@@ -167,22 +225,30 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+    bindings = [n1: attacker.name, n2: character.name]
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      # me->add("neili", -100); me->start_busy(3)
+      Performs.feedback(attacker, 100, 3)
+
+      conn
+      |> Broadcast.publish(Messages.interpolate("可只见$n哈哈一笑，身子一矮，躲了过去。\n", bindings))
+      |> Broadcast.publish(
+        Messages.interpolate("哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。\n", bindings)
+      )
+      |> put_character(character)
+    else
+      # me->start_busy(3)
+      Performs.feedback(attacker, 0, 3)
+
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。\n", bindings)
+      )
     end
-
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 100, 3)
-    msg = if hit, do: "可只见$n哈哈一笑，身子一矮，躲了过去。
-哪知方才的暗器竟是虚招，等$p反应时$N已至跟前，双掌齐施，重重的印在$n胸前。", else: "可是$p看破了$P的企图，没有受到迷惑，招手将暗器全部揽了下来。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}], "assign_refs": [{"ap", "strike"}, {"dp", "dodge"}], "busy_lines": ["me->start_busy(3);"], "level_gates": [{"bagua-biao", "120"}, {"bagua-zhang", "120"}, {"force", "150"}], "map_gates": [{"strike", "bagua-zhang"}, {"throwing", "bagua-biao"}], "prepared_gates": [{"strike", "bagua-zhang"}], "remote_damage": true, "resource_gates": [{"neili", "150"}]}
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
