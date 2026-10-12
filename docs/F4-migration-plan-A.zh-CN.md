@@ -339,23 +339,23 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `huagu_mianzhang/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `huagu_mianzhang/hua.ex` ← `huagu-mianzhang/hua.c`  (miss=1)
+- [x] ✅ `huagu_mianzhang/hua.ex` ← `huagu-mianzhang/hua.c`  (miss→0，PASS)
 
 ### `huanyin_zhi/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `huanyin_zhi/huanyin.ex` ← `huanyin-zhi/huanyin.c`  (miss=3)
+- [x] ✅ `huanyin_zhi/huanyin.ex` ← `huanyin-zhi/huanyin.c`  (miss→0，PASS)
 
 ### `huashan_quan/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `huashan_quan/song.ex` ← `huashan-quan/song.c`  (miss=3)
+- [x] ✅ `huashan_quan/song.ex` ← `huashan-quan/song.c`  (miss→0，PASS)
 
 ### `huashan_zhang/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `huashan_zhang/piao.ex` ← `huashan-zhang/piao.c`  (miss=4)
+- [x] ✅ `huashan_zhang/piao.ex` ← `huashan-zhang/piao.c`  (miss→0，PASS)
 
 ### `huilong_zhang/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `huilong_zhang/baiwei.ex` ← `huilong-zhang/baiwei.c`  (miss=1)
+- [x] ✅ `huilong_zhang/baiwei.ex` ← `huilong-zhang/baiwei.c`  (miss→0，PASS)
 
 ### `hujia_daofa/` （1 个，基线缺失 9 条）
 
