@@ -102,7 +102,9 @@ duoming_jinhua/hua.ex
 emei_jian/xian.ex
 fanliangyi_dao/makearray.ex
 fanliangyi_dao/san.ex
+feifeng_bian/xi.ex
 feifeng_whip/wu.ex
+feihua_zhang/fei.ex
 feilong_zhang/fei.ex
 feixing_shu/hua.ex
 fenglei_panfa/fenglei.ex

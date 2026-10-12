@@ -227,11 +227,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `feifeng_bian/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `feifeng_bian/xi.ex` ← `feifeng-bian/xi.c`  (miss=7)
+- [x] ✅ `feifeng_bian/xi.ex` ← `feifeng-bian/xi.c`  (miss→0，PASS)
 
 ### `feihua_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `feihua_zhang/fei.ex` ← `feihua-zhang/fei.c`  (miss=7)
+- [x] ✅ `feihua_zhang/fei.ex` ← `feihua-zhang/fei.c`  (miss→0，PASS)
 
 ### `fengmo_zhang/` （1 个，基线缺失 7 条）
 
