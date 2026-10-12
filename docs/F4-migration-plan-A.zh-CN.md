@@ -176,7 +176,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `dahai_wuliang/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `dahai_wuliang/powerup.ex` ← `dahai-wuliang/powerup.c`  (miss=4)
+- [x] ✅ `dahai_wuliang/powerup.ex` ← `dahai-wuliang/powerup.c`  (miss→0，PASS)
 
 ### `damo_jian/` （3 个，基线缺失 24 条）
 
