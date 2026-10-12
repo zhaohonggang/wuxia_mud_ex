@@ -31,11 +31,18 @@ defmodule Kantele.Combat.Skills.Performs.BahuangGong.Powerup do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
     end
+  end
+
+  # LPC: if (target != me) return notify_fail("你只能用八荒六合功来提升自己的战斗力。\n");
+  # exert 恒以自身为目标，故此门槛恒为 :ok，但保留文案以对齐 .c。
+  defp check_target(_character) do
+    _ = "你只能用八荒六合功来提升自己的战斗力。\n"
+    :ok
   end
 
   defp check_resources(character) do
@@ -47,29 +54,33 @@ defmodule Kantele.Combat.Skills.Performs.BahuangGong.Powerup do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用八荒六合功来提升自己的战斗力。\n"}
-    :ok
-
+    # LPC: if (me->query_temp("powerup")) return notify_fail("你已经在运功中了。\n");
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100); me->receive_damage("qi", 0);
+    #      message_combatd(HIR "$N凝神息气，运起八荒六合唯我独尊功，只见一股轻烟悄然缭绕周身。\n" NOR, me);
+    #      apply/attack += bahuang-gong/2; apply/dodge += /3; apply/parry += /3;
+    #      me->set_temp("powerup", 1); 定时 remove_effect（"…运行完毕，将内力收回丹田。"）
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
     conn
+    |> Broadcast.publish("$N凝神息气，运起八荒六合唯我独尊功，只见一股轻烟悄然缭绕周身。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的八荒六合唯我独尊功运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的八荒六合唯我独尊功运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["attack", "dodge", "parry"], "assign_refs": [{"skill", "bahuang-gong"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(1 + random(3));"], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["powerup"]}

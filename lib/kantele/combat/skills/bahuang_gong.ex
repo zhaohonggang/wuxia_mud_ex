@@ -62,6 +62,7 @@ defmodule Kantele.Combat.Skills.BahuangGong.Powerup do
     spec: %Kantele.Combat.Performs.Spec{
       id: "bahuang-gong/powerup",
       gates: [
+        {:custom, fn _ -> true end, "你只能用八荒六合功来提升自己的战斗力。\n"},
         {:neili_min, 100, "你的内力不够。\n"},
         {:no_buff, "powerup", "你已经在运功中了。\n"}
       ],
@@ -93,6 +94,7 @@ defmodule Kantele.Combat.Skills.BahuangGong.Shield do
     spec: %Kantele.Combat.Performs.Spec{
       id: "bahuang-gong/shield",
       gates: [
+        {:custom, fn _ -> true end, "你只能用八荒六合唯我独尊功来提升自己的防御力。\n"},
         {:neili_min, 100, "你的内力不够。\n"},
         {:skill_min, "bahuang-gong", 50, "你的八荒六合唯我独尊功修为不够。\n"},
         {:no_buff, "shield", "你已经在运功中了。\n"}
@@ -103,7 +105,7 @@ defmodule Kantele.Combat.Skills.BahuangGong.Shield do
       ],
       busy: {:if_fighting, 2},
       duration: {:skill, "bahuang-gong"},
-      expire_message: "你的八荒六合唯我独尊功运行完毕，将内力收回丹田。\n",
+      expire_message: "你的八荒六合唯我独尊功功运行完毕，将内力收回丹田。\n",
       message: "$N双手平举过顶，运起八荒六合唯我独尊功功，全身顿时笼罩在劲气之中！\n"
     }
 end

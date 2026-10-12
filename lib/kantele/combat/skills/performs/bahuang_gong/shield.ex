@@ -31,12 +31,19 @@ defmodule Kantele.Combat.Skills.Performs.BahuangGong.Shield do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_target(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_other(character) do
       :ok
     end
+  end
+
+  # LPC: if (target != me) return notify_fail("你只能用八荒六合唯我独尊功来提升自己的防御力。\n");
+  # exert 恒以自身为目标，此门槛恒为 :ok，但保留文案以对齐 .c。
+  defp check_target(_character) do
+    _ = "你只能用八荒六合唯我独尊功来提升自己的防御力。\n"
+    :ok
   end
 
   defp check_levels(character) do
@@ -57,32 +64,35 @@ defmodule Kantele.Combat.Skills.Performs.BahuangGong.Shield do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用八荒六合唯我独尊功来提升自己的防御力。\n"}
-    :ok
-
+    # LPC: if (me->query_temp("shield")) return notify_fail("你已经在运功中了。\n");
+    if Combat.buff_active?(character.meta.combat, "shield") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100); me->receive_damage("qi", 0);
+    #      message_combatd(HIW "$N双手平举过顶，运起八荒六合唯我独尊功功，全身顿时笼罩在劲气之中！\n" NOR, me);
+    #      apply/armor += bahuang-gong/2; me->set_temp("shield", 1);
+    #      定时 remove_effect（"…运行完毕，将内力收回丹田。"）；战斗中 busy 2。
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
+    combat = Combat.start_busy(character.meta.combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
+    |> Broadcast.publish("$N双手平举过顶，运起八荒六合唯我独尊功功，全身顿时笼罩在劲气之中！\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的八荒六合唯我独尊功功运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的八荒六合唯我独尊功功运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["armor"], "assign_refs": [{"skill", "bahuang-gong"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "level_gates": [{"bahuang-gong", "50"}], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["shield"]}

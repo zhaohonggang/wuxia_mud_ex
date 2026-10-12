@@ -6,6 +6,8 @@ bagua_dao/tian.ex
 bagua_quan/gua.ex
 bagua_zhang/ding.ex
 bagua_zhang/jia.ex
+bahuang_gong/powerup.ex
+bahuang_gong/shield.ex
 baibian_daxue/dian.ex
 baisheng_daofa/heng.ex
 banruo_zhang/feng.ex
