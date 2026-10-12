@@ -1,8 +1,18 @@
 defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
   @moduledoc """
-  perform「雷霆万钧」（source benlei-zhang/lei.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「雷霆万钧」（source benlei-zhang/lei.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：未持兵器 → 霹雳奔雷掌>=120 → 激发 strike 为霹雳奔雷掌 →
+  准备 strike 招式 → 真气>=400 → 目标存活。
+  命中判定 `random(strike) > parry/2`；命中时伤害
+  `benlei_zhang*3 + random(benlei_zhang*5)`；
+  命中扣 300 真气并忙乱 3，失手扣 200 真气并忙乱 2。
+
+  差异（TODO(migrate)）：
+  - `do_damage` 的第 5 参 `percent` 为护甲穿透比例，Elixir 侧 Vitals 未建模
+    护甲，按同级迁移惯例只做 `Vitals.damage(:qi, damage)`；
+  - `living(target)` 门槛未实现，由目标侧 `combat/perform-incoming` 兜底；
+  - `me->query_temp("secondary_weapon")` 副兵器检查未实现。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -21,6 +31,8 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
 
   @perform_id "benlei-zhang/lei"
 
+  @move_name "「雷霆万钧」"
+
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -29,6 +41,9 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "benlei-zhang")
+    # 命中判定基数 strike（.c: random(me->query_skill("strike"))）
+    skill = Stats.skill(stats, "strike")
+    # 伤害基数 benlei-zhang（.c: me->query_skill("benlei-zhang", 1)）
     damage = Stats.skill(stats, "benlei-zhang")
 
     with :ok <- check_perform_known(character),
@@ -39,7 +54,7 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
         topic: "combat/perform-incoming",
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
-          skill: lvl,
+          skill: skill,
           damage: damage,
           rng: rng
         }
@@ -62,12 +77,11 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -76,7 +90,9 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "benlei-zhang") < 120 -> {:error, "你的霹雳奔雷掌还不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "benlei-zhang") < 120 ->
+        {:error, "你的霹雳奔雷掌还不够娴熟，难以施展#{@move_name}。\n"}
+
       true -> :ok
     end
   end
@@ -86,10 +102,10 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
 
     cond do
       Stats.mapped(stats, "strike") != "benlei-zhang" ->
-        {:error, "你没有激发霹雳奔雷掌，难以施展。\n"}
+        {:error, "你没有激发霹雳奔雷掌，难以施展#{@move_name}。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "benlei-zhang" ->
-        {:error, "你没有准备霹雳奔雷掌，难以施展。\n"}
+        {:error, "你没有准备霹雳奔雷掌，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -100,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -109,22 +125,21 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N聚力于掌，平平推出，顿时掌风澎湃，掌力携着雷霆万钧之势猛贯向$n而去！", n1: character.name)
+    # 无条件攻击方效果：仅前置广播。
+    # C 的 -300/busy 3（命中）与 -200/busy 2（失手）均为条件消耗，
+    # 由 do_resolve_incoming 通过 Performs.feedback 作用于攻击方。
+    conn =
+      Broadcast.publish(
+        conn,
+        "只见$N聚力于掌，平平推出，顿时掌风澎湃，掌力携着雷霆万钧之势猛贯向$n而去！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -152,22 +167,38 @@ defmodule Kantele.Combat.Skills.Performs.BenleiZhang.Lei do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    # LPC: 命中判定用 random(me->query_skill("strike"))，伤害基数用
+    #      me->query_skill("benlei-zhang", 1)
+    skill = max(Map.get(data, :skill, 0), 1)
+    base = max(Map.get(data, :damage, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = div(Stats.skill(stats, "parry"), 2)
+    hit = Engine.rand(rng, skill) > dp
+
+    vitals =
+      if hit do
+        # C: damage = damage * 3 + random(damage * 5)
+        dmg = base * 3 + Engine.rand(rng, base * 5)
+        Vitals.damage(character.meta.vitals, :qi, dmg)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 3)
-    msg = if hit, do: "结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。", else: "$n躲过了$N的攻击！"
+
+    # 命中：add("neili", -300) + start_busy(3)；失手：add("neili", -200) + start_busy(2)
+    {neili_cost, busy} = if hit, do: {300, 3}, else: {200, 2}
+
+    Performs.feedback(attacker, neili_cost, busy)
+
+    msg =
+      if hit,
+        do: "结果只听$n一声闷哼，$N掌劲穿胸而过，“哇”的喷出一大口鲜血。\n",
+        else: "可是$p看破了$N的企图，躲开了这招杀着。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
