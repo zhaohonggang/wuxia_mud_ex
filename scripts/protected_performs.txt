@@ -80,6 +80,7 @@ daojian_guizhen/xue.ex
 dashou_yin/yin.ex
 dongyang_dao/luan.ex
 dongyang_dao/zhan.ex
+douzhuan_xingyi/yi.ex
 duanjia_jian/jing.ex
 duanjia_jian/lian.ex
 duanjia_sword/jing.ex

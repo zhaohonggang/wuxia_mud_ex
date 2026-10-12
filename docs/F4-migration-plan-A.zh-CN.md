@@ -198,7 +198,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `douzhuan_xingyi/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `douzhuan_xingyi/yi.ex` ← `douzhuan-xingyi/yi.c`  (miss=7)
+- [x] ✅ `douzhuan_xingyi/yi.ex` ← `douzhuan-xingyi/yi.c`  (miss→0，PASS)
 
 ### `dragon_strike/` （4 个，基线缺失 41 条）
 
