@@ -59,6 +59,7 @@ chuanyue_jian/hao.ex
 chuncan_zhang/jian.ex
 cibei_dao/sheshen.ex
 cuixin_zhang/cui.ex
+dabei_zhang/bei.ex
 dacheng_fosuo/chanrao.ex
 dagou_bang/ban.ex
 dagou_bang/chan.ex
