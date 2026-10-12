@@ -65,6 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang1 do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_state(character) do
       :ok
     end
@@ -86,6 +87,12 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang1 do
       vitals.neili < 300 -> {:error, "你已经唱得精疲力竭，内力不够了。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_state(character) do

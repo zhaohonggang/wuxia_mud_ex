@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.QingyunBian.Duan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -61,7 +62,12 @@ defmodule Kantele.Combat.Skills.Performs.QingyunBian.Duan do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_levels(character)
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_weapon(character) do
+      :ok
+    end
+  end
 
   defp check_levels(character) do
     stats = character.meta.stats
@@ -71,6 +77,12 @@ defmodule Kantele.Combat.Skills.Performs.QingyunBian.Duan do
       Stats.skill(stats, "whip") < 100 -> {:error, "断云决需要精湛的青云鞭法方能有效施展！\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp apply_effect(conn, character) do

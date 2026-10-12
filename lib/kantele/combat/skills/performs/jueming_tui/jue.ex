@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -126,7 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「绝命一踢」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -158,7 +158,7 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    msg = if hit, do: "$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", else: "却见$n镇定的向后一纵，闪开了$N这一腿。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

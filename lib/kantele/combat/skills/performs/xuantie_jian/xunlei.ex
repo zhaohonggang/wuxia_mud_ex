@@ -136,7 +136,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
     end
   end
 

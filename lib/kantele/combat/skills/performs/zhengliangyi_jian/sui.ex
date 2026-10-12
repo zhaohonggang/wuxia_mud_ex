@@ -107,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展。\n"}
       true -> :ok
     end
   end
@@ -132,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「玉碎昆冈」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -165,11 +165,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 8)
     msg = if hit, do: "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄某物已然刺穿某物，喷出一股血雨。", else: Enum.random(["$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那
-柄某物已然刺穿某物，喷出一股血雨。", "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击
-向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，某物已然透过$n前胸，喷出一股血雨。
-同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。", "$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。
-只听“噗嗤”一声，某物已然透过$n前胸而入，喷出一股血雨。", "可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。"])
+柄某物已然刺穿某物，喷出一股血雨。", else: "可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

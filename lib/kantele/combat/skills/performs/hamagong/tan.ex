@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @impl true
@@ -32,6 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -54,6 +56,12 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Tan do
       vitals.neili < 500 -> {:error, "你现在内力不足，不能弹射毒药。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_other(character) do

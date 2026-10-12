@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Kuang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
@@ -114,7 +114,7 @@ $n只觉得心跳都停止了！", n1: character.name)
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "你只能对战斗中的对手使用「狂风落叶」。\n"}
     end
   end
 

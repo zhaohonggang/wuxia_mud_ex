@@ -64,7 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施用化功大法！\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施用化功大法！\n"}
       true -> :ok
     end
   end

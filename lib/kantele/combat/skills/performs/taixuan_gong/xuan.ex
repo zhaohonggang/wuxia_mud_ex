@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
 
     cond do
       Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用。\n"}
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用。\n"}
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你使用的武器不对，无法施展。\n"}
       Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展。\n"}
       Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展。\n"}
       true -> :ok
@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「太玄激劲」只能对战斗中的对手使用。\n"}
     end
   end
 

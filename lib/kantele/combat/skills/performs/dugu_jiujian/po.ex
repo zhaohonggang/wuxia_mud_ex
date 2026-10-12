@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展。\n"}
       true -> :ok
     end
   end

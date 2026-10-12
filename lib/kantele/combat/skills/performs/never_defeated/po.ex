@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Po do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展破字诀！\n"}
+      Combat.weapon(combat) == nil -> {:error, "你必须手持兵刃才能施展破字诀！\n"}
       true -> :ok
     end
   end

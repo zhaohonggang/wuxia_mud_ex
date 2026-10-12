@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchangZhang.Huang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "必须空手才能施展「地老天荒」。\n"}
+      Combat.weapon(combat) != nil -> {:error, "必须空手才能施展「地老天荒」。\n"}
       true -> :ok
     end
   end

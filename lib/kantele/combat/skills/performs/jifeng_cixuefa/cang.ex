@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 120 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "dodge") < 120 -> {:error, "你的疾风刺穴法修为有限，难以施展。\n"}
       true -> :ok
     end
   end
@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.JifengCixuefa.Cang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

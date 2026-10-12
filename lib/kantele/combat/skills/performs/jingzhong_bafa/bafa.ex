@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "手中没刀还使什么井中八法。\n"}
+      Combat.weapon(combat) == nil -> {:error, "手中没刀还使什么井中八法。\n"}
       true -> :ok
     end
   end
@@ -124,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "井中八法只能对战斗中的对手使用。\n"}
     end
   end
 

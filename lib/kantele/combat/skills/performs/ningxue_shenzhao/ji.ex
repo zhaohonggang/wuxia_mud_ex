@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.NingxueShenzhao.Ji do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须是空手才能施展「疾电」！\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能施展「疾电」！\n"}
       true -> :ok
     end
   end

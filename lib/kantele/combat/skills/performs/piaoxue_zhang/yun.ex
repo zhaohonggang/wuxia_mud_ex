@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end
@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「云海明灯」只能在战斗中对对手使用。\n"}
     end
   end
 

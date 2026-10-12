@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展天花乱坠！\n"}
+      Combat.weapon(combat) == nil -> {:error, "你必须手持兵刃才能施展天花乱坠！\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "天花乱坠只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -113,10 +113,13 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Tianhua do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
-    else
-      do_resolve_incoming(conn, character, attacker, data)
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      character.meta.combat.busy > 0 ->
+        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧！", n1: attacker.name, n2: character.name)
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
     end
   end
 

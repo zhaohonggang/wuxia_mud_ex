@@ -33,6 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
   defp check_gates(character) do
     with :ok <- check_mapped(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -63,6 +64,12 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
       vitals.neili < 200 -> {:error, "你的内力不够。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_other(character) do

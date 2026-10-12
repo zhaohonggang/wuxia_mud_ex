@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -64,7 +65,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -96,6 +98,13 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
       vitals.neili < 1000 -> {:error, "你待要再出，却发现自己的内力不够了！\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你现在无法使用绝技。\n"}
+    :ok
+
   end
 
   defp apply_effect(conn, character) do
@@ -149,7 +158,7 @@ $N手中某物化做无双剑影攻向$n。", n1: character.name)
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 600, 1)
-    msg = if hit, do: Enum.random(["$n只觉得已经跌入了万劫魔域之中，$N手中某物如同地狱中的鬼火般，从各个方位刺了过来，避无可避！", "$n只觉身上如同万剑穿心一般，$N如同死神一般，势必要取$n性命！"]), else: "$n躲过了$N的攻击！"
+    msg = if hit, do: Enum.random(["$n只觉得已经跌入了万劫魔域之中，$N手中某物如同地狱中的鬼火般，从各个方位刺了过来，避无可避！", "$n只觉身上如同万剑穿心一般，$N如同死神一般，势必要取$n性命！"]), else: Enum.random(["然而$n抵挡得法，将$N的攻势化解。", "这时$n屏住呼吸抵挡得法，将$N的攻势一一化解。"])
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

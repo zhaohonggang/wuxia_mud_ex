@@ -208,6 +208,8 @@ class TranslatePerform:
             'damage_logic': damage_logic,
             'do_damage_details': do_damage_details,
             'damage_descriptions': damage_descriptions,
+            'not_fighting_target_msg': self.extract_not_fighting_target_msg(text),
+            'target_busy_msg': self.extract_target_busy_msg(text),
             'affect_by_details': affect_by_details,
             'messages': messages,
             'gate_messages': gate_messages,
@@ -631,7 +633,14 @@ class TranslatePerform:
             ('mapped', re.compile(r'query_skill_mapped\("(\w+)"\)\s*!=\s*"([a-z0-9-]+)"')),
             ('prepared', re.compile(r'query_skill_prepared\("(\w+)"\)\s*!=\s*"([a-z0-9-]+)"')),
             ('resource', re.compile(r'query\("(\w+)"[^)]*\)+\s*<\s*(\d+)')),
-            ('weapon', re.compile(r'query_temp\("weapon"\)[^)]*\)\s*(?:\|\||&&|>)')),
+            # `weapon` 门槛的多种写法（攻击方状态，可机械判）：
+            #   objectp(me->query_temp("weapon"))          -> must_be_empty
+            #   me->query_temp("weapon")                   -> must_be_empty
+            #   me->query_temp("weapon") || ...secondary…  -> must_be_empty
+            #   !objectp(weapon = me->query_temp("weapon"))-> must_be_wielded
+            ('weapon', re.compile(
+                r'(?:!?\s*objectp\s*\(\s*)?(?:me\s*->\s*)?query_temp\("weapon"\)'
+                r'(?:\s*\|\|\s*(?:me\s*->\s*)?query_temp\("secondary_weapon"\))?')),
             # `me->is_busy()` — attacker already busy (no-arg form only)
             ('self_busy', re.compile(r'\bme\s*->\s*is_busy\s*\(\s*\)')),
             # `me->is_fighting()` — attacker already in a fight (no-arg form only;
@@ -665,6 +674,81 @@ class TranslatePerform:
                 out.append({'kind': kind, 'arg1': a1, 'arg2': a2, 'msg': msg, 'pos': pos})
         return out
 
+    # LPC 攻击型 perform 的「必须有战斗目标」惯用句：
+    #   if (! target || ! me->is_fighting(target)) return notify_fail("...");
+    # 全集出现 500+ 次（"只能对战斗中的对手使用。" 等 106 种文案）。
+    # 本代码库的 perform 命令没有目标参数，目标恒取自 combat.enemies 首项，
+    # 因此「无敌人」恰好等价于该门槛，target/1 的空分支文案应改用原文案。
+    #
+    # 变体（务必容错）：
+    #   - 条件可跨行、括号内外有空白
+    #   - 可写 `return notify_fail(...)` 或 `return(notify_fail(...))`
+    #   - notify_fail 参数可由宏/拼接构成（交给 _expand_macros + LPC_STR_RE）
+    NOT_FIGHTING_TARGET_RE = re.compile(
+        r'!\s*target\b[\s\S]{0,40}?!\s*me\s*->\s*is_fighting\s*\(\s*target\s*\)\s*\)\s*'
+        r'return\s*\(?\s*notify_fail\s*\(([^;]*)\)', re.S)
+
+    def extract_not_fighting_target_msg(self, text: str) -> str:
+        """提取 `!target || !me->is_fighting(target)` 门槛的文案（无则返回 ''）。
+
+        返回的文案**不带**尾部 `\\n`；发射时由调用方补上（与 check_* 各门槛一致）。
+        """
+        m = self.NOT_FIGHTING_TARGET_RE.search(text)
+        if not m:
+            return ''
+        joined = ''.join(LPC_STR_RE.findall(self._expand_macros(m.group(1), text)))
+        clean = self._clean_message_fragment(joined)
+        if clean.endswith('\n'):
+            clean = clean[:-1]
+        return clean if clean and CJK_RE.search(clean) else ''
+
+    # LPC 攻击型 perform 的「对手已忙乱」惯用句（目标侧门槛）：
+    #   if (target->is_busy())
+    #       return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n");
+    # 全集出现 76+ 次，文案高度统一。攻击方只持有轻量 enemy 引用（无 busy），
+    # 该门槛必须在目标进程的 resolve_incoming/4 内用 victim 的 combat.busy 判定。
+    # `target->name() +` 前缀在文案里替换为 `$n`（n2 = 受害/目标名）。
+    #
+    # 只接受「单一条件」写法：`if (target->is_busy())`。带 `||`/`&&` 的复合条件
+    # （如 `if (target->is_fighting() || target->is_busy())`）语义不同（此处 target
+    # 可能是道具/毒虫而非战斗对手），且目标进程无法完整判定，一律排除。
+    TARGET_BUSY_RE = re.compile(
+        r'if\s*\(\s*\btarget\s*->\s*is_busy\s*\(\s*\)\s*\)\s*'
+        r'return\s*\(?\s*notify_fail\s*\((?![^;]*(?:\|\||&&))([^;]*)\)', re.S)
+
+    def extract_target_busy_msg(self, text: str) -> str:
+        """提取 `if (target->is_busy()) return notify_fail(...)` 的文案。
+
+        `target->name()` 前缀改写为 `$n`；尾部 `\\n` 去掉（发射时调用方补）。
+        返回 '' 表示未出现该门槛。
+        """
+        m = self.TARGET_BUSY_RE.search(text)
+        if not m:
+            return ''
+        arg = m.group(1)
+        # 把 `target->name() +` 前缀折叠为 `$n`，随后再取字符串字面量。
+        arg = re.sub(
+            r'target\s*->\s*name\s*\(\s*\)\s*\+\s*', '$n', arg)
+        joined = ''.join(LPC_STR_RE.findall(self._expand_macros(arg, text)))
+        # 若前缀已被折叠为 $n，需要把它接回字面量之前
+        prefix = '$n' if '$n' in arg and LPC_STR_RE.search(arg) else ''
+        clean = self._clean_message_fragment(prefix + joined)
+        if clean.endswith('\n'):
+            clean = clean[:-1]
+        return clean if clean and CJK_RE.search(clean) else ''
+
+    def _expand_macros(self, expr: str, text: str) -> str:
+        """把表达式中出现的 `#define X "..."` 宏替换为其字面量（尽力而为）。"""
+        defs = {}
+        for dm in re.finditer(r'^\s*#define\s+([A-Za-z_]\w*)\s+(.+?)\s*$', text, re.M):
+            if '"' in dm.group(2):
+                defs[dm.group(1)] = dm.group(2)
+        if not defs:
+            return expr
+        for name, val in defs.items():
+            expr = re.sub(r'\b' + re.escape(name) + r'\b', val, expr)
+        return expr
+
     def extract_hit_miss_messages(self, text: str) -> Dict[str, List[str]]:
         """Extract hit/miss messages from msg construction in hit check block.
         
@@ -672,66 +756,101 @@ class TranslatePerform:
         Uses balanced brace/paren matching to handle nested structures.
         """
         messages = {'hit': [], 'miss': []}
-        
-        # Find ALL hit check if statements (ap > dp)
+
+        # Collect every candidate ap/dp branch check together with its brace
+        # nesting depth.  A perform typically has ONE primary hit test at a
+        # shallow depth and, *inside* the resulting branch, further nested
+        # `if (ap ... dp)` damage tiers.  Those nested tiers are not hit/miss
+        # checks -- treating them as such swaps a tier's text between the hit
+        # and miss slots (they have no else of their own).  So we only accept
+        # candidates sitting at the minimum observed depth.
+        cands = []
         if_pos = text.find('if (')
         while if_pos != -1:
-            # Check if this if statement contains ap and dp with >
+            # Check if this if statement contains ap and dp with > / <
             paren_start, paren_end = self._find_balanced_parens(text, if_pos + 3)  # after 'if '
             if paren_start != -1:
                 condition = text[paren_start:paren_end+1]
-                if 'ap' in condition and 'dp' in condition and '>' in condition:
-                    # Found a hit check!
-                    # Find opening brace after the condition
-                    brace_pos = text.find('{', paren_end)
-                    if brace_pos != -1:
-                        hit_start, hit_end = self._find_balanced_braces(text, brace_pos)
-                        if hit_start != -1:
-                            hit_block = text[hit_start + 1:hit_end]
-                            
-                            # Look for else after hit block
-                            else_pos = text.find('else', hit_end)
-                            miss_block = ''
-                            if else_pos != -1 and else_pos < hit_end + 100:
-                                else_brace = text.find('{', else_pos)
-                                if else_brace != -1:
-                                    miss_start, miss_end = self._find_balanced_braces(text, else_brace)
-                                    if miss_start != -1:
-                                        miss_block = text[miss_start + 1:miss_end]
-                            
-                            # Extract msg += from hit branch
-                            hit_msgs = []
-                            for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', hit_block):
-                                clean = self._clean_message_fragment(m.group(1))
-                                if clean and not self._is_function_call(clean):
-                                    hit_msgs.append(clean)
-                            
-                            # Extract msg += from miss branch
-                            miss_msgs = []
-                            if miss_block:
-                                for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', miss_block):
-                                    clean = self._clean_message_fragment(m.group(1))
-                                    if clean and not self._is_function_call(clean):
-                                        miss_msgs.append(clean)
-                            
-                            # Also check for message_combatd in hit branch (final message).
-                            # Skip `message_combatd(msg, me, target)` -- a bare
-                            # variable argument just re-emits the accumulated
-                            # msg buffer, it is not a literal message.
-                            for m in re.finditer(r'message_combatd\s*\(([^)]+)\)', hit_block):
-                                msg_arg = m.group(1).split(',')[0].strip()
-                                if not re.search(r'"', msg_arg):
-                                    continue
-                                clean = self._clean_message_fragment(msg_arg)
-                                if clean and clean not in hit_msgs:
-                                    hit_msgs.append(clean)
-                            
-                            # Add to messages (extend, not replace)
-                            messages['hit'].extend(hit_msgs)
-                            messages['miss'].extend(miss_msgs)
-            
+                if 'ap' in condition and 'dp' in condition and ('>' in condition or '<' in condition):
+                    # Only treat this as a clean hit/miss check when the branch
+                    # selects on a *single* ap-vs-dp comparison.  Conditions that
+                    # mix in `&&`/`||` (e.g. `random(10) <= 1 && ap/2 < dp`) or a
+                    # `random(dp)` right-hand side are two-stage/secondary rolls,
+                    # not the primary hit test -- pairing their branches would
+                    # place a hit text in the miss slot.
+                    is_primary = not re.search(r'&&|\|\|', condition) \
+                        and not re.search(r'random\s*\(\s*dp\s*\)', condition)
+                    if is_primary:
+                        cands.append({
+                            'pos': if_pos,
+                            'depth': self._brace_depth_at(text, if_pos),
+                            'if_branch_is_hit': '>' in condition,
+                            'paren_end': paren_end,
+                        })
             # Try next 'if ('
             if_pos = text.find('if (', if_pos + 1)
+
+        if cands:
+            min_depth = min(c['depth'] for c in cands)
+            primary_cands = [c for c in cands if c['depth'] == min_depth]
+        else:
+            primary_cands = []
+
+        for cand in primary_cands:
+            paren_end = cand['paren_end']
+            if_branch_is_hit = cand['if_branch_is_hit']
+            # Find opening brace after the condition
+            brace_pos = text.find('{', paren_end)
+            if brace_pos == -1:
+                continue
+            hit_start, hit_end = self._find_balanced_braces(text, brace_pos)
+            if hit_start == -1:
+                continue
+            first_block = text[hit_start + 1:hit_end]
+
+            # Look for else after the first block
+            else_pos = text.find('else', hit_end)
+            second_block = ''
+            if else_pos != -1 and else_pos < hit_end + 100:
+                else_brace = text.find('{', else_pos)
+                if else_brace != -1:
+                    miss_start, miss_end = self._find_balanced_braces(text, else_brace)
+                    if miss_start != -1:
+                        second_block = text[miss_start + 1:miss_end]
+
+            hit_block = first_block if if_branch_is_hit else second_block
+            miss_block = second_block if if_branch_is_hit else first_block
+
+            # Extract msg += from hit branch
+            hit_msgs = []
+            for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', hit_block):
+                clean = self._clean_message_fragment(m.group(1))
+                if clean and not self._is_function_call(clean):
+                    hit_msgs.append(clean)
+
+            # Extract msg += from miss branch
+            miss_msgs = []
+            if miss_block:
+                for m in re.finditer(r'msg\s*[+=]\s*([^;]+);', miss_block):
+                    clean = self._clean_message_fragment(m.group(1))
+                    if clean and not self._is_function_call(clean):
+                        miss_msgs.append(clean)
+
+            # Also check for message_combatd in hit branch (final message).
+            # Skip `message_combatd(msg, me, target)` -- a bare
+            # variable argument just re-emits the accumulated
+            # msg buffer, it is not a literal message.
+            for m in re.finditer(r'message_combatd\s*\(([^)]+)\)', hit_block):
+                msg_arg = m.group(1).split(',')[0].strip()
+                if not re.search(r'"', msg_arg):
+                    continue
+                clean = self._clean_message_fragment(msg_arg)
+                if clean and clean not in hit_msgs:
+                    hit_msgs.append(clean)
+
+            # Add to messages (extend, not replace)
+            messages['hit'].extend(hit_msgs)
+            messages['miss'].extend(miss_msgs)
         
         # ---- do_damage-based path ----
         # Many performs use a hit condition that does not literally name
@@ -938,6 +1057,16 @@ class TranslatePerform:
                     return start, i
             i += 1
         return -1, -1
+
+    def _brace_depth_at(self, text: str, pos: int) -> int:
+        """Return the `{` nesting depth at offset `pos`.
+
+        The perform body is wrapped in its own function brace, so a top-level
+        statement inside the body sits at depth 1 (or more if a wrapper block
+        like `if (!target) { ... }` encloses it).  Used to tell the *primary*
+        ap/dp hit check (shallow) from secondary tiers nested inside it (deeper).
+        """
+        return text.count('{', 0, pos) - text.count('}', 0, pos)
 
     def _call_args(self, text: str, callee: str) -> List[List[str]]:
         """Extract argument lists of every `->callee(...)` call, splitting on
@@ -1642,34 +1771,56 @@ class TranslatePerform:
                     '没刀还使', '手中必须拿着', '手中并没有拿')
 
     def _emit_weapon_check(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
-        # Use extracted weapon gate messages if available
+        # Use the SOURCE-PAIRED weapon gate message when available: the flat
+        # `gate_messages['weapon']` list mixes every weapon-ish notify_fail in
+        # the file (e.g. bagua-biao/xian pairs "只能空手施展。" for the
+        # `objectp(query_temp("weapon"))` check with a *separate* handing-slot
+        # gate whose text is "你现在手中并没有拿着暗器。"), so `[0]` is often the
+        # wrong message.  `gates_paired` binds each condition to its own text.
+        paired = [g for g in data.get('gates_paired', []) if g['kind'] == 'weapon']
         gate_msgs = data.get('gate_messages', {}).get('weapon', [])
-        if not gate_msgs:
-            return None
         # Determine the gate direction from the raw LPC source.
         direction = self._weapon_gate_direction(data.get('raw_source', ''))
-        # Only trust the direction when the accompanying message text agrees
-        # with it.  `gate_msgs[0]` is the first weapon-ish notify_fail, which is
-        # not necessarily the one that pairs with the matched condition.
-        msg0 = gate_msgs[0]
-        agrees = (
-            (direction == 'must_be_empty' and any(h in msg0 for h in self._EMPTY_HAND_HINTS))
-            or (direction == 'must_be_wielded' and any(h in msg0 for h in self._WIELD_HINTS))
-        )
+        # Pick the message that both (a) comes from the paired condition whose
+        # direction agrees, and (b) carries a matching hint.  Fall back to the
+        # flat list only when no paired entry exists.
+        def _hint_ok(d, m):
+            return ((d == 'must_be_empty' and any(h in m for h in self._EMPTY_HAND_HINTS))
+                    or (d == 'must_be_wielded' and any(h in m for h in self._WIELD_HINTS)))
+
+        msg0 = ''
+        if paired:
+            # Prefer the earliest paired message whose text agrees with the
+            # mechanically-derived direction.
+            for g in paired:
+                if g.get('msg') and _hint_ok(direction, g['msg']):
+                    msg0 = g['msg']
+                    break
+        if not msg0:
+            # Paired entries either absent or not agreeing.  Fall back to the
+            # flat list's first entry: for the (common) single-weapon-gate file
+            # this is exactly the right message.  Taking the flat list first
+            # also avoids *downgrading* a previously-correct emission when the
+            # generic pairing is skewed by an unrelated disjunction (e.g.
+            # `query_skill_mapped("force") != "a" || ... != "b"` counts as
+            # several conditions and shifts every downstream pairing).
+            msg0 = gate_msgs[0] if gate_msgs else ''
+        agrees = bool(msg0) and _hint_ok(direction, msg0)
         if not agrees:
             # Direction is not mechanically certain (or the message/condition
             # pairing is ambiguous): preserve the texts as comments and return
             # :ok rather than emitting a gate that may reject legal casts.
+            todo_msgs = gate_msgs or [g['msg'] for g in paired if g.get('msg')]
             body = (
                 "    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：\n"
-                + ''.join('    #   {:error, "' + msg + '\\n"}\n' for msg in gate_msgs)
+                + ''.join('    #   {:error, "' + msg + '\\n"}\n' for msg in todo_msgs)
                 + "    :ok\n"
             )
             return ("check_weapon", body)
         if direction == 'must_be_empty':
-            clause = ('combat.weapon != nil', f'{{:error, "{msg0}\\n"}}')
+            clause = ('Combat.weapon(combat) != nil', f'{{:error, "{msg0}\\n"}}')
         else:
-            clause = ('combat.weapon == nil', f'{{:error, "{msg0}\\n"}}')
+            clause = ('Combat.weapon(combat) == nil', f'{{:error, "{msg0}\\n"}}')
         clauses = [clause, ('true', ':ok')]
         body = (
             "    combat = character.meta.combat\n\n"
@@ -1753,6 +1904,14 @@ class TranslatePerform:
         # from `other`, never from the dedicated buckets.
         live = {g['msg'] for g in data.get('gates_paired', [])
                 if g['kind'] in ('self_busy', 'self_fighting') and g.get('msg')}
+        # `!target || !me->is_fighting(target)` 的文案由 target/1 实时发出。
+        nft = data.get('not_fighting_target_msg')
+        if nft:
+            live.add(nft)
+        # `target->is_busy()` 的文案由 resolve_incoming/4 目标侧实时发出。
+        tbm = data.get('target_busy_msg')
+        if tbm:
+            live.add(tbm)
         if live:
             gate_msgs = [m for m in gate_msgs if m not in live]
         if not gate_msgs:
@@ -2002,19 +2161,41 @@ class TranslatePerform:
             "  @impl true",
             "  def resolve_incoming(conn, character, attacker, data) do",
         ]
-        # Target-side `! living(target)` guard: LPC refuses the perform when the
-        # victim is already a corpse.  The victim process has the full
-        # character here, so `meta.combat.dead` is authoritative.  The callback
-        # must return a conn (it is not a with-chain), so broadcast the LPC
-        # message and skip the damage instead of returning a tuple.
+        # Target-side guards.  Both `! living(target)` and `target->is_busy()`
+        # are decidable only on the victim process (the attacker holds a
+        # lightweight enemy ref with no `dead`/`busy`), so they run inside
+        # `resolve_incoming/4`.  The callback must return a conn (it is not a
+        # with-chain), so broadcast the LPC message and skip the damage instead
+        # of returning a tuple.
         living_msg = self._emit_living_check(data)
+        target_busy_msg = data.get('target_busy_msg') or ''
+        guards = []  # (cond_expr, msg)
         if living_msg:
+            guards.append(('character.meta.combat.dead', living_msg))
+        if target_busy_msg:
+            guards.append(('character.meta.combat.busy > 0', target_busy_msg))
+        if guards:
+            if len(guards) == 1:
+                cond, msg = guards[0]
+                lines.extend([
+                    f"    if {cond} do",
+                    f'      Broadcast.publish(conn, "{msg}", '
+                    f"n1: attacker.name, n2: character.name)",
+                    "    else",
+                    "      do_resolve_incoming(conn, character, attacker, data)",
+                    "    end",
+                ])
+            else:
+                lines.append("    cond do")
+                for cond, msg in guards:
+                    lines.append(f"      {cond} ->")
+                    lines.append(
+                        f'        Broadcast.publish(conn, "{msg}", '
+                        f"n1: attacker.name, n2: character.name)")
+                lines.append("      true ->")
+                lines.append("        do_resolve_incoming(conn, character, attacker, data)")
+                lines.append("    end")
             lines.extend([
-                "    if character.meta.combat.dead do",
-                f'      Broadcast.publish(conn, "{living_msg}", n1: attacker.name, n2: character.name)',
-                "    else",
-                "      do_resolve_incoming(conn, character, attacker, data)",
-                "    end",
                 "  end",
                 "",
                 "  defp do_resolve_incoming(conn, character, attacker, data) do",
@@ -2163,11 +2344,14 @@ class TranslatePerform:
         incoming = ''
         if use_incoming:
             with_head += ",\n         {:ok, target} <- target(combat)"
+            no_target_msg = data.get('not_fighting_target_msg') or "这里没有可供攻击的对手。"
+            # 用 LPC 原文案（"只能对战斗中的对手使用。" 等）替换泛化文案，
+            # 使「无敌人」分支与原文一致（本库 perform 无目标参数，等价）。
             helpers = (
                 "\n  defp target(combat) do\n"
                 "    case combat.enemies do\n"
                 "      [enemy | _] -> {:ok, enemy}\n"
-                '      [] -> {:error, "这里没有可供攻击的对手。\\n"}\n'
+                f'      [] -> {{:error, "{no_target_msg}\\n"}}\n'
                 "    end\n"
                 "  end\n"
                 "\n  defp ref(character) do\n"

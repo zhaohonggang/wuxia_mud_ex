@@ -127,7 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "截脉封穴只能在战斗中使用。\n"}
     end
   end
 

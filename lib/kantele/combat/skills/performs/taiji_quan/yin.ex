@@ -93,11 +93,12 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你的太极拳等级不够，难以施展。\n"}
-    #   {:error, "只能空手施展。\n"}
-    :ok
+    combat = character.meta.combat
 
+    cond do
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -121,7 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「引字诀」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -131,10 +132,13 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
-    else
-      do_resolve_incoming(conn, character, attacker, data)
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      character.meta.combat.busy > 0 ->
+        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
     end
   end
 

@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end
@@ -120,7 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「定岳七方」只能对战斗中的对手使用。\n"}
     end
   end
 

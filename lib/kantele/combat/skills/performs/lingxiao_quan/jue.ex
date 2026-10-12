@@ -127,7 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「凌宵总诀」只能对战斗中的对手使用。\n"}
     end
   end
 

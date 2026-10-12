@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Wan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须是空手才能施展万蛊噬天。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能施展万蛊噬天。\n"}
       true -> :ok
     end
   end

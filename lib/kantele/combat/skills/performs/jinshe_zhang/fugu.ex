@@ -100,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你不是空手，不能使用附骨缠身。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你不是空手，不能使用附骨缠身。\n"}
       true -> :ok
     end
   end
@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhang.Fugu do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "附骨缠身只能对战斗中的对手使用。\n"}
     end
   end
 

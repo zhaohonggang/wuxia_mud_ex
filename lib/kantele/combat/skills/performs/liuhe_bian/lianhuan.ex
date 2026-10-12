@@ -72,6 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -81,9 +82,9 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 270 -> {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
-      Stats.skill(stats, "whip") < 180 -> {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
-      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "你的内力不够，无法施展！\n"}
+      Stats.skill(stats, "force") < 270 -> {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
+      Stats.skill(stats, "whip") < 180 -> {:error, "你的内力不够，无法施展！\n"}
+      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       Stats.skill(stats, "dodge") < 180 -> {:error, "你轻功修为不足，无法快速攻击！\n"}
       true -> :ok
     end
@@ -93,9 +94,17 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
+      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手中无鞭，如何能够施展连环诀？\n"}
+    #   {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
+    :ok
+
   end
 
   defp check_other(character) do
@@ -124,7 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "六合连环诀只能对战斗中的对手使用。\n"}
     end
   end
 

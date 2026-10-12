@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以演练。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以演练。\n"}
       true -> :ok
     end
   end

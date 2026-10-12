@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "使用「如影随形」时双手必须空着！\n"}
+      Combat.weapon(combat) != nil -> {:error, "使用「如影随形」时双手必须空着！\n"}
       true -> :ok
     end
   end
@@ -132,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「如影随形」只能在战斗中对对手使用。\n"}
     end
   end
 

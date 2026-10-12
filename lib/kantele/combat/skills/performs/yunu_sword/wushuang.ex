@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
@@ -116,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "无双无对只能对战斗中的对手使用。\n"}
     end
   end
 

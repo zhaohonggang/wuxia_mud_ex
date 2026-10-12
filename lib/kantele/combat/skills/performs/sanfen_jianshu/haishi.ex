@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
   end
@@ -126,7 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「海市蜃楼」只能在战斗中对对手使用。\n"}
     end
   end
 

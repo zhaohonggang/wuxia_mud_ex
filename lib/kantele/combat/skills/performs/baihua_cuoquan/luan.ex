@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -89,6 +90,12 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
       vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp apply_effect(conn, character) do
@@ -112,7 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「百花错乱」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -122,10 +129,13 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
-    else
-      do_resolve_incoming(conn, character, attacker, data)
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      character.meta.combat.busy > 0 ->
+        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
     end
   end
 

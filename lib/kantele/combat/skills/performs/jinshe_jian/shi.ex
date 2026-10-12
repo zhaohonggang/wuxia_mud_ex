@@ -108,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end
@@ -133,7 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「金蛇噬天」只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -165,7 +165,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Shi do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 2)
-    msg = if hit, do: Enum.random(["$n见$N一道金光闪过，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。", "$n见$N金光划过，心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。"]), else: "然而$n以快对快，飞身一跳已然躲过$N这一招。"
+    msg = if hit, do: Enum.random(["$n见$N一道金光闪过，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。", "$n见$N金光划过，心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。"]), else: "$n躲过了$N的攻击！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

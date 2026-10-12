@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -68,7 +69,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -101,6 +103,13 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     end
   end
 
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你手里拿的不是剑，怎么施展？\n"}
+    :ok
+
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -118,7 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「无穷无尽」只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -150,7 +159,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    msg = if hit, do: "这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。", else: Enum.random(["$n大吃一惊，连忙退后，居然侥幸躲开着这一招！", "$n知道来招不善，急忙闪避，没出一点差错。"])
+    msg = if hit, do: "这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。", else: "$n大吃一惊，连忙退后，居然侥幸躲开着这一招！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

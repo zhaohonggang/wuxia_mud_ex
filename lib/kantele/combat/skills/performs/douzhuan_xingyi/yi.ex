@@ -68,6 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -90,6 +91,13 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
       vitals.neili < 60 -> {:error, "你现在真气不够，无法使用「斗转星移」。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "对方手里拿的是一根小小的针，你没有办法施展「斗转星移」。\n"}
+    :ok
+
   end
 
   defp check_other(character) do
@@ -117,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.DouzhuanXingyi.Yi do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「斗转星移」只能对战斗中的对手使用。\n"}
     end
   end
 

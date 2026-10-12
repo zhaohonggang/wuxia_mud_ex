@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

@@ -107,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -135,7 +135,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「神威浩荡」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -167,7 +167,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
-    msg = if hit, do: "$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", else: Enum.random(["只听“轰”的一声闷响，$n身着的某物在$N内力激荡下应声而碎，化成一块块碎片。", "只听“轰”的一声闷响，$n身着的某物在$N内力激荡下应声而裂，化成一块块碎片。", "可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。"])
+    msg = if hit, do: "$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", else: "可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

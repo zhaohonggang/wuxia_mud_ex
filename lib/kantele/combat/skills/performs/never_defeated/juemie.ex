@@ -91,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你必须手持兵刃才能施展天地绝灭！\n"}
+      Combat.weapon(combat) == nil -> {:error, "你必须手持兵刃才能施展天地绝灭！\n"}
       true -> :ok
     end
   end
@@ -115,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "天地绝灭只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -147,7 +147,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Juemie do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 70, 2)
-    msg = if hit, do: "$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n连忙格挡，可是这一招实在是鬼神莫测，哪里琢磨得透？登时中了$P的重创！", else: "只见$n并不慌张，只是轻轻一闪，就躲过了$N这一击！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

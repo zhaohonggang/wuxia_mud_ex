@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.DacidabeiShou.Yin do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手使用「大手印」！\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手使用「大手印」！\n"}
       true -> :ok
     end
   end

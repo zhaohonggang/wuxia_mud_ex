@@ -63,7 +63,8 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Lu do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -86,6 +87,12 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Lu do
     end
   end
 
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -105,7 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Lu do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "戮仙决只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -137,7 +144,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Lu do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 75, 2)
-    msg = if hit, do: "$n不明所以，运功抵挡，只觉得$P的掌力怪异之极，直渗入至奇经八脉，登时受了内伤！", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n不明所以，运功抵挡，只觉得$P的掌力怪异之极，直渗入至奇经八脉，登时受了内伤！", else: "然而$n看破了$N的掌势，不慌不忙的躲过了这一击！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

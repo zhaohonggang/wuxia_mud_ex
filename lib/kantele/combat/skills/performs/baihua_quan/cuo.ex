@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "百花错乱须是空手才能施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "百花错乱须是空手才能施展。\n"}
       true -> :ok
     end
   end
@@ -123,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaQuan.Cuo do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "百花错乱只能对战斗中的对手使用。\n"}
     end
   end
 

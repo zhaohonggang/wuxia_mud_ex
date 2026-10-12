@@ -30,7 +30,18 @@ defmodule Kantele.Combat.Skills.Performs.BiyunXinfa.Powerup do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_other(character)
+  defp check_gates(character) do
+    with :ok <- check_weapon(character),
+         :ok <- check_other(character) do
+      :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
+  end
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：

@@ -64,7 +64,14 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
     end
   end
 
-  defp check_gates(_character), do: :ok
+  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  defp check_gates(character), do: check_weapon(character)
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
+  end
 
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
@@ -89,7 +96,7 @@ $N向$n一笑，一扬手向$n抛去。
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "只能在战斗中对对手使用。\n"}
     end
   end
 

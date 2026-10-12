@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "此招只能空手施展！\n"}
+      Combat.weapon(combat) != nil -> {:error, "此招只能空手施展！\n"}
       true -> :ok
     end
   end
@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「九阴神拳」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -161,7 +161,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 90, 2)
-    msg = if hit, do: "$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！", else: "只见$n不慌不忙，轻轻一闪，躲过了$N这一击！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

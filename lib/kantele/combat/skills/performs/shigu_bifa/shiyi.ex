@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的石鼓打穴笔法修为有限，难以施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

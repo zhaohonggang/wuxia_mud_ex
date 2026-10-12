@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -62,7 +63,8 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -85,6 +87,12 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
     end
   end
 
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
+  end
+
   defp apply_effect(conn, character) do
     conn
     |> put_character(character)
@@ -94,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "唱仙法吼字决只能在战斗中对对手使用。\n"}
     end
   end
 

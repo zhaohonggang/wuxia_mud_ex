@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -67,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -101,6 +103,12 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     end
   end
 
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -121,7 +129,7 @@ $N把心一横，在自己舌尖狠命一咬，将毕生功力尽数喷出，顿
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "你只能对战斗中的对手施展「碧焰滔天」。\n"}
     end
   end
 

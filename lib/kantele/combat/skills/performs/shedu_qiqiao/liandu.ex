@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Liandu do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @perform_id "shedu-qiqiao/liandu"
@@ -43,6 +44,7 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Liandu do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -65,6 +67,12 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Liandu do
       vitals.neili < 200 -> {:error, "你现在的内力不够！\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_other(character) do

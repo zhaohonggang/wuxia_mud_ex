@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end
@@ -131,7 +131,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「无痕杀」只能在战斗中对对手使用。\n"}
     end
   end
 

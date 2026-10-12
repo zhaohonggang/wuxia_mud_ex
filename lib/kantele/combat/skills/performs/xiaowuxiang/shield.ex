@@ -33,6 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaowuxiang.Shield do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -54,6 +55,12 @@ defmodule Kantele.Combat.Skills.Performs.Xiaowuxiang.Shield do
       vitals.neili < 100 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_other(character) do

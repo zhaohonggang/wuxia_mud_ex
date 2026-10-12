@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end

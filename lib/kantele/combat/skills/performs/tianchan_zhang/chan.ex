@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须是空手才能使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能使用。\n"}
       true -> :ok
     end
   end
@@ -126,7 +126,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「毒蟾掌」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -158,7 +158,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    msg = if hit, do: "只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", else: "$p见$P来势汹涌，急忙纵身一跃而起，躲开了这一击！"
+    msg = if hit, do: "只听$n惨叫一声，被$N这一掌拍个正着，顿时毒气攻心，“哇”地喷出一大口鲜血。", else: "$n躲过了$N的攻击！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

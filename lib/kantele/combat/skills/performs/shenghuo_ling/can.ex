@@ -71,6 +71,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_state(character) do
       :ok
     end
@@ -100,6 +101,15 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     cond do
       vitals.max_neili < 5000 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
       vitals.neili < 400 -> {:error, "你的内力不够，不能使用圣火令法之。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.weapon(combat) == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end

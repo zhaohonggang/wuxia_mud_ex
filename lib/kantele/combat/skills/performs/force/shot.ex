@@ -33,7 +33,8 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -68,6 +69,12 @@ defmodule Kantele.Combat.Skills.Performs.Force.Shot do
       vitals.neili < 300 -> {:error, "你得先准备(hand)好毒药再说。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp apply_effect(conn, character) do

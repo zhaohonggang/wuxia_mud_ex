@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -101,6 +102,12 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
     end
   end
 
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
+  end
+
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
@@ -120,7 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.HuaguMianzhang.Hua do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "辣手化骨只能对战斗中的对手使用。\n"}
     end
   end
 

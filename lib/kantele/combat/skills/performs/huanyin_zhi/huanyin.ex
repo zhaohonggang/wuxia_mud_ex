@@ -65,6 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -96,6 +97,12 @@ defmodule Kantele.Combat.Skills.Performs.HuanyinZhi.Huanyin do
       vitals.neili < 400 -> {:error, "你的真气不够，现在无法施展幻阴神指。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_other(character) do

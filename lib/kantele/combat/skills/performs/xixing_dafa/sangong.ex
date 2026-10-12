@@ -30,7 +30,12 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Sangong do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_resources(character)
+  defp check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
+      :ok
+    end
+  end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
@@ -39,6 +44,12 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Sangong do
       vitals.max_neili < 1 -> {:error, "你已经将内力散尽，没什么必要再散功了。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp apply_effect(conn, character) do

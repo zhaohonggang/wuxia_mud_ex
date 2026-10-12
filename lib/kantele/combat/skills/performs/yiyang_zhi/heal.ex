@@ -65,6 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
+         :ok <- check_weapon(character),
          :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
@@ -99,6 +100,12 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
       vitals.jing < 100 -> {:error, "你现在的状态不佳，难以施展。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    :ok
+
   end
 
   defp check_state(character) do

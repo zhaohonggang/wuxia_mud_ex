@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "「九穹绝刹掌」只能空手使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「九穹绝刹掌」只能空手使用。\n"}
       true -> :ok
     end
   end
@@ -128,7 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「九穹绝刹掌」只能在战斗中对对手使用。\n"}
     end
   end
 

@@ -116,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheQuan.Rou do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「柔字诀」只能对战斗中的对手使用。\n"}
     end
   end
 

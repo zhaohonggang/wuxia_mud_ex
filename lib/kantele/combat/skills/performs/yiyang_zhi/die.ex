@@ -111,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -134,7 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「阳关三叠」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -166,9 +166,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    msg = if hit, do: "结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", else: Enum.random(["可是$n将手中某物转动如轮，终于化解了这一招。
-
-紧接着", "可是$p镇定自如，全力化解了$P这精妙的一指。"])
+    msg = if hit, do: "结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", else: "可是$p镇定自如，全力化解了$P这精妙的一指。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

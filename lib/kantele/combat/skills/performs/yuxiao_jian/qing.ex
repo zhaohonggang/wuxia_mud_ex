@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end
@@ -120,7 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「天地情长」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -145,7 +145,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 2)
-    msg = "$p顿觉$P的内力隐藏在一个个气旋中，难以捉摸去处，只能强运内力抵消。"
+    msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "你没有激发因陀罗爪，难以施展。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
+      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "你没有准备因陀罗爪，难以施展。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
       Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
       Stats.mapped(stats, "force") != "yijinjing" -> {:error, "只能空手施展。\n"}
       Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你因陀罗爪不够娴熟，难以施展。\n"}
-      Stats.mapped(stats, "claw") != "yintuoluo-zhua" -> {:error, "你没有准备因陀罗爪，难以施展。\n"}
+      Stats.mapped(stats, "claw") != "yintuoluo-zhua" -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -132,7 +132,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「赤血连环爪」只能对战斗中的对手使用。\n"}
     end
   end
 

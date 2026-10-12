@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -127,7 +127,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「混沌一阳」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -159,7 +159,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$n急忙抽身后退，可是气团射得更快，只听$p一声惨叫，鲜血飞溅！", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n急忙抽身后退，可是气团射得更快，只听$p一声惨叫，鲜血飞溅！", else: "然而$n全力抵挡，终于将$N发出的气团拨开。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

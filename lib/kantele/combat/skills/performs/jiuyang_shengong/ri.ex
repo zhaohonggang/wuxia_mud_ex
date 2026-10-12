@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

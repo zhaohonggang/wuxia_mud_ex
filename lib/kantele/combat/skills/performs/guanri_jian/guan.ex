@@ -108,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.GuanriJian.Guan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end
@@ -133,7 +133,7 @@ $n而去。霎时间炽炎暴涨，热浪扑面卷来，四周空气便似沸腾
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「天洪地炉观日神诀」只能对战斗中的对手使用。\n"}
     end
   end
 
