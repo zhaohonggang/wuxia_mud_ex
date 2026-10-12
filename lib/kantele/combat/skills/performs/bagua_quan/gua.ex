@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
   alias Kantele.Combat.Performs
 
   @perform_id "bagua-quan/gua"
+  @move_name "「劈卦八卦拳」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -47,7 +48,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -64,12 +65,12 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC 门槛顺序：weapon → bagua-quan<70 → mapped(cuff) → prepared(cuff) → neili<200
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bagua-quan") < 70 -> {:error, "你的八卦拳法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "bagua-quan") < 70 -> {:error, "你的八卦拳法不够娴熟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -88,10 +89,10 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
 
     cond do
       Stats.mapped(stats, "cuff") != "bagua-quan" ->
-        {:error, "你没有激发八卦拳法，难以施展。\n"}
+        {:error, "你没有激发八卦拳法，难以施展#{@move_name}。\n"}
 
       Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "bagua-quan" ->
-        {:error, "你没有准备八卦拳法，难以施展。\n"}
+        {:error, "你没有准备八卦拳法，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -111,32 +112,29 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N突然身体一侧，双掌向下一沉，忽又向上一翻，朝着$n的双肩斜斜地劈去！", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # LPC: 门槛通过后先广播起手式；消耗/忙乱按命中/落空分别在 resolve_incoming 结算。
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N突然身体一侧，双掌向下一沉，忽又向上一翻，朝着$n的双肩斜斜地劈去！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「劈卦八卦拳」只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -154,25 +152,39 @@ defmodule Kantele.Combat.Skills.Performs.BaguaQuan.Gua do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "只因这招实在太过巧妙，$p被$P攻了个措手不及，大叫一声，吐出一口鲜血！", else: "可是$p看破了$P的这一招，镇定解招，一丝不乱。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = target->query_skill("parry"); if (ap / 2 + random(ap) > dp)
+    dp = Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    if hit do
+      # LPC: me->add("neili", -100); me->start_busy(2)
+      vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      Performs.feedback(attacker, 100, 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "只因这招实在太过巧妙，$p被$P攻了个措手不及，大叫一声，吐出一口鲜血！\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: me->add("neili", -50); me->start_busy(3)
+      Performs.feedback(attacker, 50, 3)
+
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p看破了$P的这一招，镇定解招，一丝不乱。\n", bindings)
+      )
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

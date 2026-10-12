@@ -3,6 +3,7 @@ bagua_biao/zhi.ex
 bagua_dao/mang.ex
 bagua_dao/sha.ex
 bagua_dao/tian.ex
+bagua_quan/gua.ex
 baibian_daxue/dian.ex
 baisheng_daofa/heng.ex
 banruo_zhang/feng.ex
@@ -127,6 +128,9 @@ qishang_quan/shang.ex
 qishi_ji/juan.ex
 qiufeng_chenfa/chan.ex
 qiulin_shiye/wu.ex
+qixian_wuxingjian/shan.ex
+qixian_wuxingjian/yin.ex
+qixian_wuxingjian/zhu.ex
 qixing_jian/xing.ex
 qixing_quan/zhai.ex
 qixing_shou/po.ex
@@ -158,6 +162,3 @@ tiangang_zhi/ling.ex
 wudang_jian/sheng.ex
 xiyang_jian/ci.ex
 yunhe_jian/chong.ex
-qixian_wuxingjian/shan.ex
-qixian_wuxingjian/yin.ex
-qixian_wuxingjian/zhu.ex
