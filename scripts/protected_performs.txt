@@ -165,6 +165,9 @@ honglian_dao/huo.ex
 hongye_daofa/kuang.ex
 hongye_daofa/leiting.ex
 houquan/zhen.ex
+hua_quan/juan.ex
+huagong_dafa/hua.ex
+huagong_dafa/powerup.ex
 huashan_jian/jie.ex
 huashan_jian/lian.ex
 huashan_jian/long.ex

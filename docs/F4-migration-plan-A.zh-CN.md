@@ -330,12 +330,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `hua_quan/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `hua_quan/juan.ex` ← `hua-quan/juan.c`  (miss=7)
+- [x] ✅ `hua_quan/juan.ex` ← `hua-quan/juan.c`  (miss→0，PASS)
 
 ### `huagong_dafa/` （2 个，基线缺失 12 条）
 
-- [ ] ❌ `huagong_dafa/hua.ex` ← `huagong-dafa/hua.c`  (miss=8)
-- [ ] ❌ `huagong_dafa/powerup.ex` ← `huagong-dafa/powerup.c`  (miss=4)
+- [x] ✅ `huagong_dafa/hua.ex` ← `huagong-dafa/hua.c`  (miss→0，PASS)
+- [x] ✅ `huagong_dafa/powerup.ex` ← `huagong-dafa/powerup.c`  (miss→0，PASS)
 
 ### `huagu_mianzhang/` （1 个，基线缺失 1 条）
 
