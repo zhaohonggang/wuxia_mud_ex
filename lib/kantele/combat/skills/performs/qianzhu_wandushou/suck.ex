@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -64,6 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
   defp check_gates(character) do
     with :ok <- check_resources(character),
          :ok <- check_weapon(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -74,7 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
 
     cond do
       vitals.neili < 200 -> {:error, "你的内力不够，不足以对抗毒气，别把小命送掉。\n"}
-      vitals.qi < 50 -> {:error, "你快不行了，再练会送命的！\n"}
+      vitals.qi < 50 -> {:error, "name已经奄奄一息了，你无法从他体内吸取任何毒素！\n"}
+      vitals.qi < 200 -> {:error, "你快不行了，再练会送命的！\n"}
       true -> :ok
     end
   end
@@ -88,13 +91,23 @@ defmodule Kantele.Combat.Skills.Performs.QianzhuWandushou.Suck do
     end
   end
 
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "战斗中无法修炼千蛛万毒手！\n"}
+      Combat.busy?(combat) -> {:error, "你正忙着呢！\n"}
+      true -> :ok
+    end
+  end
+
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
+    #   {:error, "name的毒力对你来说太强了，小心把小命送了！\n"}
+    #   {:error, "name的毒力对你来说已经太轻微了！\n"}
     #   {:error, "你正在修炼中！\n"}
-    #   {:error, "你正忙着呢！\n"}
     #   {:error, "你的实战经验不够，无法继续修炼千蛛万毒手！\n"}
     #   {:error, "你要吸取什么毒虫的毒素？\n"}
-    #   {:error, "战斗中无法修炼千蛛万毒手！\n"}
     #   {:error, "毒虫正忙着呢，不能和你配合！\n"}
     #   {:error, "这里太嘈杂，你不能静下心来修炼。\n"}
     :ok

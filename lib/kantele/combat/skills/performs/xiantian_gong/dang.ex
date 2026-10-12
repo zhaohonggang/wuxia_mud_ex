@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -77,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 240 -> {:error, "你的先天功修为不够，难以施展\n"}
+      Stats.skill(stats, "xiantian-gong") < 240 -> {:error, "你的先天功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -86,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "xiantian-gong" -> {:error, "你没有激发先天功为拳脚，难以施展\n"}
-      Stats.mapped(stats, "force") != "xiantian-gong" -> {:error, "你没有激发先天功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "xiantian-gong" -> {:error, "你没有激发先天功为拳脚，难以施展。\n"}
+      Stats.mapped(stats, "force") != "xiantian-gong" -> {:error, "你没有激发先天功为内功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,8 +97,17 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 800 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 800 -> {:error, "你现在的真气不足，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

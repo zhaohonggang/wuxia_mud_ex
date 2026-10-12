@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 230 -> {:error, "你的九阴神功还不够娴熟，不能使用\n"}
-      Stats.skill(stats, "cuff") < 220 -> {:error, "你的基本拳法还不够娴熟，不能使用\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 230 -> {:error, "你的九阴神功还不够娴熟，不能使用！\n"}
+      Stats.skill(stats, "cuff") < 220 -> {:error, "你的基本拳法还不够娴熟，不能使用！\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 240 -> {:error, "你的内力不够，不能使用\n"}
+      vitals.neili < 240 -> {:error, "你的内力不够，不能使用！\n"}
       true -> :ok
     end
   end

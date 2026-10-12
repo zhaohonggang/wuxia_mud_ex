@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -74,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yinsuo-jinling") < 80 -> {:error, "你的银索金铃级别不够，无法施展\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，无法施展\n"}
+      Stats.skill(stats, "yinsuo-jinling") < 80 -> {:error, "你的银索金铃级别不够，无法施展！\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，无法施展！\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "你没有激发银索金铃，无法施展\n"}
+      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "你没有激发银索金铃，无法施展！\n"}
       true -> :ok
     end
   end
@@ -93,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不够，无法施展！\n"}
       true -> :ok
     end
   end
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Dian do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你的武器不对，无法施展\n"}
+      combat.weapon == nil -> {:error, "你的武器不对，无法施展！\n"}
       true -> :ok
     end
   end

@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiewei-bian") < 100 -> {:error, "你使用的武器不对，无法施展\n"}
+      Stats.skill(stats, "xiewei-bian") < 100 -> {:error, "你使用的武器不对，无法施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "xiewei-bian" -> {:error, "你没有激发蝎尾鞭，无法施展\n"}
+      Stats.mapped(stats, "whip") != "xiewei-bian" -> {:error, "你没有激发蝎尾鞭，无法施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展。\n"}
       true -> :ok
     end
   end

@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -64,7 +65,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -73,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 380 -> {:error, "你内功修为不够，难以施展\n"}
-      Stats.skill(stats, "xianglong-zhang") < 250 -> {:error, "你降龙十八掌火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 380 -> {:error, "你内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xianglong-zhang") < 250 -> {:error, "你降龙十八掌火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "xianglong-zhang" -> {:error, "你没有激发降龙十八掌，难以施展\n"}
+      Stats.mapped(stats, "strike") != "xianglong-zhang" -> {:error, "你没有激发降龙十八掌，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +94,17 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 6000 -> {:error, "你内力修为不够，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.max_neili < 6000 -> {:error, "你内力修为不够，难以施展。\n"}
+      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手使用。\n"}
       true -> :ok
     end
   end

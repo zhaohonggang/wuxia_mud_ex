@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "panlong-zhao" -> {:error, "你没有激发越空盘龙爪，难以施展\n"}
+      Stats.mapped(stats, "claw") != "panlong-zhao" -> {:error, "你没有激发越空盘龙爪，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

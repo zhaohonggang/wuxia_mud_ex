@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -73,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展\n"}
-      Stats.skill(stats, "wudoumi-shengong") < 140 -> {:error, "你的五斗米神功不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "wudoumi-shengong") < 140 -> {:error, "你的五斗米神功不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为内功，难以施展\n"}
-      Stats.mapped(stats, "unarmed") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为拳脚，难以施展\n"}
+      Stats.mapped(stats, "force") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为内功，难以施展。\n"}
+      Stats.mapped(stats, "unarmed") != "wudoumi-shengong" -> {:error, "你没有激发五斗米神功为拳脚，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,14 +94,14 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 800 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展\n"}
+    #   {:error, "只有空手才能施展。\n"}
     :ok
 
   end

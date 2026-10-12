@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -77,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyang-shengong") < 220 -> {:error, "你的九阳神功不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 240 -> {:error, "你的内功根基不够，难以施展\n"}
-      Stats.skill(stats, "blade") < 240 -> {:error, "你的基本刀法火候不够，难以施展\n"}
+      Stats.skill(stats, "jiuyang-shengong") < 220 -> {:error, "你的九阳神功不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 240 -> {:error, "你的内功根基不够，难以施展。\n"}
+      Stats.skill(stats, "blade") < 240 -> {:error, "你的基本刀法火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "jiuyang-shengong" -> {:error, "你没有激发九阳神功为刀法，难以施展\n"}
+      Stats.mapped(stats, "blade") != "jiuyang-shengong" -> {:error, "你没有激发九阳神功为刀法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5500 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.max_neili < 5500 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -107,7 +108,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Pi do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

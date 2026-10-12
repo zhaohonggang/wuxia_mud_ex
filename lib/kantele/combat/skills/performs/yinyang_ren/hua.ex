@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你现在的真气不够，难以施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展\n"}
-      Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "你的内功火候不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Hua do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

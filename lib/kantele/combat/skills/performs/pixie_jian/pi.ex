@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -77,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "你没有准备使用辟邪剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "pixie-jian" -> {:error, "你没有准备使用辟邪剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -86,15 +87,15 @@ defmodule Kantele.Combat.Skills.Performs.PixieJian.Pi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，难以施展\n"}
-    #   {:error, "你的辟邪剑法不够娴熟，难以施展\n"}
+    #   {:error, "你使用的武器不对，难以施展。\n"}
+    #   {:error, "你的辟邪剑法不够娴熟，难以施展。\n"}
     :ok
 
   end

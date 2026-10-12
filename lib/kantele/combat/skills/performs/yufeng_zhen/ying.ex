@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yufeng-zhen") < 100 -> {:error, "你的玉蜂针手法不够娴熟，不会使用\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，无法施展\n"}
+      Stats.skill(stats, "yufeng-zhen") < 100 -> {:error, "你的玉蜂针手法不够娴熟，不会使用。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "throwing") != "yufeng-zhen" -> {:error, "你没有激发玉蜂针，不能使用\n"}
+      Stats.mapped(stats, "throwing") != "yufeng-zhen" -> {:error, "你没有激发玉蜂针，不能使用。\n"}
       true -> :ok
     end
   end
@@ -101,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中没有针，无法施展\n"}
-    #   {:error, "你现在手中并没有拿着针，怎么施展\n"}
+    #   {:error, "你手中没有针，无法施展。\n"}
+    #   {:error, "你现在手中并没有拿着针，怎么施展？\n"}
     :ok
 
   end

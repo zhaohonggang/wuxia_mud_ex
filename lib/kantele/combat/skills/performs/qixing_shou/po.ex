@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -75,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qixing-shou") < 150 -> {:error, "你七星分天手不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "qixing-shou") < 150 -> {:error, "你七星分天手不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "qixing-shou" -> {:error, "你没有激发七星分天手，难以施展\n"}
+      Stats.mapped(stats, "hand") != "qixing-shou" -> {:error, "你没有激发七星分天手，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,14 +95,14 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展\n"}
+    #   {:error, "只有空手才能施展。\n"}
     :ok
 
   end

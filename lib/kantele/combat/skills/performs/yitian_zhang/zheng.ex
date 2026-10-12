@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -75,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yitian-zhang") < 120 -> {:error, "你的倚天屠龙掌不够娴熟，难以施展\n"}
+      Stats.skill(stats, "yitian-zhang") < 120 -> {:error, "你的倚天屠龙掌不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "yitian-zhang" -> {:error, "你没有激发倚天屠龙掌，难以施展\n"}
+      Stats.mapped(stats, "strike") != "yitian-zhang" -> {:error, "你没有激发倚天屠龙掌，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在真气太弱，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你现在真气太弱，难以施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

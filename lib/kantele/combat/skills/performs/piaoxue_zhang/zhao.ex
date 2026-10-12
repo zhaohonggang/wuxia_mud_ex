@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功的修为不够，无法施展\n"}
-      Stats.skill(stats, "piaoxue-zhang") < 180 -> {:error, "你的飘雪穿云掌修为不够，无法施展\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功的修为不够，无法施展。\n"}
+      Stats.skill(stats, "piaoxue-zhang") < 180 -> {:error, "你的飘雪穿云掌修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -84,9 +84,9 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "emei-jiuyang" -> {:error, "你没有激发飘雪穿云掌，无法施展\n"}
-      Stats.mapped(stats, "force") != "wudang-jiuyang" -> {:error, "你没有准备飘雪穿云掌，无法施展\n"}
-      Stats.mapped(stats, "force") != "shaolin-jiuyang" -> {:error, "你必须将全身功力尽数提起才能施展\n"}
+      Stats.mapped(stats, "force") != "emei-jiuyang" -> {:error, "你没有激发飘雪穿云掌，无法施展。\n"}
+      Stats.mapped(stats, "force") != "wudang-jiuyang" -> {:error, "你没有准备飘雪穿云掌，无法施展。\n"}
+      Stats.mapped(stats, "force") != "shaolin-jiuyang" -> {:error, "你必须将全身功力尽数提起才能施展。\n"}
       Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
@@ -96,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1000 -> {:error, "你的真气不够，无法施展\n"}
-      vitals.max_neili < 3500 -> {:error, "你没有激发内功为九阳神功，无法施展\n"}
+      vitals.neili < 1000 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 3500 -> {:error, "你没有激发内功为九阳神功，无法施展。\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end

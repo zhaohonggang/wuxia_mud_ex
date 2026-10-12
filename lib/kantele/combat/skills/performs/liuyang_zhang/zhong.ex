@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功不够火候，难以施展\n"}
-      Stats.skill(stats, "liuyang-zhang") < 150 -> {:error, "你的天山六阳掌不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功不够火候，难以施展。\n"}
+      Stats.skill(stats, "liuyang-zhang") < 150 -> {:error, "你的天山六阳掌不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "liuyang-zhang" -> {:error, "你没有激发掌法天山六阳掌，难以施展\n"}
-      Stats.mapped(stats, "throwing") != "liuyang-zhang" -> {:error, "你没有激发暗器天山六阳掌，难以施展\n"}
+      Stats.mapped(stats, "strike") != "liuyang-zhang" -> {:error, "你没有激发掌法天山六阳掌，难以施展。\n"}
+      Stats.mapped(stats, "throwing") != "liuyang-zhang" -> {:error, "你没有激发暗器天山六阳掌，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Zhong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end

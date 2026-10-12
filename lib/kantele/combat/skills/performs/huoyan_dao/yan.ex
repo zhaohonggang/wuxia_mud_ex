@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -73,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，无法施展\n"}
-      Stats.skill(stats, "huoyan-dao") < 150 -> {:error, "你的火焰刀修为不够，无法施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，无法施展。\n"}
+      Stats.skill(stats, "huoyan-dao") < 150 -> {:error, "你的火焰刀修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "huoyan-dao" -> {:error, "你没有准备火焰刀，无法施展\n"}
+      Stats.mapped(stats, "strike") != "huoyan-dao" -> {:error, "你没有准备火焰刀，无法施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 600 -> {:error, "你的真气不够，无法施展\n"}
-      vitals.max_neili < 2000 -> {:error, "你没有激发火焰刀，无法施展\n"}
+      vitals.neili < 600 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 2000 -> {:error, "你没有激发火焰刀，无法施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Yan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end

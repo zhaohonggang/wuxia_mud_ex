@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 480 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 480 -> {:error, "你的内功火候不够，难以施展！\n"}
       true -> :ok
     end
   end
@@ -96,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8500 -> {:error, "你的内力修为不够,无法施展\n"}
-      vitals.neili < 1000 -> {:error, "你的真气不够，现在无法施展\n"}
+      vitals.max_neili < 8500 -> {:error, "你的内力修为不够,无法施展！\n"}
+      vitals.neili < 1000 -> {:error, "你的真气不够，现在无法施展！\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须是空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须是空手才能施展！\n"}
       true -> :ok
     end
   end

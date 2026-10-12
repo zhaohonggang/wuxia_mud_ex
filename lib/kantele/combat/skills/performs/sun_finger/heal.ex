@@ -63,6 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_resources(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -80,13 +81,19 @@ defmodule Kantele.Combat.Skills.Performs.SunFinger.Heal do
     end
   end
 
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "战斗中无法运功疗伤！\n"}
+      true -> :ok
+    end
+  end
+
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你不能给\n"}
     #   {:error, "你只能替别人疗伤。\n"}
-    #   {:error, "你必须激发一种内功才能运功疗伤。\n"}
     #   {:error, "你要用真气为谁疗伤？\n"}
-    #   {:error, "战斗中无法运功疗伤！\n"}
     :ok
 
   end

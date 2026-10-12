@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你内功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你没有激发逍遥折梅手，难以施展\n"}
+      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你没有激发逍遥折梅手，难以施展。\n"}
       true -> :ok
     end
   end
@@ -95,14 +95,15 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Zhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你的逍遥折梅手等级不够，难以施展\n"}
+    #   {:error, "你的逍遥折梅手等级不够，难以施展。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

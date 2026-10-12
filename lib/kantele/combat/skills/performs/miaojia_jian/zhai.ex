@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "miaojia-jian") < 100 -> {:error, "你苗家剑法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "miaojia-jian") < 100 -> {:error, "你苗家剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "miaojia-jian" -> {:error, "你没有激发苗家剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "miaojia-jian" -> {:error, "你没有激发苗家剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 800 -> {:error, "你的内力修为不够，难以施展\n"}
-      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.max_neili < 800 -> {:error, "你的内力修为不够，难以施展。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaJian.Zhai do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

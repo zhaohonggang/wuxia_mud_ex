@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yunzhou-fufa") < 60 -> {:error, "你的云帚拂法级别不够，无法施展\n"}
+      Stats.skill(stats, "yunzhou-fufa") < 60 -> {:error, "你的云帚拂法级别不够，无法施展！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yunzhou-fufa" -> {:error, "你没有激发云帚拂法，无法施展\n"}
+      Stats.mapped(stats, "whip") != "yunzhou-fufa" -> {:error, "你没有激发云帚拂法，无法施展！\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，无法施展！\n"}
       true -> :ok
     end
   end

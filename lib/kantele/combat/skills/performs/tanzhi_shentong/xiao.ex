@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -77,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tanzhi-shentong") < 200 -> {:error, "你的弹指神通不够娴熟，难以施展\n"}
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学的了解不够，难以施展\n"}
+      Stats.skill(stats, "tanzhi-shentong") < 200 -> {:error, "你的弹指神通不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学的了解不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "tanzhi-shentong" -> {:error, "你没有激发弹指神通，难以施展\n"}
+      Stats.mapped(stats, "finger") != "tanzhi-shentong" -> {:error, "你没有激发弹指神通，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,8 +97,17 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Xiao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 800 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 800 -> {:error, "你现在的真气不够，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

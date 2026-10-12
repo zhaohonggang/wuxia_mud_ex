@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhenyu-quan") < 80 -> {:error, "你镇狱拳法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "zhenyu-quan") < 80 -> {:error, "你镇狱拳法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "zhenyu-quan" -> {:error, "你没有激发镇狱拳法，难以施展\n"}
+      Stats.mapped(stats, "cuff") != "zhenyu-quan" -> {:error, "你没有激发镇狱拳法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,9 +95,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
+  end
+
+  defp check_weapon(character) do
+    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "只能空手施展。\n"}
+    :ok
+
   end
 
   defp apply_effect(conn, character) do

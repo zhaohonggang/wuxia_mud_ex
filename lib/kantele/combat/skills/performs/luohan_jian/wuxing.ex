@@ -66,8 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -93,13 +92,6 @@ defmodule Kantele.Combat.Skills.Performs.LuohanJian.Wuxing do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     #   {:error, "「来去若无形」必须用剑才能施展。\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「来去若无形」只能在战斗中使用。\n"}
     :ok
 
   end

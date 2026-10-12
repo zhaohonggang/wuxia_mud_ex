@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yuanshi-jian") < 140 -> {:error, "你的原始剑法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "yuanshi-jian") < 140 -> {:error, "你的原始剑法不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

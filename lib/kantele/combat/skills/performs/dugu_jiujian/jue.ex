@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -65,6 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
   defp check_gates(character) do
     with :ok <- check_resources(character),
          :ok <- check_weapon(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -74,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 85 -> {:error, "你现在真气不足，难以演练\n"}
+      vitals.neili < 85 -> {:error, "你现在真气不足，难以演练。\n"}
       true -> :ok
     end
   end
@@ -83,14 +85,23 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Jue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以演练\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以演练。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "不能在战斗中演练。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你周围过于嘈杂，难以演练\n"}
+    #   {:error, "你周围过于嘈杂，难以演练。\n"}
     :ok
 
   end

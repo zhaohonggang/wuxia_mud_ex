@@ -63,7 +63,8 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -72,8 +73,8 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展\n"}
-      Stats.skill(stats, "wai-bagua") < 60 -> {:error, "你的外八卦不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "wai-bagua") < 60 -> {:error, "你的外八卦不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -82,7 +83,16 @@ defmodule Kantele.Combat.Skills.Performs.WaiBagua.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

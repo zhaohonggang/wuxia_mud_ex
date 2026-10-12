@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -77,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lansha-shou") < 100 -> {:error, "你蓝砂手不够熟练，难以施展\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内力修为不足，难以施展\n"}
+      Stats.skill(stats, "lansha-shou") < 100 -> {:error, "你蓝砂手不够熟练，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内力修为不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "lansha-shou" -> {:error, "你没有激发蓝砂手，难以施展\n"}
+      Stats.mapped(stats, "hand") != "lansha-shou" -> {:error, "你没有激发蓝砂手，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +97,16 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

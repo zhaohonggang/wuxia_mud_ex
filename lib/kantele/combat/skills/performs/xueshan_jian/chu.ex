@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -78,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以施展\n"}
-      Stats.skill(stats, "xueshan-jian") < 140 -> {:error, "你的雪山剑法修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以施展。\n"}
+      Stats.skill(stats, "xueshan-jian") < 140 -> {:error, "你的雪山剑法修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xueshan-jian" -> {:error, "你没有激发雪山剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "xueshan-jian" -> {:error, "你没有激发雪山剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -106,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

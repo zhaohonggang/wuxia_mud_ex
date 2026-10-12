@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine

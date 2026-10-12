@@ -64,15 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Hua do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_other(character)
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你现在手中没有拿着暗器唐花，难以施展\n"}
-    :ok
-
-  end
+  defp check_gates(_character), do: :ok
 
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播

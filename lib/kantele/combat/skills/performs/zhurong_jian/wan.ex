@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhurong-jian") < 160 -> {:error, "你祝融剑法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "zhurong-jian") < 160 -> {:error, "你祝融剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhurong-jian" -> {:error, "你没有激发祝融剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "zhurong-jian" -> {:error, "你没有激发祝融剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -107,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

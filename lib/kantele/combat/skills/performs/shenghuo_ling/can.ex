@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -70,7 +71,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -79,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，不能使用圣火令法之\n"}
+      Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end
@@ -88,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，无法使用\n"}
+      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，无法使用。\n"}
       true -> :ok
     end
   end
@@ -97,17 +98,17 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
-      vitals.neili < 400 -> {:error, "你的内力不够，不能使用圣火令法之\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
+      vitals.neili < 400 -> {:error, "你的内力不够，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
+  defp check_state(character) do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end

@@ -65,7 +65,9 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -74,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyang-shengong") < 250 -> {:error, "你的九阳神功还不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jiuyang-shengong") < 250 -> {:error, "你的九阳神功还不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为拳脚，难以施展\n"}
-      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为拳脚，难以施展。\n"}
+      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "你现在没有激发九阳神功为内功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,8 +95,26 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8000 -> {:error, "你的内力的修为不够，现在无法使用\n"}
-      vitals.neili < 2000 -> {:error, "你的真气不够，无法运用\n"}
+      vitals.max_neili < 8000 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
+      vitals.neili < 2000 -> {:error, "你的真气不够，无法运用。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end

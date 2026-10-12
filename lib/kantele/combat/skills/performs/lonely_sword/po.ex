@@ -63,12 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_weapon(character),
-         :ok <- check_other(character) do
-      :ok
-    end
-  end
+  defp check_gates(character), do: check_weapon(character)
 
   defp check_weapon(character) do
     combat = character.meta.combat
@@ -77,14 +72,6 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Po do
       combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你的独孤九剑等级不够，练好了再来！\n"}
-    #   {:error, "独孤九剑只能对战斗中的对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

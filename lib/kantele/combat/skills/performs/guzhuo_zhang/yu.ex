@@ -64,7 +64,8 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Yu do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -73,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Yu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 260 -> {:error, "你内功修为不够，难以施展\n"}
-      Stats.skill(stats, "guzhuo-zhang") < 180 -> {:error, "你古拙掌法火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "guzhuo-zhang") < 180 -> {:error, "你古拙掌法火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Yu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "guzhuo-zhang" -> {:error, "你没有激发古拙掌法，难以施展\n"}
+      Stats.mapped(stats, "strike") != "guzhuo-zhang" -> {:error, "你没有激发古拙掌法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +93,17 @@ defmodule Kantele.Combat.Skills.Performs.GuzhuoZhang.Yu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2800 -> {:error, "你内力修为不够，难以施展\n"}
-      vitals.neili < 600 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.max_neili < 2800 -> {:error, "你内力修为不够，难以施展。\n"}
+      vitals.neili < 600 -> {:error, "你现在真气不够，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手使用。\n"}
       true -> :ok
     end
   end

@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tougu-zhen") < 100 -> {:error, "你的透骨针还不够娴熟，无法施展\n"}
-      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展\n"}
+      Stats.skill(stats, "tougu-zhen") < 100 -> {:error, "你的透骨针还不够娴熟，无法施展！\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展！\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展\n"}
-      vitals.neili < 350 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展！\n"}
+      vitals.neili < 350 -> {:error, "你的真气不够，无法施展！\n"}
       true -> :ok
     end
   end

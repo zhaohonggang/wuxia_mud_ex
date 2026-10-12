@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "meinv-quan") < 80 -> {:error, "你的美女拳法别不够，不会使用\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功还未娴熟，不能使用\n"}
+      Stats.skill(stats, "meinv-quan") < 80 -> {:error, "你的美女拳法别不够，不会使用。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功还未娴熟，不能使用。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "meinv-quan" -> {:error, "你没有激发美女拳法，不能施展\n"}
+      Stats.mapped(stats, "unarmed") != "meinv-quan" -> {:error, "你没有激发美女拳法，不能施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 180 -> {:error, "你现在真气不够，不能使用\n"}
+      vitals.neili < 180 -> {:error, "你现在真气不够，不能使用。\n"}
       true -> :ok
     end
   end
@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.MeinvQuan.You do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end

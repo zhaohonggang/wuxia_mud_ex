@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "你九阴神功不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 280 -> {:error, "你内功根基不够，难以施展\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "你九阴神功不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 280 -> {:error, "你内功根基不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "jiuyin-shengong" -> {:error, "你没有激发九阴神功为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "jiuyin-shengong" -> {:error, "你没有激发九阴神功为内功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Xin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end

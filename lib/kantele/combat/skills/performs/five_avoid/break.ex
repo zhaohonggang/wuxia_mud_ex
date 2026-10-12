@@ -64,8 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -86,13 +85,6 @@ defmodule Kantele.Combat.Skills.Performs.FiveAvoid.Break do
       vitals.qi < 70 -> {:error, "你的气不够，无法施展「五遁绝杀」！\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「五遁绝杀」只能在战斗中使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

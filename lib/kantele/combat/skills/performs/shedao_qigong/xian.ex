@@ -97,7 +97,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「神龙再现」只能对战斗中的对手使用。\n"}
     #   {:error, "你现在还不会使用神龙再现！\n"}
     :ok
 

@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 130 -> {:error, "你的内功火候不够，使不了\n"}
-      Stats.skill(stats, "yinlong-bian") < 100 -> {:error, "你的银龙鞭法功力太浅，使不了\n"}
+      Stats.skill(stats, "force") < 130 -> {:error, "你的内功火候不够，使不了。\n"}
+      Stats.skill(stats, "yinlong-bian") < 100 -> {:error, "你的银龙鞭法功力太浅，使不了。\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinlong-bian" -> {:error, "你没有激发银龙鞭法，使不了\n"}
+      Stats.mapped(stats, "whip") != "yinlong-bian" -> {:error, "你没有激发银龙鞭法，使不了。\n"}
       true -> :ok
     end
   end
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，无法使用\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，无法使用。\n"}
       true -> :ok
     end
   end

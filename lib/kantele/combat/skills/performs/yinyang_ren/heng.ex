@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -77,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以施展\n"}
-      Stats.skill(stats, "yinyang-ren") < 180 -> {:error, "你的阴阳刃法修为不够，难以施展\n"}
-      Stats.skill(stats, "dodge") < 200 -> {:error, "你的轻功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以施展。\n"}
+      Stats.skill(stats, "yinyang-ren") < 180 -> {:error, "你的阴阳刃法修为不够，难以施展。\n"}
+      Stats.skill(stats, "dodge") < 200 -> {:error, "你的轻功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "yinyang-ren" -> {:error, "你没有激发阴阳刃法，难以施展。\n"}
       Stats.mapped(stats, "blade") != "yinyang-ren" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
@@ -98,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2700 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 300 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.max_neili < 2700 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -108,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -110,7 +111,6 @@ defmodule Kantele.Combat.Skills.Performs.RuyingSuixingtui.Ruying do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「如影随形」只能在战斗中对对手使用。\n"}
     #   {:error, "你所使用的外功中没有这样的功能。\n"}
     :ok
 

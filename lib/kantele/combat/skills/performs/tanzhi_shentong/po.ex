@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tanzhi-shentong") < 180 -> {:error, "你弹指神通修为不够，难以施展\n"}
-      Stats.skill(stats, "throwing") < 180 -> {:error, "你基本暗器修为不够，难以施展\n"}
+      Stats.skill(stats, "tanzhi-shentong") < 180 -> {:error, "你弹指神通修为不够，难以施展。\n"}
+      Stats.skill(stats, "throwing") < 180 -> {:error, "你基本暗器修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "tanzhi-shentong" -> {:error, "你没有激发弹指神通，难以施展\n"}
+      Stats.mapped(stats, "finger") != "tanzhi-shentong" -> {:error, "你没有激发弹指神通，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,15 +97,15 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.max_neili < 2400 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中没有拿着暗器，难以施展\n"}
+    #   {:error, "你手中没有拿着暗器，难以施展。\n"}
     :ok
 
   end

@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuantie-jian") < 100 -> {:error, "你的玄铁剑法不够娴熟，不能使用\n"}
-      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，不能使用\n"}
+      Stats.skill(stats, "xuantie-jian") < 100 -> {:error, "你的玄铁剑法不够娴熟，不能使用。\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，不能使用。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，不能施展\n"}
+      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，不能施展。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在内力太弱，不能使用\n"}
+      vitals.neili < 100 -> {:error, "你现在内力太弱，不能使用。\n"}
       true -> :ok
     end
   end

@@ -63,12 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_other(character) do
-      :ok
-    end
-  end
+  defp check_gates(character), do: check_levels(character)
 
   defp check_levels(character) do
     stats = character.meta.stats
@@ -77,13 +72,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Bo do
       Stats.skill(stats, "bluesea-force") < 100 -> {:error, "你的南海玄功不够深厚，不会使用碧海清波。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "碧海清波只能对战斗中的对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

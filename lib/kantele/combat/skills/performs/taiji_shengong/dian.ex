@@ -33,6 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -42,7 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-shengong") < 100 -> {:error, "你的太极神功不够娴熟，难以施展\n"}
+      Stats.skill(stats, "taiji-shengong") < 100 -> {:error, "你的太极神功不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -51,9 +52,18 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展\n"}
-      vitals.jing < 100 -> {:error, "你现在精神状态不佳，难以施展\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.jing < 100 -> {:error, "你现在精神状态不佳，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "战斗中无法运功疗伤。\n"}
       true -> :ok
     end
   end
@@ -61,9 +71,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的内功中没有这种功能。\n"}
-    #   {:error, "你无法给\n"}
     #   {:error, "你要用真气为谁疗伤？\n"}
-    #   {:error, "战斗中无法运功疗伤。\n"}
+    #   {:error, "只能对别人施展。\n"}
     :ok
 
   end

@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -75,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太浅，难以施展\n"}
-      Stats.skill(stats, "pobei-tui") < 100 -> {:error, "你的破碑腿不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太浅，难以施展。\n"}
+      Stats.skill(stats, "pobei-tui") < 100 -> {:error, "你的破碑腿不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "pobei-tui" -> {:error, "你现在没有激发破碑腿，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "pobei-tui" -> {:error, "你现在没有激发破碑腿，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在真气太弱，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你现在真气太弱，难以施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.PobeiTui.Kai do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaZhang.Dan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "miaojia-zhang") < 40 -> {:error, "你的苗家掌法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "miaojia-zhang") < 40 -> {:error, "你的苗家掌法不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaZhang.Dan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "miaojia-zhang" -> {:error, "你没有激发苗家掌法，难以施展\n"}
+      Stats.mapped(stats, "strike") != "miaojia-zhang" -> {:error, "你没有激发苗家掌法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +92,8 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaZhang.Dan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 200 -> {:error, "你的内功修为不足，难以施展\n"}
-      vitals.neili < 50 -> {:error, "你现在真气太弱，难以施展\n"}
+      vitals.max_neili < 200 -> {:error, "你的内功修为不足，难以施展。\n"}
+      vitals.neili < 50 -> {:error, "你现在真气太弱，难以施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.MiaojiaZhang.Dan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

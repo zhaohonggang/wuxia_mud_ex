@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展！\n"}
       true -> :ok
     end
   end
@@ -95,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 7000 -> {:error, "你的内力修为没有达到那个境界，无法运转内\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，现在无法施展\n"}
+      vitals.max_neili < 7000 -> {:error, "你的内力修为没有达到那个境界，无法运转内力形成！\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，现在无法施展！\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须是空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须是空手才能施展！\n"}
       true -> :ok
     end
   end

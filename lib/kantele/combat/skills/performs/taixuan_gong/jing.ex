@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -74,9 +75,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 340 -> {:error, "你内功修为不够，难以施展\n"}
-      Stats.skill(stats, "sword") < 340 -> {:error, "你的基本刀法火候不足，难以施展\n"}
-      Stats.skill(stats, "blade") < 340 -> {:error, "你现在真气不够，难以施展\n"}
+      Stats.skill(stats, "force") < 340 -> {:error, "你内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "sword") < 340 -> {:error, "你的基本刀法火候不足，难以施展。\n"}
+      Stats.skill(stats, "blade") < 340 -> {:error, "你现在真气不够，难以施展。\n"}
       Stats.skill(stats, "martial-cognize") < 260 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
@@ -86,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你没有激发太玄功为刀或剑，难以施展\n"}
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你的基本剑法火候不足，难以施展\n"}
+      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你没有激发太玄功为刀或剑，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你的基本剑法火候不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,15 +97,15 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展\n"}
-      vitals.neili < 850 -> {:error, "你武学修养不足，难以施展\n"}
+      vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展。\n"}
+      vitals.neili < 850 -> {:error, "你武学修养不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，难以施展\n"}
+    #   {:error, "你使用的武器不对，难以施展。\n"}
     :ok
 
   end

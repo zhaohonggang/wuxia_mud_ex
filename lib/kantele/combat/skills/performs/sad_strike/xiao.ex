@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -68,7 +69,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -77,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sad-strike") < 150 -> {:error, "你的黯然销魂掌火候不够，无法施展\n"}
-      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为不够，无法施展\n"}
+      Stats.skill(stats, "sad-strike") < 150 -> {:error, "你的黯然销魂掌火候不够，无法施展。\n"}
+      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -96,6 +98,15 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Xiao do
 
     cond do
       vitals.neili < 500 -> {:error, "你的真气不够！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手使用。\n"}
       true -> :ok
     end
   end

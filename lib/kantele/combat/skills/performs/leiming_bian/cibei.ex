@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -93,9 +94,6 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你使用的外功中没有这个功能。\n"}
-    #   {:error, "你的禅宗心法等级不够，怎能支持慈悲字诀？\n"}
-    #   {:error, "你的雷鸣鞭法修为太差,还不能使用慈悲字诀！\n"}
-    #   {:error, "［慈悲字诀］只能对战斗中的对手使用。\n"}
     :ok
 
   end

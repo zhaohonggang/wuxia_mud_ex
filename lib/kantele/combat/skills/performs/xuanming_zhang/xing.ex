@@ -71,7 +71,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -80,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanming-shengong") < 220 -> {:error, "你的玄冥神功火候不够，无法施展\n"}
-      Stats.skill(stats, "xuanming-zhang") < 220 -> {:error, "你的玄冥神掌不够熟练，无法施展\n"}
+      Stats.skill(stats, "xuanming-shengong") < 220 -> {:error, "你的玄冥神功火候不够，无法施展。\n"}
+      Stats.skill(stats, "xuanming-zhang") < 220 -> {:error, "你的玄冥神掌不够熟练，无法施展。\n"}
       true -> :ok
     end
   end
@@ -90,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xuanming-shengong" -> {:error, "你没有激发玄冥神功为内功，无法施展\n"}
+      Stats.mapped(stats, "force") != "xuanming-shengong" -> {:error, "你没有激发玄冥神功为内功，无法施展。\n"}
       true -> :ok
     end
   end
@@ -99,8 +100,17 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Xing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，无法施展\n"}
-      vitals.neili < 800 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，无法施展。\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

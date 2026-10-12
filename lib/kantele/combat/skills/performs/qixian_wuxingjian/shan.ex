@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "qixian-wuxingjian" -> {:error, "你没有准备七弦无形剑，难以施展\n"}
+      Stats.mapped(stats, "sword") != "qixian-wuxingjian" -> {:error, "你没有准备七弦无形剑，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,15 +97,15 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Shan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 600 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 600 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，难以施展\n"}
-    #   {:error, "你的七弦无形剑修为有限，难以施展\n"}
+    #   {:error, "你使用的武器不对，难以施展。\n"}
+    #   {:error, "你的七弦无形剑修为有限，难以施展。\n"}
     :ok
 
   end

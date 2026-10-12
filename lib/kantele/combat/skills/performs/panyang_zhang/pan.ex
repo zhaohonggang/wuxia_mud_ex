@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "panyang-zhang") < 60 -> {:error, "你的攀阳掌不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "panyang-zhang") < 60 -> {:error, "你的攀阳掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "panyang-zhang" -> {:error, "你没有激发攀阳掌，难以施展\n"}
+      Stats.mapped(stats, "strike") != "panyang-zhang" -> {:error, "你没有激发攀阳掌，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.PanyangZhang.Pan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end

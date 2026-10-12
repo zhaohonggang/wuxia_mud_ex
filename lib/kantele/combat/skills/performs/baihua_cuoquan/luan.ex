@@ -68,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -78,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "baihua-cuoquan" -> {:error, "你没有激发百花错拳，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "baihua-cuoquan" -> {:error, "你没有激发百花错拳，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,16 +86,9 @@ defmodule Kantele.Combat.Skills.Performs.BaihuaCuoquan.Luan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你的百花错拳等级不够，难以施展\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

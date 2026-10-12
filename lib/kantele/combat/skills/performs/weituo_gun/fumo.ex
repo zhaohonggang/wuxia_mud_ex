@@ -114,7 +114,6 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「韦陀伏魔」只能在战斗中对对手使用。\n"}
     #   {:error, "你还没有受过高人指点，无法施展「韦陀伏魔」。\n"}
     :ok
 

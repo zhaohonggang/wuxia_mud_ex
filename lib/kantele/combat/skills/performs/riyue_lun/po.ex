@@ -68,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -78,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "riyue-lun") < 120 -> {:error, "你的日月轮法火候不足，难以施展\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "riyue-lun") < 120 -> {:error, "你的日月轮法火候不足，难以施展。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "你没有激发日月轮法，难以施展\n"}
-      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功，难以施展\n"}
+      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "你没有激发日月轮法，难以施展。\n"}
+      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -98,8 +97,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -108,16 +107,9 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你现在无暇施展\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

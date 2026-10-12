@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -94,15 +95,25 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 200 -> {:error, "你已经在和对方打架，使用\n"}
+      vitals.jingli < 200 -> {:error, "只能在战斗中使用。\n"}
+      vitals.jingli < 200 -> {:error, "你已经在和对方打架，使用作什么?\n"}
+      vitals.neili < 1500 -> {:error, "并没有和你的对手在交战。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你已经在和对方打架，使用\n"}
+    #   {:error, "你已经在和对方打架，使用作什么?\n"}
     #   {:error, "你要和谁组成棍阵?\n"}
+    #   {:error, "只能在战斗中使用。\n"}
+    :ok
+
+  end
+
+  defp check_other(character) do
+    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
+    #   {:error, "并没有和你的对手在交战。\n"}
     :ok
 
   end

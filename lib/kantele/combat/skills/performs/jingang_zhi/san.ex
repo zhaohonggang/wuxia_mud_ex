@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -65,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -74,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jingang-zhi") < 200 -> {:error, "你大力金刚指不够娴熟，难以施展\n"}
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你没有准备大力金刚指，难以施展\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你现在的真气不够，难以施展\n"}
+      Stats.skill(stats, "jingang-zhi") < 200 -> {:error, "你大力金刚指不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你没有准备大力金刚指，难以施展。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,10 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展\n"}
-      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你对经络学了解不够，难以施展\n"}
-      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你没有激发大力金刚指，难以施展\n"}
-      Stats.mapped(stats, "finger") != "jingang-zhi" -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你对经络学了解不够，难以施展。\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你没有激发大力金刚指，难以施展。\n"}
+      Stats.mapped(stats, "finger") != "jingang-zhi" -> {:error, "你的内功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -98,6 +100,15 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.San do
 
     cond do
       vitals.max_neili < 5000 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhentian-quan") < 80 -> {:error, "你的震天拳法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "zhentian-quan") < 80 -> {:error, "你的震天拳法不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "zhentian-quan" -> {:error, "你没有激发震天拳法，难以施展\n"}
+      Stats.mapped(stats, "cuff") != "zhentian-quan" -> {:error, "你没有激发震天拳法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +94,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

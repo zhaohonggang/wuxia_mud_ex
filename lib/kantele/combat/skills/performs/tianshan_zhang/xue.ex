@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -75,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
 
     cond do
       Stats.skill(stats, "force") < 100 -> {:error, "你的基本内功火候不够！\n"}
-      Stats.skill(stats, "tianshan-zhang") < 100 -> {:error, "你的天山杖法还不到家，无法使用\n"}
+      Stats.skill(stats, "tianshan-zhang") < 100 -> {:error, "你的天山杖法还不到家，无法使用！\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了\n"}
+      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了。\n"}
       true -> :ok
     end
   end

@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "quanzhen-jian") < 180 -> {:error, "你全真剑法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "quanzhen-jian") < 180 -> {:error, "你全真剑法不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,9 +87,9 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "quanzhen-jian" -> {:error, "你没有激发全真剑法，难以施展\n"}
-      Stats.mapped(stats, "strike") != "haotian-zhang" -> {:error, "你没有激发全真的掌法，难以施展\n"}
-      Stats.mapped(stats, "strike") != "chongyang-shenzhang" -> {:error, "你现在的真气不足，难以施展\n"}
+      Stats.mapped(stats, "sword") != "quanzhen-jian" -> {:error, "你没有激发全真剑法，难以施展。\n"}
+      Stats.mapped(stats, "strike") != "haotian-zhang" -> {:error, "你没有激发全真的掌法，难以施展。\n"}
+      Stats.mapped(stats, "strike") != "chongyang-shenzhang" -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.QuanzhenJian.Lian do
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中无剑，如何施展\n"}
+    #   {:error, "你手中无剑，如何施展绝技。\n"}
     :ok
 
   end

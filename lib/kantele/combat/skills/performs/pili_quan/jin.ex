@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "pili-quan") < 40 -> {:error, "你的霹雳神拳不够娴熟，无法施展\n"}
+      Stats.skill(stats, "pili-quan") < 40 -> {:error, "你的霹雳神拳不够娴熟，无法施展。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.PiliQuan.Jin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，无法施展。\n"}
       true -> :ok
     end
   end

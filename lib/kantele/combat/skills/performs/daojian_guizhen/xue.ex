@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -77,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
 
     cond do
       Stats.skill(stats, "daojian-guizhen") < 200 -> {:error, "你所使用的外功中没有这种功能。\n"}
-      Stats.skill(stats, "daojian-guizhen") < 250 -> {:error, "你的刀剑归真等级不够，难以施展\n"}
+      Stats.skill(stats, "daojian-guizhen") < 250 -> {:error, "你的刀剑归真等级不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -86,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -95,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.DaojianGuizhen.Xue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

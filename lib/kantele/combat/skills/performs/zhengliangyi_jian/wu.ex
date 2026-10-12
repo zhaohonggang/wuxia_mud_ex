@@ -55,8 +55,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhengliangyi-jian") < 160 -> {:error, "你的正两仪剑法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "dodge") < 220 -> {:error, "你的轻功火候不足，难以施展\n"}
+      Stats.skill(stats, "zhengliangyi-jian") < 160 -> {:error, "你的正两仪剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "dodge") < 220 -> {:error, "你的轻功火候不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -65,7 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhengliangyi-jian" -> {:error, "你没有激发正两仪剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "zhengliangyi-jian" -> {:error, "你没有激发正两仪剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展。\n"}
       true -> :ok
     end
   end
@@ -91,6 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你打算攻击自己？\n"}
+    #   {:error, "只能对对手使用。\n"}
     #   {:error, "在这里不能攻击他人。\n"}
     :ok
 

@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的神照经神功火候不够，无法施展\n"}
-      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的基本拳脚火候不够，无法施展\n"}
+      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的神照经神功火候不够，无法施展。\n"}
+      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的基本拳脚火候不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "shenzhaojing" -> {:error, "你没有激发神照经神功为拳脚，无法施展\n"}
+      Stats.mapped(stats, "unarmed") != "shenzhaojing" -> {:error, "你没有激发神照经神功为拳脚，无法施展。\n"}
       true -> :ok
     end
   end
@@ -93,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end

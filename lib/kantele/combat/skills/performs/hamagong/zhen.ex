@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -70,8 +71,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "strike") < 200 -> {:error, "你的掌法不够娴熟，无法施展\n"}
+      Stats.skill(stats, "strike") < 200 -> {:error, "你的掌法不够娴熟，无法施展！\n"}
       true -> :ok
     end
   end
@@ -98,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力修为不够深厚，无法施展\n"}
-      vitals.neili < 800 -> {:error, "你的真气不够，无法运用\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不够深厚，无法施展！\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法运用！\n"}
       true -> :ok
     end
   end
@@ -108,17 +108,9 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Zhen do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用！\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你的蛤蟆功修为不够精深，不能使用\n"}
-    #   {:error, "蛤蟆功\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

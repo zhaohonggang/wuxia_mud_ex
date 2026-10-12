@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @impl true
@@ -33,6 +34,7 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -52,6 +54,8 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
 
     cond do
       vitals.neili < 120 -> {:error, "你的内力不够，不能施展化功大法。\n"}
+      vitals.neili < 10 -> {:error, "已然内力涣散，不必再化了。\n"}
+      vitals.max_neili < 10 -> {:error, "的内功修为远胜于你，你无法化他的内力！\n"}
       true -> :ok
     end
   end
@@ -65,9 +69,17 @@ defmodule Kantele.Combat.Skills.Performs.HuagongDafa.Hua do
     end
   end
 
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.busy?(combat) -> {:error, "你现在正忙，无法化他人内力。\n"}
+      true -> :ok
+    end
+  end
+
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你现在正忙，无法化他人内力。\n"}
     #   {:error, "你要化谁的内力？\n"}
     #   {:error, "在这里不能攻击他人。\n"}
     #   {:error, "搞错了！只有人才能有内力！\n"}

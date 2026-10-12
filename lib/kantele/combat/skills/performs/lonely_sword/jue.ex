@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -65,6 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
   defp check_gates(character) do
     with :ok <- check_resources(character),
          :ok <- check_weapon(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -87,9 +89,17 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
 
   end
 
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "「总诀式」不能在战斗中演练。\n"}
+      true -> :ok
+    end
+  end
+
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「总诀式」不能在战斗中演练。\n"}
     #   {:error, "这里太嘈杂，你不能静下心来演练。\n"}
     :ok
 

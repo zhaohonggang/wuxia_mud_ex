@@ -63,8 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Lu do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -85,13 +84,6 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Lu do
       vitals.neili < 200 -> {:error, "你的内力不够，不能使用戮仙决！\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "戮仙决只能对战斗中的对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

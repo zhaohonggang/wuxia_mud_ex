@@ -73,7 +73,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huashan-zhang") < 30 -> {:error, "你的华山掌法不够娴熟，不会使用\n"}
+      Stats.skill(stats, "huashan-zhang") < 30 -> {:error, "你的华山掌法不够娴熟，不会使用。\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanZhang.Piao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 60 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 60 -> {:error, "你现在真气不够，无法施展。\n"}
       true -> :ok
     end
   end

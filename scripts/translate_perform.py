@@ -13,6 +13,8 @@ from pathlib import Path
 from typing import Optional, List, Tuple, Dict, Any, Set
 
 CJK_RE = __import__('re').compile(r'[\u4e00-\u9fff]')
+# A quoted LPC string literal (non-greedy, escape-aware enough for our corpus).
+LPC_STR_RE = re.compile(r'"((?:[^"\\]|\\.)*)"')
 
 
 class TranslatePerform:
@@ -73,6 +75,13 @@ class TranslatePerform:
         
         # New patterns for message extraction
         self.notify_fail_re = re.compile(r'notify_fail\s*\(\s*"([^"]+)"', re.MULTILINE)
+        # Any `notify_fail(` — the message may be preceded by a colour macro
+        # (`notify_fail(JUE "不能在战斗中演练。")`) or an expression
+        # (`notify_fail(target->name() + "目前正自顾不暇")`), so a regex that
+        # insists on `(` immediately followed by `"` misses ~600 calls AND
+        # shifts condition↔message pairing.  Match the call, then extract the
+        # concatenated literals inside.
+        self.notify_fail_call_re = re.compile(r'notify_fail\s*\(')
         # Match if/else blocks with msg assignments inside
         self.hit_check_block_re = re.compile(
             r'if\s*\([^)]+ap[^)]+>\s*dp[^)]*\)\s*\{([^}]+)\}(?:\s*else\s*\{([^}]+)\})?',
@@ -532,6 +541,8 @@ class TranslatePerform:
             'weapon': [],
             'other': [],
             'living': [],
+            'self_busy': [],
+            'self_fighting': [],
         }
         ordered: List[Tuple[str, int, int]] = []  # (gate_type, pos, msg_id)
         order_store: List[Tuple[str, str]] = []   # ordered (gate_type, clean)
@@ -546,6 +557,14 @@ class TranslatePerform:
             # Detect gate conditions - these SET the current gate for subsequent notify_fail
             if 'living(target)' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'living'
+            elif re.search(r'\bme\s*->\s*is_busy\s*\(', stripped) and 'notify_fail' not in stripped:
+                # Attacker-side self-busy guard: `if (me->is_busy()) return
+                # notify_fail("...")`.  Decidable via Combat.busy?/1.
+                current_gate = 'self_busy'
+            elif re.search(r'\bme\s*->\s*is_fighting\s*\(', stripped) and 'notify_fail' not in stripped:
+                # Attacker-side in-combat guard: `if (me->is_fighting()) return
+                # notify_fail("不能在战斗中演练")`.  Decidable via Combat.fighting?/1.
+                current_gate = 'self_fighting'
             elif 'is_fighting' in stripped and 'notify_fail' not in stripped:
                 current_gate = 'other'
             elif 'query_skill_prepared(' in stripped and '!=' in stripped and 'notify_fail' not in stripped:
@@ -562,10 +581,14 @@ class TranslatePerform:
                 # resource gate: neili, qi, etc.
                 current_gate = 'resource'
 
-            # Extract notify_fail - associate with current gate
-            for m in self.notify_fail_re.finditer(stripped):
-                msg = m.group(1)
-                clean = self._clean_message_fragment(msg)
+            # Extract notify_fail - associate with current gate.
+            # NOTE: `notify_fail(JUE "不能在战斗中演练。\n")` style calls place a
+            # macro (or concatenated expression) before the literal, so the old
+            # `notify_fail\s*\(\s*"` regex missed them entirely AND silently
+            # shifted the condition->message pairing (the wrong, earlier
+            # notify_fail got consumed).  `iter_notify_fails` is macro- and
+            # concat-aware, so use it here.
+            for _pos, clean in self.iter_notify_fails(stripped):
                 if clean:
                     gate_msgs[current_gate].append(clean)
                     order_store.append((current_gate, clean))
@@ -601,7 +624,7 @@ class TranslatePerform:
         ``gate_messages`` order.
 
         Returns a list of dicts: {kind, skill/field, value, msg, pos}.
-        `kind` is one of level|mapped|prepared|resource|weapon.
+        `kind` is one of level|mapped|prepared|resource|weapon|self_busy|self_fighting.
         """
         kinds = [
             ('level', re.compile(r'query_skill\("([a-z0-9-]+)"[^)]*\)+\s*<\s*(\d+)')),
@@ -609,6 +632,11 @@ class TranslatePerform:
             ('prepared', re.compile(r'query_skill_prepared\("(\w+)"\)\s*!=\s*"([a-z0-9-]+)"')),
             ('resource', re.compile(r'query\("(\w+)"[^)]*\)+\s*<\s*(\d+)')),
             ('weapon', re.compile(r'query_temp\("weapon"\)[^)]*\)\s*(?:\|\||&&|>)')),
+            # `me->is_busy()` — attacker already busy (no-arg form only)
+            ('self_busy', re.compile(r'\bme\s*->\s*is_busy\s*\(\s*\)')),
+            # `me->is_fighting()` — attacker already in a fight (no-arg form only;
+            # the arg form `is_fighting(target)` is the attack *requirement*)
+            ('self_fighting', re.compile(r'\bme\s*->\s*is_fighting\s*\(\s*\)')),
         ]
         conds = []  # (pos, kind, arg1, arg2)
         for kind, rx in kinds:
@@ -617,9 +645,7 @@ class TranslatePerform:
                 a1 = g[0] if g else ''
                 a2 = g[1] if len(g) > 1 else ''
                 conds.append((m.start(), kind, a1 or '', a2 or ''))
-        fails = [(m.start(), self._clean_message_fragment(m.group(1)))
-                 for m in self.notify_fail_re.finditer(text)]
-        fails = [(p, c) for (p, c) in fails if c]
+        fails = self.iter_notify_fails(text)
         conds.sort(key=lambda x: x[0])
         fails.sort(key=lambda x: x[0])
 
@@ -794,6 +820,57 @@ class TranslatePerform:
                     return i + 1
             i += 1
         return -1
+
+    def iter_notify_fails(self, text: str) -> List[Tuple[int, str]]:
+        """Yield (position, cleaned_message) for every `notify_fail(...)` call.
+
+        Unlike `notify_fail_re`, this tolerates a colour macro or expression
+        between `(` and the first literal, and concatenates the string literals
+        inside the (balanced) argument list:
+
+            notify_fail(JUE "不能在战斗中演练。\\n");
+            notify_fail("你的" + to_chinese(force) + "修为还不够。\\n");
+
+        Only the *first* argument expression's literals are joined (LPC
+        joins adjacent literals with `+`; identifiers/macros are ignored).
+        Calls whose argument carries no CJK are dropped.  Position is the
+        offset of the `notify_fail` token (for source-order pairing).
+        """
+        out = []
+        for m in self.notify_fail_call_re.finditer(text):
+            close = self._scan_balanced(text, m.end())  # m.end()-1 == '('
+            if close == -1:
+                continue
+            args = text[m.end():close - 1]
+            # First top-level argument only (before the first top-level comma).
+            depth = 0
+            in_str = False
+            end = len(args)
+            i = 0
+            while i < len(args):
+                ch = args[i]
+                if in_str:
+                    if ch == '\\':
+                        i += 2
+                        continue
+                    if ch == '"':
+                        in_str = False
+                elif ch == '"':
+                    in_str = True
+                elif ch in '([':
+                    depth += 1
+                elif ch in ')]':
+                    depth = max(0, depth - 1)
+                elif ch == ',' and depth == 0:
+                    end = i
+                    break
+                i += 1
+            first_arg = args[:end]
+            joined = ''.join(LPC_STR_RE.findall(first_arg))
+            clean = self._clean_message_fragment(joined)
+            if clean and CJK_RE.search(clean):
+                out.append((m.start(), clean))
+        return out
 
     def _is_function_call(self, text: str) -> bool:
         """Check if a cleaned message fragment is actually a function call
@@ -1602,6 +1679,41 @@ class TranslatePerform:
         )
         return ("check_weapon", body)
 
+    def _emit_self_state_checks(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
+        """Emit attacker-side `me->is_busy()` / `me->is_fighting()` guards.
+
+        LPC guards many exerts/performs with:
+
+            if (me->is_busy())     return notify_fail("等你忙完了…");
+            if (me->is_fighting()) return notify_fail("不能在战斗中演练。");
+
+        Both are decidable from the actor's own combat state, which the
+        attacker process has in full: `Combat.busy?/1` and `Combat.fighting?/1`.
+        (The arg form `is_fighting(target)` is the attack *requirement*, handled
+        by `target/1`; only the no-arg self forms are picked up here.)
+
+        Messages are taken from the source-ordered `gates_paired`, so each
+        condition keeps its own text instead of a positional zip.
+        """
+        paired = [g for g in data.get('gates_paired', [])
+                  if g['kind'] in ('self_busy', 'self_fighting')]
+        if not paired:
+            return None
+        clauses = []
+        for g in paired:
+            msg = g['msg']
+            cond = ('Combat.busy?(combat)' if g['kind'] == 'self_busy'
+                    else 'Combat.fighting?(combat)')
+            clauses.append((cond, f'{{:error, "{msg}\\n"}}'))
+        clauses.append(('true', ':ok'))
+        body = (
+            "    combat = character.meta.combat\n\n"
+            "    cond do\n"
+            f"{self._render_cond(clauses)}\n"
+            "    end"
+        )
+        return ("check_state", body)
+
     def _emit_living_check(self, data: Dict[str, Any]) -> Optional[Tuple[str, str]]:
         """Return the `! living(target)` guard message for the target side.
 
@@ -1635,6 +1747,14 @@ class TranslatePerform:
             m for m in data.get('gate_messages', {}).get('other', [])
             if '你所使用的外功中没有这种功能' not in m
         ]
+        # Drop messages already emitted as live *code* by the dedicated helpers
+        # (self_busy/self_fighting via check_state; weapon via check_weapon),
+        # so the TODO block lists only genuinely un-mapped gates.  We only strip
+        # from `other`, never from the dedicated buckets.
+        live = {g['msg'] for g in data.get('gates_paired', [])
+                if g['kind'] in ('self_busy', 'self_fighting') and g.get('msg')}
+        if live:
+            gate_msgs = [m for m in gate_msgs if m not in live]
         if not gate_msgs:
             return None
         body = (
@@ -1645,19 +1765,21 @@ class TranslatePerform:
         return ("check_other", body)
 
     def _emit_check_gates(self, data: Dict[str, Any]) -> Tuple[str, bool]:
-        """Return (code, uses_stats)."""
+        """Return (code, uses_stats, uses_combat)."""
         helpers = [h for h in (
             self._emit_level_checks(data),
             self._emit_map_checks(data),
             self._emit_resource_checks(data),
             self._emit_weapon_check(data),
+            self._emit_self_state_checks(data),
             self._emit_other_checks(data),
         ) if h]
 
         uses_stats = any(name in ('check_levels', 'check_mapped') for name, _ in helpers)
+        uses_combat = any(name in ('check_weapon', 'check_state') for name, _ in helpers)
 
         if not helpers:
-            return ("  defp check_gates(_character), do: :ok\n", uses_stats)
+            return ("  defp check_gates(_character), do: :ok\n", uses_stats, uses_combat)
 
         if len(helpers) == 1:
             name, _ = helpers[0]
@@ -1680,7 +1802,7 @@ class TranslatePerform:
         parts = [head]
         for name, body in helpers:
             parts.append(f"\n  defp {name}(character) do\n{body}\n  end\n")
-        return (''.join(parts), uses_stats)
+        return (''.join(parts), uses_stats, uses_combat)
 
     def _emit_apply_effect(self, data: Dict[str, Any]) -> Tuple[str, bool, bool]:
         """Return (body_lines, uses_vitals, uses_combat)."""
@@ -1998,7 +2120,7 @@ class TranslatePerform:
         move = data['move']
         is_perform = data['kind'] == 'perform'
 
-        gates_str, gates_use_stats = self._emit_check_gates(data)
+        gates_str, gates_use_stats, gates_use_combat = self._emit_check_gates(data)
         effect_str, effect_use_vitals, effect_use_combat = self._emit_apply_effect(data)
 
         uses_stats = is_perform or gates_use_stats or effect_use_vitals
@@ -2008,7 +2130,7 @@ class TranslatePerform:
         use_incoming = is_perform and offensive
 
         aliases = ["  alias Kantele.Combat.Broadcast", "  alias Kantele.Character.CommandView"]
-        if effect_use_combat:
+        if effect_use_combat or gates_use_combat:
             aliases.append("  alias Kantele.Character.Combat")
         if uses_stats:
             aliases.append("  alias Kantele.Character.Stats")

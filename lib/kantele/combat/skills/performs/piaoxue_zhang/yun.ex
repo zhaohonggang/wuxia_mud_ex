@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -73,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，无法施展\n"}
-      Stats.skill(stats, "piaoxue-zhang") < 150 -> {:error, "你的飘雪穿云掌修为不够，无法施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，无法施展。\n"}
+      Stats.skill(stats, "piaoxue-zhang") < 150 -> {:error, "你的飘雪穿云掌修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "piaoxue-zhang" -> {:error, "你没有准备使用飘雪穿云掌，无法施展\n"}
+      Stats.mapped(stats, "strike") != "piaoxue-zhang" -> {:error, "你没有准备使用飘雪穿云掌，无法施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，无法施展\n"}
-      vitals.max_neili < 2000 -> {:error, "你没有激发飘雪穿云掌，无法施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 2000 -> {:error, "你没有激发飘雪穿云掌，无法施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.PiaoxueZhang.Yun do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end

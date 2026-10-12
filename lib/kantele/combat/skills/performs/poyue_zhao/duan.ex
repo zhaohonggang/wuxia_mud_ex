@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -64,7 +65,8 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -73,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "poyue-zhao") < 80 -> {:error, "你破岳神爪不够娴熟，难以施展\n"}
+      Stats.skill(stats, "poyue-zhao") < 80 -> {:error, "你破岳神爪不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -82,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "poyue-zhao" -> {:error, "你没有激发破岳神爪，难以施展\n"}
+      Stats.mapped(stats, "claw") != "poyue-zhao" -> {:error, "你没有激发破岳神爪，难以施展。\n"}
       true -> :ok
     end
   end
@@ -91,7 +93,16 @@ defmodule Kantele.Combat.Skills.Performs.PoyueZhao.Duan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展\n"}
-      Stats.skill(stats, "shiying-lianhuan") < 150 -> {:error, "你弑鹰九连环修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "shiying-lianhuan") < 150 -> {:error, "你弑鹰九连环修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "shiying-lianhuan" -> {:error, "你没有激发弑鹰九连环，难以施展\n"}
+      Stats.mapped(stats, "blade") != "shiying-lianhuan" -> {:error, "你没有激发弑鹰九连环，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

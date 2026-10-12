@@ -78,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "你的八卦掌不够娴熟，难以施展\n"}
-      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "你的八卦镖诀不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展\n"}
+      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "你的八卦掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "你的八卦镖诀不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -89,8 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "bagua-zhang" -> {:error, "你没有激发八卦掌，难以施展\n"}
-      Stats.mapped(stats, "throwing") != "bagua-biao" -> {:error, "你没有激发八卦镖诀，难以施展\n"}
+      Stats.mapped(stats, "strike") != "bagua-zhang" -> {:error, "你没有激发八卦掌，难以施展。\n"}
+      Stats.mapped(stats, "throwing") != "bagua-biao" -> {:error, "你没有激发八卦镖诀，难以施展。\n"}
       true -> :ok
     end
   end
@@ -99,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -107,6 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     #   {:error, "你现在手中并没有拿着暗器。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

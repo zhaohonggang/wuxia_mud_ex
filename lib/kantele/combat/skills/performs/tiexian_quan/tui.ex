@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -65,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -74,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tiexian-quan") < 60 -> {:error, "你铁线拳法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "tiexian-quan") < 60 -> {:error, "你铁线拳法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "tiexian-quan" -> {:error, "你没有激发铁线拳法，难以施展\n"}
+      Stats.mapped(stats, "cuff") != "tiexian-quan" -> {:error, "你没有激发铁线拳法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +95,16 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展\n"}
-      Stats.skill(stats, "pomopima-jian") < 120 -> {:error, "你的泼墨披麻剑修为不够，无法施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展。\n"}
+      Stats.skill(stats, "pomopima-jian") < 120 -> {:error, "你的泼墨披麻剑修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "pomopima-jian" -> {:error, "你没有激发泼墨披麻剑，无法使用\n"}
+      Stats.mapped(stats, "sword") != "pomopima-jian" -> {:error, "你没有激发泼墨披麻剑，无法使用。\n"}
       true -> :ok
     end
   end
@@ -97,14 +97,14 @@ defmodule Kantele.Combat.Skills.Performs.PomopimaJian.Zui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，无法施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器无法施展\n"}
+    #   {:error, "你使用的武器无法施展。\n"}
     :ok
 
   end

@@ -48,6 +48,7 @@ defmodule Kantele.Combat.Skills.Performs.ZixiaShengong.Ziqi do
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+    #   {:error, "你已经在运起紫气东来了。\n"}
     #   {:error, "你没有剑.怎么用紫气东来呀?\n"}
     :ok
 

@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -65,8 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -102,13 +102,6 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     #   {:error, "必须拿剑才能施展「连环剑」！\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「连环剑」只能对战斗中的对手使用。\n"}
     :ok
 
   end

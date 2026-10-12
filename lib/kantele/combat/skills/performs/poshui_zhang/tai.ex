@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不够，难以施展\n"}
-      Stats.skill(stats, "poshui-zhang") < 120 -> {:error, "你八十一路泼水杖火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "poshui-zhang") < 120 -> {:error, "你八十一路泼水杖火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "poshui-zhang" -> {:error, "你没有激发八十一路泼水杖，难以施展\n"}
+      Stats.mapped(stats, "staff") != "poshui-zhang" -> {:error, "你没有激发八十一路泼水杖，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.PoshuiZhang.Tai do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

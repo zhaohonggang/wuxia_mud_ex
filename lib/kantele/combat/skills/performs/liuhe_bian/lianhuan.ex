@@ -100,9 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你刚刚使用过六合连环诀，内力还未平复！\n"}
     #   {:error, "你所用的外功中没有这个功能!\n"}
-    #   {:error, "六合连环诀只能对战斗中的对手使用。\n"}
     :ok
 
   end

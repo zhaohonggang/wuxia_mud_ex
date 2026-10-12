@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Zhi do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sanwu-shou") < 100 -> {:error, "你三无三不手不够娴熟，难以施展\n"}
+      Stats.skill(stats, "sanwu-shou") < 100 -> {:error, "你三无三不手不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "sanwu-shou" -> {:error, "你没有激发三无三不手，难以施展\n"}
+      Stats.mapped(stats, "whip") != "sanwu-shou" -> {:error, "你没有激发三无三不手，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Zhi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 140 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 140 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Zhi do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

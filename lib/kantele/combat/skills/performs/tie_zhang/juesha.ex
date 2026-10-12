@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -66,8 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -109,13 +109,6 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
       combat.weapon != nil -> {:error, "「九穹绝刹掌」只能空手使用。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「九穹绝刹掌」只能在战斗中对对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

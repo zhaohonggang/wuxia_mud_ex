@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
-      vitals.neili < 300 -> {:error, "你的真气不够，不能使用圣火令法之\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end

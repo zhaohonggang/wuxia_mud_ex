@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，不能使用圣火令法之\n"}
+      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end
@@ -87,8 +87,8 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1600 -> {:error, "你的内力修为不足，不能使用圣火令法之\n"}
-      vitals.neili < 350 -> {:error, "你的内力不够，不能使用圣火令法之\n"}
+      vitals.max_neili < 1600 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
+      vitals.neili < 350 -> {:error, "你的内力不够，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之\n"}
+      combat.weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
       true -> :ok
     end
   end

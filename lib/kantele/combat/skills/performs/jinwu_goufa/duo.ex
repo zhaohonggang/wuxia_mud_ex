@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jinwu-goufa") < 160 -> {:error, "你的金蜈钩法还不够娴熟，无法施展\n"}
+      Stats.skill(stats, "jinwu-goufa") < 160 -> {:error, "你的金蜈钩法还不够娴熟，无法施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "jinwu-goufa" -> {:error, "你没有激发金蜈钩法，无法施展\n"}
+      Stats.mapped(stats, "sword") != "jinwu-goufa" -> {:error, "你没有激发金蜈钩法，无法施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.JinwuGoufa.Duo do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展。\n"}
       true -> :ok
     end
   end

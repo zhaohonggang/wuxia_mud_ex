@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Tianmo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "martial-cognize") < 300 -> {:error, "你的修行还不够,无法使用\n"}
+      Stats.skill(stats, "martial-cognize") < 300 -> {:error, "你的修行还不够,无法使用。\n"}
       true -> :ok
     end
   end
@@ -51,7 +51,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Tianmo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 8000 -> {:error, "你还没有入魔，无法使用\n"}
+      vitals.neili < 8000 -> {:error, "你还没有入魔，无法使用。\n"}
       true -> :ok
     end
   end

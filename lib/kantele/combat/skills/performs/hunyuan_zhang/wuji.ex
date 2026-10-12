@@ -69,8 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -79,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你内功修为不够，无法施展\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你内功修为不够，无法施展！\n"}
       true -> :ok
     end
   end
@@ -96,17 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.HunyuanZhang.Wuji do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1400 -> {:error, "你内力修为不足，无法施展\n"}
-      vitals.neili < 240 -> {:error, "你的内力不够，无法施展\n"}
+      vitals.max_neili < 1400 -> {:error, "你内力修为不足，无法施展！\n"}
+      vitals.neili < 240 -> {:error, "你的内力不够，无法施展！\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你的混元掌等级不够, 不能施展\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

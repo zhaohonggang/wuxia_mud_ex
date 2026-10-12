@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
       Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你的身法不够使用「一苇渡江」绝技！\n"}
       Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
       true -> :ok

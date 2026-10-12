@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -65,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -74,9 +76,9 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lianhuan-mizongtui") < 120 -> {:error, "你的连环迷踪腿不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功火候不够，难以施展\n"}
+      Stats.skill(stats, "lianhuan-mizongtui") < 120 -> {:error, "你的连环迷踪腿不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,8 +95,17 @@ defmodule Kantele.Combat.Skills.Performs.LianhuanMizongtui.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1800 -> {:error, "你的内力的修为不够，现在无法使用\n"}
-      vitals.neili < 200 -> {:error, "你现在真气太弱，难以施展\n"}
+      vitals.max_neili < 1800 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气太弱，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

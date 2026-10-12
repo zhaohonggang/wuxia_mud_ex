@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.You do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -74,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.You do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "canhe-zhi") < 200 -> {:error, "你的参合指修为有限，难以施展\n"}
+      Stats.skill(stats, "canhe-zhi") < 200 -> {:error, "你的参合指修为有限，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.You do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "canhe-zhi" -> {:error, "你没有激发参合指，难以施展\n"}
+      Stats.mapped(stats, "finger") != "canhe-zhi" -> {:error, "你没有激发参合指，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.You do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2500 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.max_neili < 2500 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.You do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

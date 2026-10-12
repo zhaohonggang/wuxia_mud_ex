@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanFumogong.Fireice do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "luohan-fumogong") < 180 -> {:error, "你罗汉伏魔功火候不足，难以施展\n"}
+      Stats.skill(stats, "luohan-fumogong") < 180 -> {:error, "你罗汉伏魔功火候不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -51,17 +51,17 @@ defmodule Kantele.Combat.Skills.Performs.LuohanFumogong.Fireice do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 500 -> {:error, "你现在的内力不足，难以施展\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的内力不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用\n"}
+    #   {:error, "你只能用来提升自己的战斗力。\n"}
     #   {:error, "你所学的内功中没有这种功能。\n"}
-    #   {:error, "你现在正在施展\n"}
+    #   {:error, "你现在正在施展。\n"}
     :ok
 
   end

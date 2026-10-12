@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "dashou-yin" -> {:error, "你没有激发大手印，难以施展\n"}
+      Stats.mapped(stats, "hand") != "dashou-yin" -> {:error, "你没有激发大手印，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,14 +88,15 @@ defmodule Kantele.Combat.Skills.Performs.DashouYin.Yin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你的大手印修为不够，难以施展\n"}
+    #   {:error, "你的大手印修为不够，难以施展。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

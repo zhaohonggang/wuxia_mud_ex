@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 420 -> {:error, "你的内功火候不够，使不出\n"}
-      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的六脉神剑修为有限，无法使用\n"}
+      Stats.skill(stats, "force") < 420 -> {:error, "你的内功火候不够，使不出。\n"}
+      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的六脉神剑修为有限，无法使用！\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.LiumaiShenjian.Qi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出如此犀利的\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出如此犀利的。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用。\n"}
       true -> :ok
     end
   end

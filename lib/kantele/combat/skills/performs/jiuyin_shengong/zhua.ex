@@ -68,7 +68,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -77,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "你的九阴神功还不够娴熟，不能使用\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 280 -> {:error, "你的九阴神功还不够娴熟，不能使用。\n"}
       true -> :ok
     end
   end
@@ -94,7 +95,16 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展！\n"}
       true -> :ok
     end
   end

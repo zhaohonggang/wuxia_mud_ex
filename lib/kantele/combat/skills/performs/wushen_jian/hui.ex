@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展\n"}
+      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 160 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 160 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

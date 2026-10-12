@@ -112,7 +112,6 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「祭血神刀」只能对战斗中的对手使用。\n"}
     #   {:error, "你还不会使用「祭血神刀」！\n"}
     :ok
 

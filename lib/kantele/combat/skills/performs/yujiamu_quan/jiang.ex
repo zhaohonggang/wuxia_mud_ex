@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "yujiamu-quan" -> {:error, "你没有激发金刚瑜迦母拳，难以施展\n"}
+      Stats.mapped(stats, "cuff") != "yujiamu-quan" -> {:error, "你没有激发金刚瑜迦母拳，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,14 +88,15 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 180 -> {:error, "你目前的真气不足，难以施展\n"}
+      vitals.neili < 180 -> {:error, "你目前的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你金刚瑜迦母拳修为不够，难以施展\n"}
+    #   {:error, "你金刚瑜迦母拳修为不够，难以施展。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

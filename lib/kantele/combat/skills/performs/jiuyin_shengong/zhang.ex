@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -76,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Zhang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功不够深厚，不会使用\n"}
-      Stats.skill(stats, "strike") < 220 -> {:error, "你的基本掌法修为不够，不会使用\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功不够深厚，不会使用。\n"}
+      Stats.skill(stats, "strike") < 220 -> {:error, "你的基本掌法修为不够，不会使用。\n"}
       true -> :ok
     end
   end

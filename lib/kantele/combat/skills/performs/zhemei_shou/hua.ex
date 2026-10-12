@@ -73,7 +73,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -82,9 +83,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "beiming-shengong") < 220 -> {:error, "你的逍遥内功火候不够，难以施展\n"}
-      Stats.skill(stats, "xiaowuxiang") < 220 -> {:error, "你逍遥折梅手等级不够，难以施展\n"}
-      Stats.skill(stats, "zhemei-shou") < 220 -> {:error, "你的内力修为不足，难以施展\n"}
+      Stats.skill(stats, "beiming-shengong") < 220 -> {:error, "你的逍遥内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "xiaowuxiang") < 220 -> {:error, "你逍遥折梅手等级不够，难以施展。\n"}
+      Stats.skill(stats, "zhemei-shou") < 220 -> {:error, "你的内力修为不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,9 +94,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "beiming-shengong" -> {:error, "你没有激发逍遥折梅手，难以施展\n"}
-      Stats.mapped(stats, "force") != "xiaowuxiang" -> {:error, "你没有准备逍遥折梅手，难以施展\n"}
-      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你现在真气不足，难以施展\n"}
+      Stats.mapped(stats, "force") != "beiming-shengong" -> {:error, "你没有激发逍遥折梅手，难以施展。\n"}
+      Stats.mapped(stats, "force") != "xiaowuxiang" -> {:error, "你没有准备逍遥折梅手，难以施展。\n"}
+      Stats.mapped(stats, "hand") != "zhemei-shou" -> {:error, "你现在真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -104,7 +105,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你没有激发逍遥内功，难以施展\n"}
+      vitals.max_neili < 4000 -> {:error, "你没有激发逍遥内功，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

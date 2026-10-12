@@ -67,6 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_weapon(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -90,9 +91,17 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
 
   end
 
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "「即世即空」只能对战斗中的对手使用。\n"}
+      true -> :ok
+    end
+  end
+
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「即世即空」只能对战斗中的对手使用。\n"}
     #   {:error, "你还不会使用「即世即空」!\n"}
     :ok
 

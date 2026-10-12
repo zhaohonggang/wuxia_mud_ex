@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你先天功不够深厚，难以施展\n"}
+      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你先天功不够深厚，难以施展。\n"}
       true -> :ok
     end
   end
@@ -51,8 +51,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.max_neili < 1000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end

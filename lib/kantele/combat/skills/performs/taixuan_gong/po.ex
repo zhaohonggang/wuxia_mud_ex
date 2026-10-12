@@ -65,7 +65,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -74,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taixuan-gong") < 260 -> {:error, "你的太玄功还不够娴熟，难以施展\n"}
+      Stats.skill(stats, "taixuan-gong") < 260 -> {:error, "你的太玄功还不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "你现在没有激发太玄功为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "taixuan-gong" -> {:error, "你现在没有激发太玄功为内功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,7 +94,25 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8500 -> {:error, "你的内力的修为不够，现在无法使用\n"}
+      vitals.max_neili < 8500 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end

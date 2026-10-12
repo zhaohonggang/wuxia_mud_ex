@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "kunlun-zhang" -> {:error, "你没有激发昆仑掌法，难以施展\n"}
+      Stats.mapped(stats, "strike") != "kunlun-zhang" -> {:error, "你没有激发昆仑掌法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,15 +87,16 @@ defmodule Kantele.Combat.Skills.Performs.KunlunZhang.Kong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你两只手都拿着武器，怎么施展\n"}
-    #   {:error, "你昆仑掌法等级不够，难以施展\n"}
+    #   {:error, "你两只手都拿着武器，怎么施展？\n"}
+    #   {:error, "你昆仑掌法等级不够，难以施展。\n"}
+    #   {:error, "目前正自顾不暇，放胆攻击吧。\n"}
     :ok
 
   end

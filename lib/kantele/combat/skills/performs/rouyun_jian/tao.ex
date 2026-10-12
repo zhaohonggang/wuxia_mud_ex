@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -73,9 +74,9 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "rouyun-jian") < 140 -> {:error, "你的柔云剑法修为不够，难以施展\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展\n"}
-      Stats.skill(stats, "dodge") < 180 -> {:error, "你的轻功修为不够，难以施展\n"}
+      Stats.skill(stats, "rouyun-jian") < 140 -> {:error, "你的柔云剑法修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "dodge") < 180 -> {:error, "你的轻功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "rouyun-jian" -> {:error, "你没有激发柔云剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "rouyun-jian" -> {:error, "你没有激发柔云剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.RouyunJian.Tao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end

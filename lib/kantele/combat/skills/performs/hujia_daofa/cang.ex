@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -75,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不够，难以施展\n"}
-      Stats.skill(stats, "hujia-daofa") < 180 -> {:error, "你的胡家刀法还不到家，难以施展\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "hujia-daofa") < 180 -> {:error, "你的胡家刀法还不到家，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "hujia-daofa" -> {:error, "你没有激发胡家刀法，难以施展\n"}
+      Stats.mapped(stats, "blade") != "hujia-daofa" -> {:error, "你没有激发胡家刀法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Cang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

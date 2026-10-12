@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-baiguzhao") < 120 -> {:error, "你的九阴白骨爪还不够娴熟，不能使用\n"}
+      Stats.skill(stats, "jiuyin-baiguzhao") < 120 -> {:error, "你的九阴白骨爪还不够娴熟，不能使用。\n"}
       true -> :ok
     end
   end

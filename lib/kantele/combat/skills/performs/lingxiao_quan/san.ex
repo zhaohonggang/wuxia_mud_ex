@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -75,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展\n"}
-      Stats.skill(stats, "lingxiao-quan") < 180 -> {:error, "你的凌霄拳法不够娴熟，难以施展\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "lingxiao-quan") < 180 -> {:error, "你的凌霄拳法不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "cuff") != "lingxiao-quan" -> {:error, "你没有激发凌霄拳法，难以施展\n"}
+      Stats.mapped(stats, "cuff") != "lingxiao-quan" -> {:error, "你没有激发凌霄拳法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,14 +95,14 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.San do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展\n"}
+    #   {:error, "只有空手才能施展。\n"}
     :ok
 
   end

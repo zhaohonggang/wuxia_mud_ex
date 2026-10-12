@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -104,7 +105,6 @@ defmodule Kantele.Combat.Skills.Performs.SanfenJianshu.Haishi do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「海市蜃楼」只能在战斗中对对手使用。\n"}
     #   {:error, "你不会使用「海市蜃楼」这一绝技！\n"}
     :ok
 

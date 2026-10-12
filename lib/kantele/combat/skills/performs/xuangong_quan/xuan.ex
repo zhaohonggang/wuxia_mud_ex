@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "xuangong-quan" -> {:error, "你没有激发无极玄功拳，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "xuangong-quan" -> {:error, "你没有激发无极玄功拳，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,14 +83,15 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你的无极玄功拳等级不够，难以施展\n"}
+    #   {:error, "你的无极玄功拳等级不够，难以施展。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

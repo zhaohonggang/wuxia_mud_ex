@@ -67,8 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -77,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 360 -> {:error, "你的内功火候不够，使不出\n"}
-      Stats.skill(stats, "sad-strike") < 180 -> {:error, "你的黯然销魂掌不够熟练，不会使用\n"}
+      Stats.skill(stats, "force") < 360 -> {:error, "你的内功火候不够，使不出。\n"}
+      Stats.skill(stats, "sad-strike") < 180 -> {:error, "你的黯然销魂掌不够熟练，不会使用。\n"}
       true -> :ok
     end
   end
@@ -95,16 +94,9 @@ defmodule Kantele.Combat.Skills.Performs.SadStrike.Tuo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你感情早已不纯，哪里还能领略到那种黯然销魂的感觉？\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

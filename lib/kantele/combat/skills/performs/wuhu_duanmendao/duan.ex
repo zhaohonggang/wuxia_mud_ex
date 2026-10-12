@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wuhu-duanmendao") < 50 -> {:error, "你的五虎断门刀还不到家，难以施展\n"}
+      Stats.skill(stats, "wuhu-duanmendao") < 50 -> {:error, "你的五虎断门刀还不到家，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "wuhu-duanmendao" -> {:error, "你没有激发五虎断门刀，难以施展\n"}
+      Stats.mapped(stats, "blade") != "wuhu-duanmendao" -> {:error, "你没有激发五虎断门刀，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.WuhuDuanmendao.Duan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不足，难以施展\n"}
-      Stats.skill(stats, "rulai-zhang") < 150 -> {:error, "你千手如来掌火候不够，难以施展\n"}
+      Stats.skill(stats, "force") < 280 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "rulai-zhang") < 150 -> {:error, "你千手如来掌火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发心意气内功为内功，难以施展\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发心意气内功为内功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,8 +95,17 @@ defmodule Kantele.Combat.Skills.Performs.RulaiZhang.Zong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

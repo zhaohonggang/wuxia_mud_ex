@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hand") != "chansi-shou" -> {:error, "你没有激发缠丝擒拿手，难以施展\n"}
+      Stats.mapped(stats, "hand") != "chansi-shou" -> {:error, "你没有激发缠丝擒拿手，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,14 +87,15 @@ defmodule Kantele.Combat.Skills.Performs.ChansiShou.Qin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在的真气不够，难以施展\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你缠丝擒拿手等级不够，难以施展\n"}
+    #   {:error, "你缠丝擒拿手等级不够，难以施展。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

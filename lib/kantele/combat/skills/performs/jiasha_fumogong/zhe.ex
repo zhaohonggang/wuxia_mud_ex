@@ -65,7 +65,8 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -74,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiasha-fumogong") < 140 -> {:error, "你的袈裟伏魔功还不够娴熟，难以施展\n"}
+      Stats.skill(stats, "jiasha-fumogong") < 140 -> {:error, "你的袈裟伏魔功还不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "jiasha-fumogong" -> {:error, "你现在没有激发袈裟伏魔功为拳脚，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "jiasha-fumogong" -> {:error, "你现在没有激发袈裟伏魔功为拳脚，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +93,17 @@ defmodule Kantele.Combat.Skills.Performs.JiashaFumogong.Zhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力的修为不够，现在无法使用\n"}
-      vitals.neili < 400 -> {:error, "你的真气不够，无法运用\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，无法运用。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

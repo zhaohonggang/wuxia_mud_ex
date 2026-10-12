@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.Gun.She do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "gun") < 80 -> {:error, "你的枪械技术不够熟练，难以施展\n"}
+      Stats.skill(stats, "gun") < 80 -> {:error, "你的枪械技术不够熟练，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.Gun.She do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "gun" -> {:error, "你并没有运用枪械技术，难以施展\n"}
+      Stats.mapped(stats, "hammer") != "gun" -> {:error, "你并没有运用枪械技术，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.Gun.She do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

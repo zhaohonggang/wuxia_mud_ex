@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @impl true
@@ -31,6 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_resources(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -45,11 +47,18 @@ defmodule Kantele.Combat.Skills.Performs.Force.Inspire do
     end
   end
 
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
+      true -> :ok
+    end
+  end
+
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的内功中没有这种功能。\n"}
-    #   {:error, "先激发你的特殊内功。\n"}
-    #   {:error, "现在你正在战斗中？还是等打完了再说吧！\n"}
     :ok
 
   end

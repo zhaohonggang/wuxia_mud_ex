@@ -65,7 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang1 do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -88,11 +88,13 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang1 do
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "唱仙法只能在战斗中使用。\n"}
-    :ok
+  defp check_state(character) do
+    combat = character.meta.combat
 
+    cond do
+      Combat.fighting?(combat) -> {:error, "唱仙法只能在战斗中使用。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do

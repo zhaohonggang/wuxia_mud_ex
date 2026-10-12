@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @impl true
@@ -31,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -45,15 +46,14 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你现在气血充盈，不需要疗伤。\n"}
-    #   {:error, "先激发你的特殊内功。\n"}
-    #   {:error, "天魔解体状态不能运功疗伤！\n"}
-    #   {:error, "战斗中运功疗伤？找死吗？\n"}
-    #   {:error, "等你忙完了手头的事情再说！\n"}
-    :ok
+  defp check_state(character) do
+    combat = character.meta.combat
 
+    cond do
+      Combat.fighting?(combat) -> {:error, "战斗中运功疗伤？找死吗？\n"}
+      Combat.busy?(combat) -> {:error, "等你忙完了手头的事情再说！\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do

@@ -81,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "canhe-zhi") < 220 -> {:error, "你的参合指修为有限，难以施展\n"}
-      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为太差，难以施展\n"}
+      Stats.skill(stats, "canhe-zhi") < 220 -> {:error, "你的参合指修为有限，难以施展。\n"}
+      Stats.skill(stats, "force") < 320 -> {:error, "你的内功修为太差，难以施展。\n"}
       true -> :ok
     end
   end
@@ -99,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 6000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 900 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.max_neili < 6000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 900 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -109,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Canhe do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

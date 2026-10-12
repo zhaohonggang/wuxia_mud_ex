@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yinfeng-dao") < 140 -> {:error, "你的阴风刀还不够娴熟，无法施展\n"}
-      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展\n"}
+      Stats.skill(stats, "yinfeng-dao") < 140 -> {:error, "你的阴风刀还不够娴熟，无法施展绝技！\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展绝技！\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "yinfeng-dao" -> {:error, "你没有激发阴风刀，无法使用\n"}
+      Stats.mapped(stats, "strike") != "yinfeng-dao" -> {:error, "你没有激发阴风刀，无法使用绝技！\n"}
       true -> :ok
     end
   end
@@ -96,8 +96,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展\n"}
-      vitals.neili < 400 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展绝技！！\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，无法施展绝技！！\n"}
       true -> :ok
     end
   end

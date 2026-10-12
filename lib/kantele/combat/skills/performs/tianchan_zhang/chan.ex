@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太低，，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候太低，，难以施展。\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "tianchan-zhang" -> {:error, "你没有激发天蟾掌法，难以施展\n"}
+      Stats.mapped(stats, "strike") != "tianchan-zhang" -> {:error, "你没有激发天蟾掌法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的内力不够，，难以施展\n"}
+      vitals.neili < 300 -> {:error, "你的内力不够，，难以施展。\n"}
       true -> :ok
     end
   end
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TianchanZhang.Chan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须是空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须是空手才能使用。\n"}
       true -> :ok
     end
   end

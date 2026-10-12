@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -77,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展\n"}
-      Stats.skill(stats, "taixuan-gong") < 240 -> {:error, "你的太玄功还不够熟练，无法使用\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展！\n"}
+      Stats.skill(stats, "taixuan-gong") < 240 -> {:error, "你的太玄功还不够熟练，无法使用！\n"}
       true -> :ok
     end
   end
@@ -87,10 +88,10 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用\n"}
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用\n"}
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展\n"}
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展\n"}
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用。\n"}
+      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用。\n"}
+      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展。\n"}
+      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展。\n"}
       true -> :ok
     end
   end
@@ -99,15 +100,15 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "你的真气不够，无法施展\n"}
-      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法施展！\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，无法施展\n"}
+    #   {:error, "你使用的武器不对，无法施展。\n"}
     #   {:error, "你还没有学会如何利用太玄功驾御兵器，这招只能空手施展！\n"}
     :ok
 

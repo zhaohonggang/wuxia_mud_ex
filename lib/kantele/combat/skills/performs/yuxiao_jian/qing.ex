@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展\n"}
+      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "看样子对方真气并不充沛，无需运用\n"}
-      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 300 -> {:error, "看样子对方真气并不充沛，无需运用。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

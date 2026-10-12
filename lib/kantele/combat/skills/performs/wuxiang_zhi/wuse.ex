@@ -116,7 +116,6 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「无色无相」只能在战斗中对对手使用。\n"}
     #   {:error, "你还没有受过高人指点，无法施展「无色无相」。\n"}
     :ok
 

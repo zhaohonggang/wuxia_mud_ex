@@ -73,7 +73,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用\n"}
+      Stats.skill(stats, "qufannao-zhi") < 100 -> {:error, "你的去烦恼指不够娴熟，不会使用。\n"}
       Stats.skill(stats, "hunyuan-yiqi") < 100 -> {:error, "你的心意气混元功不够高，不能用内力催动指力伤敌。\n"}
       true -> :ok
     end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用\n"}
+      vitals.neili < 300 -> {:error, "你现在内力太弱，不能使用。\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.QufannaoZhi.Lingkong do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用！\n"}
       true -> :ok
     end
   end

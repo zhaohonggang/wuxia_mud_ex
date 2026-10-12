@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-baiguzhao") < 140 -> {:error, "你的九阴白骨爪还不够娴熟，不能使用\n"}
+      Stats.skill(stats, "jiuyin-baiguzhao") < 140 -> {:error, "你的九阴白骨爪还不够娴熟，不能使用。\n"}
       true -> :ok
     end
   end
@@ -100,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用！\n"}
       true -> :ok
     end
   end

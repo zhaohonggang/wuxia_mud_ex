@@ -67,8 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -108,13 +107,6 @@ defmodule Kantele.Combat.Skills.Performs.PuduZhang.Zhao do
       combat.weapon == nil -> {:error, "你使用的武器不对。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「佛光普照」只能在战斗中对对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

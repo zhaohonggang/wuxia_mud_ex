@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "throwing") < 180 -> {:error, "你暗器手法火候不够，难以施展\n"}
+      Stats.skill(stats, "throwing") < 180 -> {:error, "你暗器手法火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "chousui-zhang" -> {:error, "你没有激发抽髓掌，难以施展\n"}
+      Stats.mapped(stats, "strike") != "chousui-zhang" -> {:error, "你没有激发抽髓掌，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,16 +93,17 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1200 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 500 -> {:error, "你现在的内息不足，难以施展\n"}
+      vitals.max_neili < 1200 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的内息不足，难以施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你对毒技的了解不够，难以施展\n"}
-    #   {:error, "你的抽髓掌不够娴熟，难以施展\n"}
+    #   {:error, "你对毒技的了解不够，难以施展。\n"}
+    #   {:error, "你的抽髓掌不够娴熟，难以施展。\n"}
+    #   {:error, "只能空手施展。\n"}
     :ok
 
   end

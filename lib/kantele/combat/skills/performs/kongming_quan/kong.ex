@@ -66,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kongming-quan") < 150 -> {:error, "你的空明拳不够娴熟，难以施展\n"}
+      Stats.skill(stats, "kongming-quan") < 150 -> {:error, "你的空明拳不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "kongming-quan" -> {:error, "你没有激发空明拳，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "kongming-quan" -> {:error, "你没有激发空明拳，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +94,16 @@ defmodule Kantele.Combat.Skills.Performs.KongmingQuan.Kong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在的真气太弱，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你现在的真气太弱，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

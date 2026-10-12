@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianluo-diwang") < 60 -> {:error, "你的天罗地网掌还不够娴熟，无法施展\n"}
-      Stats.skill(stats, "dodge") < 40 -> {:error, "你的轻功修为不够，无法施展\n"}
+      Stats.skill(stats, "tianluo-diwang") < 60 -> {:error, "你的天罗地网掌还不够娴熟，无法施展。\n"}
+      Stats.skill(stats, "dodge") < 40 -> {:error, "你的轻功修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 70 -> {:error, "你现在真气不够，无法使用\n"}
+      vitals.neili < 70 -> {:error, "你现在真气不够，无法使用。\n"}
       true -> :ok
     end
   end
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能施展\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能施展。\n"}
       true -> :ok
     end
   end

@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -74,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yanxing-dao") < 60 -> {:error, "你雁行刀法不够娴熟，难以施展\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你没有激发雁行刀法，难以施展\n"}
+      Stats.skill(stats, "yanxing-dao") < 60 -> {:error, "你雁行刀法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你内功火候不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -84,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yanxing-dao" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      Stats.mapped(stats, "blade") != "yanxing-dao" -> {:error, "你没有激发雁行刀法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -93,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 80 -> {:error, "TODO(migrate) neili 不足。\n"}
+      vitals.neili < 80 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -102,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

@@ -41,8 +41,8 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你目前的内力不够，难以施展\n"}
+      vitals.max_neili < 2200 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 1000 -> {:error, "你目前的内力不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -50,7 +50,8 @@ defmodule Kantele.Combat.Skills.Performs.HanbingZhenqi.Freezing do
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你所学的内功中没有这种功能。\n"}
-    #   {:error, "你现在正在施展\n"}
+    #   {:error, "你现在正在施展。\n"}
+    #   {:error, "只能对自己使用。\n"}
     :ok
 
   end

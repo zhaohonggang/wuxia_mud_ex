@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候太低，无法使出\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功火候太低，无法使出。\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.CuixinZhang.Cui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你的内力不够，无法使出\n"}
+      vitals.neili < 500 -> {:error, "你的内力不够，无法使出。\n"}
       true -> :ok
     end
   end

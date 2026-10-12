@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "huzhua-shou") < 120 -> {:error, "你没有激发虎爪绝户手，难以施展\n"}
+      Stats.skill(stats, "huzhua-shou") < 120 -> {:error, "你的虎爪绝户手不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "huzhua-shou" -> {:error, "你没有准备使用虎爪绝户手，无法使用\n"}
+      Stats.mapped(stats, "claw") != "huzhua-shou" -> {:error, "你没有激发虎爪绝户手，难以施展。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.HuzhuaShou.Juehu do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

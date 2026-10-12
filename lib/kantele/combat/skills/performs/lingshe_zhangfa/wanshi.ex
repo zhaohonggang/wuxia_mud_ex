@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -112,7 +113,6 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wanshi do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「千蛇万噬」只能对战斗中的对手使用。\n"}
     #   {:error, "你还不会使用「千蛇万噬」这一绝技。\n"}
     :ok
 

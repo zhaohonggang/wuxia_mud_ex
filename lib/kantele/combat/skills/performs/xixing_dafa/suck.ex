@@ -33,6 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
+         :ok <- check_state(character),
          :ok <- check_other(character) do
       :ok
     end
@@ -42,7 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xixing-dafa") < 200 -> {:error, "你的吸星大法尚未大成，还\n"}
+      Stats.skill(stats, "xixing-dafa") < 200 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
       true -> :ok
     end
   end
@@ -51,17 +52,24 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
+      vitals.neili < 100 -> {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
+      vitals.max_neili < 100 -> {:error, "丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "你的吸星大法尚未大成，还不能吸取对方的丹元收为己用！\n"}
       true -> :ok
     end
   end
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你刚刚吸取过丹元！\n"}
-    #   {:error, "你只能吸取战斗中的对手的丹元！\n"}
     #   {:error, "在这里不能攻击他人。\n"}
-    #   {:error, "搞错了！只有活着的生物才能有丹元！\n"}
     :ok
 
   end

@@ -65,8 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_mapped(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -75,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "dugu-jiujian" -> {:error, "你没有激发独孤九剑，无法施展\n"}
+      Stats.mapped(stats, "sword") != "dugu-jiujian" -> {:error, "你没有激发独孤九剑，无法施展。\n"}
       true -> :ok
     end
   end
@@ -84,16 +83,9 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，无法施展。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你的独孤九剑等级不够，无法施展\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

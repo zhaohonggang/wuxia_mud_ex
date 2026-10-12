@@ -62,8 +62,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -84,13 +83,6 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang3 do
       vitals.neili < 500 -> {:error, "你已经精疲力竭，真气不够了。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "唱仙法吼字决只能在战斗中对对手使用。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

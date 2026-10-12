@@ -66,8 +66,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -76,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "canhe-zhi" -> {:error, "你没有激发参合指, 难以施展\n"}
+      Stats.mapped(stats, "finger") != "canhe-zhi" -> {:error, "你没有激发参合指, 难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,16 +84,9 @@ defmodule Kantele.Combat.Skills.Performs.CanheZhi.Zhi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你的真气不够，难以施展\n"}
+      vitals.neili < 150 -> {:error, "你的真气不够，难以施展。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你的参合指修为有限，难以施展\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

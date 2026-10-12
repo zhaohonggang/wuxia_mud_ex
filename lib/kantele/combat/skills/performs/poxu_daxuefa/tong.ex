@@ -69,8 +69,7 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
   defp check_gates(character) do
     with :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -79,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "poxu-daxuefa" -> {:error, "你没有激发破虚打穴法，无法施展\n"}
+      Stats.mapped(stats, "dagger") != "poxu-daxuefa" -> {:error, "你没有激发破虚打穴法，无法施展。\n"}
       true -> :ok
     end
   end
@@ -88,21 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.PoxuDaxuefa.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，无法施展\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，无法施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你所使用的武器不对，无法施展\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你破虚打穴法等级不够，无法施展\n"}
+    #   {:error, "你所使用的武器不对，无法施展。\n"}
     :ok
 
   end

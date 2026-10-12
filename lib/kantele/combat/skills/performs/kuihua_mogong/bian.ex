@@ -68,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -78,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 260 -> {:error, "你的葵花魔功不够娴熟，难以施展\n"}
+      Stats.skill(stats, "kuihua-mogong") < 260 -> {:error, "你的葵花魔功不够娴熟，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "你没有准备使用葵花魔功，难以施展\n"}
+      Stats.mapped(stats, "sword") != "kuihua-mogong" -> {:error, "你没有准备使用葵花魔功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,17 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Bian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3700 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.max_neili < 3700 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
-  end
-
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手里拿的不是剑，怎么施\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

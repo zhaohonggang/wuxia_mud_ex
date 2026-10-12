@@ -113,7 +113,6 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Xunlei do
 
   defp check_other(character) do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "「迅雷击」只能在战斗中对对手使用。\n"}
     #   {:error, "你未得高人指点，不知该如何施展「迅雷击」。\n"}
     :ok
 

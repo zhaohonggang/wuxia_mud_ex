@@ -72,7 +72,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character),
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -81,9 +83,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-quan") < 250 -> {:error, "你的太极拳不够娴熟，难以施展\n"}
-      Stats.skill(stats, "taiji-shengong") < 300 -> {:error, "你的太极神功修为还不够高，难以施展\n"}
-      Stats.skill(stats, "taoism") < 300 -> {:error, "你的道学心法修为还不够高，难以施展\n"}
+      Stats.skill(stats, "taiji-quan") < 250 -> {:error, "你的太极拳不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "taiji-shengong") < 300 -> {:error, "你的太极神功修为还不够高，难以施展。\n"}
+      Stats.skill(stats, "taoism") < 300 -> {:error, "你的道学心法修为还不够高，难以施展。\n"}
       true -> :ok
     end
   end
@@ -92,8 +94,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "你现在没有激发太极拳，难以施展\n"}
-      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "你现在没有激发太极神功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "taiji-quan" -> {:error, "你现在没有激发太极拳，难以施展。\n"}
+      Stats.mapped(stats, "force") != "taiji-shengong" -> {:error, "你现在没有激发太极神功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -102,8 +104,26 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 1000 -> {:error, "你现在精力不够，难以施展\n"}
-      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展\n"}
+      vitals.jingli < 1000 -> {:error, "你现在精力不够，难以施展。\n"}
+      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end

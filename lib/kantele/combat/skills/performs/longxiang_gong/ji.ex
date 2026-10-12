@@ -67,7 +67,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character) do
+         :ok <- check_resources(character),
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -76,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "longxiang-gong") < 300 -> {:error, "你的龙象般若功修为不够，难以施展\n"}
+      Stats.skill(stats, "longxiang-gong") < 300 -> {:error, "你的龙象般若功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -85,8 +86,8 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "unarmed") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为拳脚，难以施展\n"}
-      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为内功，难以施展\n"}
+      Stats.mapped(stats, "unarmed") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为拳脚，难以施展。\n"}
+      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功为内功，难以施展。\n"}
       true -> :ok
     end
   end
@@ -95,8 +96,17 @@ defmodule Kantele.Combat.Skills.Performs.LongxiangGong.Ji do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 800 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 800 -> {:error, "你现在的真气不足，难以施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      combat.weapon != nil -> {:error, "只能空手施展。\n"}
       true -> :ok
     end
   end

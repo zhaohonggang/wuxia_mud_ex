@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -63,8 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -90,13 +90,6 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     #   {:error, "你现在手中并没有拿着飞刀。\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "小李飞刀只能在战斗中对对手使用。\n"}
     :ok
 
   end

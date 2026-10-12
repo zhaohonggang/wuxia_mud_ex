@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianshan-zhang") < 60 -> {:error, "你的天山杖法不够娴熟，不会使用\n"}
+      Stats.skill(stats, "tianshan-zhang") < 60 -> {:error, "你的天山杖法不够娴熟，不会使用。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Fugu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了\n"}
+      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了。\n"}
       true -> :ok
     end
   end

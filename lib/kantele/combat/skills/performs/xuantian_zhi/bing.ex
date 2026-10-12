@@ -74,8 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuantian-wujigong") < 180 -> {:error, "你的玄天无极功火候不够，使不出\n"}
-      Stats.skill(stats, "xuantian-zhi") < 180 -> {:error, "你的玄天指不够熟练，不会使用\n"}
+      Stats.skill(stats, "xuantian-wujigong") < 180 -> {:error, "你的玄天无极功火候不够，使不出。\n"}
+      Stats.skill(stats, "xuantian-zhi") < 180 -> {:error, "你的玄天指不够熟练，不会使用。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "finger") != "xuantian-zhi" -> {:error, "你没有激发玄天指，不能使用\n"}
+      Stats.mapped(stats, "finger") != "xuantian-zhi" -> {:error, "你没有激发玄天指，不能使用。\n"}
       true -> :ok
     end
   end
@@ -93,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力修为不足，无法使用\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法使用\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为不足，无法使用。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     combat = character.meta.combat
 
     cond do
-      combat.weapon != nil -> {:error, "你必须空手才能使用\n"}
+      combat.weapon != nil -> {:error, "你必须空手才能使用。\n"}
       true -> :ok
     end
   end

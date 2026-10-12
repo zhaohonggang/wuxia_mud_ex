@@ -77,9 +77,9 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sword") < 200 -> {:error, "你的剑术修为不够，不能施展\n"}
-      Stats.skill(stats, "yuenv-jian") < 150 -> {:error, "你的越女剑术的修为不够，不能施展\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，不能施展\n"}
+      Stats.skill(stats, "sword") < 200 -> {:error, "你的剑术修为不够，不能施展！\n"}
+      Stats.skill(stats, "yuenv-jian") < 150 -> {:error, "你的越女剑术的修为不够，不能施展！\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，不能施展！\n"}
       true -> :ok
     end
   end

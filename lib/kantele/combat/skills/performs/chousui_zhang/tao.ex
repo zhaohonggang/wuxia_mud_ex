@@ -67,8 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_other(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -96,17 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Tao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，无法用内力施展\n"}
-      vitals.neili < 3000 -> {:error, "你现在内息不足，无法用内力施展\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，无法用内力施展。\n"}
+      vitals.neili < 3000 -> {:error, "你现在内息不足，无法用内力施展。\n"}
       true -> :ok
     end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能对战斗中的对手施展\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do

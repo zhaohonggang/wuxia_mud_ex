@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -77,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qujing-gunfa") < 200 -> {:error, "你的内力修为太弱，难以施展\n"}
-      Stats.skill(stats, "force") < 350 -> {:error, "你现在的真气太弱，难以施展\n"}
+      Stats.skill(stats, "qujing-gunfa") < 200 -> {:error, "你的内力修为太弱，难以施展。\n"}
+      Stats.skill(stats, "force") < 350 -> {:error, "你现在的真气太弱，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,10 +88,10 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展\n"}
-      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你没有激发取经棍法，难以施展\n"}
-      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你取经棍法不够娴熟，难以施展\n"}
-      Stats.mapped(stats, "club") != "qujing-gunfa" -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" -> {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
+      Stats.mapped(stats, "force") != "yijinjing" -> {:error, "你没有激发取经棍法，难以施展。\n"}
+      Stats.mapped(stats, "force") != "luohan-fumogong" -> {:error, "你取经棍法不够娴熟，难以施展。\n"}
+      Stats.mapped(stats, "club") != "qujing-gunfa" -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -108,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.QujingGunfa.Zhen do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

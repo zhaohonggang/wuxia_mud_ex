@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qishang-quan") < 160 -> {:error, "你的七伤拳不够娴熟，无法施展\n"}
+      Stats.skill(stats, "qishang-quan") < 160 -> {:error, "你的七伤拳不够娴熟，无法施展。\n"}
       Stats.skill(stats, "force") < 160 -> {:error, "你的内功修为还不够，无法施展\n"}
       true -> :ok
     end
@@ -96,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.QishangQuan.Fei do
 
     cond do
       vitals.max_neili < 2200 -> {:error, "你内力修为不足，无法施展\n"}
-      vitals.neili < 350 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 350 -> {:error, "你现在真气不够，无法施展。\n"}
       true -> :ok
     end
   end

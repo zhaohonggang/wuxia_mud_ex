@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shou do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功还不够娴熟，不能使用\n"}
+      Stats.skill(stats, "jiuyin-shengong") < 260 -> {:error, "你的九阴神功还不够娴熟，不能使用！\n"}
       true -> :ok
     end
   end

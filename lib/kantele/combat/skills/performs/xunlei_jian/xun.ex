@@ -77,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展\n"}
-      Stats.skill(stats, "xunlei-jian") < 100 -> {:error, "你的迅雷剑法修为不够，无法施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展。\n"}
+      Stats.skill(stats, "xunlei-jian") < 100 -> {:error, "你的迅雷剑法修为不够，无法施展。\n"}
       true -> :ok
     end
   end
@@ -87,14 +87,14 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，无法施展。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器无法施展\n"}
+    #   {:error, "你使用的武器无法施展。\n"}
     :ok
 
   end

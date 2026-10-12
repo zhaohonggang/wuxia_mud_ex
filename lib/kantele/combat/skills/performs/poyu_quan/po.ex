@@ -73,7 +73,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "poyu-quan") < 140 -> {:error, "你的劈石破玉拳不够娴熟，无法施展\n"}
+      Stats.skill(stats, "poyu-quan") < 140 -> {:error, "你的劈石破玉拳不够娴熟，无法施展。\n"}
       Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为还不够，无法施展\n"}
       true -> :ok
     end
@@ -91,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不够，无法施展。\n"}
       true -> :ok
     end
   end

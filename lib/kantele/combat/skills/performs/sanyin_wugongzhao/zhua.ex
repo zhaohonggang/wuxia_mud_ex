@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sanyin-wugongzhao") < 80 -> {:error, "你的三阴蜈蚣爪不够娴熟，无法使用\n"}
+      Stats.skill(stats, "sanyin-wugongzhao") < 80 -> {:error, "你的三阴蜈蚣爪不够娴熟，无法使用。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "claw") != "sanyin-wugongzhao" -> {:error, "你没有激发三阴蜈蚣爪，无法使用\n"}
+      Stats.mapped(stats, "claw") != "sanyin-wugongzhao" -> {:error, "你没有激发三阴蜈蚣爪，无法使用。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你真气不足，无法施展\n"}
+      vitals.neili < 150 -> {:error, "你真气不足，无法施展。\n"}
       true -> :ok
     end
   end

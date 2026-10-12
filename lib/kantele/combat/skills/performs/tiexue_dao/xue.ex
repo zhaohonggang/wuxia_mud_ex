@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tiexue-dao") < 100 -> {:error, "你铁血刀法等级不够，难以施展\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展\n"}
+      Stats.skill(stats, "tiexue-dao") < 100 -> {:error, "你铁血刀法等级不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "tiexue-dao" -> {:error, "你没有激发铁血刀法，难以施展\n"}
+      Stats.mapped(stats, "blade") != "tiexue-dao" -> {:error, "你没有激发铁血刀法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -97,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你目前的真气不足，难以施展\n"}
+      vitals.neili < 200 -> {:error, "你目前的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexueDao.Xue do
     combat = character.meta.combat
 
     cond do
-      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展\n"}
+      combat.weapon == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
       true -> :ok
     end
   end

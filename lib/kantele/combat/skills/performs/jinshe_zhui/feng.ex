@@ -68,8 +68,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -78,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展。\n"}
       true -> :ok
     end
   end
@@ -87,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "throwing") != "jinshe-zhui" -> {:error, "你没有激发金蛇锥法，难以施展\n"}
+      Stats.mapped(stats, "throwing") != "jinshe-zhui" -> {:error, "你没有激发金蛇锥法，难以施展。\n"}
       true -> :ok
     end
   end
@@ -96,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
       true -> :ok
     end
   end
@@ -104,13 +103,6 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Feng do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     #   {:error, "你才用过截脉封穴，没法接着就出招。\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "截脉封穴只能在战斗中使用。\n"}
     :ok
 
   end

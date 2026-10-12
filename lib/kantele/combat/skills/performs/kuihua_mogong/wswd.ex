@@ -73,7 +73,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 400 -> {:error, "你的内力修为不够运用\n"}
+      Stats.skill(stats, "kuihua-mogong") < 400 -> {:error, "你的内力修为不够运用所需！\n"}
       true -> :ok
     end
   end
@@ -91,9 +91,9 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Wswd do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 7000 -> {:error, "你的内力不够运用\n"}
+      vitals.max_neili < 7000 -> {:error, "你的内力不够运用所需！\n"}
       vitals.neili < 1000 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      vitals.neili < 1000 -> {:error, "你待要再出\n"}
+      vitals.neili < 1000 -> {:error, "你待要再出，却发现自己的内力不够了！\n"}
       true -> :ok
     end
   end

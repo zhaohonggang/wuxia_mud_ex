@@ -75,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "你的葵花魔功不够深厚，不会使用\n"}
+      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "你的葵花魔功不够深厚，不会使用。\n"}
       true -> :ok
     end
   end
@@ -84,7 +84,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dodge") != "kuihua-mogong" -> {:error, "你还没有激发葵花魔功为轻功，无法施展\n"}
+      Stats.mapped(stats, "dodge") != "kuihua-mogong" -> {:error, "你还没有激发葵花魔功为轻功，无法施展。\n"}
       true -> :ok
     end
   end
@@ -93,8 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展\n"}
-      vitals.neili < 200 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展！\n"}
       true -> :ok
     end
   end
