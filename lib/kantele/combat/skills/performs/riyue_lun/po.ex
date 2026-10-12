@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
   alias Kantele.Combat.Performs
 
   @perform_id "riyue-lun/po"
+  @move_name "「破立势」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,9 +30,10 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "riyue-lun")
-    improve = 0
-    n = 0
-    i = 0
+
+    # LPC: ap = force + str*10；improve 加成涉及 SKILL_D()->valid_enable(martial)
+    # 的技能表，暂未建模（improve = 0）。
+    ap = Stats.skill(stats, "force") + Stats.query_str(stats) * 10
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,14 +41,17 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -65,10 +70,20 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_ready(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character) do
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query_temp("yuan_man")) return notify_fail("你现在无暇施展" PO "。\n");
+  defp check_ready(character) do
+    if Combat.buff_active?(character.meta.combat, "yuan_man") do
+      {:error, "你现在无暇施展#{@move_name}。\n"}
+    else
       :ok
     end
   end
@@ -77,8 +92,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "riyue-lun") < 120 -> {:error, "你的日月轮法火候不足，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "riyue-lun") < 120 -> {:error, "你的日月轮法火候不足，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,9 +102,14 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "hammer") != "riyue-lun" -> {:error, "你没有激发日月轮法，难以施展。\n"}
-      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你没有激发龙象般若功，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "hammer") != "riyue-lun" ->
+        {:error, "你没有激发日月轮法，难以施展#{@move_name}。\n"}
+
+      Stats.mapped(stats, "force") != "longxiang-gong" ->
+        {:error, "你没有激发龙象般若功，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -97,36 +117,31 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "hammer" -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N单手高举某物奋力朝$n砸下，气浪迭起，全然把$n卷在其中！", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # 前置广播（LPC 的 neili 消耗 / start_busy 在命中分支内，交由 do_resolve 处理）
+    weapon_name = Combat.weapon(character.meta.combat).name
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    Broadcast.publish(
+      conn,
+      "$N单手高举" <> weapon_name <> "奋力朝$n砸下，气浪迭起，全然把$n卷在其中！",
+      n1: character.name,
+      n2: target.name
+    )
   end
 
   defp target(combat) do
@@ -150,22 +165,39 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Po do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "force") + Stats.query_con(stats) * 10
+
+    # LPC: if (ap / 2 + random(ap) > dp) 命中：neili -300 + start_busy(3) + do_damage
+    #                       否则：neili -150 + start_busy(2)
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
+
+    character =
+      if hit do
+        damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      Performs.feedback(attacker, 300, 3)
+    else
+      Performs.feedback(attacker, 150, 2)
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 3)
-    msg = if hit, do: "$n被$N这强悍无比的内劲冲击得左摇右晃，接连中招，狂喷鲜血。", else: "却见$p浑不在意，轻轻一闪就躲过了$P的凶悍招数。"
+    msg =
+      if hit do
+        "$n被$N这强悍无比的内劲冲击得左摇右晃，接连中招，狂喷鲜血。"
+      else
+        "却见$p浑不在意，轻轻一闪就躲过了$P的凶悍招数。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
