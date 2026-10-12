@@ -139,7 +139,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `chansi_shou/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `chansi_shou/qin.ex` ← `chansi-shou/qin.c`  (miss=7)
+- [x] ✅ `chansi_shou/qin.ex` ← `chansi-shou/qin.c`  (miss→0，PASS)
 
 ### `chilian_shenzhang/` （1 个，基线缺失 7 条）
 
