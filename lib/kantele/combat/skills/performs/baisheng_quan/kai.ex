@@ -1,8 +1,19 @@
 defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
   @moduledoc """
-  perform「混沌初开」（source baisheng-quan/kai.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「混沌初开」（source baisheng-quan/kai.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：未持兵器 → 百胜神拳>=100 → 内功>=140 →
+  激发 cuff 为百胜神拳 → 准备 cuff 招式 → 真气>=200 → 目标存活。
+  命中判定 `random(cuff) > dodge/2`；命中时伤害
+  `cuff/2 + random(cuff*2/3)`；命中扣 100 真气并忙乱 2，失手扣 60 真气并忙乱 3。
+
+  差异（TODO(migrate)）：
+  - `do_damage` 的第 5 参 `percent` 为护甲穿透比例，Elixir 侧 Vitals 未建模
+    护甲，按同级迁移惯例只做 `Vitals.damage(:qi, damage)`；
+  - 前置广播在 .c 中被 `NOR + HIR "混沌初开" NOR + WHT` 拆为三段字面量
+    （`+` 阻止 C 侧 join_adjacent 合并），此处按原样拆为三段，运行时再
+    `Enum.join` 合一；
+  - `living(target)` 门槛未实现，由目标侧 `combat/perform-incoming` 兜底。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,6 +31,8 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
   alias Kantele.Combat.Performs
 
   @perform_id "baisheng-quan/kai"
+
+  @move_name "「混沌初开」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -62,12 +75,11 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -76,8 +88,12 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "baisheng-quan") < 100 -> {:error, "你的百胜神拳不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 140 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "baisheng-quan") < 100 ->
+        {:error, "你的百胜神拳不够娴熟，难以施展#{@move_name}。\n"}
+
+      Stats.skill(stats, "force") < 140 ->
+        {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
+
       true -> :ok
     end
   end
@@ -87,10 +103,10 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
 
     cond do
       Stats.mapped(stats, "cuff") != "baisheng-quan" ->
-        {:error, "你没有激发百胜神拳，难以施展。\n"}
+        {:error, "你没有激发百胜神拳，难以施展#{@move_name}。\n"}
 
       Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "baisheng-quan" ->
-        {:error, "你没有准备百胜神拳，难以施展。\n"}
+        {:error, "你没有准备百胜神拳，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -101,29 +117,34 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展。\n"}
-    :ok
+    combat = character.meta.combat
 
+    cond do
+      Combat.weapon(combat) != nil -> {:error, "只有空手才能施展#{@move_name}。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 60}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身子蓦的横移，两臂向后反钩，呼的一声朝$n攻去，正是「混沌初开」绝技。", n1: character.name)
+    # 无条件攻击方效果：仅前置广播。
+    # C 的 -100/busy 2（命中）与 -60/busy 3（失手）均为条件消耗，
+    # 由 do_resolve_incoming 通过 Performs.feedback 作用于攻击方。
+    # 前缀广播在 .c 中被颜色宏拆为三段字面量，此处按原样拆分、运行时再合一。
+    msg =
+      [
+        "$N身子蓦的横移，两臂向后反钩，呼的一声朝$n攻去，正是「",
+        "混沌初开",
+        "」绝技。\n"
+      ]
+      |> Enum.join("")
+
+    conn = Broadcast.publish(conn, msg, n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,22 +172,36 @@ defmodule Kantele.Combat.Skills.Performs.BaishengQuan.Kai do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    skill = max(Map.get(data, :damage, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = div(Stats.skill(stats, "dodge"), 2)
+    # LPC: if (random(me->query_skill("cuff")) > target->query_skill("dodge") / 2)
+    hit = Engine.rand(rng, skill) > dp
+
+    vitals =
+      if hit do
+        # C: damage = damage / 2 + random(damage * 2 / 3)
+        dmg = div(skill, 2) + Engine.rand(rng, div(skill * 2, 3))
+        Vitals.damage(character.meta.vitals, :qi, dmg)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 60, 3)
-    msg = if hit, do: "结果$n闪避不及，$N双拳正中$p头部两侧，顿时口喷鲜血，几欲昏厥。", else: "$n躲过了$N的攻击！"
+
+    # 命中：add("neili", -100) + start_busy(2)；失手：add("neili", -60) + start_busy(3)
+    {neili_cost, busy} = if hit, do: {100, 2}, else: {60, 3}
+
+    Performs.feedback(attacker, neili_cost, busy)
+
+    msg =
+      if hit,
+        do: "结果$n闪避不及，$N双拳正中$p头部两侧，顿时口喷鲜血，几欲昏厥。\n",
+        else: "可是$p识破了$P这一招，斜斜一跃避开。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
