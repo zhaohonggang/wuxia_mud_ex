@@ -16,10 +16,10 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "qixing-shou/po"
+  @move_name "「破穹云蛟」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,6 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "qixing-shou")
     ap = Stats.skill(stats, "hand")
+    damage = div(lvl, 2) + Engine.rand(rng, div(lvl, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,15 +38,18 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -76,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qixing-shou") < 150 -> {:error, "你七星分天手不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "qixing-shou") < 150 -> {:error, "你七星分天手不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,10 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
 
     cond do
       Stats.mapped(stats, "hand") != "qixing-shou" ->
-        {:error, "你没有激发七星分天手，难以施展。\n"}
+        {:error, "你没有激发七星分天手，难以施展#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "qixing-shou" ->
-        {:error, "你没有准备七星分天手，难以施展。\n"}
+      Stats.prepared_perform(stats, "hand") == nil or
+          String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "qixing-shou" ->
+        {:error, "你没有准备七星分天手，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -101,24 +106,32 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展。\n"}
-    :ok
-
+    if Combat.weapon(character.meta.combat) != nil do
+      {:error, "只有空手才能施展#{@move_name}。\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N双目圆睁，单手陡然一振，袖底顿时窜出一道紫光，直射$n前胸。", n1: character.name)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        Enum.join(["双目圆睁，单手陡然一振，袖底顿时窜出一道", "紫光，直射$n前胸。"]),
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -128,7 +141,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「破穹云蛟」只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -146,25 +159,85 @@ defmodule Kantele.Combat.Skills.Performs.QixingShou.Po do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    bindings = [n1: attacker.name, n2: character.name]
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+
+    {vitals, conn} =
+      landing(
+        conn,
+        stats,
+        bindings,
+        vitals,
+        ap,
+        damage,
+        rng,
+        "parry",
+        "但见$P这道气劲来势迅猛之极，$n如何避得，顿时被紫劲震开了数尺！",
+        "$p见势不妙，急忙向后纵开数尺，避开了$P这招。"
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "紧接着$N左掌蓦的一抬，凭空虚划了道弧芒，至上而下反推$n后颈。",
+        bindings
+      )
+
+    {vitals, conn} =
+      landing(
+        conn,
+        stats,
+        bindings,
+        vitals,
+        ap,
+        damage,
+        rng,
+        "dodge",
+        "$p只觉后颈一麻，已被$N这招击个正中，顿时全身瘫软，呕出一口鲜血！",
+        "可是$p丝毫不为$P所动，奋力格挡，稳稳将这一招架开。"
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "便在此时，却见$N双掌猛然回圈，平推而出，顿时层层气浪直袭$n。",
+        bindings
+      )
+
+    {vitals, conn} =
+      landing(
+        conn,
+        stats,
+        bindings,
+        vitals,
+        ap,
+        damage,
+        rng,
+        "force",
+        "$p在$N的猛攻之下，已再无余力招架，竟被这一掌震得飞起，摔了出去！",
+        "然而$p沉身聚气，奋力一格，便将$P这掌驱于无形。"
+      )
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 1)
-    msg = if hit, do: Enum.random(["但见$P这道气劲来势迅猛之极，$n如何避得，顿时被紫劲震开了数尺！", "$p只觉后颈一麻，已被$N这招击个正中，顿时全身瘫软，呕出一口鲜血！", "$p在$N的猛攻之下，已再无余力招架，竟被这一掌震得飞起，摔了出去！"]), else: Enum.random(["$p见势不妙，急忙向后纵开数尺，避开了$P这招。", "可是$p丝毫不为$P所动，奋力格挡，稳稳将这一招架开。", "然而$p沉身聚气，奋力一格，便将$P这掌驱于无形。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    Performs.feedback(attacker, 200, 2 + Engine.rand(rng, 3))
+
+    put_character(conn, character)
+  end
+
+  defp landing(conn, stats, bindings, vitals, ap, damage, rng, dp_skill, hit_msg, miss_msg) do
+    dp = Stats.skill(stats, dp_skill)
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+    if hit do
+      vitals = Vitals.damage(vitals, :qi, damage)
+      {vitals, Broadcast.publish(conn, hit_msg, bindings)}
+    else
+      {vitals, Broadcast.publish(conn, miss_msg, bindings)}
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
   alias Kantele.Combat.Performs
 
   @perform_id "qixing-quan/zhai"
+  @move_name "「摘星式」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,6 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "qixing-quan")
     ap = Stats.skill(stats, "cuff")
+    damage = lvl + Engine.rand(rng, div(lvl, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,10 +39,13 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -76,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "qixing-quan") < 60 -> {:error, "你七星拳法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "qixing-quan") < 60 -> {:error, "你七星拳法不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -86,8 +91,9 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "qixing-quan" ->
-        {:error, "你没有准备七星拳法，难以施展。\n"}
+      Stats.prepared_perform(stats, "cuff") == nil or
+          String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "qixing-quan" ->
+        {:error, "你没有准备七星拳法，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -98,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -107,17 +113,13 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 30}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # 前置广播：攻击方文案；内力消耗/忙乱由目标侧结算后经 perform-feedback 回执
     conn = Broadcast.publish(conn, "$N双拳挥出，施出绝招「摘星式」，刚劲有力，部位极准，分袭$n面门和胸口。", n1: character.name)
 
     conn
@@ -151,20 +153,28 @@ defmodule Kantele.Combat.Skills.Performs.QixingQuan.Zhai do
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 30, 1)
-    msg = if hit, do: "$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。", else: "$n不慌不忙，以快打快，将$N这招化去。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    if hit do
+      vitals = Vitals.damage(vitals, :qi, damage)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      Performs.feedback(attacker, 100, 2 + Engine.rand(rng, 2))
+      msg = "$N出手既快，方位又奇，$n闪避不及，闷哼一声，已然中拳。"
+      result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+      conn
+      |> Broadcast.publish(result)
+      |> put_character(character)
+    else
+      Performs.feedback(attacker, 30, 2 + Engine.rand(rng, 3))
+      msg = "$n不慌不忙，以快打快，将$N这招化去。"
+      result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+      conn
+      |> Broadcast.publish(result)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
