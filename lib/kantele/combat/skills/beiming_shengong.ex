@@ -78,7 +78,9 @@ defmodule Kantele.Combat.Skills.BeimingShengong.Powerup do
            defense: {:div, {:skill, "beiming-shengong"}, 3}
          }}
       ],
-      busy: {:if_fighting, {:add, 1, {:random, 1, 3}}},
+      # LPC: if (me->is_fighting()) me->start_busy(1 + random(3));
+      # {:random, min, max} 含端点，故 {:random, 1, 3} 即 1 + random(3)
+      busy: {:if_fighting, {:random, 1, 3}},
       duration: {:skill, "beiming-shengong"},
       expire_message: "你的北冥神功运行完毕，将内力收回丹田。\n",
       message: "$N将内力运遍浑身诸大要穴，然后收气丹田，双目一睁，登时精光四射！\n"
