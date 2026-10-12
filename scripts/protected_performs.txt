@@ -11,7 +11,9 @@ bahuang_gong/shield.ex
 baibian_daxue/dian.ex
 baihua_cuoquan/luan.ex
 baihua_cuoquan/yi.ex
+baihua_quan/cuo.ex
 baisheng_daofa/heng.ex
+baisheng_quan/kai.ex
 banruo_zhang/feng.ex
 baxian_jian/dian.ex
 bingpo_shenzhen/bing.ex

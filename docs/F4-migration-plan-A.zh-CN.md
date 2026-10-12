@@ -68,11 +68,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `baihua_quan/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `baihua_quan/cuo.ex` ← `baihua-quan/cuo.c`  (miss=4)
+- [x] ✅ `baihua_quan/cuo.ex` ← `baihua-quan/cuo.c`  (miss→0，PASS)
 
 ### `baisheng_quan/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `baisheng_quan/kai.ex` ← `baisheng-quan/kai.c`  (miss=10)
+- [x] ✅ `baisheng_quan/kai.ex` ← `baisheng-quan/kai.c`  (miss→0，PASS)
 
 ### `bazhen_zhang/` （1 个，基线缺失 7 条）
 

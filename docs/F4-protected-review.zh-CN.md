@@ -4,10 +4,10 @@
 
 ## 背景
 
-`scripts/protected_performs.txt` 当前共 **187** 条受保护 perform。
+`scripts/protected_performs.txt` 当前共 **189** 条受保护 perform。
 用**严格判据**（`.ex` 代码内中文文案 vs `.c` 代码内中文文案，**逐条字面一致，不做模糊等价**）复核：
 
-- **PASS = 34**，**FAIL = 153**，MISSING 合计 **1481** 条。
+- **PASS = 36**，**FAIL = 153**，MISSING 合计 **1481** 条。
 - 判据 = `check_one`：`Counter(norm(src)) - Counter(norm(tgt))` 为空才 PASS（MISSING 必须为空；EXTRA 不判错）。
 - 本计划**独立于 A/B 号计划**，可并行执行；A/B 只处理非受保护文件。
 
@@ -22,6 +22,8 @@
 - `bahuang_gong/shield.ex`
 - `baihua_cuoquan/luan.ex`
 - `baihua_cuoquan/yi.ex`
+- `baihua_quan/cuo.ex`
+- `baisheng_quan/kai.ex`
 - `banruo_zhang/feng.ex`
 - `qishang_quan/shang.ex`
 - `qixian_wuxingjian/shan.ex`
