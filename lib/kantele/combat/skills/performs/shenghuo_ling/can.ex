@@ -15,11 +15,10 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "shenghuo-ling/can"
+  @move_name "「残血令」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,12 +28,6 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenghuo-ling")
-    skill = Stats.skill(stats, "shenghuo-ling")
-    improve = 0
-    n = 0
-    m = 0
-    count = 0
-    i = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,14 +35,17 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          sword: Stats.skill(stats, "sword"),
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -71,8 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character) do
+         :ok <- check_weapon(character) do
       :ok
     end
   end
@@ -81,9 +76,14 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenghuo-ling") < 220 -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之。\n"}
-      Stats.skill(stats, "force") < 350 -> {:error, "你的内功火候不够，不能使用圣火令法之。\n"}
-      true -> :ok
+      Stats.skill(stats, "shenghuo-ling") < 220 ->
+        {:error, "你的圣火令法等级不够, 不能使用圣火令法之#{@move_name}。\n"}
+
+      Stats.skill(stats, "force") < 350 ->
+        {:error, "你的内功火候不够，不能使用圣火令法之#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -91,8 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，无法使用。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "shenghuo-ling" ->
+        {:error, "你没有激发圣火令法，无法使用#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -100,36 +103,43 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
-      vitals.neili < 400 -> {:error, "你的内力不够，不能使用圣火令法之。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，不能使用圣火令法之#{@move_name}。\n"}
+      vitals.neili < 400 -> {:error, "你的内力不够，不能使用圣火令法之#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
-      true -> :ok
+      weapon == nil or weapon.skill_type != "sword" ->
+        {:error, "你使用的兵器不对，不能使用圣火令法之#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
+    # 攻击方消耗/Busy + 前置广播；命中分支结算在目标侧 do_resolve_incoming
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声长啸，手中某物一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", n1: character.name)
+
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(4))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    weapon_name = Combat.weapon(combat).name
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声长啸，手中" <> weapon_name <> "一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -139,7 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "「残血令」只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -157,18 +167,29 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Can do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    sword = Map.get(data, :sword, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 1)
-    msg = Enum.random(["$N一声长啸，手中某物一转，招数顿时变得诡异无比，从意想不到的方位攻向$n！", "$n完全无法看透$N招中虚实，不由得心生惧意，招式一滞，登时破绽百出。"])
+    stats = character.meta.stats
+    parry = Stats.skill(stats, "parry")
+
+    hit = Engine.rand(rng, max(sword, 1)) > div(parry, 3)
+
+    if hit do
+      combat = character.meta.combat
+      combat = Combat.start_busy(combat, 1)
+      character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    end
+
+    msg =
+      if hit do
+        "$n完全无法看透$N招中虚实，不由得心生惧意，招式一滞，登时破绽百出。\n"
+      else
+        "$n见$N来势汹涌，心底一惊，打起精神小心接招。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    conn = Broadcast.publish(conn, result)
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
