@@ -1,25 +1,36 @@
 defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
   @moduledoc """
-  exert「hui」（source hamagong/hui.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  exert「hui」（source hamagong/hui.c，inherit F_CLEAN_UP）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛：须先以「经脉倒转」（`reserve`）倒转经脉，否则拒绝。
+  起手广播后回收 `reserve` 的临时加成（`dodge`/`parry` 各减 `蛤蟆功/3`，
+  `armor`/`dispel_poison` 各减 `蛤蟆功/2`），并清空真气。
+
+  差异（TODO(migrate)）：
+  - `.c` 的 `query_temp("hmg_dzjm")` / `delete_temp("hmg_dzjm")` 折算为引擎 buff
+    （`Buff{key: "hmg_dzjm"}`，由 `reserve` 安装）；回收量直接取自该 buff 的
+    `applies`（即 `reserve` 时记录的负值），与 `.c` 存 `skill` 再取负等价；
+  - `apply/dispel_poison` 不在 `Combat.applies_keys/0` 白名单内（引擎未建模），
+    仅随 `apply_temp/2` 一并抵消，无读取方。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
-  alias Kantele.Character.Stats
+  alias Kantele.Character.Combat.Buff
+  alias Kantele.Combat.Broadcast
+
+  @key "hmg_dzjm"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
 
-    with :ok <- check_gates(character) do
+    with :ok <- check_other(character) do
       apply_effect(conn, character)
     else
       {:error, message} ->
@@ -29,42 +40,46 @@ defmodule Kantele.Combat.Skills.Performs.Hamagong.Hui do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+  # LPC: if (! (skill = me->query_temp("hmg_dzjm")))
+  #        return notify_fail("你并没有倒转经脉啊。\n");
+  defp check_other(character) do
+    if Combat.buff_active?(character.meta.combat, @key) do
       :ok
+    else
+      {:error, "你并没有倒转经脉啊。\n"}
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你并没有倒转经脉啊。\n"}
-    :ok
-
-  end
-
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: 0}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，脸色变了变，阴阳不定。", n1: character.name)
+    # LPC: msg = HIB "$N" HIB "缓缓吐出一口气，脸色变了变，阴阳不定。\n" NOR;
+    #      message_combatd(msg, me);
+    #      me->add_temp("apply/dodge", -skill / 3);
+    #      me->add_temp("apply/parry", -skill / 3);
+    #      me->add_temp("apply/armor", -skill / 2);
+    #      me->add_temp("apply/dispel_poison", -skill / 2);
+    #      me->delete_temp("hmg_dzjm");
+    #      me->set("neili", 0);
+    combat =
+      character.meta.combat
+      |> reverse_applies()
+      |> Combat.remove_buff(@key)
+
+    vitals = %{character.meta.vitals | neili: 0}
+    character = %{character | meta: %{character.meta | combat: combat, vitals: vitals}}
 
     conn
+    |> Broadcast.publish("$N缓缓吐出一口气，脸色变了变，阴阳不定。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"apply_adds": ["armor", "dispel_poison", "dodge", "parry"], "remote_damage": false, "set_flags": [{"neili", "0"}]}
-
+  # reserve 存入的 `Buff.applies` 即 `.c` 中 `-skill / N` 的反值，直接叠加回 temp。
+  defp reverse_applies(combat) do
+    case Enum.find(combat.buffs, &(&1.key == @key)) do
+      %Buff{applies: applies} -> Combat.apply_temp(combat, applies)
+      nil -> combat
+    end
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // hui.c 蛤蟆功回息
   # 

@@ -287,12 +287,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `hamagong/` （6 个，基线缺失 32 条）
 
-- [ ] ❌ `hamagong/hui.ex` ← `hamagong/hui.c`  (miss=1)
-- [ ] ❌ `hamagong/powerup.ex` ← `hamagong/powerup.c`  (miss=4)
-- [ ] ❌ `hamagong/reserve.ex` ← `hamagong/reserve.c`  (miss=1)
-- [ ] ❌ `hamagong/tan.ex` ← `hamagong/tan.c`  (miss=12)
-- [ ] ❌ `hamagong/tui.ex` ← `hamagong/tui.c`  (miss=5)
-- [ ] ❌ `hamagong/zhen.ex` ← `hamagong/zhen.c`  (miss=9)
+- [x] ✅ `hamagong/hui.ex` ← `hamagong/hui.c`  (miss→0，PASS)
+- [x] ✅ `hamagong/powerup.ex` ← `hamagong/powerup.c`  (miss→0，PASS)
+- [x] ✅ `hamagong/reserve.ex` ← `hamagong/reserve.c`  (miss→0，PASS)
+- [x] ✅ `hamagong/tan.ex` ← `hamagong/tan.c`  (miss→0，PASS)
+- [x] ✅ `hamagong/tui.ex` ← `hamagong/tui.c`  (miss→0，PASS)
+- [x] ✅ `hamagong/zhen.ex` ← `hamagong/zhen.c`  (miss→0，PASS)
 
 ### `hanbing_mianzhang/` （1 个，基线缺失 6 条）
 

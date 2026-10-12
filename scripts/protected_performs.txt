@@ -140,6 +140,12 @@ guyue_chan/jing.ex
 guzhuo_zhang/yu.ex
 guzhuo_zhang/zhen.ex
 guzhuo_zhang/zhuo.ex
+hamagong/hui.ex
+hamagong/powerup.ex
+hamagong/reserve.ex
+hamagong/tan.ex
+hamagong/tui.ex
+hamagong/zhen.ex
 hanmei_jian/leng.ex
 hansha_sheying/zhen.ex
 hanwang_qingdao/ying.ex
