@@ -86,7 +86,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `benlei_zhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `benlei_zhang/lei.ex` ← `benlei-zhang/lei.c`  (miss=6)
+- [x] ✅ `benlei_zhang/lei.ex` ← `benlei-zhang/lei.c`  (miss→0，PASS)
 
 ### `bibo_shengong/` （1 个，基线缺失 4 条）
 
