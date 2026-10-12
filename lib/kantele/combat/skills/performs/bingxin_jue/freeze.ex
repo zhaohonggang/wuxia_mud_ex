@@ -93,13 +93,19 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
     end
   end
 
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 敌人列表只存引用快照（%{id,pid,name,room_id}）时无 meta 可查，此时恒判存活，
+  # 由目标侧 combat/perform-incoming 的死亡检查兜底。
   defp check_target_alive(target) do
-    if not target.meta.combat.dead do
+    if not dead?(target) do
       :ok
     else
       {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
   defp apply_effect(conn, character) do
     # LPC: me->start_busy(2);（无条件，且在命中判定之前）
