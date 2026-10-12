@@ -268,8 +268,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `guanri_jian/` （2 个，基线缺失 20 条）
 
-- [ ] ❌ `guanri_jian/fen.ex` ← `guanri-jian/fen.c`  (miss=9)
-- [ ] ❌ `guanri_jian/guan.ex` ← `guanri-jian/guan.c`  (miss=11)
+- [x] ✅ `guanri_jian/fen.ex` ← `guanri-jian/fen.c`  (miss→0，PASS)
+- [x] ✅ `guanri_jian/guan.ex` ← `guanri-jian/guan.c`  (miss→0，PASS)
 
 ### `guhong_zhang/` （1 个，基线缺失 8 条）
 

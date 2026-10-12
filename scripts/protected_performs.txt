@@ -131,6 +131,8 @@ fumo_zhang/lun.ex
 furong_jian/luan.ex
 furong_jinzhen/xian.ex
 fushang_neigong/powerup.ex
+guanri_jian/fen.ex
+guanri_jian/guan.ex
 guxing_jian/lian.ex
 guyue_chan/jing.ex
 hanmei_jian/leng.ex
