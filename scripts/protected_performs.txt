@@ -157,7 +157,9 @@ rouyun_jian/tao.ex
 rouyun_steps/zong.ex
 ruanhong_zhusuo/bohu.ex
 ruanhong_zhusuo/pan.ex
+ruanhong_zhusuo/suo.ex
 ruanhong_zhusuo/teng.ex
+rulai_zhang/zong.ex
 sanhua_zhang/san.ex
 sanwu_shou/wei.ex
 shangjia_dao/juan.ex
