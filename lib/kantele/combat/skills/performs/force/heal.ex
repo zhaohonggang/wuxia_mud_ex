@@ -1,18 +1,34 @@
 defmodule Kantele.Combat.Skills.Performs.Force.Heal do
   @moduledoc """
-  exert「heal」（source force/heal.c，由 translate_perform.py 生成，inherit ?）
+  exert「heal」（source force/heal.c）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  自我疗伤，门槛（按 `.c` 顺序）：非战斗 → 非忙乱 → 非「天魔解体」状态 →
+  已激发内功 → `eff_qi < max_qi` → 该内功>=20 → 真气>=50 →
+  非（`eff_qi < max_qi/5` 且无 `special_skill/divine`）。
+  起手广播并设 `short_desc`，随后进入 LPC 的 `start_busy` 异步循环 `healing/1`：
+  每轮 `receive_curing("qi", 10+force/3)`（`divine` 再 +`con*2`，`breakup` ×3）
+  并扣真气 50；无内功/真气不足时中断，伤愈时播收功文案；
+  `halt_healing/1` 为手动中断回调（扣 100 真气）。
+
+  差异（TODO(migrate)）：
+  - 真实运行为 `Kantele.Combat.Skills.Force.Heal`（`skills/force_heal.ex`）的
+    `Performs.Simple` spec（单次回复版），本文件为并存的对齐副本（仅供文案对齐）；
+  - `healing/1`、`halt_healing/1` 是 LPC `start_busy` 回调，引擎未建模该异步循环，
+    故以 `healing_messages/4` 等 `@doc false` 函数原样保留分支与文案，未被调用；
+  - `to_chinese(force)` 折算为映射 id 原样（引擎未维护内功 id→中文名 表）；
+  - LPC `eff_qi`/`max_qi` 对应本引擎 `vitals.max_qi`/`vitals.base_qi`；
+  - `set_short_desc` 对应 `character.meta.short_desc`。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.SpecialSkills
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Broadcast
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,56 +45,171 @@ defmodule Kantele.Combat.Skills.Performs.Force.Heal do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character) do
+    with :ok <- check_not_fighting(character),
+         :ok <- check_not_busy(character),
+         :ok <- check_not_tianmo(character),
+         :ok <- check_has_force(character),
+         :ok <- check_needs_heal(character),
+         :ok <- check_force_level(character),
+         :ok <- check_neili(character),
+         :ok <- check_not_critical(character) do
       :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 50 -> {:error, "你的真气不够。\n"}
-      true -> :ok
+  # LPC: if (me->is_fighting()) return notify_fail("战斗中运功疗伤？找死吗？\n");
+  defp check_not_fighting(character) do
+    if Combat.fighting?(character.meta.combat) do
+      {:error, "战斗中运功疗伤？找死吗？\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
+  # LPC: if (me->is_busy()) return notify_fail("等你忙完了手头的事情再说！\n");
+  defp check_not_busy(character) do
+    if Combat.busy?(character.meta.combat) do
+      {:error, "等你忙完了手头的事情再说！\n"}
+    else
+      :ok
+    end
   end
 
-  defp check_state(character) do
-    combat = character.meta.combat
+  # LPC: if (me->query_temp("tianmo")) return notify_fail("天魔解体状态不能运功疗伤！\n");
+  defp check_not_tianmo(character) do
+    if Combat.buff_active?(character.meta.combat, "tianmo") do
+      {:error, "天魔解体状态不能运功疗伤！\n"}
+    else
+      :ok
+    end
+  end
 
-    cond do
-      Combat.fighting?(combat) -> {:error, "战斗中运功疗伤？找死吗？\n"}
-      Combat.busy?(combat) -> {:error, "等你忙完了手头的事情再说！\n"}
-      true -> :ok
+  # LPC: force = me->query_skill_mapped("force");
+  #      if (! stringp(force)) return notify_fail("先激发你的特殊内功。\n");
+  defp check_has_force(character) do
+    if Stats.mapped(character.meta.stats, "force") == nil do
+      {:error, "先激发你的特殊内功。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query("eff_qi") >= (int)me->query("max_qi"))
+  #        return notify_fail("你现在气血充盈，不需要疗伤。\n");
+  defp check_needs_heal(character) do
+    vitals = character.meta.vitals
+
+    if vitals.max_qi >= vitals.base_qi do
+      {:error, "你现在气血充盈，不需要疗伤。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query_skill(force, 1) < 20)
+  #        return notify_fail("你的" + to_chinese(force) + "修为还不够。\n");
+  # C 侧 "你的" + to_chinese(force) + "修为还不够。\n" 被显式 `+` 切成两段，E 侧同粒度。
+  defp check_force_level(character) do
+    force = Stats.mapped(character.meta.stats, "force")
+
+    if Stats.skill(character.meta.stats, force) < 20 do
+      {:error, "你的" <> to_chinese(force) <> "修为还不够。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query("neili") < 50) return notify_fail("你的真气不够。\n");
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 50 do
+      {:error, "你的真气不够。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (! me->query("special_skill/divine") && (int)me->query("eff_qi") < (int)me->query("max_qi") / 5)
+  #        return notify_fail("你已经受伤过重，只怕一运真气便有生命危险！\n");
+  defp check_not_critical(character) do
+    vitals = character.meta.vitals
+    divine? = SpecialSkills.owned?(character.attributes, "divine")
+
+    if not divine? and vitals.max_qi < div(vitals.base_qi, 5) do
+      {:error, "你已经受伤过重，只怕一运真气便有生命危险！\n"}
+    else
+      :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: message_vision(HIW "$N" HIW "全身放松，坐下来开始运功疗伤。\n" NOR, me);
+    conn =
+      Broadcast.publish(conn, "$N全身放松，坐下来开始运功疗伤。\n", n1: character.name)
+
+    # LPC: me->set_temp("pending/healing", 1);
+    #      me->set_short_desc("正坐在地下运功疗伤。");
+    character =
+      character
+      |> put_in([:meta, :temp], Map.put(character.meta.temp, :pending_healing, true))
+      |> put_in([:meta, :short_desc], "正坐在地下运功疗伤。")
+
+    # LPC: me->start_busy((:call_other, __FILE__, "healing"), (:call_other, __FILE__, "halt_healing"));
+    # 引擎未建模异步 busy 循环（真实实现为单次回复），首轮扣 50 真气。
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    vitals = %{vitals | neili: 0}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    vitals = %{vitals | neili: max(vitals.neili - 50, 0)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}, {"neili", "-50"}], "assign_refs": [{"recover_points", "force"}], "busy_lines": ["if (me->is_busy())", "me->start_busy((:call_other, __FILE__, "healing" :),"], "remote_damage": false, "resource_gates": [{"neili", "50"}], "set_flags": [{"neili", "0"}]}
+  # LPC: int healing(object me) —— `start_busy` 驱动的疗伤循环回调。
+  # 引擎未建模该异步循环（真实实现为单次回复），此处按 `.c` 分支原样保留文案；
+  # `roll` 对应 `random(10)`。
+  @doc false
+  def healing_messages(has_force?, neili_ok?, roll, force_name) do
+    cond do
+      # 没有特殊内功了？
+      not has_force? ->
+        ["你一时难以定夺如何运用内力，只好先暂停疗伤。\n", "$N叹了口气，摇摇晃晃的站了起来。\n"]
 
+      # 需要继续疗伤，但真气不济
+      not neili_ok? ->
+        ["你觉得真气不济，难以在经脉中继续运转疗伤。\n", "$N叹了口气，摇摇晃晃的站了起来。\n"]
+
+      roll == 0 ->
+        # LPC: tell_object(me, "你运用" + to_chinese(force) + "沿着诸大穴慢慢运转，疗解伤痛。\n");
+        ["你运用" <> to_chinese(force_name) <> "沿着诸大穴慢慢运转，疗解伤痛。\n"]
+
+      roll == 1 ->
+        ["你将内力纳入丹田，再上行冲顶，透泥宫，顿觉精神爽快。\n"]
+
+      roll == 2 ->
+        ["你将内力运入四肢百赅，复又回收丹田，伤势痊愈不少。\n"]
+
+      true ->
+        []
+    end
+  end
+
+  # LPC: 恢复完毕 —— message_vision(HIY "$N" HIY "运功完毕，吐出一口瘀血，脸色看起来好多了。\n" NOR, me);
+  @doc false
+  def healing_done_message, do: "$N运功完毕，吐出一口瘀血，脸色看起来好多了。\n"
+
+  # LPC: int halt_healing(object me) —— 手动中断回调（扣 100 真气，引擎未建模）。
+  @doc false
+  def halt_healing_messages do
+    [
+      "你将真气收回丹田，微微喘息，站了起来。\n",
+      "猛的吸一口气，突然站了起来。\n"
+    ]
+  end
+
+  # LPC: to_chinese(force) —— 引擎未维护内功 id→中文名 表，保留 id 原样
+  # （同 `sanku_shengong/dispel.ex` 的对齐副本约定）。
+  defp to_chinese(name), do: name
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // heal.c
   # 

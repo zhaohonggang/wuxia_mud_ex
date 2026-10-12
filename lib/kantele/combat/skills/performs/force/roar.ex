@@ -1,18 +1,39 @@
 defmodule Kantele.Combat.Skills.Performs.Force.Roar do
   @moduledoc """
-  exert「roar」（source force/roar.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  exert「roar」（source force/roar.c，By Vin for heros.cn）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  仅限 10 种内功（龙象/天寰/混天/九阳/九阴/葵花/吸星/战神/易筋/混元），
+  门槛（按 `.c` 顺序）：已映射内功在允许表内 → 内功>=180 →
+  房间非 `no_fight`/`skybook`（同文案 ×2）→ 真气>=800。
+  扣真气 800、忙乱 5，按所映射内功广播不同的长啸文案；
+  随后对房间内所有生物做 `skill/2 + random(skill/2)` 与 `con*2` 的对抗，
+  失败者受 `skill - max_neili/10` 的精力伤害（`jing` ×2，`neili < skill*2`
+  时再受等量 `eff_jing` 创伤），并随机播三种旁观文案、`jing`/`eff_jing`
+  低于 1 时昏迷。
+
+  差异（TODO(migrate)）：
+  - 真实运行为 `Kantele.Combat.Skills.Force.Roar`（`skills/force_roar.ex`），
+    本文件为并存的对齐副本（仅供文案对齐）；受害者的伤害/昏迷在真实实现的
+    目标侧 `resolve_incoming/4` 结算，本文件以 `@doc false` 函数保留文案；
+  - `living()` 过滤、`die_guard` 保护、`want_kill`/`fight_ob`/`kill_ob`
+    的敌对关系建立引擎未建模；
+  - `to_chinese(f)` 折算为映射 id 原样（引擎未维护内功 id→中文名 表）；
+  - `.c` 的 `yijinjing` 与 `hunyuan-gong` 共用同一条赋值语句，E 侧以
+    `when force in [...]` 保持「一条文案」的粒度。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Broadcast
+
+  @allowed_forces ~w(longxiang-gong tianhuan-shenjue huntian-qigong jiuyang-shengong
+                     jiuyin-shengong kuihua-mogong xixing-dafa zhanshen-xinjing
+                     yijinjing hunyuan-gong)
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,63 +50,141 @@ defmodule Kantele.Combat.Skills.Performs.Force.Roar do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+    with :ok <- check_allowed_force(character),
+         :ok <- check_force_level(character),
+         :ok <- check_no_fight(character),
+         :ok <- check_skybook(character),
+         :ok <- check_neili(character) do
       :ok
     end
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "force") != "longxiang-gong" -> {:error, "你所学的内功中没有这种功能。\n"}
-      Stats.mapped(stats, "force") != "tianhuan-shenjue" -> {:error, "你的内功修为不够。\n"}
-      Stats.mapped(stats, "force") != "huntian-qigong" -> {:error, "在这里不能攻击他人。\n"}
-      Stats.mapped(stats, "force") != "jiuyang-shengong" -> {:error, "在这里不能攻击他人。\n"}
-      Stats.mapped(stats, "force") != "jiuyin-shengong" -> {:error, "你的真气不够。\n"}
-      true -> :ok
+  # LPC: if (me->query_skill_mapped("force") != "longxiang-gong" && ... && != "hunyuan-gong")
+  #        return notify_fail("你所学的内功中没有这种功能。\n");
+  defp check_allowed_force(character) do
+    if Stats.mapped(character.meta.stats, "force") in @allowed_forces do
+      :ok
+    else
+      {:error, "你所学的内功中没有这种功能。\n"}
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.jing < 1 -> {:error, "你的真气不够。\n"}
-      vitals.neili < 800 -> {:error, "TODO(migrate) neili 不足。\n"}
-      true -> :ok
+  # LPC: skill = me->query_skill("force"); if (skill < 180)
+  #        return notify_fail("你的内功修为不够。\n");
+  defp check_force_level(character) do
+    if Stats.skill(character.meta.stats, "force") < 180 do
+      {:error, "你的内功修为不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  # LPC: if (environment(me)->query("no_fight")) return notify_fail("在这里不能攻击他人。\n");
+  defp check_no_fight(character) do
+    if room_flag(character, :no_fight) do
+      {:error, "在这里不能攻击他人。\n"}
+    else
+      :ok
+    end
+  end
 
+  # LPC: // 执行天书任务的特殊房间防止龙吟中断剧情。
+  #      if (environment(me)->query("skybook")) return notify_fail("在这里不能攻击他人。\n");
+  defp check_skybook(character) do
+    if room_flag(character, :skybook) do
+      {:error, "在这里不能攻击他人。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp room_flag(character, flag) do
+    Map.get(Map.get(character.meta, :room, %{}), flag, false)
+  end
+
+  # LPC: if ((int)me->query("neili") < 800) return notify_fail("你的真气不够。\n");
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 800 do
+      {:error, "你的真气不够。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    force = Stats.mapped(character.meta.stats, "force")
     vitals = character.meta.vitals
-    vitals = %{vitals | jing: vitals.jing + 10}
-    vitals = %{vitals | neili: vitals.neili - 800}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 5)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转真气，面无表情，歌声如梵唱般贯入众人耳中。", n1: character.name)
+
+    # LPC: me->add("neili", -800); me->start_busy(5); message_combatd(msg, me);
+    vitals = %{vitals | neili: max(vitals.neili - 800, 0)}
+    combat = Combat.start_busy(character.meta.combat, 5)
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
 
     conn
+    |> Broadcast.publish(roar_message(force), n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"eff_jing", "10"}, {"jing", "10"}, {"neili", "-800"}], "assign_refs": [{"skill", "force"}], "busy_lines": ["me->start_busy(5);"], "map_gates": [{"force", "huntian-qigong"}, {"force", "hunyuan-gong"}, {"force", "jiuyang-shengong"}, {"force", "jiuyin-shengong"}, {"force", "kuihua-mogong"}, {"force", "longxiang-gong"}, {"force", "tianhuan-shenjue"}, {"force", "xixing-dafa"}, {"force", "yijinjing"}, {"force", "zhanshen-xinjing"}], "remote_damage": false, "resource_gates": [{"eff_jing", "1"}, {"jing", "1"}, {"neili", "800"}], "var_gates": [{"skill", "180"}]}
+  # LPC: switch (f) { case ...: msg = ...; }
+  # 注意：`case` 的字符串模式会与上一条分支的文案字面量被 `join_adjacent` 误并，
+  # 故此处改用「每内功一个函数子句」，保持每条文案独立。
+  defp roar_message("longxiang-gong"),
+    do: "$N运转真气，面无表情，歌声如梵唱般贯入众人耳中。\n"
 
+  defp roar_message("huntian-qigong"),
+    do: "$N深深吸入一囗气，运足内力发出一阵长啸，音传百里，慑人心神。\n"
+
+  defp roar_message("jiuyang-shengong"),
+    do: "$N仰天长啸，声音绵泊不绝，众人无不听得心驰神摇。\n"
+
+  defp roar_message("jiuyin-shengong"),
+    do: "$N气凝丹田，猛然一声断喝，声音远远的传了开去，激荡不止。\n"
+
+  defp roar_message("kuihua-mogong"),
+    do: "$N蓦地极嘶长呼，声音凄厉之极，令人毛骨悚然。\n"
+
+  # `.c` 中 yijinjing 与 hunyuan-gong 共用同一条赋值语句（仅一条文案），E 侧同粒度。
+  defp roar_message(force) when force in ["yijinjing", "hunyuan-gong"],
+    do: "$N深深吸入一囗气，运起金刚禅狮子吼，发出惊天动地的一声巨吼。\n"
+
+  # LPC: default: msg = HIY "$N" HIY "深深吸入一囗气，体内" + to_chinese(f) +
+  #                  HIY "真气急剧迸发，陡然一声巨啸。\n" NOR;
+  # C 侧被 `+ to_chinese(f) +` 切成两段，E 侧同粒度。
+  defp roar_message(force),
+    do: "$N深深吸入一囗气，体内" <> to_chinese(force) <> "真气急剧迸发，陡然一声巨啸。\n"
+
+  # LPC: tell_object(ob[i], HIR "突然间你只觉两耳一阵轰鸣，眼前金"
+  #                    "星乱冒，整个头便是要裂开一般。\n" NOR);
+  @doc false
+  def victim_hurt_message,
+    do: "突然间你只觉两耳一阵轰鸣，眼前金星乱冒，整个头便是要裂开一般。\n"
+
+  # LPC: switch (random(3)) { case 0/1/default: msg = ...; }
+  #      message("vision", msg, environment(ob[i]), ({ob[i]}));
+  # 受害者伤害/昏迷由真实实现的目标侧 `resolve_incoming/4` 结算，此处仅保留旁观文案。
+  # C 侧 "突然只见" + ob[i]->name() + "两手抱头，…" 被显式 `+` 切成两段，E 侧同粒度。
+  @doc false
+  def victim_vision_message(roll, name) do
+    case roll do
+      0 ->
+        "突然只见" <>
+          to_string(name) <> "两手抱头，双目凸出，嘴角泛出些许白沫，喉咙咯咯作响。\n"
+
+      1 ->
+        "顿时听得" <>
+          to_string(name) <> "一声惨叫，两眼发直，全身不住颤抖，蓦地呕出一口鲜血。\n"
+
+      _ ->
+        "却见" <>
+          to_string(name) <> "竟摔倒在地，发出声声哀嚎，双目双耳及鼻孔均渗出丝丝鲜血。\n"
+    end
+  end
+
+  # LPC: to_chinese(f) —— 引擎未维护内功 id→中文名 表，保留 id 原样
+  # （同 `sanku_shengong/dispel.ex` 的对齐副本约定）。
+  defp to_chinese(name), do: name
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // roar.c
   # // By Vin for heros.cn
