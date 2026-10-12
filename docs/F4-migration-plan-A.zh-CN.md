@@ -155,8 +155,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `chousui_zhang/` （2 个，基线缺失 22 条）
 
-- [ ] ❌ `chousui_zhang/shi.ex` ← `chousui-zhang/shi.c`  (miss=14)
-- [ ] ❌ `chousui_zhang/tao.ex` ← `chousui-zhang/tao.c`  (miss=8)
+- [x] ✅ `chousui_zhang/shi.ex` ← `chousui-zhang/shi.c`  (miss→0，PASS)
+- [x] ✅ `chousui_zhang/tao.ex` ← `chousui-zhang/tao.c`  (miss→0，PASS)
 
 ### `chuncan_zhang/` （1 个，基线缺失 8 条）
 

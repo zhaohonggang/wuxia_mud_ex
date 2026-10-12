@@ -51,6 +51,8 @@ chilian_shenzhang/lian.ex
 chongtian_zhang/zhan.ex
 chongyang_shenzhang/lian.ex
 chousui_zhang/dan.ex
+chousui_zhang/shi.ex
+chousui_zhang/tao.ex
 chuangwang_dao/xiong.ex
 chuanxin_zhang/zhui.ex
 chuanyue_jian/hao.ex

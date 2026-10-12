@@ -42,6 +42,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
+  alias Kantele.Feature.Damage
   alias Kantele.Quest
 
   @tick_interval 1000
@@ -315,6 +316,7 @@ defmodule Kantele.Character.CombatEvent do
   # 可选 `:gain_neili` / `:gain_qi` / `:gain_jing` 供吸取类绝招回补攻击方。
   # 可选 `:gain_max_neili` 供吸取类绝招永久增加攻击方 max_neili（受 max_neili_limit 约束）。
   # 可选 `:wound_qi` 供"被目标反伤"类绝招（canhe-zhi/canhe.c 的格反分支）对攻击方造成外伤。
+  # 可选 `:unconcious` 供"反噬"类绝招（chousui-zhang/tao.c 的回火分支）令攻击方昏厥。
   def perform_feedback(conn, %{data: data}) do
     neili_cost = Map.get(data, :neili_cost, 0)
     busy = Map.get(data, :busy, 0)
@@ -323,6 +325,7 @@ defmodule Kantele.Character.CombatEvent do
     gain_jing = Map.get(data, :gain_jing, 0)
     gain_max_neili = Map.get(data, :gain_max_neili, 0)
     wound_qi = Map.get(data, :wound_qi, 0)
+    unconcious = Map.get(data, :unconcious, false)
 
     character = conn.character
 
@@ -344,8 +347,17 @@ defmodule Kantele.Character.CombatEvent do
 
       combat = Combat.start_busy(character.meta.combat, busy)
 
-      conn
-      |> put_character(%{character | meta: %{character.meta | vitals: vitals, combat: combat}})
+      conn =
+        put_character(conn, %{character | meta: %{character.meta | vitals: vitals, combat: combat}})
+
+      if unconcious do
+        case Damage.unconcious(conn.character) do
+          {:ok, character} -> put_character(conn, character)
+          _ -> conn
+        end
+      else
+        conn
+      end
     end
   end
 
