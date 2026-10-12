@@ -137,6 +137,9 @@ guhong_zhang/qian.ex
 gun/she.ex
 guxing_jian/lian.ex
 guyue_chan/jing.ex
+guzhuo_zhang/yu.ex
+guzhuo_zhang/zhen.ex
+guzhuo_zhang/zhuo.ex
 hanmei_jian/leng.ex
 hansha_sheying/zhen.ex
 hanwang_qingdao/ying.ex

@@ -281,9 +281,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `guzhuo_zhang/` （3 个，基线缺失 23 条）
 
-- [ ] ❌ `guzhuo_zhang/yu.ex` ← `guzhuo-zhang/yu.c`  (miss=7)
-- [ ] ❌ `guzhuo_zhang/zhen.ex` ← `guzhuo-zhang/zhen.c`  (miss=8)
-- [ ] ❌ `guzhuo_zhang/zhuo.ex` ← `guzhuo-zhang/zhuo.c`  (miss=8)
+- [x] ✅ `guzhuo_zhang/yu.ex` ← `guzhuo-zhang/yu.c`  (miss→0，PASS)
+- [x] ✅ `guzhuo_zhang/zhen.ex` ← `guzhuo-zhang/zhen.c`  (miss→0，PASS)
+- [x] ✅ `guzhuo_zhang/zhuo.ex` ← `guzhuo-zhang/zhuo.c`  (miss→0，PASS)
 
 ### `hamagong/` （6 个，基线缺失 32 条）
 
