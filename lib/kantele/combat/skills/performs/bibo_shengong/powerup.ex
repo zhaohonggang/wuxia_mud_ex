@@ -1,8 +1,15 @@
 defmodule Kantele.Combat.Skills.Performs.BiboShengong.Powerup do
   @moduledoc """
-  exert「powerup」（source bibo-shengong/powerup.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  exert「powerup」（source bibo-shengong/powerup.c，inherit F_CLEAN_UP）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：目标为自身 → 真气>=100 → 未在运功。
+  扣 100 真气；attack=defense=碧波/3；持续 碧波 秒；
+  战斗中 busy `1+random(3)`；到期回收。
+
+  差异（TODO(migrate)）：
+  - `apply/attack`、`apply/defense` 临时加成与 `set_temp("powerup")` 由
+    引擎 buff 机制承担（真实运行为 `Kantele.Combat.Skills.BiboShengong.Powerup`
+    的 `Performs.Simple` spec），本文件为并存的对齐副本。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -12,7 +19,6 @@ defmodule Kantele.Combat.Skills.Performs.BiboShengong.Powerup do
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
-  alias Kantele.Character.Stats
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,13 +35,19 @@ defmodule Kantele.Combat.Skills.Performs.BiboShengong.Powerup do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
     end
+  end
+
+  # LPC: if (target != me) return notify_fail("你只能用碧波神功提升自己的战斗力。\n");
+  # exert 恒以自身为目标，故此门槛恒为 :ok，但保留文案以对齐 .c。
+  defp check_target(_character) do
+    _ = "你只能用碧波神功提升自己的战斗力。\n"
+    :ok
   end
 
   defp check_resources(character) do
@@ -47,29 +59,42 @@ defmodule Kantele.Combat.Skills.Performs.BiboShengong.Powerup do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用碧波神功提升自己的战斗力。\n"}
-    :ok
-
+    # LPC: if (me->query_temp("powerup")) return notify_fail("你已经在运功中了。\n");
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100); me->receive_damage("qi", 0);
+    #      message_combatd(HIC "$N" HIC "仰天一声清啸，全身衣袍顿时如巨涛般向四"
+    #                      "面扩涨。\n" NOR, me);
+    #      apply/attack += skill / 3; apply/defense += skill / 3;
+    #      me->set_temp("powerup", 1); 定时 remove_effect
+    #      if (me->is_fighting()) me->start_busy(1 + random(3));
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
+    combat = character.meta.combat
+
+    combat =
+      if Combat.fighting?(combat), do: Combat.start_busy(combat, 1 + :rand.uniform(3)), else: combat
+
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
     conn
+    |> Broadcast.publish("$N仰天一声清啸，全身衣袍顿时如巨涛般向四面扩涨。\n", n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的碧波神功运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的碧波神功运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["attack", "defense"], "assign_refs": [{"skill", "bibo-shengong"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(1 + random(3));"], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["powerup"]}

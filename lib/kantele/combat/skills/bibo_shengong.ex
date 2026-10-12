@@ -49,15 +49,19 @@ defmodule Kantele.Combat.Skills.BiboShengong.Powerup do
   @moduledoc """
   运功「powerup」（对照 `kungfu/skill/bibo-shengong/powerup.c`）
 
-  耗 100 内力，临时提升 attack=defense=碧波/3，持续 碧波 秒；
-  战斗中 busy 1..3 轮。
+  门槛（按 .c 顺序）：目标为自身 → 真气>=100 → 未在运功。
+  扣 100 真气；attack=defense=碧波/3，持续 碧波 秒；
+  战斗中 busy `1+random(3)`；到期回收。
   """
 
   use Kantele.Combat.Performs.Simple,
     spec: %Kantele.Combat.Performs.Spec{
       id: "bibo-shengong/powerup",
       gates: [
-        {:neili_min, 100, "你的真气不够！"},
+        # LPC: if (target != me) return notify_fail("你只能用碧波神功提升自己的战斗力。\n");
+        # exert 恒以自身为目标，此门槛恒真，仅保留文案以对齐 .c。
+        {:custom, fn _ -> true end, "你只能用碧波神功提升自己的战斗力。\n"},
+        {:neili_min, 100, "你的真气不够！\n"},
         {:no_buff, "powerup", "你已经在运功中了。\n"}
       ],
       costs: %{neili: 100},
@@ -68,6 +72,7 @@ defmodule Kantele.Combat.Skills.BiboShengong.Powerup do
            defense: {:div, {:skill, "bibo-shengong"}, 3}
          }}
       ],
+      # {:random, min, max} 含端点，故 {:random, 1, 3} 即 LPC 的 1 + random(3)
       busy: {:if_fighting, {:random, 1, 3}},
       duration: {:skill, "bibo-shengong"},
       expire_message: "你的碧波神功运行完毕，将内力收回丹田。\n",
