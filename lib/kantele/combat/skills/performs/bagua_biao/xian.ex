@@ -180,6 +180,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     # LPC: msg = HIY "突然只听$N喝道：“$n看招！”说完单手一扬，袖底顿时窜出一道金光，直射$n而去！\n" NOR;
     #      me->start_busy(3)（攻击方忙乱走 Performs.feedback，见 resolve_incoming）；
     #      if (anqi->query_amount() > 0) anqi->add_amount(-1);
+    character = consume_anqi(character, handing_anqi(character))
+
     conn =
       Broadcast.publish(
         conn,
@@ -192,14 +194,39 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Xian do
     |> assign(:prompt, false)
   end
 
-  # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对：LPC `anqi->add_amount(-1)`。
-  #   当前 Stats/Combat 尚无 handing 暗器数量的存取接口，暂略（不影响文案验收）。
-  defp has_throwing_anqi?(character) do
-    case Map.get(character.meta.combat, :handing) do
-      %{skill_type: "throwing"} -> true
-      _ -> false
+  # 手持暗器：inventory 中带 handing 标记且 skill_type=="throwing" 的实例
+  # （对应 LPC `me->query_temp("handing")`）
+  defp handing_anqi(character) do
+    Enum.find(character.inventory, fn item ->
+      is_map(item.meta) and
+        Map.get(item.meta, :handing) and
+        Map.get(item.meta, :skill_type) == "throwing" and
+        (Map.get(item.meta, :amount) || 1) >= 1
+    end)
+  end
+
+  # LPC: anqi->add_amount(-1)；数量归零则移除该实例。
+  defp consume_anqi(character, anqi) do
+    if anqi do
+      inventory =
+        character.inventory
+        |> Enum.map(fn item ->
+          if item == anqi do
+            amount = (Map.get(item.meta, :amount) || 1) - 1
+            if amount >= 1, do: %{item | meta: Map.put(item.meta, :amount, amount)}, else: nil
+          else
+            item
+          end
+        end)
+        |> Enum.reject(&is_nil/1)
+
+      %{character | inventory: inventory}
+    else
+      character
     end
   end
+
+  defp has_throwing_anqi?(character), do: handing_anqi(character) != nil
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}

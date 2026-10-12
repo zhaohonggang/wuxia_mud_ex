@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
   alias Kantele.Combat.Performs
 
   @perform_id "bagua-zhang/jia"
+  @move_name "「掌中夹镖」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -31,6 +32,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     lvl = Stats.skill(stats, "bagua-zhang")
     ap = (Stats.skill(stats, "strike") + Stats.skill(stats, "throwing"))
     damage = (div(ap, 4) + Engine.rand(rng, div(ap, 4)))
+    anqi = handing_anqi(character)
+    anqi_unit = anqi && Map.get(anqi.meta, :unit)
+    anqi_name = anqi && anqi.name
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -43,11 +47,13 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
           skill: lvl,
           ap: ap,
           damage: damage,
+          anqi_unit: anqi_unit,
+          anqi_name: anqi_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, anqi)
     else
       {:error, message} ->
         conn
@@ -65,11 +71,14 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC 门槛顺序：空手 → 手持暗器 → mapped/prepared(strike) → mapped(throwing)
+  #               → bagua-zhang<120 → bagua-biao<120 → force<150 → neili<150
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_anqi(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_levels(character),
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -78,9 +87,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "你的八卦掌不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "你的八卦镖诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "bagua-zhang") < 120 -> {:error, "你的八卦掌不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "bagua-biao") < 120 -> {:error, "你的八卦镖诀不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -90,13 +99,13 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
 
     cond do
       Stats.mapped(stats, "strike") != "bagua-zhang" ->
-        {:error, "你没有激发八卦掌，难以施展。\n"}
-
-      Stats.mapped(stats, "throwing") != "bagua-biao" ->
-        {:error, "你没有激发八卦镖诀，难以施展。\n"}
+        {:error, "你没有激发八卦掌，难以施展#{@move_name}。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "bagua-zhang" ->
-        {:error, "你没有准备八卦掌，难以施展。\n"}
+        {:error, "你没有准备八卦掌，难以施展#{@move_name}。\n"}
+
+      Stats.mapped(stats, "throwing") != "bagua-biao" ->
+        {:error, "你没有激发八卦镖诀，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -107,7 +116,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -116,20 +125,38 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  # LPC: if (! objectp(weapon = me->query_temp("handing")) ||
+  #          weapon->query("skill_type") != "throwing")
+  #         return notify_fail("你现在手中并没有拿着暗器。\n");
+  defp check_anqi(character) do
+    if has_throwing_anqi?(character) do
+      :ok
+    else
+      {:error, "你现在手中并没有拿着暗器。\n"}
+    end
+  end
+
+  defp apply_effect(conn, character, target, anqi) do
+    # LPC: me->add("neili", -100); weapon->add_amount(-1); me->start_busy(2);
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
+    combat = Combat.start_busy(character.meta.combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，一掌重重击向$n，$p正欲格挡，忽然只见眼前金光一闪，一股劲风已由$N掌中激射而出！", n1: character.name)
+    character = consume_anqi(character, anqi)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声暴喝，一掌重重击向$n，$p正欲格挡，忽然只见眼前金光一闪，一股劲风已由$N掌中激射而出！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -139,7 +166,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「掌中夹镖」只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -157,26 +184,79 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Jia do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
+    unit = Map.get(data, :anqi_unit) || ""
+    anqi_name = Map.get(data, :anqi_name) || ""
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, div((damage * 3), 2))
-          vitals = Vitals.wound(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 100, 2)
-    msg = if hit, do: Enum.random(["$n果真始料不及，$N那某物正好打在$p要穴上，顿时血气上涌，连退数步！", "( $n )", "= pmsg"]), else: "可是$p早料得$P有此一着，哈哈一笑，斜跳闪开。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = target->query_skill("dodge") + target->query_skill("parry");
+    #      if (ap / 2 + random(ap) > dp)
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    if hit do
+      # LPC: damage = ap/4 + random(ap/4);
+      #      receive_damage("qi", damage*3/2); receive_wound("qi", damage);
+      #      me->add("neili", -100); me->start_busy(2)
+      dmg = div(ap, 4) + Engine.rand(rng, max(div(ap, 4), 1))
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, div(dmg * 3, 2))
+      vitals = Vitals.wound(vitals, :qi, dmg)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      # LPC 命中消息以 weapon 的 base_unit + name 插在句中（"…$N那" + unit + name + "正好打…"）
+      msg =
+        Messages.interpolate(
+          "$n果真始料不及，$N那" <> unit <> anqi_name <> "正好打在$p要穴上，顿时血气上涌，连退数步！\n",
+          bindings
+        )
+
+      conn
+      |> Broadcast.publish(msg)
+      |> put_character(character)
+    else
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p早料得$P有此一着，哈哈一笑，斜跳闪开。\n", bindings)
+      )
+    end
+  end
+
+  # 手持暗器：inventory 中带 handing 标记且 skill_type=="throwing" 的实例
+  # （对应 LPC `me->query_temp("handing")`，其 base_unit/name 用于命中消息插值）
+  defp handing_anqi(character) do
+    Enum.find(character.inventory, fn item ->
+      is_map(item.meta) and
+        Map.get(item.meta, :handing) and
+        Map.get(item.meta, :skill_type) == "throwing" and
+        (Map.get(item.meta, :amount) || 1) >= 1
+    end)
+  end
+
+  defp has_throwing_anqi?(character), do: handing_anqi(character) != nil
+
+  # LPC: weapon->add_amount(-1)；数量归零则移除该实例。
+  defp consume_anqi(character, anqi) do
+    if anqi do
+      inventory =
+        character.inventory
+        |> Enum.map(fn item ->
+          if item == anqi do
+            amount = (Map.get(item.meta, :amount) || 1) - 1
+            if amount >= 1, do: %{item | meta: Map.put(item.meta, :amount, amount)}, else: nil
+          else
+            item
+          end
+        end)
+        |> Enum.reject(&is_nil/1)
+
+      %{character | inventory: inventory}
+    else
+      character
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

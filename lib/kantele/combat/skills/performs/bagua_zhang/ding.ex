@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
   alias Kantele.Combat.Performs
 
   @perform_id "bagua-zhang/ding"
+  @move_name "「背心钉」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,6 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "bagua-zhang")
+    # LPC: damage = me->query_skill("strike")；命中判定用 random(query_skill("strike"))
+    ap = Stats.skill(stats, "strike")
     damage = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
@@ -40,12 +43,13 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -62,12 +66,12 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC 门槛顺序：空手 → force<120 → bagua-zhang<80 → mapped → prepared → neili<200
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -76,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "bagua-zhang") < 80 -> {:error, "你的八卦掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "bagua-zhang") < 80 -> {:error, "你的八卦掌不够娴熟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,10 +91,10 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
 
     cond do
       Stats.mapped(stats, "strike") != "bagua-zhang" ->
-        {:error, "你没有激发八卦掌，难以施展。\n"}
+        {:error, "你没有激发八卦掌，难以施展#{@move_name}。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "bagua-zhang" ->
-        {:error, "你没有准备八卦掌，难以施展。\n"}
+        {:error, "你没有准备八卦掌，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -101,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -110,25 +114,22 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "#{@move_name}只能空手施展。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形一转，已飘至$n身后，陡然施出一招「背心钉」，单手作锥，直插$n背心要穴！", n1: character.name)
+  defp apply_effect(conn, character, target) do
+    # LPC: 门槛通过后先广播起手式；消耗/忙乱按命中/落空分别在 resolve_incoming 结算。
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N身形一转，已飘至$n身后，陡然施出一招#{@move_name}，单手作锥，直插$n背心要穴！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
@@ -153,25 +154,41 @@ defmodule Kantele.Combat.Skills.Performs.BaguaZhang.Ding do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "结果$p闪避不及，被$P这招插中，掌劲顿时透胸而过，口喷鲜血，几乎摔倒！", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: if (random(me->query_skill("strike")) > target->query_skill("dodge") / 2)
+    dp = div(Stats.skill(stats, "dodge"), 2)
+    hit = Engine.rand(rng, max(ap, 1)) > dp
+
+    if hit do
+      # LPC: damage = strike; damage = damage/2 + random(damage/2);
+      #      me->add("neili", -150); me->start_busy(2)
+      dmg = div(damage, 2) + Engine.rand(rng, max(div(damage, 2), 1))
+      vitals = Vitals.damage(character.meta.vitals, :qi, dmg)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      Performs.feedback(attacker, 150, 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "结果$p闪避不及，被$P这招插中，掌劲顿时透胸而过，口喷鲜血，几乎摔倒！\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: me->add("neili", -50); me->start_busy(3)
+      Performs.feedback(attacker, 50, 3)
+
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p识破了$P这一招，斜斜一跃避开。\n", bindings)
+      )
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
