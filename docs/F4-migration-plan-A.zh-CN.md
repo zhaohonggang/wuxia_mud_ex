@@ -359,11 +359,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `hujia_daofa/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `hujia_daofa/cang.ex` ← `hujia-daofa/cang.c`  (miss=9)
+- [x] ✅ `hujia_daofa/cang.ex` ← `hujia-daofa/cang.c`  (miss→0，PASS)
 
 ### `hujia_quan/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `hujia_quan/kuai.ex` ← `hujia-quan/kuai.c`  (miss=7)
+- [x] ✅ `hujia_quan/kuai.ex` ← `hujia-quan/kuai.c`  (miss→0，PASS)
 
 ### `huntian_baojian/` （2 个，基线缺失 13 条）
 
@@ -372,7 +372,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `huntian_qigong/` （2 个，基线缺失 8 条）
 
-- [ ] ❌ `huntian_qigong/powerup.ex` ← `huntian-qigong/powerup.c`  (miss=4)
+- [x] ✅ `huntian_qigong/powerup.ex` ← `huntian-qigong/powerup.c`  (miss→0，PASS)
 - [ ] ❌ `huntian_qigong/shield.ex` ← `huntian-qigong/shield.c`  (miss=4)
 
 ### `hunyuan_yiqi/` （1 个，基线缺失 4 条）

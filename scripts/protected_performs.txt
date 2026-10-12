@@ -180,8 +180,11 @@ huifeng_jian/jue.ex
 huifeng_jian/mie.ex
 huilong_bifa/cang.ex
 huilong_zhang/baiwei.ex
+hujia_daofa/cang.ex
 hujia_daofa/xian.ex
 hujia_daofa/zhui.ex
+hujia_quan/kuai.ex
+huntian_qigong/powerup.ex
 huoyan_dao/fen.ex
 jiandun_zhusuo/fu.ex
 jiandun_zhusuo/qian.ex
