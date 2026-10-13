@@ -116,10 +116,13 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Hun do
     end
   end
 
+  # LPC: if (me->query_skill_prepared("unarmed") != "jiuyang-shengong")
+  # prepared_perform 返回绝招 ID（如 jiuyang-shengong/hun），须取技能前缀比对
   defp check_prepared(character) do
     stats = character.meta.stats
+    prepared = Stats.prepared_perform(stats, "unarmed")
 
-    if Stats.prepared_perform(stats, "unarmed") != "jiuyang-shengong" do
+    if prepared == nil or hd(String.split(prepared, "/")) != "jiuyang-shengong" do
       {:error, "你现在没有准备使用九阳神功，难以施展#{@move_name}。\n"}
     else
       :ok
