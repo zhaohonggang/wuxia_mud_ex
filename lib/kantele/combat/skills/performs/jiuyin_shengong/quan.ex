@@ -1,25 +1,29 @@
 defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   @moduledoc """
-  perform「九阴神拳」（source jiuyin-shengong/quan.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「九阴神拳」（source jiuyin-shengong/perform/quan.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：目标为战斗中的对手 → 九阴神功>=230 → 基本拳法>=220 →
+  内力>=240 → 空手 → 准备 unarmed 或 cuff 为九阴神功 → 目标存活。
+  ap = max(拳脚, 拳法) + 武学常识；dp = 闪避 + dex*20 + 武学常识。
+  起手扣 50 内力、忙乱 2；命中再扣 90 内力，伤害 ap/2 + random(ap/2)，85+random(5)% 外伤。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Vitals
 
   @perform_id "jiuyin-shengong/quan"
+  @move_name "「九阴神拳」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,16 +33,21 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyin-shengong")
-    ap = Stats.skill(stats, "cuff")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    ap = max(Stats.skill(stats, "unarmed"), Stats.skill(stats, "cuff")) + Stats.skill(stats, "martial-cognize")
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    with {:ok, target} <- target(combat),
+         :ok <- check_levels(character),
+         :ok <- check_resources(character),
+         :ok <- check_weapon(combat),
+         :ok <- check_prepared(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -47,7 +56,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -56,43 +65,23 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
-      :ok
-    end
-  end
-
+  # LPC: if (me->query_skill("jiuyin-shengong", 1) < 230) / if (me->query_skill("cuff", 1) < 220)
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jiuyin-shengong") < 230 -> {:error, "你的九阴神功还不够娴熟，不能使用！\n"}
-      Stats.skill(stats, "cuff") < 220 -> {:error, "你的基本拳法还不够娴熟，不能使用！\n"}
-      true -> :ok
-    end
-  end
+      Stats.skill(stats, "jiuyin-shengong") < 230 ->
+        {:error, "你的九阴神功还不够娴熟，不能使用#{@move_name}！\n"}
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiuyin-shengong" ->
-        {:error, "你没有准备使用九阴神功，无法施展。\n"}
-
-      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "jiuyin-shengong" ->
-        {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      Stats.skill(stats, "cuff") < 220 ->
+        {:error, "你的基本拳法还不够娴熟，不能使用#{@move_name}！\n"}
 
       true ->
         :ok
@@ -100,44 +89,67 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   end
 
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 240 -> {:error, "你的内力不够，不能使用！\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 240 do
+      {:error, "你的内力不够，不能使用#{@move_name}！\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "此招只能空手施展！\n"}
-      true -> :ok
+  # LPC: if (me->query_temp("weapon")) return notify_fail("此招只能空手施展！\n");
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil do
+      {:error, "此招只能空手施展！\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 50}
-    vitals = %{vitals | neili: vitals.neili - 90}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，握拳击出，招式雄浑，难擢其威！", n1: character.name)
+  # LPC: if (me->query_skill_prepared("unarmed") != "jiuyin-shengong"
+  #          && me->query_skill_prepared("cuff") != "jiuyin-shengong")
+  # prepared_perform 返回绝招 ID（如 jiuyin-shengong/quan），须取技能前缀比对
+  defp check_prepared(character) do
+    stats = character.meta.stats
+    prepared_unarmed = Stats.prepared_perform(stats, "unarmed")
+    prepared_cuff = Stats.prepared_perform(stats, "cuff")
+    ok_unarmed = prepared_unarmed != nil and hd(String.split(prepared_unarmed, "/")) == "jiuyin-shengong"
+    ok_cuff = prepared_cuff != nil and hd(String.split(prepared_cuff, "/")) == "jiuyin-shengong"
+
+    if not ok_unarmed and not ok_cuff do
+      {:error, "你没有准备使用九阴神功，无法施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: me->start_busy(2); me->add("neili", -50); 起手文案
+  defp apply_effect(conn, character, target) do
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 50}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    combat = Combat.start_busy(character.meta.combat, 2)
+    character = %{character | meta: %{character.meta | combat: combat}}
 
     conn
+    |> Broadcast.publish(
+      Messages.interpolate(
+        "$N一声冷哼，握拳击出，招式雄浑，难擢其威！\n",
+        [n1: character.name, n2: target.name]
+      )
+    )
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「九阴神拳」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -147,37 +159,60 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Quan do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    damage = max(Map.get(data, :damage, 0), 0)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 90, 2)
-    msg = if hit, do: "$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！", else: "只见$n不慌不忙，轻轻一闪，躲过了$N这一击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = target->query_skill("dodge") + target->query("dex") * 20 +
+    #          target->query_skill("martial-cognize", 1);
+    dp = Stats.skill(stats, "dodge") + Stats.query_dex(stats) * 20 + Stats.skill(stats, "martial-cognize")
+
+    if div(ap, 2) + Engine.rand(rng, ap) < dp do
+      # LPC: 未命中
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "只见$n不慌不忙，轻轻一闪，躲过了$N这一击！\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: 命中：me->add("neili", -90); do_damage(me, target, UNARMED_ATTACK, damage, 85 + random(5), ...)
+      percent = 85 + Engine.rand(rng, 5)
+      character = apply_damage(character, damage, percent)
+      Performs.feedback(attacker, 90, 0)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "$n连忙格挡，可是这一拳力道何等之重，哪里抵挡得住？只被打得吐血三尺，连退数步！\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-50"}, {"neili", "-90"}], "assign_refs": [{"ap", "cuff"}, {"ap", "unarmed"}, {"dp", "dodge"}], "busy_lines": ["me->start_busy(2);"], "level_gates": [{"cuff", "220"}, {"jiuyin-shengong", "230"}], "prepared_gates": [{"cuff", "jiuyin-shengong"}, {"unarmed", "jiuyin-shengong"}], "remote_damage": true, "resource_gates": [{"neili", "240"}]}
+  # LPC: COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, percent, msg)
+  # wound = damage * percent / 100（armor 未建模，按 percent 直算）
+  defp apply_damage(character, damage, percent) do
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage * percent, 100))
 
+    %{character | meta: %{character.meta | vitals: vitals}}
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // quan 九阴神拳
   # 

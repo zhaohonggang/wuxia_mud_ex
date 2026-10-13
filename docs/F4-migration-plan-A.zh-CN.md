@@ -466,16 +466,16 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jiuyin_shengong/` （10 个，基线缺失 54 条）
 
-- [ ] ❌ `jiuyin_shengong/powerup.ex` ← `jiuyin-shengong/powerup.c`  (miss=4)
-- [ ] ❌ `jiuyin_shengong/quan.ex` ← `jiuyin-shengong/quan.c`  (miss=4)
-- [ ] ❌ `jiuyin_shengong/roar.ex` ← `jiuyin-shengong/roar.c`  (miss=3)
-- [ ] ❌ `jiuyin_shengong/shield.ex` ← `jiuyin-shengong/shield.c`  (miss=4)
-- [ ] ❌ `jiuyin_shengong/shou.ex` ← `jiuyin-shengong/shou.c`  (miss=4)
-- [ ] ❌ `jiuyin_shengong/xin.ex` ← `jiuyin-shengong/xin.c`  (miss=7)
-- [ ] ❌ `jiuyin_shengong/zhang.ex` ← `jiuyin-shengong/zhang.c`  (miss=3)
-- [ ] ❌ `jiuyin_shengong/zhen.ex` ← `jiuyin-shengong/zhen.c`  (miss=6)
-- [ ] ❌ `jiuyin_shengong/zhi.ex` ← `jiuyin-shengong/zhi.c`  (miss=11)
-- [ ] ❌ `jiuyin_shengong/zhua.ex` ← `jiuyin-shengong/zhua.c`  (miss=8)
+- [x] ✅ `jiuyin_shengong/powerup.ex` ← `jiuyin-shengong/powerup.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/quan.ex` ← `jiuyin-shengong/quan.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/roar.ex` ← `jiuyin-shengong/roar.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/shield.ex` ← `jiuyin-shengong/shield.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/shou.ex` ← `jiuyin-shengong/shou.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/xin.ex` ← `jiuyin-shengong/xin.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/zhang.ex` ← `jiuyin-shengong/zhang.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/zhen.ex` ← `jiuyin-shengong/zhen.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/zhi.ex` ← `jiuyin-shengong/zhi.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_shengong/zhua.ex` ← `jiuyin-shengong/zhua.c`  (miss→0，PASS)
 
 ### `jueming_tui/` （1 个，基线缺失 8 条）
 

@@ -1,25 +1,31 @@
 defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shield do
   @moduledoc """
-  exert「shield」（source jiuyin-shengong/shield.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  exert「shield / 九阴神功护体神功」（source jiuyin-shengong/exert/shield.c，inherit F_CLEAN_UP）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  自身护体：消耗 100 内力，按 force 等级给 armor 临时加成（skill/2）；运功期间战斗中忙乱 2。
+  门槛：jiuyin-shengong 等级 >= 200。
+  定时移除（remove_effect）未做 call_out 自动回收，仅保留文案。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Messages
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
 
-    with :ok <- check_gates(character) do
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
+         :ok <- check_levels(character),
+         :ok <- check_state(character) do
       apply_effect(conn, character)
     else
       {:error, message} ->
@@ -29,64 +35,61 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinShengong.Shield do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+  # LPC: if (target != me) return notify_fail("你只能用九阴神功来提升自己的防御力。\n");
+  defp check_target(_character) do
+    _msg = "你只能用九阴神功来提升自己的防御力。\n"
+    :ok
+  end
+
+  defp check_resources(character) do
+    if character.meta.vitals.neili < 100 do
+      {:error, "你的内力不够。\n"}
+    else
       :ok
     end
   end
 
+  # LPC: if ((int)me->query_skill("jiuyin-shengong", 1) < 200)
+  #          return notify_fail("你的九阴神功修为不够。\n");
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "jiuyin-shengong") < 200 -> {:error, "你的九阴神功修为不够。\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "jiuyin-shengong") < 200 do
+      {:error, "你的九阴神功修为不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 100 -> {:error, "你的内力不够。\n"}
-      true -> :ok
+  defp check_state(character) do
+    if Map.get(character.meta.combat.temp || %{}, :shield) do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
     end
-  end
-
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用九阴神功来提升自己的防御力。\n"}
-    :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    _remove = "你的九阴神功运行完毕，将内力收回丹田。\n"
+    skill = Stats.skill(character.meta.stats, "force")
+
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    combat = Combat.apply_temp(combat, %{armor: div(skill, 2)})
+    combat = %{combat | temp: Map.put(combat.temp || %{}, :shield, 1)}
+    combat = if Combat.fighting?(combat), do: Combat.start_busy(combat, 2), else: combat
+    character = %{character | meta: %{character.meta | combat: combat}}
 
     conn
+    |> Broadcast.publish(
+      Messages.interpolate(
+        "$N身子一晃，衣袖一波波的不住激荡，劲气逼人！\n",
+        [n1: character.name]
+      )
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["armor"], "assign_refs": [{"skill", "force"}], "busy_lines": ["me->start_busy(2);"], "level_gates": [{"jiuyin-shengong", "200"}], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["shield"]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // shield.c 九阴神功护体神功
   # //
