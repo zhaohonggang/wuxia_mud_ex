@@ -263,6 +263,9 @@ kuimang_dao/pan.ex
 kunlun_jian/fanyin.ex
 kunlun_qifa/liu.ex
 kunlun_zhang/kong.ex
+kurong_changong/powerup.ex
+lanhua_shou/fei.ex
+lanhua_shou/fu.ex
 lingbo_weibu/ling.ex
 lingshe_zhangfa/chan.ex
 liuhe_dao/shan.ex

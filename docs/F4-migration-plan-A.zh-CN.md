@@ -520,12 +520,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `kurong_changong/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `kurong_changong/powerup.ex` ← `kurong-changong/powerup.c`  (miss=7)
+- [x] ✅ `kurong_changong/powerup.ex` ← `kurong-changong/powerup.c`  (miss→0，PASS)
 
 ### `lanhua_shou/` （2 个，基线缺失 13 条）
 
-- [ ] ❌ `lanhua_shou/fei.ex` ← `lanhua-shou/fei.c`  (miss=6)
-- [ ] ❌ `lanhua_shou/fu.ex` ← `lanhua-shou/fu.c`  (miss=7)
+- [x] ✅ `lanhua_shou/fei.ex` ← `lanhua-shou/fei.c`  (miss→0，PASS)
+- [x] ✅ `lanhua_shou/fu.ex` ← `lanhua-shou/fu.c`  (miss→0，PASS)
 
 ### `lansha_shou/` （1 个，基线缺失 10 条）
 
