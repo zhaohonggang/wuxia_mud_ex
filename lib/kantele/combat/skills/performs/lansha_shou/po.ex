@@ -1,8 +1,19 @@
 defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
   @moduledoc """
-  perform「破靛神砂」（source lansha-shou/po.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「破靛神砂」（source lansha-shou/po.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 目标在战斗中 → 未持兵器 → 蓝砂手>=100 →
+  内功>=150 → 激发 hand 为蓝砂手 → 准备蓝砂手 → 真气>=200 → 目标存活。
+  起手式后攻击方忙乱 3；命中判定 `hand/2 + random(hand)` > 目标 `force`，
+  命中则扣 100 真气、伤害 `hand/2 + random(hand/3)`（20% 外伤比例），
+  并附 final() 的抓伤文案；未命中仅化解文案。
+
+  差异（TODO(migrate)）：
+  - LPC 的 `target->affect_by("sha_poison", …)`（沙毒：level=jiali+random(jiali)、
+    duration=lvl/50+random(lvl/30)，lvl=蓝砂手/2*3）框架未建模，仅保留 final()
+    的抓伤文案（「伤口竟渗出黑血，隐隐发着磷光」）；
+  - 攻击方 `me->start_busy(3)` 与命中分支的 -100 真气都走目标侧 feedback 回执
+    （命中 feedback(100,3)、未命中 feedback(0,3)）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,10 +27,10 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "lansha-shou/po"
+  @move_name "「破靛神砂」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -28,26 +39,31 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    lvl = (div(Stats.skill(stats, "lansha-shou"), 2) * 3)
+    lvl = Stats.skill(stats, "lansha-shou")
     ap = Stats.skill(stats, "hand")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 3)))
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -64,79 +80,99 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (objectp(me->query_temp("weapon")))
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
 
+  # LPC: if (me->query_skill("lansha-shou", 1) < 100)
+  #         if (me->query_skill("force") < 150)
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lansha-shou") < 100 -> {:error, "你蓝砂手不够熟练，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内力修为不足，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "hand") != "lansha-shou" ->
-        {:error, "你没有激发蓝砂手，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "lansha-shou" ->
-        {:error, "你没有准备蓝砂手，难以施展。\n"}
-
+      Stats.skill(stats, "lansha-shou") < 100 ->
+        {:error, "你蓝砂手不够熟练，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 150 ->
+        {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
       true ->
         :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("hand") != "lansha-shou")
+  defp check_mapped(character) do
+    if Stats.mapped(character.meta.stats, "hand") == "lansha-shou" do
+      :ok
+    else
+      {:error, "你没有激发蓝砂手，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  # LPC: if (me->query_skill_prepared("hand") != "lansha-shou")
+  defp check_prepared(character) do
+    prepared = Stats.prepared_perform(character.meta.stats, "hand")
+
+    if prepared == nil or hd(String.split(prepared, "/")) != "lansha-shou" do
+      {:error, "你没有准备蓝砂手，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query("neili") < 200)
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 200 do
+      {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+  # LPC: if (! living(target))
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形急转，宛若鬼魅，悄然施出蓝砂手绝技「破靛神砂」，朝$n胸前大穴抓落！", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target) do
+    # LPC: msg = HIG "$N" HIG "身形急转，宛若鬼魅，悄然施出蓝砂手绝技「" NOR +
+    #               HIB "破靛神砂" NOR + HIG "」，朝$n" HIG "胸前大穴抓落！\n" NOR;
+    # 三段字面量被颜色宏的 + 分隔，用 list + Enum.join("") 复现（不合并）。
+    # me->start_busy(3) 与命中分支的 neili 由目标侧 feedback 回执。
+    conn =
+      Broadcast.publish(
+        conn,
+        [
+          "$N身形急转，宛若鬼魅，悄然施出蓝砂手绝技「",
+          "破靛神砂",
+          "」，朝$n胸前大穴抓落！\n"
+        ] |> Enum.join(""),
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「破靛神砂」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -146,37 +182,47 @@ defmodule Kantele.Combat.Skills.Performs.LanshaShou.Po do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = max(Map.get(data, :ap, 0), 1)
+    dp = Stats.skill(character.meta.stats, "force")
+
+    # LPC: me->start_busy(3); if (ap / 2 + random(ap) > dp)
+    hit? = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+    # LPC: damage = ap / 2 + random(ap / 3);
+    #      COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 20, (: final :));
+    {vitals, msg, neili_cost} =
+      if hit? do
+        damage = div(ap, 2) + Engine.rand(rng, div(ap, 3))
+        v = character.meta.vitals |> Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage, 5))
+        {v, final_message(), 100}
+      else
+        {character.meta.vitals, "$n见$N来势汹涌，奋力格挡，终于化解开来。\n", 0}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 100, 3)
-    msg = if hit, do: "$n被$N击中！", else: "$n见$N来势汹涌，奋力格挡，终于化解开来。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    Performs.feedback(attacker, neili_cost, 3)
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(msg, n1: attacker.name, n2: character.name)
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}], "affect_by": ["sha_poison"], "assign_refs": [{"ap", "hand"}, {"dp", "force"}, {"lvl", "lansha-shou"}], "busy_lines": ["me->start_busy(3);"], "level_gates": [{"force", "150"}, {"lansha-shou", "100"}], "map_gates": [{"hand", "lansha-shou"}], "prepared_gates": [{"hand", "lansha-shou"}], "remote_damage": true, "resource_gates": [{"neili", "200"}]}
-
+  # LPC: string final(object me, object target, int damage)
+  #      return HIR "$n" HIR "闪避不及，登被$N" HIR "抓出五道血痕，伤口竟渗出黑血，
+  #             隐隐发着磷光。\n" NOR;
+  # （相邻字面量合并为单段）
+  defp final_message do
+    "$n闪避不及，登被$N抓出五道血痕，伤口竟渗出黑血，隐隐发着磷光。\n"
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

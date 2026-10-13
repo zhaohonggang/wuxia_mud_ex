@@ -266,6 +266,9 @@ kunlun_zhang/kong.ex
 kurong_changong/powerup.ex
 lanhua_shou/fei.ex
 lanhua_shou/fu.ex
+lansha_shou/po.ex
+leiming_bian/cibei.ex
+leiting_fu/sanda.ex
 lingbo_weibu/ling.ex
 lingshe_zhangfa/chan.ex
 liuhe_dao/shan.ex

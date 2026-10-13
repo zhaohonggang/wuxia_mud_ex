@@ -1,8 +1,22 @@
 defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
   @moduledoc """
-  perform「cibei」（source leiming-bian/cibei.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「慈悲字诀」（source leiming-bian/cibei.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：目标在战斗中 → 雷鸣鞭法>=160 → 禅宗心法>=150 →
+  正神>=200000 → 内力>=1500 → 手持鞭类武器 → 目标存活。
+  命中判定 `random(at)+at/2 > df`（at=战斗经验*鞭法/1000，df=目标战斗经验*躲闪/1000）；
+  命中则受佛法感动文案 + 气血状态 + 目标忙乱 3，伤害=正神/2000（上限 1500），
+  随后 lmt（3~6）次挥鞭连击，攻击方扣 300 内力、忙乱 random(2)+2；
+  未命中仅化解文案，扣 200 内力、忙乱 random(2)。
+
+  差异（TODO(migrate)）：
+  - LPC 的 can_perform 检查被注释掉，故无 check_perform_known（同
+    jiuyin_shengong/zhen 先例）；
+  - LPC 在未命中分支把起手式 msg 丢弃（只发布化解文案），故起手式仅在命中
+    分支发布，apply_effect 无无条件攻击方效果；
+  - lmt 次 `do_attack`（每次 apply/attack +extra/5、apply/damage +extra/5，
+    加完即减）折算为每击 level/15 + extra/5 基础伤害，不落攻击方 temp；
+  - `eff_status_msg` 用框架的 Messages.eff_status_msg/1（文案不同但语义一致）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -29,22 +43,37 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "leiming-bian")
-    extra = Stats.skill(stats, "leiming-bian")
-    skill = Stats.skill(stats, "buddhism")
-    damage = 1500
-    lmt = 6
-    i = 1
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    with {:ok, target} <- target(combat),
+         :ok <- check_levels(character),
+         :ok <- check_shen(character),
+         :ok <- check_resources(character),
+         :ok <- check_weapon(combat),
+         :ok <- check_target_alive(target) do
+      weapon_name =
+        case Combat.weapon(combat) do
+          nil -> ""
+          weapon -> Map.get(weapon, :name)
+        end
+
+      # LPC: lmt = random(leiming-bian / 50) + 1，钳制 3~6
+      hits = (Engine.rand(rng, div(lvl, 50)) + 1) |> max(3) |> min(6)
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
-          damage: damage,
+          # LPC: at = combat_exp * leiming-bian / 1000
+          at: div(stats.combat_exp * lvl, 1000),
+          # LPC: damage = shen / 2000（上限 1500）
+          shen_damage: min(div(stats.shen, 2000), 1500),
+          hits: hits,
+          extra: lvl,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
@@ -58,75 +87,73 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
-    end
-  end
-
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
-      :ok
-    end
-  end
-
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "leiming-bian") < 160 -> {:error, "你的雷鸣鞭法修为太差,还不能使用慈悲字诀！\n"}
-      Stats.skill(stats, "buddhism") < 150 -> {:error, "你的禅宗心法等级不够，怎能支持慈悲字诀？\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 1500 -> {:error, "你的内力修为不够辅助慈悲字诀。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中没有兵器如何使用慈悲字诀。\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你使用的外功中没有这个功能。\n"}
-    :ok
-
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N喃喃自语道：慈悲为怀，手中的某物仿佛如来出世般倒卷向$n。", n1: character.name)
-
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
-  end
-
+  # LPC: if (! target || ! target->is_character() || ! me->is_fighting(target))
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
       [] -> {:error, "［慈悲字诀］只能对战斗中的对手使用。\n"}
     end
+  end
+
+  # LPC: if (extra < 160) / if (skill < 150)（skill = buddhism）
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "leiming-bian") < 160 ->
+        {:error, "你的雷鸣鞭法修为太差,还不能使用慈悲字诀！\n"}
+      Stats.skill(stats, "buddhism") < 150 ->
+        {:error, "你的禅宗心法等级不够，怎能支持慈悲字诀？ \n"}
+      true ->
+        :ok
+    end
+  end
+
+  # LPC: if (me->query("shen") < 200000)
+  defp check_shen(character) do
+    if character.meta.stats.shen < 200_000 do
+      {:error, "慈悲字诀需以无边正气为辅,大师还是多行善事吧! \n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (me->query("neili") < 1500)
+  defp check_resources(character) do
+    if character.meta.vitals.neili < 1500 do
+      {:error, "你的内力修为不够辅助慈悲字诀。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (! weapon || weapon->query("skill_type") != "whip")
+  defp check_weapon(combat) do
+    weapon = Combat.weapon(combat)
+
+    if is_map(weapon) and Map.get(weapon, :skill_type) == "whip" do
+      :ok
+    else
+      {:error, "你手中没有兵器如何使用慈悲字诀。\n"}
+    end
+  end
+
+  # LPC: if (! living(target))
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC 无条件攻击方效果：无（内力/忙乱均在分支内，由目标侧 feedback 回执）。
+  defp apply_effect(conn, _character) do
+    conn
+    |> assign(:prompt, false)
   end
 
   defp ref(character) do
@@ -136,38 +163,105 @@ defmodule Kantele.Combat.Skills.Performs.LeimingBian.Cibei do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    at = max(Map.get(data, :at, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-          vitals = Vitals.wound(vitals, :qi, div(damage, 3))
+    # LPC: df = target->query("combat_exp") * target->query_skill("dodge", 1) / 1000
+    df = div(stats.combat_exp * Stats.skill(stats, "dodge"), 1000)
+
+    # LPC: if ((random(at) + at / 2) > df)
+    if Engine.rand(rng, at) + div(at, 2) > df do
+      resolve_hit(conn, character, attacker, data, rng)
+    else
+      resolve_miss(conn, character, attacker, rng)
     end
+  end
+
+  defp resolve_hit(conn, character, attacker, data, rng) do
+    damage = Map.get(data, :shen_damage, 0)
+    weapon_name = Map.get(data, :weapon_name, "")
+    level = Map.get(data, :level, 0)
+    hits = Map.get(data, :hits, 3)
+    extra = Map.get(data, :extra, 0)
+
+    # LPC: receive_damage("qi", damage); receive_wound("qi", damage / 3);
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage, 3))
+
+    # LPC: p = qi * 100 / max_qi; msg += "( $n" + eff_status_msg(p) + " )\n";
+    ratio = div(vitals.qi * 100, max(vitals.max_qi, 1))
+
+    combat = Combat.start_busy(character.meta.combat, 3)
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+    # LPC: for (i = 1; i <= lmt; i++) { add_temp("apply/attack", extra/5);
+    #      add_temp("apply/damage", extra/5); do_attack(...); add_temp(-…); }
+    # 折算：每击 level/15 + extra/5 基础伤害（加成不落攻击方 temp）
+    per_hit = max(div(level, 15), 1) + div(extra, 5)
+
+    combo_damage =
+      Enum.reduce(1..hits, 0, fn _, acc ->
+        acc + per_hit + Engine.rand(rng, per_hit)
+      end)
+
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, combo_damage)
+      |> Vitals.wound(:qi, div(combo_damage, 3))
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 1)
-    msg = if hit, do: "$n被$N击中！", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # LPC: me->add("neili", -300); me->start_busy(random(2) + 2);
+    Performs.feedback(attacker, 300, 2 + Engine.rand(rng, 2))
+
+    # LPC 起手式仅在命中分支发布（msg 未被丢弃）：
+    #   RED "只见$N喃喃自语道：慈悲为怀，手中的" + weapon->name() +
+    #   RED "仿佛如来出世般倒卷向$n。\n" NOR
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(
+      "只见$N喃喃自语道：慈悲为怀，手中的" <> weapon_name <> "仿佛如来出世般倒卷向$n。\n",
+      n1: attacker.name,
+      n2: character.name
+    )
+    |> Broadcast.publish(
+      "$n不禁被$N的无边佛法打动，猛的后退，脸上没有一丝血色...\n",
+      n1: attacker.name,
+      n2: character.name
+    )
+    |> Broadcast.publish(
+      "( $n" <> Messages.eff_status_msg(ratio) <> " )\n",
+      n1: attacker.name,
+      n2: character.name
+    )
+    |> Broadcast.publish(
+      "\n紧接着$N手中的" <> weapon_name <> "连续晃动，竟然不知道有多少击。\n",
+      n1: attacker.name,
+      n2: character.name
+    )
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-200"}, {"neili", "-300"}], "apply_adds": ["attack", "damage"], "assign_refs": [{"at", "leiming-bian"}, {"df", "dodge"}, {"extra", "leiming-bian"}, {"lmt", "leiming-bian"}, {"skill", "buddhism"}], "busy_lines": ["target->start_busy(3);", "me->start_busy(random(2) + 2);", "me->start_busy(random(2));"], "remote_damage": false, "resource_gates": [{"neili", "1500"}, {"shen", "200000"}], "var_gates": [{"extra", "160"}, {"lmt", "3"}, {"skill", "150"}]}
+  defp resolve_miss(conn, character, attacker, rng) do
+    # LPC: me->add("neili", -200); me->start_busy(random(2));
+    Performs.feedback(attacker, 200, Engine.rand(rng, 2))
 
+    conn
+    |> Broadcast.publish(
+      "\n$n左躲右闪，强$N的攻击完全化于无形！\n",
+      n1: attacker.name,
+      n2: character.name
+    )
+    |> put_character(character)
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

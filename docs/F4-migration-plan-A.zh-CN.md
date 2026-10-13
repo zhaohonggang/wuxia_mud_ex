@@ -529,15 +529,15 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `lansha_shou/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `lansha_shou/po.ex` ← `lansha-shou/po.c`  (miss=10)
+- [x] ✅ `lansha_shou/po.ex` ← `lansha-shou/po.c`  (miss→0，PASS)
 
 ### `leiming_bian/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `leiming_bian/cibei.ex` ← `leiming-bian/cibei.c`  (miss=8)
+- [x] ✅ `leiming_bian/cibei.ex` ← `leiming-bian/cibei.c`  (miss→0，PASS)
 
 ### `leiting_fu/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `leiting_fu/sanda.ex` ← `leiting-fu/sanda.c`  (miss=7)
+- [x] ✅ `leiting_fu/sanda.ex` ← `leiting-fu/sanda.c`  (miss→0，PASS)
 
 ### `lengyue_shengong/` （1 个，基线缺失 4 条）
 
