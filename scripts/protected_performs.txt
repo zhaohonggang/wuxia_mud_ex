@@ -188,7 +188,11 @@ huntian_baojian/powerup.ex
 huntian_baojian/sword.ex
 huntian_qigong/powerup.ex
 huntian_qigong/shield.ex
+hunyuan_yiqi/powerup.ex
+hunyuan_zhang/wuji.ex
 huoyan_dao/fen.ex
+huoyan_dao/yan.ex
+huzhua_shou/juehu.ex
 jiandun_zhusuo/fu.ex
 jiandun_zhusuo/qian.ex
 jidian_jian/dian.ex

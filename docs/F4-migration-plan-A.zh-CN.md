@@ -377,19 +377,19 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `hunyuan_yiqi/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `hunyuan_yiqi/powerup.ex` ← `hunyuan-yiqi/powerup.c`  (miss=4)
+- [x] ✅ `hunyuan_yiqi/powerup.ex` ← `hunyuan-yiqi/powerup.c`  (miss→0，PASS)
 
 ### `hunyuan_zhang/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `hunyuan_zhang/wuji.ex` ← `hunyuan-zhang/wuji.c`  (miss=5)
+- [x] ✅ `hunyuan_zhang/wuji.ex` ← `hunyuan-zhang/wuji.c`  (miss→0，PASS)
 
 ### `huoyan_dao/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `huoyan_dao/yan.ex` ← `huoyan-dao/yan.c`  (miss=7)
+- [x] ✅ `huoyan_dao/yan.ex` ← `huoyan-dao/yan.c`  (miss→0，PASS)
 
 ### `huzhua_shou/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `huzhua_shou/juehu.ex` ← `huzhua-shou/juehu.c`  (miss=7)
+- [x] ✅ `huzhua_shou/juehu.ex` ← `huzhua-shou/juehu.c`  (miss→0，PASS)
 
 ### `jiasha_fumogong/` （1 个，基线缺失 6 条）
 
