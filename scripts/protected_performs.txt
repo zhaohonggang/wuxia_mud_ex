@@ -270,10 +270,13 @@ lansha_shou/po.ex
 leiming_bian/cibei.ex
 leiting_fu/sanda.ex
 lengyue_shengong/powerup.ex
+liangyi_jian/ren.ex
 liangyi_shengong/powerup.ex
+lianhuan_mizongtui/lian.ex
 lingbo_weibu/ling.ex
 lingshe_quan/rou.ex
 lingshe_zhangfa/chan.ex
+lingshe_zhangfa/qianshe.ex
 liuhe_dao/shan.ex
 longcheng_shendao/feng.ex
 longxing_jian/kong.ex
