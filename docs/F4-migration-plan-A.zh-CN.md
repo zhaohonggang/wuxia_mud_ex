@@ -442,7 +442,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jinyu_quan/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `jinyu_quan/man.ex` ← `jinyu-quan/man.c`  (miss=6)
+- [x] ✅ `jinyu_quan/man.ex` ← `jinyu-quan/man.c`  (miss→0，PASS)
 
 ### `jinyuan_gun/` （1 个，基线缺失 7 条）
 

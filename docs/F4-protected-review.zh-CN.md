@@ -4,10 +4,10 @@
 
 ## 背景
 
-`scripts/protected_performs.txt` 当前共 **338** 条受保护 perform。
+`scripts/protected_performs.txt` 当前共 **350** 条受保护 perform。
 用**严格判据**（`.ex` 代码内中文文案 vs `.c` 代码内中文文案，**逐条字面一致，不做模糊等价**）复核：
 
-- **PASS = 181**，**FAIL = 157**，MISSING 合计 **1482** 条。
+- **PASS = 192**，**FAIL = 158**，MISSING 合计 **1482** 条。
 - 判据 = `check_one`：`Counter(norm(src)) - Counter(norm(tgt))` 为空才 PASS（MISSING 必须为空；EXTRA 不判错）。
 - 本计划**独立于 A/B 号计划**，可并行执行；A/B 只处理非受保护文件。
 
@@ -188,12 +188,23 @@
 - `taiji_shengong/shield.ex`
 - `taixuan_gong/powerup.ex`
 - `taixuan_gong/shield.ex`
+- `tianhuan_shenjue/powerup.ex`
+- `tianlei_shengong/powerup.ex`
+- `wudoumi_shengong/powerup.ex`
 - `xiangmo_chu/zhen.ex`
+- `xiantian_gong/powerup.ex`
+- `xiantian_gong/shield.ex`
 - `xiaowuxiang/powerup.ex`
 - `xiaowuxiang/shield.ex`
+- `xuanming_shengong/powerup.ex`
+- `xuanming_shengong/shield.ex`
 - `xuantian_wujigong/powerup.ex`
 - `xuantian_wujigong/shield.ex`
+- `yijin_duangu/powerup.ex`
+- `yijin_duangu/shield.ex`
 - `yunlong_bian/chan.ex`
+- `zhanshen_xinjing/powerup.ex`
+- `zhanshen_xinjing/shield.ex`
 
 ## 待复核 / 待修订
 
@@ -290,72 +301,73 @@
 | 89 | `jinshe_zhui/tuwu.ex` | 11 | `kungfu/skill/jinshe-zhui/tuwu.c` |
 | 90 | `jinwu_daofa/chi` | 0 | `—` |
 | 91 | `jinwu_goufa/duo` | 0 | `—` |
-| 92 | `jinzhong_zhao/zhao.ex` | 2 | `kungfu/skill/jinzhong-zhao/zhao.c` |
-| 93 | `jiuqu_jian/wan.ex` | 10 | `kungfu/skill/jiuqu-jian/wan.c` |
-| 94 | `jueqing_jian/liu.ex` | 12 | `kungfu/skill/jueqing-jian/liu.c` |
-| 95 | `kuangfeng_jian/sao.ex` | 9 | `kungfu/skill/kuangfeng-jian/sao.c` |
-| 96 | `kuimang_dao/pan.ex` | 11 | `kungfu/skill/kuimang-dao/pan.c` |
-| 97 | `kunlun_qifa/liu.ex` | 11 | `kungfu/skill/kunlun-qifa/liu.c` |
-| 98 | `lingbo_weibu/ling.ex` | 3 | `kungfu/skill/lingbo-weibu/ling.c` |
-| 99 | `lingshe_zhangfa/chan.ex` | 9 | `kungfu/skill/lingshe-zhangfa/chan.c` |
-| 100 | `liuhe_dao/shan.ex` | 11 | `kungfu/skill/liuhe-dao/shan.c` |
-| 101 | `longcheng_shendao/feng.ex` | 11 | `kungfu/skill/longcheng-shendao/feng.c` |
-| 102 | `longxing_jian/kong.ex` | 10 | `kungfu/skill/longxing-jian/kong.c` |
-| 103 | `longxing_jian/xian.ex` | 1 | `kungfu/skill/longxing-jian/xian.c` |
-| 104 | `luohan_gun/xiangmo.ex` | 7 | `kungfu/skill/luohan-gun/xiangmo.c` |
-| 105 | `luohan_quan/xiangmo.ex` | 8 | `kungfu/skill/luohan-quan/xiangmo.c` |
-| 106 | `luoying_shenjian/sui.ex` | 12 | `kungfu/skill/luoying-shenjian/sui.c` |
-| 107 | `luoyun_dao/tian.ex` | 11 | `kungfu/skill/luoyun-dao/tian.c` |
-| 108 | `lutou_zhang/tong.ex` | 11 | `kungfu/skill/lutou-zhang/tong.c` |
-| 109 | `mantian_xing/shan.ex` | 10 | `kungfu/skill/mantian-xing/shan.c` |
-| 110 | `mantianhuayu_zhen/zheng.ex` | 11 | `kungfu/skill/mantianhuayu-zhen/zheng.c` |
-| 111 | `miaojia_jian/qian.ex` | 12 | `kungfu/skill/miaojia-jian/qian.c` |
-| 112 | `mingwang_jian/ruo.ex` | 12 | `kungfu/skill/mingwang-jian/ruo.c` |
-| 113 | `mingwang_jian/xiang.ex` | 10 | `kungfu/skill/mingwang-jian/xiang.c` |
-| 114 | `mizong_houquan/zhou.ex` | 16 | `kungfu/skill/mizong-houquan/zhou.c` |
-| 115 | `nianhua_zhi/fuxue.ex` | 10 | `kungfu/skill/nianhua-zhi/fuxue.c` |
-| 116 | `ningxue_zhang/xue.ex` | 8 | `kungfu/skill/ningxue-zhang/xue.c` |
-| 117 | `pangen_cuojiefu/cuo.ex` | 13 | `kungfu/skill/pangen-cuojiefu/cuo.c` |
-| 118 | `panlong_suo/chan.ex` | 13 | `kungfu/skill/panlong-suo/chan.c` |
-| 119 | `pichen_jian/ao.ex` | 10 | `kungfu/skill/pichen-jian/ao.c` |
-| 120 | `pidi_shenzhen/huan.ex` | 11 | `kungfu/skill/pidi-shenzhen/huan.c` |
-| 121 | `poguang_dao/bing.ex` | 14 | `kungfu/skill/poguang-dao/bing.c` |
-| 122 | `pomie_jinzhen/du.ex` | 13 | `kungfu/skill/pomie-jinzhen/du.c` |
-| 123 | `qiankun_jian/qian.ex` | 12 | `kungfu/skill/qiankun-jian/qian.c` |
-| 124 | `qiankun_jian/riyue.ex` | 11 | `kungfu/skill/qiankun-jian/riyue.c` |
-| 125 | `qianye_shou/qianye.ex` | 8 | `kungfu/skill/qianye-shou/qianye.c` |
-| 126 | `qingliang_jian/ming.ex` | 11 | `kungfu/skill/qingliang-jian/ming.c` |
-| 127 | `qishi_ji/juan.ex` | 12 | `kungfu/skill/qishi-ji/juan.c` |
-| 128 | `qiufeng_chenfa/chan.ex` | 8 | `kungfu/skill/qiufeng-chenfa/chan.c` |
-| 129 | `qiulin_shiye/wu.ex` | 8 | `kungfu/skill/qiulin-shiye/wu.c` |
-| 130 | `qixing_jian/xing.ex` | 11 | `kungfu/skill/qixing-jian/xing.c` |
-| 131 | `quanzhen_jian/chan.ex` | 11 | `kungfu/skill/quanzhen-jian/chan.c` |
-| 132 | `quanzhen_jian/ding.ex` | 11 | `kungfu/skill/quanzhen-jian/ding.c` |
-| 133 | `ranmu_daofa/zhenyan.ex` | 2 | `kungfu/skill/ranmu-daofa/zhenyan.c` |
-| 134 | `raozhi_roujian/chuan.ex` | 11 | `kungfu/skill/raozhi-roujian/chuan.c` |
-| 135 | `riyue_bian/chan.ex` | 2 | `kungfu/skill/riyue-bian/chan.c` |
-| 136 | `riyue_bian/he.ex` | 1 | `kungfu/skill/riyue-bian/he.c` |
-| 137 | `riyue_bian/shang.ex` | 8 | `kungfu/skill/riyue-bian/shang.c` |
-| 138 | `riyue_lun/yuan.ex` | 2 | `kungfu/skill/riyue-lun/yuan.c` |
-| 139 | `rouyun_steps/zong.ex` | 2 | `kungfu/skill/rouyun-steps/zong.c` |
-| 140 | `ruanhong_zhusuo/teng.ex` | 11 | `kungfu/skill/ruanhong-zhusuo/teng.c` |
-| 141 | `sanhua_zhang/san.ex` | 9 | `kungfu/skill/sanhua-zhang/san.c` |
-| 142 | `sanwu_shou/wei.ex` | 12 | `kungfu/skill/sanwu-shou/wei.c` |
-| 143 | `shangjia_dao/juan.ex` | 11 | `kungfu/skill/shangjia-dao/juan.c` |
-| 144 | `shenxing_baibian/piao.ex` | 1 | `kungfu/skill/shenxing-baibian/piao.c` |
-| 145 | `shunv_jian/ning.ex` | 12 | `kungfu/skill/shunv-jian/ning.c` |
-| 146 | `songshan_jian/meng.ex` | 12 | `kungfu/skill/songshan-jian/meng.c` |
-| 147 | `sun_finger/dian.ex` | 8 | `kungfu/skill/sun-finger/dian.c` |
-| 148 | `suqin_beijian/can.ex` | 11 | `kungfu/skill/suqin-beijian/can.c` |
-| 149 | `suxin_jian/lian.ex` | 10 | `kungfu/skill/suxin-jian/lian.c` |
-| 150 | `taiji_jian/chan.ex` | 10 | `kungfu/skill/taiji-jian/chan.c` |
-| 151 | `taiji_jian/sui.ex` | 4 | `kungfu/skill/taiji-jian/sui.c` |
-| 152 | `taiji_jian/zhuan.ex` | 10 | `kungfu/skill/taiji-jian/zhuan.c` |
-| 153 | `tangmen_throwing/biao.ex` | 19 | `kungfu/skill/tangmen-throwing/biao.c` |
-| 154 | `tiangang_zhi/ling.ex` | 10 | `kungfu/skill/tiangang-zhi/ling.c` |
-| 155 | `wudang_jian/sheng.ex` | 11 | `kungfu/skill/wudang-jian/sheng.c` |
-| 156 | `xiyang_jian/ci.ex` | 10 | `kungfu/skill/xiyang-jian/ci.c` |
-| 157 | `yunhe_jian/chong.ex` | 11 | `kungfu/skill/yunhe-jian/chong.c` |
+| 92 | `jinyu_quan/man` | 0 | `—` |
+| 93 | `jinzhong_zhao/zhao.ex` | 2 | `kungfu/skill/jinzhong-zhao/zhao.c` |
+| 94 | `jiuqu_jian/wan.ex` | 10 | `kungfu/skill/jiuqu-jian/wan.c` |
+| 95 | `jueqing_jian/liu.ex` | 12 | `kungfu/skill/jueqing-jian/liu.c` |
+| 96 | `kuangfeng_jian/sao.ex` | 9 | `kungfu/skill/kuangfeng-jian/sao.c` |
+| 97 | `kuimang_dao/pan.ex` | 11 | `kungfu/skill/kuimang-dao/pan.c` |
+| 98 | `kunlun_qifa/liu.ex` | 11 | `kungfu/skill/kunlun-qifa/liu.c` |
+| 99 | `lingbo_weibu/ling.ex` | 3 | `kungfu/skill/lingbo-weibu/ling.c` |
+| 100 | `lingshe_zhangfa/chan.ex` | 9 | `kungfu/skill/lingshe-zhangfa/chan.c` |
+| 101 | `liuhe_dao/shan.ex` | 11 | `kungfu/skill/liuhe-dao/shan.c` |
+| 102 | `longcheng_shendao/feng.ex` | 11 | `kungfu/skill/longcheng-shendao/feng.c` |
+| 103 | `longxing_jian/kong.ex` | 10 | `kungfu/skill/longxing-jian/kong.c` |
+| 104 | `longxing_jian/xian.ex` | 1 | `kungfu/skill/longxing-jian/xian.c` |
+| 105 | `luohan_gun/xiangmo.ex` | 7 | `kungfu/skill/luohan-gun/xiangmo.c` |
+| 106 | `luohan_quan/xiangmo.ex` | 8 | `kungfu/skill/luohan-quan/xiangmo.c` |
+| 107 | `luoying_shenjian/sui.ex` | 12 | `kungfu/skill/luoying-shenjian/sui.c` |
+| 108 | `luoyun_dao/tian.ex` | 11 | `kungfu/skill/luoyun-dao/tian.c` |
+| 109 | `lutou_zhang/tong.ex` | 11 | `kungfu/skill/lutou-zhang/tong.c` |
+| 110 | `mantian_xing/shan.ex` | 10 | `kungfu/skill/mantian-xing/shan.c` |
+| 111 | `mantianhuayu_zhen/zheng.ex` | 11 | `kungfu/skill/mantianhuayu-zhen/zheng.c` |
+| 112 | `miaojia_jian/qian.ex` | 12 | `kungfu/skill/miaojia-jian/qian.c` |
+| 113 | `mingwang_jian/ruo.ex` | 12 | `kungfu/skill/mingwang-jian/ruo.c` |
+| 114 | `mingwang_jian/xiang.ex` | 10 | `kungfu/skill/mingwang-jian/xiang.c` |
+| 115 | `mizong_houquan/zhou.ex` | 16 | `kungfu/skill/mizong-houquan/zhou.c` |
+| 116 | `nianhua_zhi/fuxue.ex` | 10 | `kungfu/skill/nianhua-zhi/fuxue.c` |
+| 117 | `ningxue_zhang/xue.ex` | 8 | `kungfu/skill/ningxue-zhang/xue.c` |
+| 118 | `pangen_cuojiefu/cuo.ex` | 13 | `kungfu/skill/pangen-cuojiefu/cuo.c` |
+| 119 | `panlong_suo/chan.ex` | 13 | `kungfu/skill/panlong-suo/chan.c` |
+| 120 | `pichen_jian/ao.ex` | 10 | `kungfu/skill/pichen-jian/ao.c` |
+| 121 | `pidi_shenzhen/huan.ex` | 11 | `kungfu/skill/pidi-shenzhen/huan.c` |
+| 122 | `poguang_dao/bing.ex` | 14 | `kungfu/skill/poguang-dao/bing.c` |
+| 123 | `pomie_jinzhen/du.ex` | 13 | `kungfu/skill/pomie-jinzhen/du.c` |
+| 124 | `qiankun_jian/qian.ex` | 12 | `kungfu/skill/qiankun-jian/qian.c` |
+| 125 | `qiankun_jian/riyue.ex` | 11 | `kungfu/skill/qiankun-jian/riyue.c` |
+| 126 | `qianye_shou/qianye.ex` | 8 | `kungfu/skill/qianye-shou/qianye.c` |
+| 127 | `qingliang_jian/ming.ex` | 11 | `kungfu/skill/qingliang-jian/ming.c` |
+| 128 | `qishi_ji/juan.ex` | 12 | `kungfu/skill/qishi-ji/juan.c` |
+| 129 | `qiufeng_chenfa/chan.ex` | 8 | `kungfu/skill/qiufeng-chenfa/chan.c` |
+| 130 | `qiulin_shiye/wu.ex` | 8 | `kungfu/skill/qiulin-shiye/wu.c` |
+| 131 | `qixing_jian/xing.ex` | 11 | `kungfu/skill/qixing-jian/xing.c` |
+| 132 | `quanzhen_jian/chan.ex` | 11 | `kungfu/skill/quanzhen-jian/chan.c` |
+| 133 | `quanzhen_jian/ding.ex` | 11 | `kungfu/skill/quanzhen-jian/ding.c` |
+| 134 | `ranmu_daofa/zhenyan.ex` | 2 | `kungfu/skill/ranmu-daofa/zhenyan.c` |
+| 135 | `raozhi_roujian/chuan.ex` | 11 | `kungfu/skill/raozhi-roujian/chuan.c` |
+| 136 | `riyue_bian/chan.ex` | 2 | `kungfu/skill/riyue-bian/chan.c` |
+| 137 | `riyue_bian/he.ex` | 1 | `kungfu/skill/riyue-bian/he.c` |
+| 138 | `riyue_bian/shang.ex` | 8 | `kungfu/skill/riyue-bian/shang.c` |
+| 139 | `riyue_lun/yuan.ex` | 2 | `kungfu/skill/riyue-lun/yuan.c` |
+| 140 | `rouyun_steps/zong.ex` | 2 | `kungfu/skill/rouyun-steps/zong.c` |
+| 141 | `ruanhong_zhusuo/teng.ex` | 11 | `kungfu/skill/ruanhong-zhusuo/teng.c` |
+| 142 | `sanhua_zhang/san.ex` | 9 | `kungfu/skill/sanhua-zhang/san.c` |
+| 143 | `sanwu_shou/wei.ex` | 12 | `kungfu/skill/sanwu-shou/wei.c` |
+| 144 | `shangjia_dao/juan.ex` | 11 | `kungfu/skill/shangjia-dao/juan.c` |
+| 145 | `shenxing_baibian/piao.ex` | 1 | `kungfu/skill/shenxing-baibian/piao.c` |
+| 146 | `shunv_jian/ning.ex` | 12 | `kungfu/skill/shunv-jian/ning.c` |
+| 147 | `songshan_jian/meng.ex` | 12 | `kungfu/skill/songshan-jian/meng.c` |
+| 148 | `sun_finger/dian.ex` | 8 | `kungfu/skill/sun-finger/dian.c` |
+| 149 | `suqin_beijian/can.ex` | 11 | `kungfu/skill/suqin-beijian/can.c` |
+| 150 | `suxin_jian/lian.ex` | 10 | `kungfu/skill/suxin-jian/lian.c` |
+| 151 | `taiji_jian/chan.ex` | 10 | `kungfu/skill/taiji-jian/chan.c` |
+| 152 | `taiji_jian/sui.ex` | 4 | `kungfu/skill/taiji-jian/sui.c` |
+| 153 | `taiji_jian/zhuan.ex` | 10 | `kungfu/skill/taiji-jian/zhuan.c` |
+| 154 | `tangmen_throwing/biao.ex` | 19 | `kungfu/skill/tangmen-throwing/biao.c` |
+| 155 | `tiangang_zhi/ling.ex` | 10 | `kungfu/skill/tiangang-zhi/ling.c` |
+| 156 | `wudang_jian/sheng.ex` | 11 | `kungfu/skill/wudang-jian/sheng.c` |
+| 157 | `xiyang_jian/ci.ex` | 10 | `kungfu/skill/xiyang-jian/ci.c` |
+| 158 | `yunhe_jian/chong.ex` | 11 | `kungfu/skill/yunhe-jian/chong.c` |
 
 ## 处理流程（每个文件）
 
