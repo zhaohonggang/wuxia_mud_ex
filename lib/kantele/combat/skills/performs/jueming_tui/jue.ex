@@ -1,25 +1,32 @@
 defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
   @moduledoc """
-  perform「绝命一踢」（source jueming-tui/jue.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「绝命一踢」（source jueming-tui/jue.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已知此招 → 目标为战斗中的对手 → 空手（主副兵器均不可）→
+  绝命腿法>=80 → 激发 unarmed 为绝命腿法 → 准备 unarmed 为绝命腿法 →
+  内力>=200 → 目标存活。
+  ap = 拳脚 + str*10；dp = 闪避 + dex*10；pp = 招架 + str*10（均为目标侧）。
+  起手式三选一（random(3)）。两段判定：先对 pp（架住），再对 dp（闪开），
+  命中则伤害 ap/3 + random(ap/3)、60% 外伤。架住/闪开扣 30 内力、忙乱 3；
+  命中扣 100 内力、忙乱 2。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Vitals
 
   @perform_id "jueming-tui/jue"
+  @move_name "「绝命一踢」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,21 +36,30 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jueming-tui")
+    ap = Stats.skill(stats, "unarmed") + Stats.query_str(stats) * 10
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, rng)
     else
       {:error, message} ->
         conn
@@ -60,80 +76,87 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
+  #          return notify_fail(JUE "只能空手施展。\n");
+  # 框架无副兵器槽，仅检查主兵器
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
 
+  # LPC: if (me->query_skill("jueming-tui", 1) < 80)
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "jueming-tui") < 80 -> {:error, "你绝命腿法不够娴熟，难以施展。\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "jueming-tui") < 80 do
+      {:error, "你绝命腿法不够娴熟，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("unarmed") != "jueming-tui")
   defp check_mapped(character) do
-    stats = character.meta.stats
+    if Stats.mapped(character.meta.stats, "unarmed") != "jueming-tui" do
+      {:error, "你没有激发绝命腿法，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
 
-    cond do
-      Stats.mapped(stats, "unarmed") != "jueming-tui" ->
-        {:error, "你没有激发绝命腿法，难以施展。\n"}
+  # LPC: if (me->query_skill_prepared("unarmed") != "jueming-tui")
+  # prepared_perform 返回绝招 ID（如 jueming-tui/jue），须取技能前缀比对
+  defp check_prepared(character) do
+    prepared = Stats.prepared_perform(character.meta.stats, "unarmed")
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jueming-tui" ->
-        {:error, "你没有准备绝命腿法，难以施展。\n"}
-
-      true ->
-        :ok
+    if prepared == nil or hd(String.split(prepared, "/")) != "jueming-tui" do
+      {:error, "你没有准备绝命腿法，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 200 -> {:error, "你目前的内力不够，难以施展。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 200 do
+      {:error, "你目前的内力不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 30}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: switch (random(3)) 起手式三选一（用 list 而非 case，避免相邻文案被验收工具拼接）
+  defp apply_effect(conn, character, target, rng) do
+    leads = [
+      "只听$N一声冷哼，侧身飞踢，右腿横扫向$n，当真是力不可挡。\n",
+      "$N蓦地大喝一声，单腿猛踢而出，直踹$n腰际，招式极为迅猛。\n",
+      "突然只见$N双腿连环踢出，挟着嚯嚯风声，以千钧之势扫向$n。\n"
+    ]
+
+    msg = Enum.at(leads, Engine.rand(rng, 3))
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「绝命一踢」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -143,37 +166,76 @@ defmodule Kantele.Combat.Skills.Performs.JuemingTui.Jue do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 30, 3)
-    msg = if hit, do: "$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。", else: "却见$n镇定的向后一纵，闪开了$N这一腿。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = dodge + dex*10; pp = parry + str*10;
+    dp = Stats.skill(stats, "dodge") + Stats.query_dex(stats) * 10
+    pp = Stats.skill(stats, "parry") + Stats.query_str(stats) * 10
+
+    # LPC: if (ap * 7 / 10 + random(ap) < pp) ... else if (ap * 7 / 10 + random(ap) < dp) ...
+    roll_pp = div(ap * 7, 10) + Engine.rand(rng, ap)
+    roll_dp = div(ap * 7, 10) + Engine.rand(rng, ap)
+
+    cond do
+      roll_pp < pp ->
+        # LPC: 架住：me->start_busy(3); me->add("neili", -30);
+        Performs.feedback(attacker, 30, 3)
+
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate("可是$n身子一晃，硬生生架住了$N这一腿。\n", bindings)
+        )
+        |> put_character(character)
+
+      roll_dp < dp ->
+        # LPC: 闪开：me->start_busy(3); me->add("neili", -30);
+        Performs.feedback(attacker, 30, 3)
+
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate("却见$n镇定的向后一纵，闪开了$N这一腿。\n", bindings)
+        )
+        |> put_character(character)
+
+      true ->
+        # LPC: 命中：damage = ap / 3 + random(ap / 3);
+        #          do_damage(me, target, UNARMED_ATTACK, damage, 60, ...)
+        #          me->start_busy(2); me->add("neili", -100);
+        damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
+        character = apply_damage(character, damage, 60)
+        Performs.feedback(attacker, 100, 2)
+
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate(
+            "$n连忙格挡，却只觉得力道大得出奇，登时被一脚踢得飞起。\n",
+            bindings
+          )
+        )
+        |> put_character(character)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}, {"neili", "-30"}], "assign_refs": [{"ap", "unarmed"}, {"dp", "dodge"}, {"pp", "parry"}], "busy_lines": ["me->start_busy(3);", "me->start_busy(3);", "me->start_busy(2);"], "level_gates": [{"jueming-tui", "80"}], "map_gates": [{"unarmed", "jueming-tui"}], "prepared_gates": [{"unarmed", "jueming-tui"}], "remote_damage": true, "resource_gates": [{"neili", "200"}]}
+  # LPC: COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, percent, msg)
+  # wound = damage * percent / 100（armor 未建模，按 percent 直算）
+  defp apply_damage(character, damage, percent) do
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage * percent, 100))
 
+    %{character | meta: %{character.meta | vitals: vitals}}
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

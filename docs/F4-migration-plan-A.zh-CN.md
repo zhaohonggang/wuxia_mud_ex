@@ -479,7 +479,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jueming_tui/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `jueming_tui/jue.ex` ← `jueming-tui/jue.c`  (miss=8)
+- [x] ✅ `jueming_tui/jue.ex` ← `jueming-tui/jue.c`  (miss→0，PASS)
 
 ### `jueqing_zhang/` （2 个，基线缺失 13 条）
 

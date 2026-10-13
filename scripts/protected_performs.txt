@@ -242,6 +242,7 @@ jiuyin_shengong/zhang.ex
 jiuyin_shengong/zhen.ex
 jiuyin_shengong/zhi.ex
 jiuyin_shengong/zhua.ex
+jueming_tui/jue.ex
 jueqing_jian/liu.ex
 kuangfeng_jian/sao.ex
 kuimang_dao/pan.ex
