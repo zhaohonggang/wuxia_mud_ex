@@ -109,7 +109,7 @@ def main() -> int:
         lines.append("| " + " | ".join(row) + " |")
     lines.append("")
 
-    OUT.write_text("\n".join(lines), encoding="utf-8")
+    OUT.write_bytes("\n".join(lines).encode("utf-8"))
     print(f"wrote {OUT} : PASS={len(passed)} FAIL={len(failed)} MISSING={missing_total}")
     return 0
 
