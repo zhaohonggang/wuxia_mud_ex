@@ -1,25 +1,32 @@
 defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
   @moduledoc """
-  perform「风起云涌」（source kuangfeng-jian/yong.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「风起云涌」（source kuangfeng-jian/yong.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已知此招 → 目标为战斗中的对手 → 装备剑类武器 →
+  基本轻功>=140 → 狂风快剑>=140 → 激发 sword 为狂风快剑 → 内力>=250 →
+  目标存活（.c 无准备门槛）。
+  ap = 剑法 + 轻功；dp = 目标招架 + 目标轻功。
+  命中判定：ap/2 + random(ap) > dp。
+  命中：伤害 = ap + random(ap/2)、65+random(6)% 外伤，扣 230 内力、忙乱 2；
+  未命中：扣 120 内力、忙乱 2。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Vitals
 
   @perform_id "kuangfeng-jian/yong"
+  @move_name "「风起云涌」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,25 +36,33 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuangfeng-jian")
-    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "dodge"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "dodge")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
+      weapon_name = Map.get(weapon, :name)
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          # 命中文案含 weapon->name()（攻击方武器名），经事件数据传给目标侧
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, weapon_name)
     else
       {:error, message} ->
         conn
@@ -64,73 +79,80 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
-      :ok
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")) ||
+  #              (string)weapon->query("skill_type") != "sword")
+  # 武器结构体字段是 :skill_type（非 LPC 的 query("skill_type")）
+  defp check_weapon(combat) do
+    case Combat.weapon(combat) do
+      %{skill_type: "sword"} = weapon -> {:ok, weapon}
+      _ -> {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  # LPC: if (me->query_skill("dodge", 1) < 140) / if (me->query_skill("kuangfeng-jian", 1) < 140)
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "dodge") < 140 -> {:error, "你的基本轻功的修为不够，难以施展。\n"}
-      Stats.skill(stats, "kuangfeng-jian") < 140 -> {:error, "你的狂风快剑修为不够，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "dodge") < 140 ->
+        {:error, "你的基本轻功的修为不够，难以施展#{@move_name}。\n"}
+
+      Stats.skill(stats, "kuangfeng-jian") < 140 ->
+        {:error, "你的狂风快剑修为不够，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("sword") != "kuangfeng-jian")
   defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "sword") != "kuangfeng-jian" -> {:error, "你没有激发狂风快剑，难以施展。\n"}
-      true -> :ok
+    if Stats.mapped(character.meta.stats, "sword") != "kuangfeng-jian" do
+      {:error, "你没有激发狂风快剑，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
+  # LPC: if (me->query("neili") < 250)
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 250 -> {:error, "你现在真气不够，难以施展。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 250 do
+      {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
-      true -> :ok
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 120}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝神聚气，运转手中某物，刹那间犹如狂风骤起，风声萧萧，某物猛地卷向$n。", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: msg = HIW "$N" HIW "凝神聚气，运转手中" + weapon->name() + HIW "，刹那间犹如"
+  #               "狂风骤起，风声萧萧，" + weapon->name() + HIW "猛地卷向$n" HIW "。\n" NOR;
+  # 两处 weapon->name() 把文案拆成三段字面量，E 侧用 <> weapon_name <> 保持拆分
+  defp apply_effect(conn, character, target, weapon_name) do
+    msg =
+      "$N凝神聚气，运转手中" <> weapon_name <>
+        "，刹那间犹如狂风骤起，风声萧萧，" <> weapon_name <> "猛地卷向$n。\n"
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「风起云涌」只能在战斗中对对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -140,37 +162,62 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Yong do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 120, 2)
-    msg = if hit, do: "$n看得目瞪口呆，只觉一阵狂风吹过，某物却已透胸而过。", else: "可是$n微微一笑，轻轻格躲开了$N的剑招。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = target->query_skill("parry") + target->query_skill("dodge");
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "dodge")
+
+    # LPC: if (ap / 2 + random(ap) > dp)
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: damage = ap + random(ap / 2);
+      #          do_damage(me, target, WEAPON_ATTACK, damage, 65 + random(6), …);
+      #          me->add("neili", -230); me->start_busy(2);
+      damage = ap + Engine.rand(rng, div(ap, 2))
+      percent = 65 + Engine.rand(rng, 6)
+      character = apply_damage(character, damage, percent)
+      Performs.feedback(attacker, 230, 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "$n看得目瞪口呆，只觉一阵狂风吹过，" <> weapon_name <> "却已透胸而过。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: me->add("neili", -120); me->start_busy(2);
+      Performs.feedback(attacker, 120, 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate("可是$n微微一笑，轻轻格躲开了$N的剑招。\n", bindings)
+      )
+      |> put_character(character)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-120"}], "assign_refs": [{"ap", "sword"}, {"dp", "parry"}], "busy_lines": ["me->start_busy(2);", "me->start_busy(2);"], "level_gates": [{"dodge", "140"}, {"kuangfeng-jian", "140"}], "map_gates": [{"sword", "kuangfeng-jian"}], "remote_damage": true, "resource_gates": [{"neili", "250"}]}
+  # LPC: COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, percent, msg)
+  # wound = damage * percent / 100（armor 未建模，按 percent 直算）
+  defp apply_damage(character, damage, percent) do
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage * percent, 100))
 
+    %{character | meta: %{character.meta | vitals: vitals}}
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

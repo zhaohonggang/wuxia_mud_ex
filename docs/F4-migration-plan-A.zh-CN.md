@@ -497,7 +497,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `kuangfeng_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `kuangfeng_jian/yong.ex` ← `kuangfeng-jian/yong.c`  (miss=10)
+- [x] ✅ `kuangfeng_jian/yong.ex` ← `kuangfeng-jian/yong.c`  (miss→0，PASS)
 
 ### `kuihua_mogong/` （8 个，基线缺失 67 条）
 

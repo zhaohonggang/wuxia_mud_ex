@@ -4,10 +4,10 @@
 
 ## 背景
 
-`scripts/protected_performs.txt` 当前共 **382** 条受保护 perform。
+`scripts/protected_performs.txt` 当前共 **383** 条受保护 perform。
 用**严格判据**（`.ex` 代码内中文文案 vs `.c` 代码内中文文案，**逐条字面一致，不做模糊等价**）复核：
 
-- **PASS = 223**，**FAIL = 159**，MISSING 合计 **1482** 条。
+- **PASS = 224**，**FAIL = 159**，MISSING 合计 **1482** 条。
 - 判据 = `check_one`：`Counter(norm(src)) - Counter(norm(tgt))` 为空才 PASS（MISSING 必须为空；EXTRA 不判错）。
 - 本计划**独立于 A/B 号计划**，可并行执行；A/B 只处理非受保护文件。
 
@@ -168,6 +168,7 @@
 - `kongming_quan/kong.ex`
 - `kongming_quan/ruo.ex`
 - `kuangfeng_blade/kuang.ex`
+- `kuangfeng_jian/yong.ex`
 - `qishang_quan/shang.ex`
 - `qixian_wuxingjian/shan.ex`
 - `qixian_wuxingjian/yin.ex`

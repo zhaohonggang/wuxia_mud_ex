@@ -250,6 +250,7 @@ kongming_quan/kong.ex
 kongming_quan/ruo.ex
 kuangfeng_blade/kuang.ex
 kuangfeng_jian/sao.ex
+kuangfeng_jian/yong.ex
 kuimang_dao/pan.ex
 kunlun_qifa/liu.ex
 lingbo_weibu/ling.ex
