@@ -1,25 +1,32 @@
 defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
   @moduledoc """
-  perform「魂飞魄散」（source jueqing-zhang/hun.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「魂飞魄散」（source jueqing-zhang/hun.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已知此招 → 目标为战斗中的对手 → 空手（主副兵器均不可）→
+  绝情掌>=140 → 激发 strike 为绝情掌 → 准备 strike 为绝情掌 → 内功>=180 →
+  内力>=300 → 目标存活。
+  ap = 拳脚（strike）；dp = 目标招架（parry）。
+  命中判定：ap/2 + random(ap) > dp。
+  命中：伤害 = 绝情掌等级 + random(等级)、60% 外伤，扣 200 内力、忙乱 3；
+  未命中：扣 100 内力、忙乱 4。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Vitals
 
   @perform_id "jueqing-zhang/hun"
+  @move_name "「魂飞魄散」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -32,12 +39,19 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     ap = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -45,7 +59,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -62,81 +76,92 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
+  #          return notify_fail(HUN "只能空手施展。\n");
+  # 框架无副兵器槽，仅检查主兵器
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
 
+  # LPC: if (me->query_skill("jueqing-zhang", 1) < 140) …
+  #     if (me->query_skill("force") < 180) …
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "jueqing-zhang") < 140 -> {:error, "你绝情掌不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展。\n"}
-      true -> :ok
-    end
-  end
+      Stats.skill(stats, "jueqing-zhang") < 140 ->
+        {:error, "你绝情掌不够娴熟，难以施展#{@move_name}。\n"}
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "strike") != "jueqing-zhang" ->
-        {:error, "你没有激发绝情掌，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "jueqing-zhang" ->
-        {:error, "你没有准备绝情掌，难以施展。\n"}
+      Stats.skill(stats, "force") < 180 ->
+        {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("strike") != "jueqing-zhang")
+  defp check_mapped(character) do
+    if Stats.mapped(character.meta.stats, "strike") != "jueqing-zhang" do
+      {:error, "你没有激发绝情掌，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (me->query_skill_prepared("strike") != "jueqing-zhang")
+  # prepared_perform 返回绝招 ID（如 jueqing-zhang/hun），须取技能前缀比对
+  defp check_prepared(character) do
+    prepared = Stats.prepared_perform(character.meta.stats, "strike")
+
+    if prepared == nil or hd(String.split(prepared, "/")) != "jueqing-zhang" do
+      {:error, "你没有准备绝情掌，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query("neili") < 300)
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 300 do
+      {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 200}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转真气，将内力注于掌风之中，双掌猛然拍向$n，掌风凌厉无比，气势凌人，直可惊天地，泣鬼神，正是绝情谷绝学「魂飞魄散」。", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: msg = HIC "\n$N" HIC "运转真气，……正是绝情谷绝学「魂飞魄散」。\n" NOR;
+  # （C 侧各段字面量仅由颜色宏/空白分隔，合并为同一条文案）
+  defp apply_effect(conn, character, target) do
+    msg =
+      "\n$N运转真气，将内力注于掌风之中，双掌猛然拍向$n，掌风凌厉无比，气势凌人，直可惊天地，泣鬼神，正是绝情谷绝学「魂飞魄散」。\n"
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「魂飞魄散」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -146,37 +171,64 @@ defmodule Kantele.Combat.Skills.Performs.JueqingZhang.Hun do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    lvl = Map.get(data, :level, 0)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 4)
-    msg = if hit, do: "但见$N双掌拍来，掌风作响，当真气势凌人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。", else: "$n见$N这掌拍来，内力充盈，气势凌人，只得奋力向后一纵，才躲过这一掌。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = target->query_skill("parry");
+    dp = Stats.skill(stats, "parry")
+
+    # LPC: if (ap / 2 + random(ap) > dp)
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: damage = me->query_skill("jueqing-zhang", 1); damage += random(damage);
+      #          COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 60, …);
+      damage = lvl + Engine.rand(rng, lvl)
+      character = apply_damage(character, damage, 60)
+      # LPC: me->start_busy(3); me->add("neili", -200);
+      Performs.feedback(attacker, 200, 3)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "但见$N双掌拍来，掌风作响，当真气势凌人。$n顿觉心惊胆战，毫无招架之力，微迟疑间$N这掌已正中$n胸口，顿将$p震退数步。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: me->start_busy(4); me->add("neili", -100);
+      Performs.feedback(attacker, 100, 4)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "$n见$N这掌拍来，内力充盈，气势凌人，只得奋力向后一纵，才躲过这一掌。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}, {"neili", "-200"}], "assign_refs": [{"ap", "strike"}, {"damage", "jueqing-zhang"}, {"dp", "parry"}], "busy_lines": ["me->start_busy(3);", "me->start_busy(4);"], "level_gates": [{"force", "180"}, {"jueqing-zhang", "140"}], "map_gates": [{"strike", "jueqing-zhang"}], "prepared_gates": [{"strike", "jueqing-zhang"}], "remote_damage": true, "resource_gates": [{"neili", "300"}]}
+  # LPC: COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, percent, msg)
+  # wound = damage * percent / 100（armor 未建模，按 percent 直算）
+  defp apply_damage(character, damage, percent) do
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage * percent, 100))
 
+    %{character | meta: %{character.meta | vitals: vitals}}
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

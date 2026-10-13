@@ -483,8 +483,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jueqing_zhang/` （2 个，基线缺失 13 条）
 
-- [ ] ❌ `jueqing_zhang/hun.ex` ← `jueqing-zhang/hun.c`  (miss=6)
-- [ ] ❌ `jueqing_zhang/wan.ex` ← `jueqing-zhang/wan.c`  (miss=7)
+- [x] ✅ `jueqing_zhang/hun.ex` ← `jueqing-zhang/hun.c`  (miss→0，PASS)
+- [x] ✅ `jueqing_zhang/wan.ex` ← `jueqing-zhang/wan.c`  (miss→0，PASS)
 
 ### `kongming_quan/` （2 个，基线缺失 15 条）
 
