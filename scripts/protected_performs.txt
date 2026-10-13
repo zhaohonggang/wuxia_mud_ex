@@ -246,6 +246,8 @@ jueming_tui/jue.ex
 jueqing_jian/liu.ex
 jueqing_zhang/hun.ex
 jueqing_zhang/wan.ex
+kongming_quan/kong.ex
+kongming_quan/ruo.ex
 kuangfeng_jian/sao.ex
 kuimang_dao/pan.ex
 kunlun_qifa/liu.ex

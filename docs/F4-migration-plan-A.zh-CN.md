@@ -488,8 +488,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `kongming_quan/` （2 个，基线缺失 15 条）
 
-- [ ] ❌ `kongming_quan/kong.ex` ← `kongming-quan/kong.c`  (miss=7)
-- [ ] ❌ `kongming_quan/ruo.ex` ← `kongming-quan/ruo.c`  (miss=8)
+- [x] ✅ `kongming_quan/kong.ex` ← `kongming-quan/kong.c`  (miss→0，PASS)
+- [x] ✅ `kongming_quan/ruo.ex` ← `kongming-quan/ruo.c`  (miss→0，PASS)
 
 ### `kuangfeng_blade/` （1 个，基线缺失 1 条）
 
