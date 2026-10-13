@@ -15,11 +15,11 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "shenzhaojing/wu"
+  @move_name "「无影拳舞」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenzhaojing")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -62,7 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC: 等级/激发/准备/资源/空手 门槛
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的神照经神功火候不够，无法施展。\n"}
-      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的基本拳脚火候不够，无法施展。\n"}
+      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的神照经神功火候不够，无法施展#{@move_name}。\n"}
+      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的基本拳脚火候不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -87,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
 
     cond do
       Stats.mapped(stats, "unarmed") != "shenzhaojing" ->
-        {:error, "你没有激发神照经神功为拳脚，无法施展。\n"}
+        {:error, "你没有激发神照经神功为拳脚，无法施展#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "shenzhaojing" ->
-        {:error, "你现在没有准备使用神照经神功，无法施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          Stats.prepared_perform(stats, "unarmed") |> String.split("/") |> hd() != "shenzhaojing" ->
+        {:error, "你现在没有准备使用神照经神功，无法施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -101,8 +104,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展#{@move_name}。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -111,7 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -149,15 +152,23 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Wu do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(character.meta.stats, "force")
+
+    # LPC: if (ap / 2 + random(ap) > dp) ... else ...
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+    msg =
+      if hit do
+        "$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。"
+      else
+        "$n微一凝神，面对$N这排山倒海的攻势却丝毫不乱，小心招架。"
+      end
+
     Performs.feedback(attacker, 200, 1)
-    msg = "$n面对$N这排山倒海的攻势，不禁心生惧意，慌乱中破绽迭出。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

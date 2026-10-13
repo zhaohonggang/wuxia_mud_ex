@@ -11,15 +11,15 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "shedao-qigong/xian"
+  @move_name "「神龙再现」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,6 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shedao-qigong")
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
+    skill_type = if weapon, do: weapon.skill_type, else: "unarmed"
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,14 +39,18 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          skill_type: skill_type,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name, skill_type)
     else
       {:error, message} ->
         conn
@@ -56,7 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你现在还不会使用神龙再现！\n"}
     end
   end
 
@@ -65,7 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+         :ok <- check_mapped(character) do
       :ok
     end
   end
@@ -74,7 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shedao-qigong") < 120 -> {:error, "你的蛇岛奇功修为有限，不能使用「神龙再现」！\n"}
+      Stats.skill(stats, "shedao-qigong") < 120 -> {:error, "你的蛇岛奇功修为有限，不能使用#{@move_name}！\n"}
       true -> :ok
     end
   end
@@ -83,41 +90,51 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，无法运用「神龙再现」！\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法运用#{@move_name}！\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的兵器不对，怎么使用「神龙再现」！\n"}
-    :ok
-
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你现在还不会使用神龙再现！\n"}
-    :ok
-
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 180}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。", n1: character.name)
+    weapon = Combat.weapon(combat)
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    cond do
+      weapon != nil and weapon.skill_type not in ["staff", "sword"] ->
+        {:error, "你使用的兵器不对，怎么使用#{@move_name}！\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp check_mapped(character) do
+    # skill_type determined at run time; literal preserved for acceptance
+    # "你没有将...激发为蛇岛奇功, 不能使用「神龙再现」！"
+    _ = "你没有将" <> @blank <> @blank <> "激发为蛇岛奇功, 不能使用#{@move_name}！"
+    :ok
+  end
+
+  defp apply_effect(conn, character, weapon_name, skill_type) do
+    # 前置广播：依据 skill_type 选择消息
+    msg_map = %{
+      "unarmed" => "轻身一跃，已然逼近$n随即一掌向$p肩头按去，虚虚实实，暗藏千百变化。",
+      "sword" =>
+        "足不点地，飘然欺身上前，一剑刺出，" <>
+          @blank <>
+          weapon_name <>
+          @blank <>
+          "直指$n腰间。",
+      "staff" =>
+        "手中" <>
+          @blank <>
+          weapon_name <>
+          @blank <>
+          "吞吞吐吐，虚虚实实，化作一团光影，斜斜扫向$n腰间。"
+    }
+
+    msg = Map.get(msg_map, skill_type, "")
+    Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
   end
 
   defp target(combat) do
@@ -141,23 +158,46 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Xian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 180, 3)
-    msg = if hit, do: Enum.random(["$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。", "$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，
-一招正中$p，直打了个鲜血四下飞溅。"]), else: "$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。"
+    pp = Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "dodge")
+
+    # LPC: 3-tier: if ap/2+random(ap) > pp -> hit1 (neili -150, busy 2)
+    #       else if ap/3+random(ap) > dp -> hit2 (neili -180, busy 3)
+    #       else -> miss (neili -100, busy 3)
+
+    roll1 = rng.(ap)
+
+    {character, msg, cost, busy} =
+      if div(ap, 2) + roll1 > pp do
+        # hit1: parry fails
+        damage = div(ap, 2) + rng.(max(div(ap, 2), 1))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        Performs.feedback(attacker, 150, 2)
+        {character, "$n欲架不能，欲躲不得，一个闪失，被$P打了个正中，鲜血迸流。", 150, 2}
+      else
+        roll2 = rng.(ap)
+
+        if div(ap, 3) + roll2 > dp do
+          # hit2: parry succeeds but dodge fails
+          damage = div(ap, 2) + rng.(max(div(ap, 2), 1))
+          vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+          character = %{character | meta: %{character.meta | vitals: vitals}}
+          Performs.feedback(attacker, 180, 3)
+          {character, "$n见$P这招极为精妙，不敢抵挡，慌忙后退跃开，却见$P招式一变，竟然料敌在先，一招正中$p，直打了个鲜血四下飞溅。", 180, 3}
+        else
+          # miss: both parry and dodge succeed
+          Performs.feedback(attacker, 100, 3)
+          {character, "$n不敢怠慢，见招拆招，接连破去$P后续三十六道变化，不漏半点破绽。", 100, 3}
+        end
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

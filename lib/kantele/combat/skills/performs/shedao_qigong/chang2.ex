@@ -11,39 +11,23 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "shedao-qigong/chang2"
+  @move_name "「唱仙法」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
-    combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shedao-qigong")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
-          rng: rng
-        }
-      })
-
-      apply_effect(conn, character)
+         :ok <- check_gates(character) do
+      apply_effect(conn, character, rng)
     else
       {:error, message} ->
         conn
@@ -63,8 +47,8 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character) do
+         :ok <- check_fighting(character),
+         :ok <- check_chang_limit(character) do
       :ok
     end
   end
@@ -78,91 +62,84 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Chang2 do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
-  defp check_state(character) do
+  defp check_fighting(character) do
     combat = character.meta.combat
 
-    cond do
-      Combat.fighting?(combat) -> {:error, "唱仙法只能在战斗中使用。\n"}
-      true -> :ok
+    if Combat.fighting?(combat) do
+      :ok
+    else
+      {:error, "唱仙法只能在战斗中使用。\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp check_chang_limit(character) do
+    # LPC: query_temp("chang") <= -20
+    chang = Map.get(character.meta.temp, "chang", 0)
+
+    if chang <= -20 do
+      {:error, "你已经唱得太久了，不能再唱了。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp apply_effect(conn, character, _rng) do
+    # LPC: neili +100; attack/dodge/defense -1; chang -1; broadcast
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili + 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
     combat = character.meta.combat
     combat = Combat.apply_temp(combat, %{attack: -1, defense: -1, dodge: -1})
+
+    combat =
+      Map.update(combat, :temp, %{}, fn temp ->
+        Map.update(temp, "chang", 0, &(&1 - 1))
+      end)
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    Broadcast.publish(conn, "只听$N口中念念有词，顷刻之间内力大涨！", n1: character.name)
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
-    end
-  end
-
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
-
-  @impl true
-  def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
-  end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "100"}], "apply_adds": ["attack", "defense", "dodge"], "level_gates": [{"shedao-qigong", "80"}], "remote_damage": false}
-
-  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
-  # // 唱仙法
-  # 
-  # #include <ansi.h>
-  # 
-  # int perform(object me)
-  # {
-  # //    int skill;
-  # //    string msg;
-  # 
-  #     if (! me->is_fighting())
-  #         return notify_fail("唱仙法只能在战斗中使用。\n");
-  # 
-  #     if ((int)me->query_skill("shedao-qigong", 1) < 80)
-  #         return notify_fail("你的蛇岛奇功不够娴熟，不会使用唱仙法。\n");
-  # 
-  #     if ((int)me->query_temp("chang") <= -20)
-  #         return notify_fail("你已经唱得太久了，不能再唱了。\n");
-  # 
-  #     message_combatd(HIR "只听$N" HIR "口中念念有词，顷刻"
-  #                         "之间内力大涨！\n" NOR, me);
-  #     me->add_temp("apply/attack", -1);
-  #     me->add_temp("apply/dodge", -1);
-  #     me->add_temp("apply/defense", -1);
-  #     me->add_temp("chang", -1);
-  #     me->add("neili", 100);
-  # 
-  #     return 1;
-  # }
 end
+
+# TODO(migrate) 原始抽取事实（供核对；完成后删除）：
+#   %{"add_costs": [{"neili", "100"}], "apply_adds": ["attack", "defense", "dodge"], "level_gates": [{"shedao-qigong", "80"}], "remote_damage": false}
+
+# ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
+# // 唱仙法
+# 
+# #include <ansi.h>
+# 
+# int perform(object me)
+# {
+# //    int skill;
+# //    string msg;
+# 
+#     if (! me->is_fighting())
+#         return notify_fail("唱仙法只能在战斗中使用。\n");
+# 
+#     if ((int)me->query_skill("shedao-qigong", 1) < 80)
+#         return notify_fail("你的蛇岛奇功不够娴熟，不会使用唱仙法。\n");
+# 
+#     if ((int)me->query_temp("chang") <= -20)
+#         return notify_fail("你已经唱得太久了，不能再唱了。\n");
+# 
+#     message_combatd(HIR "只听$N" HIR "口中念念有词，顷刻"
+#                         "之间内力大涨！\n" NOR, me);
+#     me->add_temp("apply/attack", -1);
+#     me->add_temp("apply/dodge", -1);
+#     me->add_temp("apply/defense", -1);
+#     me->add_temp("chang", -1);
+#     me->add("neili", 100);
+# 
+#     return 1;
+# }

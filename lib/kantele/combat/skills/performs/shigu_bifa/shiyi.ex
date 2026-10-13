@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
   alias Kantele.Combat.Performs
 
   @perform_id "shigu-bifa/shiyi"
+  @move_name "「诗意纵横」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +30,6 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shigu-bifa")
-    skill = Stats.skill(stats, "shigu-bifa")
-    i = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,14 +37,16 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -62,7 +63,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC: 等级/激发/资源/武器 门槛
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -76,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的石鼓打穴笔法修为有限，难以施展。\n"}
-      Stats.skill(stats, "shigu-bifa") < 120 -> {:error, "你现在的真气不足，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "shigu-bifa") < 120 -> {:error, "你的石鼓打穴笔法修为有限，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -86,8 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "shigu-bifa" -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.mapped(stats, "dagger") != "shigu-bifa" ->
+        {:error, "你没有激发石鼓打穴笔法，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -95,28 +99,36 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你没有激发石鼓打穴笔法，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
+  # LPC: if (!objectp(weapon) || weapon->skill_type != "dagger")
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "dagger" -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N纵步上前，手中某物大开大合，招数连绵不绝，荡气回肠，瞬间向$n攻出数招！", n1: character.name)
+
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
+
+    # LPC: msg = ... "手中" + weapon->name() + "大开大合，招数连绵不绝，荡气回肠，瞬间向$n攻出数招！"
+    msg =
+      "纵步上前，手中" <>
+        weapon_name <> "大开大合，招数连绵不绝，荡气回肠，瞬间向$n攻出数招！"
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, n1: character.name, n2: target.name))
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -151,6 +163,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Shiyi do
     Performs.feedback(attacker, 80, 1)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

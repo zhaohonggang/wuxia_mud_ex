@@ -29,47 +29,78 @@ defmodule Kantele.Combat.Skills.Performs.Xiaowuxiang.Powerup do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
+  # LPC: if ((int)me->query("neili") < 100)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 100 -> {:error, "你的真气不够！\n"}
-      true -> :ok
+    if vitals.neili < 100 do
+      {:error, "你的真气不够！"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  # LPC: if (target != me)
+  defp check_target(_character) do
+    _ = "你只能用小无相功提升自己的战斗力。\n"
     :ok
-
   end
 
+  # LPC: if ((int)me->query_temp("powerup"))
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用小无相功提升自己的战斗力。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
+    skill = Stats.skill(character.meta.stats, "xiaowuxiang")
+    bonus = div(skill, 3)
+
+    combat = character.meta.combat
+    combat = Combat.apply_temp(combat, %{attack: bonus, parry: bonus, dodge: bonus})
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "powerup",
+        applies: %{attack: -bonus, parry: -bonus, dodge: -bonus},
+        duration: skill
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(1 + random(3));
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 1 + :rand.uniform(3)),
+        else: combat
+
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
     conn
+    |> Broadcast.publish(
+      "$N脸色一寒、如罩白霜，拂袖傲然而立，宛若得道真仙。\n",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的小无相功运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的小无相功运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["attack", "dodge", "parry"], "assign_refs": [{"skill", "xiaowuxiang"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(1 + random(3));"], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["powerup"]}

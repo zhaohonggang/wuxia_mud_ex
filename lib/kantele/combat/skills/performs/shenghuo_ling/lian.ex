@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
   alias Kantele.Combat.Performs
 
   @perform_id "shenghuo-ling/lian"
+  @move_name "「敛心令」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,8 +31,10 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenghuo-ling")
     skill = Stats.skill(stats, "shenghuo-ling")
-    damage = (div(skill, 2) + Engine.rand(rng, skill))
+    damage = div(skill, 2) + Engine.rand(rng, skill)
     ap = Stats.skill(stats, "sword")
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && weapon.name) || ""
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +42,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -48,7 +53,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name, target)
     else
       {:error, message} ->
         conn
@@ -79,8 +84,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenghuo-ling") < 150 -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之。\n"}
-      true -> :ok
+      Stats.skill(stats, "shenghuo-ling") < 150 ->
+        {:error, "你的圣火令法等级不够, 不能使用圣火令法之#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -88,8 +96,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shenghuo-ling" -> {:error, "你没有激发圣火令法，不能使用圣火令法之。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "shenghuo-ling" ->
+        {:error, "你没有激发圣火令法，不能使用圣火令法之#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -97,22 +108,23 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1600 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
-      vitals.neili < 350 -> {:error, "你的内力不够，不能使用圣火令法之。\n"}
+      vitals.max_neili < 1600 -> {:error, "你的内力修为不足，不能使用圣火令法之#{@move_name}。\n"}
+      vitals.neili < 350 -> {:error, "你的内力不够，不能使用圣火令法之#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
+      weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之#{@move_name}。\n"}
+      weapon.skill_type != "sword" -> {:error, "你使用的兵器不对，不能使用圣火令法之#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, weapon_name, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
@@ -122,7 +134,15 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中某物忽伸忽缩，招式诡异无比。", n1: character.name)
+
+    # LPC: 相邻字面量在 weapon->name() 处断开
+    # 段1: "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中"
+    # 段2: "忽伸忽缩，招式诡异无比。"
+    msg =
+      "$N一个筋斗猛翻至$n跟前，陡然使出圣火令法之敛心令，手中" <>
+        weapon_name <> "忽伸忽缩，招式诡异无比。"
+
+    conn = Broadcast.publish(conn, msg, n1: character.name, n2: target.name)
 
     conn
     |> put_character(character)
@@ -158,16 +178,25 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Lian do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
-          vitals = Vitals.wound(vitals, :jing, div(damage, 4))
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :jing, div(damage, 2))
+      vitals = Vitals.wound(vitals, :jing, div(damage, 4))
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 4)
-    msg = if hit, do: "$n被$N击中！", else: "$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。"
+
+    msg =
+      if hit do
+        "$n只见眼前寒光颤动，突然$N双手出现在自己眼前，两处太阳穴顿时一阵剧痛。"
+      else
+        "$n见眼前寒光颤动，连忙振作精神勉强抵挡，向后疾退数步，好不容易闪在了$N攻击范围之外。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -11,15 +11,15 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "shedao-qigong/fei"
+  @move_name "「飞仙术」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shedao-qigong")
-    count = div(Stats.skill(stats, "shedao-qigong"), 6)
-    i = 0
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,14 +38,17 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name)
     else
       {:error, message} ->
         conn
@@ -58,7 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你现在还不会使用飞仙术！\n"}
     end
   end
 
@@ -93,10 +96,14 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
 
   defp check_weapon(character) do
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你必须持剑或杖才能施展蛇岛飞仙术！\n"}
-      true -> :ok
+      weapon == nil or (weapon.skill_type != "sword" and weapon.skill_type != "staff") ->
+        {:error, "你必须持剑或杖才能施展蛇岛飞仙术！\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -104,19 +111,18 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你现在还不会使用飞仙术！\n"}
     :ok
-
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N怪叫一声，手中的某物一晃，化作数道光影飞向$n！", n1: character.name)
+  defp apply_effect(conn, character, weapon_name) do
+    # 前置广播：随机 3 种消息之一，neili 消耗 / start_busy / do_attack 次数交由 do_resolve
+    msg_map = %{
+      0 => "怪叫一声，手中的" <> @blank <> weapon_name <> @blank <> "一晃，化作数道光影飞向$n！",
+      1 => "口中念念有词，手中的" <> @blank <> weapon_name <> @blank <> "越使越快，渐渐形成一团光芒，笼罩了$n！",
+      2 => "怪笑两声，欺身近来，步法极其怪异，手中的" <> @blank <> weapon_name <> @blank <> "忽然击出，一连数招逼向$n！"
+    }
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    msg = Map.get(msg_map, :rand.uniform(3) - 1, "")
+    Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
   end
 
   defp target(combat) do
@@ -140,17 +146,37 @@ defmodule Kantele.Combat.Skills.Performs.ShedaoQigong.Fei do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 100, 1)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    lvl = Map.get(data, :level, 0)
+    count = div(lvl, 6)
+
+    # LPC: 5 次 do_attack；若随机命中则 target start_busy(1)；攻击方 neili -100, busy 1+random(5)
+    damage =
+      Enum.reduce(1..5, 0, fn _, damage_acc ->
+        ap = Map.get(data, :ap, Stats.skill(character.meta.stats, "sword"))
+
+        dp =
+          Stats.skill(character.meta.stats, "dodge") + Stats.skill(character.meta.stats, "parry")
+
+        if ap + rng.(ap) > dp do
+          per_hit = max(div(ap, 12), 1)
+          damage_acc + per_hit + rng.(per_hit)
+        else
+          damage_acc
+        end
+      end)
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, 100, 1 + rng.(5))
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

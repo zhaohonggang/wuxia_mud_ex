@@ -10,9 +10,12 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
   import Kalevala.Character.Conn
 
   alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
 
   @perform_id "shedu-qiqiao/da"
 
@@ -20,10 +23,29 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
+    combat = character.meta.combat
+    stats = character.meta.stats
+    rng = &:rand.uniform/1
+    lvl = Stats.skill(stats, "shedu-qiqiao")
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character) do
-      apply_effect(conn, character)
+    with :ok <- check_gates(character),
+         {:ok, target} <- target(combat) do
+      send(target.pid, %Event{
+        from_pid: self(),
+        topic: "combat/perform-incoming",
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
+          level: lvl,
+          skill: lvl,
+          weapon_name: weapon_name,
+          rng: rng
+        }
+      })
+
+      apply_effect(conn, character, weapon_name, target)
     else
       {:error, message} ->
         conn
@@ -32,19 +54,23 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "你要打哪条蛇？\n"}
     end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_snake(character),
+         :ok <- check_living(character) do
       :ok
     end
   end
@@ -68,33 +94,96 @@ defmodule Kantele.Combat.Skills.Performs.SheduQiqiao.Da do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你要打哪条蛇？\n"}
-    #   {:error, "看清楚些，那不是蛇，你瞎打什么？\n"}
-    :ok
-
+  defp check_snake(character) do
+    if snake?(character) do
+      :ok
+    else
+      {:error, "看清楚些，那不是蛇，你瞎打什么？\n"}
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N舞动手中的某物，朝着某人的七寸打了过去。", n1: character.name)
+  defp check_living(character) do
+    if dead?(character) do
+      {:error, "那条蛇暂时不会动弹了，你不必再打了。\n"}
+    else
+      :ok
+    end
+  end
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}) when dead == true, do: true
+  defp dead?(_), do: false
+
+  defp snake?(_character), do: true
+
+  defp apply_effect(conn, character, weapon_name, target) do
+    # 前置广播：依据是否有武器选择消息
+    msg =
+      if weapon_name != "" do
+        "舞动手中的" <> weapon_name <> "，朝着" <> target.name <> "的七寸打了过去。"
+      else
+        "伸出双指，出指如风，迅疾无比的朝着" <> target.name <> "的七寸点了过去。"
+      end
+
+    Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-50"}], "assign_refs": [{"lvl", "force"}, {"lvl", "shedu-qiqiao"}], "busy_lines": ["me->start_busy(2);"], "level_gates": [{"force", "30"}, {"shedu-qiqiao", "20"}], "remote_damage": false, "resource_gates": [{"neili", "100"}]}
 
-  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
+  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
+  #   %{"add_costs": [{"neili", "-50"}], "assign_refs": [{"lvl", "force"}, {"lvl", "shedu-qiqiao"}], "busy_lines": ["me->start_busy(2);"], "level_gates": [{"force", "30"}, {"shedu-qiqiao", "20"}], "remote_damage": false, "resource_gates": [{"neili", "100"}]}
+
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    do_resolve_incoming(conn, character, attacker, data)
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    target_ce = stats.combat_exp
+
+    # LPC: lvl = (shedu-qiqiao + dodge)^3 / 10
+    # if lvl/2 + random(lvl) > target_ce -> hit
+    #   then: msg "结果只听“啪”的一声，正打在{target}的七寸上。"
+    #   then: inner check with force lvl * 13/10 cubed
+    #     if inner succeeds: "只见{target}身子轻轻晃动几下，就不再动弹了。" + unconcious
+    #     else: "哪里想到{target}挨了这一击，竟然若无其事，顿时一个翻身，直扑向{attacker}！" + kill_ob
+    # else: miss -> "然而{target}身子一闪，躲了过去。" + kill_ob
+    # neili -50, busy 2
+
+    lvl = Stats.skill(stats, "shedu-qiqiao") + Stats.skill(stats, "dodge")
+    lvl = div(lvl * lvl * lvl, 10)
+
+    hit = div(lvl, 2) + rng.(lvl) > target_ce
+
+    hit_msg = "结果只听“啪”的一声，正打在" <> character.name <> "的七寸上。"
+
+    msgs =
+      if hit do
+        force_lvl = Stats.skill(stats, "force")
+        force_lvl = div(force_lvl * 13, 10)
+        force_lvl = div(force_lvl * force_lvl * force_lvl, 10)
+
+        if div(force_lvl, 2) + rng.(force_lvl) > target_ce do
+          [hit_msg, "只见" <> character.name <> "身子轻轻晃动几下，就不再动弹了。"]
+        else
+          [hit_msg, "哪里想到" <> character.name <> "挨了这一击，竟然若无其事，顿时一个翻身，直扑向$N！"]
+        end
+      else
+        ["然而" <> character.name <> "身子一闪，躲了过去。"]
+      end
+
+    conn =
+      Enum.reduce(msgs, conn, fn msg, conn ->
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
+      end)
+
+    Performs.feedback(attacker, 50, 2)
+
+    put_character(conn, character)
+  end
+
   # #include <ansi.h>
   # #include <skill.h>
   # #include <weapon.h>

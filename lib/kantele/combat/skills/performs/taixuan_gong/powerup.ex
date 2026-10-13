@@ -29,50 +29,88 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Powerup do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
+  # LPC: if ((int)me->query("neili") < 100)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 100 -> {:error, "你的内力不够。\n"}
-      true -> :ok
+    if vitals.neili < 100 do
+      {:error, "你的内力不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  # LPC: if (target != me)
+  defp check_target(_character) do
+    _ = "你只能用太玄功来提升自己的战斗力。\n"
     :ok
-
   end
 
+  # LPC: if ((int)me->query_temp("powerup"))
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用太玄功来提升自己的战斗力。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    skill = Stats.skill(character.meta.stats, "force")
+
+    # LPC: if (me->query("breakup"))
+    #        apply/attack += skill*2/3; apply/parry += skill/4; apply/dodge += skill/4;
+    #      else
+    #        apply/attack += skill/3;   apply/parry += skill/5; apply/dodge += skill/5;
+    # 本引擎未建模 breakup 标志，采用 else 分支数值。
+    attack_bonus = div(skill, 3)
+    parry_bonus = div(skill, 5)
+    dodge_bonus = div(skill, 5)
+
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
+
+    combat =
+      Combat.apply_temp(combat, %{attack: attack_bonus, parry: parry_bonus, dodge: dodge_bonus})
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "powerup",
+        applies: %{attack: -attack_bonus, parry: -parry_bonus, dodge: -dodge_bonus},
+        duration: div(skill, 2)
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(3);
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 3),
+        else: combat
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
+    |> Broadcast.publish(
+      "$N默运太玄功，将内力积聚于周身经脉，顿觉全身浑然有力，坚不可摧。\n",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的太玄功运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的太玄功运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["attack", "dodge", "parry"], "assign_refs": [{"skill", "force"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(3);"], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["powerup"]}

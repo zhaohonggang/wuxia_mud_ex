@@ -15,11 +15,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "shenghuo-ling/xi"
+  @move_name "「吸焰令」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,8 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenghuo-ling")
-    skill = Stats.skill(stats, "shenghuo-ling")
     ap = Stats.skill(stats, "sword")
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && weapon.name) || ""
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -46,7 +49,7 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name, target)
     else
       {:error, message} ->
         conn
@@ -65,9 +68,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_target_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_living(character) do
       :ok
     end
   end
@@ -76,8 +81,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenghuo-ling") < 140 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
-      true -> :ok
+      Stats.skill(stats, "shenghuo-ling") < 140 ->
+        {:error, "你的圣火令法等级不够,不能使用圣火令法之#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -85,22 +93,44 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的真气不够，不能使用圣火令法之。\n"}
-      vitals.neili < 300 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，不能使用圣火令法之#{@move_name}。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，不能使用圣火令法之#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
+      weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之#{@move_name}。\n"}
+      weapon.skill_type != "sword" -> {:error, "你使用的兵器不对，不能使用圣火令法之#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp check_target_weapon(character) do
+    if target_armed?(character) do
+      :ok
+    else
+      {:error, "对方没有使用武器，不能使用圣火令法之#{@move_name}。\n"}
+    end
+  end
+
+  defp check_living(character) do
+    if dead?(character) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}) when dead == true, do: true
+  defp dead?(_), do: false
+
+  defp target_armed?(_character), do: true
+
+  defp apply_effect(conn, character, weapon_name, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
@@ -110,7 +140,14 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "突然$N诡异的一笑，使出圣火令法之吸焰令，手中某物幻出数个小圈，将$n的某物紧紧缠住。", n1: character.name)
+    target_weapon_name = ""
+
+    # LPC: 相邻字面量在 weapon->name() / weapon2->name() 处断开
+    msg =
+      "突然$N诡异的一笑，使出圣火令法之吸焰令，手中" <>
+        weapon_name <> "幻出数个小圈，将$n的" <> target_weapon_name <> "紧紧缠住。"
+
+    conn = Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name, n2: target.name))
 
     conn
     |> put_character(character)
@@ -138,15 +175,29 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 240, 4)
-    msg = "$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中某物已被$N纳入怀中！"
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit = ap + Engine.rand(rng, div(ap, 2)) > dp
+    target_weapon_name = ""
+
+    {msg, cost, busy} =
+      if hit do
+        # LPC: weapon2->move(me, 1)（夺取目标武器，待目标武器系统接入后补齐）
+        msg =
+          "$n只见眼前无数寒光颤跃闪动，顿时只感头晕目眩，手腕一麻，手中" <>
+            target_weapon_name <> "已被$N纳入怀中！"
+
+        {msg, 240, 2}
+      else
+        msg = "可是$n看破$N的企图，将手中兵刃挥舞得密不透风，使得$N无从下手。"
+        {msg, 100, 4}
+      end
+
+    Performs.feedback(attacker, cost, busy)
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
@@ -179,14 +230,14 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Xi do
   #                 target = me->select_opponent();
   #         }
   # 
+  #         skill = me->query_skill("shenghuo-ling", 1);
+  # 
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail(XIYAN "只能对战斗中的对手使用。\n");
   # 
   #         if (! objectp(weapon = me->query_temp("weapon")) ||
   #             (string)weapon->query("skill_type") != "sword")
   #                 return notify_fail("你使用的兵器不对，不能使用圣火令法之" XIYAN "。\n");
-  # 
-  #         skill = me->query_skill("shenghuo-ling", 1);
   # 
   #           //if (! objectp(weapon2 = target->query_temp("weapon")) ||
   #             //weapon2->query("skill_type") != "sword")

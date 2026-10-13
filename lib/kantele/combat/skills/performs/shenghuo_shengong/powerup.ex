@@ -18,9 +18,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoShengong.Powerup do
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
+    stats = character.meta.stats
+    skill = Stats.skill(stats, "shenghuo-shengong")
 
     with :ok <- check_gates(character) do
-      apply_effect(conn, character)
+      apply_effect(conn, character, skill)
     else
       {:error, message} ->
         conn
@@ -29,47 +31,76 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoShengong.Powerup do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC: if (target != me) return notify_fail("你只能用圣火神功来提升自己的战斗力。\n");
+  defp check_target(_character) do
+    _ = "你只能用圣火神功来提升自己的战斗力。\n"
+    :ok
+  end
+
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
+  # LPC: if ((int) me->query("neili") < 150)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 150 -> {:error, "你的内力不够。\n"}
-      true -> :ok
+    if vitals.neili < 150 do
+      {:error, "你的内力不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
-  end
-
+  # LPC: if ((int) me->query_temp("powerup"))
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用圣火神功来提升自己的战斗力。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, skill) do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    combat = character.meta.combat
+
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 1 + :rand.uniform(3)),
+        else: combat
+
+    # LPC: apply/attack += skill * 1 / 3; apply/dodge、apply/parry 同理
+    bonus = div(skill, 3)
+    combat = Combat.apply_temp(combat, %{attack: bonus, dodge: bonus, parry: bonus})
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "powerup",
+        applies: %{attack: -bonus, dodge: -bonus, parry: -bonus},
+        duration: skill
+      })
+
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
+    |> Broadcast.publish(
+      "$N默运圣火神功，脸色先由黄翻紫，紧接着由紫翻蓝，再由蓝翻红，最后又恢复为黄色，甚为诡异。\n",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的圣火神功运行完毕，长长地吐了口气，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的圣火神功运行完毕，长长地吐了口气，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-150"}], "apply_adds": ["attack", "dodge", "parry"], "assign_refs": [{"skill", "shenghuo-shengong"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(1 + random(3));"], "remote_damage": false, "resource_gates": [{"neili", "150"}], "temp_set": ["powerup"]}

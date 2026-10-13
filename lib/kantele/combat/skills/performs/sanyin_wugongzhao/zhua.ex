@@ -11,15 +11,14 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "sanyin-wugongzhao/zhua"
+  @move_name "「三阴毒爪」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,7 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     ap = Stats.skill(stats, "claw")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
     lvl = Stats.skill(stats, "claw")
 
     with :ok <- check_perform_known(character),
@@ -38,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sanyin-wugongzhao") < 80 -> {:error, "你的三阴蜈蚣爪不够娴熟，无法使用。\n"}
+      Stats.skill(stats, "sanyin-wugongzhao") < 80 -> {:error, "你的三阴蜈蚣爪不够娴熟，无法使用#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -88,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
 
     cond do
       Stats.mapped(stats, "claw") != "sanyin-wugongzhao" ->
-        {:error, "你没有激发三阴蜈蚣爪，无法使用。\n"}
+        {:error, "你没有激发三阴蜈蚣爪，无法使用#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "sanyin-wugongzhao" ->
-        {:error, "你没有准备使用三阴蜈蚣爪，无法使用。\n"}
+      Stats.prepared_perform(stats, "claw") == nil or
+          String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "sanyin-wugongzhao" ->
+        {:error, "你没有准备使用三阴蜈蚣爪，无法使用#{@move_name}。\n"}
 
       true ->
         :ok
@@ -102,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你真气不足，无法施展。\n"}
+      vitals.neili < 150 -> {:error, "你真气不足，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -110,19 +112,14 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N突然一声怪叫，蓦的面赤如血，随即手腕一抖，抓向$n的要害。", n1: character.name)
+    # 前置广播 + 结果回调消息（neili 消耗 / start_busy 交由 do_resolve）
+    Broadcast.publish(conn, "突然一声怪叫，蓦的面赤如血，随即手腕一抖，抓向$n的要害。", n1: character.name)
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    # 结果回调消息（final callback）
+    _final_msg = "惊慌失措，连忙后退，然而没能避开，被这一爪抓得鲜血淋漓！"
   end
 
   defp target(combat) do
@@ -146,22 +143,34 @@ defmodule Kantele.Combat.Skills.Performs.SanyinWugongzhao.Zhua do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(stats, "parry")
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    hit = div(ap, 2) + rng.(ap) > dp
+
+    damage = if hit, do: div(ap, 2) + rng.(max(div(ap, 2), 1)), else: 0
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
     Performs.feedback(attacker, 0, 2)
-    msg = if hit, do: Enum.random(["$N突然一声怪叫，蓦的面赤如血，随即手腕一抖，抓向$n的要害。", "不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。"]), else: "不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。"
+
+    msg =
+      if hit do
+        "惊慌失措，连忙后退，然而没能避开，被这一爪抓得鲜血淋漓！"
+      else
+        "不过$p看破了$P的招式，凝神招架，挡住了$P的毒招。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

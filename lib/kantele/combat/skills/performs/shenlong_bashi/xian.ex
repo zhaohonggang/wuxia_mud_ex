@@ -36,9 +36,13 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: Stats.skill(stats, "hand"),
+          force: Stats.skill(stats, "force"),
           rng: rng
         }
       })
@@ -101,19 +105,20 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 125}
-    vitals = %{vitals | neili: vitals.neili - 30}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # LPC: me->start_busy(2);（内力消耗在命中/未命中分支回执）
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N脚下轻浮，踉踉跄跄，似倒非倒，跌跌撞撞的冲向$n，同时伸手就是一招，诡秘之极。", n1: character.name)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N脚下轻浮，踉踉跄跄，似倒非倒，跌跌撞撞的冲向$n，同时伸手就是一招，诡秘之极。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -141,22 +146,33 @@ defmodule Kantele.Combat.Skills.Performs.ShenlongBashi.Xian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    force = Map.get(data, :force, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(stats, "parry")
+    hit = Engine.rand(rng, ap) > div(dp, 2)
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 30, 2)
-    msg = if hit, do: "$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。", else: "$n躲过了$N的攻击！"
+    {character, msg} =
+      if hit do
+        # LPC: damage = force; damage = damage / 2 + random(damage / 2);
+        #      target->start_busy(1); me->add("neili", -125);
+        damage = div(force, 2) + Engine.rand(rng, div(force, 2))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        combat = Combat.start_busy(character.meta.combat, 1)
+        character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+        Performs.feedback(attacker, 125, 0)
+
+        msg = "$p左遮右挡，却没能挡住$P这看似无赖的招数，结果被$P重重的击中，哇的吐了一口鲜血。"
+        {character, msg}
+      else
+        # LPC: me->add("neili", -30);
+        Performs.feedback(attacker, 30, 0)
+        {character, "可是$p看破了$P的企图，巧妙的挡住了$P的进攻。"}
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

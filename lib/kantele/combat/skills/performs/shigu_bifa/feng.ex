@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
   alias Kantele.Combat.Performs
 
   @perform_id "shigu-bifa/feng"
+  @move_name "「神笔封穴」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,9 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shigu-bifa")
-    skill = Stats.skill(stats, "shigu-bifa")
     ap = Stats.skill(stats, "dagger")
-    damage = ((100 + div(ap, 5)) + Engine.rand(rng, div(ap, 5)))
+    damage = 100 + div(ap, 5) + Engine.rand(rng, div(ap, 5))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -48,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -65,7 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC: 等级/激发/资源/武器 门槛
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -79,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展。\n"}
-      Stats.skill(stats, "shigu-bifa") < 100 -> {:error, "你的石鼓打穴笔法修为有限，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "shigu-bifa") < 100 -> {:error, "你的石鼓打穴笔法修为有限，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -89,8 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dagger") != "shigu-bifa" -> {:error, "你没有激发石鼓打穴笔法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "dagger") != "shigu-bifa" ->
+        {:error, "你没有激发石鼓打穴笔法，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -98,33 +103,36 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
+  # LPC: if (!objectp(weapon) || weapon->skill_type != "dagger")
   defp check_weapon(character) do
-    combat = character.meta.combat
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "dagger" -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N飞身一跃而起，贴至$n跟前，手中某物大起大落，气势恢弘，幻出一道闪电直射$n要穴！", n1: character.name)
+
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
+
+    # LPC: msg = ... "手中" + weapon->name() + "大起大落，气势恢弘，幻出一道闪电" "直射$n要穴！"
+    msg =
+      "飞身一跃而起，贴至$n跟前，手中" <>
+        weapon_name <> "大起大落，气势恢弘，幻出一道闪电直射$n要穴！"
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, n1: character.name, n2: target.name))
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -145,30 +153,47 @@ defmodule Kantele.Combat.Skills.Performs.ShiguBifa.Feng do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(character.meta.stats, "parry")
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$p微微一楞，只觉胸口一麻，已被$N点中要穴，整个上半身顿时瘫软无力，缓缓瘫倒。", else: "可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！"
+    # LPC: if (ap / 2 + random(ap) > dp)
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+    {character, msg} =
+      if hit do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        Performs.feedback(attacker, 200, 1)
+
+        # LPC: if (ap / 3 + random(ap) > dp && ! target->is_busy()) target->start_busy(ap / 25 + 2);
+        character =
+          if div(ap, 3) + Engine.rand(rng, ap) > dp do
+            combat = Combat.start_busy(character.meta.combat, div(ap, 25) + 2)
+            %{character | meta: %{character.meta | combat: combat}}
+          else
+            character
+          end
+
+        {character, "$p微微一楞，只觉胸口一麻，已被$N点中要穴，整个上半身顿时瘫软无力，缓缓瘫倒。"}
+      else
+        Performs.feedback(attacker, 50, 3)
+        {character, "可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！"}
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

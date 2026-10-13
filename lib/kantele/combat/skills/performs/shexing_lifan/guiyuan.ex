@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -72,11 +74,13 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     end
   end
 
+  # LPC: 等级门槛（蛇行狸翻 → 身法 → 内功 → 轻功）
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
       Stats.skill(stats, "shexing-lifan") < 150 -> {:error, "你的蛇行狸翻等级不够，难以施展此项绝技！\n"}
+      stats.dex < 30 -> {:error, "你的身法不够使用「九阴归元」绝技！\n"}
       Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展此项绝技！\n"}
       Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，不会使用此项绝技！\n"}
       true -> :ok
@@ -96,30 +100,54 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你已经运起「九阴归元」了。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "gui_yuan") do
+      {:error, "你已经运起「九阴归元」了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    # LPC: add_temp("str"/"dex", count) —— 本引擎未建模 str/dex 临时属性，
+    # 故 buff 无数值加成，仅保留状态与到期回收（与 HuntianQigong.Shield 取舍一致）。
+    skill = Stats.skill(character.meta.stats, "shexing-lifan")
+
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "gui_yuan",
+        applies: %{},
+        duration: div(skill, 2)
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(2);
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 2),
+        else: combat
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。", n1: character.name)
 
     conn
+    |> Broadcast.publish(
+      "$N运起九阴真气，双臂骨骼一阵爆响，身形一展，整个人顿时凌空飘起，速度变得异常敏捷。",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的「九阴归元」运功完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的「九阴归元」运功完毕，将内力收回丹田。\n"
 
   defp target(combat) do
     case combat.enemies do
@@ -143,6 +171,7 @@ defmodule Kantele.Combat.Skills.Performs.ShexingLifan.Guiyuan do
     Performs.feedback(attacker, 200, 2)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

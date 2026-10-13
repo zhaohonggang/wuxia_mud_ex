@@ -11,15 +11,15 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "sanwu-shou/kong"
+  @move_name "「无孔不入」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,9 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "sanwu-shou")
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
     ap = Stats.skill(stats, "whip")
-    count = 0
-    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,16 +39,18 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name)
     else
       {:error, message} ->
         conn
@@ -79,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sanwu-shou") < 140 -> {:error, "你三无三不手够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "sanwu-shou") < 140 -> {:error, "你三无三不手够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -89,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "sanwu-shou" -> {:error, "你没有激发三无三不手，难以施展。\n"}
+      Stats.mapped(stats, "whip") != "sanwu-shou" -> {:error, "你没有激发三无三不手，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -107,25 +109,28 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
-      true -> :ok
+      Combat.weapon(combat) == nil or Combat.weapon(combat).skill_type != "whip" ->
+        {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 220}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声长啸，内劲暴涨，施出绝招「无孔不入」手中某物哧哧作响，龙吟不定，$N猛然腾空而起，挥舞着手中的某物，凌空直下，涌向$n。", n1: character.name)
+  defp apply_effect(conn, character, weapon_name) do
+    # 前置广播（neili 消耗 / start_busy 交由 do_resolve）
+    msg =
+      "一声长啸，内劲暴涨，施出绝招「无孔不入」手中" <>
+        @blank <>
+        weapon_name <>
+        @blank <>
+        "哧哧作响，龙吟不定，猛然腾空而起，挥舞着手中的" <>
+        @blank <>
+        weapon_name <>
+        @blank <>
+        "，凌空直下，涌向。"
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
   end
 
   defp target(combat) do
@@ -149,22 +154,60 @@ defmodule Kantele.Combat.Skills.Performs.SanwuShou.Kong do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    # LPC: count bonus based on target shen/gender; neili -220/-100; busy 1+random(3) or 4
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+    dp = Stats.skill(stats, "parry")
+
+    # C: if target shen > 0 -> count += 20, ap += ap*10/100
+    # if target gender != female -> count += 30, ap += ap*15/100
+    # We'll compute bonus here based on character meta
+    shen = Map.get(character.meta, :shen, 0)
+    gender = Map.get(character.meta, :gender)
+
+    count = 0
+
+    if shen > 0 do
+      count = count + 20
+      ap = ap + div(ap * 10, 100)
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 220, 4)
-    msg = if hit, do: "但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。", else: "$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。"
+    if gender != "女性" do
+      count = count + 30
+      ap = ap + div(ap * 15, 100)
+    end
+
+    hit = div(ap, 2) + rng.(ap) > dp
+
+    damage =
+      if hit do
+        base = ap + rng.(ap)
+        base + div(base * count, 100)
+      else
+        0
+      end
+
+    character =
+      if damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, if(hit, do: 220, else: 100), if(hit, do: 1 + rng.(3), else: 4))
+
+    msg =
+      if hit do
+        "但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。"
+      else
+        "$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

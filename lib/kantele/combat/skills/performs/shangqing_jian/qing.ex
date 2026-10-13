@@ -11,15 +11,15 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
 
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "shangqing-jian/qing"
+  @move_name "「清流剑」"
+  @blank ""
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,7 +29,11 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shangqing-jian")
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && weapon.name) || ""
     ap = Stats.skill(stats, "sword")
+    skill = Stats.skill(stats, "shangqing-jian")
+    damage = div(skill, 2) + rng.(max(div(skill, 3), 1))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,15 +41,19 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name)
     else
       {:error, message} ->
         conn
@@ -76,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功的修为不够，难以施展。\n"}
-      Stats.skill(stats, "shangqing-jian") < 160 -> {:error, "你的上清剑法修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功的修为不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "shangqing-jian") < 160 -> {:error, "你的上清剑法修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -86,8 +94,11 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shangqing-jian" -> {:error, "你没有激发上清剑法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "shangqing-jian" ->
+        {:error, "你没有激发上清剑法，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -95,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -104,21 +115,40 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
-      true -> :ok
+      Combat.weapon(combat) == nil or Combat.weapon(combat).skill_type != "sword" ->
+        {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出上清剑法「清流剑」绝技，手中某物随即一颤，对准$n连攻数剑，招式凌厉无比！", n1: character.name)
+  defp apply_effect(conn, character, weapon_name) do
+    # 前置广播（neili 消耗 / start_busy 交由 do_resolve）
+    msg1 =
+      "施出上清剑法「清流剑」绝技，手中" <>
+        @blank <>
+        weapon_name <>
+        @blank <>
+        "随即一颤，对准$n连攻数剑，招式凌厉无比！"
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    msg2 =
+      "却见$N跨步上前，手中" <>
+        @blank <>
+        weapon_name <>
+        @blank <>
+        "剑招陡变，又攻出一剑，剑尖顿闪出数道剑光，笼罩$n全身！"
+
+    msg3 =
+      "随即一声大喝，身外化身，剑外化剑，手中" <>
+        @blank <>
+        weapon_name <>
+        @blank <>
+        "顿时漾起一道青芒，再次攻向$n而去！"
+
+    conn = Broadcast.publish(conn, Messages.interpolate(msg1, n1: character.name))
+    conn = Broadcast.publish(conn, Messages.interpolate(msg2, n1: character.name))
+    Broadcast.publish(conn, Messages.interpolate(msg3, n1: character.name))
   end
 
   defp target(combat) do
@@ -142,25 +172,73 @@ defmodule Kantele.Combat.Skills.Performs.ShangqingJian.Qing do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    damage = max(Map.get(data, :damage, 0), 1)
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+
+    # C: 3 attacks with different dp and hit messages
+    # Attack 1: dp = parry
+    # Attack 2: dp = dodge
+    # Attack 3: dp = force
+    dp1 = Stats.skill(stats, "parry")
+    dp2 = Stats.skill(stats, "dodge")
+    dp3 = Stats.skill(stats, "force")
+
+    hit1 = div(ap, 2) + rng.(ap) > dp1
+    hit2 = div(ap, 2) + rng.(ap) > dp2
+    hit3 = div(ap, 2) + rng.(ap) > dp3
+
+    # Damage: base + damage*count/100 (simplified)
+    total_damage =
+      Enum.reduce([hit1, hit2, hit3], 0, fn hit, acc ->
+        if hit do
+          acc + damage
+        else
+          acc
+        end
+      end)
+
+    character =
+      if total_damage > 0 do
+        vitals = Vitals.damage(character.meta.vitals, :qi, total_damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        character
+      end
+
+    Performs.feedback(attacker, 300, 2 + rng.(3))
+
+    msgs = []
+
+    # Attack 1 messages
+    if hit1 do
+      msgs = msgs ++ ["$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！"]
+    else
+      msgs = msgs ++ ["$p凝神聚气，硬声声将$P这一剑架开，丝毫无损。"]
     end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 1)
-    msg = if hit, do: Enum.random(["$p奋力抵挡，却哪里招架得住，被$P这一剑刺中要脉，鲜血四处飞溅！", "$p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！", "$p运气抵挡，可只觉一股无形剑气透体而过，难受之极，喷出数口鲜血！"]), else: Enum.random(["$p一口气自丹田运了上来，$P附体剑芒虽然厉害，却未能伤$p分毫。", "$p凝神聚气，硬声声将$P这一剑架开，丝毫无损。", "可是$p丝毫不为$P华丽的剑光所动，稳稳将这一剑架开。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # Attack 2 messages
+    if hit2 do
+      msgs = msgs ++ ["$p只觉眼花缭乱，一时难以勘透其中奥妙，连中数剑，被削得血肉模糊！"]
+    else
+      msgs = msgs ++ ["可是$p丝毫不为$P华丽的剑光所动，稳稳将这一剑架开。"]
+    end
+
+    # Attack 3 messages
+    if hit3 do
+      msgs = msgs ++ ["$p运气抵挡，可只觉一股无形剑气透体而过，难受之极，喷出数口鲜血！"]
+    else
+      msgs = msgs ++ ["$p一口气自丹田运了上来，$P附体剑芒虽然厉害，却未能伤$p分毫。"]
+    end
+
+    conn =
+      Enum.reduce(msgs, conn, fn msg, conn ->
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
+      end)
+
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

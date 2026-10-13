@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
   alias Kantele.Combat.Performs
 
   @perform_id "shenzhaojing/ying"
+  @move_name "「无影神拳」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,6 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenzhaojing")
+    ap = Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +38,12 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -60,7 +65,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
+  # LPC: 等级/激发/准备/资源/空手 门槛
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -74,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的神照经神功火候不够，无法施展。\n"}
-      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的基本拳脚火候不够，无法施展。\n"}
+      Stats.skill(stats, "shenzhaojing") < 200 -> {:error, "你的神照经神功火候不够，无法施展#{@move_name}。\n"}
+      Stats.skill(stats, "unarmed") < 200 -> {:error, "你的基本拳脚火候不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -85,10 +90,11 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
 
     cond do
       Stats.mapped(stats, "unarmed") != "shenzhaojing" ->
-        {:error, "你没有激发神照经神功为拳脚，无法施展。\n"}
+        {:error, "你没有激发神照经神功为拳脚，无法施展#{@move_name}。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "shenzhaojing" ->
-        {:error, "你现在没有准备使用神照经神功，无法施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          Stats.prepared_perform(stats, "unarmed") |> String.split("/") |> hd() != "shenzhaojing" ->
+        {:error, "你现在没有准备使用神照经神功，无法施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -99,8 +105,8 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，无法施展#{@move_name}。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -109,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -150,23 +156,28 @@ defmodule Kantele.Combat.Skills.Performs.Shenzhaojing.Ying do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(character.meta.stats, "force")
+
+    # LPC: if (ap / 2 + random(ap) > dp)
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+
+    vitals =
+      if hit, do: Vitals.damage(character.meta.vitals, :qi, damage), else: character.meta.vitals
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 3)
-    msg = if hit, do: "$n见拳势变换莫测，只是微微一愣，已被$N一拳正中胸口，神照经内劲顿
-时便如山洪爆发一般，透体而入。", else: "$n见$N来势汹涌，急忙提气跃开。"
+
+    msg =
+      if hit,
+        do: "$n见拳势变换莫测，只是微微一愣，已被$N一拳正中胸口，神照经内劲顿
+时便如山洪爆发一般，透体而入。",
+        else: "$n见$N来势汹涌，急忙提气跃开。"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

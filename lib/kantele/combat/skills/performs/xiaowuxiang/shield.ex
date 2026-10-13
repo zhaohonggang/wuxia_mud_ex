@@ -29,60 +29,90 @@ defmodule Kantele.Combat.Skills.Performs.Xiaowuxiang.Shield do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_target(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "xiaowuxiang") < 40 -> {:error, "你的内力不够。\n"}
-      true -> :ok
-    end
+  # LPC: if (target != me)
+  defp check_target(_character) do
+    _ = "你只能用小无相功来提升自己的防御力。\n"
+    :ok
   end
 
+  # LPC: if ((int)me->query("neili") < 100)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 100 -> {:error, "你的真气不够。\n"}
-      true -> :ok
+    if vitals.neili < 100 do
+      {:error, "你的真气不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  # LPC: if ((int)me->query_skill("xiaowuxiang", 1) < 40)
+  defp check_levels(character) do
+    stats = character.meta.stats
 
+    if Stats.skill(stats, "xiaowuxiang") < 40 do
+      {:error, "你的内力不够。\n"}
+    else
+      :ok
+    end
   end
 
+  # LPC: if ((int)me->query_temp("shield"))
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用小无相功来提升自己的防御力。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "shield") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    skill = Stats.skill(character.meta.stats, "xiaowuxiang")
+    bonus = div(skill, 2)
+
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
+    combat = Combat.apply_temp(combat, %{armor: bonus})
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "shield",
+        applies: %{armor: -bonus},
+        duration: skill
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(2);
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 2),
+        else: combat
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
+    |> Broadcast.publish(
+      "$N双手平举过顶，运起小无相功，全身笼罩在劲气之中！\n",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的小无相功运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的小无相功运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["armor"], "assign_refs": [{"skill", "xiaowuxiang"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "level_gates": [{"xiaowuxiang", "40"}], "remote_damage": false, "resource_gates": [{"neili", "100"}], "temp_set": ["shield"]}

@@ -13,13 +13,13 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
+  alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "shenghuo-ling/hua"
+  @move_name "「光华令」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,26 +29,30 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "shenghuo-ling")
-    skill = Stats.skill(stats, "shenghuo-ling")
-    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && weapon.name) || ""
+    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "force")
+    damage = ap + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
          {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
+      send(target.pid, %{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
           damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name, target)
     else
       {:error, message} ->
         conn
@@ -65,13 +69,32 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
+    with :ok <- check_fighting(character),
          :ok <- check_weapon(character),
-         :ok <- check_state(character) do
+         :ok <- check_levels(character),
+         :ok <- check_resources(character) do
       :ok
+    end
+  end
+
+  defp check_fighting(character) do
+    combat = character.meta.combat
+
+    cond do
+      not Combat.fighting?(combat) -> {:error, "「光华令」只能对战斗中的对手使用。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+
+    cond do
+      weapon == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之「光华令」。\n"}
+      weapon.skill_type != "sword" -> {:error, "你使用的兵器不对，不能使用圣火令法之「光华令」。\n"}
+      true -> :ok
     end
   end
 
@@ -79,8 +102,11 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shenghuo-ling") < 140 -> {:error, "你的圣火令法等级不够, 不能使用圣火令法之。\n"}
-      true -> :ok
+      Stats.skill(stats, "shenghuo-ling") < 140 ->
+        {:error, "你的圣火令法等级不够,不能使用圣火令法之「光华令」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -88,45 +114,28 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，不能使用圣火令法之。\n"}
-      vitals.neili < 340 -> {:error, "你的内力不够，不能使用圣火令法之。\n"}
-      true -> :ok
+      vitals.max_neili < 1500 ->
+        {:error, "你的内力修为不足，不能使用圣火令法之「光华令」。\n"}
+
+      vitals.neili < 340 ->
+        {:error, "你的内力不够，不能使用圣火令法之「光华令」。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
+  defp apply_effect(conn, character, weapon_name, target) do
+    # LPC: 相邻字面量 join_adjacent 后为两段独立文案，中间插入 weapon->name()
+    # 段1: "猛吸一口气，使出圣火令法之「光华令」，手中"
+    # 段2: "御驾如飞，幻出无数道金芒，将笼罩起来！"（$n 为对手名）
+    preamble = "猛吸一口气，使出圣火令法之「光华令」，手中"
+    tail = "御驾如飞，幻出无数道金芒，将$n笼罩起来！"
+    msg = preamble <> weapon_name <> tail
 
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的兵器不对，不能使用圣火令法之。\n"}
-      true -> :ok
-    end
-  end
+    conn = Broadcast.publish(conn, msg, n1: character.name, n2: target.name)
 
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N猛吸一口气，使出圣火令法之「光华令」，手中某物御驾如飞，幻出无数道金芒，将$n笼罩起来！", n1: character.name)
-
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    assign(conn, :prompt, false)
   end
 
   defp target(combat) do
@@ -150,25 +159,39 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "force")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+
+    {vitals, msg_hit, cost, busy} =
+      if hit do
+        vitals = Vitals.damage(vitals, :qi, damage)
+
+        # LPC: HIR "$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！"
+        msg = "只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！"
+        {vitals, msg, 300, 2}
+      else
+        # LPC: CYN "可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。"
+        msg = "可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。"
+        {vitals, msg, 150, 4}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 4)
-    msg = if hit, do: "$n只觉万道金芒铺天盖地席卷而来，完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！", else: "可是$n看准$N的破绽，猛地向前一跃，跳出了$N的攻击范围。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    Performs.feedback(attacker, cost, busy)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        Messages.interpolate(msg_hit, n1: attacker.name, n2: character.name)
+      )
+      |> put_character(character)
+
     conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
@@ -177,65 +200,64 @@ defmodule Kantele.Combat.Skills.Performs.ShenghuoLing.Hua do
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>
-  # 
+  #
   # #define GUANG "「" HIY "光华令" NOR "」"
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # int perform(object me, object target)
   # {
   #         object weapon;
   #         int damage, skill, ap, dp;
   #         string msg;
-  # 
+  #
   #         if (userp(me) && ! me->query("can_perform/shenghuo-ling/hua"))
   #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
+  #
   #         if (! target) target = offensive_target(me);
-  # 
+  #
   #         skill = me->query_skill("shenghuo-ling",1);
-  # 
+  #
   #         if (! (me->is_fighting()))
   #                 return notify_fail(GUANG "只能对战斗中的对手使用。\n");
-  # 
+  #
   #         if (! objectp(weapon = me->query_temp("weapon")) ||
   #             (string)weapon->query("skill_type") != "sword")
   #                 return notify_fail("你使用的兵器不对，不能使用圣火令法之" GUANG "。\n");
-  # 
+  #
   #         if (skill < 140)
   #                 return notify_fail("你的圣火令法等级不够, 不能使用圣火令法之" GUANG "。\n");
-  # 
+  #
   #         if (me->query("max_neili") < 1500)
   #                 return notify_fail("你的内力修为不足，不能使用圣火令法之" GUANG "。\n");
-  # 
+  #
   #         if (me->query("neili") < 340)
   #                 return notify_fail("你的内力不够，不能使用圣火令法之" GUANG "。\n");
-  # 
+  #
   #         if (! living(target))
   #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
   #         msg = HIY "$N" HIY "猛吸一口气，使出圣火令法之「" HIW "光华令" HIY "」，手中"
   #               + weapon->name() + NOR + HIY "御驾如飞，幻出无数道金"
   #               "芒，将$n" HIY "笼罩起来！\n" NOR;
-  # 
+  #
   #         ap = me->query_skill("sword") + me->query_skill("force");
   #         dp = target->query_skill("parry") + target->query_skill("force");
-  # 
+  #
   #         if (ap / 2 + random(ap) > dp)
   #         {
   #                 damage = ap + random(ap / 2);
-  # 
+  #
   #                 me->add("neili", -300);
   #                 msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 80,
   #                        HIR "$n" HIR "只觉万道金芒铺天盖地席卷而来，"
-  #                        "完全无法阻挡。顿时只感全身几处刺痛，鲜血飞"
-  #                        "溅而出！\n" NOR);
-  # 
+  #                        "完全无法阻挡。顿时只感全身几处刺痛，鲜血飞溅而出！\n" NOR);
+  #
   #                 me->start_busy(2);
   #         } else
   #         {
-  #                 msg += CYN "可是$n" CYN "看准$N" CYN "的破绽，猛地向"
-  #                        "前一跃，跳出了$N" CYN "的攻击范围。\n"NOR;
+  #                 msg += CYN "可是$n" CYN "看准$N" CYN "的破绽，猛地向前"
+  #                        "一跃，跳出了$N" CYN "的攻击范围。\n"NOR;
   #                 me->add("neili", -150);
   #                 me->start_busy(4);
   #         }
