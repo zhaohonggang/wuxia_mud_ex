@@ -248,6 +248,7 @@ jueqing_zhang/hun.ex
 jueqing_zhang/wan.ex
 kongming_quan/kong.ex
 kongming_quan/ruo.ex
+kuangfeng_blade/kuang.ex
 kuangfeng_jian/sao.ex
 kuimang_dao/pan.ex
 kunlun_qifa/liu.ex

@@ -493,7 +493,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `kuangfeng_blade/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `kuangfeng_blade/kuang.ex` ← `kuangfeng-blade/kuang.c`  (miss=1)
+- [x] ✅ `kuangfeng_blade/kuang.ex` ← `kuangfeng-blade/kuang.c`  (miss→0，PASS)
 
 ### `kuangfeng_jian/` （1 个，基线缺失 10 条）
 
