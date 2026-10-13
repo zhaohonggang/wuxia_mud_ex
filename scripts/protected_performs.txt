@@ -280,6 +280,9 @@ lingshe_zhangfa/qianshe.ex
 lingshe_zhangfa/wanshi.ex
 lingshe_zhangfa/wuji.ex
 lingxiao_quan/jue.ex
+lingxiao_quan/san.ex
+lingyuan_xinfa/break.ex
+lingyun_jian/xiao.ex
 liuhe_dao/shan.ex
 longcheng_shendao/feng.ex
 longxing_jian/kong.ex

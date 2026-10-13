@@ -568,15 +568,15 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `lingxiao_quan/` （2 个，基线缺失 15 条）
 
 - [x] ✅ `lingxiao_quan/jue.ex` ← `lingxiao-quan/jue.c`  (miss→0，PASS)
-- [ ] ❌ `lingxiao_quan/san.ex` ← `lingxiao-quan/san.c`  (miss=8)
+- [x] ✅ `lingxiao_quan/san.ex` ← `lingxiao-quan/san.c`  (miss→0，PASS)
 
 ### `lingyuan_xinfa/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `lingyuan_xinfa/break.ex` ← `lingyuan-xinfa/break.c`  (miss=7)
+- [x] ✅ `lingyuan_xinfa/break.ex` ← `lingyuan-xinfa/break.c`  (miss→0，PASS)
 
 ### `lingyun_jian/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `lingyun_jian/xiao.ex` ← `lingyun-jian/xiao.c`  (miss=8)
+- [x] ✅ `lingyun_jian/xiao.ex` ← `lingyun-jian/xiao.c`  (miss→0，PASS)
 
 ### `linji_zhuang/` （1 个，基线缺失 10 条）
 
