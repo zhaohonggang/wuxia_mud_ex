@@ -393,23 +393,23 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jiasha_fumogong/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `jiasha_fumogong/zhe.ex` ← `jiasha-fumogong/zhe.c`  (miss=6)
+- [x] ✅ `jiasha_fumogong/zhe.ex` ← `jiasha-fumogong/zhe.c`  (miss→0，PASS)
 
 ### `jiechen_dao/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `jiechen_dao/xiuluo.ex` ← `jiechen-dao/xiuluo.c`  (miss=3)
+- [x] ✅ `jiechen_dao/xiuluo.ex` ← `jiechen-dao/xiuluo.c`  (miss→0，PASS)
 
 ### `jieshou_jiushi/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `jieshou_jiushi/jie.ex` ← `jieshou-jiushi/jie.c`  (miss=6)
+- [x] ✅ `jieshou_jiushi/jie.ex` ← `jieshou-jiushi/jie.c`  (miss→0，PASS)
 
 ### `jifeng_cixuefa/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `jifeng_cixuefa/cang.ex` ← `jifeng-cixuefa/cang.c`  (miss=8)
+- [x] ✅ `jifeng_cixuefa/cang.ex` ← `jifeng-cixuefa/cang.c`  (miss→0，PASS)
 
 ### `jinding_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `jinding_zhang/bashi.ex` ← `jinding-zhang/bashi.c`  (miss=7)
+- [x] ✅ `jinding_zhang/bashi.ex` ← `jinding-zhang/bashi.c`  (miss→0，PASS)
 
 ### `jingang_zhi/` （1 个，基线缺失 30 条）
 

@@ -195,9 +195,14 @@ huoyan_dao/yan.ex
 huzhua_shou/juehu.ex
 jiandun_zhusuo/fu.ex
 jiandun_zhusuo/qian.ex
+jiasha_fumogong/zhe.ex
 jidian_jian/dian.ex
+jiechen_dao/xiuluo.ex
+jieshou_jiushi/jie.ex
+jifeng_cixuefa/cang.ex
 jimie_zhua/wuwo.ex
 jinbiao_jue/huan.ex
+jinding_zhang/bashi.ex
 jingang_buhuaiti/jingang.ex
 jingang_quan/jingang.ex
 jingang_zhi/fumo.ex
@@ -279,7 +284,10 @@ sanhua_zhang/san.ex
 sanku_shengong/powerup.ex
 sanwu_shou/wei.ex
 shangjia_dao/juan.ex
+shedu_qiqiao/da.ex
 shedu_qiqiao/liandu.ex
+shenghuo_ling/hua.ex
+shenghuo_ling/lian.ex
 shenxing_baibian/piao.ex
 shunv_jian/ning.ex
 songshan_jian/meng.ex
