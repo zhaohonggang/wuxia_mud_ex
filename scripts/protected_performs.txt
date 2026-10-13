@@ -222,6 +222,14 @@ jinyu_quan/man
 jinyuan_gun/qian
 jinzhong_zhao/zhao.ex
 jiuqu_jian/wan.ex
+jiuyang_shengong/hun.ex
+jiuyang_shengong/jiu.ex
+jiuyang_shengong/pi.ex
+jiuyang_shengong/po.ex
+jiuyang_shengong/powerup.ex
+jiuyang_shengong/ri.ex
+jiuyang_shengong/roar.ex
+jiuyang_shengong/shield.ex
 jueqing_jian/liu.ex
 kuangfeng_jian/sao.ex
 kuimang_dao/pan.ex

@@ -450,14 +450,14 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jiuyang_shengong/` （8 个，基线缺失 70 条）
 
-- [ ] ❌ `jiuyang_shengong/hun.ex` ← `jiuyang-shengong/hun.c`  (miss=6)
-- [ ] ❌ `jiuyang_shengong/jiu.ex` ← `jiuyang-shengong/jiu.c`  (miss=8)
-- [ ] ❌ `jiuyang_shengong/pi.ex` ← `jiuyang-shengong/pi.c`  (miss=11)
-- [ ] ❌ `jiuyang_shengong/po.ex` ← `jiuyang-shengong/po.c`  (miss=11)
-- [ ] ❌ `jiuyang_shengong/powerup.ex` ← `jiuyang-shengong/powerup.c`  (miss=4)
-- [ ] ❌ `jiuyang_shengong/ri.ex` ← `jiuyang-shengong/ri.c`  (miss=23)
-- [ ] ❌ `jiuyang_shengong/roar.ex` ← `jiuyang-shengong/roar.c`  (miss=3)
-- [ ] ❌ `jiuyang_shengong/shield.ex` ← `jiuyang-shengong/shield.c`  (miss=4)
+- [x] ✅ `jiuyang_shengong/hun.ex` ← `jiuyang-shengong/hun.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/jiu.ex` ← `jiuyang-shengong/jiu.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/pi.ex` ← `jiuyang-shengong/pi.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/po.ex` ← `jiuyang-shengong/po.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/powerup.ex` ← `jiuyang-shengong/powerup.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/ri.ex` ← `jiuyang-shengong/ri.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/roar.ex` ← `jiuyang-shengong/roar.c`  (miss→0，PASS)
+- [x] ✅ `jiuyang_shengong/shield.ex` ← `jiuyang-shengong/shield.c`  (miss→0，PASS)
 
 ### `jiuyin_baiguzhao/` （2 个，基线缺失 16 条）
 
