@@ -29,6 +29,10 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xianglong-zhang")
+    ap = Stats.skill(stats, "strike")
+    damage = ap + Engine.rand(rng, max(ap, 1))
+    target = hd(combat.enemies)
+    weapon_name = target.meta.combat |> Combat.weapon() |> Map.get(:name, "兵器")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +40,14 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
@@ -65,7 +74,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_target_weapon(character) do
       :ok
     end
   end
@@ -74,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xianglong-zhang") < 150 -> {:error, "你降龙十八掌火候不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xianglong-zhang") < 150 -> {:error, "你降龙十八掌火候不够，难以施展「双龙取水」。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展「双龙取水」。\n"}
       true -> :ok
     end
   end
@@ -85,10 +95,11 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
 
     cond do
       Stats.mapped(stats, "strike") != "xianglong-zhang" ->
-        {:error, "你没有激发降龙十八掌，难以施展。\n"}
+        {:error, "你没有激发降龙十八掌，难以施展「双龙取水」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xianglong-zhang" ->
-        {:error, "你没有准备降龙十八掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xianglong-zhang" ->
+        {:error, "你没有准备降龙十八掌，难以施展「双龙取水」。\n"}
 
       true ->
         :ok
@@ -99,8 +110,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展「双龙取水」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展「双龙取水」。\n"}
       true -> :ok
     end
   end
@@ -109,22 +120,38 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「双龙取水」只能空手使用。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_target_weapon(character) do
+    combat = character.meta.combat
+    target = hd(combat.enemies)
+
+    cond do
+      Combat.weapon(target.meta.combat) == nil -> {:error, "对方没有使用兵器，难以施展「双龙取水」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -200/-300)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的某物吸入掌中。", n1: character.name)
+
+    wn = hd(character.meta.combat.enemies).meta.combat |> Combat.weapon() |> Map.get(:name, "兵器")
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N暴喝一声，全身内劲迸发，气贯右臂奋力外扯，企图将$n的" <> wn <> "吸入掌中。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -152,15 +179,33 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
+    wn = Map.get(data, :weapon_name, "兵器")
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 3) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 300, 2)
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, ap)
+      else
+        character.meta.vitals
+      end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 3)
-    msg = "$n只觉周围气流涌动，手中某物竟然拿捏不住，向$N掌心脱手飞去。"
+
+    msg =
+      if hit? do
+        "$n只觉周围气流涌动，手中" <> wn <> "竟然拿捏不住，向$N掌心脱手飞去。\n"
+      else
+        "$n只觉周围气流涌动，慌忙中连将手中" <> wn <> "挥舞得密不透风，使得$N无从下手。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

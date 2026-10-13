@@ -15,7 +15,6 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
@@ -29,8 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xianglong-zhang")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +36,12 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -76,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xianglong-zhang") < 150 -> {:error, "你降龙十八掌火候不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xianglong-zhang") < 150 -> {:error, "你降龙十八掌火候不够，难以施展「飞龙在天」。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展「飞龙在天」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
 
     cond do
       Stats.mapped(stats, "strike") != "xianglong-zhang" ->
-        {:error, "你没有激发降龙十八掌，难以施展。\n"}
+        {:error, "你没有激发降龙十八掌，难以施展「飞龙在天」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xianglong-zhang" ->
-        {:error, "你没有准备降龙十八掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xianglong-zhang" ->
+        {:error, "你没有准备降龙十八掌，难以施展「飞龙在天」。\n"}
 
       true ->
         :ok
@@ -101,8 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不够，难以施展「飞龙在天」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展「飞龙在天」。\n"}
       true -> :ok
     end
   end
@@ -111,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「飞龙在天」只能空手使用。\n"}
       true -> :ok
     end
   end
@@ -149,15 +151,23 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Fei do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 300, 1)
-    msg = "$n面对$N这排山倒海般的攻势，完全无法抵挡，招架散乱，连连退后。"
+
+    msg =
+      if hit? do
+        "$n面对$N这排山倒海般的攻势，完全无法抵挡，招架散乱，连连退后。"
+      else
+        "$n心底微微一惊，心知不妙，急忙凝聚心神，竭尽所能化解$N数道掌力。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

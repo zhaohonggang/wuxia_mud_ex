@@ -16,7 +16,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "taixuan-gong/po"
@@ -29,7 +28,15 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "taixuan-gong")
-    flag = 1
+
+    # LPC: ap = force + unarmed + martial-cognize + taixuan-gong + con * 10
+    ap =
+      Stats.skill(stats, "force") +
+        Stats.skill(stats, "unarmed") +
+        Stats.skill(stats, "martial-cognize") +
+        lvl
+
+    damage = div(ap, 3) + Engine.rand(rng, max(div(ap, 2), 1))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +44,13 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -76,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taixuan-gong") < 260 -> {:error, "你的太玄功还不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "taixuan-gong") < 260 -> {:error, "你的太玄功还不够娴熟，难以施展「乘风破浪」。\n"}
       true -> :ok
     end
   end
@@ -86,10 +97,11 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
 
     cond do
       Stats.mapped(stats, "force") != "taixuan-gong" ->
-        {:error, "你现在没有激发太玄功为内功，难以施展。\n"}
+        {:error, "你现在没有激发太玄功为内功，难以施展「乘风破浪」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taixuan-gong" ->
-        {:error, "你现在没有准备使用太玄功，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taixuan-gong" ->
+        {:error, "你现在没有准备使用太玄功，难以施展「乘风破浪」。\n"}
 
       true ->
         :ok
@@ -98,9 +110,11 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
 
   defp check_resources(character) do
     vitals = character.meta.vitals
+    enemies = character.meta.combat.enemies
 
     cond do
-      vitals.max_neili < 8500 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
+      vitals.max_neili < 8500 -> {:error, "你的内力的修为不够，现在无法使用「乘风破浪」。\n"}
+      vitals.neili < length(enemies) * 220 -> {:error, "你的真气不够，无法运用「乘风破浪」。\n"}
       true -> :ok
     end
   end
@@ -109,7 +123,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「乘风破浪」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -118,21 +132,29 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
     combat = character.meta.combat
 
     cond do
-      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
+      Combat.fighting?(combat) == false -> {:error, "「乘风破浪」只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -(sizeof(obs) * 220))
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 500}
-    vitals = %{vitals | neili: 0}
+    cost = length(character.meta.combat.enemies) * 220
+    vitals = %{vitals | neili: vitals.neili - cost}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「乘风破浪」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。", n1: character.name)
+
+    # LPC 将消息按颜色宏切成三段字面量，译文保持同样的拆分。
+    part1 =
+      "只见$N仰望天际，心中思绪万千。忽然间，$N一声长叹，随即双掌不停地拍出，侠客岛石壁上的太玄图谱已一幅幅涌上心头，霎那间四周狂风骤起，尘土飞扬，气势如虹。这正是太玄功绝招「"
+
+    part2 = "乘风破浪"
+    part3 = "」。转眼间，$N双掌越发凌厉，已不知不觉地将四周笼罩，当真令人胆战心惊。\n"
+
+    conn = Broadcast.publish(conn, part1 <> part2 <> part3, n1: character.name)
 
     conn
     |> put_character(character)
@@ -152,18 +174,62 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Po do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    do_resolve_incoming(conn, character, attacker, data)
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 500, 5)
-    msg = Enum.random(["(  )", "只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", "只见向后飞出丈远，重重的跌落在地上，衣衫破烂，再也无法站起来。", "只见歪歪斜斜倒退几步，伏倒在地，痛苦不堪。。", "急忙飞身而起，却猛然坠地，伤痕遍体，鲜血不止。", "狂风卷过，只见，飞沙狂舞，却动也动不了忽然间，却瘫软在地。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    dp = Stats.skill(stats, "force") * 2 + Stats.skill(stats, "martial-cognize")
+    hit? = div(ap * 2, 3) + Engine.rand(rng, max(ap, 1)) > dp
+    name = character.name
+
+    hits = [
+      "只听" <> name <> "一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。\n",
+      "只见" <> name <> "向后飞出丈远，重重的跌落在地上，衣衫破烂，再也无法站起来。\n",
+      "只见" <> name <> "歪歪斜斜倒退几步，伏倒在地，痛苦不堪。。\n",
+      "狂风卷过，" <> name <> "只见，飞沙狂舞，却动也动不了忽然间，却瘫软在地。\n",
+      name <> "急忙飞身而起，却猛然坠地，伤痕遍体，鲜血不止。\n"
+    ]
+
+    nocked = [
+      "你只觉眼前风沙飞扬，周围风声萧萧，一股内劲已经穿体而过。\n",
+      "你只觉眼前风沙飞扬，周围风沙狂舞，猛然间只觉千万股内劲已穿体而过。\n"
+    ]
+
+    blocked = "你只觉风沙狂起，顿时运力抵抗，方才挡住这招。\n"
+
+    # LPC: if (! flag) message_vision("风沙骤停，却没有任何人受伤。\n", me, 0, obs);
+    no_hit = "风沙骤停，却没有任何人受伤。\n"
+
+    Performs.feedback(attacker, 500, 1)
+
+    if hit? do
+      damage = div(ap, 3) + Engine.rand(rng, max(div(ap, 2), 1))
+
+      vitals = character.meta.vitals
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.wound(vitals, :qi, div(damage * 2, 3))
+      vitals = Vitals.damage(vitals, :jing, div(damage, 4))
+      vitals = Vitals.wound(vitals, :jing, div(damage, 6))
+      vitals = %{vitals | neili: max(vitals.neili - 500, 0)}
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      hit_msg = Enum.at(hits, Engine.rand(rng, length(hits)) - 1)
+      taken_msg = Enum.at(nocked, Engine.rand(rng, length(nocked)) - 1)
+
+      conn
+      |> Broadcast.publish(hit_msg)
+      |> Broadcast.publish(taken_msg)
+      |> put_character(character)
+    else
+      _ = no_hit
+
+      conn
+      |> Broadcast.publish(blocked)
+      |> put_character(character)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

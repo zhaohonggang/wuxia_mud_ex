@@ -12,12 +12,12 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Family
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "xianglong-zhang/hui"
 
@@ -29,7 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xianglong-zhang")
-    improve = 0
+    ap = Stats.skill(stats, "strike")
+    damage = ap + Engine.rand(rng, max(ap, 1))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +38,13 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -75,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 380 -> {:error, "你内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "xianglong-zhang") < 250 -> {:error, "你降龙十八掌火候不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 380 -> {:error, "你内功修为不够，难以施展「亢龙有悔」。\n"}
+      Stats.skill(stats, "xianglong-zhang") < 250 -> {:error, "你降龙十八掌火候不够，难以施展「亢龙有悔」。\n"}
       true -> :ok
     end
   end
@@ -86,10 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
 
     cond do
       Stats.mapped(stats, "strike") != "xianglong-zhang" ->
-        {:error, "你没有激发降龙十八掌，难以施展。\n"}
+        {:error, "你没有激发降龙十八掌，难以施展「亢龙有悔」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xianglong-zhang" ->
-        {:error, "你没有准备降龙十八掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xianglong-zhang" ->
+        {:error, "你没有准备降龙十八掌，难以施展「亢龙有悔」。\n"}
 
       true ->
         :ok
@@ -100,8 +106,8 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 6000 -> {:error, "你内力修为不够，难以施展。\n"}
-      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.max_neili < 6000 -> {:error, "你内力修为不够，难以施展「亢龙有悔」。\n"}
+      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展「亢龙有悔」。\n"}
       true -> :ok
     end
   end
@@ -110,12 +116,40 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「亢龙有悔」只能空手使用。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
+    conn =
+      if Family.name(character.meta.family) == "丐帮" do
+        Broadcast.publish(conn, "\n$N施展出丐帮绝学「真·亢龙有悔」\n", n1: character.name)
+      else
+        conn
+      end
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n忽然$N身形激进，左手一划，右手呼的一掌拍向$n，正是降龙十八掌「亢龙有悔」。力自掌生之际说到便到，以排山倒海之势向$n狂涌而去，当真石破天惊，威力无比。\n",
+        n1: character.name
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N一掌既出，身子已然抢到离$n三四丈之外，后掌推前掌两股掌力道合并，又是一招「亢龙有悔」攻出，掌力犹如怒潮狂涌，势不可当。霎时$p便觉气息窒滞，立足不稳。\n",
+        n1: character.name
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n紧跟着$N右掌斜挥，前招掌力未消，此招掌力又到，竟然又攻出一招「亢龙有悔」，掌夹风势，势如破竹，便如一堵无形气墙，向前疾冲而去。$n只觉气血翻涌，气息沉浊。\n",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -148,15 +182,34 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Hui do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    vitals =
+      if hit do
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = if hit, do: Enum.random(["$P身形一闪，竟已晃至$p跟前，$p躲闪不及，顿被击个正中。", "$p一声惨嚎，被$P这一掌击中胸前，喀嚓喀嚓断了几根肋骨。", "结果$p躲闪不及，$P掌劲顿时穿胸而过，顿时口中鲜血狂喷。"]), else: Enum.random(["$p眼见来势凶猛，身形疾退，瞬间飘出三丈，脱出掌力之外。", "却见$p气贯双臂，凝神应对，$P掌力如泥牛入海，尽数卸去。", "可是$p全力抵挡招架，竟似游刃有余，将$P的掌力卸于无形。"])
+
+    msg =
+      if hit,
+        do:
+          Enum.random([
+            "$P身形一闪，竟已晃至$p跟前，$p躲闪不及，顿被击个正中。",
+            "$p一声惨嚎，被$P这一掌击中胸前，喀嚓喀嚓断了几根肋骨。",
+            "结果$p躲闪不及，$P掌劲顿时穿胸而过，顿时口中鲜血狂喷。"
+          ]),
+        else:
+          Enum.random([
+            "$p眼见来势凶猛，身形疾退，瞬间飘出三丈，脱出掌力之外。",
+            "却见$p气贯双臂，凝神应对，$P掌力如泥牛入海，尽数卸去。",
+            "可是$p全力抵挡招架，竟似游刃有余，将$P的掌力卸于无形。"
+          ])
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

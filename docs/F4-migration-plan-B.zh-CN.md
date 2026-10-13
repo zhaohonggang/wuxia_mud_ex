@@ -280,12 +280,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `taixuan_gong/` （6 个，基线缺失 72 条）
 
-- [ ] ❌ `taixuan_gong/hun.ex` ← `taixuan-gong/hun.c`  (miss=7)
-- [ ] ❌ `taixuan_gong/jing.ex` ← `taixuan-gong/jing.c`  (miss=25)
-- [ ] ❌ `taixuan_gong/po.ex` ← `taixuan-gong/po.c`  (miss=22)
+- [x] ✅ `taixuan_gong/hun.ex` ← `taixuan-gong/hun.c`  (miss=7→0，PASS)
+- [x] ✅ `taixuan_gong/jing.ex` ← `taixuan-gong/jing.c`  (miss=25→0，PASS)
+- [x] ✅ `taixuan_gong/po.ex` ← `taixuan-gong/po.c`  (miss=22→0，PASS)
 - [x] ✅ `taixuan_gong/powerup.ex` ← `taixuan-gong/powerup.c`  (miss=4→0，PASS)
 - [x] ✅ `taixuan_gong/shield.ex` ← `taixuan-gong/shield.c`  (miss=4→0，PASS)
-- [ ] ❌ `taixuan_gong/xuan.ex` ← `taixuan-gong/xuan.c`  (miss=10)
+- [x] ✅ `taixuan_gong/xuan.ex` ← `taixuan-gong/xuan.c`  (miss=10→0，PASS)
 
 ### `tan_tui/` （1 个，基线缺失 6 条）
 
@@ -454,9 +454,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xianglong_zhang/` （4 个，基线缺失 43 条）
 
-- [ ] ❌ `xianglong_zhang/fei.ex` ← `xianglong-zhang/fei.c`  (miss=8)
-- [ ] ❌ `xianglong_zhang/hui.ex` ← `xianglong-zhang/hui.c`  (miss=12)
-- [ ] ❌ `xianglong_zhang/qu.ex` ← `xianglong-zhang/qu.c`  (miss=14)
+- [x] ✅ `xianglong_zhang/fei.ex` ← `xianglong-zhang/fei.c`  (miss=8→0，PASS)
+- [x] ✅ `xianglong_zhang/hui.ex` ← `xianglong-zhang/hui.c`  (miss=12→0，PASS)
+- [x] ✅ `xianglong_zhang/qu.ex` ← `xianglong-zhang/qu.c`  (miss=14→0，PASS)
 - [x] ✅ `xianglong_zhang/zhen.ex` ← `xianglong-zhang/zhen.c`  (miss=9→0，PASS)
 
 ### `xiangmo_chu/` （1 个，基线缺失 7 条）

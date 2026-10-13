@@ -14,9 +14,6 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kalevala.Event
-  alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "taixuan-gong/xuan"
@@ -29,9 +26,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "taixuan-gong")
-    ap = Stats.skill(stats, "taixuan-gong, 1")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "taixuan-gong")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +34,9 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -66,10 +63,10 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_levels(character),
+         :ok <- check_weapon(character),
+         :ok <- check_mapped(character) do
       :ok
     end
   end
@@ -78,21 +75,27 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展！\n"}
-      Stats.skill(stats, "taixuan-gong") < 240 -> {:error, "你的太玄功还不够熟练，无法使用！\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展「太玄激劲」！\n"}
+      Stats.skill(stats, "taixuan-gong") < 240 -> {:error, "你的太玄功还不够熟练，无法使用「太玄激劲」！\n"}
       true -> :ok
     end
   end
 
+  # LPC: 未学会驾御兵器(can_learned/taixuan-gong/enable_weapon)时只能空手；
+  #      学会后持武器须为 sword/blade 且已激发太玄功。空手时须把拳脚准备为太玄功。
   defp check_mapped(character) do
     stats = character.meta.stats
+    weapon = Combat.weapon(character.meta.combat)
 
     cond do
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你没有准备太玄功，无法使用。\n"}
-      Stats.mapped(stats, "unarmed") != "taixuan-gong" -> {:error, "你使用的武器不对，无法施展。\n"}
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展。\n"}
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你还没有激发太玄功，无法施展。\n"}
-      true -> :ok
+      not learned_weapon?(character) and is_nil(weapon) and not unarmed_prepared?(stats) ->
+        {:error, "你没有准备太玄功，无法使用「太玄激劲」。\n"}
+
+      learned_weapon?(character) and is_nil(weapon) and not unarmed_prepared?(stats) ->
+        {:error, "你没有准备太玄功，无法使用「太玄激劲」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -100,18 +103,45 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "你的真气不够，无法施展！\n"}
-      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出。\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法施展「太玄激劲」！\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出「太玄激劲」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，无法施展。\n"}
-    #   {:error, "你还没有学会如何利用太玄功驾御兵器，这招只能空手施展！\n"}
-    :ok
+    stats = character.meta.stats
+    weapon = Combat.weapon(character.meta.combat)
 
+    cond do
+      is_nil(weapon) ->
+        :ok
+
+      not learned_weapon?(character) ->
+        {:error, "你还没有学会如何利用太玄功驾御兵器，这招只能空手施展！\n"}
+
+      weapon.skill_type not in ["sword", "blade"] ->
+        {:error, "你使用的武器不对，无法施展「太玄激劲」。\n"}
+
+      weapon.skill_type == "sword" and Stats.mapped(stats, "sword") != "taixuan-gong" ->
+        {:error, "你还没有激发太玄功，无法施展「太玄激劲」。\n"}
+
+      weapon.skill_type == "blade" and Stats.mapped(stats, "blade") != "taixuan-gong" ->
+        {:error, "你还没有激发太玄功，无法施展「太玄激劲」。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp learned_weapon?(character) do
+    Stats.perform_known?(character.meta.stats, "taixuan-gong/enable_weapon")
+  end
+
+  defp unarmed_prepared?(stats) do
+    Stats.mapped(stats, "unarmed") == "taixuan-gong" and
+      Stats.prepared_perform(stats, "unarmed") |> to_string() |> String.split("/") |> hd() ==
+        "taixuan-gong"
   end
 
   defp apply_effect(conn, character) do
@@ -119,7 +149,13 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 600}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "霎时间$N只觉思绪狂涌，当即闭上双眼，再不理睬$n如何招架，只管施招攻出！此时侠客岛石壁上的千百种招式，转眼已从$N心底传向手足，尽数向$n袭去！", n1: character.name)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "霎时间$N只觉思绪狂涌，当即闭上双眼，再不理睬$n如何招架，只管施招攻出！此时侠客岛石壁上的千百种招式，转眼已从$N心底传向手足，尽数向$n袭去！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -147,17 +183,11 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Xuan do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    # LPC 该招由 COMBAT_D->do_attack 连击 15 次，命中提示由战斗引擎给出，此处仅结算反击反馈。
+    _ap = Map.get(data, :ap, 0)
     Performs.feedback(attacker, 600, 1)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

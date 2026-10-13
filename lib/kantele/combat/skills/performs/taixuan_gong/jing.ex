@@ -29,7 +29,10 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "taixuan-gong")
-    flag = 0
+    sub_msg = if Stats.mapped(stats, "sword") == "taixuan-gong", do: "剑", else: "刀"
+    weapon_name = weapon_name(combat)
+    ap = lvl + Stats.skill(stats, if(sub_msg == "剑", do: "sword", else: "blade"))
+    damage = ap + Engine.rand(rng, max(ap, 1))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +40,15 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          sub_msg: sub_msg,
+          weapon_name: weapon_name,
+          ap: ap,
+          damage: damage,
           rng: rng
         }
       })
@@ -63,11 +72,22 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_mapped(character) do
       :ok
+    end
+  end
+
+  # LPC: weapon 为空 或 skill_type 不是 sword/blade
+  defp check_weapon(character) do
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: st} when st in ["sword", "blade"] ->
+        :ok
+
+      _ ->
+        {:error, "你使用的武器不对，难以施展「白首太玄经」。\n"}
     end
   end
 
@@ -75,11 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 340 -> {:error, "你内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "taixuan-gong") < 340 -> {:error, "你太玄功火候不够，难以施展。\n"}
-      Stats.skill(stats, "sword") < 340 -> {:error, "你的基本刀法火候不足，难以施展。\n"}
-      Stats.skill(stats, "blade") < 340 -> {:error, "你现在真气不够，难以施展。\n"}
-      Stats.skill(stats, "martial-cognize") < 260 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      Stats.skill(stats, "force") < 340 -> {:error, "你内功修为不够，难以施展「白首太玄经」。\n"}
+      Stats.skill(stats, "taixuan-gong") < 340 -> {:error, "你太玄功火候不够，难以施展「白首太玄经」。\n"}
       true -> :ok
     end
   end
@@ -88,30 +105,72 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "taixuan-gong" -> {:error, "你没有激发太玄功为刀或剑，难以施展。\n"}
-      Stats.mapped(stats, "blade") != "taixuan-gong" -> {:error, "你的基本剑法火候不足，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "taixuan-gong" and
+          Stats.mapped(stats, "blade") != "taixuan-gong" ->
+        {:error, "你没有激发太玄功为刀或剑，难以施展「白首太玄经」。\n"}
+
+      Stats.mapped(stats, "sword") == "taixuan-gong" and Stats.skill(stats, "sword") < 340 ->
+        {:error, "你的基本剑法火候不足，难以施展「白首太玄经」。\n"}
+
+      Stats.mapped(stats, "blade") == "taixuan-gong" and Stats.skill(stats, "blade") < 340 ->
+        {:error, "你的基本刀法火候不足，难以施展「白首太玄经」。\n"}
+
+      true ->
+        :ok
     end
   end
 
   defp check_resources(character) do
     vitals = character.meta.vitals
+    stats = character.meta.stats
 
     cond do
-      vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展。\n"}
-      vitals.neili < 850 -> {:error, "你武学修养不足，难以施展。\n"}
+      vitals.max_neili < 10000 -> {:error, "你内力修为不够，难以施展「白首太玄经」。\n"}
+      vitals.neili < 850 -> {:error, "你现在真气不够，难以施展「白首太玄经」。\n"}
+      Stats.skill(stats, "martial-cognize") < 260 -> {:error, "你武学修养不足，难以施展「白首太玄经」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器不对，难以施展。\n"}
-    :ok
-
-  end
-
   defp apply_effect(conn, character) do
+    sub_msg = if Stats.mapped(character.meta.stats, "sword") == "taixuan-gong", do: "剑", else: "刀"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N情不自禁的纵声长啸，霎时之间，千百种招式纷至沓来，涌向心头。$N随手挥舞，已是不按次序，但觉无论何种招式皆能随心所欲，既不必存想内息，亦不须记忆招数，石壁上的千百种招式，自然而然的从心中传向手足，尽数袭向$n。\n",
+        n1: character.name
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N突然间只觉得右肋下‘渊液穴’上一动，一道热线沿着‘足少阳胆经’，向着‘日月’、‘京门’二穴行去，一招‘十步杀一人’的" <>
+          sub_msg <> "法已随意使出，各种招式源源而出，将$n笼罩。\n",
+        n1: character.name
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N肌肤如欲胀裂，内息不由自主的依着‘赵客缦胡缨’那套经脉运行图谱转动，同时手舞足蹈，似是大欢喜，又似大苦恼。\n",
+        n1: character.name
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n‘赵客缦胡缨’既毕，接下去便是‘吴钩霜雪明’，$N更不思索，石壁上的图谱一幅幅在脑海中自然涌出，自‘银鞍照白马’直到‘谁能书阁下’，一气呵成的使了出来。\n",
+        n1: character.name
+      )
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n待得‘谁能书阁下’这套功夫演完，$N只觉气息逆转，‘不惭世上英’倒使上去。\n",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -138,26 +197,59 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = Map.get(data, :ap, 0)
+    wn = Map.get(data, :weapon_name) || "剑"
+    sub_msg = Map.get(data, :sub_msg) || "剑"
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :jing, div(damage, 2))
-          vitals = Vitals.wound(vitals, :jing, div(damage, 4))
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
 
+    stage_hits = [
+      "$n却觉$N这招气势恢弘，于是运力奋力抵挡。但是无奈这招威力惊人，$n闷哼一声，倒退几步，顿觉内息涣散，" <>
+        wn <> "上早已染满鲜血！\n",
+      "$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，" <>
+        wn <> "已穿透$n的胸膛，鲜血不断涌出。\n",
+      "$n心中一惊，但见$N这几招奇异无比，招式变化莫测，但威力却依然不减，正犹豫间，$n却已中招，顿感精力不济，浑身无力。\n",
+      "$N" <>
+        sub_msg <>
+        "法奇妙无比，手中" <>
+        wn <>
+        "时而宛若游龙，时而宛若惊鸿，霎那间$n已遍体鳞伤，$N猛然将手中" <>
+        wn <>
+        "一转，剑势陡然加快，将$n团团围住，竟无一丝空隙！\n"
+    ]
+
+    stage_misses = [
+      "$n气贯双臂，凝神以对，竟将$N之力卸去。\n",
+      "$n会心一笑，看出$N这招中的破绽，随意施招竟将这招化去。\n",
+      "$n默运内功，内劲贯于全身，奋力抵挡住$N这招。\n",
+      "$n见这招来势凶猛，身形疾退，瞬间飘出三丈，方才躲过$N这招。\n"
+    ]
+
+    msg =
+      if hit? do
+        Enum.at(stage_hits, Engine.rand(rng, length(stage_hits)) - 1)
+      else
+        Enum.at(stage_misses, Engine.rand(rng, length(stage_misses)) - 1)
+      end
+
+    vitals = character.meta.vitals
+    vitals = if hit?, do: Vitals.damage(vitals, :qi, ap), else: vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = if hit, do: "$n冷笑一声，觉得$N此招肤浅之极，于是随意招架，猛然间，「噗嗤」！一声，某物已穿透$n的胸膛，鲜血不断涌出。", else: Enum.random(["$n会心一笑，看出$N这招中的破绽，随意施招竟将这招化去。", "$n气贯双臂，凝神以对，竟将$N之力卸去。", "$n见这招来势凶猛，身形疾退，瞬间飘出三丈，方才躲过$N这招。", "$n默运内功，内劲贯于全身，奋力抵挡住$N这招。"])
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    Performs.feedback(attacker, ap, 2)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

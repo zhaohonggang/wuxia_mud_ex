@@ -1,25 +1,30 @@
 defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
   @moduledoc """
-  perform「魔光日无极」（source jiuyang-shengong/ri.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「魔光日无极」（source jiuyang-shengong/perform/ri.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  群体 AoE：自身消耗 1000 内力、忙乱 5；对每个敌人
+  ap/2 + random(ap) > 其(force*2 + 武学参悟 + con*10) 则命中，造成
+  qi 伤 + qi 创/2 + jing 伤/6 + jing 创/10，并随机播放 5 种重伤描述之一
+  （外加 random(2) 两种私密提示）。框架内以单目标（selected enemy）近似群体结算
+  （见 do_resolve_incoming 注释；群体无一人命中时的全局提示见 no_hit_message/0）。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
+  alias Kantele.Character.Vitals
   alias Kantele.Combat.Performs
 
   @perform_id "jiuyang-shengong/ri"
+  @move_name "「魔光日无极」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,22 +34,32 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyang-shengong")
-    flag = 1
+    ap = Stats.skill(stats, "force") + Stats.skill(stats, "unarmed") +
+         Stats.skill(stats, "martial-cognize") + Stats.skill(stats, "jiuyang-shengong") +
+         Stats.query_con(stats) * 10
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
+         :ok <- check_fighting(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_resources(character),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
          {:ok, target} <- target(combat) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -61,23 +76,42 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character) do
+  defp check_fighting(combat) do
+    if Combat.fighting?(combat) do
+      :ok
+    else
+      {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil or Combat.occupied?(combat, :secondary_weapon) do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
+  defp check_resources(character) do
+    vitals = character.meta.vitals
 
     cond do
-      Stats.skill(stats, "jiuyang-shengong") < 250 -> {:error, "你的九阳神功还不够娴熟，难以施展。\n"}
-      true -> :ok
+      vitals.max_neili < 8000 ->
+        {:error, "你的内力的修为不够，现在无法使用#{@move_name}。\n"}
+
+      vitals.neili < 2000 ->
+        {:error, "你的真气不够，无法运用#{@move_name}。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp check_levels(character) do
+    if Stats.skill(character.meta.stats, "jiuyang-shengong") < 250 do
+      {:error, "你的九阳神功还不够娴熟，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
@@ -86,71 +120,57 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
 
     cond do
       Stats.mapped(stats, "unarmed") != "jiuyang-shengong" ->
-        {:error, "你现在没有激发九阳神功为拳脚，难以施展。\n"}
+        {:error, "你现在没有激发九阳神功为拳脚，难以施展#{@move_name}。\n"}
 
       Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "你现在没有激发九阳神功为内功，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiuyang-shengong" ->
-        {:error, "你现在没有准备使用九阳神功，难以施展。\n"}
+        {:error, "你现在没有激发九阳神功为内功，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
+  defp check_prepared(character) do
+    stats = character.meta.stats
 
-    cond do
-      vitals.max_neili < 8000 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
-      vitals.neili < 2000 -> {:error, "你的真气不够，无法运用。\n"}
-      true -> :ok
+    if Stats.prepared_perform(stats, "unarmed") != "jiuyang-shengong" do
+      {:error, "你现在没有准备使用九阳神功，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
-  end
-
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
-      true -> :ok
-    end
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 1000}
-    vitals = %{vitals | neili: vitals.neili - 500}
-    vitals = %{vitals | neili: 0}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 5)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N双目微闭，单手托天。掌心顿时腾起一个无比刺眼的气团，正是奥
-义「魔光日无极」。霎时金光万道，尘沙四起，空气炽热，几欲沸腾。$N
-随即收拢掌心，气团爆裂开来，向四周电射而出，光芒足以和日月争辉。", n1: character.name)
-
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
   end
 
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
+  end
+
+  # LPC: msg 由 3 段字面量组成（武器名为空）；me->add("neili", -1000); me->start_busy(5);
+  defp apply_effect(conn, character, target) do
+    msg =
+      ["只见$N双目微闭，单手托天。掌心顿时腾起一个无比刺眼的气团，正是奥\n义「",
+       "魔光日无极",
+       "」。霎时金光万道，尘沙四起，空气炽热，几欲沸腾。$N\n随即收拢掌心，气团爆裂开来，向四周电射而出，光芒足以和日月争辉。\n\n"]
+      |> Enum.join("")
+
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 1000}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+    combat = Combat.start_busy(character.meta.combat, 5)
+    character = %{character | meta: %{character.meta | combat: combat}}
+
+    conn =
+      if Enum.empty?(character.meta.combat.enemies) do
+        Broadcast.publish(conn, no_hit_message())
+      else
+        conn
+      end
+
+    conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
+    |> put_character(character)
+    |> assign(:prompt, false)
   end
 
   defp ref(character) do
@@ -159,23 +179,77 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Ri do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 500, 5)
-    msg = Enum.random(["(  )", "光芒闪过，却是呆立当场，动也不动，七窍流血，神情扭曲，煞是恐怖。", "只听一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。", "只见向后飞出丈远，重重的跌落在地上，衣衫烧焦，再也没力气站起。", "只见跌跌撞撞向后连退数步，伏倒在地。须眉、衣衫都发出一股焦臭。", "急忙抽身后退，可只见眼前光芒暴涨，一闪而过。全身已多了数个伤口，鲜血飞溅。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    if character.meta.combat.dead do
+      conn
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-1000"}, {"neili", "-500"}], "assign_refs": [{"ap", "force"}, {"dp", "force"}], "busy_lines": ["me->start_busy(5);", "obs[i]->start_busy(1);"], "level_gates": [{"jiuyang-shengong", "250"}], "map_gates": [{"force", "jiuyang-shengong"}, {"unarmed", "jiuyang-shengong"}], "prepared_gates": [{"unarmed", "jiuyang-shengong"}], "remote_damage": false, "resource_gates": [{"max_neili", "8000"}, {"neili", "0"}, {"neili", "2000"}], "set_flags": [{"neili", "0"}]}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    stats = character.meta.stats
 
+    # LPC: dp = obs[i]->query_skill("force") * 2 + 武学参悟 + con*10
+    dp = Stats.skill(stats, "force") * 2 + Stats.skill(stats, "martial-cognize") + Stats.query_con(stats) * 10
+
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: 命中
+      damage = div(ap, 4) + Engine.rand(rng, div(ap, 3))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage, 2))
+        |> Vitals.damage(:jing, div(damage, 6))
+        |> Vitals.wound(:jing, div(damage, 10))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      Performs.feedback(attacker, 500, 1)
+
+      # 私密提示（random(2) 两种）
+      conn = render(conn, CommandView, "text", %{text: Enum.random(tell_hit_messages())})
+      # 重伤描述（random(5) 五种，名字插入）
+      dmg = Enum.random(damage_messages(character.name))
+      conn = Broadcast.publish(conn, Enum.join(dmg, ""))
+
+      conn
+      |> put_character(character)
+    else
+      _no_hit = no_hit_message()
+      conn = render(conn, CommandView, "text", %{text: tell_miss_message()})
+
+      conn
+      |> put_character(character)
+    end
+  end
+
+  defp damage_messages(target_name) do
+    [
+      ["只听", target_name, "一声惨嚎，接连退了数步，“哇”的呕出一大口鲜血。\n"],
+      ["只见", target_name, "向后飞出丈远，重重的跌落在地上，衣衫烧焦，再也没力气站起。\n"],
+      ["只见", target_name, "跌跌撞撞向后连退数步，伏倒在地。须眉、衣衫都发出一股焦臭。\n"],
+      ["光芒闪过，", target_name, "却是呆立当场，动也不动，七窍流血，神情扭曲，煞是恐怖。\n"],
+      ["#{target_name}急忙抽身后退，可只见眼前光芒暴涨，一闪而过。全身已多了数个伤口，鲜血飞溅。\n"]
+    ]
+  end
+
+  defp tell_hit_messages() do
+    [
+      "你只觉眼前金光万道，周围空气几欲沸腾，光芒便如利箭一般透体而入。\n",
+      "你只觉眼前金光万道，周围空气几欲沸腾，光芒便如千万细针一齐扎入身体般。\n"
+    ]
+  end
+
+  defp tell_miss_message() do
+    "你只觉眼前金光万道，周围空气几欲沸腾，大惊之下连忙急运内功，抵御开来。\n"
+  end
+
+  defp no_hit_message() do
+    "只见光芒顿敛，却没有任何人被这招击中。\n"
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

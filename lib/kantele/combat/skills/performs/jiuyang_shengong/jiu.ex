@@ -1,25 +1,29 @@
 defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
   @moduledoc """
-  perform「九曦混阳」（source jiuyang-shengong/jiu.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「九曦混阳」（source jiuyang-shengong/perform/jiu.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛：已知此招 → 目标战斗中 → 空手 → max_neili>=4000 → 九阳神功>=200 →
+  激发 unarmed/force 为九阳神功 → 准备 unarmed → 真气>=500 → 目标存活。
+  ap = 拳脚 + con*20；命中 ap/2 + random(ap) > 目标(parry + con*20) 后给攻击临时加成
+  （apply/attack = ap/9）并连击；未命中仅描述。消耗 300 内力，忙乱 1+random(8)。
+  框架内 9 连击 + 临时攻击加成以单次命中近似（见 do_resolve_incoming 注释）。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "jiuyang-shengong/jiu"
+  @move_name "「九曦混阳」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,23 +33,31 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jiuyang-shengong")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "unarmed") + Stats.query_con(stats) * 20
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_max_neili(character),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -62,22 +74,34 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil or Combat.occupied?(combat, :secondary_weapon) do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_max_neili(character) do
+    if character.meta.vitals.max_neili < 4000 do
+      {:error, "你的内力的修为不够，现在无法使用#{@move_name}。\n"}
+    else
       :ok
     end
   end
 
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "jiuyang-shengong") < 200 -> {:error, "你的九阳神功还不够娴熟，难以施展。\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "jiuyang-shengong") < 200 do
+      {:error, "你的九阳神功还不够娴熟，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
@@ -86,55 +110,55 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
 
     cond do
       Stats.mapped(stats, "unarmed") != "jiuyang-shengong" ->
-        {:error, "你现在没有激发九阳神功为拳脚，难以施展。\n"}
+        {:error, "你现在没有激发九阳神功为拳脚，难以施展#{@move_name}。\n"}
 
       Stats.mapped(stats, "force") != "jiuyang-shengong" ->
-        {:error, "你现在没有激发九阳神功为内功，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "jiuyang-shengong" ->
-        {:error, "你现在没有准备使用九阳神功，难以施展。\n"}
+        {:error, "你现在没有激发九阳神功为内功，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
+  defp check_prepared(character) do
+    stats = character.meta.stats
+
+    if Stats.prepared_perform(stats, "unarmed") != "jiuyang-shengong" do
+      {:error, "你现在没有准备使用九阳神功，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力的修为不够，现在无法使用。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法运用。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 500 do
+      {:error, "你的真气不够，无法运用#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N大喝一声，顿时一股浩荡无比的真气至体内迸发，双掌猛然翻滚，朝$n闪电般拍去。", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target) do
+    msg = "$N大喝一声，顿时一股浩荡无比的真气至体内迸发，双掌猛然翻滚，朝$n闪电般拍去。\n"
+
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 300}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「九曦混阳」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -144,30 +168,47 @@ defmodule Kantele.Combat.Skills.Performs.JiuyangShengong.Jiu do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 1)
-    msg = "$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    ap = max(Map.get(data, :ap, 0), 1)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: dp = target->query_skill("parry") + target->query("con") * 20;
+    dp = Stats.skill(stats, "parry") + Stats.query_con(stats) * 20
+
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: 命中：count = ap/9，给攻击临时加成（框架内以单次命中近似，未做 9 连击）
+      # count = div(ap, 9)
+      Performs.feedback(attacker, 300, 1 + Engine.rand(rng, 8))
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "$n只觉周围空气炽热无比，又见无数气团向自己袭来，顿感头晕目眩，不知该如何抵挡。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      Performs.feedback(attacker, 300, 1 + Engine.rand(rng, 8))
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "$n只见$N无数气团向自己袭来，连忙强振精神，勉强抵挡。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    end
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-300"}], "apply_adds": ["attack"], "assign_refs": [{"ap", "unarmed"}, {"dp", "parry"}], "busy_lines": ["if (random(5) < 2 && ! target->is_busy())", "target->start_busy(1);", "me->start_busy(1 + random(8));"], "level_gates": [{"jiuyang-shengong", "200"}], "map_gates": [{"force", "jiuyang-shengong"}, {"unarmed", "jiuyang-shengong"}], "prepared_gates": [{"unarmed", "jiuyang-shengong"}], "remote_damage": false, "resource_gates": [{"max_neili", "4000"}, {"neili", "500"}], "var_gates": [{"i", "9"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>
