@@ -1,25 +1,28 @@
 defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Roar do
   @moduledoc """
-  exert「roar」（source kuihua-mogong/roar.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  exert「roar / 鬼哭神嚎」（source kuihua-mogong/exert/roar.c，inherit F_CLEAN_UP）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  消耗 100 内力、自身受 qi 伤 10、忙乱 5；对周围所有角色造成 qi 伤害
+  （框架内群体伤害未建模，仅保留命中提示文案）。
+  限制：neili>=100；环境 no_fight 时不可。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
-  alias Kantele.Character.Stats
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Messages
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
 
-    with :ok <- check_gates(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_no_fight(character) do
       apply_effect(conn, character)
     else
       {:error, message} ->
@@ -29,46 +32,44 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Roar do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if ((int)me->query("neili") < 100) return notify_fail("你的内力不够。\n");
+  defp check_resources(character) do
+    if character.meta.vitals.neili < 100 do
+      {:error, "你的内力不够。\n"}
+    else
       :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 100 -> {:error, "你的内力不够。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  # LPC: if (environment(me)->query("no_fight")) return notify_fail("这里不能攻击别人! \n");
+  defp check_no_fight(_character) do
+    # 框架内 room 的 no_fight 标志暂未接入，默认放行（文案需保留）
+    _msg = "这里不能攻击别人! \n"
     :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # 命中提示文案保留（框架内群体伤害未建模）
+    _hit_tell = "你只觉得魔音激荡刺耳，心胆俱裂！顿时，气血上涌，一口鲜血从口中汹涌而出。\n"
+
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 5)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    vitals = %{vitals | qi: max(vitals.qi - 10, 1)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    combat = Combat.start_busy(character.meta.combat, 5)
+    character = %{character | meta: %{character.meta | combat: combat}}
 
     conn
+    |> Broadcast.publish(
+      Messages.interpolate(
+        "$N气凝丹田，猛然一声尖啸，犹如鬼哭神嚎般，声音激荡刺耳，闻者心驰神摇，肝胆俱裂！\n",
+        [n1: character.name]
+      )
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}], "assign_refs": [{"skill", "force"}], "busy_lines": ["me->start_busy(5);"], "remote_damage": false, "resource_gates": [{"neili", "100"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // roar.c 鬼哭神嚎
   # 

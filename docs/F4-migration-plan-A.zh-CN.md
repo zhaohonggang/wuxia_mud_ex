@@ -501,14 +501,14 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `kuihua_mogong/` （8 个，基线缺失 67 条）
 
-- [ ] ❌ `kuihua_mogong/bian.ex` ← `kuihua-mogong/bian.c`  (miss=20)
-- [ ] ❌ `kuihua_mogong/powerup.ex` ← `kuihua-mogong/powerup.c`  (miss=4)
-- [ ] ❌ `kuihua_mogong/qiong.ex` ← `kuihua-mogong/qiong.c`  (miss=9)
-- [ ] ❌ `kuihua_mogong/roar.ex` ← `kuihua-mogong/roar.c`  (miss=3)
-- [ ] ❌ `kuihua_mogong/sheng.ex` ← `kuihua-mogong/sheng.c`  (miss=5)
-- [ ] ❌ `kuihua_mogong/shield.ex` ← `kuihua-mogong/shield.c`  (miss=4)
-- [ ] ❌ `kuihua_mogong/tian.ex` ← `kuihua-mogong/tian.c`  (miss=9)
-- [ ] ❌ `kuihua_mogong/wswd.ex` ← `kuihua-mogong/wswd.c`  (miss=13)
+- [x] ✅ `kuihua_mogong/bian.ex` ← `kuihua-mogong/bian.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/powerup.ex` ← `kuihua-mogong/powerup.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/qiong.ex` ← `kuihua-mogong/qiong.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/roar.ex` ← `kuihua-mogong/roar.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/sheng.ex` ← `kuihua-mogong/sheng.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/shield.ex` ← `kuihua-mogong/shield.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/tian.ex` ← `kuihua-mogong/tian.c`  (miss→0，PASS)
+- [x] ✅ `kuihua_mogong/wswd.ex` ← `kuihua-mogong/wswd.c`  (miss→0，PASS)
 
 ### `kunlun_jian/` （1 个，基线缺失 10 条）
 

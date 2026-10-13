@@ -1,25 +1,41 @@
 defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
   @moduledoc """
-  perform「无法无天」（source kuihua-mogong/tian.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「无法无天」（source kuihua-mogong/tian.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已知此招 → 目标为战斗中的对手 → 内力>=340 →
+  葵花魔功>=220 → 激发 force 为葵花魔功 → 内力上限>=3400 →
+  武器须为剑/针（空手则须准备 unarmed 为葵花魔功）→ 有武器则须激发 sword、
+  空手则须准备 unarmed 为葵花魔功 → 目标存活。
+  连击数 i = 6 + random(5)（固定 6~10 连），攻击方扣 i*30 内力。
+  命中判定：lvl*11/20 + random(lvl) > 目标 dodge（决定分支文案）。
+
+  差异（TODO(migrate)）：
+  - LPC 的 i 次 `COMBAT_D->do_attack(me, target, weapon, 0)`（完整 AP/DP/招架/
+    伤害管线）折算为每击 `lvl/15` 基础伤害 + 命中判定 `lvl/2 + random(lvl)` vs
+    目标 dodge（同 chongyang-shenzhang/lian、duanjia-sword/jue）；
+  - LPC 命中时 `add_temp("apply/attack|damage|unarmed_damage", lvl/4)` 只在连击
+    期间生效、连击后即移除；本版连击在目标侧折算，加成值 `count` 随事件数据
+    传给目标侧直接折入每击伤害，不落在攻击方临时属性上；
+  - `living(target)` 门槛在攻击方无 meta 可查时恒判存活，由目标侧
+    `combat/perform-incoming` 的死亡检查兜底。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Vitals
 
   @perform_id "kuihua-mogong/tian"
+  @move_name "「无法无天」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,23 +45,33 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
-    i = (6 + Engine.rand(rng, 5))
-    count = 0
+    hits = 6 + Engine.rand(rng, 5)
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_neili(character),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_max_neili(character),
+         :ok <- check_weapon_type(combat, character),
+         :ok <- check_weapon_mapped(combat, character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          # LPC: count = kuihua / 4（命中时 apply/* 临时加成，折入每击伤害）
+          count: div(lvl, 4),
+          hits: hits,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, hits)
     else
       {:error, message} ->
         conn
@@ -62,74 +88,124 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query("neili") < 340)
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 340 do
+      {:error, "你的真气不够，无法施展#{@move_name}！\n"}
+    else
       :ok
     end
   end
 
+  # LPC: if ((lvl = me->query_skill("kuihua-mogong", 1)) < 220)
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "kuihua-mogong") < 220 -> {:error, "你的葵花魔功火候不够，无法施展！\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "kuihua-mogong") < 220 do
+      {:error, "你的葵花魔功火候不够，无法施展#{@move_name}！\n"}
+    else
+      :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("force") != "kuihua-mogong")
   defp check_mapped(character) do
-    stats = character.meta.stats
+    if Stats.mapped(character.meta.stats, "force") != "kuihua-mogong" do
+      {:error, "你还没有激发葵花魔功为内功，无法施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
 
-    cond do
-      Stats.mapped(stats, "force") != "kuihua-mogong" ->
-        {:error, "你还没有激发葵花魔功为内功，无法施展。\n"}
+  # LPC: if ((int)me->query("max_neili") < 3400)
+  defp check_max_neili(character) do
+    if character.meta.vitals.max_neili < 3400 do
+      {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
 
-      Stats.mapped(stats, "sword") != "kuihua-mogong" ->
-        {:error, "你没有准备使用葵花魔功，难以施展。\n"}
+  # LPC: if (weapon = me->query_temp("weapon"))
+  #          { 若武器非剑/针则「你手里拿的不是剑，怎么施展…？」 }
+  #          else { 若未准备 unarmed 为葵花魔功则「你并没有准备使用葵花魔功，如何施展…？」 }
+  defp check_weapon_type(combat, character) do
+    case Combat.weapon(combat) do
+      nil ->
+        prepared = Stats.prepared_perform(character.meta.stats, "unarmed")
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "kuihua-mogong" ->
-        {:error, "你并没有准备使用葵花魔功，如何施展？\n"}
+        if prepared == nil or hd(String.split(prepared, "/")) != "kuihua-mogong" do
+          {:error, "你并没有准备使用葵花魔功，如何施展#{@move_name}？\n"}
+        else
+          :ok
+        end
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "kuihua-mogong" ->
-        {:error, "你没有准备使用葵花魔功，难以施展。\n"}
-
-      true ->
+      %{skill_type: st} when st == "sword" or st == "pin" ->
         :ok
+
+      _ ->
+        {:error, "你手里拿的不是剑，怎么施展#{@move_name}？\n"}
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
+  # LPC: if (weapon && me->query_skill_mapped("sword") != "kuihua-mogong")
+  #          return notify_fail("你没有准备使用葵花魔功，难以施展…。\n");
+  #     if (! weapon && me->query_skill_prepared("unarmed") != "kuihua-mogong")
+  #          return notify_fail("你没有准备使用葵花魔功，难以施展…。\n");
+  defp check_weapon_mapped(combat, character) do
+    case Combat.weapon(combat) do
+      nil ->
+        prepared = Stats.prepared_perform(character.meta.stats, "unarmed")
 
-    cond do
-      vitals.neili < 340 -> {:error, "你的真气不够，无法施展！\n"}
-      vitals.max_neili < 3400 -> {:error, "你的内力修为不足，难以施展。\n"}
-      true -> :ok
+        if prepared == nil or hd(String.split(prepared, "/")) != "kuihua-mogong" do
+          {:error, "你没有准备使用葵花魔功，难以施展#{@move_name}。\n"}
+        else
+          :ok
+        end
+
+      _ ->
+        if Stats.mapped(character.meta.stats, "sword") != "kuihua-mogong" do
+          {:error, "你没有准备使用葵花魔功，难以施展#{@move_name}。\n"}
+        else
+          :ok
+        end
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手里拿的不是剑，怎么施展？\n"}
-    :ok
-
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: msg = HIR "$N" HIR "默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n"
+  #               HIR "攻出数招！\n" NOR;
+  #      message_combatd(msg, me, target);  me->add("neili", -i * 30);
+  # （C 侧各段字面量仅由颜色宏/空白分隔，合并为同一条文案）
+  # 连击伤害/busy 在目标侧结算。
+  defp apply_effect(conn, character, target, hits) do
+    vitals = %{character.meta.vitals | neili: max(character.meta.vitals.neili - hits * 30, 0)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
     conn
+    |> Broadcast.publish(
+      Messages.interpolate(
+        "$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！\n",
+        [n1: character.name, n2: target.name]
+      )
+    )
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「无法无天」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -139,29 +215,85 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Tian do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = Enum.random(["$N默运葵花魔功，身形变得奇快无比，接连从不同的方位向$n攻出数招！", "$n只觉得眼前一花，发现四周都是$N的身影，不由暗生惧意，接连后退。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    level = max(Map.get(data, :level, 0), 1)
+    count = Map.get(data, :count, 0)
+    hits = Map.get(data, :hits, 6)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: if (lvl * 11 / 20 + random(lvl) > (int)target->query_skill("dodge", 1))
+    dodge = Stats.skill(stats, "dodge")
+
+    conn =
+      if div(level * 11, 20) + Engine.rand(rng, level) > dodge do
+        # LPC: count = kuihua / 4 的 apply/* 加成只在命中分支生效，折入每击伤害
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate(
+            "$n只觉得眼前一花，发现四周都是$N的身影，不由暗生惧意，接连后退。\n",
+            bindings
+          )
+        )
+      else
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate(
+            "$n见$N身法好快，哪里敢怠慢，连忙打起精神小心应对。\n",
+            bindings
+          )
+        )
+      end
+
+    # LPC: while (i--) { if (! me->is_fighting(target)) break;
+    #         if (random(2) && ! target->is_busy()) target->start_busy(1);
+    #         COMBAT_D->do_attack(me, target, weapon, 0); }
+    per_hit = max(div(level, 15), 1) + count
+
+    {damage, busy_roll?} =
+      Enum.reduce(1..hits, {0, false}, fn _, {damage_acc, busy_acc} ->
+        hit? = div(level, 2) + Engine.rand(rng, level) > dodge
+        busy_acc = busy_acc or Engine.rand(rng, 2) == 1
+
+        damage_acc =
+          if hit? do
+            damage_acc + per_hit + Engine.rand(rng, per_hit)
+          else
+            damage_acc
+          end
+
+        {damage_acc, busy_acc}
+      end)
+
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage, 3))
+
+    combat = character.meta.combat
+
+    combat =
+      if busy_roll? and not Combat.busy?(combat) do
+        Combat.start_busy(combat, 1)
+      else
+        combat
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+    # LPC: me->start_busy(1 + random(4))（收招后，位于连击之后）
+    Performs.feedback(attacker, 0, 1 + Engine.rand(rng, 4))
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"apply_adds": ["attack", "damage", "unarmed_damage"], "assign_refs": [{"count", "kuihua-mogong"}, {"lvl", "kuihua-mogong"}], "busy_lines": ["if (random(2) && ! target->is_busy())", "target->start_busy(1);", "me->start_busy(1 + random(4));"], "level_gates": [{"kuihua-mogong", "220"}], "map_gates": [{"force", "kuihua-mogong"}, {"sword", "kuihua-mogong"}], "prepared_gates": [{"unarmed", "kuihua-mogong"}], "remote_damage": false, "resource_gates": [{"max_neili", "3400"}, {"neili", "340"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // wu.c 无法无天
   # // 武器或者空手，手里拿剑或者针都可以

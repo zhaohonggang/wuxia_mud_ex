@@ -251,6 +251,14 @@ kongming_quan/ruo.ex
 kuangfeng_blade/kuang.ex
 kuangfeng_jian/sao.ex
 kuangfeng_jian/yong.ex
+kuihua_mogong/bian.ex
+kuihua_mogong/powerup.ex
+kuihua_mogong/qiong.ex
+kuihua_mogong/roar.ex
+kuihua_mogong/sheng.ex
+kuihua_mogong/shield.ex
+kuihua_mogong/tian.ex
+kuihua_mogong/wswd.ex
 kuimang_dao/pan.ex
 kunlun_qifa/liu.ex
 lingbo_weibu/ling.ex
@@ -341,6 +349,10 @@ shexing_lifan/guiyuan.ex
 shigu_bifa/feng.ex
 shigu_bifa/shiyi.ex
 shunv_jian/ning.ex
+six_finger/qi.ex
+six_finger/six.ex
+six_finger/zong.ex
+six_finger/zongheng.ex
 songshan_jian/meng.ex
 sougu/muyeyingyang.ex
 sun_finger/dian.ex

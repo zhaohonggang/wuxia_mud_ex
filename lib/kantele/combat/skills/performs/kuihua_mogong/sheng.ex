@@ -1,25 +1,31 @@
 defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
   @moduledoc """
-  perform「无声无息」（source kuihua-mogong/sheng.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「无声无息」（source kuihua-mogong/sheng.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已知此招 → 目标为战斗中的对手 → 目标未忙乱 →
+  葵花魔功>=200 → 内力上限>=3000 → 内力>=200 → 激发 dodge 为葵花魔功 →
+  目标存活。
+  ap = 葵花魔功*3/2 + 武学修养；dp = 目标闪避 + 目标武学修养。
+  命中判定：ap*3/5 + random(ap) > dp。无伤害。
+  命中：目标忙乱 ap/30+2，扣 120 内力、忙乱 1；
+  未命中：扣 80 内力、忙乱 1+random(2)。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "kuihua-mogong/sheng"
+  @move_name "「无声无息」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,15 +35,21 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
-    ap = (div((Stats.skill(stats, "kuihua-mogong") * 3), 2) + Stats.skill(stats, "martial-cognize"))
+    ap = div(Stats.skill(stats, "kuihua-mogong") * 3, 2) + Stats.skill(stats, "martial-cognize")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_target_busy(target),
+         :ok <- check_levels(character),
+         :ok <- check_resources(character),
+         :ok <- check_mapped(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -45,7 +57,7 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -62,71 +74,80 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (target->is_busy())
+  #          return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧！\n");
+  # 目标忙乱取引用快照 meta 的 combat.busy（缺 meta 时按未忙处理）
+  defp check_target_busy(target) do
+    if busy?(target) do
+      {:error, "#{Map.get(target, :name)}目前正自顾不暇，放胆攻击吧！\n"}
+    else
       :ok
     end
   end
 
+  defp busy?(target) do
+    case target do
+      %{meta: %{combat: %{busy: busy}}} -> busy > 0
+      _ -> false
+    end
+  end
+
+  # LPC: if ((int)me->query_skill("kuihua-mogong", 1) < 200)
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "kuihua-mogong") < 200 -> {:error, "你的葵花魔功不够深厚，不会使用。\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "kuihua-mogong") < 200 do
+      {:error, "你的葵花魔功不够深厚，不会使用#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "dodge") != "kuihua-mogong" -> {:error, "你还没有激发葵花魔功为轻功，无法施展。\n"}
-      true -> :ok
-    end
-  end
-
+  # LPC: if ((int)me->query("max_neili") < 3000) / if (me->query("neili") < 200)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你的真气不够，无法施展！\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展#{@move_name}！\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
+  # LPC: if (me->query_skill_mapped("dodge") != "kuihua-mogong")
+  defp check_mapped(character) do
+    if Stats.mapped(character.meta.stats, "dodge") != "kuihua-mogong" do
+      {:error, "你还没有激发葵花魔功为轻功，无法施展#{@move_name}。\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 120}
-    vitals = %{vitals | neili: vitals.neili - 80}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身子忽进忽退，身形诡秘异常，在$n身边飘忽不定。", n1: character.name)
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: msg = HIR "$N" HIR "身子忽进忽退，身形诡秘异常，在$n" HIR "身边飘忽不定。\n" NOR;
+  # （C 侧各段字面量仅由颜色宏/空白分隔，合并为同一条文案）
+  defp apply_effect(conn, character, target) do
+    msg = "$N身子忽进忽退，身形诡秘异常，在$n身边飘忽不定。\n"
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「无声无息」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -135,34 +156,45 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Sheng do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    cond do
-      character.meta.combat.dead ->
-        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
-      character.meta.combat.busy > 0 ->
-        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧！", n1: attacker.name, n2: character.name)
-      true ->
-        do_resolve_incoming(conn, character, attacker, data)
+    if character.meta.combat.dead do
+      conn
+    else
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 80, 1)
-    msg = "结果$p只能紧守门户，不敢妄自出击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    ap = max(Map.get(data, :ap, 0), 1)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: dp = target->query_skill("dodge") + target->query_skill("martial-cognize", 1);
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "martial-cognize")
+
+    # LPC: if (ap * 3 / 5 + random(ap) > dp)
+    if div(ap * 3, 5) + Engine.rand(rng, ap) > dp do
+      # LPC: target->start_busy(ap / 30 + 2); me->add("neili", -120); me->start_busy(1);
+      combat = Combat.start_busy(character.meta.combat, div(ap, 30) + 2)
+      character = %{character | meta: %{character.meta | combat: combat}}
+      Performs.feedback(attacker, 120, 1)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate("结果$p只能紧守门户，不敢妄自出击！\n", bindings)
+      )
+      |> put_character(character)
+    else
+      # LPC: me->start_busy(1 + random(2)); me->add("neili", -80);
+      Performs.feedback(attacker, 80, 1 + Engine.rand(rng, 2))
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate("可是$p看破了$P的身法，并没有受到任何影响。\n", bindings)
+      )
+      |> put_character(character)
+    end
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-120"}, {"neili", "-80"}], "assign_refs": [{"ap", "kuihua-mogong"}, {"dp", "dodge"}], "busy_lines": ["if (target->is_busy())", "target->start_busy(ap / 30 + 2);", "me->start_busy(1);", "me->start_busy(1 + random(2));"], "level_gates": [{"kuihua-mogong", "200"}], "map_gates": [{"dodge", "kuihua-mogong"}], "remote_damage": false, "resource_gates": [{"max_neili", "3000"}, {"neili", "200"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // sheng.c 无声无息
   # 

@@ -4,10 +4,10 @@
 
 ## 背景
 
-`scripts/protected_performs.txt` 当前共 **383** 条受保护 perform。
+`scripts/protected_performs.txt` 当前共 **395** 条受保护 perform。
 用**严格判据**（`.ex` 代码内中文文案 vs `.c` 代码内中文文案，**逐条字面一致，不做模糊等价**）复核：
 
-- **PASS = 224**，**FAIL = 159**，MISSING 合计 **1482** 条。
+- **PASS = 236**，**FAIL = 159**，MISSING 合计 **1482** 条。
 - 判据 = `check_one`：`Counter(norm(src)) - Counter(norm(tgt))` 为空才 PASS（MISSING 必须为空；EXTRA 不判错）。
 - 本计划**独立于 A/B 号计划**，可并行执行；A/B 只处理非受保护文件。
 
@@ -169,6 +169,14 @@
 - `kongming_quan/ruo.ex`
 - `kuangfeng_blade/kuang.ex`
 - `kuangfeng_jian/yong.ex`
+- `kuihua_mogong/bian.ex`
+- `kuihua_mogong/powerup.ex`
+- `kuihua_mogong/qiong.ex`
+- `kuihua_mogong/roar.ex`
+- `kuihua_mogong/sheng.ex`
+- `kuihua_mogong/shield.ex`
+- `kuihua_mogong/tian.ex`
+- `kuihua_mogong/wswd.ex`
 - `qishang_quan/shang.ex`
 - `qixian_wuxingjian/shan.ex`
 - `qixian_wuxingjian/yin.ex`
@@ -209,6 +217,10 @@
 - `shexing_lifan/guiyuan.ex`
 - `shigu_bifa/feng.ex`
 - `shigu_bifa/shiyi.ex`
+- `six_finger/qi.ex`
+- `six_finger/six.ex`
+- `six_finger/zong.ex`
+- `six_finger/zongheng.ex`
 - `sougu/muyeyingyang.ex`
 - `surge_force/powerup.ex`
 - `taiji_shengong/powerup.ex`

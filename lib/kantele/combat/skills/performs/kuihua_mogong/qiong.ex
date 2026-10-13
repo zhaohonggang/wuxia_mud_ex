@@ -1,25 +1,35 @@
 defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
   @moduledoc """
-  perform「无穷无尽」（source kuihua-mogong/qiong.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「无穷无尽」（source kuihua-mogong/qiong.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已知此招 → 目标为战斗中的对手 → 葵花魔功>=250 →
+  内力上限>=3800 → 内力>=200 → 武器须为剑/针（空手则须准备 unarmed 为
+  葵花魔功）→ 有武器则激发 sword、空手则准备 unarmed 为葵花魔功 → 目标存活。
+  施法即扣 60 内力、忙乱 1+random(2)。
+  dp = 目标战斗经验/10000，三分支：
+    dp>=100：对百万经验以上仍造成伤害——ap1=葵花魔功+轻功 对
+      dp1=目标闪避+目标武学修养（ap1*2/3+random(ap1)>dp1 命中），
+      命中伤害 ap/2+random(ap)、95+random(5)% 外伤、扣 80 内力；
+    否则 random(ap)>dp：一击必杀（target->die），扣 120 内力；
+    否则：仅躲闪文案。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
+  alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
+  alias Kantele.Character.Vitals
 
   @perform_id "kuihua-mogong/qiong"
+  @move_name "「无穷无尽」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,25 +40,30 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "kuihua-mogong")
     ap = Stats.skill(stats, "kuihua-mogong")
-    ap1 = (Stats.skill(stats, "kuihua-mogong") + Stats.skill(stats, "dodge"))
-    damage = (div(ap, 2) + Engine.rand(rng, ap))
+    ap1 = Stats.skill(stats, "kuihua-mogong") + Stats.skill(stats, "dodge")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_levels(character),
+         :ok <- check_resources(character),
+         :ok <- check_weapon_type(combat, character),
+         :ok <- check_weapon_mapped(combat, character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          ap1: ap1,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -65,79 +80,104 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query_skill("kuihua-mogong", 1) < 250)
+  defp check_levels(character) do
+    if Stats.skill(character.meta.stats, "kuihua-mogong") < 250 do
+      {:error, "你的葵花魔功还不够娴熟，不能使用#{@move_name}！\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "kuihua-mogong") < 250 -> {:error, "你的葵花魔功还不够娴熟，不能使用！\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "sword") != "kuihua-mogong" ->
-        {:error, "你没有准备使用葵花魔功，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "kuihua-mogong" ->
-        {:error, "你并没有准备使用葵花魔功，如何施展？\n"}
-
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "kuihua-mogong" ->
-        {:error, "你没有准备使用葵花魔功，难以施展。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
+  # LPC: if ((int)me->query("max_neili") < 3800) / if (me->query("neili") < 200)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3800 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你的真气不够，无法施展\n"}
+      vitals.max_neili < 3800 -> {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展#{@move_name}\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手里拿的不是剑，怎么施展？\n"}
-    :ok
+  # LPC: if (weapon = me->query_temp("weapon"))
+  #          { 若武器非剑/针则「你手里拿的不是剑，怎么施展…？」 }
+  #          else { 若未准备 unarmed 为葵花魔功则「你并没有准备使用葵花魔功，如何施展…？」 }
+  defp check_weapon_type(combat, character) do
+    case Combat.weapon(combat) do
+      nil ->
+        prepared = Stats.prepared_perform(character.meta.stats, "unarmed")
 
+        if prepared == nil or hd(String.split(prepared, "/")) != "kuihua-mogong" do
+          {:error, "你并没有准备使用葵花魔功，如何施展#{@move_name}？\n"}
+        else
+          :ok
+        end
+
+      %{skill_type: st} when st == "sword" or st == "pin" ->
+        :ok
+
+      _ ->
+        {:error, "你手里拿的不是剑，怎么施展#{@move_name}？\n"}
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 120}
-    vitals = %{vitals | neili: vitals.neili - 60}
-    vitals = %{vitals | neili: vitals.neili - 80}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。", n1: character.name)
+  # LPC: if (weapon && me->query_skill_mapped("sword") != "kuihua-mogong")
+  #          return notify_fail("你没有准备使用葵花魔功，难以施展…。\n");
+  #     if (! weapon && me->query_skill_prepared("unarmed") != "kuihua-mogong")
+  #          return notify_fail("你没有准备使用葵花魔功，难以施展…。\n");
+  defp check_weapon_mapped(combat, character) do
+    case Combat.weapon(combat) do
+      nil ->
+        prepared = Stats.prepared_perform(character.meta.stats, "unarmed")
+
+        if prepared == nil or hd(String.split(prepared, "/")) != "kuihua-mogong" do
+          {:error, "你没有准备使用葵花魔功，难以施展#{@move_name}。\n"}
+        else
+          :ok
+        end
+
+      _ ->
+        if Stats.mapped(character.meta.stats, "sword") != "kuihua-mogong" do
+          {:error, "你没有准备使用葵花魔功，难以施展#{@move_name}。\n"}
+        else
+          :ok
+        end
+    end
+  end
+
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: msg = HIR "\n$N" HIR "尖啸一声，猛然进步欺前，一招竟直袭$n" …
+  # （C 侧各段字面量仅由颜色宏/空白分隔，合并为同一条文案）
+  # LPC: me->add("neili", -60); me->start_busy(1 + random(2));（命中与否都扣）
+  defp apply_effect(conn, character, target) do
+    msg = "\n$N尖啸一声，猛然进步欺前，一招竟直袭$n要害，速度之快，令人见所未见，闻所未闻。\n"
+
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 60}
+    combat = Combat.start_busy(character.meta.combat, 1 + :rand.uniform(2) - 1)
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
 
     conn
+    |> Broadcast.publish(Messages.interpolate(msg, [n1: character.name, n2: target.name]))
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「无穷无尽」只能在战斗中对对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -147,37 +187,89 @@ defmodule Kantele.Combat.Skills.Performs.KuihuaMogong.Qiong do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    ap1 = max(Map.get(data, :ap1, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 80, 1)
-    msg = if hit, do: "这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。", else: "$n大吃一惊，连忙退后，居然侥幸躲开着这一招！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # LPC: dp = target->query("combat_exp") / 10000;
+    dp = div(stats.combat_exp, 10000)
+
+    cond do
+      # LPC: if (dp >= 100) // 对百万经验以上无效，但是仍然受到伤害
+      dp >= 100 ->
+        # LPC: dp1 = target->query_skill("dodge", 1) + target->query_skill("martial-cognize", 1);
+        dp1 = Stats.skill(stats, "dodge") + Stats.skill(stats, "martial-cognize")
+
+        if div(ap1 * 2, 3) + Engine.rand(rng, ap1) > dp1 do
+          # LPC: damage = ap / 2 + random(ap);
+          #          do_damage(me, target, REMOTE_ATTACK, damage, 95 + random(5), …);
+          #          me->add("neili", -80);
+          damage = div(ap, 2) + Engine.rand(rng, ap)
+          percent = 95 + Engine.rand(rng, 5)
+          character = apply_damage(character, damage, percent)
+          Performs.feedback(attacker, 80, 0)
+
+          conn
+          |> Broadcast.publish(
+            Messages.interpolate(
+              "这一招速度之快完全超出了$n的想象，$n慌忙回缩招架，但是此招之快，已无从躲闪，$n尖叫一声，已然中招。\n",
+              bindings
+            )
+          )
+          |> put_character(character)
+        else
+          conn
+          |> Broadcast.publish(
+            Messages.interpolate("$n知道来招不善，急忙闪避，没出一点差错。\n", bindings)
+          )
+          |> put_character(character)
+        end
+
+      # LPC: if (random(ap) > dp) → target->die(me)
+      Engine.rand(rng, ap) > dp ->
+        vitals = %{character.meta.vitals | qi: 0}
+        combat = %{character.meta.combat | dead: true}
+        character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+        # LPC: me->add("neili", -120);
+        Performs.feedback(attacker, 120, 0)
+
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate(
+            "这一招速度之快完全超出了$n的想象，被$N这一招正好击中了丹田要害，浑身真气登时涣散！\n",
+            bindings
+          )
+        )
+        |> put_character(character)
+
+      true ->
+        conn
+        |> Broadcast.publish(
+          Messages.interpolate("$n大吃一惊，连忙退后，居然侥幸躲开着这一招！\n", bindings)
+        )
+        |> put_character(character)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-120"}, {"neili", "-60"}, {"neili", "-80"}], "assign_refs": [{"ap", "kuihua-mogong"}, {"ap1", "kuihua-mogong"}, {"dp1", "dodge"}], "busy_lines": ["me->start_busy(1 + random(2));"], "level_gates": [{"kuihua-mogong", "250"}], "map_gates": [{"sword", "kuihua-mogong"}], "prepared_gates": [{"unarmed", "kuihua-mogong"}], "remote_damage": true, "resource_gates": [{"max_neili", "3800"}, {"neili", "200"}]}
+  # LPC: COMBAT_D->do_damage(me, target, REMOTE_ATTACK, damage, percent, msg)
+  # wound = damage * percent / 100（armor 未建模，按 percent 直算）
+  defp apply_damage(character, damage, percent) do
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, damage)
+      |> Vitals.wound(:qi, div(damage * percent, 100))
 
+    %{character | meta: %{character.meta | vitals: vitals}}
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // qiong 无穷无尽
   # 
