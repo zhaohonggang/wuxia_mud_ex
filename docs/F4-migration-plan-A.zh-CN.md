@@ -541,7 +541,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `lengyue_shengong/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `lengyue_shengong/powerup.ex` ← `lengyue-shengong/powerup.c`  (miss=4)
+- [x] ✅ `lengyue_shengong/powerup.ex` ← `lengyue-shengong/powerup.c`  (miss→0，PASS)
 
 ### `liangyi_jian/` （1 个，基线缺失 9 条）
 
@@ -549,7 +549,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `liangyi_shengong/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `liangyi_shengong/powerup.ex` ← `liangyi-shengong/powerup.c`  (miss=4)
+- [x] ✅ `liangyi_shengong/powerup.ex` ← `liangyi-shengong/powerup.c`  (miss→0，PASS)
 
 ### `lianhuan_mizongtui/` （1 个，基线缺失 8 条）
 
@@ -557,7 +557,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `lingshe_quan/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `lingshe_quan/rou.ex` ← `lingshe-quan/rou.c`  (miss=1)
+- [x] ✅ `lingshe_quan/rou.ex` ← `lingshe-quan/rou.c`  (miss→0，PASS)
 
 ### `lingshe_zhangfa/` （3 个，基线缺失 14 条）
 
