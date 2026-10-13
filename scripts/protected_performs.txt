@@ -219,6 +219,7 @@ jinshe_zhui/tuwu.ex
 jinwu_daofa/chi
 jinwu_goufa/duo
 jinyu_quan/man
+jinyuan_gun/qian
 jinzhong_zhao/zhao.ex
 jiuqu_jian/wan.ex
 jueqing_jian/liu.ex
