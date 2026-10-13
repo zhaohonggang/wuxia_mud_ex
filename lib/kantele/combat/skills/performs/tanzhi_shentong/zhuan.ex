@@ -29,12 +29,17 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tanzhi-shentong")
-    improve = 0
-    n = 0
-    m = 0
-    ap = ((Stats.skill(stats, "finger") + Stats.skill(stats, "qimen-wuxing")) + Stats.skill(stats, "tanzhi-shentong"))
+    _improve = 0
+    _n = 0
+    _m = 0
+
+    ap =
+      Stats.skill(stats, "finger") + Stats.skill(stats, "qimen-wuxing") +
+        Stats.skill(stats, "tanzhi-shentong")
+
     count = Stats.skill(stats, "mathematics")
-    damage = (ap + Engine.rand(rng, ap))
+    _count = count
+    damage = ap + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,7 +47,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -82,8 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tanzhi-shentong") < 220 -> {:error, "你的弹指神通不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "qimen-wuxing") < 200 -> {:error, "你的奇门五行修为不够，难以施展。\n"}
+      Stats.skill(stats, "tanzhi-shentong") < 220 -> {:error, "你的弹指神通不够娴熟，难以施展「转乾坤」。\n"}
+      Stats.skill(stats, "qimen-wuxing") < 200 -> {:error, "你的奇门五行修为不够，难以施展「转乾坤」。\n"}
       true -> :ok
     end
   end
@@ -93,10 +100,11 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
 
     cond do
       Stats.mapped(stats, "finger") != "tanzhi-shentong" ->
-        {:error, "你没有激发弹指神通，难以施展。\n"}
+        {:error, "你没有激发弹指神通，难以施展「转乾坤」。\n"}
 
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "tanzhi-shentong" ->
-        {:error, "你没有准备弹指神通，难以施展。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "tanzhi-shentong" ->
+        {:error, "你没有准备弹指神通，难以施展「转乾坤」。\n"}
 
       true ->
         :ok
@@ -107,8 +115,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 800 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 3500 -> {:error, "你的内力修为不足，难以施展「转乾坤」。\n"}
+      vitals.neili < 800 -> {:error, "你现在的真气不够，难以施展「转乾坤」。\n"}
       true -> :ok
     end
   end
@@ -117,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「转乾坤」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -159,23 +167,50 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Zhuan do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+
+    dp =
+      Stats.skill(stats, "force") + Stats.skill(stats, "parry") +
+        Stats.skill(stats, "qimen-wuxing")
+
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    attacker_max_neili = attacker.meta.vitals.max_neili
+    target_max_neili = character.meta.vitals.max_neili
+
+    Performs.feedback(attacker, 200, 2)
+
+    vitals =
+      if hit? do
+        if attacker_max_neili > target_max_neili * 2 do
+          # LPC: damage = -1 (instant kill)
+          Map.put(character.meta.vitals, :qi, 0)
+        else
+          damage = ap + Engine.rand(rng, max(ap, 1))
+          Vitals.damage(character.meta.vitals, :qi, damage)
+        end
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 3)
-    msg = if hit, do: "霎那间$n只见寒芒一闪，$N食指已钻入$p胸堂半尺，指劲顿时破体而入。
-你听到“嗤”的一声，身上竟然溅到几滴鲜血！", else: "$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。"
+
+    msg =
+      if hit? do
+        if attacker_max_neili > target_max_neili * 2 do
+          # LPC branch: brain strike
+          "霎那间$n只见寒芒一闪，$N食指已钻入$p印堂半尺，指劲顿时破脑而入。\n你听到“噗”的一声，身上竟然溅到几滴脑浆！\n($n受伤过重，已经有如风中残烛，随时都可能断气。)\n"
+        else
+          "霎那间$n只见寒芒一闪，$N食指已钻入$p胸堂半尺，指劲顿时破体而入。\n你听到“嗤”的一声，身上竟然溅到几滴鲜血！\n"
+        end
+      else
+        "$p见$P招式奇特，不感大意，顿时向后跃数丈，躲闪开来。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

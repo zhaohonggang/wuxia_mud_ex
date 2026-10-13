@@ -28,10 +28,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    improve = 0
-    n = 0
-    i = 0
-    lvl = Stats.skill(stats, "strike")
+    lvl = Stats.skill(stats, "tie-zhang")
+    ap = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,9 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -77,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tie-zhang") < 220 -> {:error, "你铁掌掌法火候不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tie-zhang") < 220 -> {:error, "你铁掌掌法火候不够，难以施展「阴阳磨」。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功修为不够，难以施展「阴阳磨」。\n"}
       true -> :ok
     end
   end
@@ -88,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
 
     cond do
       Stats.mapped(stats, "strike") != "tie-zhang" ->
-        {:error, "你没有激发铁掌掌法，难以施展。\n"}
+        {:error, "你没有激发铁掌掌法，难以施展「阴阳磨」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
-        {:error, "你没有准备铁掌掌法，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
+        {:error, "你没有准备铁掌掌法，难以施展「阴阳磨」。\n"}
 
       true ->
         :ok
@@ -102,8 +104,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 3500 -> {:error, "你的内力修为不够，难以施展「阴阳磨」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展「阴阳磨」。\n"}
       true -> :ok
     end
   end
@@ -112,17 +114,27 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「阴阳磨」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -400)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 3 + :rand.uniform(3))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -150,24 +162,63 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Yin do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry")
+    dd = Stats.skill(stats, "dodge")
+    _dd = dd
+    hit1? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 400, 2)
+
+    vitals =
+      if hit1? do
+        Vitals.damage(
+          character.meta.vitals,
+          :qi,
+          div(ap, 2) + Engine.rand(rng, max(div(ap, 2), 1))
+        )
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 1)
-    msg = if hit, do: Enum.random(["$N施出铁掌绝技「阴阳磨」，左掌不着半点力道，携着阴寒劲向$n拂去。", "紧接着$N右掌一振，掌风过处，竟席卷起一股热浪，向$n胸前猛然拍落。"]), else: "$n见$N掌出如风，心知此招后着极是凌厉，当即斜跳闪开。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # Stage 1 message
+    msg1 =
+      if hit1? do
+        "霎那间$n已被$N阴寒掌劲拂中要害，不由得浑身一颤，难受之极。\n"
+      else
+        "$n见$N掌出如风，心知此招后着极是凌厉，当即斜跳闪开。\n"
+      end
+
+    # Stage 2 attack broadcast (always shown in LPC)
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n紧接着$N右掌一振，掌风过处，竟席卷起一股热浪，向$n胸前猛然拍落。\n",
+        n1: attacker.name
+      )
+
+    # Stage 2 resolution
+    hit2? =
+      div(ap, 2) + Engine.rand(rng, max(ap, 1)) >
+        dd
+
+    msg2 =
+      if hit2? do
+        "只听嗤的一声，$N右掌如击败革，正中$n胸口，震断了数根肋骨。\n"
+      else
+        "忽闻呼啸声大至，眼见$N掌势如虹，急忙纵跃躲避开来。\n"
+      end
+
+    result1 = Messages.interpolate(msg1, n1: attacker.name, n2: character.name)
+    result2 = Messages.interpolate(msg2, n1: attacker.name, n2: character.name)
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(result1)
+    |> Broadcast.publish(result2)
     |> put_character(character)
   end
 

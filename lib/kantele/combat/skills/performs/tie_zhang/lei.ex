@@ -29,6 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tie-zhang")
+    ap = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -74,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tie-zhang") < 160 -> {:error, "你铁掌掌法火候不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tie-zhang") < 160 -> {:error, "你铁掌掌法火候不够，难以施展「掌心雷」。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功修为不够，难以施展「掌心雷」。\n"}
       true -> :ok
     end
   end
@@ -85,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
 
     cond do
       Stats.mapped(stats, "strike") != "tie-zhang" ->
-        {:error, "你没有激发铁掌掌法，难以施展。\n"}
+        {:error, "你没有激发铁掌掌法，难以施展「掌心雷」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
-        {:error, "你没有准备铁掌掌法，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
+        {:error, "你没有准备铁掌掌法，难以施展「掌心雷」。\n"}
 
       true ->
         :ok
@@ -99,8 +104,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 2200 -> {:error, "你的内力修为不够，难以施展「掌心雷」。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展「掌心雷」。\n"}
       true -> :ok
     end
   end
@@ -109,13 +114,13 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「掌心雷」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100/-250)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 250}
@@ -124,7 +129,10 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转真气施出「掌心雷」绝技，双掌翻红，有如火烧，朝$n猛然拍出。", n1: character.name)
+
+    # LPC: join_adjacent merges "运转真气施出「" + "掌心雷"
+    conn = Broadcast.publish(conn, "$N运转真气施出「掌心雷", n1: character.name)
+    conn = Broadcast.publish(conn, "」绝技，双掌翻红，有如火烧，朝$n猛然拍出。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -152,22 +160,32 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Lei do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 250, 3)
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, ap + Engine.rand(rng, max(div(ap, 2), 1)))
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 250, 4)
-    msg = if hit, do: "结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。", else: "$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。"
+
+    msg =
+      if hit? do
+        "结果只听$n一声闷哼，被$N一掌劈个正着，口中鲜血狂喷而出。\n"
+      else
+        "$n眼见$N来势汹涌，丝毫不敢小觑，急忙闪在了一旁。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

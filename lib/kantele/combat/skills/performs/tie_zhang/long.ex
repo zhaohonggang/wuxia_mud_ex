@@ -15,7 +15,6 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
@@ -29,6 +28,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tie-zhang")
+    ap = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +36,12 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -74,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tie-zhang") < 100 -> {:error, "你铁掌掌法火候不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tie-zhang") < 100 -> {:error, "你铁掌掌法火候不够，难以施展「龙影掌」。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功修为不够，难以施展「龙影掌」。\n"}
       true -> :ok
     end
   end
@@ -85,10 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
 
     cond do
       Stats.mapped(stats, "strike") != "tie-zhang" ->
-        {:error, "你没有激发铁掌掌法，难以施展。\n"}
+        {:error, "你没有激发铁掌掌法，难以施展「龙影掌」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
-        {:error, "你没有准备铁掌掌法，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
+        {:error, "你没有准备铁掌掌法，难以施展「龙影掌」。\n"}
 
       true ->
         :ok
@@ -99,8 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不够，难以施展「龙影掌」。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展「龙影掌」。\n"}
       true -> :ok
     end
   end
@@ -109,13 +113,13 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「龙影掌」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100/-80)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 80}
@@ -123,7 +127,10 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双掌交错，施出铁掌绝技「龙影掌」，旋起层层残影，笼罩$n四方。", n1: character.name)
+
+    # LPC: join_adjacent merges "双掌交错，施出铁掌绝技「" + "龙影掌"
+    conn = Broadcast.publish(conn, "$N双掌交错，施出铁掌绝技「龙影掌", n1: character.name)
+    conn = Broadcast.publish(conn, "」，旋起层层残影，笼罩$n四方。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -146,23 +153,33 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Long do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 80, 2)
-    msg = "残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！"
+
+    msg =
+      if hit? do
+        "残影晃动间$n招式陡然一紧，竟被$N的掌招牵引得手忙脚乱！\n"
+      else
+        "可是$n看破了$N的企图，镇定解招，一丝不乱。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

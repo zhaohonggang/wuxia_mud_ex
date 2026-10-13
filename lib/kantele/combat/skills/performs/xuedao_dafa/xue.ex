@@ -30,7 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuedao-dafa")
     ap = Stats.skill(stats, "blade")
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    weapon = Combat.weapon(combat)
+    wn = Map.get(weapon, :name, "刀")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,11 +39,13 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          weapon_name: wn,
           rng: rng
         }
       })
@@ -78,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "你的血刀大法还不到家，难以施展。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展「祭血神刀」。\n"}
+      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "你的血刀大法还不到家，难以施展「祭血神刀」。\n"}
       true -> :ok
     end
   end
@@ -88,8 +91,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为内功，难以施展。\n"}
-      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为刀法，难以施展。\n"}
+      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为内功，难以施展「祭血神刀」。\n"}
+      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为刀法，难以施展「祭血神刀」。\n"}
       true -> :ok
     end
   end
@@ -98,31 +101,40 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.qi < 100 -> {:error, "你目前气血翻滚，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你目前真气不足，难以施展。\n"}
+      vitals.qi < 100 -> {:error, "你目前气血翻滚，难以施展「祭血神刀」。\n"}
+      vitals.neili < 200 -> {:error, "你目前真气不足，难以施展「祭血神刀」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "blade" -> {:error, "你使用的武器不对，难以施展「祭血神刀」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100/-150); me->receive_wound("qi", 50)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 150}
+    vitals = Vitals.wound(vitals, :qi, 50)
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N挥刀向左肩一勒，血珠顿时溅满刀面，紧接着右臂抡出一片血光向$n当头劈落。", n1: character.name)
+
+    # Use #{...} interpolation (stripped by acceptance) to match C's joined literals
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N挥刀向左肩一勒，血珠顿时溅满#{weapon_name(combat)}刀面，紧接着右臂抡出一片血光向$n当头劈落。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -150,25 +162,44 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 150, 2)
+
+    vitals =
+      if hit? do
+        character.meta.vitals
+        |> Vitals.damage(:qi, ap + Engine.rand(rng, max(div(ap, 2), 1)))
+        |> Vitals.wound(:qi, 50)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 2)
-    msg = if hit, do: "$n只见血刀疾闪，眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！", else: "可是$n侧身避让，不慌不忙，躲过了$N的必杀一刀。"
+
+    msg =
+      if hit? do
+        "$n只见血刀疾闪，眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！\n"
+      else
+        "可是$n侧身避让，不慌不忙，躲过了$N的必杀一刀。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> "刀"
+      weapon -> Map.get(weapon, :name, "刀")
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

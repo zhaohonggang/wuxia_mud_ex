@@ -461,8 +461,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jiuyin_baiguzhao/` （2 个，基线缺失 16 条）
 
-- [ ] ❌ `jiuyin_baiguzhao/duo.ex` ← `jiuyin-baiguzhao/duo.c`  (miss=9)
-- [ ] ❌ `jiuyin_baiguzhao/zhua.ex` ← `jiuyin-baiguzhao/zhua.c`  (miss=7)
+- [x] ✅ `jiuyin_baiguzhao/duo.ex` ← `jiuyin-baiguzhao/duo.c`  (miss→0，PASS)
+- [x] ✅ `jiuyin_baiguzhao/zhua.ex` ← `jiuyin-baiguzhao/zhua.c`  (miss→0，PASS)
 
 ### `jiuyin_shengong/` （10 个，基线缺失 54 条）
 

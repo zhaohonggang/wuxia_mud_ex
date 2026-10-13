@@ -299,10 +299,10 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tanzhi_shentong/` （4 个，基线缺失 39 条）
 
-- [ ] ❌ `tanzhi_shentong/ding.ex` ← `tanzhi-shentong/ding.c`  (miss=11)
-- [ ] ❌ `tanzhi_shentong/po.ex` ← `tanzhi-shentong/po.c`  (miss=13)
-- [ ] ❌ `tanzhi_shentong/xiao.ex` ← `tanzhi-shentong/xiao.c`  (miss=7)
-- [ ] ❌ `tanzhi_shentong/zhuan.ex` ← `tanzhi-shentong/zhuan.c`  (miss=8)
+- [x] ✅ `tanzhi_shentong/ding.ex` ← `tanzhi-shentong/ding.c`  (miss=11→0，PASS)
+- [x] ✅ `tanzhi_shentong/po.ex` ← `tanzhi-shentong/po.c`  (miss=13→0，PASS)
+- [x] ✅ `tanzhi_shentong/xiao.ex` ← `tanzhi-shentong/xiao.c`  (miss=7→0，PASS)
+- [x] ✅ `tanzhi_shentong/zhuan.ex` ← `tanzhi-shentong/zhuan.c`  (miss=8→0，PASS)
 
 ### `tianchan_zhang/` （1 个，基线缺失 7 条）
 
@@ -358,11 +358,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tie_zhang/` （5 个，基线缺失 44 条）
 
-- [ ] ❌ `tie_zhang/dao.ex` ← `tie-zhang/dao.c`  (miss=10)
-- [ ] ❌ `tie_zhang/juesha.ex` ← `tie-zhang/juesha.c`  (miss=5)
-- [ ] ❌ `tie_zhang/lei.ex` ← `tie-zhang/lei.c`  (miss=9)
-- [ ] ❌ `tie_zhang/long.ex` ← `tie-zhang/long.c`  (miss=10)
-- [ ] ❌ `tie_zhang/yin.ex` ← `tie-zhang/yin.c`  (miss=10)
+- [x] ✅ `tie_zhang/dao.ex` ← `tie-zhang/dao.c`  (miss=10→0，PASS)
+- [x] ✅ `tie_zhang/juesha.ex` ← `tie-zhang/juesha.c`  (miss=5→0，PASS)
+- [x] ✅ `tie_zhang/lei.ex` ← `tie-zhang/lei.c`  (miss=9→0，PASS)
+- [x] ✅ `tie_zhang/long.ex` ← `tie-zhang/long.c`  (miss=10→0，PASS)
+- [x] ✅ `tie_zhang/yin.ex` ← `tie-zhang/yin.c`  (miss=10→0，PASS)
 
 ### `tiexian_quan/` （1 个，基线缺失 6 条）
 
@@ -582,12 +582,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xuedao_dafa/` （6 个，基线缺失 50 条）
 
-- [ ] ❌ `xuedao_dafa/chi.ex` ← `xuedao-dafa/chi.c`  (miss=9)
-- [x] ✅ `xuedao_dafa/powerup.ex` ← `xuedao-dafa/powerup.c`  (miss=6→0，PASS)
-- [ ] ❌ `xuedao_dafa/resurrect.ex` ← `xuedao-dafa/resurrect.c`  (miss=5)
-- [ ] ❌ `xuedao_dafa/shi.ex` ← `xuedao-dafa/shi.c`  (miss=13)
-- [ ] ❌ `xuedao_dafa/xue.ex` ← `xuedao-dafa/xue.c`  (miss=7)
-- [ ] ❌ `xuedao_dafa/ying.ex` ← `xuedao-dafa/ying.c`  (miss=10)
+- [x] ✅ `xuedao_dafa/chi.ex` ← `xuedao-dafa/chi.c`  (miss=9→0，PASS)
+- [x] ✅ `xuedao_dafa/resurrect.ex` ← `xuedao-dafa/resurrect.c`  (miss=5→0，PASS)
+- [x] ✅ `xuedao_dafa/shi.ex` ← `xuedao-dafa/shi.c`  (miss=13→0，PASS)
+- [x] ✅ `xuedao_dafa/xue.ex` ← `xuedao-dafa/xue.c`  (miss=7→0，PASS)
+- [x] ✅ `xuedao_dafa/ying.ex` ← `xuedao-dafa/ying.c`  (miss=10→0，PASS)
 
 ### `xuehai_mogong/` （1 个，基线缺失 4 条）
 

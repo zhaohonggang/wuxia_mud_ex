@@ -230,6 +230,8 @@ jiuyang_shengong/powerup.ex
 jiuyang_shengong/ri.ex
 jiuyang_shengong/roar.ex
 jiuyang_shengong/shield.ex
+jiuyin_baiguzhao/duo.ex
+jiuyin_baiguzhao/zhua.ex
 jueqing_jian/liu.ex
 kuangfeng_jian/sao.ex
 kuimang_dao/pan.ex

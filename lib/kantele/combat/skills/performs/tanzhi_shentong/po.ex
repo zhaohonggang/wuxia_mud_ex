@@ -29,8 +29,11 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tanzhi-shentong")
-    ap = (Stats.skill(stats, "finger") + Stats.skill(stats, "throwing"))
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "finger") + Stats.skill(stats, "throwing")
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+    weapon = Combat.weapon(combat)
+    wn = Map.get(weapon, :name, "暗器")
+    target_weapon = hd(combat.enemies).meta.combat |> Combat.weapon() |> Map.get(:name, "兵器")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,11 +41,15 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
           damage: damage,
+          weapon_name: wn,
+          target_weapon_name: target_weapon,
           rng: rng
         }
       })
@@ -78,8 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tanzhi-shentong") < 180 -> {:error, "你弹指神通修为不够，难以施展。\n"}
-      Stats.skill(stats, "throwing") < 180 -> {:error, "你基本暗器修为不够，难以施展。\n"}
+      Stats.skill(stats, "tanzhi-shentong") < 180 -> {:error, "你弹指神通修为不够，难以施展「破九域」。\n"}
+      Stats.skill(stats, "throwing") < 180 -> {:error, "你基本暗器修为不够，难以施展「破九域」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +96,11 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
 
     cond do
       Stats.mapped(stats, "finger") != "tanzhi-shentong" ->
-        {:error, "你没有激发弹指神通，难以施展。\n"}
+        {:error, "你没有激发弹指神通，难以施展「破九域」。\n"}
 
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "tanzhi-shentong" ->
-        {:error, "你没有准备弹指神通，难以施展。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "tanzhi-shentong" ->
+        {:error, "你没有准备弹指神通，难以施展「破九域」。\n"}
 
       true ->
         :ok
@@ -103,29 +111,41 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 2400 -> {:error, "你的内力修为不足，难以施展「破九域」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展「破九域」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中没有拿着暗器，难以施展。\n"}
-    :ok
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
+    cond do
+      weapon == nil or weapon.skill_type != "throwing" -> {:error, "你手中没有拿着暗器，难以施展「破九域」。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -300); weapon->add_amount(-1)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "陡见$N双目精光四射，顿听破空声大作，一某物由指尖弹出，疾速射向$n。", n1: character.name)
+
+    weapon = Combat.weapon(combat)
+    wn = Map.get(weapon, :name, "暗器")
+    base_unit = Map.get(weapon, :base_unit, "枚")
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "陡见$N双目精光四射，顿听破空声大作，一" <> base_unit <> wn <> "由指尖弹出，疾速射向$n。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -153,22 +173,42 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    wn = Map.get(data, :weapon_name, "暗器")
+    _wn = wn
+    target_wn = Map.get(data, :target_weapon_name, "兵器")
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.wound(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 300, 2)
+
+    vitals =
+      if hit? do
+        Vitals.wound(
+          character.meta.vitals,
+          :qi,
+          div(ap, 2) + Engine.rand(rng, max(div(ap, 2), 1))
+        )
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 3)
-    msg = if hit, do: Enum.random(["$n手腕一麻，手中某物不由脱手而出！", "( $n )", "= pmsg", "只见那某物来势迅猛之极，$n根本无暇闪避，被这招击个正中！"]), else: "可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。"
+
+    msg =
+      if hit? do
+        Enum.random([
+          "只见那" <> target_wn <> "来势迅猛之极，$n根本无暇闪避，被这招击个正中！\n",
+          "$n手腕一麻，手中" <> target_wn <> "不由脱手而出！\n"
+        ])
+      else
+        "可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

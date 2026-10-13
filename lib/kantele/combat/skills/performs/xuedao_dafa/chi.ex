@@ -15,7 +15,6 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
@@ -29,8 +28,9 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuedao-dafa")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "blade")
+    weapon = Combat.weapon(combat)
+    wn = Map.get(weapon, :name, "刀")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +38,13 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          weapon_name: wn,
           rng: rng
         }
       })
@@ -76,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "你的血刀大法还不到家，难以施展。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展「赤炼神刀」。\n"}
+      Stats.skill(stats, "xuedao-dafa") < 160 -> {:error, "你的血刀大法还不到家，难以施展「赤炼神刀」。\n"}
       true -> :ok
     end
   end
@@ -86,8 +90,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为内功，难以施展。\n"}
-      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为刀法，难以施展。\n"}
+      Stats.mapped(stats, "force") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为内功，难以施展「赤炼神刀」。\n"}
+      Stats.mapped(stats, "blade") != "xuedao-dafa" -> {:error, "你没有激发血刀大法为刀法，难以施展「赤炼神刀」。\n"}
       true -> :ok
     end
   end
@@ -96,26 +100,39 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展「赤炼神刀」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      weapon == nil or weapon.skill_type != "blade" -> {:error, "你使用的武器不对，难以施展「赤炼神刀」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -150)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，手中某物一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(6))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    weapon = Combat.weapon(combat)
+    wn = Map.get(weapon, :name, "刀")
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N嗔目大喝，手中" <> wn <> "一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -143,15 +160,24 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    _wn = Map.get(data, :weapon_name, "刀")
+    dp = Stats.skill(stats, "parry")
+    hit? = ap + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 150, 1)
-    msg = Enum.random(["$N嗔目大喝，手中某物一势「赤炼神刀」迸出漫天血光，铺天盖地洒向$n。", "霎时间$n只觉周围四处杀气弥漫，全身气血翻滚，甚难招架。"])
+
+    msg =
+      if hit? do
+        "霎时间$n只觉周围四处杀气弥漫，全身气血翻滚，甚难招架。\n"
+      else
+        "霎时间$n只觉周围四处杀气弥漫，心底微微一惊，连忙奋力招架。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

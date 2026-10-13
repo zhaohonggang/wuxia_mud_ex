@@ -29,8 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tie-zhang")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "strike")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -92,8 +94,13 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
       Stats.mapped(stats, "force") != "tianlei-shengong" ->
         {:error, "你必须激发天雷神功才能施展出「九穹绝刹掌」！\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tie-zhang" ->
         {:error, "你现在没有准备使用铁掌掌法，难以施展「九穹绝刹掌」。\n"}
+
+      Stats.prepared_perform(stats, "cuff") == "tiexian-quan" or
+          Stats.prepared_perform(stats, "unarmed") == "tiexian-quan" ->
+        {:error, "施展「九穹绝刹掌」时铁掌掌法不宜和铁线拳互背！\n"}
 
       true ->
         :ok
@@ -120,13 +127,23 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -300); me->add("qi", -100)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 300}
     vitals = %{vitals | qi: vitals.qi - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声怒喝，猛然施出铁掌掌法绝技「九穹绝刹掌」！体内天雷真气急速运转，双臂陡然
-暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(5))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # LPC splits at macro: "一声怒喝，猛然施出铁掌掌法绝技「" + "九穹绝刹掌" + "」！体内天雷真气急速运转..."
+    conn = Broadcast.publish(conn, "$N一声怒喝，猛然施出铁掌掌法绝技「", n1: character.name)
+    conn = Broadcast.publish(conn, "九穹绝刹掌", n1: character.name)
+
+    conn =
+      Broadcast.publish(conn, "」！体内天雷真气急速运转，双臂陡然暴长数尺。只听破空之声骤响，双掌幻出漫天掌影，铺天盖地向$n连环拍出！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -154,15 +171,32 @@ defmodule Kantele.Combat.Skills.Performs.TieZhang.Juesha do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 300, 1)
-    msg = "$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。"
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, div(ap, 9))
+      else
+        character.meta.vitals
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    msg =
+      if hit? do
+        "$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。\n"
+      else
+        "$n凝神应战，竭尽所能化解$P这几掌。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
