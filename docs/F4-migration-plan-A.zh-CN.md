@@ -413,20 +413,20 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jingang_zhi/` （1 个，基线缺失 30 条）
 
-- [ ] ❌ `jingang_zhi/san.ex` ← `jingang-zhi/san.c`  (miss=30)
+- [x] ✅ `jingang_zhi/san.ex` ← `jingang-zhi/san.c`  (miss→0，PASS)
 
 ### `jingzhong_bafa/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `jingzhong_bafa/bafa.ex` ← `jingzhong-bafa/bafa.c`  (miss=3)
+- [x] ✅ `jingzhong_bafa/bafa.ex` ← `jingzhong-bafa/bafa.c`  (miss→0，PASS)
 
 ### `jinshe_jian/` （2 个，基线缺失 18 条）
 
-- [ ] ❌ `jinshe_jian/kun.ex` ← `jinshe-jian/kun.c`  (miss=8)
-- [ ] ❌ `jinshe_jian/shi.ex` ← `jinshe-jian/shi.c`  (miss=10)
+- [x] ✅ `jinshe_jian/kun.ex` ← `jinshe-jian/kun.c`  (miss→0，PASS)
+- [x] ✅ `jinshe_jian/shi.ex` ← `jinshe-jian/shi.c`  (miss→0，PASS)
 
 ### `jinshe_zhang/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `jinshe_zhang/fugu.ex` ← `jinshe-zhang/fugu.c`  (miss=1)
+- [x] ✅ `jinshe_zhang/fugu.ex` ← `jinshe-zhang/fugu.c`  (miss→0，PASS)
 
 ### `jinshe_zhui/` （1 个，基线缺失 6 条）
 

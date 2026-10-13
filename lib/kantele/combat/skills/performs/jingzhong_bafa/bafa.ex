@@ -1,25 +1,45 @@
 defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
   @moduledoc """
-  perform「bafa」（source jingzhong-bafa/bafa.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「井中八法」（source jingzhong-bafa/bafa.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：目标为战斗中的对手 → 手持 blade → 真气>=500 →
+  基本内功>=300 → 井中八法>=200 → 激发 blade 为井中八法。
+  （`.c` 无 `can_perform`，也无 `living(target)` 检查。）
+  起手广播（含武器名）后按 `random(基本刀法) vs 目标 parry/3` 判定：
+  命中播报「出了破绽」并把攻击加成置为 `井中八法/3`，未命中播报「小心接招」且加成为 0；
+  随后连出 8 击（`COMBAT_D->do_attack`）。
+  攻击方无条件扣 150 真气并忙乱 `1+random(6)`。
+
+  差异（TODO(migrate)）：
+  - `.c` 无 `can_perform` 门槛，故不设「已知此招」检查（调用点由
+    `perform_command.ex` 的 `perform_list` 放行）；
+  - 命中判定需目标 `parry`，故两支文案与 `count` 加成均在目标侧结算；
+  - 8 次 `COMBAT_D->do_attack` 折算为每击 `level` 基础判定 + 伤害
+    （`level = 井中八法 + count`，`count` 即 `.c` 的 `add_temp("apply/attack", count)`）；
+  - `.c` 第 44 行 `count = me->query_skill("jingzhong-bafa)", 1) / 3;` 为源码笔误
+    （多一个 `"` 与 `)`），按语义取 `井中八法/3`；
+  - `.c` 起手式把武器名插在中文串中间，按约定写成 `"A" <> weapon_name <> "B"` 两段；
+  - `.c` 循环内的 `if (! me->is_fighting(target)) break;` 未建模（目标侧单次结算）。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform_id "jingzhong-bafa/bafa"
+  @move_name "井中八法"
+
+  # LPC: for (i = 0; i < 8; i++) COMBAT_D->do_attack(me, target, weapon, 0);
+  @strikes 8
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,23 +49,32 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "jingzhong-bafa")
-    count = 0
-    i = 0
+    # LPC: random(me->query_skill("blade"))
+    blade = Stats.skill(stats, "blade")
+    # LPC: count = me->query_skill("jingzhong-bafa)", 1) / 3;  （源码笔误，语义为 /3）
+    count_base = div(lvl, 3)
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    with {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_resources(character),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          blade: blade,
+          count_base: count_base,
+          strikes: @strikes,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, rng)
     else
       {:error, message} ->
         conn
@@ -54,78 +83,85 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")) ||
+  #          (string)weapon->query("skill_type") != "blade")
+  defp check_weapon(combat) do
+    weapon = Combat.weapon(combat)
+
+    if weapon != nil and Map.get(weapon, :skill_type) == "blade" do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "手中没刀还使什么#{@move_name}。\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if ((int)me->query("neili") < 500)
+  defp check_resources(character) do
+    if character.meta.vitals.neili < 500 do
+      {:error, "你的真气不够！\n"}
+    else
       :ok
     end
   end
 
+  # LPC: if ((int)me->query_skill("force") < 300)
+  #      / if ((int)me->query_skill("jingzhong-bafa", 1) < 200)
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够！\n"}
-      Stats.skill(stats, "jingzhong-bafa") < 200 -> {:error, "你的井中八法还不到家，无法施展绝招。\n"}
-      true -> :ok
+      Stats.skill(stats, "force") < 300 ->
+        {:error, "你的内功火候不够！\n"}
+
+      Stats.skill(stats, "jingzhong-bafa") < 200 ->
+        {:error, "你的#{@move_name}还不到家，无法施展绝招。\n"}
+
+      true ->
+        :ok
     end
   end
 
+  # LPC: if (me->query_skill_mapped("blade") != "jingzhong-bafa")
   defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "blade") != "jingzhong-bafa" -> {:error, "你没有激发井中八法，无法施展绝招。\n"}
-      true -> :ok
+    if Stats.mapped(character.meta.stats, "blade") == "jingzhong-bafa" do
+      :ok
+    else
+      {:error, "你没有激发#{@move_name}，无法施展绝招。\n"}
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
+  defp apply_effect(conn, character, target, rng) do
+    # LPC: msg = HIY "$N" HIY "一声清啸，手中的" + weapon->name() +
+    #            HIY "将「井中八法」一齐施出，刀法变化莫测，笼罩了$n" HIY "周身要害！\n" NOR;
+    #      message_combatd(msg, me, target); me->add("neili", -150);
+    #      8 × COMBAT_D->do_attack(me, target, weapon, 0);
+    #      me->start_busy(1 + random(6));
+    weapon = Combat.weapon(character.meta.combat) || %{}
+    weapon_name = Map.get(weapon, :name, "")
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
+    combat = Combat.start_busy(character.meta.combat, 1 + Engine.rand(rng, 6))
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
 
-    cond do
-      vitals.neili < 500 -> {:error, "你的真气不够！\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "手中没刀还使什么井中八法。\n"}
-      true -> :ok
-    end
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声清啸，手中的某物将「井中八法」一齐施出，刀法变化莫测，笼罩了$n周身要害！", n1: character.name)
+    msg =
+      [
+        "$N一声清啸，手中的",
+        weapon_name,
+        "将「#{@move_name}」一齐施出，刀法变化莫测，笼罩了$n周身要害！\n"
+      ]
+      |> Enum.join("")
 
     conn
+    |> Broadcast.publish(msg, n1: character.name, n2: target.name)
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "井中八法只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -134,23 +170,76 @@ defmodule Kantele.Combat.Skills.Performs.JingzhongBafa.Bafa do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 1)
-    msg = "$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    # .c 无 living(target) 门槛，此处仍按本仓库惯例做死亡短路
+    if character.meta.combat.dead do
+      conn
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-150"}], "apply_adds": ["attack"], "busy_lines": ["if (random(3) == 1 && ! target->is_busy())", "target->start_busy(1);", "me->start_busy(1 + random(6));"], "level_gates": [{"force", "300"}, {"jingzhong-bafa", "200"}], "map_gates": [{"blade", "jingzhong-bafa"}], "remote_damage": false, "resource_gates": [{"neili", "500"}], "var_gates": [{"i", "8"}]}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    level = max(Map.get(data, :level, 0), 1)
+    blade = max(Map.get(data, :blade, 0), 1)
+    count_base = Map.get(data, :count_base, 0)
+    strikes = Map.get(data, :strikes, @strikes)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
 
+    # LPC: if (random(me->query_skill("blade")) > target->query_skill("parry") / 3)
+    {conn, count} =
+      if Engine.rand(rng, blade) > div(Stats.skill(stats, "parry"), 3) do
+        # LPC: msg += HIR "$n" HIR "见来招实在是变幻莫测，不由得心" "生惧意，招式登时出了破绽！\n" NOR;
+        #      count = me->query_skill("jingzhong-bafa", 1) / 3;
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！\n",
+              bindings
+            )
+          )
+
+        {conn, count_base}
+      else
+        # LPC: msg += HIC "$n" HIC "心底微微一惊，打起精神小心接招。\n" NOR; count = 0;
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate("$n心底微微一惊，打起精神小心接招。\n", bindings)
+          )
+
+        {conn, 0}
+      end
+
+    lvl = level + count
+    dodge = Stats.skill(stats, "dodge")
+
+    # LPC 连击 8 次，每次 COMBAT_D->do_attack(me, target, weapon, 0)
+    damage =
+      Enum.reduce(1..strikes, 0, fn _, acc ->
+        if div(lvl, 2) + Engine.rand(rng, lvl) > dodge do
+          acc + lvl + Engine.rand(rng, lvl)
+        else
+          acc
+        end
+      end)
+
+    vitals =
+      if damage > 0 do
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage, 3))
+      else
+        character.meta.vitals
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    conn
+    |> put_character(character)
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # 

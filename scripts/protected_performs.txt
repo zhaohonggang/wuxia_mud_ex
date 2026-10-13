@@ -206,9 +206,14 @@ jinding_zhang/bashi.ex
 jingang_buhuaiti/jingang.ex
 jingang_quan/jingang.ex
 jingang_zhi/fumo.ex
+jingang_zhi/san.ex
 jinguan_yusuo/suo.ex
 jingyue_bifa/ci.ex
+jingzhong_bafa/bafa.ex
+jinshe_jian/kun.ex
+jinshe_jian/shi.ex
 jinshe_jian/wan.ex
+jinshe_zhang/fugu.ex
 jinshe_zhui/tuwu.ex
 jinzhong_zhao/zhao.ex
 jiuqu_jian/wan.ex
@@ -288,6 +293,7 @@ shedu_qiqiao/da.ex
 shedu_qiqiao/liandu.ex
 shenghuo_ling/hua.ex
 shenghuo_ling/lian.ex
+shenghuo_ling/xi.ex
 shenxing_baibian/piao.ex
 shunv_jian/ning.ex
 songshan_jian/meng.ex
