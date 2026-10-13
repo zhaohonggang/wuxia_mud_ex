@@ -438,7 +438,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `jinwu_goufa/` （1 个，基线缺失 13 条）
 
-- [ ] ❌ `jinwu_goufa/duo.ex` ← `jinwu-goufa/duo.c`  (miss=13)
+- [x] ✅ `jinwu_goufa/duo.ex` ← `jinwu-goufa/duo.c`  (miss→0，PASS)
 
 ### `jinyu_quan/` （1 个，基线缺失 6 条）
 

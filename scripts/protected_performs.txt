@@ -217,6 +217,7 @@ jinshe_zhang/fugu.ex
 jinshe_zhui/feng
 jinshe_zhui/tuwu.ex
 jinwu_daofa/chi
+jinwu_goufa/duo
 jinzhong_zhao/zhao.ex
 jiuqu_jian/wan.ex
 jueqing_jian/liu.ex
