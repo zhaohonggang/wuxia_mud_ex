@@ -562,12 +562,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `lingshe_zhangfa/` （3 个，基线缺失 14 条）
 
 - [x] ✅ `lingshe_zhangfa/qianshe.ex` ← `lingshe-zhangfa/qianshe.c`  (miss→0，PASS)
-- [ ] ❌ `lingshe_zhangfa/wanshi.ex` ← `lingshe-zhangfa/wanshi.c`  (miss=5)
-- [ ] ❌ `lingshe_zhangfa/wuji.ex` ← `lingshe-zhangfa/wuji.c`  (miss=4)
+- [x] ✅ `lingshe_zhangfa/wanshi.ex` ← `lingshe-zhangfa/wanshi.c`  (miss→0，PASS)
+- [x] ✅ `lingshe_zhangfa/wuji.ex` ← `lingshe-zhangfa/wuji.c`  (miss→0，PASS)
 
 ### `lingxiao_quan/` （2 个，基线缺失 15 条）
 
-- [ ] ❌ `lingxiao_quan/jue.ex` ← `lingxiao-quan/jue.c`  (miss=7)
+- [x] ✅ `lingxiao_quan/jue.ex` ← `lingxiao-quan/jue.c`  (miss→0，PASS)
 - [ ] ❌ `lingxiao_quan/san.ex` ← `lingxiao-quan/san.c`  (miss=8)
 
 ### `lingyuan_xinfa/` （1 个，基线缺失 7 条）

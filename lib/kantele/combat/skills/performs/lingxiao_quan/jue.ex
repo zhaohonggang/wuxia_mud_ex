@@ -1,8 +1,19 @@
 defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
   @moduledoc """
-  perform「凌宵总诀」（source lingxiao-quan/jue.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「凌宵总诀」（source lingxiao-quan/jue.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 目标在战斗中 → 空手 → 凌霄拳法>=60 →
+  内功>=100 → 真气>=100 → 激发 cuff 为凌霄拳法 → 准备凌霄拳法 → 目标存活。
+  前置广播后命中判定 `random(cuff)` > 目标 `dodge/2`，命中扣 50 真气、
+  攻击方忙乱 2、伤害 `cuff/2 + random(cuff/2)`（20% 外伤比例）；
+  未命中扣 30 真气、攻击方忙乱 3。
+
+  差异（TODO(migrate)）：
+  - `COMBAT_D->do_damage(UNARMED_ATTACK, damage, 20, msg)` 折算为
+    `Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage, 5))`；
+  - JUE 宏（`"「" HIW "凌宵总诀" NOR "」"`）在 C 侧展开+去色后合并为单段
+    `「凌宵总诀」`，E 侧用 @move_name 属性插值复现（注意起手式里是
+    「凌霄总**决**」，门槛文案是「凌**宵**总诀」，两处字不同，照抄）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,10 +27,10 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "lingxiao-quan/jue"
+  @move_name "「凌宵总诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -29,23 +40,30 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "lingxiao-quan")
-    damage = Stats.skill(stats, "cuff")
+    ap = Stats.skill(stats, "cuff")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_resources(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
-          damage: damage,
+          ap: ap,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -54,6 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
     end
   end
 
+  # LPC: if (userp(me) && ! me->query("can_perform/lingxiao-quan/jue"))
   defp check_perform_known(character) do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
@@ -62,79 +81,97 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
-      :ok
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
+  # LPC: if (objectp(weapon = me->query_temp("weapon")))
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) == nil do
+      :ok
+    else
+      {:error, "只有空手才能施展#{@move_name}。\n"}
+    end
+  end
+
+  # LPC: if ((int)me->query_skill("lingxiao-quan", 1) < 60)
+  #         if ((int)me->query_skill("force") < 100)
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "lingxiao-quan") < 60 -> {:error, "你的凌霄拳法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功修为不够，难以施展。\n"}
-      true -> :ok
-    end
-  end
+      Stats.skill(stats, "lingxiao-quan") < 60 ->
+        {:error, "你的凌霄拳法不够娴熟，难以施展#{@move_name}。\n"}
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "cuff") != "lingxiao-quan" ->
-        {:error, "你没有激发凌霄拳法，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "lingxiao-quan" ->
-        {:error, "你现在没有准备使用凌霄拳法，难以施展。\n"}
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
+  # LPC: if ((int)me->query("neili") < 100)
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 100 -> {:error, "你现在真气不够，难以施展。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 100 do
+      {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展。\n"}
-    :ok
-
+  # LPC: if (me->query_skill_mapped("cuff") != "lingxiao-quan")
+  defp check_mapped(character) do
+    if Stats.mapped(character.meta.stats, "cuff") == "lingxiao-quan" do
+      :ok
+    else
+      {:error, "你没有激发凌霄拳法，难以施展#{@move_name}。\n"}
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 30}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只听$N一声断喝，双拳聚力齐发，一式「凌霄总决」携着风雷之势轰向$n！", n1: character.name)
+  # LPC: if (me->query_skill_prepared("cuff") != "lingxiao-quan")
+  defp check_prepared(character) do
+    prepared = Stats.prepared_perform(character.meta.stats, "cuff")
+
+    if prepared == nil or hd(String.split(prepared, "/")) != "lingxiao-quan" do
+      {:error, "你现在没有准备使用凌霄拳法，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (! living(target))
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target) do
+    # LPC: msg = HIW "只听$N" HIW "一声断喝，双拳聚力齐发，一式「凌霄总决」携"
+    #               "着风雷之势轰向$n" HIW "！\n" NOR;
+    # 相邻字面量合并为单段。
+    # me->start_busy(2) / me->start_busy(3) 与分支 neili 由目标侧 feedback 回执。
+    conn =
+      Broadcast.publish(
+        conn,
+        "只听$N一声断喝，双拳聚力齐发，一式「凌霄总决」携着风雷之势轰向$n！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「凌宵总诀」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -144,37 +181,61 @@ defmodule Kantele.Combat.Skills.Performs.LingxiaoQuan.Jue do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = div(Stats.skill(stats, "dodge"), 2)
+
+    # LPC: if (random(me->query_skill("cuff")) > target->query_skill("dodge") / 2)
+    hit? = Engine.rand(rng, ap) > dp
+
+    # LPC: me->start_busy(2);
+    #      damage = me->query_skill("cuff");
+    #      damage = damage / 2 + random(damage / 2);
+    #      me->add("neili", -50);
+    #      COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 20, msg);
+    # else: me->start_busy(3); me->add("neili", -30);
+    {vitals, msg, neili_cost, attacker_busy} =
+      if hit? do
+        damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
+
+        v =
+          character.meta.vitals
+          |> Vitals.damage(:qi, damage)
+          |> Vitals.wound(:qi, div(damage, 5))
+
+        {v, hit_message(), 50, 2}
+      else
+        {character.meta.vitals, miss_message(), 30, 3}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "结果$p闪避不及，被$P一拳正中面门，顿时口喷鲜血，几乎昏厥！", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    Performs.feedback(attacker, neili_cost, attacker_busy)
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(msg, n1: attacker.name, n2: character.name)
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-30"}, {"neili", "-50"}], "assign_refs": [{"damage", "cuff"}], "busy_lines": ["me->start_busy(2);", "me->start_busy(3);"], "level_gates": [{"force", "100"}, {"lingxiao-quan", "60"}], "map_gates": [{"cuff", "lingxiao-quan"}], "prepared_gates": [{"cuff", "lingxiao-quan"}], "remote_damage": true, "resource_gates": [{"neili", "100"}]}
+  # LPC: HIR "结果$p" HIR "闪避不及，被$P" HIR "一拳正中面门，顿时口喷鲜血，几乎昏厥！\n" NOR
+  # （相邻字面量合并为单段）
+  defp hit_message do
+    "结果$p闪避不及，被$P一拳正中面门，顿时口喷鲜血，几乎昏厥！\n"
+  end
 
+  # LPC: CYN "可是$p" CYN "识破了$P" CYN "这一招，斜斜一跃避开。\n" NOR
+  # （相邻字面量合并为单段）
+  defp miss_message do
+    "可是$p识破了$P这一招，斜斜一跃避开。\n"
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

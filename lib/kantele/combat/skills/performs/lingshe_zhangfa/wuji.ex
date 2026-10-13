@@ -1,8 +1,19 @@
 defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
   @moduledoc """
-  perform「wuji」（source lingshe-zhangfa/wuji.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「横行无忌」（source lingshe-zhangfa/wuji.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 目标在战斗中 → 持杖类武器 → 内功>=200 →
+  真气>=300 → 灵蛇杖法>=150 → 激发 staff 为灵蛇杖法 → 目标存活。
+  前置广播后攻击方忙乱 3；命中判定 `ap/2 + random(ap)` > 目标 `parry`，
+  命中扣 200 真气、伤害 `ap + random(ap)`（55% 外伤比例）、目标忙乱 1；
+  未命中扣 80 真气、攻击方忙乱 4、目标忙乱 1。
+
+  差异（TODO(migrate)）：
+  - `COMBAT_D->do_damage(WEAPON_ATTACK, damage, 55, msg)` 折算为
+    `Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage*55, 100))`；
+  - LPC 命中/未命中两分支均有 `target->start_busy(1)`，E 侧目标忙乱恒为 1；
+  - 攻击方 `me->start_busy(3)`（命中）/ `me->start_busy(4)`（未命中）与分支
+    neili 由目标侧 feedback 回执（feedback(200,3) / feedback(80,4)）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,10 +27,10 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "lingshe-zhangfa/wuji"
+  @move_name "「横行无忌」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,24 +41,36 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "lingshe-zhangfa")
     ap = Stats.skill(stats, "staff")
-    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_force(character),
+         :ok <- check_resources(character),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_target_alive(target) do
+      weapon_name =
+        case Combat.weapon(combat) do
+          nil -> ""
+          weapon -> Map.get(weapon, :name)
+        end
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -56,89 +79,105 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
     end
   end
 
+  # LPC: if (userp(me) && ! me->query("can_perform/lingshe-zhangfa/wuji"))
   defp check_perform_known(character) do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你还不会使用#{@move_name}。\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (! objectp(weapon) || weapon->query("skill_type") != "staff")
+  defp check_weapon(combat) do
+    weapon = Combat.weapon(combat)
+
+    if is_map(weapon) and Map.get(weapon, :skill_type) == "staff" do
+      :ok
+    else
+      {:error, "运用#{@move_name}必须手中持杖！\n"}
+    end
+  end
+
+  # LPC: if ((int)me->query_skill("force") < 200)
+  defp check_force(character) do
+    if Stats.skill(character.meta.stats, "force") < 200 do
+      {:error, "你的内功火候不够，难以运用使用#{@move_name}！\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以运用使用「横行无忌」！\n"}
-      Stats.skill(stats, "lingshe-zhangfa") < 150 -> {:error, "你的灵蛇杖法还不到家，无法使用「横行无忌」！\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "staff") != "lingshe-zhangfa" -> {:error, "你没有激发灵蛇杖法，无法使用「横行无忌」！\n"}
-      true -> :ok
-    end
-  end
-
+  # LPC: if ((int)me->query("neili") < 300)
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，无法使用「横行无忌」！\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 300 do
+      {:error, "你现在的真气不够，无法使用#{@move_name}！\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "运用「横行无忌」必须手中持杖！\n"}
-    :ok
-
+  # LPC: if ((int)me->query_skill("lingshe-zhangfa", 1) < 150)
+  defp check_levels(character) do
+    if Stats.skill(character.meta.stats, "lingshe-zhangfa") < 150 do
+      {:error, "你的灵蛇杖法还不到家，无法使用#{@move_name}！\n"}
+    else
+      :ok
+    end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你还不会使用「横行无忌」。\n"}
-    :ok
-
+  # LPC: if (me->query_skill_mapped("staff") != "lingshe-zhangfa")
+  defp check_mapped(character) do
+    if Stats.mapped(character.meta.stats, "staff") == "lingshe-zhangfa" do
+      :ok
+    else
+      {:error, "你没有激发灵蛇杖法，无法使用#{@move_name}！\n"}
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 80}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷笑，手中的某物忽然变得如同活物一般，时上时下，忽左忽右，不知攻向$n何处！", n1: character.name)
+  # LPC: if (! living(target))
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target) do
+    # LPC: msg = HIY "$N" HIY "一声冷笑，手中的" + weapon->name() +
+    #      HIY "忽然变得如同活物一般，时上时下，忽左忽右，不知攻向$n" HIY "何处！\n" NOR;
+    # weapon->name() 前后用 <> 拆段；其后的相邻字面量在 C 侧被空白分隔合并为一段。
+    # me->start_busy 与分支 neili 由目标侧 feedback 回执。
+    weapon_name =
+      case Combat.weapon(character.meta.combat) do
+        nil -> ""
+        weapon -> Map.get(weapon, :name)
+      end
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声冷笑，手中的" <> weapon_name <>
+          "忽然变得如同活物一般，时上时下，忽左忽右，不知攻向$n何处！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「横行无忌」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -148,37 +187,60 @@ defmodule Kantele.Combat.Skills.Performs.LingsheZhangfa.Wuji do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(stats, "parry")
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 80, 4)
-    msg = if hit, do: "$n实在无法捕捉到$P的实招，接连挡空，连中数招，登时吐了一口鲜血！", else: "$n奋力招架，总算抵挡住了$P的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    # LPC: if (ap / 2 + random(ap) > dp)
+    hit? = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+    # LPC: damage = ap + random(ap);
+    #      COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 55, msg);
+    #      me->add("neili", -200); me->start_busy(3); target->start_busy(1);
+    # else: me->add("neili", -80); me->start_busy(4); target->start_busy(1);
+    {vitals, combat, msg, neili_cost, attacker_busy} =
+      if hit? do
+        damage = ap + Engine.rand(rng, ap)
+
+        v =
+          character.meta.vitals
+          |> Vitals.damage(:qi, damage)
+          |> Vitals.wound(:qi, div(damage * 55, 100))
+
+        c = Combat.start_busy(character.meta.combat, 1)
+        {v, c, hit_message(), 200, 3}
+      else
+        {character.meta.vitals, Combat.start_busy(character.meta.combat, 1), miss_message(), 80, 4}
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+    Performs.feedback(attacker, neili_cost, attacker_busy)
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(msg, n1: attacker.name, n2: character.name)
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-200"}, {"neili", "-80"}], "assign_refs": [{"ap", "staff"}, {"dp", "parry"}], "busy_lines": ["me->start_busy(3);", "target->start_busy(1);", "me->start_busy(4);", "target->start_busy(1);"], "level_gates": [{"force", "200"}, {"lingshe-zhangfa", "150"}], "map_gates": [{"staff", "lingshe-zhangfa"}], "remote_damage": true, "resource_gates": [{"neili", "300"}]}
+  # LPC: HIR "$n" HIR "实在无法捕捉到$P" HIR "的实招，接连挡空，连中数招，登时吐了一口鲜血！\n" NOR
+  # （相邻字面量合并为单段）
+  defp hit_message do
+    "$n实在无法捕捉到$P的实招，接连挡空，连中数招，登时吐了一口鲜血！\n"
+  end
 
+  # LPC: CYN "$n" CYN "奋力招架，总算抵挡住了$P" CYN "的攻击！\n" NOR
+  # （相邻字面量合并为单段）
+  defp miss_message do
+    "$n奋力招架，总算抵挡住了$P的攻击！\n"
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // wuji.c 横行无忌
   # 
