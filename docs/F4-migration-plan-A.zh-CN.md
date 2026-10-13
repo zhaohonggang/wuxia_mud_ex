@@ -512,11 +512,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `kunlun_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `kunlun_jian/fanyin.ex` ← `kunlun-jian/fanyin.c`  (miss=10)
+- [x] ✅ `kunlun_jian/fanyin.ex` ← `kunlun-jian/fanyin.c`  (miss→0，PASS)
 
 ### `kunlun_zhang/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `kunlun_zhang/kong.ex` ← `kunlun-zhang/kong.c`  (miss=8)
+- [x] ✅ `kunlun_zhang/kong.ex` ← `kunlun-zhang/kong.c`  (miss→0，PASS)
 
 ### `kurong_changong/` （1 个，基线缺失 7 条）
 
