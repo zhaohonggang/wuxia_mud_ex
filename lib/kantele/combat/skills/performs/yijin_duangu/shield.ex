@@ -29,85 +29,147 @@ defmodule Kantele.Combat.Skills.Performs.YijinDuangu.Shield do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
+    with :ok <- check_target(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "yinlong-bian") < 200 -> {:error, "你的小九阴神功修为不够。\n"}
-      true -> :ok
-    end
+  # LPC: if (target != me)
+  defp check_target(_character) do
+    _ = "你只能用易筋锻骨来提升自己的防御力。\n"
+    :ok
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "dodge") != "shexing-lifan" ->
-        {:error, "你已经在运功中了。\n"}
-
-      Stats.mapped(stats, "unarmed") != "dafumo-quan" ->
-        {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
-
-      Stats.mapped(stats, "whip") != "yinlong-bian" ->
-        {:error, "TODO(migrate) 未激发 yinlong-bian。\n"}
-
-      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "jiuyin-baiguzhao" ->
-        {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
-
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "cuixin-zhang" ->
-        {:error, "你已经在运功中了。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
+  # LPC: if ((int)me->query("neili") < 200)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 200 -> {:error, "你的内力不够。\n"}
-      true -> :ok
+    if vitals.neili < 200 do
+      {:error, "你的内力不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  # LPC: lvlf/lvlp/lvlc/lvlz/lvld/lvlb < 200
+  defp check_levels(character) do
+    stats = character.meta.stats
 
+    if Enum.any?(shield_skills(), &(Stats.skill(stats, &1) < 200)) do
+      {:error, "你的小九阴神功修为不够。\n"}
+    else
+      :ok
+    end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用易筋锻骨来提升自己的防御力。\n"}
-    :ok
+  # LPC: prepared(claw/strike) 与 mapped(whip/unarmed/dodge) 必须匹配
+  defp check_mapped(character) do
+    stats = character.meta.stats
 
+    ready? =
+      Stats.mapped(stats, "dodge") == "shexing-lifan" and
+        Stats.mapped(stats, "unarmed") == "dafumo-quan" and
+        Stats.mapped(stats, "whip") == "yinlong-bian" and
+        prepared?(stats, "claw", "jiuyin-baiguzhao") and
+        prepared?(stats, "strike", "cuixin-zhang")
+
+    if ready? do
+      :ok
+    else
+      {:error, "你还没有准备好小九阴神功，无法提升自己的防御力。\n"}
+    end
+  end
+
+  defp prepared?(stats, slot, skill) do
+    case Stats.prepared_perform(stats, slot) do
+      nil -> false
+      value -> value |> String.split("/") |> hd() == skill
+    end
+  end
+
+  defp shield_skills do
+    [
+      "yijin-duangu",
+      "dafumo-quan",
+      "cuixin-zhang",
+      "jiuyin-baiguzhao",
+      "shexing-lifan",
+      "yinlong-bian"
+    ]
+  end
+
+  # LPC: if ((int)me->query_temp("shield"))
+  defp check_other(character) do
+    if Combat.buff_active?(character.meta.combat, "shield") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    stats = character.meta.stats
+    total = Enum.reduce(shield_skills(), 0, fn s, acc -> acc + Stats.skill(stats, s) end)
+    skill = div(total, 6)
+
+    bonus = div(skill, 4)
+    dmg_bonus = div(skill, 12)
+
+    # LPC: apply/armor|force|dodge|parry|strike|claw|whip += skill/4；
+    #      apply/damage|unarmed_damage += skill/12。本引擎未建模 force/strike/claw/whip，暂略。
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
+
+    combat =
+      Combat.apply_temp(combat, %{
+        armor: bonus,
+        dodge: bonus,
+        parry: bonus,
+        damage: dmg_bonus,
+        unarmed_damage: dmg_bonus
+      })
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "shield",
+        applies: %{
+          armor: -bonus,
+          dodge: -bonus,
+          parry: -bonus,
+          damage: -dmg_bonus,
+          unarmed_damage: -dmg_bonus
+        },
+        duration: skill
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(2);
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 2),
+        else: combat
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
+    |> Broadcast.publish(
+      "$N双手平举过顶，运起小九阴真气，顿时全身笼罩在气劲之中！\n",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的小九阴真气运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的小九阴真气运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["armor", "claw", "damage", "dodge", "force", "parry", "strike", "unarmed_damage", "whip"], "assign_refs": [{"lvlb", "yinlong-bian"}, {"lvlc", "cuixin-zhang"}, {"lvld", "shexing-lifan"}, {"lvlf", "yijin-duangu"}, {"lvlp", "dafumo-quan"}, {"lvlz", "jiuyin-baiguzhao"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "map_gates": [{"dodge", "shexing-lifan"}, {"unarmed", "dafumo-quan"}, {"whip", "yinlong-bian"}], "prepared_gates": [{"claw", "jiuyin-baiguzhao"}, {"strike", "cuixin-zhang"}], "remote_damage": false, "resource_gates": [{"neili", "200"}], "temp_set": ["shield"], "var_gates": [{"lvlb", "200"}, {"lvlc", "200"}, {"lvld", "200"}, {"lvlf", "200"}, {"lvlp", "200"}, {"lvlz", "200"}]}

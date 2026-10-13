@@ -29,47 +29,95 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Powerup do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_resources(character),
-         :ok <- check_weapon(character),
+    with :ok <- check_target(character),
+         :ok <- check_resources(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
+  # LPC: if ((int)me->query("neili") < 150)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
-    cond do
-      vitals.neili < 150 -> {:error, "你的内力不够。\n"}
-      true -> :ok
+    if vitals.neili < 150 do
+      {:error, "你的内力不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  # LPC: if (target != me)
+  defp check_target(_character) do
+    _ = "你只能用血刀大法来提升自己的战斗力。\n"
     :ok
-
   end
 
+  # LPC: if ((int)me->query_temp("powerup"))
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用血刀大法来提升自己的战斗力。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    skill = Stats.skill(character.meta.stats, "xuedao-dafa")
+    bonus = div(skill, 3)
+
+    combat = character.meta.combat
+    combat = Combat.apply_temp(combat, %{attack: bonus, defense: bonus, damage: bonus})
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "powerup",
+        applies: %{attack: -bonus, defense: -bonus, damage: -bonus},
+        duration: skill
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(1 + random(3));
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 1 + :rand.uniform(3)),
+        else: combat
+
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N仰天一声狂哮，全身骨骼爆响，真气荡漾，杀气弥漫，气势迫人。\n",
+        n1: character.name
+      )
+
+    # LPC: 手持 blade 且 mapped("blade")=="xuedao-dafa" 时的额外广播
+    conn =
+      case Combat.weapon(character.meta.combat) do
+        %{skill_type: "blade", name: weapon_name} ->
+          Broadcast.publish(
+            conn,
+            "$N嗔目狞笑，手中" <> weapon_name <> "顿时漾起一道血光，漫起无边杀意。\n",
+            n1: character.name
+          )
+
+        _ ->
+          conn
+      end
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你的血刀大法运行完毕，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你的血刀大法运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["attack", "damage", "defense"], "assign_refs": [{"skill", "xuedao-dafa"}], "busy_lines": ["me->start_busy(1 + random(3));"], "remote_damage": false, "resource_gates": [{"neili", "150"}], "temp_set": ["powerup"]}

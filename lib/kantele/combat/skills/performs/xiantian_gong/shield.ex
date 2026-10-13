@@ -29,11 +29,10 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Shield do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+    with :ok <- check_resources(character),
+         :ok <- check_levels(character),
+         :ok <- check_other(character) do
       :ok
     end
   end
@@ -56,26 +55,51 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Shield do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
+  # LPC: if ((int)me->query_temp("shield"))
+  defp check_other(character) do
+    if Combat.buff_active?(character.meta.combat, "shield") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    skill = Stats.skill(character.meta.stats, "xiantian-gong")
+    bonus = div(skill, 2)
+
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
+    combat = Combat.apply_temp(combat, %{armor: bonus})
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "shield",
+        applies: %{armor: -bonus},
+        duration: skill
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(2);
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 2),
+        else: combat
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
     conn = Broadcast.publish(conn, "$N深深吸了一口气，双臂一振，一股浑厚的气劲登时盘旋在身边四周。", n1: character.name)
+    conn = put_character(conn, character)
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, "你先天无极劲运转完一个周天，将内力收回丹田。\n");
+  @doc false
+  def expire_message, do: "你先天无极劲运转完一个周天，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}], "apply_adds": ["armor"], "assign_refs": [{"skill", "xiantian-gong"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(2);"], "level_gates": [{"xiantian-gong", "50"}], "remote_damage": false, "resource_gates": [{"neili", "200"}], "temp_set": ["shield"]}

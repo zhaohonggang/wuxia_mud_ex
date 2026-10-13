@@ -30,36 +30,79 @@ defmodule Kantele.Combat.Skills.Performs.YinyangShiertian.Powerup do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_weapon(character),
+    with :ok <- check_target(character),
          :ok <- check_other(character) do
       :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  # LPC: if (target != me)
+  defp check_target(_character) do
+    _ = "你只能用阴阳十二重天来提升自己的战斗力。\n"
     :ok
-
   end
 
+  # LPC: if ((int)me->query_temp("powerup"))
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你只能用阴阳十二重天来提升自己的战斗力。\n"}
-    #   {:error, "你已经在运功中了。\n"}
-    :ok
-
+    if Combat.buff_active?(character.meta.combat, "powerup") do
+      {:error, "你已经在运功中了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    skill = Stats.skill(character.meta.stats, "force")
+    bonus = div(skill, 2)
+
     combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
+
+    combat =
+      Combat.apply_temp(combat, %{
+        attack: bonus,
+        defense: bonus,
+        unarmed_damage: bonus,
+        damage: bonus,
+        parry: bonus,
+        dodge: bonus,
+        armor: skill * 2
+      })
+
+    combat =
+      Combat.add_buff(combat, %Kantele.Character.Combat.Buff{
+        key: "powerup",
+        applies: %{
+          attack: -bonus,
+          defense: -bonus,
+          unarmed_damage: -bonus,
+          damage: -bonus,
+          parry: -bonus,
+          dodge: -bonus,
+          armor: -(bonus * 4)
+        },
+        duration: skill
+      })
+
+    # LPC: if (me->is_fighting()) me->start_busy(3);
+    combat =
+      if Combat.fighting?(combat),
+        do: Combat.start_busy(combat, 3),
+        else: combat
+
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn
+    |> Broadcast.publish(
+      "$N双目微闭，体内九阴九阳真气疾速运转十二周天，顿时只见一股澎湃无比的气劲笼罩全身。\n",
+      n1: character.name
+    )
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  # LPC remove_effect：tell_object(me, HIW "你的阴阳十二重天运行完毕，将内力收回丹田。\n" NOR);
+  @doc false
+  def expire_message, do: "你的阴阳十二重天运行完毕，将内力收回丹田。\n"
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"apply_adds": ["armor", "attack", "damage", "defense", "dodge", "parry", "unarmed_damage"], "assign_refs": [{"skill", "force"}], "busy_lines": ["if (me->is_fighting()) me->start_busy(3);"], "remote_damage": false, "temp_set": ["powerup"]}
