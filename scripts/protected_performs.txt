@@ -378,6 +378,8 @@ pomie_jinzhen/du.ex
 pomopima_jian/zui.ex
 poshui_zhang/tai.ex
 poxu_daxuefa/tong.ex
+poyang_jian/long.ex
+poyang_jian/xian.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
 qianye_shou/qianye.ex

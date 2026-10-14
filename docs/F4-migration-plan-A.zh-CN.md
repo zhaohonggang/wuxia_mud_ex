@@ -788,8 +788,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `poyang_jian/` （2 个，基线缺失 21 条）
 
-- [ ] ❌ `poyang_jian/long.ex` ← `poyang-jian/long.c`  (miss=13)
-- [ ] ❌ `poyang_jian/xian.ex` ← `poyang-jian/xian.c`  (miss=8)
+- [x] ✅ `poyang_jian/long.ex` ← `poyang-jian/long.c`  (miss=13)
+- [x] ✅ `poyang_jian/xian.ex` ← `poyang-jian/xian.c`  (miss=8)
 
 ### `poyu_quan/` （3 个，基线缺失 12 条）
 
