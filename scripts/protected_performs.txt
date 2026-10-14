@@ -333,6 +333,7 @@ miaojia_jian/qian.ex
 miaojia_jian/zhai.ex
 miaojia_jian/zhu.ex
 miaojia_neigong/powerup.ex
+miaojia_zhang/dan.ex
 mingwang_jian/ruo.ex
 mingwang_jian/xiang.ex
 mizong_houquan/zhou.ex

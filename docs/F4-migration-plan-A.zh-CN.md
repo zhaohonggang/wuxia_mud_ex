@@ -685,7 +685,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `miaojia_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `miaojia_zhang/dan.ex` ← `miaojia-zhang/dan.c`  (miss=7)
+- [x] ✅ `miaojia_zhang/dan.ex` ← `miaojia-zhang/dan.c`  (miss→0，PASS)
 
 ### `murong_jian/` （1 个，基线缺失 7 条）
 
