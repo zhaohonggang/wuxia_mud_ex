@@ -321,6 +321,7 @@ luohan_jian/wuxing.ex
 luohan_quan/xiangmo.ex
 luoyan_jian/luo.ex
 luoying_shenjian/sui.ex
+luoying_shenzhang/zhuan.ex
 luoyun_dao/tian.ex
 lutou_zhang/tong.ex
 mantian_xing/shan.ex

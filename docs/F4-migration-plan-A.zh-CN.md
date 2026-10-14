@@ -663,7 +663,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `luoying_shenzhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `luoying_shenzhang/zhuan.ex` ← `luoying-shenzhang/zhuan.c`  (miss=7)
+- [x] ✅ `luoying_shenzhang/zhuan.ex` ← `luoying-shenzhang/zhuan.c`  (miss→0，PASS)
 
 ### `mantian_xing/` （1 个，基线缺失 17 条）
 
