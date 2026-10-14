@@ -389,6 +389,7 @@ qiankun_danuoyi/nuoyi.ex
 qiankun_jian/ni.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
+qiantian_zhi/zhi.ex
 qianye_shou/qianye.ex
 qingliang_jian/ming.ex
 qishang_quan/shang.ex

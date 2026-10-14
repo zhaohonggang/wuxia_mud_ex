@@ -815,7 +815,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `qiantian_zhi/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `qiantian_zhi/zhi.ex` ← `qiantian-zhi/zhi.c`  (miss=7)
+- [x] ✅ `qiantian_zhi/zhi.ex` ← `qiantian-zhi/zhi.c`  (miss=7)
 
 ### `qianzhu_wandushou/` （3 个，基线缺失 20 条）
 
