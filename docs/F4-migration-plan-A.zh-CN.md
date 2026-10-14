@@ -760,7 +760,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 - [x] ✅ `pixie_jian/duo.ex` ← `pixie-jian/duo.c`  (miss=12)
 - [x] ✅ `pixie_jian/gui.ex` ← `pixie-jian/gui.c`  (miss=4)
 - [x] ✅ `pixie_jian/pi.ex` ← `pixie-jian/pi.c`  (miss=14)
-- [ ] ❌ `pixie_jian/po.ex` ← `pixie-jian/po.c`  (miss=19)
+- [x] ✅ `pixie_jian/po.ex` ← `pixie-jian/po.c`  (miss=19)
 
 ### `pobei_tui/` （1 个，基线缺失 7 条）
 
