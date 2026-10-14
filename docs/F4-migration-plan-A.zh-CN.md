@@ -642,7 +642,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `lunhui_jian/` （1 个，基线缺失 38 条）
 
-- [ ] ❌ `lunhui_jian/hui.ex` ← `lunhui-jian/hui.c`  (miss=38)
+- [x] ✅ `lunhui_jian/hui.ex` ← `lunhui-jian/hui.c`  (miss→0，PASS)
 
 ### `luohan_fumogong/` （2 个，基线缺失 20 条）
 
