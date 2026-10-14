@@ -365,6 +365,7 @@ pichen_jian/ao.ex
 pidi_shenzhen/huan.ex
 pikong_zhang/dai.ex
 pili_quan/jin.ex
+pili_shou/hun.ex
 poguang_dao/bing.ex
 pomie_jinzhen/du.ex
 qiankun_jian/qian.ex
