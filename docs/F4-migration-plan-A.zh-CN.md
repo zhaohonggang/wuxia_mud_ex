@@ -697,7 +697,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `nei_bagua/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `nei_bagua/powerup.ex` ← `nei-bagua/powerup.c`  (miss=4)
+- [x] ✅ `nei_bagua/powerup.ex` ← `nei-bagua/powerup.c`  (miss→0，PASS)
 
 ### `never_defeated/` （8 个，基线缺失 41 条）
 

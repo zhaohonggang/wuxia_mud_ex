@@ -339,6 +339,7 @@ mingwang_jian/xiang.ex
 mizong_houquan/zhou.ex
 murong_jian/xing.ex
 murong_sword/qixing.ex
+nei_bagua/powerup.ex
 nianhua_zhi/fuxue.ex
 ningxue_zhang/xue.ex
 pangen_cuojiefu/cuo.ex
