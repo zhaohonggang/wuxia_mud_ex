@@ -819,9 +819,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `qianzhu_wandushou/` （3 个，基线缺失 20 条）
 
-- [ ] ❌ `qianzhu_wandushou/suck.ex` ← `qianzhu-wandushou/suck.c`  (miss=15)
-- [ ] ❌ `qianzhu_wandushou/wan.ex` ← `qianzhu-wandushou/wan.c`  (miss=1)
-- [ ] ❌ `qianzhu_wandushou/zhugu.ex` ← `qianzhu-wandushou/zhugu.c`  (miss=4)
+- [x] ✅ `qianzhu_wandushou/suck.ex` ← `qianzhu-wandushou/suck.c`  (miss→0，PASS)
+- [x] ✅ `qianzhu_wandushou/wan.ex` ← `qianzhu-wandushou/wan.c`  (miss→0，PASS)
+- [x] ✅ `qianzhu_wandushou/zhugu.ex` ← `qianzhu-wandushou/zhugu.c`  (miss→0，PASS)
 
 ### `qingliang_daxuefa/` （1 个，基线缺失 8 条）
 

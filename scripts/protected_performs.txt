@@ -391,6 +391,9 @@ qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
 qiantian_zhi/zhi.ex
 qianye_shou/qianye.ex
+qianzhu_wandushou/suck.ex
+qianzhu_wandushou/wan.ex
+qianzhu_wandushou/zhugu.ex
 qingliang_jian/ming.ex
 qishang_quan/shang.ex
 qishi_ji/juan.ex
