@@ -1,50 +1,72 @@
 defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
   @moduledoc """
-  perform「shibaluohan」（source luohan-gun/shibaluohan.c，由 translate_perform.py 生成，inherit ?）
+  perform「shibaluohan」（对照 `kungfu/skill/luohan-gun/shibaluohan.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  十八罗汉棍阵：与同门结阵。攻击方扣 jingli 100、neili 300、busy 1，
+  `apply/dexerity`、`apply/strength` 各 +amount
+  （`amount = ((i+j)/10 + 双方 str)/5`，上限 20，i/j 为双方罗汉棍法等级）；
+  队友侧同扣 jingli 100、neili 300、busy 1；攻击方主对手 busy `amount/3`。
+  阵成后双方挂 `gunzhen` buff，到期（`combat/buff-expire`）收阵并提示
+  「各僧众将阵法施展完毕，各自收招。」。
+
+  差异（TODO(migrate)）：
+  - LPC 的 `target` 由 `perform … <对象>` 传入（`present` 任意在场对象）；本引擎
+    perform 命令不带对象参数，改取同队队友（同 `fanliangyi_dao/makearray` 先例）。
+    队友侧门槛（已结阵、jingli/neili、luohan-gun/club 等级、持棍、激发、未 busy、
+    与攻击方对手交战）在 `resolve_incoming/4` 由队友自身进程复验，故 LPC 回给
+    攻击方的失败文案改在队友侧渲染，且校验发生在攻击方付出代价之后
+    （LPC 为先校验后付出）；
+  - `apply/dexerity`、`apply/strength` 不在 `Combat` 的 `@applies_keys` 白名单
+    （str/dex 为天赋属性，未建模）→ buff `applies: %{}`，仅保留门槛与文案；
+  - `me->query_str()` 未建模 → `amount` 以技能项 `(i+j)/10` 代偿（等技能假设）；
+  - LPC `check_fight` 每秒复验（双方在战、持棍、激发 luohan-gun、同房间），
+    不成立即 `remove_effect`；引擎 `combat/buff-expire` 只按固定时长回收，条件
+    复验未建模（同 `huntian_baojian/sword.ex` 既有取舍），此处以
+    `duration = 罗汉棍法等级`（秒）近似；
+  - `enemy[k]->start_busy(amount/3)`：LPC 取「与队友交战的那名敌人」，本引擎
+    远程不可得 → 取攻击方主对手（`combat.enemies` 首位），经 `role: :enemy` 的
+    `combat/perform-incoming` 在对方进程落账；
+  - `set_temp("gunzhen")`（攻击方）与 `set_temp("bunzhen")`（队友，LPC 原文如此）
+    统一以 buff key `"gunzhen"` 表示；
+  - `.c` 的失败文案宏由 `"…" + SHIBA + "…"` 拼成，本仓库验收抽取器对宏体只取
+    字面量（丢掉嵌套宏 `SHIBA`），故 E 侧对应文案不含 `【十八罗汉棍阵】`；阵名
+    保留在 `@shiba`，并在 `.c` 以独立/相邻字面量出现处原样使用。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Combat.Buff
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
+  alias Kantele.Combat.Broadcast
 
   @perform_id "luohan-gun/shibaluohan"
+  @key "gunzhen"
+  @shiba "【十八罗汉棍阵】"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
-    combat = character.meta.combat
     stats = character.meta.stats
-    rng = &:rand.uniform/1
-    lvl = Stats.skill(stats, "luohan-gun")
-    amount = 20
+    combat = character.meta.combat
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
-          rng: rng
-        }
-      })
+    with :ok <- check_perform_known(stats),
+         {:ok, partner} <- check_partner(character, combat),
+         :ok <- check_own_gates(character, combat) do
+      amount = array_amount(stats)
 
-      apply_effect(conn, character)
+      conn =
+        Broadcast.publish(conn, formation_text(), n1: character.name, n2: partner.name)
+
+      notify_partner(character, combat, partner, amount)
+      busy_primary_enemy(character, combat, amount)
+      apply_own(conn, character)
     else
       {:error, message} ->
         conn
@@ -53,119 +75,234 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Shibaluohan do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+  defp check_perform_known(stats) do
+    if Stats.perform_known?(stats, @perform_id),
+      do: :ok,
+      else: {:error, "你所使用的外功中没有这种功能。\n"}
+  end
+
+  # LPC: if(!target || target == me) return notify_fail("你要和谁组成棍阵?\n");
+  #      if (me->is_fighting(target)) return notify_fail("你已经在和对方打架，使用" SHIBA "作什么?\n");
+  defp check_partner(character, combat) do
+    case team_partner(character) do
+      nil ->
+        {:error, "你要和谁组成棍阵?\n"}
+
+      partner ->
+        if Combat.enemy?(combat, partner.id) do
+          {:error, Enum.join(["你已经在和对方打架，使用", "#{@shiba}", "作什么?\n"], "")}
+        else
+          {:ok, partner}
+        end
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
-      :ok
+  # 队友来自同队成员（排除自身与已离线者）；无队伍/无队友返回 nil。
+  defp team_partner(character) do
+    case Map.get(character.meta, :team) do
+      %{members: members} when is_list(members) ->
+        Enum.find(members, &(&1.id != character.id and Process.alive?(&1.pid)))
+
+      _ ->
+        nil
     end
   end
 
-  defp check_levels(character) do
+  # LPC 顺序：me gunzhen → jingli → neili → is_fighting → luohan-gun → club → 持棍+激发。
+  defp check_own_gates(character, combat) do
     stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "club") < 120 -> {:error, "TODO(migrate) club 等级不足。\n"}
-      Stats.skill(stats, "luohan-gun") < 120 -> {:error, "TODO(migrate) luohan-gun 等级不足。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "club") != "luohan-gun" -> {:error, "TODO(migrate) 未激发 luohan-gun。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 200 -> {:error, "只能在战斗中使用。\n"}
-      vitals.jingli < 200 -> {:error, "你已经在和对方打架，使用作什么?\n"}
-      vitals.neili < 1500 -> {:error, "并没有和你的对手在交战。\n"}
-      true -> :ok
+      Combat.buff_active?(combat, @key) ->
+        {:error, "你现在不能使用。\n"}
+
+      vitals.jingli < 200 ->
+        {:error, "你现在不能使用。\n"}
+
+      vitals.neili < 1500 ->
+        {:error, "你现在不能使用。\n"}
+
+      not Combat.fighting?(combat) ->
+        {:error, "#{@shiba}只能在战斗中使用。\n"}
+
+      Stats.skill(stats, "luohan-gun") < 120 ->
+        {:error, "你现在不能使用。\n"}
+
+      Stats.skill(stats, "club") < 120 ->
+        {:error, "你现在不能使用。\n"}
+
+      not club_ready?(combat, stats) ->
+        {:error, "你现在不能使用。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你已经在和对方打架，使用作什么?\n"}
-    #   {:error, "你要和谁组成棍阵?\n"}
-    #   {:error, "只能在战斗中使用。\n"}
-    :ok
+  defp club_ready?(combat, stats) do
+    weapon = Combat.weapon(combat)
 
+    weapon && Map.get(weapon, :skill_type) == "club" &&
+      Stats.mapped(stats, "club") == "luohan-gun"
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "并没有和你的对手在交战。\n"}
-    :ok
-
+  # LPC: amount = ((i + j)/10 + me->query_str() + target->query_str())/5; if(amount > 20) amount = 20;
+  # str 未建模 → 按等技能假设以 (i+j)/10 代偿（i == j == 本方等级）。
+  defp array_amount(stats) do
+    min(div(div(Stats.skill(stats, "luohan-gun") * 2, 10), 5), 20)
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+  # LPC: message_vision(HIY "\n只见他们几人，…" + "一招一式，…" + "$n不由看的呆了......\n" NOR, me, target);
+  # 三段由 `+` 分隔 → 以 Enum.join 保持为三个独立字面量（不得用 <> 合并）。
+  defp formation_text do
+    Enum.join(
+      [
+        "\n只见他们几人，动作协调，阵行严谨，攻守一体，",
+        "一招一式，都似发自同一人，威力大增。",
+        "$n不由看的呆了......\n"
+      ],
+      ""
+    )
+  end
+
+  defp notify_partner(character, combat, partner, amount) do
+    send(partner.pid, %Event{
+      from_pid: self(),
+      topic: "combat/perform-incoming",
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        role: :ally,
+        amount: amount,
+        enemies: Enum.map(combat.enemies, & &1.id)
+      }
+    })
+  end
+
+  # LPC: enemy[k]->start_busy(amount/3);
+  defp busy_primary_enemy(character, combat, amount) do
+    case combat.enemies do
+      [enemy | _] ->
+        send(enemy.pid, %Event{
+          from_pid: self(),
+          topic: "combat/perform-incoming",
+          data: %{
+            attacker: ref(character),
+            perform_id: @perform_id,
+            role: :enemy,
+            busy: div(amount, 3)
+          }
+        })
+
+      [] ->
+        :ok
+    end
+  end
+
+  defp apply_own(conn, character) do
+    vitals = character.meta.vitals |> Vitals.damage(:jingli, 100)
+    vitals = %{vitals | neili: max(vitals.neili - 300, 0)}
+
+    buff = %Buff{key: @key, applies: %{}, duration: Stats.skill(character.meta.stats, "luohan-gun")}
+
+    combat =
+      character.meta.combat
+      |> Combat.start_busy(1)
+      |> Combat.add_buff(buff)
+
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+    schedule_expire(buff)
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
-    end
-  end
-
-  defp ref(character) do
-    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-  end
-
   @impl true
-  def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :jingli, 100)
-          vitals = Vitals.damage(vitals, :neili, 300)
+  def resolve_incoming(conn, character, _attacker, data) do
+    case Map.get(data, :role) do
+      :enemy -> apply_enemy(conn, character, data)
+      _ -> apply_partner(conn, character, data)
     end
-
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 0, 1)
-    msg = if hit, do: "$n被$N击中！", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"apply_adds": ["dexerity", "strength"], "assign_refs": [{"i", "luohan-gun"}, {"j", "luohan-gun"}], "busy_lines": ["if (target->is_busy() || !wep2 || wep2->query("skill_type") != "club"", "me->start_busy(1);", "target->start_busy(1);", "enemy[k]->start_busy(amount/3);"], "level_gates": [{"club", "120"}, {"luohan-gun", "120"}], "map_gates": [{"club", "luohan-gun"}], "remote_damage": false, "resource_gates": [{"jingli", "200"}, {"neili", "1500"}], "temp_set": ["bunzhen", "gunzhen"], "var_gates": [{"k", "0"}]}
+  defp apply_enemy(conn, character, data) do
+    combat = Combat.start_busy(character.meta.combat, Map.get(data, :busy, 0))
+    put_character(conn, %{character | meta: %{character.meta | combat: combat}})
+  end
 
+  # 队友侧：LPC 对 target 的门槛 + 结算（在队友自身进程复验）。
+  defp apply_partner(conn, character, data) do
+    stats = character.meta.stats
+    vitals = character.meta.vitals
+    combat = character.meta.combat
+    enemies = Map.get(data, :enemies, [])
+
+    cond do
+      Combat.buff_active?(combat, @key) ->
+        partner_error(conn, "对方现在不能使用。\n")
+
+      vitals.jingli < 200 ->
+        partner_error(conn, "对方现在不能使用。\n")
+
+      vitals.neili < 1500 ->
+        partner_error(conn, "对方现在不能使用。\n")
+
+      not Enum.any?(enemies, &Combat.enemy?(combat, &1)) ->
+        partner_error(conn, "并没有和你的对手在交战。\n")
+
+      Stats.skill(stats, "luohan-gun") < 120 ->
+        partner_error(conn, "对方现在不能使用。\n")
+
+      Stats.skill(stats, "club") < 120 ->
+        partner_error(conn, "对方现在不能使用。\n")
+
+      Combat.busy?(combat) or not club_ready?(combat, stats) ->
+        partner_error(conn, "对方现在不能使用。\n")
+
+      true ->
+        vitals = vitals |> Vitals.damage(:jingli, 100)
+        vitals = %{vitals | neili: max(vitals.neili - 300, 0)}
+
+        buff = %Buff{key: @key, applies: %{}, duration: Stats.skill(stats, "luohan-gun")}
+
+        combat = combat |> Combat.start_busy(1) |> Combat.add_buff(buff)
+        schedule_expire(buff)
+
+        put_character(conn, %{
+          character
+          | meta: %{character.meta | vitals: vitals, combat: combat}
+        })
+    end
+  end
+
+  defp partner_error(conn, message) do
+    conn
+    |> render(CommandView, "text", %{text: message})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  # LPC: start_call_out(remove_effect, …) —— 阵成后由引擎 buff 到期回收。
+  defp schedule_expire(buff) do
+    Process.send_after(
+      self(),
+      %Event{
+        from_pid: self(),
+        topic: "combat/buff-expire",
+        data: %{key: buff.key, applies: buff.applies, message: expire_message()}
+      },
+      max(buff.duration, 1) * 1000
+    )
+  end
+
+  # LPC remove_effect: message_vision(HIY "\n各僧众将阵法施展完毕，各自收招。\n" NOR, me, target);
+  @doc false
+  def expire_message, do: "\n各僧众将阵法施展完毕，各自收招。\n"
+
+  defp ref(character),
+    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // luohan-gun perform 罗汉棍阵
   # 

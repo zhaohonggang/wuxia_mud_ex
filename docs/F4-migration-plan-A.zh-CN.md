@@ -651,7 +651,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `luohan_gun/` （1 个，基线缺失 21 条）
 
-- [ ] ❌ `luohan_gun/shibaluohan.ex` ← `luohan-gun/shibaluohan.c`  (miss=21)
+- [x] ✅ `luohan_gun/shibaluohan.ex` ← `luohan-gun/shibaluohan.c`  (miss→0，PASS)
 
 ### `luohan_jian/` （1 个，基线缺失 6 条）
 
