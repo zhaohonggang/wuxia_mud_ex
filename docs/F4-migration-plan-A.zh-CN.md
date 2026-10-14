@@ -784,7 +784,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `poxu_daxuefa/` （1 个，基线缺失 18 条）
 
-- [ ] ❌ `poxu_daxuefa/tong.ex` ← `poxu-daxuefa/tong.c`  (miss=18)
+- [x] ✅ `poxu_daxuefa/tong.ex` ← `poxu-daxuefa/tong.c`  (miss=18)
 
 ### `poyang_jian/` （2 个，基线缺失 21 条）
 

@@ -377,6 +377,7 @@ pokong_quan/kong.ex
 pomie_jinzhen/du.ex
 pomopima_jian/zui.ex
 poshui_zhang/tai.ex
+poxu_daxuefa/tong.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
 qianye_shou/qianye.ex
