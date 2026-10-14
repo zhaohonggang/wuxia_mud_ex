@@ -681,7 +681,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `miaojia_neigong/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `miaojia_neigong/powerup.ex` ← `miaojia-neigong/powerup.c`  (miss=4)
+- [x] ✅ `miaojia_neigong/powerup.ex` ← `miaojia-neigong/powerup.c`  (miss→0，PASS)
 
 ### `miaojia_zhang/` （1 个，基线缺失 7 条）
 
