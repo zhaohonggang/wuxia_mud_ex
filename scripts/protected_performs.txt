@@ -349,6 +349,7 @@ never_defeated/tianhua.ex
 never_defeated/wanli.ex
 never_defeated/yuce.ex
 nianhua_zhi/fuxue.ex
+ningxue_shenzhao/ji.ex
 ningxue_zhang/xue.ex
 pangen_cuojiefu/cuo.ex
 panlong_suo/chan.ex

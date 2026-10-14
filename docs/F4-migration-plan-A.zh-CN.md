@@ -712,7 +712,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `ningxue_shenzhao/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `ningxue_shenzhao/ji.ex` ← `ningxue-shenzhao/ji.c`  (miss=1)
+- [x] ✅ `ningxue_shenzhao/ji.ex` ← `ningxue-shenzhao/ji.c`  (miss=1)
 
 ### `pangu_qishi/` （1 个，基线缺失 7 条）
 
