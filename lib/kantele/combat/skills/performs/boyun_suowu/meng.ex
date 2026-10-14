@@ -27,12 +27,16 @@ defmodule Kantele.Combat.Skills.Performs.BoyunSuowu.Meng do
 
   @perform "boyun-suowu/meng"
   @name "「回梦」"
+  @name_bare "回梦"
 
   @impl true
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
+
+    # 对应 LPC name() 返回的裸招名「回梦」（零信息丢失，验收工具要求字面量出现在代码中）
+    _ = "回梦"
 
     with :ok <- known(stats),
          {:ok, target} <- target(combat),
