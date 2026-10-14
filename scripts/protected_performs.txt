@@ -356,6 +356,7 @@ pangu_qishi/kai.ex
 panlong_suo/chan.ex
 panlong_suo/sha.ex
 panlong_zhao/tan.ex
+panyang_zhang/pan.ex
 pichen_jian/ao.ex
 pidi_shenzhen/huan.ex
 poguang_dao/bing.ex
