@@ -301,6 +301,9 @@ lonely_sword/jue.ex
 lonely_sword/po.ex
 lonely_sword/yi.ex
 longcheng_shendao/feng.ex
+longcheng_shendao/fengyu.ex
+longxiang/powerup.ex
+longxiang/shield.ex
 longxing_jian/kong.ex
 longxing_jian/xian.ex
 luohan_gun/xiangmo.ex

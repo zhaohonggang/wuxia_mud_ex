@@ -620,12 +620,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `longcheng_shendao/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `longcheng_shendao/fengyu.ex` ← `longcheng-shendao/fengyu.c`  (miss=5)
+- [x] ✅ `longcheng_shendao/fengyu.ex` ← `longcheng-shendao/fengyu.c`  (miss→0，PASS)
 
 ### `longxiang/` （2 个，基线缺失 9 条）
 
-- [ ] ❌ `longxiang/powerup.ex` ← `longxiang/powerup.c`  (miss=5)
-- [ ] ❌ `longxiang/shield.ex` ← `longxiang/shield.c`  (miss=4)
+- [x] ✅ `longxiang/powerup.ex` ← `longxiang/powerup.c`  (miss→0，PASS)
+- [x] ✅ `longxiang/shield.ex` ← `longxiang/shield.c`  (miss→0，PASS)
 
 ### `longxiang_gong/` （6 个，基线缺失 53 条）
 
