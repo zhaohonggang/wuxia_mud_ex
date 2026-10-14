@@ -768,7 +768,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `poguang_dao/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `poguang_dao/yang.ex` ← `poguang-dao/yang.c`  (miss=7)
+- [x] ✅ `poguang_dao/yang.ex` ← `poguang-dao/yang.c`  (miss=7)
 
 ### `pokong_quan/` （1 个，基线缺失 6 条）
 

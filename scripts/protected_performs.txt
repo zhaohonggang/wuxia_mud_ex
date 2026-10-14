@@ -372,6 +372,7 @@ pixie_jian/pi.ex
 pixie_jian/po.ex
 pobei_tui/kai.ex
 poguang_dao/bing.ex
+poguang_dao/yang.ex
 pomie_jinzhen/du.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
