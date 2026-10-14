@@ -308,6 +308,8 @@ longxiang_gong/die.ex
 longxiang_gong/ji.ex
 longxiang_gong/powerup.ex
 longxiang_gong/shield.ex
+longxiang_gong/tun.ex
+longxiang_gong/zhen.ex
 longxing_jian/kong.ex
 longxing_jian/xian.ex
 luohan_gun/xiangmo.ex
