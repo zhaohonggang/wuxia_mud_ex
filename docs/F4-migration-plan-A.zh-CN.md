@@ -764,7 +764,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `pobei_tui/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `pobei_tui/kai.ex` ← `pobei-tui/kai.c`  (miss=7)
+- [x] ✅ `pobei_tui/kai.ex` ← `pobei-tui/kai.c`  (miss=7)
 
 ### `poguang_dao/` （1 个，基线缺失 7 条）
 

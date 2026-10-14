@@ -370,6 +370,7 @@ pixie_jian/duo.ex
 pixie_jian/gui.ex
 pixie_jian/pi.ex
 pixie_jian/po.ex
+pobei_tui/kai.ex
 poguang_dao/bing.ex
 pomie_jinzhen/du.ex
 qiankun_jian/qian.ex
