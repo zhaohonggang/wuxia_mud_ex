@@ -772,7 +772,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `pokong_quan/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `pokong_quan/kong.ex` ← `pokong-quan/kong.c`  (miss=6)
+- [x] ✅ `pokong_quan/kong.ex` ← `pokong-quan/kong.c`  (miss=6)
 
 ### `pomopima_jian/` （1 个，基线缺失 7 条）
 
