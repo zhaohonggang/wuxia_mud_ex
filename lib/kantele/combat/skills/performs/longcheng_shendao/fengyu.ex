@@ -170,7 +170,7 @@ defmodule Kantele.Combat.Skills.Performs.LongchengShendao.Fengyu do
   defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     lvl = max(Map.get(data, :level, 0), 1)
-    weapon_name = Map.get(data, :weapon_name, "某物")
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
     bindings = [n1: attacker.name, n2: character.name]
 
