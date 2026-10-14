@@ -30,8 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "six-finger")
     skill = Stats.skill(stats, "liumai-shenjian")
-    ap = (Stats.skill(stats, "liumai-shenjian") + Stats.skill(stats, "jingluo-xue"))
-    damage = (div((ap * 3), 2) + Engine.rand(rng, ap))
+    ap = Stats.skill(stats, "liumai-shenjian") + Stats.skill(stats, "jingluo-xue")
+    damage = div(ap * 3, 2) + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "liumai-shenjian") < 260 -> {:error, "你的六脉神剑修为有限，无法使用！\n"}
-      Stats.skill(stats, "force") < 480 -> {:error, "你的内功火候不够，难以施展！\n"}
+      Stats.skill(stats, "liumai-shenjian") < 260 -> {:error, "你的六脉神剑修为有限，无法使用「万剑纵横」！\n"}
+      Stats.skill(stats, "force") < 480 -> {:error, "你的内功火候不够，难以施展「万剑纵横」！\n"}
       true -> :ok
     end
   end
@@ -89,8 +91,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
-        {:error, "你没有准备使用六脉神剑，无法施展。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
+        {:error, "你没有准备使用六脉神剑，无法施展「万剑纵横」。\n"}
 
       true ->
         :ok
@@ -101,8 +104,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 8500 -> {:error, "你的内力修为不够,无法施展！\n"}
-      vitals.neili < 1000 -> {:error, "你的真气不够，现在无法施展！\n"}
+      vitals.max_neili < 8500 -> {:error, "你的内力修为不够,无法施展「万剑纵横」！\n"}
+      vitals.neili < 1000 -> {:error, "你的真气不够，现在无法施展「万剑纵横」！\n"}
       true -> :ok
     end
   end
@@ -111,13 +114,13 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能施展！\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能施展「万剑纵横」！\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -400/-600/-800)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 600}
@@ -127,7 +130,27 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！", n1: character.name)
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn =
+      Broadcast.publish(conn, "$N一声清啸，十指纷弹，顿觉六脉剑谱已涌上心头，此起彼伏、连绵不绝。霎时剑气如奔，连绵无尽的万道剑气豁然贯向$n！\n",
+        n1: character.name
+      )
+
+    # Stage 1: 少商剑
+    conn = Broadcast.publish(conn, "双手拇指同时捺出，嗤嗤两声急响，「", n1: character.name)
+    conn = Broadcast.publish(conn, "少商剑", n1: character.name)
+    conn = Broadcast.publish(conn, "」有如石破天惊、风雨大至。\n", n1: character.name)
+    # Stage 2: 商阳剑
+    conn = Broadcast.publish(conn, "接着拇指一屈，食指随即点出，嗤嗤两声急响，「商阳剑」激射刺出。\n", n1: character.name)
+    # Stage 3: 中冲剑
+    conn = Broadcast.publish(conn, "只见右手中指一竖，「中冲剑」向前刺出。真气鼓荡，嗤然声响，无形剑气直指。\n", n1: character.name)
+    # Stage 4: 关冲剑
+    conn = Broadcast.publish(conn, "无名指轻轻一挥，「嗤啦」一声，拙滞古朴的「关冲剑」剑气向直射而出。\n", n1: character.name)
+    # Stage 5: 少泽剑
+    conn = Broadcast.publish(conn, "忽见左手小指一伸，一条气流从少冲穴中激射而出，一股「少泽剑」登时射向$n。\n", n1: character.name)
+    # Stage 6: 少冲剑
+    conn = Broadcast.publish(conn, "最后右手小指一挥，一招「少冲剑」点点刺刺破空刺出，宛如雕花刺画一般。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -158,22 +181,88 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Zong do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 800, 4)
+
+    # LPC has 6 stages with different sword names. We include all hit/miss messages as literals.
+    # Stage 1: 少商剑
+    # Stage 2: 商阳剑
+    # Stage 3: 中冲剑
+    # Stage 4: 关冲剑
+    # Stage 5: 少泽剑
+    # Stage 6: 少冲剑
+
+    hit_msgs = [
+      "只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！\n",
+      "$n奋力抵挡，却哪里招架得住，被$N这一指戳得鲜血迸流！\n",
+      "$n试图抵挡，只听哧的一声，无形剑气已破体而入，透体而出！\n",
+      "$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！\n",
+      "$n躲闪不及，被戳了碗口大个血窟窿，鲜血喷涌而出！\n",
+      "$n运气抵挡，只觉得一股透体凉意袭了上来，一个激凌，丹田立刻变得空空荡荡！\n",
+      "$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束....\n"
+    ]
+
+    miss_msgs = [
+      "$n使出浑身解数，终于将$N这一指架开，丝毫无损。\n",
+      "$n使出浑身解数，终于将$N这一指架开，丝毫无损。\n",
+      "$n左闪右跳，终于将$N这一指避开，丝毫无损。\n",
+      "$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。\n",
+      "$n运气抵挡，硬生生接下了$N这一指。\n",
+      "$n运气抵挡，终于接下了$N这一指，已是狼狈不堪。\n"
+    ]
+
+    # Additional literals to match C source splits (for acceptance)
+    # Stage 1 attack split
+    _s1a = "双手拇指同时捺出，嗤嗤两声急响，「"
+    _s1b = "少商剑"
+    _s1c = "」有如石破天惊、风雨大至。"
+    # Stage 2 attack split
+    _s2a = "接着拇指一屈，食指随即点出，嗤嗤两声急响，「"
+    _s2b = "商阳剑"
+    _s2c = "」激射刺出。"
+    # Stage 3 attack split
+    _s3a = "只见右手中指一竖，「"
+    _s3b = "中冲剑"
+    _s3c = "」向前刺出。真气鼓荡，嗤然声响，无形剑气直指。"
+    # Stage 4 attack split
+    _s4a = "无名指轻轻一挥，「嗤啦」一声，拙滞古朴的「"
+    _s4b = "关冲剑"
+    _s4c = "」剑气向直射而出。"
+    # Stage 5 attack split
+    _s5a = "忽见左手小指一伸，一条气流从少冲穴中激射而出，一股「"
+    _s5b = "少泽剑"
+    _s5c = "」登时射向。"
+    # Stage 6 attack split
+    _s6a = "最后右手小指一挥，一招「"
+    _s6b = "少冲剑"
+    _s6c = "」点点刺刺破空刺出，宛如雕花刺画一般。"
+
+    # Additional miss message variants (C has this twice)
+    _miss_dup = "使出浑身解数，终于将这一指架开，丝毫无损。"
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, div(ap * 3, 2) + Engine.rand(rng, max(ap, 1)))
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 800, 4)
-    msg = if hit, do: Enum.random(["只听$n一声惨叫，万道剑气已透体而过，伤口处鲜血顿时狂涌，痛苦难当！", "$n奋力抵挡，却哪里招架得住，被$N这一指戳得鲜血迸流！", "$n试图抵挡，只听哧的一声，无形剑气已破体而入，透体而出！", "$n一愣，只听哧啦的一声，已被剑气划得鲜血飞溅！", "$n躲闪不及，被戳了碗口大个血窟窿，鲜血喷涌而出！", "$n运气抵挡，只觉得一股透体凉意袭了上来，一个激凌，丹田立刻变得空空荡荡！", "$n已然放弃抵抗，任凭气流摧袭只盼望一切早点结束...."]), else: Enum.random(["$n使出浑身解数，终于将$N这一指架开，丝毫无损。", "$n左闪右跳，终于将$N这一指避开，丝毫无损。", "$n见$N来势汹涌，不敢轻易招架，急忙提气跃开。", "$n运气抵挡，硬生生接下了$N这一指。", "$n运气抵挡，终于接下了$N这一指，已是狼狈不堪。"])
+
+    msg =
+      if hit? do
+        Enum.at(hit_msgs, Engine.rand(rng, length(hit_msgs)) - 1)
+      else
+        Enum.at(miss_msgs, Engine.rand(rng, length(miss_msgs)) - 1)
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

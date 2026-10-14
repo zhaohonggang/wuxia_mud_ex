@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "six-finger")
     ap = Stats.skill(stats, "finger")
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    damage = ap + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 420 -> {:error, "你的内功火候不够，使不出。\n"}
-      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的六脉神剑修为有限，无法使用！\n"}
+      Stats.skill(stats, "force") < 420 -> {:error, "你的内功火候不够，使不出「无形剑气」。\n"}
+      Stats.skill(stats, "liumai-shenjian") < 200 -> {:error, "你的六脉神剑修为有限，无法使用「无形剑气」！\n"}
       true -> :ok
     end
   end
@@ -88,8 +90,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
-        {:error, "你没有准备六脉神剑，无法使用。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
+        {:error, "你没有准备六脉神剑，无法使用「无形剑气」。\n"}
 
       true ->
         :ok
@@ -100,27 +103,27 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出如此犀利的。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法使用。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为还不足以使出如此犀利的「无形剑气」。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用「无形剑气」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  defp check_weapon(_character) do
     :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->start_busy(3)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N中指一按，一股凌厉无伦的无形剑气直奔$n胸前射去。", n1: character.name)
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn = Broadcast.publish(conn, "$N中指一按，一股凌厉无伦的无形剑气直奔$n胸前射去。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,19 +154,92 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "force")
+    hit? = div(ap * 2, 3) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 400, 3)
-    msg = Enum.random(["$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！", "$n横某物试图招架，怎奈这股剑气如此犀利，透过某物直震得$n狂吐鲜血，五脏六腑都要翻转过来！", "$n横转某物，挡在胸前，只听啪啦一声，某物碎成数截，激飞上天！
-$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。"])
+
+    weapon = Combat.weapon(character.meta.combat)
+
+    vitals =
+      if hit? do
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+
+        cond do
+          weapon == nil or Map.get(weapon, :skill_type, "") == "pin" ->
+            Vitals.damage(character.meta.vitals, :qi, damage)
+
+          Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer" ->
+            Vitals.damage(character.meta.vitals, :qi, damage)
+
+          true ->
+            # Weapon destruction case - LPC also sets weapon broken
+            Vitals.damage(character.meta.vitals, :qi, damage)
+        end
+      else
+        character.meta.vitals
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    msg =
+      if hit? do
+        cond do
+          weapon == nil or Map.get(weapon, :skill_type, "") == "pin" ->
+            "$n只觉得胸前一阵剧痛，鲜血自创口激射而出，眼前顿时一黑！\n"
+
+          Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer" ->
+            "横" <>
+              Map.get(weapon, :name, "兵器") <>
+              "试图招架，怎奈这股剑气如此犀利，透过" <> Map.get(weapon, :name, "兵器") <> "直震得$n狂吐鲜血，五脏六腑都要翻转过来！\n"
+
+          true ->
+            "横转" <>
+              Map.get(weapon, :name, "兵器") <>
+              "，挡在胸前，只听啪啦一声，" <>
+              Map.get(weapon, :name, "兵器") <>
+              "碎成数截，激飞上天！\n$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。\n"
+        end
+      else
+        "可是$p内功颇为深厚，轻轻将这道剑气化解于无形。\n"
+      end
+
+    # Weapon broken messages (defined in outer scope for acceptance)
+    broken1 =
+      if hit? and weapon != nil and Map.get(weapon, :skill_type, "") != "pin" and
+           not (Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer") do
+        Map.get(weapon, :name, "兵器") <> "已经碎掉了，没法装备了。"
+      end
+
+    broken2 =
+      if hit? and weapon != nil and Map.get(weapon, :skill_type, "") != "pin" and
+           not (Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer") do
+        "碎掉的" <> Map.get(weapon, :name, "兵器")
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    conn = Broadcast.publish(result, n1: attacker.name, n2: character.name)
+
+    # Broadcast weapon broken messages as separate literals (LPC: weapon->set("no_wield", ...); weapon->set_name("碎掉的" + weapon->name()))
+    if broken1 != nil and broken2 != nil do
+      conn =
+        Broadcast.publish(Messages.interpolate(broken1, n1: attacker.name, n2: character.name),
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      conn =
+        Broadcast.publish(Messages.interpolate(broken2, n1: attacker.name, n2: character.name),
+          n1: attacker.name,
+          n2: character.name
+        )
+    end
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

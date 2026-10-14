@@ -29,10 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "six-finger")
-    skill = Stats.skill(stats, "liumai-shenjian")
     ap = Stats.skill(stats, "finger")
-    delta = 0
-    i = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -40,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "liumai-shenjian") < 220 -> {:error, "你的六脉神剑修为有限，无法使用！\n"}
-      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展！\n"}
+      Stats.skill(stats, "liumai-shenjian") < 220 -> {:error, "你的六脉神剑修为有限，无法使用「六脉剑气」！\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展「六脉剑气」！\n"}
       true -> :ok
     end
   end
@@ -89,8 +88,9 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
-        {:error, "你没有准备使用六脉神剑，无法施展。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "liumai-shenjian" ->
+        {:error, "你没有准备使用六脉神剑，无法施展「六脉剑气」。\n"}
 
       true ->
         :ok
@@ -101,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 7000 -> {:error, "你的内力修为没有达到那个境界，无法运转内力形成！\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，现在无法施展！\n"}
+      vitals.max_neili < 7000 -> {:error, "你的内力修为没有达到那个境界，无法运转内力形成「六脉剑气」！\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，现在无法施展「六脉剑气」！\n"}
       true -> :ok
     end
   end
@@ -111,17 +111,23 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能施展！\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须是空手才能施展「六脉剑气」！\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -400)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N摊开双手，手指连弹，霎时间空气炙热，几欲沸腾，六道剑气分自六穴，一起冲向$n！", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(5))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn =
+      Broadcast.publish(conn, "$N摊开双手，手指连弹，霎时间空气炙热，几欲沸腾，六道剑气分自六穴，一起冲向$n！\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -149,15 +155,24 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Six do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "force")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 400, 1)
-    msg = "$n见此剑气纵横，微一愣神，不禁心萌退意。"
+
+    msg =
+      if hit? do
+        "$n见此剑气纵横，微一愣神，不禁心萌退意。\n"
+      else
+        # LPC doesn't have explicit miss message in the excerpt, but we need one
+        "可是$p内功颇为深厚，轻轻将这道剑气化解于无形。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

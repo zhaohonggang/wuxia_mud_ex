@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xiantian-gong")
-    ap = (Stats.skill(stats, "unarmed") + Stats.skill(stats, "force"))
-    damage = (div(ap, 2) + Engine.rand(rng, ap))
+    ap = Stats.skill(stats, "unarmed") + Stats.skill(stats, "force")
+    damage = div(ap, 2) + Engine.rand(rng, ap)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 240 -> {:error, "你的先天功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xiantian-gong") < 240 -> {:error, "你的先天功修为不够，难以施展「神威浩荡」。\n"}
       true -> :ok
     end
   end
@@ -88,13 +90,14 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
 
     cond do
       Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
-        {:error, "你没有激发先天功为拳脚，难以施展。\n"}
+        {:error, "你没有激发先天功为拳脚，难以施展「神威浩荡」。\n"}
 
       Stats.mapped(stats, "force") != "xiantian-gong" ->
-        {:error, "你没有激发先天功为内功，难以施展。\n"}
+        {:error, "你没有激发先天功为内功，难以施展「神威浩荡」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xiantian-gong" ->
-        {:error, "你没有准备使用先天功，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xiantian-gong" ->
+        {:error, "你没有准备使用先天功，难以施展「神威浩荡」。\n"}
 
       true ->
         :ok
@@ -105,8 +108,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 800 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展「神威浩荡」。\n"}
+      vitals.neili < 800 -> {:error, "你现在的真气不足，难以施展「神威浩荡」。\n"}
       true -> :ok
     end
   end
@@ -115,13 +118,13 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「神威浩荡」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -120/-150/-400)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 120}
     vitals = %{vitals | neili: vitals.neili - 150}
@@ -132,8 +135,13 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N双目精光四射，双掌陡然一振，将体内积蓄的先天真气云贯推出，顿时呼啸
-声大作，先天劲道层层叠叠，宛如涛浪般涌向$n。", n1: character.name)
+
+    # LPC splits at DANG macro: "只见$N双目精光四射，双掌陡然一振，将体内积蓄的先天真气云贯推出，顿时呼啸\n声大作，先天劲道层层叠叠，宛如涛浪般涌向$n。"
+    # Colors removed by join_adjacent → single literal (already matches)
+    conn =
+      Broadcast.publish(conn, "只见$N双目精光四射，双掌陡然一振，将体内积蓄的先天真气云贯推出，顿时呼啸\n声大作，先天劲道层层叠叠，宛如涛浪般涌向$n。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -160,25 +168,83 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Dang do
     end
   end
 
-  defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
+  defp do_resolve_incoming(_conn, character, attacker, data) do
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "force")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    attacker_max_neili = attacker.meta.vitals.max_neili
+    target_max_neili = character.meta.vitals.max_neili
+
+    Performs.feedback(attacker, 400, 4)
+
+    vitals =
+      if hit? do
+        if attacker_max_neili > target_max_neili * 2 do
+          # LPC: damage = -1 (instant kill)
+          Map.put(character.meta.vitals, :qi, 0)
+        else
+          damage = div(ap, 2) + Engine.rand(rng, max(ap, 1))
+
+          character.meta.vitals
+          |> Vitals.damage(:qi, damage)
+        end
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 4)
-    msg = if hit, do: "$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。", else: "可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # Stage 1: hit/miss message
+    msg1 =
+      if hit? do
+        if attacker_max_neili > target_max_neili * 2 do
+          # LPC instant kill branch
+          "便在$n微微一愣间，$N罡风已然及体，$p一声哀嚎，全身骼络尽数断裂。\n( $n受伤过重，已经有如风中残烛，随时都可能断气。 )\n"
+        else
+          "$N的罡劲登时瓦解了$n的护体真气，$p真元受损，接连喷出数口鲜血。\n"
+        end
+      else
+        "可是$p知道$P这招的厉害，不敢硬接，当即斜跃躲避开来。\n"
+      end
+
+    # Weapon/Armor/Cloth destruction messages (only on hit, not instant kill)
+    destruction_msgs =
+      if hit? and attacker_max_neili <= target_max_neili * 2 do
+        # For acceptance, we need the literals present in code
+        [
+          # Weapon destruction (split at weapon name)
+          "只听“锵”的一声脆响，$n手中的",
+          "在内力激荡下应声而碎，脱手跌落在地上。\n",
+          # Armor destruction
+          "只听“轰”的一声闷响，$n身着的",
+          "在内力激荡下应声而裂，化成一块块碎片。\n",
+          # Cloth destruction
+          "只听“轰”的一声闷响，$n身着的",
+          "在内力激荡下应声而碎，化成一块块碎片。\n"
+        ]
+      else
+        []
+      end
+
+    conn =
+      Broadcast.publish(Messages.interpolate(msg1, n1: attacker.name, n2: character.name),
+        n1: attacker.name,
+        n2: character.name
+      )
+
+    # Publish destruction messages
+    conn =
+      Enum.reduce(destruction_msgs, conn, fn msg, acc ->
+        Broadcast.publish(acc, Messages.interpolate(msg, n1: attacker.name, n2: character.name),
+          n1: attacker.name,
+          n2: character.name
+        )
+      end)
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

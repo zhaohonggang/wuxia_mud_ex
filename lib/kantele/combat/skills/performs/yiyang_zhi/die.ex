@@ -21,6 +21,13 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
 
   @perform_id "yiyang-zhi/die"
 
+  # 18 acupuncture points from LPC xue_name array
+  @xue_name [
+    "劳宫穴", "膻中穴", "曲池穴", "关元穴", "曲骨穴", "中极穴",
+    "承浆穴", "天突穴", "百会穴", "幽门穴", "章门穴", "大横穴",
+    "紫宫穴", "冷渊穴", "天井穴", "极泉穴", "清灵穴", "至阳穴"
+  ]
+
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -29,11 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yiyang-zhi")
-    improve = 0
-    n = 0
-    m = 0
     ap = Stats.skill(stats, "finger")
-    damage = (ap + Engine.rand(rng, ap))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -45,7 +48,6 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
@@ -81,9 +83,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yiyang-zhi") < 200 -> {:error, "你一阳指诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学了解不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "yiyang-zhi") < 200 -> {:error, "你一阳指诀不够娴熟，难以施展「阳关三叠」。\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学了解不够，难以施展「阳关三叠」。\n"}
+      Stats.skill(stats, "force") < 300 -> {:error, "你的内功火候不够，难以施展「阳关三叠」。\n"}
       true -> :ok
     end
   end
@@ -93,10 +95,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
 
     cond do
       Stats.mapped(stats, "finger") != "yiyang-zhi" ->
-        {:error, "你没有激发一阳指诀，难以施展。\n"}
+        {:error, "你没有激发一阳指诀，难以施展「阳关三叠」。\n"}
 
       Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "yiyang-zhi" ->
-        {:error, "你没有准备一阳指诀，难以施展。\n"}
+        {:error, "你没有准备一阳指诀，难以施展「阳关三叠」。\n"}
 
       true ->
         :ok
@@ -107,8 +109,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 1000 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展「阳关三叠」。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不够，难以施展「阳关三叠」。\n"}
       true -> :ok
     end
   end
@@ -117,20 +119,22 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「阳关三叠」只能空手施展。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+defp apply_effect(conn, character) do
+    # LPC: me->add("neili", -400/-50/-80)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 50}
     vitals = %{vitals | neili: vitals.neili - 80}
-    vitals = %{vitals | neili: 0}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "突然间", n1: character.name)
+
+    # LPC splits at DIE macro: "突然" + "阳关三叠" + "点出..."
+    conn = Broadcast.publish(conn, "突然", n1: character.name)
+    conn = Broadcast.publish(conn, "阳关三叠", n1: character.name)
 
     conn
     |> put_character(character)
@@ -158,24 +162,92 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    # LPC: target weapon check for first stage
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: Map.get(weapon, :name, "兵器"), else: nil
+
+    dp = Stats.skill(stats, "parry")
+    hit1? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    # Stage 1: weapon check
+    conn1 =
+      if weapon do
+        # LPC splits: "单指一扬，径点持着" + weapon_name + "的手腕上「腕骨」、「阳谷」、「养老」三穴。"
+        msg1 = "单指一扬，径点持着" <> (weapon_name || "兵器") <> "的手腕上「腕骨」、「阳谷」、「养老」三穴。\n"
+        Broadcast.publish(conn, msg1, n1: attacker.name, n2: character.name)
+      else
+        conn
+      end
+
+    # Stage 2: "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！"
+    conn2 = Broadcast.publish(conn1, "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！\n", n1: attacker.name, n2: character.name)
+
+    # Stage 1 resolution: weapon hit/miss
+    dp1 = Stats.skill(stats, "force")
+    hit_weapon? = div(ap, 3) + Engine.rand(rng, max(ap, 1)) > dp1
+
+    conn3 =
+      if hit_weapon? do
+        msg = "霎时间$n只觉得手腕一麻，手中" <> (weapon_name || "兵器") <> "再也拿持不住，脱手掉在地上。\n紧接着"
+        Broadcast.publish(conn2, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      else
+        msg = "可是$n将手中" <> (weapon_name || "兵器") <> "转动如轮，终于化解了这一招。\n紧接着"
+        Broadcast.publish(conn2, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      end
+
+    # Stage 2: main strike
+    # "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！" already broadcast
+    dp2 = Stats.skill(stats, "parry")
+    hit2? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp2
+
+    # Pick a random xue_name for hit
+    xue = Enum.random(@xue_name)
+
+    # Stage 2 resolution
+    conn3 =
+      if hit2? do
+        msg = "结果$n被$N一指点中" <> xue <> "，全身真气逆流而上，登时呕出一大口鲜血。"
+        Broadcast.publish(conn3, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      else
+        msg = "可是$p镇定自如，全力化解了$P这精妙的一指。"
+        Broadcast.publish(conn3, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      end
+
+    # Stage 3: "接着踏前一步，体内真气迸发，隔空一指劲点而去，指气纵横，嗤然作响！"
+    conn4 = Broadcast.publish(conn3, "接着踏前一步，体内真气迸发，隔空一指劲点而去，指气纵横，嗤然作响！\n", n1: attacker.name, n2: character.name)
+
+    # Stage 3: final strike
+    dp3 = Stats.skill(stats, "force")
+    hit3? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > (Stats.skill(stats, "force") + Stats.skill(stats, "dodge")) # approx
+
+    # "最后一声猛喝，单指"嗤"一声点出，纯阳指力同时笼罩全身诸多要穴！"
+    conn5 = Broadcast.publish(conn4, "最后一声猛喝，单指\"嗤\"一声点出，纯阳指力同时笼罩全身诸多要穴！\n", n1: attacker.name, n2: character.name)
+
+    # Stage 3 resolution
+    xue3 = Enum.random(@xue_name)
+
+    conn6 =
+      if hit3? do
+        msg = "结果$n被$N一指点中" <> xue3 <> "，全身真气逆流而上，登时呕出一大口鲜血。"
+        Broadcast.publish(conn5, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      else
+        msg = "可是$p镇定自如，全力化解了$P这精妙的一指。"
+        Broadcast.publish(conn5, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      end
+
+    # "被三指连中，全身真气涣散，宛如黄河决堤，内力登时狂泻而出。"
+    conn7 = Broadcast.publish(conn6, "被三指连中，全身真气涣散，宛如黄河决堤，内力登时狂泻而出。\n", n1: attacker.name, n2: character.name)
+
+    # "你只觉丹田内竟似空空如也，一时说不出的难受。"
+    conn8 = Broadcast.publish(conn7, "你只觉丹田内竟似空空如也，一时说不出的难受。\n", n1: attacker.name, n2: character.name)
+
     Performs.feedback(attacker, 80, 1)
-    msg = if hit, do: "结果$n被$N一指点中，全身真气逆流而上，登时呕出一大口鲜血。", else: "可是$p镇定自如，全力化解了$P这精妙的一指。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
+
+    conn8
     |> put_character(character)
   end
 

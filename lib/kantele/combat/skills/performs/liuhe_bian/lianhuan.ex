@@ -1,8 +1,23 @@
 defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   @moduledoc """
-  perform「lianhuan」（source liuhe-bian/lianhuan.c，由 translate_perform.py 生成，inherit F_DBASE）
+  perform「六合连环诀」（source liuhe-bian/lianhuan.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：目标在战斗中 → 未处于连环诀运功中 → 持鞭类武器且激发
+  六合鞭法（合并为一句门槛文案）→ 内功>=270 → 鞭法>=180 → 六合鞭法>=180 →
+  真气>300 → 目标存活 → 轻功>=180。`.c` 的 can_perform 检查被注释掉，故无
+  「已学此招」门槛。起手广播（兵刃名把文案拆成两段）；命中判定 `random(ap) > dp`
+  （ap = force+六合鞭法+dodge + random(同值)，dp = 目标 parry+dodge）；
+  命中则连出六击【天/地/人/神/鬼/六合】，第 i 击伤害 `hurt/i`（i 自 6 递减到 1）、
+  50% 外伤比例，扣 300 真气、忙乱 2；未命中扣 200 真气、忙乱 2+random(3)。
+
+  差异（TODO(migrate)）：
+  - `.c` 的 6 次 `COMBAT_D->do_damage(WEAPON_ATTACK, hurt/i, 50, msg)` 折算为
+    逐击 `Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage*50, 100))`；
+  - 命中后攻击方的 `set_temp("lianhuan",1)` / `add_temp("apply/damage", lvl)`
+    与 `start_call_out(remove_effect)` 在跨进程 feedback 中无对应字段，暂不保留
+    （remove_effect 文案保留在下面供核对）；
+  - 六击文案每条都被 weapon->name() 拆成两段，E 侧按原样用 `<>` 拆分；
+  - `living(target)` 门槛由目标侧 combat/perform-incoming 的死亡检查兜底。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,7 +31,6 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "liuhe-bian/lianhuan"
@@ -28,30 +42,38 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    skill = ((Stats.skill(stats, "force") + Stats.skill(stats, "liuhe-bian")) + Stats.skill(stats, "dodge"))
-    lvl = Stats.skill(stats, "liuhe-bian")
-    ap = (skill + Engine.rand(rng, skill))
-    i = 1
-    tm = (5 + Engine.rand(rng, 5))
-    hurt = div(skill, 3)
-    damage = div(hurt, i)
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+    # LPC: skill = force + liuhe-bian + dodge; lvl = liuhe-bian / 3;
+    #      ap = skill + random(skill); hurt = skill / 3;
+    skill = Stats.skill(stats, "force") + Stats.skill(stats, "liuhe-bian") + Stats.skill(stats, "dodge")
+    lvl = Stats.skill(stats, "liuhe-bian")
+    ap = skill + Engine.rand(rng, skill)
+
+    with {:ok, target} <- target(combat),
+         :ok <- check_state(character),
+         :ok <- check_weapon(character),
+         :ok <- check_levels(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target),
+         :ok <- check_dodge(character) do
+      weapon_name = weapon_name(combat)
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          hurt: div(skill, 3),
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, weapon_name)
     else
       {:error, message} ->
         conn
@@ -60,80 +82,113 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
+  # LPC: if (! target || ! target->is_character() || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "六合连环诀只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query_temp("lianhuan"))
+  #             return notify_fail("你刚刚使用过六合连环诀，内力还未平复！\n");
+  defp check_state(character) do
+    if Map.get(character.meta.combat.temp || %{}, :lianhuan) do
+      {:error, "你刚刚使用过六合连环诀，内力还未平复！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (! objectp(weapon) || weapon->query("skill_type") != "whip"
+  #             || me->query_skill_mapped("whip") != "liuhe-bian")
+  #             return notify_fail("你手中无鞭，如何能够施展连环诀？\n");
+  # 三个条件共用一句门槛文案，合并为一个判定。
+  defp check_weapon(character) do
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+
+    if is_map(weapon) and Map.get(weapon, :skill_type) == "whip" and
+         Stats.mapped(character.meta.stats, "whip") == "liuhe-bian" do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你手中无鞭，如何能够施展连环诀？\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
-      :ok
-    end
-  end
-
+  # LPC: force < 270 / whip < 180 / liuhe-bian < 180
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 270 -> {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
-      Stats.skill(stats, "whip") < 180 -> {:error, "你的内力不够，无法施展！\n"}
-      Stats.skill(stats, "liuhe-bian") < 180 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      Stats.skill(stats, "dodge") < 180 -> {:error, "你轻功修为不足，无法快速攻击！\n"}
-      true -> :ok
+      Stats.skill(stats, "force") < 270 ->
+        {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
+
+      Stats.skill(stats, "whip") < 180 ->
+        {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
+
+      Stats.skill(stats, "liuhe-bian") < 180 ->
+        {:error, "你六合鞭法修为不足，还不能使用连环诀！\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "whip") != "liuhe-bian" -> {:error, "你鞭法修为不足，还不能使用连环诀！\n"}
-      true -> :ok
+  # LPC: if (me->query("neili") <= 300) return notify_fail("你的内力不够，无法施展！\n");
+  defp check_resources(character) do
+    if character.meta.vitals.neili <= 300 do
+      {:error, "你的内力不够，无法施展！\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中无鞭，如何能够施展连环诀？\n"}
-    #   {:error, "你的内功火候未到，无法配合鞭法施展连环诀！\n"}
-    :ok
-
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 敌人引用可能不带 meta（瘦引用），此时跳过，由目标侧
+  # combat/perform-incoming 的死亡检查兜底。
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你所用的外功中没有这个功能!\n"}
-    :ok
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
+  # LPC: if (me->query_skill("dodge", 1) < 180) return notify_fail("你轻功修为不足，无法快速攻击！\n");
+  defp check_dodge(character) do
+    if Stats.skill(character.meta.stats, "dodge") < 180 do
+      {:error, "你轻功修为不足，无法快速攻击！\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N大喝一声，口中轻轻念诵佛经，手中某物霍霍，招招连环，快如电闪！", n1: character.name)
+  defp apply_effect(conn, character, target, weapon_name) do
+    # LPC: msg = HIR "\n$N大喝一声，口中轻轻念诵佛经，手中" + weapon->name() +
+    #               HIR "霍霍，招招连环，" "快如电闪！\n\n" NOR;
+    # 兵刃名把文案拆成两段（后半两段相邻字面量在 C 侧合并）。
+    # 分支 neili/busy 由目标侧 feedback 回执。
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N大喝一声，口中轻轻念诵佛经，手中" <> weapon_name <> "霍霍，招招连环，快如电闪！\n\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "六合连环诀只能对战斗中的对手使用。\n"}
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name)
     end
   end
 
@@ -144,37 +199,84 @@ defmodule Kantele.Combat.Skills.Performs.LiuheBian.Lianhuan do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
+    # remove_effect 的收回文案（start_call_out 未建模，仅保留字面量）：
+    _fighting_msg = "\n$N将内力收回丹田，手上招数也逐渐慢了下来。\n\n"
+    _done_msg = "\n你的内功运行完毕，将内力缓缓收回丹田。\n\n"
+
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    hurt = Map.get(data, :hurt, 0)
+    weapon_name = Map.get(data, :weapon_name, "")
+
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    # LPC: dp = target->query_skill("parry") + target->query_skill("dodge");
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "dodge")
+
+    # LPC: if (random(ap) > dp)
+    hit? = Engine.rand(rng, ap) > dp
+
+    {vitals, neili_cost, attacker_busy} =
+      if hit? do
+        # LPC: i = 6..1; damage = hurt / i;
+        #      COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 50, 【X合】文案);
+        # 折算为逐击 qi 伤害 + 50% 外伤。
+        {v, _} =
+          Enum.reduce(6..1, {character.meta.vitals, 6}, fn i, {v, _i} ->
+            damage = div(hurt, i)
+            v = v |> Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage * 50, 100))
+            {v, i}
+          end)
+
+        # LPC: me->add("neili", -300); me->start_busy(2);
+        {v, 300, 2}
+      else
+        # LPC: me->add("neili", -200); me->start_busy(2 + random(3));
+        {character.meta.vitals, 200, 2 + Engine.rand(rng, 3)}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 2)
-    msg = if hit, do: Enum.random(["【天合】，$N舞动手中某物瞬息击向$n的额头，啪的一声轻响，顿时一条血印。", "【地合】，$N一个横扫打向$n的下盘，$n未能看破企图，一声惨嚎，某物鞭端已没入小腿半寸，登时连退数步！", "【人合】，$N与某物合为一体急射向$n，$n措手不急被打的吐血不止！", "【神合】，$N手中某物似有灵性一般死追着$n而去。", "【鬼合】，$N突然面如死灰，动作僵硬，然后杀气却更胜一筹，某物发出灵异的光芒，$n几乎看到了死亡的颜色。", "【六合】，$N口中高唱佛号，手中某物连环击出，鞭影重重，$n再也支持不住，身上被拉出一条条豁口。"]), else: "$n不慌不忙，以快打快，将$N的招式完全化去。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # LPC 命中后攻击方的 set_temp("lianhuan",1) / add_temp("apply/damage", lvl)
+    # 在跨进程 feedback 中无对应字段，暂不保留。
+    Performs.feedback(attacker, neili_cost, attacker_busy)
+
+    msg =
+      if hit? do
+        hit_messages(weapon_name) |> Enum.join("")
+      else
+        miss_message()
+      end
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(msg, n1: attacker.name, n2: character.name)
     |> put_character(character)
   end
 
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-200"}, {"neili", "-300"}], "apply_adds": ["damage"], "assign_refs": [{"dp", "parry"}, {"lvl", "liuhe-bian"}, {"skill", "force"}], "busy_lines": ["me->start_busy(2);", "me->start_busy(2 + random(3));"], "level_gates": [{"dodge", "180"}, {"force", "270"}, {"liuhe-bian", "180"}, {"whip", "180"}], "map_gates": [{"whip", "liuhe-bian"}], "remote_damage": true, "temp_set": ["lianhuan"]}
+  # LPC 六击文案（每条被 weapon->name() 拆成两段，E 侧按原样拆分）：
+  #   HIY 【天合】 / HIW 【地合】 / HIR 【人合】 / HIG 【神合】 / HIC 【鬼合】 / HIB 【六合】
+  defp hit_messages(weapon_name) do
+    [
+      "\n【天合】，$N舞动手中" <> weapon_name <> "瞬息击向$n的额头，啪的一声轻响，顿时一条血印。\n",
+      "\n【地合】，$N一个横扫打向$n的下盘，$n未能看破企图，一声惨嚎，" <> weapon_name <> "鞭端已没入小腿半寸，登时连退数步！\n",
+      "\n【人合】，$N与" <> weapon_name <> "合为一体急射向$n，$n措手不急被打的吐血不止！\n",
+      "\n【神合】，$N手中" <> weapon_name <> "似有灵性一般死追着$n而去。\n",
+      "\n【鬼合】，$N突然面如死灰，动作僵硬，然后杀气却更胜一筹，" <> weapon_name <> "发出灵异的光芒，$n几乎看到了死亡的颜色。\n",
+      "\n【六合】，$N口中高唱佛号，手中" <> weapon_name <> "连环击出，鞭影重重，$n再也支持不住，身上被拉出一条条豁口。\n"
+    ]
+  end
 
+  # LPC: CYN "$n" CYN "不慌不忙，以快打快，将$N" CYN "的招式完全化去。\n" NOR
+  # （相邻字面量合并为单段）
+  defp miss_message do
+    "$n不慌不忙，以快打快，将$N的招式完全化去。\n"
+  end
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   #          
   # #include <ansi.h> 

@@ -29,8 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xiantian-gong")
-    count = 0
-    i = 0
+    ap = Stats.skill(stats, "unarmed")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,9 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -76,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你的先天功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你的先天功修为不够，难以施展「天地混元」。\n"}
       true -> :ok
     end
   end
@@ -86,13 +88,14 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
 
     cond do
       Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
-        {:error, "你没有激发先天功为拳脚，难以施展。\n"}
+        {:error, "你没有激发先天功为拳脚，难以施展「天地混元」。\n"}
 
       Stats.mapped(stats, "force") != "xiantian-gong" ->
-        {:error, "你没有激发先天功为内功，难以施展。\n"}
+        {:error, "你没有激发先天功为内功，难以施展「天地混元」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xiantian-gong" ->
-        {:error, "你没有准备使用先天功，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xiantian-gong" ->
+        {:error, "你没有准备使用先天功，难以施展「天地混元」。\n"}
 
       true ->
         :ok
@@ -103,8 +106,8 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.max_neili < 4000 -> {:error, "你的内力修为不足，难以施展「天地混元」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不足，难以施展「天地混元」。\n"}
       true -> :ok
     end
   end
@@ -113,17 +116,23 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「天地混元」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -280)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 280}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N施出天地混元，全身真气急速运转，引得周围气流波动不已，层层叠叠涌向$n！", n1: character.name)
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(5))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn =
+      Broadcast.publish(conn, "\n$N施出天地混元，全身真气急速运转，引得周围气流波动不已，层层叠叠涌向$n！\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -151,15 +160,32 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hun do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 280, 1)
-    msg = "$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。"
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, div(ap, 10))
+      else
+        character.meta.vitals
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    msg =
+      if hit? do
+        "$n见$P来势迅猛之极，一时不知该如何作出抵挡，竟呆立当场。\n"
+      else
+        "$n见$p来势迅猛之极，甚难防备，连忙振作精神，小心抵挡。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

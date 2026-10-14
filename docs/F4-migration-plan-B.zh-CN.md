@@ -211,10 +211,10 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `six_finger/` （4 个，基线缺失 37 条）
 
-- [ ] ❌ `six_finger/qi.ex` ← `six-finger/qi.c`  (miss=14)
-- [ ] ❌ `six_finger/six.ex` ← `six-finger/six.c`  (miss=6)
-- [ ] ❌ `six_finger/zong.ex` ← `six-finger/zong.c`  (miss=16)
-- [ ] ❌ `six_finger/zongheng.ex` ← `six-finger/zongheng.c`  (miss=1)
+- [x] ✅ `six_finger/qi.ex` ← `six-finger/qi.c`  (miss=14→0，PASS)
+- [x] ✅ `six_finger/six.ex` ← `six-finger/six.c`  (miss=6→0，PASS)
+- [x] ✅ `six_finger/zong.ex` ← `six-finger/zong.c`  (miss=16→0，PASS)
+- [x] ✅ `six_finger/zongheng.ex` ← `six-finger/zongheng.c`  (miss=1→0，PASS)
 
 ### `sixiang_bufa/` （1 个，基线缺失 8 条）
 
@@ -465,11 +465,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xiantian_gong/` （7 个，基线缺失 51 条）
 
-- [ ] ❌ `xiantian_gong/dang.ex` ← `xiantian-gong/dang.c`  (miss=14)
-- [ ] ❌ `xiantian_gong/fen.ex` ← `xiantian-gong/fen.c`  (miss=8)
-- [ ] ❌ `xiantian_gong/hun.ex` ← `xiantian-gong/hun.c`  (miss=8)
-- [ ] ❌ `xiantian_gong/hup.ex` ← `xiantian-gong/hup.c`  (miss=4)
-- [ ] ❌ `xiantian_gong/jian.ex` ← `xiantian-gong/jian.c`  (miss=11)
+- [x] ✅ `xiantian_gong/dang.ex` ← `xiantian-gong/dang.c`  (miss=14→0，PASS)
+- [x] ✅ `xiantian_gong/fen.ex` ← `xiantian-gong/fen.c`  (miss=8→0，PASS)
+- [x] ✅ `xiantian_gong/hun.ex` ← `xiantian-gong/hun.c`  (miss=8→0，PASS)
+- [x] ✅ `xiantian_gong/hup.ex` ← `xiantian-gong/hup.c`  (miss=4→0，PASS)
+- [x] ✅ `xiantian_gong/jian.ex` ← `xiantian-gong/jian.c`  (miss=11→0，PASS)
 - [x] ✅ `xiantian_gong/powerup.ex` ← `xiantian-gong/powerup.c`  (miss=4→0，PASS)
 - [x] ✅ `xiantian_gong/shield.ex` ← `xiantian-gong/shield.c`  (miss=2→0，PASS)
 

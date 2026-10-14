@@ -78,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yiyang-zhi") < 160 -> {:error, "你一阳指诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "jingluo-xue") < 160 -> {:error, "你对经络学了解不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "yiyang-zhi") < 160 -> {:error, "你一阳指诀不够娴熟，难以施展「一指乾坤」。\n"}
+      Stats.skill(stats, "jingluo-xue") < 160 -> {:error, "你对经络学了解不够，难以施展「一指乾坤」。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展「一指乾坤」。\n"}
       true -> :ok
     end
   end
@@ -90,10 +90,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
 
     cond do
       Stats.mapped(stats, "finger") != "yiyang-zhi" ->
-        {:error, "你没有激发一阳指诀，难以施展。\n"}
+        {:error, "你没有激发一阳指诀，难以施展「一指乾坤」。\n"}
 
       Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "yiyang-zhi" ->
-        {:error, "你没有准备一阳指诀，难以施展。\n"}
+        {:error, "你没有准备一阳指诀，难以施展「一指乾坤」。\n"}
 
       true ->
         :ok
@@ -104,8 +104,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 2400 -> {:error, "你的内力修为不足，难以施展「一指乾坤」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展「一指乾坤」。\n"}
       true -> :ok
     end
   end
@@ -114,13 +114,13 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「一指乾坤」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -150/-200)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 150}
     vitals = %{vitals | neili: vitals.neili - 200}
@@ -129,7 +129,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然使出「一指乾坤」绝技，单指劲点$n檀中要穴，招式变化精奇之极！", n1: character.name)
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn = Broadcast.publish(conn, "$N陡然使出「一指乾坤」绝技，单指劲点$n檀中要穴，招式变化精奇之极！\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,22 +159,33 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Qian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "force")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 200, 4)
+
+    vitals =
+      if hit? do
+        damage = div(ap, 2) + Engine.rand(rng, max(div(ap, 2), 1))
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 4)
-    msg = if hit, do: "$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。", else: "可是$n看破了$N的招数，连消带打挡开了这一指。"
+
+    msg =
+      if hit? do
+        "$n只觉胸口一麻，已被$N一指点中，顿时气血上涌，喷出数口鲜血。\n"
+      else
+        "可是$n看破了$N的招数，连消带打挡开了这一指。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

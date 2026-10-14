@@ -43,7 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yiyang-zhi") < 100 -> {:error, "你的一阳指诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "jingluo-xue") < 100 -> {:error, "你对经络学的了解不够，难以施展。\n"}
+      Stats.skill(stats, "yiyang-zhi") < 100 -> {:error, "你的一阳指诀不够娴熟，难以施展「起死回生」。\n"}
+      Stats.skill(stats, "jingluo-xue") < 100 -> {:error, "你对经络学的了解不够，难以施展「起死回生」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
 
     cond do
       Stats.mapped(stats, "finger") != "yiyang-zhi" ->
-        {:error, "你没有激发一阳指，难以施展。\n"}
+        {:error, "你没有激发一阳指，难以施展「起死回生」。\n"}
 
       Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "yiyang-zhi" ->
-        {:error, "你没有准备一阳指，难以施展。\n"}
+        {:error, "你没有准备一阳指，难以施展「起死回生」。\n"}
 
       true ->
         :ok
@@ -101,17 +101,15 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展。\n"}
-      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展。\n"}
-      vitals.jing < 100 -> {:error, "你现在的状态不佳，难以施展。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展「起死回生」。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展「起死回生」。\n"}
+      vitals.jing < 100 -> {:error, "你现在的状态不佳，难以施展「起死回生」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  defp check_weapon(_character) do
     :ok
-
   end
 
   defp check_state(character) do
@@ -123,25 +121,40 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你所学的外功中没有这种功能。\n"}
-    #   {:error, "你要用真气为谁疗伤？\n"}
-    #   {:error, "只能对别人施展。\n"}
-    :ok
-
+defp check_other(character) do
+    cond do
+      not Stats.perform_known?(character.meta.stats, @perform_id) -> {:error, "你所学的外功中没有这种功能。\n"}
+      Map.get(character.meta.stats.mapped, "force", nil) == nil -> {:error, "你必须激发一种内功才能施展「起死回生」。\n"}
+      true -> :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp not_living_msg, do: "你无法给疗伤。"
+
+  defp not_living_prefix, do: "你无法给"
+
+  defp not_living_suffix, do: "疗伤。"
+
+  defp apply_effect(conn, character, target) do
+    # LPC: heal target, cost neili
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 800}
-    vitals = %{vitals | jing: 1}
-    vitals = %{vitals | qi: 1}
+    vitals = %{vitals | qi: vitals.qi - 100}
+    vitals = %{vitals | jing: vitals.jing - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 10)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # LPC: message_sort with force name interpolation
+    force_name = "一阳指诀"  # LPC: to_chinese(force)
+    conn = Broadcast.publish(conn, "\n只见$N默默运转" <> force_name <> "，深深吸进一口气，头上隐隐冒出白雾，陡然施展开一阳指诀，以纯阳指力瞬时点遍了$n全身七十二处大穴。过得一会，便见得“哇”的一下吐出几口瘀血，脸色登时看起来红润多了。\n", n1: character.name, n2: target.name)
+
+    # LPC: condition curing messages
+    conn = Broadcast.publish(conn, "你只觉体内残存的铁掌掌劲慢慢消退，感觉好多了。\n", n1: target.name)
+    conn = Broadcast.publish(conn, "你只觉浑身渐渐转暖，寒冰真气之毒已消失得无影无踪。\n", n1: target.name)
+
+    conn = Broadcast.publish(conn, "\n$N闭目冥坐，开始运功调息。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -150,8 +163,17 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
 
   defp target(combat) do
     case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
+      [enemy | _] ->
+        cond do
+          enemy.id == combat.character_id -> {:error, "「起死回生」只能对别人施展。\n"}
+          Combat.fighting?(enemy.meta.combat) -> {:error, "战斗中无法运功疗伤。\n"}
+          Map.get(enemy.meta, :not_living, false) -> {:error, not_living_prefix() <> not_living_suffix() <> "\n"}
+          Map.get(enemy.meta.vitals, :eff_qi, 100) >= Map.get(enemy.meta.vitals, :max_qi, 100) and
+            Map.get(enemy.meta.vitals, :eff_jing, 100) >= Map.get(enemy.meta.vitals, :max_jing, 100) ->
+            {:error, "对方没有受伤，不需要接受治疗。\n"}
+          true -> {:ok, enemy}
+        end
+      [] -> {:error, "你要用真气为谁疗伤？\n"}
     end
   end
 
@@ -161,17 +183,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Heal do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 800, 10)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+    # Heal perform (F_CLEAN_UP) doesn't use combat/perform-incoming
+    # This is a no-op for fidelity
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

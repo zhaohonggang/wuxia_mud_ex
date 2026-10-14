@@ -69,7 +69,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_target_no_perform(character) do
       :ok
     end
   end
@@ -78,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yiyang-zhi") < 120 -> {:error, "你一阳指诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "jingluo-xue") < 120 -> {:error, "你对经络学了解不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 160 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "yiyang-zhi") < 120 -> {:error, "你一阳指诀不够娴熟，难以施展「神指点穴」。\n"}
+      Stats.skill(stats, "jingluo-xue") < 120 -> {:error, "你对经络学了解不够，难以施展「神指点穴」。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你的内功火候不够，难以施展「神指点穴」。\n"}
       true -> :ok
     end
   end
@@ -90,10 +91,10 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
 
     cond do
       Stats.mapped(stats, "finger") != "yiyang-zhi" ->
-        {:error, "你没有激发一阳指诀，难以施展。\n"}
+        {:error, "你没有激发一阳指诀，难以施展「神指点穴」。\n"}
 
       Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "yiyang-zhi" ->
-        {:error, "你没有准备一阳指诀，难以施展。\n"}
+        {:error, "你没有准备一阳指诀，难以施展「神指点穴」。\n"}
 
       true ->
         :ok
@@ -104,8 +105,8 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1800 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 1800 -> {:error, "你的内力修为不足，难以施展「神指点穴」。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「神指点穴」。\n"}
       true -> :ok
     end
   end
@@ -114,13 +115,23 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「神指点穴」只能空手施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_target_no_perform(character) do
+    combat = character.meta.combat
+    target = hd(combat.enemies)
+
+    cond do
+      Map.get(target.meta, :no_perform, false) -> {:error, "对方现在已经无法控制真气，放胆攻击吧。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100/-200)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 200}
@@ -129,7 +140,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N凝聚一阳指诀功力，陡然点出一指，变化多端，巧逼$n诸处大穴。", n1: character.name)
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn = Broadcast.publish(conn, "$N凝聚一阳指诀功力，陡然点出一指，变化多端，巧逼$n诸处大穴。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,24 +170,41 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Dian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 200, 2)
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, div(ap, 4) + Engine.rand(rng, max(div(ap, 2), 1)))
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 2)
-    msg = if hit, do: "结果$p被$P逼得招架不迭，一时无法反击！", else: "可是$p看破了$P的变化，小心招架，挡住了$P的进击。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # LPC final() message
+    msg1 =
+      if hit? do
+        "$n只觉眼前寒芒一闪而过，随即全身一阵刺痛，几股血柱自身上射出。陡然间一提真气，竟发现周身力道竟似涣散一般，全然无法控制。\n"
+      else
+        "可是$p看破了$P的变化，小心招架，挡住了$P的进击。\n"
+      end
+
+    # LPC dian_end() recovery messages (kept for fidelity)
+    recover1 = "$N深深吸入一口气，脸色由白转红，看起来好多了。\n"
+    recover2 = "你感到被扰乱的真气慢慢平静了下来。\n"
+
+    result1 = Messages.interpolate(msg1, n1: attacker.name, n2: character.name)
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(result1)
+    |> Broadcast.publish(recover1)
+    |> Broadcast.publish(recover2)
     |> put_character(character)
   end
 

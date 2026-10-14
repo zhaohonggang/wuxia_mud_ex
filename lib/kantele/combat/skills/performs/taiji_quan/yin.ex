@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-quan") < 150 -> {:error, "你的太极拳等级不够，难以施展。\n"}
+      Stats.skill(stats, "taiji-quan") < 150 -> {:error, "你的太极拳等级不够，难以施展「引字诀」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +89,10 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
 
     cond do
       Stats.mapped(stats, "unarmed") != "taiji-quan" ->
-        {:error, "你没有激发太极拳，难以施展。\n"}
+        {:error, "你没有激发太极拳，难以施展「引字诀」。\n"}
 
       Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taiji-quan" ->
-        {:error, "你现在没有准备使用太极拳，无法使用。\n"}
+        {:error, "你现在没有准备使用太极拳，无法使用「引字诀」。\n"}
 
       true ->
         :ok
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「引字诀」。\n"}
       true -> :ok
     end
   end
@@ -112,13 +112,13 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「引字诀」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -10/-30/-50)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 10}
     vitals = %{vitals | neili: vitals.neili - 30}
@@ -128,7 +128,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手一圈，施出「引」字诀，如抱太极，一股雄浑无比的力道组成了一个旋涡，圈向$n。", n1: character.name)
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn = Broadcast.publish(conn, "$N双手一圈，施出「引」字诀，如抱太极，一股雄浑无比的力道组成了一个旋涡，圈向$n。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -159,22 +161,33 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Yin do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 50, 3)
+
+    vitals =
+      if hit? do
+        damage = Map.get(data, :damage, 0)
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。", else: "$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。"
+
+    msg =
+      if hit? do
+        "$n微微一楞，登时被这力道带得在原地急转七八下，如转陀螺，如旋纺锤。\n"
+      else
+        "$n见状连忙使出“千斤坠”之力定住身形，摆脱了$N的力道。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

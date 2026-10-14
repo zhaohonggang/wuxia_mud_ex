@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
   @moduledoc """
-  perform「只手遮天」（source xuanming-zhang/zhe.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「只手遮天」（source xuanming-zhang/zhe.c，inherit F_SSERVER）
 
   门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuanming-zhang")
-    ap = (Stats.skill(stats, "strike") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "strike") + Stats.skill(stats, "force")
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          dp: dp,
           rng: rng
         }
       })
@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanming-shengong") < 150 -> {:error, "你的玄冥神功火候不够，无法施展。\n"}
-      Stats.skill(stats, "xuanming-zhang") < 150 -> {:error, "你的玄冥神掌不够熟练，无法施展。\n"}
+      Stats.skill(stats, "xuanming-shengong") < 150 -> {:error, "你的玄冥神功火候不够，无法施展「只手遮天」。\n"}
+      Stats.skill(stats, "xuanming-zhang") < 150 -> {:error, "你的玄冥神掌不够熟练，无法施展「只手遮天」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +89,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
 
     cond do
       Stats.mapped(stats, "force") != "xuanming-shengong" ->
-        {:error, "你没有激发玄冥神功为内功，无法施展。\n"}
+        {:error, "你没有激发玄冥神功为内功，无法施展「只手遮天」。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
-        {:error, "你没有准备玄冥神掌，无法施展。\n"}
+        {:error, "你没有准备玄冥神掌，无法施展「只手遮天」。\n"}
 
       true ->
         :ok
@@ -103,8 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力修为不足，无法施展。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为不足，无法施展「只手遮天」。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法施展「只手遮天」。\n"}
       true -> :ok
     end
   end
@@ -113,21 +113,22 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「只手遮天」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -300); me->start_busy(4)
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 180}
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施展出绝招「只手遮天」，携带着万古至毒至寒之气的掌劲攻向$n！", n1: character.name)
+
+    # LPC: colors removed by join_adjacent → single literal
+    conn = Broadcast.publish(conn, "\n$N运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施展出绝招「只手遮天」，携带着万古至毒至寒之气的掌劲攻向$n！\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -145,7 +146,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  @impl true
+  # LPC: string final(object me, object target, int lvl)
+  defp final(_me, _target, _lvl) do
+    "只见眼前紫影晃动，那些胸口一震，已知大势不妙，只感胸口处一股寒气升起，尽损三焦六脉。\n"
+  end
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
       Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
@@ -155,25 +159,47 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "force")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 300, 4)
+
+    vitals =
+      if hit? do
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 4)
-    msg = if hit, do: "( $N )", else: "$n看见$N来势汹涌，急忙提气跃开。"
+
+    msg =
+      if hit? do
+        "一掌打在$n身上，猛然间气血翻腾，一股阴寒之气竟反噬回来，$N抵御不住，寒毒侵入体内。$N闷哼一声，一口淤血吐出，脸色顿时发紫。\n"
+      else
+        "看见$N来势汹涌，急忙提气跃开。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "「只手遮天」只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
@@ -182,70 +208,69 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>
-  # 
+  #
   # #define ZHE "「" HIG "只手遮天" NOR "」"
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # #include "/kungfu/skill/eff_msg.h";
-  # 
+  #
   # string final(object me, object target, int lvl);
-  # 
+  #
   # int perform(object me, object target)
   # {
   #         int damage;
   #         string msg;
   #         int ap, dp;
   #         int lvl, p;
-  # 
+  #
   #         if (userp(me) && ! me->query("can_perform/xuanming-zhang/zhe"))
   #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
+  #
   #         if (! target) target = offensive_target(me);
-  # 
+  #
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail(ZHE "只能对战斗中的对手使用。\n");
-  # 
+  #
   #         if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
   #                 return notify_fail(ZHE "只能空手施展。\n");
-  # 
+  #
   #         if ((int)me->query_skill("xuanming-shengong", 1) < 150)
   #                 return notify_fail("你的玄冥神功火候不够，无法施展" ZHE "。\n");
-  # 
+  #
   #         if ((int)me->query_skill("xuanming-zhang", 1) < 150)
   #                 return notify_fail("你的玄冥神掌不够熟练，无法施展" ZHE "。\n");
-  # 
+  #
   #         if (me->query_skill_mapped("force") != "xuanming-shengong")
   #                 return notify_fail("你没有激发玄冥神功为内功，无法施展" ZHE "。\n");
-  # 
+  #
   #         if (me->query_skill_prepared("strike") != "xuanming-zhang")
   #                 return notify_fail("你没有准备玄冥神掌，无法施展" ZHE "。\n");
-  # 
+  #
   #         if ((int)me->query("max_neili") < 2000)
   #                 return notify_fail("你的内力修为不足，无法施展" ZHE "。\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 500)
   #                 return notify_fail("你的真气不够，无法施展" ZHE "。\n");
-  # 
-  #        if (! living(target))
-  #               return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
+  #         if (! living(target))
+  #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  #
   #         msg = HIW "\n$N" HIW "运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施"
-  #                   "展出绝招「" HIG "只手遮天" HIW "」，携带着万古至毒至寒之气的掌劲"
-  #                   "攻向$n" HIW "！\n"NOR;  
-  # 
+  #               "展出绝招「" HIG "只手遮天" HIW "」，携带着万古至毒至寒之气的掌劲"
+  #               "攻向$n" HIW "！\n" NOR;
+  #
   #         lvl = me->query_skill("xuanming-zhang", 1);
-  # 
   #         ap = me->query_skill("strike") + me->query_skill("force");
   #         dp = target->query_skill("dodge") + target->query_skill("force");
-  # 
+  #
   #         me->start_busy(4);
-  # 
+  #
   #         if (ap / 2 + random(ap) > dp)
-  #         { 
+  #         {
   #                 damage = ap + random(ap / 2);
   #                 me->add("neili", -300);
-  #      
+  #
   #                 // 玄冥寒毒反噬
   #                 if (target->query("max_neili") * 3 / 5 > me->query("max_neili"))
   #                 {
@@ -253,42 +278,42 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
   #                         message_sort(HIM "$N" HIM "一掌打在$n" HIM "身上，猛然间气血翻腾，一股阴寒之气竟"
   #                                      "反噬回来，$N" HIM "抵御不住，寒毒侵入体内。$N" HIM "闷哼一声，一"
   #                                      "口淤血吐出，脸色顿时发紫。\n" NOR, me, target);
-  # 
+  #
   #                         me->receive_wound("qi", me->query("jiali") + random(me->query("jiali") / 2));
-  # 
+  #
   #                         p = (int)me->query("qi") * 100 / (int)me->query("max_qi");
   #                         msg = "( $N" + eff_status_msg(p) + " )\n\n";
   #                         message_vision(msg, me, target);
-  # 
+  #
   #                         me->affect_by("xuanming_poison",
   #                                       ([ "level" : me->query("jiali") + random(me->query("jiali")),
   #                                          "id"    : me->query("id"),
   #                                          "duration" : lvl / 40 + random(lvl / 20) ]));
-  # 
+  #
   #                         return 1;
-  #                         
-  #                 } 
-  # 
+  #
+  #                 }
+  #
   #                 msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 70,
   #                                           (: final, me, target, lvl :));
-  #                                            
+  #
   #         } else
   #         {
-  #                 msg += HIY "$n" HIY "看见$N" HIY "来势汹涌，急忙提气跃开。\n" NOR;
   #                 me->add("neili", -180);
+  #                 msg += HIY "$n" HIY "看见$N" HIY "来势汹涌，急忙提气跃开。\n" NOR;
   #         }
   #         message_sort(msg, me, target);
-  # 
+  #
   #         return 1;
   # }
-  # 
+  #
   # string final(object me, object target, int lvl)
   # {
   #         target->affect_by("xuanming_poison",
   #                          ([ "level" : me->query("jiali") * 3,
   #                             "id"    : me->query("id"),
   #                             "duration" : lvl / 40 + random(lvl / 20) ]));
-  # 
+  #
   #         return HIR "$n" HIR "只见眼前紫影晃动，突然间胸口一震，已知大势"
   #                "不妙，只感胸口处一股寒气升起，尽损三焦六脉。\n" NOR;
   # }

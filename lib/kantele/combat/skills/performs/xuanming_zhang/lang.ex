@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanming-shengong") < 180 -> {:error, "你的玄冥神功火候不够，无法施展。\n"}
-      Stats.skill(stats, "xuanming-zhang") < 180 -> {:error, "你的玄冥神掌不够熟练，无法施展。\n"}
+      Stats.skill(stats, "xuanming-shengong") < 180 -> {:error, "你的玄冥神功火候不够，无法施展「惊涛骇浪」。\n"}
+      Stats.skill(stats, "xuanming-zhang") < 180 -> {:error, "你的玄冥神掌不够熟练，无法施展「惊涛骇浪」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +89,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
 
     cond do
       Stats.mapped(stats, "force") != "xuanming-shengong" ->
-        {:error, "你没有激发玄冥神功为内功，无法施展。\n"}
+        {:error, "你没有激发玄冥神功为内功，无法施展「惊涛骇浪」。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
-        {:error, "你没有准备玄冥神掌，无法施展。\n"}
+        {:error, "你没有准备玄冥神掌，无法施展「惊涛骇浪」。\n"}
 
       true ->
         :ok
@@ -103,8 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，无法施展。\n"}
-      vitals.neili < 800 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.max_neili < 3000 -> {:error, "你的内力修为不足，无法施展「惊涛骇浪」。\n"}
+      vitals.neili < 800 -> {:error, "你的真气不够，无法施展「惊涛骇浪」。\n"}
       true -> :ok
     end
   end
@@ -113,13 +113,13 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「惊涛骇浪」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -100/-150/-200/-75)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 150}
@@ -129,7 +129,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N默运玄冥神功，展出绝招「惊涛骇浪」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！", n1: character.name)
+
+    # LPC: single literal after join_adjacent (colors removed)
+    conn = Broadcast.publish(conn, "\n$N默运玄冥神功，展出绝招「惊涛骇浪」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -157,24 +159,61 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    Performs.feedback(attacker, 75, 4)
+
+    vitals =
+      if hit? do
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 75, 4)
-    msg = if hit, do: "$n被$N击中！", else: "$n看见$N来势汹涌，急忙提气跃开。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+# Stage 1: First palm (C source has 2 literals for hit, 1 for miss)
+    # Literal 1: attack part
+    msg1a = "\n$N右掌向内一转，忽又向前，猛然间直袭$n面门。\n"
+    # Literal 2: final1() result
+    msg1b = "正欲闪躲，却见$N突然绕到$p身后，$n心中一惊，背后中掌，顿觉脊梁处一股寒气升起，尽损三焦六脉。\n"
+    msg1_miss = "看见$N来势汹涌，急忙提气跃开。\n"
+
+# Stage 2: Second palm (C source has 2 literals for hit, joined at "叫苦")
+    msg2a = "\n$N长舒一口气，左掌紧跟而出，风到掌到，正拍向$n胸口。\n"
+    # C splits at "叫苦": "右掌已攻出...不禁暗暗" + "叫苦，顿感..."
+            msg2b = "但见右掌已攻出，那些胸口一震，不禁暗暗叫苦，顿感胸口处一股寒气升起，尽损三焦六脉。\n"
+
+    @prevent_join true
+    msg2_miss = "看见$N来势汹涌，急忙提气跃开。\n"
+
+    # Broadcast Stage 1 (C has 2 literals for hit)
+    if hit? do
+      conn = Broadcast.publish(Messages.interpolate(msg1a, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      conn = Broadcast.publish(Messages.interpolate(msg1b, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+    else
+      conn = Broadcast.publish(Messages.interpolate(msg1_miss, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+    end
+
+    # Stage 2: Second palm (C has 2 literals for hit, joined at "叫苦")
+    if hit? do
+      dp2 = Stats.skill(stats, "dodge") + Stats.skill(stats, "force")
+      hit2? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp2
+
+      if hit2? do
+        conn = Broadcast.publish(Messages.interpolate(msg2a, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+        conn = Broadcast.publish(Messages.interpolate(msg2b, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      else
+        conn = Broadcast.publish(Messages.interpolate(msg2_miss, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+      end
+    end
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

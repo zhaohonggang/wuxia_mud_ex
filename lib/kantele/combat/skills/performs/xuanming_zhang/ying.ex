@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
   @moduledoc """
-  perform「如影相随」（source xuanming-zhang/ying.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「如影相随」（source xuanming-zhang/ying.c，inherit F_SSERVER）
 
   门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
@@ -30,6 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuanming-zhang")
     ap = Stats.skill(stats, "strike")
+    dp = Stats.skill(stats, "dodge")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,6 +42,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
           level: lvl,
           skill: lvl,
           ap: ap,
+          dp: dp,
           rng: rng
         }
       })
@@ -62,12 +64,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_state(character) do
       :ok
     end
   end
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanming-zhang") < 100 -> {:error, "你玄冥神掌不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 180 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xuanming-zhang") < 100 -> {:error, "你玄冥神掌不够娴熟，难以施展「如影相随」。\n"}
+      Stats.skill(stats, "dodge") < 180 -> {:error, "你的轻功修为不够，难以施展「如影相随」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +89,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
 
     cond do
       Stats.mapped(stats, "strike") != "xuanming-zhang" ->
-        {:error, "你没有激发玄冥神掌，难以施展。\n"}
+        {:error, "你没有激发玄冥神掌，难以施展「如影相随」。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
-        {:error, "你没有准备玄冥神掌，难以施展。\n"}
+        {:error, "你没有准备玄冥神掌，难以施展「如影相随」。\n"}
 
       true ->
         :ok
@@ -101,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「如影相随」。\n"}
       true -> :ok
     end
   end
@@ -110,22 +112,34 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「如影相随」只能空手施展。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_state(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.busy?(combat) -> {:error, "对方目前正自顾不暇，放胆攻击吧。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: me->add("neili", -180); me->start_busy(1)
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
-    combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N长啸一声，施出绝招「如影相随」，双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n笼罩。", n1: character.name)
+
+    # LPC: msg = HIC "\n$N" HIC "长啸一声，施出绝招「" HIW "如影相随" HIC "」，" "双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n" HIC "笼罩。\n" NOR;
+    conn = Broadcast.publish(conn,
+      "\n$N长啸一声，施出绝招「如影相随」，双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n笼罩。\n",
+      n1: character.name
+    )
 
     conn
     |> put_character(character)
@@ -156,81 +170,108 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    dp = Stats.skill(stats, "dodge")
+    hit? = div(ap * 2, 3) + Engine.rand(rng, max(ap, 1)) > dp
+
     Performs.feedback(attacker, 180, 2)
-    msg = "$n顿觉寒气避人，一时间无从应对，竟被困在$N的掌风之中。"
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, ap + Engine.rand(rng, max(ap, 1)))
+      else
+        character.meta.vitals
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    msg =
+      if hit? do
+        "顿觉寒气避人，一时间无从应对，竟被困在$N的掌风之中。\n"
+      else
+        "看破$N毫无攻击之意，于是大胆反攻，将$N这招尽数化解。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
   end
 
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "「如影相随」只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-100"}, {"neili", "-180"}], "assign_refs": [{"ap", "strike"}, {"dp", "dodge"}], "busy_lines": ["if (target->is_busy())", "target->start_busy(1 + ap / 18);", "me->start_busy(1);", "me->start_busy(2);"], "level_gates": [{"dodge", "180"}, {"xuanming-zhang", "100"}], "map_gates": [{"strike", "xuanming-zhang"}], "prepared_gates": [{"strike", "xuanming-zhang"}], "remote_damage": false, "resource_gates": [{"neili", "200"}]}
+  #   %{"add_costs": [{"neili", "-180"}], "assign_refs": [{"ap", "strike"}, {"dp", "dodge"}], "busy_lines": ["if (target->is_busy())", "target->start_busy(1 + ap / 18);", "me->start_busy(1);"], "level_gates": [{"dodge", "180"}, {"xuanming-zhang", "100"}], "map_gates": [{"strike", "xuanming-zhang"}], "prepared_gates": [{"strike", "xuanming-zhang"}], "remote_damage": false, "resource_gates": [{"neili", "200"}]}
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>
-  # 
+  #
   # #define YING "「" HIW "如影相随" NOR "」"
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # int perform(object me, object target)
   # {
   #         string msg;
   #         int ap, dp;
-  # 
+  #
   #         if (userp(me) && ! me->query("can_perform/xuanming-zhang/ying"))
   #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
+  #
   #         if (! target) target = offensive_target(me);
-  # 
+  #
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail(YING "只能对战斗中的对手使用。\n");
-  # 
+  #
   #         if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
   #                 return notify_fail(YING "只能空手施展。\n");
-  # 
+  #
   #         if (target->is_busy())
   #                 return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n");
-  # 
+  #
   #         if ((int)me->query_skill("xuanming-zhang", 1) < 100)
   #                 return notify_fail("你玄冥神掌不够娴熟，难以施展" YING "。\n");
-  # 
+  #
   #         if (me->query_skill_mapped("strike") != "xuanming-zhang")
   #                 return notify_fail("你没有激发玄冥神掌，难以施展" YING "。\n");
-  # 
+  #
   #         if (me->query_skill_prepared("strike") != "xuanming-zhang")
   #                 return notify_fail("你没有准备玄冥神掌，难以施展" YING "。\n");
-  # 
+  #
   #         if (me->query_skill("dodge") < 180)
   #                 return notify_fail("你的轻功修为不够，难以施展" YING "。\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 200)
   #                 return notify_fail("你现在的真气不够，难以施展" YING "。\n");
-  # 
+  #
   #         if (! living(target))
   #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
   #         ap = me->query_skill("strike");
-  # 
   #         dp = target->query_skill("dodge");
-  # 
+  #
   #         msg = HIC "\n$N" HIC "长啸一声，施出绝招「" HIW "如影相随" HIC "」，"
   #               "双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n" HIC "笼罩。\n" NOR;
   #         message_sort(msg, me, target);
-  # 
+  #
   #         if (ap * 2 / 3 + random(ap) > dp)
   #         {
   #         msg = HIR "$n" HIR "顿觉寒气避人，一时间无从应对，"
   #                       "竟被困在$N" HIR "的掌风之中。\n" NOR;
-  # 
+  #
   #                 target->start_busy(1 + ap / 18);
   #                    me->start_busy(1);
   #                 me->add("neili", -180);
@@ -238,12 +279,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
   #         {
   #                 msg = CYN "$n" CYN "看破$N" CYN "毫无攻击之意，于"
   #                       "是大胆反攻，将$N" CYN "这招尽数化解。\n" NOR;
-  # 
+  #
   #                 me->start_busy(2);
   #                 me->add("neili", -100);
   #         }
   #         message_vision(msg, me, target);
-  # 
+  #
   #         return 1;
   # }
 end

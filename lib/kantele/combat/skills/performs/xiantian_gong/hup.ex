@@ -13,6 +13,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -43,7 +44,7 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你先天功不够深厚，难以施展。\n"}
+      Stats.skill(stats, "xiantian-gong") < 200 -> {:error, "你先天功不够深厚，难以施展「五气朝元」。\n"}
       true -> :ok
     end
   end
@@ -52,31 +53,48 @@ defmodule Kantele.Combat.Skills.Performs.XiantianGong.Hup do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 1000 -> {:error, "你的内力修为不足，难以施展「五气朝元」。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「五气朝元」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  defp check_weapon(_character) do
     :ok
-
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你所学的内功中没有这种功能。\n"}
-    :ok
+    cond do
+      not Stats.perform_known?(character.meta.stats, "xiantian-gong/hup") ->
+        {:error, "你所学的内功中没有这种功能。\n"}
 
+      true ->
+        :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # LPC: heal qi, cost neili
+    vitals = character.meta.vitals
+    rp = vitals.max_qi - vitals.eff_qi
+    rp = if rp < 1, do: 1, else: rp
+    rp = min(rp, div(vitals.max_qi, 10))
+    neili_cost = rp + 100
+    neili_cost = min(neili_cost, vitals.neili)
+
+    vitals =
+      vitals
+      |> Vitals.curing(:qi, rp)
+      |> Vitals.heal(:qi, rp * 3 / 2)
+      |> Map.update(:neili, 0, &(&1 - neili_cost))
+      |> (fn v -> Map.put(v, :neili, max(Map.get(v, :neili, 0), 0)) end).()
+
+    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，顿时气脉通畅，脸色渐渐的变得平和。", n1: character.name)
+
+    conn = Broadcast.publish(conn, "$N缓缓吐出一口气，顿时气脉通畅，脸色渐渐的变得平和。\n", n1: character.name)
 
     conn
     |> put_character(character)
