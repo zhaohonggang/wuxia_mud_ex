@@ -776,7 +776,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `pomopima_jian/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `pomopima_jian/zui.ex` ← `pomopima-jian/zui.c`  (miss=7)
+- [x] ✅ `pomopima_jian/zui.ex` ← `pomopima-jian/zui.c`  (miss=7)
 
 ### `poshui_zhang/` （1 个，基线缺失 7 条）
 

@@ -375,6 +375,7 @@ poguang_dao/bing.ex
 poguang_dao/yang.ex
 pokong_quan/kong.ex
 pomie_jinzhen/du.ex
+pomopima_jian/zui.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
 qianye_shou/qianye.ex
