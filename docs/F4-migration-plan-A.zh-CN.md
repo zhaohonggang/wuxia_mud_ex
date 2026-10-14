@@ -689,7 +689,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `murong_jian/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `murong_jian/xing.ex` ← `murong-jian/xing.c`  (miss=7)
+- [x] ✅ `murong_jian/xing.ex` ← `murong-jian/xing.c`  (miss→0，PASS)
 
 ### `murong_sword/` （1 个，基线缺失 2 条）
 
