@@ -671,7 +671,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `meinv_quan/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `meinv_quan/you.ex` ← `meinv-quan/you.c`  (miss=7)
+- [x] ✅ `meinv_quan/you.ex` ← `meinv-quan/you.c`  (miss→0，PASS)
 
 ### `miaojia_jian/` （3 个，基线缺失 32 条）
 
