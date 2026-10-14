@@ -780,7 +780,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `poshui_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `poshui_zhang/tai.ex` ← `poshui-zhang/tai.c`  (miss=7)
+- [x] ✅ `poshui_zhang/tai.ex` ← `poshui-zhang/tai.c`  (miss=7)
 
 ### `poxu_daxuefa/` （1 个，基线缺失 18 条）
 
