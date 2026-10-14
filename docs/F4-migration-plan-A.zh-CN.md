@@ -732,7 +732,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `piaofeng_quan/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `piaofeng_quan/juan.ex` ← `piaofeng-quan/juan.c`  (miss=4)
+- [x] ✅ `piaofeng_quan/juan.ex` ← `piaofeng-quan/juan.c`  (miss=4)
 
 ### `piaoxu_zhang/` （1 个，基线缺失 6 条）
 
