@@ -604,8 +604,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `liuyue_jian/` （2 个，基线缺失 12 条）
 
-- [ ] ❌ `liuyue_jian/liu.ex` ← `liuyue-jian/liu.c`  (miss=7)
-- [ ] ❌ `liuyue_jian/sheng.ex` ← `liuyue-jian/sheng.c`  (miss=5)
+- [x] ✅ `liuyue_jian/liu.ex` ← `liuyue-jian/liu.c`  (miss→0，PASS)
+- [x] ✅ `liuyue_jian/sheng.ex` ← `liuyue-jian/sheng.c`  (miss→0，PASS)
 
 ### `liuyun_zhang/` （2 个，基线缺失 13 条）
 
