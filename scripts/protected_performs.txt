@@ -355,6 +355,7 @@ pangen_cuojiefu/cuo.ex
 pangu_qishi/kai.ex
 panlong_suo/chan.ex
 panlong_suo/sha.ex
+panlong_zhao/tan.ex
 pichen_jian/ao.ex
 pidi_shenzhen/huan.ex
 poguang_dao/bing.ex

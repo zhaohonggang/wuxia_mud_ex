@@ -1,25 +1,41 @@
 defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
   @moduledoc """
-  perform「云中探爪」（source panlong-zhao/tan.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「云中探爪」（对照 `kungfu/skill/panlong-zhao/tan.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 战斗中的对手 → 空手 → 越空盘龙爪>=130 →
+  激发 claw 为越空盘龙爪 → 准备 claw 为越空盘龙爪 → 真气>=200 → 目标存活。
+  起手广播后由目标侧结算：`ap = 爪法`、`dp = 目标招架`，
+  `ap/2 + random(ap) > dp` 命中则 `damage = 60 + ap/3 + random(ap/3)`、
+  攻击方扣 150 真气并忙乱 1 回合、目标受
+  `do_damage(UNARMED_ATTACK, damage, 45)`；否则攻击方扣 50 真气并忙乱
+  3 回合、广播「巧妙的招架开来」文案。
+
+  差异（TODO(migrate)）：
+  - 两条分支的 neili 消耗/忙乱为命中相关，故经
+    `Performs.feedback(attacker, neili, busy)` 回授攻击方；
+  - `COMBAT_D->do_damage(..., 45, msg)` 折算为
+    `Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage * 45, 100))`；
+  - `living(target)` 门槛在攻击方无 meta 可查，由目标侧 `combat/perform-incoming`
+    的死亡检查兜底。
+  说明：`.c` 未命中文案写作「看破了」、命中文案写作「更本无从招架」，
+  均按原文逐字保留（不改写错别字）。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
   alias Kantele.Combat.Performs
 
   @perform_id "panlong-zhao/tan"
+  @move_name "「云中探爪」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -28,27 +44,30 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    lvl = Stats.skill(stats, "panlong-zhao")
-    skill = Stats.skill(stats, "panlong-zhao")
+
+    # LPC: ap = me->query_skill("claw");
     ap = Stats.skill(stats, "claw")
-    damage = ((60 + div(ap, 3)) + Engine.rand(rng, div(ap, 3)))
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_levels(character),
+         :ok <- check_mapped(character),
+         :ok <- check_prepared(character),
+         :ok <- check_resources(character),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -57,6 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     end
   end
 
+  # LPC: if (userp(me) && ! me->query("can_perform/panlong-zhao/tan"))
   defp check_perform_known(character) do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
@@ -65,80 +85,90 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if (! target) { me->clean_up_enemy(); target = me->select_opponent(); }
+  #      if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
+    end
+  end
+
+  # LPC: if (objectp(me->query_temp("weapon")))
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) == nil do
+      :ok
+    else
+      {:error, "你必须空手才能使用#{@move_name}。\n"}
+    end
+  end
+
+  # LPC: if (me->query_skill("panlong-zhao", 1) < 130)
+  defp check_levels(character) do
+    if Stats.skill(character.meta.stats, "panlong-zhao") < 130 do
+      {:error, "你的越空盘龙爪等级不够，难以施展#{@move_name}。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "panlong-zhao") < 130 -> {:error, "你的越空盘龙爪等级不够，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
+  # LPC: if (me->query_skill_mapped("claw") != "panlong-zhao")
   defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "claw") != "panlong-zhao" ->
-        {:error, "你没有激发越空盘龙爪，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "panlong-zhao" ->
-        {:error, "你没有准备越空盘龙爪，难以施展。\n"}
-
-      true ->
-        :ok
+    if Stats.mapped(character.meta.stats, "claw") == "panlong-zhao" do
+      :ok
+    else
+      {:error, "你没有激发越空盘龙爪，难以施展#{@move_name}。\n"}
     end
   end
 
+  # LPC: if (me->query_skill_prepared("claw") != "panlong-zhao")
+  defp check_prepared(character) do
+    prepared = Stats.prepared_perform(character.meta.stats, "claw")
+
+    if prepared != nil and hd(String.split(prepared, "/")) == "panlong-zhao" do
+      :ok
+    else
+      {:error, "你没有准备越空盘龙爪，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  # LPC: if (me->query("neili") < 200)
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 200 do
+      {:error, "你的真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用。\n"}
-      true -> :ok
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 敌人列表只存引用快照（%{id,pid,name,room_id}）时无 meta 可查，此时恒判存活，
+  # 由目标侧 combat/perform-incoming 的死亡检查兜底。
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N伸出两掌，朝$n拍去，待掌至中途，却变掌为爪，幻作两道金光袭向$n各处要脉！", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
-  end
+  defp apply_effect(conn, character, target) do
+    # LPC: msg = HIW "$N" HIW "伸出两掌，朝$n" HIW "拍去，待掌至中途，却变掌为爪，幻作两"
+    #            "道金光袭向$n" HIW "各处要脉！\n" NOR;
+    #      message_combatd(msg, me, target);
+    #      ap/dp 之后按分支扣 neili / start_busy / do_damage（在目标侧结算）。
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N伸出两掌，朝$n拍去，待掌至中途，却变掌为爪，幻作两道金光袭向$n各处要脉！\n",
+        n1: character.name,
+        n2: target.name
+      )
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「云中探爪」只能在战斗中对对手使用。\n"}
-    end
+    put_character(conn, character)
   end
 
   defp ref(character) do
@@ -147,38 +177,67 @@ defmodule Kantele.Combat.Skills.Performs.PanlongZhao.Tan do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    # .c 的 !living(target) 在攻击方无 meta 可查，由此处死亡检查兜底。
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    ap = max(Map.get(data, :ap, 0), 1)
+
+    # LPC: dp = target->query_skill("parry");
+    dp = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: if (ap / 2 + random(ap) > dp)
+    #      { me->add("neili", -150);
+    #        damage = 60 + ap / 3 + random(ap / 3);
+    #        msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 45,
+    #                    HIR "$p" HIR "面对$P" HIR "这电光火石般"
+    #                    "的双抓，更本无从招架，登时被抓得血肉飞"
+    #                    "溅！\n" NOR);
+    #        me->start_busy(1); }
+    #      else
+    #      { msg += CYN "可是$p" CYN "的看破了$P" CYN
+    #               "的招式，巧妙的招架开来，没露半点破绽！\n" NOR;
+    #        me->add("neili",-50);
+    #        me->start_busy(3); }
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！", else: "可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    {conn, character} =
+      if hit do
+        damage = 60 + div(ap, 3) + Engine.rand(rng, div(ap, 3))
+        vitals = character.meta.vitals |> Vitals.damage(:qi, damage) |> Vitals.wound(:qi, div(damage * 45, 100))
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        Performs.feedback(attacker, 150, 1)
+
+        conn =
+          Broadcast.publish(
+            conn,
+            "$p面对$P这电光火石般的双抓，更本无从招架，登时被抓得血肉飞溅！\n",
+            bindings
+          )
+
+        {conn, character}
+      else
+        Performs.feedback(attacker, 50, 3)
+
+        conn =
+          Broadcast.publish(
+            conn,
+            "可是$p的看破了$P的招式，巧妙的招架开来，没露半点破绽！\n",
+            bindings
+          )
+
+        {conn, character}
+      end
+
+    put_character(conn, character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-150"}, {"neili", "-50"}], "assign_refs": [{"ap", "claw"}, {"dp", "parry"}, {"skill", "panlong-zhao"}], "busy_lines": ["me->start_busy(1);", "me->start_busy(3);"], "map_gates": [{"claw", "panlong-zhao"}], "prepared_gates": [{"claw", "panlong-zhao"}], "remote_damage": true, "resource_gates": [{"neili", "200"}], "var_gates": [{"skill", "130"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

@@ -724,7 +724,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `panlong_zhao/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `panlong_zhao/tan.ex` ← `panlong-zhao/tan.c`  (miss=5)
+- [x] ✅ `panlong_zhao/tan.ex` ← `panlong-zhao/tan.c`  (miss=5)
 
 ### `panyang_zhang/` （1 个，基线缺失 6 条）
 
