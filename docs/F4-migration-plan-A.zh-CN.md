@@ -749,7 +749,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `pili_quan/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `pili_quan/jin.ex` ← `pili-quan/jin.c`  (miss=3)
+- [x] ✅ `pili_quan/jin.ex` ← `pili-quan/jin.c`  (miss=3)
 
 ### `pili_shou/` （1 个，基线缺失 5 条）
 
