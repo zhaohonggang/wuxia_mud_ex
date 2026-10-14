@@ -385,6 +385,8 @@ poyu_quan/lei.ex
 poyu_quan/po.ex
 poyue_zhao/duan.ex
 pudu_zhang/zhao.ex
+qiankun_danuoyi/nuoyi.ex
+qiankun_jian/ni.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
 qianye_shou/qianye.ex

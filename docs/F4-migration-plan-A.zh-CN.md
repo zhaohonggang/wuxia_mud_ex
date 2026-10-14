@@ -807,11 +807,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `qiankun_danuoyi/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `qiankun_danuoyi/nuoyi.ex` ← `qiankun-danuoyi/nuoyi.c`  (miss=5)
+- [x] ✅ `qiankun_danuoyi/nuoyi.ex` ← `qiankun-danuoyi/nuoyi.c`  (miss=5)
 
 ### `qiankun_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `qiankun_jian/ni.ex` ← `qiankun-jian/ni.c`  (miss=10)
+- [x] ✅ `qiankun_jian/ni.ex` ← `qiankun-jian/ni.c`  (miss=10)
 
 ### `qiantian_zhi/` （1 个，基线缺失 7 条）
 
