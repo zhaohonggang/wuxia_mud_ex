@@ -598,9 +598,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `liuyang_zhang/` （3 个，基线缺失 22 条）
 
-- [ ] ❌ `liuyang_zhang/huan.ex` ← `liuyang-zhang/huan.c`  (miss=6)
-- [ ] ❌ `liuyang_zhang/po.ex` ← `liuyang-zhang/po.c`  (miss=10)
-- [ ] ❌ `liuyang_zhang/zhong.ex` ← `liuyang-zhang/zhong.c`  (miss=6)
+- [x] ✅ `liuyang_zhang/huan.ex` ← `liuyang-zhang/huan.c`  (miss→0，PASS)
+- [x] ✅ `liuyang_zhang/po.ex` ← `liuyang-zhang/po.c`  (miss→0，PASS)
+- [x] ✅ `liuyang_zhang/zhong.ex` ← `liuyang-zhang/zhong.c`  (miss→0，PASS)
 
 ### `liuyue_jian/` （2 个，基线缺失 12 条）
 

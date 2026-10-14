@@ -1,8 +1,12 @@
 defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
   @moduledoc """
-  perform「破神诀」（source liuyang-zhang/po.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「破神诀」（source liuyang-zhang/po.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  手工补齐：门槛文案按字符串宏 `PO`（→「破神诀」）展开；命中判定、内力比拼
+  即杀、外伤比例与攻击方忙乱按原始 LPC 语义建模。
+
+  - LPC 用 `max_neili` 二倍比拼决定「头骨拍碎」即杀，否则 `do_damage` 90% 外伤。
+  - 攻击方 `ap` 的「同类武技广度加成」（valid_enable 循环）框架无法建模，取 0。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -12,14 +16,17 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Family
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "liuyang-zhang/po"
+
+  # LPC: #define PO "「" HIR "破神诀" NOR "」"
+  @move_name "「破神诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -28,29 +35,29 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
     combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    lvl = Stats.skill(stats, "liuyang-zhang")
-    improve = 0
-    n = 0
-    m = 0
-    ap = (Stats.skill(stats, "force") + Stats.skill(stats, "strike"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(combat),
+         :ok <- check_levels(stats),
+         :ok <- check_resources(character),
+         :ok <- check_mapped(stats),
+         :ok <- check_target_alive(target) do
+      {ap, max_neili} = attack_power(character)
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           ap: ap,
-          damage: damage,
+          max_neili: max_neili,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -67,80 +74,133 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) != nil do
+      {:error, "#{@move_name}只能空手施展。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
+  # LPC: if (me->query_skill("bahuang-gong", 1) < 220)
+  #      if (me->query_skill("liuyang-zhang", 1) < 220)
+  defp check_levels(stats) do
     cond do
-      Stats.skill(stats, "bahuang-gong") < 220 -> {:error, "你八荒六合唯我独尊功火候不够，难以施展。\n"}
-      Stats.skill(stats, "liuyang-zhang") < 220 -> {:error, "你的天山六阳掌不够娴熟，难以施展。\n"}
-      true -> :ok
-    end
-  end
+      Stats.skill(stats, "bahuang-gong") < 220 ->
+        {:error, "你八荒六合唯我独尊功火候不够，难以施展#{@move_name}。\n"}
 
-  defp check_mapped(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.mapped(stats, "strike") != "liuyang-zhang" ->
-        {:error, "你没有激发天山六阳掌，难以施展。\n"}
-
-      Stats.mapped(stats, "force") != "bahuang-gong" ->
-        {:error, "你没有激发八荒六合唯我独尊功，难以施展。\n"}
-
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "liuyang-zhang" ->
-        {:error, "你没有准备天山六阳掌，难以施展。\n"}
+      Stats.skill(stats, "liuyang-zhang") < 220 ->
+        {:error, "你的天山六阳掌不够娴熟，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
     end
   end
 
+  # LPC: if (me->query("max_neili") < 3500)
+  #      if (me->query("neili") < 800)
   defp check_resources(character) do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 3500 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 800 -> {:error, "你现在真气不足，难以施展。\n"}
-      true -> :ok
+      vitals.max_neili < 3500 ->
+        {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+
+      vitals.neili < 800 ->
+        {:error, "你现在真气不足，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
+  # LPC: if (me->query_skill_mapped("strike") != "liuyang-zhang")
+  #      if (me->query_skill_prepared("strike") != "liuyang-zhang")
+  #      if (me->query_skill_mapped("force") != "bahuang-gong")
+  defp check_mapped(stats) do
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "strike") != "liuyang-zhang" ->
+        {:error, "你没有激发天山六阳掌，难以施展#{@move_name}。\n"}
+
+      prepared_is_not?(stats, "strike", "liuyang-zhang") ->
+        {:error, "你没有准备天山六阳掌，难以施展#{@move_name}。\n"}
+
+      Stats.mapped(stats, "force") != "bahuang-gong" ->
+        {:error, "你没有激发八荒六合唯我独尊功，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 380}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。", n1: character.name)
+  # LPC query_skill_prepared 返回绝招 ID（如 "liuyang-zhang/po"），需按技能前缀比对。
+  defp prepared_is_not?(stats, skill, mapped) do
+    case Stats.prepared_perform(stats, skill) do
+      nil -> true
+      prepared -> hd(String.split(prepared, "/")) != mapped
+    end
+  end
+
+  # LPC: if (! living(target))
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  # LPC: ap = me->query_skill("force") + me->query_skill("strike");
+  #      ap += ap * improve;（improve 见下）
+  #      if (me->query("family/family_name") == "灵鹫宫") ap += ap / 10;
+  defp attack_power(character) do
+    stats = character.meta.stats
+
+    # LPC: improve =（query_skills("strike") 中可 valid_enable 者，最多 5 个，
+    #      累加其等级） * 4 / 100 / lvl;  lvl = (combat_exp*10)^(1/3) * 4/5。
+    # 框架战斗态只存基本技能表（stats.skills）与当前激发映射（stats.mapped），
+    # 不持有「所有已学 strike 类武技」清单，该广度加成无法建模，improve 取 0
+    # （即 LPC 中未多学同类武技时的取值）。
+    improve = 0.0
+    ap = Stats.skill(stats, "force") + Stats.skill(stats, "strike")
+    ap = ap + trunc(ap * improve)
+
+    family = Map.get(character.meta, :family, %{})
+    ap = if Family.name(family) == "灵鹫宫", do: ap + div(ap, 10), else: ap
+
+    {ap, character.meta.vitals.max_neili}
+  end
+
+  # LPC: me->add("neili", -380);（无条件）
+  defp apply_effect(conn, character, target) do
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 380}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    # LPC: msg = HIR "$N" HIR "将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌"
+    #               "向$n" HIR "头顶猛然贯落。\n" NOR;（合并为单段）
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N将八荒六合唯我独尊功提运至极限，全身真气迸发，呼的一掌向$n头顶猛然贯落。\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「破神诀」只能对战斗中的对手使用。\n"}
-    end
   end
 
   defp ref(character) do
@@ -150,38 +210,78 @@ defmodule Kantele.Combat.Skills.Performs.LiuyangZhang.Po do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    ap = max(Map.get(data, :ap, 0), 1)
+    attacker_max_neili = Map.get(data, :max_neili, 0)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+    # LPC: dp = target->query_skill("force") + target->query_skill("parry");
+    dp = Stats.skill(stats, "force") + Stats.skill(stats, "parry")
+
+    # LPC: if (target->is_good()) ap += ap / 10;
+    # is_good() = shen > 500 || shen_type == 1；框架只存 shen，shen_type 未建模。
+    ap = if Map.get(stats, :shen, 0) > 500, do: ap + div(ap, 10), else: ap
+
+    # LPC: if (ap / 2 + random(ap) > dp)
+    hit? = div(ap, 2) + Engine.rand(rng, ap) > dp
+    bindings = [n1: attacker.name, n2: character.name]
+
+    if hit? do
+      {vitals, combat, msg} =
+        if attacker_max_neili > character.meta.vitals.max_neili * 2 do
+          # LPC: msg += HIR "顿时只听“噗”的一声，$N" HIR "一掌将$n" HIR "头骨拍得粉碎，
+          #      脑浆四溅，当即瘫了下去。\n" NOR "( $n" RED "受伤过重，已经有如风中残烛，"
+          #      "随时都可能断气。" NOR ")\n";（合并为单段）
+          msg =
+            "顿时只听“噗”的一声，$N一掌将$n头骨拍得粉碎，脑浆四溅，当即瘫了下去。\n( $n受伤过重，已经有如风中残烛，随时都可能断气。)\n"
+
+          # LPC: damage = -1; ... if (damage < 0) target->die(me);
+          vitals = %{character.meta.vitals | qi: 0}
+          combat = %{character.meta.combat | dead: true}
+          {vitals, combat, msg}
+        else
+          # LPC: damage = ap + random(ap / 2);
+          damage = ap + Engine.rand(rng, div(ap, 2))
+
+          vitals =
+            character.meta.vitals
+            |> Vitals.damage(:qi, damage)
+            |> Vitals.wound(:qi, div(damage * 90, 100))
+
+          # LPC: HIR "$n" HIR "慌忙抵挡，可已然不及，$N" HIR "掌劲如洪水般涌入体内，
+          #      接连震断数根" "肋骨。\n:内伤@?"（合并为单段）
+          {vitals, character.meta.combat,
+           "$n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。\n:内伤@?"}
+        end
+
+      # LPC: me->start_busy(1 + random(3));（仅命中分支）
+      _ = Performs.feedback(attacker, 0, 1 + Engine.rand(rng, 3))
+
+      character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+      conn
+      |> Broadcast.publish(msg, bindings)
+      |> put_character(character)
+    else
+      # LPC: CYN "$p" CYN "见$P" CYN "掌劲澎湃，决计抵挡不" "住，当即身子向后横丈许，
+      #      躲闪开来。\n" NOR;（合并为单段）
+      # LPC: me->start_busy(1 + random(4));（仅失手分支）
+      _ = Performs.feedback(attacker, 0, 1 + Engine.rand(rng, 4))
+
+      conn
+      |> Broadcast.publish(
+        "$p见$P掌劲澎湃，决计抵挡不住，当即身子向后横丈许，躲闪开来。\n",
+        bindings
+      )
+      |> put_character(character)
     end
-
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 380, 1)
-    msg = if hit, do: "$n慌忙抵挡，可已然不及，$N掌劲如洪水般涌入体内，接连震断数根肋骨。
-:内伤@?", else: "$p见$P掌劲澎湃，决计抵挡不住，当即身子向后横丈许，躲闪开来。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-380"}], "assign_refs": [{"ap", "force"}, {"dp", "force"}], "busy_lines": ["me->start_busy(1 + random(3));", "me->start_busy(1 + random(4));"], "level_gates": [{"bahuang-gong", "220"}, {"liuyang-zhang", "220"}], "map_gates": [{"force", "bahuang-gong"}, {"strike", "liuyang-zhang"}], "prepared_gates": [{"strike", "liuyang-zhang"}], "remote_damage": true, "resource_gates": [{"max_neili", "3500"}, {"neili", "800"}], "var_gates": [{"damage", "0"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>

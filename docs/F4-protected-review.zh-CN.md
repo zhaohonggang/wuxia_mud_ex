@@ -4,10 +4,10 @@
 
 ## 背景
 
-`scripts/protected_performs.txt` 当前共 **421** 条受保护 perform。
+`scripts/protected_performs.txt` 当前共 **442** 条受保护 perform。
 用**严格判据**（`.ex` 代码内中文文案 vs `.c` 代码内中文文案，**逐条字面一致，不做模糊等价**）复核：
 
-- **PASS = 262**，**FAIL = 159**，MISSING 合计 **1482** 条。
+- **PASS = 283**，**FAIL = 159**，MISSING 合计 **1482** 条。
 - 判据 = `check_one`：`Counter(norm(src)) - Counter(norm(tgt))` 为空才 PASS（MISSING 必须为空；EXTRA 不判错）。
 - 本计划**独立于 A/B 号计划**，可并行执行；A/B 只处理非受保护文件。
 
@@ -203,6 +203,9 @@
 - `liumai_shenjian/qi.ex`
 - `liumai_shenjian/six.ex`
 - `liumai_shenjian/zong.ex`
+- `liuyang_zhang/huan.ex`
+- `liuyang_zhang/po.ex`
+- `liuyang_zhang/zhong.ex`
 - `qishang_quan/shang.ex`
 - `qixian_wuxingjian/shan.ex`
 - `qixian_wuxingjian/yin.ex`
@@ -270,11 +273,29 @@
 - `xuanming_shengong/shield.ex`
 - `xuantian_wujigong/powerup.ex`
 - `xuantian_wujigong/shield.ex`
+- `xuantie_jian/dong.ex`
+- `xuantie_jian/juan.ex`
+- `xuantie_jian/xunlei.ex`
+- `xue_dao/huan.ex`
+- `xue_dao/shendao.ex`
+- `xue_dao/xueyu.ex`
+- `xueshan_jian/chu.ex`
+- `xueshan_jian/feng.ex`
+- `xueshan_jian/hui.ex`
 - `yijin_duangu/powerup.ex`
 - `yijin_duangu/shield.ex`
+- `yinsuo_jinling/dian.ex`
+- `yinsuo_jinling/feng.ex`
+- `yinsuo_jinling/kai.ex`
+- `yinyang_ren/heng.ex`
+- `yinyang_ren/hua.ex`
+- `yinyang_ren/huan.ex`
 - `yunlong_bian/chan.ex`
 - `zhanshen_xinjing/powerup.ex`
 - `zhanshen_xinjing/shield.ex`
+- `zhemei_shou/hai.ex`
+- `zhemei_shou/hua.ex`
+- `zhemei_shou/zhe.ex`
 
 ## 待复核 / 待修订
 
