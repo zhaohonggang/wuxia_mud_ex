@@ -128,7 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.BlueseaForce.Shield do
   #     if ((int)me->query("neili") < 100)
   #         return notify_fail("你的内力不够。\n");
   #
-  #     if (me->query_skill("bluesea-force", 1) < 50)
+  #     if ((int)me->query_skill("bluesea-force", 1) < 50)
   #         return notify_fail("你的南海玄功修为不够。\n");
   #
   #     if ((int)me->query_temp("shield"))

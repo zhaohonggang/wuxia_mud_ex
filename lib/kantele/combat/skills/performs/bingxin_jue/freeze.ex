@@ -242,7 +242,7 @@ defmodule Kantele.Combat.Skills.Performs.BingxinJue.Freeze do
   #                 target->start_busy(1);
   #         } else
   #                 msg += HIY "$n" HIY "感到一阵寒意自心底泛起，连忙"
-  #                        "运动抵抗，堪堪无事。\n" NOR;
+  #                        "运动抵抗，堪勘无事。\n" NOR;
   #
   #         message_combatd(msg, me, target);
   #

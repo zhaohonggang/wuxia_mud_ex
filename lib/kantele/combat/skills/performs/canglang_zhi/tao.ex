@@ -262,7 +262,7 @@ defmodule Kantele.Combat.Skills.Performs.CanglangZhi.Tao do
   #                 return notify_fail("你现在的真气不够，难以施展" TAO "。\n");
   #
   #         if (! living(target))
-  #                 return notify_fail("对方都已经这样了，用不着这样了。\n");
+  #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
   #
   #         msg = HIG "$N" HIG "陡然施出一势「碧浪滔天」，十指纷翻，指气嗤然作"
   #               "响，全全笼罩$n" HIG "。\n" NOR;

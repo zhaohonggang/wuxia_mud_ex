@@ -184,7 +184,7 @@ defmodule Kantele.Combat.Skills.Performs.DuguJiujian.Po do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = max(Map.get(data, :ap, 0), 1)
     skill = max(Map.get(data, :skill, 0), 1)
-    weapon_name = Map.get(data, :weapon_name, "某物")
+    weapon_name = Map.get(data, :weapon_name, "")
     stats = character.meta.stats
     bindings = [n1: attacker.name, n2: character.name]
 
