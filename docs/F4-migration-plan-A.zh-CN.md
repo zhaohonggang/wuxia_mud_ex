@@ -609,8 +609,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `liuyun_zhang/` （2 个，基线缺失 13 条）
 
-- [ ] ❌ `liuyun_zhang/die.ex` ← `liuyun-zhang/die.c`  (miss=7)
-- [ ] ❌ `liuyun_zhang/pai.ex` ← `liuyun-zhang/pai.c`  (miss=6)
+- [x] ✅ `liuyun_zhang/die.ex` ← `liuyun-zhang/die.c`  (miss→0，PASS)
+- [x] ✅ `liuyun_zhang/pai.ex` ← `liuyun-zhang/pai.c`  (miss→0，PASS)
 
 ### `lonely_sword/` （3 个，基线缺失 20 条）
 
