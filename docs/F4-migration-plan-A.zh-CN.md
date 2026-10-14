@@ -693,7 +693,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `murong_sword/` （1 个，基线缺失 2 条）
 
-- [ ] ❌ `murong_sword/qixing.ex` ← `murong-sword/qixing.c`  (miss=2)
+- [x] ✅ `murong_sword/qixing.ex` ← `murong-sword/qixing.c`  (miss→0，PASS)
 
 ### `nei_bagua/` （1 个，基线缺失 4 条）
 
