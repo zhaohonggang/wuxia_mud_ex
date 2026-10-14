@@ -380,6 +380,9 @@ poshui_zhang/tai.ex
 poxu_daxuefa/tong.ex
 poyang_jian/long.ex
 poyang_jian/xian.ex
+poyu_quan/feng.ex
+poyu_quan/lei.ex
+poyu_quan/po.ex
 qiankun_jian/qian.ex
 qiankun_jian/riyue.ex
 qianye_shou/qianye.ex

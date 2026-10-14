@@ -1,50 +1,54 @@
 defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Lei do
   @moduledoc """
-  perform「雷动九天」（source poyu-quan/lei.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  perform「雷动九天」（对照 `kungfu/skill/poyu-quan/lei.c`，自身增益）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 未在运功中（`query_temp("lei")`）→
+  真气>=500 → 劈石破玉拳>=120。
+  通过后无条件扣 400 真气，广播状态文案，按等级折算
+  `count = 劈石破玉拳/6`，给 `str`/`dex` 各 +`count` 临时加成，
+  战斗中忙乱 2，并置 `lei` 标记；`劈石破玉拳/3` 秒后回收加成并提示
+  「你的雷动九天运行完毕，将内力收回丹田。」
+
+  差异（TODO(migrate)）：
+  - `.c` 为单参数 perform（无 target），框架侧同样只在自身生效；
+  - `me->add_temp("str", count)` / `add_temp("dex", count)` 与回收：
+    str/dex 为天赋属性，不在 `Combat` 的 `@applies_keys` 白名单
+    （同 `luohan_gun/shibaluohan.ex` 取舍）→ buff `applies: %{}`，
+    仅以 buff 记录标记与到期时长，`count` 计算过程保留在注释中；
+  - `set_temp("lei")` + `start_call_out(remove_effect, skill/3)` 折算为
+    `Combat.Buff{key: @key, applies: %{}, duration: skill/3}` +
+    `Combat.add_buff` + `combat/buff-expire` 定时回收
+    （`Combat.buff_active?/2` 判「已在运功中」门槛），
+    `remove_effect` 的 `tell_object` 文案作为到期提示（同
+    `miaojia_neigong/powerup.ex` 先例）；
+  - `.c` 的门槛文案 `"你的劈石破玉拳修为不够，无法施展" LEI "\n"` 在绝招名后
+    无句号（原文如此，逐字保留）。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Combat.Buff
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
-  alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
+  alias Kantele.Combat.Broadcast
 
+  @key "lei"
   @perform_id "poyu-quan/lei"
+  @move_name "「雷动九天」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
-    combat = character.meta.combat
-    stats = character.meta.stats
-    rng = &:rand.uniform/1
-    lvl = Stats.skill(stats, "poyu-quan")
-    skill = Stats.skill(stats, "cuff")
-    count = div(skill, 6)
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
-          rng: rng
-        }
-      })
-
+         :ok <- check_state(character),
+         :ok <- check_resources(character),
+         :ok <- check_levels(character) do
       apply_effect(conn, character)
     else
       {:error, message} ->
@@ -54,6 +58,7 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Lei do
     end
   end
 
+  # LPC: if (userp(me) && ! me->query("can_perform/poyu-quan/lei"))
   defp check_perform_known(character) do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
@@ -62,91 +67,101 @@ defmodule Kantele.Combat.Skills.Performs.PoyuQuan.Lei do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_other(character) do
+  # LPC: if ((int)me->query_temp("lei")) return notify_fail("你已经在运功中了。\n");
+  defp check_state(character) do
+    if Combat.buff_active?(character.meta.combat, @key) do
+      {:error, "你已经在运功中了。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "cuff") < 120 -> {:error, "你的劈石破玉拳修为不够，无法施展\n"}
-      true -> :ok
-    end
-  end
-
+  # LPC: if ((int)me->query("neili") < 500) return notify_fail("你现在的真气不够。\n");
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不够。\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 500 do
+      {:error, "你现在的真气不够。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
+  # LPC: skill = (int)me->query_skill("poyu-quan",1);
+  #      if (skill < 120)
+  #      return notify_fail("你的劈石破玉拳修为不够，无法施展" LEI "\n");
+  defp check_levels(character) do
+    if Stats.skill(character.meta.stats, "poyu-quan") < 120 do
+      {:error, "你的劈石破玉拳修为不够，无法施展#{@move_name}\n"}
+    else
+      :ok
+    end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你已经在运功中了。\n"}
-    :ok
-
-  end
-
+  # LPC: me->add("neili", -400);
+  #      message_combatd(HIM "$N" HIM "深深吸了一口气，脸上顿时"
+  #                      "紫气大盛，出手越来越重！\n" NOR, me);
+  #      count = skill / 6;
+  #      if (me->is_fighting()) me->start_busy(2);
+  #      me->add_temp("str", count);
+  #      me->add_temp("dex", count);
+  #      me->set_temp("lei", 1);
+  #      me->start_call_out((: call_other, __FILE__, "remove_effect", me, count :), skill / 3);
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 400}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # LPC: skill = (int)me->query_skill("poyu-quan", 1);  count = skill / 6;
+    #      count 给 str/dex 各 +count 临时加成（未建模，见 moduledoc；不落代码）。
+    skill = Stats.skill(character.meta.stats, "poyu-quan")
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N深深吸了一口气，脸上顿时紫气大盛，出手越来越重！\n",
+        n1: character.name
+      )
+
+    # LPC: me->add("neili", -400);
+    vitals = %{character.meta.vitals | neili: max(character.meta.vitals.neili - 400, 0)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    # LPC: me->add_temp("str", count); me->add_temp("dex", count);
+    #      me->set_temp("lei", 1);
+    #      me->start_call_out(..., skill / 3);
+    # str/dex 未建模（不在 @applies_keys），applies 记 %{}，count 仅保留在注释：
+    buff = %Buff{
+      key: @key,
+      applies: %{},
+      duration: div(skill, 3)
+    }
+
+    combat =
+      character.meta.combat
+      |> Combat.add_buff(buff)
+
+    # LPC: if (me->is_fighting()) me->start_busy(2);
+    combat =
+      if Combat.fighting?(combat) do
+        Combat.start_busy(combat, 2)
+      else
+        combat
+      end
+
+    character = %{character | meta: %{character.meta | combat: combat}}
+
+    # LPC: remove_effect() 的 tell_object(me, "你的雷动九天运行完毕，将内力收回丹田。\n");
+    Process.send_after(
+      self(),
+      %Event{
+        from_pid: self(),
+        topic: "combat/buff-expire",
+        data: %{key: buff.key, applies: buff.applies, message: expire_message()}
+      },
+      max(buff.duration, 1) * 1000
+    )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
-    end
-  end
-
-  defp ref(character) do
-    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-  end
-
-  @impl true
-  def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 2)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
-  end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-400"}], "assign_refs": [{"skill", "cuff"}, {"skill", "poyu-quan"}], "busy_lines": ["me->start_busy(2);"], "remote_damage": false, "resource_gates": [{"neili", "500"}], "temp_set": ["lei"], "var_gates": [{"skill", "120"}]}
-
+  defp expire_message, do: "你的雷动九天运行完毕，将内力收回丹田。\n"
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // leidong 雷动九天
   # // by winder 98.12

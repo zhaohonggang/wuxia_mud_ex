@@ -793,9 +793,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `poyu_quan/` （3 个，基线缺失 12 条）
 
-- [ ] ❌ `poyu_quan/feng.ex` ← `poyu-quan/feng.c`  (miss=4)
-- [ ] ❌ `poyu_quan/lei.ex` ← `poyu-quan/lei.c`  (miss=4)
-- [ ] ❌ `poyu_quan/po.ex` ← `poyu-quan/po.c`  (miss=4)
+- [x] ✅ `poyu_quan/feng.ex` ← `poyu-quan/feng.c`  (miss=4)
+- [x] ✅ `poyu_quan/lei.ex` ← `poyu-quan/lei.c`  (miss=4)
+- [x] ✅ `poyu_quan/po.ex` ← `poyu-quan/po.c`  (miss=4)
 
 ### `poyue_zhao/` （1 个，基线缺失 6 条）
 
