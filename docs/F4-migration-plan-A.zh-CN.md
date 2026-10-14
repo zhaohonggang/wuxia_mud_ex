@@ -799,11 +799,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `poyue_zhao/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `poyue_zhao/duan.ex` ← `poyue-zhao/duan.c`  (miss=6)
+- [x] ✅ `poyue_zhao/duan.ex` ← `poyue-zhao/duan.c`  (miss=6)
 
 ### `pudu_zhang/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `pudu_zhang/zhao.ex` ← `pudu-zhang/zhao.c`  (miss=3)
+- [x] ✅ `pudu_zhang/zhao.ex` ← `pudu-zhang/zhao.c`  (miss=3)
 
 ### `qiankun_danuoyi/` （1 个，基线缺失 5 条）
 
