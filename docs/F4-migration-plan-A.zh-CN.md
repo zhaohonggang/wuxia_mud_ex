@@ -675,9 +675,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `miaojia_jian/` （3 个，基线缺失 32 条）
 
-- [ ] ❌ `miaojia_jian/gan.ex` ← `miaojia-jian/gan.c`  (miss=17)
-- [ ] ❌ `miaojia_jian/zhai.ex` ← `miaojia-jian/zhai.c`  (miss=7)
-- [ ] ❌ `miaojia_jian/zhu.ex` ← `miaojia-jian/zhu.c`  (miss=8)
+- [x] ✅ `miaojia_jian/gan.ex` ← `miaojia-jian/gan.c`  (miss→0，PASS)
+- [x] ✅ `miaojia_jian/zhai.ex` ← `miaojia-jian/zhai.c`  (miss→0，PASS)
+- [x] ✅ `miaojia_jian/zhu.ex` ← `miaojia-jian/zhu.c`  (miss→0，PASS)
 
 ### `miaojia_neigong/` （1 个，基线缺失 4 条）
 

@@ -328,7 +328,10 @@ mantian_xing/shan.ex
 mantian_xing/xing.ex
 mantianhuayu_zhen/zheng.ex
 meinv_quan/you.ex
+miaojia_jian/gan.ex
 miaojia_jian/qian.ex
+miaojia_jian/zhai.ex
+miaojia_jian/zhu.ex
 mingwang_jian/ruo.ex
 mingwang_jian/xiang.ex
 mizong_houquan/zhou.ex
