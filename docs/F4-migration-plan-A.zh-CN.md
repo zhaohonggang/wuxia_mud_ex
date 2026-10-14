@@ -667,7 +667,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `mantian_xing/` （1 个，基线缺失 17 条）
 
-- [ ] ❌ `mantian_xing/xing.ex` ← `mantian-xing/xing.c`  (miss=17)
+- [x] ✅ `mantian_xing/xing.ex` ← `mantian-xing/xing.c`  (miss→0，PASS)
 
 ### `meinv_quan/` （1 个，基线缺失 7 条）
 

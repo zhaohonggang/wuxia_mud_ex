@@ -325,6 +325,7 @@ luoying_shenzhang/zhuan.ex
 luoyun_dao/tian.ex
 lutou_zhang/tong.ex
 mantian_xing/shan.ex
+mantian_xing/xing.ex
 mantianhuayu_zhen/zheng.ex
 miaojia_jian/qian.ex
 mingwang_jian/ruo.ex
