@@ -745,7 +745,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `pikong_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `pikong_zhang/dai.ex` ← `pikong-zhang/dai.c`  (miss=7)
+- [x] ✅ `pikong_zhang/dai.ex` ← `pikong-zhang/dai.c`  (miss=7)
 
 ### `pili_quan/` （1 个，基线缺失 3 条）
 
