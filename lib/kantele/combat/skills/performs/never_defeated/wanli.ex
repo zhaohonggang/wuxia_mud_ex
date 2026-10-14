@@ -1,22 +1,42 @@
 defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
   @moduledoc """
-  perform「wanli」（source never-defeated/wanli.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「晴空万里」（对照 `kungfu/skill/never-defeated/perform/wanli.c`）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  门槛（按 .c 顺序）：已学此招 → 战斗中的对手 → 不败神功>=120 → 真气>=200 →
+  手持兵刃 → 目标存活。
+  起手文案（含武器名）在攻击方广播；攻击方无条件扣 20 真气、忙乱 2。
+  目标侧以 `ap/2 + random(ap*2)`（`ap = 不败神功*3/2 + 武学修养`）对目标
+  `parry + 武学修养`：命中则攻击方再扣 180 真气，目标忙乱 `1 + random(3)`，
+  qi 伤 `(ap + 内功)/2 + random((ap + 内功)/2)`、qi 上限伤 50%（命中部位取目标
+  个体 `limbs`，缺失时回退「要害」）；未命中则只广播格挡文案。
+
+  差异（TODO(migrate)）：
+  - `.c` 未列「是否已学此招」门槛（`can_perform`），本引擎以框架层
+    `perform_known?/2` 统一把关（多出的文案不影响对齐）；
+  - `.c` 把起手与分支文案累积到 `msg` 后一次 `message_combatd`；此处按引擎惯例拆分
+    （起手在攻击方 `apply_effect` 广播，分支在目标侧广播，同 `guzhuo_zhang/yu.ex`）；
+  - 两分支的 `me->start_busy(2)` 值相同 → 无条件，在攻击方直接结算；
+    `me->add("neili",-20)` 无条件 → 攻击方；命中分支内的 `me->add("neili",-180)`
+    经 `Performs.feedback/3` 回执；
+  - `COMBAT_D->do_damage(...,damage,50,pmsg)` → `damage(:qi,damage)` +
+    `wound(:qi, div(damage*50,100))` 并广播 `pmsg`（含全角弯引号“扑哧”，逐字保留）；
+  - `target->query("limbs")` 个体部位列表 → `Map.get(character.meta, :limbs)`，
+    非列表/空表回退 `"要害"`（同既有先例）；
+  - `!living(target)` 门槛在攻击方无 meta 可查，恒判存活，由目标侧
+    `combat/perform-incoming` 的死亡检查兜底。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
+  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
   alias Kantele.Combat.Performs
 
   @perform_id "never-defeated/wanli"
@@ -29,23 +49,35 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "never-defeated")
-    ap = (div((Stats.skill(stats, "never-defeated") * 3), 2) + Stats.skill(stats, "martial-cognize"))
+    wn = weapon_name(combat)
+
+    # LPC: ap = me->query_skill("never-defeated", 1) * 3 / 2 +
+    #             me->query_skill("martial-cognize", 1);
+    ap = div(Stats.skill(stats, "never-defeated") * 3, 2) + Stats.skill(stats, "martial-cognize")
 
     with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         :ok <- check_level(stats),
+         :ok <- check_neili(character),
+         :ok <- check_weapon(combat),
+         :ok <- check_target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          # LPC: damage = ap + (int)me->query_skill("force");
+          force: Stats.skill(stats, "force"),
+          wn: wn,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target, wn)
     else
       {:error, message} ->
         conn
@@ -54,6 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     end
   end
 
+  # LPC: 本式无 can_perform 门槛，框架层统一把关（见 moduledoc 差异说明）。
   defp check_perform_known(character) do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
@@ -62,62 +95,81 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+  # LPC: if (! target) target = offensive_target(me);
+  #      if (! target || ! me->is_fighting(target))
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "晴空万里只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  # LPC: if ((int)me->query_skill("never-defeated", 1) < 120)
+  defp check_level(stats) do
+    if Stats.skill(stats, "never-defeated") < 120 do
+      {:error, "你的不败神功还不够娴熟，不能使用晴空万里。\n"}
+    else
       :ok
     end
   end
 
-  defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "never-defeated") < 120 -> {:error, "你的不败神功还不够娴熟，不能使用晴空万里。\n"}
-      true -> :ok
+  # LPC: if ((int)me->query("neili", 1) < 200)
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 200 do
+      {:error, "你现在内力太弱，不能使用晴空万里。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 200 -> {:error, "你现在内力太弱，不能使用晴空万里。\n"}
-      true -> :ok
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")))
+  defp check_weapon(combat) do
+    if Combat.weapon(combat) do
+      :ok
+    else
+      {:error, "你必须手持兵刃才能施展晴空万里！\n"}
     end
   end
 
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你必须手持兵刃才能施展晴空万里！\n"}
-      true -> :ok
+  # LPC: if (! living(target))
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 180}
-    vitals = %{vitals | neili: vitals.neili - 20}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怀抱某物，一圈圈的划向$n，将$p卷在当中！", n1: character.name)
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_effect(conn, character, target, wn) do
+    # LPC: msg = HIC "$N" HIC "怀抱" + weapon->name() + HIC "，一"
+    #            "圈圈的划向$n" HIC "，将$p" HIC "卷在当中！\n" NOR;
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N怀抱" <> wn <> "，一圈圈的划向$n，将$p卷在当中！\n",
+        n1: character.name,
+        n2: target.name
+      )
+
+    # LPC: me->add("neili", -20);  me->start_busy(2);（两分支均为 2，视为无条件）
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 20}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    combat = Combat.start_busy(character.meta.combat, 2)
+    character = %{character | meta: %{character.meta | combat: combat}}
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "晴空万里只能对战斗中的对手使用。\n"}
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
     end
   end
 
@@ -128,37 +180,69 @@ defmodule Kantele.Combat.Skills.Performs.NeverDefeated.Wanli do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+      conn
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+    bindings = [n1: attacker.name, n2: character.name]
+    ap = max(Map.get(data, :ap, 0), 1)
+    force = max(Map.get(data, :force, 0), 0)
+    wn = Map.get(data, :wn)
+
+    # LPC: dp = target->query_skill("parry") + target->query_skill("martial-cognize", 1);
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "martial-cognize")
+
+    # LPC: if (ap / 2 + random(ap * 2) > dp) { … } else { … }
+    if div(ap, 2) + Engine.rand(rng, ap * 2) > dp do
+      # LPC: me->start_busy(2);（已在攻击方结算）
+      #      me->add("neili", -180);（命中分支内，回执）
+      Performs.feedback(attacker, 180, 0)
+
+      # LPC: target->start_busy(1 + random(3));
+      combat = Combat.start_busy(character.meta.combat, 1 + Engine.rand(rng, 3))
+
+      # LPC: damage = ap + (int)me->query_skill("force");
+      #      damage = damage / 2 + random(damage / 2);
+      damage = ap + force
+      damage = div(damage, 2) + Engine.rand(rng, div(damage, 2))
+
+      # LPC: if (arrayp(limbs = target->query("limbs")))
+      #        limb = limbs[random(sizeof(limbs))];
+      #      else limb = "要害";
+      limbs = Map.get(character.meta, :limbs)
+
+      limb =
+        case limbs do
+          list when is_list(list) and list != [] -> Enum.at(list, Engine.rand(rng, length(list)))
+          _ -> "要害"
+        end
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 50, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+      conn
+      |> Broadcast.publish(
+        "$n连忙腾挪躲闪，然而“扑哧”一声，" <> wn <> "正好击中$p的" <> limb <> "，$p一声惨叫，连退数步。\n",
+        bindings
+      )
+      |> put_character(character)
+    else
+      Broadcast.publish(
+        conn,
+        "可是$p看破了$P的变化，见招拆招，没有受到任何伤害。\n",
+        bindings
+      )
     end
-
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 20, 2)
-    msg = if hit, do: "$n连忙腾挪躲闪，然而“扑哧”一声，某物正好击中$p的某物，$p一声惨叫，连退数步。", else: "可是$p看破了$P的变化，见招拆招，没有受到任何伤害。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
   end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"add_costs": [{"neili", "-180"}, {"neili", "-20"}], "assign_refs": [{"ap", "never-defeated"}, {"damage", "force"}, {"dp", "parry"}], "busy_lines": ["me->start_busy(2);", "target->start_busy(1 + random(3));", "me->start_busy(2);"], "level_gates": [{"never-defeated", "120"}], "remote_damage": true, "resource_gates": [{"neili", "200"}]}
-
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // wanli.c 晴空万里
   # 

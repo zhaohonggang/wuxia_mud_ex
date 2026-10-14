@@ -340,6 +340,14 @@ mizong_houquan/zhou.ex
 murong_jian/xing.ex
 murong_sword/qixing.ex
 nei_bagua/powerup.ex
+never_defeated/juemie.ex
+never_defeated/lei.ex
+never_defeated/po.ex
+never_defeated/powerup.ex
+never_defeated/shield.ex
+never_defeated/tianhua.ex
+never_defeated/wanli.ex
+never_defeated/yuce.ex
 nianhua_zhi/fuxue.ex
 ningxue_zhang/xue.ex
 pangen_cuojiefu/cuo.ex

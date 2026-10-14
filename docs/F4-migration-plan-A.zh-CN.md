@@ -701,14 +701,14 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `never_defeated/` （8 个，基线缺失 41 条）
 
-- [ ] ❌ `never_defeated/juemie.ex` ← `never-defeated/juemie.c`  (miss=2)
-- [ ] ❌ `never_defeated/lei.ex` ← `never-defeated/lei.c`  (miss=4)
-- [ ] ❌ `never_defeated/po.ex` ← `never-defeated/po.c`  (miss=10)
-- [ ] ❌ `never_defeated/powerup.ex` ← `never-defeated/powerup.c`  (miss=4)
-- [ ] ❌ `never_defeated/shield.ex` ← `never-defeated/shield.c`  (miss=4)
-- [ ] ❌ `never_defeated/tianhua.ex` ← `never-defeated/tianhua.c`  (miss=3)
-- [ ] ❌ `never_defeated/wanli.ex` ← `never-defeated/wanli.c`  (miss=6)
-- [ ] ❌ `never_defeated/yuce.ex` ← `never-defeated/yuce.c`  (miss=8)
+- [x] ✅ `never_defeated/juemie.ex` ← `never-defeated/juemie.c`  (miss=2)
+- [x] ✅ `never_defeated/lei.ex` ← `never-defeated/lei.c`  (miss=4)
+- [x] ✅ `never_defeated/po.ex` ← `never-defeated/po.c`  (miss=10)
+- [x] ✅ `never_defeated/powerup.ex` ← `never-defeated/powerup.c`  (miss=4)
+- [x] ✅ `never_defeated/shield.ex` ← `never-defeated/shield.c`  (miss=4)
+- [x] ✅ `never_defeated/tianhua.ex` ← `never-defeated/tianhua.c`  (miss=3)
+- [x] ✅ `never_defeated/wanli.ex` ← `never-defeated/wanli.c`  (miss=6)
+- [x] ✅ `never_defeated/yuce.ex` ← `never-defeated/yuce.c`  (miss=8)
 
 ### `ningxue_shenzhao/` （1 个，基线缺失 1 条）
 
