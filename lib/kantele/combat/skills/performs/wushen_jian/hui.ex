@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wushen-jian") < 180 -> {:error, "你衡山五神剑不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "wushen-jian") < 180 -> {:error, "你衡山五神剑不够娴熟，难以施展「回峰蜿蜒势」。\n"}
+      Stats.skill(stats, "force") < 250 -> {:error, "你的内功火候不足，难以施展「回峰蜿蜒势」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展「回峰蜿蜒势」。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 160 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 160 -> {:error, "你现在的真气不够，难以施展「回峰蜿蜒势」。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「回峰蜿蜒势」。\n"}
       true -> :ok
     end
   end
@@ -117,7 +117,15 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出衡山五神剑「回峰蜿蜒势」，手中某物猛然反转，剑势迂回诡异，连连袭向$n。", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N使出衡山五神剑「回峰蜿蜒势」，手中" <> weapon_name <> "猛然反转，剑势迂回诡异，连连袭向$n。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -148,14 +156,23 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Hui do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    _stats0 = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
     vitals = character.meta.vitals
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, ap) > dp
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 2)
-    msg = "剑势迂回间$N招式陡然变快，$n已被$N攻的目不暇接，手忙脚乱！"
+
+    msg =
+      if hit? do
+        "剑势迂回间$N招式陡然变快，$n已被$N攻的目不暇接，手忙脚乱！"
+      else
+        "可是$n看破了$N的企图，镇定解招，一丝不乱。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

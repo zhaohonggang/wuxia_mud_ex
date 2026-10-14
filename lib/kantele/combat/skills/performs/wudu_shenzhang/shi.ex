@@ -79,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功不够火候，难以施展。\n"}
-      Stats.skill(stats, "wudu-shenzhang") < 150 -> {:error, "你的五毒神掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功不够火候，难以施展「万毒噬体」。\n"}
+      Stats.skill(stats, "wudu-shenzhang") < 150 -> {:error, "你的五毒神掌不够娴熟，难以施展「万毒噬体」。\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
 
     cond do
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "wudu-shenzhang" ->
-        {:error, "你现在没有准备五毒神掌，难以施展。\n"}
+        {:error, "你现在没有准备五毒神掌，难以施展「万毒噬体」。\n"}
 
       true ->
         :ok
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 120 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 120 -> {:error, "你的真气不够，难以施展「万毒噬体」。\n"}
       true -> :ok
     end
   end
@@ -145,26 +145,46 @@ defmodule Kantele.Combat.Skills.Performs.WuduShenzhang.Shi do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    dp = Stats.skill(stats, "force")
+
+    count =
+      (if Map.get(character.meta, :shen, 0) > 0, do: 20, else: 0) +
+        (if Map.get(character.meta, :gender) != "女性", do: 30, else: 0)
+
+    ap = ap + div(ap * count, 100)
+    hit = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.wound(vitals, :jing, (8 + Engine.rand(rng, 4)))
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+
+    vitals =
+      if hit do
+        vitals = Vitals.wound(vitals, :jing, 8 + Engine.rand(rng, 4))
+        Vitals.damage(vitals, :qi, damage)
+      else
+        vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 0, 2)
-    msg = if hit, do: "$n被$N击中！", else: "可是$p眼明手快，侧身一跳$P已躲过$N这招。"
+    Performs.feedback(attacker, count, 2)
+
+    msg = if hit, do: final(stats, character.meta, damage), else: "可是$p眼明手快，侧身一跳$P已躲过$N这招。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  # LPC: string final(object me, object target, int damage)
+  defp final(me_stats, target_meta, _damage) do
+    ap = Stats.skill(me_stats, "strike")
+    count = if Map.get(target_meta, :shen, 0) > 0, do: 20, else: 0
+    ap = if Map.get(target_meta, :gender) != "女性", do: ap + div(ap * 15, 100), else: ap
+    _ = {ap, count}
+
+    "只见$n被$N一掌拍中，倒退几步，却见脸色已微微泛黑。"
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

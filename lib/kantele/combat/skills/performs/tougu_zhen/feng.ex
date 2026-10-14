@@ -78,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tougu-zhen") < 100 -> {:error, "你的透骨针还不够娴熟，无法施展！\n"}
-      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展！\n"}
+      Stats.skill(stats, "tougu-zhen") < 100 -> {:error, "你的透骨针还不够娴熟，无法施展「封杀」！\n"}
+      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展「封杀」！\n"}
       true -> :ok
     end
   end
@@ -89,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
 
     cond do
       Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "tougu-zhen" ->
-        {:error, "你没有准备使用透骨针，无法使用！\n"}
+        {:error, "你没有准备使用透骨针，无法使用「封杀」！\n"}
 
       true ->
         :ok
@@ -100,8 +100,8 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展！\n"}
-      vitals.neili < 350 -> {:error, "你的真气不够，无法施展！\n"}
+      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展「封杀」！\n"}
+      vitals.neili < 350 -> {:error, "你的真气不够，无法施展「封杀」！\n"}
       true -> :ok
     end
   end
@@ -164,7 +164,7 @@ defmodule Kantele.Combat.Skills.Performs.TouguZhen.Feng do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$N使出透骨针「封 杀」绝技，手指挥舞，幻出漫天寒星，携带着阴寒之劲直封$n各处要穴！", else: "可是$n急忙退闪，连消带打躲开了这一击。"
+    msg = if hit, do: "结果只听$n一声惨嚎，被攻个正着，透骨针极寒之劲攻心，全身瘫麻，鲜血狂喷！", else: "可是$n急忙退闪，连消带打躲开了这一击。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

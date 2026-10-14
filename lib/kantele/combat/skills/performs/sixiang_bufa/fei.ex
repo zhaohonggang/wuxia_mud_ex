@@ -76,9 +76,10 @@ defmodule Kantele.Combat.Skills.Performs.SixiangBufa.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sixiang-bufa") < 150 -> {:error, "你的四象步法等级不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "sixiang-bufa") < 150 -> {:error, "你的四象步法等级不够，难以施展「飞天神行」。\n"}
+      stats.dex < 33 -> {:error, "你的身法不够，难以施展「飞天神行」。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展「飞天神行」。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展「飞天神行」。\n"}
       true -> :ok
     end
   end
@@ -87,23 +88,23 @@ defmodule Kantele.Combat.Skills.Performs.SixiangBufa.Fei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 250 -> {:error, "你此时的内力不足，难以施展。\n"}
+      vitals.max_neili < 1000 -> {:error, "你的内力修为不够，难以施展「飞天神行」。\n"}
+      vitals.neili < 250 -> {:error, "你此时的内力不足，难以施展「飞天神行」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  defp check_weapon(_character) do
+    # TODO(migrate) 武器检查需人工核对（原始 perform 不限制武器）：
     :ok
-
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你已经运起了。\n"}
-    :ok
-
+    if Map.get(character.meta.combat.temp, :fei_tian, 0) > 0 do
+      {:error, "你已经运起「飞天神行」了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -113,12 +114,17 @@ defmodule Kantele.Combat.Skills.Performs.SixiangBufa.Fei do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
+    combat = %{combat | temp: Map.put(combat.temp, :fei_tian, 1)}
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N足尖轻点地面，凌空跃起，身形顿时变得飘忽不定，难以捉摸。", n1: character.name)
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  def expire_message do
+    "你的「飞天神行」运行完毕，将内力收回丹田。\n"
   end
 
   defp target(combat) do

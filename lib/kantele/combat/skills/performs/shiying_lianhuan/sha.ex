@@ -78,8 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "shiying-lianhuan") < 150 -> {:error, "你弑鹰九连环修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展「无痕杀」。\n"}
+      Stats.skill(stats, "shiying-lianhuan") < 150 ->
+        {:error, "你弑鹰九连环修为不够，难以施展「无痕杀」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "shiying-lianhuan" -> {:error, "你没有激发弑鹰九连环，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "shiying-lianhuan" ->
+        {:error, "你没有激发弑鹰九连环，难以施展「无痕杀」。\n"}
       true -> :ok
     end
   end
@@ -97,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不足，难以施展「无痕杀」。\n"}
       true -> :ok
     end
   end
@@ -106,8 +108,18 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
-      true -> :ok
+      not match?(%{skill_type: "blade"}, Combat.weapon(combat)) ->
+        {:error, "你使用的武器不对，难以施展「无痕杀」。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
     end
   end
 
@@ -121,7 +133,15 @@ defmodule Kantele.Combat.Skills.Performs.ShiyingLianhuan.Sha do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N回转手中某物施出「无痕杀」绝技，刀身顿时漾起一道血色刀芒，直斩$n而去！", n1: character.name)
+    weapon_name = weapon_name(character.meta.combat)
+    opening = "施出「"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N回转手中" <> weapon_name <> opening <> "无痕杀」绝技，刀身顿时漾起一道血色刀芒，直斩$n而去！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)

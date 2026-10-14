@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tiexian-quan") < 60 -> {:error, "你铁线拳法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tiexian-quan") < 60 -> {:error, "你铁线拳法不够娴熟，难以施展「破甲推山」。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展「破甲推山」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
 
     cond do
       Stats.mapped(stats, "cuff") != "tiexian-quan" ->
-        {:error, "你没有激发铁线拳法，难以施展。\n"}
+        {:error, "你没有激发铁线拳法，难以施展「破甲推山」。\n"}
 
       Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "tiexian-quan" ->
-        {:error, "你没有准备铁线拳法，难以施展。\n"}
+        {:error, "你没有准备铁线拳法，难以施展「破甲推山」。\n"}
 
       true ->
         :ok
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「破甲推山」。\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.TiexianQuan.Tui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「破甲推山」只能空手施展。\n"}
       true -> :ok
     end
   end

@@ -40,7 +40,9 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以施展。\n"}
-      Stats.skill(stats, "xueshan-jian") < 140 -> {:error, "你的雪山剑法修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功的修为不够，难以施展「雪花六出」。\n"}
+      Stats.skill(stats, "xueshan-jian") < 140 -> {:error, "你的雪山剑法修为不够，难以施展「雪花六出」。\n"}
       true -> :ok
     end
   end
@@ -89,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xueshan-jian" -> {:error, "你没有激发雪山剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "xueshan-jian" -> {:error, "你没有激发雪山剑法，难以施展「雪花六出」。\n"}
       true -> :ok
     end
   end
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「雪花六出」。\n"}
       true -> :ok
     end
   end
@@ -107,15 +109,32 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「雪花六出」。\n"}
       true -> :ok
     end
   end
 
+  # LPC: msg = HIW "$N" HIW "手中" + weapon->name() + HIW "抖动，正是一招「雪花六出」..."
   defp apply_effect(conn, character) do
+    weapon_name = weapon_name(character.meta.combat)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N手中" <> weapon_name <> "抖动，正是一招「雪花六出」。虚中有实，实中有虚，四面八方向$n攻去！",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   defp target(combat) do
@@ -139,14 +158,26 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Chu do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap * 2, 1)) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n只觉剑影重重，登时眼花缭乱，被攻了个措手不及，疲于奔命。"
+
+    # LPC: me->add("neili", -attack_time * 20); me->start_busy(1 + random(attack_time))
+    Performs.feedback(attacker, 120, 1 + Engine.rand(rng, 6))
+
+    msg =
+      if hit? do
+        "$n只觉剑影重重，登时眼花缭乱，被攻了个措手不及，疲于奔命。"
+      else
+        "$n见$N剑招汹涌，寒风袭体，急忙凝神聚气，小心应付。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

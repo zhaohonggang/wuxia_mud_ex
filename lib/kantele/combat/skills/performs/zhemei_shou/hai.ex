@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -66,11 +68,20 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+
+    cond do
+      Combat.weapon(combat) != nil -> {:error, "「海渊式」只能空手施展。\n"}
+      true -> :ok
     end
   end
 
@@ -78,8 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "zhemei-shou") < 130 -> {:error, "你的逍遥折梅手等级不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展「海渊式」。\n"}
+      Stats.skill(stats, "zhemei-shou") < 130 -> {:error, "你的逍遥折梅手等级不够，难以施展「海渊式」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +100,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
 
     cond do
       Stats.mapped(stats, "hand") != "zhemei-shou" ->
-        {:error, "你没有激发逍遥折梅手，难以施展。\n"}
+        {:error, "你没有激发逍遥折梅手，难以施展「海渊式」。\n"}
 
-      Stats.prepared_perform(stats, "hand") == nil or String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "zhemei-shou" ->
-        {:error, "你没有准备使用逍遥折梅手，难以施展。\n"}
+      Stats.prepared_perform(stats, "hand") == nil or
+          String.split(Stats.prepared_perform(stats, "hand"), "/") |> hd() != "zhemei-shou" ->
+        {:error, "你没有准备使用逍遥折梅手，难以施展「海渊式」。\n"}
 
       true ->
         :ok
@@ -103,31 +115,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在真气不足，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在真气不足，难以施展「海渊式」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只能空手施展。\n"}
-    :ok
-
-  end
-
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # 无条件攻击方效果：前置广播（消耗/Busy 由目标侧 feedback 处理）
     conn = Broadcast.publish(conn, "$N挥手疾舞，施出逍遥折梅手「海渊式」，手法缥缈，虚虚实实罩向$n要害。", n1: character.name)
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
@@ -152,22 +149,34 @@ defmodule Kantele.Combat.Skills.Performs.ZhemeiShou.Hai do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    dp = Stats.skill(stats, "dodge")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
+
+    combat = Combat.start_busy(character.meta.combat, 3)
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
     Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！", else: "可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。"
+
+    msg =
+      if hit? do
+        "霎时漫天掌影化为一抓，$p闪避不及，被$N五指插入胸膛，鲜血四处飞溅！"
+      else
+        "可是$p身手敏捷，身形急转，巧妙的躲过了$P的攻击。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

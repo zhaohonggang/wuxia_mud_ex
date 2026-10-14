@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianyu-qijian") < 130 -> {:error, "你的天羽奇剑不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "tianyu-qijian") < 130 -> {:error, "你的天羽奇剑不够娴熟，难以施展「聚剑诀」。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不足，难以施展「聚剑诀」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "tianyu-qijian" -> {:error, "你没有激发天羽奇剑，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "tianyu-qijian" -> {:error, "你没有激发天羽奇剑，难以施展「聚剑诀」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不足，难以施展「聚剑诀」。\n"}
       true -> :ok
     end
   end
@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「聚剑诀」。\n"}
       true -> :ok
     end
   end
@@ -116,10 +116,12 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N手腕轻轻一抖，手中的某物化作一道彩虹，光华眩目，笼罩了$n。", n1: character.name)
+    conn = Broadcast.publish(conn, "$N手腕轻轻一抖，手中的" <> weapon_name <> "化作一道彩虹，光华眩目，笼罩了$n。", n1: character.name)
 
     conn
     |> put_character(character)

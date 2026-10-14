@@ -121,7 +121,10 @@ defmodule Kantele.Combat.Skills.Performs.ShenzhangBada.Bafang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N深深的吸了一口气，大喝一声，全身衣袍无风自鼓，然后提气往上一纵，居高临下，双掌奋力击下，刹那间，内劲犹如旋风般击向$n！", n1: character.name)
+    preamble =
+      "$N深深的吸了一口气，大喝一声，全身衣袍无风自鼓，然后提气往上一纵，居高临下，双掌奋力击下，刹那间，内劲犹如旋风般击向$n"
+
+    conn = Broadcast.publish(conn, preamble <> "！\n", n1: character.name)
 
     conn
     |> put_character(character)

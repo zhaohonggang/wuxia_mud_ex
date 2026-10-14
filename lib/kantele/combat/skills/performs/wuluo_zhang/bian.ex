@@ -76,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wuluo-zhang") < 100 -> {:error, "你五罗轻烟掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "wuluo-zhang") < 100 -> {:error, "你五罗轻烟掌不够娴熟，难以施展「风云变幻」。\n"}
       true -> :ok
     end
   end
@@ -86,10 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
 
     cond do
       Stats.mapped(stats, "strike") != "wuluo-zhang" ->
-        {:error, "你没有激发五罗轻烟掌，难以施展。\n"}
+        {:error, "你没有激发五罗轻烟掌，难以施展「风云变幻」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "wuluo-zhang" ->
-        {:error, "你没有准备五罗轻烟掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "wuluo-zhang" ->
+        {:error, "你没有准备五罗轻烟掌，难以施展「风云变幻」。\n"}
 
       true ->
         :ok
@@ -100,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展。\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不足，难以施展「风云变幻」。\n"}
       true -> :ok
     end
   end
@@ -109,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「风云变幻」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -147,14 +148,23 @@ defmodule Kantele.Combat.Skills.Performs.WuluoZhang.Bian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    _stats0 = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
     vitals = character.meta.vitals
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, ap) > dp
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    msg = "$n顿时觉得眼花缭乱，全然分辨不清真伪，只得拼命运动抵挡。"
+
+    msg =
+      if hit? do
+        "$n顿时觉得眼花缭乱，全然分辨不清真伪，只得拼命运动抵挡。"
+      else
+        "可是$n凝神顿气，奋力抵挡，丝毫不受掌影的干扰，。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

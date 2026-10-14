@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tongbi-zhang") < 80 -> {:error, "你通臂六合掌不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tongbi-zhang") < 80 -> {:error, "你通臂六合掌不够娴熟，难以施展「孤雁出群」。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你的内功修为不够，难以施展「孤雁出群」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
 
     cond do
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tongbi-zhang" ->
-        {:error, "你没有准备通臂六合掌，难以施展。\n"}
+        {:error, "你没有准备通臂六合掌，难以施展「孤雁出群」。\n"}
 
       true ->
         :ok
@@ -98,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展「孤雁出群」。\n"}
       true -> :ok
     end
   end
@@ -107,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.TongbiZhang.Chu do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「孤雁出群」只能空手施展。\n"}
       true -> :ok
     end
   end

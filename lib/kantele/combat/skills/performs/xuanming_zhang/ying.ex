@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -91,7 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
       Stats.mapped(stats, "strike") != "xuanming-zhang" ->
         {:error, "你没有激发玄冥神掌，难以施展「如影相随」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
         {:error, "你没有准备玄冥神掌，难以施展「如影相随」。\n"}
 
       true ->
@@ -136,10 +139,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     # LPC: msg = HIC "\n$N" HIC "长啸一声，施出绝招「" HIW "如影相随" HIC "」，" "双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n" HIC "笼罩。\n" NOR;
-    conn = Broadcast.publish(conn,
-      "\n$N长啸一声，施出绝招「如影相随」，双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n笼罩。\n",
-      n1: character.name
-    )
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N长啸一声，施出绝招「如影相随」，双掌不断翻腾，掌风中透出阵阵阴寒之气，将$n笼罩。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -162,8 +167,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Ying do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end

@@ -160,7 +160,7 @@ defmodule Kantele.Combat.Skills.Performs.WoshiZhang.Po do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 2)
-    msg = if hit, do: "结果只听$n一声惨嚎，胸口已被$N掌劲结结实实的轰中，“哇”的喷出一大口鲜血。", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "结果只听$n一声惨嚎，胸口已被$N掌劲结结实实的轰中，“哇”的喷出一大口鲜血。", else: "可是$p看破了$N的企图，躲开了这招杀着。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

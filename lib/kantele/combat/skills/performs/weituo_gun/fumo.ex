@@ -47,7 +47,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -113,24 +113,37 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你还没有受过高人指点，无法施展「韦陀伏魔」。\n"}
-    :ok
-
+    if Map.get(character.meta, :shen, 0) < 10000 do
+      {:error, "你正气不足，难以理解韦陀伏魔的精髓。\n"}
+    else
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 300}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的某物轻旋，恍惚中显出佛家韦陀神像，
-神光四射，笼罩住$n！", n1: character.name)
+
+    conn =
+      Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的" <> weapon_name <> "轻旋，恍惚中显出佛家韦陀神像，\n神光四射，笼罩住$n！",
+        n1: character.name,
+        n2: target.name
+      )
+
+    conn =
+      Broadcast.publish(conn, "$n平日作恶不少，见了此情此景，心中不禁颤然！",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)

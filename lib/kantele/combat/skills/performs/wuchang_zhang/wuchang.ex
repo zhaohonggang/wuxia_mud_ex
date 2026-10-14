@@ -100,10 +100,14 @@ defmodule Kantele.Combat.Skills.Performs.WuchangZhang.Wuchang do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "施展「无常五化」时必须拿着一把杖！\n"}
-    :ok
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
+    if weapon && Map.get(weapon, :skill_type) == "staff" do
+      :ok
+    else
+      {:error, "施展「无常五化」时必须拿着一把杖！\n"}
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -111,7 +115,10 @@ defmodule Kantele.Combat.Skills.Performs.WuchangZhang.Wuchang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N将手中的某物一荡，化作无数杖影扫向$n！", n1: character.name)
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+    conn = Broadcast.publish(conn, "$N将手中的" <> weapon_name <> "一荡，化作无数杖影扫向$n！", n1: character.name)
 
     conn
     |> put_character(character)

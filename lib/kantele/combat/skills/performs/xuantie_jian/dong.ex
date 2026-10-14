@@ -29,6 +29,15 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuantie-jian")
+    ap = Stats.skill(stats, "sword") + Stats.query_str(stats) * 5
+
+    # LPC: if (me->query("character") == "光明磊落" || me->query("character")=="国土无双") ap += ap / 5;
+    ap =
+      if Map.get(character.meta, :character) in ["光明磊落", "国土无双"] do
+        ap + div(ap, 5)
+      else
+        ap
+      end
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +45,12 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -62,11 +74,27 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_mapped(character) do
       :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+
+    cond do
+      weapon == nil or Map.get(weapon, :skill_type) != "sword" ->
+        {:error, "你使用的武器不对，难以施展「大江东去」。\n"}
+
+      Map.get(weapon, :weight, 0) < 25000 and not Map.get(weapon, :item_make, false) ->
+        {:error, "你手中的" <> weapon_name(combat) <> "分量不够，难以施展「大江东去」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -74,8 +102,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "xuantie-jian") < 200 -> {:error, "你的玄铁剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，难以施展「大江东去」。\n"}
+      Stats.skill(stats, "xuantie-jian") < 200 -> {:error, "你的玄铁剑法不够娴熟，难以施展「大江东去」。\n"}
       true -> :ok
     end
   end
@@ -84,7 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，难以施展「大江东去」。\n"}
       true -> :ok
     end
   end
@@ -93,32 +121,24 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 1000 -> {:error, "你现在的内力不足，难以施展。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的内力不足，难以施展「大江东去」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 120}
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 400}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N暗自凝神，顿时一股气劲由身后澎湃迸发，接着单手一振，手中某物
-随即横空卷出，激得周围尘沙腾起，所施正是玄铁剑法「大江东去」。", n1: character.name)
+    # 无条件攻击方效果：前置广播（消耗/Busy 由目标侧 feedback 处理）
+    # LPC: msg = ... "接着单" "手一振，手中" + wp + "\n随即横空卷出..."（在 wp 处拆成两段）
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N暗自凝神，顿时一股气劲由身后澎湃迸发，接着单手一振，手中" <>
+          weapon_name(character.meta.combat) <>
+          "随即横空卷出，激得周围尘沙腾起，所施正是玄铁剑法「大江东去」。",
+        n1: character.name
+      )
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
@@ -126,6 +146,13 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
       [] -> {:error, "「大江东去」只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
     end
   end
 
@@ -143,22 +170,61 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Dong do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    damage = ap + Engine.rand(rng, max(ap, 1))
+    dp = Stats.skill(stats, "force") + Stats.query_str(stats) * 5
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 400, 1)
-    msg = if hit, do: "结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！", else: "可是$n看破了$N的企图，急忙斜跃避开。"
+    # LPC: 反震/碎兵分支： "手中" + weapon_t->name() + "再也拿持不住..." / "碎掉的" + name
+    weapon_t = Combat.weapon(character.meta.combat)
+    weapon_t_name = weapon_t && Map.get(weapon_t, :name)
+
+    conn =
+      if weapon_t_name do
+        conn
+        |> Broadcast.publish(
+          "$n只觉得一股大力传来，手中" <> weapon_t_name <> "再也拿持不住，脱手而出！\n",
+          n1: attacker.name,
+          n2: character.name
+        )
+        |> Broadcast.publish(weapon_t_name <> "已经碎掉了，没法装备了。\n",
+          n1: attacker.name,
+          n2: character.name
+        )
+        |> Broadcast.publish("碎掉的" <> weapon_t_name, n1: attacker.name, n2: character.name)
+      else
+        conn
+      end
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, damage)
+      else
+        character.meta.vitals
+      end
+
+    combat =
+      if hit? do
+        Combat.start_busy(character.meta.combat, 1)
+      else
+        character.meta.combat
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+    Performs.feedback(attacker, if(hit?, do: 400, else: 200), 2)
+
+    msg =
+      if hit? do
+        "结果$n奋力招架，却被$N这一剑震的飞起，口中鲜血狂吐不止！"
+      else
+        "可是$n看破了$N的企图，急忙斜跃避开。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

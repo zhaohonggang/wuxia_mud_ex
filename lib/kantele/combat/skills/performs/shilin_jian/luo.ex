@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.ShilinJian.Luo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "shilin-jian") < 120 -> {:error, "你石廪剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "shilin-jian") < 120 -> {:error, "你石廪剑法不够娴熟，难以施展「落英纷飞」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.ShilinJian.Luo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "shilin-jian" -> {:error, "你没有激发石廪剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "shilin-jian" ->
+        {:error, "你没有激发石廪剑法，难以施展「落英纷飞」。\n"}
       true -> :ok
     end
   end
@@ -97,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ShilinJian.Luo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 140 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 140 -> {:error, "你现在的真气不够，难以施展「落英纷飞」。\n"}
       true -> :ok
     end
   end
@@ -106,15 +107,34 @@ defmodule Kantele.Combat.Skills.Performs.ShilinJian.Luo do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
-      true -> :ok
+      not match?(%{skill_type: "sword"}, Combat.weapon(combat)) ->
+        {:error, "你所使用的武器不对，难以施展「落英纷飞」。\n"}
+
+      true ->
+        :ok
     end
   end
 
   defp apply_effect(conn, character) do
+    weapon_name = weapon_name(character.meta.combat)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N长啸一声，手中" <> weapon_name <> "化出无数剑光，剑势如虹，连连刺向$n。\n",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   defp target(combat) do
@@ -138,13 +158,18 @@ defmodule Kantele.Combat.Skills.Performs.ShilinJian.Luo do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge")
+    hit = div(ap, 2) + Engine.rand(rng, ap * 2) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。"
+    msg =
+      if hit,
+        do: "结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。",
+        else: "$n见$N这几剑招式凌厉，凶猛异常，只得苦苦招架。"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

@@ -29,6 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xue-dao")
+    ap = Stats.skill(stats, "blade")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -36,9 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           rng: rng
         }
       })
@@ -106,19 +110,28 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     end
   end
 
+  # 仅前置广播；内力消耗 / 忙乱由目标侧 `combat/perform-feedback` 回执结算
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N使出血刀刀法绝技，把手中的某物舞得飞快，幻起层层刀影逼向$n！", n1: character.name)
+    weapon_name = weapon_name(character.meta.combat)
+
+    # LPC: msg = HIR "$N" HIR "使出血刀刀法绝技，把手中的" + weapon->name() + HIR "舞得飞快..."
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N使出血刀刀法绝技，把手中的" <> weapon_name <> "舞得飞快，幻起层层刀影逼向$n！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   defp target(combat) do
@@ -137,23 +150,36 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Huan do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧！", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry") + Stats.skill(stats, "dodge")
+    hit? = Engine.rand(rng, max(ap, 1)) > div(dp, 2)
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 1)
-    msg = Enum.random(["$N使出血刀刀法绝技，把手中的某物舞得飞快，幻起层层刀影逼向$n！", "结果$p被$P闹个手忙脚乱，只能紧守门户，不敢擅动！", "可是$p看破了$P的企图，并不慌张，应对自如。"])
+
+    # LPC: me->add("neili", -50)；命中则 target->start_busy，未命中则 me->start_busy(1)
+    Performs.feedback(attacker, 50, if(hit?, do: 0, else: 1))
+
+    msg =
+      if hit? do
+        "结果$p被$P闹个手忙脚乱，只能紧守门户，不敢擅动！"
+      else
+        "可是$p看破了$P的企图，并不慌张，应对自如。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

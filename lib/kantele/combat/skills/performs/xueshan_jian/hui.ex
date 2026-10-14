@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 50 -> {:error, "你的内功的修为不够，难以施展。\n"}
-      Stats.skill(stats, "xueshan-jian") < 30 -> {:error, "你的雪山剑法修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 50 -> {:error, "你的内功的修为不够，难以施展「风回雪舞」。\n"}
+      Stats.skill(stats, "xueshan-jian") < 30 -> {:error, "你的雪山剑法修为不够，难以施展「风回雪舞」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xueshan-jian" -> {:error, "你没有激发雪山剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "xueshan-jian" -> {:error, "你没有激发雪山剑法，难以施展「风回雪舞」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 50 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 50 -> {:error, "你的真气不够，难以施展「风回雪舞」。\n"}
       true -> :ok
     end
   end
@@ -104,20 +106,19 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「风回雪舞」。\n"}
       true -> :ok
     end
   end
 
+  # 仅前置广播；内力消耗 / 忙乱由目标侧 `combat/perform-feedback` 回执结算
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 30}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N回剑旋舞，一式「风回雪舞」施出，剑势连绵不绝，呼啸而至，欲图将$n缠裹其中。", n1: character.name)
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N回剑旋舞，一式「风回雪舞」施出，剑势连绵不绝，呼啸而至，欲图将$n缠裹其中。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -140,23 +141,36 @@ defmodule Kantele.Combat.Skills.Performs.XueshanJian.Hui do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit? = Engine.rand(rng, max(ap, 1)) > div(dp, 2)
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 30, 2)
-    msg = "$n只觉重重剑影铺天盖地向自己撒来，顿被攻了个手忙脚乱，不知如何应对。"
+
+    # LPC: me->add("neili", -30)；命中则 target->start_busy，未命中则 me->start_busy(2)
+    Performs.feedback(attacker, 30, if(hit?, do: 0, else: 2))
+
+    msg =
+      if hit? do
+        "$n只觉重重剑影铺天盖地向自己撒来，顿被攻了个手忙脚乱，不知如何应对。"
+      else
+        "可是$p看破了$P的企图，镇定逾恒，全神应对自如。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

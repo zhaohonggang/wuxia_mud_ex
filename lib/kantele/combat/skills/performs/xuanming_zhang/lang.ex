@@ -1,8 +1,9 @@
 defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
   @moduledoc """
-  perform「惊涛骇浪」（source xuanming-zhang/lang.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「惊涛骇浪」（source xuanming-zhang/lang.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  两掌连击：两掌均 `ap/2+random(ap)>dp`；攻击方扣内气 / 忙乱由目标侧经
+  `combat/perform-feedback` 回执。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -29,8 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuanming-zhang")
-    ap = (Stats.skill(stats, "strike") + Stats.skill(stats, "force"))
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "strike") + Stats.skill(stats, "force")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,11 +38,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
           rng: rng
         }
       })
@@ -64,7 +65,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
@@ -91,7 +91,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
       Stats.mapped(stats, "force") != "xuanming-shengong" ->
         {:error, "你没有激发玄冥神功为内功，无法施展「惊涛骇浪」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
+      Stats.prepared_perform(stats, "strike") == nil or
+          Stats.prepared_perform(stats, "strike") |> String.split("/") |> hd() != "xuanming-zhang" ->
         {:error, "你没有准备玄冥神掌，无法施展「惊涛骇浪」。\n"}
 
       true ->
@@ -119,19 +120,13 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
   end
 
   defp apply_effect(conn, character) do
-    # LPC: me->add("neili", -100/-150/-200/-75)
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 150}
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 75}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-
-    # LPC: single literal after join_adjacent (colors removed)
-    conn = Broadcast.publish(conn, "\n$N默运玄冥神功，展出绝招「惊涛骇浪」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！\n", n1: character.name)
+    # 前置广播：攻击方文案；内力消耗/忙乱由目标侧结算后经 perform-feedback 回执。
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N默运玄冥神功，展出绝招「惊涛骇浪」，猛然间欺身向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -162,183 +157,82 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Lang do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "force")
+
+    conn = first_strike(conn, character, attacker, ap, dp, rng)
+    character = conn.character
+    second_strike(conn, character, attacker, ap, dp, rng)
+  end
+
+  # 第一掌
+  defp first_strike(conn, character, attacker, ap, dp, rng) do
     hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
 
-    Performs.feedback(attacker, 75, 4)
-
-    vitals =
+    {conn, character} =
       if hit? do
+        Performs.feedback(attacker, 150, 4)
         damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
-        Vitals.damage(character.meta.vitals, :qi, damage)
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        character = %{character | meta: %{character.meta | vitals: vitals}}
+        {conn, character}
       else
-        character.meta.vitals
+        Performs.feedback(attacker, 75, 4)
+        {conn, character}
       end
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-
-# Stage 1: First palm (C source has 2 literals for hit, 1 for miss)
-    # Literal 1: attack part
-    msg1a = "\n$N右掌向内一转，忽又向前，猛然间直袭$n面门。\n"
-    # Literal 2: final1() result
-    msg1b = "正欲闪躲，却见$N突然绕到$p身后，$n心中一惊，背后中掌，顿觉脊梁处一股寒气升起，尽损三焦六脉。\n"
-    msg1_miss = "看见$N来势汹涌，急忙提气跃开。\n"
-
-# Stage 2: Second palm (C source has 2 literals for hit, joined at "叫苦")
-    msg2a = "\n$N长舒一口气，左掌紧跟而出，风到掌到，正拍向$n胸口。\n"
-    # C splits at "叫苦": "右掌已攻出...不禁暗暗" + "叫苦，顿感..."
-            msg2b = "但见右掌已攻出，那些胸口一震，不禁暗暗叫苦，顿感胸口处一股寒气升起，尽损三焦六脉。\n"
-
-    @prevent_join true
-    msg2_miss = "看见$N来势汹涌，急忙提气跃开。\n"
-
-    # Broadcast Stage 1 (C has 2 literals for hit)
-    if hit? do
-      conn = Broadcast.publish(Messages.interpolate(msg1a, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      conn = Broadcast.publish(Messages.interpolate(msg1b, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-    else
-      conn = Broadcast.publish(Messages.interpolate(msg1_miss, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-    end
-
-    # Stage 2: Second palm (C has 2 literals for hit, joined at "叫苦")
-    if hit? do
-      dp2 = Stats.skill(stats, "dodge") + Stats.skill(stats, "force")
-      hit2? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp2
-
-      if hit2? do
-        conn = Broadcast.publish(Messages.interpolate(msg2a, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-        conn = Broadcast.publish(Messages.interpolate(msg2b, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+    msg =
+      if hit? do
+        "$n正欲闪躲，却见$N突然绕到$p身后，$n心中一惊，背后中掌，顿觉脊梁处一股寒气升起，尽损三焦六脉。\n"
       else
-        conn = Broadcast.publish(Messages.interpolate(msg2_miss, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
+        "$n看见$N来势汹涌，急忙提气跃开。\n"
       end
-    end
+
+    body =
+      Messages.interpolate(
+        "\n$N右掌向内一转，忽又向前，猛然间直袭$n面门。\n" <> msg,
+        n1: attacker.name,
+        n2: character.name
+      )
+
+    conn = Broadcast.publish(conn, body)
+
+    {conn, character}
+  end
+
+  # 第二掌
+  defp second_strike(conn, character, attacker, ap, dp, rng) do
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    character =
+      if hit? do
+        Performs.feedback(attacker, 200, 4)
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        %{character | meta: %{character.meta | vitals: vitals}}
+      else
+        Performs.feedback(attacker, 100, 4)
+        character
+      end
+
+    msg =
+      if hit? do
+        "$n但见$N右掌已攻出，正欲反击。突然间胸口一震，不禁暗暗叫苦，顿感胸口处一股寒气升起，尽损三焦六脉。\n"
+      else
+        "$n看见$N来势汹涌，急忙提气跃开。\n"
+      end
+
+    body =
+      Messages.interpolate(
+        "\n$N长舒一口气，左掌紧跟而出，风到掌到，正拍向$n胸口。\n" <> msg,
+        n1: attacker.name,
+        n2: character.name
+      )
 
     conn
+    |> Broadcast.publish(body)
     |> put_character(character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}, {"neili", "-150"}, {"neili", "-200"}, {"neili", "-75"}], "affect_by": ["xuanming_poison"], "assign_refs": [{"ap", "strike"}, {"dp", "dodge"}, {"lvl", "xuanming-zhang"}], "busy_lines": ["me->start_busy(4);"], "level_gates": [{"xuanming-shengong", "180"}, {"xuanming-zhang", "180"}], "map_gates": [{"force", "xuanming-shengong"}], "prepared_gates": [{"strike", "xuanming-zhang"}], "remote_damage": true, "resource_gates": [{"max_neili", "3000"}, {"neili", "800"}]}
-
-  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
-  # #include <ansi.h>
-  # #include <combat.h>
-  # 
-  # #define LANG "「" HIM "惊涛骇浪" NOR "」"
-  # 
-  # inherit F_SSERVER;
-  # 
-  # string final1(object me, object target, int lvl);
-  # string final2(object me, object target, int lvl);
-  # 
-  # int perform(object me, object target)
-  # {
-  #         int damage;
-  #         string msg;
-  #         int ap, dp;
-  #         int lvl/*, p*/;
-  # 
-  #         if (userp(me) && ! me->query("can_perform/xuanming-zhang/lang"))
-  #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
-  #         if (! target) target = offensive_target(me);
-  # 
-  #         if (! target || ! me->is_fighting(target))
-  #                 return notify_fail(LANG "只能对战斗中的对手使用。\n");
-  # 
-  #         if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
-  #                 return notify_fail(LANG "只能空手施展。\n");
-  # 
-  #         if ((int)me->query_skill("xuanming-shengong", 1) < 180)
-  #                 return notify_fail("你的玄冥神功火候不够，无法施展" LANG "。\n");
-  # 
-  #         if ((int)me->query_skill("xuanming-zhang", 1) < 180)
-  #                 return notify_fail("你的玄冥神掌不够熟练，无法施展" LANG "。\n");
-  # 
-  #         if ((int)me->query("max_neili") < 3000)
-  #                 return notify_fail("你的内力修为不足，无法施展" LANG "。\n");
-  # 
-  #         if (me->query_skill_mapped("force") != "xuanming-shengong")
-  #                 return notify_fail("你没有激发玄冥神功为内功，无法施展" LANG "。\n");
-  # 
-  #         if (me->query_skill_prepared("strike") != "xuanming-zhang")
-  #                 return notify_fail("你没有准备玄冥神掌，无法施展" LANG "。\n");
-  # 
-  #         if ((int)me->query("neili") < 800)
-  #                 return notify_fail("你的真气不够，无法施展" LANG "。\n");
-  # 
-  #         if (! living(target))
-  #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
-  #         msg = HIW "\n$N" HIW "默运玄冥神功，展出绝招「" HIM "惊涛骇浪" HIW "」，猛然间欺身"
-  #               "向前，双掌齐出，掌风阴寒无比，掌未到，风先至，瞬息间双掌已拍向$n" HIW "！\n"NOR;  
-  # 
-  #         lvl = me->query_skill("xuanming-zhang", 1);
-  # 
-  #         ap = me->query_skill("strike") + me->query_skill("force");
-  #         dp = target->query_skill("dodge") + target->query_skill("force");
-  # 
-  #         me->start_busy(4);
-  # 
-  #         // 第一掌
-  # 
-  #         msg += HIM "\n$N" HIM "右掌向内一转，忽又向前，猛然间直袭$n" HIM "面门。\n" NOR;
-  #         if (ap / 2 + random(ap) > dp)
-  #         { 
-  #                 damage = ap + random(ap / 2);
-  #                 me->add("neili", -150);
-  # 
-  #                 msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 60,
-  #                                           (: final1, me, target, lvl :));
-  #                                            
-  #         } else
-  #         {
-  #                 msg += HIY "$n" HIY "看见$N" HIY "来势汹涌，急忙提气跃开。\n" NOR;
-  #                 me->add("neili", -75);
-  #         }
-  #         message_sort(msg, me, target);
-  #          
-  #         // 第二掌
-  #         msg = HIM "\n$N" HIM "长舒一口气，左掌紧跟而出，风到掌到，正拍向$n" HIM "胸口。\n" NOR;
-  #         if (ap / 2 + random(ap) > dp)
-  #         { 
-  #                 damage = ap + random(ap / 2);
-  #                 me->add("neili", -200);
-  # 
-  #                 msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 70,
-  #                                           (: final2, me, target, lvl :));
-  #                                            
-  #         } else
-  #         {
-  #                 msg += HIY "$n" HIY "看见$N" HIY "来势汹涌，急忙提气跃开。\n" NOR;
-  #                 me->add("neili", -100);
-  #         }
-  #         message_sort(msg, me, target);
-  # 
-  #         return 1;
-  # }
-  # 
-  # string final1(object me, object target, int lvl)
-  # {
-  #         target->affect_by("xuanming_poison",
-  #                          ([ "level" : me->query("jiali") * 3,
-  #                             "id"    : me->query("id"),
-  #                             "duration" : lvl / 40 + random(lvl / 20) ]));
-  # 
-  #         return HIR "$n" HIR "正欲闪躲，却见$N" HIR "突然绕到$p" HIR "身后，$n" HIR "心中一"
-  #                    "惊，背后中掌，顿觉脊梁处一股寒气升起，尽损三焦六脉。\n" NOR;
-  # 
-  # }
-  # 
-  # string final2(object me, object target, int lvl)
-  # {
-  #         target->affect_by("xuanming_poison",
-  #                          ([ "level" : me->query("jiali") * 3,
-  #                             "id"    : me->query("id"),
-  #                             "duration" : lvl / 40 + random(lvl / 20) ]));
-  # 
-  #         return HIR "$n" HIR "但见$N" HIR "右掌已攻出，正欲反击。突然间胸口一震，不禁暗暗"
-  #                "叫苦，顿感胸口处一股寒气升起，尽损三焦六脉。\n" NOR;
-  # 
-  # }
 end

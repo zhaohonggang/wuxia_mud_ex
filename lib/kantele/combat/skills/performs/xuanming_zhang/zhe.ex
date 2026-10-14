@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -91,7 +93,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
       Stats.mapped(stats, "force") != "xuanming-shengong" ->
         {:error, "你没有激发玄冥神功为内功，无法施展「只手遮天」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "xuanming-zhang" ->
         {:error, "你没有准备玄冥神掌，无法施展「只手遮天」。\n"}
 
       true ->
@@ -128,7 +131,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     # LPC: colors removed by join_adjacent → single literal
-    conn = Broadcast.publish(conn, "\n$N运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施展出绝招「只手遮天」，携带着万古至毒至寒之气的掌劲攻向$n！\n", n1: character.name)
+    conn =
+      Broadcast.publish(conn, "\n$N运起玄冥神功，全身浮现出一层紫气，猛然间双掌翻腾不息，施展出绝招「只手遮天」，携带着万古至毒至寒之气的掌劲攻向$n！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -148,8 +154,10 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
 
   # LPC: string final(object me, object target, int lvl)
   defp final(_me, _target, _lvl) do
-    "只见眼前紫影晃动，那些胸口一震，已知大势不妙，只感胸口处一股寒气升起，尽损三焦六脉。\n"
+    "只见眼前紫影晃动，突然间胸口一震，已知大势不妙，只感胸口处一股寒气升起，尽损三焦六脉。\n"
   end
+
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
       Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
@@ -189,17 +197,6 @@ defmodule Kantele.Combat.Skills.Performs.XuanmingZhang.Zhe do
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
-  end
-
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "「只手遮天」只能对战斗中的对手使用。\n"}
-    end
-  end
-
-  defp ref(character) do
-    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

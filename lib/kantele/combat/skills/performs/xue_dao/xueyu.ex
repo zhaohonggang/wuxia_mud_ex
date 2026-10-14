@@ -16,7 +16,6 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
   alias Kalevala.Event
   alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform_id "xue-dao/xueyu"
@@ -38,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -109,16 +110,28 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
     end
   end
 
+  # 仅前置广播；内力消耗 / 忙乱由目标侧 `combat/perform-feedback` 回执结算
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N嗔目大喝，手腕一抖，某物如闪电一般砍向$n！", n1: character.name)
+    weapon_name = weapon_name(character.meta.combat)
+
+    # LPC: msg = HIR "$N" HIR "嗔目大喝，手腕一抖，" + weapon->name() + HIR "如闪电一般砍向$n..."
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N嗔目大喝，手腕一抖，" <> weapon_name <> "如闪电一般砍向$n！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> nil
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   defp target(combat) do
@@ -142,18 +155,14 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Xueyu do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 100, 1)
-    msg = "$N嗔目大喝，手腕一抖，某物如闪电一般砍向$n！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+
+    # LPC: me->add("neili", -100); me->start_busy(1 + random(5))
+    Performs.feedback(attacker, 100, 1 + Engine.rand(rng, 5))
+
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

@@ -29,7 +29,16 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xue-dao")
+    ap = Stats.skill(stats, "blade")
     damage = Stats.skill(stats, "blade")
+
+    # LPC: if (me->query("character") == "心狠手辣") damage += damage * 3 / 10;
+    damage =
+      if Map.get(character.meta, :personality) == "心狠手辣" do
+        damage + div(damage * 3, 10)
+      else
+        damage
+      end
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,9 +46,12 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
           damage: damage,
           rng: rng
         }
@@ -103,30 +115,35 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
     end
   end
 
+  # if (! objectp(weapon = me->query_temp("weapon")) || weapon->query("skill_type") != "blade")
+  #     return notify_fail("装备刀才能使用「祭血神刀」！\n");
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "装备刀才能使用「祭血神刀」！\n"}
-    :ok
-
+    if match?(%{skill_type: "blade"}, Combat.weapon(character.meta.combat)) do
+      :ok
+    else
+      {:error, "装备刀才能使用「祭血神刀」！\n"}
+    end
   end
 
+  # can_perform 与 shen（凶残）门槛
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你还不会使用「祭血神刀」！\n"}
-    :ok
+    stats = character.meta.stats
 
+    cond do
+      not Stats.perform_known?(stats, @perform_id) -> {:error, "你还不会使用「祭血神刀」！\n"}
+      Map.get(stats, :shen, 0) > -1000 -> {:error, "你为人不够凶残，还无法领会「祭血神刀」的奥妙。\n"}
+      true -> :ok
+    end
   end
 
+  # 仅前置广播；内力消耗 / 忙乱由目标侧 `combat/perform-feedback` 回执结算
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 350}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，", n1: character.name)
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N右手持刀向左肩一勒，一阵血珠溅满刀面，紧接着右臂抡出，一片血光裹住刀影向$n当头劈落，",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -154,22 +171,43 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    dp = Stats.skill(stats, "force")
+    hit = Engine.rand(rng, max(ap, 1)) > div(dp, 2)
     vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+
+    vitals =
+      if hit do
+        Vitals.damage(vitals, :qi, damage)
+      else
+        vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 350, 2)
-    msg = if hit, do: "$n疾忙侧身避让，但血刀疾闪，只觉眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！", else: "$n躲过了$N的攻击！"
+
+    # LPC: 命中 me->add("neili",-350)/start_busy(2)，未中 me->add("neili",-100)/start_busy(2)
+    #      并恒 me->receive_wound("qi", 50)
+    feedback =
+      if hit do
+        %{neili_cost: 350, busy: 2, wound_qi: 50}
+      else
+        %{neili_cost: 100, busy: 2, wound_qi: 50}
+      end
+
+    Performs.feedback(attacker, feedback)
+
+    msg =
+      if hit do
+        "$n疾忙侧身避让，但血刀疾闪，只觉眼前一阵血红，刀刃劈面而下，鲜血飞溅，不禁惨声大嚎！"
+      else
+        "可是$n侧身避让，不慌不忙，躲过了$N的必杀一刀。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

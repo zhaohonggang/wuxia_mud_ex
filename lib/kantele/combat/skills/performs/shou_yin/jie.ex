@@ -140,14 +140,20 @@ defmodule Kantele.Combat.Skills.Performs.ShouYin.Jie do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 1)
-    msg = "$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。"
+
+    msg =
+      if hit,
+        do: "$n面对$P这排山倒海攻势，完全无法抵挡，唯有退后。",
+        else: "$n凝神应战，竭尽所能化解$P这几掌。"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

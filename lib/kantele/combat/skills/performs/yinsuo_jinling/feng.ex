@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
   alias Kantele.Combat.Performs
 
   @perform_id "yinsuo-jinling/feng"
+  @move_name "「风神诀」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -40,10 +41,13 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          weapon: weapon_name(combat),
           rng: rng
         }
       })
@@ -79,9 +83,14 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yinsuo-jinling") < 140 -> {:error, "你的银索金铃不够娴熟，还使不出。\n"}
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功火候不够，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "yinsuo-jinling") < 140 ->
+        {:error, "你的银索金铃不够娴熟，还使不出#{@move_name}。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -89,8 +98,11 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "你没有激发回银索金铃，不能使用。\n"}
-      true -> :ok
+      Stats.mapped(stats, "whip") != "yinsuo-jinling" ->
+        {:error, "你没有激发回银索金铃，不能使用#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -98,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 400 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -107,23 +119,36 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你的武器不对，无法使用。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你的武器不对，无法使用#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 30}
-    vitals = %{vitals | neili: vitals.neili - 300}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "只见$N手中某物暮地一抖，幻出无数鞭影，霎时破风声骤起，某物携着风雷之势扫向$n！", n1: character.name)
+    # LPC: w1 = weapon->name();
+    #      msg = "\n" HIW "只见$N" HIW "手中" + w1 + HIW "暮地一抖，幻出无数鞭影，霎"
+    #            "时破风声骤起，" + w1 + HIW "携着风雷之势扫向$n" HIW "！\n" NOR;
+    # 按 LPC 的字符串拼接结构拆分：`"…手中" + w1 + "暮地…" + w1 + "携着…"`
+    weapon_name = weapon_name(character.meta.combat)
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n只见$N手中" <>
+          weapon_name <>
+          "暮地一抖，幻出无数鞭影，霎时破风声骤起，" <>
+          weapon_name <> "携着风雷之势扫向$n！\n",
+        n1: character.name
+      )
+
+    conn |> assign(:prompt, false)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> "某物"
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   defp target(combat) do
@@ -147,22 +172,56 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    w1 = Map.get(data, :weapon, "某物")
+    w2 = Map.get(data, :weapon2, "兵器")
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    # LPC: me->start_busy(2 + random(4)); me->add("neili", -300);
+    Performs.feedback(attacker, 300, 2 + Engine.rand(rng, 4))
+
+    vitals =
+      if hit? do
+        Vitals.damage(character.meta.vitals, :qi, max(div(ap, 2), 1))
+      else
+        character.meta.vitals
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 1)
-    msg = if hit, do: Enum.random(["$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！", "$n稍一迟疑，突然感到后背一阵刮骨之痛，已被这招打得血肉模糊！"]), else: Enum.random(["$p一声冷哼，早预料$N有此一着，凝神聚气，将这招轻轻格开！", "可是$p镇定自如，丝毫不为这变幻莫测的招式所动，凝神抵挡，化解开来！"])
+
+    # 第二段（LPC: "\n$N" "紧接着一声娇喝，" + w1 + "猛地向后一撤，" + w1 +
+    #              "顿时化作一道长虹，已从$n背后袭出！"）与第三段（$N眉头微皱…）。
+    msg =
+      if hit? do
+        "$n只觉鞭影重重，眼花缭乱，根本无法作出抵挡，一声惨嚎，鲜血飞溅而出！\n"
+      else
+        "可是$p镇定自如，丝毫不为这变幻莫测的招式所动，凝神抵挡，化解开来！\n"
+      end <>
+        "\n紧接着$N一声娇喝，" <>
+        w1 <>
+        "猛地向后一撤，" <>
+        w1 <>
+        "顿时化作一道长虹，已从$n背后袭出！\n" <>
+        if hit? do
+          "$n稍一迟疑，突然感到后背一阵刮骨之痛，已被这招打得血肉模糊！\n"
+        else
+          "$p一声冷哼，早预料$N有此一着，凝神聚气，将这招轻轻格开！\n"
+        end <>
+        "\n$N眉头微皱，手腕轻轻一振，只听“飕”的一声，又攻出一招，" <>
+        w1 <>
+        "如流星般弹向$n腕部！\n" <>
+        if hit? do
+          "只听“当”的一声，" <>
+            w1 <> "正打在$p" <> w2 <> "上，$p手腕一麻，" <> w2 <> "再也拿持不住，脱手掉在地上。\n"
+        else
+          "可是$p看破了$P的企图，急忙斜跳躲开！\n"
+        end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

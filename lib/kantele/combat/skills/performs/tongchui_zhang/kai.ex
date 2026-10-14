@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tongchui-zhang") < 80 -> {:error, "你铜锤掌法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 90 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tongchui-zhang") < 80 -> {:error, "你铜锤掌法不够娴熟，难以施展「五丁开山」。\n"}
+      Stats.skill(stats, "force") < 90 -> {:error, "你的内功修为不够，难以施展「五丁开山」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
 
     cond do
       Stats.mapped(stats, "strike") != "tongchui-zhang" ->
-        {:error, "你没有激发铜锤掌法，难以施展。\n"}
+        {:error, "你没有激发铜锤掌法，难以施展「五丁开山」。\n"}
 
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tongchui-zhang" ->
-        {:error, "你没有准备铜锤掌法，难以施展。\n"}
+        {:error, "你没有准备铜锤掌法，难以施展「五丁开山」。\n"}
 
       true ->
         :ok
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不够，难以施展「五丁开山」。\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「五丁开山」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -167,7 +167,7 @@ defmodule Kantele.Combat.Skills.Performs.TongchuiZhang.Kai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
-    msg = if hit, do: "结果$n闪避不及，顿被$N这掌击个正中，五脏六腑翻腾不已。", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "结果$n闪避不及，顿被$N这掌击个正中，五脏六腑翻腾不已。", else: "可是$n毫不慌张，当即向后轻轻一跃，闪避开来。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

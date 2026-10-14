@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -64,11 +66,21 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_mapped(character),
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_mapped(character) do
       :ok
+    end
+  end
+
+  defp check_weapon(character) do
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+
+    cond do
+      weapon == nil or Map.get(weapon, :skill_type) != "sword" -> {:error, "你使用的武器不对。\n"}
+      true -> :ok
     end
   end
 
@@ -76,8 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuantie-jian") < 100 -> {:error, "你的玄铁剑法不够娴熟，不能使用。\n"}
-      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，不能使用。\n"}
+      Stats.skill(stats, "xuantie-jian") < 100 -> {:error, "你的玄铁剑法不够娴熟，不能使用「卷字诀」。\n"}
+      Stats.skill(stats, "force") < 400 -> {:error, "你的内功火候不够，不能使用「卷字诀」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，不能施展。\n"}
+      Stats.mapped(stats, "sword") != "xuantie-jian" -> {:error, "你没有激发玄铁剑法，不能施展「卷字诀」。\n"}
       true -> :ok
     end
   end
@@ -95,33 +107,22 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在内力太弱，不能使用。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
+      vitals.neili < 100 -> {:error, "你现在内力太弱，不能使用「卷字诀」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 25}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一抖手中的某物，自下而上的朝$n卷了过去，曲曲折折，变化无常！", n1: character.name)
+    # 无条件攻击方效果：前置广播（消耗/Busy 由目标侧 feedback 处理）
+    # LPC: msg = ... "$N一抖手中的" + weapon->name() + "，自下而上的朝$n..."
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一抖手中的" <> weapon_name(character.meta.combat) <> "，自下而上的朝$n卷了过去，曲曲折折，变化无常！",
+        n1: character.name
+      )
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
@@ -129,6 +130,13 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
       [] -> {:error, "「卷字诀」只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
     end
   end
 
@@ -141,23 +149,42 @@ defmodule Kantele.Combat.Skills.Performs.XuantieJian.Juan do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 2)
-    msg = "$p连忙竭力招架，一时无暇反击。"
+    dp = Stats.skill(stats, "dodge")
+    hit? = Engine.rand(rng, max(ap, 1)) > div(dp, 2)
+
+    combat =
+      if hit? do
+        Combat.start_busy(character.meta.combat, div(ap, 20) + 2)
+      else
+        character.meta.combat
+      end
+
+    character = %{character | meta: %{character.meta | combat: combat}}
+
+    Performs.feedback(attacker, if(hit?, do: 50, else: 25), 2)
+
+    msg =
+      if hit? do
+        "$p连忙竭力招架，一时无暇反击。"
+      else
+        "可是$p看破了$P的企图，斜跃避开了$P的攻击。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

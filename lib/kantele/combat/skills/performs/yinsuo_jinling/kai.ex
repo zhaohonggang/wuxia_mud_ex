@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
   alias Kantele.Combat.Performs
 
   @perform_id "yinsuo-jinling/kai"
+  @move_name "「开天辟地」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -37,10 +38,13 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          weapon: weapon_name(combat),
           rng: rng
         }
       })
@@ -76,9 +80,14 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yinsuo-jinling") < 140 -> {:error, "你银索金铃够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功修为不够，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "yinsuo-jinling") < 140 ->
+        {:error, "你银索金铃够娴熟，难以施展#{@move_name}。\n"}
+
+      Stats.skill(stats, "force") < 180 ->
+        {:error, "你的内功修为不够，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -86,8 +95,11 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinsuo-jinling" -> {:error, "你没有激发银索金铃，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "whip") != "yinsuo-jinling" ->
+        {:error, "你没有激发银索金铃，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -95,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -104,25 +116,34 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 220}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N长啸一声，疼空而起，施出绝招「开天辟地」，手中某物犹如长龙般龙吟不定，临空而下，罩向$n。", n1: character.name)
+    # LPC: msg = HIW "\n$N" HIW "长啸一声，疼空而起，施出绝招「" HIY "开天辟地" HIW
+    #            "」，手中" + weapon->name() + HIW "犹如长龙般龙吟不定，临空而下，罩"
+    #            "向$n。" NOR; message_sort(msg, me, target);
+    # 按 LPC 的字符串拼接结构拆分：`"…手中" + weapon->name() + "犹如长龙…"`
+    weapon_name = weapon_name(character.meta.combat)
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N长啸一声，疼空而起，施出绝招「开天辟地」，手中" <>
+          weapon_name <> "犹如长龙般龙吟不定，临空而下，罩向$n。",
+        n1: character.name
+      )
+
+    conn |> assign(:prompt, false)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> "某物"
+      weapon -> Map.get(weapon, :name)
+    end
   end
 
   defp target(combat) do
@@ -154,14 +175,16 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Kai do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 220, 4)
     msg = if hit, do: "但见$N攻势如洪，气势磅礴，$n心中略微一惊，惨叫一声，顿时鲜血淋淋。", else: "$n见$N这招袭来，内力充盈，只得向后一纵，才躲过这一鞭。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

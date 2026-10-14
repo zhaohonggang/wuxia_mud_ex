@@ -546,10 +546,10 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xuanming_zhang/` （4 个，基线缺失 40 条）
 
-- [ ] ❌ `xuanming_zhang/lang.ex` ← `xuanming-zhang/lang.c`  (miss=12)
-- [ ] ❌ `xuanming_zhang/xing.ex` ← `xuanming-zhang/xing.c`  (miss=12)
-- [ ] ❌ `xuanming_zhang/ying.ex` ← `xuanming-zhang/ying.c`  (miss=7)
-- [ ] ❌ `xuanming_zhang/zhe.ex` ← `xuanming-zhang/zhe.c`  (miss=9)
+- [x] ✅ `xuanming_zhang/lang.ex` ← `xuanming-zhang/lang.c`  (miss=12→0，PASS)
+- [x] ✅ `xuanming_zhang/xing.ex` ← `xuanming-zhang/xing.c`  (miss=12→0，PASS)
+- [x] ✅ `xuanming_zhang/ying.ex` ← `xuanming-zhang/ying.c`  (miss=7→0，PASS)
+- [x] ✅ `xuanming_zhang/zhe.ex` ← `xuanming-zhang/zhe.c`  (miss=9→0，PASS)
 
 ### `xuantian_wujigong/` （2 个，基线缺失 8 条）
 
@@ -562,9 +562,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xuantie_jian/` （3 个，基线缺失 27 条）
 
-- [ ] ❌ `xuantie_jian/dong.ex` ← `xuantie-jian/dong.c`  (miss=15)
-- [ ] ❌ `xuantie_jian/juan.ex` ← `xuantie-jian/juan.c`  (miss=7)
-- [ ] ❌ `xuantie_jian/xunlei.ex` ← `xuantie-jian/xunlei.c`  (miss=5)
+- [x] ✅ `xuantie_jian/dong.ex` ← `xuantie-jian/dong.c`  (miss=15→0，PASS)
+- [x] ✅ `xuantie_jian/juan.ex` ← `xuantie-jian/juan.c`  (miss=7→0，PASS)
+- [x] ✅ `xuantie_jian/xunlei.ex` ← `xuantie-jian/xunlei.c`  (miss=5→0，PASS)
 
 ### `xuanxu_dao/` （1 个，基线缺失 5 条）
 
@@ -576,9 +576,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xue_dao/` （3 个，基线缺失 9 条）
 
-- [ ] ❌ `xue_dao/huan.ex` ← `xue-dao/huan.c`  (miss=2)
-- [ ] ❌ `xue_dao/shendao.ex` ← `xue-dao/shendao.c`  (miss=5)
-- [ ] ❌ `xue_dao/xueyu.ex` ← `xue-dao/xueyu.c`  (miss=2)
+- [x] ✅ `xue_dao/huan.ex` ← `xue-dao/huan.c`  (miss=2→0，PASS)
+- [x] ✅ `xue_dao/shendao.ex` ← `xue-dao/shendao.c`  (miss=5→0，PASS)
+- [x] ✅ `xue_dao/xueyu.ex` ← `xue-dao/xueyu.c`  (miss=2→0，PASS)
 
 ### `xuedao_dafa/` （6 个，基线缺失 50 条）
 
@@ -598,9 +598,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xueshan_jian/` （3 个，基线缺失 21 条）
 
-- [ ] ❌ `xueshan_jian/chu.ex` ← `xueshan-jian/chu.c`  (miss=8)
-- [ ] ❌ `xueshan_jian/feng.ex` ← `xueshan-jian/feng.c`  (miss=7)
-- [ ] ❌ `xueshan_jian/hui.ex` ← `xueshan-jian/hui.c`  (miss=6)
+- [x] ✅ `xueshan_jian/chu.ex` ← `xueshan-jian/chu.c`  (miss=8→0，PASS)
+- [x] ✅ `xueshan_jian/feng.ex` ← `xueshan-jian/feng.c`  (miss=7→0，PASS)
+- [x] ✅ `xueshan_jian/hui.ex` ← `xueshan-jian/hui.c`  (miss=6→0，PASS)
 
 ### `xumishan_zhang/` （1 个，基线缺失 1 条）
 
@@ -646,9 +646,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yinsuo_jinling/` （3 个，基线缺失 35 条）
 
-- [ ] ❌ `yinsuo_jinling/dian.ex` ← `yinsuo-jinling/dian.c`  (miss=10)
-- [ ] ❌ `yinsuo_jinling/feng.ex` ← `yinsuo-jinling/feng.c`  (miss=18)
-- [ ] ❌ `yinsuo_jinling/kai.ex` ← `yinsuo-jinling/kai.c`  (miss=7)
+- [x] ✅ `yinsuo_jinling/dian.ex` ← `yinsuo-jinling/dian.c`  (miss=10→0，PASS)
+- [x] ✅ `yinsuo_jinling/feng.ex` ← `yinsuo-jinling/feng.c`  (miss=18→0，PASS)
+- [x] ✅ `yinsuo_jinling/kai.ex` ← `yinsuo-jinling/kai.c`  (miss=7→0，PASS)
 
 ### `yintuoluo_zhua/` （1 个，基线缺失 8 条）
 
@@ -656,9 +656,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yinyang_ren/` （3 个，基线缺失 28 条）
 
-- [ ] ❌ `yinyang_ren/heng.ex` ← `yinyang-ren/heng.c`  (miss=12)
-- [ ] ❌ `yinyang_ren/hua.ex` ← `yinyang-ren/hua.c`  (miss=8)
-- [ ] ❌ `yinyang_ren/huan.ex` ← `yinyang-ren/huan.c`  (miss=8)
+- [x] ✅ `yinyang_ren/heng.ex` ← `yinyang-ren/heng.c`  (miss=12→0，PASS)
+- [x] ✅ `yinyang_ren/hua.ex` ← `yinyang-ren/hua.c`  (miss=8→0，PASS)
+- [x] ✅ `yinyang_ren/huan.ex` ← `yinyang-ren/huan.c`  (miss=8→0，PASS)
 
 ### `yinyang_shiertian/` （1 个，基线缺失 4 条）
 
@@ -766,9 +766,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `zhemei_shou/` （3 个，基线缺失 21 条）
 
-- [ ] ❌ `zhemei_shou/hai.ex` ← `zhemei-shou/hai.c`  (miss=6)
-- [ ] ❌ `zhemei_shou/hua.ex` ← `zhemei-shou/hua.c`  (miss=8)
-- [ ] ❌ `zhemei_shou/zhe.ex` ← `zhemei-shou/zhe.c`  (miss=7)
+- [x] ✅ `zhemei_shou/hai.ex` ← `zhemei-shou/hai.c`  (miss=6→0，PASS)
+- [x] ✅ `zhemei_shou/hua.ex` ← `zhemei-shou/hua.c`  (miss=8→0，PASS)
+- [x] ✅ `zhemei_shou/zhe.ex` ← `zhemei-shou/zhe.c`  (miss=7→0，PASS)
 
 ### `zhengliangyi_jian/` （2 个，基线缺失 43 条）
 

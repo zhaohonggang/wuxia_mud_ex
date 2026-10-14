@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianyu-qijian") < 60 -> {:error, "你的天羽奇剑不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展。\n"}
+      Stats.skill(stats, "tianyu-qijian") < 60 -> {:error, "你的天羽奇剑不够娴熟，难以施展「闪剑诀」。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不足，难以施展「闪剑诀」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "tianyu-qijian" -> {:error, "你没有激发天羽奇剑，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "tianyu-qijian" -> {:error, "你没有激发天羽奇剑，难以施展「闪剑诀」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不足，难以施展「闪剑诀」。\n"}
       true -> :ok
     end
   end
@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「闪剑诀」。\n"}
       true -> :ok
     end
   end
@@ -149,14 +149,20 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Shan do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    msg = "$n大吃一惊，慌忙招架，这一下便失了先机。"
+
+    msg =
+      if hit?,
+        do: "$n大吃一惊，慌忙招架，这一下便失了先机。",
+        else: "可是$p不慌不忙，看破了此招虚实，并没有受到半点影响。"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
