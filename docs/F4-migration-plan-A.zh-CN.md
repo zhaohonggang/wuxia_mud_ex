@@ -592,9 +592,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `liumai_shenjian/` （3 个，基线缺失 35 条）
 
-- [ ] ❌ `liumai_shenjian/qi.ex` ← `liumai-shenjian/qi.c`  (miss=13)
-- [ ] ❌ `liumai_shenjian/six.ex` ← `liumai-shenjian/six.c`  (miss=6)
-- [ ] ❌ `liumai_shenjian/zong.ex` ← `liumai-shenjian/zong.c`  (miss=16)
+- [x] ✅ `liumai_shenjian/qi.ex` ← `liumai-shenjian/qi.c`  (miss→0，PASS)
+- [x] ✅ `liumai_shenjian/six.ex` ← `liumai-shenjian/six.c`  (miss→0，PASS)
+- [x] ✅ `liumai_shenjian/zong.ex` ← `liumai-shenjian/zong.c`  (miss→0，PASS)
 
 ### `liuyang_zhang/` （3 个，基线缺失 22 条）
 

@@ -287,6 +287,9 @@ linji_zhuang/powerup.ex
 liuhe_bian/lianhuan.ex
 liuhe_dao/shan.ex
 liuhe_zhang/tan.ex
+liumai_shenjian/qi.ex
+liumai_shenjian/six.ex
+liumai_shenjian/zong.ex
 longcheng_shendao/feng.ex
 longxing_jian/kong.ex
 longxing_jian/xian.ex
