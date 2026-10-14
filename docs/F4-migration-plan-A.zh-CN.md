@@ -740,7 +740,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `piaoxue_zhang/` （2 个，基线缺失 14 条）
 
-- [ ] ❌ `piaoxue_zhang/yun.ex` ← `piaoxue-zhang/yun.c`  (miss=6)
+- [x] ✅ `piaoxue_zhang/yun.ex` ← `piaoxue-zhang/yun.c`  (miss=6)
 - [ ] ❌ `piaoxue_zhang/zhao.ex` ← `piaoxue-zhang/zhao.c`  (miss=8)
 
 ### `pikong_zhang/` （1 个，基线缺失 7 条）
