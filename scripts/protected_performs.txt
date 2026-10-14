@@ -304,6 +304,8 @@ longcheng_shendao/feng.ex
 longcheng_shendao/fengyu.ex
 longxiang/powerup.ex
 longxiang/shield.ex
+longxiang_gong/powerup.ex
+longxiang_gong/shield.ex
 longxing_jian/kong.ex
 longxing_jian/xian.ex
 luohan_gun/xiangmo.ex

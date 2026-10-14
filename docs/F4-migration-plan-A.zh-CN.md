@@ -631,8 +631,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 - [ ] ❌ `longxiang_gong/die.ex` ← `longxiang-gong/die.c`  (miss=11)
 - [ ] ❌ `longxiang_gong/ji.ex` ← `longxiang-gong/ji.c`  (miss=10)
-- [ ] ❌ `longxiang_gong/powerup.ex` ← `longxiang-gong/powerup.c`  (miss=6)
-- [ ] ❌ `longxiang_gong/shield.ex` ← `longxiang-gong/shield.c`  (miss=6)
+- [x] ✅ `longxiang_gong/powerup.ex` ← `longxiang-gong/powerup.c`  (miss→0，PASS)
+- [x] ✅ `longxiang_gong/shield.ex` ← `longxiang-gong/shield.c`  (miss→0，PASS)
 - [ ] ❌ `longxiang_gong/tun.ex` ← `longxiang-gong/tun.c`  (miss=9)
 - [ ] ❌ `longxiang_gong/zhen.ex` ← `longxiang-gong/zhen.c`  (miss=11)
 
