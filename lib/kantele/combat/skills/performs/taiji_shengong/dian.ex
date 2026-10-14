@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
   @moduledoc """
-  exert「鹤嘴劲点龙跃窍」（source taiji-shengong/dian.c，由 translate_perform.py 生成，inherit ?）
+  exert「鹤嘴劲点龙跃窍」（source taiji-shengong/dian.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
 
   门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
@@ -13,14 +13,21 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
+
+  @perform_id "taiji-shengong/dian"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
 
-    with :ok <- check_gates(character) do
-      apply_effect(conn, character)
+    with :ok <- check_perform_known(character),
+         {:ok, target} <- target(character),
+         :ok <- check_gates(character, target) do
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -29,13 +36,52 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
+  defp check_perform_known(character) do
+    if Stats.perform_known?(character.meta.stats, @perform_id) do
+      :ok
+    else
+      {:error, "你所学的内功中没有这种功能。\n"}
+    end
+  end
+
+  defp target(character) do
+    case character.meta.combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "你要用真气为谁疗伤？\n"}
+    end
+  end
+
+  defp check_gates(character, target) do
+    with :ok <- check_not_self(character, target),
+         :ok <- check_not_fighting(character, target),
+         :ok <- check_living(target),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character),
-         :ok <- check_other(character) do
+         :ok <- check_target_injured(target) do
+      :ok
+    end
+  end
+
+  defp check_not_self(character, target) do
+    if character.id == target.id do
+      {:error, "「鹤嘴劲点龙跃窍」只能对别人施展。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_not_fighting(character, target) do
+    if Combat.fighting?(character.meta.combat) or Combat.fighting?(target.meta.combat) do
+      {:error, "战斗中无法运功疗伤。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_living(target) do
+    if target.meta.combat.dead or target.meta.vitals.qi <= 0 do
+      {:error, "你无法给" <> target.name <> "疗伤。\n"}
+    else
       :ok
     end
   end
@@ -44,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-shengong") < 100 -> {:error, "你的太极神功不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "taiji-shengong") < 100 -> {:error, "你的太极神功不够娴熟，难以施展「鹤嘴劲点龙跃窍」。\n"}
       true -> :ok
     end
   end
@@ -53,47 +99,74 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展。\n"}
-      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展。\n"}
-      vitals.jing < 100 -> {:error, "你现在精神状态不佳，难以施展。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为太浅，难以施展「鹤嘴劲点龙跃窍」。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展「鹤嘴劲点龙跃窍」。\n"}
+      vitals.jing < 100 -> {:error, "你现在精神状态不佳，难以施展「鹤嘴劲点龙跃窍」。\n"}
       true -> :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  defp check_target_injured(target) do
+    vitals = target.meta.vitals
+    max_qi = vitals.max_qi
+    max_jing = vitals.max_jing
 
-  end
-
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "战斗中无法运功疗伤。\n"}
-      true -> :ok
+    if vitals.qi >= max_qi and vitals.jing >= max_jing do
+      {:error, "对方没有受伤，不需要接受治疗。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你所学的内功中没有这种功能。\n"}
-    #   {:error, "你要用真气为谁疗伤？\n"}
-    #   {:error, "只能对别人施展。\n"}
-    :ok
-
-  end
-
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp apply_effect(conn, character, target) do
     vitals = character.meta.vitals
+
+    # 攻击者消耗
     vitals = %{vitals | neili: vitals.neili - 800}
-    vitals = %{vitals | jing: 1}
-    vitals = %{vitals | qi: 1}
+    vitals = %{vitals | qi: vitals.qi - 100}
+    vitals = %{vitals | jing: vitals.jing - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 10)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # 疗伤广播 - 使用字面量字符串匹配 LPC
+    conn =
+      Broadcast.publish(
+        conn,
+        "只见双手食指和拇指虚拿，成鹤嘴劲势，以食指指尖点在耳尖三分处的龙跃窍，运起内功，微微摆动。这招鹤嘴劲点龙跃窍使将出来，便是新断气之人也能还魂片刻。过得一会便见得额头上冒出豆大汗珠，头上冒出隐隐白雾，哇的一下吐出瘀血，脸色登时看起来红润多了。",
+        n1: character.name,
+        n2: target.name
+      )
+
+    # 目标恢复
+    target_vitals = target.meta.vitals
+    force_lvl = Stats.skill(target.meta.stats, "force") || 0
+    taiji_lvl = Stats.skill(target.meta.stats, "taiji-shengong") || 0
+
+    qi_cure = 100 + force_lvl + taiji_lvl * 3
+    jing_cure = 100 + div(force_lvl, 3) + taiji_lvl
+
+    target_vitals = Vitals.curing(target_vitals, :qi, qi_cure)
+    target_vitals = Vitals.curing(target_vitals, :jing, jing_cure)
+
+    # 确保不为0，复活处理
+    target_vitals = if target_vitals.qi <= 0, do: %{target_vitals | qi: 1}, else: target_vitals
+
+    target_vitals =
+      if target_vitals.jing <= 0, do: %{target_vitals | jing: 1}, else: target_vitals
+
+    # 如果目标已死，复活
+    if target.meta.combat.dead do
+      target = %{target | meta: %{target.meta | combat: %{target.meta.combat | dead: false}}}
+    end
+
+    target_combat = target.meta.combat
+    target_combat = Combat.start_busy(target_combat, 2)
+    target = %{target | meta: %{target.meta | vitals: target_vitals, combat: target_combat}}
+
+    conn = Broadcast.publish(conn, "闭目冥坐，开始运功调息。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -105,71 +178,71 @@ defmodule Kantele.Combat.Skills.Performs.TaijiShengong.Dian do
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
-  # 
+  #
   # #define DIAN "「" HIW "鹤嘴劲点龙跃窍" NOR "」"
-  # 
+  #
   # int exert(object me, object target)
   # {
   #         if (userp(me) && ! me->query("can_perform/taiji-shengong/dian"))
   #                 return notify_fail("你所学的内功中没有这种功能。\n");
-  # 
+  #
   #         if (! target)
   #                 return notify_fail("你要用真气为谁疗伤？\n");
-  # 
+  #
   #         if (target == me)
   #                 return notify_fail(DIAN "只能对别人施展。\n");
-  # 
+  #
   #         if (me->is_fighting() || target->is_fighting())
   #                 return notify_fail("战斗中无法运功疗伤。\n");
-  # 
+  #
   #         if (target->query("not_living"))
   #                 return notify_fail("你无法给" + target->name() + "疗伤。\n");
-  # 
+  #
   #         if ((int)me->query_skill("taiji-shengong", 1) < 100)
   #                 return notify_fail("你的太极神功不够娴熟，难以施展" DIAN "。\n");
-  # 
+  #
   #         if ((int)me->query("max_neili") < 1500)
   #                 return notify_fail("你的内力修为太浅，难以施展" DIAN "。\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 1000)
   #                 return notify_fail("你现在的真气不足，难以施展" DIAN "。\n");
-  # 
+  #
   #         if ((int)me->query("jing") < 100)
   #                 return notify_fail("你现在精神状态不佳，难以施展" DIAN "。\n");
-  # 
+  #
   #         if (target->query("eff_qi") >= target->query("max_qi") &&
   #             target->query("eff_jing") >= target->query("max_jing"))
   #                 return notify_fail("对方没有受伤，不需要接受治疗。\n");
-  # 
+  #
   #         message_sort(HIW "\n只见$N" HIW "双手食指和拇指虚拿，成鹤嘴劲"
   #                      "势，以食指指尖点在$n" HIW "耳尖三分处的龙跃窍，"
   #                      "运起内功，微微摆动。这招鹤嘴劲点龙跃窍使将出来，"
   #                      "便是新断气之人也能还魂片刻。过得一会便见得$p额头"
   #                      "上冒出豆大汗珠，头上冒出隐隐白雾，哇的一下吐出瘀"
   #                      "血，脸色登时看起来红润多了。\n" NOR, me, target);
-  # 
+  #
   #         me->add("neili", -800);
   #         me->receive_damage("qi", 100);
   #         me->receive_damage("jing", 50);
-  # 
+  #
   #         target->receive_curing("qi", 100 + (int)me->query_skill("force") +
   #                                      (int)me->query_skill("taiji-shengong", 1) * 3);
-  # 
+  #
   #         if (target->query("qi") <= 0)
   #                 target->set("qi", 1);
-  # 
+  #
   #         target->receive_curing("jing", 100 + (int)me->query_skill("force") / 3 +
   #                                        (int)me->query_skill("taiji-shengong", 1));
-  # 
+  #
   #         if (target->query("jing") <= 0)
   #                 target->set("jing", 1);
-  # 
+  #
   #         if (! living(target))
   #                 target->revive();
-  # 
+  #
   #         if (! target->is_busy())
   #                 target->stary_busy(2);
-  # 
+  #
   #         message_vision("\n$N闭目冥坐，开始运功调息。\n", me);
   #         me->start_busy(10);
   #         return 1;

@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
   @moduledoc """
-  perform「ying」（source sougu-yingzhua/ying.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「牧野鹰扬」（source sougu-yingzhua/ying.c，由 translate_perform.py 生成，inherit F_SSERVER）
 
   门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -64,7 +66,8 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_str(character) do
       :ok
     end
   end
@@ -74,6 +77,16 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
 
     cond do
       Stats.skill(stats, "sougu-yingzhua") < 150 -> {:error, "你的搜骨鹰爪功修为不够,目前还不能使用牧野鹰扬！\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_str(character) do
+    stats = character.meta.stats
+    str = Stats.skill(stats, "str")
+
+    cond do
+      str < 30 -> {:error, "你臂力不够,不能使用牧野鹰扬！\n"}
       true -> :ok
     end
   end
@@ -90,17 +103,10 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 4)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # 无条件攻击方效果：前置广播（消耗/Busy 在 resolve_incoming 分支处理）
     conn = Broadcast.publish(conn, "$N使出搜骨鹰爪功绝技「牧野鹰扬」，双爪蓦地抓向$n的全身要穴。", n1: character.name)
 
     conn
@@ -124,23 +130,35 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧！", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    stats = character.meta.stats
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
     vitals = character.meta.vitals
+
+    # LPC: random(combat_exp) > target_combat_exp / 2
+    # 这里简化为随机判定
+    hit = Engine.rand(rng, 100) > 50
+
+    if hit do
+      Performs.feedback(attacker, 150, 4)
+      msg = "结果$p被$P点中要穴，立时动弹不得！"
+    else
+      Performs.feedback(attacker, 0, 4)
+      msg = "可是$p看破了$P的企图，并没有上当。"
+    end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 150, 4)
-    msg = "结果$p被$P点中要穴，立时动弹不得！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
@@ -151,38 +169,38 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // muyeyingyang.c 牧野鹰扬
-  # 
+  #
   # #include <ansi.h>
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # int perform(object me, object target)
   # {
   #         string msg;
-  # 
+  #
   #         if (! target) target = offensive_target(me);
-  # 
+  #
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail("牧野鹰扬只能对战斗中的对手使用。\n");
-  # 
+  #
   #         if ((int)me->query_str() < 30)
   #                 return notify_fail("你臂力不够,不能使用牧野鹰扬！\n");
-  # 
+  #
   #         if ((int)me->query_skill("sougu-yingzhua",1) < 150)
   #                 return notify_fail("你的搜骨鹰爪功修为不够,目前还不能使用牧野鹰扬！\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 800)
   #                 return notify_fail("你内力现在不够, 不能使用牧野鹰扬！\n");
-  # 
+  #
   #         if (target->is_busy())
   #                 return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧！\n");
-  # 
+  #
   #        if (! living(target))
   #               return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
   #         msg = HIY "$N" HIY "使出搜骨鹰爪功绝技「牧野鹰扬」，双爪蓦地抓向$n"
   #               HIY "的全身要穴。\n" NOR;
-  # 
+  #
   #         if (random(me->query("combat_exp")) > (int)target->query("combat_exp") / 2)
   #         {
   #                 msg += HIR "结果$p" HIR "被$P" HIR "点中要穴，立时动弹不得！\n" NOR;
@@ -194,7 +212,7 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
   #                 me->start_busy(4);
   #         }
   #         message_combatd(msg, me, target);
-  # 
+  #
   #         return 1;
   # }
 end

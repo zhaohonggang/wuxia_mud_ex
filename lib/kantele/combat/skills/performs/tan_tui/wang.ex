@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "tan-tui") < 120 -> {:error, "你的十二路潭腿不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展「犀牛望月转回还」。\n"}
+      Stats.skill(stats, "tan-tui") < 120 -> {:error, "你的十二路潭腿不够娴熟，难以施展「犀牛望月转回还」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
 
     cond do
       Stats.mapped(stats, "unarmed") != "tan-tui" ->
-        {:error, "你没有激发十二路潭腿，难以施展。\n"}
+        {:error, "你没有激发十二路潭腿，难以施展「犀牛望月转回还」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "tan-tui" ->
-        {:error, "你没有准备十二路潭腿，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "tan-tui" ->
+        {:error, "你没有准备十二路潭腿，难以施展「犀牛望月转回还」。\n"}
 
       true ->
         :ok
@@ -103,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展「犀牛望月转回还」。\n"}
       true -> :ok
     end
   end
@@ -112,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「犀牛望月转回还」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -120,14 +123,12 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
-    combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N拔地跃起，凌空一个翻滚，陡然间双腿便如流星般向$n连续踢至。", n1: character.name)
+    conn = Broadcast.publish(conn, "只见$N拔地跃起，凌空一个翻滚，陡然间双腿便如流星般向$n连续踢至。\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -163,14 +164,16 @@ defmodule Kantele.Combat.Skills.Performs.TanTui.Wang do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 4)
     msg = if hit, do: "却听$n一声惨嚎，已被$P单腿正中前胸，顿时心脉受震，喷出一大口鲜血。", else: "可是$p奋力招架，终于将$P的双腿架开，没有受到任何伤害。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

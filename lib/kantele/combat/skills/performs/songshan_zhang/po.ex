@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "songshan-zhang") < 30 -> {:error, "你嵩山掌法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 40 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "songshan-zhang") < 30 -> {:error, "你嵩山掌法不够娴熟，难以施展「破山斧」。\n"}
+      Stats.skill(stats, "force") < 40 -> {:error, "你的内功修为不够，难以施展「破山斧」。\n"}
       true -> :ok
     end
   end
@@ -86,8 +88,9 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "songshan-zhang" ->
-        {:error, "你没有准备嵩山掌法，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "songshan-zhang" ->
+        {:error, "你没有准备嵩山掌法，难以施展「破山斧」。\n"}
 
       true ->
         :ok
@@ -98,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展「破山斧」。\n"}
       true -> :ok
     end
   end
@@ -107,19 +110,14 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「破山斧」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 30}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N右掌高举，施一招「破山斧」，掌速极快，犹如一把利斧从天而下，劈向$n
-。", n1: character.name)
+    # 无条件攻击方效果：前置广播（消耗/Busy 在 resolve_incoming 分支处理）
+    conn = Broadcast.publish(conn, "$N右掌高举，施一招「破山斧」，掌速极快，犹如一把利斧从天而下，劈向$n。", n1: character.name)
 
     conn
     |> put_character(character)
@@ -147,22 +145,26 @@ defmodule Kantele.Combat.Skills.Performs.SongshanZhang.Po do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      skill_lvl = Stats.skill(stats, "songshan-zhang")
+      damage = skill_lvl + Engine.rand(rng, div(skill_lvl, 2))
+      vitals = Vitals.damage(vitals, :qi, damage)
+      Performs.feedback(attacker, 100, 2 + Engine.rand(rng, 2))
+    else
+      Performs.feedback(attacker, 30, 2 + Engine.rand(rng, 3))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 30, 1)
     msg = if hit, do: "$N出手既快，方位又奇，$n闪避不及，却已中掌。", else: "$n不慌不忙，以快打快，将$N这招化去。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

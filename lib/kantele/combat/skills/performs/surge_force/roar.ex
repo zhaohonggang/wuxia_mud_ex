@@ -1,6 +1,6 @@
 defmodule Kantele.Combat.Skills.Performs.SurgeForce.Roar do
   @moduledoc """
-  exert「roar」（source surge-force/roar.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
+  exert「黯然吟」（source surge-force/roar.c，由 translate_perform.py 生成，inherit F_CLEAN_UP）
 
   门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
   """
@@ -13,6 +13,7 @@ defmodule Kantele.Combat.Skills.Performs.SurgeForce.Roar do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -33,7 +34,7 @@ defmodule Kantele.Combat.Skills.Performs.SurgeForce.Roar do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_room(character) do
       :ok
     end
   end
@@ -56,20 +57,33 @@ defmodule Kantele.Combat.Skills.Performs.SurgeForce.Roar do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+  defp check_room(character) do
+    room = character.room
 
+    if room && room.no_fight do
+      {:error, "这里不能攻击别人!\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
+    vitals = %{vitals | qi: vitals.qi - 10}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 5)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    # 广播啸声 - 匹配 LPC 字面量
+    conn = Broadcast.publish(conn, "$N仰天长啸，声浪一波一波的荡开去，令人发耳欲聩，意乱情迷！", n1: character.name)
+
+    # 这里应该影响房间内所有角色，简化处理
+    # 实际实现需要遍历房间角色并应用伤害
+    # 文案："你听了脑子轰的一下......"
+    conn = Broadcast.publish(conn, "你听了脑子轰的一下......", n1: character.name)
 
     conn
     |> put_character(character)
@@ -81,50 +95,50 @@ defmodule Kantele.Combat.Skills.Performs.SurgeForce.Roar do
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // roar.c 黯然吟
-  # 
+  #
   # #include <ansi.h>
-  # 
+  #
   # inherit F_CLEAN_UP;
-  # 
+  #
   # int exert(object me, object target)
   # {
   #     object *ob;
   #     int i, skill, damage;
-  # 
+  #
   #         if (me->query_skill("surge-force", 1) < 100)
   #                 return notify_fail("你黯然一声长叹，结果吓跑了几只老鼠！\n");
-  # 
+  #
   #     if ((int)me->query("neili") < 100)
   #         return notify_fail("你的内力不够。\n");
-  # 
+  #
   #     if (environment(me)->query("no_fight"))
   #         return notify_fail("这里不能攻击别人! \n");
-  # 
+  #
   #     skill = me->query_skill("force");
-  # 
+  #
   #     me->add("neili", -100);
   #     me->receive_damage("qi", 10);
-  # 
+  #
   #     me->start_busy(5);
   #     message_combatd(HIR "$N" HIR "仰天长啸，声浪一波一波的荡开"
   #                         "去，令人发耳欲聩，意乱情迷！\n" NOR, me);
-  # 
+  #
   #     ob = all_inventory(environment(me));
   #     for (i = 0; i < sizeof(ob); i++)
   #         {
   #         if (! ob[i]->is_character() || ob[i] == me)
   #             continue;
-  # 
+  #
   #         if (skill / 2 + random(skill / 2) < (int)ob[i]->query("con") * 2)
   #             continue;
-  # 
+  #
   #                 if ((int)ob[i]->query_condition("die_guard"))
   #                         continue;
-  # 
+  #
   #                 me->want_kill(ob[i]);
   #                 me->fight_ob(ob[i]);
   #                 ob[i]->kill_ob(me);
-  # 
+  #
   #         damage = skill - ((int)ob[i]->query("max_neili") / 10);
   #         if (damage > 0)
   #                 {

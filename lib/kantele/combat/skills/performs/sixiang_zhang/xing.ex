@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     lvl = Stats.skill(stats, "sixiang-zhang")
     skill = Stats.skill(stats, "sixiang-zhang")
     ap = Stats.skill(stats, "strike")
-    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 3)))
+    damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,7 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sixiang-zhang") < 60 -> {:error, "你的四象掌法等级不够，难以施展。\n"}
+      Stats.skill(stats, "sixiang-zhang") < 60 -> {:error, "你的四象掌法等级不够，难以施展「星罗棋布」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
 
     cond do
       Stats.mapped(stats, "strike") != "sixiang-zhang" ->
-        {:error, "你没有激发四象掌法，难以施展。\n"}
+        {:error, "你没有激发四象掌法，难以施展「星罗棋布」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "sixiang-zhang" ->
-        {:error, "你现在没有准备使用四象掌法，无法使用。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "sixiang-zhang" ->
+        {:error, "你现在没有准备使用四象掌法，无法使用「星罗棋布」。\n"}
 
       true ->
         :ok
@@ -103,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「星罗棋布」。\n"}
       true -> :ok
     end
   end
@@ -112,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「星罗棋布」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -163,14 +166,16 @@ defmodule Kantele.Combat.Skills.Performs.SixiangZhang.Xing do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 3)
     msg = if hit, do: "$n一时无法勘破这玄奇的掌法，接连中了数招，身陷其中，无法自拔。", else: "可是$p的看破了$P的掌法，巧妙的拆招，没露半点破绽。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

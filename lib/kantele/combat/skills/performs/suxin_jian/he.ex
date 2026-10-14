@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -109,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    # 无条件攻击方效果：前置广播（消耗/Busy 在 resolve_incoming 分支处理）
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 350}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
@@ -145,23 +147,27 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      damage = Stats.skill(stats, "sword") + Engine.rand(rng, Stats.skill(stats, "sword"))
+      damage = div(damage, 2) + Engine.rand(rng, div(damage, 2))
+      vitals = Vitals.damage(vitals, :qi, damage)
+      Performs.feedback(attacker, 350, 2)
+      msg = "$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！"
+    else
+      Performs.feedback(attacker, 0, 3)
+      msg = "可是$p看破了$P的企图，将自己的全身上下护得密不透风，令$P无计可施。"
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 350, 3)
-    msg = if hit, do: "$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！
-一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！", else: "$n躲过了$N的攻击！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

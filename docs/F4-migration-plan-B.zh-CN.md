@@ -109,13 +109,13 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `sanfen_jianshu/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `sanfen_jianshu/haishi.ex` ← `sanfen-jianshu/haishi.c`  (miss=5)
+- [x] ✅ `sanfen_jianshu/haishi.ex` ← `sanfen-jianshu/haishi.c`  (miss→0，PASS)
 
 ### `sanku_shengong/` （3 个，基线缺失 25 条）
 
-- [ ] ❌ `sanku_shengong/dispel.ex` ← `sanku-shengong/dispel.c`  (miss=15)
+- [x] ✅ `sanku_shengong/dispel.ex` ← `sanku-shengong/dispel.c`  (miss→0，PASS)
 - [x] ✅ `sanku_shengong/powerup.ex` ← `sanku-shengong/powerup.c`  (miss→0，PASS)
-- [ ] ❌ `sanku_shengong/roar.ex` ← `sanku-shengong/roar.c`  (miss=5)
+- [x] ✅ `sanku_shengong/roar.ex` ← `sanku-shengong/roar.c`  (miss→0，PASS)
 
 ### `sanwu_shou/` （2 个，基线缺失 17 条）
 

@@ -435,7 +435,9 @@ ruyi_dao/ruyi.ex
 ruying_suixingtui/ruying.ex
 sad_strike/tuo.ex
 sanhua_zhang/san.ex
+sanku_shengong/dispel.ex
 sanku_shengong/powerup.ex
+sanku_shengong/roar.ex
 sanwu_shou/wei.ex
 shangjia_dao/juan.ex
 shedu_qiqiao/da.ex
