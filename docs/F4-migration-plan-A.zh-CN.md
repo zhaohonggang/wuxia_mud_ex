@@ -716,7 +716,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `pangu_qishi/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `pangu_qishi/kai.ex` ← `pangu-qishi/kai.c`  (miss=7)
+- [x] ✅ `pangu_qishi/kai.ex` ← `pangu-qishi/kai.c`  (miss=7)
 
 ### `panlong_suo/` （1 个，基线缺失 8 条）
 
