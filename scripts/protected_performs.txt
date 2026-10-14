@@ -313,6 +313,8 @@ longxiang_gong/zhen.ex
 longxing_jian/kong.ex
 longxing_jian/xian.ex
 lunhui_jian/hui.ex
+luohan_fumogong/fireice.ex
+luohan_fumogong/powerup.ex
 luohan_gun/xiangmo.ex
 luohan_quan/xiangmo.ex
 luoying_shenjian/sui.ex

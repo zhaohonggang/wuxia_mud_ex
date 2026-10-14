@@ -646,8 +646,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `luohan_fumogong/` （2 个，基线缺失 20 条）
 
-- [ ] ❌ `luohan_fumogong/fireice.ex` ← `luohan-fumogong/fireice.c`  (miss=8)
-- [ ] ❌ `luohan_fumogong/powerup.ex` ← `luohan-fumogong/powerup.c`  (miss=12)
+- [x] ✅ `luohan_fumogong/fireice.ex` ← `luohan-fumogong/fireice.c`  (miss→0，PASS)
+- [x] ✅ `luohan_fumogong/powerup.ex` ← `luohan-fumogong/powerup.c`  (miss→0，PASS)
 
 ### `luohan_gun/` （1 个，基线缺失 21 条）
 
