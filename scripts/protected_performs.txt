@@ -354,6 +354,7 @@ ningxue_zhang/xue.ex
 pangen_cuojiefu/cuo.ex
 pangu_qishi/kai.ex
 panlong_suo/chan.ex
+panlong_suo/sha.ex
 pichen_jian/ao.ex
 pidi_shenzhen/huan.ex
 poguang_dao/bing.ex
