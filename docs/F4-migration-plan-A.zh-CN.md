@@ -580,15 +580,15 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `linji_zhuang/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `linji_zhuang/powerup.ex` ← `linji-zhuang/powerup.c`  (miss=10)
+- [x] ✅ `linji_zhuang/powerup.ex` ← `linji-zhuang/powerup.c`  (miss→0，PASS)
 
 ### `liuhe_bian/` （1 个，基线缺失 19 条）
 
-- [ ] ❌ `liuhe_bian/lianhuan.ex` ← `liuhe-bian/lianhuan.c`  (miss=19)
+- [x] ✅ `liuhe_bian/lianhuan.ex` ← `liuhe-bian/lianhuan.c`  (miss→0，PASS)
 
 ### `liuhe_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `liuhe_zhang/tan.ex` ← `liuhe-zhang/tan.c`  (miss=7)
+- [x] ✅ `liuhe_zhang/tan.ex` ← `liuhe-zhang/tan.c`  (miss→0，PASS)
 
 ### `liumai_shenjian/` （3 个，基线缺失 35 条）
 
