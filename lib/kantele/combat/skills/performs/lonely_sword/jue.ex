@@ -1,51 +1,51 @@
 defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
   @moduledoc """
-  perform「jue」（source lonely-sword/jue.c，由 translate_perform.py 生成，inherit F_SSERVER）
+  perform「总诀式」（source lonely-sword/jue.c，inherit F_SSERVER）
 
-  门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  自练型绝招（无目标）。门槛（按 .c 顺序）：房间 `no_fight` 且非 `scheme`
+  状态 → 非战斗 → 持剑 → `lonely-sword`>=20 → 真气>=50 →
+  精神>=`-jing_cost`（`jing_cost = max(80-int, 30)`）→ 尚可提升。
+  演练广播后扣 `40 + random(10)` 真气、耗 `jing_cost` 精神；
+  `improve = 1 + random(int)`，「基本剑法」提升 `improve/2`、
+  「独孤九剑」提升 `improve`，并忙乱 `random(3)`。
+
+  差异（TODO(migrate)）：
+  - 房间 `no_fight` 标记与 `me->query("doing")` 未建模，`check_no_fight/1`
+    恒为 :ok，仅保留文案以对齐 .c；
+  - `.c` 无 `can_perform` 门槛，故本模块不设 `check_perform_known/1`；
+  - `tell_object(me, …)` 折算为对自身的 `render(CommandView, "text", …)`；
+  - `.c` 起手文案 `"…将手中" + weapon->name() + "随意挥舞击刺。\n"` 按原样拆为两段。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.LearnGate
   alias Kantele.Character.Stats
-  alias Kalevala.Event
-  alias Kantele.Combat.Engine
   alias Kantele.Character.Vitals
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
-
-  @perform_id "lonely-sword/jue"
+  alias Kantele.Combat.Broadcast
+  alias Kantele.Combat.Engine
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
-    combat = character.meta.combat
     stats = character.meta.stats
     rng = &:rand.uniform/1
-    lvl = Stats.skill(stats, "lonely-sword")
-    skill = Stats.skill(stats, "lonely-sword")
-    jing_cost = 30
+    # LPC: jing_cost = 80 - (int)me->query("int"); if (jing_cost < 30) jing_cost = 30;
+    jing_cost = max(80 - stats.int, 30)
 
-    with :ok <- check_perform_known(character),
-         :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
-      send(target.pid, %Event{
-        from_pid: self(),
-        topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
-          level: lvl,
-          skill: lvl,
-          rng: rng
-        }
-      })
-
-      apply_effect(conn, character)
+    with :ok <- check_no_fight(character),
+         :ok <- check_not_fighting(character),
+         {:ok, weapon} <- check_weapon(character),
+         :ok <- check_skill_min(stats),
+         :ok <- check_neili(character),
+         :ok <- check_jing(character, jing_cost),
+         :ok <- check_can_improve(stats) do
+      apply_effect(conn, character, weapon, jing_cost, rng)
     else
       {:error, message} ->
         conn
@@ -54,101 +54,123 @@ defmodule Kantele.Combat.Skills.Performs.LonelySword.Jue do
     end
   end
 
-  defp check_perform_known(character) do
-    if Stats.perform_known?(character.meta.stats, @perform_id) do
+  # LPC: if (environment(me)->query("no_fight") && me->query("doing") != "scheme")
+  #         return notify_fail("这里太嘈杂，你不能静下心来演练。\n");
+  # 房间 no_fight 标记与 me->query("doing") 未建模，恒为 :ok，仅保留文案以对齐 .c。
+  defp check_no_fight(_character) do
+    _ = "这里太嘈杂，你不能静下心来演练。\n"
+    :ok
+  end
+
+  # LPC: if (me->is_fighting()) return notify_fail("「总诀式」不能在战斗中演练。\n");
+  defp check_not_fighting(character) do
+    if Combat.fighting?(character.meta.combat) do
+      {:error, "「总诀式」不能在战斗中演练。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")) ||
+  #          (string)weapon->query("skill_type") != "sword")
+  #         return notify_fail("你必须先去找一把剑。\n");
+  defp check_weapon(character) do
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "sword"} = weapon -> {:ok, weapon}
+      _ -> {:error, "你必须先去找一把剑。\n"}
+    end
+  end
+
+  # LPC: if (! skill || skill < 20)
+  #         return notify_fail("你的独孤九剑等级不够, 不能演练「总诀式」！\n");
+  defp check_skill_min(stats) do
+    if Stats.skill(stats, "lonely-sword") < 20 do
+      {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (me->query("neili") < 50)
+  #         return notify_fail("你的内力不够，没有力气演练「总诀式」！\n");
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 50 do
+      {:error, "你的内力不够，没有力气演练「总诀式」！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (me->query("jing") < -jing_cost)
+  #         return notify_fail("你现在太累了，无法集中精神演练「总诀式」！\n");
+  defp check_jing(character, jing_cost) do
+    if character.meta.vitals.jing < -jing_cost do
+      {:error, "你现在太累了，无法集中精神演练「总诀式」！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (! me->can_improve_skill("lonely-sword"))
+  #         return notify_fail("你的实战经验不够，无法体会「总诀式」！\n");
+  defp check_can_improve(stats) do
+    if LearnGate.can_improve?(stats, "lonely-sword") do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你的实战经验不够，无法体会「总诀式」！\n"}
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character),
-         :ok <- check_other(character) do
-      :ok
-    end
-  end
-
-  defp check_levels(character) do
+  defp apply_effect(conn, character, weapon, jing_cost, rng) do
     stats = character.meta.stats
 
-    cond do
-      Stats.skill(stats, "lonely-sword") < 20 -> {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
-      true -> :ok
-    end
-  end
+    # LPC: msg = HIG "$N" HIG "使出独孤九剑之「总诀式」，将手中" +
+    #            weapon->name() + HIG "随意挥舞击刺。\n" NOR;
+    #      message_combatd(msg, me);
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N使出独孤九剑之「总诀式」，将手中" <>
+          Map.get(weapon, :name) <> "随意挥舞击刺。\n",
+        n1: character.name
+      )
 
-  defp check_resources(character) do
+    # LPC: me->add("neili", -40 - random(10)); me->receive_damage("jing", jing_cost);
     vitals = character.meta.vitals
+    vitals = %{vitals | neili: vitals.neili - 40 - Engine.rand(rng, 10)}
+    vitals = Vitals.damage(vitals, :jing, jing_cost)
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
-    cond do
-      vitals.neili < 50 -> {:error, "你的内力不够，没有力气演练「总诀式」！\n"}
-      true -> :ok
-    end
-  end
+    # LPC: improve = 1 + random(me->query("int"));
+    improve = 1 + Engine.rand(rng, stats.int)
+    character = improve_skill(character, "sword", div(improve, 2))
+    character = improve_skill(character, "lonely-sword", improve)
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你必须先去找一把剑。\n"}
-    #   {:error, "你的独孤九剑等级不够, 不能演练「总诀式」！\n"}
-    :ok
+    # LPC: me->start_busy(random(3));
+    busy = Engine.rand(rng, 3)
 
-  end
+    character =
+      if busy > 0 do
+        combat = Combat.start_busy(character.meta.combat, busy)
+        %{character | meta: %{character.meta | combat: combat}}
+      else
+        character
+      end
 
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "「总诀式」不能在战斗中演练。\n"}
-      true -> :ok
-    end
-  end
-
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "这里太嘈杂，你不能静下心来演练。\n"}
-    :ok
-
-  end
-
-  defp apply_effect(conn, character) do
+    # LPC: tell_object(me, MAG "你的「基本剑法」和「独孤九剑」进步了！\n" NOR);
     conn
+    |> render(CommandView, "text", %{text: "你的「基本剑法」和「独孤九剑」进步了！\n"})
     |> put_character(character)
     |> assign(:prompt, false)
   end
 
-  defp target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "这里没有可供攻击的对手。\n"}
-    end
+  # LPC: me->improve_skill("sword", improve / 2); me->improve_skill("lonely-sword", improve);
+  defp improve_skill(character, skill_name, gain) do
+    current = Stats.skill(character.meta.stats, skill_name)
+    skills = Map.put(character.meta.stats.skills, skill_name, current + gain)
+    stats = %{character.meta.stats | skills: skills}
+    %{character | meta: %{character.meta | stats: stats}}
   end
-
-  defp ref(character) do
-    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-  end
-
-  @impl true
-  def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
-  end
-
-  # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
-  #   %{"assign_refs": [{"skill", "lonely-sword"}], "busy_lines": ["me->start_busy(random(3));"], "remote_damage": false, "resource_gates": [{"neili", "50"}], "var_gates": [{"jing_cost", "30"}, {"skill", "20"}]}
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>

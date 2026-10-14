@@ -297,6 +297,9 @@ liuyue_jian/liu.ex
 liuyue_jian/sheng.ex
 liuyun_zhang/die.ex
 liuyun_zhang/pai.ex
+lonely_sword/jue.ex
+lonely_sword/po.ex
+lonely_sword/yi.ex
 longcheng_shendao/feng.ex
 longxing_jian/kong.ex
 longxing_jian/xian.ex

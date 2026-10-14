@@ -614,9 +614,9 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `lonely_sword/` （3 个，基线缺失 20 条）
 
-- [ ] ❌ `lonely_sword/jue.ex` ← `lonely-sword/jue.c`  (miss=7)
-- [ ] ❌ `lonely_sword/po.ex` ← `lonely-sword/po.c`  (miss=9)
-- [ ] ❌ `lonely_sword/yi.ex` ← `lonely-sword/yi.c`  (miss=4)
+- [x] ✅ `lonely_sword/jue.ex` ← `lonely-sword/jue.c`  (miss→0，PASS)
+- [x] ✅ `lonely_sword/po.ex` ← `lonely-sword/po.c`  (miss→0，PASS)
+- [x] ✅ `lonely_sword/yi.ex` ← `lonely-sword/yi.c`  (miss→0，PASS)
 
 ### `longcheng_shendao/` （1 个，基线缺失 5 条）
 
