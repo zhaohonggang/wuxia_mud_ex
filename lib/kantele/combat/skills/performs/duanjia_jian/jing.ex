@@ -121,13 +121,16 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaJian.Jing do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    attacker_force = max(Map.get(data, :force, 0), 1)
-    attacker_sword = Map.get(data, :sword, 0)
-    target_force = Stats.skill(character.meta.stats, "force")
-    bindings = [n1: attacker.name, n2: character.name]
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      rng = Map.get(data, :rng, &:rand.uniform/1)
+      attacker_force = max(Map.get(data, :force, 0), 1)
+      attacker_sword = Map.get(data, :sword, 0)
+      target_force = Stats.skill(character.meta.stats, "force")
+      bindings = [n1: attacker.name, n2: character.name]
 
-    if Engine.rand(rng, attacker_force) > div(target_force, 2) do
+      if Engine.rand(rng, attacker_force) > div(target_force, 2) do
       base = max(div(attacker_force + attacker_sword, 5), 1)
       damage = base + Engine.rand(rng, base)
 
@@ -153,6 +156,7 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaJian.Jing do
 
       conn
       |> Broadcast.publish(Messages.interpolate("可是$p猛地向边上一跃，跳出了$P的攻击范围。\n", bindings))
+      end
     end
   end
 

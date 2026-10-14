@@ -1,24 +1,20 @@
 # Plan D — Remaining 153 unplanned failing performs (F4 migration)
 
-> 生成于 2026-10-14 全量严格验收扫描。
-> 范围：**不在 plan A/B/C 文档中、已登记为保护、但严格验收 FAIL** 的 perform 文件。
-> 共 **152** 个。每个需手工修过验收（中文文案逐字对齐 `.c`，MISSING=0）。
-> 验收工具：`scripts/perf_acceptance.py`（`check_one`，严格 multiset 比对，不模糊）。
->
-> 约定（沿用 plan A/B）：手工 `.ex` 必须保留 `# ===== 原始 LPC 源码 =====` 注释块（逐字节对齐 `.c`）；
+> 动态清单：每次全量严格验收扫描后重新生成，仅列出仍 FAIL 的未计划文件。
+> 验收工具：`scripts/perf_acceptance.py`（`check_one`，严格 multiset 比对，MISSING=0 为 PASS）。
+> 约定（沿用 plan A/B）：手工 `.ex` 必须保留 `# ===== 原始 LPC 源码 =====` 注释块；
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 文件数：**152**
-- 缺失字面量合计（miss 之和）：**1480**
-- 已完成（验收 PASS）：**0**
+- 剩余文件数：**150**
+- 缺失字面量合计（miss 之和）：**1478**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
 | A严重(>=15) | 12 | 233 |
 | B中等(5-14) | 118 | 1196 |
-| C轻微(1-4) | 22 | 51 |
+| C轻微(1-4) | 20 | 49 |
 
 ## 按顶层目录分组（提交批次）
 
@@ -98,8 +94,7 @@
 ### dongyang_dao（1 个）
 - [ ] ❌ `dongyang_dao/zhan.ex` ← `dongyang-dao/zhan.c` (miss=9)
 
-### duanjia_jian（2 个）
-- [ ] ❌ `duanjia_jian/jing.ex` ← `duanjia-jian/jing.c` (miss=1)
+### duanjia_jian（1 个）
 - [ ] ❌ `duanjia_jian/lian.ex` ← `duanjia-jian/lian.c` (miss=1)
 
 ### duanjia_sword（1 个）
@@ -369,10 +364,9 @@
 ### raozhi_roujian（1 个）
 - [ ] ❌ `raozhi_roujian/chuan.ex` ← `raozhi-roujian/chuan.c` (miss=11)
 
-### riyue_bian（3 个）
+### riyue_bian（2 个）
 - [ ] ❌ `riyue_bian/shang.ex` ← `riyue-bian/shang.c` (miss=8)
 - [ ] ❌ `riyue_bian/chan.ex` ← `riyue-bian/chan.c` (miss=2)
-- [ ] ❌ `riyue_bian/he.ex` ← `riyue-bian/he.c` (miss=1)
 
 ### riyue_lun（1 个）
 - [ ] ❌ `riyue_lun/yuan.ex` ← `riyue-lun/yuan.c` (miss=2)

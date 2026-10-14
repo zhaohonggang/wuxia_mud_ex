@@ -110,7 +110,10 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.He do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    rng = Map.get(data, :rng, &:rand.uniform/1)
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = max(Map.get(data, :ap, 0), 1)
     bindings = [n1: attacker.name, n2: character.name]
     stats = character.meta.stats
@@ -146,6 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.He do
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+    end
   end
 
   defp ref(character) do
