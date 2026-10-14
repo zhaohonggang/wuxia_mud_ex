@@ -394,7 +394,11 @@ qianye_shou/qianye.ex
 qianzhu_wandushou/suck.ex
 qianzhu_wandushou/wan.ex
 qianzhu_wandushou/zhugu.ex
+qingliang_daxuefa/ding.ex
 qingliang_jian/ming.ex
+qingyun_bian/duan.ex
+qingyun_shou/zhuo.ex
+qishang_quan/fei.ex
 qishang_quan/shang.ex
 qishi_ji/juan.ex
 qiufeng_chenfa/chan.ex

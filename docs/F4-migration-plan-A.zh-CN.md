@@ -825,17 +825,17 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `qingliang_daxuefa/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `qingliang_daxuefa/ding.ex` ← `qingliang-daxuefa/ding.c`  (miss=8)
+- [x] ✅ `qingliang_daxuefa/ding.ex` ← `qingliang-daxuefa/ding.c`  (miss→0，PASS)
 
 ### `qingyun_bian/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `qingyun_bian/duan.ex` ← `qingyun-bian/duan.c`  (miss=6)
+- [x] ✅ `qingyun_bian/duan.ex` ← `qingyun-bian/duan.c`  (miss→0，PASS)
 
 ### `qingyun_shou/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `qingyun_shou/zhuo.ex` ← `qingyun-shou/zhuo.c`  (miss=6)
+- [x] ✅ `qingyun_shou/zhuo.ex` ← `qingyun-shou/zhuo.c`  (miss→0，PASS)
 
 ### `qishang_quan/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `qishang_quan/fei.ex` ← `qishang-quan/fei.c`  (miss=5)
+- [x] ✅ `qishang_quan/fei.ex` ← `qishang-quan/fei.c`  (miss→0，PASS)
 
