@@ -6,14 +6,14 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**130**
-- 缺失字面量合计（miss 之和）：**1429**
+- 剩余文件数：**127**
+- 缺失字面量合计（miss 之和）：**1414**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
 | A严重(>=15) | 12 | 233 |
-| B中等(5-14) | 118 | 1196 |
+| B中等(5-14) | 115 | 1181 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
@@ -104,8 +104,8 @@
 - [ ] ❌ `emei_jian/xian.ex` ← `emei-jian/xian.c` (miss=10)
 
 ### fanliangyi_dao（2 个）
-- [ ] ❌ `fanliangyi_dao/san.ex` ← `fanliangyi-dao/san.c` (miss=18)
 - [ ] ❌ `fanliangyi_dao/makearray.ex` ← `fanliangyi-dao/makearray.c` (miss=8)
+- [ ] ❌ `fanliangyi_dao/san.ex` ← `fanliangyi-dao/san.c` (miss=18)
 
 ### feifeng_whip（1 个）
 - [ ] ❌ `feifeng_whip/wu.ex` ← `feifeng-whip/wu.c` (miss=9)
@@ -121,9 +121,6 @@
 
 ### fenglei_zifa（1 个）
 - [ ] ❌ `fenglei_zifa/she.ex` ← `fenglei-zifa/she.c` (miss=7)
-
-### fengyun_shou（1 个）
-- [ ] ❌ `fengyun_shou/qinna.ex` ← `fengyun-shou/qinna.c` (miss=5)
 
 ### fireice_strike（1 个）
 - [ ] ❌ `fireice_strike/binghuo.ex` ← `fireice-strike/binghuo.c` (miss=14)
@@ -174,10 +171,10 @@
 - [ ] ❌ `houquan/zhen.ex` ← `houquan/zhen.c` (miss=8)
 
 ### huashan_jian（4 个）
-- [ ] ❌ `huashan_jian/xian.ex` ← `huashan-jian/xian.c` (miss=16)
-- [ ] ❌ `huashan_jian/lian.ex` ← `huashan-jian/lian.c` (miss=7)
 - [ ] ❌ `huashan_jian/jie.ex` ← `huashan-jian/jie.c` (miss=6)
+- [ ] ❌ `huashan_jian/lian.ex` ← `huashan-jian/lian.c` (miss=7)
 - [ ] ❌ `huashan_jian/long.ex` ← `huashan-jian/long.c` (miss=6)
+- [ ] ❌ `huashan_jian/xian.ex` ← `huashan-jian/xian.c` (miss=16)
 
 ### huifeng_jian（2 个）
 - [ ] ❌ `huifeng_jian/jue.ex` ← `huifeng-jian/jue.c` (miss=25)
@@ -186,13 +183,12 @@
 ### huilong_bifa（1 个）
 - [ ] ❌ `huilong_bifa/cang.ex` ← `huilong-bifa/cang.c` (miss=8)
 
-### hujia_daofa（2 个）
+### hujia_daofa（1 个）
 - [ ] ❌ `hujia_daofa/xian.ex` ← `hujia-daofa/xian.c` (miss=7)
-- [ ] ❌ `hujia_daofa/zhui.ex` ← `hujia-daofa/zhui.c` (miss=5)
 
 ### jiandun_zhusuo（2 个）
-- [ ] ❌ `jiandun_zhusuo/qian.ex` ← `jiandun-zhusuo/qian.c` (miss=16)
 - [ ] ❌ `jiandun_zhusuo/fu.ex` ← `jiandun-zhusuo/fu.c` (miss=12)
+- [ ] ❌ `jiandun_zhusuo/qian.ex` ← `jiandun-zhusuo/qian.c` (miss=16)
 
 ### jidian_jian（1 个）
 - [ ] ❌ `jidian_jian/dian.ex` ← `jidian-jian/dian.c` (miss=6)
@@ -202,9 +198,6 @@
 
 ### jingang_quan（1 个）
 - [ ] ❌ `jingang_quan/jingang.ex` ← `jingang-quan/jingang.c` (miss=12)
-
-### jingang_zhi（1 个）
-- [ ] ❌ `jingang_zhi/fumo.ex` ← `jingang-zhi/fumo.c` (miss=5)
 
 ### jinguan_yusuo（1 个）
 - [ ] ❌ `jinguan_yusuo/suo.ex` ← `jinguan-yusuo/suo.c` (miss=9)
