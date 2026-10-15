@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
   alias Kantele.Combat.Performs
 
   @perform_id "zilei-jian/feng"
+  @move_name "「狂风式」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -40,6 +41,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          sword: level,
           rng: rng
         }
       })
@@ -75,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zilei-jian") < 100 -> {:error, "你紫雷剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "zilei-jian") < 100 -> {:error, "你紫雷剑法不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -85,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zilei-jian" -> {:error, "你没有激发紫雷剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "zilei-jian" -> {:error, "你没有激发紫雷剑法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -94,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -103,20 +105,27 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 120}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将某物横于胸前，内力贯于剑身，猛然间某物如一条长龙般挥出，霎时狂沙满天，令人匪夷所思。", n1: character.name)
+    # LPC: msg = HIC "\n$N" HIC "将" + wn + HIC "横于胸前，内力贯于剑身，"
+    #           "猛然间" + wn + HIC "如一条长龙般挥出，霎时狂沙满天，令"
+    #           "人匪夷所思。" NOR;
+    #      me->add("neili", -120);   // 无条件，直接在攻击方侧落账
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = Map.get(weapon, :name, "")
+    vitals = %{character.meta.vitals | neili: max(character.meta.vitals.neili - 120, 0)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N将" <> weapon_name <> "横于胸前，内力贯于剑身，猛然间" <> weapon_name <> "如一条长龙般挥出，霎时狂沙满天，令人匪夷所思。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -147,18 +156,48 @@ defmodule Kantele.Combat.Skills.Performs.ZileiJian.Feng do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 120, 2)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    stats = character.meta.stats
+    # LPC: level = me->query_skill("sword");
+    #      if (level * 2 / 3 + random(level) > target->query_skill("dodge"))
+    level = max(Map.get(data, :sword, 0), 1)
+    dp = Stats.skill(stats, "dodge")
+
+    # message_combatd(msg, target, me)：命中/失手文案中 $N=目标、$n=攻击方。
+    bindings = [n1: character.name, n2: attacker.name]
+
+    if div(level * 2, 3) + Engine.rand(rng, level) > dp do
+      # LPC: msg = HIY "$N" HIY "看不出$n" HIY "招式中的虚实，连忙"
+      #                 "护住自己全身，一时竟无以应对！\n" NOR;
+      #      target->start_busy(2 + random(level / 24));
+      #      me->start_busy(random(2));
+      combat = Combat.start_busy(character.meta.combat, 2 + Engine.rand(rng, max(div(level, 24), 1)))
+      character = %{character | meta: %{character.meta | combat: combat}}
+
+      conn =
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！\n", bindings)
+        )
+
+      Performs.feedback(attacker, 0, Engine.rand(rng, 2))
+      put_character(conn, character)
+    else
+      # LPC: msg = CYN "可是$N" CYN "镇定自若，小心拆招，没有被"
+      #                 "$n" NOR + CYN "招式所困。\n" NOR;
+      #      me->start_busy(2);
+      conn =
+        Broadcast.publish(
+          conn,
+          Messages.interpolate(
+            Enum.join(["可是$N镇定自若，小心拆招，没有被$n", "招式所困。\n"], ""),
+            bindings
+          )
+        )
+
+      Performs.feedback(attacker, 0, 2)
+      conn
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

@@ -12,7 +12,11 @@ defmodule Kantele.Combat.Skills.Performs.ZixiaShengong.Ziqi do
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Combat.Buff
   alias Kantele.Character.Stats
+  alias Kalevala.Event
+
+  @key "ziqi"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -31,9 +35,19 @@ defmodule Kantele.Combat.Skills.Performs.ZixiaShengong.Ziqi do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_not_active(character),
          :ok <- check_resources(character),
+         :ok <- check_levels(character),
          :ok <- check_weapon(character) do
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query_temp("ziqi")) return notify_fail("你已经在运起紫气东来了。\n");
+  defp check_not_active(character) do
+    if Combat.buff_active?(character.meta.combat, @key) do
+      {:error, "你已经在运起紫气东来了。\n"}
+    else
       :ok
     end
   end
@@ -42,7 +56,7 @@ defmodule Kantele.Combat.Skills.Performs.ZixiaShengong.Ziqi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zixia-shengong") < 150 -> {:error, "你的紫霞神功的修为不够，不能使用紫气东来!\n"}
+      Stats.skill(stats, "zixia-shengong") < 150 -> {:error, "你的紫霞神功的修为不够，不能使用紫气东来! \n"}
       true -> :ok
     end
   end
@@ -56,22 +70,81 @@ defmodule Kantele.Combat.Skills.Performs.ZixiaShengong.Ziqi do
     end
   end
 
+  # LPC: if ( ! weapon || weapon->query("skill_type") != "sword" )
+  #          return notify_fail("你没有剑.怎么用紫气东来呀? \n");
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你已经在运起紫气东来了。\n"}
-    #   {:error, "你没有剑.怎么用紫气东来呀?\n"}
-    :ok
-
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "sword"} -> :ok
+      _ -> {:error, "你没有剑.怎么用紫气东来呀? \n"}
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+    skill = Stats.skill(character.meta.stats, "zixia-shengong")
+
+    # LPC: message_combatd(MAG "$N" MAG "猛吸一口气，脸上紫气大盛！手中的兵器隐隐透出一层紫光。。。\n" NOR, me);
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N猛吸一口气，脸上紫气大盛！手中的兵器隐隐透出一层紫光。。。\n",
+        n1: character.name
+      )
+
     vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 200}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    {character, conn} =
+      if vitals.qi > div(vitals.max_qi * 4, 10) do
+        # LPC: qi > maxqi * 0.4 分支：
+        #      add_temp("apply/damage", skill / 10) + add_temp("apply/sword", skill / 10)
+        #      set_temp("ziqi", 1) + start_call_out(remove_effect, skill) + add("neili", -200)
+        amount = div(skill, 10)
+        buff = %Buff{key: @key, applies: %{damage: -amount, sword: -amount}}
+
+        combat =
+          character.meta.combat
+          |> Combat.apply_temp(%{damage: amount, sword: amount})
+          |> Combat.add_buff(buff)
+
+        vitals = %{vitals | neili: vitals.neili - 200}
+        character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+        # remove_effect：skill 秒后回收加成并提示（combat/buff-expire 由框架处理）
+        Process.send_after(
+          self(),
+          %Event{
+            from_pid: self(),
+            topic: "combat/buff-expire",
+            data: %{
+              key: @key,
+              applies: buff.applies,
+              message: "你的紫气东来运行完毕，紫气渐渐隐去。\n"
+            }
+          },
+          skill * 1000
+        )
+
+        {character, conn}
+      else
+        # LPC: message_combatd(HIR "$N" HIR "拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n" NOR, me);
+        conn =
+          Broadcast.publish(
+            conn,
+            "$N拼尽毕生功力想提起紫气东来，但自己受伤太重，没能成功!\n",
+            n1: character.name
+          )
+
+        {character, conn}
+      end
+
+    # LPC: if (me->is_fighting()) me->start_busy(3);
+    combat =
+      if Combat.fighting?(character.meta.combat) do
+        Combat.start_busy(character.meta.combat, 3)
+      else
+        character.meta.combat
+      end
+
+    character = %{character | meta: %{character.meta | combat: combat}}
 
     conn
     |> put_character(character)

@@ -29,8 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "zijinbagua-dao")
-    count = 0
-    i = 0
+    blade = Stats.skill(stats, "blade")
+    weapon = Combat.weapon(combat)
+    weapon_name = Map.get(weapon, :name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -41,6 +42,8 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
         data: %{attacker: ref(character), perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          blade: blade,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
@@ -111,15 +114,33 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，手中的某物刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！", n1: character.name)
+    # LPC: msg = MAG "$N" MAG "一声暴喝，手中的" + weapon->name() +
+    #           MAG "刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的"
+    #           "方位直涌$n" MAG "！\n\n" NOR;
+    #      me->add("neili", -300);   // 无条件，直接在攻击方侧落账
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = Map.get(weapon, :name, "")
+    vitals = %{character.meta.vitals | neili: max(character.meta.vitals.neili - 300, 0)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声暴喝，手中的" <> weapon_name <> "刀芒陡长，顿时只见万股凌厉的刀芒按照八卦阵的方位直涌$n！\n\n",
+        n1: character.name,
+        n2: target_name(character)
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp target_name(character) do
+    case character.meta.combat.enemies do
+      [enemy | _] -> enemy.name
+      [] -> ""
+    end
   end
 
   defp target(combat) do
@@ -143,18 +164,70 @@ defmodule Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
+    stats = character.meta.stats
+    blade = max(Map.get(data, :blade, 0), 1)
+    level = Map.get(data, :level, 0)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: if (random(me->query_skill("blade")) > target->query_skill("parry") / 2)
+    dp = div(Stats.skill(stats, "parry"), 2)
+    hit? = Engine.rand(rng, blade) > dp
+
+    conn =
+      if hit? do
+        # LPC: msg += HIR "$n" HIR "见来招实在是变幻莫测，不由得心"
+        #                 "生惧意，招式登时出了破绽！\n" NOR;
+        #      count = me->query_skill("zijinbagua-dao", 1) / 6;
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！\n", bindings)
+        )
+      else
+        # LPC: msg += HIY "$n" HIY "心底微微一惊，打起精神小心接招。\n" NOR;
+        #      count = 0;
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("$n心底微微一惊，打起精神小心接招。\n", bindings)
+        )
+      end
+
+    # LPC: for (i = 0; i < 5 + random(3); i++) { ... COMBAT_D->do_attack(me, target, weapon, 0); }
+    #      期间 apply/attack += count（折算为每击 blade + count）。
+    count = if hit?, do: div(level, 6), else: 0
+    ap2 = blade + count
+    attack_time = 5 + Engine.rand(rng, 3)
+
+    damage =
+      Enum.reduce(1..attack_time, 0, fn _i, acc ->
+        if div(ap2, 2) + Engine.rand(rng, ap2) > dp do
+          acc + div(ap2, 2) + Engine.rand(rng, max(div(ap2, 2), 1))
+        else
+          acc
+        end
+      end)
+
+    vitals =
+      if damage > 0 do
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage, 3))
+      else
+        character.meta.vitals
+      end
+
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 300, 1)
-    msg = "$n见来招实在是变幻莫测，不由得心生惧意，招式登时出了破绽！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+
+    # LPC: if (random(3) == 1 && ! target->is_busy()) target->start_busy(1);
+    #      me->add_temp("apply/attack", -count);
+    #      me->start_busy(1 + random(6));
+    if Engine.rand(rng, 3) == 1 and character.meta.combat.busy == 0 do
+      combat = Combat.start_busy(character.meta.combat, 1)
+      character = %{character | meta: %{character.meta | combat: combat}}
+    end
+
+    Performs.feedback(attacker, 300, 1 + Engine.rand(rng, 6))
+    put_character(conn, character)
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

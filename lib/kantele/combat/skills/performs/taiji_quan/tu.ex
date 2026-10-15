@@ -216,14 +216,17 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
       conn = Broadcast.publish(conn, incoming_msg)
 
       # 第三人称消息随机
+      # LPC: msg = HIR "只见" + obs[i]->name() + HIR "手舞足蹈，忘乎所以，忽"
+      #                 "然大叫一声，吐血不止！\n" NOR;   （却见/呆立两支同理，
+      #      名字位于两个字面量之间，用 <> 保持分段）
       p = div(vitals.qi * 100, max(vitals.max_qi, 1))
       status_suffix = "\n( $n#{eff_status_msg(p)} )\n"
 
       third_msg =
         Enum.random([
-          "只见$n手舞足蹈，忘乎那些，忽然大叫一声，吐血不止！",
-          "却见$n容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！",
-          "$n呆立当场，那些不动，有如中邪，七窍都迸出鲜血来。"
+          "只见" <> character.name <> "手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！",
+          "却见" <> character.name <> "容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！",
+          "$n呆立当场，一动不动，有如中邪，七窍都迸出鲜血来。"
         ]) <> status_suffix
 
       conn =
@@ -244,7 +247,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
       conn =
         Broadcast.publish(
           conn,
-          Messages.interpolate("然而那些没有任何人受了$N的影响。\n\n", n1: attacker.name)
+          Messages.interpolate("然而没有任何人受了$N的影响。\n\n", n1: attacker.name)
         )
     end
 
@@ -282,7 +285,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   #         martial = "unarmed";
   # 
   #         if (userp(me) && me->query("can_perform/taiji-quan/tu") < 10)
-  #                 return notify_fail("你所使用的外功中没有那些功能。\n");
+  #                 return notify_fail("你所使用的外功中没有这种功能。\n");
   # 
   #         me->clean_up_enemy();
   #         if (! me->is_fighting())
@@ -385,7 +388,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   #                         {
   #                         case 0:
   #                                 msg = HIR "只见" + obs[i]->name() +
-  #                                       HIR "手舞足蹈，忘乎那些，忽"
+  #                                       HIR "手舞足蹈，忘乎所以，忽"
   #                                       "然大叫一声，吐血不止！\n" NOR;
   #                                 msg += "( " + obs[i]->name() + eff_status_msg(p) + " )\n\n";
   #                                 break;
@@ -397,7 +400,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   #                                 break;
   #                         default:
   #                                 msg = HIR + obs[i]->name() +
-  #                                       HIR "呆立当场，那些不动，有如中"
+  #                                       HIR "呆立当场，一动不动，有如中"
   #                                       "邪，七窍都迸出鲜血来。\n" NOR;
   #                                 msg += "( " + obs[i]->name() + eff_status_msg(p) + " )\n\n";
   #                                 break;

@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
   alias Kantele.Combat.Performs
 
   @perform_id "zigai-jian/hui"
+  @move_name "「紫盖回翔」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,7 +31,8 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "zigai-jian")
     ap = Stats.skill(stats, "zigai-jian")
-    damage = (ap + Engine.rand(rng, div(ap, 2)))
+    weapon = Combat.weapon(combat)
+    weapon_name = Map.get(weapon, :name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -42,7 +44,7 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
           level: lvl,
           skill: lvl,
           ap: ap,
-          damage: damage,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
@@ -78,9 +80,9 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zigai-jian") < 120 -> {:error, "你紫盖剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 120 -> {:error, "你的轻功火候不够，难以施展。\n"}
+      Stats.skill(stats, "zigai-jian") < 120 -> {:error, "你紫盖剑法不够娴熟，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
+      Stats.skill(stats, "dodge") < 120 -> {:error, "你的轻功火候不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -89,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zigai-jian" -> {:error, "你没有激发紫盖剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "zigai-jian" -> {:error, "你没有激发紫盖剑法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -107,27 +109,37 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 2)
-    combat = Combat.start_busy(combat, 3)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N撤剑转身向后一纵，似欲逃走，$n乘机挺剑上前，眼见$n即
-将得手，不料$N凌空回身反刺，某物直指$n。", n1: character.name)
+    # LPC: msg = HIY "\n$N" HIY "撤剑转身向后一纵，似欲逃走，$n" HIY "乘机挺"
+    #           "剑上前，" HIY "眼见$n" HIY "即\n将得手，不料$N" HIY "凌空"
+    #           "回身反刺，" + wn + HIY "直指$n" HIY "。" NOR;
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = Map.get(weapon, :name, "")
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N撤剑转身向后一纵，似欲逃走，$n乘机挺剑上前，眼见$n即将得手，不料$N凌空回身反刺，" <>
+          weapon_name <> "直指$n。",
+        n1: character.name,
+        n2: target_name(character)
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp target_name(character) do
+    case character.meta.combat.enemies do
+      [enemy | _] -> enemy.name
+      [] -> ""
+    end
   end
 
   defp target(combat) do
@@ -151,25 +163,54 @@ defmodule Kantele.Combat.Skills.Performs.ZigaiJian.Hui do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
+    ap = max(Map.get(data, :ap, 0), 1)
+    weapon_name = Map.get(data, :weapon_name, "")
+    # LPC: dp = target->query_skill("dodge", 1);
+    dp = Stats.skill(stats, "dodge")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
-    vitals = character.meta.vitals
-    if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
-    end
+    bindings = [n1: attacker.name, n2: character.name]
 
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$n心中一惊，虽知中计，但某物突如其来迅捷无比，已然闪避不及。", else: "然而$n眼见某物已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    if hit do
+      # LPC: damage = ap + random(ap / 2);
+      #      msg = COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 45,
+      #          HIR "$n" HIR "心中一惊，虽知中计，但" + wn +
+      #          HIR "突如其来迅捷无比，已然闪" "避不及。\n" NOR);
+      #      me->start_busy(2); me->add("neili", -100);
+      damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 45, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn =
+        Broadcast.publish(
+          conn,
+          "$n心中一惊，虽知中计，但" <> weapon_name <> "突如其来迅捷无比，已然闪避不及。\n",
+          bindings
+        )
+
+      Performs.feedback(attacker, 100, 2)
+      put_character(conn, character)
+    else
+      # LPC: msg = CYN "然而$n" CYN "眼见" + wn + CYN "已至，但$n"
+      #                 CYN "身法迅速无比，提气向后一纵，$N" CYN "扑了"
+      #                 "个空。\n" NOR;
+      #      me->start_busy(3); me->add("neili", -50);
+      conn =
+        Broadcast.publish(
+          conn,
+          "然而$n眼见" <> weapon_name <> "已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。\n",
+          bindings
+        )
+
+      Performs.feedback(attacker, 50, 3)
+      conn
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
