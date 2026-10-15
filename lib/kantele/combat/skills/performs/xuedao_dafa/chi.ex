@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     lvl = Stats.skill(stats, "xuedao-dafa")
     ap = Stats.skill(stats, "blade")
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "刀")
+    wn = Map.get(weapon, :name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "刀")
+    wn = Map.get(weapon, :name, "")
 
     conn =
       Broadcast.publish(
@@ -163,7 +163,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Chi do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _wn = Map.get(data, :weapon_name, "刀")
+    _wn = Map.get(data, :weapon_name, "")
     dp = Stats.skill(stats, "parry")
     hit? = ap + Engine.rand(rng, max(ap, 1)) > dp
 

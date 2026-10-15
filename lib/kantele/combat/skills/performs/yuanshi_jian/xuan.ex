@@ -70,10 +70,11 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
+    # 武器门槛由 run/1 的 with {:ok, weapon} <- check_weapon(character) 覆盖；
+    # check_weapon 成功返回 {:ok, weapon}，此处用 :ok <- 匹配会 WithClauseError。
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end

@@ -140,7 +140,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Zhu do
     msg =
       if weapon do
         "只见$N双目微闭，单手在" <>
-          (Map.get(weapon, :name) || "某物") <>
+          (Map.get(weapon, :name) || "") <>
           "上轻轻拨动，顿时只听“啵啵啵”破空之声连续不断，数股破体无形剑气激射而出，直奔$n而去。"
       else
         "只见$N双目微闭，双手轻轻舞弄，陡然间十指一并箕张，顿时只听“啵啵啵”破空之声连续不断，数股破体无形剑气激射而出，直奔$n而去。"

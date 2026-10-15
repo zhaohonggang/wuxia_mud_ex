@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     lvl = Stats.skill(stats, "tianzhu-jian")
     ap = Stats.skill(stats, "tianzhu-jian")
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -151,10 +151,10 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "parry")
-    wp = Map.get(data, :weapon, "剑")
+    wp = Map.get(data, :weapon, "")
     attacker_max_neili = Map.get(data, :max_neili, 0)
     weapon = Combat.weapon(character.meta.combat)
-    wp2 = (weapon && Map.get(weapon, :name)) || "剑"
+    wp2 = (weapon && Map.get(weapon, :name)) || ""
 
     if attacker_max_neili > div(character.meta.vitals.max_neili * 3, 2) && weapon != nil do
       Performs.feedback(attacker, 200, 2)

@@ -149,7 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
 
   defp weapon_name(combat) do
     case Combat.weapon(combat) do
-      nil -> "某物"
+      nil -> ""
       weapon -> Map.get(weapon, :name)
     end
   end
@@ -178,7 +178,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Heng do
     ap = Map.get(data, :ap, 0)
     damage = Map.get(data, :damage, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    weapon_name = Map.get(data, :weapon, "某物")
+    weapon_name = Map.get(data, :weapon, "")
     stats = character.meta.stats
     # LPC: dp = target->query_skill("parry");
     dp = Stats.skill(stats, "parry")

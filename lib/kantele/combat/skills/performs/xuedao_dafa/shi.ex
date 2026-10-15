@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
     lvl = Stats.skill(stats, "xuedao-dafa")
     ap = Stats.skill(stats, "blade")
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "刀")
+    wn = Map.get(weapon, :name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -128,7 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "刀")
+    wn = Map.get(weapon, :name, "")
 
     # Stage 1: initial strike
     conn =
@@ -175,7 +175,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Shi do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _wn = Map.get(data, :weapon_name, "刀")
+    _wn = Map.get(data, :weapon_name, "")
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
 

@@ -135,7 +135,7 @@ defmodule Kantele.Combat.Skills.Performs.QixianWuxingjian.Yin do
     msg =
       if weapon do
         "只见$N一声冷哼，以内劲催动" <>
-          (Map.get(weapon, :name) || "某物") <>
+          (Map.get(weapon, :name) || "") <>
           "，激荡出无形琴音，铮然大响，只听“啵”的一声破空之响，一束无形剑气澎湃射出，直贯$n而去。"
       else
         "只见$N一声冷哼，狂催内劲激荡出无形琴音，铮然大响，只听“啵”的一声破空之响，一束无形剑气澎湃射出，直贯$n而去。"

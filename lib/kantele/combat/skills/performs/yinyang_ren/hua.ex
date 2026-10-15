@@ -134,7 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangRen.Hua do
 
   defp weapon_name(combat) do
     case Combat.weapon(combat) do
-      nil -> "某物"
+      nil -> ""
       weapon -> Map.get(weapon, :name)
     end
   end

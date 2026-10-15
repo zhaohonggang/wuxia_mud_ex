@@ -32,8 +32,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     ap = Stats.skill(stats, "finger") + Stats.skill(stats, "throwing")
     damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "暗器")
-    target_weapon = hd(combat.enemies).meta.combat |> Combat.weapon() |> Map.get(:name, "兵器")
+    wn = Map.get(weapon, :name, "")
+    target_weapon = hd(combat.enemies).meta.combat |> Combat.weapon() |> Map.get(:name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -137,8 +137,8 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "暗器")
-    base_unit = Map.get(weapon, :base_unit, "枚")
+    wn = Map.get(weapon, :name, "")
+    base_unit = Map.get(weapon, :base_unit, "")
 
     conn =
       Broadcast.publish(
@@ -176,9 +176,9 @@ defmodule Kantele.Combat.Skills.Performs.TanzhiShentong.Po do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    wn = Map.get(data, :weapon_name, "暗器")
+    wn = Map.get(data, :weapon_name, "")
     _wn = wn
-    target_wn = Map.get(data, :target_weapon_name, "兵器")
+    target_wn = Map.get(data, :target_weapon_name, "")
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
 

@@ -74,9 +74,10 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
+    # 武器门槛由 run/1 的 with {:ok, weapon} <- check_weapon(character) 覆盖；
+    # check_weapon 成功返回 {:ok, weapon}，此处用 :ok <- 匹配会 WithClauseError。
     with :ok <- check_levels(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -112,8 +113,8 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   end
 
   defp calculate_delta(attacker, target) do
-    attacker_gender = attacker.meta.stats.gender || "男性"
-    target_gender = target.meta.stats.gender || "男性"
+    attacker_gender = attacker.meta.stats.gender || ""
+    target_gender = target.meta.stats.gender || ""
 
     if attacker_gender == "女性" and target_gender == "女性" do
       target_per = target.meta.stats.per || 0
@@ -174,7 +175,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     delta = Map.get(data, :delta, 0)
-    weapon_name = Map.get(data, :weapon_name, "某物")
+    weapon_name = Map.get(data, :weapon_name, "")
     rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge")
     hit = div(ap * 7, 10) + Engine.rand(rng, ap) > dp

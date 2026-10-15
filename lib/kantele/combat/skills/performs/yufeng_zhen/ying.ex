@@ -35,7 +35,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
          {:ok, target} <- target(combat),
          {:ok, weapon} <- check_weapon(character) do
       weapon_name = weapon.name
-      base_unit = weapon.base_unit || "枚"
+      base_unit = weapon.base_unit || ""
       my_exp = Stats.skill(stats, "throwing")
 
       send(target.pid, %Event{
@@ -72,10 +72,11 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
+    # 武器门槛由 run/1 的 with {:ok, weapon} <- check_weapon(character) 覆盖；
+    # check_weapon 成功返回 {:ok, weapon}，此处用 :ok <- 匹配会 WithClauseError。
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
-         :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -113,9 +114,10 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     weapon = Combat.handing(combat)
 
     cond do
-      weapon == nil -> {:error, "你现在手中并没有拿着针，怎么施展「无影针」？\n"}
+      weapon == nil or weapon.skill_type != "throwing" ->
+        {:error, "你现在手中并没有拿着针，怎么施展「无影针」？\n"}
+
       weapon.amount < 1 -> {:error, "你手中没有针，无法施展「无影针」。\n"}
-      weapon.skill_type != "throwing" -> {:error, "你现在手中并没有拿着针，怎么施展「无影针」？\n"}
       true -> {:ok, weapon}
     end
   end
@@ -160,8 +162,8 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
     my_exp = Map.get(data, :my_exp, 0)
     skill = Map.get(data, :skill, 0)
-    weapon_name = Map.get(data, :weapon_name, "针")
-    base_unit = Map.get(data, :base_unit, "枚")
+    weapon_name = Map.get(data, :weapon_name, "")
+    base_unit = Map.get(data, :base_unit, "")
     rng = Map.get(data, :rng, &:rand.uniform/1)
     dp = Stats.skill(stats, "dodge")
     hit = div(my_exp, 2) + Engine.rand(rng, my_exp) > dp

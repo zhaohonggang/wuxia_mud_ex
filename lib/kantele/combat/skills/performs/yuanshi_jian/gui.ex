@@ -140,8 +140,8 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
 
   defp weapon_name(combat) do
     case Combat.weapon(combat) do
-      nil -> "剑"
-      weapon -> Map.get(weapon, :name, "剑")
+      nil -> ""
+      weapon -> Map.get(weapon, :name, "")
     end
   end
 
@@ -173,7 +173,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-    weapon_name = Map.get(data, :weapon_name, "剑")
+    weapon_name = Map.get(data, :weapon_name, "")
 
     msg =
       if hit,

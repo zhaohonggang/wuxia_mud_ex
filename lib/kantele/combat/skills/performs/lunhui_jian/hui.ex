@@ -197,7 +197,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
   defp weapon_name(combat) do
     case Combat.weapon(combat) do
       %{name: name} -> name
-      _ -> "剑"
+      _ -> ""
     end
   end
 
@@ -232,7 +232,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
     ap = max(Map.get(data, :ap, 0), 1)
     damage = Map.get(data, :damage, 0)
     level = Map.get(data, :level, 0)
-    weapon_name = Map.get(data, :weapon_name, "剑")
+    weapon_name = Map.get(data, :weapon_name, "")
     bindings = [n1: attacker.name, n2: character.name]
 
     # LPC: dp = target->query_skill("parry") + target->query_skill("buddhism", 1);
@@ -444,7 +444,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
               {character, msg}
 
             armor ->
-              an = Map.get(armor, :name, "护甲")
+              an = Map.get(armor, :name, "")
 
               msg =
                 msg <> "忽听「哧啦」一声脆响，$n身着的" <> an <> "竟被$N震裂，化成块块碎片。\n"
@@ -454,7 +454,7 @@ defmodule Kantele.Combat.Skills.Performs.LunhuiJian.Hui do
           end
 
         cloth ->
-          cn = Map.get(cloth, :name, "衣服")
+          cn = Map.get(cloth, :name, "")
           msg = msg <> "忽听轰然声大作，$n身着的" <> cn <> "在$N内力激荡下，竟被震得粉碎。\n"
           combat = Combat.unequip(combat, :cloth)
           {%{character | meta: %{character.meta | combat: combat}}, msg}

@@ -146,7 +146,7 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
 
   defp weapon_name(combat) do
     case Combat.weapon(combat) do
-      nil -> "某物"
+      nil -> ""
       weapon -> Map.get(weapon, :name)
     end
   end
@@ -174,8 +174,8 @@ defmodule Kantele.Combat.Skills.Performs.YinsuoJinling.Feng do
   defp do_resolve_incoming(conn, character, attacker, data) do
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    w1 = Map.get(data, :weapon, "某物")
-    w2 = Map.get(data, :weapon2, "兵器")
+    w1 = Map.get(data, :weapon, "")
+    w2 = Map.get(data, :weapon2, "")
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp

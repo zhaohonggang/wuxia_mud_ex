@@ -3,6 +3,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
   perform「baibu」（source xuanyuan-arrow/baibu.c，由 translate_perform.py 生成，inherit F_SSERVER）
 
   门槛/资源消耗由提取器机械生成；攻击/命中/伤害/影响/回调等语义需人工按原始源码补齐（见文末参考注释）。
+  （LPC 无 `can_perform` 门槛，本版保留 `perform_known?` 守卫，多 1 条信息性 EXTRA。）
   """
 
   @behaviour Kantele.Combat.Perform
@@ -112,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
     weapon = Combat.weapon(character.meta.combat)
-    arrow_name = (weapon && Map.get(weapon, :name)) || "某物"
+    arrow_name = (weapon && Map.get(weapon, :name)) || ""
 
     conn =
       Broadcast.publish(

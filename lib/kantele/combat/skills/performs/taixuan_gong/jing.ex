@@ -29,9 +29,10 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "taixuan-gong")
-    sub_msg = if Stats.mapped(stats, "sword") == "taixuan-gong", do: "剑", else: "刀"
+    sword_mapped? = Stats.mapped(stats, "sword") == "taixuan-gong"
+    sub_msg = if sword_mapped?, do: "剑", else: "刀"
     weapon_name = weapon_name(combat)
-    ap = lvl + Stats.skill(stats, if(sub_msg == "剑", do: "sword", else: "blade"))
+    ap = lvl + Stats.skill(stats, if(sword_mapped?, do: "sword", else: "blade"))
     damage = ap + Engine.rand(rng, max(ap, 1))
 
     with :ok <- check_perform_known(character),
@@ -53,7 +54,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, sub_msg)
     else
       {:error, message} ->
         conn
@@ -132,9 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
     end
   end
 
-  defp apply_effect(conn, character) do
-    sub_msg = if Stats.mapped(character.meta.stats, "sword") == "taixuan-gong", do: "剑", else: "刀"
-
+  defp apply_effect(conn, character, sub_msg) do
     conn =
       Broadcast.publish(
         conn,
@@ -199,8 +198,8 @@ defmodule Kantele.Combat.Skills.Performs.TaixuanGong.Jing do
   defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = Map.get(data, :ap, 0)
-    wn = Map.get(data, :weapon_name) || "剑"
-    sub_msg = Map.get(data, :sub_msg) || "剑"
+    wn = Map.get(data, :weapon_name) || ""
+    sub_msg = Map.get(data, :sub_msg) || ""
     stats = character.meta.stats
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp

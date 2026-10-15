@@ -122,7 +122,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     weapon = Combat.weapon(character.meta.combat)
-    blade_name = (weapon && Map.get(weapon, :name)) || "某物"
+    blade_name = (weapon && Map.get(weapon, :name)) || ""
 
     conn =
       Broadcast.publish(

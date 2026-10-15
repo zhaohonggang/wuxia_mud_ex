@@ -32,7 +32,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     ap = Stats.skill(stats, "strike")
     damage = ap + Engine.rand(rng, max(ap, 1))
     target = hd(combat.enemies)
-    weapon_name = target.meta.combat |> Combat.weapon() |> Map.get(:name, "兵器")
+    weapon_name = target.meta.combat |> Combat.weapon() |> Map.get(:name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -144,7 +144,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
-    wn = hd(character.meta.combat.enemies).meta.combat |> Combat.weapon() |> Map.get(:name, "兵器")
+    wn = hd(character.meta.combat.enemies).meta.combat |> Combat.weapon() |> Map.get(:name, "")
 
     conn =
       Broadcast.publish(
@@ -182,7 +182,7 @@ defmodule Kantele.Combat.Skills.Performs.XianglongZhang.Qu do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    wn = Map.get(data, :weapon_name, "兵器")
+    wn = Map.get(data, :weapon_name, "")
     dp = Stats.skill(stats, "parry")
     hit? = div(ap, 3) + Engine.rand(rng, max(ap, 1)) > dp
 
