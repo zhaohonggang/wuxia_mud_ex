@@ -6,15 +6,15 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**135**
-- 缺失字面量合计（miss 之和）：**1447**
+- 剩余文件数：**130**
+- 缺失字面量合计（miss 之和）：**1429**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
 | A严重(>=15) | 12 | 233 |
 | B中等(5-14) | 118 | 1196 |
-| C轻微(1-4) | 5 | 18 |
+| C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
 
@@ -72,9 +72,8 @@
 ### dali_chu（1 个）
 - [ ] ❌ `dali_chu/hong.ex` ← `dali-chu/hong.c` (miss=12)
 
-### damo_jian（2 个）
+### damo_jian（1 个）
 - [ ] ❌ `damo_jian/sanjue.ex` ← `damo-jian/sanjue.c` (miss=8)
-- [ ] ❌ `damo_jian/qingxin.ex` ← `damo-jian/qingxin.c` (miss=3)
 
 ### danding_dao（1 个）
 - [ ] ❌ `danding_dao/kou.ex` ← `danding-dao/kou.c` (miss=10)
@@ -141,9 +140,6 @@
 ### furong_jian（1 个）
 - [ ] ❌ `furong_jian/luan.ex` ← `furong-jian/luan.c` (miss=9)
 
-### furong_jinzhen（1 个）
-- [ ] ❌ `furong_jinzhen/xian.ex` ← `furong-jinzhen/xian.c` (miss=4)
-
 ### guxing_jian（1 个）
 - [ ] ❌ `guxing_jian/lian.ex` ← `guxing-jian/lian.c` (miss=10)
 
@@ -201,9 +197,6 @@
 ### jidian_jian（1 个）
 - [ ] ❌ `jidian_jian/dian.ex` ← `jidian-jian/dian.c` (miss=6)
 
-### jimie_zhua（1 个）
-- [ ] ❌ `jimie_zhua/wuwo.ex` ← `jimie-zhua/wuwo.c` (miss=4)
-
 ### jinbiao_jue（1 个）
 - [ ] ❌ `jinbiao_jue/huan.ex` ← `jinbiao-jue/huan.c` (miss=10)
 
@@ -239,9 +232,6 @@
 
 ### kunlun_qifa（1 个）
 - [ ] ❌ `kunlun_qifa/liu.ex` ← `kunlun-qifa/liu.c` (miss=11)
-
-### lingbo_weibu（1 个）
-- [ ] ❌ `lingbo_weibu/ling.ex` ← `lingbo-weibu/ling.c` (miss=3)
 
 ### lingshe_zhangfa（1 个）
 - [ ] ❌ `lingshe_zhangfa/chan.ex` ← `lingshe-zhangfa/chan.c` (miss=9)
@@ -369,10 +359,9 @@
 ### suxin_jian（1 个）
 - [ ] ❌ `suxin_jian/lian.ex` ← `suxin-jian/lian.c` (miss=10)
 
-### taiji_jian（3 个）
+### taiji_jian（2 个）
 - [ ] ❌ `taiji_jian/chan.ex` ← `taiji-jian/chan.c` (miss=10)
 - [ ] ❌ `taiji_jian/zhuan.ex` ← `taiji-jian/zhuan.c` (miss=10)
-- [ ] ❌ `taiji_jian/sui.ex` ← `taiji-jian/sui.c` (miss=4)
 
 ### tangmen_throwing（1 个）
 - [ ] ❌ `tangmen_throwing/biao.ex` ← `tangmen-throwing/biao.c` (miss=19)
