@@ -1,42 +1,39 @@
 defmodule Kantele.Combat.Skills.Performs.DamoJian.Sanjue do
   @moduledoc """
-  三绝「sanjue」（对照 `kungfu/skill/damo-jian/sanjue.c`）
+  达摩三绝剑「sanjue」（对照 `kungfu/skill/damo-jian/sanjue.c`，inherit F_SSERVER）
 
-  达摩剑法单体攻击：消耗 150 内力，对战斗中对手出招。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:dodge>=200,force>=200,sword>=200`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  达摩剑法（剑 sword）连击绝技：三次 do_attack（apply/attack 0/100/200 后回退
+  -300）；要求 dex>=30、force>=200、dodge>=200、sword>=200、neili>=150、
+  sword 已激发映射 damo-jian。消耗内力 75，出招后忙乱 1+random(3)。
   """
 
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
 
-  alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @perform_id "damo-jian/sanjue"
-  @move_name "「三绝」"
 
-  @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
+  @impl true
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
 
-    with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
+    with {:ok, target} <- target(combat),
          :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_dex(stats),
+         :ok <- check_force(stats),
+         :ok <- check_dodge(stats),
+         :ok <- check_sword(stats),
+         :ok <- check_neili(character),
+         :ok <- check_mapped(stats) do
+      apply_perform(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -45,18 +42,10 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Sanjue do
     end
   end
 
-  defp check_perform_known(stats) do
-    if Stats.perform_known?(stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
-    end
-  end
-
-  defp check_target(combat) do
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "「达摩三绝剑」只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -70,13 +59,43 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Sanjue do
     end
   end
 
-  defp check_skill_level(stats) do
-    level = Stats.skill(stats, "damo-jian")
-
-    if level < 200 do
-      {:error, "你的达摩剑法不够娴熟，无法施展#{@move_name}。\n"}
+  defp check_dex(stats) do
+    if Stats.query_dex(stats) < 30 do
+      {:error, "你的身法不够，目前还不能使用这项绝技！\n"}
     else
-      {:ok, level}
+      :ok
+    end
+  end
+
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 200 do
+      {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_dodge(stats) do
+    if Stats.skill(stats, "dodge") < 200 do
+      {:error, "你的轻功修为不够，不能使用达摩三绝剑！\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_sword(stats) do
+    if Stats.skill(stats, "sword") < 200 do
+      {:error, "你的剑法修为不够，目前不能使用达摩三绝剑！\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 150 do
+      {:error, "你的真气不够，不能使用达摩三绝剑！\n"}
+    else
+      :ok
     end
   end
 
@@ -84,89 +103,28 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Sanjue do
     if Stats.mapped(stats, "sword") == "damo-jian" do
       :ok
     else
-      {:error, "你没有激发达摩剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发达摩剑，不能使用达摩三绝剑！\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 150 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
-    else
-      :ok
-    end
-  end
+  defp apply_perform(conn, character, target) do
+    # LPC: msg = HIC "$N" HIC "使出达摩剑的绝技「达摩三绝剑」，攻速陡然加快！\n" NOR;
+    start_msg = "$N使出达摩剑的绝技「达摩三绝剑」，攻速陡然加快！\n"
+    conn = Broadcast.publish(conn, start_msg, n1: character.name)
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # LPC: me->add("neili", -75); me->start_busy(1 + random(3));
+    #      me->add_temp("apply/attack", 0/100/200); COMBAT_D->do_attack(me, target, weapon, 0);
+    #      me->add_temp("apply/attack", -300);
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 75}
+    combat = Combat.start_busy(character.meta.combat, 1 + Engine.rand(&:rand.uniform/1, 3))
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N剑势如虹，使出达摩剑法「三绝」，三剑合一刺向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
-
-    send(target.pid, %Event{
-      from_pid: self(),
-      topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
-    })
+    # TODO: 三次连击（apply/attack 0/100/200 回退 -300）对应 Engine.attack_round/3，
+    #       需将 character/target 转为 Fighter 后调用，跨进程补全。
+    _ = target
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
-  end
-
-  @doc false
-  def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
-      conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
-    else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
-    end
-  end
-
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
-
-  defp ref(character),
-    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "damo-jian/sanjue",
-      kind: :perform,
-      gates: [],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
   end
 end

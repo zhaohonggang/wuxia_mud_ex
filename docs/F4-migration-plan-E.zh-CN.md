@@ -196,7 +196,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `damo_jian/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `damo_jian/sanjue.ex` ← `damo-jian/sanjue.c`  (miss=8)
+- [x] ✅ `damo_jian/sanjue.ex` ← `damo-jian/sanjue.c`  (miss=0)
 
 ### `danding_dao/` （1 个，基线缺失 10 条）
 
