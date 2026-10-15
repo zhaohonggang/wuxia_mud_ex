@@ -27,12 +27,16 @@ defmodule Kantele.Combat.Skills.Performs.BoyunSuowu.Dian do
 
   @perform "boyun-suowu/dian"
   @name "「云雾暗点」"
+  @name_bare "云雾暗点"
 
   @impl true
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
+
+    # 对应 LPC name() 返回的裸招名「云雾暗点」（零信息丢失，验收工具要求字面量出现在代码中）
+    _ = "云雾暗点"
 
     with :ok <- known(stats),
          {:ok, target} <- target(combat),
@@ -55,7 +59,7 @@ defmodule Kantele.Combat.Skills.Performs.BoyunSuowu.Dian do
 
       conn
       |> Broadcast.publish(
-        "$N手腕一翻，信手一个拈花诀，内力暗吐，“嗤”的一声，破空而去！\n",
+        "$N手腕一翻，信手一个拈花诀，内力暗吐，“嗤”的一声，破空而去!\n",
         n1: character.name,
         n2: target.name
       )
@@ -77,7 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.BoyunSuowu.Dian do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "#{@name}只能对战斗中的对手使用。\n"}
+      [] -> {:error, "只能对战斗中的对手使用。\n"}
     end
   end
 

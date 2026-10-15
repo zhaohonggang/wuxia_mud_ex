@@ -23,7 +23,8 @@ defmodule Kantele.Combat.Skills.Performs.JingangBuhuaiti.Jingang do
         {:neili_min, 300, "你的内力不够。\n"},
         {:skill_min, "jingang-buhuaiti", 100, "你的金刚不坏护体神功修为不够。\n"},
         {:no_buff, "jingangbuhuai", "你已经运起金刚不坏护体神功了。\n"},
-        {:no_buff, "jinzhongzhao", "你已经运起[金钟罩]作为护体神功了。\n"}
+        {:no_buff, "jinzhongzhao", "你已经运起[金钟罩]作为护体神功了。\n"},
+        {:no_buff, "special/jinshen", "你已经运起神魔金身之术了。\n"}
       ],
       costs: %{neili: 200},
       effects: [
@@ -32,7 +33,7 @@ defmodule Kantele.Combat.Skills.Performs.JingangBuhuaiti.Jingang do
       busy: {:if_fighting, 2},
       duration: total(),
       expire_message: "你的金刚不坏护体神功运行完毕，将内力收回丹田。\n",
-      message: "$N高呼佛号，全身肌肉紧缩，霎那间皮肤竟犹如镀金一般，发出灿灿金光。\n"
+      message: "只听$N高呼佛号，全身肌肉紧缩，霎那间皮肤竟犹如镀金一般，发出灿灿金光。\n"
     }
 
   defp total(), do: {:add, {:skill, "force"}, {:div, {:skill, "jingang-buhuaiti"}, 2}}
