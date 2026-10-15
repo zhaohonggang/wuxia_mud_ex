@@ -187,7 +187,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `dagou_bang/` （2 个，基线缺失 24 条）
 
-- [ ] ❌ `dagou_bang/ban.ex` ← `dagou-bang/ban.c`  (miss=14)
+- [x] ✅ `dagou_bang/ban.ex` ← `dagou-bang/ban.c`  (miss=0)
 - [ ] ❌ `dagou_bang/chuo.ex` ← `dagou-bang/chuo.c`  (miss=10)
 
 ### `dali_chu/` （1 个，基线缺失 12 条）
