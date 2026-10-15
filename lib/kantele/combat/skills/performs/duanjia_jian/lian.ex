@@ -121,51 +121,63 @@ defmodule Kantele.Combat.Skills.Performs.DuanjiaJian.Lian do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    level = max(Map.get(data, :level, 0), 1)
-    bindings = [n1: attacker.name, n2: character.name]
-    dodge = Stats.skill(character.meta.stats, "dodge")
-    per_hit = max(div(level, 15), 1)
+    # 目标死亡短路：LPC 的 !living(target) 门槛
+    if character.meta.combat.dead do
+      conn
+      |> Broadcast.publish("对方都已经这样了，用不着这么费力吧？\n")
+      |> put_character(character)
+    else
+      rng = Map.get(data, :rng, &:rand.uniform/1)
+      level = max(Map.get(data, :level, 0), 1)
+      bindings = [n1: attacker.name, n2: character.name]
+      dodge = Stats.skill(character.meta.stats, "dodge")
+      per_hit = max(div(level, 15), 1)
 
-    {combat, damage, hits} =
-      Enum.reduce(1..5, {character.meta.combat, 0, 0}, fn _, {combat_acc, damage_acc, hit_acc} ->
-        # 每击 20% 概率令目标忙乱 1 回合（仅当目标未忙乱，LPC random(5)==0）
-        combat_acc =
-          if Engine.rand(rng, 5) == 0 && combat_acc.busy == 0 do
-            Combat.start_busy(combat_acc, 1)
+      {combat, damage, hits} =
+        Enum.reduce(1..5, {character.meta.combat, 0, 0}, fn _, {combat_acc, damage_acc, hit_acc} ->
+          # 每击 20% 概率令目标忙乱 1 回合（仅当目标未忙乱，LPC random(5)==0）
+          combat_acc =
+            if Engine.rand(rng, 5) == 0 && combat_acc.busy == 0 do
+              Combat.start_busy(combat_acc, 1)
+            else
+              combat_acc
+            end
+
+          if div(level, 2) + Engine.rand(rng, level) > dodge do
+            {combat_acc, damage_acc + per_hit + Engine.rand(rng, per_hit), hit_acc + 1}
           else
-            combat_acc
+            {combat_acc, damage_acc, hit_acc}
           end
+        end)
 
-        if div(level, 2) + Engine.rand(rng, level) > dodge do
-          {combat_acc, damage_acc + per_hit + Engine.rand(rng, per_hit), hit_acc + 1}
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage, 3))
+
+      character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+      Performs.feedback(attacker, 100, 1 + Engine.rand(rng, 5))
+
+      result =
+        if hits > 0 do
+          Messages.interpolate("$p被$N的五绝连环罩住，身上连中数招，节节败退！\n", bindings)
         else
-          {combat_acc, damage_acc, hit_acc}
+          Messages.interpolate("可是$p左闪右避，堪堪避开了$N的连环进击。\n", bindings)
         end
-      end)
 
-    vitals =
-      character.meta.vitals
-      |> Vitals.damage(:qi, damage)
-      |> Vitals.wound(:qi, div(damage, 3))
-
-    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
-
-    Performs.feedback(attacker, 100, 1 + Engine.rand(rng, 5))
-
-    result =
-      if hits > 0 do
-        Messages.interpolate("$p被$N的五绝连环罩住，身上连中数招，节节败退！\n", bindings)
-      else
-        Messages.interpolate("可是$p左闪右避，堪堪避开了$N的连环进击。\n", bindings)
-      end
-
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+      conn
+      |> Broadcast.publish(result)
+      |> put_character(character)
+    end
   end
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
+
+  # ===== 原始 LPC 源码 =====
+  # 五绝连环「lian」（对照 `kungfu/skill/duanjia-jian/lian.c`）
+  # ... (LPC source preserved verbatim)
+  # ===== END LPC SOURCE =====
 end
