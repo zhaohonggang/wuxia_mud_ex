@@ -32,8 +32,12 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     improve = 0
     n = 0
     m = 0
-    ap = ((Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan")) + Stats.skill(stats, "taiji-shengong"))
-    damage = (div(ap, 3) + Engine.rand(rng, div(ap, 3)))
+
+    ap =
+      Stats.skill(stats, "taoism") + Stats.skill(stats, "taiji-quan") +
+        Stats.skill(stats, "taiji-shengong")
+
+    damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
     flag = 1
 
     with :ok <- check_perform_known(character),
@@ -42,7 +46,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -83,9 +89,9 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "taiji-quan") < 250 -> {:error, "你的太极拳不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "taiji-shengong") < 300 -> {:error, "你的太极神功修为还不够高，难以施展。\n"}
-      Stats.skill(stats, "taoism") < 300 -> {:error, "你的道学心法修为还不够高，难以施展。\n"}
+      Stats.skill(stats, "taiji-quan") < 250 -> {:error, "你的太极拳不够娴熟，难以施展「太极图」。\n"}
+      Stats.skill(stats, "taiji-shengong") < 300 -> {:error, "你的太极神功修为还不够高，难以施展「太极图」。\n"}
+      Stats.skill(stats, "taoism") < 300 -> {:error, "你的道学心法修为还不够高，难以施展「太极图」。\n"}
       true -> :ok
     end
   end
@@ -95,13 +101,14 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
 
     cond do
       Stats.mapped(stats, "unarmed") != "taiji-quan" ->
-        {:error, "你现在没有激发太极拳，难以施展。\n"}
+        {:error, "你现在没有激发太极拳，难以施展「太极图」。\n"}
 
       Stats.mapped(stats, "force") != "taiji-shengong" ->
-        {:error, "你现在没有激发太极神功，难以施展。\n"}
+        {:error, "你现在没有激发太极神功，难以施展「太极图」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taiji-quan" ->
-        {:error, "你没有准备使用太极拳，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "taiji-quan" ->
+        {:error, "你没有准备使用太极拳，难以施展「太极图」。\n"}
 
       true ->
         :ok
@@ -112,8 +119,8 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.jingli < 1000 -> {:error, "你现在精力不够，难以施展。\n"}
-      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.jingli < 1000 -> {:error, "你现在精力不够，难以施展「太极图」。\n"}
+      vitals.neili < 1000 -> {:error, "你现在真气不够，难以施展「太极图」。\n"}
       true -> :ok
     end
   end
@@ -122,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「太极图」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -131,7 +138,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     combat = character.meta.combat
 
     cond do
-      Combat.fighting?(combat) -> {:error, "只能对战斗中的对手使用。\n"}
+      Combat.fighting?(combat) -> {:error, "「太极图」只能对战斗中的对手使用。\n"}
       true -> :ok
     end
   end
@@ -141,14 +148,13 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     vitals = character.meta.vitals
     vitals = %{vitals | jingli: vitals.jingli - 1000}
     vitals = %{vitals | neili: vitals.neili - 1000}
-    vitals = %{vitals | neili: vitals.neili - 200}
-    vitals = %{vitals | neili: vitals.neili - 500}
-    vitals = %{vitals | neili: 0}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
+    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N淡然一笑，双手轻轻划了数个圈子，顿时四周的气流波动，源源不断的被牵引进来。", n1: character.name)
+
+    msg = "$N淡然一笑，双手轻轻划了数个圈子，顿时四周的气流波动，源源不断的被牵引进来。\n\n"
+    conn = Broadcast.publish(conn, Messages.interpolate(msg, n1: character.name))
 
     conn
     |> put_character(character)
@@ -173,12 +179,76 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     _stats = character.meta.stats
     vitals = character.meta.vitals
+    combat = character.meta.combat
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    msg = Enum.random(["(  )", "却见容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！", "只见手舞足蹈，忘乎所以，忽然大叫一声，吐血不止！", "呆立当场，一动不动，有如中邪，七窍都迸出鲜血来。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    # 命中判定: ap / 2 + random(ap) > dp
+    dp =
+      Stats.skill(character.meta.stats, "force") * 2 + Stats.skill(character.meta.stats, "taoism")
+
+    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+    if hit do
+      damage = div(ap, 3) + Engine.rand(rng, div(ap, 3))
+
+      # 受击者伤害
+      vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, div(damage, 2))
+      vitals = Vitals.damage(vitals, :jing, div(damage, 3))
+      vitals = Vitals.damage(vitals, :jing, div(damage, 6))
+
+      # 受击者 Busy 3
+      combat = Combat.start_busy(combat, 3)
+      character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+      # 受击者 neili -500
+      vitals = %{vitals | neili: max(vitals.neili - 500, 0)}
+
+      # 受击者第一人称随机消息
+      incoming_msg =
+        Enum.random([
+          "恍惚之间你似乎回到了过去的世界，竟然再无法控制自我，忽然眼前的一切\n又全然不见，你心头一乱，浑身一阵剧痛，内力紊乱难以控制！",
+          "你眼前一切渐渐的模糊起来，好像是到了仙境，然而你却觉得内息越来越乱，\n四肢一阵酸痛，几乎要站立不住。",
+          "你耳边忽然响起一个霹雳，眼见雷神挥舞电锤向你打来，你不禁大吃一惊，\n浑身上下都不听使唤，只有高声呼救。"
+        ])
+
+      conn = Broadcast.publish(conn, incoming_msg)
+
+      # 第三人称消息随机
+      p = div(vitals.qi * 100, max(vitals.max_qi, 1))
+      status_suffix = "\n( $n#{eff_status_msg(p)} )\n"
+
+      third_msg =
+        Enum.random([
+          "只见$n手舞足蹈，忘乎那些，忽然大叫一声，吐血不止！",
+          "却见$n容貌哀戚，似乎想起了什么伤心之事，身子一晃，呕出数口鲜血！",
+          "$n呆立当场，那些不动，有如中邪，七窍都迸出鲜血来。"
+        ]) <> status_suffix
+
+      conn =
+        Broadcast.publish(
+          conn,
+          Messages.interpolate(third_msg, n1: attacker.name, n2: character.name)
+        )
+    else
+      # 未命中分支
+      vitals = %{vitals | neili: max(vitals.neili - 200, 0)}
+      combat = Combat.start_busy(combat, 3)
+      character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+      character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+      conn = Broadcast.publish(conn, "你发现眼前的景物似幻似真，连忙默运内功，不受困扰。")
+
+      # 无人命中时的广播消息
+      conn =
+        Broadcast.publish(
+          conn,
+          Messages.interpolate("然而那些没有任何人受了$N的影响。\n\n", n1: attacker.name)
+        )
+    end
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 
@@ -212,7 +282,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   #         martial = "unarmed";
   # 
   #         if (userp(me) && me->query("can_perform/taiji-quan/tu") < 10)
-  #                 return notify_fail("你所使用的外功中没有这种功能。\n");
+  #                 return notify_fail("你所使用的外功中没有那些功能。\n");
   # 
   #         me->clean_up_enemy();
   #         if (! me->is_fighting())
@@ -315,7 +385,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   #                         {
   #                         case 0:
   #                                 msg = HIR "只见" + obs[i]->name() +
-  #                                       HIR "手舞足蹈，忘乎所以，忽"
+  #                                       HIR "手舞足蹈，忘乎那些，忽"
   #                                       "然大叫一声，吐血不止！\n" NOR;
   #                                 msg += "( " + obs[i]->name() + eff_status_msg(p) + " )\n\n";
   #                                 break;
@@ -327,7 +397,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
   #                                 break;
   #                         default:
   #                                 msg = HIR + obs[i]->name() +
-  #                                       HIR "呆立当场，一动不动，有如中"
+  #                                       HIR "呆立当场，那些不动，有如中"
   #                                       "邪，七窍都迸出鲜血来。\n" NOR;
   #                                 msg += "( " + obs[i]->name() + eff_status_msg(p) + " )\n\n";
   #                                 break;

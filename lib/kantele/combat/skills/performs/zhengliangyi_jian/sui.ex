@@ -44,7 +44,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -70,7 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你所使用的外功中没有那些功能。\n"}
     end
   end
 
@@ -181,7 +183,12 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
     if main_hit do
       # Attacker effects
       attacker_vitals = %{attacker_vitals | neili: 0}
-      attacker_vitals = %{attacker_vitals | max_neili: attacker_vitals.max_neili - Engine.rand(rng, 50)}
+
+      attacker_vitals = %{
+        attacker_vitals
+        | max_neili: attacker_vitals.max_neili - Engine.rand(rng, 50)
+      }
+
       attacker = %{attacker | meta: %{attacker.meta | vitals: attacker_vitals}}
       attacker_combat = attacker.meta.combat
       attacker_combat = Combat.start_busy(attacker_combat, 6)
@@ -199,8 +206,19 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
         # die_reason: "使用一招玉碎昆冈，拼命不成，反被" + target->name() + "击毙"
         msg1 = "可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。\n"
         msg2 = "只听“喀嚓一声”，$n那掌正好打在$N头顶，$N哀嚎一声，软软的瘫倒。\n"
-        conn = Broadcast.publish(conn, Messages.interpolate(msg1, n1: attacker.name, n2: character.name))
-        conn = Broadcast.publish(conn, Messages.interpolate(msg2, n1: attacker.name, n2: character.name))
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(msg1, n1: attacker.name, n2: character.name)
+          )
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(msg2, n1: attacker.name, n2: character.name)
+          )
+
         # die_reason parts (for string extraction)
         _die1 = "使用一招玉碎昆冈，拼命不成，反被"
         _die2 = "击毙"
@@ -210,27 +228,61 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
           # "$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。\n"
           # "只听“噗嗤一声，" + weapon->name() + "已然透过$n前胸而入，喷出一股血雨。\n"
           # die_reason: "被" + me->name() + "使一招玉碎昆冈刺死了"
-          msg1 = "$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。\n"
-          msg2_a = "只听“�普一声，"
-          msg2_b = "已然透过$n前胸而入，喷出一股血雨。\n"
-          conn = Broadcast.publish(conn, Messages.interpolate(msg1, n1: attacker.name, n2: character.name))
-          conn = Broadcast.publish(conn, Messages.interpolate(msg2_a, n1: attacker.name, n2: character.name))
-          conn = Broadcast.publish(conn, Messages.interpolate(msg2_b, n1: attacker.name, n2: character.name))
+          msg1 = "$n眼见$N来势那些凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。\n"
+          msg2_a = "只听“噗嗤一声，"
+          msg2_b = weapon_name <> "已然透过$n前胸而入，喷出一股血雨。\n"
+
+          conn =
+            Broadcast.publish(
+              conn,
+              Messages.interpolate(msg1, n1: attacker.name, n2: character.name)
+            )
+
+          conn =
+            Broadcast.publish(
+              conn,
+              Messages.interpolate(msg2_a, n1: attacker.name, n2: character.name)
+            )
+
+          conn =
+            Broadcast.publish(
+              conn,
+              Messages.interpolate(msg2_b, n1: attacker.name, n2: character.name)
+            )
+
           _die1 = "被"
           _die2 = "使一招玉碎昆冈刺死了"
         else
           if cond3 do
             # Mutual death - branch 3
-            # "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击向$N面门，竟也是同归于尽的招数。\n"
-            # "只听“�普一声，" + weapon->name() + "已然透过$n前胸，喷出一股血雨。\n同时$n那一掌也正好打在$N头顶，听得“喀嚓一声”，$N头盖骨完全碎裂，软软的瘫倒。\n"
+            # "$n眼见$N来势那些凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击向$N面门，竟也是同归于尽的招数。\n"
+            # "只听“噗嗤一声，" + weapon->name() + "已然透过$n前胸，喷出一股血雨。\n同时$n那一掌也正好打在$N头顶，听得“喀嚓一声”，$N头盖骨完全碎裂，软软的瘫倒。\n"
             # die_reason: "使用一招玉碎昆冈与" + target->name() + "同归于尽了"
             # die_reason: "被" + me->name() + "使一招玉碎昆冈，两人一块去见了黑白无常"
             msg1 = "$n眼见$N来势那些凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击向$N面门，竟也是同归于尽的招数。\n"
-            msg2_a = "只听“�普一声，"
-            msg2_b = "已然透过$n前胸，喷出一股血雨。\n同时$n那一掌也正好打在$N头顶，听得“喀嚓一声”，$N头盖骨完全碎裂，软软的瘫倒。\n"
-            conn = Broadcast.publish(conn, Messages.interpolate(msg1, n1: attacker.name, n2: character.name))
-            conn = Broadcast.publish(conn, Messages.interpolate(msg2_a, n1: attacker.name, n2: character.name))
-            conn = Broadcast.publish(conn, Messages.interpolate(msg2_b, n1: attacker.name, n2: character.name))
+            msg2_a = "只听“噗嗤一声，"
+
+            msg2_b =
+              weapon_name <> "已然透过$n前胸，喷出一股血雨。\n同时$n那一掌也正好打在$N头顶，听得“喀嚓一声”，$N头盖骨完全碎裂，软软的瘫倒。\n"
+
+            conn =
+              Broadcast.publish(
+                conn,
+                Messages.interpolate(msg1, n1: attacker.name, n2: character.name)
+              )
+
+            conn =
+              Broadcast.publish(
+                conn,
+                Messages.interpolate(msg2_a, n1: attacker.name, n2: character.name)
+              )
+
+            conn =
+              Broadcast.publish(
+                conn,
+                Messages.interpolate(msg2_b, n1: attacker.name, n2: character.name)
+              )
+
             _die1 = "使用一招玉碎昆冈与"
             _die2 = "同归于尽了"
             _die3 = "被"
@@ -240,7 +292,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
             # target->start_busy(2 + random(6))
             # damage = ap + force; damage = damage/2 + random(damage)
             # limb = random limb or "要害"
-            # "$n眼见$N来势那些凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，那些只听“嗤啦”一声，那\n柄" + weapon->name() + "已然刺穿" + limb + "，喷出一股血雨。\n"
+            # "$n眼见$N来势那些凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，那些只听“嗤啦一声，那\n柄" + weapon->name() + "已然刺穿" + limb + "，喷出一股血雨。\n"
             target_combat = character.meta.combat
             target_combat = Combat.start_busy(target_combat, 2 + :rand.uniform(6))
             character = %{character | meta: Map.put(character.meta, :combat, target_combat)}
@@ -255,9 +307,24 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
             msg3 = "，喷出一股血雨。\n"
             # limb variable - use a representative value for string extraction
             _limb = "要害"
-            conn = Broadcast.publish(conn, Messages.interpolate(msg1, n1: attacker.name, n2: character.name))
-            conn = Broadcast.publish(conn, Messages.interpolate(msg2, n1: attacker.name, n2: character.name))
-            conn = Broadcast.publish(conn, Messages.interpolate(msg3, n1: attacker.name, n2: character.name))
+
+            conn =
+              Broadcast.publish(
+                conn,
+                Messages.interpolate(msg1, n1: attacker.name, n2: character.name)
+              )
+
+            conn =
+              Broadcast.publish(
+                conn,
+                Messages.interpolate(msg2, n1: attacker.name, n2: character.name)
+              )
+
+            conn =
+              Broadcast.publish(
+                conn,
+                Messages.interpolate(msg3, n1: attacker.name, n2: character.name)
+              )
           end
         end
       end
@@ -270,11 +337,14 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
       attacker = %{attacker | meta: Map.put(attacker.meta, :combat, attacker_combat)}
 
       msg = "可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。\n"
-      conn = Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
+
+      conn =
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 8)
+
     conn
     |> put_character(character)
   end
@@ -368,7 +438,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
   #                    me->query("max_neili") > target->query("max_neili"))
   #                 {
   #                         msg += HIR "$n" HIR "眼见$N" HIR "来势那些凶悍，这一招决计无"
-  #                                "法抵挡，骇怖达于极点，竟致僵立，束手待毙。\n只听“�普"
+  #                                "法抵挡，骇怖达于极点，竟致僵立，束手待毙。\n只听“噗"
   #                                "嗤一声，" + weapon->name() + HIR "已然透过$n" HIR
   #                                "前胸而入，喷出一股血雨。\n" NOR;
   #                         message_combatd(msg, me, target);
@@ -381,7 +451,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Sui do
   #                 {
   #                         msg += HIR "$n" HIR "眼见$N" HIR "来势那些凶悍，只觉这一招决"
   #                                "计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击\n"
-  #                                "向$N" HIR "面门，竟也是同归于尽的招数。只听“�普嗤”一"
+  #                                "向$N" HIR "面门，竟也是同归于尽的招数。只听“噗嗤”一"
   #                                "声，" + weapon->name() + HIR "已然透过$n" HIR "前胸，"
   #                                "喷出一股血雨。\n同时$n" HIR "那一掌也正好打在$N" HIR
   #                                "头顶，听得“喀嚓一声”，$N" HIR "头盖骨完全碎裂，软软"
