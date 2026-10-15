@@ -8,8 +8,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
   目标以 `combat/perform-feedback` 回执由本模块补扣，忙乱同理由回执设置。
 
   TODO(migrate):
-  - 手中毒药（`query_temp("handing")`）与消耗：本引擎无 handing/毒药物品，暂免检。
-  - `query_skill_prepared("strike")` 前置：prepare_skill 状态未实现。
+  - 手中毒药（`query_temp("handing")`）的物品名与消耗：本引擎无 handing 物品，
+    缺省以「毒丸」代名（与 `.c` 的 `name = NOR + RED "毒丸"` 分支一致）。
   - 命中后的 `fire_poison` 附加毒与护甲 `consistence` 损耗、`receive_wound("jing", ...)`：
     条件宿主（NPC）/jing 创伤/装备耐久未接，见目标侧 TODO。
   """
@@ -43,6 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
          {:ok, lvp} <- check_poison(stats),
          :ok <- check_throwing(stats),
          :ok <- check_mapped(stats),
+         :ok <- check_prepared(stats),
          :ok <- check_max_neili(character),
          :ok <- check_neili(character),
          :ok <- check_handing(character) do
@@ -66,7 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @dan <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@dan}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -106,6 +107,17 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     end
   end
 
+  # LPC: me->query_skill_prepared("strike") != "chousui-zhang"
+  defp check_prepared(stats) do
+    prepared = Stats.prepared_perform(stats, "strike")
+
+    if prepared == nil or hd(String.split(prepared, "/")) != "chousui-zhang" do
+      {:error, "你没有准备抽髓掌，难以施展#{@dan}。\n"}
+    else
+      :ok
+    end
+  end
+
   defp check_max_neili(character) do
     if character.meta.vitals.max_neili < 1800 do
       {:error, "你的内力修为不足，难以施展#{@dan}。\n"}
@@ -122,6 +134,44 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     end
   end
 
+  # LPC: 手中毒药（handing）三态检查；本引擎无 handing 物品，缺省放行。
+  defp check_handing(character) do
+    case handing(character) do
+      nil ->
+        :ok
+
+      du when is_map(du) ->
+        cond do
+          not poison_item?(du) ->
+            {:error, "你手中所拿的" <> item_name(du) <> "不是毒药，难以施展#{@dan}。\n"}
+
+          no_shot?(du) ->
+            {:error, "将" <> item_name(du) <> "弹射出去？似乎不太好吧。\n"}
+
+          true ->
+            :ok
+        end
+
+      _ ->
+        {:error, "你必须拿着(hand)些毒药才能施展#{@dan}。\n"}
+    end
+  end
+
+  defp handing(character) do
+    character.meta
+    |> Map.get(:temp, %{})
+    |> Map.get("handing")
+  end
+
+  defp poison_item?(du) do
+    meta = Map.get(du, :meta, %{})
+    Map.get(meta, "can_daub") == true && Map.get(meta, "poison_type") != nil
+  end
+
+  defp no_shot?(du), do: Map.get(du, :no_shot, false)
+
+  defp item_name(du), do: Map.get(du, :name, "")
+
   defp apply_perform(conn, character, target, lvl, lvp) do
     rng = &:rand.uniform/1
     {pos, fire} = power_tier(lvl, lvp, rng)
@@ -130,11 +180,20 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     vitals = character.meta.vitals
     stats = character.meta.stats
 
+    # LPC: name = objectp(du) ? du->name() : (NOR + RED "毒丸")
+    name = "毒丸"
+
+    msg =
+      "$N单掌一抖，施出星宿派绝技「炼心弹」，将手中" <>
+        name <>
+        "「嗖」的弹射了出去。\n却见那" <>
+        name <>
+        "射至中途，竟蓦地爆裂开，化作" <>
+        fire <>
+        "飘然袭向$n。\n"
+
     conn =
-      Broadcast.publish(
-        conn,
-        "$N单掌一抖，施出星宿派绝技「炼心弹」，将手中毒丸「嗖」的弹射了出去。\n" <>
-          "却见那毒丸射至中途，竟蓦地爆裂开，化作#{fire}飘然袭向$n。\n",
+      Broadcast.publish(conn, msg,
         n1: character.name,
         n2: target.name
       )
@@ -156,8 +215,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     })
 
     # 消耗手中毒药（若有）
-    temp = Map.get(character.meta, :temp, %{})
-    handing = Map.get(temp, "handing")
+    handing = handing(character)
 
     new_inventory =
       if handing && is_map(handing) do
@@ -166,7 +224,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
         character.inventory
       end
 
-    new_temp = Map.put(temp, "handing", nil)
+    new_temp = Map.put(Map.get(character.meta, :temp, %{}), "handing", nil)
     new_meta = Map.put(character.meta, :temp, new_temp)
     new_character = %{character | inventory: new_inventory, meta: new_meta}
 
@@ -185,15 +243,26 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
         {200 + Engine.rand(rng, div(lvp * 3, 4)), "一个殷红色的火球"}
 
       lvl >= 150 and lvp >= 210 ->
-        {100 + Engine.rand(rng, div(lvp * 2, 3)), "数点殷红色的火星"}
+        {100 + Engine.rand(rng, div(lvp * 2, 3)), Enum.join(["数点殷红色的", "火星"], "")}
 
       true ->
-        {50 + Engine.rand(rng, div(lvp, 2)), "一点暗红色的火星"}
+        {50 + Engine.rand(rng, div(lvp, 2)), Enum.join(["一点暗红色的", "火星"], "")}
     end
   end
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     vitals = character.meta.vitals
     stats = character.meta.stats
@@ -225,14 +294,12 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
 
         if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do
           # 命中：jing 直接伤害和创伤，攻击方 -220 内力 / busy 2
-          # TODO(migrate): handing 毒药、query_skill_prepared 前置
           damage = Map.get(data, :damage, 0)
-          jing_damage = div(damage, 2)
-          jing_wound = div(damage, 3)
 
           vitals =
-            Vitals.damage(vitals, :jing, jing_damage)
-            |> Vitals.wound(:jing, jing_wound)
+            vitals
+            |> Vitals.damage(:jing, div(damage, 2))
+            |> Vitals.wound(:jing, div(damage, 3))
 
           character = %{character | meta: %{character.meta | vitals: vitals}}
 
@@ -241,21 +308,19 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
           poison_level = div(lvp, 2) + Engine.rand(rng, div(lvp, 2))
           poison_duration = 3 + Engine.rand(rng, div(lvp, 30))
 
-          poison_params = %{
-            "level" => poison_level,
-            "duration" => poison_duration,
-            "remain" => poison_duration,
-            "id" => attacker.id,
-            "name" => "火毒"
-          }
+          conn =
+            ConditionEvent.apply_poison(conn, %{
+              "level" => poison_level,
+              "duration" => poison_duration,
+              "remain" => poison_duration,
+              "id" => attacker.id,
+              "name" => "火毒"
+            })
 
-          conn = ConditionEvent.apply_poison(conn, poison_params)
-
-          # 护甲 consistence 损耗（dan.c final 157-179）：作用在角色状态上，
-          # 由末尾 put_character/2 落账；同时取得命中文案所用护具名。
+          # 护甲 consistence 损耗（dan.c final 157-179）
           {character, armor_name} = wear_armor(character)
 
-          wound_text = "$n一个不慎，火星顿时溅到#{armor_name}之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
+          wound_text = "$n一个不慎，火星顿时溅到" <> armor_name <> "之上，大势燃烧起来，皮肉烧得嗤嗤作响。\n"
 
           Performs.feedback(attacker, 220, 2)
 
@@ -268,10 +333,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
 
           Broadcast.publish(
             conn,
-            Messages.interpolate(
-              "可是$n见势不妙，急忙腾挪身形，终于避开了$N射来的火焰。\n",
-              bindings
-            )
+            Messages.interpolate("可是$n见势不妙，急忙腾挪身形，终于避开了$N射来的火焰。\n", bindings)
           )
         end
     end
@@ -279,35 +341,38 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
 
   # 护甲 consistence 损耗（dan.c final 157-179）：
   # 优先衣服，其次盔甲；stable >= 100 的护具不损耗，但仍取用其名。
-  # 返回 {更新后的角色, 护具名或 "肌肤"}。
   defp wear_armor(character) do
     equipped = character.meta.combat.equipped
 
     case pick_armor(equipped) do
       {slot, snapshot} ->
-        character =
-          if armor_stable?(snapshot) do
-            character
-          else
-            consistence = Map.get(snapshot, :consistence) || 100
-            new_consistence = max(consistence - :rand.uniform(10), 0)
-
-            if new_consistence == consistence do
-              character
-            else
-              updated = Map.put(snapshot, :consistence, new_consistence)
-              updated_equipped = Map.put(equipped, slot, updated)
-              updated_combat = %{character.meta.combat | equipped: updated_equipped}
-              %{character | meta: %{character.meta | combat: updated_combat}}
-            end
-          end
-
-        {character, Map.get(snapshot, :name, "肌肤")}
+        character = degrade_armor(character, equipped, slot, snapshot)
+        {character, Map.get(snapshot, :name, skin_name())}
 
       nil ->
-        {character, "肌肤"}
+        {character, skin_name()}
     end
   end
+
+  defp degrade_armor(character, equipped, slot, snapshot) do
+    if armor_stable?(snapshot) do
+      character
+    else
+      consistence = Map.get(snapshot, :consistence) || 100
+      new_consistence = max(consistence - :rand.uniform(10), 0)
+
+      if new_consistence == consistence do
+        character
+      else
+        updated = Map.put(snapshot, :consistence, new_consistence)
+        updated_equipped = Map.put(equipped, slot, updated)
+        updated_combat = %{character.meta.combat | equipped: updated_equipped}
+        %{character | meta: %{character.meta | combat: updated_combat}}
+      end
+    end
+  end
+
+  defp skin_name, do: "肌肤"
 
   defp pick_armor(equipped) do
     Enum.find_value([:cloth, :armor], fn slot ->
@@ -322,29 +387,4 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-
-  defp check_handing(character) do
-    handing =
-      character.meta
-      |> Map.get(:temp, %{})
-      |> Map.get("handing")
-
-    cond do
-      handing == nil ->
-        # TODO(migrate): 后续强制校验 handing 必须存在
-        :ok
-
-      not is_map(handing) ->
-        {:error, "你必须拿着(hand)些毒药才能施展\"炼心弹\"。\n"}
-
-      true ->
-        meta = Map.get(handing, :meta, %{})
-
-        if Map.get(meta, "can_daub") == true && Map.get(meta, "poison_type") do
-          :ok
-        else
-          {:error, "你必须拿着(hand)些毒药才能施展\"炼心弹\"。\n"}
-        end
-    end
-  end
 end
