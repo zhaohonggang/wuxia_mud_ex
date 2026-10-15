@@ -1,12 +1,18 @@
 defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
   @moduledoc """
-  点穴「dian」（对照 `kungfu/skill/baibian-daxue/dian.c`）
+  点字诀「dian」（对照 `kungfu/skill/baibian-daxue/dian.c`）
 
-  百变大学单体攻击：消耗 100 内力，对战斗中对手出招。
+  百变大学杖法绝技：须持 staff 类武器，发起 `combat/perform-incoming` 事件，
+  由目标侧 `resolve_incoming` 判定命中并施加忙乱。
 
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:force>=100,staff>=150`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  门槛（攻击方，逐条对齐 LPC）：目标在战斗中、手持 staff 类武器、
+  `force>=100`、`staff>=150`。（LPC 无 `can_perform` 门槛，本版保留
+  `perform_known?` 守卫，多 1 条信息性 EXTRA。）
+
+  攻击方广播起手式（`$N手中的<杖>忽然变得诡秘异常…笼罩了$n多处大穴！`）、
+  发 `perform-incoming`；目标侧按 `ap/2 + rand(ap) > dp`（ap=staff，dp=dodge）判定：
+  - 命中：`$n大惊之下，慌忙抵挡，一时间无暇反击！`，目标忙乱 `ap/27+2`；
+  - 未中：`可是$p身法灵动，躲开了$n的缠身进击！`，攻击方忙乱 2。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -17,13 +23,15 @@ defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
 
   @perform_id "baibian-daxue/dian"
-  @move_name "「点穴」"
+  @move_name "「点字诀」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -32,11 +40,10 @@ defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         {:ok, weapon_name} <- check_weapon(combat),
+         :ok <- check_force_level(stats),
+         :ok <- check_skill_level(stats) do
+      apply_perform(conn, character, target, weapon_name)
     else
       {:error, message} ->
         conn
@@ -56,62 +63,56 @@ defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
+  # if (! objectp(weapon = me->query_temp("weapon")) ||
+  #     (string)weapon->query("skill_type") != "staff")
+  #         return notify_fail("运用「点字诀」手中必须持杖！\n");
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "staff" do
-      :ok
+      {:ok, Map.get(weapon, :name) || ""}
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "运用#{@move_name}手中必须持杖！\n"}
     end
   end
 
+  # if ((int)me->query_skill("force") < 100)
+  #         return notify_fail("你的内功火候不够！\n");
+  defp check_force_level(stats) do
+    if Stats.skill(stats, "force") < 100 do
+      {:error, "你的内功火候不够！\n"}
+    else
+      :ok
+    end
+  end
+
+  # if ((int)me->query_skill("staff") < 150)
+  #         return notify_fail("你的杖法还不到家，无法使用「点字诀」！\n");
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "staff")
-
-    if level < 150 do
-      {:error, "你的杖法不够娴熟，无法施展#{@move_name}。\n"}
-    else
-      {:ok, level}
-    end
-  end
-
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "staff") == "baibian-daxue" do
-      :ok
-    else
-      {:error, "你没有激发百变大学，无法施展#{@move_name}。\n"}
-    end
-  end
-
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 100 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+    if Stats.skill(stats, "staff") < 150 do
+      {:error, "你的杖法还不到家，无法使用#{@move_name}！\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target, weapon_name) do
+    ap = Stats.skill(character.meta.stats, "staff")
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N手中杖法变幻，使出百变大学「点穴」，杖尖点向$n穴道！\n",
-        n1: character.name,
-        n2: target.name
-      )
+    # LPC: msg = HIG "$N" HIG "手中的" + weapon->name() +
+    #      HIG "忽然变得诡秘异常，忽伸忽缩，笼罩了$n" HIG "多处大穴！\n" NOR;
+    opening = "$N手中的" <> weapon_name <> "忽然变得诡秘异常，忽伸忽缩，笼罩了$n多处大穴！\n"
+
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{attacker: ref(character), perform_id: @perform_id, ap: ap}
     })
 
     conn
@@ -121,34 +122,37 @@ defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
+    dp = Stats.skill(character.meta.stats, "dodge")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+    bindings = [n1: attacker.name, n2: character.name]
 
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
+    # LPC: ap = me->query_skill("staff"); dp = target->query_skill("dodge");
+    #      if (ap / 2 + random(ap) > dp)
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+      # LPC: target->start_busy(ap / 27 + 2)
+      combat = Combat.start_busy(character.meta.combat, div(ap, 27) + 2)
 
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
+      |> Broadcast.publish(Messages.interpolate("$n大惊之下，慌忙抵挡，一时间无暇反击！\n", bindings))
       |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
+      # LPC: me->start_busy(2)
+      Performs.feedback(attacker, 0, 2)
 
-      Broadcast.publish(conn, text)
+      Broadcast.publish(conn, Messages.interpolate("可是$p身法灵动，躲开了$n的缠身进击！", bindings))
     end
   end
 
@@ -157,16 +161,4 @@ defmodule Kantele.Combat.Skills.Performs.BaibianDaxue.Dian do
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "baibian-daxue/dian",
-      kind: :perform,
-      gates: [],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
 end
