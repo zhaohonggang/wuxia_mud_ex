@@ -3,15 +3,12 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
   绝招「截手式」（对照 kungfu/skill/huashan-jian/jie.c）
 
   消耗 50 内力，对战斗中的对手出剑：命中则目标忙乱 `level/22 + 2` 轮，
-  失手则文本落空（目标仅见招架/拨打文案）。
+  失手则文本落空（目标仅见招架/拨打文案），攻击者忙乱 1 轮。
 
   攻击者只出招：本模块在攻击者进程内校验门槛、扣内力、放出主文案，
   再把 `combat/perform-incoming` 事件发给目标；由目标以自身完整状态
   （parry 等级、兵器）在本进程结算命中的随机判定与忙乱——与战斗心跳
   `combat/incoming` 同构，规避跨进程读取目标状态。
-
-  TODO(migrate): LPC 在 `target->is_busy()` 时直接 notify_fail、且仅失手时
-  `me->start_busy(1)`；本版目标忙乱不阻发招、攻击者也不进入忙乱（缺回执通道）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -22,6 +19,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -38,6 +36,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
          :ok <- check_weapon(combat),
+         :ok <- check_target_busy(target),
          {:ok, level} <- check_skill_level(stats),
          :ok <- check_mapped(stats),
          :ok <- check_neili(character) do
@@ -61,7 +60,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @jie <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@jie}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -72,6 +71,24 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
       :ok
     else
       {:error, "你使用的武器不对。\n"}
+    end
+  end
+
+  # LPC: if (target->is_busy())
+  #          return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧！\n");
+  # 目标忙乱取引用快照 meta 的 combat.busy（缺 meta 时按未忙处理）。
+  defp check_target_busy(target) do
+    if busy?(target) do
+      {:error, "#{Map.get(target, :name)}目前正自顾不暇，放胆攻击吧！\n"}
+    else
+      :ok
+    end
+  end
+
+  defp busy?(target) do
+    case target do
+      %{meta: %{combat: %{busy: busy}}} -> busy > 0
+      _ -> false
     end
   end
 
@@ -108,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
     conn =
       Broadcast.publish(
         conn,
-        "$N长剑一勒，使出华山剑法绝技之「截手式」，转折之际天衣无缝，" <>
+        "但见$N长剑一勒，使出华山剑法绝技之「截手式」，转折之际天衣无缝，" <>
           "一剑既出，后着源源倾泻，如大浪跃滩，层层叠叠，迅然扑向$n！\n",
         n1: character.name,
         n2: target.name
@@ -127,6 +144,17 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     combat = character.meta.combat
@@ -134,7 +162,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
     weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+    bindings = [n1: attacker.name, n2: character.name]
 
     if Engine.rand(rng, level) > div(parry, 2) do
       combat = Combat.start_busy(combat, div(level, 22) + 2)
@@ -143,15 +171,18 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Jie do
       |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
       |> put_character(put_combat(character, combat))
     else
+      # LPC: me->start_busy(1);
+      Performs.feedback(attacker, 0, 1)
+
       text =
         if weapon_name do
           Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
+            "但是$p识破了$P的用意，自顾将手中的" <>
+              weapon_name <> "舞成一团光花，$P一怔之下再也攻不进去。\n",
             bindings
           )
         else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
+          Messages.interpolate("但是$p双手戳点刺拍，将$P的来招一一架开。\n", bindings)
         end
 
       Broadcast.publish(conn, text)

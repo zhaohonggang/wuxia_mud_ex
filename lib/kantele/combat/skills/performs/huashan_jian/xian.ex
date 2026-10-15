@@ -2,14 +2,16 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
   @moduledoc """
   夺命连环三仙剑「xian」（对照 `kungfu/skill/huashan-jian/xian.c`）
 
-  华山剑宗绝技：消耗 280 内力，连环三剑，发起 `combat/perform-incoming` 事件，
-  由目标侧 `resolve_incoming` 判定命中并施加伤害。
+  华山剑宗绝技：需持剑、华山剑法>=160、dodge>=160、真气>=300、
+  激发 sword 为华山剑法。攻击方扣 280 内力并下发 `combat/perform-incoming`，
+  由目标侧 `resolve_incoming` 连出三剑（分别对 dodge/force/parry 判定）。
+
+  各剑伤害 `ap + random(ap/3)`（第三剑 `ap + random(ap/2)`），
+  外伤比例 `40+random(10)` / `50+random(10)` / `60+random(10)`；忙乱 3。
 
   差异（TODO(migrate)）：
-  - LPC 另要求 dodge>=160；本版仅以 huashan-jian>=160 与 mapped 把关；
-  - LPC 三剑分别对 dodge/force/parry 判定，本版合为一次 parry 判定；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `ap+rand(ap/3|ap/2)`。
+  - LPC 首句用 `message_sort`，本引擎统一走 `Broadcast.publish`（同
+    `chilian_shenzhang/lian.ex` 惯例）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,9 +22,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "huashan-jian/xian"
   @move_name "「夺命连环三仙剑」"
@@ -35,11 +39,12 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
+         {:ok, weapon} <- check_weapon(combat),
          {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_dodge(stats),
+         :ok <- check_neili(character),
+         :ok <- check_mapped(stats) do
+      apply_perform(conn, character, target, level, weapon)
     else
       {:error, message} ->
         conn
@@ -59,7 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -67,7 +72,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "sword" do
-      :ok
+      {:ok, weapon}
     else
       {:error, "你使用的武器不对！\n"}
     end
@@ -83,11 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
     end
   end
 
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "sword") == "huashan-jian" do
-      :ok
+  defp check_dodge(stats) do
+    if Stats.skill(stats, "dodge") < 160 do
+      {:error, "你轻功修为不够，无法施展#{@move_name}。\n"}
     else
-      {:error, "你没有激发华山剑法，无法使用#{@move_name}。\n"}
+      :ok
     end
   end
 
@@ -99,15 +104,28 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
+  defp check_mapped(stats) do
+    if Stats.mapped(stats, "sword") == "huashan-jian" do
+      :ok
+    else
+      {:error, "你没有激发华山剑法，无法使用#{@move_name}。\n"}
+    end
+  end
+
+  defp apply_perform(conn, character, target, _level, weapon) do
+    stats = character.meta.stats
     vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 280}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+
+    weapon_name = Map.get(weapon, :name, "")
 
     conn =
       Broadcast.publish(
         conn,
-        "$N长啸一声，手中剑随即不停转动，汹涌而出，施展#{@move_name}，" <>
-          "剑锋突变，一剑顿时化为三剑，袭向$n……\n",
+        "$N长啸一声，手中" <>
+          weapon_name <>
+          "随即不停转动，汹涌而出，正是华山剑宗绝技「夺命连环三仙剑」，但是" <>
+          weapon_name <> "剑锋突变，一剑顿时化为三剑，袭向$n……\n",
         n1: character.name,
         n2: target.name
       )
@@ -118,9 +136,8 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
       data: %{
         attacker: ref(character),
         perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
+        ap: Stats.skill(stats, "sword"),
+        weapon_name: weapon_name
       }
     })
 
@@ -131,48 +148,127 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Xian do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "剑"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
-      conn
-      |> Broadcast.publish(
-        Messages.interpolate(
-          "结果$p躲避不及，被$N这一剑震得口吐鲜血，接连后退，受到#{damage}点伤害！\n",
-          bindings
-        )
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
       )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p斜身闪开，身在空中不及变招，只能挥出一招，正击中$N的剑脊上，飘然避去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
+
+    weapon_name = Map.get(data, :weapon_name, "")
+    ap = Map.get(data, :ap, 0)
+
+    dodge = Stats.skill(stats, "dodge")
+    force = Stats.skill(stats, "force")
+    parry = Stats.skill(stats, "parry")
+
+    # 第一剑：当头直劈（dp = dodge，外伤 40+random(10)）
+    conn = Broadcast.publish(conn, "$N将内力全都运到了剑上，呼的一剑，当头直劈。\n", bindings)
+
+    {qi, wound, conn} =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) < dodge do
+        conn = Broadcast.publish(conn, Messages.interpolate("$n斜身闪开。\n", bindings))
+        {0, 0, conn}
+      else
+        damage = ap + Engine.rand(rng, max(div(ap, 3), 1))
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "$n急忙后退，竟然躲避不及，被$N这一剑震得口吐鲜血，接连后退。\n",
+              bindings
+            )
+          )
+
+        {damage, div(damage * (40 + Engine.rand(rng, 10)), 100), conn}
+      end
+
+    # 第二剑：拦腰横削（dp = force，外伤 50+random(10)）
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N圈转" <> weapon_name <> "，拦腰横削，剑势恢弘，剑气纵横，令人匪夷所思。\n",
+        bindings
+      )
+
+    {qi, wound, conn} =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) < force do
+        conn = Broadcast.publish(conn, Messages.interpolate("$n纵身从剑上越过。\n", bindings))
+        {qi, wound, conn}
+      else
+        damage = ap + Engine.rand(rng, max(div(ap, 3), 1))
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "此招来势当真快极，$n哪里来得及闪避招架？只见$N剑光闪过，$n腰间霎时鲜血淋漓！\n",
+              bindings
+            )
+          )
+
+        {qi + damage, wound + div(damage * (50 + Engine.rand(rng, 10)), 100), conn}
+      end
+
+    # 第三剑：疾刺后心（dp = parry，外伤 60+random(10)）
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N长剑反撩，疾刺$p后心，剑法之快，部位之准，当真闻所未闻。\n",
+        bindings
+      )
+
+    {qi, wound, conn} =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) < parry do
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "$n身在空中，不及变招，只能挥出一招，正击中$N剑上，略一借力，飘然避去。\n",
+              bindings
+            )
+          )
+
+        {qi, wound, conn}
+      else
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(
+              "$n身在空中，哪里来得及变招？只见$N此剑掠过，$n大声惨呼，鲜血四下飞溅！\n",
+              bindings
+            )
+          )
+
+        {qi + damage, wound + div(damage * (60 + Engine.rand(rng, 10)), 100), conn}
+      end
+
+    # LPC: me->start_busy(3);
+    Performs.feedback(attacker, 0, 3)
+
+    conn
+    |> put_character(apply_wound(character, qi, wound))
+  end
+
+  defp apply_wound(character, qi, wound) do
+    vitals =
+      character.meta.vitals
+      |> Vitals.damage(:qi, qi)
+      |> Vitals.wound(:qi, wound)
+
+    %{character | meta: %{character.meta | vitals: vitals}}
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}

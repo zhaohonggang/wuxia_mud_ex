@@ -2,17 +2,16 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
   @moduledoc """
   剑掌五连环「lian」（对照 `kungfu/skill/huashan-jian/lian.c`）
 
-  门槛：华山剑法>=50、激发 weapon 对应用法为华山剑法、force>=100、
-  neili>=160、目标存活且战斗中。
-  攻击方发 `perform-incoming`；连出 5 击，每击 20% 概率令目标忙乱 1 回合；
-  命中每击造成 `level/10 + random(level/10)` 伤害（创伤 1/3）。
-  攻击方扣 120 内力并忙乱 `1+random(3)`（由目标侧 `combat/perform-feedback` 回执）。
+  门槛：持剑、neili>=160、force>=100、华山剑法>=50、激发 sword 为华山剑法、
+  目标存活且战斗中。
+  攻击方发 `perform-incoming`；连出 5 击，每击 `random(3)==1` 且目标未忙乱时
+  令目标忙乱 1 回合；攻击方扣 120 内力并忙乱 `1+random(3)`。
 
   差异（TODO(migrate)）：
-  - LPC 的 5 次 `COMBAT_D->do_attack`（完整 AP/DP/招架/伤害管线）折算为
-    每击 `level/10` 基础伤害 + 「缠字诀」同构的命中判定
-    （`level/2 + random(level)` vs dodge）；
-  - `living(target)` 门槛未实现，由目标侧 `combat/perform-incoming` 兜底。
+  - LPC 的 5 次 `COMBAT_D->do_attack`（完整 AP/DP/招架/伤害管线，无自定义文案）
+    折算为每击 `level/10 + random(level/10)` 基础伤害 + 命中判定
+    （`level/2 + random(level)` vs dodge），创伤 1/3；命中/失手文案由引擎生成，
+    本模块不补文案。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -26,7 +25,6 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform "huashan-jian/lian"
@@ -41,10 +39,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
     with :ok <- known(stats),
          {:ok, target} <- target(combat),
          {:ok, weapon} <- weapon(combat),
+         :ok <- neili(character),
+         :ok <- force(stats),
          {:ok, level} <- level(stats),
          :ok <- mapped(stats, weapon),
-         :ok <- force(stats),
-         :ok <- neili(character) do
+         :ok <- target_alive(target) do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
@@ -53,7 +52,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
 
       conn
       |> Broadcast.publish(
-        "$N手中" <> Map.get(weapon, :name) <> "剑法如行云流水，剑掌齐发，直取$n周身要害！\n",
+        "$N使出华山派绝技「剑掌五连环」，身法陡然加快！\n",
         n1: character.name,
         n2: target.name
       )
@@ -82,58 +81,81 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
   defp weapon(combat) do
     case Combat.weapon(combat) do
       %{skill_type: type} = weapon when type == "sword" -> {:ok, weapon}
-      _ -> {:error, "你使用的武器不对，难以施展#{@name}。\n"}
+      _ -> {:error, "你使用的武器不对！\n"}
     end
+  end
+
+  defp neili(character) do
+    if character.meta.vitals.neili < 160,
+      do: {:error, "你的真气不够，无法施展#{@name}！\n"},
+      else: :ok
+  end
+
+  defp force(stats) do
+    if Stats.skill(stats, "force") < 100,
+      do: {:error, "你的内功火候不够，难以施展#{@name}！\n"},
+      else: :ok
   end
 
   defp level(stats) do
     level = Stats.skill(stats, "huashan-jian")
 
     if level < 50,
-      do: {:error, "你的华山剑法还不够纯熟，难以施展#{@name}。\n"},
+      do: {:error, "你的华山剑法还不到家，无法施展#{@name}！\n"},
       else: {:ok, level}
   end
 
   defp mapped(stats, weapon) do
     if Stats.mapped(stats, weapon.skill_type) == "huashan-jian",
       do: :ok,
-      else: {:error, "你现在没有激发华山剑法，难以施展#{@name}。\n"}
+      else: {:error, "你没有激发华山剑法，无法施展#{@name}。\n"}
   end
 
-  defp force(stats) do
-    if Stats.skill(stats, "force") < 100,
-      do: {:error, "你的内功修为不够，难以施展#{@name}。\n"},
-      else: :ok
+  # LPC: if (! living(target)) —— 敌人列表只存引用快照时无 meta 可查，
+  # 此时恒判存活，由目标侧 combat/perform-incoming 的死亡检查兜底。
+  defp target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
   end
 
-  defp neili(character) do
-    if character.meta.vitals.neili < 160,
-      do: {:error, "你现在的真气不够，难以施展#{@name}。\n"},
-      else: :ok
-  end
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    # `.c` 的 living(target) 门槛已在攻击方 target_alive/1 保留文案，
+    # 目标侧死亡时静默（同 biyan_dao/luo.ex 惯例）。
+    if character.meta.combat.dead do
+      conn
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     level = max(Map.get(data, :level, 0), 1)
-    bindings = [n1: attacker.name, n2: character.name]
     dodge = Stats.skill(character.meta.stats, "dodge")
     per_hit = max(div(level, 10), 1)
 
-    {combat, damage, hits} =
-      Enum.reduce(1..5, {character.meta.combat, 0, 0}, fn _, {combat_acc, damage_acc, hit_acc} ->
-        # 每击与剑掌配合，20% 概率令目标忙乱 1 回合（仅当目标未忙乱）
+    # LPC: for (i = 0; i < 5; i++) { if (!target->is_busy() && random(3) == 1)
+    #          target->start_busy(1); COMBAT_D->do_attack(me, target, weapon, 0); }
+    {combat, damage} =
+      Enum.reduce(1..5, {character.meta.combat, 0}, fn _, {combat_acc, damage_acc} ->
         combat_acc =
-          if Engine.rand(rng, 5) == 0 && combat_acc.busy == 0 do
+          if combat_acc.busy == 0 and Engine.rand(rng, 3) == 1 do
             Combat.start_busy(combat_acc, 1)
           else
             combat_acc
           end
 
         if div(level, 2) + Engine.rand(rng, level) > dodge do
-          {combat_acc, damage_acc + per_hit + Engine.rand(rng, per_hit), hit_acc + 1}
+          {combat_acc, damage_acc + per_hit + Engine.rand(rng, per_hit)}
         else
-          {combat_acc, damage_acc, hit_acc}
+          {combat_acc, damage_acc}
         end
       end)
 
@@ -144,18 +166,10 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
 
     character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
 
+    # LPC: me->add("neili", -120); me->start_busy(1 + random(3));
     Performs.feedback(attacker, 120, 1 + Engine.rand(rng, 3))
 
-    result =
-      if hits > 0 do
-        Messages.interpolate("$p被$N的剑掌五连环罩住，身上连中数招，节节败退！\n", bindings)
-      else
-        Messages.interpolate("可是$p左闪右避，堪堪避开了$N的连环进击。\n", bindings)
-      end
-
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    put_character(conn, character)
   end
 
   defp ref(character) do

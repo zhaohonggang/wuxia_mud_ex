@@ -2,15 +2,16 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
   @moduledoc """
   天外飞龙「long」（对照 `kungfu/skill/huashan-jian/long.c`）
 
-  华山剑法单体攻击：消耗 220 内力，掷剑远程攻击，发起
-  `combat/perform-incoming` 事件，由目标侧 `resolve_incoming` 判定命中并施加伤害。
+  华山剑法掷剑绝招：需持剑、华山剑法>=150、force>=150、真气>=220、
+  激发 sword 为华山剑法。攻击方算 `ap`（sword 技能）并下发
+  `combat/perform-incoming`，由目标侧 `resolve_incoming` 以 dodge 判定命中。
+
+  命中条件：`ap > dp / 2 * 3 && ap / 2 + random(ap) > dp`；
+  命中伤害 `max_qi/4 + ap + random(damage/4)`（外伤 55%），扣 200 内力、忙乱 3；
+  落空扣 120 内力、忙乱 3。
 
   差异（TODO(migrate)）：
-  - LPC 另要求 force>=150；本版仅以 huashan-jian>=150 与 mapped 把关；
-  - LPC 命中/落空分别消耗 200/120 内力，本版统一 220；
-  - LPC 命中后武器脱手落于此地（weapon->move(environment)），本版不加此效果；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `max_qi/4+ap+rand/4`。
+  - LPC 命中后武器脱手落于此地（`weapon->move(environment(me))`），本版不加此效果。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -21,9 +22,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "huashan-jian/long"
   @move_name "「天外飞龙」"
@@ -38,8 +41,9 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
          {:ok, target} <- check_target(combat),
          :ok <- check_weapon(combat),
          {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
+         :ok <- check_force(stats),
+         :ok <- check_neili(character),
+         :ok <- check_mapped(stats) do
       apply_perform(conn, character, target, level)
     else
       {:error, message} ->
@@ -60,7 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -84,11 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
     end
   end
 
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "sword") == "huashan-jian" do
-      :ok
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 150 do
+      {:error, "你内功火候不够，无法施展#{@move_name}。\n"}
     else
-      {:error, "你没有激发华山剑法，无法施展#{@move_name}。\n"}
+      :ok
     end
   end
 
@@ -100,14 +104,21 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 220}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_mapped(stats) do
+    if Stats.mapped(stats, "sword") == "huashan-jian" do
+      :ok
+    else
+      {:error, "你没有激发华山剑法，无法施展#{@move_name}。\n"}
+    end
+  end
+
+  defp apply_perform(conn, character, target, _level) do
+    stats = character.meta.stats
 
     conn =
       Broadcast.publish(
         conn,
-        "$N心念电闪，一提内力，勒手仗剑，运劲于臂，呼的一声向$n掷了出去，施展#{@move_name}！\n",
+        "$N心念电闪，一提内力，勒手仗剑，运劲于臂，呼的一声向$n掷了出去，\n",
         n1: character.name,
         n2: target.name
       )
@@ -118,61 +129,67 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Long do
       data: %{
         attacker: ref(character),
         perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
+        ap: Stats.skill(stats, "sword")
       }
     })
 
-    conn
-    |> put_character(character)
-    |> assign(:prompt, false)
+    assign(conn, :prompt, false)
   end
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
+    stats = character.meta.stats
+    vitals = character.meta.vitals
+    bindings = [n1: attacker.name, n2: character.name]
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "剑"]
+    ap = Map.get(data, :ap, 0)
+    dp = Stats.skill(stats, "dodge")
 
-    hit = Engine.rand(rng, level) > div(parry, 2)
+    # LPC: if (ap > dp / 2 * 3 && ap / 2 + random(ap) > dp)
+    if ap > div(dp, 2) * 3 and div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+      damage = div(vitals.max_qi, 4) + ap
+      damage = damage + Engine.rand(rng, max(div(damage, 4), 1))
 
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
+      vitals =
+        vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 55, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      # LPC: me->start_busy(3); me->add("neili", -200);
+      Performs.feedback(attacker, 200, 3)
 
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "结果$p疾忙跃起，但剑如电闪，只觉一阵剧痛，剑刃拦腰而过，鲜血飞溅，受到#{damage}点伤害！\n",
+          "$n疾忙跃起，但剑如电闪，只觉一阵剧痛，剑刃拦腰而过，鲜血飞溅，皮肉卷起！\n",
           bindings
         )
       )
-      |> put_character(put_combat(character, combat))
+      |> put_character(character)
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p轻轻一笑，侧身伸指，正弹在$N的剑脊上，剑斜飞落地。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
+      # LPC: me->start_busy(3); me->add("neili", -120);
+      Performs.feedback(attacker, 120, 3)
 
-      Broadcast.publish(conn, text)
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("然而$n轻轻一笑，侧身伸指，正弹在$N的剑脊上，剑斜飞落地。\n", bindings)
+      )
     end
   end
-
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
