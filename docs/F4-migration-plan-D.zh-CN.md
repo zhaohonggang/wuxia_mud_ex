@@ -8,27 +8,17 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**51**
-- 缺失字面量合计（miss 之和）：**569**
+- 剩余文件数：**45**
+- 缺失字面量合计（miss 之和）：**501**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
-| A严重(>=15) | 5 | 92 |
-| B中等(5-14) | 46 | 477 |
+| A严重(>=15) | 3 | 51 |
+| B中等(5-14) | 42 | 450 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
-
-### huashan_jian（4 个）
-- [ ] ❌ `huashan_jian/jie.ex` ← `huashan-jian/jie.c` (miss=6)
-- [ ] ❌ `huashan_jian/lian.ex` ← `huashan-jian/lian.c` (miss=7)
-- [ ] ❌ `huashan_jian/long.ex` ← `huashan-jian/long.c` (miss=6)
-- [ ] ❌ `huashan_jian/xian.ex` ← `huashan-jian/xian.c` (miss=16)
-
-### huifeng_jian（2 个）
-- [ ] ❌ `huifeng_jian/jue.ex` ← `huifeng-jian/jue.c` (miss=25)
-- [ ] ❌ `huifeng_jian/mie.ex` ← `huifeng-jian/mie.c` (miss=8)
 
 ### jiandun_zhusuo（2 个）
 - [ ] ❌ `jiandun_zhusuo/fu.ex` ← `jiandun-zhusuo/fu.c` (miss=12)
