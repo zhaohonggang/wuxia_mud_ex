@@ -166,8 +166,8 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `chanhun_suo/` （2 个，基线缺失 23 条）
 
-- [ ] ❌ `chanhun_suo/duo.ex` ← `chanhun-suo/duo.c`  (miss=13)
-- [ ] ❌ `chanhun_suo/suo.ex` ← `chanhun-suo/suo.c`  (miss=10)
+- [x] ✅ `chanhun_suo/duo.ex` ← `chanhun-suo/duo.c`  (miss=0)
+- [x] ✅ `chanhun_suo/suo.ex` ← `chanhun-suo/suo.c`  (miss=0)
 
 ### `chuangwang_dao/` （1 个，基线缺失 11 条）
 
