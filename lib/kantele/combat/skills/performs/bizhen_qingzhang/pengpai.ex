@@ -1,12 +1,20 @@
 defmodule Kantele.Combat.Skills.Performs.BizhenQingzhang.Pengpai do
   @moduledoc """
-  震撼「pengpai」（对照 `kungfu/skill/bizhen-qingzhang/pengpai.c`）
+  澎湃「pengpai」（对照 `kungfu/skill/bizhen-qingzhang/pengpai.c`）
 
-  裨阵清掌攻击绝招：消耗 500 内力，发起 `combat/perform-incoming` 事件。
+  碧针清掌绝招：须空手，发起 `combat/perform-incoming` 事件，
+  由目标侧 `resolve_incoming` 判定命中并施加伤害。
 
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:bizhen-qingzhang>=180,force>=300`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  门槛（攻击方，逐条对齐 LPC）：已学此招 → 空手 → 目标在战斗中 →
+  `bizhen-qingzhang>=180` → `mapped("strike")=="bizhen-qingzhang"` →
+  `force>=300` → `max_neili>=3000` → `neili>=500` → 目标存活。
+
+  攻击方无条件 `start_busy(3)`、扣 200 内力，并发起手广播
+  （`$N一声轻哼…向$n涌来。`）；目标侧按 `ap/2 + rand(ap) < dp`
+  （ap=strike，dp=parry）判定：
+  - 命中（不满足上式）：额外扣 300 内力，伤害 `ap/2 + rand(ap/2)`（60% 外伤），
+    文案 `只见$n无法抵挡这汹涌澎湃的气流…`；
+  - 落空：文案 `只见$n不慌不忙，轻轻一闪，躲过了$N这一击！`。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -17,13 +25,16 @@ defmodule Kantele.Combat.Skills.Performs.BizhenQingzhang.Pengpai do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "bizhen-qingzhang/pengpai"
-  @move_name "「pengpai」"
+  @move_name "「澎湃」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -31,12 +42,14 @@ defmodule Kantele.Combat.Skills.Performs.BizhenQingzhang.Pengpai do
     combat = character.meta.combat
 
     with :ok <- check_perform_known(stats),
+         :ok <- check_unarmed(combat),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         :ok <- check_skill_level(stats),
          :ok <- check_mapped(stats),
+         :ok <- check_force_level(stats),
+         :ok <- check_max_neili(character),
          :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+      apply_perform(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -45,79 +58,107 @@ defmodule Kantele.Combat.Skills.Performs.BizhenQingzhang.Pengpai do
     end
   end
 
+  # if (userp(me) && ! me->query("can_perform/bizhen-qingzhang/pengpai"))
+  #         return notify_fail("你还不会使用这一招！\n");
   defp check_perform_known(stats) do
     if Stats.perform_known?(stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你还不会使用这一招！\n"}
+    end
+  end
+
+  # if (me->query_temp("weapon"))
+  #         return notify_fail("你必须空手才能施展「澎湃」这一招！\n");
+  defp check_unarmed(combat) do
+    if Combat.weapon(combat) do
+      {:error, "你必须空手才能施展#{@move_name}这一招！\n"}
+    else
+      :ok
     end
   end
 
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
-  defp check_weapon(combat) do
-    weapon = Combat.weapon(combat)
-
-    if weapon && Map.get(weapon, :skill_type) == "staff" do
-      :ok
-    else
-      {:error, "你使用的武器不对。\n"}
-    end
-  end
-
+  # if (me->query_skill("bizhen-qingzhang", 1) < 180)
+  #         return notify_fail("你的碧针清掌还不够娴熟，还不能用掌力伤人！\n");
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "bizhen-qingzhang")
-
-    if level < 180 do
-      {:error, "你的裨阵清掌不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "bizhen-qingzhang") < 180 do
+      {:error, "你的碧针清掌还不够娴熟，还不能用掌力伤人！\n"}
     else
-      {:ok, level}
+      :ok
     end
   end
 
+  # if (me->query_skill_mapped("strike") != "bizhen-qingzhang")
+  #         return notify_fail("你没有激发碧针清掌，无法使用「澎湃」这一招！");
   defp check_mapped(stats) do
-    if Stats.mapped(stats, "staff") == "bizhen-qingzhang" do
+    if Stats.mapped(stats, "strike") == "bizhen-qingzhang" do
       :ok
     else
-      {:error, "你没有激发裨阵清掌，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发碧针清掌，无法使用#{@move_name}这一招！"}
     end
   end
 
+  # if (me->query_skill("force") < 300)
+  #         return notify_fail("你内功的修为不够，无法用掌力伤人！\n");
+  defp check_force_level(stats) do
+    if Stats.skill(stats, "force") < 300 do
+      {:error, "你内功的修为不够，无法用掌力伤人！\n"}
+    else
+      :ok
+    end
+  end
+
+  # if (me->query("max_neili") < 3000)
+  #         return notify_fail("你的内力修为不够，无法用掌力伤人！\n");
+  defp check_max_neili(character) do
+    if character.meta.vitals.max_neili < 3000 do
+      {:error, "你的内力修为不够，无法用掌力伤人！\n"}
+    else
+      :ok
+    end
+  end
+
+  # if (me->query("neili") < 500)
+  #         return notify_fail("你的内力不够，无法用掌力伤人！\n");
   defp check_neili(character) do
     if character.meta.vitals.neili < 500 do
-      {:error, "你现在真气不够，无法施展#{@move_name}。\n"}
+      {:error, "你的内力不够，无法用掌力伤人！\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 500}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target) do
+    ap = Stats.skill(character.meta.stats, "strike")
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N掌势如山，使出裨阵清掌「pengpai」，掌劲磅礴压向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+    # LPC: me->start_busy(3); me->add("neili", -200);
+    vitals = %{character.meta.vitals | neili: max(character.meta.vitals.neili - 200, 0)}
+    combat = Combat.start_busy(character.meta.combat, 3)
+
+    meta =
+      character.meta
+      |> Map.put(:vitals, vitals)
+      |> Map.put(:combat, combat)
+
+    character = %{character | meta: meta}
+
+    # LPC: msg = HIW "$N" HIW "一声轻哼，双掌挥舞出一个大圈，"
+    #      "横推而出，顿时一股汹涌澎湃的劲气如波浪一般向$n" HIW "涌来。\n" NOR;
+    opening = "$N一声轻哼，双掌挥舞出一个大圈，横推而出，顿时一股汹涌澎湃的劲气如波浪一般向$n涌来。\n"
+
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{
-        attacker: ref(character),
-        perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
-      }
+      data: %{attacker: ref(character), perform_id: @perform_id, ap: ap}
     })
 
     conn
@@ -127,59 +168,54 @@ defmodule Kantele.Combat.Skills.Performs.BizhenQingzhang.Pengpai do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
-      conn
-      |> Broadcast.publish(
-        Messages.interpolate("结果$p被$N的#{@move_name}击中，受到#{damage}点伤害！\n", bindings)
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
       )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(character.meta.stats, "parry")
+
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: ap = me->query_skill("strike"); dp = target->query_skill("parry");
+    #      if (ap / 2 + random(ap) < dp)  → 落空
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) < dp do
+      # LPC: msg += HIY "只见$n" HIY "不慌不忙，轻轻一闪，躲过了$N" HIY "这一击！\n" NOR;
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("只见$n不慌不忙，轻轻一闪，躲过了$N这一击！\n", bindings)
+      )
+    else
+      # LPC: me->add("neili", -300); damage = ap / 2 + random(ap / 2);
+      damage = div(ap, 2) + Engine.rand(rng, max(div(ap, 2), 1))
+      Performs.feedback(attacker, 300, 0)
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 60, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "只见$n无法抵挡这汹涌澎湃的气流，喷出一大口鲜血，身子直线飞出！\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "bizhen-qingzhang/pengpai",
-      kind: :perform,
-      gates: [],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
 end
