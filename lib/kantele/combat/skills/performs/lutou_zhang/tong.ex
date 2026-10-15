@@ -2,11 +2,15 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
   @moduledoc """
   通天彻地「tong」（对照 `kungfu/skill/lutou-zhang/tong.c`）
 
-  鹿头杖法单体攻击：消耗 200 内力，对战斗中对手出招。
+  鹿头杖法绝技：需持杖、内功>=140、真气>=200、鹿头杖法>=100、激发 staff 为
+  鹿头杖法、目标存活。命中判定
+  `ap/2 + random(ap) > 目标parry + 目标dex*10`（ap = staff + 自身con*10）；
+  命中造成 `ap + random(ap/2)`（外伤 55%）并扣 180 内力、忙乱 3；
+  未命中扣 100 内力、忙乱 4。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:lutou-zhang>=100,force>=140`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  - LPC 首句用 `message_sort`，本引擎统一走 `Broadcast.publish`；
+  - 引子在攻击方广播，命中/落空在目标侧结算。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,10 +20,11 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "lutou-zhang/tong"
   @move_name "「通天彻地」"
@@ -32,11 +37,12 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_force(stats),
+         :ok <- check_neili(character),
+         :ok <- check_level(stats),
+         :ok <- check_mapped(stats) do
+      apply_perform(conn, character, target, weapon)
     else
       {:error, message} ->
         conn
@@ -56,7 +62,7 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -64,19 +70,33 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "staff" do
-      :ok
+      {:ok, weapon}
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
     end
   end
 
-  defp check_skill_level(stats) do
-    level = Stats.skill(stats, "lutou-zhang")
-
-    if level < 100 do
-      {:error, "你的鹿头杖法不够娴熟，无法施展#{@move_name}。\n"}
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 140 do
+      {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
+      :ok
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 200 do
+      {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_level(stats) do
+    if Stats.skill(stats, "lutou-zhang") < 100 do
+      {:error, "你鹿头杖法火候不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
@@ -84,26 +104,21 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
     if Stats.mapped(stats, "staff") == "lutou-zhang" do
       :ok
     else
-      {:error, "你没有激发鹿头杖法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发鹿头杖法，难以施展#{@move_name}。\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 200 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
-    else
-      :ok
-    end
-  end
+  defp apply_perform(conn, character, target, weapon) do
+    stats = character.meta.stats
+    weapon_name = Map.get(weapon, :name, "")
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 200}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
+    # LPC: msg = HIW "\n$N" HIW "一声暴喝，猛然间腾空而起，手中" + weapon->name()
+    #           + HIW "从天而降，气势惊人地" "袭向$n" HIW "。\n" NOR;
     conn =
       Broadcast.publish(
         conn,
-        "$N手中禅杖直指苍穹，使出鹿头杖法「通天彻地」，杖势通天彻地般砸向$n！\n",
+        "\n$N一声暴喝，猛然间腾空而起，手中" <>
+          weapon_name <> "从天而降，气势惊人地袭向$n。\n",
         n1: character.name,
         n2: target.name
       )
@@ -111,50 +126,88 @@ defmodule Kantele.Combat.Skills.Performs.LutouZhang.Tong do
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        staff: Stats.skill(stats, "staff"),
+        con: Stats.query_con(stats),
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
-      conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: ap = me->query_skill("staff") + me->query("con") * 10;
+    #      dp = target->query_skill("parry") + target->query("dex") * 10;
+    ap = max(Map.get(data, :staff, 0) + Map.get(data, :con, 0) * 10, 1)
+    dp = Stats.skill(stats, "parry") + Stats.query_dex(stats) * 10
+
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: damage = ap + random(ap / 2); do_damage(..., damage, 55, ...);
+      #      me->start_busy(3); me->add("neili", -180);
+      damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 55, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn =
+        Broadcast.publish(
+          conn,
+          "$n完全无法看清招中虚实，只听「嘭」地一声，已被$N击中肩膀。\n",
+          bindings
+        )
+
+      Performs.feedback(attacker, 180, 3)
+      put_character(conn, character)
+    else
+      # LPC: me->start_busy(4); me->add("neili", -100);
+      conn =
+        Broadcast.publish(
+          conn,
+          "可是$n奋力招架，左闪右避，好不容易抵挡住了$N的攻击。\n",
+          bindings
+        )
+
+      Performs.feedback(attacker, 100, 4)
+      conn
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+
+  @doc "声明式规格（用于 prepare_skill 门槛校验）"
+  def spec() do
+    %Kantele.Combat.Performs.Spec{
+      id: "lutou-zhang/tong",
+      kind: :perform,
+      gates: [],
+      costs: %{},
+      effects: [],
+      busy: 0
+    }
+  end
 end
