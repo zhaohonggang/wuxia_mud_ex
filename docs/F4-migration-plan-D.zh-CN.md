@@ -6,23 +6,17 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**120**
-- 缺失字面量合计（miss 之和）：**1321**
+- 剩余文件数：**118**
+- 缺失字面量合计（miss 之和）：**1295**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
 | A严重(>=15) | 10 | 196 |
-| B中等(5-14) | 110 | 1125 |
+| B中等(5-14) | 108 | 1099 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
-
-### bizhen_qingzhang（1 个）
-- [ ] ❌ `bizhen_qingzhang/pengpai.ex` ← `bizhen-qingzhang/pengpai.c` (miss=12)
-
-### caiyan_gong（1 个）
-- [ ] ❌ `caiyan_gong/huan.ex` ← `caiyan-gong/huan.c` (miss=14)
 
 ### canghong_bifa（1 个）
 - [ ] ❌ `canghong_bifa/jing.ex` ← `canghong-bifa/jing.c` (miss=11)
