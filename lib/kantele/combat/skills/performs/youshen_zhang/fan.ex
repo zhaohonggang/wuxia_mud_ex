@@ -76,8 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 160 -> {:error, "你的内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "youshen-zhang") < 120 -> {:error, "你的游身八卦掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你的内功修为不够，难以施展「翻卦连环掌」。\n"}
+      Stats.skill(stats, "youshen-zhang") < 120 -> {:error, "你的游身八卦掌不够娴熟，难以施展「翻卦连环掌」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +87,10 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
 
     cond do
       Stats.mapped(stats, "unarmed") != "youshen-zhang" ->
-        {:error, "你没有激发游身八卦掌，难以施展。\n"}
+        {:error, "你没有激发游身八卦掌，难以施展「翻卦连环掌」。\n"}
 
       Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "youshen-zhang" ->
-        {:error, "你没有准备游身八卦掌，难以施展。\n"}
+        {:error, "你没有准备游身八卦掌，难以施展「翻卦连环掌」。\n"}
 
       true ->
         :ok
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展「翻卦连环掌」。\n"}
       true -> :ok
     end
   end
@@ -110,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「翻卦连环掌」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -155,7 +155,14 @@ defmodule Kantele.Combat.Skills.Performs.YoushenZhang.Fan do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    msg = "$n顿时觉得呼吸不畅，全然被$N这股奇怪的力道所制，只得拼命运动抵挡。"
+
+    msg =
+      if Engine.rand(rng, 2) == 1 do
+        "$n顿时觉得呼吸不畅，全然被$N这股奇怪的力道所制，只得拼命运动抵挡。"
+      else
+        "$n深吸一口气，凝神抵挡，但见周围$N掌影重重，$p却是临危不乱，镇定拆招。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

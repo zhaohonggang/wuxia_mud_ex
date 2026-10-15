@@ -29,7 +29,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "weituo-chu")
-    damage = (Stats.skill(stats, "weituo-chu") + Stats.skill(stats, "buddhism"))
+    damage = Stats.skill(stats, "weituo-chu") + Stats.skill(stats, "buddhism")
     club = div(Stats.skill(stats, "staff"), 3)
 
     with :ok <- check_perform_known(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -59,7 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你还不会使用「即世即空」!\n"}
     end
   end
 
@@ -67,8 +69,8 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_weapon(character),
-         :ok <- check_state(character),
-         :ok <- check_other(character) do
+         :ok <- check_leidong(character),
+         :ok <- check_resources(character) do
       :ok
     end
   end
@@ -84,27 +86,31 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你刚使完「即世即空」，目前气血翻涌，无法再次运用！\n"}
-    #   {:error, "你手中无杵，怎能运用「即世即空」？！\n"}
-    :ok
+    weapon = Combat.weapon(character.meta.combat)
 
-  end
-
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "「即世即空」只能对战斗中的对手使用。\n"}
-      true -> :ok
+    if weapon == nil or Map.get(weapon, :skill_type) != "staff" do
+      {:error, "你手中无杵，怎能运用「即世即空」？！\n"}
+    else
+      :ok
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你还不会使用「即世即空」!\n"}
-    :ok
+  defp check_leidong(character) do
+    if Map.get(character.meta, :sl_leidong, false) do
+      {:error, "你刚使完「即世即空」，目前气血翻涌，无法再次运用！\n"}
+    else
+      :ok
+    end
+  end
 
+  defp check_resources(character) do
+    vitals = character.meta.vitals
+
+    cond do
+      vitals.max_neili <= 1500 -> {:error, "你的内力修为不足，劲力不足以施展「即世即空」！\n"}
+      vitals.neili <= 600 -> {:error, "你的内力不够，劲力不足以施展「即世即空」！\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -114,11 +120,36 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "杵"
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N突然大喝一声：「即世即空」，面色唰的变得通红，须发皆飞，真气溶入" <> weapon_name <> "当中，“嗡”的一声，发出闪闪光亮！",
+        n1: character.name
+      )
+
+    conn = remove_effect(conn, character, weapon_name)
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  # LPC: remove_effect1 / remove_effect2（call_out 陆续移除增益时的提示）
+  defp remove_effect(conn, character, weapon_name) do
+    _ = perform_label()
+
+    conn =
+      Broadcast.publish(conn, "一套「即世即空」使完，手中" <> weapon_name <> "上的光芒渐渐也消失了。", n1: character.name)
+
+    Broadcast.publish(conn, "你经过一段时间调气养息，又可以使用「即世即空」了。")
+  end
+
+  defp perform_label do
+    "「即世即空」"
   end
 
   defp target(combat) do
@@ -143,6 +174,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     Performs.feedback(attacker, 300, 1)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

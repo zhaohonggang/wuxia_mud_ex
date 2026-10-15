@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
   alias Kantele.Combat.Performs
 
   @perform_id "tianjue-dao/suo"
+  @move_name "「天绝锁」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -37,14 +38,16 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -75,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianjue-dao") < 50 -> {:error, "你天绝刀法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "tianjue-dao") < 50 -> {:error, "你天绝刀法不够娴熟，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -84,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "tianjue-dao" -> {:error, "你没有天绝刀法，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "tianjue-dao" -> {:error, "你没有天绝刀法，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -93,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 120 -> {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -102,12 +105,12 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 120}
@@ -115,7 +118,16 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N怒啸一声，施展出绝招「天绝锁」将手中某物挥舞得密不透风，猛然间风声大作，竟将$n笼罩在刀风之下。", n1: character.name)
+    weapon_name = weapon_name(combat)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N怒啸一声，施展出绝招#{@move_name}将手中" <>
+          weapon_name <> "挥舞得密不透风，猛然间风声大作，竟将$n笼罩在刀风之下。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -138,26 +150,52 @@ defmodule Kantele.Combat.Skills.Performs.TianjueDao.Suo do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    stats = character.meta.stats
+    level = max(Map.get(data, :level, 0), 1)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    dodge = Stats.skill(stats, "dodge")
+    hit? = level + Engine.rand(rng, level) > dodge
+
+    combat = character.meta.combat
+
+    combat =
+      if hit?,
+        do: Combat.start_busy(combat, 2 + Engine.rand(rng, max(div(level, 26), 1))),
+        else: combat
+
     vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
+    character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
     Performs.feedback(attacker, 120, 2)
-    msg = "$n被$N击中！"
+
+    msg =
+      if hit? do
+        "$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！"
+      else
+        "可是$N镇定自若，小心拆招，没有被" <> character.name <> "招式所困。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

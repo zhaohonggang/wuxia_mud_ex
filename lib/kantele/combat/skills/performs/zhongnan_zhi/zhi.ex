@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhongnan-zhi") < 60 -> {:error, "你终南指法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 80 -> {:error, "你内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "zhongnan-zhi") < 60 -> {:error, "你终南指法不够娴熟，难以施展「剑指南山」。\n"}
+      Stats.skill(stats, "force") < 80 -> {:error, "你内功修为不够，难以施展「剑指南山」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
 
     cond do
       Stats.mapped(stats, "finger") != "zhongnan-zhi" ->
-        {:error, "你没有激发终南指法，难以施展。\n"}
+        {:error, "你没有激发终南指法，难以施展「剑指南山」。\n"}
 
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "zhongnan-zhi" ->
-        {:error, "你没有准备终南指法，难以施展。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "zhongnan-zhi" ->
+        {:error, "你没有准备终南指法，难以施展「剑指南山」。\n"}
 
       true ->
         :ok
@@ -101,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 60 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 60 -> {:error, "你现在的真气不够，难以施展「剑指南山」。\n"}
       true -> :ok
     end
   end
@@ -110,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「剑指南山」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -161,14 +164,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhongnanZhi.Zhi do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    msg = if hit, do: "结果$p招架失误，被$P这一指点了个正着，内息登时一滞，气血倒流。", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "结果$p招架失误，被$P这一指点了个正着，内息登时一滞，气血倒流。", else: "可是$p识破了$P这一招，斜斜一跃避开。\n"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

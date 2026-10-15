@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -86,7 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuanfeng-leg" ->
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuanfeng-leg" ->
         {:error, "对方都已经这样了，用不着这么费力吧？\n"}
 
       true ->
@@ -104,10 +107,12 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "「狂风绝技」开始时不能拿着兵器！\n"}
-    :ok
+    combat = character.meta.combat
 
+    cond do
+      Combat.weapon(combat) != nil -> {:error, "「狂风绝技」开始时不能拿着兵器！\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -152,6 +157,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengLeg.Kuangfeng do
     Performs.feedback(attacker, 100, 1)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -30,6 +30,8 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tianzhu-jian")
     ap = Stats.skill(stats, "tianzhu-jian")
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -37,10 +39,14 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          weapon: weapon_name,
+          max_neili: character.meta.vitals.max_neili,
           rng: rng
         }
       })
@@ -76,8 +82,8 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianzhu-jian") < 120 -> {:error, "你天柱剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "tianzhu-jian") < 120 -> {:error, "你天柱剑法不够娴熟，难以施展「烟云锁身」。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展「烟云锁身」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "tianzhu-jian" -> {:error, "你没有激发天柱剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "tianzhu-jian" -> {:error, "你没有激发天柱剑法，难以施展「烟云锁身」。\n"}
       true -> :ok
     end
   end
@@ -95,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「烟云锁身」。\n"}
       true -> :ok
     end
   end
@@ -104,23 +110,12 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「烟云锁身」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 100}
-    vitals = %{vitals | neili: vitals.neili - 200}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 1)
-    combat = Combat.start_busy(combat, 2)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中某物幻作一道白芒，撩向$n所持的某物。", n1: character.name)
-
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -142,26 +137,78 @@ defmodule Kantele.Combat.Skills.Performs.TianzhuJian.Suo do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
-    vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    Performs.feedback(attacker, 200, 2)
-    msg = Enum.random(["$n只见眼前白芒暴涨，登时右手一轻，某物竟脱手飞出。", "$n惊慌不定，顿时乱了阵脚，竟被困于$N的剑光当中。"])
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
-    conn
-    |> Broadcast.publish(result)
-    |> put_character(character)
+    dp = Stats.skill(stats, "parry")
+    wp = Map.get(data, :weapon, "剑")
+    attacker_max_neili = Map.get(data, :max_neili, 0)
+    weapon = Combat.weapon(character.meta.combat)
+    wp2 = (weapon && Map.get(weapon, :name)) || "剑"
+
+    if attacker_max_neili > div(character.meta.vitals.max_neili * 3, 2) && weapon != nil do
+      Performs.feedback(attacker, 200, 2)
+
+      conn =
+        Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中" <> wp <> "幻作一道白芒，撩向$n所持的" <> wp2 <> "。",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      if Engine.rand(rng, max(ap, 1)) > div(dp, 2) do
+        conn =
+          Broadcast.publish(conn, "$n只见眼前白芒暴涨，登时右手一轻，" <> wp2 <> "竟脱手飞出。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
+        put_character(conn, character)
+      else
+        conn =
+          Broadcast.publish(conn, "$n可是$n看破$N剑法中的虚招，镇定自如，从容应对。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
+        put_character(conn, character)
+      end
+    else
+      Performs.feedback(attacker, 100, 1)
+
+      conn =
+        Broadcast.publish(conn, "$N剑法陡然变快，施展出「烟云锁身剑」，手中" <> wp <> "剑光夺目，欲将$n笼罩在剑光之中。",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      if Engine.rand(rng, max(ap, 1)) > div(dp, 2) do
+        conn =
+          Broadcast.publish(conn, "$n惊慌不定，顿时乱了阵脚，竟被困于$N的剑光当中。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
+        put_character(conn, character)
+      else
+        conn =
+          Broadcast.publish(conn, "$n可是$n看破$N剑法中的虚招，镇定自如，从容应对。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
+        put_character(conn, character)
+      end
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

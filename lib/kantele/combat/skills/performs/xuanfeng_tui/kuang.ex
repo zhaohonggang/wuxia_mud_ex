@@ -12,6 +12,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
   alias Kantele.Combat.Broadcast
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Family
   alias Kantele.Character.Stats
   alias Kalevala.Event
   alias Kantele.Combat.Engine
@@ -38,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -76,9 +79,14 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuanfeng-tui") < 100 -> {:error, "你旋风扫叶腿不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "xuanfeng-tui") < 100 -> {:error, "你的旋风扫叶腿不够娴熟，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "xuanfeng-tui") < 100 ->
+        {:error, "你旋风扫叶腿不够娴熟，难以施展「狂风绝技」。\n"}
+
+      Stats.skill(stats, "xuanfeng-tui") < 100 ->
+        {:error, "你的旋风扫叶腿不够娴熟，难以施展「狂风绝技」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -87,10 +95,11 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
 
     cond do
       Stats.mapped(stats, "unarmed") != "xuanfeng-tui" ->
-        {:error, "你没有激发旋风扫叶腿，难以施展。\n"}
+        {:error, "你没有激发旋风扫叶腿，难以施展「狂风绝技」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuanfeng-tui" ->
-        {:error, "你没有准备旋风扫叶腿，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuanfeng-tui" ->
+        {:error, "你没有准备旋风扫叶腿，难以施展「狂风绝技」。\n"}
 
       true ->
         :ok
@@ -101,7 +110,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展「狂风绝技」。\n"}
       true -> :ok
     end
   end
@@ -110,7 +119,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「狂风绝技」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -120,6 +129,13 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    # LPC: if (me->query("family/family_name") == "桃花岛") count = lvl / 4;
+    family = Family.name(Map.get(character.meta, :family, %{}))
+
+    count =
+      if family == "桃花岛", do: div(Stats.skill(character.meta.stats, "xuanfeng-tui"), 4), else: 0
+
+    _ = count
     conn = Broadcast.publish(conn, "$N使出桃花岛狂风绝技，身法飘忽不定，足带风尘，掌携万钧，有若天仙！", n1: character.name)
 
     conn
@@ -157,6 +173,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanfengTui.Kuang do
     Performs.feedback(attacker, 100, 1)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -29,8 +29,11 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "wushen-jian")
-    ap = (Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "martial-cognize"))
-    damage = ((Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "force")) + Stats.skill(stats, "martial-cognize"))
+    ap = Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "martial-cognize")
+
+    damage =
+      Stats.skill(stats, "wushen-jian") + Stats.skill(stats, "force") +
+        Stats.skill(stats, "martial-cognize")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +41,9 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,9 +83,9 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wushen-jian") < 240 -> {:error, "你衡山五神剑不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 200 -> {:error, "你的轻功火候不够，难以施展。\n"}
+      Stats.skill(stats, "wushen-jian") < 240 -> {:error, "你衡山五神剑不够娴熟，难以施展「五神朝元势」。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展「五神朝元势」。\n"}
+      Stats.skill(stats, "dodge") < 200 -> {:error, "你的轻功火候不够，难以施展「五神朝元势」。\n"}
       true -> :ok
     end
   end
@@ -89,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展「五神朝元势」。\n"}
       true -> :ok
     end
   end
@@ -98,8 +103,8 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5500 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 5500 -> {:error, "你的内力修为不足，难以施展「五神朝元势」。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展「五神朝元势」。\n"}
       true -> :ok
     end
   end
@@ -108,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「五神朝元势」。\n"}
       true -> :ok
     end
   end
@@ -123,7 +128,17 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声怒喝，内劲暴涨，手中某物变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。", n1: character.name)
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声怒喝，内劲暴涨，手中" <>
+          weapon_name <>
+          "变幻万千，霎那间化作红黄蓝绿白五道剑光，纵横飞扬。$P身法蓦地变快，随着剑光同时将『祝融』、『紫盖』、『石廪』、『芙蓉』、『天柱』五套剑法交替使出，电光火石间已袭向$n全身。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -159,14 +174,26 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    msg = if hit, do: Enum.random(["$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。", "$n见$N五道剑光缤纷洒落，交错纵横，呼啸着向自己袭来。心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。"]), else: "$n躲过了$N的攻击！"
+
+    msg =
+      if hit do
+        Enum.random([
+          "$n见$N五道剑光剑势惊人，急忙收敛心神奋力招架。哪知$P这招力道非凡，$p一声闷哼，连退几步，喷出一口鲜血。",
+          "$n见$N五道剑光缤纷洒落，交错纵横，呼啸着向自己袭来。心底不由大惊，登时听得“噗嗤”一声，剑气透体而过。"
+        ])
+      else
+        "然而$n以快对快，飞身一跳已然躲过$N这一招。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

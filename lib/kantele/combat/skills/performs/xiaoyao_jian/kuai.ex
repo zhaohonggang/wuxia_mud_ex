@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiaoyao-jian") < 120 -> {:error, "你的逍遥剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "xiaoyao-jian") < 120 -> {:error, "你的逍遥剑法不够娴熟，难以施展「快剑诀」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xiaoyao-jian" -> {:error, "你没有激发逍遥剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "xiaoyao-jian" -> {:error, "你没有激发逍遥剑法，难以施展「快剑诀」。\n"}
       true -> :ok
     end
   end
@@ -96,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你目前的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你目前的真气不够，难以施展「快剑诀」。\n"}
       true -> :ok
     end
   end
@@ -105,12 +107,20 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展「快剑诀」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
+    combat = character.meta.combat
+    wn = weapon_name(combat)
+
+    conn =
+      Broadcast.publish(conn, "$N蓦的一声清啸，施出绝学「快剑诀」，手中" <> wn <> "呼呼作响。霎时间奇妙的剑招连绵涌出。",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -125,6 +135,13 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
   end
 
   @impl true
@@ -145,6 +162,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Kuai do
     character = %{character | meta: %{character.meta | vitals: vitals}}
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

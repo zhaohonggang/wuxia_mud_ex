@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -75,8 +77,11 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuangong-quan") < 120 -> {:error, "你的无极玄功拳等级不够，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "xuangong-quan") < 120 ->
+        {:error, "你的无极玄功拳等级不够，难以施展「玄功无极劲」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -85,10 +90,11 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
 
     cond do
       Stats.mapped(stats, "unarmed") != "xuangong-quan" ->
-        {:error, "你没有激发无极玄功拳，难以施展。\n"}
+        {:error, "你没有激发无极玄功拳，难以施展「玄功无极劲」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuangong-quan" ->
-        {:error, "你现在没有准备使用无极玄功拳，无法使用。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xuangong-quan" ->
+        {:error, "你现在没有准备使用无极玄功拳，无法使用「玄功无极劲」。\n"}
 
       true ->
         :ok
@@ -99,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「玄功无极劲」。\n"}
       true -> :ok
     end
   end
@@ -108,7 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「玄功无极劲」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -157,15 +163,16 @@ defmodule Kantele.Combat.Skills.Performs.XuangongQuan.Xuan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 100, 3)
-    msg = if hit, do: "$n急忙抽身躲避，可已然不及，被$N双拳捶个正中。
-:内伤@?", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n急忙抽身躲避，可已然不及，被$N双拳捶个正中。\n:内伤@?", else: "可是$p看破了$P的企图，并没有上当。\n"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

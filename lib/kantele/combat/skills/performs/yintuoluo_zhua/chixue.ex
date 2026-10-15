@@ -75,9 +75,14 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yintuoluo-zhua") < 200 -> {:error, "你没有准备因陀罗爪，难以施展。\n"}
-      Stats.skill(stats, "force") < 300 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
-      true -> :ok
+      Stats.skill(stats, "yintuoluo-zhua") < 200 ->
+        {:error, "你因陀罗爪不够娴熟，难以施展「赤血连环爪」。\n"}
+
+      Stats.skill(stats, "force") < 300 ->
+        {:error, "你的内功修为不够，难以施展「赤血连环爪」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -85,20 +90,17 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "force") != "hunyuan-yiqi" ->
-        {:error, "你现在没有激发少林内功为内功，难以施展。\n"}
-
-      Stats.mapped(stats, "force") != "yijinjing" ->
-        {:error, "只能空手施展。\n"}
-
-      Stats.mapped(stats, "force") != "luohan-fumogong" ->
-        {:error, "你因陀罗爪不够娴熟，难以施展。\n"}
+      Stats.mapped(stats, "force") != "hunyuan-yiqi" and
+          Stats.mapped(stats, "force") != "yijinjing" and
+          Stats.mapped(stats, "force") != "luohan-fumogong" ->
+        {:error, "你现在没有激发少林内功为内功，难以施展「赤血连环爪」。\n"}
 
       Stats.mapped(stats, "claw") != "yintuoluo-zhua" ->
-        {:error, "你的内功修为不够，难以施展。\n"}
+        {:error, "你没有激发因陀罗爪，难以施展「赤血连环爪」。\n"}
 
-      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "yintuoluo-zhua" ->
-        {:error, "你现在的真气不够，难以施展。\n"}
+      Stats.prepared_perform(stats, "claw") == nil or
+          String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "yintuoluo-zhua" ->
+        {:error, "你没有准备因陀罗爪，难以施展「赤血连环爪」。\n"}
 
       true ->
         :ok
@@ -109,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在的真气不够，难以施展「赤血连环爪」。\n"}
       true -> :ok
     end
   end
@@ -118,7 +120,7 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「赤血连环爪」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -176,12 +178,27 @@ defmodule Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 4)
-    msg = if hit, do: "但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。", else: "$n奋力招架，竟将$N这招化解。"
+
+    msg =
+      cond do
+        hit and crippling?() ->
+          "$n全身一颤，立足不稳，被$N这一爪抓得跌落在地上。\n"
+
+        hit ->
+          "但见$N双爪划过，$n已闪避不及，胸口被$N抓出十条血痕。\n"
+
+        true ->
+          "$n奋力招架，竟将$N这招化解。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
   end
+
+  # LPC: me->query("max_neili") > target->query("max_neili") * 2 && me->query("neili") > 500
+  defp crippling?, do: false
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-100"}, {"neili", "-400"}, {"neili", "-500"}], "apply_adds": ["attack", "unarmed_damage"], "assign_refs": [{"ap", "claw"}, {"dp", "parry"}, {"lvl", "yintuoluo-zhua"}], "busy_lines": ["me->start_busy(3);", "me->start_busy(3);", "//target->start_busy(lvl/30);", "me->start_busy(4);", "if (random(8) < 2 && !target->is_busy())", "target->start_busy(1);"], "level_gates": [{"force", "300"}, {"yintuoluo-zhua", "200"}], "map_gates": [{"claw", "yintuoluo-zhua"}, {"force", "hunyuan-yiqi"}, {"force", "luohan-fumogong"}, {"force", "yijinjing"}], "prepared_gates": [{"claw", "yintuoluo-zhua"}], "remote_damage": true, "resource_gates": [{"neili", "500"}], "set_flags": [{"eff_jing", "0"}, {"eff_qi", "0"}], "var_gates": [{"i", "4"}]}

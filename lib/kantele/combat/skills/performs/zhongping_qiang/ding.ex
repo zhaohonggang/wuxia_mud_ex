@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -77,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhongping-qiang") < 120 -> {:error, "你中平枪法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "zhongping-qiang") < 120 -> {:error, "你中平枪法不够娴熟，难以施展「定岳七方」。\n"}
+      Stats.skill(stats, "force") < 180 -> {:error, "你的内功火候不够，难以施展「定岳七方」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "zhongping-qiang" -> {:error, "你没有激发中平枪法，难以施展。\n"}
+      Stats.mapped(stats, "club") != "zhongping-qiang" -> {:error, "你没有激发中平枪法，难以施展「定岳七方」。\n"}
       true -> :ok
     end
   end
@@ -96,8 +98,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为不够，难以施展「定岳七方」。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「定岳七方」。\n"}
       true -> :ok
     end
   end
@@ -106,12 +108,22 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展「定岳七方」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: weapon.name, else: "枪"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N身形一转，施出中平枪法绝技「定岳七方」，手中" <> weapon_name <> "接连七刺，枪枪不离$n要害！\n",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -141,11 +153,19 @@ defmodule Kantele.Combat.Skills.Performs.ZhongpingQiang.Ding do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, max(ap * 2, 1)) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。"
+
+    msg =
+      if hit,
+        do: "$n见$N攻势凶猛异常，实非寻常，不由心生寒意，招架登时散乱。\n",
+        else: "$n见$N攻势凶猛异常，实非寻常，急忙打起精神，小心应付开来。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

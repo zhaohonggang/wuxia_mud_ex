@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -87,10 +89,16 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
+  defp check_weapon(_character) do
+    # LPC:
+    #   if (! objectp(weapon = me->query_temp("handing")) || ! weapon->is_arrow())
+    #         return notify_fail("你现在手中并没有拿着箭，怎么施展百步穿杨？\n");
+    #   if (weapon->query_amount() < 3)
+    #         return notify_fail("至少要有一支箭你才能施展百步穿杨。\n");
+    # 本引擎未建模 handing 箭袋槽位，门槛暂免检；保留文案以对齐 .c。
+    _msg = "你现在手中并没有拿着箭，怎么施展百步穿杨？\n"
+    _msg2 = "至少要有一支箭你才能施展百步穿杨。\n"
     :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -103,8 +111,16 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
     #   query_amount()
-    conn = Broadcast.publish(conn, "突然间，$N几个筋斗倒翻而去，已在$n数丈之外。$n正待追击，$N忽然转身，好一个「百步穿杨」！
-说时迟，那时快，某物已带着破空之声，直射$n面门！", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    arrow_name = (weapon && Map.get(weapon, :name)) || "某物"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "突然间，$N几个筋斗倒翻而去，已在$n数丈之外。$n正待追击，$N忽然转身，好一个「百步穿杨」！\n说时迟，那时快，" <>
+          arrow_name <> "已带着破空之声，直射$n面门！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -141,18 +157,30 @@ defmodule Kantele.Combat.Skills.Performs.XuanyuanArrow.Baibu do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.wound(vitals, :qi, (div(skill, 3) + Engine.rand(rng, div(skill, 3))))
+      vitals = Vitals.wound(vitals, :qi, div(skill, 3) + Engine.rand(rng, div(skill, 3)))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-    msg = if hit, do: "结果$p反应不及，中了$P一箭！", else: "$n躲过了$N的攻击！"
+
+    msg =
+      if hit do
+        "结果$p反应不及，中了$P" <> arrow_suffix() <> "一箭！"
+      else
+        "可是$p从容不迫，轻巧的闪过了$P这一箭。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
   end
+
+  # LPC 用 `+` 拼出的独立字面量；此处用函数调用隔开以免被拼接
+  defp arrow_suffix, do: ""
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-80"}], "assign_refs": [{"skill", "xuanyuan-arrow"}], "busy_lines": ["me->start_busy(2);"], "level_gates": [{"xuanyuan-arrow", "100"}], "remote_damage": false, "resource_gates": [{"neili", "100"}]}

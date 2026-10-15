@@ -52,10 +52,15 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
     vitals = character.meta.vitals
 
     cond do
+      eff_qi_ratio(vitals) > 80 -> {:error, "你伤势很轻，不用激励易筋经至高绝学。\n"}
       vitals.max_qi < 10 -> {:error, "你内伤太重，无法激励易筋经至高绝学。\n"}
       vitals.max_neili < 500 -> {:error, "你的真气不够。\n"}
       true -> :ok
     end
+  end
+
+  defp eff_qi_ratio(vitals) do
+    div(vitals.max_qi * 100, max(vitals.base_qi, 1))
   end
 
   defp check_weapon(character) do
@@ -65,19 +70,33 @@ defmodule Kantele.Combat.Skills.Performs.Yijinjing.Tong do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你不是少林弟子，无法使用“易筋通脉”。\n"}
-    #   {:error, "你只能用易筋经来为自己易筋通脉。\n"}
-    #   {:error, "你所学的内功中没有这种功能。\n"}
-    :ok
+    cond do
+      not Stats.perform_known?(character.meta.stats, "yijinjing/tong") ->
+        {:error, "你所学的内功中没有这种功能。\n"}
 
+      target_not_self?(character) ->
+        {:error, "你只能用易筋经来为自己易筋通脉。\n"}
+
+      true ->
+        :ok
+    end
   end
+
+  # LPC: if (target != me) —— 易筋通脉只能对自身施展
+  defp target_not_self?(_character), do: false
 
   defp apply_effect(conn, character) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N默念易筋经的口诀: 元气,气存于内,放于外。易筋,孕怀于息,舒于支....\n一股详和的白色罡气自头顶迅速游遍$N的奇经八脉！\n$N的内伤刹那间大为好转！！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)

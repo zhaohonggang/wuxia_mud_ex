@@ -78,8 +78,10 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 140 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "yinhu-zhang") < 100 -> {:error, "你银瑚杖法火候不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 140 -> {:error, "你的内功火候不够，难以施展「大海捞针」。\n"}
+
+      Stats.skill(stats, "yinhu-zhang") < 100 ->
+        {:error, "你银瑚杖法火候不够，难以施展「大海捞针」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +90,8 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "yinhu-zhang" -> {:error, "你没有激发银瑚杖法，难以施展。\n"}
+      Stats.mapped(stats, "staff") != "yinhu-zhang" ->
+        {:error, "你没有激发银瑚杖法，难以施展「大海捞针」。\n"}
       true -> :ok
     end
   end
@@ -97,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「大海捞针」。\n"}
       true -> :ok
     end
   end
@@ -106,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「大海捞针」。\n"}
       true -> :ok
     end
   end
@@ -121,7 +124,14 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声暴喝，猛然间腾空而起，施出绝招「大海捞针」，手中某物从天而降，气势惊人地袭向$n。", n1: character.name)
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+
+    msg =
+      "$N一声暴喝，猛然间腾空而起，施出绝招「大海捞针」，手中" <>
+        weapon_name <> "从天而降，气势惊人地袭向$n。"
+
+    conn = Broadcast.publish(conn, msg, n1: character.name)
 
     conn
     |> put_character(character)

@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
   alias Kantele.Combat.Performs
 
   @perform_id "tianshan-zhang/xue"
+  @move_name "「冰雪纷飞」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -37,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -75,9 +78,14 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "你的基本内功火候不够！\n"}
-      Stats.skill(stats, "tianshan-zhang") < 100 -> {:error, "你的天山杖法还不到家，无法使用！\n"}
-      true -> :ok
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的基本内功火候不够！\n"}
+
+      Stats.skill(stats, "tianshan-zhang") < 100 ->
+        {:error, "你的天山杖法还不到家，无法使用#{@move_name}！\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -85,8 +93,11 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "staff") != "tianshan-zhang" -> {:error, "你没有激发天山杖法，使不了。\n"}
-      true -> :ok
+      Stats.mapped(stats, "staff") != "tianshan-zhang" ->
+        {:error, "你没有激发天山杖法，使不了#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -150,6 +161,7 @@ defmodule Kantele.Combat.Skills.Performs.TianshanZhang.Xue do
     Performs.feedback(attacker, 120, 1)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

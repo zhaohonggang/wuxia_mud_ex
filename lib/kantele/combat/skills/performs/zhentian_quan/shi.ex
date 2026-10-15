@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -76,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhentian-quan") < 80 -> {:error, "你的震天拳法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "zhentian-quan") < 80 -> {:error, "你的震天拳法不够娴熟，难以施展「石破天惊」。\n"}
       true -> :ok
     end
   end
@@ -86,10 +88,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
 
     cond do
       Stats.mapped(stats, "cuff") != "zhentian-quan" ->
-        {:error, "你没有激发震天拳法，难以施展。\n"}
+        {:error, "你没有激发震天拳法，难以施展「石破天惊」。\n"}
 
-      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "zhentian-quan" ->
-        {:error, "你现在没有准备使用震天拳法，难以施展。\n"}
+      Stats.prepared_perform(stats, "cuff") == nil or
+          String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "zhentian-quan" ->
+        {:error, "你现在没有准备使用震天拳法，难以施展「石破天惊」。\n"}
 
       true ->
         :ok
@@ -100,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「石破天惊」。\n"}
       true -> :ok
     end
   end
@@ -109,7 +112,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「石破天惊」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -160,14 +163,19 @@ defmodule Kantele.Combat.Skills.Performs.ZhentianQuan.Shi do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "结果$p闪避不及，被$P这招打了个正中，拳力掌劲顿时透体而入，顿时口喷鲜血，连退数步。", else: "$n躲过了$N的攻击！"
+
+    msg =
+      if hit, do: "结果$p闪避不及，被$P这招打了个正中，拳力掌劲顿时透体而入，顿时口喷鲜血，连退数步。", else: "可是$p识破了$P这一招，斜斜一跃避开。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

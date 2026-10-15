@@ -159,8 +159,11 @@ defmodule Kantele.Combat.Skills.Performs.YunlongJian.Xian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 4)
-    msg = if hit, do: "只见$N手中剑光幻作一条金龙，腾空而起倏的罩向$n，
-$p只觉一股大力铺天盖地般压来，登时眼前一花，两耳轰鸣，哇的喷出一口鲜血！！", else: "$n躲过了$N的攻击！"
+    msg =
+      if hit,
+        do:
+          "只见$N手中剑光幻作一条金龙，腾空而起倏的罩向$n，\n$p只觉一股大力铺天盖地般压来，登时眼前一花，两耳轰鸣，哇的喷出一口鲜血！！",
+        else: "可是$p猛地向前一跃，跳出了$P的攻击范围。\n"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

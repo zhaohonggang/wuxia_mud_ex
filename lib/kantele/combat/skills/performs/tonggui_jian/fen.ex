@@ -30,6 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
     "使用一招玉石俱焚与",
     "同归于尽了",
     "使一招玉石俱焚，两人一块去见了黑白无常",
+    "被",
     "要害"
   ]
 
@@ -50,7 +51,9 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -72,7 +75,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中那些那些那些功能。\n"}
+      {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
 
@@ -137,8 +140,8 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
     combat = Combat.start_busy(combat, 8)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
-    conn =
-      Broadcast.publish(conn, "$N凄然一声长叹，施出同归剑法「玉石俱焚」，反转过", n1: character.name)
+    conn = Broadcast.publish(conn, "$N凄然一声长叹，施出同归剑法「玉石俱焚」，反转过", n1: character.name)
+
     conn =
       Broadcast.publish(conn, weapon_name <> "剑身，连人带剑扑向$n而去！", n1: character.name, n2: target.name)
 
@@ -161,7 +164,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     if character.meta.combat.dead do
-      Broadcast.publish(conn, "对方都已经那些那些那些费力吧？", n1: attacker.name, n2: character.name)
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
     else
       do_resolve_incoming(conn, character, attacker, data)
     end
@@ -179,34 +182,69 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
     character = %{character | meta: %{character.meta | vitals: vitals}}
 
     cond do
-      hit && (ap < dp * 3 / 4) && (Map.get(attacker.meta.vitals, :max_neili, 0) < Map.get(character.meta.vitals, :max_neili, 0) * 3 / 4) ->
+      hit && ap < dp * 3 / 4 &&
+          Map.get(attacker.meta.vitals, :max_neili, 0) <
+            Map.get(character.meta.vitals, :max_neili, 0) * 3 / 4 ->
         Performs.feedback(attacker, 0, 8)
+
         conn =
-          Broadcast.publish(conn, "可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, "可是$n一声冷哼，飞身闪开来招，又顺势转身一掌拍向$N面门。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn =
-          Broadcast.publish(conn, "只听“喀嚓”一声，那掌正好打在头顶，哀嚎一声，软软的瘫倒。", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, "只听“喀嚓”一声，那掌正好打在头顶，哀嚎一声，软软的瘫倒。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn
         |> put_character(character)
 
-      hit && (ap > dp) && (Map.get(attacker.meta.vitals, :max_neili, 0) > Map.get(character.meta.vitals, :max_neili, 0)) ->
+      hit && ap > dp &&
+          Map.get(attacker.meta.vitals, :max_neili, 0) >
+            Map.get(character.meta.vitals, :max_neili, 0) ->
         weapon = Combat.weapon(attacker.meta.combat)
         weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
         Performs.feedback(attacker, 0, 8)
+
         conn =
-          Broadcast.publish(conn, "$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。只听“噗嗤”一声，", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, "$n眼见$N来势如此凶悍，这一招决计无法抵挡，骇怖达于极点，竟致僵立，束手待毙。只听“噗嗤”一声，",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn =
-          Broadcast.publish(conn, weapon_name <> "已然透过$n前胸而入，喷出一股血雨。", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, weapon_name <> "已然透过$n前胸而入，喷出一股血雨。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn
         |> put_character(character)
 
-      hit && (div(ap, 2) + Engine.rand(rng, ap * 2 / 3) > dp) ->
+      hit && div(ap, 2) + Engine.rand(rng, ap * 2 / 3) > dp ->
         weapon = Combat.weapon(attacker.meta.combat)
         weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
         Performs.feedback(attacker, 0, 8)
+
         conn =
-          Broadcast.publish(conn, "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，", n1: attacker.name, n2: character.name)
+          Broadcast.publish(
+            conn,
+            "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击向$N面门，竟也是同归于尽的招数。只听“噗嗤”一声，",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn =
-          Broadcast.publish(conn, weapon_name <> "已然透过$n前胸，喷出一股血雨。\n同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。", n1: attacker.name, n2: character.name)
+          Broadcast.publish(
+            conn,
+            weapon_name <> "已然透过$n前胸，喷出一股血雨。\n同时$n那一掌也正好打在$N头顶，听得“喀嚓”一声，$N头盖骨完全碎裂，软软的瘫倒。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn
         |> put_character(character)
 
@@ -220,17 +258,31 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
         vitals = Vitals.damage(vitals, :qi, damage_calc)
         character = %{character | meta: %{character.meta | vitals: vitals}}
         Performs.feedback(attacker, 0, 8)
+
         conn =
-          Broadcast.publish(conn, "$n眼见$N来势那些凶悍，只觉这一招决那些无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那柄", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, "$n眼见$N来势如此凶悍，只觉这一招决计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那柄",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn =
-          Broadcast.publish(conn, weapon_name <> "已然刺穿" <> limb <> "，喷出一股血雨。", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, weapon_name <> "已然刺穿" <> limb <> "，喷出一股血雨。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn
         |> put_character(character)
 
       true ->
         Performs.feedback(attacker, 0, 8)
+
         conn =
-          Broadcast.publish(conn, "可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。", n1: attacker.name, n2: character.name)
+          Broadcast.publish(conn, "可是$n早已料到$N有此一着，身形急动，躲开了这一杀着。",
+            n1: attacker.name,
+            n2: character.name
+          )
+
         conn
         |> put_character(character)
     end

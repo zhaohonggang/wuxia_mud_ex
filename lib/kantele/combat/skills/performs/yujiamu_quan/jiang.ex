@@ -80,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yujiamu-quan") < 100 -> {:error, "你金刚瑜迦母拳修为不够，难以施展。\n"}
+      Stats.skill(stats, "yujiamu-quan") < 100 -> {:error, "你金刚瑜迦母拳修为不够，难以施展「修罗降世」。\n"}
       true -> :ok
     end
   end
@@ -90,10 +90,10 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
 
     cond do
       Stats.mapped(stats, "cuff") != "yujiamu-quan" ->
-        {:error, "你没有激发金刚瑜迦母拳，难以施展。\n"}
+        {:error, "你没有激发金刚瑜迦母拳，难以施展「修罗降世」。\n"}
 
       Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "yujiamu-quan" ->
-        {:error, "你没有准备金刚瑜迦母拳，难以施展。\n"}
+        {:error, "你没有准备金刚瑜迦母拳，难以施展「修罗降世」。\n"}
 
       true ->
         :ok
@@ -104,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 180 -> {:error, "你目前的真气不足，难以施展。\n"}
+      vitals.neili < 180 -> {:error, "你目前的真气不足，难以施展「修罗降世」。\n"}
       true -> :ok
     end
   end
@@ -113,7 +113,7 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「修罗降世」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -128,7 +128,14 @@ defmodule Kantele.Combat.Skills.Performs.YujiamuQuan.Jiang do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！", n1: character.name)
+    msg =
+      if vitals.qi < div(vitals.max_qi, 2) do
+        "$N目睚俱裂，一声爆喝，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！"
+      else
+        "$N大喝一声，面色赤红，全身骨骼劈啪作响，拳头如闪电般击向$n的要害！"
+      end
+
+    conn = Broadcast.publish(conn, msg, n1: character.name)
 
     conn
     |> put_character(character)

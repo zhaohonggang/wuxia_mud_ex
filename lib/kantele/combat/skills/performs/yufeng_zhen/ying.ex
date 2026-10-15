@@ -29,17 +29,26 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yufeng-zhen")
-    my_exp = Stats.skill(stats, "throwing")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         {:ok, weapon} <- check_weapon(character) do
+      weapon_name = weapon.name
+      base_unit = weapon.base_unit || "枚"
+      my_exp = Stats.skill(stats, "throwing")
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          my_exp: my_exp,
+          weapon_name: weapon_name,
+          base_unit: base_unit,
           rng: rng
         }
       })
@@ -75,8 +84,8 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yufeng-zhen") < 100 -> {:error, "你的玉蜂针手法不够娴熟，不会使用。\n"}
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，无法施展。\n"}
+      Stats.skill(stats, "yufeng-zhen") < 100 -> {:error, "你的玉蜂针手法不够娴熟，不会使用「无影针」。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，无法施展「无影针」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "throwing") != "yufeng-zhen" -> {:error, "你没有激发玉蜂针，不能使用。\n"}
+      Stats.mapped(stats, "throwing") != "yufeng-zhen" -> {:error, "你没有激发玉蜂针，不能使用「无影针」。\n"}
       true -> :ok
     end
   end
@@ -94,26 +103,32 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你内力不够，无法施展\n"}
+      vitals.neili < 100 -> {:error, "你内力不够，无法施展「无影针」\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手中没有针，无法施展。\n"}
-    #   {:error, "你现在手中并没有拿着针，怎么施展？\n"}
-    :ok
+    combat = character.meta.combat
+    weapon = Combat.handing(combat)
 
+    cond do
+      weapon == nil -> {:error, "你现在手中并没有拿着针，怎么施展「无影针」？\n"}
+      weapon.amount < 1 -> {:error, "你手中没有针，无法施展「无影针」。\n"}
+      weapon.skill_type != "throwing" -> {:error, "你现在手中并没有拿着针，怎么施展「无影针」？\n"}
+      true -> {:ok, weapon}
+    end
   end
 
   defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    # TODO(migrate) 暗器/投掷数量扣减逻辑需人工核对
-    #   query_amount()
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 2 + :rand.uniform(2))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    # TODO: 减少暗器数量 weapon.amount - 1
+
     conn = Broadcast.publish(conn, "$N身不慌，足不移，手掌只是轻轻一抖，只见一点寒光闪过，闪电般的射向$n！", n1: character.name)
 
     conn
@@ -142,25 +157,42 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    level = Map.get(data, :level, 0)
-    skill = Map.get(data, :skill, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    my_exp = Map.get(data, :my_exp, 0)
+    skill = Map.get(data, :skill, 0)
+    weapon_name = Map.get(data, :weapon_name, "针")
+    base_unit = Map.get(data, :base_unit, "枚")
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "dodge")
+    hit = div(my_exp, 2) + Engine.rand(rng, my_exp) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.wound(vitals, :qi, (skill + Engine.rand(rng, div(skill, 3))))
+      wound = skill + Engine.rand(rng, div(skill, 3))
+      vitals = Vitals.wound(vitals, :qi, wound)
+
+      # First part: "结果反应不及，中了"
+      msg1 = "结果$p反应不及，中了$P"
+
+      conn =
+        Broadcast.publish(conn, Messages.interpolate(msg1, n1: attacker.name, n2: character.name))
+
+      # Second part: "一" + base_unit + weapon_name + "！"
+      msg2 = "一" <> base_unit <> weapon_name <> "！\n"
+
+      conn =
+        Broadcast.publish(conn, Messages.interpolate(msg2, n1: attacker.name, n2: character.name))
+    else
+      msg = "可是$p从容不迫，轻巧的闪过了$P发出的" <> weapon_name <> "。\n"
+
+      conn =
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    msg = if hit, do: "结果$p反应不及，中了$P一某物！", else: "$n躲过了$N的攻击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 
@@ -169,13 +201,13 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # #define YING "「" HIY "无影针" NOR "」"
-  # 
+  #
   # #include "/kungfu/skill/eff_msg.h";
-  # 
+  #
   # int perform(object me, object target)
   # {
   #         int skill;
@@ -184,45 +216,45 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
   #         string pmsg;
   #         string msg;
   #         object weapon;
-  # 
+  #
   #         if (! target) target = offensive_target(me);
-  # 
+  #
   #         if (! me->query("can_perform/yufeng-zhen/ying"))
   #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
+  #
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail(YING "只能在战斗中对对手使用。\n");
-  # 
+  #
   #         if (! objectp(weapon = me->query_temp("handing")) ||
   #             (string)weapon->query("skill_type") != "throwing")
   #                 return notify_fail("你现在手中并没有拿着针，怎么施展" YING "？\n");
-  # 
+  #
   #         if (weapon->query_amount() < 1)
   #                 return notify_fail("你手中没有针，无法施展" YING "。\n");
-  # 
+  #
   #         if ((skill = me->query_skill("yufeng-zhen", 1)) < 100)
   #                 return notify_fail("你的玉蜂针手法不够娴熟，不会使用" YING "。\n");
-  # 
+  #
   #         if (me->query_skill("force") < 100)
   #                 return notify_fail("你的内功火候不够，无法施展" YING "。\n");
-  # 
+  #
   #         if (me->query_skill_mapped("throwing") != "yufeng-zhen")
   #                 return notify_fail("你没有激发玉蜂针，不能使用" YING "。\n");
-  # 
+  #
   #         if ((int)me->query("neili") < 100)
   #                 return notify_fail("你内力不够，无法施展" YING "\n");
-  # 
+  #
   #        if (! living(target))
   #               return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
   #         me->add("neili", -80);
   #         weapon->add_amount(-1);
-  # 
+  #
   #         msg= HIY "$N" HIY "身不慌，足不移，手掌只是轻轻一抖，只见"
   #              "一点寒光闪过，闪电般的射向$n" HIY "！\n" NOR;
-  # 
+  #
   #         me->start_busy(2 + random(2));
-  # 
+  #
   #         my_exp = me->query_skill("throwing");
   #         ob_exp = target->query_skill("dodge");
   #         if (my_exp / 2 + random(my_exp) > ob_exp)
@@ -231,17 +263,17 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
   #                        weapon->query("base_unit") + weapon->name() +
   #                        HIR "！\n" NOR;
   #                 target->receive_wound("qi", skill + random(skill / 3), me);
-  # 
+  #
   #                 COMBAT_D->clear_ahinfo();
   #                 weapon->hit_ob(me, target, me->query("jiali") + 100);
-  # 
+  #
   #                 p = (int)target->query("qi") * 100 / (int)target->query("max_qi");
-  # 
+  #
   #                 if (stringp(pmsg = COMBAT_D->query_ahinfo()))
   #                         msg += pmsg;
-  # 
+  #
   #                 msg += "( $n" + eff_status_msg(p) + " )\n";
-  # 
+  #
   #                 message_combatd(msg, me, target);
   #         } else
   #         {
@@ -249,7 +281,7 @@ defmodule Kantele.Combat.Skills.Performs.YufengZhen.Ying do
   #                        weapon->name() + HIG "。\n" NOR;
   #                 message_combatd(msg, me, target);
   #         }
-  # 
+  #
   #         me->reset_action();
   #         return 1;
   # }

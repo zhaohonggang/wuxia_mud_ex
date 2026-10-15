@@ -74,7 +74,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yunzhou-fufa") < 60 -> {:error, "你的云帚拂法级别不够，无法施展！\n"}
+      Stats.skill(stats, "yunzhou-fufa") < 60 -> {:error, "你的云帚拂法级别不够，无法施展「风魔舞」！\n"}
       true -> :ok
     end
   end
@@ -83,7 +83,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yunzhou-fufa" -> {:error, "你没有激发云帚拂法，无法施展！\n"}
+      Stats.mapped(stats, "whip") != "yunzhou-fufa" -> {:error, "你没有激发云帚拂法，无法施展「风魔舞」！\n"}
       true -> :ok
     end
   end
@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在真气不够，无法施展！\n"}
+      vitals.neili < 100 -> {:error, "你现在真气不够，无法施展「风魔舞」！\n"}
       true -> :ok
     end
   end
@@ -101,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你的武器不对，无法施展\n"}
+      Combat.weapon(combat) == nil -> {:error, "你的武器不对，无法施展「风魔舞」\n"}
       true -> :ok
     end
   end
@@ -114,7 +114,17 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N暴喝一声，潜运体内真气，将某物挥舞得呼呼直响，直破长空，犹如漫天狂沙般卷向$n。", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: Map.get(weapon, :name, ""), else: ""
+
+    # LPC: msg = HIY "\n$N暴喝一声，潜运体内真气，将" + weapon->name() + HIY
+    #            "挥舞得呼呼直响，直破长空，犹如漫天狂沙般卷向$n。" NOR;
+    conn =
+      Broadcast.publish(
+        conn,
+        "暴喝一声，潜运体内真气，将" <> weapon_name <> "挥舞得呼呼直响，直破长空，犹如漫天狂沙般卷向$n。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -152,7 +162,17 @@ defmodule Kantele.Combat.Skills.Performs.YunzhouFufa.Feng do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 1)
-    msg = "$n只觉风声萧萧，眼前万千鞭影，顿感手脚无措，惊慌不已。"
+    # LPC: if (random(me->query("combat_exp")) > (int)target->query("combat_exp") / 2)
+    #        msg = HIR "$n" HIR "只觉风声萧萧，眼前万千鞭影，顿感" "手脚无措，惊慌不已。\n" NOR;
+    #      else
+    #        msg = CYN "可是$p" CYN "看破了$P" CYN "的企图，斜跳躲闪开来。\n" NOR;
+    msg =
+      if Engine.rand(rng, 2) == 1 do
+        "$n只觉风声萧萧，眼前万千鞭影，顿感手脚无措，惊慌不已。\n"
+      else
+        "可是$p看破了$P的企图，斜跳躲闪开来。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

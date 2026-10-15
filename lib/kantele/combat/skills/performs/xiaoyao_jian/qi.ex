@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xiaoyao-jian")
-    ap = (Stats.skill(stats, "sword") + Stats.skill(stats, "dodge"))
-    damage = (ap + Engine.rand(rng, div(ap, 4)))
+    ap = Stats.skill(stats, "sword") + Stats.skill(stats, "dodge")
+    damage = ap + Engine.rand(rng, div(ap, 4))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiaoyao-jian") < 160 -> {:error, "你逍遥剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 160 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "xiaoyao-jian") < 160 -> {:error, "你逍遥剑法不够娴熟，难以施展「奇剑诀」。\n"}
+      Stats.skill(stats, "force") < 160 -> {:error, "你的内功火候不够，难以施展「奇剑诀」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xiaoyao-jian" -> {:error, "你没有激发逍遥剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "xiaoyao-jian" -> {:error, "你没有激发逍遥剑法，难以施展「奇剑诀」。\n"}
       true -> :ok
     end
   end
@@ -97,8 +99,8 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2200 -> {:error, "你内力修为不足，难以施展。\n"}
-      vitals.neili < 350 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.max_neili < 2200 -> {:error, "你内力修为不足，难以施展「奇剑诀」。\n"}
+      vitals.neili < 350 -> {:error, "你现在的真气不够，难以施展「奇剑诀」。\n"}
       true -> :ok
     end
   end
@@ -107,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展「奇剑诀」。\n"}
       true -> :ok
     end
   end
@@ -121,7 +123,19 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N将某物斜指长空，猛地飞身跃起，某物忽左忽右，飘忽不定，猛然间破空长响，某物直指向$n咽喉。这正是逍遥剑法之「奇剑诀」，当真是招招精奇，神妙无比。", n1: character.name)
+    wn = weapon_name(combat)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N将" <>
+          wn <>
+          "斜指长空，猛地飞身跃起，" <>
+          wn <>
+          "忽左忽右，飘忽不定，猛然间破空长响，" <>
+          wn <> "直指向$n咽喉。这正是逍遥剑法之「奇剑诀」，当真是招招精奇，神妙无比。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -137,6 +151,13 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
   end
 
   @impl true
@@ -157,14 +178,16 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Qi do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 2)
     msg = if hit, do: "$n只见一道电光从半空袭来，心中惊骇不已，但鲜血已从$n胸口喷出。", else: "然而$n眼明手快，侧身一跳躲过$N这一剑。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

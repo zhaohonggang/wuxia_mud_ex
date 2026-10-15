@@ -78,8 +78,11 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yinfeng-dao") < 140 -> {:error, "你的阴风刀还不够娴熟，无法施展绝技！\n"}
-      Stats.skill(stats, "force") < 260 -> {:error, "你内功火候不够，难以施展绝技！\n"}
+      Stats.skill(stats, "yinfeng-dao") < 140 ->
+        {:error, "你的阴风刀还不够娴熟，无法施展「绝杀」绝技！\n"}
+
+      Stats.skill(stats, "force") < 260 ->
+        {:error, "你内功火候不够，难以施展「绝杀」绝技！\n"}
       true -> :ok
     end
   end
@@ -88,7 +91,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "strike") != "yinfeng-dao" -> {:error, "你没有激发阴风刀，无法使用绝技！\n"}
+      Stats.mapped(stats, "strike") != "yinfeng-dao" ->
+        {:error, "你没有激发阴风刀，无法使用「绝杀」绝技！\n"}
       true -> :ok
     end
   end
@@ -97,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展绝技！！\n"}
-      vitals.neili < 400 -> {:error, "你的真气不够，无法施展绝技！！\n"}
+      vitals.max_neili < 2400 -> {:error, "你的真气不够，无法施展「绝杀」绝技！！\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，无法施展「绝杀」绝技！！\n"}
       true -> :ok
     end
   end
@@ -161,7 +165,10 @@ defmodule Kantele.Combat.Skills.Performs.YinfengDao.Jue do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 350, 3)
-    msg = if hit, do: "$N使出阴风刀「绝 杀」绝技，掌劲幻出一片片切骨寒气如飓风般裹向$n全身！", else: "可是$n急忙退闪，连消带打躲开了这一击。"
+    msg =
+      if hit,
+        do: "结果只听$n一声惨嚎，全身几处要穴同时被阴风寒劲砍中，疼若刮骨，鲜血狂泄而出！",
+        else: "可是$n急忙退闪，连消带打躲开了这一击。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

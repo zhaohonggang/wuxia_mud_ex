@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -75,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiaoyao-jian") < 60 -> {:error, "你逍遥剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "xiaoyao-jian") < 60 -> {:error, "你逍遥剑法不够娴熟，难以施展「飞剑诀」。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展「飞剑诀」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "xiaoyao-jian" -> {:error, "你没有激发逍遥剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "xiaoyao-jian" -> {:error, "你没有激发逍遥剑法，难以施展「飞剑诀」。\n"}
       true -> :ok
     end
   end
@@ -94,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「飞剑诀」。\n"}
       true -> :ok
     end
   end
@@ -103,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「飞剑诀」。\n"}
       true -> :ok
     end
   end
@@ -116,7 +118,12 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然身法奇快，剑法灵动无比，手中某物犹如脱手飞旋一般，将$n周身笼罩。", n1: character.name)
+    wn = weapon_name(combat)
+
+    conn =
+      Broadcast.publish(conn, "$N陡然身法奇快，剑法灵动无比，手中" <> wn <> "犹如脱手飞旋一般，将$n周身笼罩。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -134,13 +141,22 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
+  end
+
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
@@ -150,14 +166,26 @@ defmodule Kantele.Combat.Skills.Performs.XiaoyaoJian.Fei do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 120, 2)
-    msg = "$n被$N击中！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    conn =
+      if hit? do
+        Broadcast.publish(conn, "$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！\n",
+          n1: attacker.name,
+          n2: character.name
+        )
+      else
+        conn
+        |> Broadcast.publish("可是$N镇定自若，小心拆招，没有被$n", n1: attacker.name, n2: character.name)
+        |> Broadcast.publish("招式所困。\n", n1: attacker.name, n2: character.name)
+      end
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 

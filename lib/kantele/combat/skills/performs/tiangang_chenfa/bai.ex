@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
   alias Kantele.Combat.Performs
 
   @perform_id "tiangang-chenfa/bai"
+  @move_name "「朝拜天罡」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -30,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "tiangang-chenfa")
     ap = Stats.skill(stats, "whip")
-    damage = div((ap * 4), 3)
+    damage = div(ap * 4, 3)
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -47,7 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -78,8 +81,11 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tiangang-chenfa") < 120 -> {:error, "你天罡尘法不够娴熟，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "tiangang-chenfa") < 120 ->
+        {:error, "你天罡尘法不够娴熟，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -87,8 +93,11 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "tiangang-chenfa" -> {:error, "你没有激发天罡尘法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "whip") != "tiangang-chenfa" ->
+        {:error, "你没有激发天罡尘法，难以施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -96,8 +105,8 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展。\n"}
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.max_neili < 1500 -> {:error, "你的内力修为不足，难以施展#{@move_name}。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -106,12 +115,12 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
       true -> :ok
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
@@ -120,7 +129,15 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "但见$N手中某人窜动不已，接连变幻了数种招式，分袭$n各处要害。", n1: character.name)
+    weapon_name = weapon_name(combat)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "但见$N手中" <> weapon_name <> "窜动不已，接连变幻了数种招式，分袭$n各处要害。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -156,17 +173,32 @@ defmodule Kantele.Combat.Skills.Performs.TiangangChenfa.Bai do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 3)
-    msg = if hit, do: "$n急忙躲闪，却发现$N的某物已然拂中胸前要穴，顿感气血上涌，难受之极。", else: "可是$p看破了$P招中虚实，当即纵身而起，躲避开来。"
+    weapon_name = weapon_name(character.meta.combat)
+
+    msg =
+      if hit,
+        do: "$n急忙躲闪，却发现$N的" <> weapon_name <> "已然拂中胸前要穴，顿感气血上涌，难受之极。",
+        else: "可是$p看破了$P招中虚实，当即纵身而起，躲避开来。"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

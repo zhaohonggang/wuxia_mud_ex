@@ -78,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangZhang.Qian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yinyang-zhang") < 100 -> {:error, "你阴阳掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "yinyang-zhang") < 100 -> {:error, "你阴阳掌不够娴熟，难以施展「千掌环」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangZhang.Qian do
 
     cond do
       Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "yinyang-zhang" ->
-        {:error, "你没有准备阴阳掌，难以施展。\n"}
+        {:error, "你没有准备阴阳掌，难以施展「千掌环」。\n"}
 
       true ->
         :ok
@@ -99,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.YinyangZhang.Qian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在的真气不够，难以施展「千掌环」。\n"}
       true -> :ok
     end
   end
@@ -108,12 +108,19 @@ defmodule Kantele.Combat.Skills.Performs.YinyangZhang.Qian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「千掌环」只能空手施展。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N一声长啸，将内力运于双掌之上，施出绝招「千掌环」，刹时间尘土漫天飞扬，$N双掌不断地连续拍出，攻势凌厉，令人不敢大意。\n",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -143,13 +150,20 @@ defmodule Kantele.Combat.Skills.Performs.YinyangZhang.Qian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge")
+    hit = Engine.rand(rng, max(ap, 1)) > div(dp, 2)
+
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "结果$n目不暇接，顿时被$N掌风所困，顿时阵脚大乱。"
+
+    msg =
+      if hit,
+        do: "结果$n目不暇接，顿时被$N掌风所困，顿时阵脚大乱。",
+        else: "$n看清$N这几招的来路，但内劲所至，掌风犀利，也只得小心抵挡。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

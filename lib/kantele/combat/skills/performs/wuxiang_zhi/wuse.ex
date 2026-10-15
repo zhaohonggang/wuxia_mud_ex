@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "wuxiang-zhi")
-    ap = (Stats.skill(stats, "finger") + Stats.skill(stats, "force"))
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    ap = Stats.skill(stats, "finger") + Stats.skill(stats, "force")
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -118,7 +120,6 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
     #   {:error, "你还没有受过高人指点，无法施展「无色无相」。\n"}
     :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -131,7 +132,9 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N聚起全身功力，汇聚于右指，纵身而上，向$n扑去，同时一指划出，如同流星一般击向$n！", n1: character.name)
+
+    conn =
+      Broadcast.publish(conn, "$N聚起全身功力，汇聚于右指，纵身而上，向$n扑去，同时一指划出，如同流星一般击向$n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -167,14 +170,21 @@ defmodule Kantele.Combat.Skills.Performs.WuxiangZhi.Wuse do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 3)
-    msg = if hit, do: "只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！", else: "可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！"
+
+    msg =
+      if hit,
+        do: "只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！",
+        else: "可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

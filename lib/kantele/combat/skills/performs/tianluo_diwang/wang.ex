@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
   alias Kantele.Combat.Performs
 
   @perform_id "tianluo-diwang/wang"
+  @move_name "「天罗地网」"
 
   @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
@@ -36,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -74,9 +77,14 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "tianluo-diwang") < 60 -> {:error, "你的天罗地网掌还不够娴熟，无法施展。\n"}
-      Stats.skill(stats, "dodge") < 40 -> {:error, "你的轻功修为不够，无法施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "tianluo-diwang") < 60 ->
+        {:error, "你的天罗地网掌还不够娴熟，无法施展#{@move_name}。\n"}
+
+      Stats.skill(stats, "dodge") < 40 ->
+        {:error, "你的轻功修为不够，无法施展#{@move_name}。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -84,8 +92,9 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     stats = character.meta.stats
 
     cond do
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tianluo-diwang" ->
-        {:error, "你没有准备天罗地网掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "tianluo-diwang" ->
+        {:error, "你没有准备天罗地网掌，难以施展#{@move_name}。\n"}
 
       true ->
         :ok
@@ -96,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 70 -> {:error, "你现在真气不够，无法使用。\n"}
+      vitals.neili < 70 -> {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -105,7 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能施展#{@move_name}。\n"}
       true -> :ok
     end
   end
@@ -141,23 +150,35 @@ defmodule Kantele.Combat.Skills.Performs.TianluoDiwang.Wang do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧！", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    stats = character.meta.stats
+    level = max(Map.get(data, :level, 0), 1)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    dodge = Stats.skill(stats, "dodge")
+    hit? = Engine.rand(rng, level) > div(dodge, 2)
+
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 1)
-    msg = "结果$p被$P压制的难以反击，只能竭力抵挡！"
+
+    msg =
+      if hit? do
+        "结果$p被$P压制的难以反击，只能竭力抵挡！"
+      else
+        "可是$p身形一闪，跃出$P的掌力所及的范围。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

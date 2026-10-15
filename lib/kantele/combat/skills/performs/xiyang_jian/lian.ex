@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -100,10 +102,10 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "必须拿剑才能施展「连环剑」！\n"}
-    :ok
-
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "sword"} -> :ok
+      _ -> {:error, "必须拿剑才能施展「连环剑」！\n"}
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -148,6 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.XiyangJian.Lian do
     Performs.feedback(attacker, 100, 1)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

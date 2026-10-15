@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -74,9 +76,14 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xuantian-wujigong") < 180 -> {:error, "你的玄天无极功火候不够，使不出。\n"}
-      Stats.skill(stats, "xuantian-zhi") < 180 -> {:error, "你的玄天指不够熟练，不会使用。\n"}
-      true -> :ok
+      Stats.skill(stats, "xuantian-wujigong") < 180 ->
+        {:error, "你的玄天无极功火候不够，使不出「冰坚地狱」。\n"}
+
+      Stats.skill(stats, "xuantian-zhi") < 180 ->
+        {:error, "你的玄天指不够熟练，不会使用「冰坚地狱」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -85,10 +92,11 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
 
     cond do
       Stats.mapped(stats, "finger") != "xuantian-zhi" ->
-        {:error, "你没有激发玄天指，不能使用。\n"}
+        {:error, "你没有激发玄天指，不能使用「冰坚地狱」。\n"}
 
-      Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "xuantian-zhi" ->
-        {:error, "你现在没有准备使用玄天指，无法使用。\n"}
+      Stats.prepared_perform(stats, "finger") == nil or
+          String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "xuantian-zhi" ->
+        {:error, "你现在没有准备使用玄天指，无法使用「冰坚地狱」。\n"}
 
       true ->
         :ok
@@ -99,8 +107,8 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 2000 -> {:error, "你的内力修为不足，无法使用。\n"}
-      vitals.neili < 500 -> {:error, "你的真气不够，无法使用。\n"}
+      vitals.max_neili < 2000 -> {:error, "你的内力修为不足，无法使用「冰坚地狱」。\n"}
+      vitals.neili < 500 -> {:error, "你的真气不够，无法使用「冰坚地狱」。\n"}
       true -> :ok
     end
   end
@@ -109,7 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用「冰坚地狱」。\n"}
       true -> :ok
     end
   end
@@ -158,14 +166,16 @@ defmodule Kantele.Combat.Skills.Performs.XuantianZhi.Bing do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 400, 4)
     msg = if hit, do: "$n稍不留神，已被$P一指点中，阴寒之劲顿时侵入三焦六脉。", else: "$n见$N来势汹涌，急忙提气跃开。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

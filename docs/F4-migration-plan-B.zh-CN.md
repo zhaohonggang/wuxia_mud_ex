@@ -293,7 +293,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tangmen_throwing/` （3 个，基线缺失 51 条）
 
-- [ ] ❌ `tangmen_throwing/hua.ex` ← `tangmen-throwing/hua.c`  (miss=15)
+- [x] ✅ `tangmen_throwing/hua.ex` ← `tangmen-throwing/hua.c`  (miss=15→0，PASS)
 - [ ] ❌ `tangmen_throwing/qian.ex` ← `tangmen-throwing/qian.c`  (miss=19)
 - [ ] ❌ `tangmen_throwing/san.ex` ← `tangmen-throwing/san.c`  (miss=17)
 

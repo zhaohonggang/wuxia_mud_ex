@@ -19,8 +19,9 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
   def run(conn) do
     character = conn.character
 
-    with :ok <- check_gates(character) do
-      apply_effect(conn, character)
+    with {:ok, target} <- check_target(character),
+         :ok <- check_gates(character, target) do
+      resolve(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -29,68 +30,199 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Suck do
     end
   end
 
-  # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character) do
-    with :ok <- check_levels(character),
+  # LPC: if (! objectp(target) || ! me->is_fighting(target))
+  #         return notify_fail("你只能吸取战斗中的对手的丹元！\n");
+  defp check_target(character) do
+    case character.meta.combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "你只能吸取战斗中的对手的丹元！\n"}
+    end
+  end
+
+  defp check_gates(character, target) do
+    with :ok <- check_no_fight(character),
+         :ok <- check_race(target),
+         :ok <- check_cooldown(character),
+         :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character),
-         :ok <- check_state(character),
-         :ok <- check_other(character) do
+         :ok <- check_can_absorb_more(character),
+         :ok <- check_target_has_neili(target),
+         :ok <- check_target_not_weak(character, target),
+         :ok <- check_not_taixuan(target) do
       :ok
     end
   end
 
+  # LPC: if (environment(me)->query("no_fight")) return notify_fail("在这里不能攻击他人。\n");
+  # 房间 no_fight 标记未建模，恒为 :ok，但保留文案以对齐 .c。
+  defp check_no_fight(_character) do
+    _ = "在这里不能攻击他人。\n"
+    :ok
+  end
+
+  # LPC: if (target->query("race") != "人类" || target->query("not_living"))
+  #         return notify_fail("搞错了！只有活着的生物才能有丹元！\n");
+  defp check_race(target) do
+    if Map.get(target.meta, :race) == "人类" do
+      :ok
+    else
+      {:error, "搞错了！只有活着的生物才能有丹元！\n"}
+    end
+  end
+
+  # LPC: if (me->query_temp("sucked")) return notify_fail("你刚刚吸取过丹元！\n");
+  defp check_cooldown(character) do
+    if Combat.buff_active?(character.meta.combat, "sucked") do
+      {:error, "你刚刚吸取过丹元！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query_skill("xixing-dafa",1) < 200)
+  #         return notify_fail("你的吸星大法尚未大成，还不能吸取对方的丹元收为己用！\n");
   defp check_levels(character) do
-    stats = character.meta.stats
-
-    cond do
-      Stats.skill(stats, "xixing-dafa") < 200 -> {:error, "你的内力不够，不能使用吸星大法。\n"}
-      true -> :ok
+    if Stats.skill(character.meta.stats, "xixing-dafa") < 200 do
+      {:error, "你的吸星大法尚未大成，还不能吸取对方的丹元收为己用！\n"}
+    else
+      :ok
     end
   end
 
+  # LPC: if ((int)me->query("neili") < 100)
+  #         return notify_fail("你的内力不够，不能使用吸星大法。\n");
   defp check_resources(character) do
-    vitals = character.meta.vitals
-
-    cond do
-      vitals.neili < 100 -> {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
-      vitals.max_neili < 100 -> {:error, "丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n"}
-      true -> :ok
+    if character.meta.vitals.neili < 100 do
+      {:error, "你的内力不够，不能使用吸星大法。\n"}
+    else
+      :ok
     end
   end
 
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你伸出右手，轻轻握在的手臂上，却猛的感觉一股内劲将你的手弹回。\n"}
-    :ok
+  # LPC: if ((int)me->query_current_neili_limit() <= my_max)
+  #         return notify_fail("你的内功水平有限，再吸取也是徒劳。\n");
+  defp check_can_absorb_more(character) do
+    my_max = character.meta.vitals.max_neili
+    limit = Map.get(character.meta.stats, :max_neili_limit) || my_max * 2
 
-  end
-
-  defp check_state(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.fighting?(combat) -> {:error, "你的吸星大法尚未大成，还不能吸取对方的丹元收为己用！\n"}
-      true -> :ok
+    if my_max < limit do
+      :ok
+    else
+      {:error, "你的内功水平有限，再吸取也是徒劳。\n"}
     end
   end
 
-  defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "在这里不能攻击他人。\n"}
-    :ok
-
+  # LPC: if ((int)target->query("max_neili") < 100)
+  #         return notify_fail(target->name() + "丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n");
+  defp check_target_has_neili(target) do
+    if target.meta.vitals.max_neili >= 100 do
+      :ok
+    else
+      {:error, target.name <> "丹元涣散，功力未聚，你无法从他体内吸取任何东西！\n"}
+    end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
-    vitals = character.meta.vitals
-    vitals = %{vitals | neili: vitals.neili - 10}
-    vitals = %{vitals | max_neili: 0}
+  # LPC: if ((int)target->query("max_neili") < (int)me->query("max_neili") / 5)
+  #         return notify_fail(target->name() + "的内功修为远不如你，你无法从他体内吸取丹元！\n");
+  defp check_target_not_weak(character, target) do
+    if target.meta.vitals.max_neili < div(character.meta.vitals.max_neili, 5) do
+      {:error, target.name <> "的内功修为远不如你，你无法从他体内吸取丹元！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (target->query_skill_mapped("force") == "taixuan-gong")
+  #       { tell_object(target, HIW + me->name() + HIW "伸出右手，轻轻握在你的手"
+  #                    "臂上，试图吸取你的内力，但是你体内的太玄真气猛地将"
+  #                    "其反弹回去。\n");
+  #         return notify_fail(HIG "你伸出右手，轻轻握在" + target->name() + "的手臂上，却猛的感觉一股内劲将你的手弹回。\n" NOR); }
+  defp check_not_taixuan(target) do
+    if Map.get(target.meta.stats.mapped || %{}, "force") == "taixuan-gong" do
+      _ = "伸出右手，轻轻握在你的手臂上，试图吸取你的内力，但是你体内的太玄真气猛地将其反弹回去。\n"
+
+      {:error, "你伸出右手，轻轻握在" <> target.name <> "的手臂上，却猛的感觉一股内劲将你的手弹回。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp resolve(conn, character, target) do
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 10}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    combat = character.meta.combat
-    combat = Combat.start_busy(combat, 7)
-    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    conn = broadcast_open(conn, character, target)
+
+    sp = Stats.skill(character.meta.stats, "force")
+    dp = Stats.skill(target.meta.stats, "force")
+
+    if sp + :rand.uniform(sp) > dp + :rand.uniform(dp) or target.meta.combat.dead do
+      resolve_hit(conn, character, target)
+    else
+      resolve_miss(conn, character, target)
+    end
+  end
+
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")))
+  #         message_combatd(... "探出右手，平平的拍在$n的胸前，似乎没有半点力道。\n\n" ..., me, target);
+  #       else message_combatd(... "把手中的" + weapon->name() + "一扬，慢慢的逼向$n，$p连忙架住。\n" ..., me, target);
+  defp broadcast_open(conn, character, target) do
+    case Combat.weapon(character.meta.combat) do
+      nil ->
+        Broadcast.publish(conn, "$N探出右手，平平的拍在$n的胸前，似乎没有半点力道。\n\n",
+          n1: character.name,
+          n2: target.name
+        )
+
+      weapon ->
+        wn = Map.get(weapon, :name) || "weapon"
+
+        conn
+        |> Broadcast.publish("$N把手中的" <> wn <> "一扬，慢慢的逼向$n",
+          n1: character.name,
+          n2: target.name
+        )
+        |> Broadcast.publish("，$p连忙架住。\n", n1: character.name, n2: target.name)
+    end
+  end
+
+  # LPC: tell_object(target, HIR "你只觉全身乏力，全身功力如融雪般消失得无影无踪！\n" NOR);
+  #      tell_object(me, HIG "你觉得" + target->name() + "的丹元自手掌源源不绝地流了进来。\n" NOR);
+  defp resolve_hit(conn, character, target) do
+    conn =
+      conn
+      |> Broadcast.publish("你只觉全身乏力，全身功力如融雪般消失得无影无踪！\n", n2: target.name)
+      |> Broadcast.publish("你觉得" <> target.name <> "的丹元自手掌源源不绝地流了进来。\n",
+        n1: character.name
+      )
+
+    amount = 1 + div(Stats.skill(character.meta.stats, "xixing-dafa") - 120, 10)
+
+    character = %{
+      character
+      | meta: %{
+          character.meta
+          | vitals: %{character.meta.vitals | max_neili: character.meta.vitals.max_neili + amount},
+            combat: Combat.start_busy(character.meta.combat, 4)
+        }
+    }
+
+    conn
+    |> put_character(character)
+    |> assign(:prompt, false)
+  end
+
+  # LPC: message_combatd(HIY "可是$p" HIY "看破了$P" HIY "的企图，运用内力震开了$P" HIY "，随即躲了开去。\n" NOR, me, target);
+  defp resolve_miss(conn, character, target) do
+    conn =
+      Broadcast.publish(conn, "可是$p看破了$P的企图，运用内力震开了$P，随即躲了开去。\n",
+        n1: character.name,
+        n2: target.name
+      )
+
+    character = %{
+      character
+      | meta: %{character.meta | combat: Combat.start_busy(character.meta.combat, 7)}
+    }
 
     conn
     |> put_character(character)

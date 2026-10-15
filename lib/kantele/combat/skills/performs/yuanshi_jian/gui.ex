@@ -43,6 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
           skill: lvl,
           ap: ap,
           damage: damage,
+          weapon_name: weapon_name(combat),
           rng: rng
         }
       })
@@ -78,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yuanshi-jian") < 140 -> {:error, "你的原始剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "yuanshi-jian") < 140 -> {:error, "你的原始剑法不够娴熟，难以施展「天地归元」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +88,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展「天地归元」。\n"}
       true -> :ok
     end
   end
@@ -96,7 +97,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，难以施展「天地归元」。\n"}
       true -> :ok
     end
   end
@@ -105,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「天地归元」。\n"}
       true -> :ok
     end
   end
@@ -120,7 +121,10 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N运转内劲，手中某物顿时青光闪烁，出剑嗤然有声，朝$n电射而去！", n1: character.name)
+    conn =
+      Broadcast.publish(conn, "$N运转内劲，手中" <> weapon_name(character.meta.combat) <> "顿时青光闪烁，出剑嗤然有声，朝$n电射而去！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -131,6 +135,13 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
       [] -> {:error, "「天地归元」只能对战斗中的对手使用。\n"}
+    end
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> "剑"
+      weapon -> Map.get(weapon, :name, "剑")
     end
   end
 
@@ -162,7 +173,12 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Gui do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-    msg = if hit, do: "只见$N某物剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。", else: "可是$n猛地向前一跃，跳出了$N的攻击范围。"
+    weapon_name = Map.get(data, :weapon_name, "剑")
+
+    msg =
+      if hit,
+        do: "只见$N" <> weapon_name <> "剑芒暴长，$p霎时只觉一股热流穿心而过，呕出一口鲜血。",
+        else: "可是$n猛地向前一跃，跳出了$N的攻击范围。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

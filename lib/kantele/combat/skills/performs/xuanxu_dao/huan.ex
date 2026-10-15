@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xuanxu-dao")
     ap = Stats.skill(stats, "blade")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功的修为不够，难以施展。\n"}
-      Stats.skill(stats, "xuanxu-dao") < 80 -> {:error, "你的玄虚刀法修为不够，难以施展。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功的修为不够，难以施展「乱环诀」。\n"}
+      Stats.skill(stats, "xuanxu-dao") < 80 -> {:error, "你的玄虚刀法修为不够，难以施展「乱环诀」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xuanxu-dao" -> {:error, "你没有激发玄虚刀法，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "xuanxu-dao" -> {:error, "你没有激发玄虚刀法，难以施展「乱环诀」。\n"}
       true -> :ok
     end
   end
@@ -97,17 +99,15 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 250 -> {:error, "你现在真气不够，难以施展「乱环诀」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
-      true -> :ok
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "blade"} -> :ok
+      _ -> {:error, "你使用的武器不对，难以施展「乱环诀」。\n"}
     end
   end
 
@@ -157,14 +157,21 @@ defmodule Kantele.Combat.Skills.Performs.XuanxuDao.Huan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
-    msg = if hit, do: "就听见“喀喀喀”几声脆响，$p一声惨叫，全身各处骨头被刀环一一绞断，像滩软泥般塌了下去！", else: "可是$p奋力格挡，$P只觉得精力略有衰竭，手中刀光渐缓。"
+
+    msg =
+      if hit,
+        do: "就听见“喀喀喀”几声脆响，$p一声惨叫，全身各处骨头被刀环一一绞断，像滩软泥般塌了下去！",
+        else: "可是$p奋力格挡，$P只觉得精力略有衰竭，手中刀光渐缓。"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

@@ -49,7 +49,6 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Sangong do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -60,6 +59,11 @@ defmodule Kantele.Combat.Skills.Performs.XixingDafa.Sangong do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    conn =
+      conn
+      |> Broadcast.publish("你默默的按照吸星大法的诀窍将内力散入奇经八脉。\n")
+      |> Broadcast.publish(character.name <> "呼吸沉重，却又不像受伤的样子，不知道在修炼什么厉害的功夫。\n")
 
     conn
     |> put_character(character)

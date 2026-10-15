@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yecha-gun") < 120 -> {:error, "你的夜叉棍法等级不够，难以施展。\n"}
+      Stats.skill(stats, "yecha-gun") < 120 -> {:error, "你的夜叉棍法等级不够，难以施展「红霞贯日」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "club") != "yecha-gun" -> {:error, "你没有激发夜叉棍法，难以施展。\n"}
+      Stats.mapped(stats, "club") != "yecha-gun" ->
+        {:error, "你没有激发夜叉棍法，难以施展「红霞贯日」。\n"}
       true -> :ok
     end
   end
@@ -97,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.YechaGun.Hongxia do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「红霞贯日」。\n"}
       true -> :ok
     end
   end

@@ -79,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Jian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiantian-gong") < 280 -> {:error, "你的先天功修为不够，难以施展。\n"}
-      Stats.skill(stats, "yiyang-zhi") < 280 -> {:error, "你一阳指诀不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学了解不够，难以施展。\n"}
+      Stats.skill(stats, "xiantian-gong") < 280 -> {:error, "你的先天功修为不够，难以施展「先天功乾阳剑气」。\n"}
+      Stats.skill(stats, "yiyang-zhi") < 280 -> {:error, "你一阳指诀不够娴熟，难以施展「先天功乾阳剑气」。\n"}
+      Stats.skill(stats, "jingluo-xue") < 200 -> {:error, "你对经络学了解不够，难以施展「先天功乾阳剑气」。\n"}
       true -> :ok
     end
   end
@@ -91,19 +91,19 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Jian do
 
     cond do
       Stats.mapped(stats, "unarmed") != "xiantian-gong" ->
-        {:error, "你没有激发先天功为拳脚，难以施展。\n"}
+        {:error, "你没有激发先天功为拳脚，难以施展「先天功乾阳剑气」。\n"}
 
       Stats.mapped(stats, "force") != "xiantian-gong" ->
-        {:error, "你没有激发先天功为内功，难以施展。\n"}
+        {:error, "你没有激发先天功为内功，难以施展「先天功乾阳剑气」。\n"}
 
       Stats.mapped(stats, "finger") != "yiyang-zhi" ->
-        {:error, "你没有激发一阳指为指法，难以施展。\n"}
+        {:error, "你没有激发一阳指为指法，难以施展「先天功乾阳剑气」。\n"}
 
       Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "xiantian-gong" ->
-        {:error, "你没有准备先天功或一阳指，难以施展。\n"}
+        {:error, "你没有准备先天功或一阳指，难以施展「先天功乾阳剑气」。\n"}
 
       Stats.prepared_perform(stats, "finger") == nil or String.split(Stats.prepared_perform(stats, "finger"), "/") |> hd() != "yiyang-zhi" ->
-        {:error, "你现在的真气不足，难以施展。\n"}
+        {:error, "你现在的真气不足，难以施展「先天功乾阳剑气」。\n"}
 
       true ->
         :ok
@@ -114,7 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Jian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展。\n"}
+      vitals.max_neili < 5000 -> {:error, "你的内力修为不足，难以施展「先天功乾阳剑气」。\n"}
       vitals.neili < 1000 -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
       true -> :ok
     end
@@ -124,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Jian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "只能空手施展。\n"}
+      Combat.weapon(combat) != nil -> {:error, "「先天功乾阳剑气」只能空手施展。\n"}
       true -> :ok
     end
   end
@@ -135,6 +135,9 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Jian do
     vitals = %{vitals | neili: vitals.neili - 600}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     conn = Broadcast.publish(conn, "霎时只见$N逆运先天真气，化为纯阳内劲聚于指尖，以一阳指诀手法疾点$n全身诸多要穴。", n1: character.name)
+
+    conn =
+      Broadcast.publish(conn, "紧接着$N十指纷飞，接连弹出数道无形剑气，$n四面八方皆被剑气所笼罩。", n1: character.name)
 
     conn
     |> put_character(character)

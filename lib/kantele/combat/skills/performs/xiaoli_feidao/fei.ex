@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -88,10 +90,13 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你现在手中并没有拿着飞刀。\n"}
-    :ok
+    weapon = Combat.weapon(character.meta.combat)
 
+    cond do
+      weapon == nil -> {:error, "你现在手中并没有拿着飞刀。\n"}
+      Map.get(weapon, :skill_type) != "throwing" -> {:error, "你现在手中并没有拿着飞刀。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -99,9 +104,11 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！
 
-一股鲜血从$n咽喉中喷出……", n1: character.name)
+    conn =
+      conn
+      |> Broadcast.publish("忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！\n\n", n1: character.name)
+      |> Broadcast.publish("一股鲜血从$n咽喉中喷出……\n", n1: character.name)
 
     conn
     |> put_character(character)
@@ -128,12 +135,13 @@ defmodule Kantele.Combat.Skills.Performs.XiaoliFeidao.Fei do
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 1)
-    msg = "忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！
 
-一股鲜血从$n咽喉中喷出……"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish("忽然间只见$N手中寒光一闪，正是小李飞刀，例无虚发！\n\n",
+      n1: attacker.name,
+      n2: character.name
+    )
+    |> Broadcast.publish("一股鲜血从$n咽喉中喷出……\n", n1: attacker.name, n2: character.name)
     |> put_character(character)
   end
 

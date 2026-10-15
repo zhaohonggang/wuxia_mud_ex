@@ -111,10 +111,11 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你已经运起「一苇渡江」了。\n"}
-    :ok
-
+    if get_in(character.meta, [:temp, "dujiang"]) do
+      {:error, "你已经运起「一苇渡江」了。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -127,10 +128,22 @@ defmodule Kantele.Combat.Skills.Performs.YiweiDujiang.Dujiang do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     conn = Broadcast.publish(conn, "$N运起少林高深内功，施展「一苇渡江」绝技,身形一展，整个人顿时凌空飘起，身体变得越来越轻。", n1: character.name)
 
+    Process.send_after(
+      self(),
+      %Event{
+        from_pid: self(),
+        topic: "combat/buff-expire",
+        data: %{key: "dujiang", applies: %{}, message: expire_message()}
+      },
+      div(Stats.skill(character.meta.stats, "yiwei-dujiang"), 2) * 1000
+    )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  defp expire_message, do: "你的「一苇渡江」运功完毕，将内力收回丹田。\n"
 
   defp target(combat) do
     case combat.enemies do

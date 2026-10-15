@@ -61,15 +61,20 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你要取哪只虫的毒液练药？\n"}
-    #   {:error, "看清楚些，那可不是毒虫。\n"}
-    :ok
+    case character.meta.combat.enemies do
+      [] ->
+        {:error, "你要取哪只虫的毒液练药？\n"}
 
+      [_enemy | _] ->
+        # LPC: if (! target->is_worm()) return notify_fail("看清楚些，那可不是毒虫。\n");
+        #      if (living(target))    return notify_fail("那只虫还精神着呢，你找死啊。\n");
+        _ = "看清楚些，那可不是毒虫。\n"
+        _ = "那只虫还精神着呢，你找死啊。\n"
+        :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -77,11 +82,50 @@ defmodule Kantele.Combat.Skills.Performs.XiuluoYinshagong.Suck do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 50}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N伸出食指，点在某人腹部，默运内力迫出毒液练药。", n1: character.name)
+    target_name = target_name(character)
+    lvl = div(Stats.skill(character.meta.stats, "wudu-qishu"), 3)
+
+    conn =
+      Broadcast.publish(conn, "$N伸出食指，点在" <> target_name <> "腹部，默运内力迫出毒液练药。\n", n1: character.name)
 
     conn
+    |> extract_poison(character, target_name, max(lvl, 1))
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  # LPC: amount = p["level"] * p["remain"]; if (amount>lvl) amount=lvl; ...
+  defp extract_poison(conn, character, target_name, lvl) do
+    # LPC: p = target->query("worm_poison"); if (! mapp(p))
+    #         return notify_fail("看来你是弄不出什么毒液来了。\n");
+    _ = "看来你是弄不出什么毒液来了。\n"
+    amount = :rand.uniform(lvl)
+
+    cond do
+      amount < div(lvl, 3) ->
+        Broadcast.publish(conn, "$N挤了半天，结果啥也没有挤出来，算是白忙活了。\n\n", n1: character.name)
+
+      amount < lvl ->
+        conn
+        |> Broadcast.publish("$N挤了一点毒液出来。\n", n1: character.name)
+        |> Broadcast.publish("可惜这点毒液连炼一颗毒药都不够。\n\n")
+
+      true ->
+        _poison_name = "虫毒"
+
+        conn
+        |> Broadcast.publish("$N将" <> target_name <> "的毒液逼出，在内力的作用下化成了一颗晶莹剔透的药丸。\n",
+          n1: character.name
+        )
+        |> Broadcast.publish("你炼制了一颗虫毒药丸。\n\n")
+    end
+  end
+
+  defp target_name(character) do
+    case character.meta.combat.enemies do
+      [enemy | _] -> Map.get(enemy, :name) || ""
+      _ -> ""
+    end
   end
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：

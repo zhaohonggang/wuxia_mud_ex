@@ -40,7 +40,9 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,7 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wushen-jian") < 200 -> {:error, "你的衡山五神剑不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "wushen-jian") < 200 -> {:error, "你的衡山五神剑不够娴熟，难以施展「千剑纵横势」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "wushen-jian" -> {:error, "你没有激发衡山五神剑，难以施展「千剑纵横势」。\n"}
       true -> :ok
     end
   end
@@ -97,7 +99,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，难以施展「千剑纵横势」。\n"}
       true -> :ok
     end
   end
@@ -106,12 +108,20 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「千剑纵横势」。\n"}
       true -> :ok
     end
   end
 
   defp apply_effect(conn, character) do
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+
+    conn =
+      Broadcast.publish(conn, "$N运转衡山五神剑，手中" <> weapon_name <> "迸出无数剑光，宛若飞虹擎天，席卷$n而去。",
+        n1: character.name
+      )
+
     conn
     |> put_character(character)
     |> assign(:prompt, false)
@@ -138,14 +148,23 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge")
+    hit = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。"
+
+    msg =
+      if hit do
+        "结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。"
+      else
+        "$n见$N这几剑招式凌厉，凶猛异常，只得苦苦招架。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

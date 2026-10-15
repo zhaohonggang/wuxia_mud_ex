@@ -77,7 +77,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yuxiao-jian") < 150 -> {:error, "你玉箫剑法等级不够，难以施展。\n"}
+      Stats.skill(stats, "yuxiao-jian") < 150 -> {:error, "你玉箫剑法等级不够，难以施展「天地情长」。\n"}
       true -> :ok
     end
   end
@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展「天地情长」。\n"}
       true -> :ok
     end
   end
@@ -95,8 +95,8 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "看样子对方真气并不充沛，无需运用。\n"}
-      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "看样子对方真气并不充沛，无需运用「天地情长」。\n"}
+      vitals.neili < 1000 -> {:error, "你现在的真气不足，难以施展「天地情长」。\n"}
       true -> :ok
     end
   end
@@ -105,7 +105,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展「天地情长」。\n"}
       true -> :ok
     end
   end
@@ -120,7 +120,17 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N手中的某物倏的刺出，卷起一阵阵气旋，不住的往里收缩。", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: Map.get(weapon, :name, ""), else: ""
+
+    # LPC: msg = HIG "$N" HIG "手中的" + weapon->name() + HIG "倏的刺出，卷起一阵"
+    #            "阵气旋，不住的往里收缩。\n" NOR;
+    conn =
+      Broadcast.publish(
+        conn,
+        "手中的" <> weapon_name <> "倏的刺出，卷起一阵阵气旋，不住的往里收缩。\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -148,14 +158,25 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Qing do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    # LPC: dp = target->query_skill("force") * 2; if (ap > dp && ap / 2 + random(ap) > dp)
+    dp = Stats.skill(stats, "force") * 2
+    hit = ap > dp and div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 2)
-    msg = "$n被$N击中！"
+
+    # LPC: HIM "$p" HIM "顿觉$P" HIM "的内力隐藏在一个个气旋中，难" "以捉摸去处，只能强运内力抵消。\n" NOR
+    # else HIC "可是$p" HIC "心神安定，丝毫没有受到困惑。\n"NOR
+    msg =
+      if hit do
+        "$p顿觉$P的内力隐藏在一个个气旋中，难以捉摸去处，只能强运内力抵消。\n"
+      else
+        "可是$p心神安定，丝毫没有受到困惑。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

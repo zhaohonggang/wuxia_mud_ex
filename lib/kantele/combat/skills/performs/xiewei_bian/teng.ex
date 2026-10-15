@@ -29,8 +29,8 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xiewei-bian")
-    ap = (Stats.skill(stats, "whip") + Stats.skill(stats, "force"))
-    damage = (div(ap, 5) + Engine.rand(rng, div(ap, 4)))
+    ap = Stats.skill(stats, "whip") + Stats.skill(stats, "force")
+    damage = div(ap, 5) + Engine.rand(rng, div(ap, 4))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiewei-bian") < 100 -> {:error, "你使用的武器不对，无法施展。\n"}
+      Stats.skill(stats, "xiewei-bian") < 100 -> {:error, "你使用的武器不对，无法施展「腾蛇诀」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "xiewei-bian" -> {:error, "你没有激发蝎尾鞭，无法施展。\n"}
+      Stats.mapped(stats, "whip") != "xiewei-bian" -> {:error, "你没有激发蝎尾鞭，无法施展「腾蛇诀」。\n"}
       true -> :ok
     end
   end
@@ -96,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，无法施展「腾蛇诀」。\n"}
       true -> :ok
     end
   end
@@ -120,7 +122,15 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然施展出「腾蛇」诀，手腕轻轻一抖，某物顿时拔地弹起，如同活物一般悄然袭向$n！", n1: character.name)
+    wn = weapon_name(combat)
+    tail = "！"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N陡然施展出「腾蛇」诀，手腕轻轻一抖，" <> wn <> "顿时拔地弹起，如同活物一般悄然袭向$n" <> tail,
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -136,6 +146,13 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
   end
 
   @impl true
@@ -156,14 +173,24 @@ defmodule Kantele.Combat.Skills.Performs.XieweiBian.Teng do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    msg = if hit, do: "然而$n未能看破企图，一声惨嚎，某物鞭端已没入体内半寸，登时连退数步！", else: "可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！"
+    wn = Map.get(data, :weapon_name) || ""
+
+    msg =
+      if hit do
+        "然而未能看破企图，一声惨嚎，" <> wn <> "鞭端已没入体内半寸，登时连退数步！"
+      else
+        "可是$p运足内力，奋力挡住了$P这神鬼莫测的一击！"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

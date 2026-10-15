@@ -64,7 +64,17 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_temp_state(character) do
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query_temp("hsj_wu"))
+  defp check_temp_state(character) do
+    if Map.get(character.meta, :hsj_wu) do
+      {:error, "你已经在运功中了。\n"}
+    else
       :ok
     end
   end
@@ -106,7 +116,17 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N双手握起某物，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n冲刺！", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: Map.get(weapon, :name, ""), else: ""
+
+    # LPC: msg = HIY "$N" HIY "双手握起" + weapon->name() + HIY
+    #            "，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n" HIY "冲刺！\n"NOR;
+    conn =
+      Broadcast.publish(
+        conn,
+        "双手握起" <> weapon_name <> "，剑芒暴长，一式「无双无对」，驭剑猛烈绝伦地往$n冲刺！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -148,7 +168,7 @@ defmodule Kantele.Combat.Skills.Performs.YunuSword.Wushuang do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 250, 3)
-    msg = if hit, do: "$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！", else: "$n躲过了$N的攻击！"
+    msg = if hit, do: "$n看到$N这一剑妙到毫巅，全然无法抵挡，一愣神之间已经被这一剑刺得鲜血飞溅！", else: "可是$p看破了$P的企图，向旁一跃，躲了开去。\n"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

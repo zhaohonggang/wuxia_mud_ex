@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -76,7 +78,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "xiaoyaoyou") < 100 -> {:error, "你的逍遥游拳法不够熟练，难以施展。\n"}
+      Stats.skill(stats, "xiaoyaoyou") < 100 -> {:error, "你的逍遥游拳法不够熟练，难以施展「仙游诀」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +87,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "dodge") != "xiaoyaoyou" -> {:error, "你没有激发逍遥游为轻功，难以施展。\n"}
+      Stats.mapped(stats, "dodge") != "xiaoyaoyou" -> {:error, "你没有激发逍遥游为轻功，难以施展「仙游诀」。\n"}
       true -> :ok
     end
   end
@@ -94,7 +96,7 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 100 -> {:error, "你现在的真气不足，难以施展。\n"}
+      vitals.neili < 100 -> {:error, "你现在的真气不足，难以施展「仙游诀」。\n"}
       true -> :ok
     end
   end
@@ -102,7 +104,6 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp apply_effect(conn, character) do
@@ -138,8 +139,10 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     cond do
       character.meta.combat.dead ->
         Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+
       character.meta.combat.busy > 0 ->
         Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。", n1: attacker.name, n2: character.name)
+
       true ->
         do_resolve_incoming(conn, character, attacker, data)
     end
@@ -149,12 +152,23 @@ defmodule Kantele.Combat.Skills.Performs.Xiaoyaoyou.Xian do
     _stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    dp = Stats.skill(stats, "parry")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
     _stats = character.meta.stats
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 80, 2)
-    msg = "$n只见无数人影奔来，不由大惊失色，攻势顿为缓滞。"
+
+    msg =
+      if hit? do
+        "$n只见无数人影奔来，不由大惊失色，攻势顿为缓滞。"
+      else
+        "可是$n看破了$P的身法，并没有受到任何影响。"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

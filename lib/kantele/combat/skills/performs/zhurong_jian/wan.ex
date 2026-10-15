@@ -29,9 +29,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     ap = Stats.skill(stats, "sword")
-    damage = (div(ap, 2) + Engine.rand(rng, ap))
+    damage = div(ap, 2) + Engine.rand(rng, ap)
     lvl = Stats.skill(stats, "zhurong-jian")
-    n = (1 + Engine.rand(rng, div(lvl, 20)))
+    n = 1 + Engine.rand(rng, div(lvl, 20))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,8 +81,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhurong-jian") < 160 -> {:error, "你祝融剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "zhurong-jian") < 160 -> {:error, "你祝融剑法不够娴熟，难以施展「万剑焚云」。\n"}
+      Stats.skill(stats, "force") < 220 -> {:error, "你的内功火候不够，难以施展「万剑焚云」。\n"}
       true -> :ok
     end
   end
@@ -89,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhurong-jian" -> {:error, "你没有激发祝融剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "zhurong-jian" -> {:error, "你没有激发祝融剑法，难以施展「万剑焚云」。\n"}
       true -> :ok
     end
   end
@@ -98,7 +100,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的真气不够，难以施展「万剑焚云」。\n"}
       true -> :ok
     end
   end
@@ -107,7 +109,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展「万剑焚云」。\n"}
       true -> :ok
     end
   end
@@ -122,7 +124,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     combat = Combat.start_busy(combat, 3)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中某物化做千万柄利刃，笼罩$n周身。", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: weapon.name, else: "剑"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "\n$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中" <>
+          weapon_name <> "化做千万柄利刃，笼罩$n周身。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -158,14 +169,26 @@ defmodule Kantele.Combat.Skills.Performs.ZhurongJian.Wan do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 4)
-    msg = if hit, do: "$N剑招突变，将真气注入剑身，剑体顿时变得通红，一式「万剑焚云」使出，霎时呼啸声大作，手中某物化做千万柄利刃，笼罩$n周身。", else: "$n眼剑某物已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。"
+    weapon_name = "剑"
+    n = 1
+
+    msg =
+      if hit do
+        "只见$N这一招疾如电、猛如火，$n心中惊疑不定，电光火石间，\n已被$N划中" <>
+          Integer.to_string(n) <> "剑，剑伤处嗤嗤作响，鲜血从外衣渗出。\n"
+      else
+        "$n眼剑" <> weapon_name <> "已至，强自镇定，侧身躲过，但对$N这招仍是心有余悸。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

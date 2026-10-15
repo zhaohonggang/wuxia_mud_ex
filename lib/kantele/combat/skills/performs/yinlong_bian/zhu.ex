@@ -60,7 +60,7 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     if Stats.perform_known?(character.meta.stats, @perform_id) do
       :ok
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      {:error, "你使用的外功中没有这种功能。\n"}
     end
   end
 
@@ -79,8 +79,10 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 130 -> {:error, "你的内功火候不够，使不了。\n"}
-      Stats.skill(stats, "yinlong-bian") < 100 -> {:error, "你的银龙鞭法功力太浅，使不了。\n"}
+      Stats.skill(stats, "force") < 130 -> {:error, "你的内功火候不够，使不了「天诛龙蛟诀」。\n"}
+
+      Stats.skill(stats, "yinlong-bian") < 100 ->
+        {:error, "你的银龙鞭法功力太浅，使不了「天诛龙蛟诀」。\n"}
       true -> :ok
     end
   end
@@ -89,7 +91,8 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "whip") != "yinlong-bian" -> {:error, "你没有激发银龙鞭法，使不了。\n"}
+      Stats.mapped(stats, "whip") != "yinlong-bian" ->
+        {:error, "你没有激发银龙鞭法，使不了「天诛龙蛟诀」。\n"}
       true -> :ok
     end
   end
@@ -98,7 +101,7 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你的真气不够，无法使用。\n"}
+      vitals.neili < 300 -> {:error, "你的真气不够，无法使用「天诛龙蛟诀」。\n"}
       true -> :ok
     end
   end
@@ -129,7 +132,14 @@ defmodule Kantele.Combat.Skills.Performs.YinlongBian.Zhu do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N诡异的一笑，手中某物犹如一条银龙猛然飞向$n，正是九阴真经中的绝招「天诛龙蛟诀」！", n1: character.name)
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+
+    msg =
+      "$N诡异的一笑，手中" <>
+        weapon_name <> "犹如一条银龙猛然飞向$n，正是九阴真经中的绝招「天诛龙蛟诀」！"
+
+    conn = Broadcast.publish(conn, msg, n1: character.name)
 
     conn
     |> put_character(character)

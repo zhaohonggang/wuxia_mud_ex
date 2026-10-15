@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "zhuihun-jian")
     ap = Stats.skill(stats, "sword")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,7 +80,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhuihun-jian") < 100 -> {:error, "你的追魂夺命剑还不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "zhuihun-jian") < 100 -> {:error, "你的追魂夺命剑还不够娴熟，难以施展「追魂夺命」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +89,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhuihun-jian" -> {:error, "你没有激发追魂夺命剑，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "zhuihun-jian" -> {:error, "你没有激发追魂夺命剑，难以施展「追魂夺命」。\n"}
       true -> :ok
     end
   end
@@ -96,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展「追魂夺命」。\n"}
       true -> :ok
     end
   end
@@ -105,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展「追魂夺命」。\n"}
       true -> :ok
     end
   end
@@ -118,7 +120,15 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，手中某物一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: weapon.name, else: "剑"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N一声冷哼，手中" <> weapon_name <> "一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！\n",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -134,6 +144,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  # LPC: string final(object me, object target, int damage)
+  defp final(_me, _target, _damage) do
+    "只听$n一声惨叫，被这一剑穿胸而入，顿时鲜血四处飞溅。\n"
   end
 
   @impl true
@@ -154,14 +169,16 @@ defmodule Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
     msg = if hit, do: "$N一声冷哼，手中某物一式「追魂夺命」，剑身顿时漾起一道血光，直射$n！", else: "可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

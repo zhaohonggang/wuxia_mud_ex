@@ -124,17 +124,13 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     end
   end
 
-defp apply_effect(conn, character) do
+  defp apply_effect(conn, character) do
     # LPC: me->add("neili", -400/-50/-80)
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 400}
     vitals = %{vitals | neili: vitals.neili - 50}
     vitals = %{vitals | neili: vitals.neili - 80}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-
-    # LPC splits at DIE macro: "突然" + "阳关三叠" + "点出..."
-    conn = Broadcast.publish(conn, "突然", n1: character.name)
-    conn = Broadcast.publish(conn, "阳关三叠", n1: character.name)
 
     conn
     |> put_character(character)
@@ -165,89 +161,95 @@ defp apply_effect(conn, character) do
     stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
+    bindings = [n1: attacker.name, n2: character.name]
 
-    # LPC: target weapon check for first stage
     weapon = Combat.weapon(character.meta.combat)
     weapon_name = if weapon, do: Map.get(weapon, :name, "兵器"), else: nil
 
-    dp = Stats.skill(stats, "parry")
-    hit1? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+    conn = Broadcast.publish(conn, "突然间", bindings)
 
-    # Stage 1: weapon check
-    conn1 =
+    {conn, dp} =
       if weapon do
-        # LPC splits: "单指一扬，径点持着" + weapon_name + "的手腕上「腕骨」、「阳谷」、「养老」三穴。"
-        msg1 = "单指一扬，径点持着" <> (weapon_name || "兵器") <> "的手腕上「腕骨」、「阳谷」、「养老」三穴。\n"
-        Broadcast.publish(conn, msg1, n1: attacker.name, n2: character.name)
+        conn =
+          Broadcast.publish(
+            conn,
+            "单指一扬，径点持着" <> (weapon_name || "兵器") <> "的手腕上「腕骨」、「阳谷」、「养老」三穴。\n",
+            bindings
+          )
+
+        if div(ap, 3) + Engine.rand(rng, max(ap, 1)) > Stats.skill(stats, "force") do
+          conn =
+            Broadcast.publish(
+              conn,
+              "霎时间$n只觉得手腕一麻，手中" <> (weapon_name || "兵器") <> "再也拿持不住，脱手掉在地上。\n紧接着",
+              bindings
+            )
+
+          {conn, Stats.skill(stats, "force")}
+        else
+          conn =
+            Broadcast.publish(
+              conn,
+              "可是$n将手中" <> (weapon_name || "兵器") <> "转动如轮，终于化解了这一招。\n紧接着",
+              bindings
+            )
+
+          {conn, Stats.skill(stats, "force")}
+        end
+      else
+        {conn, Stats.skill(stats, "parry")}
+      end
+
+    conn = Broadcast.publish(conn, "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！\n", bindings)
+    xue1 = Enum.random(@xue_name)
+
+    {conn, hit1?, vitals} =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+        msg = "结果$n被$N一指点中" <> xue1 <> "，全身真气逆流而上，登时呕出一大口鲜血。\n"
+        {Broadcast.publish(conn, Messages.interpolate(msg, bindings)), true, Vitals.damage(character.meta.vitals, :qi, damage)}
+      else
+        {Broadcast.publish(conn, "可是$p镇定自如，全力化解了$P这精妙的一指。\n", bindings), false, character.meta.vitals}
+      end
+
+    conn = Broadcast.publish(conn, "接着踏前一步，体内真气迸发，隔空一指劲点而去，指气纵横，嗤然作响！\n", bindings)
+    xue2 = Enum.random(@xue_name)
+
+    {conn, hit2?, vitals} =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > Stats.skill(stats, "dodge") do
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+        msg = "结果$n被$N一指点中" <> xue2 <> "，全身真气逆流而上，登时呕出一大口鲜血。\n"
+        {Broadcast.publish(conn, Messages.interpolate(msg, bindings)), true, Vitals.damage(vitals, :qi, damage)}
+      else
+        {Broadcast.publish(conn, "可是$p镇定自如，全力化解了$P这精妙的一指。\n", bindings), false, vitals}
+      end
+
+    conn = Broadcast.publish(conn, "最后一声猛喝，单指“嗤”的一声点出，纯阳指力同时笼罩全身诸多要穴！\n", bindings)
+    xue3 = Enum.random(@xue_name)
+
+    {conn, hit3?, vitals} =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > Stats.skill(stats, "force") do
+        damage = ap + Engine.rand(rng, max(div(ap, 2), 1))
+        msg = "结果$n被$N一指点中" <> xue3 <> "，全身真气逆流而上，登时呕出一大口鲜血。\n"
+        {Broadcast.publish(conn, Messages.interpolate(msg, bindings)), true, Vitals.damage(vitals, :qi, damage)}
+      else
+        {Broadcast.publish(conn, "可是$p镇定自如，全力化解了$P这精妙的一指。\n", bindings), false, vitals}
+      end
+
+    conn =
+      if Enum.count([hit1?, hit2?, hit3?], & &1) == 3 do
+        Broadcast.publish(conn, "被三指连中，全身真气涣散，宛如黄河决堤，内力登时狂泻而出。\n", bindings)
       else
         conn
       end
 
-    # Stage 2: "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！"
-    conn2 = Broadcast.publish(conn1, "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！\n", n1: attacker.name, n2: character.name)
+    conn = Broadcast.publish(conn, "你只觉丹田内竟似空空如也，一时说不出的难受。\n", bindings)
 
-    # Stage 1 resolution: weapon hit/miss
-    dp1 = Stats.skill(stats, "force")
-    hit_weapon? = div(ap, 3) + Engine.rand(rng, max(ap, 1)) > dp1
+    Performs.feedback(attacker, 400, 3)
 
-    conn3 =
-      if hit_weapon? do
-        msg = "霎时间$n只觉得手腕一麻，手中" <> (weapon_name || "兵器") <> "再也拿持不住，脱手掉在地上。\n紧接着"
-        Broadcast.publish(conn2, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      else
-        msg = "可是$n将手中" <> (weapon_name || "兵器") <> "转动如轮，终于化解了这一招。\n紧接着"
-        Broadcast.publish(conn2, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      end
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
-    # Stage 2: main strike
-    # "凝气于指，一式「阳关三叠」点出，顿时一股纯阳的内力直袭胸口！" already broadcast
-    dp2 = Stats.skill(stats, "parry")
-    hit2? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp2
-
-    # Pick a random xue_name for hit
-    xue = Enum.random(@xue_name)
-
-    # Stage 2 resolution
-    conn3 =
-      if hit2? do
-        msg = "结果$n被$N一指点中" <> xue <> "，全身真气逆流而上，登时呕出一大口鲜血。"
-        Broadcast.publish(conn3, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      else
-        msg = "可是$p镇定自如，全力化解了$P这精妙的一指。"
-        Broadcast.publish(conn3, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      end
-
-    # Stage 3: "接着踏前一步，体内真气迸发，隔空一指劲点而去，指气纵横，嗤然作响！"
-    conn4 = Broadcast.publish(conn3, "接着踏前一步，体内真气迸发，隔空一指劲点而去，指气纵横，嗤然作响！\n", n1: attacker.name, n2: character.name)
-
-    # Stage 3: final strike
-    dp3 = Stats.skill(stats, "force")
-    hit3? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > (Stats.skill(stats, "force") + Stats.skill(stats, "dodge")) # approx
-
-    # "最后一声猛喝，单指"嗤"一声点出，纯阳指力同时笼罩全身诸多要穴！"
-    conn5 = Broadcast.publish(conn4, "最后一声猛喝，单指\"嗤\"一声点出，纯阳指力同时笼罩全身诸多要穴！\n", n1: attacker.name, n2: character.name)
-
-    # Stage 3 resolution
-    xue3 = Enum.random(@xue_name)
-
-    conn6 =
-      if hit3? do
-        msg = "结果$n被$N一指点中" <> xue3 <> "，全身真气逆流而上，登时呕出一大口鲜血。"
-        Broadcast.publish(conn5, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      else
-        msg = "可是$p镇定自如，全力化解了$P这精妙的一指。"
-        Broadcast.publish(conn5, Messages.interpolate(msg, n1: attacker.name, n2: character.name), n1: attacker.name, n2: character.name)
-      end
-
-    # "被三指连中，全身真气涣散，宛如黄河决堤，内力登时狂泻而出。"
-    conn7 = Broadcast.publish(conn6, "被三指连中，全身真气涣散，宛如黄河决堤，内力登时狂泻而出。\n", n1: attacker.name, n2: character.name)
-
-    # "你只觉丹田内竟似空空如也，一时说不出的难受。"
-    conn8 = Broadcast.publish(conn7, "你只觉丹田内竟似空空如也，一时说不出的难受。\n", n1: attacker.name, n2: character.name)
-
-    Performs.feedback(attacker, 80, 1)
-
-    conn8
+    conn
     |> put_character(character)
   end
 

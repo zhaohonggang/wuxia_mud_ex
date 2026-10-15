@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "weituo-gun")
     ap = 0
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -134,7 +136,9 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn =
-      Broadcast.publish(conn, "$N脸色柔和，尽显一派慈祥之意，手中的" <> weapon_name <> "轻旋，恍惚中显出佛家韦陀神像，\n神光四射，笼罩住$n！",
+      Broadcast.publish(
+        conn,
+        "$N脸色柔和，尽显一派慈祥之意，手中的" <> weapon_name <> "轻旋，恍惚中显出佛家韦陀神像，\n神光四射，笼罩住$n",
         n1: character.name,
         n2: target.name
       )
@@ -179,14 +183,19 @@ defmodule Kantele.Combat.Skills.Performs.WeituoGun.Fumo do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 300, 3)
-    msg = if hit, do: "结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", else: "可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！"
+
+    msg =
+      if hit, do: "结果只听$p一声惨叫，被$P一下子打中要害，七窍一起生烟，耳鼻都渗出血来！", else: "可是$p强摄心神，没有被$P所迷惑，硬生生的架住了$P这一招！"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

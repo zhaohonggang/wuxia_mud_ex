@@ -13,6 +13,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kalevala.Event
+  alias Kantele.Combat.Engine
+  alias Kantele.Character.Vitals
+  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
 
   @perform_id "zhengliangyi-jian/wu"
 
@@ -20,10 +25,32 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
+    combat = character.meta.combat
+    stats = character.meta.stats
+    rng = &:rand.uniform/1
+    lvl = Stats.skill(stats, "zhengliangyi-jian")
+    ap = Stats.skill(stats, "sword")
+    dp = Stats.skill(stats, "parry")
 
     with :ok <- check_perform_known(character),
+         {:ok, target} <- target(combat),
+         :ok <- check_target(character, target),
          :ok <- check_gates(character) do
-      apply_effect(conn, character)
+      send(target.pid, %Event{
+        from_pid: self(),
+        topic: "combat/perform-incoming",
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
+          level: lvl,
+          skill: lvl,
+          ap: ap,
+          dp: dp,
+          rng: rng
+        }
+      })
+
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -40,9 +67,19 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     end
   end
 
+  # LPC: if (target == me) return notify_fail("你打算攻击自己？\n");
+  defp check_target(character, target) do
+    if target.id == character.id do
+      {:error, "你打算攻击自己？\n"}
+    else
+      :ok
+    end
+  end
+
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
   defp check_gates(character) do
-    with :ok <- check_levels(character),
+    with :ok <- check_room(character),
+         :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
          :ok <- check_weapon(character),
@@ -51,13 +88,32 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     end
   end
 
+  # LPC: no_fight / skybook 房间禁止动手（两处文案相同）。
+  defp check_room(character) do
+    room = Map.get(character, :room, %{})
+
+    cond do
+      Map.get(room, :no_fight) -> {:error, "在这里不能攻击他人。\n"}
+      Map.get(room, :skybook) -> {:error, "在这里不能攻击他人。\n"}
+      true -> :ok
+    end
+  end
+
   defp check_levels(character) do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhengliangyi-jian") < 160 -> {:error, "你的正两仪剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 220 -> {:error, "你的轻功火候不足，难以施展。\n"}
-      true -> :ok
+      Stats.skill(stats, "zhengliangyi-jian") < 160 ->
+        {:error, "你的正两仪剑法不够娴熟，难以施展「无声无色」。\n"}
+
+      Stats.skill(stats, "dodge") < 220 ->
+        {:error, "你的轻功火候不足，难以施展「无声无色」。\n"}
+
+      Stats.query_dex(stats) < 45 ->
+        {:error, "你现在身法太差，难以施展「无声无色」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -65,8 +121,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "zhengliangyi-jian" -> {:error, "你没有激发正两仪剑法，难以施展。\n"}
-      true -> :ok
+      Stats.mapped(stats, "sword") != "zhengliangyi-jian" ->
+        {:error, "你没有激发正两仪剑法，难以施展「无声无色」。\n"}
+
+      true ->
+        :ok
     end
   end
 
@@ -74,7 +133,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，难以施展「无声无色」。\n"}
       true -> :ok
     end
   end
@@ -83,21 +142,22 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展「无声无色」。\n"}
       true -> :ok
     end
   end
 
+  # LPC: die_guard / competitor / !living(target) 目标状态门槛。
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你打算攻击自己？\n"}
-    #   {:error, "只能对对手使用。\n"}
-    #   {:error, "在这里不能攻击他人。\n"}
-    :ok
-
+    cond do
+      Map.get(character.meta, :die_guard) -> {:error, "对方正被官府保护着呢，还是别去招惹。\n"}
+      Map.get(character.meta, :competitor) -> {:error, "比武的时候最好是正大光明的较量。\n"}
+      Map.get(character.meta, :dead) -> {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+      true -> :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 200}
@@ -105,12 +165,79 @@ defmodule Kantele.Combat.Skills.Performs.ZhengliangyiJian.Wu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声阴笑，突然使出一招「无声无色」，疾向$n背后刺去。", n1: character.name)
+
+    # LPC: msg = HIW "$N" HIW "一声阴笑，突然使出一招「无声无色」，疾向$n" HIW "背后刺去。\n" NOR;
+    conn =
+      Broadcast.publish(conn, "$N一声阴笑，突然使出一招「无声无色」，疾向$n背后刺去。\n",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
   end
+
+  defp target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "「无声无色」只能对对手使用。\n"}
+    end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
+
+  @impl true
+  def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    stats = character.meta.stats
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "parry")
+    hit = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+
+    vitals =
+      if hit do
+        Vitals.damage(character.meta.vitals, :qi, max(div(ap, 2), 1))
+      else
+        character.meta.vitals
+      end
+
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+    Performs.feedback(attacker, 200, 2)
+
+    # LPC else: HIC "可是$p" HIC "看破了$P" HIC "的企图，飞身" "一跃而起，将$P" HIC "这招化解于无形。\n" NOR;
+    msg =
+      if hit do
+        final_message()
+      else
+        "可是$p看破了$P的企图，飞身一跃而起，将$P这招化解于无形。\n"
+      end
+
+    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    conn
+    |> Broadcast.publish(result)
+    |> put_character(character)
+  end
+
+  # LPC final(): `weapon->name()` 两侧为独立字面量，故拆为三段。
+  defp final_message do
+    intro = "结果$n并没有察觉$N的杀意，丝毫没把这一招放在心上，只是身子略微的向前一倾。\n"
+    mid = "霎时只见$N招数一紧，顿时只听“嗤啦”一声破空之响，一声惨嚎，"
+    outro = "剑身已透背而入。\n"
+    intro <> mid <> outro
+  end
+
 
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"neili", "-200"}], "assign_refs": [{"ap", "sword"}, {"dp", "parry"}], "busy_lines": ["me->start_busy(2);"], "level_gates": [{"dodge", "220"}, {"zhengliangyi-jian", "160"}], "map_gates": [{"sword", "zhengliangyi-jian"}], "remote_damage": true, "resource_gates": [{"neili", "200"}]}

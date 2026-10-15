@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xunlei-jian")
     ap = Stats.skill(stats, "sword")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -77,8 +79,8 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展。\n"}
-      Stats.skill(stats, "xunlei-jian") < 100 -> {:error, "你的迅雷剑法修为不够，无法施展。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功的修为不够，无法施展「迅雷一击」。\n"}
+      Stats.skill(stats, "xunlei-jian") < 100 -> {:error, "你的迅雷剑法修为不够，无法施展「迅雷一击」。\n"}
       true -> :ok
     end
   end
@@ -87,16 +89,16 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 250 -> {:error, "你的真气不够，无法施展。\n"}
+      vitals.neili < 250 -> {:error, "你的真气不够，无法施展「迅雷一击」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你使用的武器无法施展。\n"}
-    :ok
-
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "sword"} -> :ok
+      _ -> {:error, "你使用的武器无法施展「迅雷一击」。\n"}
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -109,7 +111,15 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N飞身一跃而起，手中某物一抖，剑身顿时幻作一道电光，直直射向$n而去！", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    sword_name = (weapon && Map.get(weapon, :name)) || "某物"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N飞身一跃而起，手中" <> sword_name <> "一抖，剑身顿时幻作一道电光，直直射向$n而去！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -145,14 +155,16 @@ defmodule Kantele.Combat.Skills.Performs.XunleiJian.Xun do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 60, 3)
     msg = if hit, do: "$n躲避不及，剑光顿时透体而入，一声惨叫，鲜血狂泻不止。", else: "可是$p奋力格挡，终于架开了$P凌厉的剑招。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

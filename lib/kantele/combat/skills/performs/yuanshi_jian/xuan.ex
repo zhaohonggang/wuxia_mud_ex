@@ -30,25 +30,28 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yuanshi-jian")
     ap = Stats.skill(stats, "sword")
-    attack_time = 7
-    count = 0
-    i = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         {:ok, weapon} <- check_weapon(character) do
+      weapon_name = weapon.name
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name)
     else
       {:error, message} ->
         conn
@@ -79,7 +82,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yuanshi-jian") < 180 -> {:error, "你的原始剑法不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "yuanshi-jian") < 180 -> {:error, "你的原始剑法不够娴熟，难以施展「天旋地转」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +91,7 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "yuanshi-jian" -> {:error, "你没有激发原始剑法，难以施展「天旋地转」。\n"}
       true -> :ok
     end
   end
@@ -97,22 +100,32 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 400 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 400 -> {:error, "你的真气不够，难以施展「天旋地转」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
-      true -> :ok
+      weapon == nil -> {:error, "你使用的武器不对，难以施展「天旋地转」。\n"}
+      true -> {:ok, weapon}
     end
   end
 
-  defp apply_effect(conn, character) do
+  defp apply_effect(conn, character, weapon_name) do
+    vitals = character.meta.vitals
+    vitals = %{vitals | neili: vitals.neili - 400}
+    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+    combat = character.meta.combat
+    combat = Combat.start_busy(combat, 1 + :rand.uniform(7))
+    character = %{character | meta: Map.put(character.meta, :combat, combat)}
+    msg = "$N一振手中" <> weapon_name <> "，挽出数朵剑花，层层涌向$n，犹如潮水，一浪高过一浪。\n"
+
     conn
+    |> Broadcast.publish(msg, n1: character.name)
     |> put_character(character)
     |> assign(:prompt, false)
   end
@@ -138,14 +151,24 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
     vitals = character.meta.vitals
-    character = %{character | meta: %{character.meta | vitals: vitals}}
-    msg = "$n顿时只觉得头晕目眩，天旋地转，一时难以招架。"
+    dp = Stats.skill(stats, "force")
+    hit = div(ap, 2) + Engine.rand(rng, ap * 2) > dp
+
+    if hit do
+      count = div(ap, 16)
+      attack_time = 5 + :rand.uniform(div(ap, 45))
+      attack_time = min(attack_time, 7)
+      msg = "$n顿时只觉得头晕目眩，天旋地转，一时难以招架。\n"
+    else
+      msg = "$n见$N剑势汹涌，急忙凝神抵挡，不为所困。\n"
+    end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

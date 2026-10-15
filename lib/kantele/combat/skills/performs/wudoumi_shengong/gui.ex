@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -65,7 +67,8 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     with :ok <- check_levels(character),
          :ok <- check_mapped(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_powerup(character) do
       :ok
     end
   end
@@ -74,8 +77,8 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展。\n"}
-      Stats.skill(stats, "wudoumi-shengong") < 140 -> {:error, "你的五斗米神功不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "force") < 200 -> {:error, "你的内功修为不够，难以施展「归去来兮」。\n"}
+      Stats.skill(stats, "wudoumi-shengong") < 140 -> {:error, "你的五斗米神功不够娴熟，难以施展「归去来兮」。\n"}
       true -> :ok
     end
   end
@@ -85,13 +88,15 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
 
     cond do
       Stats.mapped(stats, "force") != "wudoumi-shengong" ->
-        {:error, "你没有激发五斗米神功为内功，难以施展。\n"}
+        {:error, "你没有激发五斗米神功为内功，难以施展「归去来兮」。\n"}
 
       Stats.mapped(stats, "unarmed") != "wudoumi-shengong" ->
-        {:error, "你没有激发五斗米神功为拳脚，难以施展。\n"}
+        {:error, "你没有激发五斗米神功为拳脚，难以施展「归去来兮」。\n"}
 
-      Stats.prepared_perform(stats, "unarmed") == nil or String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() != "wudoumi-shengong" ->
-        {:error, "你现在没有准备使用五斗米神功，难以施展。\n"}
+      Stats.prepared_perform(stats, "unarmed") == nil or
+          String.split(Stats.prepared_perform(stats, "unarmed"), "/") |> hd() !=
+            "wudoumi-shengong" ->
+        {:error, "你现在没有准备使用五斗米神功，难以施展「归去来兮」。\n"}
 
       true ->
         :ok
@@ -102,16 +107,27 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 800 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 800 -> {:error, "你现在真气不够，难以施展「归去来兮」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只有空手才能施展。\n"}
-    :ok
+    combat = character.meta.combat
 
+    if Combat.weapon(combat) != nil do
+      {:error, "只有空手才能施展「归去来兮」。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_powerup(character) do
+    if Map.get(character.meta, :powerup, false) do
+      :ok
+    else
+      {:error, "你未将全身功力尽数提起，难以施展「归去来兮」。\n"}
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -155,14 +171,31 @@ defmodule Kantele.Combat.Skills.Performs.WudoumiShengong.Gui do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 500, 1)
-    msg = if hit, do: Enum.random(["$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！", "$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！"]), else: Enum.random(["$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。", "$p见$P来势汹涌，不敢硬接，只得小巧腾挪，躲闪开来。"])
+
+    conn =
+      Broadcast.publish(conn, "\n紧接着只见$N双手陡然回圈，竟使已袭出的掌劲倒回，从$n身后再度席卷而归。",
+        n1: attacker.name,
+        n2: character.name
+      )
+
+    msg =
+      if hit,
+        do:
+          Enum.random([
+            "$p急忙奋力格挡，可只一瞬间，$P的掌劲已透体而入，接连震断数根肋骨！",
+            "$p大惊之下，竟然僵直而立，$P澎湃的掌劲顿时穿透胸膛，尽伤五脏六腑！"
+          ]),
+        else: Enum.random(["$p大惊之下急忙飞身跃起，终于躲开了这神鬼莫测的一击。", "$p见$P来势汹涌，不敢硬接，只得小巧腾挪，躲闪开来。"])
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

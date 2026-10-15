@@ -78,7 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yitian-jian") < 120 -> {:error, "你的倚天剑法不够娴熟，无法施展。\n"}
+      Stats.skill(stats, "yitian-jian") < 120 ->
+        {:error, "你的倚天剑法不够娴熟，无法施展「伏魔剑诀」。\n"}
       true -> :ok
     end
   end
@@ -87,7 +88,8 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yitian-jian" -> {:error, "你没有激发倚天剑法，无法施展。\n"}
+      Stats.mapped(stats, "sword") != "yitian-jian" ->
+        {:error, "你没有激发倚天剑法，无法施展「伏魔剑诀」。\n"}
       true -> :ok
     end
   end
@@ -96,7 +98,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你现在真气不够，无法施展。\n"}
+      vitals.neili < 200 -> {:error, "你现在真气不够，无法施展「伏魔剑诀」。\n"}
       true -> :ok
     end
   end
@@ -105,7 +107,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，无法施展「伏魔剑诀」。\n"}
       true -> :ok
     end
   end
@@ -118,7 +120,14 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N一声冷哼，手中某物一振，剑身微颤，声若龙吟，剑光携着数个剑花同时洒向$n。", n1: character.name)
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+
+    msg =
+      "$N一声冷哼，手中" <>
+        weapon_name <> "一振，剑身微颤，声若龙吟，剑光携着数个剑花同时洒向$n。"
+
+    conn = Broadcast.publish(conn, msg, n1: character.name)
 
     conn
     |> put_character(character)
@@ -160,7 +169,10 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 3)
-    msg = if hit, do: "$n被$N击中！", else: "可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。"
+    msg =
+      if hit,
+        do: "只听$n一声惨叫，被这一剑穿胸而入，顿时鲜血四处飞溅。\n",
+        else: "可$n却是镇定逾恒，一丝不乱，全神将此招化解开来。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

@@ -30,7 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "xueshan-dao")
     ap = Stats.skill(stats, "blade")
-    damage = (div(ap, 2) + Engine.rand(rng, div(ap, 2)))
+    damage = div(ap, 2) + Engine.rand(rng, div(ap, 2))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -78,8 +80,8 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "xueshan-dao") < 80 -> {:error, "你的雪山刀法还不到家，难以施展。\n"}
+      Stats.skill(stats, "force") < 100 -> {:error, "你的内功火候不够，难以施展「冰河开封」。\n"}
+      Stats.skill(stats, "xueshan-dao") < 80 -> {:error, "你的雪山刀法还不到家，难以施展「冰河开封」。\n"}
       true -> :ok
     end
   end
@@ -88,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "xueshan-dao" -> {:error, "你没有激发雪山刀法，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "xueshan-dao" -> {:error, "你没有激发雪山刀法，难以施展「冰河开封」。\n"}
       true -> :ok
     end
   end
@@ -97,17 +99,15 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 150 -> {:error, "你的真气不够，难以施展「冰河开封」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    combat = character.meta.combat
-
-    cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对，难以施展。\n"}
-      true -> :ok
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "blade"} -> :ok
+      _ -> {:error, "你使用的武器不对，难以施展「冰河开封」。\n"}
     end
   end
 
@@ -121,7 +121,15 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "只见$N手中的某物豪光绽放，嗡嗡作响，刀锋顿时迸出一道寒芒向$n砍落！", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    blade_name = (weapon && Map.get(weapon, :name)) || "某物"
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "只见$N手中的" <> blade_name <> "豪光绽放，嗡嗡作响，刀锋顿时迸出一道寒芒向$n砍落！",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -157,14 +165,16 @@ defmodule Kantele.Combat.Skills.Performs.XueshanDao.Kai do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
     msg = if hit, do: "$n招架不及，顿时被$N凌厉的刀芒划中要害，鲜血狂溅而出！", else: "可是$p凝神聚气，护住门户，$P刀芒虽然凌厉，始终奈何不得。"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

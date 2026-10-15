@@ -38,7 +38,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -76,9 +78,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhuangzi-wu") < 150 -> {:error, "你的庄子舞等级不够，难以施展。\n"}
-      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "zhuangzi-wu") < 150 -> {:error, "你的庄子舞等级不够，难以施展「化蝶」。\n"}
+      Stats.skill(stats, "force") < 150 -> {:error, "你的内功火候不够，难以施展「化蝶」。\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，难以施展「化蝶」。\n"}
       true -> :ok
     end
   end
@@ -87,8 +89,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 1000 -> {:error, "你的内力修为不够，难以施展。\n"}
-      vitals.neili < 250 -> {:error, "你此时的内力不足，难以施展。\n"}
+      vitals.max_neili < 1000 -> {:error, "你的内力修为不够，难以施展「化蝶」。\n"}
+      vitals.neili < 250 -> {:error, "你此时的内力不足，难以施展「化蝶」。\n"}
       true -> :ok
     end
   end
@@ -96,14 +98,14 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
   defp check_weapon(character) do
     # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
     :ok
-
   end
 
   defp check_other(character) do
-    # TODO(migrate) 其它门槛（战斗/临时状态/道具等）需人工核对：
-    #   {:error, "你已经运起了。\n"}
-    :ok
-
+    cond do
+      character.meta.combat.temp[:hua_die] -> {:error, "你已经运起「化蝶」了。\n"}
+      character.meta.stats.dex < 32 -> {:error, "你的身法不够，难以施展「化蝶」。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -132,6 +134,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
+  # LPC: void remove_effect(object me, int amount, int amount1)
+  defp remove_effect(_me) do
+    "你的「化蝶」运行完毕，将内力收回丹田。\n"
+  end
+
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
     _stats = character.meta.stats
@@ -143,6 +150,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhuangziWu.Hua do
     Performs.feedback(attacker, 200, 2)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

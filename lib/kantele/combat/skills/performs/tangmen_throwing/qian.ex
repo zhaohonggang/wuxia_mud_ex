@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -45,7 +47,7 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, target)
     else
       {:error, message} ->
         conn
@@ -63,15 +65,62 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_weapon(character)
-
-  defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
-
+  defp check_gates(character) do
+    with :ok <- check_weapon(character),
+         :ok <- check_levels(character),
+         :ok <- check_resources(character) do
+      :ok
+    end
   end
 
-  defp apply_effect(conn, character) do
+  # LPC: if (!objectp(weapon = me->query_temp("handing")) ||
+  #         (weapon->query("id") != "qianqian jie" &&
+  #          weapon->query("skill_type") != "throwing"))
+  defp check_weapon(character) do
+    case Combat.weapon(character.meta.combat) do
+      %{skill_type: "throwing"} -> :ok
+      _ -> {:error, "你现在手中没有拿着暗器心有千千结，难以施展" <> pname() <> "。\n"}
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "tangmen-throwing") < 140 ->
+        {:error, "你的唐门暗器不够娴熟，难以施展" <> pname() <> "。\n"}
+
+      Stats.skill(stats, "boyun-suowu") < 140 ->
+        {:error, "你的拨云锁雾不够娴熟，无法施展" <> pname() <> "。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功修为不足，难以施展" <> pname() <> "。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp check_resources(character) do
+    vitals = character.meta.vitals
+
+    cond do
+      vitals.max_neili < 1200 -> {:error, "你的内力修为不足，难以施展" <> pname() <> "。\n"}
+      vitals.neili < 150 -> {:error, "你现在真气不足，难以施展" <> pname() <> "。\n"}
+      true -> :ok
+    end
+  end
+
+  defp pname, do: "心有千千结"
+
+  defp weapon_name(combat) do
+    case Combat.weapon(combat) do
+      nil -> ""
+      weapon -> Map.get(weapon, :name) || ""
+    end
+  end
+
+  defp apply_effect(conn, character, target) do
     # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 100}
@@ -81,8 +130,17 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N突然身行一止，从怀中摸出一条某物，有无数个结，一扬手向$n 掷去。
-只见$n的周身飞舞着无数的光影，一条天网从空罩下。", n1: character.name)
+    weapon_name = weapon_name(combat)
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N突然身行一止，从怀中摸出一条" <>
+          weapon_name <>
+          "，有无数个结，一扬手向$n 掷去。\n只见$n的周身飞舞着无数的光影，一条天网从空罩下。",
+        n1: character.name,
+        n2: target.name
+      )
 
     conn
     |> put_character(character)
@@ -102,17 +160,39 @@ defmodule Kantele.Combat.Skills.Performs.TangmenThrowing.Qian do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    stats = character.meta.stats
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "dugu-jiujian")
+    hit? = div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp
+    weapon_name = weapon_name(character.meta.combat)
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 0, 3)
-    msg = "忽然那无数的光影一闪而没，$n身行一顿，给这某物缠上，仰天而倒。"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
+    pre = "你急忙屏气凝神，希望能够躲开这致命的" <> weapon_name <> "。"
+
+    {msg, tell} =
+      if hit? do
+        {"忽然那无数的光影一闪而没，$n身行一顿，给这" <> weapon_name <> "缠上，仰天而倒。",
+         "你只觉得全身被这" <>
+           weapon_name <> "越缠越紧，低头一看只见那" <> weapon_name <> "已经深深的嵌在你的皮肉中。"}
+      else
+        {"$n急忙向旁边一纵，躲开着致命的" <> weapon_name <> "，但已显得狼狈不堪。", "忽然那无数的光影一闪而没，你心中一惊急忙提神运气于足间。"}
+      end
+
     conn
-    |> Broadcast.publish(result)
+    |> Broadcast.publish(pre)
+    |> Broadcast.publish(Messages.interpolate(msg, n1: attacker.name, n2: character.name))
+    |> Broadcast.publish(tell)
     |> put_character(character)
   end
 

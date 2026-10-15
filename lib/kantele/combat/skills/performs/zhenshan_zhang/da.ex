@@ -36,7 +36,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -74,7 +76,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhenshan-zhang") < 40 -> {:error, "你的震山掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "zhenshan-zhang") < 40 -> {:error, "你的震山掌不够娴熟，难以施展「隔山打牛」。\n"}
       true -> :ok
     end
   end
@@ -84,10 +86,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
 
     cond do
       Stats.mapped(stats, "strike") != "zhenshan-zhang" ->
-        {:error, "你没有激发震山掌，难以施展。\n"}
+        {:error, "你没有激发震山掌，难以施展「隔山打牛」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "zhenshan-zhang" ->
-        {:error, "你没有准备使用震山掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "zhenshan-zhang" ->
+        {:error, "你没有准备使用震山掌，难以施展「隔山打牛」。\n"}
 
       true ->
         :ok
@@ -98,8 +101,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     vitals = character.meta.vitals
 
     cond do
-      vitals.max_neili < 200 -> {:error, "你的内功修为不足，难以施展。\n"}
-      vitals.neili < 50 -> {:error, "你现在真气太弱，难以施展。\n"}
+      vitals.max_neili < 200 -> {:error, "你的内功修为不足，难以施展「隔山打牛」。\n"}
+      vitals.neili < 50 -> {:error, "你现在真气太弱，难以施展「隔山打牛」。\n"}
       true -> :ok
     end
   end
@@ -108,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用「隔山打牛」。\n"}
       true -> :ok
     end
   end
@@ -157,15 +160,22 @@ defmodule Kantele.Combat.Skills.Performs.ZhenshanZhang.Da do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 30, 3)
-    msg = if hit, do: "$n见势连忙向后一纵，但却只觉胸口一震，顿时两耳轰鸣，已被$N掌劲所伤！
-:内伤@?", else: "$n躲过了$N的攻击！"
+
+    msg =
+      if hit,
+        do: "$n见势连忙向后一纵，但却只觉胸口一震，顿时两耳轰鸣，已被$N掌劲所伤！
+:内伤@?",
+        else: "可是$p看破了$P的企图，并没有上当。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

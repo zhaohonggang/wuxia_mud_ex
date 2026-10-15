@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           damage: damage,
@@ -76,8 +78,8 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "zhenyu-quan") < 80 -> {:error, "你镇狱拳法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展。\n"}
+      Stats.skill(stats, "zhenyu-quan") < 80 -> {:error, "你镇狱拳法不够娴熟，难以施展「百鬼恸哭」。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你的内功修为不够，难以施展「百鬼恸哭」。\n"}
       true -> :ok
     end
   end
@@ -87,10 +89,11 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
 
     cond do
       Stats.mapped(stats, "cuff") != "zhenyu-quan" ->
-        {:error, "你没有激发镇狱拳法，难以施展。\n"}
+        {:error, "你没有激发镇狱拳法，难以施展「百鬼恸哭」。\n"}
 
-      Stats.prepared_perform(stats, "cuff") == nil or String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "zhenyu-quan" ->
-        {:error, "你没有准备镇狱拳法，难以施展。\n"}
+      Stats.prepared_perform(stats, "cuff") == nil or
+          String.split(Stats.prepared_perform(stats, "cuff"), "/") |> hd() != "zhenyu-quan" ->
+        {:error, "你没有准备镇狱拳法，难以施展「百鬼恸哭」。\n"}
 
       true ->
         :ok
@@ -101,16 +104,18 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 150 -> {:error, "你现在的真气不够，难以施展「百鬼恸哭」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "只能空手施展。\n"}
-    :ok
+    combat = character.meta.combat
 
+    cond do
+      Combat.weapon(combat) != nil -> {:error, "「百鬼恸哭」只能空手施展。\n"}
+      true -> :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -159,15 +164,22 @@ defmodule Kantele.Combat.Skills.Performs.ZhenyuQuan.Tong do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
-    msg = if hit, do: "$n只是随手一挡，哪知$N这拳后势无穷，霎时拳劲吞吐，穿
-胸而过。$n顿时呕出几大口鲜血，几欲晕厥！", else: "$n躲过了$N的攻击！"
+
+    msg =
+      if hit,
+        do: "$n只是随手一挡，哪知$N这拳后势无穷，霎时拳劲吞吐，穿
+胸而过。$n顿时呕出几大口鲜血，几欲晕厥！",
+        else: "可是$p识破了$P招后更有杀着，当即向后跃开。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

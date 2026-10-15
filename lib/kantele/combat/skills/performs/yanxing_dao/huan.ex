@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yanxing-dao") < 60 -> {:error, "你雁行刀法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "force") < 120 -> {:error, "你内功火候不够，难以施展。\n"}
+      Stats.skill(stats, "yanxing-dao") < 60 -> {:error, "你雁行刀法不够娴熟，难以施展「无形幻影」。\n"}
+      Stats.skill(stats, "force") < 120 -> {:error, "你内功火候不够，难以施展「无形幻影」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,8 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "blade") != "yanxing-dao" -> {:error, "你没有激发雁行刀法，难以施展。\n"}
+      Stats.mapped(stats, "blade") != "yanxing-dao" ->
+        {:error, "你没有激发雁行刀法，难以施展「无形幻影」。\n"}
       true -> :ok
     end
   end
@@ -94,7 +95,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 80 -> {:error, "你现在真气不够，难以施展。\n"}
+      vitals.neili < 80 -> {:error, "你现在真气不够，难以施展「无形幻影」。\n"}
       true -> :ok
     end
   end
@@ -103,7 +104,7 @@ defmodule Kantele.Combat.Skills.Performs.YanxingDao.Huan do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你的武器不对，难以施展「无形幻影」。\n"}
       true -> :ok
     end
   end

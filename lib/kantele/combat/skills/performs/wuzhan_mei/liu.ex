@@ -37,7 +37,9 @@ defmodule Kantele.Combat.Skills.Performs.WuzhanMei.Liu do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           rng: rng
@@ -62,12 +64,50 @@ defmodule Kantele.Combat.Skills.Performs.WuzhanMei.Liu do
   end
 
   # TODO(migrate) 门槛由提取器机械生成，文案/查法需按原始源码核对
-  defp check_gates(character), do: check_weapon(character)
+  defp check_gates(character) do
+    with :ok <- check_levels(character),
+         :ok <- check_resources(character),
+         :ok <- check_mapped(character),
+         :ok <- check_weapon(character) do
+      :ok
+    end
+  end
+
+  defp check_levels(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.skill(stats, "wuzhan-mei") < 100 -> {:error, "你的五展梅剑法不够纯熟，无法使用『流花掠影』。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_resources(character) do
+    vitals = character.meta.vitals
+
+    cond do
+      vitals.neili < 400 -> {:error, "你目前的内力不足，无法施展『流花掠影』。\n"}
+      true -> :ok
+    end
+  end
+
+  defp check_mapped(character) do
+    stats = character.meta.stats
+
+    cond do
+      Stats.mapped(stats, "sword") != "wuzhan-mei" -> {:error, "你没有激发五展梅，难以施展『流花掠影』。\n"}
+      true -> :ok
+    end
+  end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    :ok
+    weapon = Combat.weapon(character.meta.combat)
 
+    if weapon == nil or Map.get(weapon, :skill_type) != "sword" do
+      {:error, "你必须在使用剑时才能使出『流花掠影』。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -77,11 +117,24 @@ defmodule Kantele.Combat.Skills.Performs.WuzhanMei.Liu do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
+    weapon = Combat.weapon(combat)
+    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
+
+    conn =
+      Broadcast.publish(
+        conn,
+        "$N手中" <> weapon_name <> "乱抖，幻出一片青光，施展出唐门绝学『" <> perform_label() <> "』。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  defp perform_label do
+    "流花掠影"
   end
 
   defp target(combat) do
@@ -106,6 +159,7 @@ defmodule Kantele.Combat.Skills.Performs.WuzhanMei.Liu do
     Performs.feedback(attacker, 0, 2)
     msg = "$n被$N击中！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)

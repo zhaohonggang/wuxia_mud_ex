@@ -75,8 +75,8 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yunv-jian") < 40 -> {:error, "你玉女剑法不够娴熟，难以施展。\n"}
-      Stats.skill(stats, "dodge") < 60 -> {:error, "你的轻功修为不够，难以施展。\n"}
+      Stats.skill(stats, "yunv-jian") < 40 -> {:error, "你玉女剑法不够娴熟，难以施展「千姿百媚」。\n"}
+      Stats.skill(stats, "dodge") < 60 -> {:error, "你的轻功修为不够，难以施展「千姿百媚」。\n"}
       true -> :ok
     end
   end
@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yunv-jian" -> {:error, "你没有激发玉女剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "yunv-jian" -> {:error, "你没有激发玉女剑法，难以施展「千姿百媚」。\n"}
       true -> :ok
     end
   end
@@ -94,7 +94,7 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 60 -> {:error, "你现在的真气不够，难以施展。\n"}
+      vitals.neili < 60 -> {:error, "你现在的真气不够，难以施展「千姿百媚」。\n"}
       true -> :ok
     end
   end
@@ -103,7 +103,7 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展。\n"}
+      Combat.weapon(combat) == nil -> {:error, "你所使用的武器不对，难以施展「千姿百媚」。\n"}
       true -> :ok
     end
   end
@@ -116,7 +116,21 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N陡然间姿态万千，身法飘逸，犹如一个婀娜多姿的女子在随歌漫舞一样。但是$N手中某物却跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉害的招式。", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    wn = if weapon, do: Map.get(weapon, :name, ""), else: ""
+
+    # LPC: wn = weapon->name();
+    #      msg = HIC "\n$N" HIC "陡然间姿态万千，身法飘逸，犹如一个婀娜"
+    #            "多姿的女子在随歌漫舞一样。但是$N手中" + wn + HIC "却"
+    #            "跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉"
+    #            "害的招式。" NOR;
+    conn =
+      Broadcast.publish(
+        conn,
+        "陡然间姿态万千，身法飘逸，犹如一个婀娜多姿的女子在随歌漫舞一样。但是$N手中" <>
+          wn <> "却跟随着身体轻盈地晃动，看似毫无章法，却又像是隐藏着厉害的招式。",
+        n1: character.name
+      )
 
     conn
     |> put_character(character)
@@ -144,14 +158,25 @@ defmodule Kantele.Combat.Skills.Performs.YunvJian.Mei do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
+    stats = character.meta.stats
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    level = Map.get(data, :level, 0)
+    # LPC: if (level / 2 + random(level) > target->query_skill("dodge", 1))
+    hit = div(level, 2) + Engine.rand(rng, max(level, 1)) > Stats.skill(stats, "dodge")
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 2)
-    msg = "$n被$N击中！"
+    # LPC: if (level / 2 + random(level) > target->query_skill("dodge", 1))
+    #        msg = HIY "$N" HIY "看不出$n" HIY "招式中的虚实，连忙" "护住自己全身，一时竟无以应对！\n" NOR;
+    #      else
+    #        msg = CYN "可是$N" CYN "看出了$n" CYN "这招乃虚招，顿" "时一丝不乱，镇定自若。\n" NOR;
+    msg =
+      if hit do
+        "$N看不出$n招式中的虚实，连忙护住自己全身，一时竟无以应对！\n"
+      else
+        "可是$N看出了$n这招乃虚招，顿时一丝不乱，镇定自若。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

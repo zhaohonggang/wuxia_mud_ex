@@ -76,7 +76,8 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yitian-zhang") < 120 -> {:error, "你的倚天屠龙掌不够娴熟，难以施展。\n"}
+      Stats.skill(stats, "yitian-zhang") < 120 ->
+        {:error, "你的倚天屠龙掌不够娴熟，难以施展「谁与争锋」。\n"}
       true -> :ok
     end
   end
@@ -86,10 +87,11 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
 
     cond do
       Stats.mapped(stats, "strike") != "yitian-zhang" ->
-        {:error, "你没有激发倚天屠龙掌，难以施展。\n"}
+        {:error, "你没有激发倚天屠龙掌，难以施展「谁与争锋」。\n"}
 
-      Stats.prepared_perform(stats, "strike") == nil or String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "yitian-zhang" ->
-        {:error, "你没有准备使用倚天屠龙掌，难以施展。\n"}
+      Stats.prepared_perform(stats, "strike") == nil or
+          String.split(Stats.prepared_perform(stats, "strike"), "/") |> hd() != "yitian-zhang" ->
+        {:error, "你没有准备使用倚天屠龙掌，难以施展「谁与争锋」。\n"}
 
       true ->
         :ok
@@ -100,7 +102,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 500 -> {:error, "你现在真气太弱，难以施展。\n"}
+      vitals.neili < 500 -> {:error, "你现在真气太弱，难以施展「谁与争锋」。\n"}
       true -> :ok
     end
   end
@@ -109,7 +111,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用「谁与争锋」。\n"}
       true -> :ok
     end
   end
@@ -147,14 +149,19 @@ defmodule Kantele.Combat.Skills.Performs.YitianZhang.Zheng do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    _stats = character.meta.stats
+    stats = character.meta.stats
+    hit = Engine.rand(rng, max(Stats.skill(stats, "force") + Stats.skill(stats, "strike"), 1)) >
+            Stats.skill(stats, "force")
     vitals = character.meta.vitals
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 150, 1)
-    msg = "$n顿时觉得呼吸不畅，全然被这股力道所制，只得拼命运动抵挡。"
+
+    msg =
+      if hit,
+        do: "$n顿时觉得呼吸不畅，全然被这股力道所制，只得拼命运动抵挡。",
+        else: "$n深吸一口气，凝神抵挡，犹如轻舟立于惊涛骇浪之中，左右颠簸，却是不倒。\n"
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

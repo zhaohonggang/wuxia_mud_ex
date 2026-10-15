@@ -79,9 +79,9 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "yuxiao-jian") < 180 -> {:error, "你玉箫剑法等级不够, 难以施展。\n"}
-      Stats.skill(stats, "bibo-shengong") < 180 -> {:error, "你碧波神功修为不够，难以施展。\n"}
-      Stats.skill(stats, "bihai-chaosheng") < 180 -> {:error, "你的碧海潮生曲太低，难以施展。\n"}
+      Stats.skill(stats, "yuxiao-jian") < 180 -> {:error, "你玉箫剑法等级不够, 难以施展「碧海潮生按玉箫」。\n"}
+      Stats.skill(stats, "bibo-shengong") < 180 -> {:error, "你碧波神功修为不够，难以施展「碧海潮生按玉箫」。\n"}
+      Stats.skill(stats, "bihai-chaosheng") < 180 -> {:error, "你的碧海潮生曲太低，难以施展「碧海潮生按玉箫」。\n"}
       true -> :ok
     end
   end
@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     stats = character.meta.stats
 
     cond do
-      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展。\n"}
+      Stats.mapped(stats, "sword") != "yuxiao-jian" -> {:error, "你没有激发玉箫剑法，难以施展「碧海潮生按玉箫」。\n"}
       true -> :ok
     end
   end
@@ -99,17 +99,20 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 300 -> {:error, "你现在的内力不够，难以施展。\n"}
+      vitals.neili < 300 -> {:error, "你现在的内力不够，难以施展「碧海潮生按玉箫」。\n"}
       true -> :ok
     end
   end
 
   defp check_weapon(character) do
-    # TODO(migrate) 武器检查需人工核对（自动提取的文案仅供参考）：
-    #   {:error, "你手里没有拿萧，难以施展。\n"}
-    #   {:error, "你玉箫剑法等级不够, 难以施展。\n"}
-    :ok
+    # LPC: 手里/兵器需可作为「萧」使用（valid_as_xiao）
+    combat = character.meta.combat
 
+    if Combat.weapon(combat) == nil do
+      {:error, "你手里没有拿萧，难以施展「碧海潮生按玉箫」。\n"}
+    else
+      :ok
+    end
   end
 
   defp apply_effect(conn, character) do
@@ -160,7 +163,35 @@ defmodule Kantele.Combat.Skills.Performs.YuxiaoJian.Bihai do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 200, 1)
-    msg = if hit, do: Enum.random(["$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", "$n只感心头一震，脸上情不自禁的露出了一丝微笑。", "此时$n已身陷绝境，全身气血逆流，再也无法脱身。", "霎时间$n只感心头滚热，喉干舌燥，说不出的难受。"]), else: Enum.random(["$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。", "此时$n已身陷绝境，全身气血逆流，再也无法脱身。", "霎时间$n只感心头滚热，喉干舌燥，说不出的难受。"])
+
+    # LPC 逐段累积：四段洞箫声 + 四次命中/化解判定；每段命中失败时目标皆「应付裕如」。
+    p1 =
+      if hit,
+        do: "$n只感心头一震，脸上情不自禁的露出了一丝微笑。\n",
+        else: "暗暗凝神守一，对这箫声自是应付裕如。\n"
+
+    p2 = "突然又听那洞箫声情致飘忽，缠绵宛转，便似一个女子一会儿叹息，一会儿又似呻吟，一会儿却又软语温存或柔声叫唤。\n"
+
+    p3 =
+      if hit,
+        do: "$n只感全身热血沸腾，就只想手舞足蹈的乱动一番。\n",
+        else: "暗暗凝神守一，对这箫声自是应付裕如。\n"
+
+    p4 = "那箫声清亮宛如大海浩淼，万里无波，远处潮水缓缓推近，渐近渐快，其后洪涛汹涌，白浪连山，而潮水中鱼跃鲸浮，海面风啸鸥飞，水妖海怪群魔弄潮，极尽变幻之能事。\n"
+
+    p5 =
+      if hit,
+        do: "霎时间$n只感心头滚热，喉干舌燥，说不出的难受。\n",
+        else: "暗暗凝神守一，对这箫声自是应付裕如。\n"
+
+    p6 = "时至最后，却听那箫声愈来愈细，几乎难以听闻，便尤如大海潮退后水平如镜一般，但海底却又是暗流湍急，汹涌澎湃。\n"
+
+    p7 =
+      if hit,
+        do: "此时$n已身陷绝境，全身气血逆流，再也无法脱身。\n",
+        else: "暗暗凝神守一，对这箫声自是应付裕如。\n"
+
+    msg = p1 <> p2 <> p3 <> p4 <> p5 <> p6 <> p7
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

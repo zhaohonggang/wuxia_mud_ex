@@ -64,7 +64,17 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
   defp check_gates(character) do
     with :ok <- check_levels(character),
          :ok <- check_resources(character),
-         :ok <- check_weapon(character) do
+         :ok <- check_weapon(character),
+         :ok <- check_temp_state(character) do
+      :ok
+    end
+  end
+
+  # LPC: if (me->query_temp("jueji/sword/feisheng"))
+  defp check_temp_state(character) do
+    if Map.get(character.meta, :jueji_sword_feisheng) do
+      {:error, "你无法连续使用「御剑飞升」绝技！\n"}
+    else
       :ok
     end
   end
@@ -104,12 +114,41 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
     vitals = %{vitals | neili: vitals.neili - 100}
     vitals = %{vitals | neili: vitals.neili - 1000}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
-    conn = Broadcast.publish(conn, "$N一声巨喝，聚气入腕，只听破空声一响，手中某物携着隐隐风雷之劲向$n澎湃贯
-出，疾若电闪，势如雷霆。", n1: character.name)
+    weapon = Combat.weapon(character.meta.combat)
+    weapon_name = if weapon, do: Map.get(weapon, :name, ""), else: ""
+
+    # LPC: msg = HIW "\n$N" HIW "一声巨喝，聚气入腕，只听破空声一响，手中"
+    #            + weapon->name() + HIW "携着隐隐风雷之劲向$n" ...;
+    conn =
+      Broadcast.publish(
+        conn,
+        "一声巨喝，聚气入腕，只听破空声一响，手中" <>
+          weapon_name <> "携着隐隐风雷之劲向$n澎湃贯\n出，疾若电闪，势如雷霆。\n",
+        n1: character.name
+      )
+
+    conn = Broadcast.publish(conn, perform2_lead(), n1: character.name)
+    conn = Broadcast.publish(conn, Enum.random(perform2_end_messages()), n1: character.name)
 
     conn
     |> put_character(character)
     |> assign(:prompt, false)
+  end
+
+  # LPC perform2(): msg = HIW "\n$N" HIW "手中御剑凌驾如飞，宛若游龙，灵转千变，一道道"
+  #                           "凌厉剑气疾射而出。\n" NOR;
+  @doc false
+  def perform2_lead, do: "$N手中御剑凌驾如飞，宛若游龙，灵转千变，一道道凌厉剑气疾射而出。\n"
+
+  # LPC perform2()/end_perform2() 的收尾提示（逐字复制 C）。
+  defp perform2_end_messages do
+    [
+      "你运转内力，仰天一声清啸，剑在空中盘旋了一圈，又飞回了你的手中。\n",
+      "你停止使用「御剑飞升」绝技。\n",
+      "你剑至中途，可怎奈内息不足，只好停止御剑。\n",
+      "你经过调气养息，又可以继续使用「御剑飞升」了。\n",
+      "可是$p看破了$P的企图，斜跃避开。\n"
+    ]
   end
 
   defp target(combat) do
@@ -139,7 +178,19 @@ defmodule Kantele.Combat.Skills.Performs.YujianShu.Yujian do
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 1000, 1)
-    msg = if hit, do: Enum.random(["$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！", "只听「嗤啦」一声，无形剑气竟在$n上身刺出一个血洞，数股血柱疾射而出！"]), else: "$n躲过了$N的攻击！"
+
+    # LPC perform(): HIR "$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！\n"
+    # LPC perform2(): HIR "只听「嗤啦」一声，" HIW "无形剑气" NOR + HIR "竟在$n" ... ;
+    #                 （`+` 两侧为两段独立字面量，E 侧同样拆开，勿并成单串。）
+    msg =
+      if hit do
+        wound_a = "只听「嗤啦」一声，无形剑气"
+        wound_b = "竟在$n上身刺出一个血洞，数股血柱疾射而出！\n"
+        Enum.random(["$n看到$N这气拔千钧的一击，竟不知如何招架，登时受了重创！\n", wound_a <> wound_b])
+      else
+        "可是$p看破了$P的企图，斜跃避开。\n"
+      end
+
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
     conn
     |> Broadcast.publish(result)

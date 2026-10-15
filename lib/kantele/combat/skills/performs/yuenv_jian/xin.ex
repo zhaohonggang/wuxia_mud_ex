@@ -29,25 +29,33 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     stats = character.meta.stats
     rng = &:rand.uniform/1
     lvl = Stats.skill(stats, "yuenv-jian")
-    delta = 0
-    improve = 0
-    n = 0
-    m = 0
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
-         {:ok, target} <- target(combat) do
+         {:ok, target} <- target(combat),
+         {:ok, weapon} <- check_weapon(character) do
+      weapon_name = weapon.name
+      delta = calculate_delta(character, target)
+      ap = div(Stats.skill(stats, "sword") + Stats.skill(stats, "dodge"), 2)
+      improve = calculate_improve(character)
+      ap = ap + div(ap * improve, 100)
+
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
+          ap: ap,
+          delta: delta,
+          weapon_name: weapon_name,
           rng: rng
         }
       })
 
-      apply_effect(conn, character)
+      apply_effect(conn, character, weapon_name, delta)
     else
       {:error, message} ->
         conn
@@ -77,9 +85,9 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "sword") < 200 -> {:error, "你的剑术修为不够，不能施展！\n"}
-      Stats.skill(stats, "yuenv-jian") < 150 -> {:error, "你的越女剑术的修为不够，不能施展！\n"}
-      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，不能施展！\n"}
+      Stats.skill(stats, "sword") < 200 -> {:error, "你的剑术修为不够，不能施展「西子捧心」！\n"}
+      Stats.skill(stats, "yuenv-jian") < 150 -> {:error, "你的越女剑术的修为不够，不能施展「西子捧心」！\n"}
+      Stats.skill(stats, "dodge") < 150 -> {:error, "你的轻功修为不够，不能施展「西子捧心」！\n"}
       true -> :ok
     end
   end
@@ -95,23 +103,47 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 
   defp check_weapon(character) do
     combat = character.meta.combat
+    weapon = Combat.weapon(combat)
 
     cond do
-      Combat.weapon(combat) == nil -> {:error, "你使用的武器不对。\n"}
-      true -> :ok
+      weapon == nil -> {:error, "你使用的武器不对。\n"}
+      true -> {:ok, weapon}
     end
   end
 
-  defp apply_effect(conn, character) do
-    # 无条件攻击方效果：消耗/Busy/Apply/暗器数量 + 前置广播
+  defp calculate_delta(attacker, target) do
+    attacker_gender = attacker.meta.stats.gender || "男性"
+    target_gender = target.meta.stats.gender || "男性"
+
+    if attacker_gender == "女性" and target_gender == "女性" do
+      target_per = target.meta.stats.per || 0
+      attacker_per = attacker.meta.stats.per || 0
+      target_per - attacker_per
+    else
+      0
+    end
+  end
+
+  defp calculate_improve(character) do
+    # 简化版：实际应该遍历技能计算
+    0
+  end
+
+  defp apply_effect(conn, character, weapon_name, delta) do
     vitals = character.meta.vitals
     vitals = %{vitals | neili: vitals.neili - 180}
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N幽幽一声长叹，手中的某物就如闪电般刺向$n的胸口。
-但见剑招轻盈灵动，优美华丽，就连杀人间也不带一丝尘俗之气。", n1: character.name)
+
+    msg = "$N幽幽一声长叹，手中的" <> weapon_name <> "就如闪电般刺向$n的胸口。\n但见剑招轻盈灵动，优美华丽，就连杀人间也不带一丝尘俗之气。\n"
+    conn = Broadcast.publish(conn, msg, n1: character.name)
+
+    if delta > 0 do
+      delta_msg = "$n只觉得$N眼神中隐然透出一股冰冷的寒意，心中不禁一颤。\n"
+      conn = Broadcast.publish(conn, delta_msg, n1: character.name)
+    end
 
     conn
     |> put_character(character)
@@ -139,26 +171,51 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   end
 
   defp do_resolve_incoming(conn, character, attacker, data) do
-    _stats = character.meta.stats
-    ap = Map.get(data, :ap, 0)
-    damage = Map.get(data, :damage, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
     stats = character.meta.stats
-    dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
-    hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+    ap = Map.get(data, :ap, 0)
+    delta = Map.get(data, :delta, 0)
+    weapon_name = Map.get(data, :weapon_name, "某物")
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(stats, "dodge")
+    hit = div(ap * 7, 10) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      damage = div(ap, 2) + Engine.rand(rng, div(ap, 2)) + delta * 20
+      vitals = Vitals.damage(vitals, :qi, damage)
+
+      # First hit message
+      msg1 = "$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？\n只听$p一声惨叫，胸口已经被剑气所伤！\n"
+
+      conn =
+        Broadcast.publish(conn, Messages.interpolate(msg1, n1: attacker.name, n2: character.name))
+
+      # Second hit check
+      second_hit = div(ap, 2) + Engine.rand(rng, ap) > dp
+
+      if second_hit do
+        damage2 = ap + Engine.rand(rng, div(ap, 2)) + delta * 20
+        vitals = Vitals.damage(vitals, :qi, damage2)
+
+        msg2 = "$n重创之下不禁破绽迭出，$P见状随手刺出" <> weapon_name <> "，又是一剑！\n就听$p又是一声惨叫，痛苦不堪。\n"
+
+        conn =
+          Broadcast.publish(
+            conn,
+            Messages.interpolate(msg2, n1: attacker.name, n2: character.name)
+          )
+      end
+    else
+      msg = "$n见状身形急退，避开了$N的无形剑气的凌厉一击！\n"
+
+      conn =
+        Broadcast.publish(conn, Messages.interpolate(msg, n1: attacker.name, n2: character.name))
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 180, 1)
-    msg = if hit, do: Enum.random(["$n大吃一惊，慌忙躲避，然而剑气来的好快，哪里躲得开？
-只听$p一声惨叫，胸口已经被剑气所伤！", "$n重创之下不禁破绽迭出，$P见状随手刺出某物，又是一剑！
-就听$p又是一声惨叫，痛苦不堪。"]), else: "$n见状身形急退，避开了$N的无形剑气的凌厉一击！"
-    result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
-    |> Broadcast.publish(result)
     |> put_character(character)
   end
 
@@ -167,14 +224,14 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
 
   # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # // pengxin.c 西子捧心
-  # 
+  #
   # #include <ansi.h>
   # #include <combat.h>
-  # 
+  #
   # #define XIN "「" HIM "西子捧心" NOR "」"
-  # 
+  #
   # inherit F_SSERVER;
-  # 
+  #
   # int perform(object me, object target)
   # {
   #     object weapon;
@@ -182,60 +239,60 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   #         int ap, dp;
   #         int damage;
   #         int delta;
-  # 
+  #
   #         float improve;
   #         int lvl, m, n;
   #         string martial;
   #         string *ks;
   #         martial = "sword";
-  # 
+  #
   #         if (userp(me) && ! me->query("can_perform/yuenv-jian/xin"))
   #                 return notify_fail("你所使用的外功中没有这种功能。\n");
-  # 
+  #
   #         if (! target)
   #         {
   #             me->clean_up_enemy();
   #             target = me->select_opponent();
   #         }
-  # 
+  #
   #     if (! target || ! me->is_fighting(target))
   #             return notify_fail(XIN "只能在战斗中对对手使用。\n");
-  # 
+  #
   #     if (! objectp(weapon = me->query_temp("weapon")) ||
   #         (string)weapon->query("skill_type") != "sword")
   #             return notify_fail("你使用的武器不对。\n");
-  # 
+  #
   #     if (me->query_skill("sword", 1) < 200)
   #         return notify_fail("你的剑术修为不够，不能施展" XIN "！\n");
-  # 
+  #
   #     if (me->query_skill("yuenv-jian", 1) < 150)
   #         return notify_fail("你的越女剑术的修为不够，不能施展" XIN "！\n");
-  # 
+  #
   #     if (me->query_skill("dodge",1) < 150)
   #         return notify_fail("你的轻功修为不够，不能施展" XIN "！\n");
-  # 
+  #
   #     if (me->query("neili") < 200)
   #         return notify_fail("你的真气不够！\n");
-  # 
+  #
   #         if (! living(target))
   #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
-  # 
+  #
   #         if (me->query("gender") == "女性" &&
   #             target->query("gender") == "女性")
   #                 delta = target->query("per") - me->query("per");
   #         else
   #                 delta = 0;
-  # 
+  #
   #     msg = HIG "\n$N" HIG "幽幽一声长叹，手中的" + weapon->name() +
   #               HIG "就如闪电般刺向$n" HIG "的胸口。\n但见剑招轻盈灵动，优美华丽，就"
   #               "连杀人间也不带一丝尘俗之气。\n" NOR;
-  # 
+  #
   #         if (delta > 0)
   #                 msg += HIY "$n" HIY "只觉得$N" HIY "眼神中隐然透出"
   #                        "一股冰冷的寒意，心中不禁一颤。\n" NOR;
   #         else
   #                 delta = 0;
-  # 
+  #
   #         lvl = to_int(pow(to_float(me->query("combat_exp") * 10), 1.0 / 3));
   #         lvl = lvl * 4 / 5;
   #         ks = keys(me->query_skills(martial));
@@ -252,9 +309,9 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   #                     break;
   #             }
   #         }
-  # 
+  #
   #         improve = improve * 5 / 100 / lvl;
-  # 
+  #
   #         me->add("neili", -180);
   #         ap = (me->query_skill("sword") + me->query_skill("dodge")) / 2;
   #         dp = target->query_skill("dodge");
@@ -263,7 +320,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   #         if (ap * 7 / 10  + random(ap) > dp)
   #         {
   #                 damage = ap / 2 + random(ap / 2) + delta * 20;
-  # 
+  #
   #                 msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 50,
   #                                            HIR "$n" HIR "大吃一惊，慌忙躲避，然而剑"
   #                                            "气来的好快，哪里躲得开？\n只听$p" HIR
@@ -272,7 +329,7 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   #                 {
   #                         //damage /= 3;
   #                         damage = ap + random(ap / 2) + delta * 20;
-  # 
+  #
   #                         msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 60,
   #                                                    HIC "$n重创之下不禁破绽迭出，$P"
   #                                                    HIC "见状随手刺出" + weapon->name() +
@@ -284,9 +341,9 @@ defmodule Kantele.Combat.Skills.Performs.YuenvJian.Xin do
   #                 msg += HIC "$n" HIC "见状身形急退，避开了$N"
   #                        HIC "的无形剑气的凌厉一击！\n" NOR;
   #         }
-  # 
+  #
   #         message_combatd(msg, me, target);
-  # 
+  #
   #     return 1;
   # }
 end

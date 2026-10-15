@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     lvl = Stats.skill(stats, "wusheng-zhao")
     skill = Stats.skill(stats, "wusheng-zhao")
     ap = Stats.skill(stats, "claw")
-    damage = ((60 + div(ap, 5)) + Engine.rand(rng, div(ap, 5)))
+    damage = 60 + div(ap, 5) + Engine.rand(rng, div(ap, 5))
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -39,7 +39,9 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
       send(target.pid, %Event{
         from_pid: self(),
         topic: "combat/perform-incoming",
-        data: %{attacker: ref(character), perform_id: @perform_id,
+        data: %{
+          attacker: ref(character),
+          perform_id: @perform_id,
           level: lvl,
           skill: lvl,
           ap: ap,
@@ -79,7 +81,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     stats = character.meta.stats
 
     cond do
-      Stats.skill(stats, "wusheng-zhao") < 120 -> {:error, "你的五圣毒爪等级不够，难以施展。\n"}
+      Stats.skill(stats, "wusheng-zhao") < 120 -> {:error, "你的五圣毒爪等级不够，难以施展「夺命连环」。\n"}
       true -> :ok
     end
   end
@@ -89,10 +91,11 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
 
     cond do
       Stats.mapped(stats, "claw") != "wusheng-zhao" ->
-        {:error, "你没有激发五圣毒爪，难以施展。\n"}
+        {:error, "你没有激发五圣毒爪，难以施展「夺命连环」。\n"}
 
-      Stats.prepared_perform(stats, "claw") == nil or String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "wusheng-zhao" ->
-        {:error, "你没有准备使用五圣毒爪，难以施展。\n"}
+      Stats.prepared_perform(stats, "claw") == nil or
+          String.split(Stats.prepared_perform(stats, "claw"), "/") |> hd() != "wusheng-zhao" ->
+        {:error, "你没有准备使用五圣毒爪，难以施展「夺命连环」。\n"}
 
       true ->
         :ok
@@ -103,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     vitals = character.meta.vitals
 
     cond do
-      vitals.neili < 200 -> {:error, "你的真气不够，难以施展。\n"}
+      vitals.neili < 200 -> {:error, "你的真气不够，难以施展「夺命连环」。\n"}
       true -> :ok
     end
   end
@@ -112,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     combat = character.meta.combat
 
     cond do
-      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用。\n"}
+      Combat.weapon(combat) != nil -> {:error, "你必须空手才能使用「夺命连环」。\n"}
       true -> :ok
     end
   end
@@ -127,7 +130,9 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     combat = Combat.start_busy(combat, 1)
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
-    conn = Broadcast.publish(conn, "$N身形一展，扑至$n跟前，猛然施展「夺命连环」，双爪幻作数道金光，直琐$n各处要脉！", n1: character.name)
+
+    conn =
+      Broadcast.publish(conn, "$N身形一展，扑至$n跟前，猛然施展「夺命连环」，双爪幻作数道金光，直琐$n各处要脉！", n1: character.name)
 
     conn
     |> put_character(character)
@@ -163,14 +168,16 @@ defmodule Kantele.Combat.Skills.Performs.WushengZhao.Lian do
     dp = Stats.skill(stats, "dodge") + Stats.skill(stats, "parry")
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
+
     if hit do
-          vitals = Vitals.damage(vitals, :qi, damage)
+      vitals = Vitals.damage(vitals, :qi, damage)
     end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     Performs.feedback(attacker, 50, 3)
     msg = if hit, do: "$p奋力抵抗，结果还是连中$P数抓，登时鲜血飞溅，无法反击！", else: "可是$p的看破了$P的招式，巧妙的一一拆解，没露半点破绽！"
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
+
     conn
     |> Broadcast.publish(result)
     |> put_character(character)
