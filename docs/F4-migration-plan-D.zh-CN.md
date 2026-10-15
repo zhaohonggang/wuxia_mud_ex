@@ -1,146 +1,40 @@
 # Plan D — Remaining unplanned failing performs (F4 migration)
 
 > 动态清单：每次全量严格验收扫描后重新生成，仅列出仍 FAIL 的未计划文件。
+> 已排除计划 A / B / C / E。**Plan E**（`scripts/f4-plan-E-rel.json`，60 个 B 级文件）
+> 由另一 session 执行，见 `docs/F4-migration-plan-E.zh-CN.md`；本清单与 Plan E 互不重叠。
 > 验收工具：`scripts/perf_acceptance.py`（`check_one`，严格 multiset 比对，MISSING=0 为 PASS）。
 > 约定（沿用 plan A/B）：手工 `.ex` 必须保留 `# ===== 原始 LPC 源码 =====` 注释块；
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**117**
-- 缺失字面量合计（miss 之和）：**1284**
+- 剩余文件数：**57**
+- 缺失字面量合计（miss 之和）：**681**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
 | A严重(>=15) | 10 | 196 |
-| B中等(5-14) | 107 | 1088 |
+| B中等(5-14) | 47 | 485 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
 
-### chanhun_suo（2 个）
-- [ ] ❌ `chanhun_suo/duo.ex` ← `chanhun-suo/duo.c` (miss=13)
-- [ ] ❌ `chanhun_suo/suo.ex` ← `chanhun-suo/suo.c` (miss=10)
-
 ### chousui_zhang（1 个）
 - [ ] ❌ `chousui_zhang/dan.ex` ← `chousui-zhang/dan.c` (miss=19)
 
-### chuangwang_dao（1 个）
-- [ ] ❌ `chuangwang_dao/xiong.ex` ← `chuangwang-dao/xiong.c` (miss=11)
-
-### chuanxin_zhang（1 个）
-- [ ] ❌ `chuanxin_zhang/zhui.ex` ← `chuanxin-zhang/zhui.c` (miss=8)
-
-### chuanyue_jian（1 个）
-- [ ] ❌ `chuanyue_jian/hao.ex` ← `chuanyue-jian/hao.c` (miss=11)
-
-### dacheng_fosuo（1 个）
-- [ ] ❌ `dacheng_fosuo/chanrao.ex` ← `dacheng-fosuo/chanrao.c` (miss=9)
-
-### dagou_bang（2 个）
-- [ ] ❌ `dagou_bang/ban.ex` ← `dagou-bang/ban.c` (miss=14)
-- [ ] ❌ `dagou_bang/chuo.ex` ← `dagou-bang/chuo.c` (miss=10)
-
-### dali_chu（1 个）
-- [ ] ❌ `dali_chu/hong.ex` ← `dali-chu/hong.c` (miss=12)
-
-### damo_jian（1 个）
-- [ ] ❌ `damo_jian/sanjue.ex` ← `damo-jian/sanjue.c` (miss=8)
-
-### danding_dao（1 个）
-- [ ] ❌ `danding_dao/kou.ex` ← `danding-dao/kou.c` (miss=10)
-
 ### daojian_guizhen（1 个）
 - [ ] ❌ `daojian_guizhen/daojian.ex` ← `daojian-guizhen/daojian.c` (miss=23)
-
-### dongyang_dao（1 个）
-- [ ] ❌ `dongyang_dao/zhan.ex` ← `dongyang-dao/zhan.c` (miss=9)
-
-### duanjia_sword（1 个）
-- [ ] ❌ `duanjia_sword/jing.ex` ← `duanjia-sword/jing.c` (miss=9)
-
-### duanyun_fu（1 个）
-- [ ] ❌ `duanyun_fu/tiaoyan.ex` ← `duanyun-fu/tiaoyan.c` (miss=7)
-
-### dugu_jiujian（2 个）
-- [ ] ❌ `dugu_jiujian/qi.ex` ← `dugu-jiujian/qi.c` (miss=12)
-- [ ] ❌ `dugu_jiujian/yi.ex` ← `dugu-jiujian/yi.c` (miss=10)
-
-### duoluoye_zhi（1 个）
-- [ ] ❌ `duoluoye_zhi/jimie.ex` ← `duoluoye-zhi/jimie.c` (miss=14)
-
-### duoming_jinhua（1 个）
-- [ ] ❌ `duoming_jinhua/hua.ex` ← `duoming-jinhua/hua.c` (miss=11)
-
-### emei_jian（1 个）
-- [ ] ❌ `emei_jian/xian.ex` ← `emei-jian/xian.c` (miss=10)
 
 ### fanliangyi_dao（2 个）
 - [ ] ❌ `fanliangyi_dao/makearray.ex` ← `fanliangyi-dao/makearray.c` (miss=8)
 - [ ] ❌ `fanliangyi_dao/san.ex` ← `fanliangyi-dao/san.c` (miss=18)
 
-### feifeng_whip（1 个）
-- [ ] ❌ `feifeng_whip/wu.ex` ← `feifeng-whip/wu.c` (miss=9)
-
-### feilong_zhang（1 个）
-- [ ] ❌ `feilong_zhang/fei.ex` ← `feilong-zhang/fei.c` (miss=11)
-
-### feixing_shu（1 个）
-- [ ] ❌ `feixing_shu/hua.ex` ← `feixing-shu/hua.c` (miss=12)
-
 ### fenglei_panfa（1 个）
 - [ ] ❌ `fenglei_panfa/fenglei.ex` ← `fenglei-panfa/fenglei.c` (miss=19)
 
-### fenglei_zifa（1 个）
-- [ ] ❌ `fenglei_zifa/she.ex` ← `fenglei-zifa/she.c` (miss=7)
-
-### fireice_strike（1 个）
-- [ ] ❌ `fireice_strike/binghuo.ex` ← `fireice-strike/binghuo.c` (miss=14)
-
 ### force（1 个）
 - [ ] ❌ `force/power.ex` ← `force/power.c` (miss=25)
-
-### fumo_jian（1 个）
-- [ ] ❌ `fumo_jian/foxin.ex` ← `fumo-jian/foxin.c` (miss=11)
-
-### fumo_zhang（1 个）
-- [ ] ❌ `fumo_zhang/lun.ex` ← `fumo-zhang/lun.c` (miss=7)
-
-### furong_jian（1 个）
-- [ ] ❌ `furong_jian/luan.ex` ← `furong-jian/luan.c` (miss=9)
-
-### guxing_jian（1 个）
-- [ ] ❌ `guxing_jian/lian.ex` ← `guxing-jian/lian.c` (miss=10)
-
-### guyue_chan（1 个）
-- [ ] ❌ `guyue_chan/jing.ex` ← `guyue-chan/jing.c` (miss=9)
-
-### hanmei_jian（1 个）
-- [ ] ❌ `hanmei_jian/leng.ex` ← `hanmei-jian/leng.c` (miss=11)
-
-### hansha_sheying（1 个）
-- [ ] ❌ `hansha_sheying/zhen.ex` ← `hansha-sheying/zhen.c` (miss=11)
-
-### hanwang_qingdao（1 个）
-- [ ] ❌ `hanwang_qingdao/ying.ex` ← `hanwang-qingdao/ying.c` (miss=11)
-
-### hanxing_bada（1 个）
-- [ ] ❌ `hanxing_bada/lastrisk.ex` ← `hanxing-bada/lastrisk.c` (miss=7)
-
-### heixue_shenzhen（1 个）
-- [ ] ❌ `heixue_shenzhen/luo.ex` ← `heixue-shenzhen/luo.c` (miss=12)
-
-### henshan_jian（1 个）
-- [ ] ❌ `henshan_jian/huan.ex` ← `henshan-jian/huan.c` (miss=13)
-
-### hexing_bifa（1 个）
-- [ ] ❌ `hexing_bifa/dian.ex` ← `hexing-bifa/dian.c` (miss=9)
-
-### hongye_daofa（1 个）
-- [ ] ❌ `hongye_daofa/leiting.ex` ← `hongye-daofa/leiting.c` (miss=7)
-
-### houquan（1 个）
-- [ ] ❌ `houquan/zhen.ex` ← `houquan/zhen.c` (miss=8)
 
 ### huashan_jian（4 个）
 - [ ] ❌ `huashan_jian/jie.ex` ← `huashan-jian/jie.c` (miss=6)
@@ -152,75 +46,9 @@
 - [ ] ❌ `huifeng_jian/jue.ex` ← `huifeng-jian/jue.c` (miss=25)
 - [ ] ❌ `huifeng_jian/mie.ex` ← `huifeng-jian/mie.c` (miss=8)
 
-### huilong_bifa（1 个）
-- [ ] ❌ `huilong_bifa/cang.ex` ← `huilong-bifa/cang.c` (miss=8)
-
-### hujia_daofa（1 个）
-- [ ] ❌ `hujia_daofa/xian.ex` ← `hujia-daofa/xian.c` (miss=7)
-
 ### jiandun_zhusuo（2 个）
 - [ ] ❌ `jiandun_zhusuo/fu.ex` ← `jiandun-zhusuo/fu.c` (miss=12)
 - [ ] ❌ `jiandun_zhusuo/qian.ex` ← `jiandun-zhusuo/qian.c` (miss=16)
-
-### jidian_jian（1 个）
-- [ ] ❌ `jidian_jian/dian.ex` ← `jidian-jian/dian.c` (miss=6)
-
-### jinbiao_jue（1 个）
-- [ ] ❌ `jinbiao_jue/huan.ex` ← `jinbiao-jue/huan.c` (miss=10)
-
-### jingang_quan（1 个）
-- [ ] ❌ `jingang_quan/jingang.ex` ← `jingang-quan/jingang.c` (miss=12)
-
-### jinguan_yusuo（1 个）
-- [ ] ❌ `jinguan_yusuo/suo.ex` ← `jinguan-yusuo/suo.c` (miss=9)
-
-### jingyue_bifa（1 个）
-- [ ] ❌ `jingyue_bifa/ci.ex` ← `jingyue-bifa/ci.c` (miss=12)
-
-### jinshe_jian（1 个）
-- [ ] ❌ `jinshe_jian/wan.ex` ← `jinshe-jian/wan.c` (miss=10)
-
-### jinshe_zhui（1 个）
-- [ ] ❌ `jinshe_zhui/tuwu.ex` ← `jinshe-zhui/tuwu.c` (miss=11)
-
-### jiuqu_jian（1 个）
-- [ ] ❌ `jiuqu_jian/wan.ex` ← `jiuqu-jian/wan.c` (miss=10)
-
-### jueqing_jian（1 个）
-- [ ] ❌ `jueqing_jian/liu.ex` ← `jueqing-jian/liu.c` (miss=12)
-
-### kuangfeng_jian（1 个）
-- [ ] ❌ `kuangfeng_jian/sao.ex` ← `kuangfeng-jian/sao.c` (miss=9)
-
-### kuimang_dao（1 个）
-- [ ] ❌ `kuimang_dao/pan.ex` ← `kuimang-dao/pan.c` (miss=11)
-
-### kunlun_qifa（1 个）
-- [ ] ❌ `kunlun_qifa/liu.ex` ← `kunlun-qifa/liu.c` (miss=11)
-
-### lingshe_zhangfa（1 个）
-- [ ] ❌ `lingshe_zhangfa/chan.ex` ← `lingshe-zhangfa/chan.c` (miss=9)
-
-### liuhe_dao（1 个）
-- [ ] ❌ `liuhe_dao/shan.ex` ← `liuhe-dao/shan.c` (miss=11)
-
-### longcheng_shendao（1 个）
-- [ ] ❌ `longcheng_shendao/feng.ex` ← `longcheng-shendao/feng.c` (miss=11)
-
-### longxing_jian（1 个）
-- [ ] ❌ `longxing_jian/kong.ex` ← `longxing-jian/kong.c` (miss=10)
-
-### luohan_gun（1 个）
-- [ ] ❌ `luohan_gun/xiangmo.ex` ← `luohan-gun/xiangmo.c` (miss=7)
-
-### luohan_quan（1 个）
-- [ ] ❌ `luohan_quan/xiangmo.ex` ← `luohan-quan/xiangmo.c` (miss=8)
-
-### luoying_shenjian（1 个）
-- [ ] ❌ `luoying_shenjian/sui.ex` ← `luoying-shenjian/sui.c` (miss=12)
-
-### luoyun_dao（1 个）
-- [ ] ❌ `luoyun_dao/tian.ex` ← `luoyun-dao/tian.c` (miss=11)
 
 ### lutou_zhang（1 个）
 - [ ] ❌ `lutou_zhang/tong.ex` ← `lutou-zhang/tong.c` (miss=11)
