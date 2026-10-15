@@ -183,7 +183,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `dacheng_fosuo/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `dacheng_fosuo/chanrao.ex` ← `dacheng-fosuo/chanrao.c`  (miss=9)
+- [x] ✅ `dacheng_fosuo/chanrao.ex` ← `dacheng-fosuo/chanrao.c`  (miss=0)
 
 ### `dagou_bang/` （2 个，基线缺失 24 条）
 
