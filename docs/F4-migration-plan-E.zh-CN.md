@@ -192,7 +192,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `dali_chu/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `dali_chu/hong.ex` ← `dali-chu/hong.c`  (miss=12)
+- [x] ✅ `dali_chu/hong.ex` ← `dali-chu/hong.c`  (miss=0)
 
 ### `damo_jian/` （1 个，基线缺失 8 条）
 
