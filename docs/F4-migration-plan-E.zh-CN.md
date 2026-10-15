@@ -175,7 +175,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `chuanxin_zhang/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `chuanxin_zhang/zhui.ex` ← `chuanxin-zhang/zhui.c`  (miss=8)
+- [x] ✅ `chuanxin_zhang/zhui.ex` ← `chuanxin-zhang/zhui.c`  (miss=0)
 
 ### `chuanyue_jian/` （1 个，基线缺失 11 条）
 
