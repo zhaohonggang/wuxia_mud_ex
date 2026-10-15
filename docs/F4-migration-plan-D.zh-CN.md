@@ -8,26 +8,14 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**4**
-- 缺失字面量合计（miss 之和）：**42**
+- 剩余文件数：**0**
+- 缺失字面量合计（miss 之和）：**0**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
 | A严重(>=15) | 0 | 0 |
-| B中等(5-14) | 4 | 42 |
+| B中等(5-14) | 0 | 0 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
-
-### tiangang_zhi（1 个）
-- [ ] ❌ `tiangang_zhi/ling.ex` ← `tiangang-zhi/ling.c` (miss=10)
-
-### wudang_jian（1 个）
-- [ ] ❌ `wudang_jian/sheng.ex` ← `wudang-jian/sheng.c` (miss=11)
-
-### xiyang_jian（1 个）
-- [ ] ❌ `xiyang_jian/ci.ex` ← `xiyang-jian/ci.c` (miss=10)
-
-### yunhe_jian（1 个）
-- [ ] ❌ `yunhe_jian/chong.ex` ← `yunhe-jian/chong.c` (miss=11)
