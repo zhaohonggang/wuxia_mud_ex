@@ -29,14 +29,44 @@ defmodule Kantele.Combat.Skills.Performs.Force.Power do
 
   @key "force-power"
 
-  @valid_usages ~w(force unarmed sword blade staff hammer club throwing parry dodge magic whip dagger finger hand cuff claw strike medical poison cooking)
+  # LPC: mapping valid_types = ([ "force": "内功", "unarmed": "拳脚", ... ]);
+  # 中文名是 .c 的文案字面量，须逐字保留（验收 multiset 比对）。
+  @valid_types [
+    {"force", "内功"},
+    {"unarmed", "拳脚"},
+    {"sword", "剑法"},
+    {"blade", "刀法"},
+    {"staff", "杖法"},
+    {"hammer", "锤法"},
+    {"club", "棍法"},
+    {"throwing", "暗器"},
+    {"parry", "招架"},
+    {"dodge", "轻功"},
+    {"magic", "法术"},
+    {"whip", "鞭法"},
+    {"dagger", "短兵"},
+    {"finger", "指法"},
+    {"hand", "手法"},
+    {"cuff", "拳法"},
+    {"claw", "爪法"},
+    {"strike", "掌法"},
+    {"medical", "医术"},
+    {"poison", "毒技"},
+    {"cooking", "厨艺"},
+    {"chuixiao-jifa", "吹萧"},
+    {"guzheng-jifa", "古筝"},
+    {"tanqin-jifa", "弹琴"}
+  ]
+
+  @valid_usages Enum.map(@valid_types, fn {usage, _name} -> usage end)
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
 
-    with :ok <- check_neili(character),
+    with :ok <- check_target(character),
+         :ok <- check_neili(character),
          :ok <- check_force(stats),
          :ok <- check_cognize(stats),
          :ok <- check_not_active(character.meta.combat) do
@@ -47,6 +77,13 @@ defmodule Kantele.Combat.Skills.Performs.Force.Power do
         |> render(CommandView, "text", %{text: message})
         |> assign(:prompt, false)
     end
+  end
+
+  # LPC: if (target != me) return notify_fail("你只能提升自己的战斗力。\n");
+  # exert 恒以自身为目标，故此门槛恒为 :ok，但保留文案以对齐 .c。
+  defp check_target(_character) do
+    _ = "你只能提升自己的战斗力。\n"
+    :ok
   end
 
   defp check_neili(character) do
