@@ -67,7 +67,7 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Chan do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -106,26 +106,41 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Chan do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      character.meta.combat.busy > 0 ->
+        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     level = Map.get(data, :level, 0)
     bindings = [n1: attacker.name, n2: character.name]
 
-    if character.meta.combat.busy > 0 do
-      conn
-    else
-      if div(level, 2) + Engine.rand(rng, max(level, 1)) >
-           Stats.skill(character.meta.stats, "dodge") do
-        combat = Combat.start_busy(character.meta.combat, div(level, 18) + 2)
-        character = %{character | meta: %{character.meta | combat: combat}}
-        Performs.feedback(attacker, 50, 1)
+    if div(level, 2) + Engine.rand(rng, max(level, 1)) >
+         Stats.skill(character.meta.stats, "dodge") do
+      combat = Combat.start_busy(character.meta.combat, div(level, 18) + 2)
+      character = %{character | meta: %{character.meta | combat: combat}}
+      Performs.feedback(attacker, 50, 1)
 
-        conn
-        |> Broadcast.publish(Messages.interpolate("棒影窜动间$n招式陡然一紧，已被$N攻的蹦跳不停，手忙脚乱！\n", bindings))
-        |> put_character(character)
-      else
-        Performs.feedback(attacker, 50, 2)
-        Broadcast.publish(conn, Messages.interpolate("可是$n看破了$N的企图，镇定解招，一丝不乱。\n", bindings))
-      end
+      conn
+      |> Broadcast.publish(Messages.interpolate("棒影窜动间$n招式陡然一紧，已被$N攻的蹦跳不停，手忙脚乱！\n", bindings))
+      |> put_character(character)
+    else
+      Performs.feedback(attacker, 50, 2)
+      Broadcast.publish(conn, Messages.interpolate("可是$n看破了$N的企图，镇定解招，一丝不乱。\n", bindings))
     end
   end
 

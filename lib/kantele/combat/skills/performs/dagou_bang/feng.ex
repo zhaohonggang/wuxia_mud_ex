@@ -54,9 +54,9 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Feng do
     wp =
       case Combat.weapon(ctx.character.meta.combat) do
         %{name: name} -> name
-        _ -> "兵器"
+        _ -> ""
       end
 
-    "$N使出打狗棒法「封」字诀，手中#{wp}疾速舞动，幻出许许棒影护住周身。\n"
+    "$N使出打狗棒法「封」字诀，手中" <> wp <> "疾速舞动，幻出许许棒影护住周身。\n"
   end
 end

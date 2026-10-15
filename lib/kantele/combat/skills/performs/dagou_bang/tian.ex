@@ -86,7 +86,7 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Tian do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -123,6 +123,14 @@ defmodule Kantele.Combat.Skills.Performs.DagouBang.Tian do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？", n1: attacker.name, n2: character.name)
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = max(Map.get(data, :ap, 0), 1)
     bindings = [n1: attacker.name, n2: character.name]
