@@ -59,7 +59,7 @@ defmodule Kantele.Combat.Skills.Performs.FengyunShou.Qinna do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      [] -> {:error, "风云手#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -106,7 +106,7 @@ defmodule Kantele.Combat.Skills.Performs.FengyunShou.Qinna do
     conn =
       Broadcast.publish(
         conn,
-        "$N贴上前来，施展#{@move_name}和$n近身搏击，手忽折忽扭，或抓或甩，令人眼花缭乱！\n",
+        "$N贴上前来，和$n近身搏击，只见$P的手忽折忽扭，或抓或甩，令人眼花缭乱！\n",
         n1: character.name,
         n2: target.name
       )
@@ -130,15 +130,23 @@ defmodule Kantele.Combat.Skills.Performs.FengyunShou.Qinna do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "双手"]
+    bindings = [n1: attacker.name, n2: character.name]
 
     hit = Engine.rand(rng, level) > div(parry, 2)
 
@@ -150,24 +158,16 @@ defmodule Kantele.Combat.Skills.Performs.FengyunShou.Qinna do
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "结果$p被$N的#{@move_name}压制得无法反击，受到#{damage}点伤害！\n",
+          "$p奋力抵抗，终究不敌$N，连中数招后还是被压制得无法反击！\n",
           bindings
         )
       )
       |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p的看破了$N的招式，巧妙的一一拆解，没露半点破绽！\n", bindings)
+      )
     end
   end
 

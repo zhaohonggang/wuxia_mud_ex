@@ -6,7 +6,6 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
   `combat/perform-incoming` 事件，由目标侧 `resolve_incoming` 判定命中并施加伤害。
 
   差异（TODO(migrate)）：
-  - LPC 另要求 force>=200；本版仅以 jingang-zhi>=150 把关；
   - LPC 要求 mapped force 为 hunyuan-yiqi/yijinjing/luohan-fumogong，本版保留；
   - LPC 命中/落空分别消耗 300/100，本版统一 300；
   - 命中判定：LPC 以 finger+force 对 dodge+parry，本版以 `rand(level) > parry/2` 代理；
@@ -40,6 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
          :ok <- check_unarmed(combat),
+         :ok <- check_force_level(stats),
          {:ok, level} <- check_skill_level(stats),
          :ok <- check_mapped(stats),
          :ok <- check_force_mapped(stats),
@@ -64,13 +64,22 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
   defp check_unarmed(combat) do
     if Combat.weapon(combat) do
       {:error, "你必须空手才能使用#{@move_name}！\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (me->query_skill("force") < 200)
+  defp check_force_level(stats) do
+    if Stats.skill(stats, "force") < 200 do
+      {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
     else
       :ok
     end
@@ -117,7 +126,13 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
     conn =
       Broadcast.publish(
         conn,
-        "$N眼中闪过一道青光，汇聚全身功力，右手食指弹出一道劲气，划空而过，如同流星一般击向$n！\n",
+        Enum.join(
+          [
+            "$N眼中闪过一道青光，汇聚全身功力，右手食指弹出一道劲气，划空而过，如同流星一般击向$n",
+            "！\n"
+          ],
+          ""
+        ),
         n1: character.name,
         n2: target.name
       )
@@ -141,15 +156,24 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "指"]
+    bindings = [n1: attacker.name, n2: character.name]
 
     hit = Engine.rand(rng, level) > div(parry, 2)
 
@@ -161,21 +185,17 @@ defmodule Kantele.Combat.Skills.Performs.JingangZhi.Fumo do
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "只见$p一声惨叫，已被点中胸口要穴，只觉得胸口气血汹涌，全身气血倒流，受到#{damage}点伤害！\n",
+          "只见$p一声惨叫，已被点中胸口要穴，$p只觉得胸口气血汹涌，全身气血倒流，哇的一声吐出一口鲜血，苦不堪言！\n",
           bindings
         )
       )
       |> put_character(put_combat(character, combat))
     else
       text =
-        if weapon_name do
-          Messages.interpolate(
-            "可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
+        Messages.interpolate(
+          "可是$p看破了$N的企图，轻轻向后飘出数丈，躲过了这一致命的一击！\n",
+          bindings
+        )
 
       Broadcast.publish(conn, text)
     end

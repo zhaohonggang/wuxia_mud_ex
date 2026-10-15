@@ -64,7 +64,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -115,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
   defp apply_perform(conn, character, target, _level) do
     stats = character.meta.stats
     weapon = Combat.weapon(character.meta.combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "刀"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     # LPC: ap = me->query_skill("blade") + me->query_skill("force")
     ap = Stats.skill(stats, "blade") + Stats.skill(stats, "force")
@@ -124,7 +124,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
     conn =
       Broadcast.publish(
         conn,
-        "$N手中的#{weapon_name}一振，施出#{@move_name}，顿时一股凌厉无比的无形刀气破空袭向$n！\n",
+        "$N手中的" <> weapon_name <> "一振，施出#{@move_name}，顿时一股凌厉无比的无形刀气破空袭向$n！\n",
         n1: character.name,
         n2: target.name
       )
@@ -148,6 +148,17 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     combat = character.meta.combat
@@ -160,7 +171,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
     ap = Map.get(data, :ap, level * 2)
     dp = Stats.skill(character.meta.stats, "force")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "刀"]
+    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || ""]
 
     # LPC: if (ap / 4 + random(ap / 2) > dp) → hit
     hit = div(ap, 4) + Engine.rand(rng, max(div(ap, 2), 1)) > dp
@@ -174,7 +185,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Zhui do
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "结果$n一声惨叫，整个人如遭电击，刀气穿心，口中鲜血狂喷而出！\n",
+          "只见$n一声惨叫，整个人如遭电击，刀气穿心，口中鲜血狂喷而出！\n",
           bindings
         )
       )
