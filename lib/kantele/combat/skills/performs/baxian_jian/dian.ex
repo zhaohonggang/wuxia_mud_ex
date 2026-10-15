@@ -2,12 +2,18 @@ defmodule Kantele.Combat.Skills.Performs.BaxianJian.Dian do
   @moduledoc """
   魁星点元「dian」（对照 `kungfu/skill/baxian-jian/dian.c`）
 
-  八仙剑法攻击绝招：消耗 250 内力，发起 `combat/perform-incoming` 事件。
+  八仙剑法绝招：须持 sword 类武器，发起 `combat/perform-incoming` 事件，
+  由目标侧 `resolve_incoming` 判定命中并施加伤害（并泄去目标内力）。
 
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:baxian-jian>=100,force>=150`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - LPC `set:neili=0`，本版简化处理。
+  门槛（攻击方，逐条对齐 LPC）：目标在战斗中、手持 sword 类武器、
+  `force>=150`、`baxian-jian>=100`、`mapped("sword")=="baxian-jian"`、
+  `neili>=250`。
+
+  攻击方广播起手式（`$N施出「魁星点元」绝技…射向$n。`）、发 `perform-incoming`；
+  目标侧按 `ap/2 + rand(ap) > dp`（ap=sword，dp=parry）判定命中：
+  - 命中：伤害 `ap/2 + rand(ap*2/3)`（30% 外伤），并 `target->add("neili", -damage)`；
+    文案 `结果$n不慎被$N剑尖荡出的剑气点中劳宫穴…`，攻击方扣 150 内力、忙乱 2；
+  - 未中：`可是$p并不慌乱…格挡开了$P的剑招。`，攻击方扣 60 内力、忙乱 3。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -18,13 +24,16 @@ defmodule Kantele.Combat.Skills.Performs.BaxianJian.Dian do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "baxian-jian/dian"
   @move_name "「魁星点元」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -33,11 +42,12 @@ defmodule Kantele.Combat.Skills.Performs.BaxianJian.Dian do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         {:ok, weapon_name} <- check_weapon(combat),
+         :ok <- check_force_level(stats),
+         :ok <- check_skill_level(stats),
          :ok <- check_mapped(stats),
          :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+      apply_perform(conn, character, target, weapon_name)
     else
       {:error, message} ->
         conn
@@ -57,68 +67,78 @@ defmodule Kantele.Combat.Skills.Performs.BaxianJian.Dian do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
+  # if (! objectp(weapon = me->query_temp("weapon")) ||
+  #     (string)weapon->query("skill_type") != "sword")
+  #         return notify_fail("你使用的武器不对，难以施展" DIAN "。\n");
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "sword" do
+      {:ok, Map.get(weapon, :name) || ""}
+    else
+      {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  # if (me->query_skill("force") < 150)
+  #         return notify_fail("你的内功的修为不够，难以施展" DIAN "。\n");
+  defp check_force_level(stats) do
+    if Stats.skill(stats, "force") < 150 do
+      {:error, "你的内功的修为不够，难以施展#{@move_name}。\n"}
+    else
       :ok
-    else
-      {:error, "你使用的武器不对。\n"}
     end
   end
 
+  # if (me->query_skill("baxian-jian", 1) < 100)
+  #         return notify_fail("你的八仙剑法修为不够，难以施展" DIAN "。\n");
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "baxian-jian")
-
-    if level < 100 do
-      {:error, "你的八仙剑法不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "baxian-jian") < 100 do
+      {:error, "你的八仙剑法修为不够，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
+      :ok
     end
   end
 
+  # if (me->query_skill_mapped("sword") != "baxian-jian")
+  #         return notify_fail("你没有激发八仙剑法，难以施展" DIAN "。\n");
   defp check_mapped(stats) do
     if Stats.mapped(stats, "sword") == "baxian-jian" do
       :ok
     else
-      {:error, "你没有激发八仙剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发八仙剑法，难以施展#{@move_name}。\n"}
     end
   end
 
+  # if (me->query("neili") < 250)
+  #         return notify_fail("你现在真气不够，难以施展" DIAN "。\n");
   defp check_neili(character) do
     if character.meta.vitals.neili < 250 do
-      {:error, "你现在真气不够，无法施展#{@move_name}。\n"}
+      {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 250}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target, weapon_name) do
+    ap = Stats.skill(character.meta.stats, "sword")
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N剑尖一点，使出八仙剑法「魁星点元」，剑气如流星般点向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+    # LPC: msg = HIC "$N" HIC "施出「" HIR "魁星点元" HIC "」绝技，手中" + wn +
+    #      HIC "微作龙吟，剑尖迸出一道剑气射向$n" HIC "。\n" NOR;
+    opening =
+      "$N施出「魁星点元」绝技，手中" <>
+        weapon_name <> "微作龙吟，剑尖迸出一道剑气射向$n。\n"
+
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{
-        attacker: ref(character),
-        perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
-      }
+      data: %{attacker: ref(character), perform_id: @perform_id, ap: ap}
     })
 
     conn
@@ -128,59 +148,58 @@ defmodule Kantele.Combat.Skills.Performs.BaxianJian.Dian do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
-      conn
-      |> Broadcast.publish(
-        Messages.interpolate("结果$p被$N的#{@move_name}击中，受到#{damage}点伤害！\n", bindings)
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
       )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(character.meta.stats, "parry")
+
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: ap = me->query_skill("sword"); dp = target->query_skill("parry");
+    #      if (ap / 2 + random(ap) > dp)
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+      # LPC: damage = ap / 2 + random(ap * 2 / 3); me->start_busy(2); me->add("neili", -150)
+      damage = div(ap, 2) + Engine.rand(rng, max(div(ap * 2, 3), 1))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 30, 100))
+
+      # LPC final(): target->add("neili", -damage)（不低于 0）
+      vitals = %{vitals | neili: max(vitals.neili - damage, 0)}
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      Performs.feedback(attacker, 150, 2)
+
+      conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "结果$n不慎被$N剑尖荡出的剑气点中劳宫穴，全身真气不禁狂泄而出！\n",
+          bindings
+        )
+      )
+      |> put_character(character)
+    else
+      # LPC: me->start_busy(3); me->add("neili", -60)
+      Performs.feedback(attacker, 60, 3)
+
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p并不慌乱，收敛心神，轻轻格挡开了$P的剑招。\n", bindings)
+      )
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "baxian-jian/dian",
-      kind: :perform,
-      gates: [],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
 end
