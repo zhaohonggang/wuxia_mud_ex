@@ -2,11 +2,13 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
   @moduledoc """
   缚字诀「fu」（对照 `kungfu/skill/jiandun-zhusuo/fu.c`）
 
-  剑盾爪锁单体攻击：消耗 50 内力，对战斗中对手出招。
+  剑盾珠索缠绕技：需持鞭、剑盾珠索>=50、真气>=50、激发 whip 为剑盾珠索、
+  目标未处于忙乱。命中（`random(剑盾珠索) > 目标 parry/2`）则目标忙乱
+  `剑盾珠索/20 + 1` 轮，攻击方忙乱 1 轮。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:jiandun-zhusuo>=50`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  - `target->is_busy()` 取引用快照 meta 的 combat.busy（缺 meta 时按未忙处理）；
+  - 命中/落空在目标侧结算。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,7 +18,7 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -32,11 +34,12 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
+         :ok <- check_target_busy(target),
+         {:ok, weapon} <- check_weapon(combat),
          {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_neili(character),
+         :ok <- check_mapped(stats) do
+      apply_perform(conn, character, target, level, weapon)
     else
       {:error, message} ->
         conn
@@ -56,17 +59,30 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
+
+  # LPC: if (target->is_busy())
+  #          return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n");
+  defp check_target_busy(target) do
+    if busy?(target) do
+      {:error, "#{Map.get(target, :name)}目前正自顾不暇，放胆攻击吧。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp busy?(%{meta: %{combat: %{busy: busy}}}), do: busy > 0
+  defp busy?(_), do: false
 
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "whip" do
-      :ok
+      {:ok, weapon}
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "你的武器不对，难以施展#{@move_name}。\n"}
     end
   end
 
@@ -74,9 +90,17 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
     level = Stats.skill(stats, "jiandun-zhusuo")
 
     if level < 50 do
-      {:error, "你的剑盾爪锁不够娴熟，无法施展#{@move_name}。\n"}
+      {:error, "你的剑盾珠索级别不够，难以施展#{@move_name}。\n"}
     else
       {:ok, level}
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 50 do
+      {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
@@ -84,26 +108,17 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
     if Stats.mapped(stats, "whip") == "jiandun-zhusuo" do
       :ok
     else
-      {:error, "你没有激发剑盾爪锁，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发剑盾珠索，难以施展#{@move_name}。\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 50 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
-    else
-      :ok
-    end
-  end
-
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target, level, weapon) do
+    weapon_name = Map.get(weapon, :name, "")
 
     conn =
       Broadcast.publish(
         conn,
-        "$N鞭影如蛇，使出剑盾爪锁「缚字诀」，锁链缠绕向$n！\n",
+        "$N右手一扬，手中" <> weapon_name <> "顿时回旋飞舞而至，迂回盘绕向$n！\n",
         n1: character.name,
         n2: target.name
       )
@@ -111,44 +126,56 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Fu do
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        level: level,
+        weapon_name: weapon_name,
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
-      conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
+      )
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
 
-      Broadcast.publish(conn, text)
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    weapon_name = Map.get(data, :weapon_name, "")
+    level = Map.get(data, :level, 0)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: me->start_busy(1);
+    Performs.feedback(attacker, 0, 1)
+
+    # LPC: random(me->query_skill("jiandun-zhusuo", 1)) > target->query_skill("parry", 1) / 2
+    if Engine.rand(rng, max(level, 1)) > div(Stats.skill(stats, "parry"), 2) do
+      # LPC: target->start_busy(me->query_skill("jiandun-zhusuo") / 20 + 1);
+      combat = Combat.start_busy(character.meta.combat, div(level, 20) + 1)
+
+      conn =
+        Broadcast.publish(
+          conn,
+          "$n只觉全身一紧，已被" <> weapon_name <> "牢牢缚住，动弹不得！\n",
+          bindings
+        )
+
+      put_character(conn, put_combat(character, combat))
+    else
+      Broadcast.publish(conn, "可是$p看破了$P的企图，斜跳躲闪开来。\n", bindings)
     end
   end
 

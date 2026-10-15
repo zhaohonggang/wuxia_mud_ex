@@ -2,14 +2,14 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
   @moduledoc """
   千头万绪「qian」（对照 `kungfu/skill/jiandun-zhusuo/qian.c`）
 
-  剑盾珠索三连击：消耗 300 内力，发起 `combat/perform-incoming` 事件，
-  由目标侧 `resolve_incoming` 判定命中并施加伤害。
+  剑盾珠索三连击：需持鞭、内功>=180、剑盾珠索>=120、真气>=400、激发 whip 为
+  剑盾珠索、目标存活。三鞭均以攻击方 whip 等级对目标 parry/dodge/force 判定，
+  命中按 `do_damage(WEAPON_ATTACK, damage, 10)` 结算；伤害
+  `damage = 剑盾珠索/4 + random(/16)`。收招扣 300 内力，忙乱 3+random(3)。
 
   差异（TODO(migrate)）：
-  - LPC 另要求 force>=180；本版仅以 jiandun-zhusuo>=120 与 mapped 把关；
-  - LPC 三鞭分别对 parry/dodge/force 判定，本版合为一次 parry 判定；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `skill/4+rand(skill/16)`。
+  - 三鞭的 do_damage 在目标侧依次结算，真力消耗累加后一次性 feedback；
+  - 首招引子在攻击方广播，其余两招引子与全部结果在目标侧广播。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -19,10 +19,11 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "jiandun-zhusuo/qian"
   @move_name "「千头万绪」"
@@ -35,11 +36,12 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_force(stats),
          {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_neili(character),
+         :ok <- check_mapped(stats) do
+      apply_perform(conn, character, target, level, weapon)
     else
       {:error, message} ->
         conn
@@ -59,7 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -67,9 +69,17 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "whip" do
-      :ok
+      {:ok, weapon}
     else
       {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 180 do
+      {:error, "你的内功的修为不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
@@ -83,14 +93,6 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
     end
   end
 
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "whip") == "jiandun-zhusuo" do
-      :ok
-    else
-      {:error, "你没有激发剑盾珠索，难以施展#{@move_name}。\n"}
-    end
-  end
-
   defp check_neili(character) do
     if character.meta.vitals.neili < 400 do
       {:error, "你的真气不够，难以施展#{@move_name}。\n"}
@@ -99,14 +101,22 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_mapped(stats) do
+    if Stats.mapped(stats, "whip") == "jiandun-zhusuo" do
+      :ok
+    else
+      {:error, "你没有激发剑盾珠索，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  defp apply_perform(conn, character, target, level, weapon) do
+    stats = character.meta.stats
+    weapon_name = Map.get(weapon, :name, "")
 
     conn =
       Broadcast.publish(
         conn,
-        "$N一声轻哼，右手横挥，手中$w一招#{@move_name}对准$n乱点下来。\n",
+        "$N一声轻哼，右手横挥，手中" <> weapon_name <> "一招「千头万绪」对准$n乱点下来。\n",
         n1: character.name,
         n2: target.name
       )
@@ -118,60 +128,106 @@ defmodule Kantele.Combat.Skills.Performs.JiandunZhusuo.Qian do
         attacker: ref(character),
         perform_id: @perform_id,
         level: level,
-        ap: level * 2,
-        dp: 0
+        whip: Stats.skill(stats, "whip"),
+        weapon_name: weapon_name,
+        rng: &:rand.uniform/1
       }
     })
 
     conn
-    |> put_character(character)
     |> assign(:prompt, false)
   end
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "鞭"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
-      conn
-      |> Broadcast.publish(
-        Messages.interpolate(
-          "结果$p抽身回退却已然不及，被这一招点中要穴，顿时口喷鲜血，受到#{damage}点伤害！\n",
-          bindings
-        )
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+        n1: attacker.name,
+        n2: character.name
       )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "可是$p凝神聚气，硬声声将$N这一鞭架开，丝毫无损。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    weapon_name = Map.get(data, :weapon_name, "")
+    level = Map.get(data, :level, 0)
+    whip = Map.get(data, :whip, 0)
+    damage = div(level, 4) + Engine.rand(rng, max(div(div(level, 4), 4), 1))
+
+    # 第一招：对 parry（外伤 10）
+    {conn, character} =
+      resolve_stage(conn, character, attacker, rng, %{
+        ap: whip,
+        dp: Stats.skill(stats, "parry"),
+        damage: damage,
+        hit_msg: "$p抽身回退，却已然不及，被$P这招点中要穴，顿时口喷鲜血！\n",
+        miss_msg: "$p凝神聚气，硬声声将$P这一鞭架开，丝毫无损。\n"
+      })
+
+    # 第二招：对 dodge（外伤 10）
+    {conn, character} =
+      resolve_stage(conn, character, attacker, rng, %{
+        lead:
+          "\n却见$N跨步上前，手中" <>
+            weapon_name <> "招数一变，反转鞭鞘，抽向$n而去。\n",
+        ap: whip,
+        dp: Stats.skill(stats, "dodge"),
+        damage: damage,
+        hit_msg: "便在$p微微一楞间，已被$P这招抽中，鲜血四处飞溅！\n",
+        miss_msg: "可是$p急忙猛吸一口气，飞身跃起，躲开了这一招。\n"
+      })
+
+    # 第三招：对 force（外伤 10）
+    {conn, character} =
+      resolve_stage(conn, character, attacker, rng, %{
+        lead:
+          "\n紧接着又见$N纵身而起，单手将" <>
+            weapon_name <> "急速舞动，凌空朝着$n圈去。\n",
+        ap: whip,
+        dp: Stats.skill(stats, "force"),
+        damage: damage,
+        hit_msg: "顿时便听“啪”的一声闷响，$n竟被" <> weapon_name <> "卷至半空，重重摔下，再也无力爬起！\n",
+        miss_msg: "可$p一个翻滚，起身时已在丈许开外，便将这式化解于无形。\n"
+      })
+
+    # LPC: me->start_busy(3 + random(3)); me->add("neili", -300);
+    Performs.feedback(attacker, 300, 3 + Engine.rand(rng, 3))
+
+    put_character(conn, character)
+  end
+
+  # 单招结算：命中走 do_damage(WEAPON_ATTACK, damage, 10)，未命中走化解文案。
+  defp resolve_stage(conn, character, attacker, rng, opts) do
+    ap = max(Map.get(opts, :ap, 0), 1)
+    dp = Map.get(opts, :dp, 0)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    conn =
+      case Map.get(opts, :lead) do
+        nil -> conn
+        lead -> Broadcast.publish(conn, lead, bindings)
+      end
+
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      damage = Map.get(opts, :damage, 0)
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 10, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      conn = Broadcast.publish(conn, Map.get(opts, :hit_msg), bindings)
+      {conn, character}
+    else
+      conn = Broadcast.publish(conn, Map.get(opts, :miss_msg), bindings)
+      {conn, character}
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
