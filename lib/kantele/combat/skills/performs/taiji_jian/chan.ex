@@ -2,11 +2,15 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
   @moduledoc """
   缠字诀「chan」（对照 `kungfu/skill/taiji-jian/chan.c`）
 
-  太极剑法单体攻击：消耗 60 内力，对战斗中对手出招。
+  太极剑法牵制攻击：需持剑、目标未忙乱且存活、太极剑法>=80、激发 sword 为
+  太极剑法、真气>=60。攻击方恒扣 30 真气；命中判定
+  `random(level) > 目标parry/2`（level = 太极剑法）：命中令目标忙乱
+  `level/16 + 2` 轮；未命中攻击方忙乱 2。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:taiji-jian>=80`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  - `.c` 的 `target->is_busy()` 与 `living(target)` 门槛由目标侧
+    `combat/perform-incoming` 的 `cond` 兜底（攻击方拿不到目标 meta）；
+  - 引子在攻击方广播，命中/落空在目标侧结算。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -17,6 +21,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -32,11 +37,11 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_level(stats),
          :ok <- check_mapped(stats),
          :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+      apply_perform(conn, character, target, weapon, stats)
     else
       {:error, message} ->
         conn
@@ -45,6 +50,7 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
     end
   end
 
+  # LPC: if (userp(me) && ! me->query("can_perform/taiji-jian/chan"))
   defp check_perform_known(stats) do
     if Stats.perform_known?(stats, @perform_id) do
       :ok
@@ -53,57 +59,67 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
     end
   end
 
+  # LPC: if (! target) target = offensive_target(me);
+  #      if (! target || ! me->is_fighting(target))
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")) ||
+  #           (string)weapon->query("skill_type") != "sword")
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "sword" do
+      {:ok, weapon}
+    else
+      {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  # LPC: if ((level = me->query_skill("taiji-jian", 1)) < 80)
+  defp check_level(stats) do
+    if Stats.skill(stats, "taiji-jian") < 80 do
+      {:error, "你的太极剑法不够娴熟，难以施展#{@move_name}。\n"}
+    else
       :ok
-    else
-      {:error, "你使用的武器不对。\n"}
     end
   end
 
-  defp check_skill_level(stats) do
-    level = Stats.skill(stats, "taiji-jian")
-
-    if level < 80 do
-      {:error, "你的太极剑法不够娴熟，无法施展#{@move_name}。\n"}
-    else
-      {:ok, level}
-    end
-  end
-
+  # LPC: if (me->query_skill_mapped("sword") != "taiji-jian")
   defp check_mapped(stats) do
     if Stats.mapped(stats, "sword") == "taiji-jian" do
       :ok
     else
-      {:error, "你没有激发太极剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发太极剑法，难以施展#{@move_name}。\n"}
     end
   end
 
+  # LPC: if (me->query("neili") < 60)
   defp check_neili(character) do
     if character.meta.vitals.neili < 60 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你现在真气不够，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 60}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target, _weapon, stats) do
+    level = Stats.skill(stats, "taiji-jian")
+
+    # LPC: msg = HIC "$N" HIC "使出太极剑法「缠」字诀，剑意圈转，连绵不绝，连"
+    #           "递数个虚招企图扰乱$n" HIC "的攻势。\n" NOR;
+    #      me->add("neili", -30);   // 无条件，直接在攻击方侧落账
+    vitals = %{character.meta.vitals | neili: max(character.meta.vitals.neili - 30, 0)}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
     conn =
       Broadcast.publish(
         conn,
-        "$N剑势缠绵，使出太极剑法「缠字诀」，剑圈缠绕向$n！\n",
+        "$N使出太极剑法「缠」字诀，剑意圈转，连绵不绝，连递数个虚招企图扰乱$n的攻势。\n",
         n1: character.name,
         n2: target.name
       )
@@ -111,7 +127,12 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        level: level,
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
@@ -121,42 +142,74 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
+    cond do
+      character.meta.combat.dead ->
+        # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？\n",
+          n1: attacker.name,
+          n2: character.name
+        )
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+      character.meta.combat.busy > 0 ->
+        # LPC: if (target->is_busy())
+        #          return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n");
+        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧。",
+          n1: attacker.name,
+          n2: character.name
+        )
 
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
-      conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
-    else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    stats = character.meta.stats
+    bindings = [n1: attacker.name, n2: character.name]
 
-  defp ref(character),
-    do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+    # LPC: if (random(level) > (int)target->query_skill("parry", 1) / 2)
+    level = max(Map.get(data, :level, 0), 1)
+    dp = div(Stats.skill(stats, "parry"), 2)
+
+    if Engine.rand(rng, level) > dp do
+      # LPC: msg += HIR "结果$p" HIR "被$P" HIR "闹个手忙脚乱，"
+      #           "惊慌失措，呆在当场，不知如何应对！\n" NOR;
+      #      target->start_busy(level / 16 + 2);
+      combat = Combat.start_busy(character.meta.combat, div(level, 16) + 2)
+      character = %{character | meta: %{character.meta | combat: combat}}
+
+      conn =
+        Broadcast.publish(
+          conn,
+          Messages.interpolate(
+            "结果$p被$P闹个手忙脚乱，惊慌失措，呆在当场，不知如何应对！\n",
+            bindings
+          )
+        )
+
+      put_character(conn, character)
+    else
+      # LPC: msg += CYN "可是$p" CYN "看破了$P" CYN "的企图，镇"
+      #           "定逾恒，全神应对自如。\n" NOR;
+      #      me->start_busy(2);
+      conn =
+        Broadcast.publish(
+          conn,
+          Messages.interpolate(
+            "可是$p看破了$P的企图，镇定逾恒，全神应对自如。\n",
+            bindings
+          )
+        )
+
+      Performs.feedback(attacker, 0, 2)
+      conn
+    end
+  end
+
+  defp ref(character) do
+    %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
+  end
 
   @doc "声明式规格（用于 prepare_skill 门槛校验）"
   def spec() do
@@ -169,4 +222,65 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Chan do
       busy: 0
     }
   end
+
+  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
+  # #include <ansi.h>
+  # #include <combat.h>
+  # 
+  # #define CHAN "「" HIC "缠字诀" NOR "」"
+  # 
+  # inherit F_SSERVER;
+  # 
+  # int perform(object me, object target)
+  # {
+  #     object weapon;
+  #     int level;
+  #     string msg;
+  # 
+  #         if (userp(me) && ! me->query("can_perform/taiji-jian/chan"))
+  #                 return notify_fail("你所使用的外功中没有这种功能。\n");
+  # 
+  #     if (! target) target = offensive_target(me);
+  # 
+  #     if (! target || ! me->is_fighting(target))
+  #         return notify_fail(CHAN "只能对战斗中的对手使用。\n");
+  # 
+  #     if (! objectp(weapon = me->query_temp("weapon")) ||
+  #             (string)weapon->query("skill_type") != "sword")
+  #         return notify_fail("你使用的武器不对，难以施展" CHAN "。\n");
+  # 
+  #     if (target->is_busy())
+  #         return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n");
+  # 
+  #     if ((level = me->query_skill("taiji-jian", 1)) < 80)
+  #         return notify_fail("你的太极剑法不够娴熟，难以施展" CHAN "。\n");
+  # 
+  #         if (me->query_skill_mapped("sword") != "taiji-jian")
+  #                 return notify_fail("你没有激发太极剑法，难以施展" CHAN "。\n");
+  # 
+  #         if (me->query("neili") < 60)
+  #                 return notify_fail("你现在真气不够，难以施展" CHAN "。\n");
+  # 
+  #         if (! living(target))
+  #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 
+  #     msg = HIC "$N" HIC "使出太极剑法「缠」字诀，剑意圈转，连绵不绝，连"
+  #               "递数个虚招企图扰乱$n" HIC "的攻势。\n" NOR;
+  # 
+  #         me->add("neili", -30);
+  #         if (random(level) > (int)target->query_skill("parry", 1) / 2)
+  #         {
+  #         msg += HIR "结果$p" HIR "被$P" HIR "闹个手忙脚乱，"
+  #                        "惊慌失措，呆在当场，不知如何应对！\n" NOR;
+  #         target->start_busy(level / 16 + 2);
+  #     } else
+  #         {
+  #         msg += CYN "可是$p" CYN "看破了$P" CYN "的企图，镇"
+  #                        "定逾恒，全神应对自如。\n" NOR;
+  #         me->start_busy(2);
+  #     }
+  #     message_combatd(msg, me, target);
+  # 
+  #     return 1;
+  # }
 end
