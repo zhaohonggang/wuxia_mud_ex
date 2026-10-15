@@ -34,12 +34,22 @@ defmodule Kantele.Combat.Skills.Performs.CibeiDao.Sheshen do
       busy: {:if_fighting, 2},
       duration: {:div, {:skill, "cibei-dao"}, 4},
       expire_message: "你的「舍身喂鹰」运行完毕，将内力收回丹田。\n",
-      message: "$N使出慈悲刀法「舍身喂鹰」，将浑身的功力都运到手中的刀上，刀势一往无前！\n"
+      message: &message/1
     }
 
   alias Kantele.Character.Combat
 
   defp weapon_blade?(ctx) do
     match?(%{skill_type: "blade"}, Combat.weapon(ctx.combat))
+  end
+
+  defp message(ctx) do
+    wp =
+      case Combat.weapon(ctx.combat) do
+        %{name: name} -> name
+        _ -> ""
+      end
+
+    "$N使出慈悲刀法「舍身喂鹰」，将浑身的功力都运到" <> wp <> "上！\n"
   end
 end

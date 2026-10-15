@@ -39,8 +39,16 @@ defmodule Kantele.Combat.Skills.Performs.RouyunSteps.Zong do
         {:custom, &effect_zong/1}
       ],
       busy: 0,
-      message: "$N身形陡然纵起，十分优雅，天空中却飘下一朵云，非常奇怪！\n原来$N已使出#{@name}，乘云而去了！\n"
+      message: &message/1
     }
+  end
+
+  defp message(_ctx) do
+    [
+      "$N身形陡然纵起，十分优雅，天空中却飘下一朵云，非常奇怪！\n",
+      "原来$N已使出#{@name}，乘云而去了！\n"
+    ]
+    |> Enum.join("")
   end
 
   defp effect_zong(state) do

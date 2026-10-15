@@ -32,10 +32,20 @@ defmodule Kantele.Combat.Skills.Performs.RiyueLun.Yuan do
       busy: {:if_fighting, 2},
       duration: {:div, {:skill, "riyue-lun"}, 2},
       expire_message: "你的「圆满势」运行完毕，将内力收回丹田。\n",
-      message: "$N吐气扬声，施出日月轮法「圆满势」，手中兵刃运转如飞，迅速护住周身要害。\n"
+      message: &message/1
     }
 
   alias Kantele.Character.Combat
 
   defp weapon_hammer?(ctx), do: match?(%{skill_type: "hammer"}, Combat.weapon(ctx.combat))
+
+  defp message(ctx) do
+    wp =
+      case Combat.weapon(ctx.combat) do
+        %{name: name} -> name
+        _ -> ""
+      end
+
+    "$N吐气扬声，施出日月轮法「圆满势」，手中" <> wp <> "运转如飞，迅速护住周身要害。\n"
+  end
 end
