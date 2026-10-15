@@ -137,8 +137,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Sha do
       "$N仰天清啸，手中" <>
         weapon_name <> "斜划出一道半弧，整个刀身顿时腾起凛冽无比的杀气，直贯$n而去！\n"
 
-    conn =
-      Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
@@ -194,8 +193,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Sha do
 
       head = Messages.interpolate("只听$n一声惨叫，$N", bindings)
 
-      tail =
-        Messages.interpolate("刀锋一闪，竟已嵌入$p体内尺许，带出一蓬血雨。\n", bindings)
+      tail = Messages.interpolate("刀锋一闪，竟已嵌入$p体内尺许，带出一蓬血雨。\n", bindings)
 
       conn
       |> Broadcast.publish(head <> weapon_name <> tail)

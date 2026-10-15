@@ -152,11 +152,9 @@ defmodule Kantele.Combat.Skills.Performs.BaguaBiao.Zhi do
 
     # LPC: msg = HIY "只见$N" HIY "纵身一跃而起…将手中所有的"
     #      + weapon->name() + HIY "打了出去！\n";
-    opening =
-      "只见$N纵身一跃而起，一声暴喝，十指箕张，将手中所有的" <> weapon_name <> "打了出去！\n"
+    opening = "只见$N纵身一跃而起，一声暴喝，十指箕张，将手中所有的" <> weapon_name <> "打了出去！\n"
 
-    conn =
-      Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),

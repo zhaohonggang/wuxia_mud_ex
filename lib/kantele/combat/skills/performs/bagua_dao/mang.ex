@@ -153,8 +153,7 @@ defmodule Kantele.Combat.Skills.Performs.BaguaDao.Mang do
         ""
       )
 
-    conn =
-      Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
