@@ -97,26 +97,41 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.Chan do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      character.meta.combat.busy > 0 ->
+        Broadcast.publish(conn, "$n目前正自顾不暇，放胆攻击吧！",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = max(Map.get(data, :ap, 0), 1)
     level = Map.get(data, :level, 0)
     bindings = [n1: attacker.name, n2: character.name]
 
-    if character.meta.combat.busy > 0 do
-      conn
-    else
-      if div(ap, 2) + Engine.rand(rng, ap) > Stats.effective(character.meta.stats, "parry") do
-        combat = Combat.start_busy(character.meta.combat, div(level, 20) + 2)
-        character = %{character | meta: %{character.meta | combat: combat}}
-        Performs.feedback(attacker, 0, 1)
+    if div(ap, 2) + Engine.rand(rng, ap) > Stats.effective(character.meta.stats, "parry") do
+      combat = Combat.start_busy(character.meta.combat, div(level, 20) + 2)
+      character = %{character | meta: %{character.meta | combat: combat}}
+      Performs.feedback(attacker, 0, 1)
 
-        conn
-        |> Broadcast.publish(Messages.interpolate("结果$p被$P攻了个措手不及！\n", bindings))
-        |> put_character(character)
-      else
-        Performs.feedback(attacker, 0, 2)
-        Broadcast.publish(conn, Messages.interpolate("可是$p看破了$P的企图，小心应对，并没有上当。\n", bindings))
-      end
+      conn
+      |> Broadcast.publish(Messages.interpolate("结果$p被$P攻了个措手不及！\n", bindings))
+      |> put_character(character)
+    else
+      Performs.feedback(attacker, 0, 2)
+      Broadcast.publish(conn, Messages.interpolate("可是$p看破了$P的企图，小心应对，并没有上当。\n", bindings))
     end
   end
 

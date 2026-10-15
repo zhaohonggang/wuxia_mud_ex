@@ -39,6 +39,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
          {:ok, level} <- check_skill_level(stats),
+         :ok <- check_force(stats),
          :ok <- check_neili(character) do
       apply_perform(conn, character, target, level)
     else
@@ -60,7 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -71,6 +72,14 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
       {:error, "你的火焰刀等级不够，还不能使出#{@move_name}！\n"}
     else
       {:ok, level}
+    end
+  end
+
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 120 do
+      {:error, "你的内功火候不够，不能使用这样绝技。\n"}
+    else
+      :ok
     end
   end
 
@@ -113,6 +122,17 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
@@ -133,7 +153,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "结果$p强运内力试图抵抗，然而无法掌握$N内力的变化，被无形刀气重创在胸口，受到#{damage}点伤害！\n",
+          "$p强运内力试图抵抗，然而无法掌握$N内力的变化，结果被$N的无形刀气重创在胸口！\n",
           bindings
         )
       )
