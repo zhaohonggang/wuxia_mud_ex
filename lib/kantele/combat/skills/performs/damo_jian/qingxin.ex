@@ -60,7 +60,7 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Qingxin do
       conn
       |> put_character(character)
       |> Broadcast.publish(
-        "$N将手中的" <> Map.get(weapon, :name) <> "轻轻一抖，一股剑气悄然而出，分作数路攻向$n！\n",
+        "$N将" <> Map.get(weapon, :name) <> "轻轻一抖，一股剑气悄然而出，分作数路攻向$n！\n",
         n1: character.name,
         n2: target.name
       )
@@ -115,6 +115,25 @@ defmodule Kantele.Combat.Skills.Performs.DamoJian.Qingxin do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      Combat.buff_active?(character.meta.combat, "damo-qingxin") ->
+        Broadcast.publish(conn, "对方刚刚才中过达摩清心剑，你不必再用一次了。",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = max(Map.get(data, :ap, 0), 1)
     bindings = [n1: attacker.name, n2: character.name]

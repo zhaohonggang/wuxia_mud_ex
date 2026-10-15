@@ -52,14 +52,14 @@ defmodule Kantele.Combat.Skills.Performs.JimieZhua.Wuwo do
     if Stats.perform_known?(stats, @perform_id) do
       :ok
     else
-      {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      {:error, "你所使用的外功中没有这种功能。\n"}
     end
   end
 
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -120,6 +120,17 @@ defmodule Kantele.Combat.Skills.Performs.JimieZhua.Wuwo do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
+    if character.meta.combat.dead do
+      Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+        n1: attacker.name,
+        n2: character.name
+      )
+    else
+      do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
     ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
@@ -140,23 +151,16 @@ defmodule Kantele.Combat.Skills.Performs.JimieZhua.Wuwo do
       conn
       |> Broadcast.publish(
         Messages.interpolate(
-          "慌乱中，$p不及招架$N这看似简单的一抓，结果被抓了个正中，喀的一声，$p身上多了一条伤痕，受到#{damage}点伤害！\n",
+          "慌乱中，$p不及招架$N这看似简单这一抓，结果被抓了个正中，喀的一声，$p身上多了一条伤痕。\n",
           bindings
         )
       )
       |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "可是$p见来势凶猛，连忙招架，顺势跃开，没有被$N得手。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p$N见来势凶猛连忙招架，顺势跃开，没有被$N得手。\n", bindings)
+      )
     end
   end
 

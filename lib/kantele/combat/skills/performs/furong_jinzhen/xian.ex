@@ -61,7 +61,7 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
 
       conn
       |> Broadcast.publish(
-        "$N五指陡然箕张，$n但觉眼前金光一闪，数股劲风随即扑面而来！\n",
+        "只见$N五指陡然箕张，$n但觉眼前金光一闪，数股劲风随即扑面而来！\n",
         n1: character.name,
         n2: target.name
       )
@@ -115,45 +115,59 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
 
   @impl true
   def resolve_incoming(conn, character, attacker, data) do
+    cond do
+      character.meta.combat.dead ->
+        Broadcast.publish(conn, "对方都已经这样了，用不着这么费力吧？",
+          n1: attacker.name,
+          n2: character.name
+        )
+
+      character.meta.combat.busy > 0 ->
+        conn
+
+      true ->
+        do_resolve_incoming(conn, character, attacker, data)
+    end
+  end
+
+  defp do_resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     ap = max(Map.get(data, :ap, 0), 1)
     stats = character.meta.stats
+    unit = Map.get(data, :unit, "")
+    weapon_name = Map.get(data, :weapon_name, "")
 
     bindings = [n1: attacker.name, n2: character.name]
 
     dp = Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
 
-    if character.meta.combat.busy > 0 do
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      damage = div(ap, 5) + Engine.rand(rng, max(div(ap, 5), 1))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage, 2))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      Performs.feedback(attacker, 100, 2)
+
       conn
+      |> Broadcast.publish(
+        Messages.interpolate(
+          "$n微微一愣，却已被$N那" <> unit <> weapon_name <> "正中要穴，入肉半寸之深。\n",
+          bindings
+        )
+      )
+      |> put_character(character)
     else
-      if div(ap, 2) + Engine.rand(rng, ap) > dp do
-        damage = div(ap, 5) + Engine.rand(rng, max(div(ap, 5), 1))
+      Performs.feedback(attacker, 100, 2)
 
-        vitals =
-          character.meta.vitals
-          |> Vitals.damage(:qi, damage)
-          |> Vitals.wound(:qi, div(damage, 2))
-
-        character = %{character | meta: %{character.meta | vitals: vitals}}
-
-        Performs.feedback(attacker, 100, 2)
-
-        conn
-        |> Broadcast.publish(
-          Messages.interpolate(
-            "$n微微一愣，却已被$N那#{Map.get(data, :unit, "枚")}#{Map.get(data, :weapon_name, "暗器")}正中要穴，入肉半寸之深。\n",
-            bindings
-          )
-        )
-        |> put_character(character)
-      else
-        Performs.feedback(attacker, 100, 2)
-
-        Broadcast.publish(
-          conn,
-          Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。\n", bindings)
-        )
-      end
+      Broadcast.publish(
+        conn,
+        Messages.interpolate("可是$p早料得$P有此一着，急忙飞身跃起，躲闪开来。\n", bindings)
+      )
     end
   end
 
