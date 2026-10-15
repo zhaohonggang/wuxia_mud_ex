@@ -8,33 +8,17 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**57**
-- 缺失字面量合计（miss 之和）：**681**
+- 剩余文件数：**51**
+- 缺失字面量合计（miss 之和）：**569**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
-| A严重(>=15) | 10 | 196 |
-| B中等(5-14) | 47 | 485 |
+| A严重(>=15) | 5 | 92 |
+| B中等(5-14) | 46 | 477 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
-
-### chousui_zhang（1 个）
-- [ ] ❌ `chousui_zhang/dan.ex` ← `chousui-zhang/dan.c` (miss=19)
-
-### daojian_guizhen（1 个）
-- [ ] ❌ `daojian_guizhen/daojian.ex` ← `daojian-guizhen/daojian.c` (miss=23)
-
-### fanliangyi_dao（2 个）
-- [ ] ❌ `fanliangyi_dao/makearray.ex` ← `fanliangyi-dao/makearray.c` (miss=8)
-- [ ] ❌ `fanliangyi_dao/san.ex` ← `fanliangyi-dao/san.c` (miss=18)
-
-### fenglei_panfa（1 个）
-- [ ] ❌ `fenglei_panfa/fenglei.ex` ← `fenglei-panfa/fenglei.c` (miss=19)
-
-### force（1 个）
-- [ ] ❌ `force/power.ex` ← `force/power.c` (miss=25)
 
 ### huashan_jian（4 个）
 - [ ] ❌ `huashan_jian/jie.ex` ← `huashan-jian/jie.c` (miss=6)
