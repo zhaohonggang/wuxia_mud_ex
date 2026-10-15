@@ -179,7 +179,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `chuanyue_jian/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `chuanyue_jian/hao.ex` ← `chuanyue-jian/hao.c`  (miss=11)
+- [x] ✅ `chuanyue_jian/hao.ex` ← `chuanyue-jian/hao.c`  (miss=0)
 
 ### `dacheng_fosuo/` （1 个，基线缺失 9 条）
 
