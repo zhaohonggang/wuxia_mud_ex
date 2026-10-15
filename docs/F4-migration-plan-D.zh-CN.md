@@ -6,36 +6,17 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**127**
-- 缺失字面量合计（miss 之和）：**1414**
+- 剩余文件数：**120**
+- 缺失字面量合计（miss 之和）：**1321**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
-| A严重(>=15) | 12 | 233 |
-| B中等(5-14) | 115 | 1181 |
+| A严重(>=15) | 10 | 196 |
+| B中等(5-14) | 110 | 1125 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
-
-### bagua_biao（1 个）
-- [ ] ❌ `bagua_biao/zhi.ex` ← `bagua-biao/zhi.c` (miss=11)
-
-### bagua_dao（2 个）
-- [ ] ❌ `bagua_dao/mang.ex` ← `bagua-dao/mang.c` (miss=13)
-- [ ] ❌ `bagua_dao/sha.ex` ← `bagua-dao/sha.c` (miss=12)
-
-### baibian_daxue（1 个）
-- [ ] ❌ `baibian_daxue/dian.ex` ← `baibian-daxue/dian.c` (miss=9)
-
-### baisheng_daofa（1 个）
-- [ ] ❌ `baisheng_daofa/heng.ex` ← `baisheng-daofa/heng.c` (miss=17)
-
-### baxian_jian（1 个）
-- [ ] ❌ `baxian_jian/dian.ex` ← `baxian-jian/dian.c` (miss=11)
-
-### bingpo_shenzhen（1 个）
-- [ ] ❌ `bingpo_shenzhen/bing.ex` ← `bingpo-shenzhen/bing.c` (miss=20)
 
 ### bizhen_qingzhang（1 个）
 - [ ] ❌ `bizhen_qingzhang/pengpai.ex` ← `bizhen-qingzhang/pengpai.c` (miss=12)
