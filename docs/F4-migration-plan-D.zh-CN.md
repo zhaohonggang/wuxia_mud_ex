@@ -8,21 +8,17 @@
 > 文案字面量必须在代码字符串中（注释被验收工具剥除）；按 `scripts/protected_performs.txt` 登记保护；按顶层目录批次提交。
 
 ## 统计
-- 剩余文件数：**45**
-- 缺失字面量合计（miss 之和）：**501**
+- 剩余文件数：**41**
+- 缺失字面量合计（miss 之和）：**438**
 - 严重度：A严重(>=15) / B中等(5-14) / C轻微(1-4)
 
 | 严重度 | 文件数 | miss 合计 |
 |--------|--------|-----------|
-| A严重(>=15) | 3 | 51 |
-| B中等(5-14) | 42 | 450 |
+| A严重(>=15) | 0 | 0 |
+| B中等(5-14) | 41 | 438 |
 | C轻微(1-4) | 0 | 0 |
 
 ## 按顶层目录分组（提交批次）
-
-### jiandun_zhusuo（2 个）
-- [ ] ❌ `jiandun_zhusuo/fu.ex` ← `jiandun-zhusuo/fu.c` (miss=12)
-- [ ] ❌ `jiandun_zhusuo/qian.ex` ← `jiandun-zhusuo/qian.c` (miss=16)
 
 ### lutou_zhang（1 个）
 - [ ] ❌ `lutou_zhang/tong.ex` ← `lutou-zhang/tong.c` (miss=11)
@@ -39,9 +35,6 @@
 ### mingwang_jian（2 个）
 - [ ] ❌ `mingwang_jian/ruo.ex` ← `mingwang-jian/ruo.c` (miss=12)
 - [ ] ❌ `mingwang_jian/xiang.ex` ← `mingwang-jian/xiang.c` (miss=10)
-
-### mizong_houquan（1 个）
-- [ ] ❌ `mizong_houquan/zhou.ex` ← `mizong-houquan/zhou.c` (miss=16)
 
 ### nianhua_zhi（1 个）
 - [ ] ❌ `nianhua_zhi/fuxue.ex` ← `nianhua-zhi/fuxue.c` (miss=10)
@@ -129,9 +122,6 @@
 ### taiji_jian（2 个）
 - [ ] ❌ `taiji_jian/chan.ex` ← `taiji-jian/chan.c` (miss=10)
 - [ ] ❌ `taiji_jian/zhuan.ex` ← `taiji-jian/zhuan.c` (miss=10)
-
-### tangmen_throwing（1 个）
-- [ ] ❌ `tangmen_throwing/biao.ex` ← `tangmen-throwing/biao.c` (miss=19)
 
 ### tiangang_zhi（1 个）
 - [ ] ❌ `tiangang_zhi/ling.ex` ← `tiangang-zhi/ling.c` (miss=10)
