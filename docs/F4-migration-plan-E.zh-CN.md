@@ -200,7 +200,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `danding_dao/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `danding_dao/kou.ex` ← `danding-dao/kou.c`  (miss=10)
+- [x] ✅ `danding_dao/kou.ex` ← `danding-dao/kou.c`  (miss=0)
 
 ### `dongyang_dao/` （1 个，基线缺失 9 条）
 
