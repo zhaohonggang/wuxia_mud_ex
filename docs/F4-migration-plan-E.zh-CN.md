@@ -171,7 +171,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `chuangwang_dao/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `chuangwang_dao/xiong.ex` ← `chuangwang-dao/xiong.c`  (miss=11)
+- [x] ✅ `chuangwang_dao/xiong.ex` ← `chuangwang-dao/xiong.c`  (miss=0)
 
 ### `chuanxin_zhang/` （1 个，基线缺失 8 条）
 
