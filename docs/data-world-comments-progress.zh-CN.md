@@ -66,7 +66,7 @@
 | M6 | `set()` key 真丢失 distinct / occ | 202 / 3150 | **200 / 3110** | ✅ | `triage_lost_keys.py` |
 | M7 | `valid_leave` 生效条数 | 133 / 166 | `—` | ⬜ | `world_reachability.py`（或 `recount_veto_status.exs`） |
 | M8 | 可达性 | 4190 / 4409（95.0%） | **4190 / 4409（95.0%）** | ✅ | `world_reachability.py` |
-| M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **34** | ✅ | `mix test --seed 12345` |
+| M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **33**（无新增；`reload_command_test` 那条转好，属 recompile 环境相关） | ✅ | `mix test --seed 12345` |
 | M10 | 已回填 `room.flags` 房间数 | 0 | **284** | ✅ | `backfill_l1_fields.py` |
 | M11 | `validate_ucl.py` 通过 / 失败 | 67 / 10 | **67 / 10** | ✅ | `validate_ucl.py` |
 | M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **249**（wield 218 / unwield 155 / wear 22 / remove 13 / unequip 31） | ✅ | `scripts/probe_item_messages.exs`（容器内） |
@@ -244,7 +244,7 @@
 | 批次 | key | 次数 | 归属 | 状态 | 提交 |
 |------|-----|-----:|------|:----:|------|
 | **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | 装备文案（**零数据写入，最高性价比，先做**） | ✅ | `0676bd08` |
-| **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案 → `messages = { wear, remove, unequip }`（`wield`/`unwield` 已由 B5a 覆盖） | ✅ | （见 §13） |
+| **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案 → `messages = { wear, remove, unequip }`（`wield`/`unwield` 已由 B5a 覆盖） | ✅ | `e8c88c32` |
 | **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ⬜ | |
 | **B6** | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | NPC 战斗喊话 | ⬜ | |
 | ~~B7~~ | ~~`sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）~~ | ~~127/90/55~~ | **已由 B1 完成**（`cf0af449`） | ✅ | `cf0af449` |
@@ -424,7 +424,7 @@
 | 2026-10-16 | 文档更正 | `cf0af449` | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
 | 2026-10-16 | **P1a 复核 2（B2/B3/B4 改判）** | `0676bd08` | 回源实测推翻 3 条原判：`base_unit`/`base_value`→L3-framework、`female_only`→L2（新字段）、`coagents`→manual；`plan_key_field_map.py` 加 `base_*` 硬规则 + 禁映射 `flag`；重算 `tmp/key_field_map.json`；新增发现 `messages` 早已转好（B5a）；计划 + 进度文档同步更正 | 分诊表 L1 9→**1**（假阳性）/ L2 20→**21** / L3-fw 83→**85** / manual 122→**123**；**L1 清空** |
 | 2026-10-16 | **B5a（激活 messages）** | `0676bd08` | `Item.Meta` 加 `:messages`；`loader.ex parse_item` 读取物品块顶层 `messages`；新增只读探针 `scripts/probe_item_messages.exs` | 代码改动，**零数据写入**；M12 0→**219**（218 wield / 155 unwield）；测试 3435/34 不新增 |
-| 2026-10-16 | **B5b（wear/remove/unequip）** | （见提交） | 新增 `scripts/backfill_item_messages.py`；回填 46 个 `items` 块的 `messages.wear/remove/unequip`；新增 `scripts/probe_ucl_brackets.exs`（elias 引号内 `[`/`,` 边界）；门禁升级为「完整 issue 集合 + 行号归一化」比对 | **14 区 / +126 行 / −0 行**；M12 219→**249**、M13 0→**66**；幂等 ✓；校验 NEW=NONE |
+| 2026-10-16 | **B5b（wear/remove/unequip）** | `e8c88c32` | 新增 `scripts/backfill_item_messages.py`；回填 46 个 `items` 块的 `messages.wear/remove/unequip`；新增 `scripts/probe_ucl_brackets.exs`（elias 引号内 `[`/`,` 边界）；门禁升级为「完整 issue 集合 + 行号归一化」比对 | **14 区 / +126 行 / −0 行**；M12 219→**249**、M13 0→**66**；幂等 ✓；校验 NEW=NONE |
 
 ---
 
