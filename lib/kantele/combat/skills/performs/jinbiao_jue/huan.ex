@@ -1,12 +1,15 @@
 defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
   @moduledoc """
-  金莲幻生「huan」（对照 `kungfu/skill/jinbiao-jue/huan.c`）
+  金莲幻生「huan」（对照 `kungfu/skill/jinbiao-jue/huan.c`，inherit F_SSERVER）
 
-  金镖诀单体攻击：消耗 100 内力，对战斗中对手出招。
+  金镖诀（暗器 throwing，持有于 handing 槽）攻击绝招：要求持暗器、
+  jinbiao-jue >= 100、真气 >= 100；消耗 80 内力、暗器 1 枚，忙乱 2。命中判定
+  `random(combat_exp + skill*skill/10*skill) > target_combat_exp`，
+  命中后创伤 `skill/3 + random(skill/3)` 外伤。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:jinbiao-jue>=100`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  - LPC 未检查 mapped，本版保持一致；
+  - `reset_action()` 未建模。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,10 +19,9 @@ defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "jinbiao-jue/huan"
   @move_name "「金莲幻生」"
@@ -32,10 +34,11 @@ defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
+         {:ok, weapon} <- check_weapon(combat),
          {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats, level, weapon)
     else
       {:error, message} ->
         conn
@@ -55,7 +58,17 @@ defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
+    end
+  end
+
+  defp check_weapon(combat) do
+    weapon = Map.get(combat.equipped, :handing)
+
+    if weapon && Map.get(weapon, :skill_type) == "throwing" do
+      {:ok, weapon}
+    else
+      {:error, "你现在手中没有拿着暗器，难以施展#{@move_name}。\n"}
     end
   end
 
@@ -63,44 +76,64 @@ defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
     level = Stats.skill(stats, "jinbiao-jue")
 
     if level < 100 do
-      {:error, "你的金镖诀不够娴熟，无法施展#{@move_name}。\n"}
+      {:error, "你的金镖诀不够娴熟，难以施展#{@move_name}。\n"}
     else
       {:ok, level}
     end
   end
 
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "throwing") == "jinbiao-jue" do
-      :ok
-    else
-      {:error, "你没有激发金镖诀，无法施展#{@move_name}。\n"}
-    end
-  end
-
   defp check_neili(character) do
     if character.meta.vitals.neili < 100 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你现在真气不足，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N镖光如莲，使出金镖诀「金莲幻生」，镖影重重幻化罩向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_perform(conn, character, target, stats, level, weapon) do
+    weapon_name = Map.get(weapon, :name) || ""
+    base_unit = Map.get(weapon, :base_unit) || Map.get(weapon, :unit) || ""
+
+    # LPC: msg= HIY "忽然间只见$N" HIY "单袖一扬，袖底顿时窜起一道金光，径直向$n"
+    #          HIY "电射而去。\n" NOR;
+    start_msg = "忽然间只见$N单袖一扬，袖底顿时窜起一道金光，径直向$n电射而去。\n"
+
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 80}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    # LPC: my_exp = me->query("combat_exp") + skill * skill / 10 * skill;
+    #      ob_exp = target->query("combat_exp");
+    #      if (random(my_exp) > ob_exp) { ... }
+    my_exp = stats.combat_exp + div(level * level, 10) * level
+    ob_exp = target.meta.stats.combat_exp
+    rng = &:rand.uniform/1
+    hit? = Engine.rand(rng, max(my_exp, 1)) > ob_exp
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        hit?: hit?,
+        skill: level,
+        weapon_name: weapon_name,
+        base_unit: base_unit,
+        rng: rng
+      }
     })
 
     conn
@@ -110,39 +143,52 @@ defmodule Kantele.Combat.Skills.Performs.JinbiaoJue.Huan do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
+    hit? = Map.get(data, :hit?, false)
+    skill = Map.get(data, :skill, 0)
+    weapon_name = Map.get(data, :weapon_name)
+    base_unit = Map.get(data, :base_unit)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "暗器"]
+    if hit? do
+      # LPC: target->receive_wound("qi", skill / 3 + random(skill / 3), me);
+      vitals =
+        Vitals.wound(
+          character.meta.vitals,
+          :qi,
+          div(skill, 3) + Engine.rand(rng, max(div(skill, 3), 1))
+        )
 
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
 
-      conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
+      # LPC: msg += HIR "结果$p" HIR "躲闪不及，被$P" + HIR "那" +
+      #            weapon->query("base_unit") + weapon->name() +
+      #            HIR "射中身体，顿时鲜血四处飞溅！\n" NOR;
+      # NOTE: "结果$p躲闪不及，被$P" 与 "那" 为相邻纯字面量，用 Enum.join 保段。
+      head = Enum.join(["结果$p躲闪不及，被$P", "那"], "")
+
+      hit_msg = head <> (base_unit || "") <> (weapon_name || "") <> "射中身体，顿时鲜血四处飞溅！\n"
+
+      conn = Broadcast.publish(conn, hit_msg, bindings)
+
+      # LPC: p = target->query("qi") * 100 / target->query("max_qi");
+      #      msg += "( $n" + eff_status_msg(p) + " )\n";
+      max_qi = character.meta.vitals.max_qi || character.meta.vitals.qi || 1
+      p = div(character.meta.vitals.qi * 100, max(max_qi, 1))
+      conn = Broadcast.publish(conn, "( $n" <> eff_status_msg(p) <> " )\n", bindings)
+
+      put_character(conn, character)
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      # LPC: msg += CYN "可是$p" CYN "丝毫不乱，身子略倾，闪开了$P"
+      #            CYN "发出的" + weapon->name() + CYN "。\n" NOR;
+      miss_msg = "可是$p丝毫不乱，身子略倾，闪开了$P发出的" <> (weapon_name || "") <> "。\n"
+      Broadcast.publish(conn, miss_msg, bindings)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  # LPC: eff_status_msg(p) —— 定义于 /kungfu/skill/eff_msg.h（状态描述按 qi 百分比）。
+  # TODO: 该表位于独立头文件，逐条移植待补；当前返回空串以避免引入额外文案。
+  defp eff_status_msg(_p), do: ""
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
