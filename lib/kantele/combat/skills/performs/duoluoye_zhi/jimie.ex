@@ -1,15 +1,12 @@
 defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
   @moduledoc """
-  菩提寂灭「jimie」（对照 `kungfu/skill/duoluoye-zhi/jimie.c`）
+  菩提寂灭「jimie」（对照 `kungfu/skill/duoluoye-zhi/jimie.c`，inherit F_SSERVER）
 
-  多罗叶指攻击绝招：消耗 800 内力，发起 `combat/perform-incoming` 事件，
-  由目标侧 `resolve_incoming` 判定命中并施加伤害。
-
-  差异（TODO(migrate)）：
-  - LPC `ap = finger + duoluoye-zhi`、`dp = dodge + force`、命中率 `ap/2+rand(ap)`；
-    本版为 `rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - LPC 还要求 max_neili>=2500、miss 亦耗内伤（self qi damage/4），未建模；
-  - 伤害计算：`damage = level * 2`（简化），LPC 有复杂公式。
+  少林多罗叶指（空手）绝招：要求空手、force >= 200、duoluoye-zhi >= 180、
+  真气 >= 800 且 max_neili >= 2500、finger 已激发映射；命中判定
+  `ap/2 + random(ap) > dp`，其中 `ap = finger + duoluoye-zhi`，
+  `dp = dodge + force`；命中伤害 `damage = random(ap) + ap`（外伤 70%）。
+  LPC 另有无条件追加的收束文案与施招者自伤 `damage/4`。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -19,27 +16,28 @@ defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "duoluoye-zhi/jimie"
-  @move_name "「菩提寂灭」"
 
-  @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
+  @impl true
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
 
-    with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+    with {:ok, target} <- target(combat),
+         :ok <- check_unarmed(combat),
+         :ok <- check_force(stats),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats)
     else
       {:error, message} ->
         conn
@@ -48,38 +46,47 @@ defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
     end
   end
 
-  defp check_perform_known(stats) do
-    if Stats.perform_known?(stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
-    end
-  end
-
-  defp check_target(combat) do
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "「菩提寂灭」只能在战斗中对对手使用。\n"}
     end
   end
 
-  defp check_weapon(combat) do
+  # LPC: if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))
+  #          return notify_fail("你必须空手才能使用「菩提寂灭」！\n");
+  defp check_unarmed(combat) do
     weapon = Combat.weapon(combat)
+    secondary = Map.get(combat.equipped, :secondary_weapon)
 
-    if weapon && Map.get(weapon, :skill_type) == "unarmed" do
-      :ok
+    if weapon || secondary do
+      {:error, "你必须空手才能使用「菩提寂灭」！\n"}
     else
-      {:error, "你必须空手才能使用#{@move_name}！\n"}
+      :ok
+    end
+  end
+
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 200 do
+      {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
+    else
+      :ok
     end
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "duoluoye-zhi")
-
-    if level < 180 do
-      {:error, "你的多罗叶指修为不够，目前不能使用#{@move_name}！\n"}
+    if Stats.skill(stats, "duoluoye-zhi") < 180 do
+      {:error, "你的多罗叶指修为不够，目前不能使用「菩提寂灭」！\n"}
     else
-      {:ok, level}
+      :ok
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 800 or character.meta.vitals.max_neili < 2500 do
+      {:error, "你的真气不够，无法使用「菩提寂灭」！\n"}
+    else
+      :ok
     end
   end
 
@@ -87,29 +94,50 @@ defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
     if Stats.mapped(stats, "finger") == "duoluoye-zhi" do
       :ok
     else
-      {:error, "你没有激发多罗叶指，不能使用#{@move_name}！\n"}
+      {:error, "你没有激发多罗叶指，不能使用「菩提寂灭」！\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 800 do
-      {:error, "你的真气不够，无法使用#{@move_name}！\n"}
-    else
+  defp check_target_alive(target) do
+    if not dead?(target) do
       :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 800}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N运起全身功力，双手一圈，用一股内劲拖住$n，随即全力一指戳出，施展#{@move_name}！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp apply_perform(conn, character, target, stats) do
+    # LPC: msg = HIB "$N" HIB "运起全身功力，直扑向$n" + HIB "，双手一圈，用一股内劲" +
+    #           "拖住$n，" + HIB "随即全力一指戳出，不惜耗费大量真元，力求一击毙敌！\n" NOR;
+    # NOTE: 四段之间均为 + 拼接 → 四个独立字面量。
+    s1 = "$N运起全身功力，直扑向$n"
+    s2 = "，双手一圈，用一股内劲"
+    s3 = "拖住$n，"
+    s4 = "随即全力一指戳出，不惜耗费大量真元，力求一击毙敌！\n"
+    start_msg = s1 <> s2 <> s3 <> s4
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    # LPC: msg += HIR "而$P" + HIR "由于内力提升过度，经脉负荷不" + "了，受了不轻的内伤！\n" NOR;
+    #      me->receive_damage("qi", damage / 4);
+    # NOTE: 该段与自伤在 C 中均位于 hit/miss 分支之后、无条件执行；此处一并在
+    #       施招方进程落实（与命中/落空消息的显示顺序因此提前，属已知差异）。
+    q1 = "而$P"
+    q2 = "由于内力提升过度，经脉负荷不"
+    q3 = "了，受了不轻的内伤！\n"
+    post_msg = q1 <> q2 <> q3
+    conn = Broadcast.publish(conn, post_msg, n1: character.name, n2: target.name)
+
+    # LPC: ap = finger + duoluoye-zhi; dp = dodge + force; damage = random(ap) + ap;
+    ap = Stats.skill(stats, "finger") + Stats.skill(stats, "duoluoye-zhi")
+    dp = Stats.skill(target.meta.stats, "dodge") + Stats.skill(target.meta.stats, "force")
+    damage = Engine.rand(&:rand.uniform/1, max(ap, 1)) + ap
+
+    # LPC: me->receive_damage("qi", damage / 4); —— 施招者自伤
+    vitals = Vitals.damage(character.meta.vitals, :qi, div(damage, 4))
+    character = %{character | meta: %{character.meta | vitals: vitals}}
 
     send(target.pid, %Event{
       from_pid: self(),
@@ -117,9 +145,10 @@ defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
       data: %{
         attacker: ref(character),
         perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
+        ap: ap,
+        dp: dp,
+        damage: damage,
+        rng: &:rand.uniform/1
       }
     })
 
@@ -128,64 +157,55 @@ defmodule Kantele.Combat.Skills.Performs.DuoluoyeZhi.Jimie do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "双指"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(
-        Messages.interpolate(
-          "结果$p被$N的#{@move_name}击中，一股霸道的内力伤及经脉，受到#{damage}点伤害！\n",
-          bindings
-        )
-      )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    dp = Map.get(data, :dp, 0)
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+      # LPC: msg += COMBAT_D->do_damage(me, target, UNARMED_ATTACK, damage, 70,
+      #        HIR "只见$p" HIR "一声惨号，已被$P" + HIR "一指击中，一股霸道的内力由$P" +
+      #        HIR "的指尖传来，伤及经脉！\n" NOR);
+      #      me->add("neili", -500); me->start_busy(2);
+      vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+      vitals = Vitals.wound(vitals, :qi, div(damage * 70, 100))
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      # NOTE: 第一段为相邻拼接的单字面量，后两段以 + 分隔。
+      h1 = "只见$p一声惨号，已被$P"
+      h2 = "一指击中，一股霸道的内力由$P"
+      h3 = "的指尖传来，伤及经脉！\n"
+      hit_msg = h1 <> h2 <> h3
+      conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+
+      Performs.feedback(attacker, 500, 2)
+
+      conn
+      |> put_character(character)
+    else
+      # LPC: msg += CYN "可是$p" CYN "内力深厚，及时摆脱了"
+      #            CYN "$P" CYN "内力的牵扯，躲开了这一击！\n" NOR;
+      #      me->add("neili", -200); me->start_busy(3);
+      miss_msg = "可是$p内力深厚，及时摆脱了$P内力的牵扯，躲开了这一击！\n"
+      conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+
+      Performs.feedback(attacker, 200, 3)
+
+      conn
+      |> put_character(character)
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
-
-  @doc "声明式规格（用于 prepare_skill 门槛校验）"
-  def spec() do
-    %Kantele.Combat.Performs.Spec{
-      id: "duoluoye-zhi/jimie",
-      kind: :perform,
-      gates: [],
-      costs: %{},
-      effects: [],
-      busy: 0
-    }
-  end
 end

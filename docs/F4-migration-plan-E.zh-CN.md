@@ -221,7 +221,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `duoluoye_zhi/` （1 个，基线缺失 14 条）
 
-- [ ] ❌ `duoluoye_zhi/jimie.ex` ← `duoluoye-zhi/jimie.c`  (miss=14)
+- [x] ✅ `duoluoye_zhi/jimie.ex` ← `duoluoye-zhi/jimie.c`  (miss=0)
 
 ### `duoming_jinhua/` （1 个，基线缺失 11 条）
 
