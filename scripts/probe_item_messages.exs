@@ -21,10 +21,10 @@ with_msgs = Enum.filter(items, &(msgs.(&1) != nil))
 IO.puts("items total          : #{length(items)}")
 IO.puts("items with messages  : #{length(with_msgs)}")
 
-wield = Enum.count(with_msgs, fn it -> Map.has_key?(msgs.(it), :wield) end)
-unwield = Enum.count(with_msgs, fn it -> Map.has_key?(msgs.(it), :unwield) end)
-IO.puts("  with wield         : #{wield}")
-IO.puts("  with unwield       : #{unwield}")
+for k <- [:wield, :unwield, :wear, :remove, :unequip] do
+  c = Enum.count(with_msgs, fn it -> Map.has_key?(msgs.(it), k) end)
+  IO.puts("  with #{String.pad_trailing(to_string(k), 8)}: #{c}")
+end
 
 case with_msgs do
   [] ->

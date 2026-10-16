@@ -265,6 +265,39 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
      而实际写的是 `messages.wield` —— 这是审计的一类**假阳性**（另一例见 B1 的 `valid_startroom`）。
    - **结论**：这是一笔「**零数据写入即可激活**」的 L2 收益，列为 **B5a**（见 §3 P2）。
 
+   **D10 实测规模（B5b 期间测出）—— 不是 1 个文件，是 83 个块**
+
+   D10 原文只举了 `danA_1.c` 一例。做 B5b 时按「源文件 → UCL 块」全量对账，实测：
+
+   | | `items` 块（loader 会读 `messages`） | `characters` 块（loader 不读） |
+   |---|---:|---:|
+   | 命中块数 | **46** | **83** |
+   | `wear`/`remove`/`unequip` 条数 | 22 / 13 / 31 | 63 / 56 / 20 |
+
+   即 **68% 的目标落在 `characters` 块**，且**全部**来自 `npc/obj/*.c`（如
+   `d/beijing/npc/obj/blade.c` `inherit BLADE` —— 明明是武器，却被输出成
+   `characters "blade" { name/aliases/description }`，**整个 meta 都没有**：
+   damage/value/unit/material/weapon_prop/messages 全丢）。
+
+   - 转换器把「继承武器/护甲宏（BLADE/SWORD/STAFF/CLOTH…）」的文件误判成 NPC ——
+     它的 item 判定只认字面量 `ITEM`/`OBJECT`。
+   - **本批只写 `items` 块**（46 块）：`characters` 块里 loader 根本不读 `messages`，
+     写进去是**无效数据**，故不写、只计数上报。
+   - ⚠️ **修 D10 需要改已有行**（`characters "x" {` → `items "x" {`），与 **P4「只增不改」冲突**
+     → 属**待决策项**（见进度文档 §14 R7）。且光改名不够：这些块的 meta **从未生成过**，
+     还得从源补 meta（本计划 P1/P2 的 key 通道可覆盖）。
+
+   **B5b 顺带实测的两条 elias 词法边界**（`scripts/probe_ucl_brackets.exs`）
+
+   | 引号内的值含 | 结果 |
+   |---|---|
+   | `[` / `]`（如 `，[唰]的一声`） | ❌ `syntax error before: '['` → **必须换成 `(` `)`**（与 `(pen)` 同惯例） |
+   | `,` + 空白（`，` 全角无碍） | ❌ `syntax error before: ','` |
+   | `[0-9],`（数字紧邻逗号） | ❌ 同上报错 |
+   | `,` + 非数字非空白（`把`、`and`） | ✅ |
+
+   > 全库待写值里只有 **1 条**踩到（`kunlun:pao1` 的 `，[唰]的一声`），已按上表改成 `(唰)`。
+
 **验收**：`python scripts/validate_ucl.py data/world/<zone>.ucl` 通过；
 `git diff --stat` 只有**新增行**（无删除/修改）；`mix test --seed 12345` 绿；
 二次运行 dry-run 报「0 待补」。
@@ -295,7 +328,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | 批次 | key | 次数 | 目标 |
 |------|-----|-----:|------|
 | **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | `Item.Meta` 加 `messages` 字段 + loader 读取（**零数据写入，最高性价比**）—— **已完成 `0676bd08`**（219 物品命中） |
-| B5b | `wear_msg` / `remove_msg` / `unequip_msg` | 89/63/37 | `Item.Meta` 装备文案（`wield`/`unwield` 已在 B5a 覆盖，不重复转） |
+| B5b | `wear_msg` / `remove_msg` / `unequip_msg` | 89/63/37 | `messages = { wear, remove, unequip }`（`wield`/`unwield` 已在 B5a 覆盖，不重复转）—— **已完成**：因 B5a 已建好 `messages` 通道，本批实际是 **L1 纯数据**，无需再加字段 |
 | B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」） |
 | B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` |
 | B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 |
@@ -391,6 +424,9 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `probe_elias_expressibility.exs` | **§1 Q1 / P5 前置** | —（只解析字符串） | — | **容器内** | ✅ | **已建** |
 | `plan_key_field_map.py` | P1a | `tmp/lost_key_triage.json` + `.c` 语料 | `tmp/` | 宿主机 | ✅ | **已建** |
 | `backfill_l1_fields.py` | P1b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（含写盘前备份 + `validate_ucl` 自校验门禁） |
+| `backfill_item_messages.py` | B5b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（装备文案 → `messages = { wear, remove, unequip }`；门禁为「完整 issue 集合 + 行号归一化」比对） |
+| `probe_item_messages.exs` | B5a/B5b 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（统计 `Item.Meta.messages` 各键装载数） |
+| `probe_ucl_brackets.exs` | elias 边界 | —（只解析字符串） | — | **容器内** | ✅ | ✅ **已建**（引号内 `[`/`,` 的可词法性） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 
 **所有脚本的公共约定**

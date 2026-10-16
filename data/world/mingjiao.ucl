@@ -4030,6 +4030,7 @@ chats = [
 
   messages = {
     wield = "{npc}抽出一把明晃晃的{name}握在手中。"
+    unequip = "{npc}将手中的{name}插入腰间的刀鞘。"
   }
 
       meta = {
@@ -4119,6 +4120,7 @@ chats = [
 
   messages = {
     wield = "{npc}抽出一把明晃晃的{name}握在手中。"
+    unequip = "{npc}将手中的{name}插入腰间的刀鞘。"
   }
 
       meta = {

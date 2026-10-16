@@ -2977,6 +2977,7 @@ chats = [
 
   messages = {
     wield = "{npc}抽出一把{name}握在手中。"
+    unequip = "{npc}将手中的{name}插回腰间。"
   }
 
       meta = {

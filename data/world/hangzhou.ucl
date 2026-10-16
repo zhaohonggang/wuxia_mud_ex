@@ -3703,6 +3703,10 @@ item_desc = {
         material = "plant"
         armor = 10
       }
+  messages = {
+    unequip = "{npc}轻轻地把{name}从头上摘了下来。"
+    wear = "{npc}轻轻地把一朵{name}戴在头上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/obj/huangshan.c by LPCConverter

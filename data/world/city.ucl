@@ -5805,6 +5805,10 @@ chats = [
         material = "plant"
         armor = 0
       }
+  messages = {
+    remove = "{npc}幽幽的叹了口气，把{name}从头上摘了下来。"
+    wear = "{npc}轻轻地把一朵{name}戴在头上，嫣然一笑。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/shitou.c by LPCConverter
@@ -5942,6 +5946,10 @@ chats = [
         material = "plant"
         armor = 0
       }
+  messages = {
+    remove = "{npc}轻轻的叹了口气，把{name}从头上摘了下来。"
+    wear = "{npc}轻轻地把一朵{name}戴在头上，衬得明眸好齿更加动人。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/ccloth.c by LPCConverter

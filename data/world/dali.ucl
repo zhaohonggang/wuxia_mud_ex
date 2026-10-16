@@ -7267,6 +7267,10 @@ chats = [
         material = "plant"
         armor = 0
       }
+  messages = {
+    unequip = "{npc}轻轻地把{name}从头上摘了下来。"
+    wear = "{npc}轻轻地把一朵{name}戴在头上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/chahua12.c by LPCConverter
@@ -7290,6 +7294,10 @@ chats = [
         material = "plant"
         armor = 0
       }
+  messages = {
+    unequip = "{npc}轻轻地把{name}从头上摘了下来。"
+    wear = "{npc}轻轻地把一朵{name}戴在头上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/chahua13.c by LPCConverter
@@ -7313,6 +7321,10 @@ chats = [
         material = "plant"
         armor = 0
       }
+  messages = {
+    unequip = "{npc}轻轻地把{name}从头上摘了下来。"
+    wear = "{npc}轻轻地把一朵{name}戴在头上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/fangshaji.c by LPCConverter

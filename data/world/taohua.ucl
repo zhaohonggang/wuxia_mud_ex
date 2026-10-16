@@ -1203,6 +1203,9 @@ item_desc = {
         material = "silk"
         armor = 1
       }
+  messages = {
+    wear = "{npc}将{name}拿出束在头发上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/mingzhu.c by LPCConverter
@@ -1290,6 +1293,9 @@ item_desc = {
         material = "silk"
         armor = 1
       }
+  messages = {
+    wear = "{npc}将{name}拿出束在头发上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/taohua/obj/taojian.c by LPCConverter
@@ -1308,6 +1314,7 @@ item_desc = {
 
   messages = {
     wield = "{npc}拿出一把练剑用的{name}，握在手中。"
+    unequip = "{npc}放下手中的{name}。"
   }
 
       meta = {

@@ -1319,6 +1319,7 @@ item_desc = {
 
   messages = {
     wield = "{npc}拿出一个{name}，试了试重量后握在手中。"
+    unequip = "{npc}放下手中的{name}。"
   }
 
       meta = {
@@ -1515,6 +1516,10 @@ item_desc = {
         material = "cloth"
         armor = 65
       }
+  messages = {
+    remove = "{npc}解开{name},把{name}从身上脱了下来。"
+    wear = "{npc}迎风一展，(唰)的一声，披上一件{name}。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao2.c by LPCConverter
@@ -1538,6 +1543,10 @@ item_desc = {
         material = "cloth"
         armor = 45
       }
+  messages = {
+    remove = "{npc}轻轻的把{name}从身上脱了下来。"
+    wear = "{npc}把{name}迎风一展，缓缓的披在身上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao3.c by LPCConverter
@@ -1561,6 +1570,10 @@ item_desc = {
         material = "cloth"
         armor = 30
       }
+  messages = {
+    remove = "{npc}轻轻的把{name}从身上脱了下来。"
+    wear = "{npc}把{name}迎风一展，缓缓的披在身上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/pao4.c by LPCConverter
@@ -1584,6 +1597,10 @@ item_desc = {
         material = "cloth"
         armor = 10
       }
+  messages = {
+    remove = "{npc}轻轻的把{name}从身上脱了下来。"
+    wear = "{npc}把{name}迎风一展，缓缓的披在身上。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/kunlun/obj/rice.c by LPCConverter

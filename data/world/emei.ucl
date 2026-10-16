@@ -2940,6 +2940,7 @@ direction = ~
 
   messages = {
     wield = "{npc}拿出一把{name}，握在手中。"
+    unequip = "{npc}放下手中的{name}。"
   }
 
       meta = {

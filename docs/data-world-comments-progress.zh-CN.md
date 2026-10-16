@@ -41,7 +41,7 @@
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
-| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活已存在的 `messages`）；B5b–B10 ⬜ |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（`wear`/`remove`/`unequip`，46 块）；B3/B6–B10 ⬜ |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -69,7 +69,8 @@
 | M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **34** | ✅ | `mix test --seed 12345` |
 | M10 | 已回填 `room.flags` 房间数 | 0 | **284** | ✅ | `backfill_l1_fields.py` |
 | M11 | `validate_ucl.py` 通过 / 失败 | 67 / 10 | **67 / 10** | ✅ | `validate_ucl.py` |
-| M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **219**（218 `wield` / 155 `unwield`） | ✅ | `scripts/probe_item_messages.exs`（容器内） |
+| M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **249**（wield 218 / unwield 155 / wear 22 / remove 13 / unequip 31） | ✅ | `scripts/probe_item_messages.exs`（容器内） |
+| M13 | 装备文案已回填条数（B5b 新增） | 0 | **66**（wear 22 / remove 13 / unequip 31，46 个 `items` 块 / 14 区） | ✅ | `backfill_item_messages.py` |
 
 **基线已实测确认**：M1–M6、M8 为本轮实跑值；M7 引用 `ucl-comment-todo.zh-CN.md` 的记录。
 
@@ -216,6 +217,22 @@
 - `mix test --seed 12345`：**3435 tests, 34 failures** —— 与基线**完全一致**（34 个既有失败不新增）。
 - 无消费端 → **线上行为零变化**；`Meta.Trim` 只 `Map.take([:damage, :armor])` → 新字段不进 web 载荷，**无需 `Jason.Encoder`**。
 
+**B5b 验收记录（2026-10-16）**
+
+- **实际是 L1，不是 L2**：B5a 已建好 `messages` 通道（`Item.Meta.messages` + loader 读取），
+  所以 B5b 只需把 `wear`/`remove`/`unequip` 三个键写进同一个 map —— **零代码改动、纯数据**。
+- 新脚本 `scripts/backfill_item_messages.py`（沿用 B1 的安全模式：dry-run 默认 / **写盘前备份** /
+  `is_insertion_only` 断言 / `validate_ucl` 自校验门禁）。
+- 值归一化**逐条对齐转换器**：`extract_strings_from_macro_wrapped` → `process_lpc_escapes` →
+  `$N`→`{npc}`/`$n`→`{name}` → `sanitize_ucl_sval`。非字面量（closure `(: do_wear :)`、含变量）**跳过并计数**（1 条 closure）。
+- 实测：**46 个 `items` 块 / 14 区 / +126 行 / −0 行**；`wear` 22 / `remove` 13 / `unequip` 31 = **66 条**。
+- 幂等：二次 dry-run `filled=0, already=46` ✅；备份 `tmp/backup-20261016-151807/`（14 文件，**写盘之前**，抽验为改前态 ✅）。
+- **校验不新增失败** ✅：14 区逐个与 `HEAD` 对比「完整 issue 集合（行号归一化）」→ `NEW=NONE`。
+  （`baituo`/`huashan`/`shaolin`/`wudu` 本来就各带 1 个 Chars 问题，属既有。）
+- 探针 `probe_item_messages.exs`：带 `messages` 的物品 **219 → 249**。
+- ⚠️ **68% 的目标落在 `characters` 块（83 块），本批不写** —— loader 不读 `characters` 的 `messages`，
+  写了是无效数据。属 **D10 待决策**（见 §14 R7）。
+
 > **复核修正（2026-10-16）**：`sleep_room` / `no_sleep_room` / `no_steal` **不在此表** ——
 > 消费端**已存在**（`room.ex` L223/L238 读 `data.flags` → `attrs["sleep_room"]`；`sleep_command.ex` L70）。
 > 缺的是**数据**：全仓 `.ucl` 里 `"flags"` 出现 **0** 次，所以这两个 flag 恒为 `false`。
@@ -227,7 +244,7 @@
 | 批次 | key | 次数 | 归属 | 状态 | 提交 |
 |------|-----|-----:|------|:----:|------|
 | **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | 装备文案（**零数据写入，最高性价比，先做**） | ✅ | `0676bd08` |
-| **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案（`wield`/`unwield` 已由 B5a 覆盖，不重复转） | ⬜ | |
+| **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案 → `messages = { wear, remove, unequip }`（`wield`/`unwield` 已由 B5a 覆盖） | ✅ | （见 §13） |
 | **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ⬜ | |
 | **B6** | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | NPC 战斗喊话 | ⬜ | |
 | ~~B7~~ | ~~`sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）~~ | ~~127/90/55~~ | **已由 B1 完成**（`cf0af449`） | ✅ | `cf0af449` |
@@ -390,6 +407,8 @@
 | D16 | `coagents` 是纯数据 L1 吗？ | **否** → `manual`。源值是 mapping 列表（`startroom`+`id`），`parse_coagents/1` 做 `to_string/1` 会崩；两处消费端形状不一致（`combat_event.ex` 要 id 串 / `guarder.ex` 要 map） | 2026-10-16 | `loader.ex` L1055-1062；`combat_event.ex` L435；`guarder.ex` L73 |
 | D17 | 「丢失 key 审计」的结果可直接信吗？ | **不可全信** —— 存在**假阳性**：key 可能已被转换器**改名/改形**输出。已知两例：`wield_msg`→`messages.wield`（220 块）、`valid_startroom`→flag `"startroom"` | 2026-10-16 | `lpc_converter.ex` L3253；`tmp/lost_key_triage.json` |
 | D18 | `wield_msg`/`unwield_msg` 需要回填数据吗？ | **不需要** —— 转换器**早已输出** `messages = { wield, unwield }`，只缺 loader 读取。列为 **B5a**：零数据写入激活 373 条文案 | 2026-10-16 | 全库实测 220 块 / 218+155 条 |
+| D19 | 引号内的 `[` / `]` 怎么处理？ | **换成 `(` / `)`**（elias 实测拒绝 `[`：`syntax error before: '['`；`(` 可解析，全库既有的 `(pen)` 即此惯例）。同时确认 `,`+空白 与 `[0-9],` 也不可入串 | 2026-10-16 | `scripts/probe_ucl_brackets.exs` |
+| D20 | B5b 要不要写 `characters` 块？ | **不写**。`characters` 块里 loader 不读 `messages` → 写了是无效数据。只写 `items` 块（46/129），其余 83 块登记为 **D10 待决策**（R7） | 2026-10-16 | 全量「源文件→UCL 块」对账 |
 
 ---
 
@@ -405,6 +424,7 @@
 | 2026-10-16 | 文档更正 | `cf0af449` | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
 | 2026-10-16 | **P1a 复核 2（B2/B3/B4 改判）** | `0676bd08` | 回源实测推翻 3 条原判：`base_unit`/`base_value`→L3-framework、`female_only`→L2（新字段）、`coagents`→manual；`plan_key_field_map.py` 加 `base_*` 硬规则 + 禁映射 `flag`；重算 `tmp/key_field_map.json`；新增发现 `messages` 早已转好（B5a）；计划 + 进度文档同步更正 | 分诊表 L1 9→**1**（假阳性）/ L2 20→**21** / L3-fw 83→**85** / manual 122→**123**；**L1 清空** |
 | 2026-10-16 | **B5a（激活 messages）** | `0676bd08` | `Item.Meta` 加 `:messages`；`loader.ex parse_item` 读取物品块顶层 `messages`；新增只读探针 `scripts/probe_item_messages.exs` | 代码改动，**零数据写入**；M12 0→**219**（218 wield / 155 unwield）；测试 3435/34 不新增 |
+| 2026-10-16 | **B5b（wear/remove/unequip）** | （见提交） | 新增 `scripts/backfill_item_messages.py`；回填 46 个 `items` 块的 `messages.wear/remove/unequip`；新增 `scripts/probe_ucl_brackets.exs`（elias 引号内 `[`/`,` 边界）；门禁升级为「完整 issue 集合 + 行号归一化」比对 | **14 区 / +126 行 / −0 行**；M12 219→**249**、M13 0→**66**；幂等 ✓；校验 NEW=NONE |
 
 ---
 
@@ -418,6 +438,7 @@
 | R4 | `Meta.Trim` 新字段必须能 JSON 编码 | websocket 进程崩溃 | ⬜ | 加字段时同步补 `Jason.Encoder` |
 | R5 | `context.data.no_steal` 的取数路径未确认 | 决定 `no_steal` 是 L1（纯数据）还是 L3（要接线） | ✅ 已查清 | **已确认**：`context.data` 就是 `%Room{}`（`vendor/kalevala/.../room.ex` L79-85 `state.data = room`；`Context.new` 取 `state.data`），所以 `no_steal` 走 L1（数据已写），消费端见 R6 |
 | R6 | **`room.ex` L1458-1462 的 cond 会抛 `KeyError`（既有缺陷）** | 偷窃在房间内必然崩溃；`no_steal` 数据写了也不生效 | ⬜ 待修 | `context.data.skybook` / `.no_fight` / `.no_steal` 三个字段 `Room` 都没有（实测 `Map.has_key?` = false）。应改用 `Kantele.World.room_flags(room_id)`。**属既有 bug，非本批引入** → P3 |
+| R7 | **D10：83 个 `characters` 块其实是物品（整个 meta 缺失）** | 68% 的装备文案目标 + 这些物品的 damage/value/unit/material/weapon_prop 全部无法装载 | ⬜ **待决策** | 修法＝把 `characters "x" {` 改成 `items "x" {` —— **改已有行，与 P4「只增不改」冲突**；且这些块的 meta **从未生成过**，改名后仍需回填 meta。需用户拍板是否开 P4 例外（可做成独立、可回滚的脚本 + 逐块对账） |
 
 ---
 

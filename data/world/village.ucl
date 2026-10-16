@@ -1209,6 +1209,7 @@ chats = [
 
   messages = {
     wield = "{npc}拿出一把{name}，握在手中。"
+    unequip = "{npc}放下手中的{name}。"
   }
 
       meta = {
@@ -1237,6 +1238,9 @@ chats = [
         weight = 700
         unit = "个"
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
 # Source: C:/files/git/mud/d/village/npc/obj/egg.c
@@ -1257,6 +1261,9 @@ chats = [
         unit = "颗"
         food = 50
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
 # Source: C:/files/git/mud/d/village/npc/obj/hammer.c
@@ -1280,6 +1287,9 @@ chats = [
         unit = "把"
         material = "iron"
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
 # Source: C:/files/git/mud/d/village/npc/obj/shoes.c
@@ -1300,6 +1310,9 @@ chats = [
         material = "cloth"
         armor = 1
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
 # Source: C:/files/git/mud/d/village/npc/obj/stick.c
@@ -1323,6 +1336,9 @@ chats = [
         unit = "根"
         material = "wood"
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
     characters "walker" {

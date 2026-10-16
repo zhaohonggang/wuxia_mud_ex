@@ -2554,6 +2554,7 @@ item_desc = {
 
   messages = {
     wield = "只听见「飕」地一声，{npc}的手中已经多了一把寒光四射的宝剑----{name}。"
+    unequip = "{npc}将手中的{name}插入腰间的剑鞘。"
   }
 
       meta = {

@@ -6475,6 +6475,7 @@ chats = [
 
   messages = {
     wield = "{npc}抽出一把明晃晃的{name}握在手中。"
+    unequip = "{npc}将手中的{name}插入腰间的刀鞘。"
   }
 
       meta = {
@@ -6526,6 +6527,10 @@ chats = [
         material = "cloth"
         armor = 220
       }
+  messages = {
+    remove = "{npc}将金刚罩从身上脱了下来，折叠成小小的一团。"
+    wear = "只听「哗」的一声，{npc}展开一件金光闪闪的袈裟披在身上。 瞬时间日月为之失色，瑞气千条，祥云朵朵，一派庄严气象。"
+  }
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/liuli-qiezi.c by LPCConverter
@@ -6627,6 +6632,7 @@ chats = [
 
   messages = {
     wield = "{npc}从衣袋里掏出一根{name}，握在手中当武器。"
+    unequip = "{npc}将手中的{name}放回衣袋。"
   }
 
       meta = {
@@ -6655,6 +6661,7 @@ chats = [
 
   messages = {
     wield = "{npc}抽出一把{name}握在手中。"
+    unequip = "{npc}将手中的{name}插回腰间。"
   }
 
       meta = {
@@ -7134,6 +7141,7 @@ chats = [
 
   messages = {
     wield = "{npc}拿出一把{name}，握在手中。"
+    unequip = "{npc}放下手中的{name}。"
   }
 
       meta = {
@@ -7403,6 +7411,9 @@ chats = [
           difficulty = 20
         }
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
 
@@ -7429,6 +7440,9 @@ chats = [
           difficulty = 20
         }
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
     characters "mafu" {
@@ -7512,6 +7526,9 @@ chats = [
         unit = "柄"
         material = "iron"
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
 
@@ -7531,6 +7548,9 @@ chats = [
         material = "cloth"
         armor = 10
       }
+  messages = {
+    unequip = "{npc}放下手中的{name}。"
+  }
     }
 
     characters "walker" {
