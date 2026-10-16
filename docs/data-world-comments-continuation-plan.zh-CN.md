@@ -327,7 +327,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
    - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`max_liquid`、
      `power_point can_make not_make item_origin`；扩 `armor_prop` 子键（`personality`/`armor_vs_force`/`warm`）与 `weapon_prop` 子键（`personality`）；
    - `Room` 加：`room_owner room_name room_position room_owner_id`；
-   - `NonPlayerMeta` 加：`chat_msg_combat chat_chance_combat`。
+   - `NonPlayerMeta` 加：`chat_msg_combat chat_chance_combat`。（✅ `72b86831`）
    - 每个字段**只加 `Map.get`**，不写任何默认逻辑 → 消费端未接 = 行为不变。
 2. **回填数据**（复用 P1b 脚本，换映射表）。
 3. **补 `Jason.Encoder`**（若新字段会进 `Meta.Trim` 发给 web 客户端）——
@@ -342,7 +342,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | `Item.Meta` 加 `messages` 字段 + loader 读取（**零数据写入，最高性价比**）—— **已完成 `0676bd08`**（219 物品命中） |
 | B5b | `wear_msg` / `remove_msg` / `unequip_msg` | 89/63/37 | `messages = { wear, remove, unequip }`（`wield`/`unwield` 已在 B5a 覆盖，不重复转）—— **已完成**：因 B5a 已建好 `messages` 通道，本批实际是 **L1 纯数据**，无需再加字段 |
 | B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」）—— **已完成**：`Item.Meta` 加 `{:female_only, false}` + `parse_item_meta` 读 `meta.female_only`（`to_bool`）；回填 **24 个 `items` 块 / 7 区 / +24 行**，探针实测 24 物品命中 |
-| B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` |
+| B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` —— **已完成 `72b86831`**：`NonPlayerMeta` 加 `{:chat_msg_combat, []}` / `{:chat_chance_combat, 0}`；`loader.ex parse_character/4` 读取 + `parse_chat_msg_combat/1`；回填 **122 个 `characters` 块 / 29 区 / +239 行**，容器内探针 `probe_npc_combat_chat.exs` 实测 loader 载入字段（254/256 命中，样本 老大娘 chance=50） |
 | B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 |
 | B8 | `max_liquid` | 74 | `Item.Meta` 容器容量 |
 | B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | `Item.Meta` 打造系统 |
@@ -442,6 +442,8 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `probe_item_female_only.exs` | B3 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（24 物品命中 + `flag` 位掩码未被污染） |
 | `audit_block_attribution.py` | D10/R7 对账 | `.ucl` | — | 宿主机 | ✅ | ✅ **已建**（修正后的块归因；`iter_blocks/1` 输出每块的块类型与真实源路径） |
 | `probe_ucl_brackets.exs` | elias 边界 | —（只解析字符串） | — | **容器内** | ✅ | ✅ **已建**（引号内 `[`/`,` 的可词法性） |
+| `backfill_npc_combat_chat.py` | B6 | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（B6 回填 `chat_msg_combat/chat_chance_combat`；dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、双引号列表） |
+| `probe_npc_combat_chat.exs` | B6 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；实测 loader 载入 NonPlayerMeta.chat_msg_combat/chat_chance_combat，254/256 命中） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 
 **所有脚本的公共约定**
