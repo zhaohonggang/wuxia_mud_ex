@@ -7,10 +7,12 @@ defmodule Kantele.Character.ItemView do
     context = Map.get(attributes, :context, :none)
 
     item = item_instance.item
+    name_attribute = Kalevala.Output.Tags.escape_attribute(item.name)
+    description = Kalevala.Output.Tags.escape_attribute(item.description)
 
     [
-      ~i({item-instance id="#{item_instance.id}" context="#{context}" name="#{item.name}" description="#{
-        item.description
+      ~i({item-instance id="#{item_instance.id}" context="#{context}" name="#{name_attribute}" description="#{
+        description
       }"}),
       render("name", %{item: item}),
       ~i({/item-instance})
@@ -18,7 +20,7 @@ defmodule Kantele.Character.ItemView do
   end
 
   def render("name", %{item: item}) do
-    ~i({item id="#{item.id}"}#{item.name}{/item})
+    ~i({item id="#{item.id}"}#{Kalevala.Output.Tags.escape(item.name)}{/item})
   end
 
   def render("drop-abort", %{reason: :missing_verb, item: item}) do

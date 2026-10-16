@@ -47,7 +47,7 @@ defmodule Kantele.Character.LookView do
 
   def render("look.text", %{room: room}) do
     ~E"""
-    {room-title id="<%= room.id %>" x="<%= to_string(room.x) %>" y="<%= to_string(room.y) %>" z="<%= to_string(room.z) %>"}<%= room.name %>{/room-title}
+    {room-title id="<%= room.id %>" x="<%= to_string(room.x) %>" y="<%= to_string(room.y) %>" z="<%= to_string(room.z) %>"}<%= Kalevala.Output.Tags.escape(room.name) %>{/room-title}
     <%= render("_description", %{room: room}) %>
     """
   end
@@ -111,7 +111,9 @@ defmodule Kantele.Character.LookView do
     exits =
       room.exits
       |> Enum.map(fn room_exit ->
-        ~i({exit name="#{room_exit.exit_name}"}#{room_exit.exit_name}{/exit})
+        ~i({exit name="#{Kalevala.Output.Tags.escape_attribute(room_exit.exit_name)}"}#{
+          Kalevala.Output.Tags.escape(room_exit.exit_name)
+        }{/exit})
       end)
       |> View.join(" ")
 

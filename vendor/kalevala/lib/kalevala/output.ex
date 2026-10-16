@@ -96,6 +96,24 @@ defmodule Kalevala.Output.Tags do
     |> String.replace(~r/}/, "\\}")
   end
 
+  @doc """
+  Escape a string for use inside a tag attribute value (`name="..."`)
+
+  Attribute values are delimited by double quotes and must not contain raw
+  quotes or tag braces, otherwise the tag parser cannot find the closing
+  quote/brace and the whole line falls back to raw text. This escapes the
+  backslash, double quote, and brace characters so arbitrary user/world data
+  (item names, descriptions, room names, ...) round-trips through
+  `parse_tag_attributes/1` unchanged.
+  """
+  def escape_attribute(string) do
+    string
+    |> String.replace("\\", "\\\\")
+    |> String.replace("\"", "\\\"")
+    |> String.replace(~r/{/, "\\{")
+    |> String.replace(~r/}/, "\\}")
+  end
+
   @impl true
   def init(opts) do
     %Context{
@@ -224,13 +242,28 @@ defmodule Kalevala.Output.Tags do
   end
 
   def parse_tag_attributes(tag) do
-    case Regex.run(~r/(?<name>[\w-]+)="(?<value>[^"]+)"/, tag) do
+    case Regex.run(~r/(?<name>[\w-]+)="(?<value>(?:[^"\\]|\\.)*)"/u, tag) do
       [string, name, value] ->
-        [{name, value} | parse_tag_attributes(String.replace(tag, string, ""))]
+        [
+          {name, unescape_attribute(value)}
+          | parse_tag_attributes(String.replace(tag, string, ""))
+        ]
 
       _ ->
         [tag]
     end
+  end
+
+  defp unescape_attribute(value), do: unescape_attribute(value, [])
+
+  defp unescape_attribute(<<>>, acc), do: IO.iodata_to_binary(acc)
+
+  defp unescape_attribute(<<"\\", character::utf8, rest::binary>>, acc) do
+    unescape_attribute(rest, [acc, <<character::utf8>>])
+  end
+
+  defp unescape_attribute(<<character::utf8, rest::binary>>, acc) do
+    unescape_attribute(rest, [acc, <<character::utf8>>])
   end
 end
 
