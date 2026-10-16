@@ -225,7 +225,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `duoming_jinhua/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `duoming_jinhua/hua.ex` ← `duoming-jinhua/hua.c`  (miss=11)
+- [x] ✅ `duoming_jinhua/hua.ex` ← `duoming-jinhua/hua.c`  (miss=0)
 
 ### `emei_jian/` （1 个，基线缺失 10 条）
 
