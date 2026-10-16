@@ -216,7 +216,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `dugu_jiujian/` （2 个，基线缺失 22 条）
 
-- [ ] ❌ `dugu_jiujian/qi.ex` ← `dugu-jiujian/qi.c`  (miss=12)
+- [x] ✅ `dugu_jiujian/qi.ex` ← `dugu-jiujian/qi.c`  (miss=0)
 - [ ] ❌ `dugu_jiujian/yi.ex` ← `dugu-jiujian/yi.c`  (miss=10)
 
 ### `duoluoye_zhi/` （1 个，基线缺失 14 条）
