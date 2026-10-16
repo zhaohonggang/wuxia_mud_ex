@@ -1241,6 +1241,11 @@ defmodule Kantele.World.Loader do
           Enum.uniq((item_meta.aliases || []) ++ parse_aliases(Map.get(item_data, :aliases)))
     }
 
+    # `messages` 同样在物品块**顶层**（与 name 同级，不在 meta 块内）：
+    # 转换器早已输出 `messages = { wield = "…" unwield = "…" }`，这里只是装进来
+    # （P7：只加 Map.get，无消费端 → 行为不变）。全库 220 块 / 373 条文案。
+    item_meta = %{item_meta | messages: Map.get(item_data, :messages)}
+
     item = %Item{
       id: "#{zone.id}:#{key}",
       name: item_data.name,

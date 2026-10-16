@@ -40,8 +40,8 @@
 |------|------|-----:|:--:|:----:|------|----------|
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
-| **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | 🟨 | `cf0af449` | B1 ✅ / B2–B5 ⬜ |
-| **P2** | 加字段 + 回填 | 7 个批次 | L2 | ⬜ | | |
+| **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | | **B5a ✅**（激活已存在的 `messages`）；B5b–B10 ⬜ |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -69,6 +69,7 @@
 | M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **34** | ✅ | `mix test --seed 12345` |
 | M10 | 已回填 `room.flags` 房间数 | 0 | **284** | ✅ | `backfill_l1_fields.py` |
 | M11 | `validate_ucl.py` 通过 / 失败 | 67 / 10 | **67 / 10** | ✅ | `validate_ucl.py` |
+| M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **219**（218 `wield` / 155 `unwield`） | ✅ | `scripts/probe_item_messages.exs`（容器内） |
 
 **基线已实测确认**：M1–M6、M8 为本轮实跑值；M7 引用 `ucl-comment-todo.zh-CN.md` 的记录。
 
@@ -118,15 +119,37 @@
    不是房间 flag。
 3. **`parts` 目标不匹配**（源是物品，`NonPlayerMeta.parts` 是 NPC 字段）→ 退回 `manual`。
 
+**P1a 复核结论 2（第二轮，逐条回源实测）—— B2/B3/B4 全部改判**
+
+> 第一轮只按「名字/同义」推断，第二轮按 §3 P1 第 1 步**回源读真实语义**，三条全部判错：
+
+| 原判 | 改判 | 硬证据 |
+|------|------|--------|
+| `base_unit`→`unit`、`base_value`→`value`（L1） | **L3-framework** | `inherit/item/combined.c`：`set_amount()` 里 `set("value", amount * base_value)`；`short()` 用 `base_unit`；`setup()` 把 `unit` 默认 `"些"`。`clone/money/coin.c` 同写 `unit="些"`/`base_unit="文"`；`d/beijing/npc/obj/jinbiao.c` 同写 `unit="些"`/`value=2000`/`base_unit="支"`/`base_value=4000`。**引擎无 `amount`** |
+| `female_only`→`item.meta.flag`（L1） | **L2**（新字段） | `flag` 是武器类型位掩码：`wield_command.ex` L101 默认 `1`=ONE_HANDED；`loader.ex` L1274 `\|\| 1`；战斗按 `& TWO_HANDED`。`female_only` 的真实消费端是 `cmds/std/wear.c` L75（穿戴限制） |
+| `coagents`→`npc.coagents`（L1） | **manual** | 源值恒为 mapping 列表（30 处全含 `startroom`+`id`）；`loader.ex parse_coagents/1` 做 `Enum.map(&to_string/1)` → 对 map 崩；消费端不一致（`combat_event.ex` L435 要 id 字符串 / `guarder.ex` L73 要 map） |
+
+- 分诊表 `tmp/key_field_map.json` 随之重算：**L1=1（假阳性）/ L2=21 / L3-framework=85 / noop=8 / manual=122**。
+- **L1 已清空**：B1 之后重跑分诊只剩 `valid_startroom`，而它正是 B1 用 `FLAG_NAME` 改名写成 `"startroom"` → 假阳性。
+- `plan_key_field_map.py` 加两条硬规则防复发：① `base_*` 前缀一律 `L3-framework`；② 不再把任何 key 直接映射到 `item.meta.flag`。
+
+**新发现：`wield_msg`/`unwield_msg` 早已转好，只是被 loader 丢弃**
+
+- 转换器 `lpc_converter.ex` L3253-3260 **已经**输出 `messages = { wield = "…" unwield = "…" }`（占位符已归一化）。
+- 全库实测 **220 个 `messages` 块**（全在 `items` 块内），含 **218 `wield` + 155 `unwield`**。
+- loader 无 `messages` 解析、`Item.Meta` 无该字段 → 373 条文案被静默丢弃。
+- 审计把它报成「丢失」只因搜的是字面 key `wield_msg`（实际写的是 `messages.wield`）→ 审计**假阳性**第二例。
+- → 列为 **B5a**：**零数据写入**即可激活。
+
 > 同一 key 会落在不同对象类型上（`no_steal` = room×45/item×4/npc×6），
 > 故 P1a 为每个 key 输出 `kinds` 源对象类型分布，target 按主导类型定。
 
 | 批次 | key | 次数 | 目标 | 状态 | 提交 | 备注 |
 |------|-----|-----:|------|:----:|------|------|
 | **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | ✅ | `cf0af449` | 命中 **284 房间 / 56 区**；`valid_startroom` 的 flag 名是 **`startroom`** |
-| **B2** | `base_unit` / `base_value` | 72/69 | `item.meta.unit/value` | ⬜ | | **注意 `npc/` 下物品被输出成 `characters` 块**，需一并处理 |
-| **B3** | `female_only` | 60 | `item.meta.flag` | ⬜ | | 物品属性（`Item.Meta.flag` 已存在，`item.ex` L262） |
-| **B4** | `coagents` | 30 | `npc.coagents` | ⬜ | | NonPlayerMeta 白名单已含 |
+| ~~B2~~ | ~~`base_unit` / `base_value`~~ | ~~72/69~~ | ~~`item.meta.unit/value`~~ | ➖ | | **改判 L3-framework**（见「复核结论 2」）：`base_*` 是「单件」语义，引擎无 `amount` |
+| **B3** | `female_only` | 60 | `item.meta.female_only`（**新字段**） | ⬜ | | **改判 L2**：`flag` 是武器位掩码，不能复用 |
+| ~~B4~~ | ~~`coagents`~~ | ~~30~~ | ~~`npc.coagents`~~ | ➖ | | **改判 manual**：源值是 mapping 列表，`parse_coagents` 会崩；消费端形状不一致 |
 | B5 | `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | ⬜ | | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
 | ~~B1'~~ | ~~`base_weight`~~ | ~~36~~ | ~~`item.meta.weight`~~ | ➖ | | **作废**：改判 L3-framework（堆叠物品单件重量） |
 
@@ -169,13 +192,29 @@
 
 | 结构体 | 要加的字段 | 状态 |
 |--------|-----------|:----:|
-| `Item.Meta` | `wield_msg unwield_msg wear_msg remove_msg unequip_msg` | ⬜ |
+| `Item.Meta` | `messages`（**激活已存在**的 `wield`/`unwield`，B5a；`messages` 在物品块顶层） | ✅ |
+| `Item.Meta` | `wear_msg remove_msg unequip_msg`（B5b；`wield`/`unwield` 已在 `messages` 内，不重复加） | ⬜ |
+| `Item.Meta` | `female_only`（B3；**不能塞 `flag`** —— `flag` 是武器位掩码） | ⬜ |
 | `Item.Meta` | `liquid max_liquid liquid_type` | ⬜ |
 | `Item.Meta` | `can_make not_make power_point item_origin material_attrib material_name` | ⬜ |
-| `Room` | `female_only no_beg no_map` | ⬜ |
 | `Room` | `room_owner room_name room_position room_owner_id` | ⬜ |
 | `NonPlayerMeta` | `chat_msg_combat chat_chance_combat` | ⬜ |
 | `Combat.applies_keys()` | 是否纳入 `personality`（B10 前置） | ⬜ |
+
+> **复核修正 2（2026-10-16）**：`female_only` **从 `Room` 行移到 `Item.Meta` 行** ——
+> 源对象是 `obj/qingpao.c` 等**物品**（item×45/npc×15），消费端 `cmds/std/wear.c` L75 也是物品穿戴。
+> 原表把它列在 `Room` 下是错的。`base_unit`/`base_value` **不进本表**（已改判 L3-framework，见 §5 复核结论 2）。
+
+**B5a 验收记录（2026-10-16）**
+
+- 改动**只在 `lib/`，零数据写入**：`Item.Meta` 加 `:messages`（`item.ex`）；`loader.ex parse_item/4`
+  加一行 `item_meta = %{item_meta | messages: Map.get(item_data, :messages)}`（P7：只加字段 + `Map.get`）。
+- 容器探针 `scripts/probe_item_messages.exs`：`items total 1588 / with messages 219`，
+  其中 **218 `wield` + 155 `unwield`** —— 与 `.ucl` 里实测的 220 块 / 218+155 条**一致**
+  （差 1 块属未加载的排除区）。示例：`mingjiao:chanzhang` → `%{wield: "{npc}抽出一根{name}…", unwield: …}`。
+- `mix compile`：仅既有 warning，无新增。
+- `mix test --seed 12345`：**3435 tests, 34 failures** —— 与基线**完全一致**（34 个既有失败不新增）。
+- 无消费端 → **线上行为零变化**；`Meta.Trim` 只 `Map.take([:damage, :armor])` → 新字段不进 web 载荷，**无需 `Jason.Encoder`**。
 
 > **复核修正（2026-10-16）**：`sleep_room` / `no_sleep_room` / `no_steal` **不在此表** ——
 > 消费端**已存在**（`room.ex` L223/L238 读 `data.flags` → `attrs["sleep_room"]`；`sleep_command.ex` L70）。
@@ -187,13 +226,18 @@
 
 | 批次 | key | 次数 | 归属 | 状态 | 提交 |
 |------|-----|-----:|------|:----:|------|
-| **B5** | `wield_msg`/`unwield_msg`/`wear_msg`/`remove_msg`/`unequip_msg` | 295/217/89/63/37 | 装备文案（**最高收益**） | ⬜ | |
+| **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | 装备文案（**零数据写入，最高性价比，先做**） | ✅ | （见 §13） |
+| **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案（`wield`/`unwield` 已由 B5a 覆盖，不重复转） | ⬜ | |
+| **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ⬜ | |
 | **B6** | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | NPC 战斗喊话 | ⬜ | |
-| **B7** | `sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）/`female_only`/`no_beg` | 127/90/55/60/39 | 前三个走 **L1**（已有 `flags` 通道）；`female_only`/`no_beg` 依赖上表加字段 | ⬜ | |
-| **B8** | `max_liquid`/`liquid`/`base_unit`/`base_value` | 74/74/72/69 | 容器 / 酒水 | ⬜ | |
+| ~~B7~~ | ~~`sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）~~ | ~~127/90/55~~ | **已由 B1 完成**（`cf0af449`） | ✅ | `cf0af449` |
+| **B7** | `room_owner`/`room_name`/`room_position`/`room_owner_id` | 29/29/29/24 | 房间归属（需 `Room` 新字段） | ⬜ | |
+| **B8** | `max_liquid` | 74 | 容器容量 | ⬜ | |
 | **B9** | `can_make`/`not_make`/`power_point`/`item_origin` | 16/8/20/16 | 打造系统 | ⬜ | |
 | **B10** | `armor_prop/personality` / `weapon_prop/personality` | 69 / 3 | 需扩 `applies_keys` 或单列字段 | ⬜ | |
-| **B11** | `default_long`/`for_family`/`jiaji`/`hellzhen`/`room_*` | 28/35/21/18/111 | 杂项 | ⬜ | | `valid_startroom`(68) 已改判 L1 并入 B1（见 D11）；`room_*` 取 4 个规范键 |
+| ~~B11~~ | ~~`base_unit`/`base_value`~~ | ~~72/69~~ | **已改判 L3-framework**，退出本表 | ➖ | |
+
+> `default_long`(28) / `for_family`(35) / `jiaji`(21) / `hellzhen`(18) 等仍判 `manual`，不在上表。
 
 - [ ] ⬜ 若新字段进 `Meta.Trim`，已补 `Jason.Encoder`（否则 websocket 进程崩溃）
 - [ ] ⬜ `mix test` 绿且**线上行为零变化**（无消费者）
@@ -319,6 +363,8 @@
 | `no_map` / `no_shown` / `no_user` / `no_magic` | noop | 显示开关 | 2026-10-16 |
 | `max_room` | noop | 容量提示，无消费端 | 2026-10-16 |
 | `death:heisenlin` / `heimuya:insert` / `huashan:tsr_room_dugu-jiujian` | manual | generic 文件，需人工判断是否接入世界 | 2026-10-16 |
+| `coagents`（30） | manual | 字段在但**形状不符**：源值是 mapping 列表（`startroom`+`id`），`parse_coagents/1` 做 `to_string/1` 会崩；两处消费端形状不一致 → 需先定 schema（D16） | 2026-10-16 |
+| `base_unit`（72）/ `base_value`（69） | L3-framework | 「单件」语义（堆叠物品），与 `unit`/`value`（整叠）不同；引擎无 `amount` → 框架优先（D14） | 2026-10-16 |
 
 ---
 
@@ -339,6 +385,11 @@
 | D11 | `valid_startroom` 到底是不是 noop？ | **不是**。消费者是 `flags` 里的 **`"startroom"`**（`home_command.ex` L54 / `recall_command.ex` L50 都 `Enum.find(..., "startroom" in room.flags)`）。**推翻 D6**，改判 L1，已并入 B1 | 2026-10-16 | `grep -rn 'startroom' lib/` |
 | D12 | 房间 flag 类要不要给 `Room` 加字段？ | **不加**。`Room.flags` 字段已存在（`room.ex` L34）、loader 已解析（`parse_flags/1`）、消费端已存在（`World.room_flags/1`）。**框架文档 §4 B 类该行已更正为 A 类** | 2026-10-16 | `Room.__struct__()` 含 `:flags`（容器实测） |
 | D13 | UCL 列表元素之间用什么分隔？ | **必须逗号**。elias 对「两个换行分隔、无逗号」的元素报 `syntax error before: '"'`。1 项时无需分隔符（这是手写先例看不出坑的原因） | 2026-10-16 | `scripts/probe_elias_expressibility.exs` |
+| D14 | `base_unit`/`base_value` 是否等于 `unit`/`value`？ | **否** → 改判 L3-framework。`base_*` 是「单件」语义（`combined.c`：`set("value", amount*base_value)`、`short()` 用 `base_unit`），`unit`/`value` 是「整叠」；引擎无 `amount` 字段 | 2026-10-16 | `inherit/item/combined.c` L15-45；`clone/money/coin.c`；`d/beijing/npc/obj/jinbiao.c` |
+| D15 | `female_only` 能塞 `item.meta.flag` 吗？ | **不能**（**推翻 D8 的目标**）→ 改判 L2，需新字段 `item.meta.female_only`。`flag` 是武器类型位掩码（`wield_command.ex` L101 默认 1=ONE_HANDED；`loader.ex` L1274 `\|\| 1`） | 2026-10-16 | `wield_command.ex` L101；`cmds/std/wear.c` L75 |
+| D16 | `coagents` 是纯数据 L1 吗？ | **否** → `manual`。源值是 mapping 列表（`startroom`+`id`），`parse_coagents/1` 做 `to_string/1` 会崩；两处消费端形状不一致（`combat_event.ex` 要 id 串 / `guarder.ex` 要 map） | 2026-10-16 | `loader.ex` L1055-1062；`combat_event.ex` L435；`guarder.ex` L73 |
+| D17 | 「丢失 key 审计」的结果可直接信吗？ | **不可全信** —— 存在**假阳性**：key 可能已被转换器**改名/改形**输出。已知两例：`wield_msg`→`messages.wield`（220 块）、`valid_startroom`→flag `"startroom"` | 2026-10-16 | `lpc_converter.ex` L3253；`tmp/lost_key_triage.json` |
+| D18 | `wield_msg`/`unwield_msg` 需要回填数据吗？ | **不需要** —— 转换器**早已输出** `messages = { wield, unwield }`，只缺 loader 读取。列为 **B5a**：零数据写入激活 373 条文案 | 2026-10-16 | 全库实测 220 块 / 218+155 条 |
 
 ---
 
@@ -352,6 +403,8 @@
 | 2026-10-16 | P1b + **B1**（首版，**已回滚**） | 未提交 | 新增 `scripts/backfill_l1_fields.py`；回填 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg` → `room.flags` | 55 区 / +242 行 / -0 行；M6 202→200、M10 0→242 |
 | 2026-10-16 | **回滚 + B1 重做** | `cf0af449` | 首版脚本**备份在写盘之后**（等于没备份）+ **列表缺逗号**导致 56 区语法非法 → `git checkout -- data/world` 回滚、删除无效备份；修脚本（备份前置 + 逗号 + `validate_ucl` 自校验门禁）；补入 `valid_startroom` → flag `"startroom"` 重做 | **56 区 / +921 行 / -0 行**；M10 242→**284** |
 | 2026-10-16 | 文档更正 | `cf0af449` | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
+| 2026-10-16 | **P1a 复核 2（B2/B3/B4 改判）** | （本次） | 回源实测推翻 3 条原判：`base_unit`/`base_value`→L3-framework、`female_only`→L2（新字段）、`coagents`→manual；`plan_key_field_map.py` 加 `base_*` 硬规则 + 禁映射 `flag`；重算 `tmp/key_field_map.json`；新增发现 `messages` 早已转好（B5a）；计划 + 进度文档同步更正 | 分诊表 L1 9→**1**（假阳性）/ L2 20→**21** / L3-fw 83→**85** / manual 122→**123**；**L1 清空** |
+| 2026-10-16 | **B5a（激活 messages）** | （见提交） | `Item.Meta` 加 `:messages`；`loader.ex parse_item` 读取物品块顶层 `messages`；新增只读探针 `scripts/probe_item_messages.exs` | 代码改动，**零数据写入**；M12 0→**219**（218 wield / 155 unwield）；测试 3435/34 不新增 |
 
 ---
 

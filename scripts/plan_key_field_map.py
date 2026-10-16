@@ -101,9 +101,23 @@ KNOWN = {
     "armor_prop/armor_vs_force": ("item.meta.armor_prop", "L2",
                                   "子键 armor_vs_force 不在 applies_keys（R2）"),
 
-    # --- B3: same-name targets already in the Item.Meta whitelist
-    "base_unit": ("item.meta.unit", "L1", "同义 unit（白名单含 unit）"),
-    "base_value": ("item.meta.value", "L1", "同义 value（白名单含 value）"),
+    # --- B2: base_unit / base_value are **NOT** synonyms of unit / value.
+    #     Same trap as base_weight: the bare name describes the *whole stack*,
+    #     base_* describes ONE unit of it.
+    #       inherit/item/combined.c   set_amount(): set("value", amount * base_value);
+    #                                 short():      chinese_number(amount) + base_unit + ...
+    #                                 setup():      unit defaults to "些"
+    #       clone/money/coin.c        unit="些"   base_unit="文"     (both set, differ)
+    #       d/beijing/npc/obj/jinbiao.c  unit="些" value=2000  base_unit="支" base_value=4000
+    #     Engine has no `amount` field -> cannot represent stackables at all.
+    "base_unit": (None, "L3-framework",
+                  "堆叠物品的『单件量词』，与 unit（整叠量词）语义不同："
+                  "combined.c short() 用 base_unit，setup() 把 unit 默认成『些』；"
+                  "coin.c unit=些/base_unit=文 并存。引擎无 amount 字段 → 框架优先"),
+    "base_value": (None, "L3-framework",
+                   "堆叠物品的『单件价值』，与 value（整叠价值）语义不同："
+                   "combined.c set_amount() 里 set(\"value\", amount*base_value)；"
+                   "jinbiao.c value=2000/base_value=4000 并存。引擎无 amount/base_value → 框架优先"),
     "food_supply": ("item.meta.food", "L1",
                     "别名 food_supply→food；item_meta_backfill.py 已处理，本批只对账"),
 
@@ -122,9 +136,11 @@ KNOWN = {
 
     # --- B7: room flags.  Room whitelist HAS `flags` (parse_flags/1, loader L428)
     #     and room.ex L223 reads data.flags -> attrs.  So these are pure data.
-    "female_only": ("item.meta.flag", "L1",
-                    "**物品**属性（qingpao.c/shoe.c 等 obj/ 下）：限定女性可穿/可持；"
-                    "Item.Meta 白名单含 flag 列表；消费端待接线，但 Q3 不阻塞"),
+    "female_only": ("item.meta.female_only", "L2",
+                    "**物品**属性（qingpao.c/shoe.c 等 obj/ 下），源消费端 cmds/std/wear.c L75；"
+                    "Item.Meta 的 flag 是**武器类型位掩码**（wield_command.ex L101 默认 1=ONE_HANDED，"
+                    "loader L1274 `|| 1`，战斗按 & TWO_HANDED 取值）——塞 female_only 会污染武器语义 "
+                    "→ 必须新增独立字段"),
     "no_beg": ("room.flags", "L1", "房间 flag：写入已有 flags 列表"),
     "sleep_room": ("room.flags", "L1",
                    "房间 flag：消费端已存在（room.ex L238 → attrs[sleep_room]）；"
@@ -142,9 +158,15 @@ KNOWN = {
     "max_liquid": ("item.meta.max_liquid", "L2", "容器容量；Item.Meta 白名单无此字段"),
     "can_make": ("item.meta.can_make", "L2", "打造系统；需加字段"),
 
-    # --- already in the NonPlayerMeta whitelist
-    "coagents": ("npc.coagents", "L1",
-                 "NonPlayerMeta 白名单已含 coagents（character.ex L306）"),
+    # --- field exists in NonPlayerMeta, but the SHAPE does not match -> manual.
+    #     LPC value is an array of mappings: ({ ([ "startroom": "/x", "id": "y" ]) })
+    #     loader parse_coagents/1 does Enum.map(&to_string/1) -> crashes on a map;
+    #     combat_event.ex L435 iterates string ids; guarder.ex L73 expects maps.
+    #     The two consumers disagree -> a schema decision is required, not a clean L1.
+    "coagents": (None, "manual",
+                 "NonPlayerMeta 白名单已含 coagents，但**形状不符**：源值是 mapping 列表"
+                 "（startroom+id），parse_coagents/1 做 to_string/1 会崩（String.Chars 无 Map 实现）；"
+                 "且消费端不一致（combat_event.ex 要 id 字符串 / guarder.ex 要 map）→ 需先定 schema"),
 
     # --- B9: crafting -> add fields
     "power_point": ("item.meta.power_point", "L2", "打造系统；需加字段"),
@@ -253,6 +275,16 @@ def classify(key, occ, kinds=None):
     kind_hint = ""
     if kc:
         kind_hint = "（源对象类型：" + "/".join(f"{k}×{n}" for k, n in kc.most_common()) + "）"
+
+    # `base_*` family: describes ONE unit of a stackable object, while the bare
+    # name describes the whole stack (base_weight / base_unit / base_value).
+    # Never treat base_* as a synonym of the bare name -- the engine has no
+    # `amount`/stackable subsystem, so it is framework-first by construction.
+    if name.startswith("base_"):
+        return None, "L3-framework", (
+            f"base_* 属『单件』语义族（{name}），与裸名（整叠）不同；"
+            "引擎无 amount / stackable 子系统 → 框架优先" + kind_hint
+        )
 
     # Q1 -- elias cannot lex it; must fix schema first (never write it).
     if DIGIT_OR_SPECIAL.search(name):

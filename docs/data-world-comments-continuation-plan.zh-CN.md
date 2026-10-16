@@ -100,7 +100,7 @@ Q3  有没有消费端（谁读它）？
 | `UNHANDLED FUNCTION` 条数 / 名数 | 2136 / 643 | 同上 |
 | 分支归属函数数 | 442 | `scripts/build_unhandled_manifest.py` |
 | 函数 body 已回源 | 2104 / 2136（98.5%） | 同上 |
-| `set()` key 在 `.ucl` 无痕迹 | 202 distinct / 3150 occ | `scripts/triage_lost_keys.py` |
+| `set()` key 在 `.ucl` 无痕迹 | 200 distinct / 3110 occ（missing 桶）+ 37 / 1018（engine 桶） | `scripts/triage_lost_keys.py` |
 | 可达性 | **4190 / 4409（95.0%）** | `scripts/world_reachability.py` |
 | 测试 | `mix test --seed 12345` 绿 | — |
 
@@ -205,12 +205,16 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
    | 批次 | key | 次数 | 目标 | 说明 |
    |------|-----|-----:|------|------|
-   | **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | **最先做**（已实施）：房间块无歧义；`flags` 已在 Room 白名单（`loader.ex` L428 `parse_flags/1`），消费端 `World.room_flags/1`（`world.ex` L73） |
-   | **B2** | `base_unit` / `base_value` | 72/69 | `item.meta.unit/value` | 同义（白名单含 unit/value）；**注意 `npc/` 路径下的物品被输出成 `characters` 块**（见下） |
-   | **B3** | `female_only` | 60 | `item.meta.flag` | **物品**属性（不是房间）；白名单含 `flag` |
-   | **B4** | `coagents` | 30 | `npc.coagents` | NonPlayerMeta 白名单已含 `coagents` |
+   | **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | **已完成**（提交 `cf0af449`）：房间块无歧义；`flags` 已在 Room 白名单（`loader.ex` L428 `parse_flags/1`），消费端 `World.room_flags/1`（`world.ex` L73） |
+   | ~~B2~~ | ~~`base_unit` / `base_value`~~ | ~~72/69~~ | ~~`item.meta.unit/value`~~ | **已改判 `L3-framework`**（见下「P1a 修正 2」）：`base_*` 是「单件」语义，与 `unit`/`value`（整叠）不同 |
+   | ~~B3~~ | ~~`female_only`~~ | ~~60~~ | ~~`item.meta.flag`~~ | **已改判 `L2`**：`flag` 是武器类型位掩码，塞不得 → 需新字段 `item.meta.female_only` |
+   | ~~B4~~ | ~~`coagents`~~ | ~~30~~ | ~~`npc.coagents`~~ | **已改判 `manual`**：源值是 mapping 列表，`parse_coagents` 会崩；两处消费端形状不一致 |
    | ~~B1'~~ | ~~`base_weight`~~ | ~~36~~ | ~~`item.meta.weight`~~ | **已改判 L3-framework**（见下「P1a 修正」） |
    | B5 | NPC 侧 `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
+
+   > **L1 已清空**：B1 之后重跑分诊（`tmp/lost_key_triage.json` 12:29 版）只剩 `valid_startroom` 一个 L1 项，
+   > 而它正是 B1 用 `FLAG_NAME` 改名写成了 `"startroom"`（消费端 `home_command.ex` L54 找的是 `"startroom"`）
+   > —— 属**改名导致的假阳性**。因此**白名单内纯数据回填已全部做完**，下一步只能走 L2（加字段）。
 
    **B1 实施记录（2026-10-16，提交 `cf0af449`）**：284 房间 / 56 区，`+921` 行 `-0` 行；幂等、校验 67/10 不退化、可达性 4190/4409 不变、`mix test` 34 个既有失败不新增。
    - `valid_startroom` → flag 名 **`"startroom"`**（消费端 `home_command.ex` L54 / `recall_command.ex` L50 找的是 `"startroom"`，不是 `valid_startroom`）。
@@ -235,6 +239,31 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
      可堆叠的「养精丹」`COMBINED_ITEM`，却生成 `characters "danA_1" { ... }`）。
      `item_meta_backfill.py` 只处理 `items` 块 → 这批物品**从未被回填过**。
      做 B2 时必须同时处理 `characters` 块里的物品，否则会漏。
+
+   **P1a 修正 2（2026-10-16，逐条回源实测）—— 剩余三个「L1」全部改判**
+
+   按 §3 P1 第 1 步「decision 必须人工过一遍再动手」，对 B2/B3/B4 逐条回源核对，**三条全部判错**：
+
+   | 原判 | 实测结论 | 改判 | 硬证据 |
+   |------|----------|------|--------|
+   | `base_unit`→`unit`、`base_value`→`value`（L1） | **不是同义词**，是 `base_weight` 的同类陷阱 | **L3-framework** | `inherit/item/combined.c`：`set_amount()` 里 `set("value", amount * base_value)`；`short()` 用 `base_unit`；`setup()` 把 `unit` 默认成 `"些"`。`clone/money/coin.c` 同时写 `unit="些"`/`base_unit="文"`；`d/beijing/npc/obj/jinbiao.c` 同时写 `unit="些"`/`value=2000`/`base_unit="支"`/`base_value=4000`。**引擎无 `amount` 字段** → 表达不了堆叠 |
+   | `female_only`→`item.meta.flag`（L1） | **`flag` 是武器类型位掩码**，不能当通用 flag 列表 | **L2**（需新字段） | `wield_command.ex` L101 `Map.get(item.meta, :flag, 1)`（默认 1 = `ONE_HANDED`）；`loader.ex` L1274 `flag: Map.get(meta, :flag) \|\| 1`；战斗按 `& TWO_HANDED` 取值。`female_only` 的真实消费端是 `cmds/std/wear.c` L75（穿戴限制），与武器位掩码无关 |
+   | `coagents`→`npc.coagents`（L1） | **字段在，但形状不符** | **manual** | 源值恒为 mapping 列表 `({ ([ "startroom":…, "id":… ]) })`（30 处全是）；`loader.ex parse_coagents/1` 做 `Enum.map(&to_string/1)` → 对 map 调 `to_string` 会 `Protocol.UndefinedError` **崩加载**；且消费端不一致（`combat_event.ex` L435 迭代 id 字符串 / `guarder.ex` L73 过滤 `is_map`）→ 必须先定 schema |
+
+   > **教训（已写进脚本）**：`plan_key_field_map.py` 新增两条硬规则，防止同类误判复发——
+   > ① `base_*` 前缀一律 `L3-framework`（「单件」语义族，引擎无 `amount`）；
+   > ② `KNOWN` 表里不再把任何 key 直接映射到 `item.meta.flag`（该字段专用于武器位掩码）。
+   > 结果：分诊表 `tmp/key_field_map.json` 变为 **L1=1（假阳性）/ L2=21 / L3-framework=85 / noop=8 / manual=122**。
+
+   **新发现（同一次回源核对的副产品）：`wield_msg`/`unwield_msg` 其实早就转好了，只是被 loader 丢弃**
+
+   - 转换器 `lpc_converter.ex` L3253-3260 **已经**把这两个 key 输出成
+     `messages = { wield = "…" unwield = "…" }`（占位符 `{npc}`/`{name}` 已归一化）。
+   - 全库实测：**220 个 `messages` 块**（全部落在 `items` 块内），含 **218 条 `wield` + 155 条 `unwield`**。
+   - 但 **loader 没有 `messages` 解析、`Item.Meta` 没有该字段** → 这 373 条文案被**静默丢弃**。
+   - 「丢失 key 审计」把它们报成「丢失」，只是因为它在 `.ucl` 里搜的是字面 key `wield_msg`，
+     而实际写的是 `messages.wield` —— 这是审计的一类**假阳性**（另一例见 B1 的 `valid_startroom`）。
+   - **结论**：这是一笔「**零数据写入即可激活**」的 L2 收益，列为 **B5a**（见 §3 P2）。
 
 **验收**：`python scripts/validate_ucl.py data/world/<zone>.ucl` 通过；
 `git diff --stat` 只有**新增行**（无删除/修改）；`mix test --seed 12345` 绿；
@@ -261,16 +290,23 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
 **验收**：字段在 `.ucl` 中可见；`mix test` 绿；**线上行为零变化**（无消费者）。
 
-**P2 批次（按次数，来源 `tmp/key_field_map.json` 的 20 个 L2 key）**：
+**P2 批次（按次数，来源 `tmp/key_field_map.json` 的 21 个 L2 key）**：
 
 | 批次 | key | 次数 | 目标 |
 |------|-----|-----:|------|
-| B5 | `wield_msg` / `unwield_msg` / `wear_msg` / `remove_msg` / `unequip_msg` | 295/217/89/63/37 | `Item.Meta` 装备文案（**最高收益**） |
+| **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | `Item.Meta` 加 `messages` 字段 + loader 读取（**零数据写入，最高性价比，先做**） |
+| B5b | `wear_msg` / `remove_msg` / `unequip_msg` | 89/63/37 | `Item.Meta` 装备文案（`wield`/`unwield` 已在 B5a 覆盖，不重复转） |
+| B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」） |
 | B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` |
 | B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 |
 | B8 | `max_liquid` | 74 | `Item.Meta` 容器容量 |
 | B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | `Item.Meta` 打造系统 |
 | B10 | `armor_prop/personality`、`armor_prop/armor_vs_force`、`armor_prop/warm`、`weapon_prop/personality` | 69/2/1/3 | 扩 `Combat.applies_keys()` 或单列字段 |
+
+> **B5a 做法**（P7 只加字段）：`Item.Meta` 加 `:messages`（默认 `nil`）；`loader.ex parse_item/4`
+> 加一行 `messages: Map.get(item_data, :messages)`（`messages` 在物品块**顶层**，与 `name` 同级，
+> 不在 `meta` 块内）。**无消费端 → 行为零变化**；`Meta.Trim` 只 `Map.take([:damage, :armor])`，
+> 新字段不进 web 载荷，**不需要 `Jason.Encoder`**。
 
 **明确免除（登记抑制清单，不实现）**：`no_clean_up`（1805，生命周期）、`no_map`/`no_shown`/`no_user`/`no_magic`（显示开关）、`max_room`。
 **判 `manual`、待人工定夺（不在上表）**：`default_long`(28)、`for_family`(35)、`jiaji`(21)、`hellzhen`(18)、`no_get_from`(14)、`liquid_type`(3) 等。

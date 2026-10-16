@@ -233,6 +233,10 @@ defmodule Kantele.World.Item.Meta do
   - `book` 秘籍五元组 `%Meta.Book{}`（消费端研习命令属 b 期）
   - `flag` 武器类型位掩码（LPC weapon.h：ONE_HANDED=0x1, SECONDARY=0x2, TWO_HANDED=0x4；缺省 0x1 单手）
 
+  装备文案（B5a：激活转换器早已输出、却被 loader 丢弃的 `messages` 块）：
+
+  - `messages` `%{wield: "...", unwield: "..."}` 或 `nil`（占位符 `{npc}`/`{name}` 已归一化）
+
   背包扩展字段（Backpack 宿主接线，对应 `feature/user_storage.c`）：
 
   - `storage_bag` 存储扩展格数（整数；为 nil 表示非背包容器）
@@ -261,6 +265,13 @@ defmodule Kantele.World.Item.Meta do
     :armor_prop,
     :flag,
     :storage_bag,
+
+    # 装备文案（`wield`/`unwield`）：转换器 `lpc_converter.ex` L3253 早已把 LPC 的
+    # `set("wield_msg" ...)` / `set("unwield_msg" ...)` 输出成物品块**顶层**的
+    # `messages = { wield = "…" unwield = "…" }`（占位符已归一化为 {npc}/{name}），
+    # 但 loader 一直没有读取 → 全库 220 块 / 373 条文案被静默丢弃。
+    # 这里只是把它装进来（P7：只加字段 + Map.get，无消费端 = 行为不变）。
+    :messages,
 
     # LPC `set_name(<名>, ({ "id1", "id2" }))` 的 id 表（对应 present/get 的匹配依据）。
     # 转换早期整组丢失，导致 `present('mian')` 这类拼音 id 匹配不上，
