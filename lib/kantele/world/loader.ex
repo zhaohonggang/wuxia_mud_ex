@@ -340,7 +340,11 @@ defmodule Kantele.World.Loader do
       item_desc: parse_item_desc(Map.get(room_data, :item_desc)),
       exit_vetoes: parse_room_vetoes(Map.get(room_data, :valid_leave)),
       behavior: Map.get(room_data, :behavior),
-      behavior_config: parse_behavior_config(Map.get(room_data, :behavior_config))
+      behavior_config: parse_behavior_config(Map.get(room_data, :behavior_config)),
+      room_owner: Map.get(room_data, :room_owner),
+      room_name: Map.get(room_data, :room_name),
+      room_position: Map.get(room_data, :room_position),
+      room_owner_id: Map.get(room_data, :room_owner_id)
     }
 
     {key, room}

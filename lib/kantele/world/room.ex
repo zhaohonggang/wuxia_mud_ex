@@ -41,7 +41,16 @@ defmodule Kantele.World.Room do
     # 转换器把这两个字段整组丢掉了（loader 之前根本不读），守卫拦截因此 16 个
     # 房间全部失效 —— 详见 docs/ucl-comment-todo.zh-CN.md 三、B 节。
     behavior: nil,
-    behavior_config: nil
+    behavior_config: nil,
+
+    # LPC set("room_owner"/"room_name"/"room_position"/"room_owner_id")：
+    # 房间归属信息。源 .c 中全部为 `//**` 注释块里的模板占位符（ROOM_OWNER 等），
+    # 无激活的 set() 调用，故暂无数据可回填；字段先加到结构体（默认 nil），
+    # loader 只读取，不产生任何行为变化（P7）。待有真实数据/消费端后再回填。
+    room_owner: nil,
+    room_name: nil,
+    room_position: nil,
+    room_owner_id: nil
   ]
 
   @doc """
