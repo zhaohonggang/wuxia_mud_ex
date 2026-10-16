@@ -5,18 +5,18 @@
 | | `dev_start.bat`（推荐） | 手动 `docker cp` |
 |---|---|---|
 | 文件同步 | **自动**（bind mount `.:/app`） | 每次改完要 `docker cp` |
-| 改完代码 | 直接生效，等自动编译 | 需要 cp + restart |
+| 改完代码 | `docker restart` 重编译（`code_reloader` 已关） | 需要 cp + restart |
 | 改完 UCL | 游戏内 `reload` | 游戏内 `reload` |
 | 改完 JS | 浏览器 F5 | cp + restart + F5 |
 
-**结论：用 `dev_start.bat` 启动的开发环境最方便，改完代码等几秒自动编译即可。**
+**结论：用 `dev_start.bat` 启动的开发环境最方便；文件自动同步，但改完 Elixir 代码需 `docker restart` 重编译（见下方说明）。**
 
 ## 改动类型与刷新方式
 
 | 改动类型 | 文件位置 | 刷新方式 |
 |---------|---------|---------|
 | UCL 世界数据 | `data/**/*.ucl` | 游戏内 `reload` |
-| Elixir 源码 | `lib/**/*.ex` | 自动编译（bind mount）或 `docker restart` |
+| Elixir 源码 | `lib/**/*.ex` | `docker restart` 重编译（`code_reloader` 已关，见 `dev-code-reloader-signin-hang.zh-CN.md`） |
 | JS/React 前端 | `assets/js/**/*.{js,jsx}` | 浏览器 F5 |
 | Elixir 测试 | `test/**/*.exs` | `mix test`（容器内） |
 | Mix 配置 | `config/*.exs` | 重启服务器 |
@@ -44,15 +44,13 @@ reload
 
 ### 2. Elixir 源码
 
-`mix phx.server` 开发模式下，容器内文件变化会自动检测编译。
-
-**但**通过 `docker cp` 同步的文件可能不被 watcher 检测到，此时需要手动重启：
+`code_reloader` 已在 dev 环境关闭（原因见 `docs/dev-code-reloader-signin-hang.zh-CN.md`），改完 Elixir 源码**不会**自动重编译。`mix phx.server` 启动时会先 `mix compile`，因此重启容器即可把改动编进去：
 
 ```bash
 docker restart wuxia_mud_dev-app-1
 ```
 
-重启后自动编译所有改动，约 25 秒恢复服务。
+重启后自动编译所有改动，约 1~2 分钟恢复服务（过期检测要扫描 bind mount 上的源码）。
 
 ### 3. 前端 JS/React
 

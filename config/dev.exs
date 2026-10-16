@@ -18,7 +18,7 @@ config :ex_venture, ExVenture.Repo, show_sensitive_data_on_connection_error: tru
 config :ex_venture, Web.Endpoint,
   server: true,
   debug_errors: true,
-  code_reloader: true,
+  code_reloader: false,
   check_origin: false,
   watchers: [
     node: [
