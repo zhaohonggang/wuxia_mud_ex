@@ -257,19 +257,19 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `fumo_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `fumo_zhang/lun.ex` ← `fumo-zhang/lun.c`  (miss=7)
+- [x] ✅ `fumo_zhang/lun.ex` ← `fumo-zhang/lun.c`  (miss=0)
 
 ### `furong_jian/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `furong_jian/luan.ex` ← `furong-jian/luan.c`  (miss=9)
+- [x] ✅ `furong_jian/luan.ex` ← `furong-jian/luan.c`  (miss=0)
 
 ### `guxing_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `guxing_jian/lian.ex` ← `guxing-jian/lian.c`  (miss=10)
+- [x] ✅ `guxing_jian/lian.ex` ← `guxing-jian/lian.c`  (miss=0)
 
 ### `guyue_chan/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `guyue_chan/jing.ex` ← `guyue-chan/jing.c`  (miss=9)
+- [x] ✅ `guyue_chan/jing.ex` ← `guyue-chan/jing.c`  (miss=0)
 
 ### `hanmei_jian/` （1 个，基线缺失 11 条）
 
@@ -285,7 +285,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `hanxing_bada/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `hanxing_bada/lastrisk.ex` ← `hanxing-bada/lastrisk.c`  (miss=7)
+- [x] ✅ `hanxing_bada/lastrisk.ex` ← `hanxing-bada/lastrisk.c`  (miss=0)
 
 ### `heixue_shenzhen/` （1 个，基线缺失 12 条）
 
@@ -369,15 +369,15 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `liuhe_dao/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `liuhe_dao/shan.ex` ← `liuhe-dao/shan.c`  (miss=11)
+- [x] ✅ `liuhe_dao/shan.ex` ← `liuhe-dao/shan.c`  (miss=0)
 
 ### `longcheng_shendao/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `longcheng_shendao/feng.ex` ← `longcheng-shendao/feng.c`  (miss=11)
+- [x] ✅ `longcheng_shendao/feng.ex` ← `longcheng-shendao/feng.c`  (miss=0)
 
 ### `longxing_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `longxing_jian/kong.ex` ← `longxing-jian/kong.c`  (miss=10)
+- [x] ✅ `longxing_jian/kong.ex` ← `longxing-jian/kong.c`  (miss=0)
 
 ### `luohan_gun/` （1 个，基线缺失 7 条）
 
