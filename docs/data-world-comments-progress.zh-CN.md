@@ -41,7 +41,7 @@
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
-| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）；B7–B10 ⬜ |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）；B8–B10 ⬜ |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -200,7 +200,7 @@
 | `Item.Meta` | `female_only`（B3；**不能塞 `flag`** —— `flag` 是武器位掩码） | ✅ `199e2b74` |
 | `Item.Meta` | `liquid max_liquid liquid_type` | ⬜ |
 | `Item.Meta` | `can_make not_make power_point item_origin material_attrib material_name` | ⬜ |
-| `Room` | `room_owner room_name room_position room_owner_id` | ⬜ |
+| `Room` | `room_owner room_name room_position room_owner_id` | ✅ 代码 `48fa1b59`；**数据 ⏸ 阻塞（源无真实值）** |
 | `NonPlayerMeta` | `chat_msg_combat chat_chance_combat` | ✅ `72b86831` |
 | `Combat.applies_keys()` | 是否纳入 `personality`（B10 前置） | ⬜ |
 
@@ -277,7 +277,7 @@
 | **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ✅ | `199e2b74` | `Item.Meta` 加 `{:female_only, false}` + `parse_item_meta` 读 `meta.female_only`；回填 **24 个 `items` 块 / 7 区 / +24 行**；全库 74 处取值恒为 `1` |
 | **B6** | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | NPC 战斗喊话 | ✅ | `72b86831` |
 | ~~B7~~ | ~~`sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）~~ | ~~127/90/55~~ | **已由 B1 完成**（`cf0af449`） | ✅ | `cf0af449` |
-| **B7** | `room_owner`/`room_name`/`room_position`/`room_owner_id` | 29/29/29/24 | 房间归属（需 `Room` 新字段） | ⬜ | |
+| **B7** | `room_owner`/`room_name`/`room_position`/`room_owner_id` | 29/29/29/24 | 房间归属 | ⏸ 数据阻塞 | 代码 `48fa1b59`；源 .c 全为 `//**` 注释模板占位符，无激活 set()，无真实值可回填 |
 | **B8** | `max_liquid` | 74 | 容器容量 | ⬜ | |
 | **B9** | `can_make`/`not_make`/`power_point`/`item_origin` | 16/8/20/16 | 打造系统 | ⬜ | |
 | **B10** | `armor_prop/personality` / `weapon_prop/personality` | 69 / 3 | 需扩 `applies_keys` 或单列字段 | ⬜ | |
@@ -455,7 +455,8 @@
 | 2026-10-16 | **P1a 复核 2（B2/B3/B4 改判）** | `0676bd08` | 回源实测推翻 3 条原判：`base_unit`/`base_value`→L3-framework、`female_only`→L2（新字段）、`coagents`→manual；`plan_key_field_map.py` 加 `base_*` 硬规则 + 禁映射 `flag`；重算 `tmp/key_field_map.json`；新增发现 `messages` 早已转好（B5a）；计划 + 进度文档同步更正 | 分诊表 L1 9→**1**（假阳性）/ L2 20→**21** / L3-fw 83→**85** / manual 122→**123**；**L1 清空** |
 | 2026-10-16 | **B5a（激活 messages）** | `0676bd08` | `Item.Meta` 加 `:messages`；`loader.ex parse_item` 读取物品块顶层 `messages`；新增只读探针 `scripts/probe_item_messages.exs` | 代码改动，**零数据写入**；M12 0→**219**（218 wield / 155 unwield）；测试 3435/34 不新增 |
 | 2026-10-16 | **B5b（wear/remove/unequip）** | `e8c88c32` | 新增 `scripts/backfill_item_messages.py`；回填 46 个 `items` 块的 `messages.wear/remove/unequip`；新增 `scripts/probe_ucl_brackets.exs`（elias 引号内 `[`/`,` 边界）；门禁升级为「完整 issue 集合 + 行号归一化」比对 | **14 区 / +126 行 / −0 行**；M12 219→**249**、M13 0→**66**；幂等 ✓；校验 NEW=NONE |
-| 2026-10-16 | **B6（chat_msg_combat/chat_chance_combat）** | `72b86831` | `lib/kantele/character.ex` NonPlayerMeta 加两字段；`lib/kantele/world/loader.ex` `parse_character/4` 读取 + 新增 `parse_chat_msg_combat/1`；新增 `scripts/backfill_npc_combat_chat.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、双引号列表）+ `scripts/probe_npc_combat_chat.exs` | **29 区 / 122 块 / +239 行 / −0 行**；M15 0→**254/256**；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（loader 载入 NonPlayerChat 字段，样本 老大娘 chance=50） |
+| 2026-10-16 | **B6（chat_msg_combat/chat_chance_combat）** | `72b86831` | `lib/kantele/character.ex` NonPlayerMeta 加两字段；`lib/kantele/world/loader.ex` `parse_character/4` 读取 + 新增 `parse_chat_msg_combat/1`；新增 `scripts/backfill_npc_combat_chat.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、双引号列表）+ `scripts/probe_npc_combat_chat.exs` | **29 区 / 122 块 / +239 行 / −0 行**；M15 0→**254/256**；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（loader 载入 NonPlayerMeta 字段，样本 老大娘 chance=50） |
+| 2026-10-16 | **B7（room_owner/room_name/room_position/room_owner_id，代码侧）** | `48fa1b59` | `lib/kantele/world/room.ex` Room 结构体加 4 字段（默认 nil）；`lib/kantele/world/loader.ex` `parse_room/4` 加 Map.get 读取；新增 `scripts/probe_room_owner.exs` | **3 文件 / +60 行 / −2 行**；4409 个房间字段均为 nil（无源数据）；**数据回填阻塞：源 .c 4 个 key 全在 `//**` 注释块为模板占位符，无激活 set()，也无 sidecar/其他真实值来源** |
 
 ---
 
@@ -470,6 +471,7 @@
 | R5 | `context.data.no_steal` 的取数路径未确认 | 决定 `no_steal` 是 L1（纯数据）还是 L3（要接线） | ✅ 已查清 | **已确认**：`context.data` 就是 `%Room{}`（`vendor/kalevala/.../room.ex` L79-85 `state.data = room`；`Context.new` 取 `state.data`），所以 `no_steal` 走 L1（数据已写），消费端见 R6 |
 | R6 | **`room.ex` L1458-1462 的 cond 会抛 `KeyError`（既有缺陷）** | 偷窃在房间内必然崩溃；`no_steal` 数据写了也不生效 | ⬜ 待修 | `context.data.skybook` / `.no_fight` / `.no_steal` 三个字段 `Room` 都没有（实测 `Map.has_key?` = false）。应改用 `Kantele.World.room_flags(room_id)`。**属既有 bug，非本批引入** → P3 |
 | R7 | **D10：83 个 `characters` 块其实是物品（整个 meta 缺失）** | 68% 的装备文案目标 + 这些物品的 damage/value/unit/material/weapon_prop 全部无法装载 | ⬜ **待决策** | 修法＝把 `characters "x" {` 改成 `items "x" {` —— **改已有行，与 P4「只增不改」冲突**；且这些块的 meta **从未生成过**，改名后仍需回填 meta。需用户拍板是否开 P4 例外（可做成独立、可回滚的脚本 + 逐块对账） |
+| R8 | **B7 数据回填阻塞：源无真实值** | Room 4 字段已加（代码 `48fa1b59`），但无数据可写 | ⏸ 阻塞 | 源 .c 中 `room_owner`/`room_name`/`room_position`/`room_owner_id` 全在 `//**` 注释块里为 `ROOM_OWNER` 等模板占位符，**无激活的 set() 调用**；sidecar `room.comments.txt` 仅 1 处条件判断提及 `room_owner_id`，无值；UCL 现无相关字段。待出现真实数据源或消费端后再回填。字段本身默认 nil，不产生行为变化 |
 
 ---
 
