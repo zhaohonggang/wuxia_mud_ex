@@ -1,12 +1,20 @@
 defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Tuwu do
   @moduledoc """
-  图武「tuwu」（对照 `kungfu/skill/jinshe-zhui/tuwu.c`）
+  金蛇吐雾「tuwu」（对照 `kungfu/skill/jinshe-zhui/tuwu.c`，inherit F_SSERVER）
 
-  金蛇锥法单体攻击：消耗 300 内力，对战斗中对手出招。
+  金蛇锥法（暗器 throwing，持于 handing 槽）单体绝招：要求手持 `jinshe zhui`
+  且余量 >= 1、jinshe-zhui >= 100、真气 >= 300、目标存活。
+  起手消耗暗器 1 枚；命中判定 `skill / 2 + random(skill) > target->query_skill("dodge")`，
+  命中则造成 qi 伤/创伤各 `skill / 3`、扣 200 真气、给目标挂 `skill / 30` 秒
+  「血雾遮眼」失明 buff（对应 `set_temp("block_msg/all")` + `tuwu_target_end`）。
 
   差异（TODO(migrate)）：
-  - LPC 仅 `level:jinshe-zhui>=100`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  - `.c` 的自身冷却 `me->set_temp("jinshe/tuwu")` 仅在命中后置、`skill / 30` 秒后由
+    `tuwu_me_end` 清除；本版简化为起手即置冷却 buff（命中/失手均进入冷却，同
+    `jinshe-zhui/feng.ex` 先例），文案与时限保留；
+  - `tuwu_target_end` 的 `message_combatd`（房间可见）与 `tell_object`（私有）
+    经引擎 `combat/buff-expire` 合并为 `message` 渲染给目标（同 `cuixin-zhang/cui.ex`）；
+  - `.c` 无 `can_perform`，故不设「已知此招」检查。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -17,25 +25,31 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Tuwu do
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
+  alias Kantele.Character.Combat.Buff
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "jinshe-zhui/tuwu"
-  @move_name "「图武」"
+  @cooldown_key "jinshe/tuwu"
+  @blind_key "jinshe/tuwu/blind"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
 
-    with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+    with :ok <- check_cooldown(combat),
+         {:ok, target} <- target(combat),
+         :ok <- check_weapon(character),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats)
     else
       {:error, message} ->
         conn
@@ -44,63 +58,116 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Tuwu do
     end
   end
 
-  defp check_perform_known(stats) do
-    if Stats.perform_known?(stats, @perform_id) do
-      :ok
+  # LPC: if (me->query_temp("jinshe/tuwu"))
+  #          return notify_fail("你才用的金蛇吐雾，没法接着就出招。\n");
+  defp check_cooldown(combat) do
+    if Combat.buff_active?(combat, @cooldown_key) do
+      {:error, "你才用的金蛇吐雾，没法接着就出招。\n"}
     else
-      {:error, "你所使用的外功中没有这种功能。\n"}
+      :ok
     end
   end
 
-  defp check_target(combat) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  #          return notify_fail("金蛇吐雾只能在战斗中使用。\n");
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "金蛇吐雾只能在战斗中使用。\n"}
     end
   end
 
-  defp check_skill_level(stats) do
-    level = Stats.skill(stats, "jinshe-zhui")
+  # LPC: if (! objectp(weapon = me->query_temp("handing")) ||
+  #         (string)weapon->query("id") != "jinshe zhui" ||
+  #         weapon->query_amount() < 1)
+  #          return notify_fail("你手里没拿金蛇锥，不能使用绝招！\n");
+  defp check_weapon(character) do
+    item = handing(character)
 
-    if level < 100 do
-      {:error, "你的金蛇锥法不够娴熟，无法施展#{@move_name}。\n"}
-    else
-      {:ok, level}
-    end
-  end
-
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "throwing") == "jinshe-zhui" do
+    if item && Map.get(item, :id) == "jinshe zhui" and (Map.get(item.meta, :amount) || 1) >= 1 do
       :ok
     else
-      {:error, "你没有激发金蛇锥法，无法施展#{@move_name}。\n"}
+      {:error, "你手里没拿金蛇锥，不能使用绝招！\n"}
     end
   end
 
+  # LPC: if ((skill = me->query_skill("jinshe-zhui", 1)) < 100)
+  #          return notify_fail("你的金蛇锥法不够娴熟，不会使用金蛇吐雾。\n");
+  defp check_skill_level(stats) do
+    if Stats.skill(stats, "jinshe-zhui") < 100 do
+      {:error, "你的金蛇锥法不够娴熟，不会使用金蛇吐雾。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query("neili") < 300)
+  #          return notify_fail("你内力不够了。\n");
   defp check_neili(character) do
     if character.meta.vitals.neili < 300 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你内力不够了。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N手中金蛇锥飞出，使出金蛇锥法「图武」，锥影如图般幻化射向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp handing(character), do: Enum.find(character.inventory, & &1.handing)
+
+  defp apply_perform(conn, character, target, stats) do
+    skill = Stats.skill(stats, "jinshe-zhui")
+    secs = cooldown_secs(skill)
+
+    # LPC: weapon->add_amount(-1);
+    character =
+      case handing(character) do
+        nil -> character
+        item -> consume_handing(character, item)
+      end
+
+    # LPC: me->set_temp("jinshe/tuwu", 1);
+    #      me->start_call_out((: call_other, __FILE__, "tuwu_me_end", me :), skill / 30);
+    combat =
+      character.meta.combat
+      |> Combat.add_buff(%Buff{key: @cooldown_key, applies: %{}, duration: secs})
+
+    character = %{character | meta: %{character.meta | combat: combat}}
+
+    Process.send_after(
+      self(),
+      %Event{
+        from_pid: self(),
+        topic: "combat/buff-expire",
+        data: %{key: @cooldown_key, applies: %{}}
+      },
+      secs * 1000
+    )
+
+    # LPC: msg = HIY "$N" HIY "一声轻啸，身形微动，手中金蛇锥竟然向上飞"
+    #           "起绕了个圈，随而迅速袭向$n" HIY "的面前。\n" NOR;
+    start_msg = "$N一声轻啸，身形微动，手中金蛇锥竟然向上飞起绕了个圈，随而迅速袭向$n的面前。\n"
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        skill: skill,
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
@@ -108,41 +175,101 @@ defmodule Kantele.Combat.Skills.Performs.JinsheZhui.Tuwu do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  defp cooldown_secs(skill), do: max(div(skill, 30), 1)
+
+  defp consume_handing(character, item) do
+    amount = (Map.get(item.meta, :amount) || 1) - 1
+
+    inventory =
+      character.inventory
+      |> Enum.reject(fn i -> i == item && amount < 1 end)
+      |> Enum.map(fn i ->
+        if i == item, do: %{i | meta: Map.put(i.meta, :amount, amount)}, else: i
+      end)
+
+    %{character | inventory: inventory}
+  end
+
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "暗器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    skill = max(Map.get(data, :skill, 0), 1)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dodge = Stats.skill(character.meta.stats, "dodge")
+    secs = cooldown_secs(skill)
+
+    # LPC: if (skill / 2 + random(skill) > target->query_skill("dodge", 1))
+    if div(skill, 2) + Engine.rand(rng, skill) > dodge do
+      # LPC: target->receive_damage("qi", (int)skill / 3, me);
+      #      target->receive_wound("qi", (int)skill / 3, me);
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, div(skill, 3))
+        |> Vitals.wound(:qi, div(skill, 3))
+
+      # LPC: target->set_temp("block_msg/all", 1);
+      #      target->start_call_out((: call_other, __FILE__, "tuwu_target_end", target :), skill / 30);
+      combat =
+        Combat.add_buff(character.meta.combat, %Buff{
+          key: @blind_key,
+          applies: %{},
+          duration: secs
+        })
+
+      character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+      # LPC tuwu_target_end(): message_combatd("$N抹了抹满脸的" HIR "鲜血" NOR "，终于睁开了眼。\n", target);
+      #                        tell_object(target, HIR "你终于抹掉了满脸的鲜血，看到了周围的情景。\n" NOR);
+      Process.send_after(
+        self(),
+        %Event{
+          from_pid: self(),
+          topic: "combat/buff-expire",
+          data: %{
+            key: @blind_key,
+            applies: %{},
+            message:
+              Enum.join(
+                [
+                  Messages.interpolate("$N抹了抹满脸的鲜血，终于睁开了眼。\n", n1: character.name),
+                  "你终于抹掉了满脸的鲜血，看到了周围的情景。\n"
+                ],
+                ""
+              )
+          }
+        },
+        secs * 1000
+      )
+
+      # LPC: msg += HIM "只听一阵狂风扫叶般的声响中，$N" HIM "手中的"
+      #                "金蛇锥闪出夺目的光芒，闪耀得$n" HIM "眼冒金花，"
+      #                "\n除了眼前一重重的雾气外，$n" HIM "啥也看不见了！\n" NOR;
+      hit_msg =
+        "只听一阵狂风扫叶般的声响中，$N手中的金蛇锥闪出夺目的光芒，闪耀得$n眼冒金花，\n" <>
+          "除了眼前一重重的雾气外，$n啥也看不见了！\n"
+
+      conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+
+      # LPC: me->add("neili", -200);
+      Performs.feedback(attacker, 200, 0)
+
+      put_character(conn, character)
+    else
+      # LPC: msg += CYN "$n" CYN "心中暗暗一惊，急忙后"
+      #                "退，闪开了这枚金蛇锥。\n" NOR;
+      miss_msg = "$n心中暗暗一惊，急忙后退，闪开了这枚金蛇锥。\n"
+      conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+
+      put_character(conn, character)
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
