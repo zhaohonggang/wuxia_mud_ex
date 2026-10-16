@@ -241,19 +241,19 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `feixing_shu/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `feixing_shu/hua.ex` ← `feixing-shu/hua.c`  (miss=12)
+- [x] ✅ `feixing_shu/hua.ex` ← `feixing-shu/hua.c`  (miss=0)
 
 ### `fenglei_zifa/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `fenglei_zifa/she.ex` ← `fenglei-zifa/she.c`  (miss=7)
+- [x] ✅ `fenglei_zifa/she.ex` ← `fenglei-zifa/she.c`  (miss=0)
 
 ### `fireice_strike/` （1 个，基线缺失 14 条）
 
-- [ ] ❌ `fireice_strike/binghuo.ex` ← `fireice-strike/binghuo.c`  (miss=14)
+- [x] ✅ `fireice_strike/binghuo.ex` ← `fireice-strike/binghuo.c`  (miss=0)
 
 ### `fumo_jian/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `fumo_jian/foxin.ex` ← `fumo-jian/foxin.c`  (miss=11)
+- [x] ✅ `fumo_jian/foxin.ex` ← `fumo-jian/foxin.c`  (miss=0)
 
 ### `fumo_zhang/` （1 个，基线缺失 7 条）
 
@@ -273,15 +273,15 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `hanmei_jian/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `hanmei_jian/leng.ex` ← `hanmei-jian/leng.c`  (miss=11)
+- [x] ✅ `hanmei_jian/leng.ex` ← `hanmei-jian/leng.c`  (miss=0)
 
 ### `hansha_sheying/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `hansha_sheying/zhen.ex` ← `hansha-sheying/zhen.c`  (miss=11)
+- [x] ✅ `hansha_sheying/zhen.ex` ← `hansha-sheying/zhen.c`  (miss=0)
 
 ### `hanwang_qingdao/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `hanwang_qingdao/ying.ex` ← `hanwang-qingdao/ying.c`  (miss=11)
+- [x] ✅ `hanwang_qingdao/ying.ex` ← `hanwang-qingdao/ying.c`  (miss=0)
 
 ### `hanxing_bada/` （1 个，基线缺失 7 条）
 
@@ -289,83 +289,83 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `heixue_shenzhen/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `heixue_shenzhen/luo.ex` ← `heixue-shenzhen/luo.c`  (miss=12)
+- [x] ✅ `heixue_shenzhen/luo.ex` ← `heixue-shenzhen/luo.c`  (miss=0)
 
 ### `henshan_jian/` （1 个，基线缺失 13 条）
 
-- [ ] ❌ `henshan_jian/huan.ex` ← `henshan-jian/huan.c`  (miss=13)
+- [x] ✅ `henshan_jian/huan.ex` ← `henshan-jian/huan.c`  (miss=0)
 
 ### `hexing_bifa/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `hexing_bifa/dian.ex` ← `hexing-bifa/dian.c`  (miss=9)
+- [x] ✅ `hexing_bifa/dian.ex` ← `hexing-bifa/dian.c`  (miss=0)
 
 ### `hongye_daofa/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `hongye_daofa/leiting.ex` ← `hongye-daofa/leiting.c`  (miss=7)
+- [x] ✅ `hongye_daofa/leiting.ex` ← `hongye-daofa/leiting.c`  (miss=0)
 
 ### `houquan/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `houquan/zhen.ex` ← `houquan/zhen.c`  (miss=8)
+- [x] ✅ `houquan/zhen.ex` ← `houquan/zhen.c`  (miss=0)
 
 ### `huilong_bifa/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `huilong_bifa/cang.ex` ← `huilong-bifa/cang.c`  (miss=8)
+- [x] ✅ `huilong_bifa/cang.ex` ← `huilong-bifa/cang.c`  (miss=0)
 
 ### `hujia_daofa/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `hujia_daofa/xian.ex` ← `hujia-daofa/xian.c`  (miss=7)
+- [x] ✅ `hujia_daofa/xian.ex` ← `hujia-daofa/xian.c`  (miss=0)
 
 ### `jidian_jian/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `jidian_jian/dian.ex` ← `jidian-jian/dian.c`  (miss=6)
+- [x] ✅ `jidian_jian/dian.ex` ← `jidian-jian/dian.c`  (miss=0)
 
 ### `jinbiao_jue/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `jinbiao_jue/huan.ex` ← `jinbiao-jue/huan.c`  (miss=10)
+- [x] ✅ `jinbiao_jue/huan.ex` ← `jinbiao-jue/huan.c`  (miss=0)
 
 ### `jingang_quan/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `jingang_quan/jingang.ex` ← `jingang-quan/jingang.c`  (miss=12)
+- [x] ✅ `jingang_quan/jingang.ex` ← `jingang-quan/jingang.c`  (miss=0)
 
 ### `jinguan_yusuo/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `jinguan_yusuo/suo.ex` ← `jinguan-yusuo/suo.c`  (miss=9)
+- [x] ✅ `jinguan_yusuo/suo.ex` ← `jinguan-yusuo/suo.c`  (miss=0)
 
 ### `jingyue_bifa/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `jingyue_bifa/ci.ex` ← `jingyue-bifa/ci.c`  (miss=12)
+- [x] ✅ `jingyue_bifa/ci.ex` ← `jingyue-bifa/ci.c`  (miss=0)
 
 ### `jinshe_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `jinshe_jian/wan.ex` ← `jinshe-jian/wan.c`  (miss=10)
+- [x] ✅ `jinshe_jian/wan.ex` ← `jinshe-jian/wan.c`  (miss=0)
 
 ### `jinshe_zhui/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `jinshe_zhui/tuwu.ex` ← `jinshe-zhui/tuwu.c`  (miss=11)
+- [x] ✅ `jinshe_zhui/tuwu.ex` ← `jinshe-zhui/tuwu.c`  (miss=0)
 
 ### `jiuqu_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `jiuqu_jian/wan.ex` ← `jiuqu-jian/wan.c`  (miss=10)
+- [x] ✅ `jiuqu_jian/wan.ex` ← `jiuqu-jian/wan.c`  (miss=0)
 
 ### `jueqing_jian/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `jueqing_jian/liu.ex` ← `jueqing-jian/liu.c`  (miss=12)
+- [x] ✅ `jueqing_jian/liu.ex` ← `jueqing-jian/liu.c`  (miss=0)
 
 ### `kuangfeng_jian/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `kuangfeng_jian/sao.ex` ← `kuangfeng-jian/sao.c`  (miss=9)
+- [x] ✅ `kuangfeng_jian/sao.ex` ← `kuangfeng-jian/sao.c`  (miss=0)
 
 ### `kuimang_dao/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `kuimang_dao/pan.ex` ← `kuimang-dao/pan.c`  (miss=11)
+- [x] ✅ `kuimang_dao/pan.ex` ← `kuimang-dao/pan.c`  (miss=0)
 
 ### `kunlun_qifa/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `kunlun_qifa/liu.ex` ← `kunlun-qifa/liu.c`  (miss=11)
+- [x] ✅ `kunlun_qifa/liu.ex` ← `kunlun-qifa/liu.c`  (miss=0)
 
 ### `lingshe_zhangfa/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `lingshe_zhangfa/chan.ex` ← `lingshe-zhangfa/chan.c`  (miss=9)
+- [x] ✅ `lingshe_zhangfa/chan.ex` ← `lingshe-zhangfa/chan.c`  (miss=0)
 
 ### `liuhe_dao/` （1 个，基线缺失 11 条）
 
@@ -381,16 +381,16 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `luohan_gun/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `luohan_gun/xiangmo.ex` ← `luohan-gun/xiangmo.c`  (miss=7)
+- [x] ✅ `luohan_gun/xiangmo.ex` ← `luohan-gun/xiangmo.c`  (miss=0)
 
 ### `luohan_quan/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `luohan_quan/xiangmo.ex` ← `luohan-quan/xiangmo.c`  (miss=8)
+- [x] ✅ `luohan_quan/xiangmo.ex` ← `luohan-quan/xiangmo.c`  (miss=0)
 
 ### `luoying_shenjian/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `luoying_shenjian/sui.ex` ← `luoying-shenjian/sui.c`  (miss=12)
+- [x] ✅ `luoying_shenjian/sui.ex` ← `luoying-shenjian/sui.c`  (miss=0)
 
 ### `luoyun_dao/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `luoyun_dao/tian.ex` ← `luoyun-dao/tian.c`  (miss=11)
+- [x] ✅ `luoyun_dao/tian.ex` ← `luoyun-dao/tian.c`  (miss=0)
