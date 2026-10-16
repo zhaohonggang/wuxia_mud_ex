@@ -212,7 +212,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
    | ~~B1'~~ | ~~`base_weight`~~ | ~~36~~ | ~~`item.meta.weight`~~ | **已改判 L3-framework**（见下「P1a 修正」） |
    | B5 | NPC 侧 `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
 
-   **B1 实施记录（2026-10-16）**：284 房间 / 56 区，`+921` 行 `-0` 行；幂等、校验 67/10 不退化、可达性 4190/4409 不变。
+   **B1 实施记录（2026-10-16，提交 `cf0af449`）**：284 房间 / 56 区，`+921` 行 `-0` 行；幂等、校验 67/10 不退化、可达性 4190/4409 不变、`mix test` 34 个既有失败不新增。
    - `valid_startroom` → flag 名 **`"startroom"`**（消费端 `home_command.ex` L54 / `recall_command.ex` L50 找的是 `"startroom"`，不是 `valid_startroom`）。
    - ⚠️ **列表分隔符必须是逗号**：elias 对「两个换行分隔、无逗号」的列表元素报 `syntax error before: '"'`。
      手写先例 `city.ucl` 的 `flags` **只有 1 项**（无需分隔符）因而看不出这个坑 —— 首版脚本按它写了无逗号多行格式，整批 56 区语法非法，已回滚重做。

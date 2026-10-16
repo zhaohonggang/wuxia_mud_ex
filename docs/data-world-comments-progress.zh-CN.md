@@ -40,7 +40,7 @@
 |------|------|-----:|:--:|:----:|------|----------|
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
-| **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | 🟨 | | B1 ✅ / B2–B5 ⬜ |
+| **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | 🟨 | `cf0af449` | B1 ✅ / B2–B5 ⬜ |
 | **P2** | 加字段 + 回填 | 7 个批次 | L2 | ⬜ | | |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
@@ -123,7 +123,7 @@
 
 | 批次 | key | 次数 | 目标 | 状态 | 提交 | 备注 |
 |------|-----|-----:|------|:----:|------|------|
-| **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | ✅ | （本批） | 命中 **284 房间 / 56 区**；`valid_startroom` 的 flag 名是 **`startroom`** |
+| **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | ✅ | `cf0af449` | 命中 **284 房间 / 56 区**；`valid_startroom` 的 flag 名是 **`startroom`** |
 | **B2** | `base_unit` / `base_value` | 72/69 | `item.meta.unit/value` | ⬜ | | **注意 `npc/` 下物品被输出成 `characters` 块**，需一并处理 |
 | **B3** | `female_only` | 60 | `item.meta.flag` | ⬜ | | 物品属性（`Item.Meta.flag` 已存在，`item.ex` L262） |
 | **B4** | `coagents` | 30 | `npc.coagents` | ⬜ | | NonPlayerMeta 白名单已含 |
@@ -348,10 +348,10 @@
 |------|------|------|------|----------|
 | 2026-10-16 | P0 | （未提交） | 新增 5 个只读脚本 + 3 份文档；建立基线 M1–M9 | 建立基线，无数据改动 |
 | 2026-10-16 | 复核 | （未提交） | 修正 9 处失效 `§` 引用；P5.1 `gumu` 15→14；Tier 0 计数改为「去 test 区」口径（129）；`valid_startroom` 移出 B11；§6 Room 字段表移出 `sleep_room`/`no_sleep_room`/`no_steal`（改判 L1）；§7 移出 `no_steal`（已有消费端） | 无数据改动，仅文档口径 |
-| 2026-10-16 | P1a | （本批） | 新增 `scripts/plan_key_field_map.py`（242 key 三问分诊）；`tmp/key_field_map.json`；改判 `base_weight`→L3-framework、`female_only`→`item.meta.flag`、`parts`→manual | L1=8 / L2=20 / L3-fw=83 / noop=9 / manual=122 |
-| 2026-10-16 | P1b + **B1** | （本批） | 新增 `scripts/backfill_l1_fields.py`；回填 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg` → `room.flags` | 55 区 / +242 行 / -0 行；M6 202→200、M10 0→242 |
-| 2026-10-16 | **回滚 + B1 重做** | （本批） | 首版脚本**备份在写盘之后**（等于没备份）+ **列表缺逗号**导致 56 区语法非法 → `git checkout -- data/world` 回滚、删除无效备份；修脚本（备份前置 + 逗号 + `validate_ucl` 自校验门禁）；补入 `valid_startroom` → flag `"startroom"` 重做 | **56 区 / +921 行 / -0 行**；M10 242→**284** |
-| 2026-10-16 | 文档更正 | （本批） | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
+| 2026-10-16 | P1a | `cf0af449` | 新增 `scripts/plan_key_field_map.py`（242 key 三问分诊）；`tmp/key_field_map.json`；改判 `base_weight`→L3-framework、`female_only`→`item.meta.flag`、`parts`→manual | L1=9 / L2=20 / L3-fw=83 / noop=8 / manual=122 |
+| 2026-10-16 | P1b + **B1**（首版，**已回滚**） | 未提交 | 新增 `scripts/backfill_l1_fields.py`；回填 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg` → `room.flags` | 55 区 / +242 行 / -0 行；M6 202→200、M10 0→242 |
+| 2026-10-16 | **回滚 + B1 重做** | `cf0af449` | 首版脚本**备份在写盘之后**（等于没备份）+ **列表缺逗号**导致 56 区语法非法 → `git checkout -- data/world` 回滚、删除无效备份；修脚本（备份前置 + 逗号 + `validate_ucl` 自校验门禁）；补入 `valid_startroom` → flag `"startroom"` 重做 | **56 区 / +921 行 / -0 行**；M10 242→**284** |
+| 2026-10-16 | 文档更正 | `cf0af449` | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
 
 ---
 
