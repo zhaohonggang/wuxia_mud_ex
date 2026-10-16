@@ -287,6 +287,18 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
      → 属**待决策项**（见进度文档 §14 R7）。且光改名不够：这些块的 meta **从未生成过**，
      还得从源补 meta（本计划 P1/P2 的 key 通道可覆盖）。
 
+   > **⚠️ 对账方法本身踩过的坑（B3 期间修正，2026-10-16）**
+   > 上面「83 / 46」用的是**错的归因**——把块归给它前面最近的 `# Generated from` 头。
+   > 但转换器**并不给每个块都写这个头**：`characters "mangshe"` 跟在 `zhulou.c` 的头后面，
+   > 真实源却是 `# LPC: clone/beast/mangshe.c`（该注释在块**内部**，depth ≥ 1，
+   > 所以按 depth==0 扫前缀永远看不到它）。用错归因把 `mangshe`/`caihuashe`/… 这 12 条蛇
+   > 全算成了「`zhulou.c`(物品) 被写成 characters」，虚高了 item 数。
+   >
+   > **正确口径**：块内首条 `# LPC: <path>` > 最近的 `# Generated from` 头；需**回溯**取块身。
+   > 按此重算全库 `characters` 块：**npc 1108 / item 619 / 源缺失 623 / unknown 235**。
+   > 已固化为 `scripts/audit_block_attribution.py`（`iter_blocks/1` 直接给出每块的
+   > 块类型与真实源），后续对账一律用它，别再手写正则。
+
    **B5b 顺带实测的两条 elias 词法边界**（`scripts/probe_ucl_brackets.exs`）
 
    | 引号内的值含 | 结果 |
@@ -329,7 +341,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 |------|-----|-----:|------|
 | **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | `Item.Meta` 加 `messages` 字段 + loader 读取（**零数据写入，最高性价比**）—— **已完成 `0676bd08`**（219 物品命中） |
 | B5b | `wear_msg` / `remove_msg` / `unequip_msg` | 89/63/37 | `messages = { wear, remove, unequip }`（`wield`/`unwield` 已在 B5a 覆盖，不重复转）—— **已完成**：因 B5a 已建好 `messages` 通道，本批实际是 **L1 纯数据**，无需再加字段 |
-| B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」） |
+| B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」）—— **已完成**：`Item.Meta` 加 `{:female_only, false}` + `parse_item_meta` 读 `meta.female_only`（`to_bool`）；回填 **24 个 `items` 块 / 7 区 / +24 行**，探针实测 24 物品命中 |
 | B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` |
 | B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 |
 | B8 | `max_liquid` | 74 | `Item.Meta` 容器容量 |
@@ -426,6 +438,9 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `backfill_l1_fields.py` | P1b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（含写盘前备份 + `validate_ucl` 自校验门禁） |
 | `backfill_item_messages.py` | B5b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（装备文案 → `messages = { wear, remove, unequip }`；门禁为「完整 issue 集合 + 行号归一化」比对） |
 | `probe_item_messages.exs` | B5a/B5b 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（统计 `Item.Meta.messages` 各键装载数） |
+| `backfill_item_female_only.py` | B3 | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（`meta.female_only`；两阶段：先算+门禁全过再备份写入） |
+| `probe_item_female_only.exs` | B3 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（24 物品命中 + `flag` 位掩码未被污染） |
+| `audit_block_attribution.py` | D10/R7 对账 | `.ucl` | — | 宿主机 | ✅ | ✅ **已建**（修正后的块归因；`iter_blocks/1` 输出每块的块类型与真实源路径） |
 | `probe_ucl_brackets.exs` | elias 边界 | —（只解析字符串） | — | **容器内** | ✅ | ✅ **已建**（引号内 `[`/`,` 的可词法性） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 

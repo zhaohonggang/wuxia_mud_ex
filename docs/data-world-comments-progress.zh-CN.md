@@ -41,7 +41,7 @@
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
-| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（`wear`/`remove`/`unequip`，46 块）；B3/B6–B10 ⬜ |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）；B6–B10 ⬜ |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -71,6 +71,7 @@
 | M11 | `validate_ucl.py` 通过 / 失败 | 67 / 10 | **67 / 10** | ✅ | `validate_ucl.py` |
 | M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **249**（wield 218 / unwield 155 / wear 22 / remove 13 / unequip 31） | ✅ | `scripts/probe_item_messages.exs`（容器内） |
 | M13 | 装备文案已回填条数（B5b 新增） | 0 | **66**（wear 22 / remove 13 / unequip 31，46 个 `items` 块 / 14 区） | ✅ | `backfill_item_messages.py` |
+| M14 | `Item.Meta.female_only=true` 物品数（B3） | 0 | **24**（7 区） | ✅ | `scripts/probe_item_female_only.exs`（容器内） |
 
 **基线已实测确认**：M1–M6、M8 为本轮实跑值；M7 引用 `ucl-comment-todo.zh-CN.md` 的记录。
 
@@ -195,7 +196,7 @@
 |--------|-----------|:----:|
 | `Item.Meta` | `messages`（**激活已存在**的 `wield`/`unwield`，B5a；`messages` 在物品块顶层） | ✅ |
 | `Item.Meta` | `wear_msg remove_msg unequip_msg`（B5b；`wield`/`unwield` 已在 `messages` 内，不重复加） | ⬜ |
-| `Item.Meta` | `female_only`（B3；**不能塞 `flag`** —— `flag` 是武器位掩码） | ⬜ |
+| `Item.Meta` | `female_only`（B3；**不能塞 `flag`** —— `flag` 是武器位掩码） | ✅ 已建（提交号待回填，见 §13） |
 | `Item.Meta` | `liquid max_liquid liquid_type` | ⬜ |
 | `Item.Meta` | `can_make not_make power_point item_origin material_attrib material_name` | ⬜ |
 | `Room` | `room_owner room_name room_position room_owner_id` | ⬜ |
@@ -233,6 +234,33 @@
 - ⚠️ **68% 的目标落在 `characters` 块（83 块），本批不写** —— loader 不读 `characters` 的 `messages`，
   写了是无效数据。属 **D10 待决策**（见 §14 R7）。
 
+**B3 验收记录（2026-10-16）**
+
+- **先做代码、再写数据**：`Item.Meta` 加 `{:female_only, false}`（默认 `false`，布尔语义）；
+  `parse_item_meta/1` 加 `female_only: to_bool(Map.get(meta, :female_only))`
+  —— 与 `no_sell`/`no_put`/`owner` 同路（都在 `meta` 块内、由 `parse_item_meta` 读）。
+- 新脚本 `scripts/backfill_item_female_only.py`，写成**两阶段**：先把所有区的改动算完并过门禁
+  （`insertion-only` 断言 + `validate_ucl` 完整 issue 集合比对、行号归一化），
+  **全过**才备份、才写盘。避免「后半区失败、树已被改一半」。
+- 实测：**24 个 `items` 块 / 7 区 / +24 行 / −0 行**；全库 74 处 `female_only` 取值恒为 `1`，
+  与 `no_sell = 1` 的既有惯例一致（`to_bool/1` 收 `true/"true"/1/"1"`）。
+- 幂等 ✅（二次 dry-run `blocks_written=0, blocks_skipped=24`）；
+  备份 `tmp/backup-20261016-180527/`（7 文件，**写盘之前**，`female_only` 计数 0 vs 线上 10 ✅）。
+- 校验不新增失败 ✅：7 区逐个与 `HEAD` 对比归一化 issue 集合 → `NEW=NONE`。
+- 探针 `scripts/probe_item_female_only.exs`：**24 物品命中**
+  （`taohua:shudai` 束发金带 / `quanzhou:flower_shoe` 绣花鞋 / `fuzhou:junfu` 军妇 … 语义吻合）；
+  且 **`flag` 位掩码未被污染**（24 件的 `flag` 全是 `1`，无一进 `& TWO_HANDED` 分支）✅
+  —— 这正是没把 `female_only` 塞进 `flag` 的验证点。
+- 与 B5b 同因，**56 个 `characters` 块未写**（loader 不读）→ D10/R7。
+
+> **对账方法修正（2026-10-16，B3 期间）**：B5b 的「83 / 46」用的是**错误的块归因** ——
+> 把块归给前面最近的 `# Generated from` 头，但转换器**不给每个块都写头**，
+> 且真实源 `# LPC: <path>` 注释在块**内部**（depth ≥ 1）。错归因把 `mangshe` 等 12 条蛇
+> 全算成「`zhulou.c`(物品) 被写成 characters」，虚高 item 数。
+> **正确口径**：块内首条 `# LPC:` > 最近的 `# Generated from`，需回溯块身取。
+> 按此重算全库 `characters` 块 = **npc 1108 / item 619 / 源缺失 623 / unknown 235**。
+> 已固化为 `scripts/audit_block_attribution.py`。
+
 > **复核修正（2026-10-16）**：`sleep_room` / `no_sleep_room` / `no_steal` **不在此表** ——
 > 消费端**已存在**（`room.ex` L223/L238 读 `data.flags` → `attrs["sleep_room"]`；`sleep_command.ex` L70）。
 > 缺的是**数据**：全仓 `.ucl` 里 `"flags"` 出现 **0** 次，所以这两个 flag 恒为 `false`。
@@ -245,7 +273,7 @@
 |------|-----|-----:|------|:----:|------|
 | **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | 装备文案（**零数据写入，最高性价比，先做**） | ✅ | `0676bd08` |
 | **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案 → `messages = { wear, remove, unequip }`（`wield`/`unwield` 已由 B5a 覆盖） | ✅ | `e8c88c32` |
-| **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ⬜ | |
+| **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ✅ | （见 §13） | `Item.Meta` 加 `{:female_only, false}` + `parse_item_meta` 读 `meta.female_only`；回填 **24 个 `items` 块 / 7 区 / +24 行**；全库 74 处取值恒为 `1` |
 | **B6** | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | NPC 战斗喊话 | ⬜ | |
 | ~~B7~~ | ~~`sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）~~ | ~~127/90/55~~ | **已由 B1 完成**（`cf0af449`） | ✅ | `cf0af449` |
 | **B7** | `room_owner`/`room_name`/`room_position`/`room_owner_id` | 29/29/29/24 | 房间归属（需 `Room` 新字段） | ⬜ | |

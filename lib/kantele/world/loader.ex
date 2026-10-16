@@ -1282,6 +1282,7 @@ defmodule Kantele.World.Loader do
       no_put: Map.get(meta, :no_put),
       owner: Map.get(meta, :owner),
       owner_id: Map.get(meta, :owner_id),
+      female_only: to_bool(Map.get(meta, :female_only)),
       aliases: parse_aliases(Map.get(meta, :aliases))
     }
 

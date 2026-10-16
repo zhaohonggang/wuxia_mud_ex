@@ -2929,6 +2929,7 @@ chats = [
         unit = "双"
         material = "cloth"
         armor = 1
+        female_only = 1
       }
     }
 

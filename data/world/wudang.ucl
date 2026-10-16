@@ -2646,6 +2646,7 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 1
+        female_only = 1
       }
     }
 

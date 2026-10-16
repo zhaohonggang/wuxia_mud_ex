@@ -3104,6 +3104,7 @@ chats = [
         unit = "个"
         material = "cloth"
         armor = 3
+        female_only = 1
       }
     }
 
@@ -3182,6 +3183,7 @@ chats = [
         unit = "块"
         material = "玉"
         armor = 2
+        female_only = 1
       }
     }
 

@@ -1292,6 +1292,7 @@ item_desc = {
         unit = "条"
         material = "silk"
         armor = 1
+        female_only = 1
       }
   messages = {
     wear = "{npc}将{name}拿出束在头发上。"

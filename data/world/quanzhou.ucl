@@ -1165,6 +1165,7 @@ item_desc = {
         unit = "双"
         material = "cloth"
         armor = 1
+        female_only = 1
       }
     }
 
@@ -1186,6 +1187,7 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 1
+        female_only = 1
       }
     }
 
@@ -1206,6 +1208,7 @@ item_desc = {
         weight = 70
         unit = "颗"
         food = 80
+        female_only = 1
       }
     }
 
@@ -1226,6 +1229,7 @@ item_desc = {
         weight = 100
         unit = "个"
         food = 50
+        female_only = 1
       }
     }
 
@@ -1249,6 +1253,7 @@ item_desc = {
         weight = 5
         unit = "根"
         material = "steel"
+        female_only = 1
       }
     }
 
@@ -1402,6 +1407,7 @@ item_desc = {
         weight = 4000
         unit = "柄"
         material = "iron"
+        female_only = 1
       }
     }
 
@@ -1421,6 +1427,7 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 10
+        female_only = 1
       }
     }
 

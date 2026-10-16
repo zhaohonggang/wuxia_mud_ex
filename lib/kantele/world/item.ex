@@ -282,7 +282,13 @@ defmodule Kantele.World.Item.Meta do
     :no_sell,
     :no_put,
     :owner,
-    :owner_id
+    :owner_id,
+
+    # 性别限定的可穿/可持（LPC `set("female_only", 1)`，全库 74 处取值恒为 1）。
+    # 消费端是 `cmds/std/wear.c` L75 的穿戴限制（**不是**上面的 `flag` ——
+    # 那个是武器类型位掩码，见 wield_command.ex L101 的默认 ONE_HANDED）。
+    # 由 scripts/backfill_item_female_only.py 从源 .c 回填。
+    {:female_only, false}
   ]
 
   @doc """
