@@ -6393,6 +6393,7 @@ chats = [
         value = 100
         weight = 700
         unit = "个"
+        max_liquid = 10
       }
     }
 
@@ -6739,6 +6740,7 @@ chats = [
         value = 100
         weight = 700
         unit = "个"
+        max_liquid = 10
       }
     }
 
@@ -6819,6 +6821,7 @@ chats = [
         value = 160
         weight = 50
         unit = "碗"
+        max_liquid = 8
       }
     }
 

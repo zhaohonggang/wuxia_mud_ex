@@ -2248,6 +2248,7 @@ chats = [
         value = 100
         weight = 700
         unit = "只"
+        max_liquid = 15
       }
     }
 
@@ -2267,6 +2268,7 @@ chats = [
         value = 80
         weight = 400
         unit = "个"
+        max_liquid = 30
       }
     }
 
@@ -2490,6 +2492,7 @@ chats = [
         value = 120
         weight = 700
         unit = "个"
+        max_liquid = 20
       }
     }
 

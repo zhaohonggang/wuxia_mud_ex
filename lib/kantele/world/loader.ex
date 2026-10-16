@@ -1295,6 +1295,7 @@ defmodule Kantele.World.Loader do
       owner: Map.get(meta, :owner),
       owner_id: Map.get(meta, :owner_id),
       female_only: to_bool(Map.get(meta, :female_only)),
+      max_liquid: Map.get(meta, :max_liquid),
       aliases: parse_aliases(Map.get(meta, :aliases))
     }
 

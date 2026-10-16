@@ -2122,6 +2122,7 @@ chats = [
         value = 0
         weight = 50
         unit = "只"
+        max_liquid = 6
       }
     }
 
@@ -2260,6 +2261,7 @@ chats = [
       meta = {
         weight = 50
         unit = "个"
+        max_liquid = 5
       }
     }
 

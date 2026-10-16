@@ -2633,6 +2633,7 @@ item_desc = {
         value = 80
         weight = 50
         unit = "碗"
+        max_liquid = 4
       }
     }
 

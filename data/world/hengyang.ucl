@@ -3391,6 +3391,7 @@ chats = [
         value = 10
         weight = 50
         unit = "碗"
+        max_liquid = 4
       }
     }
 

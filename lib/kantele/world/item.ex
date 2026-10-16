@@ -288,7 +288,13 @@ defmodule Kantele.World.Item.Meta do
     # 消费端是 `cmds/std/wear.c` L75 的穿戴限制（**不是**上面的 `flag` ——
     # 那个是武器类型位掩码，见 wield_command.ex L101 的默认 ONE_HANDED）。
     # 由 scripts/backfill_item_female_only.py 从源 .c 回填。
-    {:female_only, false}
+    {:female_only, false},
+
+    # LPC `set("max_liquid", N)`：容器/酒水的最大容量（整数）。源 .c 有 77 处
+    # 取值，皆为整数（如 bowl 6、jiudai 15、hdjiudai 20）。elias 可表达。
+    # 暂无消费端（Q3 ❌），字段先加（默认 nil）、loader 只读取，不产生行为变化（P7）。
+    # 待消费端（倒/喝命令）接线后再生效；由 scripts/backfill_item_max_liquid.py 回填。
+    {:max_liquid, nil}
   ]
 
   @doc """

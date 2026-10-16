@@ -4568,6 +4568,7 @@ chats = [
         value = 80
         weight = 50
         unit = "碗"
+        max_liquid = 4
       }
     }
 
@@ -4586,6 +4587,7 @@ chats = [
         value = 1500
         weight = 5000
         unit = "只"
+        max_liquid = 4
       }
     }
 
@@ -4604,6 +4606,7 @@ chats = [
         value = 1500
         weight = 5000
         unit = "只"
+        max_liquid = 4
       }
     }
 
@@ -4622,6 +4625,7 @@ chats = [
         value = 1500
         weight = 5000
         unit = "只"
+        max_liquid = 4
       }
     }
 
@@ -4810,6 +4814,7 @@ chats = [
         weight = 5000
         unit = "柄"
         material = "steel"
+        max_liquid = 4
       }
     }
 
@@ -4832,6 +4837,7 @@ chats = [
         weight = 7000
         unit = "柄"
         material = "steel"
+        max_liquid = 4
       }
     }
 
@@ -4854,6 +4860,7 @@ chats = [
         weight = 3000
         unit = "根"
         material = "bamboo"
+        max_liquid = 4
       }
     }
 

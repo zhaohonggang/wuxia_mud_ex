@@ -890,5 +890,6 @@ zones "room" {
         value = 10
         weight = 50
         unit = "只"
+        max_liquid = 4
       }
     }

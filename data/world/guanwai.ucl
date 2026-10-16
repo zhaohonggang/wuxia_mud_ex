@@ -2380,6 +2380,7 @@ chats = [
         value = 20
         weight = 50
         unit = "碗"
+        max_liquid = 20
       }
     }
 
@@ -2400,6 +2401,7 @@ chats = [
         weight = 90
         unit = "块"
         food = 40
+        max_liquid = 20
       }
     }
 
@@ -2418,6 +2420,7 @@ chats = [
         value = 200
         weight = 700
         unit = "碗"
+        max_liquid = 20
       }
     }
 
@@ -2437,6 +2440,7 @@ chats = [
         weight = 10
         unit = "张"
         material = "paper"
+        max_liquid = 20
       }
     }
 
@@ -2457,6 +2461,7 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 10
+        max_liquid = 20
       }
     }
 
@@ -2585,6 +2590,7 @@ chats = [
         weight = 2000
         unit = "把"
         material = "wood"
+        max_liquid = 20
       }
     }
 
@@ -2668,6 +2674,7 @@ chats = [
         weight = 4000
         unit = "柄"
         material = "iron"
+        max_liquid = 20
       }
     }
 
@@ -2687,6 +2694,7 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 10
+        max_liquid = 20
       }
     }
 

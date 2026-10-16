@@ -423,6 +423,7 @@ item_desc = {
         value = 500
         weight = 700
         unit = "坛"
+        max_liquid = 15
       }
     }
 

@@ -1327,6 +1327,7 @@ item_desc = {
         value = 150
         weight = 200
         unit = "个"
+        max_liquid = 10
       }
     }
 

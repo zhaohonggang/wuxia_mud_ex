@@ -5874,6 +5874,7 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        max_liquid = 10
       }
     }
 
@@ -5894,6 +5895,7 @@ chats = [
         unit = "个"
         material = "gold"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -5912,6 +5914,7 @@ chats = [
         value = 100
         weight = 800
         unit = "个"
+        max_liquid = 10
       }
     }
 
@@ -5932,6 +5935,7 @@ chats = [
         weight = 80
         unit = "个"
         food = 40
+        max_liquid = 10
       }
     }
 
@@ -5952,6 +5956,7 @@ chats = [
         weight = 80
         unit = "个"
         food = 40
+        max_liquid = 10
       }
     }
 
@@ -5972,6 +5977,7 @@ chats = [
         weight = 80
         unit = "个"
         food = 40
+        max_liquid = 10
       }
     }
 
@@ -5992,6 +5998,7 @@ chats = [
         unit = "个"
         material = "gold"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6012,6 +6019,7 @@ chats = [
         unit = "件"
         material = "leather"
         armor = 6
+        max_liquid = 10
       }
     }
 
@@ -6035,6 +6043,7 @@ chats = [
         weight = 4000
         unit = "柄"
         material = "iron"
+        max_liquid = 10
       }
     }
 
@@ -6061,6 +6070,7 @@ chats = [
           jing_cost = 20
           difficulty = 20
         }
+        max_liquid = 10
       }
     }
 
@@ -6087,6 +6097,7 @@ chats = [
           jing_cost = 20
           difficulty = 20
         }
+        max_liquid = 10
       }
     }
 
@@ -6110,6 +6121,7 @@ chats = [
         weight = 5000
         unit = "柄"
         material = "steel"
+        max_liquid = 10
       }
     }
 
@@ -6130,6 +6142,7 @@ chats = [
         weight = 300
         unit = "碗"
         food = 100
+        max_liquid = 10
       }
     }
 
@@ -6150,6 +6163,7 @@ chats = [
         weight = 80
         unit = "颗"
         food = 30
+        max_liquid = 10
       }
     }
 
@@ -6173,6 +6187,7 @@ chats = [
         weight = 8000
         unit = "把"
         material = "iron"
+        max_liquid = 10
       }
     }
 
@@ -6193,6 +6208,7 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        max_liquid = 10
       }
     }
 
@@ -6213,6 +6229,7 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        max_liquid = 10
       }
     }
 
@@ -6233,6 +6250,7 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        max_liquid = 10
       }
     }
 
@@ -6250,6 +6268,7 @@ chats = [
       meta = {
         value = 5000
         unit = "包"
+        max_liquid = 10
       }
     }
 
@@ -6270,6 +6289,7 @@ chats = [
         unit = "个"
         material = "gold"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6294,6 +6314,7 @@ chats = [
         unit = "根"
         material = "bone"
         food = 15
+        max_liquid = 10
       }
     }
 
@@ -6312,6 +6333,7 @@ chats = [
         value = 100
         weight = 700
         unit = "个"
+        max_liquid = 10
       }
     }
 
@@ -6332,6 +6354,7 @@ chats = [
         weight = 80
         unit = "个"
         food = 20
+        max_liquid = 10
       }
     }
 
@@ -6352,6 +6375,7 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        max_liquid = 10
       }
     }
 
@@ -6372,6 +6396,7 @@ chats = [
         weight = 300
         unit = "盘"
         food = 30
+        max_liquid = 10
       }
     }
 
@@ -6392,6 +6417,7 @@ chats = [
         weight = 100
         unit = "碗"
         food = 10
+        max_liquid = 10
       }
     }
 
@@ -6412,6 +6438,7 @@ chats = [
         weight = 100
         unit = "碗"
         food = 35
+        max_liquid = 10
       }
     }
 
@@ -6432,6 +6459,7 @@ chats = [
         weight = 100
         unit = "碗"
         food = 35
+        max_liquid = 10
       }
     }
 
@@ -6452,6 +6480,7 @@ chats = [
         weight = 100
         unit = "碗"
         food = 35
+        max_liquid = 10
       }
     }
 
@@ -6471,6 +6500,7 @@ chats = [
         weight = 600
         unit = "台"
         material = "wood"
+        max_liquid = 10
       }
     }
 
@@ -6491,6 +6521,7 @@ chats = [
         unit = "个"
         material = "gold"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6511,6 +6542,7 @@ chats = [
         weight = 80
         unit = "个"
         food = 20
+        max_liquid = 10
       }
     }
 
@@ -6531,6 +6563,7 @@ chats = [
         unit = "个"
         material = "gold"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6551,6 +6584,7 @@ chats = [
         unit = "面"
         material = "leather"
         armor = 5
+        max_liquid = 10
       }
     }
 
@@ -6571,6 +6605,7 @@ chats = [
         weight = 300
         unit = "盘"
         food = 30
+        max_liquid = 10
       }
     }
 
@@ -6589,6 +6624,7 @@ chats = [
         value = 30
         weight = 500
         unit = "个"
+        max_liquid = 10
       }
     }
 
@@ -6609,6 +6645,7 @@ chats = [
         unit = "个"
         material = "gold"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6626,6 +6663,7 @@ chats = [
       meta = {
         value = 2000
         unit = "粒"
+        max_liquid = 10
       }
     }
 
@@ -6646,6 +6684,7 @@ chats = [
         unit = "个"
         material = "silver"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6666,6 +6705,7 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        max_liquid = 10
       }
     }
 
@@ -6686,6 +6726,7 @@ chats = [
         unit = "个"
         material = "diamond"
         armor = 1
+        max_liquid = 10
       }
     }
 
@@ -6704,6 +6745,7 @@ chats = [
         value = 500
         weight = 300
         unit = "壶"
+        max_liquid = 10
       }
     }
 
