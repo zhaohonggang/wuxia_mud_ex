@@ -118,7 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.WuzhanMei.Liu do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 2)
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn =

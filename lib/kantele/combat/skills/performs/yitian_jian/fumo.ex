@@ -121,7 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.YitianJian.Fumo do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     msg =
       "$N一声冷哼，手中" <>

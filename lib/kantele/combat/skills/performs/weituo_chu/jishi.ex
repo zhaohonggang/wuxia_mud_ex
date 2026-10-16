@@ -121,7 +121,7 @@ defmodule Kantele.Combat.Skills.Performs.WeituoChu.Jishi do
     combat = character.meta.combat
     combat = Combat.start_busy(combat, 1)
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "杵"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
 
     conn =

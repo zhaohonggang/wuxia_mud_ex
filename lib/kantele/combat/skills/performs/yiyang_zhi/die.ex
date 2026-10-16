@@ -164,7 +164,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
     bindings = [n1: attacker.name, n2: character.name]
 
     weapon = Combat.weapon(character.meta.combat)
-    weapon_name = if weapon, do: Map.get(weapon, :name, "兵器"), else: nil
+    weapon_name = if weapon, do: Map.get(weapon, :name, ""), else: nil
 
     conn = Broadcast.publish(conn, "突然间", bindings)
 
@@ -173,7 +173,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
         conn =
           Broadcast.publish(
             conn,
-            "单指一扬，径点持着" <> (weapon_name || "兵器") <> "的手腕上「腕骨」、「阳谷」、「养老」三穴。\n",
+            "单指一扬，径点持着" <> (weapon_name || "") <> "的手腕上「腕骨」、「阳谷」、「养老」三穴。\n",
             bindings
           )
 
@@ -181,7 +181,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
           conn =
             Broadcast.publish(
               conn,
-              "霎时间$n只觉得手腕一麻，手中" <> (weapon_name || "兵器") <> "再也拿持不住，脱手掉在地上。\n紧接着",
+              "霎时间$n只觉得手腕一麻，手中" <> (weapon_name || "") <> "再也拿持不住，脱手掉在地上。\n紧接着",
               bindings
             )
 
@@ -190,7 +190,7 @@ defmodule Kantele.Combat.Skills.Performs.YiyangZhi.Die do
           conn =
             Broadcast.publish(
               conn,
-              "可是$n将手中" <> (weapon_name || "兵器") <> "转动如轮，终于化解了这一招。\n紧接着",
+              "可是$n将手中" <> (weapon_name || "") <> "转动如轮，终于化解了这一招。\n紧接着",
               bindings
             )
 

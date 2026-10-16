@@ -125,7 +125,7 @@ defmodule Kantele.Combat.Skills.Performs.YinhuZhang.Lao do
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     msg =
       "$N一声暴喝，猛然间腾空而起，施出绝招「大海捞针」，手中" <>

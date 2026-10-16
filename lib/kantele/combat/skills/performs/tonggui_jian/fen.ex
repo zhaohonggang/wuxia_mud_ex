@@ -30,8 +30,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
     "使用一招玉石俱焚与",
     "同归于尽了",
     "使一招玉石俱焚，两人一块去见了黑白无常",
-    "被",
-    "要害"
+    "被"
   ]
 
   @impl true
@@ -129,7 +128,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
 
   defp apply_effect(conn, character, target) do
     weapon = Combat.weapon(character.meta.combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     vitals = character.meta.vitals
     vitals = %{vitals | max_neili: vitals.max_neili - 50}
@@ -206,7 +205,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
           Map.get(attacker.meta.vitals, :max_neili, 0) >
             Map.get(character.meta.vitals, :max_neili, 0) ->
         weapon = Combat.weapon(attacker.meta.combat)
-        weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+        weapon_name = (weapon && Map.get(weapon, :name)) || ""
         Performs.feedback(attacker, 0, 8)
 
         conn =
@@ -226,7 +225,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
 
       hit && div(ap, 2) + Engine.rand(rng, ap * 2 / 3) > dp ->
         weapon = Combat.weapon(attacker.meta.combat)
-        weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+        weapon_name = (weapon && Map.get(weapon, :name)) || ""
         Performs.feedback(attacker, 0, 8)
 
         conn =
@@ -252,7 +251,7 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
         target_limbs = Map.get(character.meta, :limbs, ["要害"])
         limb = Enum.random(target_limbs)
         weapon = Combat.weapon(attacker.meta.combat)
-        weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+        weapon_name = (weapon && Map.get(weapon, :name)) || ""
         damage_calc = ap + Stats.skill(stats, "force")
         damage_calc = div(damage_calc, 2) + :rand.uniform(damage_calc)
         vitals = Vitals.damage(vitals, :qi, damage_calc)
@@ -291,14 +290,14 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"max_neili", "-50"}], "assign_refs": [{"ap", "sword"}, {"damage", "force"}, {"dp", "force"}], "busy_lines": ["me->start_busy(6);", "target->start_busy(2 + random(6));", "me->start_busy(8);"], "level_gates": [{"force", "150"}, {"tonggui-jian", "120"}], "map_gates": [{"sword", "tonggui-jian"}], "remote_damage": true, "resource_gates": [{"max_neili", "1500"}, {"neili", "200"}], "set_flags": [{"neili", "0"}], "temp_set": ["die_reason"]}
 
-  # ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
+# ===== 原始 LPC 源码（逐行保留，禁止丢失信息；核对/移植后删除）=====
   # #include <ansi.h>
   # #include <combat.h>
-  #
+  # 
   # #define FEN "「" HIR "玉石俱焚" NOR "」"
-  #
+  # 
   # inherit F_SSERVER;
-  #
+  # 
   # int perform(object me, object target)
   # {
   #         object weapon;
@@ -308,63 +307,63 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
   #         string *limbs;
   #         string  limb;
   #         int ap, dp;
-  #
+  # 
   #         if (userp(me) && ! me->query("can_perform/tonggui-jian/fen"))
-  #                 return notify_fail("你所使用的外功中那些那些那些功能。\n");
-  #
+  #                 return notify_fail("你所使用的外功中没有这种功能。\n");
+  # 
   #         if (! target)
   #         {
   #                 me->clean_up_enemy();
   #                 target = me->select_opponent();
   #         }
-  #
+  # 
   #         if (! target || ! me->is_fighting(target))
   #                 return notify_fail(FEN "只能对战斗中的对手使用。\n");
-  #
+  # 
   #         if (! objectp(weapon = me->query_temp("weapon")) ||
   #             (string)weapon->query("skill_type") != "sword")
   #                 return notify_fail("你使用的武器不对，无法施展" FEN "。\n");
-  #
+  # 
   #         if ((int)me->query_skill("tonggui-jian", 1) < 120)
   #                 return notify_fail("你的同归剑法不够娴熟，难以施展" FEN "。\n");
-  #
+  # 
   #         if ((int)me->query_skill("force") < 150)
   #                 return notify_fail("你的内功火候不足，难以施展" FEN "。\n");
-  #
+  # 
   #         if (me->query("max_neili") < 1500)
   #                 return notify_fail("你的内力修为不足，难以施展" FEN "。\n");
-  #
+  # 
   #         if (me->query("neili") < 200)
   #                 return notify_fail("你现在的真气不够，难以施展" FEN "。\n");
-  #
-  #         if (me->query_skill_mapped("sword") != "tonggui-jian")
+  # 
+  #         if (me->query_skill_mapped("sword") != "tonggui-jian") 
   #                 return notify_fail("你没有激发同归剑法，难以施展" FEN "。\n");
-  #
+  # 
   #         if (! living(target))
-  #                 return notify_fail("对方那些那些那些费力吧？\n");
-  #
+  #                 return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  # 
   #         msg = HIY "$N" HIY "凄然一声长叹，施出同归剑法「" HIR "玉石俱焚"
   #               HIY "」，反转过" + weapon->name() + HIY "剑身，连人带剑扑"
   #               "向$n" HIY "而去！\n" NOR;
   #         me->add("max_neili", -50);
-  #
+  # 
   #         me->want_kill(target);
   #         target->kill_ob(me);
   #         ap = me->query_skill("sword");
   #         dp = target->query_skill("force");
-  #
+  # 
   #         if (ap / 2 + random(ap * 3 / 2) > dp)
   #         {
   #                 me->start_busy(6);
   #                 me->set("neili", 0);
   #                 me->add("max_neili", -random(50));
   #                 damage = 0;
-  #
+  # 
   #                 if (ap < dp * 3 / 4
   #                    && me->query("max_neili") < target->query("max_neili") * 3 / 4)
   #                 {
   #                         msg += HIY "可是$n" HIY "一声冷哼，飞身闪开来招，又顺势转身一"
-  #                                "掌拍向$N" HIY "面门。\n" NOR + HIR "只听“喀嚓一声"
+  #                                "掌拍向$N" HIY "面门。\n" NOR + HIR "只听“喀嚓”一声"
   #                                "，$n" HIR "那掌正好打在$N" HIR "头顶，$N" HIR "哀嚎一"
   #                                "声，软软的瘫倒。\n" NOR;
   #                         message_combatd(msg, me, target);
@@ -376,9 +375,9 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
   #                 if (ap > dp
   #                    && me->query("max_neili") > target->query("max_neili"))
   #                 {
-  #                         msg += HIR "$n" HIR "眼见$N" HIR "来势那些凶悍，这一招决那些无"
+  #                         msg += HIR "$n" HIR "眼见$N" HIR "来势如此凶悍，这一招决计无"
   #                                "法抵挡，骇怖达于极点，竟致僵立，束手待毙。\n只听“噗"
-  #                                "嗤一声，" + weapon->name() + HIR "已然透过$n" HIR
+  #                                "嗤”一声，" + weapon->name() + HIR "已然透过$n" HIR
   #                                "前胸而入，喷出一股血雨。\n" NOR;
   #                         message_combatd(msg, me, target);
   #                         target->set_temp("die_reason", "被" + me->name() + "使一招玉"
@@ -388,12 +387,12 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
   #                 } else
   #                 if (ap / 2 + random(ap * 2 / 3) > dp)
   #                 {
-  #                         msg += HIR "$n" HIR "眼见$N" HIR "来势那些凶悍，只觉这一招决"
+  #                         msg += HIR "$n" HIR "眼见$N" HIR "来势如此凶悍，只觉这一招决"
   #                                "计无法抵挡，骇怖达于极点，慌乱之中一掌猛拍而出，击\n"
   #                                "向$N" HIR "面门，竟也是同归于尽的招数。只听“噗嗤”一"
   #                                "声，" + weapon->name() + HIR "已然透过$n" HIR "前胸，"
   #                                "喷出一股血雨。\n同时$n" HIR "那一掌也正好打在$N" HIR
-  #                                "头顶，听得“喀嚓一声，$N" HIR "头盖骨完全碎裂，软软"
+  #                                "头顶，听得“喀嚓”一声，$N" HIR "头盖骨完全碎裂，软软"
   #                                "的瘫倒。\n" NOR;
   #                         message_combatd(msg, me, target);
   #                         me->set_temp("die_reason", "使用一招玉石俱焚与" +
@@ -406,26 +405,26 @@ defmodule Kantele.Combat.Skills.Performs.TongguiJian.Fen do
   #                 } else
   #                 {
   #                         target->start_busy(2 + random(6));
-  #
+  #         
   #                         damage = ap + (int)me->query_skill("force");
   #                         damage = damage / 2 + random(damage);
-  #
+  # 
   #                         if (arrayp(limbs = target->query("limbs")))
   #                                 limb = limbs[random(sizeof(limbs))];
   #                         else
   #                                 limb = "要害";
-  #                         pmsg = HIR "$n" HIR "眼见$N" HIR "来势那些凶悍，只觉这一招决"
-  #                                "计无法抵挡，急忙飞身闪避，然而只听“嗤啦一声，那\n"
+  #                         pmsg = HIR "$n" HIR "眼见$N" HIR "来势如此凶悍，只觉这一招决"
+  #                                "计无法抵挡，急忙飞身闪避，然而只听“嗤啦”一声，那\n"
   #                                "柄" + weapon->name() + HIR "已然刺穿" + limb + HIR "，"
   #                                "喷出一股血雨。\n" NOR;
   #                         msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage,
   #                                90, pmsg);
   #                 }
-  #         } else
+  #         } else 
   #         {
   #                 me->start_busy(8);
   #                 msg += HIY "可是$n" HIY "早已料到$N"
-  #                        HIY "有此一着，身形急动，躲开
+  #                        HIY "有此一着，身形急动，躲开"
   #                        "了这一杀着。\n" NOR;
   #         }
   #         message_combatd(msg, me, target);

@@ -115,7 +115,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Qian do
 
   defp apply_effect(conn, character) do
     weapon = Combat.weapon(character.meta.combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     conn =
       Broadcast.publish(conn, "$N运转衡山五神剑，手中" <> weapon_name <> "迸出无数剑光，宛若飞虹擎天，席卷$n而去。",

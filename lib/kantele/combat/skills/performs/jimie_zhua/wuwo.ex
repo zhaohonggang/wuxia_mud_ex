@@ -139,7 +139,7 @@ defmodule Kantele.Combat.Skills.Performs.JimieZhua.Wuwo do
     weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "爪"]
+    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || ""]
 
     hit = Engine.rand(rng, level) > div(parry, 2)
 

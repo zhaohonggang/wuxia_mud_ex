@@ -117,7 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.WuchangZhang.Wuchang do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
     conn = Broadcast.publish(conn, "$N将手中的" <> weapon_name <> "一荡，化作无数杖影扫向$n！", n1: character.name)
 
     conn

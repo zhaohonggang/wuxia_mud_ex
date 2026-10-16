@@ -129,7 +129,7 @@ defmodule Kantele.Combat.Skills.Performs.WushenJian.Shen do
     combat = Combat.start_busy(combat, 3)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "剑"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
 
     conn =
       Broadcast.publish(

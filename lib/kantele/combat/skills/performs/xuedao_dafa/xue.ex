@@ -31,7 +31,7 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
     lvl = Stats.skill(stats, "xuedao-dafa")
     ap = Stats.skill(stats, "blade")
     weapon = Combat.weapon(combat)
-    wn = Map.get(weapon, :name, "刀")
+    wn = Map.get(weapon, :name, "")
 
     with :ok <- check_perform_known(character),
          :ok <- check_gates(character),
@@ -197,8 +197,8 @@ defmodule Kantele.Combat.Skills.Performs.XuedaoDafa.Xue do
 
   defp weapon_name(combat) do
     case Combat.weapon(combat) do
-      nil -> "刀"
-      weapon -> Map.get(weapon, :name, "刀")
+      nil -> ""
+      weapon -> Map.get(weapon, :name, "")
     end
   end
 

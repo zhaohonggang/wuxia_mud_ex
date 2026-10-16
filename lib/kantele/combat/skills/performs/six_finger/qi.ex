@@ -193,14 +193,14 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
 
           Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer" ->
             "横" <>
-              Map.get(weapon, :name, "兵器") <>
-              "试图招架，怎奈这股剑气如此犀利，透过" <> Map.get(weapon, :name, "兵器") <> "直震得$n狂吐鲜血，五脏六腑都要翻转过来！\n"
+              Map.get(weapon, :name, "") <>
+              "试图招架，怎奈这股剑气如此犀利，透过" <> Map.get(weapon, :name, "") <> "直震得$n狂吐鲜血，五脏六腑都要翻转过来！\n"
 
           true ->
             "横转" <>
-              Map.get(weapon, :name, "兵器") <>
+              Map.get(weapon, :name, "") <>
               "，挡在胸前，只听啪啦一声，" <>
-              Map.get(weapon, :name, "兵器") <>
+              Map.get(weapon, :name, "") <>
               "碎成数截，激飞上天！\n$n连退几步，“哇”的吐了一口鲜血，脸色变的惨白。\n"
         end
       else
@@ -211,13 +211,13 @@ defmodule Kantele.Combat.Skills.Performs.SixFinger.Qi do
     broken1 =
       if hit? and weapon != nil and Map.get(weapon, :skill_type, "") != "pin" and
            not (Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer") do
-        Map.get(weapon, :name, "兵器") <> "已经碎掉了，没法装备了。"
+        Map.get(weapon, :name, "") <> "已经碎掉了，没法装备了。"
       end
 
     broken2 =
       if hit? and weapon != nil and Map.get(weapon, :skill_type, "") != "pin" and
            not (Map.get(weapon, :damage, 0) > 180 or Map.get(weapon, :skill_type, "") == "hammer") do
-        "碎掉的" <> Map.get(weapon, :name, "兵器")
+        "碎掉的" <> Map.get(weapon, :name, "")
       end
 
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)

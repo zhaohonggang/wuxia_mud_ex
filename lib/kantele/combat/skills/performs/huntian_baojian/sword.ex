@@ -146,7 +146,7 @@ defmodule Kantele.Combat.Skills.Performs.HuntianBaojian.Sword do
     meta = Map.get(item, :meta) || %{}
 
     %{
-      name: Map.get(item, :name, "剑气"),
+      name: Map.get(item, :name, ""),
       skill_type: "sword",
       damage: Map.get(meta, :damage) || 0,
       prop: Map.get(meta, :weapon_prop),

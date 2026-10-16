@@ -117,7 +117,7 @@ defmodule Kantele.Combat.Skills.Performs.TianyuQijian.Ju do
     character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
     combat = character.meta.combat
     weapon = Combat.weapon(combat)
-    weapon_name = (weapon && Map.get(weapon, :name)) || "兵器"
+    weapon_name = (weapon && Map.get(weapon, :name)) || ""
     combat = Combat.start_busy(combat, 2)
     combat = Combat.start_busy(combat, 4)
     character = %{character | meta: Map.put(character.meta, :combat, combat)}

@@ -195,8 +195,8 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
     |> Enum.reject(&is_nil/1)
   end
 
-  defp du_name(du), do: Map.get(du.meta, :name) || "暗器"
-  defp du_unit(du), do: Map.get(du.meta, :unit) || "枚"
+  defp du_name(du), do: Map.get(du.meta, :name) || ""
+  defp du_unit(du), do: Map.get(du.meta, :unit) || ""
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}

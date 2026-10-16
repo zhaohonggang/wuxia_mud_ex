@@ -141,7 +141,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
     weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "掌"]
+    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || ""]
 
     hit = Engine.rand(rng, level) > div(parry, 2)
 
@@ -159,12 +159,7 @@ defmodule Kantele.Combat.Skills.Performs.HuoyanDao.Fen do
       )
       |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate("却见$p不慌不忙，轻轻一闪，躲过了$N的必杀一击！\n", bindings)
-        else
-          Messages.interpolate("却见$p不慌不忙，轻轻一闪，躲过了$N的必杀一击！\n", bindings)
-        end
+      text = Messages.interpolate("却见$p不慌不忙，轻轻一闪，躲过了$N的必杀一击！\n", bindings)
 
       Broadcast.publish(conn, text)
     end
