@@ -7,11 +7,6 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
   攻击方消耗手中暗器 1 枚并发 `perform-incoming`；目标侧掷
   `random(combat_exp + skill³/10)` 对抗 `target combat_exp * 2/3`：命中则
   创伤 `skill/2 + random(skill/2)`；两分支攻击方均扣 80 内力、忙乱 2（回执）。
-
-  差异（TODO(migrate)）：
-  - LPC 命中后的 `weapon->hit_ob`/`combat_d` 追加伤害与 `eff_status_msg` 括号
-    文案未建模，折算为一次 `skill/2 + random` 创伤；
-  - `living(target)` 检查省略（由目标侧 `combat/perform-incoming` 死亡检查兜底）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,12 +15,10 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
 
   alias Kalevala.Event
   alias Kantele.Character.CommandView
-  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
 
   @perform "fenglei-zifa/she"
@@ -41,8 +34,19 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
          {:ok, target} <- target(combat),
          {:ok, dart} <- handing(character),
          :ok <- level(stats),
-         :ok <- neili(character) do
+         :ok <- neili(character),
+         :ok <- target_alive(target) do
       character = consume_dart(character, dart)
+      weapon_name = dart.name
+      base_unit = Map.get(dart.meta, :base_unit) || ""
+
+      # LPC: msg = HIR "$N" HIR "身形微微一展，单手一晃，只听“飕”的一声，一" +
+      #           weapon->query("base_unit") + weapon->name() + HIR "如闪电般" +
+      #           "射向$n" HIR "而去。\n" NOR;
+      # NOTE: "如闪电般" 与 "射向$n而去。" 为相邻纯字面量，用 Enum.join 保段。
+      s1 = "$N身形微微一展，单手一晃，只听“飕”的一声，一"
+      middle = Enum.join(["如闪电般", "射向$n而去。\n"], "")
+      start_msg = s1 <> base_unit <> (weapon_name || "") <> middle
 
       send(target.pid, %Event{
         from_pid: self(),
@@ -51,17 +55,14 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
           attacker: ref(character),
           perform_id: @perform,
           skill: Stats.skill(stats, "fenglei-zifa"),
-          combat_exp: stats.combat_exp
+          combat_exp: stats.combat_exp,
+          weapon_name: weapon_name
         }
       })
 
       conn
       |> put_character(character)
-      |> Broadcast.publish(
-        "$N身形微微一展，单手一晃，只听“飕”的一声，一#{dart.meta.base_unit}#{dart.name}如闪电般射向$n而去。\n",
-        n1: character.name,
-        n2: target.name
-      )
+      |> Broadcast.publish(start_msg, n1: character.name, n2: target.name)
       |> assign(:prompt, false)
     else
       {:error, message} ->
@@ -80,22 +81,18 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
   defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, "#{@name}只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@name}只能在战斗中对对手使用。\n"}
     end
   end
 
   defp handing(character) do
-    case character.inventory |> Enum.find(& &1.handing) do
-      nil ->
-        {:error, "你现在手中并没有拿着暗器，无法施展#{@name}。\n"}
+    dart = character.inventory |> Enum.find(& &1.handing)
 
-      dart ->
-        if Map.get(dart.meta, :skill_type) == "throwing" &&
-             (Map.get(dart.meta, :amount) || 1) >= 1 do
-          {:ok, dart}
-        else
-          {:error, "你现在手中并没有拿着暗器，无法施展#{@name}。\n"}
-        end
+    if dart && Map.get(dart.meta, :skill_type) == "throwing" &&
+         (Map.get(dart.meta, :amount) || 1) >= 1 do
+      {:ok, dart}
+    else
+      {:error, "你现在手中并没有拿着暗器，无法施展出#{@name}。\n"}
     end
   end
 
@@ -110,6 +107,15 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
       do: {:error, "你内力不足，无法施展#{@name}。\n"},
       else: :ok
   end
+
+  defp target_alive(target) do
+    if not dead?(target),
+      do: :ok,
+      else: {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
   defp consume_dart(character, dart) do
     amount = (Map.get(dart.meta, :amount) || 1) - 1
@@ -128,6 +134,7 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
   def resolve_incoming(conn, character, attacker, data) do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     skill = max(Map.get(data, :skill, 0), 0)
+    weapon_name = Map.get(data, :weapon_name)
     my_exp = Map.get(data, :combat_exp, 0) + div(skill * skill, 10) * skill
     ob_exp = character.meta.stats.combat_exp
     bindings = [n1: attacker.name, n2: character.name]
@@ -136,18 +143,35 @@ defmodule Kantele.Combat.Skills.Performs.FengleiZifa.She do
       damage = div(skill, 2) + Engine.rand(rng, max(div(skill, 2), 1))
       vitals = Vitals.wound(character.meta.vitals, :qi, damage)
       character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      max_qi = character.meta.vitals.max_qi || character.meta.vitals.qi || 1
+      p = div(character.meta.vitals.qi * 100, max(max_qi, 1))
+
+      # LPC: msg += HIR "$n" HIR "闪避不及，顿时被这招打了个血肉模糊"
+      #            "的窟窿，整个人疼得几乎都要散架。\n" NOR;
+      #      ... msg += "( $n" + eff_status_msg(p) + " )\n";
+      hit_msg = "$n闪避不及，顿时被这招打了个血肉模糊的窟窿，整个人疼得几乎都要散架。\n"
+      conn = Broadcast.publish(conn, hit_msg, bindings)
+      conn = Broadcast.publish(conn, "( $n" <> eff_status_msg(p) <> " )\n", bindings)
+
+      Performs.feedback(attacker, 80, 2)
+
+      put_character(conn, character)
+    else
+      # LPC: msg += CYN "可是$p" CYN "轻轻一纵，躲闪开了$P" CYN "发出的" +
+      #            weapon->name() + CYN "。\n" NOR;
+      miss_msg = "可是$p轻轻一纵，躲闪开了$P发出的" <> (weapon_name || "") <> "。\n"
+      conn = Broadcast.publish(conn, miss_msg, bindings)
+
       Performs.feedback(attacker, 80, 2)
 
       conn
-      |> Broadcast.publish(
-        Messages.interpolate("$n闪避不及，顿时被这招打了个血肉模糊的窟窿，整个人疼得几乎都要散架。\n", bindings)
-      )
-      |> put_character(character)
-    else
-      Performs.feedback(attacker, 80, 2)
-      Broadcast.publish(conn, Messages.interpolate("可是$p轻轻一纵，躲闪开了$P发出的暗器。\n", bindings))
     end
   end
+
+  # LPC: eff_status_msg(p) —— 定义于 /kungfu/skill/eff_msg.h（状态描述按 qi 百分比）。
+  # TODO: 该表位于独立头文件，逐条移植待补；当前返回空串以避免引入额外文案。
+  defp eff_status_msg(_p), do: ""
 
   defp ref(character) do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
