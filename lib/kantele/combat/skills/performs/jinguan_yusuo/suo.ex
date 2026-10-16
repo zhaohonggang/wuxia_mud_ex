@@ -1,14 +1,12 @@
 defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
   @moduledoc """
-  玄门金锁「suo」（对照 `kungfu/skill/jinguan-yusuo/suo.c`）
+  玄门金锁「suo」（对照 `kungfu/skill/jinguan-yusuo/suo.c`，inherit F_SSERVER）
 
-  金刚玉锁单体攻击：消耗 500 内力，对战斗中对手出招。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:jinguan-yusuo>=150,force>=200`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  金关玉锁单体攻击绝招：要求 jinguan-yusuo >= 150、内功 force >= 200、
+  真气 >= 500、目标未忙乱且存活；攻击方扣 100 真气 / 忙乱 1 于命中，
+  扣 50 真气 / 忙乱 2 于落空。命中判定
+  `random(level) > target->query_skill("parry") / 2`，命中后目标忙乱 `level / 16` 轮。
   """
-
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
@@ -16,7 +14,7 @@ defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -24,6 +22,7 @@ defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
   @perform_id "jinguan-yusuo/suo"
   @move_name "「玄门金锁」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -31,11 +30,13 @@ defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
     combat = character.meta.combat
 
     with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         {:ok, target} <- target(combat),
+         :ok <- check_skill_level(stats),
+         :ok <- check_force(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_busy(target),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats)
     else
       {:error, message} ->
         conn
@@ -52,55 +53,84 @@ defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
     end
   end
 
-  defp check_target(combat) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  #          return notify_fail(SUO "只有在战斗中才能使用。\n");
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只有在战斗中才能使用。\n"}
     end
   end
 
+  # LPC: if ((level = me->query_skill("jinguan-yusuo", 1)) < 150)
+  #          return notify_fail("你的金关玉锁不够熟练，难以施展" SUO "。\n" NOR);
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "jinguan-yusuo")
-
-    if level < 150 do
-      {:error, "你的玄门金锁不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "jinguan-yusuo") < 150 do
+      {:error, "你的金关玉锁不够熟练，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
-    end
-  end
-
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "force") == "jinguan-yusuo" do
       :ok
-    else
-      {:error, "你没有激发玄门金锁，无法施展#{@move_name}。\n"}
     end
   end
 
+  # LPC: if ((int)me->query_skill("force") < 200)
+  #          return notify_fail("你的内功火候不足，难以施展" SUO "。\n");
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 200 do
+      {:error, "你的内功火候不足，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if ((int)me->query("neili") < 500)
+  #          return notify_fail("你现在的真气不足，难以施展" SUO "。\n" NOR);
   defp check_neili(character) do
     if character.meta.vitals.neili < 500 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你现在的真气不足，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 500}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  # LPC: if (target->is_busy())
+  #          return notify_fail(target->name() + "目前正自顾不暇，放胆攻击吧。\n");
+  defp check_target_busy(target) do
+    if Combat.busy?(target.meta.combat) do
+      {:error, target.name <> "目前正自顾不暇，放胆攻击吧。\n"}
+    else
+      :ok
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N运起内劲，使出玄门金锁「玄门金锁」，气劲如锁链般锁向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    else
+      :ok
+    end
+  end
+
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_perform(conn, character, target, stats) do
+    # LPC: msg = HIY "突然间$N" HIY "双手蓦的回圈，使出「" HIR "玄门金锁"
+    #           HIY "」绝技，企图锁死$n" HIY "的招数。\n" NOR;
+    start_msg = "突然间$N双手蓦的回圈，使出「玄门金锁」绝技，企图锁死$n的招数。\n"
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    level = Stats.skill(stats, "jinguan-yusuo")
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        level: level,
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
@@ -108,41 +138,47 @@ defmodule Kantele.Combat.Skills.Performs.JinguanYusuo.Suo do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "气劲"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    level = max(Map.get(data, :level, 0), 1)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    parry = Stats.skill(character.meta.stats, "parry")
+
+    # LPC: if (random(level) > (int)target->query_skill("parry", 1) / 2)
+    if Engine.rand(rng, level) > div(parry, 2) do
+      # LPC: target->start_busy(level / 16);
+      combat = Combat.start_busy(character.meta.combat, div(level, 16))
+      character = %{character | meta: %{character.meta | combat: combat}}
+
+      # LPC: msg += HIR "霎时$n" HIR "只觉招数一紧，双臂瘫软，全身"
+      #            "力道竟似被$N" HIR "牢牢锁住！\n" NOR;
+      hit_msg = "霎时$n只觉招数一紧，双臂瘫软，全身力道竟似被$N牢牢锁住！\n"
+      conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+
+      # LPC: me->add("neili", -100); me->start_busy(1);
+      Performs.feedback(attacker, 100, 1)
+
+      put_character(conn, character)
+    else
+      # LPC: msg += HIC "可是$n" HIC "防守严密，丝毫不为$N"
+      #            HIC "的招数所乱。\n" NOR;
+      miss_msg = "可是$n防守严密，丝毫不为$N的招数所乱。\n"
+      conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+
+      # LPC: me->add("neili", -50); me->start_busy(2);
+      Performs.feedback(attacker, 50, 2)
+
+      put_character(conn, character)
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
