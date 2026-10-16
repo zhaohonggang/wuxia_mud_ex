@@ -294,7 +294,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
 | 批次 | key | 次数 | 目标 |
 |------|-----|-----:|------|
-| **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | `Item.Meta` 加 `messages` 字段 + loader 读取（**零数据写入，最高性价比，先做**） |
+| **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | `Item.Meta` 加 `messages` 字段 + loader 读取（**零数据写入，最高性价比**）—— **已完成 `0676bd08`**（219 物品命中） |
 | B5b | `wear_msg` / `remove_msg` / `unequip_msg` | 89/63/37 | `Item.Meta` 装备文案（`wield`/`unwield` 已在 B5a 覆盖，不重复转） |
 | B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」） |
 | B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` |

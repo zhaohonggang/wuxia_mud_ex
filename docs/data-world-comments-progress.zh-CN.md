@@ -41,7 +41,7 @@
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
-| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | | **B5a ✅**（激活已存在的 `messages`）；B5b–B10 ⬜ |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活已存在的 `messages`）；B5b–B10 ⬜ |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -226,7 +226,7 @@
 
 | 批次 | key | 次数 | 归属 | 状态 | 提交 |
 |------|-----|-----:|------|:----:|------|
-| **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | 装备文案（**零数据写入，最高性价比，先做**） | ✅ | （见 §13） |
+| **B5a** | （无 key）激活**已存在**的 `messages = { wield, unwield }` | 220 块 / 218+155 条 | 装备文案（**零数据写入，最高性价比，先做**） | ✅ | `0676bd08` |
 | **B5b** | `wear_msg`/`remove_msg`/`unequip_msg` | 89/63/37 | 装备文案（`wield`/`unwield` 已由 B5a 覆盖，不重复转） | ⬜ | |
 | **B3** | `female_only` | 60 | 物品穿戴限制（需 `Item.Meta.female_only` 新字段） | ⬜ | |
 | **B6** | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | NPC 战斗喊话 | ⬜ | |
@@ -403,8 +403,8 @@
 | 2026-10-16 | P1b + **B1**（首版，**已回滚**） | 未提交 | 新增 `scripts/backfill_l1_fields.py`；回填 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg` → `room.flags` | 55 区 / +242 行 / -0 行；M6 202→200、M10 0→242 |
 | 2026-10-16 | **回滚 + B1 重做** | `cf0af449` | 首版脚本**备份在写盘之后**（等于没备份）+ **列表缺逗号**导致 56 区语法非法 → `git checkout -- data/world` 回滚、删除无效备份；修脚本（备份前置 + 逗号 + `validate_ucl` 自校验门禁）；补入 `valid_startroom` → flag `"startroom"` 重做 | **56 区 / +921 行 / -0 行**；M10 242→**284** |
 | 2026-10-16 | 文档更正 | `cf0af449` | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
-| 2026-10-16 | **P1a 复核 2（B2/B3/B4 改判）** | （本次） | 回源实测推翻 3 条原判：`base_unit`/`base_value`→L3-framework、`female_only`→L2（新字段）、`coagents`→manual；`plan_key_field_map.py` 加 `base_*` 硬规则 + 禁映射 `flag`；重算 `tmp/key_field_map.json`；新增发现 `messages` 早已转好（B5a）；计划 + 进度文档同步更正 | 分诊表 L1 9→**1**（假阳性）/ L2 20→**21** / L3-fw 83→**85** / manual 122→**123**；**L1 清空** |
-| 2026-10-16 | **B5a（激活 messages）** | （见提交） | `Item.Meta` 加 `:messages`；`loader.ex parse_item` 读取物品块顶层 `messages`；新增只读探针 `scripts/probe_item_messages.exs` | 代码改动，**零数据写入**；M12 0→**219**（218 wield / 155 unwield）；测试 3435/34 不新增 |
+| 2026-10-16 | **P1a 复核 2（B2/B3/B4 改判）** | `0676bd08` | 回源实测推翻 3 条原判：`base_unit`/`base_value`→L3-framework、`female_only`→L2（新字段）、`coagents`→manual；`plan_key_field_map.py` 加 `base_*` 硬规则 + 禁映射 `flag`；重算 `tmp/key_field_map.json`；新增发现 `messages` 早已转好（B5a）；计划 + 进度文档同步更正 | 分诊表 L1 9→**1**（假阳性）/ L2 20→**21** / L3-fw 83→**85** / manual 122→**123**；**L1 清空** |
+| 2026-10-16 | **B5a（激活 messages）** | `0676bd08` | `Item.Meta` 加 `:messages`；`loader.ex parse_item` 读取物品块顶层 `messages`；新增只读探针 `scripts/probe_item_messages.exs` | 代码改动，**零数据写入**；M12 0→**219**（218 wield / 155 unwield）；测试 3435/34 不新增 |
 
 ---
 
