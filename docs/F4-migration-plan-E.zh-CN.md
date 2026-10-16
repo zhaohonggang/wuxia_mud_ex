@@ -237,7 +237,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `feilong_zhang/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `feilong_zhang/fei.ex` ← `feilong-zhang/fei.c`  (miss=11)
+- [x] ✅ `feilong_zhang/fei.ex` ← `feilong-zhang/fei.c`  (miss=0)
 
 ### `feixing_shu/` （1 个，基线缺失 12 条）
 
