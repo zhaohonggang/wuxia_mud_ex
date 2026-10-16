@@ -208,7 +208,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `duanjia_sword/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `duanjia_sword/jing.ex` ← `duanjia-sword/jing.c`  (miss=9)
+- [x] ✅ `duanjia_sword/jing.ex` ← `duanjia-sword/jing.c`  (miss=0)
 
 ### `duanyun_fu/` （1 个，基线缺失 7 条）
 
