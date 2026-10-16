@@ -163,29 +163,30 @@ defmodule Kantele.Combat.Skills.Performs.SuohouGong.Suo do
     # LPC: ap / 2 + random(ap * 2 / 3) > dp
     hit = div(ap, 2) + Engine.rand(rng, div(ap * 2, 3)) > dp
 
-    if hit do
-      # LPC: if (me->query("max_neili") > target->query("max_neili") * 2) - instant kill
-      if attacker_max_neili > target_max_neili * 2 do
-        # 即死分支 - 使用占位符匹配 LPC 格式
-        vitals = %{vitals | qi: -1}
-        Performs.feedback(attacker, 50, 1)
-        msg = "霎时只听「喀嚓」一声脆响，$N五指竟将$n的喉结捏个粉碎。(受伤过重，已经有如风中残烛，随时都可能断气。)"
+    {vitals, msg} =
+      if hit do
+        # LPC: if (me->query("max_neili") > target->query("max_neili") * 2) - instant kill
+        if attacker_max_neili > target_max_neili * 2 do
+          # 即死分支 - 使用占位符匹配 LPC 格式
+          vitals = %{vitals | qi: -1}
+          Performs.feedback(attacker, 50, 1)
+          {vitals, "霎时只听「喀嚓」一声脆响，$N五指竟将$n的喉结捏个粉碎。(受伤过重，已经有如风中残烛，随时都可能断气。)"}
+        else
+          # 普通伤害分支
+          damage = ap + Stats.skill(stats, "force")
+          damage = div(damage, 2) + Engine.rand(rng, div(damage, 2))
+          vitals = Vitals.damage(vitals, :qi, damage)
+          Performs.feedback(attacker, 180, 3)
+          # 肢体部位 - 分两部分匹配 LPC 字面量
+          limb = random_limb(rng)
+          msg1 = "$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的"
+          msg2 = "。"
+          {vitals, msg1 <> limb <> msg2}
+        end
       else
-        # 普通伤害分支
-        damage = ap + Stats.skill(stats, "force")
-        damage = div(damage, 2) + Engine.rand(rng, div(damage, 2))
-        vitals = Vitals.damage(vitals, :qi, damage)
-        Performs.feedback(attacker, 180, 3)
-        # 肢体部位 - 分两部分匹配 LPC 字面量
-        limb = random_limb(rng)
-        msg1 = "$n慌忙躲闪，却听「喀嚓」一声，$N五指正拿中$n的"
-        msg2 = "。"
-        msg = msg1 <> limb <> msg2
+        Performs.feedback(attacker, 100, 4)
+        {vitals, "可是$n看破了$P的企图，身形急动，躲开了这一抓。"}
       end
-    else
-      Performs.feedback(attacker, 100, 4)
-      msg = "可是$n看破了$P的企图，身形急动，躲开了这一抓。"
-    end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)

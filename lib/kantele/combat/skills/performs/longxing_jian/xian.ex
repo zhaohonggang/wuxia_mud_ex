@@ -100,10 +100,6 @@ defmodule Kantele.Combat.Skills.Performs.LongxingJian.Xian do
     %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
   end
 
-  defp put_character(conn, character) do
-    %{conn | assigns: Map.put(conn.assigns, :character, character)}
-  end
-
   # ===== 原始 LPC 源码 =====
   # 神龙再现「xian」（对照 `kungfu/skill/longxing-jian/xian.c`）
   # ... (LPC source preserved verbatim)

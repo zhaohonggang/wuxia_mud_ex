@@ -255,6 +255,10 @@ defmodule Kantele.Combat.Skills.Performs.TaijiQuan.Tu do
     |> put_character(character)
   end
 
+  # LPC: eff_status_msg(p) —— 定义于 /kungfu/skill/eff_msg.h（状态描述按 qi 百分比）。
+  # TODO: 该表位于独立头文件，逐条移植待补；当前返回空串以避免引入额外文案。
+  defp eff_status_msg(_p), do: ""
+
   # TODO(migrate) 原始抽取事实（供核对；完成后删除）：
   #   %{"add_costs": [{"jingli", "-1000"}, {"neili", "-1000"}, {"neili", "-200"}, {"neili", "-500"}], "assign_refs": [{"ap", "taoism"}, {"dp", "force"}], "busy_lines": ["me->start_busy(4);", "obs[i]->start_busy(3);"], "level_gates": [{"taiji-quan", "250"}, {"taiji-shengong", "300"}, {"taoism", "300"}], "map_gates": [{"force", "taiji-shengong"}, {"unarmed", "taiji-quan"}], "prepared_gates": [{"unarmed", "taiji-quan"}], "remote_damage": false, "resource_gates": [{"jingli", "1000"}, {"neili", "0"}, {"neili", "1000"}], "set_flags": [{"neili", "0"}]}
 

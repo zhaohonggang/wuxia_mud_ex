@@ -148,13 +148,14 @@ defmodule Kantele.Combat.Skills.Performs.SouguYingzhua.Ying do
     # 这里简化为随机判定
     hit = Engine.rand(rng, 100) > 50
 
-    if hit do
-      Performs.feedback(attacker, 150, 4)
-      msg = "结果$p被$P点中要穴，立时动弹不得！"
-    else
-      Performs.feedback(attacker, 0, 4)
-      msg = "可是$p看破了$P的企图，并没有上当。"
-    end
+    msg =
+      if hit do
+        Performs.feedback(attacker, 150, 4)
+        "结果$p被$P点中要穴，立时动弹不得！"
+      else
+        Performs.feedback(attacker, 0, 4)
+        "可是$p看破了$P的企图，并没有上当。"
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)

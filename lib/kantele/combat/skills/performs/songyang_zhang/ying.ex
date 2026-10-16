@@ -158,13 +158,14 @@ defmodule Kantele.Combat.Skills.Performs.SongyangZhang.Ying do
     hit = Engine.rand(rng, ap) > div(dp, 2)
     vitals = character.meta.vitals
 
-    if hit do
-      Performs.feedback(attacker, 80, 1)
-      msg = "$n心神惧裂，一时间竟无从应对，竟被困在$N的掌风之中。"
-    else
-      Performs.feedback(attacker, 30, 2)
-      msg = "看破$N毫无攻击之意，于是大胆反攻，将$N这招尽数化解。"
-    end
+    msg =
+      if hit do
+        Performs.feedback(attacker, 80, 1)
+        "$n心神惧裂，一时间竟无从应对，竟被困在$N的掌风之中。"
+      else
+        Performs.feedback(attacker, 30, 2)
+        "看破$N毫无攻击之意，于是大胆反攻，将$N这招尽数化解。"
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)

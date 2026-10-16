@@ -154,16 +154,17 @@ defmodule Kantele.Combat.Skills.Performs.SuxinJian.He do
     hit = div(ap, 2) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
 
-    if hit do
-      damage = Stats.skill(stats, "sword") + Engine.rand(rng, Stats.skill(stats, "sword"))
-      damage = div(damage, 2) + Engine.rand(rng, div(damage, 2))
-      vitals = Vitals.damage(vitals, :qi, damage)
-      Performs.feedback(attacker, 350, 2)
-      msg = "$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！"
-    else
-      Performs.feedback(attacker, 0, 3)
-      msg = "可是$p看破了$P的企图，将自己的全身上下护得密不透风，令$P无计可施。"
-    end
+    {vitals, msg} =
+      if hit do
+        damage = Stats.skill(stats, "sword") + Engine.rand(rng, Stats.skill(stats, "sword"))
+        damage = div(damage, 2) + Engine.rand(rng, div(damage, 2))
+        vitals = Vitals.damage(vitals, :qi, damage)
+        Performs.feedback(attacker, 350, 2)
+        {vitals, "$n看到$N双剑飞舞，招式中所有破绽都为另一剑补去，竟不知如何是好！一呆之下，$N的剑招已经破身而入！$n一声惨叫之下，登时受了重创！"}
+      else
+        Performs.feedback(attacker, 0, 3)
+        {vitals, "可是$p看破了$P的企图，将自己的全身上下护得密不透风，令$P无计可施。"}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)

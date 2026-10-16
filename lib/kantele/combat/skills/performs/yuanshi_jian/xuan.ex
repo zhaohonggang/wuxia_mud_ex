@@ -159,14 +159,15 @@ defmodule Kantele.Combat.Skills.Performs.YuanshiJian.Xuan do
     dp = Stats.skill(stats, "force")
     hit = div(ap, 2) + Engine.rand(rng, ap * 2) > dp
 
-    if hit do
-      count = div(ap, 16)
-      attack_time = 5 + :rand.uniform(div(ap, 45))
-      attack_time = min(attack_time, 7)
-      msg = "$n顿时只觉得头晕目眩，天旋地转，一时难以招架。\n"
-    else
-      msg = "$n见$N剑势汹涌，急忙凝神抵挡，不为所困。\n"
-    end
+    msg =
+      if hit do
+        count = div(ap, 16)
+        attack_time = 5 + :rand.uniform(div(ap, 45))
+        attack_time = min(attack_time, 7)
+        "$n顿时只觉得头晕目眩，天旋地转，一时难以招架。\n"
+      else
+        "$n见$N剑势汹涌，急忙凝神抵挡，不为所困。\n"
+      end
 
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
 

@@ -176,51 +176,51 @@ defmodule Kantele.Combat.Skills.Performs.FeilongZhang.Fei do
     weapon_name = Map.get(data, :weapon_name)
     rng = Map.get(data, :rng, &:rand.uniform/1)
 
-    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
-      # LPC: damage = ap / 2 + random(ap / 2); damage += random(damage);
-      #      msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 55,
-      #        HIR "$n" HIR "只觉一股劲风袭到，闪避"
-      #        "不及，那根" + wn + HIR "正好击中胸口"
-      #        "，撞断数根肋骨。\n" NOR);
-      #      me->start_busy(3); me->add("neili", -300);
-      damage = div(ap, 2) + Engine.rand(rng, max(div(ap, 2), 1))
-      damage = damage + Engine.rand(rng, max(damage, 1))
-      vitals = Vitals.damage(character.meta.vitals, :qi, damage)
-      vitals = Vitals.wound(vitals, :qi, div(damage * 55, 100))
-      character = %{character | meta: %{character.meta | vitals: vitals}}
+    conn =
+      if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+        # LPC: damage = ap / 2 + random(ap / 2); damage += random(damage);
+        #      msg += COMBAT_D->do_damage(me, target, WEAPON_ATTACK, damage, 55,
+        #        HIR "$n" HIR "只觉一股劲风袭到，闪避"
+        #        "不及，那根" + wn + HIR "正好击中胸口"
+        #        "，撞断数根肋骨。\n" NOR);
+        #      me->start_busy(3); me->add("neili", -300);
+        damage = div(ap, 2) + Engine.rand(rng, max(div(ap, 2), 1))
+        damage = damage + Engine.rand(rng, max(damage, 1))
+        vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+        vitals = Vitals.wound(vitals, :qi, div(damage * 55, 100))
+        character = %{character | meta: %{character.meta | vitals: vitals}}
 
-      # NOTE: "正好击中胸口" 与 "，撞断数根肋骨。" 在 C 中相邻（中间仅 HIY），
-      #       合并为单一字面量；无额外 + 分隔。
-      h1 = "$n只觉一股劲风袭到，闪避不及，那根"
-      h2 = "正好击中胸口，撞断数根肋骨。\n"
-      hit_msg = h1 <> (weapon_name || "") <> h2
-      conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+        # NOTE: "正好击中胸口" 与 "，撞断数根肋骨。" 在 C 中相邻（中间仅 HIY），
+        #       合并为单一字面量；无额外 + 分隔。
+        h1 = "$n只觉一股劲风袭到，闪避不及，那根"
+        h2 = "正好击中胸口，撞断数根肋骨。\n"
+        hit_msg = h1 <> (weapon_name || "") <> h2
+        conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
 
-      Performs.feedback(attacker, 300, 3)
+        Performs.feedback(attacker, 300, 3)
 
-      conn
-      |> put_character(character)
-    else
-      # LPC: msg += CYN "$n" CYN "见$N" CYN "气势如虹，不敢硬"
-      #            "接，当即向后横移数尺，躲闪开来。\n" NOR;
-      #      me->start_busy(4); me->add("neili", -200);
-      miss_msg = "$n见$N气势如虹，不敢硬接，当即向后横移数尺，躲闪开来。\n"
-      conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+        conn
+        |> put_character(character)
+      else
+        # LPC: msg += CYN "$n" CYN "见$N" CYN "气势如虹，不敢硬"
+        #            "接，当即向后横移数尺，躲闪开来。\n" NOR;
+        #      me->start_busy(4); me->add("neili", -200);
+        miss_msg = "$n见$N气势如虹，不敢硬接，当即向后横移数尺，躲闪开来。\n"
+        conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
 
-      Performs.feedback(attacker, 200, 4)
+        Performs.feedback(attacker, 200, 4)
 
-      conn
-      |> put_character(character)
-    end
-    |> then(fn conn ->
-      # LPC: msg += HIY "只见那根" + wn + HIY "余势不尽，又向前飞出数"
-      #            "丈，方才没入土中。\n" NOR;
-      # NOTE: 该段位于 hit/miss 分支之后，无条件追加一次；wn 拆两段字面量。
-      t1 = "只见那根"
-      t2 = "余势不尽，又向前飞出数丈，方才没入土中。\n"
-      tail_msg = t1 <> (weapon_name || "") <> t2
-      Broadcast.publish(conn, tail_msg, n1: attacker.name, n2: character.name)
-    end)
+        conn
+        |> put_character(character)
+      end
+
+    # LPC: msg += HIY "只见那根" + wn + HIY "余势不尽，又向前飞出数"
+    #            "丈，方才没入土中。\n" NOR;
+    # NOTE: 该段位于 hit/miss 分支之后，无条件追加一次；wn 拆两段字面量。
+    t1 = "只见那根"
+    t2 = "余势不尽，又向前飞出数丈，方才没入土中。\n"
+    tail_msg = t1 <> (weapon_name || "") <> t2
+    Broadcast.publish(conn, tail_msg, n1: attacker.name, n2: character.name)
   end
 
   defp ref(character),

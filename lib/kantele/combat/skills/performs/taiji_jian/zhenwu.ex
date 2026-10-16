@@ -159,20 +159,21 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Zhenwu do
     hit = div(ap * 3, 5) + Engine.rand(rng, ap) > dp
     vitals = character.meta.vitals
 
-    if hit do
-      vitals = Vitals.damage(vitals, :jing, div(damage, 4))
-      vitals = Vitals.wound(vitals, :jing, div(damage, 8))
-      vitals = Vitals.damage(vitals, :qi, damage)
-      Performs.feedback(attacker, 50, 2)
-      # LPC final 函数返回两部分消息
-      # 部分1: "结果$n却丝毫未把这招放在眼里，随手应了一招，却见$N剑势忽然一变，气象万千，变幻无穷，极具王者风范！"
-      # 部分2: "$n顿时惊慌失措，被$P这一剑击中要害，鲜血崩流，惨不忍睹！"
-      msg1 = "结果$n却丝毫未把这招放在眼里，随手应了一招，却见$N剑势忽然一变，气象万千，变幻无穷，极具王者风范！"
-      msg2 = "$n顿时惊慌失措，被$P这一剑击中要害，鲜血崩流，惨不忍睹！"
-      msg = msg1 <> "\n" <> msg2
-    else
-      msg = "可是$n看透$P招后更有杀着，镇定逾恒，全神应对自如。"
-    end
+    {vitals, msg} =
+      if hit do
+        vitals = Vitals.damage(vitals, :jing, div(damage, 4))
+        vitals = Vitals.wound(vitals, :jing, div(damage, 8))
+        vitals = Vitals.damage(vitals, :qi, damage)
+        Performs.feedback(attacker, 50, 2)
+        # LPC final 函数返回两部分消息
+        # 部分1: "结果$n却丝毫未把这招放在眼里，随手应了一招，却见$N剑势忽然一变，气象万千，变幻无穷，极具王者风范！"
+        # 部分2: "$n顿时惊慌失措，被$P这一剑击中要害，鲜血崩流，惨不忍睹！"
+        msg1 = "结果$n却丝毫未把这招放在眼里，随手应了一招，却见$N剑势忽然一变，气象万千，变幻无穷，极具王者风范！"
+        msg2 = "$n顿时惊慌失措，被$P这一剑击中要害，鲜血崩流，惨不忍睹！"
+        {vitals, msg1 <> "\n" <> msg2}
+      else
+        {vitals, "可是$n看透$P招后更有杀着，镇定逾恒，全神应对自如。"}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)

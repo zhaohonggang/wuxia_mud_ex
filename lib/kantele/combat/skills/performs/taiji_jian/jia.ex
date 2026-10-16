@@ -185,20 +185,21 @@ defmodule Kantele.Combat.Skills.Performs.TaijiJian.Jia do
     hit = div(ap, 2) + Engine.rand(rng, ap * 4 / 3) > dp
     vitals = character.meta.vitals
 
-    if hit do
-      vitals = Vitals.damage(vitals, :qi, damage)
-      Performs.feedback(attacker, 30, 1)
+    {vitals, msg} =
+      if hit do
+        vitals = Vitals.damage(vitals, :qi, damage)
+        Performs.feedback(attacker, 30, 1)
 
-      # LPC: "却见$n手中" + wn2 + "被" + wn1 + "缠住后不断增加重量，招数顿见涩滞，真力不由狂泻而出。"
-      # 分三部分匹配 LPC 字面量
-      msg1 = "却见$n手中"
-      msg2 = "被"
-      msg3 = "缠住后不断增加重量，招数顿见涩滞，真力不由狂泻而出。"
-      msg = msg1 <> msg2 <> msg3
-    else
-      Performs.feedback(attacker, 10, 3)
-      msg = "$n不禁大惊失色，急忙跃开数步，方才摆脱$N的力道。"
-    end
+        # LPC: "却见$n手中" + wn2 + "被" + wn1 + "缠住后不断增加重量，招数顿见涩滞，真力不由狂泻而出。"
+        # 分三部分匹配 LPC 字面量
+        msg1 = "却见$n手中"
+        msg2 = "被"
+        msg3 = "缠住后不断增加重量，招数顿见涩滞，真力不由狂泻而出。"
+        {vitals, msg1 <> msg2 <> msg3}
+      else
+        Performs.feedback(attacker, 10, 3)
+        {vitals, "$n不禁大惊失色，急忙跃开数步，方才摆脱$N的力道。"}
+      end
 
     character = %{character | meta: %{character.meta | vitals: vitals}}
     result = Messages.interpolate(msg, n1: attacker.name, n2: character.name)
