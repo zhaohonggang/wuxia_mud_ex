@@ -324,8 +324,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
    早期草稿里的 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg`/`female_only`/`no_map`
    已被改判（前四个走已有 `room.flags` → **B1/L1**；`female_only` → **B3/L1**；`no_map` → noop），
    **不要再为它们加字段**：
-   - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`max_liquid`、
-     `power_point can_make not_make item_origin`；扩 `armor_prop` 子键（`personality`/`armor_vs_force`/`warm`）与 `weapon_prop` 子键（`personality`）；
+   - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`max_liquid`（✅ 已加 `a178e005`）、`power_point can_make not_make item_origin`；扩 `armor_prop` 子键（`personality`/`armor_vs_force`/`warm`）与 `weapon_prop` 子键（`personality`）；
    - `Room` 加：`room_owner room_name room_position room_owner_id`。（代码 ✅ `48fa1b59`，**数据 ⏸ 阻塞：源无真实值**）
    - `NonPlayerMeta` 加：`chat_msg_combat chat_chance_combat`。（✅ `72b86831`）
    - 每个字段**只加 `Map.get`**，不写任何默认逻辑 → 消费端未接 = 行为不变。
@@ -344,7 +343,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | B3 | `female_only` | 60 | `Item.Meta` **新字段** `female_only`（**不能塞 `flag`**，见「P1a 修正 2」）—— **已完成**：`Item.Meta` 加 `{:female_only, false}` + `parse_item_meta` 读 `meta.female_only`（`to_bool`）；回填 **24 个 `items` 块 / 7 区 / +24 行**，探针实测 24 物品命中 |
 | B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` —— **已完成 `72b86831`**：`NonPlayerMeta` 加 `{:chat_msg_combat, []}` / `{:chat_chance_combat, 0}`；`loader.ex parse_character/4` 读取 + `parse_chat_msg_combat/1`；回填 **122 个 `characters` 块 / 29 区 / +239 行**，容器内探针 `probe_npc_combat_chat.exs` 实测 loader 载入字段（254/256 命中，样本 老大娘 chance=50） |
 | B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 —— **代码 ✅ `48fa1b59`**（Room 结构体加 4 字段 + `parse_room/4` Map.get；4409 个房间字段均为 nil）；**数据 ⏸ 阻塞**：源 .c 中 4 个 key 全在 `//**` 注释块为模板占位符，无激活 set()，无真实值可回填 |
-| B8 | `max_liquid` | 74 | `Item.Meta` 容器容量 |
+| B8 | `max_liquid` | 74（实测 96 块） | `Item.Meta` 容器容量 —— **已完成 `a178e005`**：`Item.Meta` 加 `{:max_liquid, nil}`；`loader.ex parse_item_meta/1` 读 `meta.max_liquid`；回填 **96 个 `items` 块 / 30 区 / +96 行**，容器内探针 `probe_item_max_liquid.exs` 实测 loader 载入字段（96 命中，样本 葫芦 max_liquid=10） |
 | B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | `Item.Meta` 打造系统 |
 | B10 | `armor_prop/personality`、`armor_prop/armor_vs_force`、`armor_prop/warm`、`weapon_prop/personality` | 69/2/1/3 | 扩 `Combat.applies_keys()` 或单列字段 |
 
@@ -445,6 +444,8 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `probe_room_owner.exs` | B7 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（B7；4409 房间字段均 nil，loader 读取正常；数据阻塞：源无真实值） |
 | `backfill_npc_combat_chat.py` | B6 | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（B6 回填 `chat_msg_combat/chat_chance_combat`；dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、双引号列表） |
 | `probe_npc_combat_chat.exs` | B6 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；实测 loader 载入 NonPlayerMeta.chat_msg_combat/chat_chance_combat，254/256 命中） |
+| `backfill_item_max_liquid.py` | B8 | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（B8 回填 `max_liquid`；dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内） |
+| `probe_item_max_liquid.exs` | B8 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；实测 loader 载入 Item.Meta.max_liquid，96 命中，样本 葫芦=10） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 
 **所有脚本的公共约定**
