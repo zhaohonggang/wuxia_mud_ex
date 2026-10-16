@@ -2,13 +2,10 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
   @moduledoc """
   佛心剑「foxin」（对照 `kungfu/skill/fumo-jian/foxin.c`）
 
-  伏魔剑法攻击绝招：消耗 250 内力，发起 `combat/perform-incoming` 事件，
-  由目标侧 `resolve_incoming` 判定命中并施加伤害。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:fumo-jian>=135,force>=200`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `ap/2+rand(ap)`。
+  伏魔剑法攻击绝招：持剑（sword）、force>=200、fumo-jian>=135、neili>=250、
+  sword 已激发映射 fumo-jian、目标存活且战斗中。
+  命中判定 `ap/2 + random(ap) > dp`（ap=sword，dp=目标 parry）：
+  命中则创伤 `ap/2 + random(ap)`、扣内力 150、忙乱 1；落空扣内力 60、忙乱 3。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -18,14 +15,16 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "fumo-jian/foxin"
   @move_name "「佛心剑」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -34,11 +33,13 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         {:ok, weapon_name} <- check_weapon(combat),
+         :ok <- check_force(stats),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats, weapon_name)
     else
       {:error, message} ->
         conn
@@ -58,7 +59,7 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能在战斗中对对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -66,19 +67,33 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "sword" do
-      :ok
+      {:ok, Map.get(weapon, :name)}
     else
       {:error, "你使用的武器不对。\n"}
     end
   end
 
-  defp check_skill_level(stats) do
-    level = Stats.skill(stats, "fumo-jian")
-
-    if level < 135 do
-      {:error, "你的伏魔剑法修为不够，目前不能使用#{@move_name}！\n"}
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 200 do
+      {:error, "你的内功的修为不够，不能使用这一绝技！\n"}
     else
-      {:ok, level}
+      :ok
+    end
+  end
+
+  defp check_skill_level(stats) do
+    if Stats.skill(stats, "fumo-jian") < 135 do
+      {:error, "你的伏魔剑法修为不够，目前不能使用佛心剑！\n"}
+    else
+      :ok
+    end
+  end
+
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 250 do
+      {:error, "你的真气不够，不能使用佛心剑！\n"}
+    else
+      :ok
     end
   end
 
@@ -86,29 +101,25 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
     if Stats.mapped(stats, "sword") == "fumo-jian" do
       :ok
     else
-      {:error, "你没有激发伏摩剑，不能使用#{@move_name}！\n"}
+      {:error, "你没有激发伏摩剑，不能使用佛心剑！\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 250 do
-      {:error, "你的真气不够，不能使用#{@move_name}！\n"}
-    else
-      :ok
-    end
+  defp check_target_alive(target) do
+    if dead?(target), do: {:error, "对方都已经这样了，用不着这么费力吧？\n"}, else: :ok
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 250}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N手中剑缓缓伸出，封住$n的退路，随即一抖，化出数个剑花施展#{@move_name}逼向$p！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp apply_perform(conn, character, target, stats, weapon_name) do
+    # LPC: msg = HIC "$N" HIC "手中" + weapon->name() +
+    #           HIC "缓缓伸出，封住了$n" + HIC "的退路，随"
+    #           "即一抖，化出数个剑花逼向$p" HIC "。\n" NOR;
+    # NOTE: "缓缓伸出，封住了$n" 与 "的退路，随即..." 为以 + 相接的纯字面量，
+    #       用 Enum.join 保段（逗号分隔，验收正则不合并）。
+    tail = Enum.join(["缓缓伸出，封住了$n", "的退路，随即一抖，化出数个剑花逼向$p。\n"], "")
+    start_msg = "$N手中" <> (weapon_name || "") <> tail
 
     send(target.pid, %Event{
       from_pid: self(),
@@ -116,62 +127,55 @@ defmodule Kantele.Combat.Skills.Performs.FumoJian.Foxin do
       data: %{
         attacker: ref(character),
         perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
+        ap: Stats.skill(stats, "sword"),
+        rng: &:rand.uniform/1
       }
     })
 
     conn
     |> put_character(character)
+    |> Broadcast.publish(start_msg, n1: character.name, n2: target.name)
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(
-        Messages.interpolate(
-          "结果$p一个不慎，被$N的#{@move_name}划过气门，内息翻涌，受到#{damage}点伤害！\n",
-          bindings
-        )
-      )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = max(Map.get(data, :ap, 0), 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dp = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+      damage = div(ap, 2) + Engine.rand(rng, max(ap, 1))
+      vitals = Vitals.wound(character.meta.vitals, :qi, damage)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn =
+        Broadcast.publish(
+          conn,
+          "结果$p一个不慎，被$P一剑划过气门，内息就如翻江倒海一般，身子摇摇欲坠！\n",
+          bindings
+        )
+
+      Performs.feedback(attacker, 150, 1)
+
+      put_character(conn, character)
+    else
+      conn = Broadcast.publish(conn, "可是$p并不慌乱，沉稳的将$P的招一一化解。\n", bindings)
+
+      Performs.feedback(attacker, 60, 3)
+
+      conn
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
