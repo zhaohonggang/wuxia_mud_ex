@@ -1,15 +1,11 @@
 defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
   @moduledoc """
-  雷霆霹雳「leiting」（对照 `kungfu/skill/hongye-daofa/leiting.c`）
+  雷霆霹雳「leiting」（对照 `kungfu/skill/hongye-daofa/leiting.c`，inherit F_SSERVER）
 
-  红叶刀法攻击绝招：消耗 500 内力，发起 `combat/perform-incoming` 事件，
-  由目标侧 `resolve_incoming` 判定命中并施加伤害。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:hongye-daofa>=80`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮；
-  - LPC 命中有 60% 概率额外追加一击，本版合为单次结算；
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `skill+rand(dodge)/2`。
+  红叶刀法攻击绝招：要求不忙乱、hongye-daofa >= 80、持 blade 类武器、
+  真气 >= 500、目标在战斗中。攻击方广播起手式并发 `combat/perform-incoming`，
+  目标侧 `random(10) > 4` 时命中文案（伤害 `skill + rand(dodge)/2`，30% 外伤，
+  扣 50 内力），否则“不退反进”文案（不扣内力）；两种分支均忙乱 1。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -19,14 +15,16 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "hongye-daofa/leiting"
   @move_name "「雷霆霹雳」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -34,12 +32,12 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
     combat = character.meta.combat
 
     with :ok <- check_perform_known(stats),
+         :ok <- check_busy(combat),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
+         {:ok, weapon_name} <- check_weapon(combat),
+         :ok <- check_skill_level(stats),
          :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+      apply_perform(conn, character, target, stats, weapon_name)
     else
       {:error, message} ->
         conn
@@ -56,41 +54,44 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
     end
   end
 
+  # LPC: if (me->is_busy()) return notify_fail("你现在没空！！\n");
+  defp check_busy(combat) do
+    if Combat.busy?(combat),
+      do: {:error, "你现在没空！！\n"},
+      else: :ok
+  end
+
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
+  # LPC: if (!objectp(weapon = me->query_temp("weapon"))
+  #     || (string)weapon->query("skill_type") != "blade")
+  #          return notify_fail("你使用的武器不对。\n");
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "blade" do
-      :ok
+      {:ok, Map.get(weapon, :name) || ""}
     else
       {:error, "你使用的武器不对。\n"}
     end
   end
 
+  # LPC: if ((int)me->query_skill("hongye-daofa", 1) < 80)
+  #          return notify_fail("你目前功力还使不出" LEITING "。\n");
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "hongye-daofa")
-
-    if level < 80 do
+    if Stats.skill(stats, "hongye-daofa") < 80 do
       {:error, "你目前功力还使不出#{@move_name}。\n"}
     else
-      {:ok, level}
-    end
-  end
-
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "blade") == "hongye-daofa" do
       :ok
-    else
-      {:error, "你没有激发红叶刀法，难以施展#{@move_name}。\n"}
     end
   end
 
+  # LPC: if ((int)me->query("neili") < 500) return notify_fail("你的内力不够。\n");
   defp check_neili(character) do
     if character.meta.vitals.neili < 500 do
       {:error, "你的内力不够。\n"}
@@ -99,17 +100,22 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 500}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp apply_perform(conn, character, target, stats, weapon_name) do
+    # LPC: damage = me->query_skill("hongye-daofa", 1)
+    #            + random((int)me->query_skill("dodge")) / 2;
+    damage =
+      Stats.skill(stats, "hongye-daofa") +
+        div(Engine.rand(&:rand.uniform/1, max(Stats.skill(stats, "dodge"), 1)), 2)
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N手中的兵刃幻出漫天刀云，划破刀云，施展#{@move_name}雷霆霹雳般的击向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+    # LPC: msg = HIR "\n$N手中的" + weapon->name() + HIR "幻出漫天刀云，"
+    #           + weapon->name() + HIR "划破刀云，雷霆霹雳般的击向$n！\n" NOR;
+    # NOTE: weapon->name() 把起手文案拆成三段字面量。
+    opening =
+      "$N手中的" <>
+        weapon_name <>
+        "幻出漫天刀云，" <> weapon_name <> "划破刀云，雷霆霹雳般的击向$n！\n"
+
+    conn = Broadcast.publish(conn, opening, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
@@ -117,9 +123,8 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
       data: %{
         attacker: ref(character),
         perform_id: @perform_id,
-        level: level,
-        ap: level * 2,
-        dp: 0
+        damage: damage,
+        rng: &:rand.uniform/1
       }
     })
 
@@ -128,51 +133,48 @@ defmodule Kantele.Combat.Skills.Performs.HongyeDaofa.Leiting do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵刃"]
-
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(
-        Messages.interpolate(
-          "结果$p被$N的#{@move_name}刀气直贯，受到#{damage}点伤害！\n",
-          bindings
-        )
-      )
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    damage = Map.get(data, :damage, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    bindings = [n1: attacker.name, n2: character.name]
+
+    # LPC: if (random(10) > 4) { me->add("neili", -50);
+    #          msg = do_damage(..., 30, HIC "\n$N刀气好似暴雨前雷霆一般，..."); }
+    if Engine.rand(rng, 10) > 4 do
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 30, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+      Performs.feedback(attacker, 50, 1)
+
+      conn
+      |> Broadcast.publish(
+        "\n$N刀气好似暴雨前雷霆一般，夹杂着刺耳的尖鸣，直贯$n而去。\n",
+        bindings
+      )
+      |> put_character(character)
+    else
+      # LPC: message_combatd(HIC "\n$n不退反进，..."; ...); me->start_busy(1)
+      Performs.feedback(attacker, 0, 1)
+
+      Broadcast.publish(
+        conn,
+        "\n$n不退反进，在$N挥刀之前逼到近身，使得$N不得不收回了七成的力道。\n",
+        bindings
+      )
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
