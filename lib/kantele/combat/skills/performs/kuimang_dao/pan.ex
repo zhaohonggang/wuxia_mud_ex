@@ -1,12 +1,12 @@
 defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
   @moduledoc """
-  蝰蟒盘身「pan」（对照 `kungfu/skill/kuimang-dao/pan.c`）
+  蝰蟒盘身「pan」（对照 `kungfu/skill/kuimang-dao/pan.c`，inherit F_SSERVER）
 
-  蝰蟒刀法单体攻击：消耗 50 内力，对战斗中对手出招。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:kuimang-dao>=40,force>=60`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  蝰蟒刀法单体攻击：要求持刀、force >= 60、kuimang-dao >= 40、blade 已激发为
+  kuimang-dao、真气 >= 50、目标存活且战斗中。攻击方广播起手并发
+  `combat/perform-incoming`；目标侧以 `ap/2 + random(ap)` 对抗 parry：
+  命中创伤 `ap/3 + random(ap/3)`（外伤 20%）、忙乱 2、扣 30 内力；
+  落空则扣 10 内力、忙乱 3（回执）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,14 +16,16 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "kuimang-dao/pan"
   @move_name "「蝰蟒盘身」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -32,11 +34,13 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_force(stats),
+         :ok <- check_skill_level(stats),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats, weapon)
     else
       {:error, message} ->
         conn
@@ -56,7 +60,7 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -64,19 +68,25 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "blade" do
-      :ok
+      {:ok, weapon}
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 60 do
+      {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "kuimang-dao")
-
-    if level < 40 do
-      {:error, "你的蝰蟒刀法不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "kuimang-dao") < 40 do
+      {:error, "你的蝰蟒刀法还不到家，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
+      :ok
     end
   end
 
@@ -84,34 +94,53 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
     if Stats.mapped(stats, "blade") == "kuimang-dao" do
       :ok
     else
-      {:error, "你没有激发蝰蟒刀法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发蝰蟒刀法，难以施展#{@move_name}。\n"}
     end
   end
 
   defp check_neili(character) do
     if character.meta.vitals.neili < 50 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你的真气不够，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 50}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N刀光如蛇，使出蝰蟒刀法「蝰蟒盘身」，刀势盘旋缠绕，攻向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
+  defp apply_perform(conn, character, target, stats, weapon) do
+    weapon_name = Map.get(weapon, :name) || ""
+    ap = Stats.skill(stats, "blade")
+
+    # LPC: msg = HIR "$N" HIR "手中" + weapon->name() + HIR "翻转不定，忽然只见刀"
+    #           "光一闪，刀锋已向$n" HIR "斜斜撩去。\n" NOR;
+    # NOTE: weapon->name() 把起手文案拆成两段字面量。
+    start_msg =
+      "$N手中" <>
+        weapon_name <>
+        "翻转不定，忽然只见刀光一闪，刀锋已向$n斜斜撩去。\n"
+
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    # LPC: ap = me->query_skill("blade"); dp = target->query_skill("parry");
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        ap: ap,
+        weapon_name: weapon_name
+      }
     })
 
     conn
@@ -119,41 +148,47 @@ defmodule Kantele.Combat.Skills.Performs.KuimangDao.Pan do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    parry = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > parry do
+      # LPC: damage = ap / 3 + random(ap / 3); neili -30; busy 2
+      #      do_damage(me, target, WEAPON_ATTACK, damage, 20, msg)
+      damage = div(ap, 3) + Engine.rand(rng, max(div(ap, 3), 1))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 20, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn = Broadcast.publish(conn, "$n微微一愣间，已被$N刀锋带中，划出一道鲜血淋漓的伤口！\n", bindings)
+
+      Performs.feedback(attacker, 30, 2)
+
+      put_character(conn, character)
+    else
+      # LPC: msg = CYN "可是$p" CYN "微微一笑，身子朝一旁偏过尺许，躲开$P"
+      #           CYN "这一刀。\n" NOR; neili -10; busy 3
+      conn = Broadcast.publish(conn, "可是$p微微一笑，身子朝一旁偏过尺许，躲开$P这一刀。\n", bindings)
+
+      Performs.feedback(attacker, 10, 3)
+      conn
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
