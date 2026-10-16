@@ -212,7 +212,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `duanyun_fu/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `duanyun_fu/tiaoyan.ex` ← `duanyun-fu/tiaoyan.c`  (miss=7)
+- [x] ✅ `duanyun_fu/tiaoyan.ex` ← `duanyun-fu/tiaoyan.c`  (miss=0)
 
 ### `dugu_jiujian/` （2 个，基线缺失 22 条）
 

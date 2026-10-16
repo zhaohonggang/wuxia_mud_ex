@@ -1,12 +1,10 @@
 defmodule Kantele.Combat.Skills.Performs.DuanyunFu.Tiaoyan do
   @moduledoc """
-  挑燕「tiaoyan」（对照 `kungfu/skill/duanyun-fu/tiaoyan.c`）
+  挑眼式「tiaoyan」（对照 `kungfu/skill/duanyun-fu/tiaoyan.c`，inherit F_SSERVER）
 
-  断云拂法单体攻击：消耗 100 内力，对战斗中对手出招。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:duanyun-fu>=60`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定同华山截手式：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  夺命三斧单体攻击：要求 duanyun-fu >= 60、真气 >= 100；命中判定为
+  `random(combat_exp) > target_combat_exp/2`，命中伤害取技能等级（外伤 45%），
+  无武器/内激发门槛。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,27 +14,25 @@ defmodule Kantele.Combat.Skills.Performs.DuanyunFu.Tiaoyan do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "duanyun-fu/tiaoyan"
-  @move_name "「挑燕」"
 
-  @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
+  @impl true
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
 
-    with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+    with {:ok, target} <- target(combat),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats)
     else
       {:error, message} ->
         conn
@@ -45,73 +41,57 @@ defmodule Kantele.Combat.Skills.Performs.DuanyunFu.Tiaoyan do
     end
   end
 
-  defp check_perform_known(stats) do
-    if Stats.perform_known?(stats, @perform_id) do
-      :ok
-    else
-      {:error, "你所使用的外功中没有这种功能。\n"}
-    end
-  end
-
-  defp check_target(combat) do
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
-    end
-  end
-
-  defp check_weapon(combat) do
-    weapon = Combat.weapon(combat)
-
-    if weapon && Map.get(weapon, :skill_type) == "club" do
-      :ok
-    else
-      {:error, "你使用的武器不对。\n"}
+      [] -> {:error, "「挑眼式」只能在战斗中对对手使用。\n"}
     end
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "duanyun-fu")
-
-    if level < 60 do
-      {:error, "你的断云拂法不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "duanyun-fu") < 60 do
+      {:error, "你的夺命三斧还不到家，不会施展「挑眼式」。\n"}
     else
-      {:ok, level}
-    end
-  end
-
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "club") == "duanyun-fu" do
       :ok
-    else
-      {:error, "你没有激发断云拂法，无法施展#{@move_name}。\n"}
     end
   end
 
   defp check_neili(character) do
     if character.meta.vitals.neili < 100 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你的真气不够，无法施展「挑眼式」。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N手中拂尘轻挥，使出断云拂法「挑燕」，拂尘如灵蛇般刺向$n要害！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
+  defp apply_perform(conn, character, target, stats) do
+    # LPC: msg = HIG "$N" HIG "使出夺命三斧之「挑眼式」，斧尖疾挑$n" HIG "双眼。\n" NOR;
+    start_msg = "$N使出夺命三斧之「挑眼式」，斧尖疾挑$n双眼。\n"
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    # LPC: random(me->query("combat_exp")) > (int)target->query("combat_exp") / 2
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        ap: stats.combat_exp,
+        dp: target.meta.stats.combat_exp,
+        lvl: Stats.skill(stats, "duanyun-fu"),
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
@@ -119,41 +99,46 @@ defmodule Kantele.Combat.Skills.Performs.DuanyunFu.Tiaoyan do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    dp = Map.get(data, :dp, 0)
+    lvl = Map.get(data, :lvl, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+
+    if Engine.rand(rng, max(ap, 1)) > div(dp, 2) do
+      # LPC: do_damage(me, target, WEAPON_ATTACK, lvl, 45,
+      #        HIR "结果$p" HIR "只觉得眼前一黑，双眼一"
+      #        "阵剧痛，血流满面。\n" NOR);
+      #      me->add("neili", -50);
+      vitals = Vitals.damage(character.meta.vitals, :qi, lvl)
+      vitals = Vitals.wound(vitals, :qi, div(lvl * 45, 100))
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      hit_msg = "结果$p只觉得眼前一黑，双眼一阵剧痛，血流满面。\n"
+      conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+
+      Performs.feedback(attacker, 50, 2)
+
+      conn
+      |> put_character(character)
+    else
+      # LPC: msg += HIG "可是$p" HIG "看破了$P" HIG "的企图，急忙躲开了。\n" NOR;
+      miss_msg = "可是$p看破了$P的企图，急忙躲开了。\n"
+      conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+
+      conn
+      |> put_character(character)
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
