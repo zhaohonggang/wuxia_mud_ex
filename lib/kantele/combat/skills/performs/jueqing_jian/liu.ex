@@ -1,12 +1,12 @@
 defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
   @moduledoc """
-  流水无情「liu」（对照 `kungfu/skill/jueqing-jian/liu.c`）
+  流水无情「liu」（对照 `kungfu/skill/jueqing-jian/liu.c`，inherit F_SSERVER）
 
-  绝情剑法单体攻击：消耗 60 内力，对战斗中对手出招。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:jueqing-jian>=60,force>=80`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  绝情剑法单体攻击：要求持剑、jueqing-jian >= 60、sword 已激发为
+  jueqing-jian、force >= 80、真气 >= 60、目标存活且战斗中。攻击方广播起手并发
+  `combat/perform-incoming`；目标侧以 `ap/2 + random(ap)` 对抗 parry：
+  命中创伤 `ap + random(ap/4)`（外伤 24%）、忙乱 1+random(2)、扣 60 内力；
+  落空则扣 30 内力、忙乱 2（回执）。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,14 +16,16 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "jueqing-jian/liu"
   @move_name "「流水无情」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -32,11 +34,13 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_skill_level(stats),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_force(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats, weapon)
     else
       {:error, message} ->
         conn
@@ -56,7 +60,7 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能在战斗中对对手使用。\n"}
     end
   end
 
@@ -64,19 +68,17 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "sword" do
-      :ok
+      {:ok, weapon}
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
     end
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "jueqing-jian")
-
-    if level < 60 do
-      {:error, "你的绝情剑法不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "jueqing-jian") < 60 do
+      {:error, "你绝情剑法不够娴熟，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
+      :ok
     end
   end
 
@@ -84,34 +86,64 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
     if Stats.mapped(stats, "sword") == "jueqing-jian" do
       :ok
     else
-      {:error, "你没有激发绝情剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发绝情剑法，难以施展#{@move_name}。\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 60 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 80 do
+      {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 60}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 60 do
+      {:error, "你现在的真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N剑势如流水行云，使出绝情剑法「流水无情」，剑光绵绵不绝刺向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_perform(conn, character, target, stats, weapon) do
+    weapon_name = Map.get(weapon, :name) || ""
+    ap = Stats.skill(stats, "jueqing-jian")
+
+    # LPC: msg = HIY "\n$N" HIY "长叹一声，一股悲切之情涌上心头，手中" + wn +
+    #           HIY "迅猛无比地刺出，风声嗖嗖，完全不理会$n" HIY "的攻势，"
+    #           "将自己的生死置之度外，这正是绝情谷绝学「" HIR "流水无情" HIY
+    #           "」。" NOR;
+    # NOTE: weapon->name() 把起手文案拆成两段字面量。
+    start_msg =
+      "\n$N长叹一声，一股悲切之情涌上心头，手中" <>
+        weapon_name <>
+        "迅猛无比地刺出，风声嗖嗖，完全不理会$n的攻势，将自己的生死置之度外，这正是绝情谷绝学「流水无情」。"
+
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    # LPC: ap = me->query_skill("jueqing-jian", 1); dp = target->query_skill("parry", 1);
+    # 命中判定在目标侧完成（需要目标 parry），攻击方仅下发 ap 与武器名。
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        ap: ap,
+        weapon_name: weapon_name
+      }
     })
 
     conn
@@ -119,41 +151,49 @@ defmodule Kantele.Combat.Skills.Performs.JueqingJian.Liu do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    weapon_name = Map.get(data, :weapon_name, "")
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    parry = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
+
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > parry do
+      # LPC: damage = ap + random(ap / 4);
+      #      do_damage(me, target, WEAPON_ATTACK, damage, 24, msg); neili -60; busy 1+random(2)
+      damage = ap + Engine.rand(rng, max(div(ap, 4), 1))
+
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 24, 100))
+
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn = Broadcast.publish(conn, "$n见$N此招剑势迅猛，似与自己共存亡，心中一惊，早已中剑。\n", bindings)
+
+      Performs.feedback(attacker, 60, 1 + Engine.rand(rng, 2))
+
+      put_character(conn, character)
+    else
+      # LPC: msg = CYN "然而$n" CYN "眼见" + wn + CYN "已至，但$n" CYN
+      #           "身法迅速无比，提气向后一纵，$N" CYN "扑了个空。\n" NOR;
+      miss_msg = "然而$n眼见" <> weapon_name <> "已至，但$n身法迅速无比，提气向后一纵，$N扑了个空。\n"
+
+      conn = Broadcast.publish(conn, miss_msg, bindings)
+      Performs.feedback(attacker, 30, 2)
+      conn
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
