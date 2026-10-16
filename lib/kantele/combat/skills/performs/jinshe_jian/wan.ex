@@ -1,14 +1,14 @@
 defmodule Kantele.Combat.Skills.Performs.JinsheJian.Wan do
   @moduledoc """
-  蛇影万道「wan」（对照 `kungfu/skill/jinshe-jian/wan.c`）
+  蛇影万道「wan」（对照 `kungfu/skill/jinshe-jian/wan.c`，inherit F_SSERVER）
 
-  金蛇剑法单体攻击：消耗 260 内力，对战斗中对手出招。
-
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:jinshe-jian>=180`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  金蛇剑法（剑 sword）多段攻击绝招：要求持剑、jinshe-jian >= 180、
+  真气 >= 260、sword 已激发映射、目标存活。
+  命中判定 `ap / 2 + random(ap * 2) > target->query_skill("dodge")`（ap=剑法），
+  命中则 `attack_time = 4 + random(ap / 35)`（上限 9）并追加大批攻击，
+  否则不追加；两分支攻击方均扣 `attack_time * 30` 真气并忙乱
+  `1 + random(attack_time / 2)`。
   """
-
   @behaviour Kantele.Combat.Perform
 
   import Kalevala.Character.Conn
@@ -16,7 +16,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Wan do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
@@ -24,6 +24,7 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Wan do
   @perform_id "jinshe-jian/wan"
   @move_name "「蛇影万道」"
 
+  @impl true
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
     character = conn.character
@@ -31,12 +32,13 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Wan do
     combat = character.meta.combat
 
     with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
+         {:ok, target} <- target(combat),
          :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         :ok <- check_skill_level(stats),
+         :ok <- check_neili(character),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats)
     else
       {:error, message} ->
         conn
@@ -53,65 +55,97 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Wan do
     end
   end
 
-  defp check_target(combat) do
+  # LPC: if (! target || ! me->is_fighting(target))
+  #          return notify_fail(QIAN "只能对战斗中的对手使用。\n");
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
+  # LPC: if (! objectp(weapon = me->query_temp("weapon")) ||
+  #         (string)weapon->query("skill_type") != "sword")
+  #          return notify_fail("你使用的武器不对，难以施展" QIAN "。\n");
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "sword" do
       :ok
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
     end
   end
 
+  # LPC: if ((int)me->query_skill("jinshe-jian", 1) < 180)
+  #          return notify_fail("你的金蛇剑法不够娴熟，难以施展" QIAN "。\n");
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "jinshe-jian")
-
-    if level < 180 do
-      {:error, "你的金蛇剑法不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "jinshe-jian") < 180 do
+      {:error, "你的金蛇剑法不够娴熟，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
+      :ok
     end
   end
 
+  # LPC: if (me->query("neili") < 260)
+  #          return notify_fail("你的真气不够，难以施展" QIAN "。\n");
+  defp check_neili(character) do
+    if character.meta.vitals.neili < 260 do
+      {:error, "你的真气不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
+    end
+  end
+
+  # LPC: if (me->query_skill_mapped("sword") != "jinshe-jian")
+  #          return notify_fail("你没有激发金蛇剑法，难以施展" QIAN "。\n");
   defp check_mapped(stats) do
     if Stats.mapped(stats, "sword") == "jinshe-jian" do
       :ok
     else
-      {:error, "你没有激发金蛇剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发金蛇剑法，难以施展#{@move_name}。\n"}
     end
   end
 
-  defp check_neili(character) do
-    if character.meta.vitals.neili < 260 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+  # LPC: if (! living(target)) return notify_fail("对方都已经这样了，用不着这么费力吧？\n");
+  defp check_target_alive(target) do
+    if dead?(target) do
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 260}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N剑光如万蛇飞舞，使出金蛇剑法「蛇影万道」，剑影重重罩向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp apply_perform(conn, character, target, stats) do
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = weapon && Map.get(weapon, :name)
+
+    # LPC: msg = HIW "\n$N" HIW "一声长吟，手中" + weapon->name() + HIW
+    #           "顿时化做无数条灵蛇，" "从四面八方同时向$n" HIW "袭去。\n" NOR;
+    # NOTE: weapon->name() 把起始文案拆成两段独立字面量。
+    start_msg =
+      "\n$N一声长吟，手中" <>
+        (weapon_name || "") <> "顿时化做无数条灵蛇，从四面八方同时向$n袭去。\n"
+
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    ap = Stats.skill(stats, "sword")
+    attack_time = min(4 + Engine.rand(&:rand.uniform/1, max(div(ap, 35), 1)), 9)
 
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        ap: ap,
+        attack_time: attack_time,
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
@@ -119,41 +153,45 @@ defmodule Kantele.Combat.Skills.Performs.JinsheJian.Wan do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = max(Map.get(data, :ap, 0), 1)
+    attack_time = max(Map.get(data, :attack_time, 1), 1)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+    dodge = Stats.skill(character.meta.stats, "dodge")
+
+    # LPC: if (ap / 2 + random(ap * 2) > dp)
+    # TODO: 多段攻击循环（COMBAT_D->do_attack）跨进程补全；此处仅结算文案与消耗。
+    conn =
+      if div(ap, 2) + Engine.rand(rng, ap * 2) > dodge do
+        # LPC: msg = HIR "结果$n" HIR "被$N" HIR "攻了个措手不及，$n"
+        #            HIR "慌忙招架，心中叫苦。\n" NOR;
+        hit_msg = "结果$n被$N攻了个措手不及，$n慌忙招架，心中叫苦。\n"
+        Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+      else
+        # LPC: msg = HIC "$n" HIC "见$N" HIC "这几剑招式凌厉，诡异"
+        #            "无比，只得苦苦招架。\n" NOR;
+        miss_msg = "$n见$N这几剑招式凌厉，诡异无比，只得苦苦招架。\n"
+        Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+      end
+
+    # LPC: me->add("neili", -attack_time * 30); me->start_busy(1 + random(attack_time / 2));
+    Performs.feedback(
+      attacker,
+      attack_time * 30,
+      1 + Engine.rand(rng, max(div(attack_time, 2), 1))
+    )
+
+    put_character(conn, character)
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
