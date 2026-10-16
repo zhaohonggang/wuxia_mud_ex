@@ -229,7 +229,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `emei_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `emei_jian/xian.ex` ← `emei-jian/xian.c`  (miss=10)
+- [x] ✅ `emei_jian/xian.ex` ← `emei-jian/xian.c`  (miss=0)
 
 ### `feifeng_whip/` （1 个，基线缺失 9 条）
 
