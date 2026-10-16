@@ -1,16 +1,14 @@
 defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
   @moduledoc """
-  推天献印势「xian」（对照 `kungfu/skill/hujia-daofa/xian.c`）
+  推天献印势「xian」（对照 `kungfu/skill/hujia-daofa/xian.c`，inherit F_SSERVER）
 
-  胡家刀法单体攻击：消耗 150 内力，双手握刀缓缓推进，发起
-  `combat/perform-incoming` 事件，由目标侧 `resolve_incoming` 判定命中并施加伤害。
+  胡家刀法单体攻击：要求持刀（blade）、force >= 160、hujia-daofa >= 120、
+  blade 已激发胡家刀法、真气 >= 200；消耗 150 内力（落空 50），双手握刀缓缓推进，
+  发起 `combat/perform-incoming` 事件，由目标侧 `resolve_incoming` 判定命中并施加伤害。
 
   差异（TODO(migrate)）：
-  - LPC 另要求 force>=160；本版仅以 hujia-daofa>=120 与 mapped 把关；
-  - LPC 命中/落空分别消耗 150/50 且落空忙乱 3 轮，本版统一 150、
-    `level/22+2` 轮忙乱；
-  - 命中判定：`rand(level) > parry/2`。
-  - 伤害计算：`damage = level * 2`（简化），LPC 为 `ap/8+rand(ap/8)`。
+  - 命中判定：LPC 以 blade+force 对 force，本版以 `rand(level) > parry/2` 代理；
+  - 忙乱：命中 2 轮、落空 3 轮。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -20,10 +18,10 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "hujia-daofa/xian"
   @move_name "「推天献印势」"
@@ -36,11 +34,13 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
 
     with :ok <- check_perform_known(stats),
          {:ok, target} <- check_target(combat),
-         :ok <- check_weapon(combat),
+         {:ok, weapon} <- check_weapon(combat),
+         :ok <- check_force(stats),
          {:ok, level} <- check_skill_level(stats),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, level, weapon)
     else
       {:error, message} ->
         conn
@@ -60,7 +60,7 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
   defp check_target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -68,9 +68,17 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
     weapon = Combat.weapon(combat)
 
     if weapon && Map.get(weapon, :skill_type) == "blade" do
-      :ok
+      {:ok, weapon}
     else
       {:error, "你使用的武器不对，难以施展#{@move_name}。\n"}
+    end
+  end
+
+  defp check_force(stats) do
+    if Stats.skill(stats, "force") < 160 do
+      {:error, "你的内功火候不够，难以施展#{@move_name}。\n"}
+    else
+      :ok
     end
   end
 
@@ -100,17 +108,30 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N横过手中$w，施出#{@move_name}，双手握刀，将整个刀锋向$n缓缓推进！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_perform(conn, character, target, level, weapon) do
+    weapon_name = Map.get(weapon, :name) || ""
+
+    # LPC: msg = HIY "$N" HIY "横过手中" + weapon->name() + HIY "，施出「推天献"
+    #           "印势」，双手握刀，将整个刀锋向$n" HIY "缓缓推进！\n"NOR;
+    a1 = "$N横过手中"
+    a2 = "，施出#{@move_name}，双手握刀，将整个刀锋向$n缓缓推进！\n"
+    start_msg = a1 <> weapon_name <> a2
+
+    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
+    character = %{character | meta: %{character.meta | vitals: vitals}}
+
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
 
     send(target.pid, %Event{
       from_pid: self(),
@@ -119,8 +140,8 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
         attacker: ref(character),
         perform_id: @perform_id,
         level: level,
-        ap: level * 2,
-        dp: 0
+        weapon_name: weapon_name,
+        rng: &:rand.uniform/1
       }
     })
 
@@ -132,42 +153,29 @@ defmodule Kantele.Combat.Skills.Performs.HujiaDaofa.Xian do
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
     level = Map.get(data, :level, 0)
-    ap = Map.get(data, :ap, 0)
     rng = Map.get(data, :rng, &:rand.uniform/1)
     combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
     parry = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "刀"]
+    if Engine.rand(rng, max(level, 1)) > div(parry, 2) do
+      damage = div(level, 2) + Engine.rand(rng, max(div(level, 2), 1))
+      combat = Combat.start_busy(combat, 2)
+      vitals = Vitals.damage(character.meta.vitals, :qi, damage)
+      character = %{character | meta: %{character.meta | vitals: vitals}}
 
-    hit = Engine.rand(rng, level) > div(parry, 2)
-
-    if hit do
-      damage = level * 2
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-      combat = Combat.apply_damage(combat, damage)
+      # LPC: msg += COMBAT_D->do_damage(..., HIR "$n" HIR "何曾见过如此高明的刀法，"
+      #       "一声惨叫，刀锋已入体三分，鲜血四处喷溅！\n" NOR);
+      hit_msg = "$n何曾见过如此高明的刀法，一声惨叫，刀锋已入体三分，鲜血四处喷溅！\n"
 
       conn
-      |> Broadcast.publish(
-        Messages.interpolate(
-          "结果$p何曾见过如此高明的刀法，一声惨叫，刀锋已入体三分，鲜血四处喷溅，受到#{damage}点伤害！\n",
-          bindings
-        )
-      )
+      |> Broadcast.publish(hit_msg, bindings)
       |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p大吃一惊，也不招架，当即向后横移数尺，避开了$N这一招。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      # LPC: msg += CYN "$p" CYN "大吃一惊，也不招架，当即向后"
+      #       "横移数尺，避开了$P" CYN "这一招。\n" NOR;
+      miss_msg = "$p大吃一惊，也不招架，当即向后横移数尺，避开了$P这一招。\n"
+      Broadcast.publish(conn, miss_msg, bindings)
     end
   end
 
