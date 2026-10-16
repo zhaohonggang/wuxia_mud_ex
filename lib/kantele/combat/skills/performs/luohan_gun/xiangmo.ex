@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
 
   差异（TODO(migrate)）：
   - LPC 仅 `level:luohan-gun>=80`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  - 命中判定：`ap/2 + rand(ap) > dp`（dp=parry），忙乱 2/3 轮。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,13 +16,14 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "luohan-gun/xiangmo"
-  @move_name "「降魔」"
+  @move_name "「罗汉降魔」"
 
   @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
   def run(conn) do
@@ -31,12 +32,12 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
     combat = character.meta.combat
 
     with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
          :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
-         :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         {:ok, target} <- check_target(combat),
+         {:ok, ap} <- check_skill_level(stats),
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, ap)
     else
       {:error, message} ->
         conn
@@ -53,13 +54,6 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
     end
   end
 
-  defp check_target(combat) do
-    case combat.enemies do
-      [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
-    end
-  end
-
   defp check_weapon(combat) do
     weapon = Combat.weapon(combat)
 
@@ -70,40 +64,49 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
     end
   end
 
+  defp check_target(combat) do
+    case combat.enemies do
+      [enemy | _] -> {:ok, enemy}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
+    end
+  end
+
   defp check_skill_level(stats) do
     level = Stats.skill(stats, "luohan-gun")
 
     if level < 80 do
-      {:error, "你的罗汉棍法不够娴熟，无法施展#{@move_name}。\n"}
+      {:error, "你的罗汉棍法不够娴熟，现在还无法使用#{@move_name}。\n"}
     else
-      {:ok, level}
-    end
-  end
-
-  defp check_mapped(stats) do
-    if Stats.mapped(stats, "club") == "luohan-gun" do
-      :ok
-    else
-      {:error, "你没有激发罗汉棍法，无法施展#{@move_name}。\n"}
+      {:ok, Stats.skill(stats, "club")}
     end
   end
 
   defp check_neili(character) do
     if character.meta.vitals.neili < 150 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你现在真气不够，无法运用#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 150}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
+
+  defp apply_perform(conn, character, target, ap) do
+    # LPC: msg = HIY "$N" HIY "嗨的一声，一棍平平朝$n"
+    #           HIY "扫出，招式虽然简单，但是却也是力道极重。\n" NOR;
     conn =
       Broadcast.publish(
         conn,
-        "$N手中禅杖挥舞，使出罗汉棍法「降魔」，杖影如山压向$n！\n",
+        "$N嗨的一声，一棍平平朝$n扫出，招式虽然简单，但是却也是力道极重。\n",
         n1: character.name,
         n2: target.name
       )
@@ -111,7 +114,7 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{attacker: ref(character), perform_id: @perform_id, ap: ap, rng: &:rand.uniform/1}
     })
 
     conn
@@ -121,39 +124,40 @@ defmodule Kantele.Combat.Skills.Performs.LuohanGun.Xiangmo do
 
   @doc false
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
+    ap = max(Map.get(data, :ap, 0), 1)
     rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
+    dp = Stats.skill(character.meta.stats, "parry")
+    bindings = [n1: attacker.name, n2: character.name]
 
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
+    if div(ap, 2) + Engine.rand(rng, ap) > dp do
+      # LPC: damage = 100 + ap / 5 + random(ap / 5);
+      #      msg += HIR "只见$n" HIR "一个招架失误，登时"
+      #             "被这棍打了个正着，闷哼一声，退了一步。\n" NOR;
+      damage = 100 + div(ap, 5) + Engine.rand(rng, max(div(ap, 5), 1))
 
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
+      vitals =
+        character.meta.vitals
+        |> Vitals.damage(:qi, damage)
+        |> Vitals.wound(:qi, div(damage * 30, 100))
 
-      conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
+      character = %{character | meta: %{character.meta | vitals: vitals}}
+
+      conn = Broadcast.publish(conn, "只见$n一个招架失误，登时被这棍打了个正着，闷哼一声，退了一步。\n", bindings)
+
+      # LPC: me->add("neili", -50); me->start_busy(2);
+      Performs.feedback(attacker, 50, 2)
+
+      put_character(conn, character)
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
+      # LPC: msg += CYN "可是$p" CYN "轻轻一格，架住了$P"
+      #            CYN "的棍势。\n" NOR; me->add("neili", -50); me->start_busy(3);
+      conn = Broadcast.publish(conn, "可是$p轻轻一格，架住了$P的棍势。\n", bindings)
 
-      Broadcast.publish(conn, text)
+      Performs.feedback(attacker, 50, 3)
+
+      put_character(conn, character)
     end
   end
-
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
