@@ -204,7 +204,7 @@ git -c core.autocrlf=false -c core.safecrlf=false commit -F /tmp/msg.txt -- <显
 
 ### `dongyang_dao/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `dongyang_dao/zhan.ex` ← `dongyang-dao/zhan.c`  (miss=9)
+- [x] ✅ `dongyang_dao/zhan.ex` ← `dongyang-dao/zhan.c`  (miss=0)
 
 ### `duanjia_sword/` （1 个，基线缺失 9 条）
 
