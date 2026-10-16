@@ -1,12 +1,13 @@
 defmodule Kantele.Combat.Skills.Performs.GuxingJian.Lian do
   @moduledoc """
-  九星连珠「lian」（对照 `kungfu/skill/guxing-jian/lian.c`）
+  九星连珠「lian」（对照 `kungfu/skill/guxing-jian/lian.c`，inherit F_SSERVER）
 
-  孤星剑法单体攻击：消耗 300 内力，对战斗中对手出招。
+  孤星剑法（剑 sword）连击绝招：要求真气 >= 300、guxing-jian >= 100、剑已激发
+  映射；按 sword 与 dodge 判定命中，随后连续 do_attack（attack_time 次）。
 
-  差异（TODO(migrate)）：
-  - LPC 仅 `level:guxing-jian>=100`；本版加 `mapped` 与 `neili` 门槛；
-  - 命中判定：`rand(level) > parry/2`，忙乱 `level/22+2` 轮。
+  TODO(migrate): LPC 在命中后循环 do_attack(attack_time) 多次连击（attack_time
+  起始 4，随 ap/40 增加，上限 8，消耗 neili = attack_time*20，busy = 1+random(attack_time)）。
+  此处仅实现命中/落空文案与基础判定，连击循环待补全。
   """
 
   @behaviour Kantele.Combat.Perform
@@ -16,27 +17,29 @@ defmodule Kantele.Combat.Skills.Performs.GuxingJian.Lian do
   alias Kalevala.Event
   alias Kantele.Combat.Broadcast
   alias Kantele.Combat.Engine
-  alias Kantele.Combat.Messages
+  alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
 
   @perform_id "guxing-jian/lian"
   @move_name "「九星连珠」"
 
-  @spec run(Kalevala.Character.Conn.t()) :: Kalevala.Character.Conn.t()
+  @impl true
   def run(conn) do
     character = conn.character
     stats = character.meta.stats
     combat = character.meta.combat
 
     with :ok <- check_perform_known(stats),
-         {:ok, target} <- check_target(combat),
+         {:ok, target} <- target(combat),
          :ok <- check_weapon(combat),
-         {:ok, level} <- check_skill_level(stats),
+         :ok <- check_skill_level(stats),
          :ok <- check_mapped(stats),
-         :ok <- check_neili(character) do
-      apply_perform(conn, character, target, level)
+         :ok <- check_neili(character),
+         :ok <- check_target_alive(target) do
+      apply_perform(conn, character, target, stats)
     else
       {:error, message} ->
         conn
@@ -53,10 +56,10 @@ defmodule Kantele.Combat.Skills.Performs.GuxingJian.Lian do
     end
   end
 
-  defp check_target(combat) do
+  defp target(combat) do
     case combat.enemies do
       [enemy | _] -> {:ok, enemy}
-      [] -> {:error, @move_name <> "只能对战斗中的对手使用。\n"}
+      [] -> {:error, "#{@move_name}只能对战斗中的对手使用。\n"}
     end
   end
 
@@ -66,17 +69,15 @@ defmodule Kantele.Combat.Skills.Performs.GuxingJian.Lian do
     if weapon && Map.get(weapon, :skill_type) == "sword" do
       :ok
     else
-      {:error, "你使用的武器不对。\n"}
+      {:error, "你所使用的武器不对，难以施展#{@move_name}。\n"}
     end
   end
 
   defp check_skill_level(stats) do
-    level = Stats.skill(stats, "guxing-jian")
-
-    if level < 100 do
-      {:error, "你的孤星剑法不够娴熟，无法施展#{@move_name}。\n"}
+    if Stats.skill(stats, "guxing-jian") < 100 do
+      {:error, "你的孤星剑法不够娴熟，难以施展#{@move_name}。\n"}
     else
-      {:ok, level}
+      :ok
     end
   end
 
@@ -84,34 +85,58 @@ defmodule Kantele.Combat.Skills.Performs.GuxingJian.Lian do
     if Stats.mapped(stats, "sword") == "guxing-jian" do
       :ok
     else
-      {:error, "你没有激发孤星剑法，无法施展#{@move_name}。\n"}
+      {:error, "你没有激发孤星剑法，难以施展#{@move_name}。\n"}
     end
   end
 
   defp check_neili(character) do
     if character.meta.vitals.neili < 300 do
-      {:error, "你现在真气不够，无法使用#{@move_name}。\n"}
+      {:error, "你目前的真气不够，难以施展#{@move_name}。\n"}
     else
       :ok
     end
   end
 
-  defp apply_perform(conn, character, target, level) do
-    vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 300}
-    character = %{character | meta: Map.put(character.meta, :vitals, vitals)}
+  defp check_target_alive(target) do
+    if not dead?(target) do
+      :ok
+    else
+      {:error, "对方都已经这样了，用不着这么费力吧？\n"}
+    end
+  end
 
-    conn =
-      Broadcast.publish(
-        conn,
-        "$N剑光如星，使出孤星剑法「九星连珠」，九道剑光连珠般刺向$n！\n",
-        n1: character.name,
-        n2: target.name
-      )
+  defp dead?(%{meta: %{combat: %{dead: dead}}}), do: dead == true
+  defp dead?(_), do: false
 
+  defp apply_perform(conn, character, target, stats) do
+    combat = character.meta.combat
+    weapon = Combat.weapon(combat)
+    weapon_name = weapon && Map.get(weapon, :name)
+
+    # LPC: msg = HIW "\n$N" HIW "蓦的一声清啸，施出绝学「" HIM "九星连珠"
+    #            HIW "」，手中" + weapon->name() + HIW "呼呼作响。霎时间"
+    #            "孤星剑法剑招连绵涌出，此起彼伏，剑气笼罩$n" HIW "全身。" NOR;
+    # NOTE: weapon->name() 将起始文案拆成两段字面量。
+    p1 = "\n$N蓦的一声清啸，施出绝学「九星连珠」，手中"
+    p2 = "呼呼作响。霎时间孤星剑法剑招连绵涌出，此起彼伏，剑气笼罩$n全身。"
+    start_msg = p1 <> (weapon_name || "") <> p2
+    conn = Broadcast.publish(conn, start_msg, n1: character.name, n2: target.name)
+
+    ap = Stats.skill(stats, "sword")
+    dp = Stats.skill(target.meta.stats, "dodge")
+
+    # TODO(migrate): 连击循环 attack_time = 4 + random(ap/40)（上限 8），
+    #                neili -= attack_time*20，命中后循环 do_attack。
     send(target.pid, %Event{
       from_pid: self(),
       topic: "combat/perform-incoming",
-      data: %{attacker: ref(character), perform_id: @perform_id, level: level}
+      data: %{
+        attacker: ref(character),
+        perform_id: @perform_id,
+        ap: ap,
+        dp: dp,
+        rng: &:rand.uniform/1
+      }
     })
 
     conn
@@ -119,41 +144,43 @@ defmodule Kantele.Combat.Skills.Performs.GuxingJian.Lian do
     |> assign(:prompt, false)
   end
 
-  @doc false
+  @impl true
   def resolve_incoming(conn, character, attacker, data) do
-    level = Map.get(data, :level, 0)
-    rng = Map.get(data, :rng, &:rand.uniform/1)
-    combat = character.meta.combat
-    weapon = Combat.weapon(combat)
-    weapon_name = weapon && Map.get(weapon, :name)
-    parry = Stats.skill(character.meta.stats, "parry")
-
-    bindings = [n1: attacker.name, n2: character.name, weapon2: weapon_name || "兵器"]
-
-    if Engine.rand(rng, level) > div(parry, 2) do
-      combat = Combat.start_busy(combat, div(level, 22) + 2)
-
+    if character.meta.combat.dead do
       conn
-      |> Broadcast.publish(Messages.interpolate("结果$p瘁不及防，连连倒退几步，一时间无法回手！\n", bindings))
-      |> put_character(put_combat(character, combat))
     else
-      text =
-        if weapon_name do
-          Messages.interpolate(
-            "但是$p识破了$N的用意，自顾将手中的#{weapon_name}舞成一团光花，" <>
-              "$N一怔之下再也攻不进去。\n",
-            bindings
-          )
-        else
-          Messages.interpolate("但是$p双手戳点刺拍，将$N的来招一一架开。\n", bindings)
-        end
-
-      Broadcast.publish(conn, text)
+      do_resolve_incoming(conn, character, attacker, data)
     end
   end
 
-  defp put_combat(character, combat),
-    do: %{character | meta: Map.put(character.meta, :combat, combat)}
+  defp do_resolve_incoming(conn, character, attacker, data) do
+    ap = Map.get(data, :ap, 0)
+    dp = Map.get(data, :dp, 0)
+    rng = Map.get(data, :rng, &:rand.uniform/1)
+
+    if div(ap, 2) + Engine.rand(rng, max(ap, 1)) > dp do
+      # LPC: msg = HIY "$n" HIY "见$P" HIY "剑势汹涌，寒意顿生，竟"
+      #            "被逼得连连后退，狼狈不已。\n" NOR;
+      # TODO(migrate): 命中后循环 do_attack(attack_time) 连击。
+      hit_msg = "$n见$P剑势汹涌，寒意顿生，竟被逼得连连后退，狼狈不已。\n"
+      conn = Broadcast.publish(conn, hit_msg, n1: attacker.name, n2: character.name)
+
+      Performs.feedback(attacker, 80, 1)
+
+      conn
+      |> put_character(character)
+    else
+      # LPC: msg = HIC "$n" HIC "见$N" HIC "这几剑来势迅猛无比，毫"
+      #            "无破绽，只得小心应付。\n" NOR;
+      miss_msg = "$n见$N这几剑来势迅猛无比，毫无破绽，只得小心应付。\n"
+      conn = Broadcast.publish(conn, miss_msg, n1: attacker.name, n2: character.name)
+
+      Performs.feedback(attacker, 80, 1)
+
+      conn
+      |> put_character(character)
+    end
+  end
 
   defp ref(character),
     do: %{id: character.id, pid: character.pid, name: character.name, room_id: character.room_id}
