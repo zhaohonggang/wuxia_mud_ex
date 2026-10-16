@@ -433,6 +433,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -458,6 +462,9 @@ direction = "west"
   x = -1
   y = -1
   z = 2
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian2" {
@@ -1255,6 +1262,9 @@ item_desc = {
   x = -5
   y = 5
   z = -4
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "xiaowu" {
@@ -1333,6 +1343,9 @@ behavior_config = {
   x = 0
   y = 0
   z = 5
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "xiuxishi" {
     room_id = rooms.xiuxishi.id

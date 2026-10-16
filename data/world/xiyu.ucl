@@ -237,6 +237,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -278,6 +282,9 @@ direction = "west"
   x = 0
   y = 1
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian3" {
@@ -1125,6 +1132,9 @@ item_desc = {
 item_desc = {
  wall = "星宿淫贼人人得而株之！"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiaoyao" {
@@ -1179,6 +1189,9 @@ behavior_config = {
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
+  flags = [
+    "startroom"
+  ]
     }
 
   room_characters "xxh2" {

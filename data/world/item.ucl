@@ -103,6 +103,9 @@ zones "item" {
   x = 4
   y = 1
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "xiaowu" {

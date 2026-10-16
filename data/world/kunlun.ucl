@@ -308,6 +308,9 @@ item_desc = {
   x = -1
   y = -3
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "jingxiushi" {
@@ -408,6 +411,9 @@ item_desc = {
   x = -2
   y = -2
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "keting2" {
@@ -598,6 +604,9 @@ item_desc = {
   x = 0
   y = -6
   z = 1
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "sanshengtang" {
@@ -1012,6 +1021,9 @@ item_desc = {
   x = 0
   y = -4
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxishi" {

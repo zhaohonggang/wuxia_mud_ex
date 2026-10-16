@@ -110,6 +110,9 @@ zones "emei" {
   x = 18
   y = 11
   z = -21
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "bgschanfang" {
@@ -408,6 +411,9 @@ direction = "south"
   x = 13
   y = 9
   z = -15
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "fsachanfang" {
@@ -424,6 +430,9 @@ direction = "south"
   x = 11
   y = 10
   z = -15
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "fsaxiuxishi" {
@@ -568,6 +577,9 @@ direction = "south"
   x = -1
   y = -2
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "hcachanfang" {
@@ -673,6 +685,9 @@ direction = "south"
   x = 0
   y = 0
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "hcaguangchang" {
@@ -703,6 +718,9 @@ direction = "south"
   x = 0
   y = -2
   z = 0
+  flags = [
+    "no_steal"
+  ]
     }
 
   room_exits "hcahoudian" {
@@ -792,6 +810,9 @@ item_desc = {
   x = -1
   y = -3
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "hcaxiuxishi" {
@@ -979,6 +1000,9 @@ item_desc = {
   x = -1
   y = 2
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "jinding" {
@@ -1508,6 +1532,9 @@ item_desc = {
   x = 10
   y = 9
   z = -12
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "qfachanfang" {
@@ -1786,6 +1813,9 @@ item_desc = {
   x = 1
   y = 0
   z = 3
+  flags = [
+    "no_sleep_room"
+  ]
     }
   room_exits "st0" {
     room_id = rooms.st0.id
@@ -1806,6 +1836,9 @@ item_desc = {
   x = 0
   y = 0
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
   room_exits "st1" {
     room_id = rooms.st1.id
@@ -1828,6 +1861,9 @@ item_desc = {
   x = 0
   y = 0
   z = 5
+  flags = [
+    "no_sleep_room"
+  ]
     }
   room_exits "st2" {
     room_id = rooms.st2.id
@@ -1911,6 +1947,9 @@ item_desc = {
   x = 10
   y = 11
   z = -13
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "wnachanfang" {

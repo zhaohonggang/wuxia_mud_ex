@@ -629,6 +629,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -671,6 +675,9 @@ direction = "west"
   x = 2
   y = -3
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian3" {
@@ -1183,6 +1190,9 @@ valid_leave = [
 }
 
 ]
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "loveroom" {
@@ -2415,6 +2425,9 @@ item_desc = {
 item_desc = {
  paizi = "本店出售各类药品。"
 }
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "yaodian" {

@@ -1241,6 +1241,10 @@ item_desc = {
   x = -2
   y = 1
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "hh_xiangfang1" {
@@ -1257,6 +1261,10 @@ item_desc = {
   x = 2
   y = 1
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "hh_xiangfang2" {
@@ -1410,6 +1418,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "hh_zhengting" {
@@ -2529,6 +2540,9 @@ direction = ~
   x = -4
   y = -8
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "yaopu" {

@@ -86,6 +86,9 @@ zones "kunming" {
 item_desc = {
  paizi = "公平交易"
 }
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "dangpu" {
@@ -313,6 +316,10 @@ direction = "westup"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -339,6 +346,9 @@ direction = "westup"
   x = -2
   y = -2
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian1" {
@@ -954,6 +964,9 @@ direction = "north"
   x = 3
   y = 3
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiangfan" {

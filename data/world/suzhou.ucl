@@ -223,6 +223,10 @@ zones "suzhou" {
 item_desc = {
  sign = "公平交易  sell        卖 buy         买 value       估价"
 }
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
 
   room_exits "dangpu" {
@@ -599,6 +603,9 @@ item_desc = {
   x = -1
   y = -2
   z = 0
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "jubaozhai" {
@@ -639,6 +646,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -681,6 +692,9 @@ direction = "west"
   x = 1
   y = 2
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian3" {

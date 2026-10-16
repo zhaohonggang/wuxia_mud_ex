@@ -180,8 +180,10 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
 **步骤**
 
-1. **P1a 生成映射表**（新脚本 `scripts/plan_key_field_map.py`）
-   对 `tmp/lost_key_triage.json` 的 202 个真丢失 key，逐个过 §1 的三问：
+1. **P1a 生成映射表**（新脚本 `scripts/plan_key_field_map.py`，**已建**）
+   对 `tmp/lost_key_triage.json` 的 `missing` + `engine` 两桶（共 242 个 key）逐个过 §1 的三问：
+   （`missing` = 全库无字段痕迹；`engine` = lib/ 里出现过该名字，通常字段已存在 → 多属 L1。
+   两桶都要过，因为 P1/P2 的批次表同时引用它们。）
    - **Q1** 这个 key 的名字/值 elias 能表达吗？（含数字/连字符的 key、浮点值 → ❌）
      —— 判定必须跑 `scripts/probe_elias_expressibility.exs`，**不采信归档文档**；
    - **Q2** 是否等于某个 struct 字段名（`Item.Meta` / `Room` / `NonPlayerMeta`）？
@@ -199,14 +201,40 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
    - 默认 dry-run，`--apply` 才写盘；写盘前把目标文件复制到 `tmp/backup-<时间戳>/`。
    - 方法沿用既有先例 `scripts/item_meta_backfill.py`（`c7c5fd9`，685 物品）。
 
-3. **优先批次**（按收益/风险）：
+3. **优先批次**（按收益/风险）——**已由 P1a 实测重排**，见 `tmp/key_field_map.json`：
 
    | 批次 | key | 次数 | 目标 | 说明 |
    |------|-----|-----:|------|------|
-   | B1 | `base_weight` | 36 | `item.meta.weight` | 同义，先核对 `set_weight` 是否已写 |
-   | B2 | `armor_prop/*`、`weapon_prop/*` 白名单内子键 | — | `item.meta.armor_prop/weapon_prop` | 仅 `applies_keys` 内的子键 |
-   | B3 | `food_supply`、`base_unit`、`base_value` | 185+72+69 | `item.meta.food/unit/value` | 与既有 food 回填对账 |
-   | B4 | NPC 侧 `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | **先查 `vitals` 结构再定** |
+   | **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | **最先做**（已实施）：房间块无歧义；`flags` 已在 Room 白名单（`loader.ex` L428 `parse_flags/1`），消费端 `World.room_flags/1`（`world.ex` L73） |
+   | **B2** | `base_unit` / `base_value` | 72/69 | `item.meta.unit/value` | 同义（白名单含 unit/value）；**注意 `npc/` 路径下的物品被输出成 `characters` 块**（见下） |
+   | **B3** | `female_only` | 60 | `item.meta.flag` | **物品**属性（不是房间）；白名单含 `flag` |
+   | **B4** | `coagents` | 30 | `npc.coagents` | NonPlayerMeta 白名单已含 `coagents` |
+   | ~~B1'~~ | ~~`base_weight`~~ | ~~36~~ | ~~`item.meta.weight`~~ | **已改判 L3-framework**（见下「P1a 修正」） |
+   | B5 | NPC 侧 `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
+
+   **B1 实施记录（2026-10-16）**：284 房间 / 56 区，`+921` 行 `-0` 行；幂等、校验 67/10 不退化、可达性 4190/4409 不变。
+   - `valid_startroom` → flag 名 **`"startroom"`**（消费端 `home_command.ex` L54 / `recall_command.ex` L50 找的是 `"startroom"`，不是 `valid_startroom`）。
+   - ⚠️ **列表分隔符必须是逗号**：elias 对「两个换行分隔、无逗号」的列表元素报 `syntax error before: '"'`。
+     手写先例 `city.ucl` 的 `flags` **只有 1 项**（无需分隔符）因而看不出这个坑 —— 首版脚本按它写了无逗号多行格式，整批 56 区语法非法，已回滚重做。
+     实测见 `scripts/probe_elias_expressibility.exs`；正确写法是 `"a",\n"b"`（逗号）或单行 `["a", "b"]`。
+   - ⚠️ **`no_beg` 无消费端**（`beg_command.ex` 是「乞讨系统暂未开放」桩）；
+     **`no_steal` 消费端可疑** —— `room.ex` L1462 读 `context.data.no_steal`，但 `context.data` 就是 `%Room{}` 结构体，
+     而 `Room` **没有** `:no_steal` 字段（实测 `Map.has_key?` = false）→ 该分支会抛 `KeyError`。二者均登记 P3/风险 R6。
+
+   **P1a 修正（2026-10-16，实测）**
+
+   - **`base_weight` 不是 `weight` 的同义词**：`set_weight(N)` 写的是私有 `weight` 变量（`mud/feature/move.c` L40），
+     而 `set("base_weight", N)` 是**独立**属性，只有可堆叠物品才读它
+     （`cmds/std/hand.c` L37：`query_amount() ? query("base_weight") : query_weight()`）。
+     引擎既无 `amount` 也无 `base_weight` 字段 → 属**框架优先**，不能塞进 `weight`。
+   - **`female_only` 是物品属性，不是房间属性**：源文件是 `d/baituo/obj/qingpao.c` 等 obj 物品
+     （item×45 / npc×15），所以目标是 `item.meta.flag` 而不是 `room.flags`。
+   - **同一 key 会落在不同对象类型上**：`no_steal` = room×45/item×4/npc×6，`base_unit` = item×63/npc×11。
+     P1a 因此为每个 key 输出**源对象类型分布**（`kinds` 字段），target 按主导类型定。
+   - ⚠️ **转换器把 `npc/` 路径下的物品输出成 `characters` 块**（实例：`d/beijing/npc/dan/danA_1.c` 是
+     可堆叠的「养精丹」`COMBINED_ITEM`，却生成 `characters "danA_1" { ... }`）。
+     `item_meta_backfill.py` 只处理 `items` 块 → 这批物品**从未被回填过**。
+     做 B2 时必须同时处理 `characters` 块里的物品，否则会漏。
 
 **验收**：`python scripts/validate_ucl.py data/world/<zone>.ucl` 通过；
 `git diff --stat` 只有**新增行**（无删除/修改）；`mix test --seed 12345` 绿；
@@ -218,9 +246,13 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
 **步骤**
 
-1. **只加字段**（P7）：
-   - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`liquid max_liquid liquid_type`、`can_make not_make power_point item_origin material_attrib material_name`；
-   - `Room` 加：`sleep_room no_sleep_room female_only no_steal no_beg no_map`（房间级 flag）、`room_owner room_name room_position room_owner_id`；
+1. **只加字段**（P7）——**下表已由 P1a 实测收敛为 20 个 key（1282 occ）**，
+   早期草稿里的 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg`/`female_only`/`no_map`
+   已被改判（前四个走已有 `room.flags` → **B1/L1**；`female_only` → **B3/L1**；`no_map` → noop），
+   **不要再为它们加字段**：
+   - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`max_liquid`、
+     `power_point can_make not_make item_origin`；扩 `armor_prop` 子键（`personality`/`armor_vs_force`/`warm`）与 `weapon_prop` 子键（`personality`）；
+   - `Room` 加：`room_owner room_name room_position room_owner_id`；
    - `NonPlayerMeta` 加：`chat_msg_combat chat_chance_combat`。
    - 每个字段**只加 `Map.get`**，不写任何默认逻辑 → 消费端未接 = 行为不变。
 2. **回填数据**（复用 P1b 脚本，换映射表）。
@@ -229,19 +261,19 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
 **验收**：字段在 `.ucl` 中可见；`mix test` 绿；**线上行为零变化**（无消费者）。
 
-**P2 批次（按次数）**：
+**P2 批次（按次数，来源 `tmp/key_field_map.json` 的 20 个 L2 key）**：
 
-| 批次 | key | 次数 | 归属 |
+| 批次 | key | 次数 | 目标 |
 |------|-----|-----:|------|
-| B5 | `wield_msg` / `unwield_msg` / `wear_msg` / `remove_msg` / `unequip_msg` | 295/217/89/63/37 | 物品装备文案（**最高收益**） |
-| B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | NPC 战斗喊话 |
-| B7 | `sleep_room` / `no_sleep_room` / `female_only` / `no_steal` / `no_beg` | 127/90/60/55/39 | 房间与物品 flag |
-| B8 | `max_liquid` / `liquid` / `base_unit` / `base_value` | 74/74/72/69 | 容器 / 酒水 |
-| B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | 打造系统 |
-| B10 | `armor_prop/personality` / `weapon_prop/personality` | 69/3 | 需扩 `applies_keys` 或单列字段 |
-| B11 | `valid_startroom` / `default_long` / `for_family` / `jiaji` / `hellzhen` / `room_*` | 68/28/35/21/18/111 | 杂项 |
+| B5 | `wield_msg` / `unwield_msg` / `wear_msg` / `remove_msg` / `unequip_msg` | 295/217/89/63/37 | `Item.Meta` 装备文案（**最高收益**） |
+| B6 | `chat_msg_combat` / `chat_chance_combat` | 132/129 | `NonPlayerMeta` |
+| B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 |
+| B8 | `max_liquid` | 74 | `Item.Meta` 容器容量 |
+| B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | `Item.Meta` 打造系统 |
+| B10 | `armor_prop/personality`、`armor_prop/armor_vs_force`、`armor_prop/warm`、`weapon_prop/personality` | 69/2/1/3 | 扩 `Combat.applies_keys()` 或单列字段 |
 
 **明确免除（登记抑制清单，不实现）**：`no_clean_up`（1805，生命周期）、`no_map`/`no_shown`/`no_user`/`no_magic`（显示开关）、`max_room`。
+**判 `manual`、待人工定夺（不在上表）**：`default_long`(28)、`for_family`(35)、`jiaji`(21)、`hellzhen`(18)、`no_get_from`(14)、`liquid_type`(3) 等。
 
 ### P3 · 消费端接线（L3，逐字段）
 
@@ -321,8 +353,8 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `triage_lost_keys.py` | P0 | `.c` + `.ucl` + `lib/` | `tmp/` | 宿主机 | ✅ | **已建** |
 | `build_unhandled_manifest.py` | P0 | `.comments.txt` + `.c` | `tmp/` | 宿主机 | ✅ | **已建** |
 | `probe_elias_expressibility.exs` | **§1 Q1 / P5 前置** | —（只解析字符串） | — | **容器内** | ✅ | **已建** |
-| `plan_key_field_map.py` | P1a | `tmp/lost_key_triage.json` + `lib/` | `tmp/` | 宿主机 | ✅ | 待建 |
-| `backfill_l1_fields.py` | P1b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | 待建 |
+| `plan_key_field_map.py` | P1a | `tmp/lost_key_triage.json` + `.c` 语料 | `tmp/` | 宿主机 | ✅ | **已建** |
+| `backfill_l1_fields.py` | P1b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（含写盘前备份 + `validate_ucl` 自校验门禁） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 
 **所有脚本的公共约定**

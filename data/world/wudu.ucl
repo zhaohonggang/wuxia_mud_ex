@@ -513,6 +513,9 @@ valid_leave = [
   x = 1
   y = 1
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "dating" {
@@ -865,6 +868,9 @@ item_desc = {
   x = 1
   y = 0
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "jingshi" {
@@ -1445,6 +1451,9 @@ item_desc = {
  xia = "一只石匣，好象是和石案连在一起的，不知道敢不敢打开看看。"
  wall = "墙上刻着很多蝇头小字，还附着一些图画，似乎是一门极上乘的武学。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "mishi" {

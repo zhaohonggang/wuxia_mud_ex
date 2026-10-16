@@ -36,6 +36,9 @@ zones "death" {
   x = 0
   y = 0
   z = 2
+  flags = [
+    "startroom"
+  ]
     }
   room_exits "block" {
     room_id = rooms.block.id
@@ -55,6 +58,9 @@ zones "death" {
 item_desc = {
  jingti = "一块血红色的巨大晶体，发出血色光芒，你忍不住想敲(qiao)一块下来。"
 }
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "diyin" {
@@ -79,6 +85,9 @@ valid_leave = [
 }
 
 ]
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "diyin_road1" {
@@ -103,6 +112,9 @@ valid_leave = [
 }
 
 ]
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "diyin_road2" {
@@ -136,6 +148,9 @@ valid_leave = [
   x = 0
   y = -12
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "gate" {
@@ -167,6 +182,9 @@ valid_leave = [
 }
 
 ]
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "gateway" {
@@ -379,6 +397,9 @@ valid_leave = [
   x = -1
   y = -10
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "inn1" {
@@ -402,6 +423,9 @@ valid_leave = [
   x = 1
   y = -10
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "inn2" {
@@ -494,6 +518,9 @@ direction = ~
 }
 
 ]
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "qiao1" {
@@ -530,6 +557,9 @@ direction = ~
 }
 
 ]
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "qiao2" {
@@ -580,6 +610,9 @@ item_desc = {
   x = 0
   y = -10
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "road1" {
@@ -599,6 +632,9 @@ item_desc = {
   x = 0
   y = -9
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "road2" {
@@ -616,6 +652,9 @@ item_desc = {
   x = 0
   y = -8
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "road3" {
@@ -633,6 +672,9 @@ item_desc = {
   x = 0
   y = -7
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "road4" {
@@ -657,6 +699,9 @@ valid_leave = [
 }
 
 ]
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "road5" {
@@ -674,6 +719,9 @@ valid_leave = [
   x = 0
   y = -5
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "road6" {
@@ -5637,6 +5685,9 @@ chats = [
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "sky1" {
@@ -5665,6 +5716,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky10" {
     room_id = rooms.sky10.id
@@ -5690,6 +5744,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky11" {
     room_id = rooms.sky11.id
@@ -5715,6 +5772,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky12" {
     room_id = rooms.sky12.id
@@ -5740,6 +5800,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky2" {
     room_id = rooms.sky2.id
@@ -5765,6 +5828,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky3" {
     room_id = rooms.sky3.id
@@ -5790,6 +5856,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky4" {
     room_id = rooms.sky4.id
@@ -5815,6 +5884,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky5" {
     room_id = rooms.sky5.id
@@ -5840,6 +5912,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky6" {
     room_id = rooms.sky6.id
@@ -5865,6 +5940,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky7" {
     room_id = rooms.sky7.id
@@ -5890,6 +5968,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky8" {
     room_id = rooms.sky8.id
@@ -5915,6 +5996,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky9" {
     room_id = rooms.sky9.id
@@ -5937,6 +6021,9 @@ item_desc = {
   x = 0
   y = 0
   z = 26
+  flags = [
+    "no_sleep_room"
+  ]
     }
   room_exits "skylocal" {
     room_id = rooms.skylocal.id
@@ -5958,6 +6045,9 @@ item_desc = {
   x = 0
   y = 0
   z = 14
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "tianmen" {

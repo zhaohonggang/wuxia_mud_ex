@@ -11,6 +11,9 @@ zones "room" {
   x = 0
   y = 0
   z = 1
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "qianting" {
@@ -31,6 +34,9 @@ zones "room" {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "xiaoyuan" {
@@ -58,6 +64,9 @@ zones "room" {
   x = 0
   y = 0
   z = 2
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "dating" {
@@ -78,6 +87,9 @@ zones "room" {
   x = 0
   y = 1
   z = 2
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "houyuan" {
@@ -94,6 +106,9 @@ zones "room" {
   x = 1
   y = 0
   z = 2
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "woshi" {
@@ -110,6 +125,9 @@ zones "room" {
   x = 0
   y = 0
   z = 3
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "dulewu" {
@@ -248,6 +266,9 @@ zones "room" {
   x = 0
   y = 0
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "chashi" {
@@ -266,6 +287,9 @@ zones "room" {
   x = 0
   y = 0
   z = 5
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "chufang" {
@@ -284,6 +308,10 @@ zones "room" {
   x = 0
   y = -1
   z = 1
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "dayuan" {
@@ -301,6 +329,9 @@ zones "room" {
   x = 0
   y = 0
   z = 6
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "huayuan" {
@@ -321,6 +352,9 @@ zones "room" {
   x = -1
   y = 0
   z = 6
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "jusuo" {
@@ -339,6 +373,9 @@ zones "room" {
   x = 0
   y = 0
   z = 7
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "lianwu" {
@@ -356,6 +393,9 @@ zones "room" {
   x = -2
   y = 0
   z = 6
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "shufang" {
@@ -372,6 +412,9 @@ zones "room" {
   x = 2
   y = 0
   z = 6
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "tingtao" {
@@ -388,6 +431,9 @@ zones "room" {
   x = 0
   y = 1
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "yanwu1" {
@@ -404,6 +450,9 @@ zones "room" {
   x = -2
   y = 1
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "yanwu2" {
@@ -420,6 +469,9 @@ zones "room" {
   x = -1
   y = 0
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "yingke" {
@@ -438,6 +490,9 @@ zones "room" {
   x = -1
   y = 1
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "yishiting" {
@@ -457,6 +512,9 @@ zones "room" {
   x = -1
   y = 0
   z = 1
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "youwei" {
@@ -473,6 +531,9 @@ zones "room" {
   x = -2
   y = 2
   z = 4
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "youxiang" {
@@ -489,6 +550,9 @@ zones "room" {
   x = -1
   y = 2
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "zhongting" {
@@ -508,6 +572,9 @@ zones "room" {
   x = 1
   y = 0
   z = 6
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "zhulin" {
@@ -525,6 +592,9 @@ zones "room" {
   x = -1
   y = -1
   z = 4
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "zoudao" {
@@ -542,6 +612,9 @@ zones "room" {
   x = 1
   y = 0
   z = 1
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "zuowei" {
@@ -558,6 +631,9 @@ zones "room" {
   x = 0
   y = 2
   z = 4
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "zuoxiang" {

@@ -266,6 +266,9 @@ item_desc = {
   x = 1
   y = 1
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "nanxiangfang" {
@@ -299,6 +302,9 @@ item_desc = {
   x = -1
   y = 1
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "nvxiangfang" {
@@ -318,6 +324,9 @@ item_desc = {
 item_desc = {
  diao = "这一对白雕正展翅欲飞。如果是桃花岛的弟子，骑上(ride)就 可以飞到桃花岛，非常便利。"
 }
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "qianyuan" {

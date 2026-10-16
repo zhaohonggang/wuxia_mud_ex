@@ -109,6 +109,9 @@ behavior_config = {
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "dating" {
@@ -432,6 +435,9 @@ item_desc = {
   x = 1
   y = 1
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxishi" {

@@ -11,6 +11,9 @@ zones "lingjiu" {
   x = 0
   y = 7
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "biguan" {
@@ -469,6 +472,9 @@ zones "lingjiu" {
   x = 0
   y = 1
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "dating" {
@@ -702,6 +708,9 @@ item_desc = {
   x = 0
   y = -5
   z = -3
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "pingtai3" {
@@ -734,6 +743,10 @@ item_desc = {
   x = 3
   y = 3
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "restroom" {

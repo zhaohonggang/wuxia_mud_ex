@@ -267,6 +267,9 @@ behavior_config = {
   x = 1
   y = -3
   z = 2
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "shandong3" {
@@ -533,6 +536,9 @@ behavior_config = {
   x = 2
   y = -3
   z = 2
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxishi" {

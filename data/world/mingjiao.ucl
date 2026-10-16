@@ -45,6 +45,9 @@ zones "mingjiao" {
   x = 6
   y = -16
   z = -11
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "daoshe" {
@@ -61,6 +64,9 @@ zones "mingjiao" {
   x = 0
   y = 0
   z = 1
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "didao1" {
@@ -79,6 +85,9 @@ zones "mingjiao" {
   x = 0
   y = 0
   z = 2
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "didao2" {
@@ -153,6 +162,9 @@ zones "mingjiao" {
   x = 6
   y = -14
   z = -11
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "foshe" {
@@ -1502,6 +1514,9 @@ direction = "in"
   x = 2
   y = -11
   z = -11
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "nanshe" {
@@ -1518,6 +1533,9 @@ direction = "in"
   x = 0
   y = 0
   z = 1
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "neishi" {
@@ -1545,6 +1563,9 @@ direction = "in"
   x = 6
   y = -11
   z = -11
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "nushe" {
@@ -1958,6 +1979,9 @@ direction = ~
 }
 
 ]
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "square" {
@@ -1986,6 +2010,9 @@ direction = ~
   x = 2
   y = -15
   z = -11
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "sushe" {

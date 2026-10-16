@@ -929,6 +929,9 @@ direction = "southup"
   x = 0
   y = -1
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "sanqingdian" {
@@ -1424,6 +1427,9 @@ direction = "southup"
   x = 5
   y = 9
   z = -8
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "tufeiwo2" {
@@ -1451,6 +1457,9 @@ direction = "southup"
   x = 6
   y = 9
   z = -8
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "tufeiwo3" {
@@ -2162,6 +2171,9 @@ item_desc = {
   x = 2
   y = 0
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxishi" {

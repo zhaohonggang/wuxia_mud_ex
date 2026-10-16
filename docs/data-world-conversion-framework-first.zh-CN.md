@@ -140,13 +140,28 @@ docker exec -w /app wuxia_mud_dev-app-1 mix run --no-start scripts/probe_elias_e
 |-----------|-----:|-----------|
 | 装备文案 5 件套 `wield/unwield/wear/remove/unequip_msg` | 701 | `Item.Meta` 加 5 字段 |
 | `chat_msg_combat` / `chat_chance_combat` | 132 / 129 | `NonPlayerMeta` 加 2 字段 |
-| 房间 flag `sleep_room` / `no_sleep_room` / `female_only` | 127 / 90 / 60 | `Room` 加字段 |
-| 权限 flag `no_steal` / `no_beg` / `no_get_from` | 55 / 39 / 14 | `Room` / `Item.Meta` |
-| 容器 / 酒水 `max_liquid` / `liquid` / `liquid_type` | 74 / 74 / 3 | `Item.Meta` 加字段 |
+| 容器 `max_liquid` | 74 | `Item.Meta` 加字段 |
 | 打造 `can_make` / `not_make` / `power_point` / `item_origin` | 16 / 8 / 20 / 16 | `Item.Meta` 加字段 |
-| `armor_prop/personality` / `weapon_prop/personality` | 69 / 3 | 扩 `Combat.applies_keys()` 或单列字段 |
-| 杂项 `valid_startroom` / `default_long` / `for_family` / `jiaji` / `room_*` | 68 / 28 / 35 / 21 / 111 | 按归属分别加 |
+| `armor_prop/personality` / `armor_prop/armor_vs_force` / `armor_prop/warm` / `weapon_prop/personality` | 69 / 2 / 1 / 3 | 扩 `Combat.applies_keys()` 或单列字段 |
+| 房间归属 `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29 / 29 / 29 / 24 | `Room` 加 4 字段 |
 | `switch(random())` 池 | 132 | schema 已有先例（`pick_runtime_exit`），需定 `pools` 字段 |
+
+> **§4 更正（2026-10-16，实测）**：本节初稿把**房间 flag 类**误列为 B 类，实际是 **A 类（L1）** ——
+> `Room` **已有** `flags` 字段（`room.ex` L34），loader 已解析（`parse_flags/1`，`loader.ex` L428），
+> 消费端已存在（`World.room_flags/1`，`world.ex` L73；`snapshot/1` attrs，`room.ex` L238-240）。
+> 因此下面这些 key 走 **已有 `flags` 通道**，**不要加字段**（已由 B1 落地，284 房间 / 56 区）：
+>
+> | key | 次数 | flag 名 | 消费端 |
+> |-----|-----:|--------|--------|
+> | `sleep_room` | 127 | `sleep_room` | ✅ `room.ex` L238（attrs） |
+> | `no_sleep_room` | 90 | `no_sleep_room` | ✅ `room.ex` L239（attrs） |
+> | `valid_startroom` | 68 | **`startroom`** | ✅ `home_command.ex` L54 / `recall_command.ex` L50 |
+> | `no_steal` | 55 | `no_steal` | ⚠️ `room.ex` L1462 路径可疑（见风险 R6） |
+> | `no_beg` | 39 | `no_beg` | ❌ 无（`beg_command.ex` 是桩）→ P3 |
+>
+> `female_only`(60) 同理属 A 类：`Item.Meta` 已有 `flag`（`item.ex` L262、`loader.ex` L1274）。
+> `base_unit`(72) / `base_value`(69) → `Item.Meta` 已有 `unit`/`value`，亦属 A 类。
+> 判据：**Q2 只看「字段在不在白名单」，不看「字段名是否与 key 同名」**。
 
 ### C 类 · 框架优先（不补框架就没法转 / 转了没意义）
 

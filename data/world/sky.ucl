@@ -14,6 +14,9 @@ zones "sky" {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "sky1" {
@@ -42,6 +45,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky2" {
     room_id = rooms.sky2.id
@@ -67,6 +73,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky3" {
     room_id = rooms.sky3.id
@@ -92,6 +101,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky4" {
     room_id = rooms.sky4.id
@@ -118,6 +130,9 @@ item_desc = {
 item_desc = {
  yunti = "一蓬白色的云彩拔地而起，连接上层的天际。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
   room_exits "sky5" {
     room_id = rooms.sky5.id
@@ -139,6 +154,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "tianmen" {

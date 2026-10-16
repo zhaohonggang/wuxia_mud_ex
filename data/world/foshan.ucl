@@ -30,6 +30,10 @@ zones "foshan" {
 item_desc = {
  paizi = "##==================##         ##                  ##         ##     公平交易     ##         ##                  ##         ##  卖出：   sell   ##         ##                  ##         ##  买进：   buy    ##         ##                  ##         ##  估价：   value  ##         ##                  ##         ##                  ##         ##==================##"
 }
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
 
   room_exits "dangpu" {
@@ -142,6 +146,10 @@ direction = "south"
 }
 
 ]
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
 
   room_exits "pm_restroom" {

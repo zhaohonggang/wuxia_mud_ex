@@ -196,6 +196,9 @@ zones "songshan" {
   x = 3
   y = 7
   z = 7
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kefang" {

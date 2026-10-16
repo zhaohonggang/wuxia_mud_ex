@@ -180,6 +180,9 @@ item_desc = {
   x = 0
   y = 0
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "bed" {
@@ -993,6 +996,9 @@ item_desc = {
   x = 1
   y = -8
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "gongbu_shi" {
@@ -1016,6 +1022,9 @@ item_desc = {
   x = 1
   y = -6
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "gongbu_tong" {

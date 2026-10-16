@@ -341,6 +341,9 @@ zones "xiangyang" {
 item_desc = {
  paizi = "你情我愿，概不赊欠。"
 }
+  flags = [
+    "no_beg"
+  ]
     }
 
   room_exits "dangpu" {
@@ -671,6 +674,9 @@ item_desc = {
   x = -1
   y = 3
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "guofukefang" {
@@ -996,6 +1002,9 @@ direction = ~
   x = -1
   y = -3
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "juyifemale" {
@@ -1102,6 +1111,9 @@ direction = "east"
   x = -3
   y = -3
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "juyimale" {
@@ -1153,6 +1165,10 @@ direction = "east"
   x = -1
   y = 2
   z = 0
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {

@@ -157,6 +157,9 @@ direction = "west"
   x = -2
   y = 0
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "wizard_room" {

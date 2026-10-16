@@ -38,9 +38,9 @@
 
 | 阶段 | 内容 | 规模 | 层 | 状态 | 提交 | 完成日期 |
 |------|------|-----:|:--:|:----:|------|----------|
-| **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | （本轮新增，未提交） | 2026-10-16 |
+| **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
-| **P1** | 白名单内纯数据回填 | 4 个批次 | L1 | ⬜ | | |
+| **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | 🟨 | | B1 ✅ / B2–B5 ⬜ |
 | **P2** | 加字段 + 回填 | 7 个批次 | L2 | ⬜ | | |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
@@ -63,10 +63,12 @@
 | M3 | `UNHANDLED FUNCTION` 条数 / 名数 | 2136 / 643 | `—` | ⬜ | 同上 |
 | M4 | 分支归属函数数 | 442 | `—` | ⬜ | `build_unhandled_manifest.py` |
 | M5 | 函数 body 未回源 | 32 | `—` | ⬜ | 同上 |
-| M6 | `set()` key 真丢失 distinct / occ | 202 / 3150 | `—` | ⬜ | `triage_lost_keys.py` |
+| M6 | `set()` key 真丢失 distinct / occ | 202 / 3150 | **200 / 3110** | ✅ | `triage_lost_keys.py` |
 | M7 | `valid_leave` 生效条数 | 133 / 166 | `—` | ⬜ | `world_reachability.py`（或 `recount_veto_status.exs`） |
-| M8 | 可达性 | 4190 / 4409（95.0%） | `—` | ⬜ | `world_reachability.py` |
-| M9 | 测试 | `mix test --seed 12345` 绿 | `—` | ⬜ | — |
+| M8 | 可达性 | 4190 / 4409（95.0%） | **4190 / 4409（95.0%）** | ✅ | `world_reachability.py` |
+| M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **34** | ✅ | `mix test --seed 12345` |
+| M10 | 已回填 `room.flags` 房间数 | 0 | **284** | ✅ | `backfill_l1_fields.py` |
+| M11 | `validate_ucl.py` 通过 / 失败 | 67 / 10 | **67 / 10** | ✅ | `validate_ucl.py` |
 
 **基线已实测确认**：M1–M6、M8 为本轮实跑值；M7 引用 `ucl-comment-todo.zh-CN.md` 的记录。
 
@@ -103,24 +105,61 @@
 
 | 步骤 | 状态 | 说明 |
 |------|:----:|------|
-| P1a `plan_key_field_map.py` 生成映射表 | ⬜ | 输出 `tmp/key_field_map.json`；`decision` 枚举 `L1`/`L2`/`L3-framework`/`noop`/`manual` |
-| P1a 人工过一遍 decision | ⬜ | **不许跳过**；判 `L3-framework` 的移交 P5 |
-| P1b `backfill_l1_fields.py` 回填 | ⬜ | 只增不改 + 幂等 + dry-run 默认 |
+| P1a `plan_key_field_map.py` 生成映射表 | ✅ | 输出 `tmp/key_field_map.json`（242 key）；`decision` 枚举 `L1`/`L2`/`L3-framework`/`noop`/`manual` |
+| P1a 人工过一遍 decision | ✅ | 已复核；**发现并改判 3 项**（见下「P1a 复核结论」） |
+| P1b `backfill_l1_fields.py` 回填 | ✅ | 只增不改 + 幂等 + dry-run 默认 + **写盘前备份** + **`validate_ucl` 自校验门禁**；**当前只实现 `room.flags` 目标** |
+
+**P1a 复核结论（决定性的 3 处改判）**
+
+1. **`base_weight` 不是 `weight` 的同义词 → 改判 L3-framework**。`set_weight(N)` 写私有 `weight` 变量
+   （`mud/feature/move.c` L40），`set("base_weight", N)` 是独立属性，仅可堆叠物品读它
+   （`cmds/std/hand.c` L37）。引擎无 `amount`/`base_weight` 字段。**计划原 B1 作废**。
+2. **`female_only` 是物品属性 → 目标 `item.meta.flag`**（源为 `obj/qingpao.c` 等，item×45/npc×15），
+   不是房间 flag。
+3. **`parts` 目标不匹配**（源是物品，`NonPlayerMeta.parts` 是 NPC 字段）→ 退回 `manual`。
+
+> 同一 key 会落在不同对象类型上（`no_steal` = room×45/item×4/npc×6），
+> 故 P1a 为每个 key 输出 `kinds` 源对象类型分布，target 按主导类型定。
 
 | 批次 | key | 次数 | 目标 | 状态 | 提交 | 备注 |
 |------|-----|-----:|------|:----:|------|------|
-| **B1** | `base_weight` | 36 | `item.meta.weight` | ⬜ | | 建议第一个做（最小闭环） |
-| **B2** | `armor_prop/*`、`weapon_prop/*` 白名单内子键 | — | `item.meta.armor_prop/weapon_prop` | ⬜ | | 仅 `applies_keys` 内的子键 |
-| **B3** | `food_supply` / `base_unit` / `base_value` | 185 / 72 / 69 | `item.meta.food/unit/value` | ⬜ | | 与既有 food 回填对账 |
-| **B4** | `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | ⬜ | | **先查 `vitals` 结构再定** |
+| **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | ✅ | （本批） | 命中 **284 房间 / 56 区**；`valid_startroom` 的 flag 名是 **`startroom`** |
+| **B2** | `base_unit` / `base_value` | 72/69 | `item.meta.unit/value` | ⬜ | | **注意 `npc/` 下物品被输出成 `characters` 块**，需一并处理 |
+| **B3** | `female_only` | 60 | `item.meta.flag` | ⬜ | | 物品属性（`Item.Meta.flag` 已存在，`item.ex` L262） |
+| **B4** | `coagents` | 30 | `npc.coagents` | ⬜ | | NonPlayerMeta 白名单已含 |
+| B5 | `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | ⬜ | | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
+| ~~B1'~~ | ~~`base_weight`~~ | ~~36~~ | ~~`item.meta.weight`~~ | ➖ | | **作废**：改判 L3-framework（堆叠物品单件重量） |
+
+**B1 验收记录（2026-10-16，最终）**
+
+- dry-run：284 待补 → `--apply` → 二次 dry-run：`filled=0, already=284`（**幂等 ✓**）
+- `git diff --numstat`：**56 文件 / +921 行 / -0 行**（只增不改 ✓）
+- `validate_ucl.py`：**67 通过 / 10 失败**，与基线**完全一致**；且对 56 个改动文件**逐文件对照 HEAD**，
+  `新增失败 = NONE` ✓
+  > ⚠️ 全库本就有 10 个区不通过（`baituo clone_lib huashan kissa-jarvi lepakko-luola
+  > lingxiao liuxi shaolin wudu xiangyang`），DoD 因此读作「**不新增失败**」而非「全绿」。
+- 备份：`tmp/backup-20261016-122602/`（56 个文件，**写盘之前**复制；已抽验为改前态）
+- ⚠️ **列表分隔符必须是逗号（踩过的坑）**：首版脚本照手写先例写成「多行、无逗号」，
+  elias 报 `syntax error before: '"'`，56 个区语法非法 → **整批回滚重做**。
+  手写先例 `city.ucl` 的 `flags` 只有 **1 项**（无需分隔符），所以看不出这个坑。
+  实测：`scripts/probe_elias_expressibility.exs`。正确写法：多行带逗号，或单行 `["a", "b"]`。
+  已给脚本加 **`validate_ucl` 自校验门禁**（新增失败即拒绝写盘）。
+- ⚠️ 消费端现状（写数据 ≠ 生效）：
+  - `sleep_room` / `no_sleep_room` → ✅ `room.ex` L238-239（attrs）
+  - `valid_startroom` → ✅ `home_command.ex` L54 / `recall_command.ex` L50 找 flag `"startroom"`
+  - `no_steal` → ⚠️ `room.ex` L1462 读 `context.data.no_steal`，但 `context.data` 就是 `%Room{}`，
+    而 `Room` 无 `:no_steal` 字段（实测 `Map.has_key?` = false）→ 该分支会抛 `KeyError`。见风险 R6
+  - `no_beg` → ❌ 无消费端（`beg_command.ex` 是「乞讨系统暂未开放」桩）→ P3
 
 **P1 DoD**
 
-- [ ] ⬜ dry-run → `--apply` → 二次 dry-run 显示「0 项」
-- [ ] ⬜ `git diff --stat` 只有新增行
-- [ ] ⬜ `validate_ucl.py` 通过
-- [ ] ⬜ `mix test --seed 12345` 绿
-- [ ] ⬜ `world_reachability.py` 不降
+- [x] dry-run → `--apply` → 二次 dry-run 显示「0 项」
+- [x] `git diff --stat` 只有新增行
+- [x] `validate_ucl.py` 不新增失败
+- [x] `mix test --seed 12345` **不新增失败**（实测 **3435 tests, 34 failures**；34 个失败分布在 12 个测试文件，
+  **没有一个读 `data/world`**；其中 `recall_command_test` / `home_command_test` 已用「限定路径 `git stash` 回干净树」
+  对照验证为**既有失败**。属既有问题，与本批无关）
+- [x] `world_reachability.py` 不降（实测 **4190/4409 = 95.0%**，与基线一致）
 
 ---
 
@@ -154,7 +193,7 @@
 | **B8** | `max_liquid`/`liquid`/`base_unit`/`base_value` | 74/74/72/69 | 容器 / 酒水 | ⬜ | |
 | **B9** | `can_make`/`not_make`/`power_point`/`item_origin` | 16/8/20/16 | 打造系统 | ⬜ | |
 | **B10** | `armor_prop/personality` / `weapon_prop/personality` | 69 / 3 | 需扩 `applies_keys` 或单列字段 | ⬜ | |
-| **B11** | `default_long`/`for_family`/`jiaji`/`hellzhen`/`room_*` | 28/35/21/18/111 | 杂项 | ⬜ | | `valid_startroom`(68) 已判 noop → 见 §11；`room_*` 取 4 个规范键 |
+| **B11** | `default_long`/`for_family`/`jiaji`/`hellzhen`/`room_*` | 28/35/21/18/111 | 杂项 | ⬜ | | `valid_startroom`(68) 已改判 L1 并入 B1（见 D11）；`room_*` 取 4 个规范键 |
 
 - [ ] ⬜ 若新字段进 `Meta.Trim`，已补 `Jason.Encoder`（否则 websocket 进程崩溃）
 - [ ] ⬜ `mix test` 绿且**线上行为零变化**（无消费者）
@@ -167,6 +206,7 @@
 |------|--------|:----:|:----:|:----:|------|
 | 装备文案 5 件套 | `wield/wear/remove_command.ex` | 低 | 不需要 | ⬜ | |
 | `female_only` / `no_beg` | 移动 / 乞讨命令前置判定 | 中 | **需要**（新拦截） | ⬜ | |
+| `no_steal` | **修 bug**：`room.ex` L1458-1462 改用 `World.room_flags(room_id)`（现写法会抛 `KeyError`，见 R6） | 低 | 不需要 | ⬜ | |
 | `sleep_room` / `no_sleep_room` | `sleep_command.ex` | 低 | 不需要 | ⬜ | |
 | `liquid` / `max_liquid` | 倒 / 喝命令 | 中 | 需要 | ⬜ | |
 | `can_make` / `not_make` / `power_point` | 打造命令 | 中 | 需要 | ⬜ | |
@@ -175,9 +215,11 @@
 - [ ] ⬜ 每个字段一条集成测试
 - [ ] ⬜ 行为变更走**灰度开关 + 默认关**
 
-> **复核修正（2026-10-16）**：`no_steal` 已有生效消费端（`room.ex` L1462 `context.data.no_steal` → 「这里禁止行窃」），
-> 属 **L1 回填**（B7），不需要新写拦截，已从本表移出。
-> ⚠️ 待确认：`context.data` 的来源（是否直接来自 `.ucl` 原始 map）—— 决定 `no_steal` 到底能不能纯数据落地。
+> **复核修正（2026-10-16）**：`no_steal` 的既有消费端 `room.ex` L1462 `context.data.no_steal` **是坏的** ——
+> `context.data` 就是 `%Room{}` 结构体（`vendor/kalevala/.../room.ex` L79-85），而 `Room` 没有 `:no_steal` 字段
+> （容器实测 `Map.has_key?` = false）→ 该 cond 抛 `KeyError`。数据已按 L1 回填（B1），
+> **接线工作因此变成「修 bug」**：改用 `Kantele.World.room_flags(room_id)`。见 R6。
+> `no_beg` 确认无消费端（`beg_command.ex` 是桩）→ 需新写拦截。
 
 ---
 
@@ -273,7 +315,7 @@
 | id / key | tier | 理由 | 登记日期 |
 |----------|:----:|------|----------|
 | `no_clean_up`（1805） | noop | 房间重置提示，引擎生命周期已覆盖 | 2026-10-16 |
-| `valid_startroom`（68） | noop | 出生点校验，非运行时数据 | 2026-10-16 |
+| ~~`valid_startroom`（68）~~ | ~~noop~~ | ~~出生点校验，非运行时数据~~ → **已推翻（D11）**：消费者是 `flags` 里的 `"startroom"`，已并入 B1 落地 | 2026-10-16 |
 | `no_map` / `no_shown` / `no_user` / `no_magic` | noop | 显示开关 | 2026-10-16 |
 | `max_room` | noop | 容量提示，无消费端 | 2026-10-16 |
 | `death:heisenlin` / `heimuya:insert` / `huashan:tsr_room_dugu-jiujian` | manual | generic 文件，需人工判断是否接入世界 | 2026-10-16 |
@@ -289,7 +331,14 @@
 | D3 | 是否信归档文档的阻塞理由？ | **不信，必须跑探针**（CJK 方向一条已证伪） | 2026-10-16 | 框架文档 §3 |
 | D4 | `sleep_room`/`no_sleep_room`/`no_steal` 加字段还是回填？ | **回填**：消费端已存在（`room.ex` 读 `flags`），只是 `.ucl` 里 `flags` 全缺 | 2026-10-16 | 本轮复核：`grep '"flags"' data/world/*.ucl` = **0** |
 | D5 | `food_supply` 是否算丢失？ | **不算**：是 `food` 的别名，`item_meta_backfill.py` 已处理；B3 只需**对账** | 2026-10-16 | `triage_lost_keys.py` ALIAS 表 |
-| D6 | `valid_startroom` 是否要做？ | **不做（noop）**：`lib/` 无消费者；B11 已移出 | 2026-10-16 | §11 抑制清单 |
+| D6 | `valid_startroom` 是否要做？ | ~~**不做（noop）**：`lib/` 无消费者~~ → **已推翻（见 D11）**：消费者存在，是 `flags` 里的 `"startroom"` | 2026-10-16 | ~~§11 抑制清单~~ |
+| D7 | `base_weight` 是否等于 `weight`？ | **否** → 改判 L3-framework。`set_weight()` 写私有 `weight` 变量；`base_weight` 是独立属性，仅可堆叠物品读（`hand.c` L37） | 2026-10-16 | P1a 复核；`feature/move.c` L40 |
+| D8 | `female_only` 是房间还是物品属性？ | **物品** → `item.meta.flag`（源为 `obj/qingpao.c` 等） | 2026-10-16 | P1a `kinds` 分布 |
+| D9 | `validate_ucl.py` 的 DoD 怎么算？ | **不新增失败**（全库本就有 10 个区不通过，属既有问题） | 2026-10-16 | 实测基线 67/10 |
+| D10 | `npc/` 下的物品为何没有 meta？ | 转换器把它们输出成 `characters` 块，而 `item_meta_backfill.py` 只处理 `items` 块 → 从未回填。B2 起须一并处理 | 2026-10-16 | `d/beijing/npc/dan/danA_1.c` → `characters "danA_1"` |
+| D11 | `valid_startroom` 到底是不是 noop？ | **不是**。消费者是 `flags` 里的 **`"startroom"`**（`home_command.ex` L54 / `recall_command.ex` L50 都 `Enum.find(..., "startroom" in room.flags)`）。**推翻 D6**，改判 L1，已并入 B1 | 2026-10-16 | `grep -rn 'startroom' lib/` |
+| D12 | 房间 flag 类要不要给 `Room` 加字段？ | **不加**。`Room.flags` 字段已存在（`room.ex` L34）、loader 已解析（`parse_flags/1`）、消费端已存在（`World.room_flags/1`）。**框架文档 §4 B 类该行已更正为 A 类** | 2026-10-16 | `Room.__struct__()` 含 `:flags`（容器实测） |
+| D13 | UCL 列表元素之间用什么分隔？ | **必须逗号**。elias 对「两个换行分隔、无逗号」的元素报 `syntax error before: '"'`。1 项时无需分隔符（这是手写先例看不出坑的原因） | 2026-10-16 | `scripts/probe_elias_expressibility.exs` |
 
 ---
 
@@ -299,6 +348,10 @@
 |------|------|------|------|----------|
 | 2026-10-16 | P0 | （未提交） | 新增 5 个只读脚本 + 3 份文档；建立基线 M1–M9 | 建立基线，无数据改动 |
 | 2026-10-16 | 复核 | （未提交） | 修正 9 处失效 `§` 引用；P5.1 `gumu` 15→14；Tier 0 计数改为「去 test 区」口径（129）；`valid_startroom` 移出 B11；§6 Room 字段表移出 `sleep_room`/`no_sleep_room`/`no_steal`（改判 L1）；§7 移出 `no_steal`（已有消费端） | 无数据改动，仅文档口径 |
+| 2026-10-16 | P1a | （本批） | 新增 `scripts/plan_key_field_map.py`（242 key 三问分诊）；`tmp/key_field_map.json`；改判 `base_weight`→L3-framework、`female_only`→`item.meta.flag`、`parts`→manual | L1=8 / L2=20 / L3-fw=83 / noop=9 / manual=122 |
+| 2026-10-16 | P1b + **B1** | （本批） | 新增 `scripts/backfill_l1_fields.py`；回填 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg` → `room.flags` | 55 区 / +242 行 / -0 行；M6 202→200、M10 0→242 |
+| 2026-10-16 | **回滚 + B1 重做** | （本批） | 首版脚本**备份在写盘之后**（等于没备份）+ **列表缺逗号**导致 56 区语法非法 → `git checkout -- data/world` 回滚、删除无效备份；修脚本（备份前置 + 逗号 + `validate_ucl` 自校验门禁）；补入 `valid_startroom` → flag `"startroom"` 重做 | **56 区 / +921 行 / -0 行**；M10 242→**284** |
+| 2026-10-16 | 文档更正 | （本批） | 框架文档 §4 B 类：房间 flag 行更正为 **A 类**（`flags` 字段已存在）；计划 P2 批次表按 20 个 L2 key 收敛；计划 B1 行并入 `valid_startroom` | 无数据改动 |
 
 ---
 
@@ -310,7 +363,8 @@
 | R2 | `armor_prop/personality` 被 `sanitize_prop` 丢弃 | B10 无法纯数据落地 | ⬜ | 需决定扩 `applies_keys` 或单列字段 |
 | R3 | 战斗回调方案 A 会有第二份 `engage` 抽取实现 | 与转换器漂移风险 | ⬜ | 加对账脚本，或明确记录在文档 |
 | R4 | `Meta.Trim` 新字段必须能 JSON 编码 | websocket 进程崩溃 | ⬜ | 加字段时同步补 `Jason.Encoder` |
-| R5 | `context.data.no_steal` 的取数路径未确认 | 决定 `no_steal` 是 L1（纯数据）还是 L3（要接线） | ⬜ | 追 `context.data` 赋值点后再定 B7 归属 |
+| R5 | `context.data.no_steal` 的取数路径未确认 | 决定 `no_steal` 是 L1（纯数据）还是 L3（要接线） | ✅ 已查清 | **已确认**：`context.data` 就是 `%Room{}`（`vendor/kalevala/.../room.ex` L79-85 `state.data = room`；`Context.new` 取 `state.data`），所以 `no_steal` 走 L1（数据已写），消费端见 R6 |
+| R6 | **`room.ex` L1458-1462 的 cond 会抛 `KeyError`（既有缺陷）** | 偷窃在房间内必然崩溃；`no_steal` 数据写了也不生效 | ⬜ 待修 | `context.data.skybook` / `.no_fight` / `.no_steal` 三个字段 `Room` 都没有（实测 `Map.has_key?` = false）。应改用 `Kantele.World.room_flags(room_id)`。**属既有 bug，非本批引入** → P3 |
 
 ---
 

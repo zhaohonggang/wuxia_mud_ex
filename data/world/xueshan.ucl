@@ -257,6 +257,10 @@ direction = "northup"
 item_desc = {
  lunpan = "这是一个由黄铜所铸的大轮盘，轮盘上面刻着许多希奇古怪的花 纹，全是和风水有关。看样子你可以转(turn)动它。"
 }
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "chanshi" {
@@ -300,6 +304,9 @@ item_desc = {
   x = 0
   y = 1
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "dadian" {

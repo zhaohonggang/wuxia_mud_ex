@@ -572,6 +572,10 @@ item_desc = {
 item_desc = {
  paizi = "即日起只供应吃喝，不留宿。"
 }
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -812,6 +816,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "rongcheng" {
@@ -837,6 +845,9 @@ direction = "west"
   x = 1
   y = 1
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "rongcheng2" {

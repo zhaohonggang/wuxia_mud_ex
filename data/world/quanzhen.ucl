@@ -437,6 +437,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "datang1" {
@@ -523,6 +526,9 @@ item_desc = {
 item_desc = {
  cabinet = "这是一个红木角柜，也许是堆放衣物用的。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "diziju" {
@@ -783,6 +789,9 @@ item_desc = {
 item_desc = {
  drawer = "一个抽屉，好象可以拉(pull)开，里面可能有不少金银珠宝哦。"
 }
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "fu_woshi" {
@@ -1287,6 +1296,10 @@ direction = "south"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian1" {
@@ -1312,6 +1325,9 @@ direction = "south"
   x = 0
   y = -3
   z = -1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian2" {
@@ -2386,6 +2402,11 @@ item_desc = {
   x = 6
   y = -2
   z = 0
+  flags = [
+    "no_beg",
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxishi" {
@@ -2404,6 +2425,9 @@ item_desc = {
   x = -1
   y = -1
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "yaojishi" {

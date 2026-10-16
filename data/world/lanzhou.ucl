@@ -340,6 +340,9 @@ zones "lanzhou" {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "guangchang" {
@@ -433,6 +436,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -486,6 +493,9 @@ direction = "west"
   x = 0
   y = 0
   z = 3
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian3" {
@@ -783,6 +793,9 @@ direction = "west"
   x = 0
   y = 0
   z = 4
+  flags = [
+    "no_steal"
+  ]
     }
 
   room_exits "tudimiao" {
@@ -823,6 +836,9 @@ direction = "west"
   x = -1
   y = -1
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "xiaojisi" {

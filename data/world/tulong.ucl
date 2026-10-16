@@ -1102,6 +1102,10 @@ item_desc = {
   x = 0
   y = 0
   z = 7
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
   room_exits "move1" {
     room_id = rooms.move1.id

@@ -147,6 +147,9 @@ zones "xuanminggu" {
   x = 0
   y = 0
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiaowu" {

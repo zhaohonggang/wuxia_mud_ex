@@ -1833,6 +1833,10 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "kedian" {
@@ -1857,6 +1861,9 @@ direction = "west"
   x = 2
   y = -13
   z = 1
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian2" {
@@ -3628,6 +3635,10 @@ behavior_config = {
   permit_module = "Kantele.Npc.Guarder"
   permit_function = "permit_pass"
 }
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "wangfugate" {
@@ -3976,6 +3987,9 @@ behavior_config = {
   x = 5
   y = -5
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxishi" {

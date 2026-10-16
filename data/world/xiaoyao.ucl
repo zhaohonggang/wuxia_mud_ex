@@ -175,6 +175,9 @@ zones "xiaoyao" {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "qingcaop" {
@@ -480,6 +483,10 @@ zones "xiaoyao" {
   x = -3
   y = 0
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "xiuxis" {

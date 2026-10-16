@@ -259,6 +259,10 @@ item_desc = {
   x = 0
   y = -4
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "qingxinge" {

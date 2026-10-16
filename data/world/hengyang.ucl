@@ -818,6 +818,9 @@ item_desc = {
   x = 1
   y = 1
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kefang" {

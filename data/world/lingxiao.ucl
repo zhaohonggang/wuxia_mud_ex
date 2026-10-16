@@ -239,6 +239,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "dadian" {
@@ -1152,6 +1155,10 @@ direction = ~
 item_desc = {
  paizi = "水晶招牌，童叟无欺  sell        卖  buy         买 redeem      赎 value       估价"
 }
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
 
   room_exits "sell" {
@@ -1214,6 +1221,9 @@ item_desc = {
   x = -2
   y = 2
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "sleep" {

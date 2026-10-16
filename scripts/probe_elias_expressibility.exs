@@ -16,6 +16,9 @@
 #
 # Read-only: parses strings only, never touches data/world.
 
+# Build a multi-line snippet from lines (avoids escaping a literal backslash-n).
+ml = fn lines -> Enum.join(lines, "\n") end
+
 cases = [
   # --- keys -----------------------------------------------------------------
   {"key plain ascii",              ~s|room_exits "h" { room_id = rooms.a.id  qian = rooms.b.id }|},
@@ -34,6 +37,14 @@ cases = [
   {"map entries, comma sep",       ~s|items "i" { meta = { a = 1,b = 2 } }|},
   {"map entries, comma+space",     ~s|items "i" { meta = { a = 1, b = 2 } }|},
   {"trailing comma in list",       ~s|rooms "r" { t = ["a","b",] }|},
+  # --- list separators inside a room block (B1 regression) -------------------
+  # The hand-written `flags` precedent in data/world/city.ucl has only ONE item,
+  # so it never exercised the separator.  Two newline-separated items with no
+  # comma are REJECTED -- that bug shipped once and had to be rolled back.
+  {"flags 1 item, multi-line",     ml.(["rooms \"r\" {", "  name = \"x\"", "  flags = [", "    \"no_fight\"", "  ]", "}"])},
+  {"flags 2 items, multi-line NO comma", ml.(["rooms \"r\" {", "  name = \"x\"", "  flags = [", "    \"a\"", "    \"b\"", "  ]", "}"])},
+  {"flags 2 items, multi-line w/ comma", ml.(["rooms \"r\" {", "  name = \"x\"", "  flags = [", "    \"a\",", "    \"b\"", "  ]", "}"])},
+  {"flags 3 items, single-line",   ~s|rooms "r" { flags = ["a", "b", "c"] }|},
 
   # --- value shapes ---------------------------------------------------------
   {"nested mapping",               ~s|characters "c" { inquiries = [ { id = "x"  value = { kind = "smith"  pattern = "huwan" } } ] }|},
@@ -80,5 +91,8 @@ Legend / what to do with a FAIL:
   key shape fails        -> pick a naming scheme FIRST (e.g. hole_a not hole_1)
   float fails            -> decide a representation FIRST (string? scaled int?)
   comma+space fails      -> write [a,b] with NO space (existing data already does this)
+  multi-line list w/o comma fails -> that is CORRECT behaviour: put a comma between
+                            items.  A single item needs no separator, so a 1-item
+                            precedent tells you nothing -- always test with >= 2.
   anything else fails    -> the value needs a schema decision before conversion
 """)

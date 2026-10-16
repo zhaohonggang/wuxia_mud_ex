@@ -14,6 +14,10 @@ zones "zhongzhou" {
 item_desc = {
  paizi = "######################         ##                  ##         ##     公平交易     ##         ##                  ##         ##  存钱： deposit  ##         ##                  ##         ##  取钱： withdraw ##         ##                  ##         ##  兑换： convert  ##         ##                  ##         ##  查帐： check    ##         ##                  ##         ##                  ##         ######################"
 }
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
 
   room_exits "bank" {
@@ -180,6 +184,10 @@ item_desc = {
 item_desc = {
  paizi = "######################         ##                  ##         ##     公平交易     ##         ##                  ##         ##  卖出：   sell   ##         ##                  ##         ##  买进：   buy    ##         ##                  ##         ##  估价：   value  ##         ##                  ##         ##                  ##         ######################"
 }
+  flags = [
+    "no_beg",
+    "no_steal"
+  ]
     }
 
   room_exits "dangpu" {
@@ -264,6 +272,9 @@ item_desc = {
   x = 0
   y = 9
   z = 0
+  flags = [
+    "no_sleep_room"
+  ]
     }
 
   room_exits "dukoulu" {
@@ -682,6 +693,9 @@ direction = ~
 }
 
 ]
+  flags = [
+    "startroom"
+  ]
     }
 
   room_characters "miaojia_houting" {
@@ -805,6 +819,10 @@ item_desc = {
   x = 3
   y = 5
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "miaojia_xiangfang1" {
@@ -821,6 +839,10 @@ item_desc = {
   x = 3
   y = 3
   z = 0
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "miaojia_xiangfang2" {
@@ -1827,6 +1849,10 @@ item_desc = {
   x = 1
   y = 1
   z = 0
+  flags = [
+    "no_sleep_room",
+    "startroom"
+  ]
     }
 
   room_exits "yinghao" {

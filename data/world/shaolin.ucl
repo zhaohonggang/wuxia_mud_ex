@@ -1181,6 +1181,9 @@ direction = ~
   x = 0
   y = 1
   z = 1
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "dxbdian" {
@@ -1947,6 +1950,9 @@ valid_leave = [
   x = 0
   y = 3
   z = 0
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "houdian" {
@@ -2027,6 +2033,9 @@ valid_leave = [
   x = 1
   y = 7
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "hsyuan2" {
@@ -2055,6 +2064,9 @@ valid_leave = [
   x = 1
   y = 8
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "hsyuan3" {
@@ -2111,6 +2123,9 @@ valid_leave = [
   x = -1
   y = 7
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "hsyuan5" {
@@ -2139,6 +2154,9 @@ valid_leave = [
   x = -1
   y = 8
   z = 0
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "hsyuan6" {
@@ -2166,6 +2184,9 @@ valid_leave = [
   x = 0
   y = 2
   z = 1
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "jianyu" {
@@ -2289,6 +2310,9 @@ valid_leave = [
 }
 
 ]
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "jlyuan" {
@@ -2336,6 +2360,9 @@ direction = "west"
 }
 
 ]
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "kedian1" {
@@ -2365,6 +2392,9 @@ direction = "west"
   x = 1
   y = 1
   z = 17
+  flags = [
+    "sleep_room"
+  ]
     }
 
   room_exits "kedian2" {
@@ -2698,6 +2728,9 @@ direction = "west"
   x = 0
   y = 3
   z = 1
+  flags = [
+    "startroom"
+  ]
     }
 
   room_exits "putiyuan" {
@@ -2854,6 +2887,9 @@ direction = ~
 }
 
 ]
+  flags = [
+    "startroom"
+  ]
     }
 
   room_characters "shang_dating" {
@@ -3140,6 +3176,10 @@ item_desc = {
   x = 4
   y = 9
   z = 16
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "shang_xiange" {
@@ -3156,6 +3196,10 @@ item_desc = {
   x = 2
   y = 9
   z = 16
+  flags = [
+    "no_steal",
+    "sleep_room"
+  ]
     }
 
   room_exits "shang_xiangw" {
