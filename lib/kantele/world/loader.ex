@@ -506,7 +506,9 @@ defmodule Kantele.World.Loader do
         accept: parse_accept_rules(Map.get(character_data, :accept)),
         guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder)),
         engage: parse_engage(Map.get(character_data, :engage)),
-        carry: parse_carry(Map.get(character_data, :carry))
+        carry: parse_carry(Map.get(character_data, :carry)),
+        chat_msg_combat: parse_chat_msg_combat(Map.get(character_data, :chat_msg_combat)),
+        chat_chance_combat: Map.get(character_data, :chat_chance_combat) || 0
       }
     }
 
@@ -542,6 +544,12 @@ defmodule Kantele.World.Loader do
   end
 
   def parse_carry(_), do: []
+
+  # LPC `set("chat_msg_combat", (...))` → 字符串列表（转换器已过滤 closure，
+  # 此处只做容错：非 list 返回 []）。
+  def parse_chat_msg_combat(nil), do: []
+  def parse_chat_msg_combat(list) when is_list(list), do: list
+  def parse_chat_msg_combat(_), do: []
 
   defp build_brain(character_data, brains) do
     brain = Kantele.Brain.process(Map.get(character_data, :brain), brains)

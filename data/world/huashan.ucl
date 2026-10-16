@@ -2060,6 +2060,8 @@ item_desc = {
       family = "华山派"
       msgs = {}
     }
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
   }}
 
 # Generated from C:/files/git/mud/d/huashan/npc/girldizi.c by LPCConverter
@@ -2195,6 +2197,8 @@ item_desc = {
       msgs = {}
     }
   }
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/huashan/npc/liang-fa.c by LPCConverter
@@ -2244,6 +2248,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/huashan/npc/lin-pingzhi.c by LPCConverter
@@ -2294,6 +2300,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/huashan/npc/ren-yingying.c by LPCConverter
@@ -2405,6 +2413,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/huashan/npc/teller.c by LPCConverter

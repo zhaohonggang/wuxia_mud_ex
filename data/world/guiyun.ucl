@@ -651,6 +651,7 @@ item_desc = {
     { id = items.18niou.id }
   ]
 
+  chat_chance_combat = 120
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/duantiande.c by LPCConverter
@@ -1465,6 +1466,8 @@ item_desc = {
     { id = items.male1_cloth.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["recover", "sword.ding"]
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/xiaoju.c by LPCConverter

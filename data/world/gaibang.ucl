@@ -339,6 +339,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["strike.kai", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/5dai.c by LPCConverter
@@ -392,6 +394,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["strike.kai", "unarmed.jue", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/6dai.c by LPCConverter
@@ -446,6 +450,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["strike.kai", "unarmed.jue", "staff.luan", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/7dai.c by LPCConverter
@@ -500,6 +506,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["strike.kai", "unarmed.jue", "staff.luan", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/cloth.c by LPCConverter

@@ -2129,6 +2129,8 @@ item_desc = {
   engage = {
     fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["官兵喝道：大胆刁民，竟敢造反不成？", "官兵喝道：跑得了和尚跑不了庙，你还是快快束手就擒！"]
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/boy.c by LPCConverter

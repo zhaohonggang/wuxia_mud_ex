@@ -2631,6 +2631,8 @@ direction = "east"
   engage = {
     fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["宋兵喝道：大胆刁民，竟敢造反不成？", "宋兵喝道：跑得了和尚跑不了庙，你还是快快束手就擒！"]
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/npc/boy.c by LPCConverter
@@ -2926,6 +2928,8 @@ chats = [
     greet_delay = 0
     add_actions = ["check", "chazhang", "convert", "duihuan", "deposit", "cun", "withdraw", "qu", "join", "decide", "yao", "unjoin"]
   }
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/npc/jia.c by LPCConverter

@@ -4933,6 +4933,8 @@ item_desc = {
   engage = {
     fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["北京官兵喝道：大胆刁民，京城之中，竟敢造反不成？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/bing2.c by LPCConverter
@@ -4971,6 +4973,8 @@ item_desc = {
   engage = {
     fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["东厂官兵喝道：大胆刁民，京城之中，竟敢造反不成？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/bing3.c by LPCConverter
@@ -5009,6 +5013,8 @@ item_desc = {
   engage = {
     fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["西厂官兵喝道：大胆刁民，京城之中，竟敢造反不成？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/boy1.c by LPCConverter
@@ -5556,6 +5562,8 @@ chats = [
   engage = {
     fight = { accept = true msg = "这可是你活腻了自找的，休得怪我无情。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["多隆喝道：他奶奶的，你连我都敢惹？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/fangang.c by LPCConverter
@@ -6093,6 +6101,8 @@ chats = [
     { id = items.sword1.id }
   ]
 
+  chat_chance_combat = 60
+  chat_msg_combat = ["recover"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/guixinshu.c by LPCConverter
@@ -6143,6 +6153,8 @@ chats = [
     { id = items.cloth5.id }
   ]
 
+  chat_chance_combat = 60
+  chat_msg_combat = ["recover"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/guizhong.c by LPCConverter
@@ -6199,6 +6211,8 @@ chats = [
     { id = items.hupi.id }
   ]
 
+  chat_chance_combat = 60
+  chat_msg_combat = ["recover"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/guizishou.c by LPCConverter
@@ -9016,6 +9030,8 @@ chats = [
   engage = {
     fight = { accept = true msg = "这可是你活腻了自找的，休得怪我无情。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["御前侍卫喝道：亡命狂徒，京城之中，岂得由你猖狂？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/yuqian2.c by LPCConverter
@@ -9054,6 +9070,8 @@ chats = [
   engage = {
     fight = { accept = true msg = "这可是你活腻了自找的，休得怪我无情。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["骁骑营侍卫喝道：亡命狂徒，京城之中，岂得由你猖狂？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/zhanggui.c by LPCConverter
@@ -9121,6 +9139,8 @@ chats = [
   engage = {
     fight = { accept = true msg = "这可是你活腻了自找的，休得怪我无情。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["张康年喝道：太岁头上居然敢动土？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/zhaoqi.c by LPCConverter
@@ -9160,6 +9180,8 @@ chats = [
   engage = {
     fight = { accept = true msg = "这可是你活腻了自找的，休得怪我无情。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["赵齐贤喝道：太岁头上居然敢动土？"]
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/zheng.c by LPCConverter

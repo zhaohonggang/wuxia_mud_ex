@@ -250,6 +250,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["sword.po", "blade.zhenyan", "blade.huo", "staff.wugou", "staff.chan", "staff.ban", "unarmed.cimu", "parry.nuoyi", "dodge.lingbo", "throwing.shan", "hand.zhugu", "strike.wuji", "finger.six", "finger.zhongheng", "claw.zhua", "recover", "powerup", "shield", "heal", "dispel", "regenerate"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/hua.c by LPCConverter
@@ -302,6 +304,8 @@ item_desc = {
     { id = items.miji2.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.aojue", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/kou.c by LPCConverter
@@ -357,6 +361,8 @@ item_desc = {
     { id = items.jue.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["blade.bafa", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/li.c by LPCConverter
@@ -418,6 +424,8 @@ chats = [
     { id = items.tianxiadan.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["throwing.fei", "dodge.guiyuan", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/li2.c by LPCConverter
@@ -472,6 +480,8 @@ chats = [
     { id = items.miji3.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.fei", "freeze", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/tie.c by LPCConverter
@@ -524,6 +534,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/xu.c by LPCConverter
@@ -579,6 +591,8 @@ chats = [
     { id = items.sheli.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["hand.jie", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/sky/npc/obj/chijian.c by LPCConverter

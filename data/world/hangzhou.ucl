@@ -2776,6 +2776,8 @@ item_desc = {
     { id = items.yaodai.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["unarmed.cuo", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/huo.c by LPCConverter
@@ -2838,6 +2840,8 @@ item_desc = {
     { id = items.shortsword.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.haishi", "dodge.hua", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/jiang.c by LPCConverter
@@ -2942,6 +2946,8 @@ item_desc = {
     { id = items.changjian.id }
   ]
 
+  chat_chance_combat = 60
+  chat_msg_combat = ["sword.ren", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/luo.c by LPCConverter
@@ -3244,6 +3250,8 @@ item_desc = {
     { id = items.greyrobe.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["sword.zhu", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/xinyan.c by LPCConverter
@@ -3579,6 +3587,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 70
+  chat_msg_combat = ["wield changjian", "haha", "unwield changjian", "wield jili", "unwield jili"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/zhou.c by LPCConverter
@@ -4028,6 +4038,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/npc/dao-ke.c by LPCConverter
@@ -4487,6 +4499,8 @@ chats = [
     { id = items.tiejia.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["throwing.shan", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/npc/mengmian.c by LPCConverter
@@ -4573,6 +4587,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 50
+  chat_msg_combat = ["E)7r=P5@#:I1HKDD#!I1HKDD#!", "E)7r=P5@#:SPMA7KDD#!9bLl /HUOB4r=YDD#!", "surrender"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/npc/poorman.c by LPCConverter
@@ -5045,6 +5061,8 @@ chats = [
     { id = items.zhujian.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["powerup", "sword.xin"]
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/npc/obj/baozi.c by LPCConverter

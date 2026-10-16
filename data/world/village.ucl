@@ -860,6 +860,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 50
+  chat_msg_combat = ["E)7r=P5@#:I1HKDD#!I1HKDD#!", "E)7r=P5@#:SPMA7KDD#!9bLl /HUOB4r=YDD#!", "surrender"]
     }
 
 # Generated from C:/files/git/mud/d/village/npc/poorman.c by LPCConverter

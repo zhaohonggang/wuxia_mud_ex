@@ -2684,6 +2684,8 @@ chats = [
     hit = { accept = true }
     kill = { accept = true }
   }
+  chat_chance_combat = 100
+  chat_msg_combat = ["powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/npc/mengpo.c by LPCConverter
@@ -2788,6 +2790,8 @@ chats = [
     hit = { accept = true }
     kill = { accept = true }
   }
+  chat_chance_combat = 100
+  chat_msg_combat = ["powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/npc/qinglong.c by LPCConverter
@@ -2877,6 +2881,8 @@ chats = [
     { id = items.qise.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["finger.zhi", "strike.zhang", "cuff.quan", "hand.shou", "claw.zhua", "recover", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/npc/wangfangping.c by LPCConverter
@@ -3180,6 +3186,8 @@ chats = [
     { kind = "item_id" id = "xuanwu jiake" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] },
     { kind = "any" accept = true msg = ["十殿阎罗摇了摇头，道：你给我这个干什么？", "十殿阎罗对{npc}笑道：你已经替我备齐所有的原料了，这个还是你留着自己用吧。", "十殿阎罗道：无功不受禄，这个你还是自己留着吧。", "十殿阎罗见是龙胆，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是龙胆，对{npc}摇头道：龙胆你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是虎骨，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是虎骨，对{npc}摇头道：虎骨你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是朱羽，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的 帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是朱羽，对{npc}摇头道：朱羽你已经给过我了，你还是快去寻找其它原料吧。", "十殿阎罗见是玄武甲壳，大喜道：“这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有 你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。”", "十殿阎罗见是玄武甲壳，对{npc}摇头道：这东西你已经给过我了，你还是快去寻找其它原料吧。"] fail_msg = ["你没有这件东西。"] }
   ]
+  chat_chance_combat = 100
+  chat_msg_combat = ["finger.zhi", "strike.zhang", "cuff.quan", "hand.shou", "claw.zhua", "recover", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/npc/yinchangsheng.c by LPCConverter
@@ -6090,6 +6098,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["sword.po", "blade.zhenyan", "blade.huo", "staff.wugou", "staff.chan", "staff.ban", "unarmed.cimu", "parry.nuoyi", "dodge.lingbo", "throwing.shan", "hand.zhugu", "strike.wuji", "finger.six", "finger.zhongheng", "claw.zhua", "recover", "powerup", "shield", "heal", "dispel", "regenerate"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/hua.c by LPCConverter
@@ -6122,6 +6132,8 @@ item_desc = {
     { id = items.chijian.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.aojue", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/kou.c by LPCConverter
@@ -6154,6 +6166,8 @@ item_desc = {
     { id = items.jingzhongyue.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["blade.bafa", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/li.c by LPCConverter
@@ -6195,6 +6209,8 @@ chats = [
     { id = items.renou.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["throwing.fei", "dodge.guiyuan", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/li2.c by LPCConverter
@@ -6227,6 +6243,8 @@ chats = [
     { id = items.chiyoujian.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.fei", "freeze", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/lonely.c by LPCConverter
@@ -6295,6 +6313,8 @@ chats = [
     fight = { accept = true msg = "你等会，让我把面前的这个家伙放倒再说。" }
     kill = { accept = true msg = "很好！近年还真没有遇到什么敢和我较量的高手！" }
   }
+  chat_chance_combat = 200
+  chat_msg_combat = ["sword.po", "sword.juemie", "sword.lei", "sword.tianhua", "sword.wanli", "sword.yuce"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/tianshen.c by LPCConverter
@@ -6353,6 +6373,8 @@ chats = [
     { id = items.changjian.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["sword.po", "sword.juemie", "sword.lei", "sword.tianhua", "sword.wanli", "sword.yuce"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/tie.c by LPCConverter
@@ -6386,6 +6408,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 80
+  chat_msg_combat = ["powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/xu.c by LPCConverter
@@ -6418,6 +6442,8 @@ chats = [
     { id = items.hands.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["hand.jie", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/chijian.c by LPCConverter

@@ -464,6 +464,8 @@ item_desc = {
     { id = items.jiaofu.id }
   ]
 
+  chat_chance_combat = 2
+  chat_msg_combat = ["白龟寿喝道：无耻小贼，竟敢打屠龙刀的主意？"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/chang.c by LPCConverter
@@ -509,6 +511,8 @@ item_desc = {
     hit = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
     kill = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
   }
+  chat_chance_combat = 90
+  chat_msg_combat = ["常金鹏喝道：恶贼还不放手？", "常金鹏喝道：恶贼不得无礼！", "hammer.poli"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/guo.c by LPCConverter
@@ -596,6 +600,8 @@ item_desc = {
     { id = items.bosi.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["powerup", "recover", "sword.xiyan", "sword.guang", "sword.lian"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/jiaozhong1.c by LPCConverter
@@ -692,6 +698,8 @@ item_desc = {
     { id = items.bosi.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["powerup", "recover", "sword.can", "sword.xiyan"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/mai.c by LPCConverter
@@ -779,6 +787,8 @@ item_desc = {
     { id = items.bosi.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["powerup", "recover", "sword.xiyan", "sword.guang", "sword.lian"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/qqq.c by LPCConverter
@@ -824,6 +834,8 @@ item_desc = {
     hit = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
     kill = { accept = true msg = "他奶奶的，要打架吗？正合老子心意！" retaliate = true }
   }
+  chat_chance_combat = 90
+  chat_msg_combat = ["常金鹏喝道：恶贼还不放手？", "常金鹏喝道：恶贼不得无礼！", "hammer.poli"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/yin.c by LPCConverter
@@ -1716,6 +1728,8 @@ direction = "down"
     { id = items.tongbo.id }
   ]
 
+  chat_chance_combat = 20
+  chat_msg_combat = ["blade.poli", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-4zhang.c by LPCConverter
@@ -1751,6 +1765,8 @@ direction = "down"
     { id = items.tiezhang.id }
   ]
 
+  chat_chance_combat = 20
+  chat_msg_combat = ["staff.xiang", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-5dao.c by LPCConverter
@@ -1786,6 +1802,8 @@ direction = "down"
     { id = items.blade1.id }
   ]
 
+  chat_chance_combat = 20
+  chat_msg_combat = ["blade.xueyu", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/18jingang-5jian.c by LPCConverter
@@ -1821,6 +1839,8 @@ direction = "down"
     { id = items.sword2.id }
   ]
 
+  chat_chance_combat = 20
+  chat_msg_combat = ["sword.bei", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/ada.c by LPCConverter
@@ -1883,6 +1903,8 @@ direction = "down"
     fight = { accept = false msg = "没郡主的吩咐我不会出手。" }
     hit = { accept = false msg = "没郡主的吩咐我不会出手。" }
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.kuang", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/ada2.c by LPCConverter
@@ -1945,6 +1967,8 @@ direction = "down"
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.fen", "sword.guan", "recover", "powerup", "shengang"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/aer.c by LPCConverter
@@ -2003,6 +2027,8 @@ direction = "down"
     fight = { accept = false msg = "没郡主的吩咐我不会出手。" }
     hit = { accept = false msg = "没郡主的吩咐我不会出手。" }
   }
+  chat_chance_combat = 20
+  chat_msg_combat = ["strike.feng", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/asan.c by LPCConverter
@@ -2061,6 +2087,8 @@ direction = "down"
     fight = { accept = false msg = "没郡主的吩咐我不会出手。" }
     hit = { accept = false msg = "没郡主的吩咐我不会出手。" }
   }
+  chat_chance_combat = 200
+  chat_msg_combat = ["finger.fumo", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/bing1.c by LPCConverter
@@ -2207,6 +2235,8 @@ direction = "down"
     fight = { accept = false msg = "哼，如我何太冲内力尚在，也由不得你猖狂。" }
     hit = { accept = false msg = "哼，如我何太冲内力尚在，也由不得你猖狂。" }
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.fanyin", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/hebiweng.c by LPCConverter
@@ -2253,6 +2283,8 @@ direction = "down"
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["strike.wuji", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/li4.c by LPCConverter
@@ -2299,6 +2331,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/luzhangke.c by LPCConverter
@@ -2345,6 +2379,8 @@ direction = "down"
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 100
+  chat_msg_combat = ["strike.wuji", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/qian2.c by LPCConverter
@@ -2391,6 +2427,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/sun3.c by LPCConverter
@@ -2437,6 +2475,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/wang8.c by LPCConverter
@@ -2483,6 +2523,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/wu6.c by LPCConverter
@@ -2529,6 +2571,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao.c by LPCConverter
@@ -2596,6 +2640,8 @@ direction = "down"
     fight = { accept = false msg = "欺负一个弱小女子算什么，要比和我的手下比(bi)。" }
     hit = { accept = false msg = "欺负一个弱小女子算什么，要比和我的手下比(bi)。" }
   }
+  chat_chance_combat = 60
+  chat_msg_combat = ["sword.ren"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao1.c by LPCConverter
@@ -2642,6 +2688,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/zhaomin2.c by LPCConverter
@@ -2695,6 +2743,8 @@ direction = "down"
     { id = items.female2_cloth.id }
   ]
 
+  chat_chance_combat = 60
+  chat_msg_combat = ["sword.ren"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/zheng7.c by LPCConverter
@@ -2741,6 +2791,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/zhou5.c by LPCConverter
@@ -2787,6 +2839,8 @@ direction = "down"
     { id = items.gong.id }
   ]
 
+  chat_chance_combat = 200
+  chat_msg_combat = ["throwing.baibu"]
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/gong.c by LPCConverter

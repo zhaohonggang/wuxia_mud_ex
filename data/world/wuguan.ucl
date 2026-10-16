@@ -1130,6 +1130,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["perform strike.fei twice", "perform strike.hui twice", "perform strike.zhen twice", "perform strike.qu and strike.hui", "perform strike.fei and strike.hui", "perform strike.zhen and strike.hui", "perform strike.zhen and strike.fei", "shield", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/wuguan/npc/puren1.c by LPCConverter
@@ -1228,6 +1230,8 @@ chats = [
     hit = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
     kill = { accept = true msg = "给我滚进去，跑到这里来瞎胡闹什么！" retaliate = true }
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["finger.qian", "finger.dian", "dodge.gui", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/wuguan/npc/wusantong.c by LPCConverter
@@ -1285,6 +1289,8 @@ chats = [
   init = {
     greet_delay = 1
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["cuff.man", "strike.bian", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/wuguan/npc/wuxiuwen.c by LPCConverter
@@ -1352,6 +1358,8 @@ chats = [
   accept = [
     { kind = "any" accept = true msg = ["你还没完成工作，怎么就回来还工具了，偷懒吗？", "你还错东西了吧，我从没有发过这样工具。", "我没有发给你过东西，你是不是还错了？", "干得不错，你现在去耶律师兄那儿领取酬劳吧。", "shake", "nod"] }
   ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["finger.qian", "finger.dian", "dodge.gui", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/wuguan/npc/yahuan.c by LPCConverter
@@ -1447,6 +1455,8 @@ chats = [
     greet_delay = 0
     add_actions = ["task"]
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["unarmed.ruo", "unarmed.kong", "hup", "shield", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/wuguan/npc/zhuziliu.c by LPCConverter
@@ -1505,6 +1515,8 @@ chats = [
   init = {
     greet_delay = 1
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["dagger.ding", "cuff.man", "strike.bian", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/wuguan/obj/chaidao.c by LPCConverter

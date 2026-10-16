@@ -2974,6 +2974,7 @@ chats = [
   engage = {
     fight = { accept = true }
   }
+  chat_msg_combat = ["blade.kuang"]
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/turou.c by LPCConverter
@@ -3202,6 +3203,8 @@ chats = [
     { id = items.ycloth.id }
   ]
 
+  chat_chance_combat = 60
+  chat_msg_combat = ["sword.mie"]
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/blackcloth.c by LPCConverter

@@ -2985,6 +2985,8 @@ item_desc = {
   engage = {
     fight = { accept = true msg = "大爷我正想找人杀呐，今天算你倒霉。" retaliate = true }
   }
+  chat_chance_combat = 10
+  chat_msg_combat = ["官兵喝道：大胆刁民，竟敢造反不成？", "官兵喝道：跑得了和尚跑不了庙，你还是快快束手就擒！"]
     }
 
 # Generated from C:/files/git/mud/d/city/npc/chen.c by LPCConverter
@@ -3284,6 +3286,8 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 15
+  chat_msg_combat = ["王五说道：你当真吃了豹子胆，敢跟大爷较量！", "王五忽然挥出一刀，招数精奇，但刀到中途却又急忙收招。", "王五说道：快滚！算我输了还不行……"]
     }
 
 # Generated from C:/files/git/mud/d/city/npc/guigong.c by LPCConverter
@@ -3711,6 +3715,8 @@ chats = [
   accept = [
     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "haha"] }
   ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["cuff.juan", "blade.duan", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/city/npc/mudren-mm.c by LPCConverter
@@ -4055,6 +4061,8 @@ chats = [
     fight = { accept = false msg = "没兴趣。" }
     hit = { accept = true msg = "他奶奶的，连我你都敢惹？" retaliate = true }
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["cuff.gua", "whip.chan", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/city/npc/shiye.c by LPCConverter
@@ -4765,6 +4773,7 @@ chats = [
     { id = items.yayifu.id }
   ]
 
+  chat_msg_combat = ["衙役说道：你当这里是什么地方，敢来这里骚扰？", "衙役说道：你要是再无理取闹，当心捕头把你抓去坐牢!", "衙役手中的刀越砍越快，让你应接不暇。", "衙役说道：衙门岂是你放肆的地方？！"]
     }
 
 # Generated from C:/files/git/mud/d/city/npc/yuhuan.c by LPCConverter
@@ -6037,6 +6046,8 @@ chats = [
     { id = items.ccloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["unarmed.tian", "unarmed.qiong", "unarmed.bian", "unarmed.sheng", "recover", "powerup", "shield"]
     }
 
 # Generated from C:/files/git/mud/d/city/obj/cgift/dabing.c by LPCConverter

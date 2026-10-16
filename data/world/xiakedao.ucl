@@ -2631,6 +2631,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/xiakedao/npc/tongzi.c by LPCConverter

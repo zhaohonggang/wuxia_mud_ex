@@ -171,6 +171,8 @@ zones "item" {
   engage = {
     fight = { accept = false msg = "没兴趣。" }
   }
+  chat_chance_combat = 3
+  chat_msg_combat = ["张天师摇摇铃铛，道：天灵灵，地零零，太上老君还不显灵？", "张天师呼呼的吹了几口气。"]
     }
 
 # Generated from C:/files/git/mud/d/item/obj/butian.c by LPCConverter

@@ -700,6 +700,7 @@ zones "room" {
     hit = { accept = false msg = "{npc}愁眉苦脸的对{name}道：“可不要和我开这种玩笑！”" }
     kill = { accept = false msg = "{npc}一声长叹，道：“既然主人不留我了，罢罢罢！合则留，不合则去！我走了。” 说罢，老人丢下扫把，飘然而去。" }
   }
+  chat_chance_combat = 80
     }
 
 # Generated from C:/files/git/mud/d/room/roomnpc/puren.c by LPCConverter

@@ -3628,6 +3628,8 @@ chats = [
     { id = items.changjian.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["cuff.man", "strike.bian", "sword.jing", "sword.lian", "recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/luoyang/npc/laobao.c by LPCConverter
@@ -3758,6 +3760,8 @@ chats = [
     greet_delay = 0
     add_actions = ["list", "buy"]
   }
+  chat_chance_combat = 100
+  chat_msg_combat = ["freeze", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/luoyang/npc/lu.c by LPCConverter
@@ -3847,6 +3851,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["unarmed.cui", "unarmed.fei", "unarmed.xian", "powerup", "recover"]
     }
 
 # Generated from C:/files/git/mud/d/luoyang/npc/qi.c by LPCConverter
@@ -4066,6 +4072,8 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  chat_chance_combat = 120
+  chat_msg_combat = ["recover", "powerup"]
     }
 
 # Generated from C:/files/git/mud/d/luoyang/npc/xiao.c by LPCConverter

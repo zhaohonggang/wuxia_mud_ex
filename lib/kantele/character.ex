@@ -334,7 +334,15 @@ defmodule Kantele.Character.NonPlayerMeta do
     :engage,
     # LPC `carry_object(...)` 的 item_id 列表（转换器的 `carry = [...]`）。
     # 装备动作在 SpawnController 出生时做 —— 加载期 Items cache 还没就绪。
-    {:carry, []}
+    {:carry, []},
+
+    # LPC `set("chat_chance_combat", N)` / `set("chat_msg_combat", {...})`：
+    # NPC 战斗中的闲聊台词与触发概率。对应 NonPlayerMeta 字段，
+    # 由 scripts/backfill_npc_combat_chat.py 从源 .c 回填。
+    # 转换器 build_chat/1 只处理 chat_chance/chat_msg（闲聊），不处理
+    # *_combat 变体 → 全库 456 处战斗聊天被静默丢弃，本批回填。
+    {:chat_msg_combat, []},
+    {:chat_chance_combat, 0}
   ]
 
   defimpl Kalevala.Meta.Trim do
