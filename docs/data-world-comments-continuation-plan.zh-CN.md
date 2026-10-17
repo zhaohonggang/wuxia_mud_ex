@@ -414,7 +414,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 
 | 顺序 | 子系统 | 代表函数 | 规模 | 做法 | Q1 |
 |-----:|--------|----------|-----:|------|:--:|
-| 1 | **逐对象 `add_action` 通道** | `do_move/climb/jump/open/push/enter/get/eat/think/serve/...` | 646 行 / 215 名 | `Room.add_action/2` 已有雏形但只有房间级、无 UCL 入口。定义 UCL `actions = [ { verb, handler } ]`，loader 读入后注册到房间/NPC/物品；`Kalevala.Verb` 路由时**对象级优先**。**这一层覆盖最大面积** | ✅ 已实测可表达 |
+| 1 | **逐对象 `add_action` 通道** | `do_move/climb/jump/open/push/enter/get/eat/think/serve/...`（实际 1568 调用/793 文件，详见 D24） | 1568 调用 / 379 handler | **勘查已完成**（`scripts/survey_add_action.py`，D24）：NPC add_actions 已被冻结转换器写进 UCL（52 文件）但**只存 handler 丢了 verb**、加载后无人分发；`room.ex` `resolve_verb/4` 骨架格式（map）与 UCL 扁平 list 不匹配；item 完全缺 UCL 入口。下一步：**定义 verb→handler schema + 对象级分发路由**（房间/物品补 UCL 入口）+ 桥接既有 shop 事件。先 pilot 高体量子集（shop list/buy 292 调用，已有 `npc_shop_event.ex` 承载），再扩 | ✅ 已实测可表达 |
 | 2 | 战斗回调 | `accept_fight/kill/hit/ansuan`、`unconcious`、`die`、`owner_is_killed` | 259 行 / 12 名 | **方案 A：在新脚本里重新抽取 `engage`**（读同一批 LPC 源，只增不改地合并进 `.ucl`）。**不要加宽转换器的抽取规则** —— 那违反 P1。见框架文档 §5 决策点 1 | ✅ |
 | 3 | 动态出口 | `do_turn` 的 `set("exits/down", ...)` | 含在 `do_*` 内 | **框架优先**：出口现在是**加载期固化**的，运行时增删需要先加 API（`Room.dynamic_exits` 已有雏形，缺增删入口） | ⚠️ 需定 schema |
 | 4 | look / inquiry | `look_*`、`ask_*`、`item_desc` 闭包 `(: look_hua :)` | 185 行 / 86 名 | schema **已可表达**（`value = { kind = "smith"  pattern = "huwan" }` 实测 OK），缺的是运行时 handler 注册表 + 分发。与 `ucl-comment-todo` §6 E（`xiangyang` 铁匠 6 条）合并做 | ✅ |
@@ -476,6 +476,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | `probe_valid_leave_candidates.exs` | P4 分类 | —（加载世界） | `tmp/p4_verdict.json` | **容器内** | ✅ | ✅ **已建（P4 已完成）**（八项真门：parse/enforceable/supported/dir-scoped-or-all_dirs/房间找到/方向存在/别名有定义/不被既有生效条目遮蔽；产物 11 effective / 1 blocked） |
 | `backfill_exit_vetoes.py` | P4 回填 | `tmp/p4_verdict.json` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建（P4 已完成）**（dry-run 默认、先 dry-run 定计划→`validate_ucl` 基线→备份→写盘→插入性子序列断言+问题集对比；逗号紧跟上一 `}`；幂等；**6 区 / +68 行**） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
+| `survey_add_action.py` | **P5-1 勘查** | `.c` 语料 + `lib/.../commands/` | `tmp/survey_add_action.json` | 宿主机 | ✅ | ✅ **已建（D24）**（扫描 `add_action("verb","handler")` 调用；按对象类型 room/npc/item/other 分诊；标注 Tier0 已有命令 vs 需新建；1568 调用/793 文件；发现 NPC add_actions 已被转换器写进 UCL 但只存 handler 丢了 verb、且未接分发） |
 
 **所有脚本的公共约定**
 - Python 脚本只在**宿主机**跑（容器内无 Python，见 `lpc-converter-usage.zh-CN.md` §二）；
