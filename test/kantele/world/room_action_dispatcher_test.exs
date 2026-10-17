@@ -1,0 +1,112 @@
+defmodule Kantele.World.RoomActionDispatcherTest do
+  use ExUnit.Case, async: true
+
+  alias Kantele.World.Room
+  alias Kantele.World.RoomAction
+  alias Kantele.World.RoomActionDispatcher
+  alias Kantele.World.RoomActionHandlers
+
+  # 假 handler：实现 RoomAction 行为，把 verb/trailing 记到 conn 上以便断言被调用。
+  defmodule FakeMove do
+    use RoomAction
+    def run(conn, %{verb: verb, trailing: trailing}), do: Map.put(conn, :fake_called, {verb, trailing})
+  end
+
+  defp room_with_actions(actions) do
+    %Room{id: "z:r", key: "r", zone_id: "z", actions: actions}
+  end
+
+  defp conn_with_room(room) do
+    %{private: %{room: room}}
+  end
+
+  # 假注册表：只认 "do_move"，其余视为未移植。
+  defp fake_lookup do
+    fn
+      "do_move" -> {:ok, {FakeMove, :run}}
+      other -> {:unimplemented, other}
+    end
+  end
+
+  describe "动词提取（经 resolve 间接验证，extract_verb 为私有）" do
+    test "前导/尾部空白被剥离，只取首词" do
+      conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
+
+      assert {:handled, {FakeMove, :run}, params} =
+               RoomActionDispatcher.resolve(conn, "  move   foo  bar ", fake_lookup())
+
+      assert params.verb == "move"
+      assert params.trailing == "foo  bar"
+    end
+
+    test "CJK 动词原样匹配（大小写/分词无关）" do
+      conn = conn_with_room(room_with_actions(%{"面壁" => "do_mianbi"}))
+      cjk_lookup = fn "do_mianbi" -> {:ok, {FakeMove, :run}}; _ -> {:unimplemented, "x"} end
+
+      assert {:handled, {FakeMove, :run}, params} =
+               RoomActionDispatcher.resolve(conn, "面壁 一下", cjk_lookup)
+
+      assert params.verb == "面壁"
+      assert params.trailing == "一下"
+    end
+
+    test "全空白 / 空输入 → :not_handled（不会误命中）" do
+      conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
+
+      assert :not_handled = RoomActionDispatcher.resolve(conn, "   ", fake_lookup())
+      assert :not_handled = RoomActionDispatcher.resolve(conn, "", fake_lookup())
+    end
+  end
+
+  describe "resolve/3" do
+    test "房间有 verb 且 handler 已注册 → {:handled, {mod, fun}, params}" do
+      conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
+
+      assert {:handled, {FakeMove, :run}, params} =
+               RoomActionDispatcher.resolve(conn, "move foo", fake_lookup())
+
+      assert params.verb == "move"
+      assert params.trailing == "foo"
+      assert %Room{} = params.room
+    end
+
+    test "房间无此 verb → :not_handled（即便注册表认得 handler）" do
+      conn = conn_with_room(room_with_actions(%{"climb" => "do_climb"}))
+
+      assert :not_handled = RoomActionDispatcher.resolve(conn, "move", fake_lookup())
+    end
+
+    test "房间有 verb 但 handler 未移植 → :not_handled（真实空注册表）" do
+      conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
+
+      assert :not_handled = RoomActionDispatcher.resolve(conn, "move", &RoomActionHandlers.lookup/1)
+    end
+
+    test "conn 没有房间（private.room 为 nil）→ :not_handled（不崩溃）" do
+      conn = %{private: %{room: nil}}
+
+      assert :not_handled = RoomActionDispatcher.resolve(conn, "move", fake_lookup())
+    end
+  end
+
+  describe "dispatch/3（接线等价：应用 handler 或放行全局命令）" do
+    test "正向路径：handler 被调用，返回 {:handled, conn}" do
+      conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
+
+      assert {:handled, conn2} = RoomActionDispatcher.dispatch(conn, "move foo", fake_lookup())
+      assert conn2.fake_called == {"move", "foo"}
+    end
+
+    test " dormant 路径（真实空注册表）：返回 :not_handled，放行全局命令" do
+      conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
+
+      assert :not_handled = RoomActionDispatcher.dispatch(conn, "move", &RoomActionHandlers.lookup/1)
+    end
+
+    test "房间无 verb：返回 :not_handled" do
+      conn = conn_with_room(room_with_actions(%{}))
+
+      assert :not_handled = RoomActionDispatcher.dispatch(conn, "wave", fake_lookup())
+    end
+  end
+end

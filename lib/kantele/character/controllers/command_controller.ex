@@ -8,6 +8,7 @@ defmodule Kantele.Character.CommandController do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Events
   alias Kantele.Character.IncomingEvents
+  alias Kantele.World.RoomActionDispatcher
 
   @impl true
   def init(conn) do
@@ -32,19 +33,31 @@ defmodule Kantele.Character.CommandController do
         Tags.escape(data)
       end
 
-    case Commands.call(conn, data) do
-      {:error, :unknown} ->
-        conn
-        |> render(CommandView, "unknown", %{})
-        |> prompt(CommandView, "prompt", %{})
-
-      conn ->
+    case RoomActionDispatcher.dispatch(conn, data) do
+      {:handled, conn} ->
         case Map.get(conn.assigns, :prompt, true) do
           true ->
             prompt(conn, CommandView, "prompt", %{})
 
           false ->
             conn
+        end
+
+      :not_handled ->
+        case Commands.call(conn, data) do
+          {:error, :unknown} ->
+            conn
+            |> render(CommandView, "unknown", %{})
+            |> prompt(CommandView, "prompt", %{})
+
+          conn ->
+            case Map.get(conn.assigns, :prompt, true) do
+              true ->
+                prompt(conn, CommandView, "prompt", %{})
+
+              false ->
+                conn
+            end
         end
     end
   end
