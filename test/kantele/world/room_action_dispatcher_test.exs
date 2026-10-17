@@ -147,9 +147,9 @@ defmodule Kantele.World.RoomActionDispatcherTest do
       assert Enum.any?(texts, &String.contains?(&1, "剑冢"))
     end
 
-    test "同名 handler 按房间区分：baituo:neishi 的 do_move 未移植 → 不触发" do
+    test "同名 handler 按房间区分：未注册房间的 do_move → 不触发" do
       room = room_with_actions(%{"move" => "do_move"})
-      conn = %{private: %{room: room}, character: %{room_id: "baituo:neishi"}, output: []}
+      conn = %{private: %{room: room}, character: %{room_id: "some:other"}, output: []}
 
       assert :not_handled = RoomActionDispatcher.dispatch(conn, "move", &RoomActionHandlers.lookup/2)
     end
@@ -171,6 +171,29 @@ defmodule Kantele.World.RoomActionDispatcherTest do
       assert event.topic == Kalevala.Event.Message
       assert event.data.type == "vision"
       assert String.contains?(event.data.text, "群蛙")
+    end
+
+    test "baituo:neishi 的 move（欧阳世家 + pen）→ 真实 Move handler 广播开洞" do
+      room = room_with_actions(%{"move" => "do_move"})
+
+      conn = %Kalevala.Character.Conn{
+        character: %Kalevala.Character{
+          name: "测试",
+          room_id: "baituo:neishi",
+          meta: %{family: %{born_family: "欧阳世家"}}
+        },
+        private: %Kalevala.Character.Conn.Private{room: room, channel_changes: []},
+        output: []
+      }
+
+      assert {:handled, conn2} =
+               RoomActionDispatcher.dispatch(conn, "move pen", &RoomActionHandlers.lookup/2)
+
+      assert [{:publish, "rooms:baituo:neishi", event, _opts, _err} | _] =
+               conn2.private.channel_changes
+
+      assert event.data.type == "vision"
+      assert String.contains?(event.data.text, "露出一个黑幽幽的洞口")
     end
   end
 end

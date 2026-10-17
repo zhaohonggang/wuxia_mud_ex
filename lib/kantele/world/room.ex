@@ -379,6 +379,99 @@ defmodule Kantele.World.Room do
 
   def actions_by_id(_), do: %{}
 
+  # ---- 运行时动态出口增删（对应 LPC `set/delete("exits/<dir>", ...)`） ----
+  #
+  # `room.exits` 是 `%Kalevala.World.Exit{}` 列表（loader 加载期构建，
+  # `Callbacks.exits/1` 直接返回它、`snapshot/1` 也直接读它）。本组函数在运行期
+  # 向房间进程 `state.data.exits` 追加/移除出口 → look 与移动立即生效。
+  #
+  # P7 安全：仅当 handler 主动调用 `set_exit/delete_exit` 时才改数据；没有调用方
+  # 时 `room.exits` 原样不动，对全部既有房间零行为变化。
+
+  @doc "房间 struct 是否有指定方向的出口"
+  def has_exit?(room, exit_name) when is_binary(exit_name) do
+    room
+    |> Map.get(:exits)
+    |> List.wrap()
+    |> Enum.any?(fn exit -> Map.get(exit, :exit_name) == exit_name end)
+  end
+
+  def has_exit?(_room, _exit_name), do: false
+
+  @doc "在房间 struct 上设置（或覆盖同方向）动态出口，返回新 struct"
+  def put_exit(room, exit_name, target_room_id) when is_binary(exit_name) do
+    exit = %Kalevala.World.Exit{
+      id: "#{Map.get(room, :id)}:#{exit_name}",
+      exit_name: exit_name,
+      start_room_id: Map.get(room, :id),
+      end_room_id: target_room_id
+    }
+
+    kept =
+      room
+      |> Map.get(:exits)
+      |> List.wrap()
+      |> Enum.reject(fn e -> Map.get(e, :exit_name) == exit_name end)
+
+    Map.put(room, :exits, [exit | kept])
+  end
+
+  @doc "移除房间 struct 上指定方向的出口，返回新 struct"
+  def remove_exit(room, exit_name) when is_binary(exit_name) do
+    kept =
+      room
+      |> Map.get(:exits)
+      |> List.wrap()
+      |> Enum.reject(fn e -> Map.get(e, :exit_name) == exit_name end)
+
+    Map.put(room, :exits, kept)
+  end
+
+  def remove_exit(room, _exit_name), do: room
+
+  @doc """
+  运行期：在房间进程上设置动态出口（对应 LPC `set("exits/<dir>", target)`）。
+
+  房间进程不存在时返回 `:error`（安全降级，不崩溃）。
+  """
+  def set_exit(room_id, exit_name, target_room_id) when is_binary(room_id) do
+    update_room_data(room_id, fn room -> put_exit(room, exit_name, target_room_id) end)
+  end
+
+  def set_exit(_room_id, _exit_name, _target), do: :error
+
+  @doc "运行期：在房间进程上移除动态出口（对应 LPC `delete(\"exits/<dir>\")`）"
+  def delete_exit(room_id, exit_name) when is_binary(room_id) do
+    update_room_data(room_id, fn room -> remove_exit(room, exit_name) end)
+  end
+
+  def delete_exit(_room_id, _exit_name), do: :error
+
+  @doc "运行期：房间（进程）是否有指定方向出口；无进程返回 false"
+  def has_exit_by_id?(room_id, exit_name) when is_binary(room_id) and is_binary(exit_name) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        has_exit?(state.data || %{}, exit_name)
+
+      _ ->
+        false
+    end
+  end
+
+  def has_exit_by_id?(_room_id, _exit_name), do: false
+
+  defp update_room_data(room_id, fun) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        :sys.replace_state(pid, fn state -> %{state | data: fun.(state.data)} end)
+        :ok
+
+      _ ->
+        :error
+    end
+  end
+
   # ---- 座位/玩家清单（对应 LPC seat/present/living） ----
 
   @doc "房间座位表（对应 LPC qiyuan2 的 `%{black, white, game}`）"

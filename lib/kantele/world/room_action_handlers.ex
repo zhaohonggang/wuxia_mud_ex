@@ -32,6 +32,7 @@ defmodule Kantele.World.RoomActionHandlers do
   #   - emei:shierpan3 do_clap：message_vision 房间广播（专用模块 Clap）
   #   - hangzhou:liuzhuang do_knock / huanggong:inwell do_reach：纯消息/分支
   #     （数据驱动 MessageOnly，见 room_actions/message_only.ex）
+  #   - baituo:neishi do_move：状态变更（开/关 down 密道）专用模块 Move
   @registry %{
     "huashan:lianhua" => %{
       "do_tiao" => {Kantele.World.RoomActions.Huashan.Lianhua.Tiao, :run}
@@ -45,6 +46,10 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "huanggong:inwell" => %{
       "do_reach" => {Kantele.World.RoomActions.MessageOnly, :run}
+    },
+    # 状态变更样板：开/关密道（set/delete("exits/down") + 查 born_family + 广播）
+    "baituo:neishi" => %{
+      "do_move" => {Kantele.World.RoomActions.Baituo.Neishi.Move, :run}
     }
   }
 
