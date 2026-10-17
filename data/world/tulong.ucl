@@ -247,6 +247,12 @@ direction = "east"
   direction = ~
   message = "向东的路被白龟寿拦住了。"
 }
+,
+{
+  condition = "me->query_temp('dao') && dir=='east' && (ob = present('bai guishou',this_object()))"
+  direction = "east"
+  message = "向东的路被白龟寿拦住了。"
+}
 
 ]
     }
@@ -1356,6 +1362,12 @@ valid_leave = [
   direction = ~
   message = "大门被蒙古兵挡住了。"
 }
+,
+{
+  condition = "dir == 'in' && (ob = present('qianfu zhang',this_object()))"
+  direction = "in"
+  message = "大门被蒙古兵挡住了。"
+}
 
 ]
     }
@@ -1389,6 +1401,12 @@ valid_leave = [
 valid_leave = [
 {
   direction = ~
+  message = "向北的路被神箭八雄拦住了。"
+}
+,
+{
+  condition = "dir == 'north' && (ob = present('zhao yishang',this_object()))"
+  direction = "north"
   message = "向北的路被神箭八雄拦住了。"
 }
 

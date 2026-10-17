@@ -270,10 +270,11 @@ defmodule Kantele.World.LpcConditionTest do
 
       enforceable = Enum.filter(with_cond, fn {_id, v} -> Cond.enforceable?(v.condition) end)
 
-      # 166 条里 148 条可执行；剩下 18 条是三种自定义函数形态
+      # 177 条里 159 条可执行；剩下 18 条是三种自定义函数形态
       # （check_dirs 8 / check_out 5 / ob->refuse 5），保留原文、运行时放行
-      assert length(with_cond) == 166
-      assert length(enforceable) == 148
+      # （166 → 177 / 148 → 159：P4 2026-10-16 回源回填 11 条，全部可执行）
+      assert length(with_cond) == 177
+      assert length(enforceable) == 159
 
       unsupported = Enum.reject(with_cond, fn {_id, v} -> Cond.enforceable?(v.condition) end)
 

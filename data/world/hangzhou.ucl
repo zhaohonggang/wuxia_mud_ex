@@ -2291,6 +2291,12 @@ valid_leave = [
   direction = ~
   message = "铁匠对你道：哎，这位客官，拿了兵器再走！"
 }
+,
+{
+  condition = "dir == 'west' && (int)me->query_temp('marks/ouyezi')"
+  direction = "west"
+  message = "铁匠对你道：哎，这位客官，拿了兵器再走！"
+}
 
 ]
     }

@@ -200,6 +200,13 @@ direction = ~
   direction = ~
   message = "你踩动了机关，掉进密室。"
 }
+,
+{
+  condition = "me->query_temp('/bagua/count') == 18"
+  all_dirs = true
+  direction = ~
+  message = "你踩动了机关，掉进密室。"
+}
 
 ]
     }
@@ -1642,6 +1649,12 @@ direction = "northup"
   z = 0
 valid_leave = [
 {
+  direction = "southup"
+  message = "你级别不够，不能进入达摩院。"
+}
+,
+{
+  condition = "!me->query('luohan_winner') && !wizardp(me) && dir == 'southup'"
   direction = "southup"
   message = "你级别不够，不能进入达摩院。"
 }
@@ -4117,6 +4130,12 @@ direction = ~
   z = 0
 valid_leave = [
 {
+  direction = "northup"
+  message = "你级别不够，不能进入达摩院。"
+}
+,
+{
+  condition = "!me->query('luohan_winner') && !wizardp(me) && dir == 'northup'"
   direction = "northup"
   message = "你级别不够，不能进入达摩院。"
 }

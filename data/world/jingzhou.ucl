@@ -663,6 +663,13 @@ valid_leave = [
   direction = ~
   message = "你突然头晕目旋摔倒在地。"
 }
+,
+{
+  condition = "!(me->query_temp('jinboxunhua')) && !wizardp(me) && userp(me)"
+  all_dirs = true
+  direction = ~
+  message = "你突然头晕目旋摔倒在地。"
+}
 
 ]
     }
@@ -1592,6 +1599,12 @@ valid_leave = [
 {
    condition = "(dir == 'southdown' || dir == 'northeast') && me->query('zha/山') == 1"
 direction = "southdown"
+  message = "你的雷管还插在那里，想留下来害人吗？"
+}
+,
+{
+  condition = "(dir == 'southdown' || dir == 'northeast') && me->query('zha/山') == 1"
+  direction = ~
   message = "你的雷管还插在那里，想留下来害人吗？"
 }
 

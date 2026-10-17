@@ -676,6 +676,12 @@ valid_leave = [
   direction = "westdown"
   message = "这么急的水，你想跳下去自杀呀？"
 }
+,
+{
+  condition = "dir == 'westdown' && me->query('family/family_name') != '古墓派'"
+  direction = "westdown"
+  message = "这么急的水，你想跳下去自杀呀？"
+}
 
 ]
     }

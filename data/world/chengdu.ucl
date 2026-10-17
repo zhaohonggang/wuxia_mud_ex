@@ -1505,6 +1505,12 @@ valid_leave = [
 direction = "up"
   message = "马五德笑道: 那是本馆弟子才能进去的。"
 }
+,
+{
+  condition = "!me->query_temp('marks/jinniu_paied') && (dir == 'up' || dir == 'down')"
+  direction = ~
+  message = "马五德笑道: 那是本馆弟子才能进去的。"
+}
 
 ]
   flags = [
