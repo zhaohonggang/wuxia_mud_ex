@@ -18,9 +18,15 @@ defmodule Kantele.World.RoomAction do
   - `:trailing` — 动词之后的剩余文本（已 trim，无则为 `""`）；对应 LPC `do_*` 的 `arg`
   - `:room_id` — 当前房间 id（`conn.character.room_id`）；handler 需改动房间
     （如 LPC `set("exits/down", ...)`）时用它向房间进程发事件
+
+  ## 返回 `:not_handled`（LPC `return 0`）
+
+  handler 可以返回 `:not_handled`，等价于 LPC `do_*` 里的 `return 0` ——
+  「本次输入我不处理，交回命令解析」。分发器会把它当作未命中放行全局命令
+  （如 `d/xiakedao/xiaowu.c` 的 `do_move` 在 `arg != "bed"` 时 `return 0`）。
   """
   @callback run(conn :: Kalevala.Character.Conn.t(), params :: map()) ::
-              Kalevala.Character.Conn.t()
+              Kalevala.Character.Conn.t() | :not_handled
 
   defmacro __using__(_opts) do
     quote do
@@ -62,7 +68,11 @@ defmodule Kantele.World.RoomActionDispatcher do
   def dispatch(conn, text, lookup_fun \\ &RoomActionHandlers.lookup/2) do
     case resolve(conn, text, lookup_fun) do
       {:handled, {module, function}, params} ->
-        {:handled, apply(module, function, [conn, params])}
+        case apply(module, function, [conn, params]) do
+          # LPC `return 0`：handler 声明本次不处理，放行全局命令
+          :not_handled -> :not_handled
+          conn -> {:handled, conn}
+        end
 
       :not_handled ->
         :not_handled

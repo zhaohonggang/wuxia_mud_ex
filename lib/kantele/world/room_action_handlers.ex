@@ -62,6 +62,19 @@ defmodule Kantele.World.RoomActionHandlers do
       "do_suicide" => {Kantele.World.RoomActions.MessageOnly, :run},
       "do_give" => {Kantele.World.RoomActions.MessageOnly, :run},
       "do_drop" => {Kantele.World.RoomActions.MessageOnly, :run}
+    },
+    # 位移样板（me->move(__DIR__"x") → Helpers.move_to/2 → Teleport.teleport/2）
+    "lingxiao:juegu" => %{
+      "do_pan" => {Kantele.World.RoomActions.Lingxiao.Juegu.Pan, :run}
+    },
+    "hengyang:furong1" => %{
+      "do_climb" => {Kantele.World.RoomActions.Hengyang.Furong1.Climb, :run}
+    },
+    "changan:kzsleep" => %{
+      "do_bed" => {Kantele.World.RoomActions.Changan.Kzsleep.Bed, :run}
+    },
+    "xiakedao:xiaowu" => %{
+      "do_move" => {Kantele.World.RoomActions.Xiakedao.Xiaowu.Move, :run}
     }
   }
 
