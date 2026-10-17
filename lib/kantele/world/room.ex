@@ -87,6 +87,25 @@ defmodule Kantele.World.Room do
 
   def load_item(item_instance), do: Items.get!(item_instance.item_id)
 
+  @doc """
+  房间 flag 判定（对应 LPC `room->query("<flag>")`）
+
+  flags 是 UCL 顶层的字符串列表（转换器 `build_room_flags` 白名单
+  no_fight/no_steal/no_sleep_room/outdoors/water + B1 回填的
+  sleep_room/no_beg/startroom），如 `["no_fight", "no_steal"]`。
+
+  **历史坑（R6）**：room.ex 曾有若干处直读 `context.data.no_steal` 等**结构体
+  不存在的字段**（Room defstruct 只有 `flags`）→ 每次求值都抛 `KeyError`
+  （steal/attempt 三个条件全踩中、search 的 no_search 同理）。房间事件里的
+  flag 判定一律走本函数，不要再直读字段。
+  """
+  def has_flag?(room, flag) when is_binary(flag) do
+    room
+    |> Map.get(:flags, [])
+    |> List.wrap()
+    |> Enum.member?(flag)
+  end
+
   # ---- 房间广播原语（对应 LPC tell_room/message_vision/broadcast） ----
 
   @doc """
@@ -1461,14 +1480,20 @@ defmodule Kantele.World.Room.StealRequestEvent do
         context
 
       {requester, true} ->
+        # flag 判定走 Room.has_flag?/2：这三个 key 都不在 Room 结构体里
+        # （Room 只有 flags 列表），原来直读 context.data.no_steal 等字段
+        # 每次必抛 KeyError（R6）。no_steal/no_fight 有真实数据，
+        # skybook 当前数据为 0（保留判定，与 LPC steal.c 语义对齐）。
+        flags = Map.get(context.data, :flags, []) || []
+
         cond do
-          context.data.skybook ->
+          "skybook" in flags ->
             render(context, requester.pid, CommandView, "text", %{text: "这里禁止行窃。\n"})
 
-          context.data.no_fight ->
+          "no_fight" in flags ->
             render(context, requester.pid, CommandView, "text", %{text: "这里禁止行窃。\n"})
 
-          context.data.no_steal ->
+          "no_steal" in flags ->
             render(context, requester.pid, CommandView, "text", %{text: "这里禁止行窃。\n"})
 
           true ->
@@ -1880,7 +1905,10 @@ defmodule Kantele.World.Room.SearchRequestEvent do
         context
 
       _ ->
-        if context.data.no_search == "all" do
+        # 同 R6：Room 无 :no_search 字段，原来 `context.data.no_search` 每次
+        # 搜索必抛 KeyError。LPC 侧 no_search 是 quest explore 的 set_temp 映射表，
+        # UCL 当前无数据 → 本分支休眠；将来若回填 flag 即刻生效。
+        if Kantele.World.Room.has_flag?(context.data, "no_search") do
           render(context, requester.pid, CommandView, "text", %{text: "这里不允许搜寻。\n"})
         else
           qi = Map.get(requester.attributes, "qi", 0)
@@ -1890,9 +1918,14 @@ defmodule Kantele.World.Room.SearchRequestEvent do
             render(context, requester.pid, CommandView, "text", %{text: "你的气或精不足，无法进行搜寻。\n"})
           else
             updated_requester =
-              requester
-              |> put_in([:attributes, "qi"], qi - 30)
-              |> put_in([:attributes, "jing"], jing - 30)
+              %{
+                requester
+                | attributes:
+                    Map.merge(requester.attributes, %{
+                      "qi" => qi - 30,
+                      "jing" => jing - 30
+                    })
+              }
 
             context = update_char_in_ctx(context, requester.id, updated_requester)
 
