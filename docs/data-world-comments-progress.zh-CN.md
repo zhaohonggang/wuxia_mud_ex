@@ -43,7 +43,7 @@
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
 | **P2** | 加字段 + 回填 | 8 个批次 | L2 | ✅ | `2d9de14a` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）/ **B10 ✅**（B10a 126 块 / 22 区 / +389 行 `bcd168c0` + B10b 28 块 / 8 区 / +34 行 `2d9de14a`）→ **P2 批次全部完成** |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
-| **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
+| **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | 🟨 | | **`valid_leave` 已完成 ✅**（11 条生效回填 / 6 区 / +68 行，M7 144→155；61 候选中 49 条转换器已有等价条目，余为 Trap 通道）；`create`(2619)/`init`/`greeting` 归 P1/P2/P5 未完 |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
 | **P6** | 防回归 | 2 个脚本 | — | 🟨 | | |
 
@@ -64,7 +64,7 @@
 | M4 | 分支归属函数数 | 442 | `—` | ⬜ | `build_unhandled_manifest.py` |
 | M5 | 函数 body 未回源 | 32 | `—` | ⬜ | 同上 |
 | M6 | `set()` key 真丢失 distinct / occ | 202 / 3150 | **200 / 3110** | ✅ | `triage_lost_keys.py` |
-| M7 | `valid_leave` 生效条数 | 133 / 166 | `—` | ⬜ | `world_reachability.py`（或 `recount_veto_status.exs`） |
+| M7 | `valid_leave` 生效条数 | 133 / 166 | **155 / 177** | ✅ | `recount_veto_status.exs`（P4 回填 11 条后实测） |
 | M8 | 可达性 | 4190 / 4409（95.0%） | **4190 / 4409（95.0%）** | ✅ | `world_reachability.py` |
 | M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **33**（无新增；`reload_command_test` 那条转好，属 recompile 环境相关） | ✅ | `mix test --seed 12345` |
 | M10 | 已回填 `room.flags` 房间数 | 0 | **284** | ✅ | `backfill_l1_fields.py` |
@@ -75,8 +75,9 @@
 | M15 | `chat_msg_combat`/`chat_chance_combat` 载入 NPC 数（B6） | 0 | **254/256**（29 区，样本 老大娘 chance=50） | ✅ | `scripts/probe_npc_combat_chat.exs`（容器内） |
 | M16 | `Item.Meta.*_prop` 已装载物品数（B10a/B10b；此前 .ucl 只有 liuxi 3 个手写块） | 0 | **133**（armor 117 / dodge 17 / personality 28 / defense 3 / unarmed_damage 4 / attack 1；含 liuxi 手写 3） | ✅ | `scripts/probe_item_props.exs`（容器内） |
 | M17 | prop 子键白名单 `Combat.applies_keys()` 键数 | 7 | **11**（+personality/per/warm/armor_vs_force） | ✅ | `scripts/probe_item_props.exs`（容器内） |
+| M18 | P4 回填 exit_vetoes 生效条数（回源 LPC `valid_leave` 的 `notify_fail`） | 0 | **11**（6 区：tulong 3 / shaolin 3 / jingzhou 2 / chengdu / gumu / hangzhou 各 1；+68 行） | ✅ | `scripts/probe_valid_leave_candidates.exs` + `backfill_exit_vetoes.py` |
 
-**基线已实测确认**：M1–M6、M8 为本轮实跑值；M7 引用 `ucl-comment-todo.zh-CN.md` 的记录。
+**基线已实测确认**：M1–M8 为本轮实跑值；M7 的「133」是 `ucl-comment-todo.zh-CN.md` 的旧快照，P4 执行前实测为 144/166、回填后 155/177。
 
 ---
 
@@ -321,27 +322,57 @@
 | 归属函数 | 行数 | 处置 | 状态 |
 |----------|-----:|------|:----:|
 | `create` | 2619 | 走 P1/P2 的 key 通道，不单独做 | ⬜ |
-| `valid_leave` | 410（bare） | 回源取 `notify_fail` 文案 → 补进 `exit_vetoes` | ⬜ |
+| `valid_leave` | 410（bare） | 回源取 `notify_fail` 文案 → 补进 `exit_vetoes` | ✅ |
 | `init` / `greeting` | 367 / 184 | 回源补 action（`add_action`、台词池） | ⬜ |
+
+**`valid_leave` 回源结果（2026-10-16 完成，D22）**
+
+LPC 侧 384 个文件有 `valid_leave`；解析器可静态提取 150 条 `notify_fail`
+判条件，过完数据层门槛后 61 条候选：**49 条转换器早已写过等价条目**
+（同 cond+msg+方向，去重命中），12 条新；再过容器真门（parse /
+enforceable / supported / direction_scoped / 方向存在 / 别名有定义 /
+不撞车）→ **11 条生效、1 条被既有等价条目遮蔽**（city:qiyuan1，
+既有条目两个操作数顺序不同、语义相同）。
+
+| 区 | 新回填条数 | 房间 |
+|----|-----:|------|
+| tulong | 3 | daobian / was_damen / was_dayuan |
+| shaolin | 3 | bagua3 / guangchang5 / wuchang3 |
+| jingzhou | 2 | huayuan / shikuang1 |
+| chengdu / gumu / hangzhou | 各 1 | wuguan / shandong / tiejiangpu |
+
+合计 **+68 行 / 6 区**。其余落选原因（Trap 通道，非缺陷）：elias 词法
+不接受多参调用 `present('x', environment(me))`（48）、白名单外函数
+check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
+如 `skill`/`myfam`（17）、`b/` 镜像树无对应房间（5）；另有 66 个文件
+的 notify_fail 是动态拼接文案（`RANK_D->query_respect(me)` 等），无法静态落库。
+
+**踩过的坑（都留了注释）**：① `&&` 后直接粘 `ob = present(...)` ——
+补括号成 `(ob = present('x',this_object()))`；② 裸 `present('x')` 单参
+会在求值器 `eval_args` 解构时 MatchError —— 按 LPC 语义补
+`,this_object()`（注意逗号后不能有空格，elias 不接受 `, x`）；
+③ elias 不接受 `}` 与 `,` 之间的空行 —— 逗号必须紧跟在上一条目 `}` 后；
+④ 转换器会把 `dir=='a'||dir=='b'` 的条件截成单个方向（chengdu/wuguan
+只留 up）—— 去重必须方向感知，同 cond+msg 不同方向的候选是真缺口。
 
 **`valid_leave` 逐区清单（410 条 / 60 区，去掉 test 靶场）**
 
 | 区 | 条数 | 状态 | 区 | 条数 | 状态 |
 |----|-----:|:----:|----|-----:|:----:|
-| shaolin | 71 | ⬜ | chengdu | 7 | ⬜ |
-| city | 23 | ⬜ | huanghe | 7 | ⬜ |
-| xiyu | 21 | ⬜ | wuguan | 7 | ⬜ |
-| beijing | 19 | ⬜ | xueshan | 7 | ⬜ |
-| mingjiao | 17 | ⬜ | lingzhou | 6 | ⬜ |
-| death | 15 | ⬜ | 其余 **42 区** | 各 1–6（共 140） | ⬜ |
-| huashan | 15 | ⬜ | | | |
-| tulong | 11 | ⬜ | | | |
-| jingzhou | 10 | ⬜ | | | |
-| heimuya / wudang | 9 / 9 | ⬜ | | | |
-| guanwai / wudu | 8 / 8 | ⬜ | | | |
+| shaolin | 71 | ✅ 3 条已回填，余 Trap | chengdu | 7 | ✅ 1 条已回填，余 Trap |
+| city | 23 | ✅ 1 条有效（1 条被遮蔽） | huanghe | 7 | Trap（kedian 全家动态文案） |
+| xiyu | 21 | Trap（wall* 全靠 sscanf） | wuguan | 7 | Trap |
+| beijing | 19 | Trap | xueshan | 7 | Trap |
+| mingjiao | 17 | Trap | lingzhou | 6 | Trap |
+| death | 15 | Trap | 其余 **42 区** | 各 1–6（共 140） | Trap / 已存在 |
+| huashan | 15 | Trap | | | |
+| tulong | 11 | ✅ 3 条已回填，余 Trap | | | |
+| jingzhou | 10 | ✅ 2 条已回填，余 Trap | | | |
+| heimuya / wudang | 9 / 9 | Trap | | | |
+| guanwai / wudu | 8 / 8 | Trap | | | |
 
-- [ ] ⬜ `exit_vetoes` 生效条数从 **133** 上升（M7）
-- [ ] ⬜ `world_reachability.py` 不降
+- [x] ✅ `exit_vetoes` 生效条数从 **144** 上升到 **155**（M7；+11 全部通过运行时真门。文档旧值 133 是更早数据状态的快照，执行前实测为 144）
+- [x] ✅ `world_reachability.py` 不降（4190/4409，前后逐字节一致）
 
 ---
 
@@ -442,6 +473,7 @@
 | D19 | 引号内的 `[` / `]` 怎么处理？ | **换成 `(` / `)`**（elias 实测拒绝 `[`：`syntax error before: '['`；`(` 可解析，全库既有的 `(pen)` 即此惯例）。同时确认 `,`+空白 与 `[0-9],` 也不可入串 | 2026-10-16 | `scripts/probe_ucl_brackets.exs` |
 | D20 | B5b 要不要写 `characters` 块？ | **不写**。`characters` 块里 loader 不读 `messages` → 写了是无效数据。只写 `items` 块（46/129），其余 83 块登记为 **D10 待决策**（R7） | 2026-10-16 | 全量「源文件→UCL 块」对账 |
 | D21 | B10 的 prop 子键：扩 `applies_keys` 还是单列字段？范围是否含白名单内子键？ | **扩白名单**（R2 决策）：单列字段过不了 `sanitize_prop`，白名单是唯一装载通道。范围**含白名单内子键** —— 勘查（`scripts/survey_b10_props.py`）发现**旧审计的假设错误**：全库 663 处斜杠式 `set("armor_prop/<sub>")` 从未被转换（转换器只认整体式，`lpc_converter.ex` L3327-3328），白名单内 armor/dodge 等同样缺失。拆 B10a（白名单内数据，经既有链路生效）→ B10b（+4 键白名单 + personality 数据）。技能键（finger/hand/strike/cuff/claw/unarmed）判 manual：Fighter.skills 通道引擎 v0 未建模，写了会被丢弃 | 2026-10-16 | `tmp/b10_survey.json`；`feature/equip.c` L38-47；`Combat.effective_applies` 泛型 `Map.get` 读取 |
+| D22 | P4 只回填「通过容器真门」的候选，还是全部 410 条 bare？ | **只回填真门通过的 11 条**（`probe_valid_leave_candidates.exs` 八项检查）。三问分诊：elias 词法不支持多参调用/裸变量/取反不了的复杂守卫/动态拼接文案的，归 Trap 通道（91 条跳过有据）。**去重方向感知**：转换器会把 `dir=='a'||dir=='b'` 截成单方向，同 cond+msg 不同方向 = 真缺口（chengdu/wuguan 补 down）。既有「无条件裸条目」（转换器丢守卫产物，condition=nil 运行时本就跳过）**不删不改**，新条目才是生效的那条 | 2026-10-16 | `tmp/p4_candidates.json` 61 候选；`tmp/p4_verdict.json` 11 effective / 1 遮蔽 |
 
 ---
 
@@ -465,6 +497,7 @@
 | 2026-10-16 | **B9（can_make/not_make/power_point/item_origin 打造系统）** | `84dbaef2` | `lib/kantele/world/item.ex` Item.Meta 加 4 字段（默认 nil）；`lib/kantele/world/loader.ex` `parse_item_meta/1` 加 4 Map.get 读取；新增 `scripts/backfill_item_craft_keys.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内）+ `scripts/probe_item_craft_keys.exs` | **3 区 / 14 块 / +49 行 / −0 行**；源文件 can_make=35/不_make=10/power_point=51/item_origin=35；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，样本 补天石 can_make=["all"] power_point=100 item_origin=1） |
 | 2026-10-16 | **B10a（prop 斜杠子键·白名单内，计划外新发现）** | `bcd168c0` | 勘查脚本 `scripts/survey_b10_props.py` 发现**转换器只认整体式 `set("armor_prop", ([...]))`（`lpc_converter.ex` L3327-3328），而全库 663 处均为斜杠路径式 `set("armor_prop/armor", 1)` → prop 子键从未被转换**（旧审计假设白名单子键已转，不成立）。新增 `scripts/backfill_item_props.py`（`--subsets` 分子键类、缩进自适应、已有 map 并吞模式）+ `scripts/probe_item_props.exs`；白名单内 armor/dodge/defense/attack/unarmed_damage 137 子键写入 126 个 `items` 块 | **22 区 / +389 行 / −0 行**；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；探针 OK（130 物品带 prop，白名单外键 []，round-trip 干净）；`mix test` 3435/34 不新增。**行为说明**：这批经既有消费链路生效（`Equip.wear_state` 语义同 LPC `feature/equip.c` L38-47 穿戴累加），等价于恢复原始 LPC 战斗数值 |
 | 2026-10-16 | **B10b（扩 applies_keys + personality 回填，R2 决策落地）** | `2d9de14a` | `lib/kantele/character/combat.ex` `@applies_keys` 7→11 键（+personality/per/warm/armor_vs_force，P7 只加不改；公式 `Map.get(applies, key, 0)` 惰性读取 → 无战斗行为变化；Combat 不在 `Meta.Trim` 保留清单 → 无 web 载荷影响）；`backfill_item_props.py --subsets non_whitelisted` 写入 personality（25 块并入 B10a 既有 map、3 块新建 map） | **8 区 / 28 块 / +34 行 / −0 行**；per-zone 与 HEAD（B10a 后）对比 new_issues=0；幂等 ✓；探针 OK（133 物品带 prop、personality 28）；`mix test` 3435/**33**（33 = 原 34 基线去掉 recompile 后转好的 `reload_command_test`，失败清单与文档 12 文件基线一致、无新增）。per/warm/armor_vs_force 的 items 块目标 0（源全在 characters 块，D10/R7 受害） |
+| 2026-10-16 | **P4-valid_leave（exit_vetoes 回源回填，计划内）** | `c219937d` | 三脚本链：`scripts/survey_valid_leave.py`（LPC `valid_leave` 解析器：嵌套 if 守卫合取、放行守卫取反累积、颜色宏包裹的 notify_fail、裸 `present()` 补 `this_object()` 参数、`&&ob=` 补括号）→ `scripts/probe_valid_leave_candidates.exs`（容器内八项真门）→ `scripts/backfill_exit_vetoes.py`（dry-run→备份→insertion-only 子序列断言+`validate_ucl` 问题集对比→写盘，幂等）。**只增不改**：新条目插在既有 `valid_leave` 列表内（逗号紧跟上一 `}`）或房间块尾部新建列表 | **6 区 / +68 行 / −0 行**（tulong 3 / shaolin 3 / jingzhou 2 / chengdu / gumu / hangzhou 各 1）；61 候选中 49 条转换器已有等价条目（方向感知去重）、11 条生效回填、1 条被既有等价条目遮蔽（city:qiyuan1）；91 条跳过均登记原因（elias 多参 48 / 白名单外函数 19 / 裸变量 17 / b/ 镜像无房间 5 / 动态文案另计 66 文件）；幂等 ✓（二次 dry-run 11 跳过 0 写）；`recount_veto_status.exs` M7 **144→155**；`audit_veto_effectiveness.exs` 11 条全部 live；`world_reachability.py` 前后逐字节一致（4190/4409） |
 
 ---
 

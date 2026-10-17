@@ -346,6 +346,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | B8 | `max_liquid` | 74（实测 96 块） | `Item.Meta` 容器容量 —— **已完成 `a178e005`**：`Item.Meta` 加 `{:max_liquid, nil}`；`loader.ex parse_item_meta/1` 读 `meta.max_liquid`；回填 **96 个 `items` 块 / 30 区 / +96 行**，容器内探针 `probe_item_max_liquid.exs` 实测 loader 载入字段（96 命中，样本 葫芦 max_liquid=10） |
 | B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | `Item.Meta` 打造系统 —— **已完成 `84dbaef2`**：`Item.Meta` 加 `{:can_make, nil}`/`{:not_make, nil}`/`{:power_point, nil}`/`{:item_origin, nil}` + `parse_item_meta/1` 读取；新增 `scripts/backfill_item_craft_keys.py` + `scripts/probe_item_craft_keys.exs`；回填 **14 个 `items` 块 / 3 区 / +49 行**，源文件 can_make=35/不_make=10/power_point=51/item_origin=35；容器内探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，类型全部正确） |
 | B10 | `armor_prop/personality`、`armor_prop/armor_vs_force`、`armor_prop/warm`、`weapon_prop/personality` | 69/2/1/3 | **已完成（D21 拆两批）**：勘查（`scripts/survey_b10_props.py`）发现**全库 663 处斜杠式 `set("armor_prop/<sub>", N)` 从未被转换**（转换器只认整体式，`lpc_converter.ex` L3327-3328）—— 白名单内 armor/dodge/defense/attack/unarmed_damage（532 源文件）同样缺失。**B10a `bcd168c0`**：白名单内 137 子键 → **126 个 items 块 / 22 区 / +389 行**，经既有链路生效（`Equip.wear_state` 同 LPC `feature/equip.c` L38-47）；**B10b `2d9de14a`**：`Combat.applies_keys()` +personality/per/warm/armor_vs_force（惰性携带、无战斗行为变化）+ personality 回填 **28 块 / 8 区 / +34 行**（per/warm/armor_vs_force 的 items 目标 0 = D10 受害）。技能键 finger/hand/strike/cuff/claw/unarmed 判 manual（Fighter.skills 通道 v0 未建模） |
+| B11 | `valid_leave` bare 条件（P4 的 data 部分） | 410 | **已完成（D22）**：回源 LPC `valid_leave` 的 `notify_fail` 判条件，61 候选中 **49 条转换器已有等价条目**、**11 条回填**（6 区：tulong/shaolin 各 3、jingzhou 2、chengdu/gumu/hangzhou 各 1，+68 行），1 条被遮蔽；余走 Trap 通道（见 §P4）。M7 生效 **144→155**；可达性不变；`mix test` 无新增失败 |
 
 > **B5a 做法**（P7 只加字段）：`Item.Meta` 加 `:messages`（默认 `nil`）；`loader.ex parse_item/4`
 > 加一行 `messages: Map.get(item_data, :messages)`（`messages` 在物品块**顶层**，与 `name` 同级，
@@ -380,6 +381,16 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `valid_leave` | 472 | 剩余 410 条 bare 条件 → 回源取 `notify_fail` 文案 → 补进 `exit_vetoes`（与既有 183 条同法） |
 | `init` / `greeting` | 367 / 184 | 回源补 action（`add_action`、台词池） |
 | `do_*` 等 | 其余 | 归 P5 |
+
+**`valid_leave` 状态：✅ 已完成（2026-10-16，D22）**。410 条 bare 的回源结论：
+**61 条候选里 49 条转换器早已写过等价条目**（cond+msg+方向三同），
+**11 条真缺口已回填**（6 区 / +68 行，全部过容器八项真门），1 条被既有
+等价条目遮蔽（city:qiyuan1）。余 91+66 条走 **Trap 通道**：elias 词法不
+支持多参调用 `present('x', environment(me))`（48）、白名单外函数
+check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
+（17）、`b/` 镜像树无对应房间（5）、动态拼接文案无法静态落库（66 文件）。
+验收：**生效条数 144→155**（M7；实测基线非文档旧值 133）、
+`world_reachability.py` 前后逐字节一致。
 
 **验收**：`exit_vetoes` 生效条数从 133 上升；`world_reachability.py` 不降。
 
@@ -451,6 +462,9 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `survey_b10_props.py` | B10 勘查 | `.c` + `.ucl` | `tmp/b10_survey.json` | 宿主机 | ✅ | ✅ **已建**（prop 斜杠子键三分：whitelisted/non_whitelisted/skill_manual + items/characters 块归属；证实 663 处从未被转换） |
 | `backfill_item_props.py` | B10a/B10b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（`--subsets whitelisted\|non_whitelisted\|both`；缩进自适应、既有 prop map 并入模式、dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等） |
 | `probe_item_props.exs` | B10 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；133 物品带 prop、personality 28、白名单外键 []、round-trip 干净） |
+| `survey_valid_leave.py` | P4 勘查 | `.c` + `.ucl` | `tmp/p4_candidates.json` | 宿主机 | ✅ | ✅ **已建（P4 已完成）**（LPC `valid_leave` 解析器：嵌套 if 合取、放行守卫取反累积/复杂即作废、颜色宏 notify_fail、裸 `present()` 补 `this_object()`、裸变量与多参调用 elias 敌意检测、方向感知去重；61 候选 = 49 已有 + 12 新） |
+| `probe_valid_leave_candidates.exs` | P4 分类 | —（加载世界） | `tmp/p4_verdict.json` | **容器内** | ✅ | ✅ **已建（P4 已完成）**（八项真门：parse/enforceable/supported/dir-scoped-or-all_dirs/房间找到/方向存在/别名有定义/不被既有生效条目遮蔽；产物 11 effective / 1 blocked） |
+| `backfill_exit_vetoes.py` | P4 回填 | `tmp/p4_verdict.json` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建（P4 已完成）**（dry-run 默认、先 dry-run 定计划→`validate_ucl` 基线→备份→写盘→插入性子序列断言+问题集对比；逗号紧跟上一 `}`；幂等；**6 区 / +68 行**） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 
 **所有脚本的公共约定**
