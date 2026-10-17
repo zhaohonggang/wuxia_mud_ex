@@ -5815,6 +5815,7 @@ chats = [
         armor = 0
         armor_prop = {
           armor = 0
+          personality = 3
         }
       }
   messages = {
@@ -5961,6 +5962,7 @@ chats = [
         armor = 0
         armor_prop = {
           armor = 0
+          personality = 3
         }
       }
   messages = {

@@ -1193,6 +1193,7 @@ item_desc = {
         female_only = 1
         armor_prop = {
           armor = 1
+          personality = 3
         }
       }
     }
@@ -1217,6 +1218,7 @@ item_desc = {
         female_only = 1
         armor_prop = {
           armor = 1
+          personality = 3
         }
       }
     }
@@ -1241,6 +1243,7 @@ item_desc = {
         female_only = 1
         armor_prop = {
           armor = 1
+          personality = 3
         }
       }
     }
@@ -1268,6 +1271,7 @@ item_desc = {
         female_only = 1
         armor_prop = {
           armor = 1
+          personality = 3
         }
       }
     }
@@ -1425,6 +1429,7 @@ item_desc = {
         female_only = 1
         armor_prop = {
           armor = 1
+          personality = 3
         }
       }
     }
@@ -1448,6 +1453,7 @@ item_desc = {
         female_only = 1
         armor_prop = {
           armor = 1
+          personality = 3
         }
       }
     }

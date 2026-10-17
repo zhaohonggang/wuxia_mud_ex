@@ -2639,6 +2639,9 @@ chats = [
         weight = 8000
         unit = "柄"
         material = "steel"
+        weapon_prop = {
+          personality = 8
+        }
       }
     }
 
@@ -2707,6 +2710,9 @@ chats = [
         weight = 8000
         unit = "柄"
         material = "steel"
+        weapon_prop = {
+          personality = 8
+        }
       }
     }
 

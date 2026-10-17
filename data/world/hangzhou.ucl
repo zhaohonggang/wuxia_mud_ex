@@ -3714,6 +3714,7 @@ item_desc = {
         armor = 10
         armor_prop = {
           armor = 10
+          personality = 3
         }
       }
   messages = {

@@ -32,7 +32,34 @@ defmodule Kantele.Character.Combat do
             attacked_by: MapSet.new(),
             helping: false
 
-  @applies_keys [:attack, :defense, :damage, :unarmed_damage, :dodge, :parry, :armor]
+  # applies 白名单（Item.Meta.sanitize_prop 只放行这些键，Equip.wield_state/
+  # wear_state 也只合并这些键进 applies；战斗公式经 Map.get(applies, key, 0)
+  # 逐键读取，白名单外的键被丢弃）。
+  #
+  # B10b：补 4 个 LPC armor_prop/weapon_prop 斜杠子键（全库 96 个源文件持有，
+  # 此前因不在白名单被 sanitize_prop 静默丢弃；转换器只认整体式
+  # set("armor_prop", ([...]))，从未输出斜杠式，详见 backfill_item_props.py）：
+  #   :personality     人格魅力（LPC enchased.c 镶嵌属性表；无本引擎消费端）
+  #   :per             容貌（Stats.query_per/Attributes.per 的 temp_applies 口）
+  #   :warm            保暖能力（LPC natured.c 寒冷环境影响 con；无本引擎消费端）
+  #   :armor_vs_force  内力攻击伤害减免（LPC inherit/skill/force.c L79；公式未读）
+  # 这 4 个键当前**无消费端**：公式只 Map.get 已知键（默认 0），故加入白名单
+  # 不改变战斗行为，只是让 loader 装得下这些数据（P7）。技能类子键
+  # （finger/hand/strike/cuff/claw/unarmed）仍不放行 —— 走 Fighter.skills
+  # 通道，引擎 v0 未建模。
+  @applies_keys [
+    :attack,
+    :defense,
+    :damage,
+    :unarmed_damage,
+    :dodge,
+    :parry,
+    :armor,
+    :personality,
+    :per,
+    :warm,
+    :armor_vs_force
+  ]
 
   # 护甲槽位白名单（对照 LPC equip.c 的 armor_type；cloth=衣袍，body 归一化为 cloth）
   @armor_slots ~w(cloth head feet waist hands neck cloak finger)
