@@ -58,7 +58,7 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
   defp new_room(conn), do: conn.private.update_character.room_id
 
   describe "entries/0 覆盖度" do
-    test "7 个房间 7 个 verb" do
+    test "10 个房间 10 个 verb" do
       assert Map.keys(VisionMove.entries()) |> Enum.sort() ==
                [
                  {"emei:hcawest", "jump"},
@@ -67,6 +67,9 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
                  {"gumu:taiyi1", "jump"},
                  {"gumu:taiyi2", "climb"},
                  {"mingjiao:gudi3", "enter"},
+                 {"mingjiao:tohsq3", "jump"},
+                 {"wudu:dijiao", "pull"},
+                 {"wudu:minju10", "pull"},
                  {"wudu:minju7", "enter"}
                ]
     end
@@ -254,6 +257,75 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
                {"rooms:gumu:taiyi1", %{}},
                {"rooms:gumu:taiyi2", %{}}
              ]
+    end
+  end
+
+  describe "arg: :none（LPC `if (!arg)` 必须无参数）" do
+    test "jump 无参数 → 跳潭到 hsqtan1" do
+      conn = conn_in("mingjiao:tohsq3", "jump", "do_jump")
+
+      assert {:handled, conn2} = dispatch(conn, "jump")
+
+      assert publishes(conn2) == [
+               {"rooms:mingjiao:tohsq3", "{npc}一闭眼，向潭中跳了下去，只觉冰冷刺骨，赶紧运气相抗。\n"}
+             ]
+
+      assert new_room(conn2) == "mingjiao:hsqtan1"
+    end
+
+    test "jump 带参数 → 只提示「你要跳到哪儿？」且不移动" do
+      conn = conn_in("mingjiao:tohsq3", "jump", "do_jump")
+
+      assert {:handled, conn2} = dispatch(conn, "jump pond")
+
+      assert texts(conn2) == ["你要跳到哪儿？\n"]
+      assert is_nil(conn2.private.update_character)
+    end
+  end
+
+  describe "empty_arg 与 otherwise: {:vision, ...}（wudu 地道双向）" do
+    test "dijiao pull xi → 掀草席爬上去到 minju10" do
+      conn = conn_in("wudu:dijiao", "pull", "do_move")
+
+      assert {:handled, conn2} = dispatch(conn, "pull xi")
+
+      assert publishes(conn2) == [
+               {"rooms:wudu:dijiao", "\n{npc}掀开盖在洞口的草席爬了上去。\n"},
+               {"rooms:wudu:minju10", "\n盖在地上的草席忽然一掀，{npc}从下面钻了出来。\n"}
+             ]
+
+      assert new_room(conn2) == "wudu:minju10"
+    end
+
+    test "minju10 pull xi → 掀草席走下去回 dijiao（反向）" do
+      conn = conn_in("wudu:minju10", "pull", "do_move")
+
+      assert {:handled, conn2} = dispatch(conn, "pull xi")
+
+      assert publishes(conn2) == [
+               {"rooms:wudu:minju10", "\n{npc}掀开盖在洞口的草席走了下去。\n"},
+               {"rooms:wudu:dijiao", "\n盖在洞口的草席一掀，{npc}从上面走了下来。\n"}
+             ]
+
+      assert new_room(conn2) == "wudu:dijiao"
+    end
+
+    test "其它参数 → 房间广播「什么也没抓住」，不移动" do
+      conn = conn_in("wudu:dijiao", "pull", "do_move")
+
+      assert {:handled, conn2} = dispatch(conn, "pull cao")
+
+      assert publishes(conn2) == [
+               {"rooms:wudu:dijiao", "\n{npc}双手在空中比划了几下，但似乎什么也没抓住。\n"}
+             ]
+
+      assert is_nil(conn2.private.update_character)
+    end
+
+    test "无参数 → :not_handled（LPC `if (!arg || arg == \"\") return 0;`）" do
+      conn = conn_in("wudu:dijiao", "pull", "do_move")
+
+      assert :not_handled = dispatch(conn, "pull")
     end
   end
 end

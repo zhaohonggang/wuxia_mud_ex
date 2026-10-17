@@ -30,7 +30,7 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert {:ok, {XiaowuMove, :run}} = RoomActionHandlers.lookup("xiakedao:xiaowu", "do_move")
     end
 
-    test "VisionMove 批量表七个房间解析成功" do
+    test "VisionMove 批量表十个房间解析成功" do
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("mingjiao:gudi3", "do_enter")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("gumu:taiyi1", "do_jump")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("gumu:taiyi2", "do_climb")
@@ -38,6 +38,9 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("emei:xiaoshulin1", "do_jump")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("emei:ssyb", "do_climb")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("wudu:minju7", "do_enter")
+      assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("mingjiao:tohsq3", "do_jump")
+      assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("wudu:dijiao", "do_move")
+      assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("wudu:minju10", "do_move")
     end
 
     test "房间未注册 → {:unimplemented, name}" do
@@ -77,7 +80,10 @@ defmodule Kantele.World.RoomActionHandlersTest do
                  "huashan:lianhua",
                  "lingxiao:juegu",
                  "mingjiao:gudi3",
+                 "mingjiao:tohsq3",
                  "register:prison",
+                 "wudu:dijiao",
+                 "wudu:minju10",
                  "wudu:minju7",
                  "xiakedao:xiaowu"
                ]
@@ -100,6 +106,9 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert RoomActionHandlers.registered?("emei:xiaoshulin1", "do_jump")
       assert RoomActionHandlers.registered?("emei:ssyb", "do_climb")
       assert RoomActionHandlers.registered?("wudu:minju7", "do_enter")
+      assert RoomActionHandlers.registered?("mingjiao:tohsq3", "do_jump")
+      assert RoomActionHandlers.registered?("wudu:dijiao", "do_move")
+      assert RoomActionHandlers.registered?("wudu:minju10", "do_move")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
       # do_climb 只在 hengyang:furong1 与 gumu:taiyi2 移植

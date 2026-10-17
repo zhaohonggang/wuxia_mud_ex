@@ -22,11 +22,13 @@ defmodule Kantele.World.RoomActions.VisionMove do
   ## 表结构
 
       {{room_id, verb}, %{
-        arg:       参数名（`nil` = 不校验参数）,
+        arg:       参数名（`nil` = 不校验参数；`:none` = 参数必须为空，对应 LPC `if (!arg)`）,
+        empty_arg: 空参数时的特殊处理（目前只有 `:not_handled`，对应 LPC `if (!arg) return 0;`）,
         before:    旧房间广播（`nil` = 不广播）,
         target:    目标房间 id（必填）,
         after:     新房间广播（`nil` = 不广播）,
-        otherwise: 参数不符时（`{:write, text}` = 只提示本人 / `:not_handled` = LPC `return 0`）,
+        otherwise: 参数不符时（`{:write, text}` 只提示本人 / `{:vision, text}` 房间广播 /
+                   `:not_handled` 对应 LPC `return 0`）,
         exclude_actor: `true` = 两段广播都排除行动者（LPC `message(..., ({me}))`）
       }}
 
@@ -95,6 +97,32 @@ defmodule Kantele.World.RoomActions.VisionMove do
       after: "$N从外面钻了进来。\n",
       exclude_actor: true,
       otherwise: :not_handled
+    },
+    # d/mingjiao/tohsq3.c: 不带参数才跳潭（`if (!arg)` → `arg: :none`）
+    {"mingjiao:tohsq3", "jump"} => %{
+      arg: :none,
+      before: "$N一闭眼，向潭中跳了下去，只觉冰冷刺骨，赶紧运气相抗。\n",
+      target: "mingjiao:hsqtan1",
+      after: nil,
+      otherwise: {:write, "你要跳到哪儿？\n"}
+    },
+    # d/wudu/dijiao.c / d/wudu/minju10.c: pull xi 掀草席上下地道；
+    # 无参数 return 0，其它参数给一句「什么也没抓住」的房间广播。
+    {"wudu:dijiao", "pull"} => %{
+      arg: "xi",
+      empty_arg: :not_handled,
+      before: "\n$N掀开盖在洞口的草席爬了上去。\n",
+      target: "wudu:minju10",
+      after: "\n盖在地上的草席忽然一掀，$N从下面钻了出来。\n",
+      otherwise: {:vision, "\n$N双手在空中比划了几下，但似乎什么也没抓住。\n"}
+    },
+    {"wudu:minju10", "pull"} => %{
+      arg: "xi",
+      empty_arg: :not_handled,
+      before: "\n$N掀开盖在洞口的草席走了下去。\n",
+      target: "wudu:dijiao",
+      after: "\n盖在洞口的草席一掀，$N从上面走了下来。\n",
+      otherwise: {:vision, "\n$N双手在空中比划了几下，但似乎什么也没抓住。\n"}
     }
   }
 
@@ -110,8 +138,12 @@ defmodule Kantele.World.RoomActions.VisionMove do
   end
 
   defp perform(conn, room_id, move, arg) do
-    case arg_matches?(move[:arg], arg) do
-      true ->
+    cond do
+      # LPC `if (!arg || arg == "") return 0;` —— 空参数单独处理
+      arg == "" and move[:empty_arg] == :not_handled ->
+        :not_handled
+
+      arg_matches?(move[:arg], arg) ->
         opts =
           case move[:exclude_actor] do
             true -> [exclude_actor: true]
@@ -123,12 +155,14 @@ defmodule Kantele.World.RoomActions.VisionMove do
         |> Helpers.move_to(move.target)
         |> maybe_vision(move.target, move[:after], opts)
 
-      false ->
-        otherwise(conn, move[:otherwise])
+      true ->
+        otherwise(conn, move[:otherwise], room_id)
     end
   end
 
   defp arg_matches?(nil, _arg), do: true
+  # LPC `if (! arg)` —— 参数必须为空
+  defp arg_matches?(:none, arg), do: arg == ""
   defp arg_matches?(want, arg), do: want == arg
 
   defp maybe_vision(conn, _room_id, nil, _opts), do: conn
@@ -138,6 +172,10 @@ defmodule Kantele.World.RoomActions.VisionMove do
   end
 
   # LPC `return 0`
-  defp otherwise(_conn, :not_handled), do: :not_handled
-  defp otherwise(conn, {:write, text}), do: Helpers.render_to_player(conn, text)
+  defp otherwise(_conn, :not_handled, _room_id), do: :not_handled
+  defp otherwise(conn, {:write, text}, _room_id), do: Helpers.render_to_player(conn, text)
+
+  defp otherwise(conn, {:vision, text}, room_id) do
+    Helpers.broadcast_vision(conn, room_id, text)
+  end
 end

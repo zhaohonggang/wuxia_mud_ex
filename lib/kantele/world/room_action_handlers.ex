@@ -98,6 +98,16 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "wudu:minju7" => %{
       "do_enter" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    # VisionMove 第三批：无参/空参分支（arg: :none / empty_arg）
+    "mingjiao:tohsq3" => %{
+      "do_jump" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "wudu:dijiao" => %{
+      "do_move" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "wudu:minju10" => %{
+      "do_move" => {Kantele.World.RoomActions.VisionMove, :run}
     }
   }
 
