@@ -705,6 +705,9 @@ behavior_config = {
         unit = "领"
         material = "cloth"
         armor = 15
+        armor_prop = {
+          armor = 15
+        }
       }
     }
 

@@ -2152,6 +2152,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -2290,6 +2293,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -2416,6 +2422,9 @@ chats = [
         unit = "双"
         material = "iron"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 

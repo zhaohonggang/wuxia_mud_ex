@@ -7266,6 +7266,9 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        armor_prop = {
+          armor = 0
+        }
       }
   messages = {
     unequip = "{npc}轻轻地把{name}从头上摘了下来。"
@@ -7293,6 +7296,9 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        armor_prop = {
+          armor = 0
+        }
       }
   messages = {
     unequip = "{npc}轻轻地把{name}从头上摘了下来。"
@@ -7320,6 +7326,9 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        armor_prop = {
+          armor = 0
+        }
       }
   messages = {
     unequip = "{npc}轻轻地把{name}从头上摘了下来。"

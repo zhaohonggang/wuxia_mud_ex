@@ -1145,6 +1145,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -1166,6 +1169,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -1228,6 +1234,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 

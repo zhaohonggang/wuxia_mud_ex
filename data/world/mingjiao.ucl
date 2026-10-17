@@ -3863,6 +3863,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -3884,6 +3887,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 15
+        armor_prop = {
+          armor = 15
+        }
       }
     }
 
@@ -4081,6 +4087,9 @@ chats = [
         unit = "双"
         material = "wrists"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 
@@ -4102,6 +4111,9 @@ chats = [
         unit = "条"
         material = "waist"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 
@@ -4333,6 +4345,9 @@ chats = [
         weight = 1000
         unit = "双"
         material = "boots"
+        armor_prop = {
+          dodge = 5
+        }
       }
     }
 
@@ -4383,6 +4398,9 @@ chats = [
         unit = "双"
         material = "hands"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
     }
 
@@ -4424,6 +4442,9 @@ chats = [
         unit = "块"
         material = "steel"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -4464,6 +4485,9 @@ chats = [
         unit = "顶"
         material = "head"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -4561,6 +4585,9 @@ chats = [
         unit = "条"
         material = "neck"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
     }
 
@@ -4636,6 +4663,9 @@ chats = [
         unit = "条"
         material = "waist"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 
@@ -4676,6 +4706,9 @@ chats = [
         unit = "副"
         material = "finger"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 

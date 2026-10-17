@@ -2905,6 +2905,9 @@ direction = ~
         unit = "条"
         material = "waist"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 
@@ -2925,6 +2928,9 @@ direction = ~
         unit = "件"
         material = "cloth"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 

@@ -3712,6 +3712,9 @@ item_desc = {
         unit = "支"
         material = "plant"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
   messages = {
     unequip = "{npc}轻轻地把{name}从头上摘了下来。"
@@ -3736,6 +3739,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 

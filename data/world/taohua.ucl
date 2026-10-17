@@ -1037,6 +1037,10 @@ item_desc = {
         weight = 500
         unit = "件"
         armor = 2
+        armor_prop = {
+          armor = 2
+          dodge = 5
+        }
       }
     }
 
@@ -1057,6 +1061,10 @@ item_desc = {
         weight = 1000
         unit = "件"
         armor = 1
+        armor_prop = {
+          armor = 1
+          dodge = 2
+        }
       }
     }
 
@@ -1077,6 +1085,10 @@ item_desc = {
         weight = 1000
         unit = "件"
         armor = 1
+        armor_prop = {
+          armor = 1
+          dodge = 10
+        }
       }
     }
 
@@ -1097,6 +1109,10 @@ item_desc = {
         weight = 1000
         unit = "件"
         armor = 1
+        armor_prop = {
+          armor = 1
+          dodge = 1
+        }
       }
     }
 
@@ -1137,6 +1153,10 @@ item_desc = {
         weight = 1000
         unit = "件"
         armor = 1
+        armor_prop = {
+          armor = 1
+          dodge = 1
+        }
       }
     }
 
@@ -1203,6 +1223,9 @@ item_desc = {
         unit = "条"
         material = "silk"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
   messages = {
     wear = "{npc}将{name}拿出束在头发上。"
@@ -1248,6 +1271,10 @@ item_desc = {
         unit = "件"
         material = "copper"
         armor = 75
+        armor_prop = {
+          armor = 75
+          dodge = -5
+        }
       }
     }
 
@@ -1294,6 +1321,9 @@ item_desc = {
         material = "silk"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
   messages = {
     wear = "{npc}将{name}拿出束在头发上。"

@@ -1300,6 +1300,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1516,6 +1519,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 65
+        armor_prop = {
+          armor = 65
+        }
       }
   messages = {
     remove = "{npc}解开{name},把{name}从身上脱了下来。"
@@ -1543,6 +1549,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 45
+        armor_prop = {
+          armor = 45
+        }
       }
   messages = {
     remove = "{npc}轻轻的把{name}从身上脱了下来。"
@@ -1570,6 +1579,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 30
+        armor_prop = {
+          armor = 30
+        }
       }
   messages = {
     remove = "{npc}轻轻的把{name}从身上脱了下来。"
@@ -1597,6 +1609,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
   messages = {
     remove = "{npc}轻轻的把{name}从身上脱了下来。"
@@ -1700,6 +1715,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
     }
 
@@ -1721,6 +1739,9 @@ item_desc = {
         unit = "副"
         material = "steel"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 

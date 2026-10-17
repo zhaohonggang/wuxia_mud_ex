@@ -5813,6 +5813,9 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        armor_prop = {
+          armor = 0
+        }
       }
   messages = {
     remove = "{npc}幽幽的叹了口气，把{name}从头上摘了下来。"
@@ -5956,6 +5959,9 @@ chats = [
         unit = "朵"
         material = "plant"
         armor = 0
+        armor_prop = {
+          armor = 0
+        }
       }
   messages = {
     remove = "{npc}轻轻的叹了口气，把{name}从头上摘了下来。"
@@ -5980,6 +5986,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -6107,6 +6116,9 @@ chats = [
         weight = 1000
         unit = "顶"
         material = "cloth"
+        armor_prop = {
+          dodge = 5
+        }
       }
     }
 

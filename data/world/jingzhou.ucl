@@ -2746,6 +2746,9 @@ chats = [
         unit = "件"
         material = "leather"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -2767,6 +2770,9 @@ chats = [
         unit = "件"
         material = "leather"
         armor = 6
+        armor_prop = {
+          armor = 6
+        }
       }
     }
 
@@ -2787,6 +2793,9 @@ chats = [
         weight = 200
         unit = "双"
         material = "wood"
+        armor_prop = {
+          dodge = 2
+        }
       }
     }
 
@@ -2836,6 +2845,9 @@ chats = [
         weight = 1000
         unit = "串"
         material = "steel"
+        armor_prop = {
+          dodge = 5
+        }
       }
     }
 
@@ -2932,6 +2944,9 @@ chats = [
         material = "cloth"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2953,6 +2968,9 @@ chats = [
         unit = "件"
         material = "leather"
         armor = 50
+        armor_prop = {
+          armor = 50
+        }
       }
     }
 
@@ -2974,6 +2992,9 @@ chats = [
         unit = "块"
         material = "fur"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -3083,6 +3104,9 @@ chats = [
         unit = "双"
         material = "cloth"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 
@@ -3104,6 +3128,9 @@ chats = [
         unit = "条"
         material = "leather"
         armor = 5
+        armor_prop = {
+          armor = 5
+        }
       }
     }
 
@@ -3282,6 +3309,9 @@ chats = [
         weight = 800
         unit = "双"
         material = "leather"
+        armor_prop = {
+          dodge = 8
+        }
       }
     }
 
@@ -3321,6 +3351,10 @@ chats = [
         unit = "面"
         material = "leather"
         armor = 5
+        armor_prop = {
+          armor = 5
+          defense = 3
+        }
       }
     }
 
@@ -3342,6 +3376,9 @@ chats = [
         unit = "双"
         material = "leather"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
     }
 
@@ -3381,6 +3418,9 @@ chats = [
         unit = "件"
         material = "leather"
         armor = 45
+        armor_prop = {
+          armor = 45
+        }
       }
     }
 
@@ -3401,6 +3441,9 @@ chats = [
         weight = 500
         unit = "条"
         material = "leather"
+        armor_prop = {
+          dodge = -3
+        }
       }
     }
 
@@ -3422,6 +3465,9 @@ chats = [
         unit = "件"
         material = "steel"
         armor = 50
+        armor_prop = {
+          armor = 50
+        }
       }
     }
 
@@ -3443,6 +3489,9 @@ chats = [
         unit = "块"
         material = "steel"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -3484,6 +3533,9 @@ chats = [
         weight = 2000
         unit = "顶"
         material = "steel"
+        armor_prop = {
+          dodge = -5
+        }
       }
     }
 
@@ -3633,6 +3685,10 @@ chats = [
         unit = "副"
         material = "steel"
         armor = 5
+        armor_prop = {
+          armor = 5
+          unarmed_damage = 5
+        }
       }
     }
 

@@ -3511,6 +3511,9 @@ chats = [
         weight = 800
         unit = "双"
         material = "leather"
+        armor_prop = {
+          dodge = 80
+        }
       }
     }
 

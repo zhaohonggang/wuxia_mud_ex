@@ -1988,6 +1988,9 @@ direction = ~
         material = "cloth"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2009,6 +2012,9 @@ direction = ~
         unit = "碗"
         food = 100
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2028,6 +2034,9 @@ direction = ~
         weight = 700
         unit = "个"
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2049,6 +2058,9 @@ direction = ~
         unit = "颗"
         food = 80
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2070,6 +2082,9 @@ direction = ~
         unit = "个"
         food = 50
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2091,6 +2106,9 @@ direction = ~
         material = "cloth"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2115,6 +2133,9 @@ direction = ~
         unit = "根"
         material = "steel"
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2270,6 +2291,9 @@ direction = ~
         unit = "捆"
         material = "wood"
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2354,6 +2378,9 @@ direction = ~
         unit = "柄"
         material = "iron"
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2374,6 +2401,9 @@ direction = ~
         material = "cloth"
         armor = 10
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 

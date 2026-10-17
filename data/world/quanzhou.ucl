@@ -1166,6 +1166,9 @@ item_desc = {
         material = "cloth"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1188,6 +1191,9 @@ item_desc = {
         material = "cloth"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1209,6 +1215,9 @@ item_desc = {
         unit = "颗"
         food = 80
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1230,6 +1239,9 @@ item_desc = {
         unit = "个"
         food = 50
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1254,6 +1266,9 @@ item_desc = {
         unit = "根"
         material = "steel"
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1408,6 +1423,9 @@ item_desc = {
         unit = "柄"
         material = "iron"
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -1428,6 +1446,9 @@ item_desc = {
         material = "cloth"
         armor = 10
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 

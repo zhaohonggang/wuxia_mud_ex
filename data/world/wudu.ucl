@@ -3735,6 +3735,9 @@ chats = [
         unit = "个"
         material = "bamboo"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
   messages = {
     remove = "{npc}将竹篓从背上放了下来。"
@@ -3762,6 +3765,9 @@ chats = [
         unit = "个"
         material = "bamboo"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
   messages = {
     remove = "{npc}将竹篓从背上放了下来。"
@@ -3786,6 +3792,9 @@ chats = [
         weight = 80
         unit = "个"
         food = 20
+        armor_prop = {
+          armor = 3
+        }
       }
   messages = {
     remove = "{npc}将竹篓从背上放了下来。"
@@ -3808,6 +3817,9 @@ chats = [
         value = 100
         weight = 700
         unit = "个"
+        armor_prop = {
+          armor = 3
+        }
       }
   messages = {
     remove = "{npc}将竹篓从背上放了下来。"
@@ -3836,6 +3848,9 @@ chats = [
         unit = "根"
         material = "bone"
         food = 15
+        armor_prop = {
+          armor = 3
+        }
       }
   messages = {
     remove = "{npc}将竹篓从背上放了下来。"

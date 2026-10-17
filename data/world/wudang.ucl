@@ -2587,6 +2587,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 50
+        armor_prop = {
+          armor = 50
+        }
       }
     }
 
@@ -2607,6 +2610,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2648,6 +2654,9 @@ chats = [
         material = "cloth"
         armor = 1
         female_only = 1
+        armor_prop = {
+          armor = 1
+        }
       }
     }
 
@@ -2668,6 +2677,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 2
+        armor_prop = {
+          armor = 2
+        }
       }
     }
 
@@ -2793,6 +2805,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 3
+        armor_prop = {
+          armor = 3
+        }
       }
     }
 
@@ -2814,6 +2829,9 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 50
+        armor_prop = {
+          armor = 50
+        }
       }
     }
 

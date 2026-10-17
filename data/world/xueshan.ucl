@@ -1104,6 +1104,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 20
+        armor_prop = {
+          armor = 20
+        }
       }
     }
 
@@ -1125,6 +1128,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 20
+        armor_prop = {
+          armor = 20
+        }
       }
     }
 
@@ -1349,6 +1355,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 20
+        armor_prop = {
+          armor = 20
+        }
       }
     }
 
@@ -1391,6 +1400,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 20
+        armor_prop = {
+          armor = 20
+        }
       }
     }
 
@@ -1441,6 +1453,9 @@ item_desc = {
         unit = "顶"
         material = "head"
         armor = 10
+        armor_prop = {
+          armor = 10
+        }
       }
     }
 
@@ -1480,6 +1495,9 @@ item_desc = {
         unit = "件"
         material = "cloth"
         armor = 20
+        armor_prop = {
+          armor = 20
+        }
       }
     }
 

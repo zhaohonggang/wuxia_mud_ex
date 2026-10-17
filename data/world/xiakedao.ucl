@@ -3107,6 +3107,9 @@ chats = [
         material = "cloth"
         armor = 3
         female_only = 1
+        armor_prop = {
+          armor = 3
+        }
       }
     }
 
@@ -3186,6 +3189,9 @@ chats = [
         material = "玉"
         armor = 2
         female_only = 1
+        armor_prop = {
+          armor = 2
+        }
       }
     }
 
