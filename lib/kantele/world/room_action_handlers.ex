@@ -75,6 +75,22 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "xiakedao:xiaowu" => %{
       "do_move" => {Kantele.World.RoomActions.Xiakedao.Xiaowu.Move, :run}
+    },
+    # 批量机制 #2：数据驱动「文案 + 位移 + 文案」（VisionMove 表）
+    "mingjiao:gudi3" => %{
+      "do_enter" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "gumu:taiyi1" => %{
+      "do_jump" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "gumu:taiyi2" => %{
+      "do_climb" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "emei:hcawest" => %{
+      "do_jump" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "emei:xiaoshulin1" => %{
+      "do_jump" => {Kantele.World.RoomActions.VisionMove, :run}
     }
   }
 
