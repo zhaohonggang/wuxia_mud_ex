@@ -48,17 +48,26 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
     |> Enum.map(fn {:publish, channel, event, _opts, _err} -> {channel, event.data.text} end)
   end
 
+  defp publish_metas(conn) do
+    conn.private.channel_changes
+    |> Enum.reverse()
+    |> Enum.filter(&match?({:publish, _c, _e, _o, _f}, &1))
+    |> Enum.map(fn {:publish, channel, event, _opts, _err} -> {channel, event.data.meta} end)
+  end
+
   defp new_room(conn), do: conn.private.update_character.room_id
 
   describe "entries/0 覆盖度" do
-    test "5 个房间 5 个 verb" do
+    test "7 个房间 7 个 verb" do
       assert Map.keys(VisionMove.entries()) |> Enum.sort() ==
                [
                  {"emei:hcawest", "jump"},
+                 {"emei:ssyb", "climb"},
                  {"emei:xiaoshulin1", "jump"},
                  {"gumu:taiyi1", "jump"},
                  {"gumu:taiyi2", "climb"},
-                 {"mingjiao:gudi3", "enter"}
+                 {"mingjiao:gudi3", "enter"},
+                 {"wudu:minju7", "enter"}
                ]
     end
   end
@@ -194,6 +203,57 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
       conn = conn_in("some:other", "jump", "do_jump")
 
       assert :not_handled = dispatch(conn, "jump chuang")
+    end
+  end
+
+  describe "exclude_actor（LPC message(..., ({me})) 排除行动者）" do
+    test "emei:ssyb climb → 两段广播都带 exclude_actor: true，行动者被排除" do
+      conn = conn_in("emei:ssyb", "climb", "do_climb")
+
+      assert {:handled, conn2} = dispatch(conn, "climb")
+
+      assert publish_metas(conn2) == [
+               {"rooms:emei:ssyb", %{exclude_actor: true}},
+               {"rooms:emei:gudelin1", %{exclude_actor: true}}
+             ]
+
+      assert publishes(conn2) == [
+               {"rooms:emei:ssyb", "{npc}使劲爬上去，花了九牛二虎之力。\n"},
+               {"rooms:emei:gudelin1", "{npc}花了九牛二虎之力，到了这个地方，却不知道在哪里？\n"}
+             ]
+
+      assert new_room(conn2) == "emei:gudelin1"
+    end
+
+    test "wudu:minju7 enter zhuo → 钻到供桌下，两段广播都排除行动者" do
+      conn = conn_in("wudu:minju7", "enter", "do_enter")
+
+      assert {:handled, conn2} = dispatch(conn, "enter zhuo")
+
+      assert publish_metas(conn2) == [
+               {"rooms:wudu:minju7", %{exclude_actor: true}},
+               {"rooms:wudu:minju9", %{exclude_actor: true}}
+             ]
+
+      assert new_room(conn2) == "wudu:minju9"
+    end
+
+    test "wudu:minju7 参数不符 → :not_handled（LPC `return 0`）" do
+      conn = conn_in("wudu:minju7", "enter", "do_enter")
+
+      assert :not_handled = dispatch(conn, "enter")
+      assert :not_handled = dispatch(conn, "enter window")
+    end
+
+    test "不带 exclude_actor 的条目 meta 为空（不受影响）" do
+      conn = conn_in("gumu:taiyi1", "jump", "do_jump")
+
+      assert {:handled, conn2} = dispatch(conn, "jump chi")
+
+      assert publish_metas(conn2) == [
+               {"rooms:gumu:taiyi1", %{}},
+               {"rooms:gumu:taiyi2", %{}}
+             ]
     end
   end
 end

@@ -30,12 +30,14 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert {:ok, {XiaowuMove, :run}} = RoomActionHandlers.lookup("xiakedao:xiaowu", "do_move")
     end
 
-    test "VisionMove 批量表五个房间解析成功" do
+    test "VisionMove 批量表七个房间解析成功" do
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("mingjiao:gudi3", "do_enter")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("gumu:taiyi1", "do_jump")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("gumu:taiyi2", "do_climb")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("emei:hcawest", "do_jump")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("emei:xiaoshulin1", "do_jump")
+      assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("emei:ssyb", "do_climb")
+      assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("wudu:minju7", "do_enter")
     end
 
     test "房间未注册 → {:unimplemented, name}" do
@@ -57,7 +59,7 @@ defmodule Kantele.World.RoomActionHandlersTest do
   end
 
   describe "registered?/2 与 registered_rooms/0" do
-    test "已注册房间与 handler 覆盖（样板 + MessageOnly + Move + 全局覆盖 + 位移 + VisionMove）" do
+    test "已注册房间与 handler 覆盖（样板 + MessageOnly + Move + 全局覆盖 + 位移 + VisionMove 两批）" do
       assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                [
                  "baituo:neishi",
@@ -65,6 +67,7 @@ defmodule Kantele.World.RoomActionHandlersTest do
                  "chengdu:guangchang",
                  "emei:hcawest",
                  "emei:shierpan3",
+                 "emei:ssyb",
                  "emei:xiaoshulin1",
                  "gumu:taiyi1",
                  "gumu:taiyi2",
@@ -75,6 +78,7 @@ defmodule Kantele.World.RoomActionHandlersTest do
                  "lingxiao:juegu",
                  "mingjiao:gudi3",
                  "register:prison",
+                 "wudu:minju7",
                  "xiakedao:xiaowu"
                ]
 
@@ -94,6 +98,8 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert RoomActionHandlers.registered?("gumu:taiyi2", "do_climb")
       assert RoomActionHandlers.registered?("emei:hcawest", "do_jump")
       assert RoomActionHandlers.registered?("emei:xiaoshulin1", "do_jump")
+      assert RoomActionHandlers.registered?("emei:ssyb", "do_climb")
+      assert RoomActionHandlers.registered?("wudu:minju7", "do_enter")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
       # do_climb 只在 hengyang:furong1 与 gumu:taiyi2 移植

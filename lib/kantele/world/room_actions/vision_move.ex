@@ -26,7 +26,8 @@ defmodule Kantele.World.RoomActions.VisionMove do
         before:    旧房间广播（`nil` = 不广播）,
         target:    目标房间 id（必填）,
         after:     新房间广播（`nil` = 不广播）,
-        otherwise: 参数不符时（`{:write, text}` = 只提示本人 / `:not_handled` = LPC `return 0`）
+        otherwise: 参数不符时（`{:write, text}` = 只提示本人 / `:not_handled` = LPC `return 0`）,
+        exclude_actor: `true` = 两段广播都排除行动者（LPC `message(..., ({me}))`）
       }}
 
   `after` 广播**必须**显式用 `target`（新房间）—— `move_to/2` 之后
@@ -76,6 +77,24 @@ defmodule Kantele.World.RoomActions.VisionMove do
       target: "emei:hcawest",
       after: "$N从华藏庵外跳窗进来。\n",
       otherwise: :not_handled
+    },
+    # d/emei/ssyb.c: 爬上去到密林（LPC 用 message(..., ({me})) 排除行动者）
+    {"emei:ssyb", "climb"} => %{
+      arg: nil,
+      before: "$N使劲爬上去，花了九牛二虎之力。\n",
+      target: "emei:gudelin1",
+      after: "$N花了九牛二虎之力，到了这个地方，却不知道在哪里？\n",
+      exclude_actor: true,
+      otherwise: :not_handled
+    },
+    # d/wudu/minju7.c: 往供桌下面钻（同样排除行动者）
+    {"wudu:minju7", "enter"} => %{
+      arg: "zhuo",
+      before: "$N一弯腰往供桌下面钻了进去。\n",
+      target: "wudu:minju9",
+      after: "$N从外面钻了进来。\n",
+      exclude_actor: true,
+      otherwise: :not_handled
     }
   }
 
@@ -93,10 +112,16 @@ defmodule Kantele.World.RoomActions.VisionMove do
   defp perform(conn, room_id, move, arg) do
     case arg_matches?(move[:arg], arg) do
       true ->
+        opts =
+          case move[:exclude_actor] do
+            true -> [exclude_actor: true]
+            _ -> []
+          end
+
         conn
-        |> maybe_vision(room_id, move[:before])
+        |> maybe_vision(room_id, move[:before], opts)
         |> Helpers.move_to(move.target)
-        |> maybe_vision(move.target, move[:after])
+        |> maybe_vision(move.target, move[:after], opts)
 
       false ->
         otherwise(conn, move[:otherwise])
@@ -106,8 +131,11 @@ defmodule Kantele.World.RoomActions.VisionMove do
   defp arg_matches?(nil, _arg), do: true
   defp arg_matches?(want, arg), do: want == arg
 
-  defp maybe_vision(conn, _room_id, nil), do: conn
-  defp maybe_vision(conn, room_id, text), do: Helpers.broadcast_vision(conn, room_id, text)
+  defp maybe_vision(conn, _room_id, nil, _opts), do: conn
+
+  defp maybe_vision(conn, room_id, text, opts) do
+    Helpers.broadcast_vision(conn, room_id, text, opts)
+  end
 
   # LPC `return 0`
   defp otherwise(_conn, :not_handled), do: :not_handled

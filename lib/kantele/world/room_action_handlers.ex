@@ -91,6 +91,13 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "emei:xiaoshulin1" => %{
       "do_jump" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    # VisionMove 第二批：LPC 用 message(..., ({me})) 排除行动者的两处
+    "emei:ssyb" => %{
+      "do_climb" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    "wudu:minju7" => %{
+      "do_enter" => {Kantele.World.RoomActions.VisionMove, :run}
     }
   }
 

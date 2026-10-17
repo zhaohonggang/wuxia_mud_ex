@@ -8,6 +8,9 @@ defmodule Kantele.World.RoomActions.Helpers do
   - `message_vision(msg, this_player())` → `broadcast_vision/3`：向房间频道
     `rooms:\#{room_id}` 广播 `type: "vision"` 消息，房间内每人（含行动者）都收到，
     由 `Kantele.Character.VisionEvent` 按 `from_pid` 分流 echo/listen 渲染。
+  - `message("vision", msg, env, ({me}))` → `broadcast_vision(conn, room_id, msg,
+    exclude_actor: true)`：同样广播，但**行动者自己收不到**（LPC 用 `({me})`
+    把行动者排除在接收列表外）。
   - `write(msg)` → `render_to_player/2`：只把文本推给当前玩家，不广播。
   - `this_player()->move(__DIR__"xxx")` → `move_to/2`：把玩家瞬移到目标房间。
   """
@@ -26,17 +29,27 @@ defmodule Kantele.World.RoomActions.Helpers do
   「你」，与 LPC `message_vision` 语义不符（`wield_command.ex` 的装备文案
   同样只预替换 `{name}`、把 `{npc}` 留给 `VisionView`）。
 
+  选项：
+  - `:exclude_actor`（默认 `false`）—— 为 `true` 时行动者**收不到**这条广播，
+    对应 LPC `message("vision", msg, env, ({me}))`（接收列表里排除了行动者）。
+
   返回更新后的 `conn`（`private.channel_changes` 增加一条 publish）。
   """
-  def broadcast_vision(conn, room_id, template)
+  def broadcast_vision(conn, room_id, template, opts \\ [])
       when is_binary(room_id) and is_binary(template) do
     text = String.replace(template, "$N", "{npc}")
+
+    options =
+      case Keyword.get(opts, :exclude_actor, false) do
+        true -> [type: "vision", meta: %{exclude_actor: true}]
+        false -> [type: "vision"]
+      end
 
     Conn.publish_message(
       conn,
       "rooms:#{room_id}",
       text,
-      [type: "vision"],
+      options,
       &__MODULE__.publish_error/1
     )
   end

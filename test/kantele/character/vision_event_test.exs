@@ -76,6 +76,33 @@ defmodule Kantele.Character.VisionEventTest do
 
       assert output_text(conn) =~ "张三抖出一柄长剑握在手中。"
     end
+
+    test "meta.exclude_actor=true：行动者不渲染（LPC message(..., ({me}))）" do
+      character = character("player-1", "张三")
+
+      conn =
+        VisionEvent.echo(build_conn(character), %Event{
+          from_pid: self(),
+          topic: Event.Message,
+          data: message_event(%{meta: %{exclude_actor: true}})
+        })
+
+      refute output_text(conn) =~ "长剑"
+      assert conn.output == []
+    end
+
+    test "meta.exclude_actor=true 只影响行动者，旁观者照常渲染" do
+      character = character("player-2", "李四")
+
+      conn =
+        VisionEvent.echo(build_conn(character), %Event{
+          from_pid: other_pid(),
+          topic: Event.Message,
+          data: message_event(%{meta: %{exclude_actor: true}})
+        })
+
+      assert output_text(conn) =~ "张三抖出一柄长剑握在手中。"
+    end
   end
 
   describe "VisionView.render/2" do
