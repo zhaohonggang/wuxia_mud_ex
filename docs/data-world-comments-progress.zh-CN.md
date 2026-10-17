@@ -41,7 +41,7 @@
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
-| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）；B9–B10 ⬜ |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）；B10 ⬜ |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -280,7 +280,7 @@
 | ~~B7~~ | ~~`sleep_room`/`no_sleep_room`/`no_steal`（→ `flags`）~~ | ~~127/90/55~~ | **已由 B1 完成**（`cf0af449`） | ✅ | `cf0af449` |
 | **B7** | `room_owner`/`room_name`/`room_position`/`room_owner_id` | 29/29/29/24 | 房间归属 | ⏸ 数据阻塞 | 代码 `48fa1b59`；源 .c 全为 `//**` 注释模板占位符，无激活 set()，无真实值可回填 |
 | **B8** | `max_liquid` | 74（实测 96 块） | 容器容量 | ✅ | `a178e005` | `Item.Meta` 加 `{:max_liquid, nil}` + `parse_item_meta` 读 `meta.max_liquid`；回填 **96 个 `items` 块 / 30 区 / +96 行**；全库 82 处源文件取值 |
-| **B9** | `can_make`/`not_make`/`power_point`/`item_origin` | 16/8/20/16 | 打造系统 | ⬜ | |
+| **B9** | `can_make`/`not_make`/`power_point`/`item_origin` | 16/8/20/16 | 打造系统 | ✅ | `84dbaef2` | `Item.Meta` 加 `{:can_make, nil}`/`{:not_make, nil}`/`{:power_point, nil}`/`{:item_origin, nil}` + `parse_item_meta` 读取；新增 `scripts/backfill_item_craft_keys.py` + `scripts/probe_item_craft_keys.exs`；回填 **14 个 `items` 块 / 3 区 / +49 行**；源文件 can_make=35/不_make=10/power_point=51/item_origin=35；探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，类型全部正确） |
 | **B10** | `armor_prop/personality` / `weapon_prop/personality` | 69 / 3 | 需扩 `applies_keys` 或单列字段 | ⬜ | |
 | ~~B11~~ | ~~`base_unit`/`base_value`~~ | ~~72/69~~ | **已改判 L3-framework**，退出本表 | ➖ | |
 
@@ -459,6 +459,7 @@
 | 2026-10-16 | **B6（chat_msg_combat/chat_chance_combat）** | `72b86831` | `lib/kantele/character.ex` NonPlayerMeta 加两字段；`lib/kantele/world/loader.ex` `parse_character/4` 读取 + 新增 `parse_chat_msg_combat/1`；新增 `scripts/backfill_npc_combat_chat.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、双引号列表）+ `scripts/probe_npc_combat_chat.exs` | **29 区 / 122 块 / +239 行 / −0 行**；M15 0→**254/256**；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（loader 载入 NonPlayerMeta 字段，样本 老大娘 chance=50） |
 | 2026-10-16 | **B7（room_owner/room_name/room_position/room_owner_id，代码侧）** | `48fa1b59` | `lib/kantele/world/room.ex` Room 结构体加 4 字段（默认 nil）；`lib/kantele/world/loader.ex` `parse_room/4` 加 Map.get 读取；新增 `scripts/probe_room_owner.exs` | **3 文件 / +60 行 / −2 行**；4409 个房间字段均为 nil（无源数据）；**数据回填阻塞：源 .c 4 个 key 全在 `//**` 注释块为模板占位符，无激活 set()，也无 sidecar/其他真实值来源** |
 | 2026-10-16 | **B8（max_liquid 容器容量）** | `a178e005` | `lib/kantele/world/item.ex` Item.Meta 加 `{:max_liquid, nil}`；`lib/kantele/world/loader.ex` `parse_item_meta/1` 读 `meta.max_liquid`；新增 `scripts/backfill_item_max_liquid.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内）+ `scripts/probe_item_max_liquid.exs` | **30 区 / 96 块 / +96 行 / −0 行**；源 .c 82 处取值；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（96 物品命中，样本 葫芦 max_liquid=10） |
+| 2026-10-16 | **B9（can_make/not_make/power_point/item_origin 打造系统）** | `84dbaef2` | `lib/kantele/world/item.ex` Item.Meta 加 4 字段（默认 nil）；`lib/kantele/world/loader.ex` `parse_item_meta/1` 加 4 Map.get 读取；新增 `scripts/backfill_item_craft_keys.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内）+ `scripts/probe_item_craft_keys.exs` | **3 区 / 14 块 / +49 行 / −0 行**；源文件 can_make=35/不_make=10/power_point=51/item_origin=35；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，样本 补天石 can_make=["all"] power_point=100 item_origin=1） |
 
 ---
 
