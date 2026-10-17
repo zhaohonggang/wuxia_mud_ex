@@ -41,7 +41,7 @@
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
-| **P2** | 加字段 + 回填 | 8 个批次 | L2 | 🟨 | `0676bd08` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）；B10 ⬜ |
+| **P2** | 加字段 + 回填 | 8 个批次 | L2 | ✅ | `2d9de14a` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）/ **B10 ✅**（B10a 126 块 / 22 区 / +389 行 `bcd168c0` + B10b 28 块 / 8 区 / +34 行 `2d9de14a`）→ **P2 批次全部完成** |
 | **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ⬜ | | |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
@@ -73,6 +73,8 @@
 | M13 | 装备文案已回填条数（B5b 新增） | 0 | **66**（wear 22 / remove 13 / unequip 31，46 个 `items` 块 / 14 区） | ✅ | `backfill_item_messages.py` |
 | M14 | `Item.Meta.female_only=true` 物品数（B3） | 0 | **24**（7 区） | ✅ | `scripts/probe_item_female_only.exs`（容器内） |
 | M15 | `chat_msg_combat`/`chat_chance_combat` 载入 NPC 数（B6） | 0 | **254/256**（29 区，样本 老大娘 chance=50） | ✅ | `scripts/probe_npc_combat_chat.exs`（容器内） |
+| M16 | `Item.Meta.*_prop` 已装载物品数（B10a/B10b；此前 .ucl 只有 liuxi 3 个手写块） | 0 | **133**（armor 117 / dodge 17 / personality 28 / defense 3 / unarmed_damage 4 / attack 1；含 liuxi 手写 3） | ✅ | `scripts/probe_item_props.exs`（容器内） |
+| M17 | prop 子键白名单 `Combat.applies_keys()` 键数 | 7 | **11**（+personality/per/warm/armor_vs_force） | ✅ | `scripts/probe_item_props.exs`（容器内） |
 
 **基线已实测确认**：M1–M6、M8 为本轮实跑值；M7 引用 `ucl-comment-todo.zh-CN.md` 的记录。
 
@@ -203,7 +205,7 @@
 | `Item.Meta` | `can_make not_make power_point item_origin material_attrib material_name` | ⬜ |
 | `Room` | `room_owner room_name room_position room_owner_id` | ✅ 代码 `48fa1b59`；**数据 ⏸ 阻塞（源无真实值）** |
 | `NonPlayerMeta` | `chat_msg_combat chat_chance_combat` | ✅ `72b86831` |
-| `Combat.applies_keys()` | 是否纳入 `personality`（B10 前置） | ⬜ |
+| `Combat.applies_keys()` | 4 键（personality（B10b）：per warm armor_vs_force；R2 已决策 = 扩白名单，不让 sanitize_prop 丢弃） | ✅ `2d9de14a` |
 
 > **复核修正 2（2026-10-16）**：`female_only` **从 `Room` 行移到 `Item.Meta` 行** ——
 > 源对象是 `obj/qingpao.c` 等**物品**（item×45/npc×15），消费端 `cmds/std/wear.c` L75 也是物品穿戴。
@@ -281,7 +283,7 @@
 | **B7** | `room_owner`/`room_name`/`room_position`/`room_owner_id` | 29/29/29/24 | 房间归属 | ⏸ 数据阻塞 | 代码 `48fa1b59`；源 .c 全为 `//**` 注释模板占位符，无激活 set()，无真实值可回填 |
 | **B8** | `max_liquid` | 74（实测 96 块） | 容器容量 | ✅ | `a178e005` | `Item.Meta` 加 `{:max_liquid, nil}` + `parse_item_meta` 读 `meta.max_liquid`；回填 **96 个 `items` 块 / 30 区 / +96 行**；全库 82 处源文件取值 |
 | **B9** | `can_make`/`not_make`/`power_point`/`item_origin` | 16/8/20/16 | 打造系统 | ✅ | `84dbaef2` | `Item.Meta` 加 `{:can_make, nil}`/`{:not_make, nil}`/`{:power_point, nil}`/`{:item_origin, nil}` + `parse_item_meta` 读取；新增 `scripts/backfill_item_craft_keys.py` + `scripts/probe_item_craft_keys.exs`；回填 **14 个 `items` 块 / 3 区 / +49 行**；源文件 can_make=35/不_make=10/power_point=51/item_origin=35；探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，类型全部正确） |
-| **B10** | `armor_prop/personality` / `weapon_prop/personality` | 69 / 3 | 需扩 `applies_keys` 或单列字段 | ⬜ | |
+| **B10** | `armor_prop/personality` / `weapon_prop/personality` / `per` / `warm` / `armor_vs_force` + 白名单内子键（B10a 新发现） | 96 源文件（non-wl）+ 532 源文件（wl） | prop 子键斜杠式 **全库 663 处从未被转换**（转换器只认整体式）→ 拆两批：**B10a** 白名单内 armor/dodge/defense/attack/unarmed_damage（数据即生效）、**B10b** 扩 `applies_keys` + personality 回填 | ✅ | `bcd168c0` + `2d9de14a` | B10a：**22 区 / 126 块 / +389 行**（137 子键；260 characters 块跳过）；B10b：`@applies_keys` +4 键 + **8 区 / 28 块 / +34 行**（personality；per/warm/armor_vs_force 的 items 目标 0，全在 characters 块 = D10 受害）。技能键 finger/hand/strike/cuff/claw/unarmed（20 源文件）**不写**（Fighter.skills 通道 v0 不支持，写了也被 sanitize_prop 丢） |
 | ~~B11~~ | ~~`base_unit`/`base_value`~~ | ~~72/69~~ | **已改判 L3-framework**，退出本表 | ➖ | |
 
 > `default_long`(28) / `for_family`(35) / `jiaji`(21) / `hellzhen`(18) 等仍判 `manual`，不在上表。
@@ -439,6 +441,7 @@
 | D18 | `wield_msg`/`unwield_msg` 需要回填数据吗？ | **不需要** —— 转换器**早已输出** `messages = { wield, unwield }`，只缺 loader 读取。列为 **B5a**：零数据写入激活 373 条文案 | 2026-10-16 | 全库实测 220 块 / 218+155 条 |
 | D19 | 引号内的 `[` / `]` 怎么处理？ | **换成 `(` / `)`**（elias 实测拒绝 `[`：`syntax error before: '['`；`(` 可解析，全库既有的 `(pen)` 即此惯例）。同时确认 `,`+空白 与 `[0-9],` 也不可入串 | 2026-10-16 | `scripts/probe_ucl_brackets.exs` |
 | D20 | B5b 要不要写 `characters` 块？ | **不写**。`characters` 块里 loader 不读 `messages` → 写了是无效数据。只写 `items` 块（46/129），其余 83 块登记为 **D10 待决策**（R7） | 2026-10-16 | 全量「源文件→UCL 块」对账 |
+| D21 | B10 的 prop 子键：扩 `applies_keys` 还是单列字段？范围是否含白名单内子键？ | **扩白名单**（R2 决策）：单列字段过不了 `sanitize_prop`，白名单是唯一装载通道。范围**含白名单内子键** —— 勘查（`scripts/survey_b10_props.py`）发现**旧审计的假设错误**：全库 663 处斜杠式 `set("armor_prop/<sub>")` 从未被转换（转换器只认整体式，`lpc_converter.ex` L3327-3328），白名单内 armor/dodge 等同样缺失。拆 B10a（白名单内数据，经既有链路生效）→ B10b（+4 键白名单 + personality 数据）。技能键（finger/hand/strike/cuff/claw/unarmed）判 manual：Fighter.skills 通道引擎 v0 未建模，写了会被丢弃 | 2026-10-16 | `tmp/b10_survey.json`；`feature/equip.c` L38-47；`Combat.effective_applies` 泛型 `Map.get` 读取 |
 
 ---
 
@@ -460,6 +463,8 @@
 | 2026-10-16 | **B7（room_owner/room_name/room_position/room_owner_id，代码侧）** | `48fa1b59` | `lib/kantele/world/room.ex` Room 结构体加 4 字段（默认 nil）；`lib/kantele/world/loader.ex` `parse_room/4` 加 Map.get 读取；新增 `scripts/probe_room_owner.exs` | **3 文件 / +60 行 / −2 行**；4409 个房间字段均为 nil（无源数据）；**数据回填阻塞：源 .c 4 个 key 全在 `//**` 注释块为模板占位符，无激活 set()，也无 sidecar/其他真实值来源** |
 | 2026-10-16 | **B8（max_liquid 容器容量）** | `a178e005` | `lib/kantele/world/item.ex` Item.Meta 加 `{:max_liquid, nil}`；`lib/kantele/world/loader.ex` `parse_item_meta/1` 读 `meta.max_liquid`；新增 `scripts/backfill_item_max_liquid.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内）+ `scripts/probe_item_max_liquid.exs` | **30 区 / 96 块 / +96 行 / −0 行**；源 .c 82 处取值；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（96 物品命中，样本 葫芦 max_liquid=10） |
 | 2026-10-16 | **B9（can_make/not_make/power_point/item_origin 打造系统）** | `84dbaef2` | `lib/kantele/world/item.ex` Item.Meta 加 4 字段（默认 nil）；`lib/kantele/world/loader.ex` `parse_item_meta/1` 加 4 Map.get 读取；新增 `scripts/backfill_item_craft_keys.py`（dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内）+ `scripts/probe_item_craft_keys.exs` | **3 区 / 14 块 / +49 行 / −0 行**；源文件 can_make=35/不_make=10/power_point=51/item_origin=35；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；容器内探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，样本 补天石 can_make=["all"] power_point=100 item_origin=1） |
+| 2026-10-16 | **B10a（prop 斜杠子键·白名单内，计划外新发现）** | `bcd168c0` | 勘查脚本 `scripts/survey_b10_props.py` 发现**转换器只认整体式 `set("armor_prop", ([...]))`（`lpc_converter.ex` L3327-3328），而全库 663 处均为斜杠路径式 `set("armor_prop/armor", 1)` → prop 子键从未被转换**（旧审计假设白名单子键已转，不成立）。新增 `scripts/backfill_item_props.py`（`--subsets` 分子键类、缩进自适应、已有 map 并吞模式）+ `scripts/probe_item_props.exs`；白名单内 armor/dodge/defense/attack/unarmed_damage 137 子键写入 126 个 `items` 块 | **22 区 / +389 行 / −0 行**；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；探针 OK（130 物品带 prop，白名单外键 []，round-trip 干净）；`mix test` 3435/34 不新增。**行为说明**：这批经既有消费链路生效（`Equip.wear_state` 语义同 LPC `feature/equip.c` L38-47 穿戴累加），等价于恢复原始 LPC 战斗数值 |
+| 2026-10-16 | **B10b（扩 applies_keys + personality 回填，R2 决策落地）** | `2d9de14a` | `lib/kantele/character/combat.ex` `@applies_keys` 7→11 键（+personality/per/warm/armor_vs_force，P7 只加不改；公式 `Map.get(applies, key, 0)` 惰性读取 → 无战斗行为变化；Combat 不在 `Meta.Trim` 保留清单 → 无 web 载荷影响）；`backfill_item_props.py --subsets non_whitelisted` 写入 personality（25 块并入 B10a 既有 map、3 块新建 map） | **8 区 / 28 块 / +34 行 / −0 行**；per-zone 与 HEAD（B10a 后）对比 new_issues=0；幂等 ✓；探针 OK（133 物品带 prop、personality 28）；`mix test` 3435/**33**（33 = 原 34 基线去掉 recompile 后转好的 `reload_command_test`，失败清单与文档 12 文件基线一致、无新增）。per/warm/armor_vs_force 的 items 块目标 0（源全在 characters 块，D10/R7 受害） |
 
 ---
 
@@ -468,7 +473,7 @@
 | # | 事项 | 影响 | 状态 | 处理 |
 |---|------|------|:----:|------|
 | R1 | 5 个新脚本 + 3 份文档尚未 commit | 回滚基线缺失 | ⬜ | 先提交 P0 |
-| R2 | `armor_prop/personality` 被 `sanitize_prop` 丢弃 | B10 无法纯数据落地 | ⬜ | 需决定扩 `applies_keys` 或单列字段 |
+| R2 | `armor_prop/personality` 被 `sanitize_prop` 丢弃 | B10 无法纯数据落地 | ✅ 已决策 | **决策 = 扩 `Combat.applies_keys()` 白名单**（B10b `2d9de14a`）：让 loader 装得下是唯一通道；新键经 `Map.get(applies, key, 0)` 惰性携带、公式不读 → 无战斗行为变化。同时发现**白名单内子键（532 源文件）也从未被转换**（斜杠式）→ B10a 先数据回填 |
 | R3 | 战斗回调方案 A 会有第二份 `engage` 抽取实现 | 与转换器漂移风险 | ⬜ | 加对账脚本，或明确记录在文档 |
 | R4 | `Meta.Trim` 新字段必须能 JSON 编码 | websocket 进程崩溃 | ⬜ | 加字段时同步补 `Jason.Encoder` |
 | R5 | `context.data.no_steal` 的取数路径未确认 | 决定 `no_steal` 是 L1（纯数据）还是 L3（要接线） | ✅ 已查清 | **已确认**：`context.data` 就是 `%Room{}`（`vendor/kalevala/.../room.ex` L79-85 `state.data = room`；`Context.new` 取 `state.data`），所以 `no_steal` 走 L1（数据已写），消费端见 R6 |

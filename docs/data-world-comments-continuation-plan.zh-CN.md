@@ -324,7 +324,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
    早期草稿里的 `sleep_room`/`no_sleep_room`/`no_steal`/`no_beg`/`female_only`/`no_map`
    已被改判（前四个走已有 `room.flags` → **B1/L1**；`female_only` → **B3/L1**；`no_map` → noop），
    **不要再为它们加字段**：
-   - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`max_liquid`（✅ 已加 `a178e005`）、`power_point can_make not_make item_origin`；扩 `armor_prop` 子键（`personality`/`armor_vs_force`/`warm`）与 `weapon_prop` 子键（`personality`）；
+   - `Item.Meta` 加：`wield_msg unwield_msg wear_msg remove_msg unequip_msg`、`max_liquid`（✅ 已加 `a178e005`）、`power_point can_make not_make item_origin`（✅ `84dbaef2`）；扩 `armor_prop` 子键（`personality`/`armor_vs_force`/`warm`）与 `weapon_prop` 子键（`personality`）→ **已改为扩 `Combat.applies_keys()`（✅ `2d9de14a`，见 D21：单列字段过不了 `sanitize_prop`）**；
    - `Room` 加：`room_owner room_name room_position room_owner_id`。（代码 ✅ `48fa1b59`，**数据 ⏸ 阻塞：源无真实值**）
    - `NonPlayerMeta` 加：`chat_msg_combat chat_chance_combat`。（✅ `72b86831`）
    - 每个字段**只加 `Map.get`**，不写任何默认逻辑 → 消费端未接 = 行为不变。
@@ -345,7 +345,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | B7 | `room_owner` / `room_name` / `room_position` / `room_owner_id` | 29/29/29/24 | `Room` 房间归属 —— **代码 ✅ `48fa1b59`**（Room 结构体加 4 字段 + `parse_room/4` Map.get；4409 个房间字段均为 nil）；**数据 ⏸ 阻塞**：源 .c 中 4 个 key 全在 `//**` 注释块为模板占位符，无激活 set()，无真实值可回填 |
 | B8 | `max_liquid` | 74（实测 96 块） | `Item.Meta` 容器容量 —— **已完成 `a178e005`**：`Item.Meta` 加 `{:max_liquid, nil}`；`loader.ex parse_item_meta/1` 读 `meta.max_liquid`；回填 **96 个 `items` 块 / 30 区 / +96 行**，容器内探针 `probe_item_max_liquid.exs` 实测 loader 载入字段（96 命中，样本 葫芦 max_liquid=10） |
 | B9 | `can_make` / `not_make` / `power_point` / `item_origin` | 16/8/20/16 | `Item.Meta` 打造系统 —— **已完成 `84dbaef2`**：`Item.Meta` 加 `{:can_make, nil}`/`{:not_make, nil}`/`{:power_point, nil}`/`{:item_origin, nil}` + `parse_item_meta/1` 读取；新增 `scripts/backfill_item_craft_keys.py` + `scripts/probe_item_craft_keys.exs`；回填 **14 个 `items` 块 / 3 区 / +49 行**，源文件 can_make=35/不_make=10/power_point=51/item_origin=35；容器内探针 OK（can_make 14/不_make 7/power_point 14/item_origin 14，类型全部正确） |
-| B10 | `armor_prop/personality`、`armor_prop/armor_vs_force`、`armor_prop/warm`、`weapon_prop/personality` | 69/2/1/3 | 扩 `Combat.applies_keys()` 或单列字段 |
+| B10 | `armor_prop/personality`、`armor_prop/armor_vs_force`、`armor_prop/warm`、`weapon_prop/personality` | 69/2/1/3 | **已完成（D21 拆两批）**：勘查（`scripts/survey_b10_props.py`）发现**全库 663 处斜杠式 `set("armor_prop/<sub>", N)` 从未被转换**（转换器只认整体式，`lpc_converter.ex` L3327-3328）—— 白名单内 armor/dodge/defense/attack/unarmed_damage（532 源文件）同样缺失。**B10a `bcd168c0`**：白名单内 137 子键 → **126 个 items 块 / 22 区 / +389 行**，经既有链路生效（`Equip.wear_state` 同 LPC `feature/equip.c` L38-47）；**B10b `2d9de14a`**：`Combat.applies_keys()` +personality/per/warm/armor_vs_force（惰性携带、无战斗行为变化）+ personality 回填 **28 块 / 8 区 / +34 行**（per/warm/armor_vs_force 的 items 目标 0 = D10 受害）。技能键 finger/hand/strike/cuff/claw/unarmed 判 manual（Fighter.skills 通道 v0 未建模） |
 
 > **B5a 做法**（P7 只加字段）：`Item.Meta` 加 `:messages`（默认 `nil`）；`loader.ex parse_item/4`
 > 加一行 `messages: Map.get(item_data, :messages)`（`messages` 在物品块**顶层**，与 `name` 同级，
@@ -446,6 +446,11 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `probe_npc_combat_chat.exs` | B6 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；实测 loader 载入 NonPlayerMeta.chat_msg_combat/chat_chance_combat，254/256 命中） |
 | `backfill_item_max_liquid.py` | B8 | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（B8 回填 `max_liquid`；dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内） |
 | `probe_item_max_liquid.exs` | B8 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；实测 loader 载入 Item.Meta.max_liquid，96 命中，样本 葫芦=10） |
+| `backfill_item_craft_keys.py` | B9 | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（B9 回填 `can_make/not_make/power_point/item_origin`；dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等、8 空缩进写入 meta 块内） |
+| `probe_item_craft_keys.exs` | B9 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；实测 loader 载入 4 字段，can_make 14/不_make 7/power_point 14/item_origin 14） |
+| `survey_b10_props.py` | B10 勘查 | `.c` + `.ucl` | `tmp/b10_survey.json` | 宿主机 | ✅ | ✅ **已建**（prop 斜杠子键三分：whitelisted/non_whitelisted/skill_manual + items/characters 块归属；证实 663 处从未被转换） |
+| `backfill_item_props.py` | B10a/B10b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（`--subsets whitelisted\|non_whitelisted\|both`；缩进自适应、既有 prop map 并入模式、dry-run 默认、两阶段、insertion-only、`validate_ucl` 门禁、幂等） |
+| `probe_item_props.exs` | B10 验收 | —（加载世界） | — | **容器内** | ✅ | ✅ **已建**（探针；133 物品带 prop、personality 28、白名单外键 []、round-trip 干净） |
 | `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
 
 **所有脚本的公共约定**
