@@ -72,6 +72,27 @@ defmodule Kantele.Character.ShopTest do
     refute_receive %Event{}, 100
   end
 
+  test "非商人（无 goods）对 buy 同样保持沉默" do
+    # 房间把 buy 广播给房间内所有非玩家角色；无货 NPC 若回一句
+    # 「这里不卖X」，玩家买一样东西会被全场 NPC 刷屏。
+    no_goods = %{vendor() | meta: %NonPlayerMeta{goods: nil}}
+
+    NpcShopEvent.buy(build_conn(no_goods), buy_event("包子"))
+
+    refute_receive %Event{}, 100
+  end
+
+  test "有货商人报 unavailable 时带上 request_id（供玩家侧去重）" do
+    NpcShopEvent.buy(build_conn(vendor()), %Event{
+      topic: "shop/buy",
+      data: %{reply_to: self(), item_name: "长剑", buyer_id: "player-1", request_id: 4242}
+    })
+
+    assert_receive %Event{topic: "shop/buy-result", data: data}
+    assert data.unavailable == true
+    assert data.request_id == 4242
+  end
+
   test "NPC 对在售物品报价" do
     NpcShopEvent.buy(build_conn(vendor()), buy_event("包子"))
 
@@ -164,6 +185,92 @@ defmodule Kantele.Character.ShopTest do
 
     {:ok, parsed} = Kantele.Character.Commands.parse("问 店小二 柳溪")
     assert parsed.function == :run
+  end
+
+  test "玩家渲染货单（shop/list-result -> ShopView）" do
+    conn =
+      ShopEvent.list_result(build_conn(buyer()), %Event{
+        topic: "shop/list-result",
+        data: %{
+          vendor: "店小二",
+          items: [%{short: "包子 Baozi(liuxi:baozi)", unit: "个", price: 15, count: -1}]
+        }
+      })
+
+    assert %Kalevala.Character.Conn.EventText{topic: "Shop.List", data: data} =
+             Enum.find(conn.output, &match?(%Kalevala.Character.Conn.EventText{topic: "Shop.List"}, &1))
+
+    assert data.vendor == "店小二"
+    assert [%{short: "包子 Baozi(liuxi:baozi)", price: 15}] = data.items
+  end
+
+  test "货单事件载荷不合约定时原样返回" do
+    conn =
+      ShopEvent.list_result(build_conn(buyer()), %Event{
+        topic: "shop/list-result",
+        data: %{unexpected: true}
+      })
+
+    assert conn.private.update_character == nil
+    assert conn.output == []
+  end
+
+  test "同一 request_id 的重复报价只成交一次（同房间两个商人卖同样货）" do
+    quote_event = fn ->
+      %Event{
+        topic: "shop/buy-result",
+        data: %{
+          vendor: "小贩",
+          unavailable: false,
+          item_id: "liuxi:baozi",
+          item_name: "包子 Baozi",
+          price: 15,
+          quantity: 1,
+          buyer_id: "player-1",
+          request_id: 777
+        }
+      }
+    end
+
+    conn = ShopEvent.buy_result(build_conn(buyer(100)), quote_event.())
+    updated = conn.private.update_character
+
+    assert updated.meta.coins == 85
+    assert [%Kalevala.World.Item.Instance{item_id: "liuxi:baozi"}] = updated.inventory
+
+    # 第二个商人（同一次 buy 命令）也回了一份报价 —— 必须被忽略
+    conn2 = ShopEvent.buy_result(build_conn(updated), quote_event.())
+
+    assert conn2.private.update_character == nil
+    assert conn2.output == []
+  end
+
+  test "不同 request_id 各自成交（连续两次 buy 都算）" do
+    quote = fn request_id ->
+      %Event{
+        topic: "shop/buy-result",
+        data: %{
+          vendor: "小贩",
+          unavailable: false,
+          item_id: "liuxi:baozi",
+          item_name: "包子 Baozi",
+          price: 15,
+          quantity: 1,
+          buyer_id: "player-1",
+          request_id: request_id
+        }
+      }
+    end
+
+    conn = ShopEvent.buy_result(build_conn(buyer(100)), quote.(1))
+    first = conn.private.update_character
+    assert first.meta.coins == 85
+
+    conn2 = ShopEvent.buy_result(build_conn(first), quote.(2))
+    second = conn2.private.update_character
+
+    assert second.meta.coins == 70
+    assert length(second.inventory) == 2
   end
 
   defp list_event(),

@@ -51,9 +51,16 @@ defmodule Kantele.Character.ShopEvent do
       ) do
     character = conn.character
     quantity = Map.get(data, :quantity, 1) || 1
+    request_id = Map.get(data, :request_id)
 
     cond do
       buyer_id != character.id ->
+        conn
+
+      # 同一请求只成交一次：房间把 buy 广播给房间内所有 NPC，若有两个卖同样
+      # 货的商人（taishan:tianjie / kaifeng:paifang），各自都会回一份报价，
+      # 不去重就会各扣一次钱。request_id 由房间按「一次命令」生成。
+      duplicate_request?(character, request_id) ->
         conn
 
       (character.meta.coins || 0) < price * quantity ->
@@ -78,6 +85,7 @@ defmodule Kantele.Character.ShopEvent do
             coins = character.meta.coins - price * quantity
             character = %{character | inventory: instances ++ character.inventory}
             character = Map.put(character, :meta, Map.put(character.meta, :coins, coins))
+            character = mark_request_done(character, request_id)
 
             Records.save(character)
 
@@ -98,4 +106,22 @@ defmodule Kantele.Character.ShopEvent do
   end
 
   def buy_result(conn, _event), do: conn
+
+  # 一次 `buy` 命令对应一个 request_id（房间侧生成），广播给多个商人时共用。
+  # 成交后记进 meta.temp，同 request_id 的后续报价一律忽略 —— 否则同房间
+  # 两个卖同样货的商人会各扣一次钱。
+  defp duplicate_request?(_character, nil), do: false
+
+  defp duplicate_request?(character, request_id) do
+    Map.get(Map.get(character.meta, :temp) || %{}, "shop_buy_request") == request_id
+  end
+
+  defp mark_request_done(character, nil), do: character
+
+  defp mark_request_done(character, request_id) do
+    meta = character.meta
+    temp = Map.put(Map.get(meta, :temp) || %{}, "shop_buy_request", request_id)
+
+    Map.put(character, :meta, Map.put(meta, :temp, temp))
+  end
 end

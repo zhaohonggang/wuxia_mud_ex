@@ -4,6 +4,10 @@ defmodule Kantele.Character.NpcShopEvent do
 
   收到房间转发的 `shop/list` / `shop/buy` 后，商人核对自家 goods
   并把结果作为事件回给玩家进程，由玩家侧 ShopEvent 渲染与扣钱。
+
+  未指名的 `buy` 会被房间广播给房间内所有 NPC，故报价里带回房间生成的
+  `request_id`：玩家侧靠它保证「一次 buy 只成交一次」（同房间两个卖同样
+  货的商人不会各扣一次钱）。无 goods 的 NPC 对 `list`/`buy` 都保持沉默。
   """
 
   use Kalevala.Character.Event
@@ -49,15 +53,24 @@ defmodule Kantele.Character.NpcShopEvent do
 
     case matched && item_info(matched) do
       nil ->
-        reply(reply_to, "shop/buy-result", %{
-          vendor: conn.character.name,
-          unavailable: true,
-          item_name: item_name,
-          buyer_id: Map.get(data, :buyer_id),
-          buyer_name: Map.get(data, :buyer_name)
-        })
+        # 无货 NPC 必须保持沉默：房间把 `buy` 广播给房间内**所有**非玩家角色
+        # （房间侧看不到谁有货，见 Room.ShopRequestEvent），若不设这道门，
+        # 路过的每个 NPC 都会回一句「这里不卖X」，玩家买一样东西会被刷屏。
+        # 与 list/2 的 `[] -> conn` 对称（那边本来就不回）。
+        if goods == [] do
+          conn
+        else
+          reply(reply_to, "shop/buy-result", %{
+            vendor: conn.character.name,
+            unavailable: true,
+            item_name: item_name,
+            buyer_id: Map.get(data, :buyer_id),
+            buyer_name: Map.get(data, :buyer_name),
+            request_id: Map.get(data, :request_id)
+          })
 
-        conn
+          conn
+        end
 
       info ->
         item_map = %{
@@ -81,7 +94,8 @@ defmodule Kantele.Character.NpcShopEvent do
               price: unit_price,
               quantity: Map.get(data, :quantity, 1),
               buyer_id: Map.get(data, :buyer_id),
-              buyer_name: Map.get(data, :buyer_name)
+              buyer_name: Map.get(data, :buyer_name),
+              request_id: Map.get(data, :request_id)
             })
 
             conn
@@ -92,7 +106,8 @@ defmodule Kantele.Character.NpcShopEvent do
               unavailable: true,
               item_name: info.name,
               buyer_id: Map.get(data, :buyer_id),
-              buyer_name: Map.get(data, :buyer_name)
+              buyer_name: Map.get(data, :buyer_name),
+              request_id: Map.get(data, :request_id)
             })
 
             conn

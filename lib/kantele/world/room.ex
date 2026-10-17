@@ -1011,8 +1011,15 @@ defmodule Kantele.World.Room.ShopRequestEvent do
   @moduledoc """
   商店请求转发（A10/N2）
 
-  把 `list`/`buy` 转给房间内的 NPC：指名则只找该角色，未指名则广播全场
-  非玩家，由带 goods 的商人应答（房间上下文角色被 Trimmed，无法直接看 meta）。
+  把 `list`/`buy` 转给房间内的 NPC：指名则只找该角色，未指名则广播给
+  全场非玩家，由带 goods 的商人应答。
+
+  注：`Context.new/1` 只清空 `inventory`，`meta` 是**完整保留**的（早先这里
+  写的「角色被 Trimmed，无法直接看 meta」不成立）。之所以仍用广播而不是
+  由房间按 goods 挑人：挑人需要在房间侧复刻 `NpcShopEvent` 的物品名匹配
+  （`Item.matches?` + 物品注册表查询），会把「谁卖什么」的判定分散到两处。
+  代价是未指名的 `buy` 会被多个商人各答一次，故此处按「一次命令」生成
+  `request_id` 透传下去，玩家侧据此只成交一次。
   """
 
   import Kalevala.World.Room.Context
@@ -1027,18 +1034,27 @@ defmodule Kantele.World.Room.ShopRequestEvent do
         context
 
       requester ->
+        # 一次命令一个 request_id，广播给多个商人时共用：玩家侧据此只成交一次
+        # （否则同房间两个卖同样货的商人会各扣一次钱，见 taishan:tianjie）。
+        data = Map.put(data, :request_id, System.unique_integer([:positive]))
         forward(context, topic, data, requester)
     end
   end
 
-  defp forward(context, topic, %{name: name}, requester) when is_binary(name) and name != "" do
+  defp forward(context, topic, %{name: name} = data, requester)
+       when is_binary(name) and name != "" do
     Enum.reduce(context.characters, context, fn character, acc ->
       if target?(character, requester) &&
            Kantele.World.Room.NameMatch.matches?(character, name) do
         event(acc, character.pid, self(), topic, %{
           reply_to: requester.pid,
           buyer_id: requester.id,
-          buyer_name: requester.name
+          buyer_name: requester.name,
+          # 与下方广播分支保持同一载荷形状：指名购买时 NPC 侧
+          # NpcShopEvent.buy/2 严格匹配 item_name，缺键会 FunctionClauseError
+          item_name: Map.get(data, :item_name),
+          quantity: Map.get(data, :quantity, 1),
+          request_id: Map.get(data, :request_id)
         })
       else
         acc
@@ -1057,7 +1073,8 @@ defmodule Kantele.World.Room.ShopRequestEvent do
           buyer_id: requester.id,
           buyer_name: requester.name,
           item_name: Map.get(data, :item_name),
-          quantity: Map.get(data, :quantity, 1)
+          quantity: Map.get(data, :quantity, 1),
+          request_id: Map.get(data, :request_id)
         })
       else
         acc
