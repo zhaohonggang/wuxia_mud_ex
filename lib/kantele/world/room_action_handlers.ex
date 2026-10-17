@@ -27,15 +27,24 @@ defmodule Kantele.World.RoomActionHandlers do
   handler 被真正移植并注册后，该房间的该动作才被拦截激活。
   """
   # 房间级注册表：room_id -> (handler_name -> {module, function})。
-  # 初始放 P5-1b-3 两个样板，动词均**不在全局命令表**、激活后不影响任何全局命令：
-  #   - huashan:lianhua do_tiao：纯 write 文本（render_to_player）
-  #   - emei:shierpan3 do_clap：message_vision 房间广播（broadcast_vision）
+  # 已注册的动词均**不在全局命令表**、激活后不影响任何全局命令：
+  #   - huashan:lianhua do_tiao：纯 write 文本（专用模块 Tiao）
+  #   - emei:shierpan3 do_clap：message_vision 房间广播（专用模块 Clap）
+  #   - hangzhou:liuzhuang do_knock / huanggong:inwell do_reach：纯消息/分支
+  #     （数据驱动 MessageOnly，见 room_actions/message_only.ex）
   @registry %{
     "huashan:lianhua" => %{
       "do_tiao" => {Kantele.World.RoomActions.Huashan.Lianhua.Tiao, :run}
     },
     "emei:shierpan3" => %{
       "do_clap" => {Kantele.World.RoomActions.Emei.Shierpan3.Clap, :run}
+    },
+    # 纯消息 / 简单分支：走数据驱动的 MessageOnly（见 room_actions/message_only.ex）
+    "hangzhou:liuzhuang" => %{
+      "do_knock" => {Kantele.World.RoomActions.MessageOnly, :run}
+    },
+    "huanggong:inwell" => %{
+      "do_reach" => {Kantele.World.RoomActions.MessageOnly, :run}
     }
   }
 
