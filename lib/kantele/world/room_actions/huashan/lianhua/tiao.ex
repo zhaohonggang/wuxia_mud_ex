@@ -30,7 +30,6 @@ defmodule Kantele.World.RoomActions.Huashan.Lianhua.Tiao do
 
   @impl true
   def run(conn, _params) do
-    text = %Kalevala.Character.Conn.Text{data: @text, newline: true}
-    Map.put(conn, :output, conn.output ++ [text])
+    Kantele.World.RoomActions.Helpers.render_to_player(conn, @text)
   end
 end

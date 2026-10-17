@@ -153,5 +153,24 @@ defmodule Kantele.World.RoomActionDispatcherTest do
 
       assert :not_handled = RoomActionDispatcher.dispatch(conn, "move", &RoomActionHandlers.lookup/2)
     end
+
+    test "emei:shierpan3 的 clap → 真实 Clap handler 向房间频道广播 vision 消息" do
+      # 用真实 Conn/Character/Private 结构体，才能走通 publish_message（房间广播）。
+      room = room_with_actions(%{"clap" => "do_clap"})
+
+      conn = %Kalevala.Character.Conn{
+        character: %Kalevala.Character{name: "测试", room_id: "emei:shierpan3"},
+        private: %Kalevala.Character.Conn.Private{room: room, channel_changes: []},
+        output: []
+      }
+
+      assert {:handled, conn2} =
+               RoomActionDispatcher.dispatch(conn, "clap", &RoomActionHandlers.lookup/2)
+
+      assert [{:publish, "rooms:emei:shierpan3", event, _opts, _err}] = conn2.private.channel_changes
+      assert event.topic == Kalevala.Event.Message
+      assert event.data.type == "vision"
+      assert String.contains?(event.data.text, "群蛙")
+    end
   end
 end
