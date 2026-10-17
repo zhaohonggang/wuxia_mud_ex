@@ -191,6 +191,10 @@ zones "item" {
         value = 10000
         weight = 6000
         unit = "块"
+        can_make = ["all"]
+        not_make = ["战衣", "腰带"]
+        power_point = 100
+        item_origin = 1
       }
     }
 
@@ -210,6 +214,9 @@ zones "item" {
         value = 10000
         weight = 500
         unit = "束"
+        can_make = ["鞭", "护甲", "战衣", "靴子", "腰带"]
+        power_point = 35
+        item_origin = 1
       }
     }
 
@@ -229,6 +236,10 @@ zones "item" {
         value = 10000
         weight = 5000
         unit = "块"
+        can_make = ["all"]
+        not_make = ["鞭", "战衣", "腰带"]
+        power_point = 70
+        item_origin = 1
       }
     }
 
@@ -248,6 +259,10 @@ zones "item" {
         value = 5000
         weight = 4500
         unit = "块"
+        can_make = ["all"]
+        not_make = ["腰带", "战衣"]
+        power_point = 30
+        item_origin = 1
       }
     }
 
@@ -267,6 +282,9 @@ zones "item" {
         value = 100000
         weight = 700
         unit = "束"
+        can_make = ["鞭", "护甲", "战衣", "靴子", "腰带"]
+        power_point = 100
+        item_origin = 1
       }
     }
 
@@ -286,6 +304,9 @@ zones "item" {
         value = 20000
         weight = 1800
         unit = "束"
+        can_make = ["鞭", "护甲", "战衣", "靴子", "腰带"]
+        power_point = 70
+        item_origin = 1
       }
     }
 
@@ -305,5 +326,9 @@ zones "item" {
         value = 30000
         weight = 30000
         unit = "块"
+        can_make = ["all"]
+        not_make = ["鞭", "战衣", "锤", "腰带"]
+        power_point = 70
+        item_origin = 1
       }
     }

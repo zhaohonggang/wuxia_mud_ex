@@ -1296,6 +1296,10 @@ defmodule Kantele.World.Loader do
       owner_id: Map.get(meta, :owner_id),
       female_only: to_bool(Map.get(meta, :female_only)),
       max_liquid: Map.get(meta, :max_liquid),
+      can_make: Map.get(meta, :can_make),
+      not_make: Map.get(meta, :not_make),
+      power_point: Map.get(meta, :power_point),
+      item_origin: Map.get(meta, :item_origin),
       aliases: parse_aliases(Map.get(meta, :aliases))
     }
 

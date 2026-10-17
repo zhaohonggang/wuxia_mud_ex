@@ -294,7 +294,18 @@ defmodule Kantele.World.Item.Meta do
     # 取值，皆为整数（如 bowl 6、jiudai 15、hdjiudai 20）。elias 可表达。
     # 暂无消费端（Q3 ❌），字段先加（默认 nil）、loader 只读取，不产生行为变化（P7）。
     # 待消费端（倒/喝命令）接线后再生效；由 scripts/backfill_item_max_liquid.py 回填。
-    {:max_liquid, nil}
+    {:max_liquid, nil},
+
+    # LPC 打造系统字段（转换器未输出，全库丢失）：
+    # - can_make / not_make：可/不可打造的装备类型，字符串列表（"all"/"甲" 或列表）
+    # - power_point：打造所需点数（整数，源中有 // 注释行，回填脚本需跳过）
+    # - item_origin：物品来源标记（整数，恒为 1）
+    # 暂无消费端（打造系统是 P3 子系统，Q3 ❌），字段先加、loader 只读取，
+    # 不产生行为变化（P7）。由 scripts/backfill_item_craft_keys.py 回填。
+    {:can_make, nil},
+    {:not_make, nil},
+    {:power_point, nil},
+    {:item_origin, nil}
   ]
 
   @doc """

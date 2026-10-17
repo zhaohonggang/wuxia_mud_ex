@@ -701,6 +701,10 @@ chats = [
         value = 3000000
         weight = 10000
         unit = "块"
+        can_make = ["all"]
+        not_make = ["鞭", "甲"]
+        power_point = 80
+        item_origin = 1
       }
     }
 

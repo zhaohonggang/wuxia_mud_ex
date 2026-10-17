@@ -3407,6 +3407,9 @@ chats = [
         value = 1000000
         weight = 700
         unit = "张"
+        can_make = ["战衣"]
+        power_point = 100
+        item_origin = 1
       }
     }
 
@@ -3426,6 +3429,9 @@ chats = [
         value = 120000
         weight = 25000
         unit = "块"
+        can_make = ["护甲"]
+        power_point = 100
+        item_origin = 1
       }
     }
 
@@ -3482,6 +3488,9 @@ chats = [
         value = 200000
         weight = 700
         unit = "根"
+        can_make = ["鞭"]
+        power_point = 100
+        item_origin = 1
       }
     }
 
@@ -3521,6 +3530,10 @@ chats = [
         value = 10000000
         weight = 10000
         unit = "块"
+        can_make = ["all"]
+        not_make = ["战衣", "腰带", "护腕", "靴子"]
+        power_point = 100
+        item_origin = 1
       }
     }
 
@@ -3576,6 +3589,9 @@ chats = [
         value = 10000000
         weight = 10000
         unit = "块"
+        can_make = ["all"]
+        power_point = 120
+        item_origin = 1
       }
     }
 
@@ -6525,6 +6541,10 @@ chats = [
         value = 3000000
         weight = 10000
         unit = "块"
+        can_make = ["all"]
+        not_make = ["鞭", "甲"]
+        power_point = 80
+        item_origin = 1
       }
     }
 
