@@ -360,14 +360,22 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 
 每个新字段接一个消费端，**一次一个、逐条提交**：
 
-| 字段 | 消费端 | 风险 |
-|------|--------|------|
-| 装备文案 5 件套 | `wield/wear/remove_command.ex` 输出替换硬编码文案 | 低 |
-| `female_only` / `no_steal` / `no_beg` | 移动/偷窃/乞讨命令的前置判定 | 中（**新拦截**，需灰度） |
-| `sleep_room` / `no_sleep_room` | `sleep_command.ex` | 低 |
-| `liquid` / `max_liquid` | 倒/喝命令 | 中 |
-| `can_make` / `not_make` / `power_point` | 打造命令 | 中 |
-| `chat_msg_combat` | NPC 战斗心跳 | 低 |
+| 字段 | 消费端 | 风险 | 状态 |
+|------|--------|------|------|
+| 装备文案 5 件套 | `wield/wear/remove_command.ex` 输出替换硬编码文案 | 低 | ✅ `c5c3c325`（2026-10-17） |
+| `female_only` / `no_steal` / `no_beg` | 移动/偷窃/乞讨命令的前置判定 | 中（**新拦截**，需灰度） | ⬜ |
+| `sleep_room` / `no_sleep_room` | `sleep_command.ex` | 低 | ⬜ |
+| `liquid` / `max_liquid` | 倒/喝命令 | 中 | ⬜ |
+| `can_make` / `not_make` / `power_point` | 打造命令 | 中 | ⬜ |
+| `chat_msg_combat` | NPC 战斗心跳 | 低 | ⬜ |
+
+**装备文案 5 件套已完成（P3-a，`c5c3c325`）**：新起 `VisionEvent`/`VisionView`
+落地 LPC `message_vision` 语义（`rooms:` 频道 + 事件类型 `"vision"`；`{npc}`
+对行动者渲染「你」、对旁观者渲染姓名，`{name}` 由命令侧预替换）。接线只覆盖
+「单物品动作」：wield（主手/副手）/wear/unwield/remove；`unwield`/`remove`
+回退 `unequip` 键（源里两个键同义）；**swap 路径保持默认文案**（双物品复合
+动作，LPC 无对应文本）。无自定义文案的路径渲染路径完全不变 → 行为变更只发生
+在 249 个带文案物品上。零数据写入。
 
 **验收**：每个字段一条集成测试；行为变更走**灰度开关 + 默认关**。
 

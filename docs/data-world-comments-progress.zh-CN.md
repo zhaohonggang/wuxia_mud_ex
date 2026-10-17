@@ -42,7 +42,7 @@
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
 | **P2** | 加字段 + 回填 | 8 个批次 | L2 | ✅ | `2d9de14a` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）/ **B10 ✅**（B10a 126 块 / 22 区 / +389 行 `bcd168c0` + B10b 28 块 / 8 区 / +34 行 `2d9de14a`）→ **P2 批次全部完成** |
-| **P3** | 消费端接线 | 6 个字段 | L3 | ⬜ | | |
+| **P3** | 消费端接线 | 6 个字段 | L3 | 🟨 | `c5c3c325` | **装备文案 5 件套 ✅**（vision 广播原语 + 4 路径接线；数据零写入）；余 5 个字段未完 |
 | **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | 🟨 | | **`valid_leave` 已完成 ✅**（11 条生效回填 / 6 区 / +68 行，M7 144→155；61 候选中 49 条转换器已有等价条目，余为 Trap 通道）；`create`(2619)/`init`/`greeting` 归 P1/P2/P5 未完 |
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ⬜ | | |
 | **P6** | 防回归 | 2 个脚本 | — | 🟨 | | |
@@ -69,7 +69,7 @@
 | M9 | 测试失败数 | 34（既有，12 个文件均不读 `data/world`） | **33**（无新增；`reload_command_test` 那条转好，属 recompile 环境相关） | ✅ | `mix test --seed 12345` |
 | M10 | 已回填 `room.flags` 房间数 | 0 | **284** | ✅ | `backfill_l1_fields.py` |
 | M11 | `validate_ucl.py` 通过 / 失败 | 67 / 10 | **67 / 10** | ✅ | `validate_ucl.py` |
-| M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **249**（wield 218 / unwield 155 / wear 22 / remove 13 / unequip 31） | ✅ | `scripts/probe_item_messages.exs`（容器内） |
+| M12 | `Item.Meta.messages` 已装载物品数（转换器已输出、此前被丢弃） | 0 | **249**（wield 218 / unwield 155 / wear 22 / remove 13 / unequip 31；P3-a `c5c3c325` 已接消费端） | ✅ | `scripts/probe_item_messages.exs` + `scripts/probe_equip_messages_wiring.exs`（容器内） |
 | M13 | 装备文案已回填条数（B5b 新增） | 0 | **66**（wear 22 / remove 13 / unequip 31，46 个 `items` 块 / 14 区） | ✅ | `backfill_item_messages.py` |
 | M14 | `Item.Meta.female_only=true` 物品数（B3） | 0 | **24**（7 区） | ✅ | `scripts/probe_item_female_only.exs`（容器内） |
 | M15 | `chat_msg_combat`/`chat_chance_combat` 载入 NPC 数（B6） | 0 | **254/256**（29 区，样本 老大娘 chance=50） | ✅ | `scripts/probe_npc_combat_chat.exs`（容器内） |
@@ -298,7 +298,7 @@
 
 | 字段 | 消费端 | 风险 | 灰度 | 状态 | 提交 |
 |------|--------|:----:|:----:|:----:|------|
-| 装备文案 5 件套 | `wield/wear/remove_command.ex` | 低 | 不需要 | ⬜ | |
+| 装备文案 5 件套 | `wield/wear/remove_command.ex` | 低 | 不需要 | ✅ | `c5c3c325` | **新增 vision 广播原语**（`VisionEvent`/`VisionView` + 路由 + web handler，LPC `message_vision` 语义：`{npc}` 对自己→「你」、对他人→行动者名）；wield/unwield/wear/remove 接线（`unwield`/`remove` 回退 `unequip` 键）；**数据零写入**，激活 249 物品 439 条文案；swap 路径保持默认文案 |
 | `female_only` / `no_beg` | 移动 / 乞讨命令前置判定 | 中 | **需要**（新拦截） | ⬜ | |
 | `no_steal` | **修 bug**：`room.ex` L1458-1462 改用 `World.room_flags(room_id)`（现写法会抛 `KeyError`，见 R6） | 低 | 不需要 | ⬜ | |
 | `sleep_room` / `no_sleep_room` | `sleep_command.ex` | 低 | 不需要 | ⬜ | |
@@ -498,6 +498,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | 2026-10-16 | **B10a（prop 斜杠子键·白名单内，计划外新发现）** | `bcd168c0` | 勘查脚本 `scripts/survey_b10_props.py` 发现**转换器只认整体式 `set("armor_prop", ([...]))`（`lpc_converter.ex` L3327-3328），而全库 663 处均为斜杠路径式 `set("armor_prop/armor", 1)` → prop 子键从未被转换**（旧审计假设白名单子键已转，不成立）。新增 `scripts/backfill_item_props.py`（`--subsets` 分子键类、缩进自适应、已有 map 并吞模式）+ `scripts/probe_item_props.exs`；白名单内 armor/dodge/defense/attack/unarmed_damage 137 子键写入 126 个 `items` 块 | **22 区 / +389 行 / −0 行**；per-zone 与 HEAD 对比 NEW=NONE；幂等 ✓；探针 OK（130 物品带 prop，白名单外键 []，round-trip 干净）；`mix test` 3435/34 不新增。**行为说明**：这批经既有消费链路生效（`Equip.wear_state` 语义同 LPC `feature/equip.c` L38-47 穿戴累加），等价于恢复原始 LPC 战斗数值 |
 | 2026-10-16 | **B10b（扩 applies_keys + personality 回填，R2 决策落地）** | `2d9de14a` | `lib/kantele/character/combat.ex` `@applies_keys` 7→11 键（+personality/per/warm/armor_vs_force，P7 只加不改；公式 `Map.get(applies, key, 0)` 惰性读取 → 无战斗行为变化；Combat 不在 `Meta.Trim` 保留清单 → 无 web 载荷影响）；`backfill_item_props.py --subsets non_whitelisted` 写入 personality（25 块并入 B10a 既有 map、3 块新建 map） | **8 区 / 28 块 / +34 行 / −0 行**；per-zone 与 HEAD（B10a 后）对比 new_issues=0；幂等 ✓；探针 OK（133 物品带 prop、personality 28）；`mix test` 3435/**33**（33 = 原 34 基线去掉 recompile 后转好的 `reload_command_test`，失败清单与文档 12 文件基线一致、无新增）。per/warm/armor_vs_force 的 items 块目标 0（源全在 characters 块，D10/R7 受害） |
 | 2026-10-16 | **P4-valid_leave（exit_vetoes 回源回填，计划内）** | `c219937d` | 三脚本链：`scripts/survey_valid_leave.py`（LPC `valid_leave` 解析器：嵌套 if 守卫合取、放行守卫取反累积、颜色宏包裹的 notify_fail、裸 `present()` 补 `this_object()` 参数、`&&ob=` 补括号）→ `scripts/probe_valid_leave_candidates.exs`（容器内八项真门）→ `scripts/backfill_exit_vetoes.py`（dry-run→备份→insertion-only 子序列断言+`validate_ucl` 问题集对比→写盘，幂等）。**只增不改**：新条目插在既有 `valid_leave` 列表内（逗号紧跟上一 `}`）或房间块尾部新建列表 | **6 区 / +68 行 / −0 行**（tulong 3 / shaolin 3 / jingzhou 2 / chengdu / gumu / hangzhou 各 1）；61 候选中 49 条转换器已有等价条目（方向感知去重）、11 条生效回填、1 条被既有等价条目遮蔽（city:qiyuan1）；91 条跳过均登记原因（elias 多参 48 / 白名单外函数 19 / 裸变量 17 / b/ 镜像无房间 5 / 动态文案另计 66 文件）；幂等 ✓（二次 dry-run 11 跳过 0 写）；`recount_veto_status.exs` M7 **144→155**；`audit_veto_effectiveness.exs` 11 条全部 live；`world_reachability.py` 前后逐字节一致（4190/4409） |
+| 2026-10-17 | **P3-a（装备文案 5 件套消费端接线，计划内）** | `c5c3c325` | 新增 LPC `message_vision` 语义原语：`lib/kantele/character/events/vision_event.ex`（新事件类型 `"vision"`，`interested?` = type + `rooms:` 前缀门控）+ `lib/kantele/character/views/vision_view.ex`（echo/listen 分流：`{npc}` 对自己→「你」、对他人→行动者姓名；`{name}` 发布方预替换）+ `events.ex` 路由注册 + `assets/js/store.js` `Room.Vision` handler（与 `Room.Say` 同形的 display 分发）。`wield_command.ex` 接线：wield（主手/副手）→`:wield`、wear→`:wear`、unwield→`:unwield` 回退 `:unequip`、remove→`:remove` 回退 `:unequip`（源里两键同义，blade.c 只设 unequip_msg）；卸下路径按 combat 快照全名从背包精确回查物品定义；swap 路径保持默认文案；无自定义文案的路径渲染路径完全不变。新增 `scripts/probe_equip_messages_wiring.exs`（真实数据全链路） | **零数据写入**（纯消费端，8 文件 +533/−12）；激活 249 物品 / 439 条文案；新增 11 测试（vision_event 6 + equipment 5）；全量 **3446/34** 与基线一致（34 既有失败不新增）；probe OK（样本 mingjiao:langyabang：actor/room 双视角渲染正确，interested? 门控 speech=false） |
 
 ---
 
