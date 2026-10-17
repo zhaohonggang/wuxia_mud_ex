@@ -330,6 +330,53 @@ defmodule Kantele.Character.EquipmentTest do
     end
   end
 
+  describe "female_only 穿戴限制（P3-c）" do
+    @silk_skirt %Item{
+      id: "test:qun",
+      name: "绸裙 Chouqun",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Meta{armor: 3, armor_type: "cloth", female_only: true}
+    }
+
+    setup do
+      Items.put(@silk_skirt.id, @silk_skirt)
+      :ok
+    end
+
+    test "男性穿戴 female_only 物品被拒绝" do
+      character = adventurer_with_gender([@silk_skirt.id], "男性")
+
+      conn = WieldCommand.wear(build_conn(character), %{"item_name" => "绸裙"})
+      assert output_text(conn) =~ "只有女性才能穿戴"
+      refute Combat.occupied?(current_character(conn).meta.combat, :cloth)
+    end
+
+    test "女性穿戴 female_only 物品可正常穿戴" do
+      character = adventurer_with_gender([@silk_skirt.id], "女性")
+
+      conn = WieldCommand.wear(build_conn(character), %{"item_name" => "绸裙"})
+      assert output_text(conn) =~ "你穿上了一件绸裙"
+      assert Combat.occupied?(current_character(conn).meta.combat, :cloth)
+    end
+
+    test "男性穿戴非 female_only 物品不受影响（回归）" do
+      character = adventurer_with_gender([@cloth.id], "男性")
+
+      conn = WieldCommand.wear(build_conn(character), %{"item_name" => "布袍"})
+      assert output_text(conn) =~ "你穿上了一件布袍"
+      assert Combat.occupied?(current_character(conn).meta.combat, :cloth)
+    end
+
+    test "性别未知（env 无 gender）时 female_only 放行（fail-open）" do
+      character = adventurer_with([@silk_skirt.id])
+
+      conn = WieldCommand.wear(build_conn(character), %{"item_name" => "绸裙"})
+      assert output_text(conn) =~ "你穿上了一件绸裙"
+      assert Combat.occupied?(current_character(conn).meta.combat, :cloth)
+    end
+  end
+
   # ---- helpers ----
 
   defp serialized_equipment_via_record(combat) do
@@ -384,6 +431,25 @@ defmodule Kantele.Character.EquipmentTest do
       end)
 
     %{character | inventory: instances}
+  end
+
+  defp adventurer_with_gender(item_ids, gender) do
+    character = base_adventurer()
+
+    instances =
+      Enum.map(item_ids, fn id ->
+        %Kalevala.World.Item.Instance{
+          id: Kalevala.World.Item.Instance.generate_id(),
+          item_id: id,
+          created_at: DateTime.utc_now()
+        }
+      end)
+
+    %{
+      character
+      | inventory: instances,
+        meta: %{character.meta | env: %{"gender" => gender}}
+    }
   end
 
   defp give_item(character, item_id) do

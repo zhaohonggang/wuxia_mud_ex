@@ -353,8 +353,33 @@ defmodule Kantele.Character.WieldCommand do
 
     case item_instance && Items.get!(item_instance.item_id) do
       nil -> render_error(conn, "你的身上没有这样东西。\n")
-      item -> callback.(item)
+      item -> female_only_guard(conn, character, item, callback)
     end
+  end
+
+  # female_only 穿戴限制（P3-c）：物品 female_only==true 时仅女性可装备。
+  # LPC wear.c 语义：me->query("gender")=="男性" → 拒绝；gender 未知（nil）按 LPC
+  # 恒不等于"男性" → 放行（fail-open，宁漏不误拦）。性别取自运行态
+  # meta.env["gender"]（Records.apply_to_character 把 DB gender 写进 env）；
+  # env 仅 PlayerMeta 有，故用 Map.get 取、缺省 %{}，避免 NPC 上 struct 取未定义键 KeyError。
+  defp female_only_guard(conn, character, item, callback) do
+    if female_only_conflict?(character, item) do
+      render_error(conn, "只有女性才能穿戴。\n")
+    else
+      callback.(item)
+    end
+  end
+
+  defp female_only_conflict?(character, item) do
+    case Map.get(item.meta, :female_only) do
+      true -> character_gender(character) == "男性"
+      _ -> false
+    end
+  end
+
+  defp character_gender(character) do
+    env = Map.get(character.meta, :env, %{})
+    Map.get(env, "gender") || Map.get(character.meta, :gender)
   end
 
   # remove/unwield 支持中英文名匹配快照（快照存的是全名）
