@@ -149,6 +149,10 @@ const eventTextHandlers = {
     const { text } = event;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));
   },
+  "Room.Vision": (dispatch, getState, event, { history }) => {
+    const { text } = event;
+    dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));
+  },
 };
 
 const systemEventHandlers = {

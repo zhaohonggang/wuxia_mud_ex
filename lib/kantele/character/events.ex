@@ -14,6 +14,7 @@ defmodule Kantele.Character.Events do
   alias Kantele.Character.SayEvent
   alias Kantele.Character.TellEvent
   alias Kantele.Character.TrapEvent
+  alias Kantele.Character.VisionEvent
   alias Kantele.Character.WhisperEvent
 
   scope(Kantele.Character) do
@@ -190,6 +191,10 @@ defmodule Kantele.Character.Events do
     module(SayEvent) do
       event("say/send", :broadcast)
       event(Message, :echo, interested?: &SayEvent.interested?/1)
+    end
+
+    module(VisionEvent) do
+      event(Message, :echo, interested?: &VisionEvent.interested?/1)
     end
 
     module(SkillsEvent) do

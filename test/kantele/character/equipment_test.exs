@@ -202,6 +202,134 @@ defmodule Kantele.Character.EquipmentTest do
     end
   end
 
+  describe "装备文案 vision 广播（P3-a：Item.Meta.messages 消费端接线）" do
+    @flashing_sword %Item{
+      id: "test:youlongjian",
+      name: "游龙剑 Youlongjian",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Meta{
+        damage: 30,
+        skill_type: "sword",
+        messages: %{
+          wield: "{npc}「唰」的一声抖出一柄{name}握在手中。",
+          unwield: "{npc}将手中的{name}插回剑鞘。"
+        }
+      }
+    }
+
+    @flowing_robe %Item{
+      id: "test:piaosa",
+      name: "飘纱 Piaosha",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Meta{
+        armor: 5,
+        armor_type: "cloth",
+        messages: %{
+          wear: "{npc}迎风一展，缓缓的披上一件{name}。",
+          remove: "{npc}轻轻的把{name}从身上脱了下来。"
+        }
+      }
+    }
+
+    # blade.c 只设 unequip_msg（与 unwield_msg 同义），验证 unwield 回退键
+    @feibiao %Item{
+      id: "test:feibiao",
+      name: "飞镖 Feibiao",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Meta{
+        damage: 12,
+        skill_type: "throwing",
+        messages: %{unequip: "{npc}将手中的{name}放了下来。"}
+      }
+    }
+
+    setup do
+      Items.put(@flashing_sword.id, @flashing_sword)
+      Items.put(@flowing_robe.id, @flowing_robe)
+      Items.put(@feibiao.id, @feibiao)
+
+      :ok
+    end
+
+    test "wield 带自定义文案：不给默认文本，入队 rooms 频道 type=vision 广播" do
+      character = adventurer_with([@flashing_sword.id])
+
+      conn = WieldCommand.wield(build_conn(character), %{"item_name" => "游龙剑"})
+
+      assert output_text(conn) == ""
+
+      event = vision_publish(conn)
+      assert event != nil
+      assert event.data.type == "vision"
+      # {name}（物品名，与观看者无关）已替换；{npc} 留给 VisionView 按接收者渲染
+      assert event.data.text == "{npc}「唰」的一声抖出一柄游龙剑 Youlongjian握在手中。"
+
+      # 装备状态照常落盘（快照 + prop）
+      snap = Combat.weapon(current_character(conn).meta.combat)
+      assert snap.name == "游龙剑 Youlongjian"
+      assert Combat.effective_applies(current_character(conn).meta.combat).attack == 0
+    end
+
+    test "unwield 带自定义文案：卸下路径按快照全名回查物品，广播 unwield 文案" do
+      character = adventurer_with([@flashing_sword.id])
+
+      conn = WieldCommand.wield(build_conn(character), %{"item_name" => "游龙剑"})
+      c = current_character(conn)
+
+      conn2 = WieldCommand.unwield(build_conn(c), %{"item_name" => "游龙剑"})
+
+      assert output_text(conn2) == ""
+      event = vision_publish(conn2)
+      assert event.data.text == "{npc}将手中的游龙剑 Youlongjian插回剑鞘。"
+      refute Combat.occupied?(current_character(conn2).meta.combat, :weapon)
+    end
+
+    test "unequip 回退：只设 unequip 键的物品，unwield 也走自定义文案" do
+      character = adventurer_with([@feibiao.id])
+
+      conn = WieldCommand.wield(build_conn(character), %{"item_name" => "飞镖"})
+      # 该物品没有 wield 键 → 默认文案照旧
+      assert output_text(conn) =~ "你「唰」的一声抽出一柄飞镖"
+
+      c = current_character(conn)
+
+      conn2 = WieldCommand.unwield(build_conn(c), %{"item_name" => "飞镖"})
+
+      assert output_text(conn2) == ""
+      event = vision_publish(conn2)
+      assert event.data.text == "{npc}将手中的飞镖 Feibiao放了下来。"
+    end
+
+    test "wear/remove 带自定义文案：双向都走 vision 广播" do
+      character = adventurer_with([@flowing_robe.id])
+
+      conn = WieldCommand.wear(build_conn(character), %{"item_name" => "飘纱"})
+
+      assert output_text(conn) == ""
+      assert vision_publish(conn).data.text == "{npc}迎风一展，缓缓的披上一件飘纱 Piaosha。"
+
+      c = current_character(conn)
+
+      conn2 = WieldCommand.remove(build_conn(c), %{"item_name" => "飘纱"})
+
+      assert output_text(conn2) == ""
+      assert vision_publish(conn2).data.text == "{npc}轻轻的把飘纱 Piaosha从身上脱了下来。"
+      refute Combat.occupied?(current_character(conn2).meta.combat, :cloth)
+    end
+
+    test "无自定义文案：默认文案照旧只给自己看，不广播" do
+      character = adventurer_with([@weapon.id])
+
+      conn = WieldCommand.wield(build_conn(character), %{"item_name" => "长剑"})
+
+      assert output_text(conn) =~ "你「唰」的一声抽出一柄长剑"
+      assert vision_publish(conn) == nil
+    end
+  end
+
   # ---- helpers ----
 
   defp serialized_equipment_via_record(combat) do
@@ -285,6 +413,17 @@ defmodule Kantele.Character.EquipmentTest do
   end
 
   defp current_character(conn), do: conn.private.update_character || conn.character
+
+  # 从 conn 的频道变更队列里取出 vision 广播事件（无则 nil）
+  defp vision_publish(conn) do
+    Enum.find_value(conn.private.channel_changes, fn
+      {:publish, _channel, event, _opts, _fun} ->
+        if event.data.type == "vision", do: event
+
+      _ ->
+        nil
+    end)
+  end
 
   defp output_text(conn) do
     conn.output

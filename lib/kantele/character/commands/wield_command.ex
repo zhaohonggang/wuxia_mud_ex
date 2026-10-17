@@ -7,6 +7,12 @@ defmodule Kantele.Character.WieldCommand do
   - wield_decision 决定装备槽位（主手/副手/交换/报错）
   - wield_state/unequip_state 累加/扣减武器 prop 到 temp_applies
   - wear_state/unequip_state 累加/扣减护甲 + prop
+
+  装备文案（P3-a，激活 B5a/B5b 回填的 `Item.Meta.messages`）：
+  物品带自定义文案（LPC `wield_msg`/`unwield_msg`/`wear_msg`/`remove_msg`/
+  `unequip_msg` 的转换产物，占位符 `{npc}`/`{name}`）时，按 LPC
+  `message_vision` 语义走房间广播（`VisionEvent`，自己收到时 `{npc}`→"你"）；
+  无自定义文案的路径保持原硬编码默认文案（只给自己看）不变。
   """
 
   use Kalevala.Character.Command
@@ -39,8 +45,11 @@ defmodule Kantele.Character.WieldCommand do
 
         conn
         |> put_character(%{character | meta: %{character.meta | combat: combat}})
-        |> render(CommandView, "text", %{text: "你卸下了#{Map.get(weapon_snap, :name)}。\n"})
-        |> prompt(CommandView, "prompt", %{})
+        |> equip_feedback(
+          equipped_item(character, Map.get(weapon_snap, :name)),
+          [:unwield, :unequip],
+          "你卸下了#{Map.get(weapon_snap, :name)}。\n"
+        )
 
       true ->
         # 尝试卸下副手武器
@@ -54,8 +63,11 @@ defmodule Kantele.Character.WieldCommand do
 
           conn
           |> put_character(%{character | meta: %{character.meta | combat: combat}})
-          |> render(CommandView, "text", %{text: "你卸下了#{Map.get(secondary_snap, :name)}。\n"})
-          |> prompt(CommandView, "prompt", %{})
+          |> equip_feedback(
+            equipped_item(character, Map.get(secondary_snap, :name)),
+            [:unwield, :unequip],
+            "你卸下了#{Map.get(secondary_snap, :name)}。\n"
+          )
         else
           render_error(conn, "你没有装备这样东西。\n")
         end
@@ -87,8 +99,11 @@ defmodule Kantele.Character.WieldCommand do
 
         conn
         |> put_character(%{character | meta: %{character.meta | combat: combat}})
-        |> render(CommandView, "text", %{text: "你卸下了#{Map.get(snap, :name)}。\n"})
-        |> prompt(CommandView, "prompt", %{})
+        |> equip_feedback(
+          equipped_item(character, Map.get(snap, :name)),
+          [:remove, :unequip],
+          "你卸下了#{Map.get(snap, :name)}。\n"
+        )
     end
   end
 
@@ -121,8 +136,11 @@ defmodule Kantele.Character.WieldCommand do
 
               conn
               |> put_character(%{character | meta: %{character.meta | combat: combat}})
-              |> render(CommandView, "text", %{text: "你「唰」的一声抽出一柄#{item.name}握在手中。\n"})
-              |> prompt(CommandView, "prompt", %{})
+              |> equip_feedback(
+                item,
+                [:wield],
+                "你「唰」的一声抽出一柄#{item.name}握在手中。\n"
+              )
 
             {:secondary_weapon} ->
               # 装备到副手
@@ -133,8 +151,7 @@ defmodule Kantele.Character.WieldCommand do
 
               conn
               |> put_character(%{character | meta: %{character.meta | combat: combat}})
-              |> render(CommandView, "text", %{text: "你把#{item.name}握在副手。\n"})
-              |> prompt(CommandView, "prompt", %{})
+              |> equip_feedback(item, [:wield], "你把#{item.name}握在副手。\n")
 
             {:swap} ->
               # 交换：卸下原主手（如果是副手类），装备新武器到主手
@@ -186,8 +203,7 @@ defmodule Kantele.Character.WieldCommand do
 
             conn
             |> put_character(%{character | meta: %{character.meta | combat: combat}})
-            |> render(CommandView, "text", %{text: "你穿上了一件#{item.name}。\n"})
-            |> prompt(CommandView, "prompt", %{})
+            |> equip_feedback(item, [:wear], "你穿上了一件#{item.name}。\n")
           end
       end
     end)
@@ -267,6 +283,68 @@ defmodule Kantele.Character.WieldCommand do
 
     Combat.apply_temp(combat, temp_sub)
   end
+
+  # ---- 装备文案（P3-a：Item.Meta.messages → LPC message_vision 语义） ----
+
+  # 装备/卸下反馈：物品带自定义文案 → 房间 vision 广播；否则渲染默认文案。
+  #
+  # - `item_or_nil`：物品定义（卸下路径按名字从背包回查，查不到为 nil → 默认文案）
+  # - `keys`：按优先级回退查找的消息键（如卸武器 `[:unwield, :unequip]`；
+  #   源里 `unwield_msg` 与 `unequip_msg` 同义，见 blade.c 只设 unequip_msg）
+  # - `default_text`：无自定义文案时的既有默认文案（只给自己看）
+  defp equip_feedback(conn, item, keys, default_text) do
+    case equip_message(item, keys) do
+      nil ->
+        conn
+        |> render(CommandView, "text", %{text: default_text})
+        |> prompt(CommandView, "prompt", %{})
+
+      template ->
+        # {name} 与观看者无关，在此替换；{npc} 留给 VisionView 按接收者渲染
+        # （自己→"你"，房间内其他人→行动者名）。
+        text = String.replace(template, "{name}", item_name_of(item))
+
+        conn
+        |> publish_message(
+          "rooms:#{conn.character.room_id}",
+          text,
+          [type: "vision"],
+          &publish_error/2
+        )
+        |> assign(:prompt, false)
+    end
+  end
+
+  # 卸载路径只有 combat 快照（name/skill_type/damage/prop/flag），没有物品定义；
+  # 按快照全名从背包精确回查完整物品以读取 meta.messages。查不到返回 nil
+  # （走默认文案）。用全名相等而非别名匹配：避免同名别名误配到别的物品，
+  # 导致广播文案张冠李戴。
+  defp equipped_item(character, expected_name) do
+    Enum.find_value(character.inventory, fn instance ->
+      item = Items.get!(instance.item_id)
+      if item.name == expected_name, do: item
+    end)
+  rescue
+    _ -> nil
+  end
+
+  defp equip_message(nil, _keys), do: nil
+
+  defp equip_message(item, keys) do
+    messages = Map.get(item.meta, :messages) || %{}
+
+    Enum.find_value(keys, fn key ->
+      case Map.get(messages, key) do
+        template when is_binary(template) and template != "" -> template
+        _ -> nil
+      end
+    end)
+  end
+
+  defp item_name_of(nil), do: "东西"
+  defp item_name_of(item), do: item.name
+
+  defp publish_error(conn, _error), do: conn
 
   # ---- 工具 ----
 
