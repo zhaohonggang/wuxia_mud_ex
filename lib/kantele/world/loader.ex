@@ -344,11 +344,18 @@ defmodule Kantele.World.Loader do
       room_owner: Map.get(room_data, :room_owner),
       room_name: Map.get(room_data, :room_name),
       room_position: Map.get(room_data, :room_position),
-      room_owner_id: Map.get(room_data, :room_owner_id)
+      room_owner_id: Map.get(room_data, :room_owner_id),
+      actions: parse_room_actions(Map.get(room_data, :actions))
     }
 
     {key, room}
   end
+
+  # P5-1：房间级 verb→handler 映射（LPC add_action("verb","handler") 的回源回填结果）。
+  # UCL: actions = { convert = "bian"  climb = "pan" }。缺省 %{}（无行为变化，P7）。
+  defp parse_room_actions(nil), do: %{}
+  defp parse_room_actions(actions) when is_map(actions), do: Map.new(actions, fn {k, v} -> {to_string(k), to_string(v)} end)
+  defp parse_room_actions(_), do: %{}
 
   # 房间墙上器物/菜单（LPC set("item_desc", ...)）：keyword -> 文本
   # 房间级行为配置（LPC set("behavior_config", ...)），目前只有 guarded_exit。

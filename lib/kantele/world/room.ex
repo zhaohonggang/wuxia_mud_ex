@@ -50,7 +50,14 @@ defmodule Kantele.World.Room do
     room_owner: nil,
     room_name: nil,
     room_position: nil,
-    room_owner_id: nil
+    room_owner_id: nil,
+
+    # P5-1：逐对象 add_action 通道（LPC add_action("verb","handler")）。
+    # 存玩家输入的 verb → LPC handler 函数名 的映射（如 %{"convert" => "bian"}）。
+    # 注意：冻结的转换器（lpc_converter.ex L1286-1289）只存了 handler、丢了 verb，
+    # 故 verb→handler 映射需由 backfill 脚本从 .c 回源重抽（见 D24）。
+    # 本字段只读取、不产生任何行为变化（P7）；消费端（对象级 verb 分发路由）见 P5-1b。
+    actions: %{}
   ]
 
   @doc """
