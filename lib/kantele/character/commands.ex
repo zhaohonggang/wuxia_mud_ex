@@ -1223,6 +1223,62 @@ defmodule Kantele.Character.Commands do
 
     parse("银行", :show)
     parse("bank", :show)
+
+    # LPC 的银行 NPC 把子命令注册成**独立顶层动词**
+    # （`add_action("do_deposit","cun")` 等），玩家直接输 `cun 10 银`。
+    # 这里补上这批动词，全部转调上面的既有实现（见 BankCommand 的别名段）。
+    # 只补全局命令表里**没有**的：`check`/`score`/`hp` 已是全局命令，不动。
+    parse("cun", :cun, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("deposit", :deposit_cmd, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("qu", :qu, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("withdraw", :withdraw_cmd, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("convert", :convert_cmd, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("duihuan", :duihuan, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("transfer", :transfer_cmd, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("zhuan", :zhuan, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    # 裸动词：text/2 要求 min: 1，无参时落到这里，打 LPC 的用法提示。
+    #
+    # 两个必须注意的点：
+    # 1. 函数名要与带参形式不同 —— parse 宏按 `parsep_<verb>_<fun>` 生成函数，
+    #    同 verb 同 fun 注册两次会因默认参数重复定义而编译失败。
+    # 2. **必须加 `eos()`** —— Router.parse_text/4 不要求 leftover 为空，所以
+    #    只写字面量的裸注册会前缀匹配掉更长的动词：`qu` 会抢走 `quanjia`（劝架）
+    #    和 `quest`。eos() 要求输入到词尾，才等价于「只匹配这一个词」。
+    parse("cun", :cun_bare, fn command -> command |> eos() end)
+    parse("deposit", :deposit_bare, fn command -> command |> eos() end)
+    parse("qu", :qu_bare, fn command -> command |> eos() end)
+    parse("withdraw", :withdraw_bare, fn command -> command |> eos() end)
+    parse("convert", :convert_bare, fn command -> command |> eos() end)
+    parse("duihuan", :duihuan_bare, fn command -> command |> eos() end)
+    parse("transfer", :transfer_bare, fn command -> command |> eos() end)
+    parse("zhuan", :zhuan_bare, fn command -> command |> eos() end)
+
+    # 查帐：LPC do_check 不收参数
+    parse("chazhang", :chazhang, fn command -> command |> eos() end)
   end
 
   # 变卖/估价：接 Kantele.Npc.Dealer（do_value/do_sell）

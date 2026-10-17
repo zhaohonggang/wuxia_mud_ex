@@ -52,6 +52,76 @@ defmodule Kantele.Character.BankCommand do
 
   def run(conn, _params), do: show(conn)
 
+  # ---- LPC 顶层动词别名 ----
+  #
+  # LPC 的银行 NPC 是把子命令当**独立顶层动词**注册的：
+  #   add_action("do_deposit", "deposit");  add_action("do_deposit", "cun");
+  #   add_action("do_withdraw", "withdraw"); add_action("do_withdraw", "qu");
+  #   add_action("do_convert", "convert");   add_action("do_convert", "duihuan");
+  #   add_action("do_check", "chazhang");    add_action("do_transfer", "zhuan"/"transfer");
+  # 玩家直接输 `cun 10 银`，而不是 `bank 存 10 银`。
+  #
+  # 参数格式与 banker.c 完全一致（`<数量> <货币单位>` / `<数量> <from> to <to>`），
+  # 所以这里只做一层「拆词 → 转调既有实现」的适配，不复制任何存取逻辑。
+  # 提示文案沿用 LPC 的 notify_fail 原文。
+
+  # 带参形式（router 的 text/2 要求 min: 1，所以裸动词会走下面的分支）
+  def cun(conn, %{"rest" => rest}), do: deposit_alias(conn, rest)
+  def deposit_cmd(conn, %{"rest" => rest}), do: deposit_alias(conn, rest)
+  def qu(conn, %{"rest" => rest}), do: withdraw_alias(conn, rest)
+  def withdraw_cmd(conn, %{"rest" => rest}), do: withdraw_alias(conn, rest)
+  def duihuan(conn, %{"rest" => rest}), do: convert_alias(conn, rest)
+  def convert_cmd(conn, %{"rest" => rest}), do: convert_alias(conn, rest)
+  def zhuan(conn, %{"rest" => rest}), do: transfer_alias(conn, rest)
+  def transfer_cmd(conn, %{"rest" => rest}), do: transfer_alias(conn, rest)
+
+  # 裸动词：LPC 这里走 notify_fail 打用法，照抄。
+  # 必须用**不同的函数名**：router 的 parse 宏按 `parsep_<verb>_<fun>` 生成函数，
+  # 同 verb 同 fun 注册两次会因默认参数重复定义而编译失败。
+  def cun_bare(conn, _params), do: deposit_alias(conn, nil)
+  def deposit_bare(conn, _params), do: deposit_alias(conn, nil)
+  def qu_bare(conn, _params), do: withdraw_alias(conn, nil)
+  def withdraw_bare(conn, _params), do: withdraw_alias(conn, nil)
+  def convert_bare(conn, _params), do: convert_alias(conn, nil)
+  def duihuan_bare(conn, _params), do: convert_alias(conn, nil)
+  def transfer_bare(conn, _params), do: transfer_alias(conn, nil)
+  def zhuan_bare(conn, _params), do: transfer_alias(conn, nil)
+
+  @doc "查帐（LPC do_check 的顶层动词 `chazhang`）"
+  def chazhang(conn, _params), do: show(conn)
+
+  defp deposit_alias(conn, rest) do
+    case words(rest) do
+      [amount, denom] -> deposit(conn, amount, denom)
+      _ -> reply(conn, "命令格式：deposit|cun <数量> <货币单位>\n")
+    end
+  end
+
+  defp withdraw_alias(conn, rest) do
+    case words(rest) do
+      [amount, denom] -> withdraw(conn, amount, denom)
+      _ -> reply(conn, "命令格式：withdraw|qu <数量> <货币单位>\n")
+    end
+  end
+
+  defp convert_alias(conn, rest) do
+    case words(rest) do
+      [amount, from, "to", to] -> convert(conn, amount, from, to)
+      [amount, from, "成", to] -> convert(conn, amount, from, to)
+      _ -> reply(conn, "命令格式：convert|duihuan <数量> <货币单位> to <新货币单位>\n")
+    end
+  end
+
+  defp transfer_alias(conn, rest) do
+    case words(rest) do
+      [amount, denom, "to", who] -> transfer(conn, amount, denom, who)
+      [amount, denom, "给", who] -> transfer(conn, amount, denom, who)
+      _ -> reply(conn, "命令格式：transfer|zhuan <数量> <货币单位> to <某人>\n")
+    end
+  end
+
+  defp words(rest), do: String.split(String.trim(rest || ""))
+
   @doc "查存款（对应 banker.c do_check；命令分发入口 arity 2）"
   def show(conn, _params), do: show(conn)
 
