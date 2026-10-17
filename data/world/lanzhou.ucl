@@ -343,6 +343,9 @@ zones "lanzhou" {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    zuan = "do_zuan"
+  }
     }
 
   room_exits "guangchang" {

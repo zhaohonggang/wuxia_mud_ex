@@ -1518,6 +1518,10 @@ item_desc = {
   x = 2
   y = -7
   z = 0
+  actions = {
+    jiaoshui = "do_jiaoshui"
+    peiyu = "do_peiyu"
+  }
     }
 
   room_exits "miaoyuan" {

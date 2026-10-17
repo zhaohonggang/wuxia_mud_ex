@@ -726,6 +726,9 @@ behavior_config = {
 item_desc = {
  pen = "这是一个大花盆，看上去非常坚固结实，作工也很考究，仔细 观察下，不难发现地上有些浮土，似乎有人移动(move)过花盆。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "neishi" {

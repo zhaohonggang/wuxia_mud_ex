@@ -96,6 +96,9 @@ zones "city" {
 item_desc = {
  paizi = "##==================================##         ##                                  ##         ##             赌博规则             ##         ##                                  ##         ##                                  ##         ##  头彩 <tc> 骰数由每次开盘前确定  ##         ##            赔率：一赢三十六      ##         ##                                  ##         ##  双对 <sd> 两骰号相同，且为偶数  ##         ##            赔率：一赢十二        ##         ##                                  ##         ##  七星 <qx> 两个骰数之和为七      ##         ##            赔率：一赢六          ##         ##                                  ##         ##  散星 <sx> 和为三，五，九，十一  ##         ##            赔率：一赢三          ##         ##                                  ##         ##  开赌：                          ##         ##                                  ##         ##                                  ##         ##   bet  压盘种类  数量  货币种类  ##         ##                                  ##         ##                                  ##         ##                                  ##         ##==================================##"
 }
+  actions = {
+    bet = "do_bet"
+  }
     }
 
   room_exits "bet" {
@@ -232,6 +235,9 @@ item_desc = {
 item_desc = {
  paizi = "##==========================##         ##                          ##         ##         赌博规则         ##         ##                          ##         ##      用三粒色子撒在一只  ##         ##  碗里，色子点数总和在四  ##         ##  至十间为小，十一至十七  ##         ##  为大。如三粒色子点数相  ##         ##  同，则大小通吃。开大赔  ##         ##  大开小赔小，赔率一。接  ##         ##  受各种货币为赌注。限额  ##         ##  为五十到五百。          ##         ##                          ##         ##  开赌：                  ##         ##                          ##         ##          big             ##         ##   gamble  |  数量  货币  ##         ##         small            ##         ##                          ##         ##                          ##         ##=========================##"
 }
+  actions = {
+    gamble = "do_gamble"
+  }
     }
 
   room_exits "daxiao" {
@@ -468,6 +474,10 @@ valid_leave = [
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    broadcast = "do_broadcast"
+    order = "do_order"
+  }
     }
 
   room_exits "furong" {
@@ -544,6 +554,10 @@ item_desc = {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    climb = "do_climb"
+    enter = "do_enter"
+  }
     }
 
   room_exits "guangchang" {
@@ -965,6 +979,12 @@ direction = "west"
   x = 0
   y = 0
   z = 3
+  actions = {
+    invite = "do_invite"
+    kickout = "do_kickout"
+    lclose = "do_lclose"
+    lopen = "do_lopen"
+  }
     }
 
   room_exits "leitai" {
@@ -1126,6 +1146,9 @@ direction = ~
   x = -1
   y = 2
   z = 0
+  actions = {
+    back = "do_back"
+  }
     }
 
   room_exits "ma_chufang" {
@@ -1477,6 +1500,10 @@ valid_leave = [
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    broadcast = "do_broadcast"
+    order = "do_order"
+  }
     }
 
   room_exits "meigui" {
@@ -1639,6 +1666,10 @@ valid_leave = [
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    broadcast = "do_broadcast"
+    order = "do_order"
+  }
     }
 
   room_exits "mudan" {
@@ -2055,6 +2086,9 @@ direction = ~
 }
 
 ]
+  actions = {
+    pass = "do_pass"
+  }
     }
   room_exits "underlt" {
     room_id = rooms.underlt.id
@@ -2269,6 +2303,9 @@ direction = ~
     "no_sleep_room",
     "no_steal"
   ]
+  actions = {
+    pray = "do_pray"
+  }
     }
 
   room_exits "wumiao2" {
@@ -6177,6 +6214,15 @@ direction = ~
     "no_sleep_room",
     "no_steal"
   ]
+  actions = {
+    leave = "do_leave"
+    new = "do_new"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    sit = "do_sit"
+    undo = "do_undo"
+  }
     }
 
   room_exits "qiyuan2" {
@@ -6216,6 +6262,15 @@ direction = ~
     "no_sleep_room",
     "no_steal"
   ]
+  actions = {
+    leave = "do_leave"
+    new = "do_new"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    sit = "do_sit"
+    undo = "do_undo"
+  }
     }
 
   room_exits "qiyuan3" {
@@ -6255,6 +6310,15 @@ direction = ~
     "no_sleep_room",
     "no_steal"
   ]
+  actions = {
+    leave = "do_leave"
+    new = "do_new"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    sit = "do_sit"
+    undo = "do_undo"
+  }
     }
 
   room_exits "qiyuan4" {

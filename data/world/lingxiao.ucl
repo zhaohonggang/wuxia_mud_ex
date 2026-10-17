@@ -39,6 +39,9 @@ zones "lingxiao" {
   x = -1
   y = 4
   z = 5
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "bingti" {
@@ -128,6 +131,9 @@ item_desc = {
 item_desc = {
  che = "一台以上好的红杉木所制的冰车，是凌霄弟子下山之用。"
 }
+  actions = {
+    take = "do_take"
+  }
     }
 
   room_exits "car" {
@@ -216,6 +222,9 @@ item_desc = {
   x = 2
   y = 2
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "cook" {
@@ -279,6 +288,9 @@ item_desc = {
 item_desc = {
  men = "一扇厚厚的石门，怕有千斤之重。看样子很难推(push)开。"
 }
+  actions = {
+    push = "do_push"
+  }
     }
 
   room_exits "didi" {
@@ -458,6 +470,10 @@ direction = ~
 }
 
 ]
+  actions = {
+    close = "do_close"
+    open = "do_open"
+  }
     }
 
   room_exits "gate" {
@@ -730,6 +746,9 @@ direction = ~
   x = 0
   y = 0
   z = 3
+  actions = {
+    climb = "do_pan"
+  }
     }
   room_exits "juegu" {
     room_id = rooms.juegu.id
@@ -850,6 +869,9 @@ direction = ~
   x = 0
   y = -1
   z = 0
+  actions = {
+    pick = "do_pick"
+  }
     }
 
   room_exits "meiroad1" {
@@ -885,6 +907,9 @@ direction = ~
   x = -1
   y = -1
   z = 0
+  actions = {
+    pick = "do_pick"
+  }
     }
 
   room_exits "meiroad2" {
@@ -917,6 +942,9 @@ direction = ~
   x = 1
   y = -1
   z = 0
+  actions = {
+    pick = "do_pick"
+  }
     }
 
   room_exits "meiroad3" {
@@ -992,6 +1020,9 @@ direction = ~
   x = 0
   y = 1
   z = 0
+  actions = {
+    pick = "do_pick"
+  }
     }
 
   room_exits "qianyuan" {
@@ -1185,6 +1216,9 @@ item_desc = {
 item_desc = {
  bridge = "这是一张极大的吊桥，乃是凌霄城的一道防线。"
 }
+  actions = {
+    open = "do_open"
+  }
     }
 
   room_exits "shanya" {
@@ -1550,6 +1584,9 @@ item_desc = {
 item_desc = {
  quan = "这是山道间的一处温泉，深不见底，似乎可以潜(dive)下去。"
 }
+  actions = {
+    dive = "do_dive"
+  }
     }
 
   room_exits "water" {
@@ -1582,6 +1619,9 @@ direction = ~
 }
 
 ]
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_characters "wave" {

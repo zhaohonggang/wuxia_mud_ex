@@ -67,6 +67,9 @@ zones "mingjiao" {
   flags = [
     "no_beg"
   ]
+  actions = {
+    zou = "do_zou"
+  }
     }
 
   room_exits "didao1" {
@@ -88,6 +91,9 @@ zones "mingjiao" {
   flags = [
     "no_beg"
   ]
+  actions = {
+    zou = "do_zou"
+  }
     }
 
   room_exits "didao2" {
@@ -301,6 +307,9 @@ zones "mingjiao" {
   x = 0
   y = 0
   z = 3
+  actions = {
+    climb = "do_climb"
+  }
     }
   room_exits "gudi1" {
     room_id = rooms.gudi1.id
@@ -321,6 +330,10 @@ item_desc = {
  dong = "一个不知深浅的山洞。"
  tree = "一株挺拔健硕的松树。"
 }
+  actions = {
+    climb = "do_climb"
+    enter = "do_enter"
+  }
     }
   room_exits "gudi2" {
     room_id = rooms.gudi2.id
@@ -340,6 +353,9 @@ item_desc = {
 item_desc = {
  dong = "这是一个不知深浅的山洞。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "gudi3" {
@@ -400,6 +416,9 @@ item_desc = {
  tan = "这是瀑布下的一座清澈碧绿的深潭。你附身潭边，凝神瞧去，只见 碧绿的水中十馀条大白鱼(fish)来回游动。"
  fish = "生活在深潭中的白鱼，全身白鳞，足有一尺多长。鱼在深潭中游来 游去，你见了不竟想去捉(zhuo)一条。"
 }
+  actions = {
+    zhuo = "do_zhuo"
+  }
     }
 
   room_exits "gudi5" {
@@ -774,6 +793,9 @@ valid_leave = [
   x = 0
   y = 0
   z = 6
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "jmqshenmu" {
@@ -1305,6 +1327,9 @@ direction = "northup"
   x = 0
   y = 4
   z = 8
+  actions = {
+    ketou = "do_ketou"
+  }
     }
 
   room_exits "mishi" {
@@ -1709,6 +1734,10 @@ direction = "in"
   x = 1
   y = -5
   z = -4
+  actions = {
+    push = "do_push"
+    sit = "do_sit"
+  }
     }
 
   room_exits "rjqmenlou3" {
@@ -1796,6 +1825,9 @@ direction = "in"
 item_desc = {
  men = "一扇大石门，看来总有两万斤重吧。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "shandong" {
@@ -2115,6 +2147,9 @@ direction = ~
   x = 0
   y = -2
   z = -6
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "tohsq3" {
@@ -2531,6 +2566,10 @@ direction = ~
   x = 0
   y = -10
   z = -7
+  actions = {
+    jump = "do_tiao"
+    tiao = "do_tiao"
+  }
     }
 
   room_exits "xuantianshi" {

@@ -190,6 +190,9 @@ zones "tulong" {
   x = 0
   y = 0
   z = 2
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "boat2" {
@@ -220,6 +223,9 @@ zones "tulong" {
 item_desc = {
  deck = "大船的甲板，已经被海水侵蚀得腐烂不堪。"
 }
+  actions = {
+    jump = "do_jump"
+  }
     }
   room_exits "boat3" {
     room_id = rooms.boat3.id
@@ -330,6 +336,9 @@ direction = "east"
 item_desc = {
  boat = "这是一艘大帆船，造得很结实，看来可以出远海的。"
 }
+  actions = {
+    accept = "do_accept"
+  }
     }
 
   room_exits "haigang" {
@@ -1180,6 +1189,9 @@ item_desc = {
   x = 0
   y = 0
   z = 10
+  actions = {
+    leave = "do_leave"
+  }
     }
 
   room_exits "road1" {

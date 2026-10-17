@@ -96,6 +96,9 @@ zones "gaibang" {
 item_desc = {
  wall = "这是一堵斑剥淋漓的墙，墙上密密麻麻写满了小字，似乎均与杖法有关。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "mishi" {
@@ -112,6 +115,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  actions = {
+    goto = "do_goto"
+  }
     }
 
   room_exits "undertre" {

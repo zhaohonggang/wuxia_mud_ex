@@ -78,6 +78,9 @@ zones "quanzhou" {
 item_desc = {
  zhou = "一条兵舟，往返澎湖的交通兵船。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "chiqian" {
@@ -150,6 +153,9 @@ item_desc = {
 item_desc = {
  chuan = "一条大海船。出远海没这样的船可不行。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "haigang" {
@@ -375,6 +381,9 @@ item_desc = {
  chuan = "一条大海船。出远海没这样的船可不行。"
  zhou = "一条水军战舟，前往台湾，还得靠它。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
   room_exits "penghu" {
     room_id = rooms.penghu.id

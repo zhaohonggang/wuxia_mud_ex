@@ -14,6 +14,10 @@ zones "kunlun" {
 item_desc = {
  stone = "这块巨石很大，可以卧(wo)下一个人。巨石的表面十分平整光 滑，似乎常有人摩挲一般。"
 }
+  actions = {
+    breathe = "do_breathe"
+    wo = "do_wo"
+  }
     }
 
   room_exits "bainiushan" {
@@ -140,6 +144,9 @@ item_desc = {
 item_desc = {
  cliff = "扶峰山山壁很是陡峭，看样子要攀爬(climb)上去并不容易。"
 }
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "fufengshan" {

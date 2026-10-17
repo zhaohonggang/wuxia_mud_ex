@@ -400,6 +400,10 @@ direction = ~
   x = 0
   y = -6
   z = -6
+  actions = {
+    du = "do_study"
+    study = "do_study"
+  }
     }
 
   room_exits "shijin" {

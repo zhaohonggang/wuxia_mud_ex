@@ -432,6 +432,9 @@ valid_leave = [
   x = 2
   y = 6
   z = 7
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "songshan_chufang" {

@@ -221,6 +221,9 @@ direction = "east"
   x = 0
   y = 0
   z = -1
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "mtyadi" {

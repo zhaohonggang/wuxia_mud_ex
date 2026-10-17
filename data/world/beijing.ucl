@@ -175,6 +175,10 @@ direction = "north"
   x = -4
   y = 6
   z = 0
+  actions = {
+    turn = "do_turn"
+    xian = "do_xian"
+  }
     }
 
   room_exits "aofu_shufang" {
@@ -1266,6 +1270,9 @@ item_desc = {
 item_desc = {
  shadai = "几个沉重的沙袋，可以试着打打(jida)看。"
 }
+  actions = {
+    jida = "do_jida"
+  }
     }
 
   room_exits "front_yard" {
@@ -1289,6 +1296,10 @@ item_desc = {
  shakeng = "沙坑里有些家将在练习轻功，你也可以跳(tiao)下去试试。"
  muzhuang = "几根木桩上有不少击打(jida)过的痕迹。"
 }
+  actions = {
+    jida = "do_jida"
+    tiao = "do_tiao"
+  }
     }
 
   room_exits "front_yard2" {
@@ -1659,6 +1670,9 @@ item_desc = {
   x = -1
   y = -3
   z = 0
+  actions = {
+    body = "do_body"
+  }
     }
 
   room_exits "hg_w" {
@@ -2133,6 +2147,11 @@ direction = ~
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    ci = "do_thrust"
+    stab = "do_thrust"
+    thrust = "do_thrust"
+  }
     }
 
   room_exits "kediandayuan" {
@@ -2240,6 +2259,9 @@ direction = ~
 item_desc = {
  lu = "一个深黑色的大铁丹炉，顶部不停地升起丝丝青烟。"
 }
+  actions = {
+    liandan = "do_liandan"
+  }
     }
 
   room_exits "liandan_fang" {
@@ -2256,6 +2278,9 @@ item_desc = {
   x = 0
   y = 0
   z = 4
+  actions = {
+    cai = "do_cai"
+  }
     }
   room_exits "liandan_lin" {
     room_id = rooms.liandan_lin.id
@@ -4009,6 +4034,9 @@ direction = "west"
   x = 2
   y = 1
   z = 0
+  actions = {
+    pray = "do_pray"
+  }
     }
 
   room_exits "wenmiao" {
@@ -4718,6 +4746,9 @@ item_desc = {
 item_desc = {
  men = "这扇门是锁着的，除非你打破(break)它。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "zhuang3" {

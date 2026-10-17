@@ -14,6 +14,9 @@ zones "jinshe" {
 item_desc = {
  dong = "一个被烂泥堵住的山洞，不知道能不能打破（break）。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "shanbi" {
@@ -34,6 +37,11 @@ item_desc = {
  map = "石壁每个人形均不相同，举手踢足，似在练武。"
  word = "“重宝秘术，付与有缘，入我门来，遇祸莫怨。”"
 }
+  actions = {
+    ba = "do_pull"
+    pull = "do_pull"
+    think = "do_think"
+  }
     }
 
   room_exits "shandong" {
@@ -80,6 +88,9 @@ item_desc = {
 item_desc = {
  stone = "一块巨石，要想前进只有想办法把它移开（move）。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "yongdao2" {

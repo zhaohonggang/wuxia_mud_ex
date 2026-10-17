@@ -171,6 +171,9 @@ zones "gumu" {
 item_desc = {
  tan = "一口很深的水摊，不知道可不可以潜(qian)下到这水底世界去？"
 }
+  actions = {
+    qian = "do_qian"
+  }
     }
 
   room_exits "hanshuitan" {
@@ -208,6 +211,10 @@ item_desc = {
  picture = "画中是一个中年道士的背影，看不出什么相貌，画中人一手指 天，画角题着「活死人像」四个大字。"
  coffin = "用厚厚的石板做成的棺材，棺板合上后，就没有一丝的缝隙了。"
 }
+  actions = {
+    niu = "do_niu"
+    tang = "do_tang"
+  }
     }
 
   room_exits "houting" {
@@ -379,6 +386,10 @@ item_desc = {
 item_desc = {
  brick = "几块普通的青砖，看不出有什么特别的。"
 }
+  actions = {
+    ci = "do_ci"
+    zhan = "do_zhan"
+  }
     }
 
   room_exits "mishi1" {
@@ -399,6 +410,9 @@ item_desc = {
 item_desc = {
  wall = "一堵用整块青石砌合而成的墙，上面雕刻着很多文字，似乎记 载了一些心法的窍决所在。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "mishi2" {
@@ -543,6 +557,9 @@ item_desc = {
 item_desc = {
  shi = "这是块巨石，怕不有万斤上下，好象锩着「降龙石」几个字。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "mumen" {
@@ -1260,6 +1277,9 @@ item_desc = {
 item_desc = {
  chi = "这是一个很大的山间湖，碧波荡漾，湖水清 澈见底，让人忍不住想跳(jump)下去畅游一番。"
 }
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "taiyi1" {
@@ -1283,6 +1303,10 @@ item_desc = {
   x = 0
   y = 0
   z = 3
+  actions = {
+    climb = "do_climb"
+    swim = "do_swim"
+  }
     }
   room_exits "taiyi2" {
     room_id = rooms.taiyi2.id
@@ -1440,6 +1464,9 @@ item_desc = {
   flags = [
     "startroom"
   ]
+  actions = {
+    sleep = "do_sleep"
+  }
     }
 
   room_exits "zhengting" {

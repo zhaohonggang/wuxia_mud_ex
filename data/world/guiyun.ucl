@@ -11,6 +11,9 @@ zones "guiyun" {
   x = 0
   y = 3
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "chufang" {
@@ -250,6 +253,11 @@ direction = "east"
 item_desc = {
  ship = "这是太湖水盗劫富济贫的战船。上去(shang ship)就出发。"
 }
+  actions = {
+    cross = "do_cross"
+    shang = "do_shang"
+    yell = "do_yell"
+  }
     }
 
   room_exits "matou" {
@@ -327,6 +335,9 @@ item_desc = {
   flags = [
     "startroom"
   ]
+  actions = {
+    ride = "do_ride"
+  }
     }
 
   room_exits "qianyuan" {
@@ -545,6 +556,10 @@ item_desc = {
   x = 5
   y = -1
   z = 3
+  actions = {
+    cross = "do_cross"
+    yell = "do_yell"
+  }
     }
 
   room_exits "taihu" {

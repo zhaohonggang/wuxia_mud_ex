@@ -14,6 +14,9 @@ zones "wanjiegu" {
 item_desc = {
  rock = "一块很大的石头，挡住了石屋的入口。"
 }
+  actions = {
+    push = "do_push"
+  }
     }
 
   room_exits "backyard" {
@@ -109,6 +112,9 @@ item_desc = {
 item_desc = {
  grass = "一片茂密的草丛，你可以试着把它拨开(pushaside)。"
 }
+  actions = {
+    pushaside = "do_push"
+  }
     }
 
   room_exits "entrance" {
@@ -128,6 +134,9 @@ item_desc = {
 item_desc = {
  hammer = "一个铁锤，可以用来敲(knock)东西。"
 }
+  actions = {
+    knock = "do_knock"
+  }
     }
 
   room_exits "grassland" {
@@ -442,6 +451,9 @@ item_desc = {
 item_desc = {
  grass = "一堆枯草，里面有一个大铁环(ring)。"
 }
+  actions = {
+    pull = "do_pull"
+  }
     }
 
   room_exits "tree_hole" {

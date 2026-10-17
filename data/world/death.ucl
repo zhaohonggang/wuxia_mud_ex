@@ -61,6 +61,9 @@ item_desc = {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    qiao = "do_qiao"
+  }
     }
 
   room_exits "diyin" {
@@ -132,6 +135,19 @@ valid_leave = [
   x = 0
   y = 0
   z = 4
+  actions = {
+    bian = "do_get"
+    cast = "do_get"
+    eat = "do_get"
+    fight = "do_get"
+    fly = "do_get"
+    get = "do_get"
+    kill = "do_get"
+    l = "do_get"
+    look = "do_get"
+    perform = "do_get"
+    steal = "do_get"
+  }
     }
   room_exits "emptyroom" {
     room_id = rooms.emptyroom.id
@@ -400,6 +416,9 @@ valid_leave = [
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    ask = "redirect_ask"
+  }
     }
 
   room_exits "inn1" {
@@ -473,6 +492,13 @@ item_desc = {
 item_desc = {
  table = "一个青石制成的桌案，上面有几许裂缝，看样子已搁在这里很久了。"
 }
+  actions = {
+    move = "do_move"
+    pull = "do_move"
+    push = "do_move"
+    say = "do_say"
+    turn = "do_turn"
+  }
     }
 
   room_exits "lunhuisi" {
@@ -521,6 +547,10 @@ direction = ~
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    jump = "do_move"
+    tiao = "do_move"
+  }
     }
 
   room_exits "qiao1" {
@@ -588,6 +618,10 @@ direction = ~
 item_desc = {
  xuanwo = "一股由寒流形成的旋涡，你似乎可以通过它回到地面。"
 }
+  actions = {
+    enter = "do_move"
+    xun = "do_xun"
+  }
     }
   room_exits "qinglongtan" {
     room_id = rooms.qinglongtan.id
@@ -993,6 +1027,10 @@ direction = ~
 item_desc = {
  stone = "上面好象可以放(put)物品。"
 }
+  actions = {
+    fang = "do_fang"
+    put = "do_fang"
+  }
     }
 
   room_exits "yinyangta18" {
@@ -2336,6 +2374,11 @@ direction = ~
   x = 0
   y = 0
   z = 12
+  actions = {
+    enter = "do_enter"
+    say = "do_say"
+    smash = "do_smash"
+  }
     }
   room_exits "wujiandao" {
     room_id = rooms.wujiandao.id
@@ -5715,6 +5758,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
 
   room_exits "sky1" {
@@ -5746,6 +5796,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky10" {
     room_id = rooms.sky10.id
@@ -5774,6 +5831,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky11" {
     room_id = rooms.sky11.id
@@ -5802,6 +5866,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky12" {
     room_id = rooms.sky12.id
@@ -5830,6 +5901,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky2" {
     room_id = rooms.sky2.id
@@ -5858,6 +5936,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky3" {
     room_id = rooms.sky3.id
@@ -5886,6 +5971,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky4" {
     room_id = rooms.sky4.id
@@ -5914,6 +6006,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky5" {
     room_id = rooms.sky5.id
@@ -5942,6 +6041,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky6" {
     room_id = rooms.sky6.id
@@ -5970,6 +6076,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky7" {
     room_id = rooms.sky7.id
@@ -5998,6 +6111,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky8" {
     room_id = rooms.sky8.id
@@ -6026,6 +6146,13 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    enter = "do_move"
+    jump = "do_move"
+    move = "do_move"
+    tiao = "do_move"
+    up = "do_move"
+  }
     }
   room_exits "sky9" {
     room_id = rooms.sky9.id

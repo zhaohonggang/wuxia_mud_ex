@@ -293,6 +293,9 @@ direction = ~
   x = -1
   y = 3
   z = 1
+  actions = {
+    cross = "do_cross"
+  }
     }
 
   room_exits "hhyuan_3" {
@@ -468,6 +471,9 @@ direction = "west"
 item_desc = {
  huo = "这是一口巨大的铁锅，锅中盛满铁沙，下面燃着炭火。"
 }
+  actions = {
+    charu = "do_cha"
+  }
     }
 
   room_exits "lgfang" {
@@ -512,6 +518,9 @@ item_desc = {
 item_desc = {
  he = "一个四四方方的石盒，上面落满了尘土。"
 }
+  actions = {
+    open = "do_open"
+  }
     }
 
   room_exits "mishi" {
@@ -533,6 +542,9 @@ item_desc = {
 item_desc = {
  song = "这棵松树能长得如此奇特，必蕴涵了天地日月之精华。"
 }
+  actions = {
+    caiqi = "do_caiqi"
+  }
     }
 
   room_exits "mzfeng" {
@@ -968,6 +980,9 @@ item_desc = {
  shizhuo = "一座石桌，桌身好象是和石屋连在一起的，上面重重的印着两个手印。"
  shouyin = "一双在石桌上的手印，你可以试着把双手嵌(qian)进去。"
 }
+  actions = {
+    qian = "do_qian"
+  }
     }
 
   room_exits "shishi" {
@@ -1162,6 +1177,9 @@ item_desc = {
   x = -2
   y = 11
   z = 6
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "wmfeng" {

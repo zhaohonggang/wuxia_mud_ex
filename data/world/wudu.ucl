@@ -550,6 +550,9 @@ valid_leave = [
 item_desc = {
  xi = "一张厚厚的草席盖在洞口，遮住了外面的阳光。"
 }
+  actions = {
+    pull = "do_move"
+  }
     }
   room_exits "dijiao" {
     room_id = rooms.dijiao.id
@@ -577,6 +580,13 @@ rooms "dongxue" {
   x = 0
   y = 0
   z = 3
+  actions = {
+    climb = "do_climb"
+    dian = "do_fire"
+    fire = "do_fire"
+    insert = "do_insert"
+    use = "do_use"
+  }
     }
   room_exits "dongxue" {
     room_id = rooms.dongxue.id
@@ -663,6 +673,9 @@ rooms "duchuan" {
 item_desc = {
  lu = "这是一座青铜香炉，模样颇为古旧，香炉周围似乎有移动过的痕迹。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "huating2" {
@@ -684,6 +697,9 @@ item_desc = {
 item_desc = {
  tu = "你只见图中少女手持钢钩，含笑而立。恍惚间你似乎觉得有无 数道剑气扑面而来。这里面似乎隐含着某种奥秘。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "huating3" {
@@ -794,6 +810,11 @@ item_desc = {
 item_desc = {
  bone = "一具人类的遗骨，下面似乎压着什么东西，你可以仔细搜索(sousuo)一下。"
 }
+  actions = {
+    rain = "do_train"
+    search = "do_search"
+    sousuo = "do_search"
+  }
     }
 
   room_exits "huxue2" {
@@ -914,6 +935,9 @@ item_desc = {
   x = 0
   y = -1
   z = 0
+  actions = {
+    lianzhi = "do_lianzhi"
+  }
     }
 
   room_exits "liandu" {
@@ -1237,6 +1261,9 @@ item_desc = {
 item_desc = {
  xi = "一张厚厚的草席盖在洞口，下面似乎是一个地窖。"
 }
+  actions = {
+    pull = "do_move"
+  }
     }
 
   room_exits "minju10" {
@@ -1376,6 +1403,9 @@ item_desc = {
 item_desc = {
  zhuo = "一个陈旧的供桌，上面搭着黑糊糊的台布一直垂到地面。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "minju7" {
@@ -1454,6 +1484,10 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    open = "do_open"
+    think = "do_think"
+  }
     }
 
   room_exits "mishi" {
@@ -1472,6 +1506,9 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "nanyuan" {
@@ -2047,6 +2084,9 @@ direction = ~
 item_desc = {
  wall = "一堵岩壁，上面突出些石笋，似乎可以顺着爬上去。"
 }
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "wandu3" {

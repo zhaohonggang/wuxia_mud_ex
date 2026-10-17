@@ -914,6 +914,9 @@ direction = "south"
   x = 0
   y = 2
   z = 0
+  actions = {
+    circle = "do_circle"
+  }
     }
 
   room_exits "huoting" {
@@ -1416,6 +1419,11 @@ direction = "south"
 item_desc = {
  basket = "一个巨大的吊篮，是供给日月神教中人下山之用。"
 }
+  actions = {
+    enter = "do_enter"
+    float = "do_float"
+    piao = "do_float"
+  }
     }
 
   room_exits "shanya3" {
@@ -1748,6 +1756,10 @@ direction = "south"
   x = -6
   y = 0
   z = 10
+  actions = {
+    float = "do_float"
+    piao = "do_float"
+  }
     }
 
   room_exits "up1" {
@@ -1779,6 +1791,9 @@ item_desc = {
  rope = "绳子就是绳子，可能是向上的工具。"
  xiazi = "这是一个匣子，看样子是一个开关，匣子的侧面有一个插孔。"
 }
+  actions = {
+    insert = "do_insert"
+  }
     }
 
   room_exits "up2" {
@@ -1802,6 +1817,9 @@ item_desc = {
  rope = "绳子就是绳子，可能是向上的工具。"
  xiazi = "这是一个匣子，看样子是一个开关，匣子的侧面有一个插孔。"
 }
+  actions = {
+    insert = "do_insert"
+  }
     }
 
   room_exits "up3" {
@@ -1825,6 +1843,9 @@ item_desc = {
  rope = "绳子就是绳子，可能是向上的工具。"
  xiazi = "这是一个匣子，看样子是一个开关，匣子的侧面有一个插孔。"
 }
+  actions = {
+    insert = "do_insert"
+  }
     }
 
   room_exits "up4" {

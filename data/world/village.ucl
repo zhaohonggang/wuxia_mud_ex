@@ -598,6 +598,9 @@ item_desc = {
 item_desc = {
  hole = "看来这个大洞被人凿开不久，洞那边好象有个小棚子。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "temple1" {

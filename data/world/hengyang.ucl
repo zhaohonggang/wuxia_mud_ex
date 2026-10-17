@@ -275,6 +275,11 @@ item_desc = {
  dong = "阳光从洞外射进来，四周怪石(stone)突出，似乎可以从这里爬(climb)上去。"
  stone = "只见这些突石有的坚韧如刀，有的层错如梯，各显其异。"
 }
+  actions = {
+    climb = "do_climb"
+    pull = "do_pull"
+    think = "do_think"
+  }
     }
 
   room_exits "furong1" {
@@ -455,6 +460,9 @@ valid_leave = [
   x = 2
   y = 1
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "henshan_chufang" {
@@ -725,6 +733,9 @@ item_desc = {
   x = -1
   y = 1
   z = 2
+  actions = {
+    use = "do_use"
+  }
     }
 
   room_exits "inhole2" {
@@ -741,6 +752,10 @@ item_desc = {
   x = 1
   y = 1
   z = 2
+  actions = {
+    use = "do_use"
+    zou = "do_zou"
+  }
     }
 
   room_exits "inhole3" {
@@ -972,6 +987,11 @@ item_desc = {
 item_desc = {
  gate = "朱红的大门紧闭着，敲敲(knock)看吧。"
 }
+  actions = {
+    knock = "do_knock"
+    open = "do_push"
+    push = "do_push"
+  }
     }
 
   room_exits "liufugate" {
@@ -1180,6 +1200,10 @@ item_desc = {
  hole = "太远了，看得不太清楚，看来得想个办法过去。"
  teng = "这些树藤看起来很结实，看来可以拉着根树藤跳过去。"
 }
+  actions = {
+    la = "do_la"
+    tiao = "do_tiao"
+  }
     }
 
   room_exits "ontree2" {
@@ -1803,6 +1827,11 @@ item_desc = {
  quanshui = "一股清泉源源地从底下涌出，水质清澈，令人忍不住想喝(he)上两口。"
  bei = "上书：天 泉 之 水 字峰遒劲有力。"
 }
+  actions = {
+    ba = "do_ba"
+    he = "do_he"
+    xue = "do_xue"
+  }
     }
 
   room_exits "tianquan_hole" {
@@ -1936,6 +1965,9 @@ item_desc = {
  xuanya = "只见从绝壁上垂下一些树藤(teng)， 似乎可以顺着爬(climb) 上去。而下面却是万丈深渊，深不见底。"
  teng = "这些树藤看起来很结实。"
 }
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "xuanya" {
@@ -2262,6 +2294,10 @@ behavior_config = {
   x = 0
   y = 0
   z = 13
+  actions = {
+    use = "do_use"
+    zou = "do_zou"
+  }
     }
 
   room_characters "zigai4" {
@@ -2292,6 +2328,10 @@ behavior_config = {
   x = 0
   y = -1
   z = 9
+  actions = {
+    move = "do_move"
+    pick = "do_pick"
+  }
     }
 
   room_exits "zigaihole" {
@@ -3812,6 +3852,9 @@ chats = [
   x = 2
   y = -22
   z = -3
+  actions = {
+    play = "play_xiao"
+  }
     }
 
   room_exits "hengyang_shop" {

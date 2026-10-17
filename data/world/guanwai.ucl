@@ -243,6 +243,9 @@ zones "guanwai" {
   x = -1
   y = 1
   z = -1
+  actions = {
+    famu = "do_famu"
+  }
     }
 
   room_exits "famu" {
@@ -304,6 +307,9 @@ zones "guanwai" {
   x = 1
   y = -1
   z = 0
+  actions = {
+    yanlian = "do_yanlian"
+  }
     }
 
   room_exits "huagai" {
@@ -365,6 +371,11 @@ zones "guanwai" {
   x = -6
   y = 6
   z = -4
+  actions = {
+    kick = "do_kick"
+    knock = "do_knock"
+    push = "do_push"
+  }
     }
 
   room_exits "jingxiu" {
@@ -1098,6 +1109,9 @@ item_desc = {
   x = -4
   y = 7
   z = -4
+  actions = {
+    amble = "do_amble"
+  }
     }
 
   room_exits "taxue" {
@@ -1166,6 +1180,9 @@ item_desc = {
   x = -2
   y = -1
   z = 0
+  actions = {
+    yanlian = "do_yanlian"
+  }
     }
 
   room_exits "tiyun" {
@@ -1346,6 +1363,10 @@ behavior_config = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    close = "do_close"
+    open = "do_open"
+  }
     }
   room_exits "xiuxishi" {
     room_id = rooms.xiuxishi.id

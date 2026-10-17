@@ -643,6 +643,9 @@ item_desc = {
   x = 2
   y = 5
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "miaojia_chufang" {
@@ -731,6 +734,9 @@ direction = ~
 item_desc = {
  jiashan = "你发现假山背面光滑无比，似乎还刻有什么文字。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "miaojia_houyuan" {
@@ -803,6 +809,10 @@ item_desc = {
 item_desc = {
  tu = "只见图画中绘着一些正在打斗的小人，似是与掌法有关。"
 }
+  actions = {
+    canwu = "do_canwu"
+    think = "do_think"
+  }
     }
 
   room_exits "miaojia_shufang" {

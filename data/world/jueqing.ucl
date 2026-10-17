@@ -97,6 +97,9 @@ zones "jueqing" {
   x = -1
   y = 1
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "chufang" {

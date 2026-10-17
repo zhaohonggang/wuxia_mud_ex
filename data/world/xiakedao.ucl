@@ -22,6 +22,9 @@ valid_leave = [
 }
 
 ]
+  actions = {
+    sit = "do_sit"
+  }
     }
 
   room_exits "chashi" {
@@ -75,6 +78,9 @@ valid_leave = [
 item_desc = {
  pingfeng = "这是一个非常漂亮的玉石屏风，不知道推(push)开它后面是什么。"
 }
+  actions = {
+    push = "do_push"
+  }
     }
 
   room_exits "dating" {
@@ -150,6 +156,12 @@ item_desc = {
  oldman = "你仔细一看，这位老者已经仙去很多年了，留下的只是他的遗骨(gu)，好可怜呀!"
  sea = "看什么呀? 你难道想游泳吗?"
 }
+  actions = {
+    bury = "do_mai"
+    climb = "do_climb"
+    mai = "do_mai"
+    swim = "do_swim"
+  }
     }
   room_exits "gudi" {
     room_id = rooms.gudi.id
@@ -195,6 +207,9 @@ item_desc = {
 item_desc = {
  boat = "这艘船可到侠客岛。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "haigang" {
@@ -221,6 +236,9 @@ item_desc = {
 item_desc = {
  boat = "这是侠客岛对外联系的大船。岛上的客人只要上船(enter)就可以回中原。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "haitan" {
@@ -468,6 +486,9 @@ item_desc = {
 item_desc = {
  shibi = "石壁有什么可看的，不过这侧的石壁和其他的不同却是真的。 呀，它是一个石门(men)！"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "midao4" {
@@ -589,6 +610,10 @@ item_desc = {
  pubu = "你仔细一看，瀑布里面好象有出口，你似乎可以跳(jump)进去。"
  xuanya = "下面弥漫着烟雾，什么也看不见，你可不要跳(plump)下去呀！"
 }
+  actions = {
+    jump = "do_jump"
+    plump = "do_plump"
+  }
     }
 
   room_exits "pubu" {
@@ -818,6 +843,9 @@ item_desc = {
   x = 0
   y = 0
   z = 9
+  actions = {
+    canwu = "do_canwu"
+  }
     }
 
   room_exits "shidong10" {
@@ -846,6 +874,9 @@ item_desc = {
   x = 0
   y = 1
   z = 0
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "shidong2" {
@@ -884,6 +915,9 @@ item_desc = {
   x = 1
   y = 0
   z = 0
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "shidong4" {
@@ -942,6 +976,10 @@ item_desc = {
 item_desc = {
  weapon = "图中人物手持刀剑，互相挥砍……"
 }
+  actions = {
+    canwu = "do_canwu"
+    think = "do_think"
+  }
     }
 
   room_exits "shidong7" {
@@ -1586,6 +1624,9 @@ item_desc = {
 item_desc = {
  cao = "几珠碧绿的小草，你不禁想拿(take)起来。"
 }
+  actions = {
+    take = "do_take"
+  }
     }
 
   room_exits "wangyun" {
@@ -1673,6 +1714,9 @@ item_desc = {
 item_desc = {
  bed = "一张舒适得让人立马想睡的小床。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "xiaowu" {
@@ -1862,6 +1906,11 @@ item_desc = {
 item_desc = {
  water = "碧绿碧绿的水，在阳光照耀下美丽级了，你不禁想游泳了(swim)。"
 }
+  actions = {
+    climb = "do_climb"
+    push = "do_push"
+    swim = "do_swim"
+  }
     }
   room_exits "yadi" {
     room_id = rooms.yadi.id

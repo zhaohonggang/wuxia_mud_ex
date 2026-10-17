@@ -11,6 +11,9 @@ zones "wudang" {
   x = -1
   y = 0
   z = 1
+  actions = {
+    jingxiu = "do_jingxiu"
+  }
     }
 
   room_exits "cangjingge" {
@@ -288,6 +291,10 @@ zones "wudang" {
   x = 0
   y = 0
   z = 0
+  actions = {
+    float = "do_float"
+    piao = "do_float"
+  }
     }
 
   room_exits "guangchang" {
@@ -360,6 +367,9 @@ direction = "east"
 item_desc = {
  tree = "这是一株人参果树，据说摘下人参果吃了对武功进益很有好处。"
 }
+  actions = {
+    zhai = "do_zhai"
+  }
     }
 
   room_exits "gyroad2" {
@@ -877,6 +887,9 @@ direction = "southup"
 }
 
 ]
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "nanyangong" {
@@ -1164,6 +1177,9 @@ direction = "southup"
   x = 1
   y = -4
   z = 1
+  actions = {
+    think = "do_mianbi"
+  }
     }
 
   room_exits "shizhu" {
@@ -1940,6 +1956,10 @@ item_desc = {
   x = 8
   y = 13
   z = -9
+  actions = {
+    float = "do_float"
+    piao = "do_float"
+  }
     }
 
   room_exits "wdroad5" {

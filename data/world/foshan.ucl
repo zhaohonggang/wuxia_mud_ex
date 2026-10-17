@@ -150,6 +150,11 @@ direction = "south"
     "no_beg",
     "no_steal"
   ]
+  actions = {
+    close = "do_close"
+    look = "do_look"
+    open = "do_open"
+  }
     }
 
   room_exits "pm_restroom" {
@@ -173,6 +178,9 @@ direction = "south"
   x = 0
   y = 0
   z = 1
+  actions = {
+    look = "do_look"
+  }
     }
 
   room_exits "pmc" {

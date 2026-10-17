@@ -14,6 +14,9 @@ zones "gaochang" {
 item_desc = {
  fo = "这些佛像都摆着奇怪的姿势，你感觉可以参悟(think)基本拳脚的真意。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "dadian" {
@@ -35,6 +38,9 @@ item_desc = {
 item_desc = {
  huan = "一只锈迹斑斑的金属门环，看样子似乎可以扭(turn)动。"
 }
+  actions = {
+    turn = "do_turn"
+  }
     }
 
   room_exits "entrance" {

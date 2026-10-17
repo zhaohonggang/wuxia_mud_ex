@@ -101,6 +101,9 @@ behavior_config = {
 item_desc = {
  desk = "这是一张很结实的红木书桌，桌面上摆着几只狼毫笔，磨了一半的墨， 还有一叠未用的白纸。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "buwei2" {
@@ -240,6 +243,10 @@ item_desc = {
  ya = "悬崖下峭壁高耸，一条青藤（teng）直垂而下。"
  teng = "一根青藤，如果你轻功不错，可以试着拉（la）住它可以跳（jump）下悬崖。"
 }
+  actions = {
+    jump = "do_jump"
+    la = "do_la"
+  }
     }
 
   room_exits "chaoyang" {
@@ -285,6 +292,9 @@ direction = ~
 }
 
 ]
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "chufang" {
@@ -423,6 +433,11 @@ item_desc = {
  big_stone = "一堆石头，似乎独孤求败所遗留之剑就在下面。"
  lianhua = "景色壮丽无比，可以从这里（jump lianhua）到莲花峰。"
 }
+  actions = {
+    jump = "do_jump"
+    move = "do_move"
+    pick = "do_pick"
+  }
     }
   room_exits "jianzhong" {
     room_id = rooms.jianzhong.id
@@ -459,6 +474,11 @@ item_desc = {
  ya = "悬崖下峭壁高耸，一条青藤（teng）直垂而下。"
  teng = "一根青藤，在半空中摇晃着，可以用他爬（climb）上悬崖。"
 }
+  actions = {
+    ba = "do_ba"
+    climb = "do_climb"
+    wa = "do_wa"
+  }
     }
   room_exits "jinshedong" {
     room_id = rooms.jinshedong.id
@@ -497,6 +517,12 @@ item_desc = {
  sword = "这是上次前往福建时带回的龙泉剑。"
  tai = "这是一张红漆梳妆台，半开的抽屉斜插着几朵鲜花。"
 }
+  actions = {
+    move = "do_move"
+    pick = "do_pick"
+    push = "do_move"
+    zhai = "do_pick"
+  }
     }
 
   room_exits "jushi" {
@@ -606,6 +632,10 @@ item_desc = {
 item_desc = {
  road = "路边模模糊糊，好象有个碑。可是太暗了实在看不见。"
 }
+  actions = {
+    use = "do_use"
+    zuan = "do_zuan"
+  }
     }
 
   room_exits "jzroad5" {
@@ -668,6 +698,10 @@ item_desc = {
   x = 0
   y = 0
   z = 6
+  actions = {
+    view = "do_look"
+    wang = "do_look"
+  }
     }
 
   room_exits "kuihua_1" {
@@ -686,6 +720,9 @@ item_desc = {
   x = 0
   y = 0
   z = 7
+  actions = {
+    climb = "do_climb"
+  }
     }
   room_exits "kuihua_2" {
     room_id = rooms.kuihua_2.id
@@ -740,6 +777,10 @@ behavior_config = {
 item_desc = {
  jianzhong = "太远了瞧不清楚。"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_tiao"
+  }
     }
 
   room_exits "lianhua" {
@@ -1117,6 +1158,9 @@ item_desc = {
   x = 0
   y = 2
   z = 12
+  actions = {
+    mianbi = "do_mianbi"
+  }
     }
 
   room_exits "sgyhole" {
@@ -1138,6 +1182,9 @@ item_desc = {
 item_desc = {
  wall = "一面很厚的石壁。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "sgyhole1" {
@@ -1164,6 +1211,10 @@ item_desc = {
   x = 0
   y = 3
   z = 11
+  actions = {
+    mianbi = "do_mianbi"
+    think = "do_think"
+  }
     }
 
   room_exits "sgyhole2" {
@@ -1181,6 +1232,9 @@ item_desc = {
   x = 0
   y = 4
   z = 10
+  actions = {
+    mianbi = "do_mianbi"
+  }
     }
 
   room_exits "sgyhole3" {
@@ -1198,6 +1252,9 @@ item_desc = {
   x = 0
   y = 5
   z = 10
+  actions = {
+    mianbi = "do_mianbi"
+  }
     }
 
   room_exits "sgyhole4" {
@@ -1305,6 +1362,10 @@ item_desc = {
 item_desc = {
  stone = "一块天然的巨石，被洪水无情地冲蚀着。"
 }
+  actions = {
+    cross = "do_cross"
+    jump = "do_jump"
+  }
     }
 
   room_exits "shanhongpb" {
@@ -1360,6 +1421,9 @@ item_desc = {
   x = -1
   y = 1
   z = 0
+  actions = {
+    zhengli = "do_zhengli"
+  }
     }
 
   room_exits "shufang" {
@@ -1524,6 +1588,9 @@ behavior_config = {
 item_desc = {
  hongshui = "洪水汹涌无比，你只觉随时有可能被洪水冲到水中。"
 }
+  actions = {
+    jump = "do_jump"
+  }
     }
   room_exits "stone" {
     room_id = rooms.stone.id
@@ -1645,6 +1712,11 @@ item_desc = {
   x = 2
   y = 1
   z = 0
+  actions = {
+    kick = "do_kick"
+    knock = "do_knock"
+    push = "do_push"
+  }
     }
 
   room_exits "xiaolu2" {
@@ -1702,6 +1774,10 @@ behavior_config = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    close = "do_close"
+    open = "do_open"
+  }
     }
   room_exits "xiuxishi" {
     room_id = rooms.xiuxishi.id
@@ -1796,6 +1872,9 @@ behavior_config = {
 item_desc = {
  cliff = "玉女祠下的山崖很是陡峭，似乎连接了一条小路。"
 }
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "yunuci" {
@@ -1910,6 +1989,9 @@ item_desc = {
 item_desc = {
  teng = "一根紫藤，看起来很结实的样子，好像可以用它爬（climb）下悬崖。"
 }
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "ziqitai" {

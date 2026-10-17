@@ -75,6 +75,9 @@ valid_leave = [
 item_desc = {
  tan = "深潭边的岩石上刻着四个巨大的古篆：“万古寒潭”， 再有五个小字：“苍松子谨书”。 潭边都是极硬的玄武岩， 潭水澄碧透明，鱼虾不生。水面隐隐泛着一股幽幽的深绿色， 走近便觉一股彻骨寒气扑面而来。  粗看似乎只有几十丈深， 仔细望下去却是越看越深，直如无底深渊一般！"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "bagua" {
@@ -895,6 +898,9 @@ direction = ~
   x = -1
   y = -2
   z = -1
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "beilin2" {
@@ -915,6 +921,10 @@ direction = ~
 item_desc = {
  table = "这是一整块巨石雕成的石桌，上面刻了些奇怪的图形。"
 }
+  actions = {
+    du = "do_study"
+    study = "do_study"
+  }
     }
 
   room_exits "beilin3" {
@@ -1082,6 +1092,10 @@ direction = ~
   x = -2
   y = 12
   z = 1
+  actions = {
+    mianbi = "do_mianbi"
+    面壁 = "do_mianbi"
+  }
     }
 
   room_exits "damodong" {
@@ -1191,6 +1205,9 @@ direction = ~
   flags = [
     "startroom"
   ]
+  actions = {
+    ketou = "do_ketou"
+  }
     }
 
   room_exits "dxbdian" {
@@ -1443,6 +1460,9 @@ valid_leave = [
 }
 
 ]
+  actions = {
+    knock = "do_knock"
+  }
     }
 
   room_exits "guangchang1" {
@@ -1814,6 +1834,10 @@ valid_leave = [
   x = -1
   y = 0
   z = 6
+  actions = {
+    hit = "do_hit"
+    out = "do_out"
+  }
     }
 
   room_exits "gulou7" {
@@ -2744,6 +2768,10 @@ direction = "west"
   flags = [
     "startroom"
   ]
+  actions = {
+    get = "do_get"
+    xian = "do_xian"
+  }
     }
 
   room_exits "putiyuan" {
@@ -2869,6 +2897,9 @@ direction = ~
   x = 2
   y = 12
   z = 16
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "shang_chufang" {
@@ -3000,6 +3031,10 @@ item_desc = {
  shakeng = "沙坑里有些家将在练习轻功，你也可以跳(tiao)下去试试。"
  muzhuang = "几根木桩上有不少击打(jida)过的痕迹。"
 }
+  actions = {
+    jida = "do_jida"
+    tiao = "do_tiao"
+  }
     }
 
   room_exits "shang_lianwue" {
@@ -3035,6 +3070,9 @@ item_desc = {
 item_desc = {
  shadai = "几个沉重的沙袋，可以试着打打(jida)看。"
 }
+  actions = {
+    jida = "do_jida"
+  }
     }
 
   room_exits "shang_lianwuw" {
@@ -3880,6 +3918,10 @@ direction = ~
   x = 0
   y = -3
   z = -1
+  actions = {
+    close = "do_close"
+    open = "do_open"
+  }
     }
 
   room_exits "smdian" {
@@ -4538,6 +4580,9 @@ direction = ~
   x = 1
   y = 0
   z = 0
+  actions = {
+    open = "do_open"
+  }
     }
 
   room_exits "zhonglou1" {
@@ -4648,6 +4693,10 @@ direction = ~
   x = 1
   y = 0
   z = 6
+  actions = {
+    knock = "do_knock"
+    out = "do_out"
+  }
     }
 
   room_exits "zhonglou7" {
@@ -4783,6 +4832,9 @@ direction = ~
   x = -2
   y = 0
   z = 13
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "zhushe" {

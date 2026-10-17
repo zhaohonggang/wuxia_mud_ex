@@ -184,6 +184,9 @@ zones "chengdu" {
 item_desc = {
  liang = "房子的门梁垮塌，将门封了个严实。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "eastroad3" {
@@ -243,6 +246,11 @@ item_desc = {
   x = 0
   y = 0
   z = 0
+  actions = {
+    drink = "do_drink"
+    eat = "do_eat"
+    get = "do_get"
+  }
     }
 
   room_exits "guangchang" {
@@ -631,6 +639,9 @@ direction = "south"
   x = -3
   y = -2
   z = 0
+  actions = {
+    back = "do_back"
+  }
     }
 
   room_exits "qingyanggong" {

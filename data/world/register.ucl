@@ -45,6 +45,13 @@ item_desc = {
 item_desc = {
  paizi = "第十八层地狱，你想翻身？那就试试！"
 }
+  actions = {
+    drink = "do_drink"
+    drop = "do_drop"
+    eat = "do_eat"
+    give = "do_give"
+    suicide = "do_suicide"
+  }
     }
   room_exits "prison" {
     room_id = rooms.prison.id
@@ -160,6 +167,10 @@ item_desc = {
 item_desc = {
  paizi = "投胎乃人生大事，切记不可草率！  选好先天属性(指令：washto)之后再投胎(指令：born <中文地名>)吧。"
 }
+  actions = {
+    born = "do_born"
+    washto = "do_wash"
+  }
     }
   room_exits "yanluodian" {
     room_id = rooms.yanluodian.id

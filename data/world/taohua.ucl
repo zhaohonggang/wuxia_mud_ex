@@ -36,6 +36,9 @@ zones "taohua" {
   x = -1
   y = 1
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "chufang" {
@@ -81,6 +84,9 @@ zones "taohua" {
 item_desc = {
  diao = "这一对白雕正展翅欲飞。如果是桃花岛的弟子，骑上(ride)就 可以飞到中原，非常便利。"
 }
+  actions = {
+    ride = "do_ride"
+  }
     }
 
   room_exits "damen" {
@@ -221,6 +227,9 @@ behavior_config = {
 item_desc = {
  chuan = "这是桃花岛对外联系的大船。岛上的客人或弟子只要 上船(enter)就可以回中原。"
 }
+  actions = {
+    enter = "do_enter"
+  }
     }
 
   room_exits "haitan" {
@@ -303,6 +312,9 @@ item_desc = {
 item_desc = {
  bei = "石碑上刻着：「桃花岛女主冯氏埋香之墓」"
 }
+  actions = {
+    push = "do_push"
+  }
     }
 
   room_exits "mudi" {

@@ -14,6 +14,10 @@ zones "room" {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    close = "do_close"
+    push = "do_push"
+  }
     }
 
   room_exits "qianting" {
@@ -90,6 +94,9 @@ zones "room" {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    sit = "do_sit"
+  }
     }
 
   room_exits "houyuan" {
@@ -332,6 +339,9 @@ zones "room" {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    sit = "do_sit"
+  }
     }
 
   room_exits "huayuan" {
@@ -396,6 +406,9 @@ zones "room" {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    sign = "do_sign"
+  }
     }
 
   room_exits "shufang" {
@@ -595,6 +608,10 @@ zones "room" {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    close = "do_close"
+    push = "do_push"
+  }
     }
 
   room_exits "zoudao" {

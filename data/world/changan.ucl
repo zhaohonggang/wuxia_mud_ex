@@ -680,6 +680,9 @@ item_desc = {
   x = -1
   y = 1
   z = 0
+  actions = {
+    bet = "do_bet"
+  }
     }
 
   room_exits "duchang" {
@@ -703,6 +706,9 @@ item_desc = {
   x = 0
   y = 0
   z = 2
+  actions = {
+    bet = "do_bet"
+  }
     }
 
   room_exits "duchang2" {
@@ -1281,6 +1287,9 @@ item_desc = {
 item_desc = {
  gaoshi = "现在正紧缺人手，急需雇佣一批短工来干活。 work    开始工作。"
 }
+  actions = {
+    work = "do_work"
+  }
     }
 
   room_exits "huozhan" {
@@ -1386,6 +1395,9 @@ direction = "up"
 item_desc = {
  bed = "一张白色的软榻，看上去极为精致。"
 }
+  actions = {
+    bed = "do_bed"
+  }
     }
 
   room_exits "kzsleep" {
@@ -2343,6 +2355,9 @@ direction = ~
 item_desc = {
  bed = "这张床似乎可以推开(push)。"
 }
+  actions = {
+    push = "do_push"
+  }
     }
 
   room_exits "qunyuys8" {
@@ -2803,6 +2818,9 @@ item_desc = {
   x = 3
   y = -6
   z = 0
+  actions = {
+    open = "do_open"
+  }
     }
 
   room_exits "xunbufang" {

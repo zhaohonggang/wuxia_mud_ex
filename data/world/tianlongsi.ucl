@@ -229,6 +229,10 @@ item_desc = {
   x = 0
   y = -7
   z = 0
+  actions = {
+    exit = "do_exit"
+    quit = "do_quit"
+  }
     }
 
   room_exits "munitang" {

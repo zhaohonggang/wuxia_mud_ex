@@ -1070,6 +1070,9 @@ item_desc = {
 item_desc = {
  gate = "朱红的大门紧闭着，敲敲(knock)看吧。"
 }
+  actions = {
+    knock = "do_knock"
+  }
     }
 
   room_exits "liuzhuang" {
@@ -1193,6 +1196,12 @@ valid_leave = [
   flags = [
     "sleep_room"
   ]
+  actions = {
+    broadcast = "do_broadcast"
+    close = "do_close"
+    open = "do_open"
+    order = "do_order"
+  }
     }
 
   room_exits "loveroom" {

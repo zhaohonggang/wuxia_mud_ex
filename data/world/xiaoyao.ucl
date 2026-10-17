@@ -213,6 +213,9 @@ zones "xiaoyao" {
   x = -2
   y = -1
   z = 0
+  actions = {
+    order = "do_order"
+  }
     }
 
   room_exits "shantang" {

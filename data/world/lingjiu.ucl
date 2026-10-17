@@ -534,6 +534,9 @@ zones "lingjiu" {
 item_desc = {
  tiesuo = "这条铁索是通往对面的接天桥，你也许可以走(zou)过去。"
 }
+  actions = {
+    zou = "do_zou"
+  }
     }
 
   room_exits "jian" {

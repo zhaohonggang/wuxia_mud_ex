@@ -551,6 +551,9 @@ zones "fuzhou" {
 item_desc = {
  men = "这扇门已被挡住无法通行，除非你打破(break)它。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "houyuan" {
@@ -602,6 +605,9 @@ item_desc = {
 item_desc = {
  men = "这扇门已被挡住无法通行，除非你打破(break)它。"
 }
+  actions = {
+    break = "do_break"
+  }
     }
 
   room_exits "laozhai" {
@@ -664,6 +670,9 @@ item_desc = {
   x = -1
   y = 0
   z = 1
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "mishi" {

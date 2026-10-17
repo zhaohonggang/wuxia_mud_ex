@@ -123,6 +123,13 @@ zones "huanggong" {
   x = 0
   y = 0
   z = 1
+  actions = {
+    climb = "do_climb"
+    jump = "do_jump"
+    pa = "do_climb"
+    reach = "do_reach"
+    tiao = "do_jump"
+  }
     }
   room_exits "inwell" {
     room_id = rooms.inwell.id
@@ -210,6 +217,9 @@ zones "huanggong" {
 item_desc = {
  desk = "一张制作精良的檀香木书桌."
 }
+  actions = {
+    press = "do_press"
+  }
     }
 
   room_exits "shufang" {

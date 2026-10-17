@@ -455,6 +455,10 @@ behavior_config = {
   x = -2
   y = -3
   z = 2
+  actions = {
+    enter = "do_enter"
+    get = "do_get"
+  }
     }
 
   room_exits "sroad8" {

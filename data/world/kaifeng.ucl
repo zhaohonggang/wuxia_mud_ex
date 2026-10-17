@@ -737,6 +737,9 @@ zones "kaifeng" {
   x = 1
   y = -3
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "hh_chufang" {
@@ -938,6 +941,9 @@ direction = ~
 item_desc = {
  bagua = "这个八卦似乎是为修炼步法所用，你不妨沿着八卦走(zou)走看。"
 }
+  actions = {
+    zou = "do_zou"
+  }
     }
 
   room_exits "hh_jianlou2" {
@@ -958,6 +964,9 @@ item_desc = {
 item_desc = {
  wall = "墙壁上绘着一些正在练剑的小人，似是与剑法有关。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "hh_jianlou3" {
@@ -1077,6 +1086,9 @@ item_desc = {
 item_desc = {
  wall = "石壁上刻着一些栩栩如生，正拳搏激烈的小人，旁边还有一些注释。"
 }
+  actions = {
+    think = "do_think"
+  }
     }
 
   room_exits "hh_mishi" {
@@ -1318,6 +1330,9 @@ item_desc = {
 item_desc = {
  zhuo = "一张古旧的青石桌案，不知能不能移开。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "hh_xiaozhu" {

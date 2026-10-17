@@ -100,6 +100,9 @@ item_desc = {
 item_desc = {
  floor = "这层木板似乎可以拉开(pull)。"
 }
+  actions = {
+    pull = "do_open"
+  }
     }
 
   room_exits "didao3" {
@@ -216,6 +219,9 @@ item_desc = {
   x = 0
   y = 2
   z = 0
+  actions = {
+    knock = "do_knock"
+  }
     }
 
   room_exits "gate" {
@@ -335,6 +341,10 @@ item_desc = {
 item_desc = {
  man = "这个人如同稀泥一般，双目涣散，没有一点神采。整个人似乎只剩下 了一个干枯的躯壳，然而却还有一口气，如果不是铁镣锁着，也许可 以把他搬下床来。"
 }
+  actions = {
+    ban = "do_move"
+    move = "do_move"
+  }
     }
 
   room_exits "laofang" {
@@ -383,6 +393,9 @@ item_desc = {
  shu_jia = "书架上摆着各种各样的书。"
  book = "都是一些很平常的书，到处都可以见到。"
 }
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "mishi" {
@@ -439,6 +452,9 @@ item_desc = {
 item_desc = {
  eye = "一块邪恶的朱雀石，发出耀眼的红光。"
 }
+  actions = {
+    push = "do_push"
+  }
     }
 
   room_exits "neitang" {
@@ -608,6 +624,9 @@ item_desc = {
   x = 1
   y = -7
   z = 1
+  actions = {
+    open = "do_open"
+  }
     }
 
   room_exits "tianjing" {

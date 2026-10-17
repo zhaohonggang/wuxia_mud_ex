@@ -76,6 +76,9 @@ zones "quanzhen" {
 item_desc = {
  frutex = "一丛你叫不出名字的灌木，其中夹杂着很多小刺。"
 }
+  actions = {
+    kan = "do_kan"
+  }
     }
 
   room_exits "baishulin4" {
@@ -217,6 +220,9 @@ item_desc = {
   x = 6
   y = 2
   z = 0
+  actions = {
+    jingxiu = "do_jingxiu"
+  }
     }
 
   room_exits "chanfang3" {
@@ -529,6 +535,9 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    pull = "do_pull"
+  }
     }
 
   room_exits "diziju" {
@@ -792,6 +801,9 @@ item_desc = {
   flags = [
     "sleep_room"
   ]
+  actions = {
+    pull = "do_pull"
+  }
     }
 
   room_exits "fu_woshi" {
@@ -1377,6 +1389,10 @@ item_desc = {
  paper = "这是一摞厚厚的牛皮纸册，用铁钉钉在墙上。好象可以用来练 掌法的，你可以试着打(da)打看。"
  bag = "这是一个大沙袋，看起来非常结实。好象是专门用来练习指法 的，你可以刺(ci)刺它试试看。"
 }
+  actions = {
+    ci = "do_finger"
+    da = "do_strike"
+  }
     }
 
   room_exits "liangong" {
@@ -1777,6 +1793,9 @@ item_desc = {
   x = 6
   y = -3
   z = 0
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "shantang" {

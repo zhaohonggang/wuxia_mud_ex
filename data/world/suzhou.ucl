@@ -2245,6 +2245,9 @@ chats = [
   x = 2
   y = 2
   z = 1
+  actions = {
+    put = "do_put"
+  }
     }
 
   room_exits "suzhou_shop" {

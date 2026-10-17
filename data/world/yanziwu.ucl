@@ -208,6 +208,9 @@ item_desc = {
  sign = "缺大理段氏六脉神剑，丐帮降龙十八掌、打狗棍法…"
  jia = "上面放着各种武学书籍，却发现没什么有价值的秘籍。"
 }
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "huanshi" {
@@ -375,6 +378,10 @@ item_desc = {
 item_desc = {
  penjing = "这盆景似乎很平常，独有其边沿特别光滑。"
 }
+  actions = {
+    knock = "do_knock"
+    whisper = "do_say"
+  }
     }
 
   room_exits "lanyue" {
@@ -728,6 +735,11 @@ item_desc = {
 item_desc = {
  qin = "这琴比之寻常七弦琴短了尺许，却有九根琴弦。 不知是该去弹一弹(tan)还是将它击开(break)。"
 }
+  actions = {
+    break = "do_break"
+    play = "do_tan"
+    tan = "do_tan"
+  }
     }
 
   room_exits "tingyu" {
@@ -782,6 +794,11 @@ item_desc = {
  table = "一张典雅的桃木小桌，上面放着水果盘和饮茶器具。"
  chair = "一只青竹打制的靠椅，躺上去摇摇晃晃，好舒服耶！"
 }
+  actions = {
+    knock = "do_tap"
+    sit = "do_sit"
+    tap = "do_tap"
+  }
     }
 
   room_exits "xiaoting" {

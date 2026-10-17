@@ -633,6 +633,9 @@ direction = "west"
 }
 
 ]
+  actions = {
+    unlock = "do_unlock"
+  }
     }
 
   room_exits "houyuan" {
@@ -1090,6 +1093,9 @@ item_desc = {
   x = 0
   y = 4
   z = 0
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "luan2" {
@@ -1612,6 +1618,9 @@ direction = "southdown"
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    zha = "do_zha"
+  }
     }
 
   room_exits "shikuang1" {
@@ -1642,6 +1651,9 @@ direction = "northup"
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    zha = "do_zha"
+  }
     }
 
   room_exits "shikuang2" {
@@ -1724,6 +1736,9 @@ direction = "northup"
   x = 0
   y = 0
   z = 4
+  actions = {
+    jump = "do_jump"
+  }
     }
   room_exits "tiesuo" {
     room_id = rooms.tiesuo.id

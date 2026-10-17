@@ -14,6 +14,9 @@ zones "shenfeng" {
 item_desc = {
  bridge = "这是一条宽约七寸的独木桥，看来只能走(zou)过一人。"
 }
+  actions = {
+    zou = "do_zou"
+  }
     }
 
   room_exits "bridge1" {
@@ -35,6 +38,9 @@ item_desc = {
 item_desc = {
  bridge = "这是一条宽约七寸的独木桥，看来只能走(zou)过一人。"
 }
+  actions = {
+    zou = "do_zou"
+  }
     }
 
   room_exits "bridge2" {
@@ -245,6 +251,10 @@ direction = "north"
 item_desc = {
  pool = "池水澄净清澈，更无纤毫苔泥，圆池四周都是翡翠。"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+  }
     }
 
   room_exits "feicui1" {
@@ -275,6 +285,10 @@ item_desc = {
  rattan = "生长在翡翠池岸边的翠绿青藤，可以由它爬上岸去。"
  hole = "潜藏在池底的一个小洞，你似乎可以钻进去。"
 }
+  actions = {
+    climb = "do_climb"
+    zuan = "do_zuan"
+  }
     }
   room_exits "feicui2" {
     room_id = rooms.feicui2.id
@@ -747,6 +761,9 @@ item_desc = {
 item_desc = {
  peak = "陡峭的白玉山峰上布满斧凿痕迹，看来似乎可以爬上去。"
 }
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "shanjiao" {
@@ -767,6 +784,11 @@ item_desc = {
  gate = "嵌在神峰山腰的巨大厚重的石门，看起来很难推动。"
  sand = "巨大的石门由于时间过长，已被沙子堵得严严实实。 如果要想打开石门，看来非得将这些沙子移开才行。"
 }
+  actions = {
+    climb = "do_climb"
+    move = "do_move"
+    push = "do_push"
+  }
     }
   room_exits "shenfeng" {
     room_id = rooms.shenfeng.id
@@ -811,6 +833,11 @@ item_desc = {
   x = 0
   y = 0
   z = 6
+  actions = {
+    jump = "do_tiao"
+    tiao = "do_tiao"
+    use = "do_use"
+  }
     }
   room_exits "shishi" {
     room_id = rooms.shishi.id
@@ -918,6 +945,11 @@ item_desc = {
   x = 0
   y = 0
   z = 7
+  actions = {
+    jump = "do_tiao"
+    tiao = "do_tiao"
+    use = "do_use"
+  }
     }
 
   room_exits "yongdao1" {
@@ -951,6 +983,10 @@ item_desc = {
   x = -1
   y = -1
   z = 0
+  actions = {
+    break = "do_break"
+    get = "do_get"
+  }
     }
 
   room_exits "yongdao3" {
@@ -1018,6 +1054,10 @@ item_desc = {
  table = "圆桌都是整块从玉石中雕刻出来的，连在地上，圆桌桌面刻的 是一群背上生翅的飞骆驼，花纹极细，刻工甚是精致，然而骆 驼的头和身子却并不连在一起，各自离开了一尺多位置。"
  bed = "这是一张玉石雕刻出来的床。"
 }
+  actions = {
+    climb = "do_climb"
+    move = "do_move"
+  }
     }
 
   room_exits "yushi" {

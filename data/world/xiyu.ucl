@@ -130,6 +130,10 @@ zones "xiyu" {
   x = -1
   y = 5
   z = 0
+  actions = {
+    move = "do_move"
+    pick = "do_pick"
+  }
     }
 
   room_exits "houdong" {
@@ -862,6 +866,9 @@ item_desc = {
 item_desc = {
  mount = "这是一座黄沙堆积形成的山。微风吹动，沙山发出嗡嗡的响声。 你不禁对自然的造物发出由衷的赞叹。"
 }
+  actions = {
+    climb = "do_climb"
+  }
     }
 
   room_exits "silk3" {
@@ -990,6 +997,10 @@ item_desc = {
 item_desc = {
  valley = "深涧足有三丈多宽，不知道能不能跳过去。"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+  }
     }
 
   room_exits "tianroad3" {
@@ -1020,6 +1031,10 @@ item_desc = {
 item_desc = {
  valley = "深涧足有三丈多宽，不知道能不能跳过去。"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+  }
     }
 
   room_exits "tianroad4" {

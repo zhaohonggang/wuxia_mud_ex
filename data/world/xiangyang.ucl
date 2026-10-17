@@ -979,6 +979,9 @@ direction = ~
 }
 
 ]
+  actions = {
+    serve = "do_serve"
+  }
     }
 
   room_exits "juyichufang" {

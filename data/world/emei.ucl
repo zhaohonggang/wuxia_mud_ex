@@ -316,6 +316,9 @@ direction = "south"
   x = -1
   y = -1
   z = 0
+  actions = {
+    sheshen = "do_sheshen"
+  }
     }
 
   room_exits "dgtsheshenya" {
@@ -597,6 +600,9 @@ direction = "south"
   x = 0
   y = -1
   z = 0
+  actions = {
+    move = "do_move"
+  }
     }
 
   room_exits "hcadadian" {
@@ -750,6 +756,9 @@ direction = "south"
 item_desc = {
  chuang = "窗外可以看到峨眉山的秀丽山景。"
 }
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "hcawest" {
@@ -1751,6 +1760,9 @@ item_desc = {
   x = 6
   y = 10
   z = -11
+  actions = {
+    clap = "do_clap"
+  }
     }
 
   room_exits "shierpan3" {
@@ -1788,6 +1800,10 @@ item_desc = {
 item_desc = {
  fenmu = "看来这个坟墓已经在这里很久了，上面已长满了青苔，令人一看不禁沧然之意顿生。"
 }
+  actions = {
+    bai = "do_bai"
+    climb = "do_climb"
+  }
     }
 
   room_exits "ssyb" {
@@ -1816,6 +1832,9 @@ item_desc = {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    wang = "do_wang"
+  }
     }
   room_exits "st0" {
     room_id = rooms.st0.id
@@ -1839,6 +1858,9 @@ item_desc = {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    wang = "do_wang"
+  }
     }
   room_exits "st1" {
     room_id = rooms.st1.id
@@ -1864,6 +1886,9 @@ item_desc = {
   flags = [
     "no_sleep_room"
   ]
+  actions = {
+    wang = "do_wang"
+  }
     }
   room_exits "st2" {
     room_id = rooms.st2.id
@@ -2055,6 +2080,9 @@ item_desc = {
   x = -1
   y = 2
   z = 2
+  actions = {
+    jump = "do_jump"
+  }
     }
 
   room_exits "xiaoshulin1" {
