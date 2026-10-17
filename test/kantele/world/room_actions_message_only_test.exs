@@ -22,14 +22,16 @@ defmodule Kantele.World.RoomActions.MessageOnlyTest do
   end
 
   describe "run/2（数据驱动纯消息）" do
-    test "knock：message_vision 广播，$N 替换为行动者名" do
+    test "knock：message_vision 广播，$N 归一化为 {npc}（由 VisionView 按接收者渲染）" do
       conn = conn_for("hangzhou:liuzhuang", "李四")
 
       conn2 = MessageOnly.run(conn, %{verb: "knock", trailing: "", room_id: "hangzhou:liuzhuang"})
 
       text = published_text(conn2)
       assert is_binary(text)
-      assert String.contains?(text, "李四")
+      # 不预替换名字：行动者经 VisionView echo 渲染成「你」，旁观者渲染成姓名
+      assert String.contains?(text, "{npc}")
+      refute String.contains?(text, "李四")
       assert String.contains?(text, "敲着门")
     end
 

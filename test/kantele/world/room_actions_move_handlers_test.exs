@@ -145,8 +145,8 @@ defmodule Kantele.World.RoomActions.MoveHandlersTest do
       assert {:handled, conn2} = dispatch(conn, "bed")
 
       assert publishes(conn2) == [
-               {"rooms:changan:kzsleep", "测试掀开纱帐，准备上床了。\n\n"},
-               {"rooms:changan:bed", "\n沙帐轻轻一动，测试钻了进来。\n"}
+               {"rooms:changan:kzsleep", "{npc}掀开纱帐，准备上床了。\n\n"},
+               {"rooms:changan:bed", "\n沙帐轻轻一动，{npc}钻了进来。\n"}
              ]
 
       assert conn2.private.update_character.room_id == "changan:bed"
@@ -184,7 +184,7 @@ defmodule Kantele.World.RoomActions.MoveHandlersTest do
       assert {:handled, conn2} = dispatch(conn, "move bed")
 
       assert publishes(conn2) == [
-               {"rooms:xiakedao:xiaowu", "测试用力把小床移开，发现里面竟然有一条秘密通道！\n"}
+               {"rooms:xiakedao:xiaowu", "{npc}用力把小床移开，发现里面竟然有一条秘密通道！\n"}
              ]
 
       assert conn2.private.update_character.room_id == "xiakedao:midao1"

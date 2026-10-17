@@ -18,7 +18,7 @@ defmodule Kantele.World.RoomActions.HelpersTest do
   end
 
   describe "broadcast_vision/3（LPC message_vision 等价）" do
-    test "向 rooms:<room_id> 广播 type=vision 消息，并把 $N 替换为行动者名字" do
+    test "向 rooms:<room_id> 广播 type=vision 消息，$N 归一化为 {npc}（不预先替换名字）" do
       conn = %Conn{
         character: %Character{name: "张三", room_id: "z:r"},
         private: %Private{channel_changes: []},
@@ -31,10 +31,33 @@ defmodule Kantele.World.RoomActions.HelpersTest do
       assert event.topic == Kalevala.Event.Message
       assert event.data.type == "vision"
       assert event.data.channel_name == "rooms:z:r"
-      assert event.data.text == "张三 拍了拍手。\n"
+      # {npc} 留给 VisionView 按接收者渲染：行动者→「你」，旁观者→行动者姓名
+      assert event.data.text == "{npc} 拍了拍手。\n"
     end
 
-    test "无名字时 $N 回退为「某人」（不崩溃）" do
+    test "{npc} 经 VisionView 分流：行动者看到「你」，旁观者看到姓名" do
+      conn = %Conn{
+        character: %Character{name: "张三", room_id: "z:r"},
+        private: %Private{channel_changes: []},
+        output: []
+      }
+
+      conn2 = Helpers.broadcast_vision(conn, "z:r", "$N 拍了拍手。\n")
+
+      assert [{:publish, _c, event, _opts, _err}] = conn2.private.channel_changes
+
+      echo = Kantele.Character.VisionView.render("echo", %{text: event.data.text})
+      listen =
+        Kantele.Character.VisionView.render("listen", %{
+          text: event.data.text,
+          character: %Character{name: "张三"}
+        })
+
+      assert echo.text == "你 拍了拍手。\n"
+      assert listen.text == "张三 拍了拍手。\n"
+    end
+
+    test "行动者无名字时，旁观者渲染回退为「某人」（不崩溃）" do
       conn = %Conn{
         character: %Character{room_id: "z:r"},
         private: %Private{channel_changes: []},
@@ -44,7 +67,15 @@ defmodule Kantele.World.RoomActions.HelpersTest do
       conn2 = Helpers.broadcast_vision(conn, "z:r", "$N 笑了笑。")
 
       assert [{:publish, "rooms:z:r", event, _opts, _err}] = conn2.private.channel_changes
-      assert event.data.text == "某人 笑了笑。"
+      assert event.data.text == "{npc} 笑了笑。"
+
+      listen =
+        Kantele.Character.VisionView.render("listen", %{
+          text: event.data.text,
+          character: %Character{}
+        })
+
+      assert listen.text == "某人 笑了笑。"
     end
   end
 end

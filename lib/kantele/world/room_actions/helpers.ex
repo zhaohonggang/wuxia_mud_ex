@@ -17,16 +17,20 @@ defmodule Kantele.World.RoomActions.Helpers do
   @doc """
   `message_vision(msg, this_player())` 等价。
 
-  把 `template` 里 LPC 的 `$N`（行动者名字）替换为当前玩家名字后，向房间频道
+  把 `template` 里 LPC 的 `$N` 归一化为 `{npc}` 后，向房间频道
   `rooms:\#{room_id}` 广播 `type: "vision"` 消息。房间内每个订阅者（含行动者
   自己）都会收到；`VisionEvent` 用 `from_pid == self()` 区分 echo（行动者）/
-  listen（旁观者）渲染。
+  listen（旁观者）渲染，`VisionView` 再把 `{npc}` 渲染成「你」/行动者姓名。
+
+  **不要在这里把 `$N` 直接替换成名字**：那样行动者会看到自己的名字而不是
+  「你」，与 LPC `message_vision` 语义不符（`wield_command.ex` 的装备文案
+  同样只预替换 `{name}`、把 `{npc}` 留给 `VisionView`）。
 
   返回更新后的 `conn`（`private.channel_changes` 增加一条 publish）。
   """
   def broadcast_vision(conn, room_id, template)
       when is_binary(room_id) and is_binary(template) do
-    text = String.replace(template, "$N", actor_name(conn))
+    text = String.replace(template, "$N", "{npc}")
 
     Conn.publish_message(
       conn,
@@ -68,13 +72,6 @@ defmodule Kantele.World.RoomActions.Helpers do
   """
   def move_to(conn, to_room_id) when is_binary(to_room_id) do
     Teleport.teleport(conn, to_room_id)
-  end
-
-  defp actor_name(conn) do
-    case Map.get(conn, :character) do
-      %{name: name} when is_binary(name) and name != "" -> name
-      _ -> "某人"
-    end
   end
 
   @doc false

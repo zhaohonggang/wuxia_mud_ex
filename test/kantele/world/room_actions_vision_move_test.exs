@@ -70,7 +70,7 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
       assert {:handled, conn2} = dispatch(conn, "enter dong")
 
       assert publishes(conn2) == [
-               {"rooms:mingjiao:gudi3", "测试深吸了一口气，慢慢沿着洞壁往外爬。\n"}
+               {"rooms:mingjiao:gudi3", "{npc}深吸了一口气，慢慢沿着洞壁往外爬。\n"}
              ]
 
       assert new_room(conn2) == "mingjiao:gudi2"
@@ -102,8 +102,8 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
       assert {:handled, conn2} = dispatch(conn, "jump chi")
 
       assert publishes(conn2) == [
-               {"rooms:gumu:taiyi1", "\n测试 往太乙池中跳去。\n"},
-               {"rooms:gumu:taiyi2", "\n测试跳进了太乙池中来。\n"}
+               {"rooms:gumu:taiyi1", "\n{npc} 往太乙池中跳去。\n"},
+               {"rooms:gumu:taiyi2", "\n{npc}跳进了太乙池中来。\n"}
              ]
 
       assert new_room(conn2) == "gumu:taiyi2"
@@ -126,8 +126,8 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
       assert {:handled, conn2} = dispatch(conn, "climb up")
 
       assert publishes(conn2) == [
-               {"rooms:gumu:taiyi2", "测试在太乙池中往岸上爬了上去。\n"},
-               {"rooms:gumu:taiyi1", "测试从太乙池中爬了上去。\n"}
+               {"rooms:gumu:taiyi2", "{npc}在太乙池中往岸上爬了上去。\n"},
+               {"rooms:gumu:taiyi1", "{npc}从太乙池中爬了上去。\n"}
              ]
 
       assert new_room(conn2) == "gumu:taiyi1"
@@ -150,8 +150,8 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
       assert {:handled, conn2} = dispatch(conn, "jump chuang")
 
       assert publishes(conn2) == [
-               {"rooms:emei:hcawest", "测试趁人不注意，跳出窗外。\n"},
-               {"rooms:emei:xiaoshulin1", "测试从华藏庵里跳窗出来。\n"}
+               {"rooms:emei:hcawest", "{npc}趁人不注意，跳出窗外。\n"},
+               {"rooms:emei:xiaoshulin1", "{npc}从华藏庵里跳窗出来。\n"}
              ]
 
       assert new_room(conn2) == "emei:xiaoshulin1"
@@ -163,8 +163,8 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
       assert {:handled, conn2} = dispatch(conn, "jump chuang")
 
       assert publishes(conn2) == [
-               {"rooms:emei:xiaoshulin1", "测试趁人不注意，跳进窗里。\n"},
-               {"rooms:emei:hcawest", "测试从华藏庵外跳窗进来。\n"}
+               {"rooms:emei:xiaoshulin1", "{npc}趁人不注意，跳进窗里。\n"},
+               {"rooms:emei:hcawest", "{npc}从华藏庵外跳窗进来。\n"}
              ]
 
       assert new_room(conn2) == "emei:hcawest"
