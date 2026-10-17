@@ -15,8 +15,9 @@ defmodule Kantele.World.RoomAction do
 
   `params` 字段：
   - `:verb` — 玩家输入的动词（与 UCL `actions` 键原样匹配，大小写敏感）
-  - `:trailing` — 动词之后的剩余文本（已 trim，无则为 `""`）
-  - `:room` — 当前房间结构体（`Kantele.World.Room`）
+  - `:trailing` — 动词之后的剩余文本（已 trim，无则为 `""`）；对应 LPC `do_*` 的 `arg`
+  - `:room_id` — 当前房间 id（`conn.character.room_id`）；handler 需改动房间
+    （如 LPC `set("exits/down", ...)`）时用它向房间进程发事件
   """
   @callback run(conn :: Kalevala.Character.Conn.t(), params :: map()) ::
               Kalevala.Character.Conn.t()
@@ -73,11 +74,11 @@ defmodule Kantele.World.RoomActionDispatcher do
   """
   def resolve(conn, text, lookup_fun \\ &RoomActionHandlers.lookup/1) do
     verb = extract_verb(text)
-    room = get_room(conn)
+    actions = get_room_actions(conn)
 
-    case priority_action(room, verb, lookup_fun) do
+    case priority_action(actions, verb, lookup_fun) do
       {:handled, {module, function}} ->
-        {:handled, {module, function}, build_params(verb, text, room)}
+        {:handled, {module, function}, build_params(verb, text, conn)}
 
       :not_handled ->
         :not_handled
@@ -93,14 +94,27 @@ defmodule Kantele.World.RoomActionDispatcher do
 
   defp extract_verb(_), do: nil
 
-  defp get_room(conn) do
-    Map.get(conn, :room) || conn.private.room
+  # 取当前房间的 actions 映射（P5-1b-2 运行时修正）：
+  # 引擎不把房间塞进 conn.private.room（恒为 nil），故优先用 Room.actions_by_id
+  # 直接查房间进程；单测可把结构体放进 conn.private.room 走快速路径。
+  defp get_room_actions(conn) do
+    case Map.get(conn, :room) || conn.private.room do
+      %Room{actions: actions} -> actions
+      _ -> fetch_actions_by_character(conn)
+    end
   end
 
-  defp priority_action(_room, nil, _lookup_fun), do: :not_handled
+  defp fetch_actions_by_character(conn) do
+    case Map.get(conn, :character) do
+      %{room_id: room_id} when is_binary(room_id) -> Room.actions_by_id(room_id)
+      _ -> %{}
+    end
+  end
 
-  defp priority_action(room, verb, lookup_fun) when is_binary(verb) do
-    case Room.resolve_action(room, verb) do
+  defp priority_action(_actions, nil, _lookup_fun), do: :not_handled
+
+  defp priority_action(actions, verb, lookup_fun) when is_binary(verb) do
+    case Room.resolve_action(%Room{actions: actions}, verb) do
       {:ok, handler} ->
         case lookup_fun.(handler) do
           {:ok, {module, function}} -> {:handled, {module, function}}
@@ -112,13 +126,19 @@ defmodule Kantele.World.RoomActionDispatcher do
     end
   end
 
-  defp build_params(verb, text, room) do
+  defp build_params(verb, text, conn) do
     trailing =
       case String.trim(text) |> String.split(~r/\s+/, parts: 2) do
         [_verb, rest] -> String.trim(rest)
         _ -> ""
       end
 
-    %{verb: verb, trailing: trailing, room: room}
+    room_id =
+      case Map.get(conn, :character) do
+        %{room_id: rid} when is_binary(rid) -> rid
+        _ -> nil
+      end
+
+    %{verb: verb, trailing: trailing, room_id: room_id}
   end
 end

@@ -67,7 +67,8 @@ defmodule Kantele.World.RoomActionDispatcherTest do
 
       assert params.verb == "move"
       assert params.trailing == "foo"
-      assert %Room{} = params.room
+      assert Map.has_key?(params, :room_id)
+      assert is_nil(params.room_id)
     end
 
     test "房间无此 verb → :not_handled（即便注册表认得 handler）" do
@@ -86,6 +87,24 @@ defmodule Kantele.World.RoomActionDispatcherTest do
       conn = %{private: %{room: nil}}
 
       assert :not_handled = RoomActionDispatcher.resolve(conn, "move", fake_lookup())
+    end
+
+    test "private.room 为 nil 且无 character/room_id → :not_handled（安全降级）" do
+      conn = %{private: %{room: nil}}
+
+      assert :not_handled =
+               RoomActionDispatcher.resolve(conn, "move", &RoomActionHandlers.lookup/1)
+    end
+  end
+
+  describe "Room.actions_by_id/1（运行时取数，引擎不塞 conn.private.room）" do
+    test "房间进程不存在 → 返回 %{}（安全降级）" do
+      assert Room.actions_by_id("nonexistent:room") == %{}
+    end
+
+    test "非字符串 room_id → %{}" do
+      assert Room.actions_by_id(nil) == %{}
+      assert Room.actions_by_id(123) == %{}
     end
   end
 

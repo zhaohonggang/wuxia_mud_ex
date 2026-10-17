@@ -357,6 +357,28 @@ defmodule Kantele.World.Room do
     end
   end
 
+  @doc """
+  按 room_id 取房间的 `actions` 映射（P5-1b-2 运行时取数）。
+
+  引擎不会把房间塞进 `conn.private.room`（恒为 nil），而 `snapshot/1` 返回的精简
+  map 也不含 `actions` 字段；本函数直接查房间进程的 `state.data`（即加载后的
+  `Kantele.World.Room` 结构体，含 `actions`），提取 verb→handler 映射。房间进程
+  不存在时返回 `%{}`（安全降级，调用方仍走 `:not_handled` 放行全局命令）。
+  """
+  def actions_by_id(room_id) when is_binary(room_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        data = state.data || %{}
+        Map.get(data, :actions, %{})
+
+      _ ->
+        %{}
+    end
+  end
+
+  def actions_by_id(_), do: %{}
+
   # ---- 座位/玩家清单（对应 LPC seat/present/living） ----
 
   @doc "房间座位表（对应 LPC qiyuan2 的 `%{black, white, game}`）"
