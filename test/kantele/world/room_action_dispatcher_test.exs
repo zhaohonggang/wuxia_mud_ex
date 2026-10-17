@@ -1,6 +1,7 @@
 defmodule Kantele.World.RoomActionDispatcherTest do
   use ExUnit.Case, async: true
 
+  alias Kalevala.Character.Conn.Text
   alias Kantele.World.Room
   alias Kantele.World.RoomAction
   alias Kantele.World.RoomActionDispatcher
@@ -17,14 +18,14 @@ defmodule Kantele.World.RoomActionDispatcherTest do
   end
 
   defp conn_with_room(room) do
-    %{private: %{room: room}}
+    %{private: %{room: room}, output: []}
   end
 
-  # 假注册表：只认 "do_move"，其余视为未移植。
+  # 假注册表：只认 "do_move"，其余视为未移植（忽略 room_id）。
   defp fake_lookup do
     fn
-      "do_move" -> {:ok, {FakeMove, :run}}
-      other -> {:unimplemented, other}
+      _room_id, "do_move" -> {:ok, {FakeMove, :run}}
+      _room_id, other -> {:unimplemented, other}
     end
   end
 
@@ -41,7 +42,7 @@ defmodule Kantele.World.RoomActionDispatcherTest do
 
     test "CJK 动词原样匹配（大小写/分词无关）" do
       conn = conn_with_room(room_with_actions(%{"面壁" => "do_mianbi"}))
-      cjk_lookup = fn "do_mianbi" -> {:ok, {FakeMove, :run}}; _ -> {:unimplemented, "x"} end
+      cjk_lookup = fn _room_id, "do_mianbi" -> {:ok, {FakeMove, :run}}; _room_id, _ -> {:unimplemented, "x"} end
 
       assert {:handled, {FakeMove, :run}, params} =
                RoomActionDispatcher.resolve(conn, "面壁 一下", cjk_lookup)
@@ -77,23 +78,23 @@ defmodule Kantele.World.RoomActionDispatcherTest do
       assert :not_handled = RoomActionDispatcher.resolve(conn, "move", fake_lookup())
     end
 
-    test "房间有 verb 但 handler 未移植 → :not_handled（真实空注册表）" do
+    test "房间有 verb 但 handler 未移植 → :not_handled（真实空注册表其余房间）" do
       conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
 
-      assert :not_handled = RoomActionDispatcher.resolve(conn, "move", &RoomActionHandlers.lookup/1)
+      assert :not_handled = RoomActionDispatcher.resolve(conn, "move", &RoomActionHandlers.lookup/2)
     end
 
     test "conn 没有房间（private.room 为 nil）→ :not_handled（不崩溃）" do
-      conn = %{private: %{room: nil}}
+      conn = %{private: %{room: nil}, output: []}
 
       assert :not_handled = RoomActionDispatcher.resolve(conn, "move", fake_lookup())
     end
 
     test "private.room 为 nil 且无 character/room_id → :not_handled（安全降级）" do
-      conn = %{private: %{room: nil}}
+      conn = %{private: %{room: nil}, output: []}
 
       assert :not_handled =
-               RoomActionDispatcher.resolve(conn, "move", &RoomActionHandlers.lookup/1)
+               RoomActionDispatcher.resolve(conn, "move", &RoomActionHandlers.lookup/2)
     end
   end
 
@@ -116,16 +117,41 @@ defmodule Kantele.World.RoomActionDispatcherTest do
       assert conn2.fake_called == {"move", "foo"}
     end
 
-    test " dormant 路径（真实空注册表）：返回 :not_handled，放行全局命令" do
+    test " dormant 路径（真实注册表其余房间）：返回 :not_handled，放行全局命令" do
       conn = conn_with_room(room_with_actions(%{"move" => "do_move"}))
 
-      assert :not_handled = RoomActionDispatcher.dispatch(conn, "move", &RoomActionHandlers.lookup/1)
+      assert :not_handled = RoomActionDispatcher.dispatch(conn, "move", &RoomActionHandlers.lookup/2)
     end
 
     test "房间无 verb：返回 :not_handled" do
       conn = conn_with_room(room_with_actions(%{}))
 
       assert :not_handled = RoomActionDispatcher.dispatch(conn, "wave", fake_lookup())
+    end
+  end
+
+  describe "E2E：真实 handler 端到端触发（P5-1b-3 样板）" do
+    test "huashan:lianhua 的 tiao → 真实 Tiao handler 被调用并向玩家输出文本" do
+      # 注入房间结构体（测试快速路径，等价于运行期 Room.actions_by_id 返回的 data）
+      room = room_with_actions(%{"tiao" => "do_tiao"})
+      conn = %{private: %{room: room}, character: %{room_id: "huashan:lianhua"}, output: []}
+
+      assert {:handled, conn2} = RoomActionDispatcher.dispatch(conn, "tiao", &RoomActionHandlers.lookup/2)
+
+      texts =
+        Enum.flat_map(conn2.output, fn
+          %Text{data: data} -> [data]
+          _ -> []
+        end)
+
+      assert Enum.any?(texts, &String.contains?(&1, "剑冢"))
+    end
+
+    test "同名 handler 按房间区分：baituo:neishi 的 do_move 未移植 → 不触发" do
+      room = room_with_actions(%{"move" => "do_move"})
+      conn = %{private: %{room: room}, character: %{room_id: "baituo:neishi"}, output: []}
+
+      assert :not_handled = RoomActionDispatcher.dispatch(conn, "move", &RoomActionHandlers.lookup/2)
     end
   end
 end

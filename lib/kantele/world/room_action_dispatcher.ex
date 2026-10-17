@@ -7,7 +7,7 @@ defmodule Kantele.World.RoomAction do
 
       defmodule Kantele.World.RoomActions.Move do
         use Kantele.World.RoomAction
-        def run(conn, %{verb: verb, trailing: trailing, room: room}) do
+        def run(conn, %{verb: verb, trailing: trailing, room_id: room_id}) do
           # ... 处理逻辑 ...
           conn
         end
@@ -35,7 +35,7 @@ defmodule Kantele.World.RoomActionDispatcher do
 
   在 `Kantele.Character.CommandController.recv` 的全局命令入口**之前**插入本分发器：
   提取玩家输入的动词 → 查当前房间的 `actions`（`Room.resolve_action/2`）→ 经
-  `RoomActionHandlers.lookup/1` 解析 handler 名到 Elixir `{module, function}`。
+  `RoomActionHandlers.lookup/2`（房间级）解析 handler 名到 Elixir `{module, function}`。
 
   - 命中且已注册（P5-1b-3 移植了 handler）→ 执行 handler，拦截全局命令。
   - 未命中 / handler 未移植（`{:unimplemented, _}`）→ 返回 `:not_handled`，
@@ -56,10 +56,10 @@ defmodule Kantele.World.RoomActionDispatcher do
   @doc """
   分发玩家输入。返回 `{:handled, conn}` 或 `:not_handled`。
 
-  `lookup_fun` 可注入（默认 `RoomActionHandlers.lookup/1`），便于单测用假注册表
-  验证正向路径而不污染真实（空的）注册表。
+  `lookup_fun` 可注入（默认 `RoomActionHandlers.lookup/2`），便于单测用假注册表
+  验证正向路径而不污染真实（当前仅 1 个房间 1 个 handler 的）注册表。
   """
-  def dispatch(conn, text, lookup_fun \\ &RoomActionHandlers.lookup/1) do
+  def dispatch(conn, text, lookup_fun \\ &RoomActionHandlers.lookup/2) do
     case resolve(conn, text, lookup_fun) do
       {:handled, {module, function}, params} ->
         {:handled, apply(module, function, [conn, params])}
@@ -72,11 +72,12 @@ defmodule Kantele.World.RoomActionDispatcher do
   @doc """
   纯决策：是否由房间 verb 拦截。返回 `{:handled, {mod, fun}, params}` 或 `:not_handled`。
   """
-  def resolve(conn, text, lookup_fun \\ &RoomActionHandlers.lookup/1) do
+  def resolve(conn, text, lookup_fun \\ &RoomActionHandlers.lookup/2) do
     verb = extract_verb(text)
     actions = get_room_actions(conn)
+    room_id = room_id_of(conn)
 
-    case priority_action(actions, verb, lookup_fun) do
+    case priority_action(actions, verb, room_id, lookup_fun) do
       {:handled, {module, function}} ->
         {:handled, {module, function}, build_params(verb, text, conn)}
 
@@ -111,18 +112,25 @@ defmodule Kantele.World.RoomActionDispatcher do
     end
   end
 
-  defp priority_action(_actions, nil, _lookup_fun), do: :not_handled
+  defp priority_action(_actions, nil, _room_id, _lookup_fun), do: :not_handled
 
-  defp priority_action(actions, verb, lookup_fun) when is_binary(verb) do
+  defp priority_action(actions, verb, room_id, lookup_fun) when is_binary(verb) do
     case Room.resolve_action(%Room{actions: actions}, verb) do
       {:ok, handler} ->
-        case lookup_fun.(handler) do
+        case lookup_fun.(room_id, handler) do
           {:ok, {module, function}} -> {:handled, {module, function}}
           {:unimplemented, _name} -> :not_handled
         end
 
       {:error, :no_such_action} ->
         :not_handled
+    end
+  end
+
+  defp room_id_of(conn) do
+    case Map.get(conn, :character) do
+      %{room_id: rid} when is_binary(rid) -> rid
+      _ -> nil
     end
   end
 
