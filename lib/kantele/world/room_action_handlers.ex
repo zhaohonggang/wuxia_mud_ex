@@ -50,6 +50,18 @@ defmodule Kantele.World.RoomActionHandlers do
     # 状态变更样板：开/关密道（set/delete("exits/down") + 查 born_family + 广播）
     "baituo:neishi" => %{
       "do_move" => {Kantele.World.RoomActions.Baituo.Neishi.Move, :run}
+    },
+    # 房间动作覆盖全局命令的样板（完整移植，非残缺）：禁止吃喝/给/扔/自杀
+    "chengdu:guangchang" => %{
+      "do_drink" => {Kantele.World.RoomActions.MessageOnly, :run},
+      "do_eat" => {Kantele.World.RoomActions.MessageOnly, :run}
+    },
+    "register:prison" => %{
+      "do_eat" => {Kantele.World.RoomActions.MessageOnly, :run},
+      "do_drink" => {Kantele.World.RoomActions.MessageOnly, :run},
+      "do_suicide" => {Kantele.World.RoomActions.MessageOnly, :run},
+      "do_give" => {Kantele.World.RoomActions.MessageOnly, :run},
+      "do_drop" => {Kantele.World.RoomActions.MessageOnly, :run}
     }
   }
 

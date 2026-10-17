@@ -69,10 +69,29 @@ defmodule Kantele.World.RoomActions.MessageOnlyTest do
       assert conn2.output == []
     end
 
+    test "chengdu:guangchang drink：房间动作覆盖全局 drink，只给本人「别在这里喝！」" do
+      conn = conn_for("chengdu:guangchang")
+
+      conn2 = MessageOnly.run(conn, %{verb: "drink", trailing: "", room_id: "chengdu:guangchang"})
+
+      assert [%Conn.Text{data: "别在这里喝！\n"}] = conn2.output
+      assert conn2.private.channel_changes == []
+    end
+
+    test "register:prison drop：房间动作覆盖全局 drop，只给本人「这里不能乱仍东西！」" do
+      conn = conn_for("register:prison")
+
+      conn2 = MessageOnly.run(conn, %{verb: "drop", trailing: "sword", room_id: "register:prison"})
+
+      assert [%Conn.Text{data: "这里不能乱仍东西！\n"}] = conn2.output
+    end
+
     test "entries/0 暴露已配置条目（覆盖度统计）" do
       entries = MessageOnly.entries()
       assert {"hangzhou:liuzhuang", "knock"} in entries
       assert {"huanggong:inwell", "reach"} in entries
+      assert {"chengdu:guangchang", "drink"} in entries
+      assert {"register:prison", "drop"} in entries
     end
   end
 end

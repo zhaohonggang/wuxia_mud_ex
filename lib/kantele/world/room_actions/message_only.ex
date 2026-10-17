@@ -33,7 +33,16 @@ defmodule Kantele.World.RoomActions.MessageOnly do
        %{
          "mutong" => "\n$N试著去抓木桶，但总是差一点够着，要能跳高一点就好了。\n",
          "string" => "\n$N试著去抓长绳，但总是差一点够着，要能跳高一点就好了。\n"
-       }}
+       }},
+    # d/chengdu/guangchang.c: 广场禁止吃喝（房间动作覆盖全局 drink/eat）
+    {"chengdu:guangchang", "drink"} => {:player, "别在这里喝！\n"},
+    {"chengdu:guangchang", "eat"} => {:player, "要吃到别处吃！\n"},
+    # d/register/prison.c: 冥府牢房禁止吃喝给扔自杀（房间动作覆盖全局命令）
+    {"register:prison", "eat"} => {:player, "老实点！\n"},
+    {"register:prison", "drink"} => {:player, "老实点！\n"},
+    {"register:prison", "suicide"} => {:player, "在这冥府你也想自杀，省省吧！\n"},
+    {"register:prison", "give"} => {:player, "这里不能给东西！\n"},
+    {"register:prison", "drop"} => {:player, "这里不能乱仍东西！\n"}
   }
 
   @impl true

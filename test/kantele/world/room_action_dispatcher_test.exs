@@ -195,5 +195,30 @@ defmodule Kantele.World.RoomActionDispatcherTest do
       assert event.data.type == "vision"
       assert String.contains?(event.data.text, "露出一个黑幽幽的洞口")
     end
+
+    test "全局命令覆盖按房间生效：chengdu:guangchang 的 drink 被房间动作拦截" do
+      room = room_with_actions(%{"drink" => "do_drink"})
+
+      conn = %{
+        private: %{room: room},
+        character: %{room_id: "chengdu:guangchang"},
+        output: []
+      }
+
+      assert {:handled, conn2} = RoomActionDispatcher.dispatch(conn, "drink", &RoomActionHandlers.lookup/2)
+
+      assert Enum.any?(conn2.output, fn
+               %Text{data: data} -> String.contains?(data, "别在这里喝")
+               _ -> false
+             end)
+    end
+
+    test "同名全局 verb 在未注册房间不被拦截（放行全局命令）" do
+      room = room_with_actions(%{"drink" => "do_drink"})
+
+      conn = %{private: %{room: room}, character: %{room_id: "some:other"}, output: []}
+
+      assert :not_handled = RoomActionDispatcher.dispatch(conn, "drink", &RoomActionHandlers.lookup/2)
+    end
   end
 end

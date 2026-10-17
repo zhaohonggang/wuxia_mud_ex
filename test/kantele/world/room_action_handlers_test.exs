@@ -14,6 +14,8 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert {:ok, {MessageOnly, :run}} = RoomActionHandlers.lookup("hangzhou:liuzhuang", "do_knock")
       assert {:ok, {MessageOnly, :run}} = RoomActionHandlers.lookup("huanggong:inwell", "do_reach")
       assert {:ok, {Move, :run}} = RoomActionHandlers.lookup("baituo:neishi", "do_move")
+      assert {:ok, {MessageOnly, :run}} = RoomActionHandlers.lookup("chengdu:guangchang", "do_drink")
+      assert {:ok, {MessageOnly, :run}} = RoomActionHandlers.lookup("register:prison", "do_drop")
     end
 
     test "房间未注册 → {:unimplemented, name}" do
@@ -32,14 +34,16 @@ defmodule Kantele.World.RoomActionHandlersTest do
   end
 
   describe "registered?/2 与 registered_rooms/0" do
-    test "当前五个房间各 1 个 handler 已注册（P5-1b-3 样板 + MessageOnly + Move）" do
+    test "已注册房间与 handler 覆盖（样板 + MessageOnly + Move + 全局覆盖）" do
       assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                [
                  "baituo:neishi",
+                 "chengdu:guangchang",
                  "emei:shierpan3",
                  "hangzhou:liuzhuang",
                  "huanggong:inwell",
-                 "huashan:lianhua"
+                 "huashan:lianhua",
+                 "register:prison"
                ]
 
       assert RoomActionHandlers.registered?("huashan:lianhua", "do_tiao")
@@ -47,6 +51,8 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert RoomActionHandlers.registered?("hangzhou:liuzhuang", "do_knock")
       assert RoomActionHandlers.registered?("huanggong:inwell", "do_reach")
       assert RoomActionHandlers.registered?("baituo:neishi", "do_move")
+      assert RoomActionHandlers.registered?("chengdu:guangchang", "do_drink")
+      assert RoomActionHandlers.registered?("register:prison", "do_drop")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
     end
