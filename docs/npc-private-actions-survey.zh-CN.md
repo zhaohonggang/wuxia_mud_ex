@@ -80,12 +80,35 @@ R9 已确认 UCL 里的 `init.add_actions` 是**基类继承动词**：2024 个 
 
 ## 4. 推荐执行顺序
 
-1. **钱庄动词别名（67 次调用，收益最大、改动最小）**
-   把 `cun`/`qu`/`deposit`/`withdraw`/`convert`/`duihuan`/`transfer`/`zhuan`/`chexiao` 接到既有 `BankCommand`。注意 LPC 的参数约定与现有 `bank 存 <数量> <面额>` 不同（LPC 是 `do_deposit("10 silver")` 这类单串），需要一层参数适配。
+1. **钱庄动词别名（67 次调用，收益最大、改动最小）** — ✅ **已完成（2026-10-17）**
+   把 `cun`/`qu`/`deposit`/`withdraw`/`convert`/`duihuan`/`transfer`/`zhuan`/`chazhang`
+   接到既有 `BankCommand`（带参 + 裸动词两种形式，裸动词打 LPC 原文的用法提示）。
+   `check` **没有**被接管 —— 它在 Kantele 已是全局命令（查看某人，需目标参数），
+   抢了会让玩家在任意房间的 `check` 改道钱庄。
+   参数格式与 `banker.c` 完全一致（`<数量> <货币单位>`、`<数量> <from> to <to>`），
+   所以只是「拆词 → 转调」，没有复制任何存取逻辑。
+
+   **接线时踩到两个 router 坑（后续补动词都会遇到）**：
+   ① 同一个 verb 用**同一个函数名**注册两次会因默认参数重复定义而编译失败
+   （`parse` 宏按 `parsep_<verb>_<fun>` 生成函数）→ 裸动词要用 `<fun>_bare`。
+   ② `Router.parse_text/4` **不要求 leftover 为空**，所以只写字面量的裸注册会
+   前缀匹配掉更长的动词：`qu` 会抢走 `quanjia`（劝架）、`quest`、`quest2`、`quit`
+   → 裸形式必须加 `eos()`。已核对：9 个新动词里只有 `qu` 存在这种冲突。
 2. **`play`（琴箫，基类一份实现覆盖 4 NPC）**
 3. **纯输出型（`yun`/`chazhang` 的纯消息分支）** —— 可复用房间侧的 `MessageOnly` 思路
 4. **`bi`/`compare`/`yao`/`decide`（比武、赌场）** —— 有状态与随机性，最贵，最后做
 5. **`adm/` 下的 43 次调用直接排除**（巫师工具，不属玩家玩法）
+
+### 顺带发现（未修）：`BankCommand.convert` 的成交文案金额不对
+
+接 `duihuan` 时核对到：`bank convert 5 silver to coin` 实际把 5 两白银换成
+**500 文铜钱**（`Banker.do_convert` 的 `to_amount = div(amount * from_base, to_base)`），
+但提示写成 `to_value = denom_base(to) * amount` = 5 → 「你把五两白银兑换成了五文铜钱。」
+
+LPC 的 `do_convert` 文案是两个**各自单位的数量**（`chinese_number(amount)` + 源单位 /
+`chinese_number(amount * bv1 / bv2)` + 目标单位）。要改对需要 `Money` 暴露一个
+「按单位格式化数量」的函数（现在只有按**总价值**格式化的 `money_str/1`，
+`chinese/1` 与 `unit_of/1` 都是私有的），所以本轮没有顺手改 —— 见 progress §14 R11。
 
 ## 5. 已知局限
 
