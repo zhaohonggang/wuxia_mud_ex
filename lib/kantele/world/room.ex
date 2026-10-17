@@ -320,19 +320,40 @@ defmodule Kantele.World.Room do
     %{room | dynamic_exits: Map.merge(existing, verbs)}
   end
 
-  @doc "解析并执行房间动词（由 Kalevala.Verb 路由调用）"
-  def resolve_verb(room, verb_name, context, _args) do
-    verbs = Map.get(room.dynamic_exits, :verbs, %{})
+  @doc """
+  解析房间动词（P5-1b）：在 UCL 加载的 `actions` 映射里查找玩家输入的 verb。
 
-    case Map.get(verbs, verb_name) do
-      {module, fun, args} ->
-        apply(module, fun, [context, args])
+  `actions` 是 `%{verb => handler_fn_name}`（handler 为 LPC 函数名字符串，
+  如 `%{"move" => "do_move"}`，由 P5-1a2 回填）。本函数只做**查找**，不执行；
+  真正的执行由对象级 verb 分发路由（P5-1b-2）通过
+  `Kantele.World.RoomActionHandlers.lookup/1` 把 handler 名解析为 Elixir
+  `{module, function}` 后完成。
 
-      {module, fun, args, _help} ->
-        apply(module, fun, [context, args])
+  返回 `{:ok, handler}` | `{:error, :no_such_action}`。verb **大小写敏感**
+  （LPC 动词区分大小写，玩家输入与 UCL 键原样匹配）。
+  """
+  def resolve_action(%__MODULE__{actions: actions}, verb) when is_binary(verb) do
+    case Map.get(actions, verb) do
+      nil -> {:error, :no_such_action}
+      handler when is_binary(handler) -> {:ok, handler}
+    end
+  end
 
-      nil ->
-        {:error, :no_such_verb}
+  def resolve_action(_room, _verb), do: {:error, :no_such_action}
+
+  @doc """
+  兼容旧契约的房间动词入口（P5-1b 起改为委托 `resolve_action/2`）。
+
+  旧实现从 `dynamic_exits[:verbs]` 读取 `{module, fun, args}` 元组并直接 `apply`，
+  但转换后的 UCL 数据落在 `actions` 字段（handler 为字符串），且本函数当前无调用方。
+  现改为：查到返回 `{:ok, handler}`（字符串，交由上层路由解析执行），查不到返回
+  `{:error, :no_such_verb}`。`context`/`args` 保留为签名兼容，供未来 Kalevala.Verb
+  路由接入。
+  """
+  def resolve_verb(room, verb_name, _context, _args) do
+    case resolve_action(room, verb_name) do
+      {:ok, handler} -> {:ok, handler}
+      {:error, :no_such_action} -> {:error, :no_such_verb}
     end
   end
 
