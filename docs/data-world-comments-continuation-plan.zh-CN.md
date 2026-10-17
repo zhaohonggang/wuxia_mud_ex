@@ -363,7 +363,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | 字段 | 消费端 | 风险 | 状态 |
 |------|--------|------|------|
 | 装备文案 5 件套 | `wield/wear/remove_command.ex` 输出替换硬编码文案 | 低 | ✅ `c5c3c325`（2026-10-17） |
-| `female_only` | `wield`/`wear` 命令前置判定（`with_item` 性别门控） | 中（**新拦截**，需灰度） | ✅（P3-c，待提交） |
+| `female_only` | `wield`/`wear` 命令前置判定（`with_item` 性别门控） | 中（**新拦截**，需灰度） | ✅（P3-c，a52ece2b） |
 | `no_steal` | 偷窃命令前置判定 | 中（**新拦截**） | ✅ `524efcff`（P3-b，实际范围扩为 steal 三 flag + search no_search 共 4 处 KeyError 修复） |
 | `no_beg` | 乞讨命令前置判定 | 中（**新拦截**） | ⬜（`beg_command.ex` 是「暂未开放」桩，无真实消费端 → 等 P5 乞讨系统） |
 | `sleep_room` / `no_sleep_room` | `sleep_command.ex`（`room.attrs["sleep_room"]`） | 低 | ✅（consumer 已存在，`room.ex` L266-267 把 flags→attrs；B1 数据即生效，无需接线） |
@@ -414,7 +414,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 
 | 顺序 | 子系统 | 代表函数 | 规模 | 做法 | Q1 |
 |-----:|--------|----------|-----:|------|:--:|
-| 1 | **逐对象 `add_action` 通道** | `do_move/climb/jump/open/push/enter/get/eat/think/serve/...`（实际 1568 调用/793 文件，详见 D24） | 1568 调用 / 379 handler | **勘查已完成**（`scripts/survey_add_action.py`，D24）：NPC add_actions 已被冻结转换器写进 UCL（52 文件）但**只存 handler 丢了 verb**、加载后无人分发；`room.ex` `resolve_verb/4` 骨架格式（map）与 UCL 扁平 list 不匹配；item 完全缺 UCL 入口。下一步：**定义 verb→handler schema + 对象级分发路由**（房间/物品补 UCL 入口）+ 桥接既有 shop 事件。先 pilot 高体量子集（shop list/buy 292 调用，已有 `npc_shop_event.ex` 承载），再扩 | ✅ 已实测可表达 |
+| 1 | **逐对象 `add_action` 通道** | `do_move/climb/jump/open/push/enter/get/eat/think/serve/...`（实际 1568 调用/793 文件，详见 D24） | 1568 调用 / 379 handler | **P5-1a 基础已完成（2026-10-17，9d185a57）**：Room 新增 `actions` 字段 + loader 读入 verb→handler map（P7 只加字段，零行为变化），4 loader 测试通过；NPC add_actions 已被冻结转换器写进 UCL（52 文件）但**只存 handler 丢了 verb**、加载后无人分发；`room.ex` `resolve_verb/4` 骨架格式（map）与 UCL 扁平 list 不匹配；item 完全缺 UCL 入口。**待做**：backfill（从 .c 回源 verb→handler，因转换器丢了 verb，且 .c→UCL room id 映射非统一需专门解析） + 对象级分发路由（P5-1b）。先 pilot 高体量子集（shop list/buy 292 调用，已有 `npc_shop_event.ex` 承载），再扩 | ✅ 已实测可表达 |
 | 2 | 战斗回调 | `accept_fight/kill/hit/ansuan`、`unconcious`、`die`、`owner_is_killed` | 259 行 / 12 名 | **方案 A：在新脚本里重新抽取 `engage`**（读同一批 LPC 源，只增不改地合并进 `.ucl`）。**不要加宽转换器的抽取规则** —— 那违反 P1。见框架文档 §5 决策点 1 | ✅ |
 | 3 | 动态出口 | `do_turn` 的 `set("exits/down", ...)` | 含在 `do_*` 内 | **框架优先**：出口现在是**加载期固化**的，运行时增删需要先加 API（`Room.dynamic_exits` 已有雏形，缺增删入口） | ⚠️ 需定 schema |
 | 4 | look / inquiry | `look_*`、`ask_*`、`item_desc` 闭包 `(: look_hua :)` | 185 行 / 86 名 | schema **已可表达**（`value = { kind = "smith"  pattern = "huwan" }` 实测 OK），缺的是运行时 handler 注册表 + 分发。与 `ucl-comment-todo` §6 E（`xiangyang` 铁匠 6 条）合并做 | ✅ |
