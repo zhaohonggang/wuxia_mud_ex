@@ -4013,3 +4013,23 @@ chats = [
   ]
 
     }
+
+# Source: C:/files/git/mud/d/wudu/npc/obj/baozi2.c
+# Zone: wudu
+
+    items "baozi2" {
+      name = "蛇肉包子"
+      aliases = ["baozi", "bao"]
+      description = "一个香喷喷的蛇肉包子。"
+      verbs = [
+        "get",
+        "drop",
+        "eat"
+      ]
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
+    }

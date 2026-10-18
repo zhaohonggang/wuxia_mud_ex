@@ -10698,3 +10698,252 @@ chats = [
   ]
 
     }
+
+# Source: C:/files/git/mud/d/beijing/npc/obj/blade.c
+# Zone: beijing
+
+    items "blade" {
+      name = "钢刀"
+      aliases = ["gang dao", "gangdao", "dao", "blade"]
+      description = "这是一寻常的单刀，份量大约六、七斤重。"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 25
+        skill_type = "blade"
+        value = 500
+        weight = 4000
+        unit = "柄"
+        material = "iron"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/sword.c
+# Zone: beijing
+
+    items "sword" {
+      name = "长剑"
+      aliases = ["chang jian", "changjian", "jian", "sword"]
+      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 500
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/dagger.c
+# Zone: beijing
+
+    items "dagger" {
+      name = "匕首"
+      aliases = ["bi shou", "bishou", "dagger"]
+      description = "这是一把看起相当普通的匕首。"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 4
+        skill_type = "dagger"
+        value = 50
+        weight = 1000
+        unit = "把"
+        material = "steel"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/hammer.c
+# Zone: beijing
+
+    items "hammer" {
+      name = "铁锤"
+      aliases = ["hammer"]
+      description = "这是一把沈重的铁锤，打造的相当坚实。"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 15
+        skill_type = "hammer"
+        value = 300
+        weight = 8000
+        unit = "把"
+        material = "iron"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/staff.c
+# Zone: beijing
+
+    items "staff" {
+      name = "禅杖"
+      aliases = ["staff", "zhang"]
+      description = "这是一把禅杖，上面几个铁环叮当作响．"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 25
+        skill_type = "staff"
+        value = 500
+        weight = 4000
+        unit = "把"
+        material = "iron"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/throwing.c
+# Zone: beijing
+
+    items "throwing" {
+      name = "飞璜石"
+      aliases = ["shi"]
+      description = "飞璜石是一种十分常见的暗器。"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 20
+        skill_type = "throwing"
+        value = 50
+        unit = "些"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/whip.c
+# Zone: beijing
+
+    items "whip" {
+      name = "皮鞭"
+      aliases = ["pi bian", "pibian", "bian", "whip"]
+      description = "一条长长的皮鞭．"
+      verbs = [
+        "get",
+        "drop",
+        "wield",
+        "unwield"
+      ]
+      meta = {
+        damage = 15
+        skill_type = "whip"
+        value = 500
+        weight = 1000
+        unit = "条"
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/body.c
+# Zone: beijing
+
+    items "body" {
+      name = "铁甲"
+      aliases = ["tie jia", "tiejia", "jia", "armor", "body"]
+      description = "一件沉甸甸的铁甲。"
+      verbs = [
+        "get",
+        "drop",
+        "wear",
+        "remove"
+      ]
+      meta = {
+        armor = 30
+        value = 0
+        weight = 4000
+        unit = "件"
+        material = "steel"
+        armor_prop = {
+          armor = 30
+          dodge = -10
+        }
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/helmet.c
+# Zone: beijing
+
+    items "helmet" {
+      name = "钢盔"
+      aliases = ["gang kui", "gangkui", "kui", "helmet"]
+      description = "一顶结实的钢盔。"
+      verbs = [
+        "get",
+        "drop",
+        "wear",
+        "remove"
+      ]
+      meta = {
+        armor = 5
+        value = 0
+        weight = 800
+        unit = "顶"
+        material = "steel"
+        armor_prop = {
+          armor = 5
+        }
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/feet.c
+# Zone: beijing
+
+    items "feet" {
+      name = "战靴"
+      aliases = ["zhan xue", "xue", "feet", "zhanxue", "boots"]
+      description = "一双皮靴，上等牛皮制成。靴子虽很结实，但颇轻战斗时穿非常方便适用。"
+      verbs = [
+        "get",
+        "drop",
+        "wear",
+        "remove"
+      ]
+      meta = {
+        armor = 5
+        value = 0
+        weight = 300
+        unit = "双"
+        material = "leather"
+        armor_prop = {
+          armor = 5
+        }
+      }
+    }
+# Source: C:/files/git/mud/d/beijing/npc/obj/waist.c
+# Zone: beijing
+
+    items "waist" {
+      name = "护心镜"
+      aliases = ["huxin jing", "mirror", "huxinjing", "jing", "huxin", "waist"]
+      description = "一面黄铜做的护心镜。"
+      verbs = [
+        "get",
+        "drop",
+        "wear",
+        "remove"
+      ]
+      meta = {
+        armor = 5
+        value = 0
+        weight = 1000
+        unit = "面"
+        material = "copper"
+        armor_prop = {
+          armor = 5
+        }
+      }
+    }
