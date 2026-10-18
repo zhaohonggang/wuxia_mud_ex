@@ -1,8 +1,8 @@
 defmodule Kalevala.Websocket.Handler do
   @moduledoc """
-  Cowboy websocket handler
+      Cowboy websocket handler
 
-  Starts a foreman process tied to this websocket connection
+      Starts a foreman process tied to this websocket connection
   """
 
   @behaviour :cowboy_websocket
@@ -161,10 +161,12 @@ defmodule Kalevala.Websocket.Handler do
 
     case context.newline do
       true ->
-        ["\n", text]
+        [newline_char(), text]
 
       false ->
         text
     end
   end
+
+  defp newline_char, do: <<10>>
 end

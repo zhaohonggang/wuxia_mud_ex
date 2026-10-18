@@ -12,7 +12,7 @@ use Mix.Config
 # 读了会让测试误连开发库
 config :ex_venture, ExVenture.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
-  url: "postgresql://postgres:postgres@db/ex_venture_test"
+  url: "postgresql://postgres:postgres@localhost:15432/ex_venture_test"
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

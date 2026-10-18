@@ -1,6 +1,6 @@
 defmodule Kalevala.Character.View do
   @moduledoc """
-  Render output from the game
+      Render output from the game
   """
 
   defmacro __using__(_opts) do
@@ -12,9 +12,9 @@ defmodule Kalevala.Character.View do
   end
 
   @doc """
-  "Join" an IO data list with a separator string
+      "Join" an IO data list with a separator string
 
-  Similar to Enum.join, but leaves as an IO data list
+      Similar to Enum.join, but leaves as an IO data list
   """
   def join([], _separator), do: []
 
@@ -25,11 +25,11 @@ defmodule Kalevala.Character.View do
   end
 
   @doc """
-  Trim empty lines from io data
+      Trim empty lines from io data
 
-  Detects empty lines in io data (for example when rendered via EEx templating),
-  and removes them. This way the template string works as expected, returning an
-  empty string from a sub-render will strip the line.
+      Detects empty lines in io data (for example when rendered via EEx templating),
+      and removes them. This way the template string works as expected, returning an
+      empty string from a sub-render will strip the line.
   """
   def trim_lines([]), do: []
 
@@ -42,13 +42,13 @@ end
 
 defmodule Kalevala.Character.View.Macro do
   @moduledoc """
-  Imported into views
+      Imported into views
   """
 
   alias Kalevala.Character.View
 
   @doc """
-  Creates ~E which runs through EEx templating
+      Creates ~E which runs through EEx templating
   """
   defmacro sigil_E({:<<>>, _, [expr]}, opts) do
     string =
@@ -64,7 +64,7 @@ defmodule Kalevala.Character.View.Macro do
   end
 
   @doc """
-  Creates ~i to create IO lists that look like standard interpolation
+      Creates ~i to create IO lists that look like standard interpolation
   """
   defmacro sigil_i({:<<>>, _, text}, _) do
     Enum.map(text, &sigil_i_unwrap/1)
@@ -80,15 +80,17 @@ defmodule Kalevala.Character.View.Macro do
   end
 
   defp sigil_i_unwrap(text) when is_binary(text) do
-    :elixir_interpolation.unescape_chars(text)
+    # Elixir 1.20+ already handles escape sequences in string literals,
+    # so unescape_chars is a no-op. Kept for compatibility with older Elixir.
+    text
   end
 end
 
 defmodule Kalevala.Character.View.EExKalevala do
   @moduledoc """
-  An EEx Engine that returns IO data instead of a string
+      An EEx Engine that returns IO data instead of a string
 
-  Taken from [Phoenix.HTML.Engine](https://github.com/phoenixframework/phoenix_html/blob/master/lib/phoenix_html/engine.ex)
+      Taken from [Phoenix.HTML.Engine](https://github.com/phoenixframework/phoenix_html/blob/master/lib/phoenix_html/engine.ex)
   """
 
   @behaviour EEx.Engine
