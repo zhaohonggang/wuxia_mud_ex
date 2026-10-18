@@ -36,9 +36,13 @@ defmodule Kantele.World.NpcActionDispatcher do
 
   `lookup_fun` 可注入(默认 `NpcActionHandlers.lookup/2`），便于单测用假
   注册表验证正向路径而不污染真实注册表。
+
+  `chars_fun` 亦可注入(默认查房间进程 `state.private.characters`），便于单测在
+  不启动房间进程的情况下验证「NPC 动词表」取数路径。生产环境引擎不填
+  `conn.private.room`，故默认走房间进程查询。
   """
-  def dispatch(conn, text, lookup_fun \\ &NpcActionHandlers.lookup/2) do
-    case resolve(conn, text, lookup_fun) do
+  def dispatch(conn, text, lookup_fun \\ &NpcActionHandlers.lookup/2, chars_fun \\ &room_characters/1) do
+    case resolve(conn, text, lookup_fun, chars_fun) do
       {:handled, {module, function}, params} ->
         case apply(module, function, [conn, params]) do
           # LPC `return 0`：handler 声明本次不处理，放行全局命令
@@ -55,11 +59,16 @@ defmodule Kantele.World.NpcActionDispatcher do
   纯决策：是否由 NPC 私有动词拦截。返回 `{:handled, {mod, fun}, params}`
   或 `:not_handled`。
   """
-  def resolve(conn, text, lookup_fun \\ &NpcActionHandlers.lookup/2) do
+  def resolve(
+        conn,
+        text,
+        lookup_fun \\ &NpcActionHandlers.lookup/2,
+        chars_fun \\ &room_characters/1
+      ) do
     verb = extract_verb(text)
     room_id = room_id_of(conn)
 
-    case priority_action(conn, verb, room_id, lookup_fun) do
+    case priority_action(conn, verb, room_id, lookup_fun, chars_fun) do
       {:handled, {module, function}, npc} ->
         {:handled, {module, function}, build_params(verb, text, conn, npc)}
 
@@ -77,10 +86,10 @@ defmodule Kantele.World.NpcActionDispatcher do
 
   defp extract_verb(_), do: nil
 
-  defp priority_action(_conn, nil, _room_id, _lookup_fun), do: :not_handled
+  defp priority_action(_conn, nil, _room_id, _lookup_fun, _chars_fun), do: :not_handled
 
-  defp priority_action(conn, verb, room_id, lookup_fun) when is_binary(verb) do
-    case find_npc(conn, verb) do
+  defp priority_action(conn, verb, room_id, lookup_fun, chars_fun) when is_binary(verb) do
+    case find_npc(conn, verb, chars_fun) do
       nil ->
         :not_handled
 
@@ -92,25 +101,37 @@ defmodule Kantele.World.NpcActionDispatcher do
     end
   end
 
+  # 默认取数：从房间进程的 `state.private.characters`（经 Meta.trim 的裁剪快照，
+  # 含 `meta.init.add_actions`）读取。`conn.private.room` 在引擎中恒为 nil，故这是
+  # 生产路径；单测可注入 `conn.private.room`（快速路径）或自定义 chars_fun。
+  defp room_characters(conn) do
+    case room_id_of(conn) do
+      room_id when is_binary(room_id) -> Kantele.World.Room.npc_characters_by_id(room_id)
+      _ -> []
+    end
+  end
+
   # 取当前房间内的 NPC 角色列表。
   #
-  # 快速路径：`conn.private.room`(测试可直接注入一个带 `:characters` 的
-  # Room 结构体）。引擎不保证 `conn.private.room` 恒包含 characters，
-  # 缺失时返回 []，即安全降级为全局命令放行(P7）。
-  defp npc_characters(conn) do
+  # 快速路径：`conn.private.room`（测试可直接注入一个带 `:characters` 的 Room
+  # 结构体）。真实引擎不填该字段，缺失时回落到 `chars_fun`（默认查房间进程）。
+  defp npc_characters(conn, chars_fun) do
     case Map.get(conn, :private) do
       %{room: room} when is_map(room) ->
-        Map.get(room, :characters, [])
+        case Map.get(room, :characters) do
+          list when is_list(list) and list != [] -> list
+          _ -> chars_fun.(conn)
+        end
 
       _ ->
-        []
+        chars_fun.(conn)
     end
   end
 
   # 在房间内找第一个 `meta.init.add_actions` 包含该 verb 的 NPC。
   # 只有 NPC 才会携带 `init.add_actions`，故该条件天然区分 NPC 与玩家。
-  defp find_npc(conn, verb) do
-    Enum.find(npc_characters(conn), fn character ->
+  defp find_npc(conn, verb, chars_fun) do
+    Enum.find(npc_characters(conn, chars_fun), fn character ->
       verb in npc_add_actions(character)
     end)
   end

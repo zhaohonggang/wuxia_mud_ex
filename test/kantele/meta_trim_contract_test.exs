@@ -12,6 +12,7 @@ defmodule Kantele.Meta.TrimContractTest do
     - 少了 `:env`     -> `me->query("gender")` 之类恒为 nil
     - 少了 `:stats`   -> `me->query_skill("force") < 500` 恒成立
     - 少了 `:aliases` -> `present('shi wei', ...)` 永远匹配不到人
+    - 少了 `:init`    -> NPC 私有动词分发读不到 `init.add_actions`，整套 add_action 通道静默失效
 
   本模块把这些「不能裁」写成测试，避免以后有人为了省内存把它裁回去。
   """
@@ -21,7 +22,7 @@ defmodule Kantele.Meta.TrimContractTest do
   alias Kantele.Character.PlayerMeta
 
   @player_keep [:vitals, :stats, :family, :temp, :env]
-  @npc_keep [:vitals, :stats, :guarder, :aliases]
+  @npc_keep [:vitals, :stats, :guarder, :aliases, :init]
 
   test "PlayerMeta 裁剪后仍带房间侧要读的字段" do
     meta = %PlayerMeta{
@@ -49,6 +50,7 @@ defmodule Kantele.Meta.TrimContractTest do
       stats: %{skills: %{}},
       guarder: %{family: "白驼山庄"},
       aliases: ["shi wei"],
+      init: %{greet_delay: 0, add_actions: ["yun"], heartbeat: 0},
       goods: ["sword"],
       inquiries: %{}
     }
@@ -60,6 +62,7 @@ defmodule Kantele.Meta.TrimContractTest do
     end)
 
     assert trimmed.guarder.family == "白驼山庄"
+    assert trimmed.init.add_actions == ["yun"]
     refute Map.has_key?(trimmed, :inquiries)
   end
 

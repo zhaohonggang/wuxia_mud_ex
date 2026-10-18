@@ -379,6 +379,51 @@ defmodule Kantele.World.Room do
 
   def actions_by_id(_), do: %{}
 
+  @doc """
+  按 room_id 取房间内角色（含 NPC 与玩家）的裁剪快照列表（P5-1c-2 运行时取数）。
+
+  与 `actions_by_id/1` 同源：引擎不会把房间塞进 `conn.private.room`（恒为 nil），
+  故 `NpcActionDispatcher` 需要从房间进程直接取 `state.private.characters`。这些
+  条目是经 `Meta.trim` 裁剪过的 `Kalevala.Character` 快照（含 `:init`，见
+  `Kantele.Character.NonPlayerMeta.Trim`），`meta.init.add_actions` 即 NPC 私有动词表。
+
+  房间进程不存在时返回 `[]`（安全降级，调用方仍走 `:not_handled` 放行全局命令）。
+  """
+  def npc_characters_by_id(room_id) when is_binary(room_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        private = state.private || %{}
+        Map.get(private, :characters) || []
+
+      _ ->
+        []
+    end
+  end
+
+  def npc_characters_by_id(_), do: []
+
+  @doc """
+  按 room_id 取房间内地面上物品实例（`state.private.item_instances`）。
+
+  同 `npc_characters_by_id/1` 的取数路径，供 NPC 私有动作（如田嫂 `do_yao` 的
+  `present("baozi", environment())`）判断「房间地上是否已有某物」。房间进程不存在
+  时返回 `[]`（安全降级）。
+  """
+  def item_instances_by_id(room_id) when is_binary(room_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        private = state.private || %{}
+        Map.get(private, :item_instances) || []
+
+      _ ->
+        []
+    end
+  end
+
+  def item_instances_by_id(_), do: []
+
   # ---- 运行时动态出口增删（对应 LPC `set/delete("exits/<dir>", ...)`） ----
   #
   # `room.exits` 是 `%Kalevala.World.Exit{}` 列表（loader 加载期构建，
@@ -1761,9 +1806,7 @@ defmodule Kantele.World.Room.StealRequestEvent do
       context
       |> render(requester.pid, CommandView, "text", %{
         text:
-          "糟糕！你失手了！\n\n#{victim.name}一回头，正好发现你的手正抓在自己的#{_stolen_item.name || "东西"}之上。\n\n#{
-            victim.name
-          }喝道：小贼，干什么！\n"
+          "糟糕！你失手了！\n\n#{victim.name}一回头，正好发现你的手正抓在自己的#{_stolen_item.name || "东西"}之上。\n\n#{victim.name}喝道：小贼，干什么！\n"
       })
 
     if victim.is_npc do
@@ -3147,7 +3190,7 @@ defmodule Kantele.World.Room.CombatEvent do
       Enum.reduce(guarded, context, fn guardian_id, acc ->
         guardian = Enum.find(acc.characters, &(&1.id == guardian_id))
 
-        if guardian && not dead?(guardian) and guardian.pid != attacker.pid do
+        if (guardian && not dead?(guardian)) and guardian.pid != attacker.pid do
           # 守护者加入战斗攻击攻击者
           engage(acc, guardian, attacker, "kill")
         else
@@ -3182,7 +3225,7 @@ defmodule Kantele.World.Room.CombatEvent do
       Enum.reduce(guarded, context, fn guardian_id, acc ->
         guardian = Enum.find(acc.characters, &(&1.id == guardian_id))
 
-        if guardian && not dead?(guardian) and guardian.pid != attacker.pid do
+        if (guardian && not dead?(guardian)) and guardian.pid != attacker.pid do
           # 守护者加入战斗攻击攻击者
           engage(acc, guardian, attacker, "kill")
         else

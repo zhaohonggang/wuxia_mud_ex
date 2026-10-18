@@ -150,4 +150,34 @@ defmodule Kantele.World.NpcActionDispatcherTest do
       assert :not_handled = NpcActionDispatcher.dispatch(conn, "yun", lookup)
     end
   end
+
+  describe "房间角色取数（生产路径：conn.private.room 恒为 nil）" do
+    test "private.room 缺失时经 chars_fun 取 NPC 表 → 正向命中" do
+      conn = %{private: %{room: nil}, output: []} |> put_room_id("z:r")
+      chars = [npc("殷素素", ["yun"])]
+
+      assert {:handled, {FakeYun, :run}, params} =
+               NpcActionDispatcher.resolve(conn, "yun roar", fake_lookup(), fn _conn -> chars end)
+
+      assert params.npc.name == "殷素素"
+      assert params.trailing == "roar"
+    end
+
+    test "chars_fun 返回的 NPC 无该 verb → :not_handled" do
+      conn = %{private: %{room: nil}, output: []} |> put_room_id("z:r")
+      other = [npc("殷素素", ["exert"])]
+
+      assert :not_handled =
+               NpcActionDispatcher.resolve(conn, "yun", fake_lookup(), fn _conn -> other end)
+    end
+
+    test "默认 chars_fun 查房间进程：未知房间 → :not_handled（安全降级，不崩溃）" do
+      conn = %{private: %{room: nil}, output: []} |> put_room_id("no:such_room")
+      assert :not_handled = NpcActionDispatcher.resolve(conn, "yun", fake_lookup())
+    end
+
+    test "Room.npc_characters_by_id/1 未知房间返回 []" do
+      assert [] = Kantele.World.Room.npc_characters_by_id("no:such_room")
+    end
+  end
 end

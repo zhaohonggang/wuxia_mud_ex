@@ -354,13 +354,18 @@ defmodule Kantele.Character.NonPlayerMeta do
     #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）——仅 PlayerMeta 有
     #   env     LPC set() 属性仓库：`query("...")`——仅 PlayerMeta 有
     #   aliases LPC present/get/ask 的 id 表匹配依据
+    #   init    NPC 入场配置 `%{greet_delay, add_actions, heartbeat}`：房间侧的
+    #           NPC 私有动词分发（`NpcActionDispatcher`）要读 `init.add_actions`
+    #           才能判断某 verb 是否属于本房间的 NPC；裁掉它 NPC add_action 通道
+    #           恒为空，等同于整套 `do_*` 私有动词静默失效。字段很小（3 个子键），
+    #           代价可忽略。
     #
     # 这些字段都会被**房间侧**读到：移动事件的 character、房间 state 的 characters
     # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
     # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
     # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
-      Map.take(meta, [:vitals, :stats, :guarder, :aliases])
+      Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init])
     end
   end
 
