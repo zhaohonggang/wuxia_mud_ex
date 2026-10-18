@@ -15,7 +15,7 @@ defmodule Kalevala.Character.Conn.Private do
   ]
 
   @doc """
-  Generate a request id to track actions past usage in the conn
+      Generate a request id to track actions past usage in the conn
   """
   def generate_request_id() do
     bytes =
@@ -61,7 +61,7 @@ end
 
 defmodule Kalevala.Character.Conn.Event do
   @moduledoc """
-  Send an out of band Event
+      Send an out of band Event
   """
 
   @derive Jason.Encoder
@@ -70,10 +70,10 @@ end
 
 defmodule Kalevala.Character.Conn.EventText do
   @moduledoc """
-  An event that also includes text output
+      An event that also includes text output
 
-  Geared towards text suppression in the web client, to allow for
-  text to be rendered for telnet and send an event in the web client.
+      Geared towards text suppression in the web client, to allow for
+      text to be rendered for telnet and send an event in the web client.
   """
 
   @derive Jason.Encoder
@@ -82,10 +82,10 @@ end
 
 defmodule Kalevala.Character.Conn.IncomingEvent do
   @moduledoc """
-  Receive an out of band event
+      Receive an out of band event
 
-  Telnet: via GMCP
-  Websocket: anything not `system/send`
+      Telnet: via GMCP
+      Websocket: anything not `system/send`
   """
 
   @derive Jason.Encoder
@@ -94,10 +94,10 @@ end
 
 defmodule Kalevala.Character.Conn.Text do
   @moduledoc """
-  Struct to print text
+      Struct to print text
 
-  Used to determine if a new line should be sent before sending out
-  new text.
+      Used to determine if a new line should be sent before sending out
+      new text.
   """
 
   defstruct [:data, newline: false, go_ahead: false]
@@ -105,7 +105,7 @@ end
 
 defmodule Kalevala.Character.Conn.Option do
   @moduledoc """
-  Telnet option
+      Telnet option
   """
 
   defstruct [:name, :value]
@@ -113,7 +113,7 @@ end
 
 defmodule Kalevala.Character.Conn do
   @moduledoc """
-  Struct for tracking data being processed in a controller or command
+      Struct for tracking data being processed in a controller or command
   """
 
   @type t() :: %__MODULE__{}
@@ -171,9 +171,9 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Get the character out of the conn
+      Get the character out of the conn
 
-  If the character has been updated, this character will be returned
+      If the character has been updated, this character will be returned
   """
   def character(conn, opts \\ [])
 
@@ -182,7 +182,7 @@ defmodule Kalevala.Character.Conn do
   def character(conn, _), do: conn.private.update_character || conn.character
 
   @doc """
-  Render text to the conn
+      Render text to the conn
   """
   def render(conn, view, template, assigns \\ %{}) do
     assigns = merge_assigns(conn, assigns)
@@ -191,7 +191,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Render a prompt to the conn
+      Render a prompt to the conn
   """
   def prompt(conn, view, template, assigns \\ %{}) do
     assigns = merge_assigns(conn, assigns)
@@ -200,7 +200,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Add to the assignment map on the conn
+      Add to the assignment map on the conn
   """
   def assign(conn, key, value) do
     assigns = Map.put(conn.assigns, key, value)
@@ -208,7 +208,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Put a value into the session data
+      Put a value into the session data
   """
   def put_session(conn, key, value) do
     session = Map.put(conn.session, key, value)
@@ -216,19 +216,19 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Get a value out of the session data
+      Get a value out of the session data
   """
   def get_session(conn, key), do: Map.get(conn.session, key)
 
   @doc """
-  Put the new controller that the foreman should swap to
+      Put the new controller that the foreman should swap to
   """
   def put_controller(conn, controller) do
     put_private(conn, :next_controller, controller)
   end
 
   @doc """
-  Mark the connection for termination
+      Mark the connection for termination
   """
   def halt(conn) do
     private = Map.put(conn.private, :halt?, true)
@@ -236,7 +236,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Send the foreman an in-game event
+      Send the foreman an in-game event
   """
   def event(conn, topic, data \\ %{}) do
     event = %Kalevala.Event{
@@ -250,7 +250,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Delay an event
+      Delay an event
   """
   def delay_event(conn, delay, topic, data \\ %{}) do
     event = %Kalevala.Event.Delayed{
@@ -265,7 +265,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Send a telnet option
+      Send a telnet option
   """
   def send_option(conn, name, value) when is_boolean(value) do
     option = %Kalevala.Character.Conn.Option{name: name, value: value}
@@ -273,7 +273,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Request the room to move via the exit
+      Request the room to move via the exit
   """
   def request_movement(conn, exit_name) do
     event = %Kalevala.Event{
@@ -292,7 +292,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Creates an even to move from one room to another
+      Creates an even to move from one room to another
   """
   def move(conn, direction, room_id, view, template, assigns) do
     assigns = merge_assigns(conn, assigns)
@@ -314,7 +314,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Sends a request to drop an item into the room
+      Sends a request to drop an item into the room
   """
   def request_item_drop(conn, item_instance) do
     event = %Kalevala.Event{
@@ -330,7 +330,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Sends a request to get an item from the room
+      Sends a request to get an item from the room
   """
   def request_item_pickup(conn, item_name) do
     event = %Kalevala.Event{
@@ -346,14 +346,14 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Update the character in state
+      Update the character in state
   """
   def put_character(conn, character) do
     put_private(conn, :update_character, character)
   end
 
   @doc """
-  Request to subscribe to a channel
+      Request to subscribe to a channel
   """
   def subscribe(conn, channel_name, options, error_fun) do
     options = Keyword.merge([character: Private.character(conn)], options)
@@ -366,7 +366,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Request to unsubscribe from a channel
+      Request to unsubscribe from a channel
   """
   def unsubscribe(conn, channel_name, options, error_fun) do
     options = Keyword.merge([character: Private.character(conn)], options)
@@ -379,13 +379,13 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Request to publish a message to a channel
+      Request to publish a message to a channel
 
-  Available options for altering the message, these also get passed along to
-  the channel callbacks.
+      Available options for altering the message, these also get passed along to
+      the channel callbacks.
 
-  - `type`, defaults to `"speech"`
-  - `meta`, defaults to `%{}`
+      - `type`, defaults to `"speech"`
+      - `meta`, defaults to `%{}`
   """
   def publish_message(conn, channel_name, text, options, error_fun) do
     event = %Kalevala.Event{
@@ -416,10 +416,10 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Put an action to be performed
+      Put an action to be performed
 
-  This should be a `Kalevala.Character.Action` struct to save which
-  action module should be run, along with any delay and params.
+      This should be a `Kalevala.Character.Action` struct to save which
+      action module should be run, along with any delay and params.
   """
   def put_action(conn, action = %Kalevala.Character.Action{}) do
     action = %{action | request_id: conn.private.request_id}
@@ -427,7 +427,7 @@ defmodule Kalevala.Character.Conn do
   end
 
   @doc """
-  Update a key in a character's meta map
+      Update a key in a character's meta map
   """
   def put_meta(conn, key, value) do
     character = character(conn)

@@ -21,9 +21,20 @@ UCL 里 NPC 的 `init.add_actions` **不是逐 NPC 数据，而是基类继承�
 
 只读。输出 `scripts/tmp/npc_private_actions.json` + 终端摘要。
 
-用法：python scripts/survey_npc_private_actions.py
+用法
+----
+    python scripts/survey_npc_private_actions.py
+    python scripts/survey_npc_private_actions.py --ignore-global cun,qu,deposit,withdraw
+
+`--ignore-global` 把指定 verb 当成「还没接线」，用来复现**接线前**的基线。
+必要性：本脚本读的是**当前**的 `commands.ex`，所以每补一个动词别名，
+同一个 verb 就从「私有」挪到「已覆盖」，总数会变 —— 想横向比较
+「还剩多少活」必须能冻住基线。钱庄那 9 个（`cun`/`qu`/`deposit`/`withdraw`/
+`convert`/`duihuan`/`transfer`/`zhuan`/`chazhang`）已在 `6944ffaf` 接好，
+用 `--ignore-global` 排除它们即可得到接线前的数字。
 """
 
+import argparse
 import json
 import os
 import re
@@ -78,24 +89,58 @@ def load_global_verbs():
     return set(GLOBAL_VERB_RE.findall(txt))
 
 
-def is_npc_file(path):
-    """NPC 对象：`d/<zone>/npc/*.c`（zone 段在 npc 之前两层）。
+def parse_args(argv):
+    p = argparse.ArgumentParser(description="NPC 私有动作勘查（只读）")
+    p.add_argument(
+        "--ignore-global",
+        default="",
+        help="逗号分隔的 verb，视作「尚未接线」，用于复现接线前基线",
+    )
+    p.add_argument("--out", default=OUT_JSON, help="JSON 输出路径（默认 scripts/tmp/npc_private_actions.json）")
+    return p.parse_args(argv)
 
-    注意是 **两层**：`d/baituo/npc/cungu.c` 里 `npc` 的前一段是 zone 名，
-    再前一段才是 `d`。按「前一段是 d」判会只匹配 `d/npc/...`，几乎全漏。
+
+def kind_of(path):
+    """按目录判定对象类型。
+
+    **关键**：`d/<zone>/npc/obj/*.c` 是**物品**（乐器、面具、箱子…），不是 NPC。
+    早先只判「路径里有 /npc/」会把 12 个物品文件算成 NPC —— `play`（琴箫）
+    就是这样被误当成 NPC 动作的，实际是乐器对象注册的。
     """
     norm = path.replace("\\", "/")
-    segs = norm.split("/")
-    for i, seg in enumerate(segs):
-        if seg == "npc" and i >= 2 and segs[i - 2] in ("d", "clone", "b"):
-            return True
-    return "/npc/" in norm
+    if "/npc/obj/" in norm:
+        return "item"
+    if "/npc/" in norm:
+        return "npc"
+    if "/obj/" in norm:
+        return "item"
+    if "/room/" in norm:
+        return "room"
+    return "other"
+
+
+def is_npc_file(path):
+    return kind_of(path) == "npc"
 
 
 def iter_all_c():
     for dirpath, _dirnames, filenames in os.walk(MUD_ROOT):
         for fn in filenames:
             if fn.endswith(".c"):
+                yield os.path.join(dirpath, fn)
+
+
+def iter_all_src():
+    """`.c` + `.h`。
+
+    **必须带 `.h`**：LPC 语料里有把 handler 定义在头文件里再 `#include` 进来的写法
+    （`d/beijing/npc/matong.c` 的 10 个 `do_rideXX` 全在 `matongXX.h` 里）。
+    只扫 `.c` 会把这些误判成 `undefined` —— 那 10 个动词是**有实现**的，
+    只是实现藏在头文件里。
+    """
+    for dirpath, _dirnames, filenames in os.walk(MUD_ROOT):
+        for fn in filenames:
+            if fn.endswith(".c") or fn.endswith(".h"):
                 yield os.path.join(dirpath, fn)
 
 
@@ -111,7 +156,12 @@ def zone_of(relpath):
 
 
 def area_of(relpath):
-    """顶层分区：d=游戏内容 / adm=巫师工具 / u=个人目录 / clone=共享库 / b=备份。"""
+    """顶层分区：d=游戏内容 / adm=巫师工具 / u=个人目录 / clone=共享库 / b=倚天屠龙区。
+
+    **`b/` 不是备份**：`d/beijing/huiying.c` 的 `up` 出口指向 `/b/yitian/jiulou`，
+    `d/beijing/road10.c` 的 `east` 指向 `/b/tulong/haigang` —— 是**可达区域**
+    （倚天屠龙记副本内容），其私有动作要算进工作量。
+    """
     return relpath.split("/")[0]
 
 
@@ -159,6 +209,43 @@ def classify(body):
     return "unknown"
 
 
+CONTROL_FEATURES = ("if(", "if (", "for(", "for (", "while(", "while (",
+                    "switch(", "switch (", "case ", "do {")
+
+
+def is_dead(body):
+    """函数体在**任何分支之前**就无条件 `return` 了，且后面还跟着大段代码。
+
+    典型：`kungfu/class/yunlong/tiandihui.h` 的 `do_join`：
+
+        me = this_object(); ob = this_player();
+        return notify_fail("天地会正在清理叛徒，不对外招人。\\n");
+        //return 1;          <-- 以下整段 join 逻辑永远不执行
+
+    这类 verb 玩家敲了只会得到一句「不对外招人」，**不需要移植**。
+
+    两个必要条件，缺一不可：
+    ① 第一个 `return` 之前没有任何分支（`if`/`for`/`while`/`switch`/`case`）；
+    ② 该 `return` **之后还有实质代码**。
+    只判 ① 会把「直线型函数末尾的 `return 1;`」全判成死功能
+    （`b/tulong/npc/chang.c` 的 `do_compare`、`adm/npc/luban.c` 的 `do_show`
+    都是这种），必须靠 ② 排掉。
+    """
+    if not body or len(body) < 3:
+        return False
+    inner = body[1:-1]                      # 去掉最外层花括号
+    m = re.search(r"\breturn\b", inner)
+    if not m:
+        return False
+    if any(f in inner[:m.start()] for f in CONTROL_FEATURES):
+        return False
+    semi = inner.find(";", m.end())
+    if semi < 0:
+        return False
+    after = re.sub(r"\s+", "", inner[semi + 1:])
+    return len(after) >= 80
+
+
 def load_impl_hints(verbs, handlers):
     """检查某个 verb 是否**已在别处实现**，只是没挂在顶层动词上。
 
@@ -198,13 +285,21 @@ def load_impl_hints(verbs, handlers):
     return hints
 
 
-def main():
+def main(argv=None):
+    args = parse_args(argv if argv is not None else sys.argv[1:])
     if not os.path.isdir(MUD_ROOT):
         print("MUD_ROOT 不存在: %s" % MUD_ROOT, file=sys.stderr)
         sys.exit(1)
 
+    ignored = {v.strip() for v in args.ignore_global.split(",") if v.strip()}
     global_verbs = load_global_verbs()
-    print("全局命令 verb 数（commands.ex 的 parse）:", len(global_verbs))
+    if ignored:
+        # 视作未接线：从全局表里摘掉，让它们落回「私有」
+        global_verbs -= ignored
+        print("全局命令 verb 数（commands.ex 的 parse）: %d（已按 --ignore-global 排除 %d 个）"
+              % (len(global_verbs), len(ignored)))
+    else:
+        print("全局命令 verb 数（commands.ex 的 parse）:", len(global_verbs))
 
     # ---------- pass 1：NPC 文件里的注册 ----------
     npc_files = 0
@@ -219,9 +314,29 @@ def main():
     handler_npcs = defaultdict(set)          # handler -> {npc_file}
     local_kind = {}                          # (npc_file, handler) -> kind | None
     local_busy = {}                          # (npc_file, handler) -> bool | None
+    local_dead = {}                          # (npc_file, handler) -> bool | None
+
+    item_files = 0
+    item_calls = 0
+    item_verbs = Counter()
 
     for path in iter_all_c():
-        if not is_npc_file(path):
+        kind = kind_of(path)
+
+        # 物品侧（/obj/）：只做计数，供未来的 item 通道参考。
+        # `play`（琴箫）、`climb`（铁箱）等都在这里 —— 它们是物品动作，不是 NPC。
+        if kind == "item":
+            item_files += 1
+            try:
+                itxt = open(path, encoding="utf-8", errors="replace").read()
+            except OSError:
+                continue
+            for _handler, verb in ADD_ACTION_RE.findall(itxt):
+                item_calls += 1
+                item_verbs[verb] += 1
+            continue
+
+        if kind != "npc":
             continue
         npc_files += 1
         try:
@@ -253,6 +368,7 @@ def main():
                 local_busy[(r, handler)] = (
                     any(f in body for f in BUSY_FEATURES) if body else None
                 )
+                local_dead[(r, handler)] = is_dead(body) if body else None
 
     print("NPC .c 文件总数            :", npc_files)
     print("含 add_action 的 NPC 文件   :", files_with_action)
@@ -282,7 +398,7 @@ def main():
     print("本地未定义的 handler（疑似继承）:", len(wanted))
 
     defs = defaultdict(list)     # handler -> [(file, kind)]
-    for path in iter_all_c():
+    for path in iter_all_src():
         try:
             txt = open(path, encoding="utf-8", errors="replace").read()
         except OSError:
@@ -294,9 +410,12 @@ def main():
             if name not in wanted:
                 continue
             body = extract_handler_body(txt, name)
-            defs[name].append(
-                (rel(path), classify(body), any(f in body for f in BUSY_FEATURES) if body else False)
-            )
+            defs[name].append((
+                rel(path),
+                classify(body),
+                any(f in body for f in BUSY_FEATURES) if body else False,
+                is_dead(body),
+            ))
 
     # ---------- 汇总 ----------
     rows = []
@@ -305,6 +424,7 @@ def main():
         kinds = Counter()
         resolved = {}
         busy = 0
+        dead = 0
         for handler, hc in verb_handlers[verb].items():
             local = [local_kind[(f, handler)] for f in handler_npcs[handler]
                      if local_kind.get((f, handler)) is not None]
@@ -312,21 +432,28 @@ def main():
                 kinds[local[0]] += hc
                 local_busy_flags = [local_busy.get((f, handler)) for f in handler_npcs[handler]]
                 is_busy = any(flag for flag in local_busy_flags)
+                is_dead_flag = any(
+                    local_dead.get((f, handler)) for f in handler_npcs[handler]
+                )
                 resolved[handler] = {"via": "local", "kind": local[0],
-                                     "busy": is_busy, "defs": []}
+                                     "busy": is_busy, "dead": is_dead_flag, "defs": []}
             else:
                 d = defs.get(handler, [])
                 kind = d[0][1] if d else "undefined"
-                is_busy = any(b for _f, _k, b in d)
+                is_busy = any(b for _f, _k, b, _x in d)
+                is_dead_flag = any(x for _f, _k, _b, x in d)
                 kinds[kind] += hc
                 resolved[handler] = {
                     "via": "inherited" if d else "undefined",
                     "kind": kind,
                     "busy": is_busy,
-                    "defs": sorted({f for f, _k, _b in d})[:5],
+                    "dead": is_dead_flag,
+                    "defs": sorted({f for f, _k, _b, _x in d})[:5],
                 }
             if is_busy:
                 busy += hc
+            if is_dead_flag:
+                dead += hc
         if busy:
             busy_verbs[verb] = busy
         rows.append({
@@ -337,6 +464,7 @@ def main():
             "handlers": resolved,
             "kinds": dict(kinds),
             "busy": busy,
+            "dead": dead,
             "impl_hint": hints.get(verb, []),
             "samples": verb_samples[verb],
         })
@@ -361,7 +489,7 @@ def main():
             continue
         if len(files) < 2:
             continue
-        d = sorted({f for f, _k, _b in defs.get(handler, [])})
+        d = sorted({f for f, _k, _b, _x in defs.get(handler, [])})
         if d and len(d) <= 2:
             shared.append({
                 "handler": handler,
@@ -369,6 +497,7 @@ def main():
                 "defs": d,
                 "kind": defs[handler][0][1],
                 "busy": defs[handler][0][2],
+                "dead": defs[handler][0][3],
                 "verbs": sorted(v for v, hs in verb_handlers.items() if handler in hs),
             })
     shared.sort(key=lambda x: (-x["npc_files"], x["handler"]))
@@ -386,6 +515,22 @@ def main():
         print("%-12s %5d  %s" % (row["verb"], row["calls"], ", ".join(row["samples"][:2])))
     print("合计纯输出型: %d 个 / %d 次调用"
           % (len(msg_only), sum(r["calls"] for r in msg_only)))
+
+    dead_rows = [r for r in rows if r["dead"]]
+    print("\n=== 死功能（函数体开头就无条件 return，后续全是死代码）===")
+    for row in dead_rows:
+        print("%-12s %5d  %s" % (row["verb"], row["calls"], ", ".join(row["samples"][:2])))
+    print("合计死功能: %d 个 / %d 次调用 —— 这些**不需要移植**"
+          % (len(dead_rows), sum(r["calls"] for r in dead_rows)))
+
+    item_private = {v: c for v, c in item_verbs.items() if v not in global_verbs}
+    print("\n=== 附：物品侧（/obj/，不属于 NPC 通道）===")
+    print("物品 .c 文件: %d / add_action 调用: %d / 不同 verb: %d"
+          % (item_files, item_calls, len(item_verbs)))
+    print("其中私有 verb: %d 个 / %d 次"
+          % (len(item_private), sum(item_private.values())))
+    top_items = sorted(item_private.items(), key=lambda kv: -kv[1])[:10]
+    print("  前 10: " + ", ".join("%s=%d" % (v, c) for v, c in top_items))
 
     by_area = Counter()
     for verb, count in real_private.items():
@@ -415,10 +560,17 @@ def main():
             "movement_like_verbs": len(movement_like),
             "real_private_verbs": len(real_private),
             "real_private_calls": sum(real_private.values()),
+            "dead_verbs": len(dead_rows),
+            "dead_calls": sum(r["calls"] for r in dead_rows),
             "impl_hint_verbs": len(hints),
             "impl_hint_calls": hint_calls,
             "inherited_handlers": len(wanted),
             "shared_base_handlers": len(shared),
+            "item_files": item_files,
+            "item_calls": item_calls,
+            "item_private_verbs": len(item_private),
+            "item_private_calls": sum(item_private.values()),
+            "ignored_global": sorted(ignored),
         },
         "covered_verbs": dict(sorted(covered.items(), key=lambda kv: -kv[1])),
         "movement_like": dict(sorted(movement_like.items(), key=lambda kv: -kv[1])),
@@ -427,9 +579,10 @@ def main():
         "private_calls_by_area": dict(by_area),
         "impl_hints": {v: hints[v] for v in sorted(hints)},
     }
-    os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
-    json.dump(out, open(OUT_JSON, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
-    print("\nwritten:", OUT_JSON)
+    out_path = args.out
+    os.makedirs(os.path.dirname(os.path.abspath(out_path)), exist_ok=True)
+    json.dump(out, open(out_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print("\nwritten:", out_path)
 
 
 if __name__ == "__main__":

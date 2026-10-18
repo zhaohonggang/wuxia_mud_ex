@@ -1,8 +1,8 @@
 defmodule Kalevala.Event.Router do
   @moduledoc """
-  Route in-game events
+      Route in-game events
 
-  Locates the appropriate module and function for a `Kalevala.Event`
+      Locates the appropriate module and function for a `Kalevala.Event`
   """
 
   alias Kalevala.Character.Conn
@@ -38,19 +38,19 @@ defmodule Kalevala.Event.Router do
   end
 
   @doc """
-  Parse an input string with the conn as the context
+      Parse an input string with the conn as the context
   """
   @callback call(topic :: Event.topic(), conn :: Conn.t(), event :: Event.t()) :: :ok
 
   @doc """
-  Macro to generate the receive functions
+      Macro to generate the receive functions
 
-      scope(App) do
-        module(CombatEvent) do
-          event("combat/start", :start)
-          event("combat/stop", :stop)
-        end
-      end
+          scope(App) do
+            module(CombatEvent) do
+              event("combat/start", :start)
+              event("combat/stop", :stop)
+            end
+          end
   """
   defmacro scope(module, opts) do
     quote do
@@ -64,7 +64,7 @@ defmodule Kalevala.Event.Router do
   end
 
   @doc false
-  def parse_modules({:__aliases__, _, top_module}, {:__block__, [], modules}) do
+  def parse_modules({:__aliases__, _, top_module}, {:__block__, _, modules}) do
     Enum.map(modules, fn module ->
       parse_module(top_module, module)
     end)
@@ -87,7 +87,7 @@ defmodule Kalevala.Event.Router do
   end
 
   @doc false
-  def parse_events(module, {:__block__, [], events}) do
+  def parse_events(module, {:__block__, _, events}) do
     Enum.map(events, fn event ->
       parse_event(module, event)
     end)

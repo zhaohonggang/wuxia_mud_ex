@@ -1,6 +1,6 @@
 defmodule Kalevala.Communication.Channel do
   @moduledoc """
-  A GenServer to handle channel communication
+      A GenServer to handle channel communication
   """
 
   use GenServer
@@ -30,24 +30,24 @@ defmodule Kalevala.Communication.Channel do
   @type channel_name() :: String.t()
 
   @doc """
-  Called during initialization
+      Called during initialization
 
-  You can change any of the config you wish on start of the gen server
+      You can change any of the config you wish on start of the gen server
   """
   @callback init(config()) :: config()
 
   @doc """
-  Called before a pid is allowed to subscribe to a channel
+      Called before a pid is allowed to subscribe to a channel
   """
   @callback subscribe_request(channel_name(), options(), config()) :: :ok
 
   @doc """
-  Called before a pid is allowed to unsubscribe to a channel
+      Called before a pid is allowed to unsubscribe to a channel
   """
   @callback unsubscribe_request(channel_name(), options(), config()) :: :ok
 
   @doc """
-  Called before a message is allowed to publish on the channel
+      Called before a message is allowed to publish on the channel
   """
   @callback publish_request(channel_name(), Event.message(), options(), config()) :: :ok
 
@@ -74,25 +74,25 @@ defmodule Kalevala.Communication.Channel do
   end
 
   @doc """
-  Publish a new message
+      Publish a new message
   """
   def publish(pid, message, options) do
     GenServer.call(pid, {:publish, message, options})
   end
 
   @doc """
-  Subscribe to a new channel
+      Subscribe to a new channel
 
-  Allows for the callback_module to reject subscription
+      Allows for the callback_module to reject subscription
   """
   def subscribe(pid, channel_name, subscriber_pid, options) do
     GenServer.call(pid, {:subscribe, channel_name, subscriber_pid, options})
   end
 
   @doc """
-  Unsubscribe to a new channel
+      Unsubscribe to a new channel
 
-  Allows for the callback_module to reject unsubscription
+      Allows for the callback_module to reject unsubscription
   """
   def unsubscribe(pid, channel_name, subscriber_pid, options) do
     GenServer.call(pid, {:unsubscribe, channel_name, subscriber_pid, options})

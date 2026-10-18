@@ -1,6 +1,6 @@
 defmodule Kalevala.Communication.Channels do
   @moduledoc """
-  DynamicSupervisor for registering channels
+      DynamicSupervisor for registering channels
   """
 
   use DynamicSupervisor

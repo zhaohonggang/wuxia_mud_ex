@@ -1,6 +1,6 @@
 defmodule Kalevala.World.Room.Events do
   @moduledoc """
-  Module for handling room events
+      Module for handling room events
   """
 
   alias Kalevala.Event
@@ -11,7 +11,7 @@ defmodule Kalevala.World.Room.Events do
   alias Kalevala.World.Room.Movement
 
   @doc """
-  Process events in a room
+      Process events in a room
   """
   # Forward movement requests to the zone to handle
   def handle_event(event = %Event{topic: Event.Movement.Request}, state) do
@@ -84,7 +84,7 @@ end
 
 defmodule Kalevala.World.Room.Item do
   @moduledoc """
-  Handle item pickup
+      Handle item pickup
   """
 
   alias Kalevala.Event
@@ -92,7 +92,7 @@ defmodule Kalevala.World.Room.Item do
   alias Kalevala.Event.ItemPickUp
 
   @doc """
-  Handle a request for dropping an item
+      Handle a request for dropping an item
   """
   def handle_drop_request({:abort, event, reason}, state, metadata) do
     character = event.acting_character
@@ -132,7 +132,7 @@ defmodule Kalevala.World.Room.Item do
   end
 
   @doc """
-  Handle a request for picking up an item
+      Handle a request for picking up an item
   """
   def handle_pickup_request({:abort, event, reason, item_instance}, state, metadata) do
     character = event.acting_character
@@ -192,7 +192,7 @@ end
 
 defmodule Kalevala.World.Room.Movement do
   @moduledoc """
-  Handle room movement
+      Handle room movement
   """
 
   alias Kalevala.Event
@@ -201,10 +201,10 @@ defmodule Kalevala.World.Room.Movement do
   alias Kalevala.World.Zone
 
   @doc """
-  Handle the movement request
+      Handle the movement request
 
-  - If an abort, forward to the character
-  - Otherwise, Forward to the zone
+      - If an abort, forward to the character
+      - Otherwise, Forward to the zone
   """
   def handle_request({:abort, event, reason}, state, metadata) do
     %{character: character} = event.data
@@ -246,7 +246,7 @@ defmodule Kalevala.World.Room.Movement do
   end
 
   @doc """
-  Handle the movement event
+      Handle the movement event
   """
   def handle_event(state, event = %Event{topic: Movement, data: %{direction: :to}}) do
     state
@@ -261,7 +261,7 @@ defmodule Kalevala.World.Room.Movement do
   end
 
   @doc """
-  Broadcast the event to characters in the room
+      Broadcast the event to characters in the room
   """
   def broadcast(state, event) do
     event = %Kalevala.Event{

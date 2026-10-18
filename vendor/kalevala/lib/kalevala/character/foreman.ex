@@ -1,8 +1,8 @@
 defmodule Kalevala.Character.Foreman do
   @moduledoc """
-  Session Foreman
+      Session Foreman
 
-  Manages data flowing from the player into the game.
+      Manages data flowing from the player into the game.
   """
 
   use GenServer
@@ -28,7 +28,7 @@ defmodule Kalevala.Character.Foreman do
   ]
 
   @doc """
-  Start a new foreman for a connecting player
+      Start a new foreman for a connecting player
   """
   def start_player(protocol_pid, options) do
     options =
@@ -41,7 +41,7 @@ defmodule Kalevala.Character.Foreman do
   end
 
   @doc """
-  Start a new foreman for a non-player (character run by the world)
+      Start a new foreman for a non-player (character run by the world)
   """
   def start_non_player(options) do
     options = Keyword.merge(options, callback_module: Kalevala.Character.Foreman.NonPlayer)
@@ -159,7 +159,7 @@ defmodule Kalevala.Character.Foreman do
   end
 
   @doc """
-  Handle the conn struct after processing
+      Handle the conn struct after processing
   """
   def handle_conn(conn, state) do
     conn
@@ -264,7 +264,7 @@ end
 
 defmodule Kalevala.Character.Foreman.Callbacks do
   @moduledoc """
-  Callbacks for a integrating with the character foreman process
+      Callbacks for a integrating with the character foreman process
   """
 
   alias Kalevala.Character.Conn
@@ -276,43 +276,43 @@ defmodule Kalevala.Character.Foreman.Callbacks do
   @type opts() :: Keyword.t()
 
   @doc """
-  Fill in state with any passed in options
+      Fill in state with any passed in options
   """
   @callback init(state(), opts()) :: state()
 
   @doc """
-  Called when the foreman process is halted through a conn
+      Called when the foreman process is halted through a conn
 
-  Perform whatever actions are required to start terminating.
+      Perform whatever actions are required to start terminating.
   """
   @callback terminate(state()) :: :ok
 
   @doc """
-  The process is terminating from a `:terminate` message
+      The process is terminating from a `:terminate` message
 
-  Perform whatever is required before terminating.
+      Perform whatever is required before terminating.
   """
   @callback terminating(state()) :: :ok
 
   @doc """
-  Send options to a connection process
+      Send options to a connection process
   """
   @callback send_options(state(), list()) :: :ok
 
   @doc """
-  Send text to a connection process
+      Send text to a connection process
   """
   @callback send_output(state(), list()) :: :ok
 
   @doc """
-  The character updated and presence should be tracked
+      The character updated and presence should be tracked
   """
   @callback track_presence(state, Conn.t()) :: :ok
 end
 
 defmodule Kalevala.Character.Foreman.Player do
   @moduledoc """
-  Callbacks for a player character
+      Callbacks for a player character
   """
 
   alias Kalevala.Character.Conn
@@ -384,7 +384,7 @@ end
 
 defmodule Kalevala.Character.Foreman.NonPlayer do
   @moduledoc """
-  Callbacks for a non-player character
+      Callbacks for a non-player character
   """
 
   require Logger

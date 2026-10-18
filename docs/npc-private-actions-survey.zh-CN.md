@@ -25,6 +25,7 @@
 | 其中移动/方向类（出口系统管） | 0 | 0 |
 | 私有 handler 本地未定义（继承/头文件里的） | 15 | 15 |
 | 基类动作（多 NPC 共用一份实现） | 2 | 0（已接线） |
+| `ride*` 十连（一份实现覆盖 10 个动词） | 10 | 0（已接线，2026-10-17，`6d5e4e0`） |
 | **死功能（不需要移植）** | **1 个 / 10 次** | **1 个 / 10 次** |
 | 疑似已有实现、只缺顶层动词接线 | 18 个 / 99 次 | 7 个 / 20 次 |
 
@@ -115,13 +116,13 @@ R9 已确认 UCL 里的 `init.add_actions` 是**基类继承动词**：2024 个 
 
 | verb | 次数 | 语义（据 handler 名与源文件） |
 |---|---:|---|
-| `bi` | 14 | 比武 / 比划（`do_bi` / `do_bihua` / `begin`）。**深度依赖任务状态**：倚天屠龙记的阿大/阿二/阿三要 `query_temp("win_aer")`、`present("shelf")`、倚天剑在手才肯打 |
-| `decide` | 5 | 拍卖 / 抽签决策（`do_decide` / `decide_withdraw`） |
-| `compare` | 4 | 赌场比大小（`b/tulong`，`do_compare` 直接 `kill_ob` 开打） |
-| `show` | 4 | 展示（3/4 在 `adm/`，`do_show` 只是 `show_desc()` 的一层皮） |
-| `yun` | 4 | 运功 / 琴韵（**纯输出**，最便宜） |
-| `choose` | 3 | 选（兽商 / 马商，`do_choose` / `do_selete`） |
-| `yao` | 3 | 摇（骰子 / 签） |
+| `bi` | 14 | 比武 / 比划（`do_bi` / `do_bihua` / `begin`）。**深度依赖任务状态**：倚天屠龙记的阿大/阿二/阿三要 `query_temp("win_aer")`、`present("shelf")`、倚天剑在手才肯打 | ✅ **已落地**（`bi.ex` + `tulong:huichang_back`/`tulong:huichang`，2 房间 × 2 动词） |
+| `decide` | 5 | 拍卖 / 抽签决策（`do_decide` / `decide_withdraw`） | ✅ **已落地**（`decide.ex` + `guiyun:taihu`/`xiangyang:qianzhuang`） |
+| `compare` | 4 | 赌场比大小（`b/tulong`，`do_compare` 直接 `kill_ob` 开打） | ❌ **无 UCL 注册房间**：`b/tulong/npc/{chang,guo,mai,yuan}.c` 含 `add_action("compare", ...)`，但 `data/world/` 无 `b.ucl`，UCL `tulong.ucl` 里该 NPC 的 `add_actions` 为 `["bi","get"]`，非 `compare`；NPC 分发器仅读 UCL `meta.init.add_actions`，故无房间可接线 `compare`，暂不可实施 |
+| `show` | 4 | 展示（3/4 在 `adm/`，`do_show` 只是 `show_desc()` 的一层皮） | （跨 `adm/`，排除） |
+| `yun` | 4 | 运功 / 琴韵（**纯输出**，最便宜） | ✅ **已落地** |
+| `choose` | 3 | 选（兽商 / 马商，`do_choose` / `do_selete`） | （2 次在 `adm/`，排除） |
+| `yao` | 3 | 摇（骰子 / 签） | ✅ **已落地**（`yao.ex` + `xiangyang:qianzhuang`/`wudu:chufang`/`beijing:bingqi`） |
 | `bian` | 2 | 灵蛇变身（handler 名叫 `convert`，**不是**钱庄动作） |
 | `bihua` / `copy` / `exchange` / `mine` / `serve` | 各 2 | 比划 / 抄录 / 兑换 / 挖矿 / 上菜 |
 | `kneel` / `move` / `peiyao` / `puzzle` / `read` / `recopy` / `recover` / `sew` / `sign` / `task` / `txbw` / `unjoin` / `zhanbu` | 各 1 | 一次性动作 |
@@ -167,6 +168,11 @@ R9 已确认 UCL 里的 `init.add_actions` 是**基类继承动词**：2024 个 
 | `Kantele.World.NpcActionHandlers` 注册表 | ✅ 已落地 | `lib/kantele/world/npc_action_handlers.ex`；房间级 `lookup(room_id, verb)`，初始 4 个 `yun` 条目 |
 | `command_controller.ex:recv/2` 接线 | ✅ 已落地 | 在 `RoomActionDispatcher.dispatch` 之后、`Commands.call` **之前**插入 NPC 分发 |
 | 首个样板 `yun` | ✅ 已落地 | `lib/kantele/world/npc_actions/yun.ex`；`arg == "roar"` → `Helpers.broadcast_vision/3` 广播，否则 `:not_handled` |
+| 第二批样板 `ride*` 十连 | ✅ 已落地 | `lib/kantele/world/npc_actions/ride.ex`；10 个动词复用一份参数化实现，注册于 `beijing:majuan`（八卦门专属） |
+| 第三批样板 `bi` / `get` | ✅ 已落地 | `lib/kantele/world/npc_actions/bi.ex`；注册于 `tulong:huichang_back`、`tulong:huichang`（bi、get）；屠龙刀扬刀立威会场四关，`NpcAttack.kill_ob` 发起战斗 |
+| 第四批样板 `yao` | ✅ 已落地 | `lib/kantele/world/npc_actions/yao.ex`；注册于 `xiangyang:qianzhuang`（黄真发商令）、`wudu:chufang`（田嫂发包子）、`beijing:bingqi`（钱正伦发兵器/护甲） |
+| 第五批样板 `decide` | ✅ 已落地 | `lib/kantele/world/npc_actions/decide.ex`；注册于 `guiyun:taihu`（陆小凤引荐书信）、`xiangyang:qianzhuang`（商业协会入退） |
+| `compare` | ❌ 不可实施 | `b/tulong/npc/{chang,guo,mai,yuan}.c` 含 `compare`，但 `data/world/` 无 `b.ucl`，UCL 无对应房间注册，NPC 分发器无法命中 |
 
 **关键设计决策（与房间通道对称，空注册表 → P7 dormant，对全局命令零影响）：**
 
@@ -174,7 +180,7 @@ R9 已确认 UCL 里的 `init.add_actions` 是**基类继承动词**：2024 个 
 - `room` 进程的 `state.private.characters` 里是**完整**的 NPC 结构体（含 `meta.init.add_actions`），`Kalevala.World.Room.Context.new/1` 只清空 `inventory`、`meta` 完整保留。
 - 注册表按 **`room_id`**（UCL 房间 id，重启不变）索引，**不使用** `Character.generate_id()`（运行期随机 id，重启就变）。
 - `yun` 覆盖 4 个注册（殷素素：`tulong:huichang_back`/`tulong:huichang`；赵一伤：`tulong:jiulou`/`tulong:was_dayuan`），LPC 源 `d/tulong/tulong/npc/yin.c`、`d/tulong/yitian/npc/zhao.c` 均按 `arg == "roar"` → `message_vision` + `return 1`，否则 `return 0`。
-- 新增测试 3 个文件约 30 条用例（dispatcher / handlers / yun），经 `elixirc` 编译验证；全量 `mix test` 因沙箱环境缺 `:ssl_verify_fun`（与本次代码无关）暂未跑通，后续会话需补验证。
+- 新增测试 5 个文件约 60 条用例（dispatcher / handlers / yun / ride + handlers 扩展），经 `elixirc` 编译验证；全量 `mix test --seed 12345`：**3558/3634 通过，76 失败**（基线 75 为预先存在的 combat/web/user 失败，与 NPC 工作无关，零 NPC 回归）。
 
 **下一步（在本文档 §7 顺序中已标示）**：继续 NPC 私有动作，`ride*` 十连为下一批。
 
@@ -182,12 +188,10 @@ R9 已确认 UCL 里的 `init.add_actions` 是**基类继承动词**：2024 个 
 
 1. ~~**钱庄动词别名**（76 次，只缺接线）~~ — ✅ **已完成（`6944ffaf`）**
 2. ~~**纯输出型 `yun`（4 次）** + NPC 分发层~~ — ✅ **已完成（2026-10-17，分发层 + `yun` 样板落地）**
-3. **`ride*` 十连（10 次 / 1 份实现）** —— 参数化马童快速旅行；需要 `move` + `tell_room`
-   的连续播报，是「一份实现覆盖 N 动词」的样板。（下一批）
-4. **`bi` / `compare` / `yao` / `decide`（26 次）** —— 比武、赌场、拍卖，有状态与随机性，
-   且 `bi` 深度依赖任务状态，最贵，最后做。
-5. **`adm/` 分区 42 次直接排除**（巫师工具；其中专属 verb 31 个 / 34 次）。
-6. **`join` 10 次直接排除**（死功能）。
+3. ~~**`ride*` 十连（10 次 / 1 份实现）**~~ — ✅ **已完成（2026-10-17，`6d5e4e0`；参数化马童快速旅行，10 个动词注册于 `beijing:majuan`，27 条单测全绿）**
+4. **`bi` / `yao` / `decide`（22 次）** ✅ **已全部落地** —— `bi`（`bi.ex`，tulong 会场 2 房间 × 2 动词）、`yao`（`yao.ex`，3 房间）、`decide`（`decide.ex`，2 房间）；`compare`（4 次）❌ **不可实施**：`b/tulong` LPC 源未入 UCL，无房间注册 `compare`，NPC 分发器无法命中。
+5. ~~**`adm/` 分区 42 次直接排除**~~（巫师工具；其中专属 verb 31 个 / 34 次）。
+6. ~~**`join` 10 次直接排除**~~（死功能）。
 7. **物品侧 `play`（11 次）另开一条通道**，不混进 NPC 计划。
 
 ## 8. 已知局限
@@ -218,3 +222,22 @@ LPC 的 `do_convert` 文案是两个**各自单位的数量**（`chinese_number(
 `chinese_number(amount * bv1 / bv2)` + 目标单位）。要改对需要 `Money` 暴露一个
 「按单位格式化数量」的函数（现在只有按**总价值**格式化的 `money_str/1`，
 `chinese/1` 与 `unit_of/1` 都是私有的），所以本轮没有顺手改 —— 见 progress §14 R11。
+
+## 11. `bi` / `compare` 同名分歧（已澄清，2026-10-18）
+
+P5-1c 施工到 `bi` 档时核对到一处「UCL 写 `bi`、LPC 写 `compare`」的表面矛盾。回源后确认
+这是**两棵并行且各自可达的 LPC 树**，**不是**转换器 bug，也**无需改 UCL**：
+
+- `data/world/tulong.ucl` 的 `# Generated from` 指向 **`d/tulong/tulong/npc/*.c`**，其中
+  `chang.c` / `guo.c` 注册 `add_action("do_bi","bi")`，`mai.c` / `yuan.c` 注册
+  `add_action("begin","bi")`。故 UCL `add_actions = ["bi","get"]`
+  （tulong.ucl:521/555/742/844/912）与 `["bi"]`（1929/2053/2113/2261）**与源一致**。
+- 勘查表里的 `compare`（4 次）来自**另一棵** `b/tulong/npc/*.c`（`do_compare` 直接 `kill_ob`）。
+  `b/` 是可达副本区（见 §8「`b/` 不是备份」）。
+- **当前没有任何 UCL 由 `b/` 生成**：`data/world/*.ucl` 中 `Generated from …/b/` 的头计数为 0，
+  因此 `compare` 这一半**尚未迁移出 UCL，暂时无法接线**；可接线目标只有 `bi`。
+
+代价评估（`bi`，tulong）：`chang` 仅 `message_vision` + 互 `kill_ob`；`guo`/`mai`/`yuan` 的
+`begin` 依赖 `COMBAT_D->do_attack`、`apply_condition("nishui")`、`set("anti",me)`、
+`call_out("guo",6,me)`，以及 NPC `die`/`unconcious` 覆写（胜负写 `win_mai`/`win_aer`）——
+即战斗起手 + 条件系统 + 定时回呼 + 死亡钩子，属**红区邻近**，需先补齐这些机制才能忠实移植。

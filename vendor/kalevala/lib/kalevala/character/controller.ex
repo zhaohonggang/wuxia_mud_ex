@@ -1,42 +1,42 @@
 defmodule Kalevala.Character.Controller do
   @moduledoc """
-  Kalevala controllers are the current set of actions for the user
+      Kalevala controllers are the current set of actions for the user
 
-  For instance, you might have a LoginController that handles
-  authentication, that then passes to a CommandController to start
-  processing player commands after they signed in.
+      For instance, you might have a LoginController that handles
+      authentication, that then passes to a CommandController to start
+      processing player commands after they signed in.
   """
 
   alias Kalevala.Character.Conn
   alias Kalevala.Character.Event
 
   @doc """
-  Called when the controller is first switched to
+      Called when the controller is first switched to
   """
   @callback init(Conn.t()) :: Conn.t()
 
   @doc """
-  Called when text is received from the player
+      Called when text is received from the player
   """
   @callback recv(Conn.t(), String.t()) :: Conn.t()
 
   @doc """
-  Called when the connection receives an event (e.g. incoming GMCP)
+      Called when the connection receives an event (e.g. incoming GMCP)
   """
   @callback recv_event(Conn.t(), any()) :: Conn.t()
 
   @doc """
-  Called when a `Kalevala.Character.Event` is sent to the foreman process
+      Called when a `Kalevala.Character.Event` is sent to the foreman process
   """
   @callback event(Conn.t(), Event.t()) :: Conn.t()
 
   @doc """
-  Called when a `Kalevala.Character.Event.Display` is sent to the foreman process
+      Called when a `Kalevala.Character.Event.Display` is sent to the foreman process
   """
   @callback display(Conn.t(), Event.t()) :: Conn.t()
 
   @doc """
-  Marks the module as a controller and imports controller functions
+      Marks the module as a controller and imports controller functions
   """
   defmacro __using__(_opts) do
     quote do

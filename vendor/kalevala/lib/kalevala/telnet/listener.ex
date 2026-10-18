@@ -1,6 +1,6 @@
 defmodule Kalevala.Telnet.Listener do
   @moduledoc """
-  Process that starts the `ranch` listener
+      Process that starts the `ranch` listener
   """
 
   use GenServer

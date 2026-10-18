@@ -1,6 +1,6 @@
 defmodule Kalevala.Websocket.Listener do
   @moduledoc """
-  Start a cowboy listener
+      Start a cowboy listener
   """
 
   use Supervisor

@@ -1,6 +1,6 @@
 defmodule Kalevala.World do
   @moduledoc """
-  Manages the virtual world
+      Manages the virtual world
   """
 
   require Logger
@@ -13,7 +13,7 @@ defmodule Kalevala.World do
   alias Kalevala.World.ZoneSupervisor
 
   @doc """
-  Start the zone into the world
+      Start the zone into the world
   """
   def start_zone(zone, config) do
     options = %{
@@ -26,7 +26,7 @@ defmodule Kalevala.World do
   end
 
   @doc """
-  Start the room into the world
+      Start the room into the world
   """
   def start_room(room, item_instances, config) do
     options = %{
@@ -40,7 +40,7 @@ defmodule Kalevala.World do
   end
 
   @doc """
-  Start a world character into the world
+      Start a world character into the world
   """
   def start_character(character, config) do
     options = Keyword.merge(config, character: character)

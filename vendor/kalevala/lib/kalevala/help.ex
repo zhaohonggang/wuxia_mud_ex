@@ -1,8 +1,8 @@
 defmodule Kalevala.Help do
   @moduledoc """
-  Help Topics
+      Help Topics
 
-  A cache for help topics that the user can look up.
+      A cache for help topics that the user can look up.
   """
 
   use Supervisor
@@ -11,7 +11,7 @@ defmodule Kalevala.Help do
   alias Kalevala.Help.KeywordCache
 
   @doc """
-  Put a topic in the cache
+      Put a topic in the cache
   """
   def put(help_topic) do
     Cache.put(help_topic.key, help_topic)
@@ -19,7 +19,7 @@ defmodule Kalevala.Help do
   end
 
   @doc """
-  Get a help topic from the cache
+      Get a help topic from the cache
   """
   def get(topic), do: Cache.get(topic)
 
@@ -47,7 +47,7 @@ end
 
 defmodule Kalevala.Help.KeywordCache do
   @moduledoc """
-  A small cache to be a lookup from keyword -> help topic key
+      A small cache to be a lookup from keyword -> help topic key
   """
 
   use Kalevala.Cache
@@ -62,7 +62,7 @@ end
 
 defmodule Kalevala.Help.HelpTopic do
   @moduledoc """
-  Struct for help topics
+      Struct for help topics
   """
 
   defstruct [:content, :key, :tagline, :title, keywords: [], see_also: []]

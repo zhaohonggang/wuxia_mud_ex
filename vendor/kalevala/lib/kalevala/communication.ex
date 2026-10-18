@@ -1,8 +1,8 @@
 defmodule Kalevala.Communication do
   @moduledoc """
-  Handle communication for the game
+      Handle communication for the game
 
-  Register global channels, room channels, character channels, etc.
+      Register global channels, room channels, character channels, etc.
   """
 
   require Logger
@@ -59,7 +59,7 @@ defmodule Kalevala.Communication do
       end
 
       @doc """
-      Subscribe the current pid to the channel
+              Subscribe the current pid to the channel
       """
       def subscribe(channel_name, options, config_overrides \\ []) do
         channel_ets_key = config(config_overrides)[:channel_ets_key]
@@ -67,7 +67,7 @@ defmodule Kalevala.Communication do
       end
 
       @doc """
-      Unsubscribe the current pid to the channel
+              Unsubscribe the current pid to the channel
       """
       def unsubscribe(channel_name, options, config_overrides \\ []) do
         channel_ets_key = config(config_overrides)[:channel_ets_key]
@@ -91,14 +91,14 @@ defmodule Kalevala.Communication do
   @callback initial_channels() :: []
 
   @doc """
-  Register a new channel with a callback
+      Register a new channel with a callback
   """
   def register(pid, channel_name, callback_module, options) do
     Cache.register(pid, channel_name, callback_module, options)
   end
 
   @doc """
-  Subscribe the current PID to a channel
+      Subscribe the current PID to a channel
   """
   def subscribe(channel_ets_key, channel_name, subscriber_pid, options) do
     case :ets.lookup(channel_ets_key, channel_name) do
@@ -111,7 +111,7 @@ defmodule Kalevala.Communication do
   end
 
   @doc """
-  Unsubscribe the current PID to a channel
+      Unsubscribe the current PID to a channel
   """
   def unsubscribe(channel_ets_key, channel_name, subscriber_pid, options) do
     case :ets.lookup(channel_ets_key, channel_name) do
@@ -124,7 +124,7 @@ defmodule Kalevala.Communication do
   end
 
   @doc """
-  Publish a message on a channel
+      Publish a message on a channel
   """
   def publish(channel_ets_key, channel_name, event = %Event{topic: Message}, options) do
     case :ets.lookup(channel_ets_key, channel_name) do
@@ -137,10 +137,7 @@ defmodule Kalevala.Communication do
   end
 
   def publish(_channel_ets_key, channel_name, message, _options) do
-    Logger.warn("""
-    Trying to publish #{inspect(message)} on `#{channel_name}`.
-    Only events with a topic of #{__MODULE__} allowed.
-    """)
+    Logger.warn("Trying to publish #{inspect(message)} on `#{channel_name}`. Only events with a topic of #{__MODULE__} allowed.")
 
     :error
   end

@@ -1,8 +1,8 @@
 defmodule Kalevala.Verb.Conditions do
   @moduledoc """
-  A verb is not allowed unless all conditions are met
+      A verb is not allowed unless all conditions are met
 
-  - `location` is an array of all allowed locations, one must match
+      - `location` is an array of all allowed locations, one must match
   """
 
   @derive Jason.Encoder
@@ -11,9 +11,9 @@ end
 
 defmodule Kalevala.Verb.Context do
   @moduledoc """
-  Context for running a verb
+      Context for running a verb
 
-  - `location` where the verb is taking place
+      - `location` where the verb is taking place
   """
 
   @derive Jason.Encoder
@@ -22,9 +22,9 @@ end
 
 defmodule Kalevala.Verb do
   @moduledoc """
-  A verb is a discrete action that the player may perform
+      A verb is a discrete action that the player may perform
 
-  Things like picking up or dropping items, stealing, etc.
+      Things like picking up or dropping items, stealing, etc.
   """
 
   @derive Jason.Encoder
@@ -39,7 +39,7 @@ defmodule Kalevala.Verb do
   end
 
   @doc """
-  Check if a list of verbs contains a verb that matches the context
+      Check if a list of verbs contains a verb that matches the context
   """
   def has_matching_verb?(verbs, verb_key, context) do
     verb =
@@ -57,25 +57,25 @@ defmodule Kalevala.Verb do
   end
 
   @doc """
-  Check if a verb matches the context
+      Check if a verb matches the context
   """
   def matches?(verb, context) do
     matches_location?(verb.conditions, context)
   end
 
   @doc """
-  Check if the location condition matches the context
+      Check if the location condition matches the context
 
-  No location condition == all locations are good
+      No location condition == all locations are good
 
-      iex> Verb.matches_location?(%{location: ["room"]}, %{location: "room"})
-      true
+          iex> Verb.matches_location?(%{location: ["room\"]}, %{location: "room"})
+          true
 
-      iex> Verb.matches_location?(%{location: ["inventory/self"]}, %{location: "inventory/self"})
-      true
+          iex> Verb.matches_location?(%{location: ["inventory/self\"]}, %{location: "inventory/self"})
+          true
 
-      iex> Verb.matches_location?(%{location: ["inventory"]}, %{location: "inventory/self"})
-      true
+          iex> Verb.matches_location?(%{location: ["inventory\"]}, %{location: "inventory/self"})
+          true
   """
   def matches_location?(%{location: locations}, context) do
     Enum.any?(locations, fn location ->

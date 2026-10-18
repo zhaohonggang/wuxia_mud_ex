@@ -1,6 +1,6 @@
 defmodule Kalevala.Telnet.Protocol do
   @moduledoc """
-  ranch protocol for handling telnet connection
+      ranch protocol for handling telnet connection
   """
 
   alias Kalevala.Character.Conn.Event

@@ -1,10 +1,10 @@
 defmodule Kalevala.Character.Foreman.Channel do
   @moduledoc """
-  Helpers for dealing with communication channels
+      Helpers for dealing with communication channels
   """
 
   @doc """
-  Handle any channel updates from the conn
+      Handle any channel updates from the conn
   """
   def handle_channels(conn, state) do
     channel_changes = Enum.reverse(conn.private.channel_changes)

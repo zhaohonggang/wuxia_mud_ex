@@ -282,9 +282,9 @@ defmodule Kalevala.Character.Command.RouterMacros do
       unquote(parsec)
       |> concat(
         choice([
-          ignore(string("\""))
+          ignore(string("\\\""))
           |> utf8_string([not: ?"], min: 1)
-          |> ignore(string("\""))
+          |> ignore(string("\\\""))
           |> reduce({Enum, :join, [""]}),
           utf8_string([not: ?\s, not: ?"], min: 1)
         ])

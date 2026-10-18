@@ -10,41 +10,41 @@ end
 
 defmodule Kalevala.Output.Tables do
   @moduledoc """
-  Process table tags into ANSI tables
+      Process table tags into ANSI tables
 
-  Processes 3 tags, `{table}`, `{row}`, and `{cell}`.
+      Processes 3 tags, `{table}`, `{row}`, and `{cell}`.
 
-  Tables are automatically balanced and text in cells are centered.
+      Tables are automatically balanced and text in cells are centered.
 
-  Example table:
+      Example table:
 
-  ```
-  {table}
-    {row}
-      {cell}Player Name{/cell}
-    {/row}
-    {row}
-      {cell}HP{/cell}
-      {cell}{color foreground="red"}50/50{/color}{/cell}
-    {/row}
-  {/table}
-  ```
+      ```
+      {table}
+        {row}
+          {cell}Player Name{/cell}
+        {/row}
+        {row}
+          {cell}HP{/cell}
+          {cell}{color foreground="red"}50/50{/color}{/cell}
+        {/row}
+      {/table}
+      ```
 
-  # `{table}` Tag
+      # `{table}` Tag
 
-  This tag starts a new table. It can _only_ contain `{row}` tags as children. Any
-  whitespace is trimmed and ignored inside the table.
+      This tag starts a new table. It can _only_ contain `{row}` tags as children. Any
+      whitespace is trimmed and ignored inside the table.
 
-  # `{row}` Tag
+      # `{row}` Tag
 
-  This tag starts a new row. It can _only_ contain `{cell}` tags as children. Any
-  whitespace is trimmed and ignored inside the row.
+      This tag starts a new row. It can _only_ contain `{cell}` tags as children. Any
+      whitespace is trimmed and ignored inside the row.
 
-  # `{cell}` Tag
+      # `{cell}` Tag
 
-  This tag is a cell. It can contain strings and other tags that don't increase
-  the width of the cell, e.g. color tags. Anything other than a string is not
-  used to calculate the width of the cell, which is used for balacing the table.
+      This tag is a cell. It can contain strings and other tags that don't increase
+      the width of the cell, e.g. color tags. Anything other than a string is not
+      used to calculate the width of the cell, which is used for balacing the table.
   """
 
   use Kalevala.Output
@@ -158,10 +158,10 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Give table tags some "breathing" room
+      Give table tags some "breathing" room
 
-  - If there is text before the table and no newline, then make a new line
-  - If there is text after the table and no newline, then make a new line
+      - If there is text before the table and no newline, then make a new line
+      - If there is text after the table and no newline, then make a new line
   """
   def table_breathing_room([]), do: []
 
@@ -232,7 +232,7 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Validate rows in a table (are all row tags and have valid cells)
+      Validate rows in a table (are all row tags and have valid cells)
   """
   def valid_rows?(rows) do
     Enum.all?(rows, fn row ->
@@ -241,7 +241,7 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Validate cells in a row (are all cell tags)
+      Validate cells in a row (are all cell tags)
   """
   def valid_cells?(cells) do
     Enum.all?(cells, fn cell ->
@@ -250,7 +250,7 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Display a table
+      Display a table
   """
   def display_rows(rows) do
     width = max_width(rows)
@@ -260,13 +260,13 @@ defmodule Kalevala.Output.Tables do
     rows = Enum.map(rows, &display_row(&1, width, split_row))
 
     [
-      ~i(+#{split_row}+\n),
+      "+#{split_row}+\n",
       View.join(rows, "\n")
     ]
   end
 
   @doc """
-  Display a row's cells
+      Display a row's cells
   """
   def display_row(row, max_width, split_row) do
     width_difference = max_width - row_width(row)
@@ -281,9 +281,9 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Display a cell's contents
+      Display a cell's contents
 
-  Pads the left and right, "pulls" left when centering (if an odd number)
+      Pads the left and right, "pulls" left when centering (if an odd number)
   """
   def display_cells(cells, cell_padding) do
     left_padding = cell_padding(Float.floor(cell_padding / 2))
@@ -295,7 +295,7 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Build a list of padding spaces for a side of a cell
+      Build a list of padding spaces for a side of a cell
   """
   def cell_padding(0.0), do: []
 
@@ -306,7 +306,7 @@ defmodule Kalevala.Output.Tables do
   end
 
   @doc """
-  Find the max width of rows in a table
+      Find the max width of rows in a table
   """
   def max_width(rows) do
     rows
@@ -314,11 +314,7 @@ defmodule Kalevala.Output.Tables do
     |> row_width()
   end
 
-  @doc """
-  Get the total width of a row
-
-  Each cell tracks it's string width, plus 3 for built in padding
-  """
+  @doc false
   def row_width(row) do
     # - 1 for not tracking the final "|" of the row
     Enum.reduce(row.children, 0, fn cell, width ->

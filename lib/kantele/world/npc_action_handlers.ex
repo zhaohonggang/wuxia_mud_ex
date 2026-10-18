@@ -40,6 +40,10 @@ defmodule Kantele.World.NpcActionHandlers do
     `Kantele.World.NpcActions.Ride`，注册于 `beijing:majuan`：
     - rideyz, ridedl, rideem, ridefs, ridefz, ridehz, ridesz, ridexy, rideyd, rideyl
 
+  - `bi` / `get`：屠龙刀扬刀立威会场四关（常金鹏/元广波/麦鲸/过三拳），
+    `Kantele.World.NpcActions.Bi`，注册于 tulong 会场两房间：
+    - tulong:huichang_back、tulong:huichang（bi、get）
+
   - `yao` 要物三连：黄真（xiangyang:qianzhuang，发商令）/ 田嫂（wudu:chufang，
     发两个蛇肉包子）/ 钱正伦（beijing:bingqi，发兵器护甲）复用
     `Kantele.World.NpcActions.Yao`，按 room_id 分派。钱正伦的共享发放上限依赖

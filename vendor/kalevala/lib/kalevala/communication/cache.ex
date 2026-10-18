@@ -1,9 +1,9 @@
 defmodule Kalevala.Communication.Cache do
   @moduledoc """
-  A local cache server for communication
+      A local cache server for communication
 
-  Tracks which channels are registered to which PID and which pids
-  are subscribed to which channel.
+      Tracks which channels are registered to which PID and which pids
+      are subscribed to which channel.
   """
 
   use GenServer
@@ -18,14 +18,14 @@ defmodule Kalevala.Communication.Cache do
   end
 
   @doc """
-  Register a new channel
+      Register a new channel
   """
   def register(pid, channel_name, callback_module, options) do
     GenServer.call(pid, {:register, {channel_name, callback_module, options}})
   end
 
   @doc """
-  Get a list of all subscribers on a channel
+      Get a list of all subscribers on a channel
   """
   def subscribers(subscriber_ets_key, channel_name) do
     :ets.match_object(subscriber_ets_key, {channel_name, :"$1", :_})

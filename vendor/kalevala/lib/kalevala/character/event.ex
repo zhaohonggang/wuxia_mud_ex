@@ -1,6 +1,6 @@
 defmodule Kalevala.Character.Event do
   @moduledoc """
-  Process events in the context of a character
+      Process events in the context of a character
   """
 
   defmacro __using__(_opts) do

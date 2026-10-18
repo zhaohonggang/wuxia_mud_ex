@@ -1,6 +1,6 @@
 defmodule Kalevala.World.Room.Private do
   @moduledoc """
-  Store private information for a room, e.g. characters in the room
+      Store private information for a room, e.g. characters in the room
   """
 
   defstruct characters: [], item_instances: []
@@ -8,7 +8,7 @@ end
 
 defmodule Kalevala.World.Room.Feature do
   @moduledoc """
-  A room feature is a highlighted part of a room
+      A room feature is a highlighted part of a room
   """
 
   defstruct [:id, :keyword, :short_description, :description]
@@ -16,7 +16,7 @@ end
 
 defmodule Kalevala.World.Room do
   @moduledoc """
-  Rooms are the base unit of space in Kalevala
+      Rooms are the base unit of space in Kalevala
   """
 
   use GenServer
@@ -32,7 +32,7 @@ defmodule Kalevala.World.Room do
   alias Kalevala.World.Room.Private
 
   @doc """
-  Confirm movement for a character
+      Confirm movement for a character
   """
   def confirm_movement(event = %Event{topic: Voting, data: %{aborted: true}}, _room_id) do
     event
@@ -43,14 +43,14 @@ defmodule Kalevala.World.Room do
   end
 
   @doc """
-  Replace internal room state
+      Replace internal room state
   """
   def update(pid, room) do
     GenServer.call(pid, {:update, room})
   end
 
   @doc """
-  Replace internal room items state
+      Replace internal room items state
   """
   def update_items(pid, item_instances) do
     GenServer.call(pid, {:update_items, item_instances})
@@ -170,111 +170,111 @@ end
 
 defprotocol Kalevala.World.Room.Callbacks do
   @doc """
-  Called when the room is initializing
+      Called when the room is initializing
   """
   def init(room)
 
   @doc """
-  Called after the room process is started
+      Called after the room process is started
 
-  Directly after `init` is completed.
+      Directly after `init` is completed.
   """
   def initialized(room)
 
   @doc """
-  Callback for when a new event is received
+      Callback for when a new event is received
   """
   def event(room, context, event)
 
   @doc """
-  Load the exits for a given room
+      Load the exits for a given room
 
-  Used when a character is trying to move, the appropriate exit is chosen
-  and forwarded into movement request callbacks. Since this is a common thing
-  that will happen 99% of the time, Kalevala handles it.
+      Used when a character is trying to move, the appropriate exit is chosen
+      and forwarded into movement request callbacks. Since this is a common thing
+      that will happen 99% of the time, Kalevala handles it.
   """
   def exits(room)
 
   @doc """
-  Convert item instances into items
+      Convert item instances into items
   """
   def load_item(room, item_instance)
 
   @doc """
-  Callback for allowing an item drop off
+      Callback for allowing an item drop off
 
-  A character is requesting to pick up an item, this let's the room
-  accept or reject the request.
+      A character is requesting to pick up an item, this let's the room
+      accept or reject the request.
   """
   def item_request_drop(room, context, item_request_drop, item_instance)
 
   @doc """
-  Callback for allowing an item pick up
+      Callback for allowing an item pick up
 
-  A character is requesting to pick up an item, this let's the room
-  accept or reject the request.
+      A character is requesting to pick up an item, this let's the room
+      accept or reject the request.
   """
   def item_request_pickup(room, context, item_request_pickup, item_instance)
 
   @doc """
-  Callback for the room to hook into movement between exits
+      Callback for the room to hook into movement between exits
 
-  The character is requesting to move via an exit, a tuple allowing or rejecting
-  the movement before being pitched up to the Zone should be returned.
+      The character is requesting to move via an exit, a tuple allowing or rejecting
+      the movement before being pitched up to the Zone should be returned.
 
-  Can immediately terminate a room before being checked in a more detailed fashion
-  with `confirm_movement/2` below.
+      Can immediately terminate a room before being checked in a more detailed fashion
+      with `confirm_movement/2` below.
   """
   def movement_request(room, context, movement_request, room_exit)
 
   @doc """
-  Callback for confirming or aborting character movement
+      Callback for confirming or aborting character movement
 
-  Called while the Zone is checking each side of the exit to know if the movement
-  is indeed allowed. Returning the original event allows movement to proceed, otherwise
-  return an aborted event to prevent movement.
+      Called while the Zone is checking each side of the exit to know if the movement
+      is indeed allowed. Returning the original event allows movement to proceed, otherwise
+      return an aborted event to prevent movement.
 
-  Hook to allow for the room to reject movement for custom reasons, e.g. an NPC
-  is blocking the exit and needs to be convinced first, or there is a trap blocking
-  the exit.
+      Hook to allow for the room to reject movement for custom reasons, e.g. an NPC
+      is blocking the exit and needs to be convinced first, or there is a trap blocking
+      the exit.
   """
   def confirm_movement(room, context, event)
 end
 
 defmodule Kalevala.World.BasicRoom do
   @moduledoc """
-  A basic room
+      A basic room
 
-  These are the minimum fields a room should have. You likely want more, so
-  we have a protocol `Kalevala.World.Room.Callbacks` to let you create your own
-  local struct.
+      These are the minimum fields a room should have. You likely want more, so
+      we have a protocol `Kalevala.World.Room.Callbacks` to let you create your own
+      local struct.
 
-  The following functions provide default implementations you can use for the
-  `defimpl` of that protocol.
+      The following functions provide default implementations you can use for the
+      `defimpl` of that protocol.
 
-  ```elixir
-  defimpl Kalevala.World.Room.Callbacks do
-    alias Kalevala.World.BasicRoom
+      ```elixir
+      defimpl Kalevala.World.Room.Callbacks do
+        alias Kalevala.World.BasicRoom
 
-    @impl true
-    def movement_request(_room, context, event, room_exit),
-      do: BasicRoom.movement_request(context, event, room_exit)
+        @impl true
+        def movement_request(_room, context, event, room_exit),
+          do: BasicRoom.movement_request(context, event, room_exit)
 
-    @impl true
-    def confirm_movement(_room, context, event),
-      do: BasicRoom.confirm_movement(context, event)
+        @impl true
+        def confirm_movement(_room, context, event),
+          do: BasicRoom.confirm_movement(context, event)
 
-    @impl true
-    def item_request_drop(_room, context, event, item_instance),
-      do: BasicRoom.item_request_drop(context, event, item_instance)
+        @impl true
+        def item_request_drop(_room, context, event, item_instance),
+          do: BasicRoom.item_request_drop(context, event, item_instance)
 
-    @impl true
-    def item_request_pickup(_room, context, event, item_instance),
-      do: BasicRoom.item_request_pickup(context, event, item_instance)
+        @impl true
+        def item_request_pickup(_room, context, event, item_instance),
+          do: BasicRoom.item_request_pickup(context, event, item_instance)
 
-    # ...
-  end
-  ```
+        # ...
+      end
+      ```
   """
 
   defstruct [:id]

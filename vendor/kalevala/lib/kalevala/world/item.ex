@@ -1,8 +1,8 @@
 defmodule Kalevala.World.Item do
   @moduledoc """
-  Item struct
+      Item struct
 
-  Common data that all items will have
+      Common data that all items will have
   """
 
   alias Kalevala.Verb
@@ -22,7 +22,7 @@ defmodule Kalevala.World.Item do
   @type t() :: %__MODULE__{}
 
   @doc """
-  Match a string against the item
+      Match a string against the item
   """
   @callback matches?(item :: t(), keyword :: String.t()) :: boolean()
 
@@ -40,7 +40,7 @@ defmodule Kalevala.World.Item do
   end
 
   @doc """
-  Filter the item's verbs based on the current context
+      Filter the item's verbs based on the current context
   """
   def context_verbs(item, context) do
     Enum.filter(item.verbs, fn action ->
@@ -51,9 +51,9 @@ end
 
 defmodule Kalevala.World.Item.ItemNotLoaded do
   @moduledoc """
-  An empty struct for item instances to include by default
+      An empty struct for item instances to include by default
 
-  To know that the item is _not_ loaded and you should load it
+      To know that the item is _not_ loaded and you should load it
   """
 
   @derive Jason.Encoder
@@ -62,9 +62,9 @@ end
 
 defmodule Kalevala.World.Item.Instance do
   @moduledoc """
-  Item instance struct
+      Item instance struct
 
-  A specific instance of an item in the world
+      A specific instance of an item in the world
   """
 
   alias Kalevala.World.Item.ItemNotLoaded
@@ -75,7 +75,7 @@ defmodule Kalevala.World.Item.Instance do
   @type t() :: %__MODULE__{}
 
   @doc """
-  Generate a random instance ID
+      Generate a random instance ID
   """
   def generate_id() do
     bytes =

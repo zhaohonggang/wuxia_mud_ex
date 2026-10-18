@@ -1,10 +1,10 @@
 defmodule Kalevala.ConnTest do
   @moduledoc """
-  Test helpers for testing Controllers/Commands/Actions/etc
+      Test helpers for testing Controllers/Commands/Actions/etc
   """
 
   @doc """
-  Generate an event struct
+      Generate an event struct
   """
   def event(character, topic, data) do
     %Kalevala.Event{
@@ -16,7 +16,7 @@ defmodule Kalevala.ConnTest do
   end
 
   @doc """
-  Build a simple conn struct for the character
+      Build a simple conn struct for the character
   """
   def build_conn(character, session \\ %{}) do
     %Kalevala.Character.Conn{
@@ -29,9 +29,9 @@ defmodule Kalevala.ConnTest do
   end
 
   @doc """
-  Assert the expected actions match the actions stored in the conn
+      Assert the expected actions match the actions stored in the conn
 
-  This expects the order to match and have no extra actions in the `actual_actions`.
+      This expects the order to match and have no extra actions in the `actual_actions`.
   """
   defmacro assert_actions(actual_actions, expected_actions) do
     quote do

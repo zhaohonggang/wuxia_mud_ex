@@ -1,6 +1,6 @@
 defprotocol Kalevala.Brain.Node do
   @moduledoc """
-  Process a node in the behavior tree
+      Process a node in the behavior tree
   """
 
   def run(node, conn, event)
@@ -8,7 +8,7 @@ end
 
 defmodule Kalevala.Brain.NullNode do
   @moduledoc """
-  A no-op node
+      A no-op node
   """
 
   defstruct []
@@ -20,7 +20,7 @@ end
 
 defmodule Kalevala.Brain.FirstSelector do
   @moduledoc """
-  Processes each node one at a time and stops processing when the first one succeeds
+      Processes each node one at a time and stops processing when the first one succeeds
   """
 
   defstruct [:nodes]
@@ -53,7 +53,7 @@ end
 
 defmodule Kalevala.Brain.ConditionalSelector do
   @moduledoc """
-  Processes each node one at a time and stops processing when the first one fails
+      Processes each node one at a time and stops processing when the first one fails
   """
 
   defstruct [:nodes]
@@ -77,7 +77,7 @@ end
 
 defmodule Kalevala.Brain.RandomSelector do
   @moduledoc """
-  Processes a random node
+      Processes a random node
   """
 
   defstruct [:nodes]
@@ -98,7 +98,7 @@ end
 
 defmodule Kalevala.Brain.Sequence do
   @moduledoc """
-  Process each node one at a time
+      Process each node one at a time
   """
 
   defstruct [:nodes]
@@ -122,9 +122,9 @@ end
 
 defmodule Kalevala.Brain.Condition do
   @moduledoc """
-  Check if a condition is valid
+      Check if a condition is valid
 
-  Returns error if it does not match
+      Returns error if it does not match
   """
 
   defstruct [:data, :type]
@@ -146,43 +146,43 @@ end
 
 defmodule Kalevala.Brain.Variable do
   @moduledoc """
-  Handle variable data in brain nodes
+      Handle variable data in brain nodes
 
-  Replaces variables in the format of `${variable_name}`. Works with
-  a dot notation for nested variables.
+      Replaces variables in the format of `${variable_name}`. Works with
+      a dot notation for nested variables.
 
-  Example:
+      Example:
 
-  The starting data
+      The starting data
 
-       %{
-         channel_name: "rooms:${room_id}",
-         delay: 500,
-         text: "Welcome, ${character.name}!"
-       }
+           %{
+             channel_name: "rooms:${room_id}",
+             delay: 500,
+             text: "Welcome, ${character.name}!"
+           }
 
-  With the event data
+      With the event data
 
-      %{
-        room_id: "room-id",
-        character: %{
-          name: "Elias"
-        }
-      }
+          %{
+            room_id: "room-id",
+            character: %{
+              name: "Elias"
+            }
+          }
 
-  Will replace to the following
+      Will replace to the following
 
-       %{
-         channel_name: "rooms:room-id",
-         delay: 500,
-         text: "Welcome, Elias!"
-       }
+           %{
+             channel_name: "rooms:room-id",
+             delay: 500,
+             text: "Welcome, Elias!"
+           }
   """
 
   defstruct [:path, :original, :reference, :value]
 
   @doc """
-  Replace action data variables with event data
+      Replace action data variables with event data
   """
   def replace(data, event_data) do
     data
@@ -192,7 +192,7 @@ defmodule Kalevala.Brain.Variable do
   end
 
   @doc """
-  Detect variables inside of the data
+      Detect variables inside of the data
   """
   def detect_variables(data, path \\ []) do
     data
@@ -214,7 +214,7 @@ defmodule Kalevala.Brain.Variable do
   defp find_variables(_, _), do: nil
 
   @doc """
-  Scan the value for a variable, returning `Variable` structs
+      Scan the value for a variable, returning `Variable` structs
   """
   def variables(value, path) do
     Enum.map(Regex.scan(~r/\$\{(?<variable>[\w\.]+)\}/, value), fn [string, variable] ->
@@ -245,10 +245,10 @@ defmodule Kalevala.Brain.Variable do
   end
 
   @doc """
-  Replace detected and dereferenced variables in the data
+      Replace detected and dereferenced variables in the data
 
-  Fails if any variables still contain an `:error` value, they were
-  not able to be dereferenced.
+      Fails if any variables still contain an `:error` value, they were
+      not able to be dereferenced.
   """
   def replace_variables(variables, data) do
     failed_replace? =
@@ -276,7 +276,7 @@ defmodule Kalevala.Brain.Variable do
   end
 
   @doc """
-  Dereference a variable path from a map of data
+      Dereference a variable path from a map of data
   """
   def dereference(data, variable_path) do
     Enum.reduce(variable_path, data, fn
@@ -303,9 +303,9 @@ defmodule Kalevala.Brain.Variable do
   defp maybe_destruct(data), do: data
 
   @doc """
-  Walk the resulting data map to convert keys from atoms to strings
+      Walk the resulting data map to convert keys from atoms to strings
 
-  This is useful when sending the resulting data struct to action params
+      This is useful when sending the resulting data struct to action params
   """
   def stringify_keys(nil), do: nil
 
@@ -324,7 +324,7 @@ end
 
 defmodule Kalevala.Brain.Action do
   @moduledoc """
-  Node to trigger an action
+      Node to trigger an action
   """
 
   defstruct [:data, :type, delay: 0]
@@ -356,7 +356,7 @@ end
 
 defmodule Kalevala.Brain.StateSet do
   @moduledoc """
-  Node to set meta values on a character
+      Node to set meta values on a character
   """
 
   defstruct [:data]
@@ -394,7 +394,7 @@ end
 
 defmodule Kalevala.Brain.Conditions.EventMatch do
   @moduledoc """
-  Condition check for the event being a message and the regex matches
+      Condition check for the event being a message and the regex matches
   """
 
   alias Kalevala.Character.Conn
@@ -425,7 +425,7 @@ end
 
 defmodule Kalevala.Brain.Conditions.MessageMatch do
   @moduledoc """
-  Condition check for the event being a message and the regex matches
+      Condition check for the event being a message and the regex matches
   """
 
   @behaviour Kalevala.Brain.Condition
@@ -454,7 +454,7 @@ end
 
 defmodule Kalevala.Brain.Conditions.StateMatch do
   @moduledoc """
-  Match values in the meta map
+      Match values in the meta map
   """
 
   alias Kalevala.Brain
@@ -495,9 +495,9 @@ end
 
 defmodule Kalevala.Brain.State do
   @moduledoc """
-  Keep state around a character's brain
+      Keep state around a character's brain
 
-  A key/value store that allows for expiring keys
+      A key/value store that allows for expiring keys
   """
 
   alias Kalevala.Brain.StateValue
@@ -505,7 +505,7 @@ defmodule Kalevala.Brain.State do
   defstruct values: []
 
   @doc """
-  Get a key from the store
+      Get a key from the store
   """
   def get(state, key, compare_time) do
     value =
@@ -537,7 +537,7 @@ defmodule Kalevala.Brain.State do
   defp expired?(_value, _compare_time), do: false
 
   @doc """
-  Put a key in the store, with an optional expiration time
+      Put a key in the store, with an optional expiration time
   """
   def put(state, key, value, expires_at) do
     values =
@@ -566,7 +566,7 @@ end
 
 defmodule Kalevala.Brain do
   @moduledoc """
-  A struct for holding a character's brain and state
+      A struct for holding a character's brain and state
   """
 
   alias Kalevala.Brain.Node
@@ -576,14 +576,14 @@ defmodule Kalevala.Brain do
   defstruct [:root, state: %Kalevala.Brain.State{}]
 
   @doc """
-  Get a value from the brain's state
+      Get a value from the brain's state
   """
   def get(brain, key, compare_time \\ Time.utc_now()) do
     State.get(brain.state, key, compare_time)
   end
 
   @doc """
-  Put a value in the brain's state
+      Put a value in the brain's state
   """
   def put(brain, key, value, expires_at \\ nil) do
     state = State.put(brain.state, key, value, expires_at)
@@ -591,7 +591,7 @@ defmodule Kalevala.Brain do
   end
 
   @doc """
-  Process a new event based on the character's brain data
+      Process a new event based on the character's brain data
   """
   def run(brain, conn, event) do
     brain.root

@@ -4,17 +4,12 @@ defmodule Kalevala.Cache do
 
   ## Example
 
-  ```
-  defmodule Kantele.World.Items do
-    use Kalevala.Cache
-  end
-  ```
+      defmodule Kantele.World.Items do
+        use Kalevala.Cache
+      end
 
-  ```
-  iex> Kalevala.Items.put("sammatti:sword", %Item{})
-  iex> Kalevala.Items.get("sammatti:sword")
-  %Item{}
-  ```
+      iex> Kalevala.Items.put("sammatti:sword", %Item{})
+      iex> Kalevala.Items.get("sammatti:sword")
   """
 
   use GenServer

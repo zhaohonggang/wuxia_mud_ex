@@ -1,10 +1,10 @@
 defmodule Kalevala do
   @moduledoc """
-  Documentation for Kalevala.
+      Documentation for Kalevala.
   """
 
   @doc """
-  Get the loaded version of Kalevala
+      Get the loaded version of Kalevala
   """
   def version() do
     {:kalevala, _, version} =

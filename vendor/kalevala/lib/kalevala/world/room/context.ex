@@ -1,6 +1,6 @@
 defmodule Kalevala.World.Room.Context do
   @moduledoc """
-  Context for performing work for an event in a room
+      Context for performing work for an event in a room
   """
 
   alias Kalevala.Event
@@ -11,7 +11,7 @@ defmodule Kalevala.World.Room.Context do
   defstruct [:data, assigns: %{}, characters: [], events: [], item_instances: [], output: []]
 
   @doc """
-  Create a new context struct from room state
+      Create a new context struct from room state
   """
   def new(state) do
     item_instances =
@@ -56,7 +56,7 @@ defmodule Kalevala.World.Room.Context do
   end
 
   @doc """
-  Render text back to a pid
+      Render text back to a pid
   """
   def render(context, to_pid, view, template, assigns \\ %{}) do
     assigns = Map.merge(context.assigns, assigns)
@@ -65,7 +65,7 @@ defmodule Kalevala.World.Room.Context do
   end
 
   @doc """
-  Render a prompt back to a pid
+      Render a prompt back to a pid
   """
   def prompt(context, to_pid, view, template, assigns) do
     assigns = Map.merge(context.assigns, assigns)
@@ -74,7 +74,7 @@ defmodule Kalevala.World.Room.Context do
   end
 
   @doc """
-  Add to the assignment map on the context
+      Add to the assignment map on the context
   """
   def assign(context, key, value) do
     assigns = Map.put(context.assigns, key, value)
@@ -82,7 +82,7 @@ defmodule Kalevala.World.Room.Context do
   end
 
   @doc """
-  Send an event back to a pid
+      Send an event back to a pid
   """
   def event(context, to_pid, from_pid, topic, data) do
     event = %Kalevala.Event{
@@ -95,7 +95,7 @@ defmodule Kalevala.World.Room.Context do
   end
 
   @doc """
-  Handle context after processing an event
+      Handle context after processing an event
   """
   def handle_context(context) do
     context

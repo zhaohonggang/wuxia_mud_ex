@@ -1,12 +1,12 @@
 defprotocol Kalevala.Meta.Trim do
   @moduledoc """
-  Protocol for dealing with extra metadata on an instance from Kalevala
+      Protocol for dealing with extra metadata on an instance from Kalevala
   """
 
   @doc """
-  Trim metadata down to fields that should be publicly accessible
+      Trim metadata down to fields that should be publicly accessible
 
-  These will be included when being sent around in events
+      These will be included when being sent around in events
   """
   def trim(meta)
 end
@@ -29,7 +29,7 @@ end
 
 defmodule Kalevala.Meta.Trimmed do
   @moduledoc """
-  Struct to tag trimmed metadata as already trimmed
+      Struct to tag trimmed metadata as already trimmed
   """
 
   defstruct []
@@ -53,11 +53,11 @@ end
 
 defmodule Kalevala.Meta do
   @moduledoc """
-  Trim extra metadata on an instance metadata
+      Trim extra metadata on an instance metadata
   """
 
   @doc """
-  Trim extra metadata on an instance metadata
+      Trim extra metadata on an instance metadata
   """
   def trim(meta) do
     meta

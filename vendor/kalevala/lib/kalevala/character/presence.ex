@@ -1,6 +1,6 @@
 defmodule Kalevala.Character.Presence do
   @moduledoc """
-  Track the presence of online characters
+      Track the presence of online characters
   """
 
   use GenServer
@@ -8,12 +8,12 @@ defmodule Kalevala.Character.Presence do
   alias Kalevala.Character.Presence.Implementation
 
   @doc """
-  Notify the callback module that a character is online
+      Notify the callback module that a character is online
   """
   @callback online(Character.t()) :: :ok
 
   @doc """
-  Notify the callback module that a character is offline
+      Notify the callback module that a character is offline
   """
   @callback offline(Character.t()) :: :ok
 
@@ -49,14 +49,14 @@ defmodule Kalevala.Character.Presence do
   end
 
   @doc """
-  Start tracking a character (and it's foreman process)
+      Start tracking a character (and it's foreman process)
   """
   def track(pid, character) do
     GenServer.call(pid, {:track, character})
   end
 
   @doc """
-  Load all online characters
+      Load all online characters
   """
   def characters(ets_key) do
     ets_key

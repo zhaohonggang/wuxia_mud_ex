@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Kalevala.Gen.Command do
   @moduledoc """
-  Generate files for a new command (command / event / views)
+      Generate files for a new command (command / event / views)
   """
 
   use Mix.Task

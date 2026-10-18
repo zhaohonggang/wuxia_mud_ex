@@ -1,8 +1,8 @@
 defmodule Kalevala.World.Exit do
   @moduledoc """
-  Exits link rooms together in one exit_name
+      Exits link rooms together in one exit_name
 
-  To link rooms together, create exits in both exit_names
+      To link rooms together, create exits in both exit_names
   """
 
   @type t() :: %__MODULE__{}

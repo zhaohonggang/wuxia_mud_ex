@@ -1,6 +1,6 @@
 defmodule Kalevala.Event.Metadata do
   @moduledoc """
-  Metadata for an event, used for telemetry
+      Metadata for an event, used for telemetry
   """
 
   defstruct [:start_time, :end_time]
@@ -8,7 +8,7 @@ end
 
 defmodule Kalevala.Event.Message do
   @moduledoc """
-  Struct for sending a message
+      Struct for sending a message
   """
 
   @type t() :: %__MODULE__{}
@@ -16,7 +16,7 @@ defmodule Kalevala.Event.Message do
   defstruct [:channel_name, :character, :id, :text, meta: %{}, type: "speech"]
 
   @doc """
-  Generate a random ID
+      Generate a random ID
   """
   def generate_id() do
     bytes =
@@ -30,7 +30,7 @@ end
 
 defmodule Kalevala.Event do
   @moduledoc """
-  An internal event
+      An internal event
   """
 
   @type t() :: %__MODULE__{}
@@ -60,21 +60,21 @@ defmodule Kalevala.Event do
   defstruct [:acting_character, :data, :from_pid, :topic, metadata: %__MODULE__.Metadata{}]
 
   @doc """
-  Set the start time on an event
+      Set the start time on an event
   """
   def set_start_time(event) do
     update_metadata(event, %{event.metadata | start_time: System.monotonic_time()})
   end
 
   @doc """
-  Set the end time on an event
+      Set the end time on an event
   """
   def set_end_time(event) do
     update_metadata(event, %{event.metadata | end_time: System.monotonic_time()})
   end
 
   @doc """
-  Timing for an event in microseconds
+      Timing for an event in microseconds
   """
   def timing(event) do
     event.metadata.end_time - event.metadata.start_time
@@ -87,7 +87,7 @@ end
 
 defmodule Kalevala.Event.Delayed do
   @moduledoc """
-  Struct for sending a message
+      Struct for sending a message
   """
 
   @type t() :: %__MODULE__{}
@@ -102,7 +102,7 @@ defmodule Kalevala.Event.Delayed do
   ]
 
   @doc """
-  Turn a delayed event into a stanard event
+      Turn a delayed event into a stanard event
   """
   def to_event(delayed_event) do
     %Kalevala.Event{
@@ -117,7 +117,7 @@ end
 
 defmodule Kalevala.Event.Display do
   @moduledoc """
-  An event to display text/data back to the user
+      An event to display text/data back to the user
   """
 
   defstruct output: [], options: []

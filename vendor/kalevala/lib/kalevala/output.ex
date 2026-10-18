@@ -1,6 +1,6 @@
 defmodule Kalevala.Output.Context do
   @moduledoc """
-  Context struct for an output callback module
+      Context struct for an output callback module
   """
 
   defstruct data: [], meta: %{}, opts: %{}
@@ -8,10 +8,10 @@ end
 
 defmodule Kalevala.Output do
   @moduledoc """
-  An output post processor for text from Kalevala
+      An output post processor for text from Kalevala
 
-  Allow the game to modify text leaving Kalevala, such as to insert
-  ANSI codes for color.
+      Allow the game to modify text leaving Kalevala, such as to insert
+      ANSI codes for color.
   """
 
   alias Kalevala.Output.Context
@@ -80,15 +80,15 @@ end
 
 defmodule Kalevala.Output.Tags do
   @moduledoc """
-  Output processor that parses tags
+      Output processor that parses tags
   """
 
   use Kalevala.Output
 
   @doc """
-  Escape special tag characters in a string
+      Escape special tag characters in a string
 
-  To prevent characters from using these tags in commands
+      To prevent characters from using these tags in commands
   """
   def escape(string) do
     string
@@ -97,19 +97,19 @@ defmodule Kalevala.Output.Tags do
   end
 
   @doc """
-  Escape a string for use inside a tag attribute value (`name="..."`)
+      Escape a string for use inside a tag attribute value (`name="..."`)
 
-  Attribute values are delimited by double quotes and must not contain raw
-  quotes or tag braces, otherwise the tag parser cannot find the closing
-  quote/brace and the whole line falls back to raw text. This escapes the
-  backslash, double quote, and brace characters so arbitrary user/world data
-  (item names, descriptions, room names, ...) round-trips through
-  `parse_tag_attributes/1` unchanged.
+      Attribute values are delimited by double quotes and must not contain raw
+      quotes or tag braces, otherwise the tag parser cannot find the closing
+      quote/brace and the whole line falls back to raw text. This escapes the
+      backslash, double quote, and brace characters so arbitrary user/world data
+      (item names, descriptions, room names, ...) round-trips through
+      `parse_tag_attributes/1` unchanged.
   """
   def escape_attribute(string) do
     string
     |> String.replace("\\", "\\\\")
-    |> String.replace("\"", "\\\"")
+    |> String.replace("\\\"", "\\\\\"")
     |> String.replace(~r/{/, "\\{")
     |> String.replace(~r/}/, "\\}")
   end
@@ -242,7 +242,7 @@ defmodule Kalevala.Output.Tags do
   end
 
   def parse_tag_attributes(tag) do
-    case Regex.run(~r/(?<name>[\w-]+)="(?<value>(?:[^"\\]|\\.)*)"/u, tag) do
+    case Regex.run(~r/(?<name>[\w-]+)="(?<value>(?:[^\"\\]|\\.)*)"/u, tag) do
       [string, name, value] ->
         [
           {name, unescape_attribute(value)}
@@ -269,7 +269,7 @@ end
 
 defmodule Kalevala.Output.StripTags do
   @moduledoc """
-  Remove any open and close tag tuples from the data
+      Remove any open and close tag tuples from the data
   """
 
   use Kalevala.Output
@@ -290,7 +290,7 @@ end
 
 defmodule Kalevala.Output.TagColors do
   @moduledoc """
-  Process `color` tags into ANSI escape codes
+      Process `color` tags into ANSI escape codes
   """
 
   use Kalevala.Output

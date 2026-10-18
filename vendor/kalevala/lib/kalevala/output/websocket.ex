@@ -11,9 +11,9 @@ end
 
 defmodule Kalevala.Output.Websocket do
   @moduledoc """
-  Processes tags for the websocket output
+      Processes tags for the websocket output
 
-  Finds matching opening and closing tags and groups children together
+      Finds matching opening and closing tags and groups children together
   """
 
   use Kalevala.Output

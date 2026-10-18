@@ -1,6 +1,6 @@
 defmodule Kalevala.World.Zone do
   @moduledoc """
-  Zones group together Rooms into a logical space
+      Zones group together Rooms into a logical space
   """
 
   use GenServer
@@ -13,12 +13,12 @@ defmodule Kalevala.World.Zone do
   @type t() :: map()
 
   @doc """
-  Called when the zone is initializing
+      Called when the zone is initializing
   """
   @callback init(zone :: t()) :: t()
 
   @doc """
-  Replace internal zone state
+      Replace internal zone state
   """
   def update(pid, zone) do
     GenServer.call(pid, {:update, zone})
@@ -69,10 +69,10 @@ end
 
 defmodule Kalevala.World.BasicZone do
   @moduledoc """
-  A basic Zone
+      A basic Zone
 
-  These are the minimum fields a zone should have. You likely want more, so
-  you can create your own local struct with these and more fields.
+      These are the minimum fields a zone should have. You likely want more, so
+      you can create your own local struct with these and more fields.
   """
 
   defstruct [:id]
@@ -80,7 +80,7 @@ end
 
 defmodule Kalevala.World.Zone.Movement do
   @moduledoc """
-  Zone movement functions
+      Zone movement functions
   """
 
   alias Kalevala.Event

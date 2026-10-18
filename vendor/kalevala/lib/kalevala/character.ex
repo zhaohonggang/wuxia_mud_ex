@@ -1,8 +1,8 @@
 defmodule Kalevala.Character do
   @moduledoc """
-  Character struct
+      Character struct
 
-  Common data that all characters will have
+      Common data that all characters will have
   """
 
   defstruct [
@@ -32,7 +32,7 @@ defmodule Kalevala.Character do
   end
 
   @doc """
-  Check if a keyword matches the character
+      Check if a keyword matches the character
   """
   def matches?(character, keyword) do
     character.id == keyword ||
@@ -40,7 +40,7 @@ defmodule Kalevala.Character do
   end
 
   @doc """
-  Generate a random ID
+      Generate a random ID
   """
   def generate_id() do
     bytes =
