@@ -29,13 +29,17 @@ defmodule Kantele.World.NpcActionHandlers do
   仅当某房间某 NPC verb 的 handler 被真正移植并注册后，该动作才被
   拦截激活。
 
-  ## 已注册(P5-1c-3 首个样板 `yun`)
+  ## 已注册(P5-1c-3)
 
-  `yun` 是纯输出动作（`arg == "roar"` 广播一条 vision 文案，否则 `return 0`
-  放行），零状态变更，四个 NPC 注册了它：
+  - `yun`：纯输出动作（`arg == "roar"` 广播一条 vision 文案，否则 `return 0`
+    放行），零状态变更，四个 NPC 注册了它：
     - 殷素素：tulong:huichang_back、tulong:huichang
     - 赵一伤：tulong:jiulou、tulong:was_dayuan
-  """
+
+  - `ride*` 十连：beijing 马童快速旅行（八卦门专属），10 个动词复用
+    `Kantele.World.NpcActions.Ride`，注册于 `beijing:majuan`：
+    - rideyz, ridedl, rideem, ridefs, ridefz, ridehz, ridesz, ridexy, rideyd, rideyl
+    """
   # 房间级注册表：room_id -> (verb -> {module, function})。
   @registry %{
     "tulong:huichang_back" => %{
@@ -49,6 +53,18 @@ defmodule Kantele.World.NpcActionHandlers do
     },
     "tulong:was_dayuan" => %{
       "yun" => {Kantele.World.NpcActions.Yun, :run}
+    },
+    "beijing:majuan" => %{
+      "rideyz" => {Kantele.World.NpcActions.Ride, :run},
+      "ridedl" => {Kantele.World.NpcActions.Ride, :run},
+      "rideem" => {Kantele.World.NpcActions.Ride, :run},
+      "ridefs" => {Kantele.World.NpcActions.Ride, :run},
+      "ridefz" => {Kantele.World.NpcActions.Ride, :run},
+      "ridehz" => {Kantele.World.NpcActions.Ride, :run},
+      "ridesz" => {Kantele.World.NpcActions.Ride, :run},
+      "ridexy" => {Kantele.World.NpcActions.Ride, :run},
+      "rideyd" => {Kantele.World.NpcActions.Ride, :run},
+      "rideyl" => {Kantele.World.NpcActions.Ride, :run}
     }
   }
 

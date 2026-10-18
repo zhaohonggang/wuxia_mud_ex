@@ -24,6 +24,56 @@ defmodule Kantele.World.NpcActionHandlersTest do
                NpcActionHandlers.lookup("tulong:was_dayuan", "yun")
     end
 
+    test "beijing:majuan 的 rideyz → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "rideyz")
+    end
+
+    test "beijing:majuan 的 ridedl → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "ridedl")
+    end
+
+    test "beijing:majuan 的 rideem → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "rideem")
+    end
+
+    test "beijing:majuan 的 ridefs → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "ridefs")
+    end
+
+    test "beijing:majuan 的 ridefz → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "ridefz")
+    end
+
+    test "beijing:majuan 的 ridehz → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "ridehz")
+    end
+
+    test "beijing:majuan 的 ridesz → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "ridesz")
+    end
+
+    test "beijing:majuan 的 ridexy → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "ridexy")
+    end
+
+    test "beijing:majuan 的 rideyd → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "rideyd")
+    end
+
+    test "beijing:majuan 的 rideyl → 已注册的 Ride handler" do
+      assert {:ok, {Kantele.World.NpcActions.Ride, :run}} =
+               NpcActionHandlers.lookup("beijing:majuan", "rideyl")
+    end
+
     test "未注册房间 → {:unimplemented, verb}" do
       assert {:unimplemented, "yun"} = NpcActionHandlers.lookup("nonexistent:room", "yun")
     end
@@ -31,6 +81,11 @@ defmodule Kantele.World.NpcActionHandlersTest do
     test "注册房间但未注册 verb（exert）→ {:unimplemented, verb}" do
       assert {:unimplemented, "exert"} =
                NpcActionHandlers.lookup("tulong:huichang_back", "exert")
+    end
+
+    test "beijing:majuan 未注册 verb（yun）→ {:unimplemented, verb}" do
+      assert {:unimplemented, "yun"} =
+               NpcActionHandlers.lookup("beijing:majuan", "yun")
     end
 
     test "非字符串房间 id / verb → {:unimplemented, :unknown}" do
@@ -51,14 +106,15 @@ defmodule Kantele.World.NpcActionHandlersTest do
   end
 
   describe "registered_rooms/0" do
-    test "返回已注册房间 id 列表，包含 4 个 yun 房间" do
+    test "返回已注册房间 id 列表，包含 4 个 yun 房间和 1 个 ride* 房间" do
       rooms = NpcActionHandlers.registered_rooms()
 
       assert "tulong:huichang_back" in rooms
       assert "tulong:huichang" in rooms
       assert "tulong:jiulou" in rooms
       assert "tulong:was_dayuan" in rooms
-      assert length(rooms) == 4
+      assert "beijing:majuan" in rooms
+      assert length(rooms) == 5
     end
   end
 end
