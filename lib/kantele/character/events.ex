@@ -308,5 +308,9 @@ defmodule Kantele.Character.NonPlayerEvents do
     module(InvasionEquipEvent) do
       event("invasion/equip", :call)
     end
+
+    module(CallOutEvent) do
+      event("npc/call-out", :run)
+    end
   end
 end
