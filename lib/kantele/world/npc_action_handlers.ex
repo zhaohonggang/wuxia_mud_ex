@@ -44,6 +44,11 @@ defmodule Kantele.World.NpcActionHandlers do
     发两个蛇肉包子）/ 钱正伦（beijing:bingqi，发兵器护甲）复用
     `Kantele.World.NpcActions.Yao`，按 room_id 分派。钱正伦的共享发放上限依赖
     `Kantele.World.NpcActions.Counters`（按 room_id 计数）。
+
+  - `decide` 二连：陆小凤（guiyun:taihu，发引荐书信）/ 黄真
+    （xiangyang:qianzhuang，商业协会入退）复用
+    `Kantele.World.NpcActions.Decide`，按 room_id 分派。海公公
+    （beijing:dongchang，昏迷红区）/ 水笙（register:entry，邮箱注册）暂未移植。
   """
   # 房间级注册表：room_id -> (verb -> {module, function})。
   @registry %{
@@ -72,7 +77,11 @@ defmodule Kantele.World.NpcActionHandlers do
       "rideyl" => {Kantele.World.NpcActions.Ride, :run}
     },
     "xiangyang:qianzhuang" => %{
-      "yao" => {Kantele.World.NpcActions.Yao, :run}
+      "yao" => {Kantele.World.NpcActions.Yao, :run},
+      "decide" => {Kantele.World.NpcActions.Decide, :run}
+    },
+    "guiyun:taihu" => %{
+      "decide" => {Kantele.World.NpcActions.Decide, :run}
     },
     "wudu:chufang" => %{
       "yao" => {Kantele.World.NpcActions.Yao, :run}

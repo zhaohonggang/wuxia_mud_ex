@@ -135,6 +135,57 @@ defmodule Kantele.World.NpcActions.Helpers do
     put_character(conn, %{character | meta: meta})
   end
 
+  @doc "`delete_temp(key)`：删 `meta.temp[key]`（会话级）"
+  def delete_temp(conn, key) do
+    character = current(conn)
+    meta = PlayerMeta.delete_temp(character.meta, key)
+    put_character(conn, %{character | meta: meta})
+  end
+
+  @doc "`set(\"<key>\", value)` 等价：写 `meta.env[key]`（LPC `set()` 属性仓库）"
+  def put_env(conn, key, value) do
+    character = current(conn)
+    env = character.meta |> Map.get(:env, %{}) |> Map.put(key, value)
+    put_character(conn, %{character | meta: Map.put(character.meta, :env, env)})
+  end
+
+  @doc "`delete(\"<key>\")` 等价：删 `meta.env[key]`"
+  def delete_env(conn, key) do
+    character = current(conn)
+    env = character.meta |> Map.get(:env, %{}) |> Map.delete(key)
+    put_character(conn, %{character | meta: Map.put(character.meta, :env, env)})
+  end
+
+  @doc """
+  `ob = present(<name>, me); destruct(ob)` 等价：从背包移除第一件匹配 `name` 的实例。
+
+  返回 `{removed?, conn}`。`removed?` 供 handler 决定是否播报「注销」之类文案
+  （LPC `present(...)` 命中与否）。
+  """
+  def take_item(conn, name) do
+    character = current(conn)
+
+    case Enum.split_while(character.inventory, fn inst ->
+           not Kantele.World.Item.matches?(Kantele.World.Item.instance_item(inst), name)
+         end) do
+      {_before, []} ->
+        {false, conn}
+
+      {before, [_taken | rest]} ->
+        character = %{character | inventory: before ++ rest}
+        Records.save(character)
+        {true, put_character(conn, character)}
+    end
+  end
+
+  @doc """
+  `RANK_D->query_respect(me)` 等价：对玩家的敬称。
+
+  尊称系统尚未建模（@todo）：暂统一返回「大侠」，保证文案完整；接入等级/门派
+  尊称后替换此处即可。
+  """
+  def respect(_character), do: "大侠"
+
   @doc """
   `query("food") >= max_food_capacity()*90/100`
 
