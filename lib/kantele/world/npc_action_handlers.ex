@@ -39,7 +39,12 @@ defmodule Kantele.World.NpcActionHandlers do
   - `ride*` 十连：beijing 马童快速旅行（八卦门专属），10 个动词复用
     `Kantele.World.NpcActions.Ride`，注册于 `beijing:majuan`：
     - rideyz, ridedl, rideem, ridefs, ridefz, ridehz, ridesz, ridexy, rideyd, rideyl
-    """
+
+  - `yao` 要物三连：黄真（xiangyang:qianzhuang，发商令）/ 田嫂（wudu:chufang，
+    发两个蛇肉包子）/ 钱正伦（beijing:bingqi，发兵器护甲）复用
+    `Kantele.World.NpcActions.Yao`，按 room_id 分派。钱正伦的共享发放上限依赖
+    `Kantele.World.NpcActions.Counters`（按 room_id 计数）。
+  """
   # 房间级注册表：room_id -> (verb -> {module, function})。
   @registry %{
     "tulong:huichang_back" => %{
@@ -65,6 +70,15 @@ defmodule Kantele.World.NpcActionHandlers do
       "ridexy" => {Kantele.World.NpcActions.Ride, :run},
       "rideyd" => {Kantele.World.NpcActions.Ride, :run},
       "rideyl" => {Kantele.World.NpcActions.Ride, :run}
+    },
+    "xiangyang:qianzhuang" => %{
+      "yao" => {Kantele.World.NpcActions.Yao, :run}
+    },
+    "wudu:chufang" => %{
+      "yao" => {Kantele.World.NpcActions.Yao, :run}
+    },
+    "beijing:bingqi" => %{
+      "yao" => {Kantele.World.NpcActions.Yao, :run}
     }
   }
 

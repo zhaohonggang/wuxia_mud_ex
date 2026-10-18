@@ -74,6 +74,21 @@ defmodule Kantele.World.NpcActionHandlersTest do
                NpcActionHandlers.lookup("beijing:majuan", "rideyl")
     end
 
+    test "xiangyang:qianzhuang 的 yao → 已注册的 Yao handler" do
+      assert {:ok, {Kantele.World.NpcActions.Yao, :run}} =
+               NpcActionHandlers.lookup("xiangyang:qianzhuang", "yao")
+    end
+
+    test "wudu:chufang 的 yao → 已注册的 Yao handler" do
+      assert {:ok, {Kantele.World.NpcActions.Yao, :run}} =
+               NpcActionHandlers.lookup("wudu:chufang", "yao")
+    end
+
+    test "beijing:bingqi 的 yao → 已注册的 Yao handler" do
+      assert {:ok, {Kantele.World.NpcActions.Yao, :run}} =
+               NpcActionHandlers.lookup("beijing:bingqi", "yao")
+    end
+
     test "未注册房间 → {:unimplemented, verb}" do
       assert {:unimplemented, "yun"} = NpcActionHandlers.lookup("nonexistent:room", "yun")
     end
@@ -106,7 +121,7 @@ defmodule Kantele.World.NpcActionHandlersTest do
   end
 
   describe "registered_rooms/0" do
-    test "返回已注册房间 id 列表，包含 4 个 yun 房间和 1 个 ride* 房间" do
+    test "返回已注册房间 id 列表，包含 4 个 yun 房间、1 个 ride* 房间与 3 个 yao 房间" do
       rooms = NpcActionHandlers.registered_rooms()
 
       assert "tulong:huichang_back" in rooms
@@ -114,7 +129,10 @@ defmodule Kantele.World.NpcActionHandlersTest do
       assert "tulong:jiulou" in rooms
       assert "tulong:was_dayuan" in rooms
       assert "beijing:majuan" in rooms
-      assert length(rooms) == 5
+      assert "xiangyang:qianzhuang" in rooms
+      assert "wudu:chufang" in rooms
+      assert "beijing:bingqi" in rooms
+      assert length(rooms) == 8
     end
   end
 end
