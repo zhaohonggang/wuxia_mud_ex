@@ -53,10 +53,14 @@ defmodule Kantele.World.NpcActionHandlers do
   # 房间级注册表：room_id -> (verb -> {module, function})。
   @registry %{
     "tulong:huichang_back" => %{
-      "yun" => {Kantele.World.NpcActions.Yun, :run}
+      "yun" => {Kantele.World.NpcActions.Yun, :run},
+      "bi" => {Kantele.World.NpcActions.Bi, :run},
+      "get" => {Kantele.World.NpcActions.Bi, :run}
     },
     "tulong:huichang" => %{
-      "yun" => {Kantele.World.NpcActions.Yun, :run}
+      "yun" => {Kantele.World.NpcActions.Yun, :run},
+      "bi" => {Kantele.World.NpcActions.Bi, :run},
+      "get" => {Kantele.World.NpcActions.Bi, :run}
     },
     "tulong:jiulou" => %{
       "yun" => {Kantele.World.NpcActions.Yun, :run}

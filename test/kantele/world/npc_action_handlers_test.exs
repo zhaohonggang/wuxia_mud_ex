@@ -9,9 +9,29 @@ defmodule Kantele.World.NpcActionHandlersTest do
                NpcActionHandlers.lookup("tulong:huichang_back", "yun")
     end
 
+    test "tulong:huichang_back 的 bi → 已注册的 Bi handler" do
+      assert {:ok, {Kantele.World.NpcActions.Bi, :run}} =
+               NpcActionHandlers.lookup("tulong:huichang_back", "bi")
+    end
+
+    test "tulong:huichang_back 的 get → 已注册的 Bi handler" do
+      assert {:ok, {Kantele.World.NpcActions.Bi, :run}} =
+               NpcActionHandlers.lookup("tulong:huichang_back", "get")
+    end
+
     test "tulong:huichang 的 yun → 已注册的 Yun handler" do
       assert {:ok, {Kantele.World.NpcActions.Yun, :run}} =
                NpcActionHandlers.lookup("tulong:huichang", "yun")
+    end
+
+    test "tulong:huichang 的 bi → 已注册的 Bi handler" do
+      assert {:ok, {Kantele.World.NpcActions.Bi, :run}} =
+               NpcActionHandlers.lookup("tulong:huichang", "bi")
+    end
+
+    test "tulong:huichang 的 get → 已注册的 Bi handler" do
+      assert {:ok, {Kantele.World.NpcActions.Bi, :run}} =
+               NpcActionHandlers.lookup("tulong:huichang", "get")
     end
 
     test "tulong:jiulou 的 yun → 已注册的 Yun handler" do

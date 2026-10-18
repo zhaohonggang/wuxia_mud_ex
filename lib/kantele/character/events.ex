@@ -214,6 +214,10 @@ defmodule Kantele.Character.Events do
     module(ChannelEvent) do
       event(Message, :echo, interested?: &ChannelEvent.interested?/1)
     end
+
+    module(BiEvent) do
+      event("bi/result", :result)
+    end
   end
 end
 
@@ -260,6 +264,11 @@ defmodule Kantele.Character.NonPlayerEvents do
     module(ConditionEvent) do
       event("poison/apply", :apply)
       event("condition/tick", :tick)
+      event("condition/apply", :apply_named)
+    end
+
+    module(ConditionDownEvent) do
+      event("condition/down", :run)
     end
 
     module(FleeEvent) do
@@ -311,6 +320,10 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(CallOutEvent) do
       event("npc/call-out", :run)
+    end
+
+    module(BiEvent) do
+      event("bi/begin", :begin_event)
     end
   end
 end

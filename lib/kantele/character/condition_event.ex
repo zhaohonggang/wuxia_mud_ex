@@ -52,19 +52,61 @@ defmodule Kantele.Character.ConditionEvent do
     end
   end
 
+  # ---- 通用落条件：由他人（NPC 私有动作）经事件给宿主上 condition ----
+  #
+  # NPC 私有动作 handler 跑在**玩家**进程里，无法直接改 NPC 的 session；于是经
+  # `send(npc.pid, %Event{topic: "condition/apply", data: %{name: cnd, info: info}})`
+  # 把条件落到 NPC 自身（对应 LPC `ob->apply_condition(cnd, info)`）。
+  def apply_named(conn, event) do
+    name = Map.get(event.data, :name)
+    info = Map.get(event.data, :info) || %{}
+
+    if is_binary(name) and name != "" do
+      grant(conn, name, info)
+    else
+      conn
+    end
+  end
+
+  @doc """
+  给宿主落一个 condition 并开动心跳；供本模块事件与**同进程** handler 直接调用
+  （`conn` 必须是被落条件的角色自身的 conn）。
+  """
+  def grant(conn, name, info) when is_binary(name) and name != "" do
+    merged = Conditions.apply_condition(%{conditions: get_session(conn, "conditions")}, name, info)
+
+    conn
+    |> put_session_cond("conditions", merged.conditions)
+    |> schedule_next()
+  end
+
   # ---- 主循环心跳 ----
 
   def tick(conn, _event) do
     conds = get_session(conn, "conditions")
 
-    if is_map(conds) && map_size(conds) > 0 do
-      character = conn.character
-      vitals = character.meta.vitals
+    if tickable?(conds) do
+      conn
+      |> tick_vitals()
+      |> maybe_emit_down()
+      |> render(CharacterView, "vitals", %{})
+    else
+      conn
+    end
+  end
 
-      # 引擎状态：attributes 由 vitals 喂入 + 特技开关（piyi 免疫判定用）
-      state = %{
+  defp tickable?(conds), do: is_map(conds) and map_size(conds) > 0
+
+  defp tick_vitals(conn) do
+    character = conn.character
+    vitals = character.meta.vitals
+    conds = get_session(conn, "conditions")
+    cond_applyer = get_session(conn, "cond_applyer")
+
+    state =
+      %{
         conditions: conds,
-        cond_applyer: get_session(conn, "cond_applyer"),
+        cond_applyer: cond_applyer,
         attributes: %{
           jing: vitals.jing,
           qi: vitals.qi,
@@ -73,41 +115,50 @@ defmodule Kantele.Character.ConditionEvent do
           special_skills: Map.get(character.attributes, "special_skills") || %{}
         }
       }
+      |> update_lifecycle()
+      |> apply_effects()
 
-      daemon = &ConditionRegistry.daemon/1
+    vitals = %{vitals | jing: state.attributes.jing, qi: state.attributes.qi}
 
-      # 1) 生命周期（remain/duration 递减、到期清）；{:continue, new} 引擎已写回
-      {state, _live?} = Conditions.update_condition(state, daemon)
-
-      # 2) 每存活条件一跳 do_effect（Poison 扣 jing/qi；do_effect 已不递减 remain）
-      #    Conditions.affect_by/4 的契约是 `{:ok, do_effect 返回值}`（结果不透明，
-      #    见 test/kantele/batch6_test.exs），Poison.do_effect 返回 `{:ok, state}`，
-      #    故这里要解双层；免疫 `{:immune}` 与解析失败 `:error` 保持 state。
-      state =
-        Enum.reduce(Map.keys(state.conditions || %{}), state, fn cnd, state ->
-          case Conditions.affect_by(state, daemon, cnd, nil) do
-            {:ok, {:ok, new_state}} when is_map(new_state) -> new_state
-            {:ok, new_state} when is_map(new_state) -> new_state
-            _ -> state
-          end
-        end)
-
-      # 3) vitals 与 conditions 回写宿主
-      vitals = %{vitals | jing: state.attributes.jing, qi: state.attributes.qi}
-
-      conn =
-        conn
-        |> put_character(%{character | meta: %{character.meta | vitals: vitals}})
-        |> put_session_cond("conditions", state.conditions)
-        |> put_session_cond("cond_applyer", state.cond_applyer)
-        |> maybe_schedule_next()
-
-      conn
-      |> render(CharacterView, "vitals", %{})
-    else
-      conn
-    end
+    conn
+    |> put_character(%{character | meta: %{character.meta | vitals: vitals}})
+    |> put_session_cond("conditions", state.conditions)
+    |> put_session_cond("cond_applyer", state.cond_applyer)
+    |> maybe_schedule_next()
   end
+
+  defp update_lifecycle(state) do
+    daemon = &ConditionRegistry.daemon/1
+    elem(Conditions.update_condition(state, daemon), 0)
+  end
+
+  defp apply_effects(state) do
+    daemon = &ConditionRegistry.daemon/1
+
+    Enum.reduce(Map.keys(state.conditions || %{}), state, fn cnd, state ->
+      case Conditions.affect_by(state, daemon, cnd, nil) do
+        {:ok, {:ok, new_state}} when is_map(new_state) -> new_state
+        {:ok, new_state} when is_map(new_state) -> new_state
+        _ -> state
+      end
+    end)
+  end
+
+  # NPC 气/精被条件拖到 0：发 condition/down，交 ConditionDownEvent 执行专属处决。
+  defp maybe_emit_down(%{character: %{meta: %Kantele.Character.NonPlayerMeta{} = meta}} = conn) do
+    vitals = meta.vitals
+
+    if down?(vitals) do
+      cause = if (vitals.jing || 0) <= 0, do: :jing, else: :qi
+      send(self(), %Event{from_pid: self(), topic: "condition/down", data: %{cause: cause}})
+    end
+
+    conn
+  end
+
+  defp maybe_emit_down(conn), do: conn
+
+  defp down?(vitals), do: (vitals.qi || 0) <= 0 or (vitals.jing || 0) <= 0
 
   # ---- 心跳调度：conditions 非空才续投，空则停 ----
 
