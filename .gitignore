@@ -1,6 +1,9 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
 
+# Windows-aligned auxiliary build (see win_toolchain.cmd).
+/_build_win13/
+
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
 

@@ -2,34 +2,86 @@
 
 **沟通语言**: 优先使用中文与用户交流。
 
+## 运行环境（务必遵守）
+
+- **运行 / 测试的唯一权威环境 = Docker**。启动用 `dev_start.bat`（或
+  `docker compose -f docker-compose.dev.yml up app`）。镜像工具链 = Elixir **1.13.4** /
+  Erlang **OTP 25.3.2.6**（见 `Dockerfile.dev`、`.tool-versions`，后者是版本真源）。
+- **Windows 原生环境只作辅助**（`mix format` / `mix credo` / 少量单测），且**版本必须与
+  Docker 对齐**：用仓库根的 `win_toolchain.cmd` 进入对齐 shell（该工具链已装在
+  `%USERPROFILE%\tools\erl-25.3.2.6` 与 `%USERPROFILE%\tools\elixir-1.13.4-otp25`）。
+- **不要**用系统安装的 Elixir 1.20.4 / OTP 29 直接跑本项目 —— 该版本在 `mix.lock` 支持的窗口
+  之外（`ecto 3.6.2` 的 `@opaque dynamic` 在 Elixir ≥1.14 编译失败），历史上只靠陈旧 `_build`
+  产物 + 手工改 `deps/cowlib/src/cow_sse.erl` 才勉强跑通，**已不再支持**。
+
+## 环境位置（Environment locations）
+
+> 只用下面这些位置；不要猜、不要用系统 PATH 里的其他 Elixir/Erlang。
+
+| 用途 | 位置 |
+|------|------|
+| **版本真源** | `.tool-versions`（`elixir 1.13.4-otp-25` / `erlang 25.3.2.6` / `nodejs 20.19.5`） |
+| **Docker 镜像定义** | `Dockerfile.dev`（`hexpm/elixir:1.13.4-erlang-25.3.2.6-debian-trixie`）+ `docker-compose.dev.yml` |
+| Docker 启动 | `dev_start.bat` → 容器 `wuxia_mud_dev-app-1`，DB 容器 `wuxia_mud_dev-db-1` |
+| Docker 源码挂载 | 仓库根 → `/app`（bind mount，改动实时可见） |
+| Windows Erlang | `%USERPROFILE%\tools\erl-25.3.2.6`（erts-13.2.2.3） |
+| Windows Elixir | `%USERPROFILE%\tools\elixir-1.13.4-otp25`（源码编译，`compiled with Erlang/OTP 25`） |
+| Windows 隔离 MIX_HOME | `%USERPROFILE%\tools\mix-1.13`（hex/rebar 为 1.13.4 构建） |
+| Windows GNU make | `%USERPROFILE%\tools\make\bin\make.exe` |
+| Windows MSVC（NIF 依赖） | 由 `vswhere` 自动定位并 `call vcvars64.bat`（本机为 VS 18 Community） |
+| Windows 入口脚本 | 仓库根 `win_toolchain.cmd`（自动设置 PATH / MIX_HOME / MIX_BUILD_PATH / ERL_LIBS / MSVC） |
+| Windows 构建产物 | `_build_win13`（**不要**与 Docker/Linux 的 `_build` 混用） |
+
+Windows 原生编译注意：
+
+```bat
+win_toolchain.cmd            REM 进入对齐 shell（已含 MSVC + 上述变量）
+mix deps.get
+mix compile
+```
+
+- `MIX_BUILD_PATH` 必须是**绝对路径**：相对路径会让 Mix 传给 rebar3 的 `REBAR_CONFIG`
+  变成相对路径，rebar3 在 `deps/<app>` 内解析不到，静默退回默认配置（`include/` 丢失，典型报错
+  `can't find include file "yamerl_*.hrl"`）。
+- `ERL_LIBS=<build>/lib` 是 Windows 上编译 `vendor/kalevala` 路径依赖所必需的（否则
+  `Jason.Encoder` 报 `could not load module ... :unavailable`）。
+- `vendor/kalevala/_build` / `vendor/kalevala/deps` 是**历史独立构建残留**，会遮蔽根项目的依赖；
+  若存在请删除。
+- NIF 依赖（`bcrypt_elixir`）需要 MSVC 的 `nmake`；未加载 `vcvars64` 时会报 `"nmake" not found`。
+
 ## Quick Commands
 
+> 命令**默认在容器内 / 对齐 shell 内**执行；Windows 主机请先 `win_toolchain.cmd`。
+
 ```bash
-# Install deps & compile
+# Docker dev shell（Elixir 1.13.4 / OTP 25 / Node / inotify-tools）
+docker compose -f docker-compose.dev.yml run --rm app sh
+
+# 一次性容器跑测试：app 容器若在跑 phx.server（PID1），docker exec 会因 4000/4646
+# 端口占用报 eaddrinuse，故用一次性容器（复用镜像/挂载/db，不发布端口）：
+docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test app mix test
+
+# 安装依赖 / 编译
 mix deps.get && mix compile
 
-# Format check (CI step)
+# 格式检查（CI）
 mix format --check-formatted
 
-# Lint (CI step)
+# Lint（CI）
 mix credo --all --format=oneline
 
-# Run all tests (needs Postgres)
+# 全量测试（需 Postgres）
 MIX_ENV=test mix test
 
-# Run single test file
+# 单个测试文件
 MIX_ENV=test mix test test/kantele/world/mirror_daemon_test.exs
 
-# Run tests with specific seed (reproduce flaky)
+# 指定 seed 复现 flaky
 MIX_ENV=test mix test --seed 731933
 
-# Docker dev shell (has Elixir 1.11, OTP 23, Node, inotify-tools)
-docker-compose -f docker-compose.dev.yml run --rm app sh
-
-# In container: run tests against mounted code
-# NOTE: 若 app 容器正在跑 phx.server（PID1），直接 docker exec 会因 4646/4000
-# 端口占用报 eaddrinuse。改用一次性容器（复用镜像/挂载/db，不发布端口）：
-docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test app mix test
+# [Windows 辅助] 进入与 Docker 对齐的本地 shell（Elixir 1.13.4 / OTP 25）
+# 进入后：set MIX_ENV=test && mix test <显式文件路径>
+win_toolchain.cmd
 ```
 
 ## Test Conventions
@@ -129,9 +181,9 @@ This ensures future passes can complete the conversion without re-reading LPC.
 
 ## Docker Notes
 
-- **Dev image**: `Dockerfile.dev` (hexpm/elixir:1.11.1-erlang-23.0.2-alpine-3.12.1 + build tools)
-- **Compose**: `docker-compose.dev.yml` mounts source, runs `sh` by default
-- **Test DB**: Postgres 12, `stein_example_test` / `postgres:postgres`
+- **Dev image**: `Dockerfile.dev` (`hexpm/elixir:1.13.4-erlang-25.3.2.6-debian-trixie` + git/make/gcc/node/inotify-tools)
+- **Compose**: `docker-compose.dev.yml` mounts source, runs `sh` by default; dev DB container `wuxia_mud_dev-db-1`
+- **Test DB**: Postgres, user `postgres:postgres`
 
 ## Dev Reload (Hot Reload)
 

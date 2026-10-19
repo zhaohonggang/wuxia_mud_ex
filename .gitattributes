@@ -12,3 +12,8 @@ data/** text eol=lf
 *.exs text eol=lf
 *.erl text eol=lf
 *.hrl text eol=lf
+
+# Windows batch launchers must keep CRLF: cmd mis-parses LF line endings inside
+# `(...)` blocks (splits mid-token, e.g. "'riv' is not recognized").
+*.bat text eol=crlf
+*.cmd text eol=crlf
