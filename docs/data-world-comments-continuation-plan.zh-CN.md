@@ -174,6 +174,15 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 - 给每条记录补 `tier` 字段（见 P5 分诊表），让清单直接可排期。
 - 产出 `docs/data-world-unhandled-baseline.zh-CN.md`（人类可读的基线表 + 抑制清单）。
 
+**状态：✅ 已完成（2026-10-19）**。命名变体在**本文件 + 递归继承链**内匹配后
+**0 条可归属**：25 条仅有前置声明、4 条本文件内实现被注释、3 条同名实现只存在于其它对象
+（`ask_me1/2` → `xiangyang/npc/wuxiuwen.c`；`drool` → `city/npc/tao1..3.c`）。
+全部 32 条登记为抑制项。分诊结果：**Tier 0 / 1 / 2 = 188 / 1041 / 9866**。
+产物：`tmp/unhandled_manifest_tiered.json`（可排期清单）、`tmp/unhandled_baseline.json`（冻结计数）、
+`scripts/unhandled_suppressions.json`（188 条）、`docs/data-world-unhandled-baseline.zh-CN.md`。
+两条新脚本（`resolve_unhandled_variants.py`、`tier_unhandled_manifest.py`）只写 `tmp/` / `docs/` /
+`scripts/unhandled_suppressions.json`，幂等（连跑两次字节一致），不触碰 `data/world`。
+
 ### P1 · 白名单内纯数据回填（L1，**建议最先做**）
 
 **目的**：把能映射到**已有** loader 字段的丢失值补回 `.ucl`。零运行时风险。
@@ -453,6 +462,8 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | `audit_ucl_key_loss.py` | P0 | `.c` + `.ucl` | `tmp/` | 宿主机 | ✅ | **已建** |
 | `triage_lost_keys.py` | P0 | `.c` + `.ucl` + `lib/` | `tmp/` | 宿主机 | ✅ | **已建** |
 | `build_unhandled_manifest.py` | P0 | `.comments.txt` + `.c` | `tmp/` | 宿主机 | ✅ | **已建** |
+| `resolve_unhandled_variants.py` | P0.1 | manifest + `.c/.h` + `globals.h` | `tmp/unhandled_variants.json`、`tmp/unhandled_manifest_resolved.json` | 宿主机 | ✅ | ✅ **已建**（命名变体 + 递归继承链；32 条 → 0 可归属） |
+| `tier_unhandled_manifest.py` | P0.1 | resolved manifest + variants + `survey_add_action.json` | `tmp/unhandled_manifest_tiered.json`、`tmp/unhandled_baseline.json`、`scripts/unhandled_suppressions.json`、基线文档 | 宿主机 | ✅ | ✅ **已建**（Tier 0/1/2 + 抑制清单） |
 | `probe_elias_expressibility.exs` | **§1 Q1 / P5 前置** | —（只解析字符串） | — | **容器内** | ✅ | **已建** |
 | `plan_key_field_map.py` | P1a | `tmp/lost_key_triage.json` + `.c` 语料 | `tmp/` | 宿主机 | ✅ | **已建** |
 | `backfill_l1_fields.py` | P1b | `.c` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建**（含写盘前备份 + `validate_ucl` 自校验门禁） |
@@ -475,7 +486,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | `survey_valid_leave.py` | P4 勘查 | `.c` + `.ucl` | `tmp/p4_candidates.json` | 宿主机 | ✅ | ✅ **已建（P4 已完成）**（LPC `valid_leave` 解析器：嵌套 if 合取、放行守卫取反累积/复杂即作废、颜色宏 notify_fail、裸 `present()` 补 `this_object()`、裸变量与多参调用 elias 敌意检测、方向感知去重；61 候选 = 49 已有 + 12 新） |
 | `probe_valid_leave_candidates.exs` | P4 分类 | —（加载世界） | `tmp/p4_verdict.json` | **容器内** | ✅ | ✅ **已建（P4 已完成）**（八项真门：parse/enforceable/supported/dir-scoped-or-all_dirs/房间找到/方向存在/别名有定义/不被既有生效条目遮蔽；产物 11 effective / 1 blocked） |
 | `backfill_exit_vetoes.py` | P4 回填 | `tmp/p4_verdict.json` + `.ucl` | `.ucl` | 宿主机 | 必须 | ✅ **已建（P4 已完成）**（dry-run 默认、先 dry-run 定计划→`validate_ucl` 基线→备份→写盘→插入性子序列断言+问题集对比；逗号紧跟上一 `}`；幂等；**6 区 / +68 行**） |
-| `assert_unhandled_baseline.py` | P6 | `tmp/*.json` | — | 宿主机 | ✅ | 待建 |
+| `assert_unhandled_baseline.py` | P6 | `tmp/unhandled_baseline.json` | — | 宿主机 | ✅ | ✅ **已建（P6.1）**（冻结 M3/M4/M5 + Tier 计数；任一超基线退出码非 0） |
 | `survey_add_action.py` | **P5-1 勘查** | `.c` 语料 + `lib/.../commands/` | `tmp/survey_add_action.json` | 宿主机 | ✅ | ✅ **已建（D24）**（扫描 `add_action("verb","handler")` 调用；按对象类型 room/npc/item/other 分诊；标注 Tier0 已有命令 vs 需新建；1568 调用/793 文件；发现 NPC add_actions 已被转换器写进 UCL 但只存 handler 丢了 verb、且未接分发） |
 
 **所有脚本的公共约定**

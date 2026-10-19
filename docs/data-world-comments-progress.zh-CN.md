@@ -39,7 +39,7 @@
 | 阶段 | 内容 | 规模 | 层 | 状态 | 提交 | 完成日期 |
 |------|------|-----:|:--:|:----:|------|----------|
 | **P0** | 清单化（5 个只读脚本） | 11095 条记录 | — | ✅ | `059c07b8` | 2026-10-16 |
-| **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ⬜ | | |
+| **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ✅ | 本提交 | 2026-10-19（0 可归属；32 全部抑制；Tier 0/1/2 = 188/1041/9866） |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
 | **P2** | 加字段 + 回填 | 8 个批次 | L2 | ✅ | `2d9de14a` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）/ **B10 ✅**（B10a 126 块 / 22 区 / +389 行 `bcd168c0` + B10b 28 块 / 8 区 / +34 行 `2d9de14a`）→ **P2 批次全部完成** |
 | **P3** | 消费端接线 | 6 个字段 | L3 | 🟨 | `524efcff` | **装备文案 5 件套 ✅**（`c5c3c325`）；**no_steal ✅**（`524efcff`，实际范围 skybook/no_fight/no_search 一并修复）；**female_only ✅**（P3-c，wield_command 灰度拦截）；余 no_beg / liquid+max_liquid / can_make / chat_msg_combat 待 P5 子系统（消费端未建） |
@@ -76,8 +76,16 @@
 | M16 | `Item.Meta.*_prop` 已装载物品数（B10a/B10b；此前 .ucl 只有 liuxi 3 个手写块） | 0 | **133**（armor 117 / dodge 17 / personality 28 / defense 3 / unarmed_damage 4 / attack 1；含 liuxi 手写 3） | ✅ | `scripts/probe_item_props.exs`（容器内） |
 | M17 | prop 子键白名单 `Combat.applies_keys()` 键数 | 7 | **11**（+personality/per/warm/armor_vs_force） | ✅ | `scripts/probe_item_props.exs`（容器内） |
 | M18 | P4 回填 exit_vetoes 生效条数（回源 LPC `valid_leave` 的 `notify_fail`） | 0 | **11**（6 区：tulong 3 / shaolin 3 / jingzhou 2 / chengdu / gumu / hangzhou 各 1；+68 行） | ✅ | `scripts/probe_valid_leave_candidates.exs` + `backfill_exit_vetoes.py` |
+| M19 | P0.1 分诊 Tier 0 / 1 / 2 条数 | — | **188 / 1041 / 9866** | ✅ | `scripts/tier_unhandled_manifest.py` |
 
 **基线已实测确认**：M1–M8 为本轮实跑值；M7 的「133」是 `ucl-comment-todo.zh-CN.md` 的旧快照，P4 执行前实测为 144/166、回填后 155/177。
+
+**P0.1 结论（2026-10-19）**：32 条未回源函数**全部无可归属实现**（25 条仅有前置声明 / 4 条本文件内实现被注释 / 3 条同名实现只存在于其它对象：
+`ask_me1`/`ask_me2` → `xiangyang/npc/wuxiuwen.c`，`drool` → `city/npc/tao1..3.c`）。
+命名变体（`ask_me1` ↔ `ask_me_1`）已在**本文件 + 递归继承链**内匹配，恢复 0 条，全部登记为抑制项。
+产物：`tmp/unhandled_manifest_tiered.json`（可排期清单）、`tmp/unhandled_baseline.json`（冻结计数）、
+`scripts/unhandled_suppressions.json`（188 条）、`docs/data-world-unhandled-baseline.zh-CN.md`（基线表）。
+`scripts/assert_unhandled_baseline.py` 已可挂 P6/CI，断言上述计数只降不升。
 
 ---
 
