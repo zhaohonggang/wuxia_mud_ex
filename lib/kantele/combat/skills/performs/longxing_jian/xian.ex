@@ -15,14 +15,10 @@ defmodule Kantele.Combat.Skills.Performs.LongxingJian.Xian do
 
   import Kalevala.Character.Conn
 
-  alias Kalevala.Event
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat
   alias Kantele.Character.Stats
-  alias Kantele.Character.Vitals
   alias Kantele.Combat.Broadcast
-  alias Kantele.Combat.Messages
-  alias Kantele.Combat.Performs
 
   @perform "longxing-jian/xian"
   @name "「神龙再现」"
@@ -39,18 +35,30 @@ defmodule Kantele.Combat.Skills.Performs.LongxingJian.Xian do
          :ok <- skill_buddhism(stats),
          :ok <- neili_min(character),
          :ok <- not_saturated(combat) do
-      # 扣内力 + 忙乱
-      character = Performs.consume_neili(character, 100)
+      # LPC: me->add("neili", -100); me->start_busy(1);
+      vitals = %{character.meta.vitals | neili: character.meta.vitals.neili - 100}
       combat = Combat.start_busy(combat, 1)
 
-      # 应用增益：attack+2, dodge+1, parry+1, xian 计数+1
-      temp = Map.update(combat.temp, :xian, 1, &(&1 + 1))
-      combat = %{combat | temp: temp}
-      character = %{character | meta: %{character.meta | combat: combat}}
+      # LPC: add_temp("apply/attack", 2) / ("apply/dodge", 1)
+      #      / ("apply/parry", 1) / ("xian", 1)
+      temp =
+        combat.temp
+        |> Map.update(:attack, 2, &(&1 + 2))
+        |> Map.update(:dodge, 1, &(&1 + 1))
+        |> Map.update(:parry, 1, &(&1 + 1))
+        |> Map.update(:xian, 1, &(&1 + 1))
 
-      # 启动广播：必须与 .c 逐字一致
+      combat = %{combat | temp: temp}
+      character = %{character | meta: %{character.meta | vitals: vitals, combat: combat}}
+
+      # LPC: message_combatd(HIR "只听$N" HIR "口中念念有词，神龙从天而将，"
+      #                      "钻入$N体中！\n" NOR, me);
+      # 「天而将」是 .c 原文错字（应为「降」），按逐字对齐原则保留。
       conn
-      |> Broadcast.publish("只听口中念念有词，神龙从天而将，钻入体中！\n")
+      |> Broadcast.publish(
+        "只听$N口中念念有词，神龙从天而将，钻入$N体中！\n",
+        n1: character.name
+      )
       |> put_character(character)
     else
       {:error, message} ->

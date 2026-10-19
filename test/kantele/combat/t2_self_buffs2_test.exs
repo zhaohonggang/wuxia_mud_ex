@@ -282,7 +282,9 @@ defmodule Kantele.Combat.T2SelfBuffs2Test do
       assert updated.meta.combat.temp.parry == 1
       assert updated.meta.combat.temp.xian == 1
       assert updated.meta.combat.busy == 1
-      assert published_text(conn) =~ "神龙从天而降"
+      # LPC xian.c 原文是「神龙从天而将」（错字，应为「降」），
+      # 本移植按逐字对齐原则保留原文，故断言用「将」。
+      assert published_text(conn) =~ "神龙从天而将"
     end
 
     test "可叠放：再施一次计数 +2" do

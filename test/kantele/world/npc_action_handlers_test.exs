@@ -119,6 +119,78 @@ defmodule Kantele.World.NpcActionHandlersTest do
                NpcActionHandlers.lookup("guiyun:taihu", "decide")
     end
 
+    test "xiangyang:qianzhuang 的 join/unjoin → 已注册的 Decide handler" do
+      assert {:ok, {Kantele.World.NpcActions.Decide, :run}} =
+               NpcActionHandlers.lookup("xiangyang:qianzhuang", "join")
+
+      assert {:ok, {Kantele.World.NpcActions.Decide, :run}} =
+               NpcActionHandlers.lookup("xiangyang:qianzhuang", "unjoin")
+    end
+
+    test "meizhuang:chufang 的 serve → 已注册的 Serve handler" do
+      assert {:ok, {Kantele.World.NpcActions.Serve, :run}} =
+               NpcActionHandlers.lookup("meizhuang:chufang", "serve")
+    end
+
+    test "wuguan:guofu_fanting 的 serve → 已注册的 Serve handler" do
+      assert {:ok, {Kantele.World.NpcActions.Serve, :run}} =
+               NpcActionHandlers.lookup("wuguan:guofu_fanting", "serve")
+    end
+
+    test "beijing:wenmiao 的 puzzle → 已注册的 Puzzle handler" do
+      assert {:ok, {Kantele.World.NpcActions.Puzzle, :run}} =
+               NpcActionHandlers.lookup("beijing:wenmiao", "puzzle")
+    end
+
+    test "wuguan:guofu_dayuan2 的 task → 已注册的 Task handler" do
+      assert {:ok, {Kantele.World.NpcActions.Task, :run}} =
+               NpcActionHandlers.lookup("wuguan:guofu_dayuan2", "task")
+    end
+
+    test "city:wuguan 的 txbw → 已注册的 Txbw handler" do
+      assert {:ok, {Kantele.World.NpcActions.Txbw, :run}} =
+               NpcActionHandlers.lookup("city:wuguan", "txbw")
+    end
+
+    test "city:kedian 的 exchange/duihuan → 已注册的 Exchange handler" do
+      assert {:ok, {Kantele.World.NpcActions.Exchange, :run}} =
+               NpcActionHandlers.lookup("city:kedian", "exchange")
+
+      assert {:ok, {Kantele.World.NpcActions.Exchange, :run}} =
+               NpcActionHandlers.lookup("city:kedian", "duihuan")
+    end
+
+    test "city:zhujuan 的 choose → 已注册的 Choose handler" do
+      assert {:ok, {Kantele.World.NpcActions.Choose, :run}} =
+               NpcActionHandlers.lookup("city:zhujuan", "choose")
+    end
+
+    test "pk:entry 的 sign → 已注册的 Sign handler" do
+      assert {:ok, {Kantele.World.NpcActions.Sign, :run}} =
+               NpcActionHandlers.lookup("pk:entry", "sign")
+    end
+
+    test "jobs 族五房间（copy×2/sew/mine×2/move）→ 已注册的 Jobs handler" do
+      for {room, verb} <- [
+            {"guiyun:shufang", "copy"},
+            {"city:shuyuan", "copy"},
+            {"city:garments", "sew"},
+            {"guanwai:shichang", "mine"},
+            {"guanwai:shichang", "move"},
+            {"hangzhou:kuangshan", "mine"}
+          ] do
+        assert {:ok, {Kantele.World.NpcActions.Jobs, :run}} =
+                 NpcActionHandlers.lookup(room, verb)
+      end
+    end
+
+    test "倚天链两房间（was_lou4 / jiulou）→ 已注册的 Yitian handler" do
+      for room <- ["tulong:was_lou4", "tulong:jiulou"] do
+        assert {:ok, {Kantele.World.NpcActions.Yitian, :run}} =
+                 NpcActionHandlers.lookup(room, "bi")
+      end
+    end
+
     test "未注册房间 → {:unimplemented, verb}" do
       assert {:unimplemented, "yun"} = NpcActionHandlers.lookup("nonexistent:room", "yun")
     end
@@ -151,7 +223,7 @@ defmodule Kantele.World.NpcActionHandlersTest do
   end
 
   describe "registered_rooms/0" do
-    test "返回已注册房间 id 列表，包含 4 个 yun 房间、1 个 ride* 房间、3 个 yao 房间与 1 个 decide 房间" do
+    test "返回已注册房间 id 列表，含 4 yun、1 ride*、2 bi/get、3 yao、2 decide(+join/unjoin)、2 serve、1 puzzle、1 task、1 txbw、1 exchange(+duihuan)、1 choose、1 sign、5 jobs(copy×2/sew/mine×2/move)、1 yitian、1 kneel、1 peiyao 共 25 个" do
       rooms = NpcActionHandlers.registered_rooms()
 
       assert "tulong:huichang_back" in rooms
@@ -163,7 +235,23 @@ defmodule Kantele.World.NpcActionHandlersTest do
       assert "wudu:chufang" in rooms
       assert "beijing:bingqi" in rooms
       assert "guiyun:taihu" in rooms
-      assert length(rooms) == 9
+      assert "meizhuang:chufang" in rooms
+      assert "wuguan:guofu_fanting" in rooms
+      assert "beijing:wenmiao" in rooms
+      assert "wuguan:guofu_dayuan2" in rooms
+      assert "city:wuguan" in rooms
+      assert "city:kedian" in rooms
+      assert "city:zhujuan" in rooms
+      assert "pk:entry" in rooms
+      assert "guiyun:shufang" in rooms
+      assert "city:shuyuan" in rooms
+      assert "city:garments" in rooms
+      assert "guanwai:shichang" in rooms
+      assert "hangzhou:kuangshan" in rooms
+      assert "tulong:was_lou4" in rooms
+      assert "hangzhou:liuhe9" in rooms
+      assert "kaifeng:yaopu" in rooms
+      assert length(rooms) == 25
     end
   end
 end

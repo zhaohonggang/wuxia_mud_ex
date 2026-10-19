@@ -1430,6 +1430,7 @@ item_desc = {
     "drop"
   ]
 
+  actions = [{ verb = "play" handler = "play_xiao" }]
       meta = {
         value = 10
         weight = 300

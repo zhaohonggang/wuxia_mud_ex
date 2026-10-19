@@ -2612,6 +2612,7 @@ chats = [
     "drop"
   ]
 
+  actions = [{ verb = "play" handler = "play_zheng" }]
       meta = {
         value = 5000
         weight = 300
@@ -2653,6 +2654,7 @@ chats = [
     "drop"
   ]
 
+  actions = [{ verb = "play" handler = "play_zheng" }]
       meta = {
         value = 50
         weight = 300

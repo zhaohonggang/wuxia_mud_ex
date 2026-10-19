@@ -1,0 +1,1196 @@
+{
+  "room_id_candidates": {
+    "baituo:neishi": {
+      "move": "do_move"
+    },
+    "beijing:aofu_shufang": {
+      "xian": "do_xian",
+      "turn": "do_turn"
+    },
+    "beijing:front_yard": {
+      "jida": "do_jida"
+    },
+    "beijing:front_yard2": {
+      "jida": "do_jida",
+      "tiao": "do_tiao"
+    },
+    "beijing:hg_w": {
+      "body": "do_body"
+    },
+    "beijing:kediandayuan": {
+      "thrust": "do_thrust",
+      "ci": "do_thrust",
+      "stab": "do_thrust"
+    },
+    "beijing:liandan_fang": {
+      "liandan": "do_liandan"
+    },
+    "beijing:liandan_lin": {
+      "cai": "do_cai"
+    },
+    "beijing:wenmiao": {
+      "pray": "do_pray"
+    },
+    "beijing:zhuang3": {
+      "break": "do_break"
+    },
+    "changan:duchang": {
+      "bet": "do_bet"
+    },
+    "changan:duchang2": {
+      "bet": "do_bet"
+    },
+    "changan:huozhan": {
+      "work": "do_work"
+    },
+    "changan:kzsleep": {
+      "bed": "do_bed"
+    },
+    "changan:qunyuys8": {
+      "push": "do_push"
+    },
+    "changan:xunbufang": {
+      "open": "do_open"
+    },
+    "chengdu:eastroad3": {
+      "break": "do_break"
+    },
+    "chengdu:guangchang": {
+      "get": "do_get",
+      "eat": "do_eat",
+      "drink": "do_drink"
+    },
+    "chengdu:qingyanggong": {
+      "back": "do_back"
+    },
+    "city:bet": {
+      "bet": "do_bet"
+    },
+    "city:daxiao": {
+      "gamble": "do_gamble"
+    },
+    "city:furong": {
+      "order": "do_order",
+      "broadcast": "do_broadcast"
+    },
+    "city:guangchang": {
+      "enter": "do_enter",
+      "climb": "do_climb"
+    },
+    "city:leitai": {
+      "lclose": "do_lclose",
+      "lopen": "do_lopen",
+      "invite": "do_invite",
+      "kickout": "do_kickout"
+    },
+    "city:ma_chufang": {
+      "back": "do_back"
+    },
+    "city:meigui": {
+      "order": "do_order",
+      "broadcast": "do_broadcast"
+    },
+    "city:mudan": {
+      "order": "do_order",
+      "broadcast": "do_broadcast"
+    },
+    "city:underlt": {
+      "pass": "do_pass"
+    },
+    "city:wumiao2": {
+      "pray": "do_pray"
+    },
+    "city:qiyuan2": {
+      "sit": "do_sit",
+      "leave": "do_leave",
+      "play": "do_play",
+      "pass": "do_pass",
+      "new": "do_new",
+      "undo": "do_undo",
+      "refresh": "do_refresh"
+    },
+    "city:qiyuan3": {
+      "sit": "do_sit",
+      "leave": "do_leave",
+      "play": "do_play",
+      "pass": "do_pass",
+      "new": "do_new",
+      "undo": "do_undo",
+      "refresh": "do_refresh"
+    },
+    "city:qiyuan4": {
+      "sit": "do_sit",
+      "leave": "do_leave",
+      "play": "do_play",
+      "pass": "do_pass",
+      "new": "do_new",
+      "undo": "do_undo",
+      "refresh": "do_refresh"
+    },
+    "death:diyin": {
+      "qiao": "do_qiao"
+    },
+    "death:emptyroom": {
+      "eat": "do_get",
+      "get": "do_get",
+      "kill": "do_get",
+      "fight": "do_get",
+      "cast": "do_get",
+      "bian": "do_get",
+      "fly": "do_get",
+      "look": "do_get",
+      "l": "do_get",
+      "perform": "do_get",
+      "steal": "do_get"
+    },
+    "death:inn1": {
+      "ask": "redirect_ask"
+    },
+    "death:lunhuisi": {
+      "turn": "do_turn",
+      "say": "do_say",
+      "move": "do_move",
+      "push": "do_move",
+      "pull": "do_move"
+    },
+    "death:qiao1": {
+      "jump": "do_move",
+      "tiao": "do_move"
+    },
+    "death:qinglongtan": {
+      "enter": "do_move",
+      "xun": "do_xun"
+    },
+    "death:yinyangta18": {
+      "put": "do_fang",
+      "fang": "do_fang"
+    },
+    "death:wujiandao": {
+      "say": "do_say",
+      "enter": "do_enter",
+      "smash": "do_smash"
+    },
+    "death:sky1": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky10": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky11": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky12": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky2": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky3": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky4": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky5": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky6": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky7": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky8": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "death:sky9": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "emei:dgtsheshenya": {
+      "sheshen": "do_sheshen"
+    },
+    "emei:hcadadian": {
+      "move": "do_move"
+    },
+    "emei:hcawest": {
+      "jump": "do_jump"
+    },
+    "emei:shierpan3": {
+      "clap": "do_clap"
+    },
+    "emei:ssyb": {
+      "climb": "do_climb",
+      "bai": "do_bai"
+    },
+    "emei:st0": {
+      "wang": "do_wang"
+    },
+    "emei:st1": {
+      "wang": "do_wang"
+    },
+    "emei:st2": {
+      "wang": "do_wang"
+    },
+    "emei:xiaoshulin1": {
+      "jump": "do_jump"
+    },
+    "foshan:pm_restroom": {
+      "look": "do_look",
+      "open": "do_open",
+      "close": "do_close"
+    },
+    "foshan:pmc": {
+      "look": "do_look"
+    },
+    "fuzhou:houyuan": {
+      "break": "do_break"
+    },
+    "fuzhou:laozhai": {
+      "break": "do_break"
+    },
+    "fuzhou:mishi": {
+      "jump": "do_jump"
+    },
+    "gaibang:mishi": {
+      "think": "do_think"
+    },
+    "gaibang:undertre": {
+      "goto": "do_goto"
+    },
+    "gaochang:dadian": {
+      "think": "do_think"
+    },
+    "gaochang:entrance": {
+      "turn": "do_turn"
+    },
+    "guanwai:famu": {
+      "famu": "do_famu"
+    },
+    "guanwai:huagai": {
+      "yanlian": "do_yanlian"
+    },
+    "guanwai:jingxiu": {
+      "knock": "do_knock",
+      "push": "do_push",
+      "kick": "do_kick"
+    },
+    "guanwai:taxue": {
+      "amble": "do_amble"
+    },
+    "guanwai:tiyun": {
+      "yanlian": "do_yanlian"
+    },
+    "guanwai:xiuxishi": {
+      "open": "do_open",
+      "close": "do_close"
+    },
+    "guiyun:chufang": {
+      "serve": "do_serve"
+    },
+    "guiyun:matou": {
+      "yell": "do_yell",
+      "shang": "do_shang",
+      "cross": "do_cross"
+    },
+    "guiyun:qianyuan": {
+      "ride": "do_ride"
+    },
+    "guiyun:taihu": {
+      "yell": "do_yell",
+      "cross": "do_cross"
+    },
+    "gumu:hanshuitan": {
+      "qian": "do_qian"
+    },
+    "gumu:houting": {
+      "tang": "do_tang",
+      "niu": "do_niu"
+    },
+    "gumu:mishi1": {
+      "ci": "do_ci",
+      "zhan": "do_zhan"
+    },
+    "gumu:mishi2": {
+      "think": "do_think"
+    },
+    "gumu:mumen": {
+      "move": "do_move"
+    },
+    "gumu:taiyi1": {
+      "jump": "do_jump"
+    },
+    "gumu:taiyi2": {
+      "climb": "do_climb",
+      "swim": "do_swim"
+    },
+    "gumu:zhengting": {
+      "sleep": "do_sleep"
+    },
+    "hangzhou:liuzhuang": {
+      "knock": "do_knock"
+    },
+    "hangzhou:loveroom": {
+      "order": "do_order",
+      "close": "do_close",
+      "open": "do_open",
+      "broadcast": "do_broadcast"
+    },
+    "heimuya:huoting": {
+      "circle": "do_circle"
+    },
+    "heimuya:shanya3": {
+      "enter": "do_enter",
+      "float": "do_float",
+      "piao": "do_float"
+    },
+    "heimuya:up1": {
+      "float": "do_float",
+      "piao": "do_float"
+    },
+    "heimuya:up2": {
+      "insert": "do_insert"
+    },
+    "heimuya:up3": {
+      "insert": "do_insert"
+    },
+    "heimuya:up4": {
+      "insert": "do_insert"
+    },
+    "hengyang:furong1": {
+      "pull": "do_pull",
+      "think": "do_think",
+      "climb": "do_climb"
+    },
+    "hengyang:henshan_chufang": {
+      "serve": "do_serve"
+    },
+    "hengyang:inhole2": {
+      "use": "do_use"
+    },
+    "hengyang:inhole3": {
+      "use": "do_use",
+      "zou": "do_zou"
+    },
+    "hengyang:liufugate": {
+      "knock": "do_knock",
+      "push": "do_push",
+      "open": "do_push"
+    },
+    "hengyang:ontree2": {
+      "la": "do_la",
+      "tiao": "do_tiao"
+    },
+    "hengyang:tianquan_hole": {
+      "he": "do_he",
+      "xue": "do_xue",
+      "ba": "do_ba"
+    },
+    "hengyang:xuanya": {
+      "climb": "do_climb"
+    },
+    "hengyang:zigai4": {
+      "zou": "do_zou",
+      "use": "do_use"
+    },
+    "hengyang:zigaihole": {
+      "move": "do_move",
+      "pick": "do_pick"
+    },
+    "hengyang:hengyang_shop": {
+      "play": "play_xiao"
+    },
+    "huanggong:inwell": {
+      "climb": "do_climb",
+      "pa": "do_climb",
+      "tiao": "do_jump",
+      "jump": "do_jump",
+      "reach": "do_reach"
+    },
+    "huanggong:shufang": {
+      "press": "do_press"
+    },
+    "huashan:buwei2": {
+      "move": "do_move"
+    },
+    "huashan:chaoyang": {
+      "la": "do_la",
+      "jump": "do_jump"
+    },
+    "huashan:chufang": {
+      "serve": "do_serve"
+    },
+    "huashan:jianzhong": {
+      "move": "do_move",
+      "pick": "do_pick",
+      "jump": "do_jump"
+    },
+    "huashan:jinshedong": {
+      "climb": "do_climb",
+      "ba": "do_ba",
+      "wa": "do_wa"
+    },
+    "huashan:jushi": {
+      "push": "do_move",
+      "move": "do_move",
+      "pick": "do_pick",
+      "zhai": "do_pick"
+    },
+    "huashan:jzroad5": {
+      "use": "do_use",
+      "zuan": "do_zuan"
+    },
+    "huashan:kuihua_1": {
+      "view": "do_look",
+      "wang": "do_look"
+    },
+    "huashan:kuihua_2": {
+      "climb": "do_climb"
+    },
+    "huashan:lianhua": {
+      "tiao": "do_tiao",
+      "jump": "do_jump"
+    },
+    "huashan:sgyhole": {
+      "mianbi": "do_mianbi"
+    },
+    "huashan:sgyhole1": {
+      "break": "do_break"
+    },
+    "huashan:sgyhole2": {
+      "mianbi": "do_mianbi",
+      "think": "do_think"
+    },
+    "huashan:sgyhole3": {
+      "mianbi": "do_mianbi"
+    },
+    "huashan:sgyhole4": {
+      "mianbi": "do_mianbi"
+    },
+    "huashan:shanhongpb": {
+      "cross": "do_cross",
+      "jump": "do_jump"
+    },
+    "huashan:shufang": {
+      "zhengli": "do_zhengli"
+    },
+    "huashan:stone": {
+      "jump": "do_jump"
+    },
+    "huashan:xiaolu2": {
+      "knock": "do_knock",
+      "push": "do_push",
+      "kick": "do_kick"
+    },
+    "huashan:xiuxishi": {
+      "open": "do_open",
+      "close": "do_close"
+    },
+    "huashan:yunuci": {
+      "jump": "do_jump"
+    },
+    "huashan:ziqitai": {
+      "climb": "do_climb"
+    },
+    "jingzhou:houyuan": {
+      "unlock": "do_unlock"
+    },
+    "jingzhou:luan2": {
+      "move": "do_move"
+    },
+    "jingzhou:shikuang1": {
+      "zha": "do_zha"
+    },
+    "jingzhou:shikuang2": {
+      "zha": "do_zha"
+    },
+    "jingzhou:tiesuo": {
+      "jump": "do_jump"
+    },
+    "jinshe:shanbi": {
+      "break": "do_break"
+    },
+    "jinshe:shandong": {
+      "think": "do_think",
+      "pull": "do_pull",
+      "ba": "do_pull"
+    },
+    "jinshe:yongdao2": {
+      "move": "do_move"
+    },
+    "jueqing:chufang": {
+      "serve": "do_serve"
+    },
+    "kaifeng:hh_chufang": {
+      "serve": "do_serve"
+    },
+    "kaifeng:hh_jianlou2": {
+      "zou": "do_zou"
+    },
+    "kaifeng:hh_jianlou3": {
+      "think": "do_think"
+    },
+    "kaifeng:hh_mishi": {
+      "think": "do_think"
+    },
+    "kaifeng:hh_xiaozhu": {
+      "move": "do_move"
+    },
+    "kunlun:bainiushan": {
+      "wo": "do_wo",
+      "breathe": "do_breathe"
+    },
+    "kunlun:fufengshan": {
+      "climb": "do_climb"
+    },
+    "lanzhou:guangchang": {
+      "zuan": "do_zuan"
+    },
+    "lingjiu:jian": {
+      "zou": "do_zou"
+    },
+    "lingxiao:bingti": {
+      "jump": "do_jump"
+    },
+    "lingxiao:car": {
+      "take": "do_take"
+    },
+    "lingxiao:cook": {
+      "serve": "do_serve"
+    },
+    "lingxiao:didi": {
+      "push": "do_push"
+    },
+    "lingxiao:gate": {
+      "open": "do_open",
+      "close": "do_close"
+    },
+    "lingxiao:juegu": {
+      "climb": "do_pan"
+    },
+    "lingxiao:meiroad1": {
+      "pick": "do_pick"
+    },
+    "lingxiao:meiroad2": {
+      "pick": "do_pick"
+    },
+    "lingxiao:meiroad3": {
+      "pick": "do_pick"
+    },
+    "lingxiao:qianyuan": {
+      "pick": "do_pick"
+    },
+    "lingxiao:shanya": {
+      "open": "do_open"
+    },
+    "lingxiao:water": {
+      "dive": "do_dive"
+    },
+    "lingxiao:wave": {
+      "break": "do_break"
+    },
+    "luoyang:miaoyuan": {
+      "jiaoshui": "do_jiaoshui",
+      "peiyu": "do_peiyu"
+    },
+    "meizhuang:didao3": {
+      "pull": "do_open"
+    },
+    "meizhuang:gate": {
+      "knock": "do_knock"
+    },
+    "meizhuang:laofang": {
+      "move": "do_move",
+      "ban": "do_move"
+    },
+    "meizhuang:mishi": {
+      "jump": "do_jump"
+    },
+    "meizhuang:neitang": {
+      "push": "do_push"
+    },
+    "meizhuang:tianjing": {
+      "open": "do_open"
+    },
+    "mingjiao:didao1": {
+      "zou": "do_zou"
+    },
+    "mingjiao:didao2": {
+      "zou": "do_zou"
+    },
+    "mingjiao:gudi1": {
+      "climb": "do_climb"
+    },
+    "mingjiao:gudi2": {
+      "enter": "do_enter",
+      "climb": "do_climb"
+    },
+    "mingjiao:gudi3": {
+      "enter": "do_enter"
+    },
+    "mingjiao:gudi5": {
+      "zhuo": "do_zhuo"
+    },
+    "mingjiao:jmqshenmu": {
+      "climb": "do_climb"
+    },
+    "mingjiao:mishi": {
+      "ketou": "do_ketou"
+    },
+    "mingjiao:rjqmenlou3": {
+      "push": "do_push",
+      "sit": "do_sit"
+    },
+    "mingjiao:shandong": {
+      "break": "do_break"
+    },
+    "mingjiao:tohsq3": {
+      "jump": "do_jump"
+    },
+    "mingjiao:xuantianshi": {
+      "tiao": "do_tiao",
+      "jump": "do_tiao"
+    },
+    "motianya:mtyadi": {
+      "climb": "do_climb"
+    },
+    "quanzhen:baishulin4": {
+      "kan": "do_kan"
+    },
+    "quanzhen:chanfang3": {
+      "jingxiu": "do_jingxiu"
+    },
+    "quanzhen:diziju": {
+      "pull": "do_pull"
+    },
+    "quanzhen:fu_woshi": {
+      "pull": "do_pull"
+    },
+    "quanzhen:liangong": {
+      "da": "do_strike",
+      "ci": "do_finger"
+    },
+    "quanzhen:shantang": {
+      "serve": "do_serve"
+    },
+    "quanzhou:chiqian": {
+      "enter": "do_enter"
+    },
+    "quanzhou:haigang": {
+      "enter": "do_enter"
+    },
+    "quanzhou:penghu": {
+      "enter": "do_enter"
+    },
+    "register:prison": {
+      "suicide": "do_suicide",
+      "drop": "do_drop",
+      "give": "do_give",
+      "eat": "do_eat",
+      "drink": "do_drink"
+    },
+    "register:yanluodian": {
+      "washto": "do_wash",
+      "born": "do_born"
+    },
+    "room:qianting": {
+      "push": "do_push",
+      "close": "do_close"
+    },
+    "room:houyuan": {
+      "sit": "do_sit"
+    },
+    "room:huayuan": {
+      "sit": "do_sit"
+    },
+    "room:shufang": {
+      "sign": "do_sign"
+    },
+    "room:zoudao": {
+      "push": "do_push",
+      "close": "do_close"
+    },
+    "shaolin:bagua": {
+      "enter": "do_enter"
+    },
+    "shaolin:beilin2": {
+      "move": "do_move"
+    },
+    "shaolin:beilin3": {
+      "study": "do_study",
+      "du": "do_study"
+    },
+    "shaolin:damodong": {
+      "面壁": "do_mianbi",
+      "mianbi": "do_mianbi"
+    },
+    "shaolin:dxbdian": {
+      "ketou": "do_ketou"
+    },
+    "shaolin:guangchang1": {
+      "knock": "do_knock"
+    },
+    "shaolin:gulou7": {
+      "hit": "do_hit",
+      "out": "do_out"
+    },
+    "shaolin:putiyuan": {
+      "get": "do_get",
+      "xian": "do_xian"
+    },
+    "shaolin:shang_chufang": {
+      "serve": "do_serve"
+    },
+    "shaolin:shang_lianwue": {
+      "jida": "do_jida",
+      "tiao": "do_tiao"
+    },
+    "shaolin:shang_lianwuw": {
+      "jida": "do_jida"
+    },
+    "shaolin:smdian": {
+      "open": "do_open",
+      "close": "do_close"
+    },
+    "shaolin:zhonglou1": {
+      "open": "do_open"
+    },
+    "shaolin:zhonglou7": {
+      "knock": "do_knock",
+      "out": "do_out"
+    },
+    "shaolin:zhushe": {
+      "move": "do_move"
+    },
+    "shenfeng:bridge1": {
+      "zou": "do_zou"
+    },
+    "shenfeng:bridge2": {
+      "zou": "do_zou"
+    },
+    "shenfeng:feicui1": {
+      "jump": "do_jump",
+      "tiao": "do_jump"
+    },
+    "shenfeng:feicui2": {
+      "zuan": "do_zuan",
+      "climb": "do_climb"
+    },
+    "shenfeng:shanjiao": {
+      "climb": "do_climb"
+    },
+    "shenfeng:shenfeng": {
+      "climb": "do_climb",
+      "push": "do_push",
+      "move": "do_move"
+    },
+    "shenfeng:shishi": {
+      "use": "do_use",
+      "tiao": "do_tiao",
+      "jump": "do_tiao"
+    },
+    "shenfeng:yongdao1": {
+      "use": "do_use",
+      "tiao": "do_tiao",
+      "jump": "do_tiao"
+    },
+    "shenfeng:yongdao3": {
+      "get": "do_get",
+      "break": "do_break"
+    },
+    "shenfeng:yushi": {
+      "climb": "do_climb",
+      "move": "do_move"
+    },
+    "shenlong:haitan": {
+      "enter": "do_enter"
+    },
+    "shenlong:lin1": {
+      "kan": "do_kan"
+    },
+    "sky:sky1": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "sky:sky2": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "sky:sky3": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "sky:sky4": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "sky:sky5": {
+      "jump": "do_move",
+      "move": "do_move",
+      "tiao": "do_move",
+      "enter": "do_move",
+      "up": "do_move"
+    },
+    "songshan:songshan_chufang": {
+      "serve": "do_serve"
+    },
+    "suzhou:suzhou_shop": {
+      "put": "do_put"
+    },
+    "taishan:shijin": {
+      "study": "do_study",
+      "du": "do_study"
+    },
+    "taohua:chufang": {
+      "serve": "do_serve"
+    },
+    "taohua:damen": {
+      "ride": "do_ride"
+    },
+    "taohua:haitan": {
+      "enter": "do_enter"
+    },
+    "taohua:mudi": {
+      "push": "do_push"
+    },
+    "tianlongsi:munitang": {
+      "quit": "do_quit",
+      "exit": "do_exit"
+    },
+    "tiezhang:hhyuan_3": {
+      "cross": "do_cross"
+    },
+    "tiezhang:lgfang": {
+      "charu": "do_cha"
+    },
+    "tiezhang:mishi": {
+      "open": "do_open"
+    },
+    "tiezhang:mzfeng": {
+      "caiqi": "do_caiqi"
+    },
+    "tiezhang:shishi": {
+      "qian": "do_qian"
+    },
+    "tiezhang:wmfeng": {
+      "move": "do_move"
+    },
+    "tulong:boat2": {
+      "break": "do_break"
+    },
+    "tulong:boat3": {
+      "jump": "do_jump"
+    },
+    "tulong:haigang": {
+      "accept": "do_accept"
+    },
+    "tulong:road1": {
+      "leave": "do_leave"
+    },
+    "village:temple1": {
+      "enter": "do_enter"
+    },
+    "wanjiegu:backyard": {
+      "push": "do_push"
+    },
+    "wanjiegu:entrance": {
+      "pushaside": "do_push"
+    },
+    "wanjiegu:grassland": {
+      "knock": "do_knock"
+    },
+    "wanjiegu:tree_hole": {
+      "pull": "do_pull"
+    },
+    "wudang:cangjingge": {
+      "jingxiu": "do_jingxiu"
+    },
+    "wudang:guangchang": {
+      "float": "do_float",
+      "piao": "do_float"
+    },
+    "wudang:gyroad2": {
+      "zhai": "do_zhai"
+    },
+    "wudang:nanyangong": {
+      "move": "do_move"
+    },
+    "wudang:shizhu": {
+      "think": "do_mianbi"
+    },
+    "wudang:wdroad5": {
+      "float": "do_float",
+      "piao": "do_float"
+    },
+    "wudu:dijiao": {
+      "pull": "do_move"
+    },
+    "wudu:dongxue": {
+      "use": "do_use",
+      "fire": "do_fire",
+      "dian": "do_fire",
+      "insert": "do_insert",
+      "climb": "do_climb"
+    },
+    "wudu:huating2": {
+      "move": "do_move"
+    },
+    "wudu:huating3": {
+      "think": "do_think"
+    },
+    "wudu:huxue2": {
+      "search": "do_search",
+      "sousuo": "do_search",
+      "rain": "do_train"
+    },
+    "wudu:liandu": {
+      "lianzhi": "do_lianzhi"
+    },
+    "wudu:minju10": {
+      "pull": "do_move"
+    },
+    "wudu:minju7": {
+      "enter": "do_enter"
+    },
+    "wudu:mishi": {
+      "think": "do_think",
+      "open": "do_open"
+    },
+    "wudu:nanyuan": {
+      "climb": "do_climb"
+    },
+    "wudu:wandu3": {
+      "climb": "do_climb"
+    },
+    "wuguan:guofu_caidi1": {
+      "chu": "do_chu"
+    },
+    "wuguan:guofu_caidi2": {
+      "jiao": "do_jiao"
+    },
+    "wuguan:guofu_chaifang": {
+      "pi": "do_pi"
+    },
+    "wuguan:guofu_mafang": {
+      "sao": "do_sao"
+    },
+    "wuguan:guofu_mufang": {
+      "ju": "do_pi"
+    },
+    "xiakedao:chashi": {
+      "sit": "do_sit"
+    },
+    "xiakedao:dating": {
+      "push": "do_push"
+    },
+    "xiakedao:gudi": {
+      "climb": "do_climb",
+      "bury": "do_mai",
+      "mai": "do_mai",
+      "swim": "do_swim"
+    },
+    "xiakedao:haigang": {
+      "enter": "do_enter"
+    },
+    "xiakedao:haitan": {
+      "enter": "do_enter"
+    },
+    "xiakedao:midao4": {
+      "break": "do_break"
+    },
+    "xiakedao:pubu": {
+      "jump": "do_jump",
+      "plump": "do_plump"
+    },
+    "xiakedao:shidong10": {
+      "canwu": "do_canwu"
+    },
+    "xiakedao:shidong2": {
+      "think": "do_think"
+    },
+    "xiakedao:shidong4": {
+      "think": "do_think"
+    },
+    "xiakedao:shidong7": {
+      "think": "do_think",
+      "canwu": "do_canwu"
+    },
+    "xiakedao:wangyun": {
+      "take": "do_take"
+    },
+    "xiakedao:xiaowu": {
+      "move": "do_move"
+    },
+    "xiakedao:yadi": {
+      "climb": "do_climb",
+      "push": "do_push",
+      "swim": "do_swim"
+    },
+    "xiangyang:juyichufang": {
+      "serve": "do_serve"
+    },
+    "xiaoyao:shantang": {
+      "order": "do_order"
+    },
+    "xiyu:houdong": {
+      "move": "do_move",
+      "pick": "do_pick"
+    },
+    "xiyu:silk3": {
+      "climb": "do_climb"
+    },
+    "xiyu:tianroad3": {
+      "jump": "do_jump",
+      "tiao": "do_jump"
+    },
+    "xiyu:tianroad4": {
+      "jump": "do_jump",
+      "tiao": "do_jump"
+    },
+    "xuedao:sroad8": {
+      "get": "do_get",
+      "enter": "do_enter"
+    },
+    "xueshan:chanshi": {
+      "turn": "do_turn"
+    },
+    "yanziwu:huanshi": {
+      "move": "do_move"
+    },
+    "yanziwu:lanyue": {
+      "knock": "do_knock",
+      "whisper": "do_say"
+    },
+    "yanziwu:tingyu": {
+      "tan": "do_tan",
+      "play": "do_tan",
+      "break": "do_break"
+    },
+    "yanziwu:xiaoting": {
+      "tap": "do_tap",
+      "knock": "do_tap",
+      "sit": "do_sit"
+    },
+    "zhongzhou:miaojia_chufang": {
+      "serve": "do_serve"
+    },
+    "zhongzhou:miaojia_houyuan": {
+      "think": "do_think"
+    },
+    "zhongzhou:miaojia_shufang": {
+      "think": "do_think",
+      "canwu": "do_canwu"
+    }
+  },
+  "coverage": {
+    "room_no_add_action": 4063,
+    "room_with_literal_action": 304,
+    "room_with_dynamic_action": 2
+  },
+  "unresolved_source_on_disk": [],
+  "rooms_without_source_comment": [
+    "kissa-jarvi:gates",
+    "kissa-jarvi:path-1",
+    "kissa-jarvi:path-2",
+    "kissa-jarvi:path-3",
+    "kissa-jarvi:path-4",
+    "kissa-jarvi:lake-1",
+    "kissa-jarvi:lake-2",
+    "kissa-jarvi:lake-3",
+    "kissa-jarvi:lake-4",
+    "kissa-jarvi:lake-5",
+    "kissa-jarvi:lake-6",
+    "lepakko-luola:cave-outside",
+    "lepakko-luola:cave-entrance",
+    "liuxi:shanlu",
+    "liuxi:guangchang",
+    "liuxi:zixu_guan",
+    "liuxi:lianwuchang",
+    "liuxi:tiepupu",
+    "liuxi:nether",
+    "liuxi:qianzhuang",
+    "liuxi:guofu",
+    "sammatti:town_square",
+    "sammatti:marketplace",
+    "sammatti:inn",
+    "sammatti:inn_upstairs",
+    "sammatti:well",
+    "sammatti:guild_hall",
+    "sammatti:blacksmith",
+    "sammatti:main-street-1",
+    "sammatti:main-street-2",
+    "sammatti:main-street-3",
+    "sammatti:park-1",
+    "sammatti:park-2",
+    "sammatti:park-3",
+    "sammatti:residence-1",
+    "sammatti:residence-2",
+    "sammatti:town-hall",
+    "signature:yinyi",
+    "signature:zhu_ting",
+    "signature:guan_yun",
+    "signature:shulin",
+    "signature:lunwu_tai"
+  ],
+  "total_candidate_rooms": 304,
+  "total_candidate_verbs": 532
+}

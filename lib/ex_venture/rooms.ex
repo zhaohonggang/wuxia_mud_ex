@@ -153,9 +153,13 @@ defmodule ExVenture.Rooms do
         {:error, :not_found}
 
       room ->
+        # 同 Zones.get/1：ecto 3.6.2 在顶层 preload >= 2 条时会调用
+        # `adapter.checked_out?/1`，而锁定的 ecto_sql 3.6.1 未实现该回调，
+        # 会抛 UndefinedFunctionError。拆成两次单条 preload 走串行分支规避。
         room =
           room
-          |> Repo.preload([:staged_changes, zone: [:staged_changes]])
+          |> Repo.preload(:staged_changes)
+          |> Repo.preload(zone: [:staged_changes])
           |> StagedChanges.apply()
           |> StagedChanges.apply(:zone)
 

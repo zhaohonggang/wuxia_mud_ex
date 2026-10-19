@@ -38,6 +38,10 @@ defmodule Kantele.Combat.ChousuiZhangTest do
     %{
       skills: %{"chousui-zhang" => 120, "poison" => 180, "throwing" => 190, "strike" => 120},
       mapped: %{"strike" => "chousui-zhang"},
+      # LPC dan.c:40 `me->query_skill_prepared("strike") != "chousui-zhang"`
+      # 与 mapped 是两道独立门槛，缺一则「你没有准备抽髓掌」。
+      # 4e560a9d 重写 dan.ex 补齐该门栈后，本 fixture 需同步补 prepared。
+      prepared: %{"strike" => @dan},
       performs: MapSet.new([@dan])
     }
   end
@@ -157,7 +161,12 @@ defmodule Kantele.Combat.ChousuiZhangTest do
       character = %{character | meta: %{character.meta | temp: temp}}
 
       conn = PerformCommand.run(build_conn(character), %{"action" => @cmd})
-      assert output_text(conn) =~ "拿着(hand)些毒药"
+
+      # LPC dan.c:53 `objectp(du) && !mapp(du->query("poison"))` —— 手中有物件
+      # 但不是毒药，走「不是毒药」分支；「你必须拿着(hand)些毒药」只对应
+      # 手中根本没有物件（!objectp）。此处的 handing 是缺 meta 的物件，
+      # 因此断言「不是毒药」这一支，重点是安全拒绝而不抛异常。
+      assert output_text(conn) =~ "不是毒药"
     end
 
     test "成功放招：放出主文案、投递目标侧事件、暂不扣内力" do

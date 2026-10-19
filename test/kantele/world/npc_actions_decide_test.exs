@@ -25,8 +25,8 @@ defmodule Kantele.World.NpcActions.DecideTest do
     }
   end
 
-  defp params(room_id, npc, trailing \\ "") do
-    %{verb: "decide", trailing: trailing, room_id: room_id, npc: npc}
+  defp params(room_id, npc, trailing \\ "", verb \\ "decide") do
+    %{verb: verb, trailing: trailing, room_id: room_id, npc: npc}
   end
 
   defp run(conn, params) do
@@ -129,6 +129,82 @@ defmodule Kantele.World.NpcActions.DecideTest do
       assert conn2.character.meta.env["bad_vendor"] == 1
       assert conn2.character.meta.temp["want_tuoli"] == nil
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "人各有志"))
+    end
+  end
+
+  describe "黄真（xiangyang:qianzhuang）join/unjoin" do
+    test "join 商业协会 → 落 want_join 标记（decide 消费）" do
+      npc = npc("黄真")
+      conn2 = run(conn("xiangyang:qianzhuang"), params("xiangyang:qianzhuang", npc, "商业协会", "join"))
+
+      assert conn2 != :not_handled
+      assert conn2.character.meta.temp["want_join"] == 1
+      assert String.contains?(out_text(conn2), "你真的打算")
+    end
+
+    test "join 参数不对 → 提示加入什么" do
+      npc = npc("黄真")
+      conn2 = run(conn("xiangyang:qianzhuang"), params("xiangyang:qianzhuang", npc, "天地会", "join"))
+
+      assert String.contains?(out_text(conn2), "你要加入什么")
+    end
+
+    test "join 无参数 → 提示加入什么" do
+      npc = npc("黄真")
+      conn2 = run(conn("xiangyang:qianzhuang"), params("xiangyang:qianzhuang", npc, "", "join"))
+
+      assert String.contains?(out_text(conn2), "你要加入什么")
+    end
+
+    test "已是商会成员（is_vendor）→ 拒绝" do
+      npc = npc("黄真")
+      conn = conn("xiangyang:qianzhuang", %{env: %{"is_vendor" => 1}})
+      conn2 = run(conn, params("xiangyang:qianzhuang", npc, "商业协会", "join"))
+
+      assert String.contains?(out_text(conn2), "不是已经加入")
+    end
+
+    test "失信商人（bad_vendor）→ 拒绝" do
+      npc = npc("黄真")
+      conn = conn("xiangyang:qianzhuang", %{env: %{"bad_vendor" => 1}})
+      conn2 = run(conn, params("xiangyang:qianzhuang", npc, "商业协会", "join"))
+
+      assert String.contains?(out_text(conn2), "又回来作甚")
+    end
+
+    test "unjoin 商业协会（成员）→ 落 want_tuoli 标记" do
+      npc = npc("黄真")
+      conn = conn("xiangyang:qianzhuang", %{env: %{"is_vendor" => 1}})
+      conn2 = run(conn, params("xiangyang:qianzhuang", npc, "商业协会", "unjoin"))
+
+      assert conn2 != :not_handled
+      assert conn2.character.meta.temp["want_tuoli"] == 1
+      assert String.contains?(out_text(conn2), "可不能反悔")
+    end
+
+    test "unjoin 参数不对 → 提示说话不清不楚" do
+      npc = npc("黄真")
+      conn = conn("xiangyang:qianzhuang", %{env: %{"is_vendor" => 1}})
+      conn2 = run(conn, params("xiangyang:qianzhuang", npc, "x", "unjoin"))
+
+      assert String.contains?(out_text(conn2), "说话不清不楚")
+    end
+
+    test "unjoin 非成员 → 没理你" do
+      npc = npc("黄真")
+      conn2 = run(conn("xiangyang:qianzhuang"), params("xiangyang:qianzhuang", npc, "商业协会", "unjoin"))
+
+      assert String.contains?(out_text(conn2), "冷笑一声，没理你")
+    end
+
+    test "join/unjoin 在其它房间 → :not_handled（房间级限定）" do
+      npc = npc("黄真")
+
+      assert :not_handled =
+               Decide.run(conn("unknown:room"), params("unknown:room", npc, "商业协会", "join"))
+
+      assert :not_handled =
+               Decide.run(conn("unknown:room"), params("unknown:room", npc, "商业协会", "unjoin"))
     end
   end
 end

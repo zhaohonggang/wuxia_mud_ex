@@ -96,9 +96,17 @@ defmodule ExVenture.Zones do
         {:error, :not_found}
 
       zone ->
+        # 分两次 preload，而不是 `Repo.preload([:staged_changes, rooms: [...]])`。
+        # 原因：ecto 3.6.2 的 `Ecto.Repo.Preloader.maybe_pmap/3` 在顶层 preload
+        # 条目 >= 2 时会调用 `adapter.checked_out?/1` 判断能否并行加载，而本仓库
+        # 锁定的 ecto_sql 3.6.1 还没有实现这个回调（3.6.2 才补上），于是抛
+        # `UndefinedFunctionError`，把 Zones.get/1 整个炸掉。
+        # 拆成两次单条 preload 后走串行分支，不再触达该回调；两个关联数据量都很小，
+        # 串行没有可感知的性能损失。ecto_sql 升到 >= 3.6.2 之后可以合并回一条。
         zone =
           zone
-          |> Repo.preload([:staged_changes, rooms: [:staged_changes]])
+          |> Repo.preload(:staged_changes)
+          |> Repo.preload(rooms: [:staged_changes])
           |> StagedChanges.apply()
           |> StagedChanges.apply(:rooms)
 

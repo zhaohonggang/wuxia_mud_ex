@@ -228,7 +228,7 @@ N1 别名层、N2 商店、N3/N4 行为树问答、N7 四维道具（仅需给 e
 
 T4 e2e 夹具随各系统落地同步扩展。✅ scripts/phase_a_e2e.exs（19 断言全绿）＋ combat_e2e.exs 回归通过（death-respawn 为 flaky 项）。
 
-### b 期——危险但非"启动杀手"，T1 前就位（红区纪律生效）
+### b 期——危险但非"启动杀手"，T1 前就位（红区纪律生效）✅ 已完成（2026-08-26，b1-b6 全绿 219 测试，见 `session-prompts-phase-b.zh-CN.md` §七 实施摘要）
 
 > 提示词文件：`docs/session-prompts-phase-b.zh-CN.md`（含六项任务详情与验收标准）。执行顺序：**b6 先行** → b1 → b2-b5 捆绑。
 

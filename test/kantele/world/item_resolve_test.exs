@@ -10,6 +10,11 @@ defmodule Kantele.World.ItemResolveTest do
   @gone "global:potion"
 
   setup do
+    # 本用例的前提是「global:potion 没有定义」，但 Items 是全局 ETS 缓存，
+    # 其它用例（如 drink_test）会往同一 key 里塞真物品且不清理。这里先删掉，
+    # 让断言不依赖用例执行顺序。
+    Items.delete(@gone)
+
     Items.put(@real, %Item{
       id: @real,
       name: "包子 Baozi",

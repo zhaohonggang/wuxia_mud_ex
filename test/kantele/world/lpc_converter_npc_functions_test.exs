@@ -187,7 +187,7 @@ defmodule Kantele.World.LPCConverterNpcFunctionsTest do
       ast = parse(@shouwei_path)
 
       assert ast.engage != nil
-      assert Map.keys(ast.engage) == [:fight, :hit, :kill]
+      assert Enum.sort(Map.keys(ast.engage)) == [:fight, :hit, :kill]
       assert Enum.all?(ast.engage, fn {_, rule} -> rule.accept == false end)
       assert Enum.all?(ast.engage, fn {_, rule} -> rule.inherit end)
 

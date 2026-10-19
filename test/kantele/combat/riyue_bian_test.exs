@@ -383,9 +383,11 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert published_text(conn) =~ "飞刺向"
 
+      # LPC shang.c:44 `ap = me->query_skill("whip") + me->query_skill("force")`
+      # = whip 180 + force 300 = 480（不含 riyue-bian 本身）
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
-        data: %{perform_id: "riyue-bian/shang", ap: 660, attacker: %{id: "player-1"}}
+        data: %{perform_id: "riyue-bian/shang", ap: 480, attacker: %{id: "player-1"}}
       }
     end
   end

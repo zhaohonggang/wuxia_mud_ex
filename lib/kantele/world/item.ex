@@ -241,6 +241,14 @@ defmodule Kantele.World.Item.Meta do
 
   - `storage_bag` 存储扩展格数（整数；为 nil 表示非背包容器）
 
+  物品 `add_action` 动词表（第十二批，对应 LPC `add_action(<handler_fn>, <verb>)`）：
+
+  - `actions` `[%{verb: "play", handler: "play_qin"}]`（`verb` 是玩家输入的词，
+    `handler` 是 LPC handler 函数名；消费端见 `ItemActionDispatcher`）。
+    琴/箫/筝类乐器与可读书册由 `scripts/backfill_item_actions.py` 从源 .c 回填
+    （转换器只给 NPC 侧 `characters` 块输出过 `init.add_actions`，物品块从未输出）
+  - `read_text` 书册类 `do_read` 的长文案（`read` 动词的输出，同批回填）
+
   任务物品扩展字段（Q5 宝镜任务，对应 LPC set_task 物品 meta）：
 
   - `no_sell` 不可出售（Seller/Dealer 拒绝语；非空即拦截）
@@ -305,7 +313,17 @@ defmodule Kantele.World.Item.Meta do
     {:can_make, nil},
     {:not_make, nil},
     {:power_point, nil},
-    {:item_origin, nil}
+    {:item_origin, nil},
+
+    # 物品侧 `add_action` 动词表（第十二批）。形如
+    # `[%{verb: "play", handler: "play_qin"}]` —— verb 为玩家输入词，handler 为
+    # LPC handler 函数名（`add_action` 的第一个参数）。分发/消费见
+    # `Kantele.World.ItemActionDispatcher` 与 `ItemActionHandlers`。
+    # 默认 `[]`（无动作），只有回填过 `actions` 的物品才带。
+    {:actions, []},
+
+    # 书册 `do_read` 的长文案（`read` 动词的直接输出；nil = 非可读书册）。
+    {:read_text, nil}
   ]
 
   @doc """

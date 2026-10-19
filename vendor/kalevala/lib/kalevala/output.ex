@@ -105,11 +105,16 @@ defmodule Kalevala.Output.Tags do
       backslash, double quote, and brace characters so arbitrary user/world data
       (item names, descriptions, room names, ...) round-trips through
       `parse_tag_attributes/1` unchanged.
+
+      World data may legitimately omit a description (`nil`), so `nil` is
+      escaped to the empty string rather than crashing the caller.
   """
+  def escape_attribute(nil), do: ""
+
   def escape_attribute(string) do
     string
     |> String.replace("\\", "\\\\")
-    |> String.replace("\\\"", "\\\\\"")
+    |> String.replace("\"", "\\\"")
     |> String.replace(~r/{/, "\\{")
     |> String.replace(~r/}/, "\\}")
   end

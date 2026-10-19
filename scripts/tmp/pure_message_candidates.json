@@ -1,0 +1,26 @@
+[
+ {
+  "room": "hangzhou:liuzhuang",
+  "verb": "knock",
+  "handler": "do_knock",
+  "mode": "vision",
+  "text": "$N“咚，咚，咚”地敲着门，可里面却一点动静都没有。\n",
+  "src": "d/hangzhou/liuzhuang.c"
+ },
+ {
+  "room": "huanggong:inwell",
+  "verb": "reach",
+  "handler": "do_reach",
+  "mode": "vision",
+  "text": "\n$N试著去抓木桶，但总是差一点够着，要能跳高一点就好了。\n",
+  "src": "d/huanggong/inwell.c"
+ },
+ {
+  "room": "emei:shierpan3",
+  "verb": "clap",
+  "handler": "do_clap",
+  "mode": "vision",
+  "text": "\n池内忽然有蛙大鸣一声，接着群蛙次第相合，最后又是一蛙大\n鸣，群蛙便嘎然而止，其数正好为八。\n",
+  "src": "d/emei/shierpan3.c"
+ }
+]

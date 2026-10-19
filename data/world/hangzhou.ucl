@@ -946,6 +946,14 @@ item_desc = {
     down = rooms.liuhe8.id
     }
 
+  # 乾隆皇帝（LPC d/hangzhou/npc/qianlong.c）置于六和塔顶：弱玩家跪拜会被一脚
+  # 踢下塔（落点取六和塔底 hangzhou:liuheta，见 Kantele.World.NpcActions.Kneel）。
+  room_characters "liuhe9" {
+    room_id = rooms.liuhe9.id
+    characters = [
+      { id = characters.qianlong.id }    ]
+  }
+
 # Generated from C:/files/git/mud/d/hangzhou/liuhea.c by LPCConverter
 # Zone: hangzhou
 

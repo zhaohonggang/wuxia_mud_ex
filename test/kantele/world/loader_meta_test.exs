@@ -441,4 +441,58 @@ defmodule Kantele.World.LoaderMetaTest do
     room = Enum.find(world.rooms, &(&1.id == "test:liandan_lin"))
     assert room != nil
   end
+
+  # ---- 第十二批：物品侧 add_action 动词表（actions / read_text） ----
+
+  # 直接调 parse_item/4（不走全量夹具世界）：UCL 顶层 `actions = [{ verb handler }]`
+  # 与 `read_text` 的解析。类型错误的条目应被丢弃而不是拖垮加载（P7）。
+  test "parse_item：actions 逐条解析 verb/handler，畸形条目丢弃" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(zone, "muqin", %{
+        name: "木琴",
+        description: "一个平凡的木琴。",
+        verbs: ["get"],
+        actions: [
+          %{verb: "play", handler: "play_qin"},
+          %{verb: "", handler: "play_qin"},
+          %{verb: "read"},
+          "not-a-map"
+        ],
+        read_text: "  羽毛扇始于周昭王时。\n"
+      }, %{})
+
+    assert item.id == "test:muqin"
+    assert item.meta.actions == [%{verb: "play", handler: "play_qin"}]
+    assert item.meta.read_text == "  羽毛扇始于周昭王时。\n"
+  end
+
+  test "parse_item：无 actions/read_text 时取默认值（空表 / nil）" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(zone, "changjian", %{
+        name: "长剑",
+        description: "青钢剑",
+        verbs: ["get"]
+      }, %{})
+
+    assert item.meta.actions == []
+    assert item.meta.read_text == nil
+  end
+
+  test "parse_item：空串 read_text 归一为 nil" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(zone, "book", %{
+        name: "书",
+        description: "空书",
+        verbs: [],
+        read_text: "   "
+      }, %{})
+
+    assert item.meta.read_text == nil
+  end
 end

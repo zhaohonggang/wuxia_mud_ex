@@ -78,8 +78,9 @@ defmodule Kantele.World do
 
     case ZoneCache.get(zone_id) do
       {:ok, zone} ->
-        zone.rooms
-        |> Enum.find(&(&1.id == room_id))
+        zone
+        |> zone_rooms()
+        |> Enum.find(fn room -> Map.get(room, :id) == room_id end)
         |> case do
           nil ->
             []
@@ -95,6 +96,20 @@ defmodule Kantele.World do
   end
 
   def room_flags(_), do: []
+
+  # 缓存中的 `Zone.rooms` 运行时是列表：Loader 在交给 ZoneCache 之前会经
+  # `zone_rooms_to_list/1` 把 map 归一为 `Map.values/1`（见 loader.ex:178-179）。
+  # 但直接写缓存的调用方（测试种子、外部工具）可能塞进未归一的 map，
+  # 此时 `Enum.find/2`、`Enum.flat_map/2` 会拿到 `{key, value}` 元组，
+  # 后续 `.id` / `Map.get/3` 便抛 BadMapError，把玩家指令甚至登录流程炸掉。
+  # 这里统一兜底成列表，两种形状都能安全遍历。
+  defp zone_rooms(zone) do
+    case Map.get(zone, :rooms, []) do
+      rooms when is_map(rooms) -> Map.values(rooms)
+      rooms when is_list(rooms) -> rooms
+      _ -> []
+    end
+  end
 
   @doc """
   出生点房间 id（A5/D2 startroom flag）
@@ -117,7 +132,7 @@ defmodule Kantele.World do
     |> Enum.sort()
     |> Enum.flat_map(fn zone_id ->
       case ZoneCache.get(zone_id) do
-        {:ok, zone} -> Map.get(zone, :rooms, [])
+        {:ok, zone} -> zone_rooms(zone)
         _ -> []
       end
     end)

@@ -59,7 +59,8 @@ defmodule Kantele.Character.PlayerMeta do
     spouse: nil,
     schedule: nil,
     tianshu_books: nil,
-    jifen: nil
+    jifen: nil,
+    marks: %{}
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -272,6 +273,14 @@ defmodule Kantele.Character.PlayerMeta do
   @doc "写积分"
   def put_jifen(%__MODULE__{} = meta, jifen),
     do: %{meta | jifen: jifen}
+
+  # ---- 任务/剧情标记（落盘 metadata.marks；LPC `set("marks/<key>", 1)`）----
+  @doc "读剧情标记（缺省 nil），如 `marks/qianlong` 对应 `mark(meta, \"qianlong\")`"
+  def mark(%__MODULE__{marks: marks}, key), do: Map.get(marks || %{}, key)
+
+  @doc "写剧情标记（持久），如 `me->set(\"marks/qianlong\", 1)`"
+  def put_mark(%__MODULE__{} = meta, key, value),
+    do: %{meta | marks: Map.put(meta.marks || %{}, key, value)}
 end
 
 defmodule Kantele.Character.NonPlayerMeta do

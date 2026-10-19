@@ -6513,6 +6513,7 @@ chats = [
     "drop"
   ]
 
+  actions = [{ verb = "play" handler = "play_qin" }]
       meta = {
         value = 50
         weight = 600

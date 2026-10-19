@@ -166,7 +166,9 @@ defmodule Kantele.Combat.FlowTest do
     initial_boar = boar(vitals: [qi: 8, max_qi: 150])
 
     {_all_text, conn, final_boar, rounds} =
-      exchange_rounds(a, initial_boar, fn ch -> ch.status =~ "尸体" end, 40)
+      # status 在死亡结算时才被置为尸体文案，存活期间是 nil，
+      # 因此谓词必须 nil 安全（do_rounds/8 每回合都会调用它）。
+      exchange_rounds(a, initial_boar, fn ch -> is_binary(ch.status) and ch.status =~ "尸体" end, 40)
 
     # 击杀奖励消息是死亡结算的权威信号
     assert_receive %Event{topic: "combat/enemy-died", data: data}, @recv_timeout

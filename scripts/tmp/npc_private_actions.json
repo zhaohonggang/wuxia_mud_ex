@@ -1,0 +1,2005 @@
+{
+ "meta": {
+  "global_verbs": 403,
+  "npc_files": 1299,
+  "files_with_add_action": 225,
+  "add_action_calls": 565,
+  "distinct_verbs": 108,
+  "covered_verbs": 40,
+  "covered_calls": 449,
+  "private_verbs": 68,
+  "private_calls": 116,
+  "movement_like_verbs": 0,
+  "real_private_verbs": 68,
+  "real_private_calls": 116,
+  "dead_verbs": 1,
+  "dead_calls": 10,
+  "impl_hint_verbs": 7,
+  "impl_hint_calls": 20,
+  "inherited_handlers": 15,
+  "shared_base_handlers": 0,
+  "item_files": 1426,
+  "item_calls": 158,
+  "item_private_verbs": 42,
+  "item_private_calls": 72,
+  "ignored_global": []
+ },
+ "covered_verbs": {
+  "list": 140,
+  "buy": 139,
+  "get": 13,
+  "duihuan": 13,
+  "withdraw": 11,
+  "sell": 10,
+  "value": 10,
+  "check": 10,
+  "chazhang": 10,
+  "convert": 10,
+  "deposit": 10,
+  "cun": 10,
+  "qu": 10,
+  "kill": 6,
+  "answer": 4,
+  "fight": 4,
+  "halt": 4,
+  "exert": 4,
+  "hit": 3,
+  "touxi": 3,
+  "drop": 3,
+  "accept": 3,
+  "help": 2,
+  "描述": 1,
+  "帮助": 1,
+  "stop": 1,
+  "hp": 1,
+  "score": 1,
+  "special": 1,
+  "beg": 1,
+  "steal": 1,
+  "quanjia": 1,
+  "persuade": 1,
+  "ansuan": 1,
+  "cook": 1,
+  "transfer": 1,
+  "zhuan": 1,
+  "summon": 1,
+  "heal": 1,
+  "register": 1
+ },
+ "movement_like": {},
+ "private_rows": [
+  {
+   "verb": "bi",
+   "calls": 14,
+   "zones": 3,
+   "areas": {
+    "adm": 1,
+    "b": 4,
+    "d": 9
+   },
+   "handlers": {
+    "do_bihua": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    },
+    "begin": {
+     "via": "local",
+     "kind": "combat",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    },
+    "do_bi": {
+     "via": "local",
+     "kind": "unknown",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1,
+    "combat": 10,
+    "unknown": 3
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/referee.c:do_bihua",
+    "b/yitian/npc/ada.c:begin",
+    "b/yitian/npc/aer.c:begin"
+   ]
+  },
+  {
+   "verb": "join",
+   "calls": 10,
+   "zones": 6,
+   "areas": {
+    "d": 10
+   },
+   "handlers": {
+    "do_join": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": true,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 10
+   },
+   "busy": 0,
+   "dead": 10,
+   "impl_hint": [
+    "lib/.../league_command.ex"
+   ],
+   "samples": [
+    "d/beijing/npc/fangang.c:do_join",
+    "d/beijing/npc/fengjizhong.c:do_join",
+    "d/beijing/npc/guananji.c:do_join"
+   ]
+  },
+  {
+   "verb": "decide",
+   "calls": 5,
+   "zones": 5,
+   "areas": {
+    "adm": 1,
+    "d": 4
+   },
+   "handlers": {
+    "decide_withdraw": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    },
+    "do_decide": {
+     "via": "local",
+     "kind": "state",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1,
+    "state": 4
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:decide_withdraw",
+    "d/beijing/npc/haigonggong.c:do_decide",
+    "d/guiyun/npc/xiaolu.c:do_decide"
+   ]
+  },
+  {
+   "verb": "compare",
+   "calls": 4,
+   "zones": 1,
+   "areas": {
+    "b": 4
+   },
+   "handlers": {
+    "do_compare": {
+     "via": "local",
+     "kind": "unknown",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    },
+    "begin": {
+     "via": "local",
+     "kind": "combat",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "unknown": 2,
+    "combat": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "b/tulong/npc/chang.c:do_compare",
+    "b/tulong/npc/guo.c:do_compare",
+    "b/tulong/npc/mai.c:begin"
+   ]
+  },
+  {
+   "verb": "show",
+   "calls": 4,
+   "zones": 2,
+   "areas": {
+    "adm": 3,
+    "d": 1
+   },
+   "handlers": {
+    "do_show": {
+     "via": "local",
+     "kind": "unknown",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "unknown": 4
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [
+    "lib/.../help_command.ex",
+    "lib/.../scheme_command.ex",
+    "lib/.../version_command.ex"
+   ],
+   "samples": [
+    "adm/npc/luban.c:do_show",
+    "adm/npc/moye.c:do_show",
+    "adm/npc/qingyangzi.c:do_show"
+   ]
+  },
+  {
+   "verb": "yun",
+   "calls": 4,
+   "zones": 3,
+   "areas": {
+    "b": 1,
+    "d": 3
+   },
+   "handlers": {
+    "do_yun": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 4
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "b/yitian/npc/zhao.c:do_yun",
+    "d/tulong/tulong/npc/yin.c:do_yun",
+    "d/tulong/yitian/npc/zhao.c:do_yun"
+   ]
+  },
+  {
+   "verb": "choose",
+   "calls": 3,
+   "zones": 2,
+   "areas": {
+    "adm": 2,
+    "d": 1
+   },
+   "handlers": {
+    "do_choose": {
+     "via": "local",
+     "kind": "message",
+     "busy": true,
+     "dead": false,
+     "defs": []
+    },
+    "do_selete": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1,
+    "state+msg": 2
+   },
+   "busy": 1,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/beastseller.c:do_choose",
+    "adm/npc/horseboss.c:do_selete",
+    "d/city/npc/horseboss.c:do_selete"
+   ]
+  },
+  {
+   "verb": "finish",
+   "calls": 3,
+   "zones": 1,
+   "areas": {
+    "adm": 3
+   },
+   "handlers": {
+    "finish_auction": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    },
+    "do_finish": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1,
+    "message": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/feng.c:finish_auction",
+    "adm/npc/ganjiang.c:do_finish",
+    "adm/npc/luban.c:do_finish"
+   ]
+  },
+  {
+   "verb": "yao",
+   "calls": 3,
+   "zones": 3,
+   "areas": {
+    "d": 3
+   },
+   "handlers": {
+    "do_yao": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 3
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/qianzhenglun.c:do_yao",
+    "d/wudu/npc/tian.c:do_yao",
+    "d/xiangyang/npc/huangzhen.c:do_yao"
+   ]
+  },
+  {
+   "verb": "bian",
+   "calls": 2,
+   "zones": 1,
+   "areas": {
+    "d": 2
+   },
+   "handlers": {
+    "convert": {
+     "via": "local",
+     "kind": "combat",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "combat": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/baituo/npc/lingshe.c:convert",
+    "d/baituo/npc/snake.c:convert"
+   ]
+  },
+  {
+   "verb": "bihua",
+   "calls": 2,
+   "zones": 2,
+   "areas": {
+    "adm": 1,
+    "d": 1
+   },
+   "handlers": {
+    "do_bihua": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/referee.c:do_bihua",
+    "d/village/npc/wang.c:do_bihua"
+   ]
+  },
+  {
+   "verb": "copy",
+   "calls": 2,
+   "zones": 1,
+   "areas": {
+    "d": 2
+   },
+   "handlers": {
+    "do_copy": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": true,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 2
+   },
+   "busy": 2,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/city/npc/shutong.c:do_copy",
+    "d/city/npc/zhu.c:do_copy"
+   ]
+  },
+  {
+   "verb": "desc",
+   "calls": 2,
+   "zones": 1,
+   "areas": {
+    "adm": 2
+   },
+   "handlers": {
+    "do_desc": {
+     "via": "local",
+     "kind": "unknown",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "unknown": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [
+    "lib/.../horse_command.ex"
+   ],
+   "samples": [
+    "adm/npc/ganjiang.c:do_desc",
+    "adm/npc/luban.c:do_desc"
+   ]
+  },
+  {
+   "verb": "exchange",
+   "calls": 2,
+   "zones": 2,
+   "areas": {
+    "d": 2
+   },
+   "handlers": {
+    "do_exchange": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/city/npc/xiaoer.c:do_exchange",
+    "d/minimal_world_v2/npc/xiaoer.c:do_exchange"
+   ]
+  },
+  {
+   "verb": "mine",
+   "calls": 2,
+   "zones": 2,
+   "areas": {
+    "d": 2
+   },
+   "handlers": {
+    "do_mine": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": true,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 2
+   },
+   "busy": 2,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/guanwai/npc/jiangong.c:do_mine",
+    "d/hangzhou/npc/jiangong.c:do_mine"
+   ]
+  },
+  {
+   "verb": "serve",
+   "calls": 2,
+   "zones": 2,
+   "areas": {
+    "d": 2
+   },
+   "handlers": {
+    "do_serve": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 2
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/meizhuang/npc/chushi.c:do_serve",
+    "d/wuguan/npc/chushi.c:do_serve"
+   ]
+  },
+  {
+   "verb": "agree",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_agree": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_agree"
+   ]
+  },
+  {
+   "verb": "ban",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_ban": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/feng.c:do_ban"
+   ]
+  },
+  {
+   "verb": "changedesc",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_changedesc": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_changedesc"
+   ]
+  },
+  {
+   "verb": "changeid",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_changeid": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_changeid"
+   ]
+  },
+  {
+   "verb": "changename",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_changename": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_changename"
+   ]
+  },
+  {
+   "verb": "changetype",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_changetype": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_changetype"
+   ]
+  },
+  {
+   "verb": "chexiao",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_withdraw": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_withdraw"
+   ]
+  },
+  {
+   "verb": "delete",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_delete": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_delete"
+   ]
+  },
+  {
+   "verb": "demolish",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_demolish": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_demolish"
+   ]
+  },
+  {
+   "verb": "discard",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_discard": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_discard"
+   ]
+  },
+  {
+   "verb": "h",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_halt": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/referee.c:do_halt"
+   ]
+  },
+  {
+   "verb": "jupai",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_jupai": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/feng.c:do_jupai"
+   ]
+  },
+  {
+   "verb": "kneel",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_kneel": {
+     "via": "local",
+     "kind": "combat",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "combat": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/hangzhou/npc/qianlong.c:do_kneel"
+   ]
+  },
+  {
+   "verb": "move",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_mine": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": true,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 1,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/guanwai/npc/jiangong.c:do_mine"
+   ]
+  },
+  {
+   "verb": "name",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_name": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [
+    "lib/.../assist_command.ex",
+    "lib/.../daub_command.ex",
+    "lib/.../detach_command.ex",
+    "lib/.../drug_command.ex"
+   ],
+   "samples": [
+    "adm/npc/ganjiang.c:do_name"
+   ]
+  },
+  {
+   "verb": "ok",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_finish": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_finish"
+   ]
+  },
+  {
+   "verb": "peiyao",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_peiyao": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": true,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 1,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/city/npc/ping.c:do_peiyao"
+   ]
+  },
+  {
+   "verb": "puzzle",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "u": 1
+   },
+   "handlers": {
+    "do_puzzle": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "u/mudren/npc/LiSouci.c:do_puzzle"
+   ]
+  },
+  {
+   "verb": "qiao",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_qiao": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/feng.c:do_qiao"
+   ]
+  },
+  {
+   "verb": "qiecuo",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_bihua": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/referee.c:do_bihua"
+   ]
+  },
+  {
+   "verb": "read",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_read": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/city/npc/shanzi/shan-book.c:do_read"
+   ]
+  },
+  {
+   "verb": "recopy",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "clone": 1
+   },
+   "handlers": {
+    "do_recopy": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "clone/npc/meng-zhu.c:do_recopy"
+   ]
+  },
+  {
+   "verb": "recover",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "clone": 1
+   },
+   "handlers": {
+    "do_recover": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "clone/npc/meng-zhu.c:do_recover"
+   ]
+  },
+  {
+   "verb": "reject",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_reject": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/luban.c:do_reject"
+   ]
+  },
+  {
+   "verb": "removemsg",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_unwield": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_unwield"
+   ]
+  },
+  {
+   "verb": "ridedl",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_ridedl": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongdl.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_ridedl"
+   ]
+  },
+  {
+   "verb": "rideem",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_rideem": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongem.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_rideem"
+   ]
+  },
+  {
+   "verb": "ridefs",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_ridefs": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongfs.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_ridefs"
+   ]
+  },
+  {
+   "verb": "ridefz",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_ridefz": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongfz.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_ridefz"
+   ]
+  },
+  {
+   "verb": "ridehz",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_ridehz": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matonghz.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_ridehz"
+   ]
+  },
+  {
+   "verb": "ridesz",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_ridesz": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongsz.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_ridesz"
+   ]
+  },
+  {
+   "verb": "ridexy",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_ridexy": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongxy.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_ridexy"
+   ]
+  },
+  {
+   "verb": "rideyd",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_rideyd": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongyd.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_rideyd"
+   ]
+  },
+  {
+   "verb": "rideyl",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_rideyl": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongyl.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_rideyl"
+   ]
+  },
+  {
+   "verb": "rideyz",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_rideyz": {
+     "via": "inherited",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": [
+      "d/beijing/npc/matongyz.h"
+     ]
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/beijing/npc/matong.c:do_rideyz"
+   ]
+  },
+  {
+   "verb": "sew",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_sew": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": true,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 1,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/city/npc/zeng.c:do_sew"
+   ]
+  },
+  {
+   "verb": "sign",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_sign": {
+     "via": "local",
+     "kind": "combat",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "combat": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/pk/npc/wu.c:do_sign"
+   ]
+  },
+  {
+   "verb": "start",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_start": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [
+    "lib/.../scheme_command.ex"
+   ],
+   "samples": [
+    "adm/npc/feng.c:do_start"
+   ]
+  },
+  {
+   "verb": "task",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_task": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/wuguan/npc/yelvqi.c:do_task"
+   ]
+  },
+  {
+   "verb": "txbw",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_txbw": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/city/npc/txbw.c:do_txbw"
+   ]
+  },
+  {
+   "verb": "type",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_type": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [
+    "lib/.../daub_command.ex",
+    "lib/.../ride_command.ex",
+    "lib/.../wash_command.ex"
+   ],
+   "samples": [
+    "adm/npc/luban.c:do_type"
+   ]
+  },
+  {
+   "verb": "unjoin",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "d": 1
+   },
+   "handlers": {
+    "do_unjoin": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "d/xiangyang/npc/huangzhen.c:do_unjoin"
+   ]
+  },
+  {
+   "verb": "unwieldmsg",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_unwield": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_unwield"
+   ]
+  },
+  {
+   "verb": "wearmsg",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_wieldmsg": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_wieldmsg"
+   ]
+  },
+  {
+   "verb": "wieldmsg",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_wieldmsg": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_wieldmsg"
+   ]
+  },
+  {
+   "verb": "zhanbu",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "u": 1
+   },
+   "handlers": {
+    "do_zhanbu": {
+     "via": "local",
+     "kind": "unknown",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "unknown": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "u/mudren/npc/shensuan.c:do_zhanbu"
+   ]
+  },
+  {
+   "verb": "命名",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_name": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [
+    "lib/.../assist_command.ex",
+    "lib/.../daub_command.ex",
+    "lib/.../detach_command.ex",
+    "lib/.../drug_command.ex"
+   ],
+   "samples": [
+    "adm/npc/ganjiang.c:do_name"
+   ]
+  },
+  {
+   "verb": "完成",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_finish": {
+     "via": "local",
+     "kind": "message",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "message": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_finish"
+   ]
+  },
+  {
+   "verb": "收起",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_unwield": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_unwield"
+   ]
+  },
+  {
+   "verb": "收起信息",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_unwield": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_unwield"
+   ]
+  },
+  {
+   "verb": "装备",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_wieldmsg": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_wieldmsg"
+   ]
+  },
+  {
+   "verb": "装备信息",
+   "calls": 1,
+   "zones": 1,
+   "areas": {
+    "adm": 1
+   },
+   "handlers": {
+    "do_wieldmsg": {
+     "via": "local",
+     "kind": "state+msg",
+     "busy": false,
+     "dead": false,
+     "defs": []
+    }
+   },
+   "kinds": {
+    "state+msg": 1
+   },
+   "busy": 0,
+   "dead": 0,
+   "impl_hint": [],
+   "samples": [
+    "adm/npc/ganjiang.c:do_wieldmsg"
+   ]
+  }
+ ],
+ "shared_base_actions": [],
+ "private_calls_by_area": {
+  "adm": 42,
+  "d": 61,
+  "b": 9,
+  "clone": 2,
+  "u": 2
+ },
+ "impl_hints": {
+  "desc": [
+   "lib/.../horse_command.ex"
+  ],
+  "join": [
+   "lib/.../league_command.ex"
+  ],
+  "name": [
+   "lib/.../assist_command.ex",
+   "lib/.../daub_command.ex",
+   "lib/.../detach_command.ex",
+   "lib/.../drug_command.ex"
+  ],
+  "show": [
+   "lib/.../help_command.ex",
+   "lib/.../scheme_command.ex",
+   "lib/.../version_command.ex"
+  ],
+  "start": [
+   "lib/.../scheme_command.ex"
+  ],
+  "type": [
+   "lib/.../daub_command.ex",
+   "lib/.../ride_command.ex",
+   "lib/.../wash_command.ex"
+  ],
+  "命名": [
+   "lib/.../assist_command.ex",
+   "lib/.../daub_command.ex",
+   "lib/.../detach_command.ex",
+   "lib/.../drug_command.ex"
+  ]
+ }
+}

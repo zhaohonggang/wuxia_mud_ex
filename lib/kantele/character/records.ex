@@ -50,6 +50,8 @@ defmodule ExVenture.Characters.Metadata do
     field(:schedule, :string)
     field(:tianshu_books, :map, default: %{})
     field(:jifen, :integer, default: 0)
+    # marks：剧情/任务持久标记（LPC `set("marks/<key>", 1)`），如 %{"qianlong" => 1}
+    field(:marks, :map, default: %{})
 
     timestamps()
   end
@@ -91,7 +93,8 @@ defmodule ExVenture.Characters.Metadata do
       :spouse,
       :schedule,
       :tianshu_books,
-      :jifen
+      :jifen,
+      :marks
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -172,7 +175,8 @@ defmodule Kantele.Character.Records do
           spouse: meta.spouse || %{},
           schedule: meta.schedule,
           tianshu_books: meta.tianshu_books || %{},
-          jifen: meta.jifen || 0
+          jifen: meta.jifen || 0,
+          marks: meta.marks || %{}
         })
 
       case Repo.insert_or_update(metadata) do
@@ -322,6 +326,7 @@ defmodule Kantele.Character.Records do
       |> Map.put(:schedule, metadata.schedule)
       |> Map.put(:tianshu_books, metadata.tianshu_books || %{})
       |> Map.put(:jifen, metadata.jifen || 0)
+      |> Map.put(:marks, metadata.marks || %{})
 
     character = %{character | meta: meta, inventory: inventory}
     %{character | attributes: Map.put(character.attributes, "wiz_level", wiz_level)}

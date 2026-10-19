@@ -3,3 +3,12 @@
 data/** text eol=lf
 *.ucl text eol=lf
 *.help text eol=lf
+
+# Source must be LF too. Windows checkouts with core.autocrlf=true (the Git for
+# Windows default) otherwise produce CRLF, and the Elixir 1.13.4 dev container
+# crashes while tokenizing CRLF content inside `"""` heredocs / `~r` sigils
+# (`:elixir_interpolation.extract/6 is undefined`). Force LF on checkout.
+*.ex text eol=lf
+*.exs text eol=lf
+*.erl text eol=lf
+*.hrl text eol=lf

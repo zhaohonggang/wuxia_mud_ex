@@ -1,22 +1,50 @@
-# Dev image: same toolchain as the production Dockerfile (Elixir 1.11 / OTP 23 /
-# Alpine 3.12) plus the extra tools needed for live development:
+# Dev image: the one Elixir/OTP pair that compiles the committed mix.lock from
+# scratch, plus the extra tools needed for live development:
 #   - git            : git-based deps (stein_storage)
-#   - make/gcc/musl  : native compilation
+#   - make/gcc/libc  : native compilation (bcrypt NIF, rebar3 C deps)
 #   - inotify-tools  : phoenix_live_reload file events (hot reload)
-#   - nodejs + yarn  : asset watchers configured in config/dev.exs (Node 12 era)
-FROM hexpm/elixir:1.11.1-erlang-23.0.2-alpine-3.12.1
+#   - nodejs + yarn  : asset watchers configured in config/dev.exs
+#
+# WHY 1.13.4 / OTP 25 AND NOT SOMETHING NEWER
+#
+# The dependency set is a 2021 snapshot, and mix.lock currently pins two packages
+# that bracket the toolchain from opposite sides:
+#
+#   * credo 1.7.19   declares `elixir: ">= 1.13.0"`  -> needs Elixir >= 1.13
+#   * ecto 3.6.2     declares `@opaque dynamic`       -> needs Elixir <  1.14
+#
+# `dynamic/0` became a Kernel built-in type in Elixir 1.14, so redefining it is a
+# hard compile error (`Kernel.TypespecError`) on 1.14 and everything newer. That
+# leaves exactly one minor version that satisfies both: 1.13.
+#
+# The OTP side has a second, independent constraint: cowlib 2.9.1 (pulled in by
+# cowboy 2.8 / plug_cowboy 2.5) has an unbound type variable in the spec of
+# cow_sse.erl. OTP 25-27 accept that as a warning, OTP 28 turned it into an
+# error. So OTP must be <= 27.
+#
+# Elixir 1.13.4 supports OTP 25, so 1.13.4 + OTP 25 is the intersection. hexpm
+# publishes no Alpine build for 1.13.4 any more, hence the Debian base.
+#
+# Consequence worth knowing: the Windows host runs Elixir 1.20.4 / OTP 29, which
+# is *outside* this window. It only works because _build holds beams compiled by
+# an older toolchain, plus a hand edit to deps/cowlib/src/cow_sse.erl that a
+# fresh `mix deps.get` throws away. Fixing that properly means upgrading the
+# dependency set (Phoenix 1.5 -> 1.7, ecto, cowboy), not just this image.
+FROM hexpm/elixir:1.13.4-erlang-25.3.2.6-debian-trixie-20260610
 
-RUN apk add --no-cache \
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
     ca-certificates \
     git \
     make \
     gcc \
-    musl-dev \
+    libc6-dev \
     inotify-tools \
     nodejs \
     npm \
-    yarn
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

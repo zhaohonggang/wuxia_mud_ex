@@ -53,6 +53,60 @@ defmodule Kantele.World.NpcActionHandlers do
     （xiangyang:qianzhuang，商业协会入退）复用
     `Kantele.World.NpcActions.Decide`，按 room_id 分派。海公公
     （beijing:dongchang，昏迷红区）/ 水笙（register:entry，邮箱注册）暂未移植。
+
+  - `serve` 二连：梅庄/郭府厨师（`meizhuang:chufang`、`wuguan:guofu_fanting`），
+    `Kantele.World.NpcActions.Serve`，两份 LPC 实现逐字相同，复用一份
+    handler：身上/地上已有饭+茶 → 拒绝；否则发饭 + 茶。
+
+  - `puzzle` 单连：李瘦辞（`beijing:wenmiao`，`Kantele.World.NpcActions.Puzzle`）：
+    外部灯谜 API 无部署 → 仅降级提示（@todo：HTTP 出题 + GIFT_D 奖励）。
+
+  - `join` / `unjoin`：黄真（xiangyang:qianzhuang）商业协会入/退的入口标记
+    （落 `want_join` / `want_tuoli`，由同房间 `decide` 消费）。`join` 按 verb
+    粒度虽在 survey 死功能排除项内（依据天地会），但黄真分支是活的，此处为
+    房间级例外（仅此一间命中）。
+
+  - `task` 单连：耶律齐（`wuguan:guofu_dayuan2`，郭府大院），
+    `Kantele.World.NpcActions.Task`：`task ok` 覆命领赏的四个守门分支
+    （未领工/活没干完/工期内太快/工具未还）+ 成功路径 @todo（银两/经验/
+    潜能发放被 P2/P9 与无银两 item 阻塞，暂只播 NPC 台词）。
+
+  - `txbw` 单连：天下布武使者（`city:wuguan`），`Kantele.World.NpcActions.Txbw`：
+    花 5000 gold 存款学 29 种入门武功之一的五级守门（用法/经验/存款/
+    清单外/已掌握）+ 成功路径 @todo（`improve_skill` 直升语义与 P9 学习
+    系统不匹配，暂静默消费）。
+
+  - `exchange` / `duihuan` 二连（积分兑换，店小二，`city:kedian`）：
+    `Kantele.World.NpcActions.Exchange`，整链落地——32 种兑换表、积分
+    读写（`PlayerMeta.jifen`）、扣分 + 发物（`Helpers.give_item`）；14 种
+    世界数据缺失的礼品落 LPC `!ob` 分支文案（不扣分），数据补齐后自动可兑；
+    rumor 频道 @todo。
+
+  - `choose` 单连（宠物店老板，`city:zhujuan`）：`Kantele.World.NpcActions.Choose`，
+    驭兽术 < 30 / 未付 `pet/money`（say 报价）两道守门；宠物定制链
+    （input_to 四步 + 模板落盘）不可移植，且原世界该分支即不可达
+    （无任何文件写 `pet/money`），落静默 @todo。
+
+  - `sign` 单连（乌老大，`pk:entry`）：`Kantele.World.NpcActions.Sign`，
+    打招呼广播 + 经验 < 1 万拒绝；PK_D 未建模 → 落地其「无赛事」态文案，
+    赛事流程（骑马/携人检查/传送准备室）@todo。
+
+  - `copy` 二连 / `sew` / `mine` 二连 / `move`（打工类守门族，书童
+    `guiyun:shufang`、朱熹 `city:shuyuan`、曾柔 `city:garments`、监工
+    `guanwai:shichang` + `hangzhou:kuangshan`）：`Kantele.World.NpcActions.Jobs`，
+    LPC 五份同构 handler（`is_busy` → `job/*` temp → 拒绝/多轮干活）的
+    共享守门落地——未领活时按各 NPC 文案拒绝（抄书系广播、监工系渲染），
+    多轮 `start_busy` 干活流程 @todo（`ask_job` 未移植，该分支不可达）。
+
+  - `bi` 倚天万安寺四关（`tulong:was_lou4` 何太冲/阿三/阿二/阿大 +
+    `tulong:jiulou` 阿大单挑）：`Kantele.World.NpcActions.Yitian`，
+    链条守卫（`win_he`/`win_asan`/`win_aer` 击杀标记 + 兵器/空手判定，
+    跳过已倒下 NPC）与开场文案完整落地；胜负经 8~10 拍脚本结算
+    （`CallOut` → `Down.mark_dead` + `yitian/result` 落标记/广播死亡
+    文案）；@todo：倚天剑 `move`/`wield`（物品态 API 缺 + UCL 未把剑
+    放进剑架）、阿大倒后鹤笔翁/鹿杖客动态 spawn、窗口内真实击杀无
+    `win_*`（战斗死亡钩子属红区）、社交动作 heng/grin/nod/shake
+    （`emoted.c` 无定义，原世界即静默）。
   """
   # 房间级注册表：room_id -> (verb -> {module, function})。
   @registry %{
@@ -67,7 +121,8 @@ defmodule Kantele.World.NpcActionHandlers do
       "get" => {Kantele.World.NpcActions.Bi, :run}
     },
     "tulong:jiulou" => %{
-      "yun" => {Kantele.World.NpcActions.Yun, :run}
+      "yun" => {Kantele.World.NpcActions.Yun, :run},
+      "bi" => {Kantele.World.NpcActions.Yitian, :run}
     },
     "tulong:was_dayuan" => %{
       "yun" => {Kantele.World.NpcActions.Yun, :run}
@@ -86,7 +141,9 @@ defmodule Kantele.World.NpcActionHandlers do
     },
     "xiangyang:qianzhuang" => %{
       "yao" => {Kantele.World.NpcActions.Yao, :run},
-      "decide" => {Kantele.World.NpcActions.Decide, :run}
+      "decide" => {Kantele.World.NpcActions.Decide, :run},
+      "join" => {Kantele.World.NpcActions.Decide, :run},
+      "unjoin" => {Kantele.World.NpcActions.Decide, :run}
     },
     "guiyun:taihu" => %{
       "decide" => {Kantele.World.NpcActions.Decide, :run}
@@ -96,6 +153,56 @@ defmodule Kantele.World.NpcActionHandlers do
     },
     "beijing:bingqi" => %{
       "yao" => {Kantele.World.NpcActions.Yao, :run}
+    },
+    "meizhuang:chufang" => %{
+      "serve" => {Kantele.World.NpcActions.Serve, :run}
+    },
+    "wuguan:guofu_fanting" => %{
+      "serve" => {Kantele.World.NpcActions.Serve, :run}
+    },
+    "wuguan:guofu_dayuan2" => %{
+      "task" => {Kantele.World.NpcActions.Task, :run}
+    },
+    "city:wuguan" => %{
+      "txbw" => {Kantele.World.NpcActions.Txbw, :run}
+    },
+    "city:kedian" => %{
+      "exchange" => {Kantele.World.NpcActions.Exchange, :run},
+      "duihuan" => {Kantele.World.NpcActions.Exchange, :run}
+    },
+    "city:zhujuan" => %{
+      "choose" => {Kantele.World.NpcActions.Choose, :run}
+    },
+    "pk:entry" => %{
+      "sign" => {Kantele.World.NpcActions.Sign, :run}
+    },
+    "guiyun:shufang" => %{
+      "copy" => {Kantele.World.NpcActions.Jobs, :run}
+    },
+    "city:shuyuan" => %{
+      "copy" => {Kantele.World.NpcActions.Jobs, :run}
+    },
+    "city:garments" => %{
+      "sew" => {Kantele.World.NpcActions.Jobs, :run}
+    },
+    "guanwai:shichang" => %{
+      "mine" => {Kantele.World.NpcActions.Jobs, :run},
+      "move" => {Kantele.World.NpcActions.Jobs, :run}
+    },
+    "hangzhou:kuangshan" => %{
+      "mine" => {Kantele.World.NpcActions.Jobs, :run}
+    },
+    "tulong:was_lou4" => %{
+      "bi" => {Kantele.World.NpcActions.Yitian, :run}
+    },
+    "beijing:wenmiao" => %{
+      "puzzle" => {Kantele.World.NpcActions.Puzzle, :run}
+    },
+    "hangzhou:liuhe9" => %{
+      "kneel" => {Kantele.World.NpcActions.Kneel, :run}
+    },
+    "kaifeng:yaopu" => %{
+      "peiyao" => {Kantele.World.NpcActions.Peiyao, :run}
     }
   }
 

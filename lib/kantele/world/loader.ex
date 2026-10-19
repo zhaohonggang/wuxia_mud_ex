@@ -1239,7 +1239,8 @@ defmodule Kantele.World.Loader do
 
   ID is the zone's id concatenated with the item's key
 
-  支持可选的 `meta = {}` 块描述战斗属性（damage/skill_type/armor/value）
+  支持可选的 `meta = {}` 块描述战斗属性（damage/skill_type/armor/value），
+  以及顶层的 `actions`（物品 add_action 动词表）/ `read_text`（书册文案）。
   """
   def parse_item(zone, key, item_data, verbs) do
     item_verbs =
@@ -1264,6 +1265,18 @@ defmodule Kantele.World.Loader do
     # 转换器早已输出 `messages = { wield = "…" unwield = "…" }`，这里只是装进来
     # （P7：只加 Map.get，无消费端 → 行为不变）。全库 220 块 / 373 条文案。
     item_meta = %{item_meta | messages: Map.get(item_data, :messages)}
+
+    # `actions` / `read_text` 同样在物品块顶层（第十二批物品动作通道）：
+    # `actions = [{ verb = "play" handler = "play_qin" }]` 是物品侧
+    # `add_action` 的回填（LPC `add_action(<handler_fn>, <verb>)` 的两个参数），
+    # 转换器只为 NPC 的 characters 块输出过 `init.add_actions`；`read_text` 是
+    # 书册 `do_read` 的长文案。默认值由 Meta struct 提供（`[]` / nil），
+    # 未回填的物品零行为变化（P7）。消费端见 ItemActionDispatcher。
+    item_meta = %{
+      item_meta
+      | actions: parse_item_actions(Map.get(item_data, :actions)),
+        read_text: parse_read_text(Map.get(item_data, :read_text))
+    }
 
     item = %Item{
       id: "#{zone.id}:#{key}",
@@ -1317,6 +1330,34 @@ defmodule Kantele.World.Loader do
   defp parse_medicine(nil), do: nil
   defp parse_medicine(medicine) when is_map(medicine), do: medicine
   defp parse_medicine(_), do: nil
+
+  # 物品侧 add_action 动词表（第十二批）：`[{ verb = "play" handler = "play_qin" }]`。
+  # elias 把 UCL 的 `{ k = v }` 表解析成 atom 键 map；逐条校验 verb/handler
+  # 均为非空二进制，畸形条目丢弃（P7：坏数据不拖垮加载）。
+  defp parse_item_actions(nil), do: []
+
+  defp parse_item_actions(actions) when is_list(actions) do
+    Enum.flat_map(actions, fn
+      %{verb: verb, handler: handler} when is_binary(verb) and is_binary(handler) ->
+        verb = String.trim(verb)
+        handler = String.trim(handler)
+        if verb != "" and handler != "", do: [%{verb: verb, handler: handler}], else: []
+
+      _ ->
+        []
+    end)
+  end
+
+  defp parse_item_actions(_), do: []
+
+  # 书册 do_read 长文案：非空二进制才收，空串/非串归一为 nil
+  defp parse_read_text(nil), do: nil
+
+  defp parse_read_text(text) when is_binary(text) do
+    if String.trim(text) == "", do: nil, else: text
+  end
+
+  defp parse_read_text(_), do: nil
 
   defp parse_book(nil), do: nil
 

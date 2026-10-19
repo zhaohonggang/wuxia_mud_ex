@@ -12,6 +12,14 @@ defmodule Kantele.World.NpcActions.Decide do
     是则发放引荐书信 `obj/xin`。
   - `xiangyang:qianzhuang` —— 黄真（`d/xiangyang/npc/huangzhen.c`）：处理
     `want_join` / `want_tuoli` 两个临时标记，加入/退出「商业协会」。
+    配套动词 `join 商业协会`（落 `want_join`）与 `unjoin 商业协会`（落
+    `want_tuoli`）同在本模块同房间注册——三者共用黄真的商协会流程。
+
+  > **`join` verb 的例外说明**：survey 按 verb 粒度把 `join`（10 次）整体判为
+  > 死功能（依据是天地会 `tiandihui.h` 的 `do_join` 首句 `return notify_fail`）。
+  > 黄真的 `do_join` 是**活的**，且是本流程入口（`want_join` 的唯一来源）。
+  > 注册表按 `room_id` 限定，仅 `xiangyang:qianzhuang` 一间房命中，对其它房间
+  > 零影响（P7 dormant）。
 
   ## @todo 未移植（会话提示早先已定：以实际代码为准，遇红区/外部依赖先记录）
 
@@ -32,10 +40,12 @@ defmodule Kantele.World.NpcActions.Decide do
   @shang_ling "clone_lib:shang_ling"
 
   @impl true
-  def run(conn, %{room_id: room_id, npc: npc}) do
-    case room_id do
-      "guiyun:taihu" -> xiaolu(conn, room_id, npc)
-      "xiangyang:qianzhuang" -> huangzhen(conn, room_id, npc)
+  def run(conn, %{verb: verb, room_id: room_id, npc: npc, trailing: trailing}) do
+    case {verb, room_id} do
+      {"decide", "guiyun:taihu"} -> xiaolu(conn, room_id, npc)
+      {"decide", "xiangyang:qianzhuang"} -> huangzhen(conn, room_id, npc)
+      {"join", "xiangyang:qianzhuang"} -> huangzhen_join(conn, trailing)
+      {"unjoin", "xiangyang:qianzhuang"} -> huangzhen_unjoin(conn, trailing)
       _ -> :not_handled
     end
   end
@@ -92,6 +102,43 @@ defmodule Kantele.World.NpcActions.Decide do
 
       {false, conn} ->
         conn
+    end
+  end
+
+  # 黄真：join 商业协会 → 落 want_join 标记（由 decide 消费）
+  defp huangzhen_join(conn, trailing) do
+    character = conn.character
+
+    cond do
+      trailing != "商业协会" ->
+        Helpers.render(conn, "黄真一楞，说道：你要加入什么？我这里是商业协会。\n")
+
+      Helpers.flag?(character, "is_vendor") ->
+        Helpers.render(conn, "黄真皱了皱眉，说道：你不是已经加入商业协会了么？\n")
+
+      Helpers.flag?(character, "bad_vendor") ->
+        Helpers.render(conn, "黄真冷笑一声，说道：既然你已经脱离了商业协会，又回来作甚？\n")
+
+      true ->
+        conn
+        |> Helpers.render("\n黄真点了点头，说道：你真的打算(decide)加入商业协会么？可考虑清楚了？\n")
+        |> Helpers.put_temp("want_join", 1)
+    end
+  end
+
+  # 黄真：unjoin 商业协会 → 落 want_tuoli 标记（由 decide 消费）
+  defp huangzhen_unjoin(conn, trailing) do
+    cond do
+      trailing != "商业协会" ->
+        Helpers.render(conn, "黄真皱了皱眉，说道：你打算脱离什么？说话不清不楚的。\n")
+
+      not Helpers.flag?(conn.character, "is_vendor") ->
+        Helpers.render(conn, "黄真冷笑一声，没理你。\n")
+
+      true ->
+        conn
+        |> Helpers.render("\n黄真叹了口气，说道：如果脱离商业协会，以后可不能反悔。你真打算(decide)这么做么？\n")
+        |> Helpers.put_temp("want_tuoli", 1)
     end
   end
 

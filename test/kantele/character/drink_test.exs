@@ -29,6 +29,13 @@ defmodule Kantele.Character.DrinkTest do
   }
 
   setup do
+    # Items 是全局 ETS 缓存，本文件写入的 key 必须清理，
+    # 否则会泄漏给后续用例（item_resolve_test 断言 global:potion 未定义）。
+    on_exit(fn ->
+      Items.delete("global:potion")
+      Items.delete("liuxi:sword")
+    end)
+
     Items.put("global:potion", %Item{
       id: "global:potion",
       name: "金创药 Jinchuang Yao",

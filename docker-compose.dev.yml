@@ -16,7 +16,7 @@ x-app-base: &app-base
   build:
     context: .
     dockerfile: Dockerfile.dev
-  image: wuxia-mud-dev:1.11.1-otp-23-alpine3.12
+  image: wuxia-mud-dev:1.13.4-otp-25-debian13
   working_dir: /app
   environment: &app-env
     MIX_ENV: dev

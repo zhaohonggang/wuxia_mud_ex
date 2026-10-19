@@ -91,6 +91,19 @@ defmodule Kantele.Combat.Skill do
   @doc "绝招文件路由（对应 perform_action_file/2）：招式名 -> 实现 module"
   @callback perform_action_file(String.t()) :: module() | nil
 
+  @doc """
+  曲目技能效果钩子（对应 LPC `SKILL_D(arg)->do_effect(me)`，歌谱技能专用）
+
+  仅歌谱类技能（碧海潮生曲等）实现；入参 `conn` 供房间级广播 / 状态改写，
+  `character` 为演奏者（actor）。绝大多数武学不实现此回调 —— 由
+  `ItemActions.Play` 经 `Skills.get(arg)` + `function_exported?(:do_effect, 2)`
+  守卫调用：未登记或未导出时**不调用**，演奏只播分级文案 + `start_busy`，
+  与 LPC 在技能缺省时的行为一致。P9 把歌谱技能迁移为真实实现后自动接通，
+  无需改 `Play`。
+  """
+  @callback do_effect(Kalevala.Character.Conn.t(), Kalevala.Character.t()) ::
+              Kalevala.Character.Conn.t()
+
   @optional_callbacks [
     perform_list: 0,
     exert_list: 0,
@@ -101,7 +114,8 @@ defmodule Kantele.Combat.Skill do
     query_effect_parry: 1,
     query_effect_dodge: 1,
     skill_improved: 1,
-    perform_action_file: 1
+    perform_action_file: 1,
+    do_effect: 2
   ]
 
   defmacro __using__(_opts) do

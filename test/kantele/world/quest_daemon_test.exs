@@ -36,10 +36,14 @@ defmodule Kantele.World.QuestDaemonTest do
     zone = %Zone{
       id: "test",
       name: "测试",
-      rooms: %{
-        "room" => %{id: "test:room", name: "小屋"},
-        "market" => %{id: "test:market", name: "市集"}
-      },
+      # 运行时契约：Loader 会经 zone_rooms_to_list/1 把 rooms 归一为列表后
+      # 才交给 ZoneCache（见 loader.ex:178-179）。这里直接写缓存，必须同样用
+      # 列表，否则 Kantele.World.room_flags/1 会 Enum.find 出 {key, value}
+      # 元组并崩溃，且污染到其它 async 测试。
+      rooms: [
+        %{id: "test:room", name: "小屋"},
+        %{id: "test:market", name: "市集"}
+      ],
       characters: %{"giver" => npc1, "helper" => npc2}
     }
 

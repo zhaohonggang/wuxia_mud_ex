@@ -5838,6 +5838,8 @@ zones "clone_lib" {
     wield = "{npc}缓缓从怀中铁琴的琴脊处抽出一柄厚脊薄刃的长剑握在手中。"
     unwield = "{npc}微微一笑，将手中的铁琴剑收回，插入铁琴中去。"
   }
+
+  actions = [{ verb = "play" handler = "play_qin" }]
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -5927,6 +5929,8 @@ zones "clone_lib" {
     wield = "{npc}从背后缓缓取出一具白玉瑶琴，轻轻的合抱在手中。"
     unwield = "{npc}微微一笑，将手中的白玉瑶琴收了起来，放到背后。"
   }
+
+  actions = [{ verb = "play" handler = "play_qin" }]
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）

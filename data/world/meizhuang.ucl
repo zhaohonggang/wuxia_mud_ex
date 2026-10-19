@@ -1218,6 +1218,7 @@ item_desc = {
     unwield = "{npc}将手中的檀木琴收了起来，放到背后。"
   }
 
+  actions = [{ verb = "play" handler = "play_qin" }]
       meta = {
         damage = 20
         skill_type = "sword"

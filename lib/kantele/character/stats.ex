@@ -180,7 +180,7 @@ defmodule Kantele.Character.Stats do
   - 必须未激活对应用法的特技（mapped/2 返回特技 ID）
   - 特技的用法集合（valid_enable）必须包含该用法
   """
-  def prepare_perform(%__MODULE_{} = stats, usage, perform_id) do
+  def prepare_perform(%__MODULE__{} = stats, usage, perform_id) do
     cond do
       not perform_known?(stats, perform_id) ->
         {:error, "你尚未学会 #{perform_id}。\n"}
@@ -198,7 +198,7 @@ defmodule Kantele.Character.Stats do
   @doc """
   取消预备某用法的绝招
   """
-  def unprepare_perform(%__MODULE_{} = stats, usage) do
+  def unprepare_perform(%__MODULE__{} = stats, usage) do
     %{stats | prepared: Map.delete(prepared(stats), usage)}
   end
 
@@ -218,14 +218,14 @@ defmodule Kantele.Character.Stats do
   @doc """
   查询某用法当前预备的绝招。如 "sword" -> "huashan-jian/jie"。
   """
-  def prepared_perform(%__MODULE_{} = stats, usage) do
+  def prepared_perform(%__MODULE__{} = stats, usage) do
     Map.get(prepared(stats), usage)
   end
 
   @doc """
   查询某用法是否有预备绝招
   """
-  def prepared?(%__MODULE_{} = stats, usage) do
+  def prepared?(%__MODULE__{} = stats, usage) do
     Map.has_key?(prepared(stats), usage)
   end
 

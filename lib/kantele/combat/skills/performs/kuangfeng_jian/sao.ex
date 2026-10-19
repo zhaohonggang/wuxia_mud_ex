@@ -8,6 +8,13 @@ defmodule Kantele.Combat.Skills.Performs.KuangfengJian.Sao do
   `level/2 + random(level)` 对抗 dodge，命中造成 `level/3 + random(level/3)`
   伤害、50% 概率令目标忙乱 1 回合。
   攻击方忙乱 `1+random(6)` 由目标侧 `combat/perform-feedback` 回执。
+
+  差异（TODO(migrate)）：
+  - 每击 `level/3 + random(level/3)` 是对 LPC `COMBAT_D->do_attack` 的**近似**，
+    不是 LPC 数值。同类「循环 do_attack」的招式各写各的近似，例如
+    `huashan_jian/lian` 用 `level/10`（相差 3.3 倍）。两者**故意不统一**：
+    在没有依据的情况下改动会直接影响平衡。
+    将来若在战斗层抽出共享的 do_attack 近似实现，应把两者一起切过去。
   """
 
   @behaviour Kantele.Combat.Perform

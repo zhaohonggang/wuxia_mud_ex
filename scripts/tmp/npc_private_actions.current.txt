@@ -1,0 +1,95 @@
+全局命令 verb 数（commands.ex 的 parse）: 403
+NPC .c 文件总数            : 1299
+含 add_action 的 NPC 文件   : 225
+add_action 调用总数        : 565
+不同 verb                  : 108
+已由全局命令覆盖的 verb    : 40 个 / 449 次调用
+**私有 verb（需新实现）**  : 68 个 / 116 次调用
+  其中移动/方向类（出口系统管）: 0 个 / 0 次
+  真正的私有动作 verb          : 68 个 / 116 次
+疑似已有实现、只缺动词接线    : 7 个 verb / 20 次调用
+本地未定义的 handler（疑似继承）: 15
+
+=== 私有 verb（按调用次数，前 30）===
+verb         calls zones  handler 分类             定义来源
+bi              14     3  combat=13 state+msg=1  do_bihua:local begin:local do_bi:local
+join            10     6  state+msg=10           do_join:local
+decide           5     5  message=1 state+msg=4  decide_withdraw:local do_decide:local
+compare          4     1  combat=4               do_compare:local begin:local
+show             4     2  unknown=4              do_show:local
+yun              4     3  message=4              do_yun:local
+choose           3     2  message=3              do_choose:local do_selete:local
+finish           3     1  message=2 state+msg=1  finish_auction:local do_finish:local
+yao              3     3  state+msg=3            do_yao:local
+bian             2     1  combat=2               convert:local
+bihua            2     2  state+msg=2            do_bihua:local
+copy             2     1  state+msg=2            do_copy:local
+desc             2     1  unknown=2              do_desc:local
+exchange         2     2  state+msg=2            do_exchange:local
+mine             2     2  state+msg=2            do_mine:local
+serve            2     2  state+msg=2            do_serve:local
+agree            1     1  message=1              do_agree:local
+ban              1     1  message=1              do_ban:local
+changedesc       1     1  message=1              do_changedesc:local
+changeid         1     1  state+msg=1            do_changeid:local
+changename       1     1  state+msg=1            do_changename:local
+changetype       1     1  message=1              do_changetype:local
+chexiao          1     1  state+msg=1            do_withdraw:local
+delete           1     1  message=1              do_delete:local
+demolish         1     1  message=1              do_demolish:local
+discard          1     1  state+msg=1            do_discard:local
+h                1     1  message=1              do_halt:local
+jupai            1     1  state+msg=1            do_jupai:local
+kneel            1     1  combat=1               do_kneel:local
+move             1     1  state+msg=1            do_mine:local
+
+=== 基类动作（多个 NPC 共用一份实现，只需移植一次）前 20 ===
+handler            npcs 分类             定义文件
+基类动作合计: 0 个 handler
+
+=== 纯输出型私有 verb（最易移植）===
+yun              4  b/yitian/npc/zhao.c:do_yun, d/tulong/tulong/npc/yin.c:do_yun
+choose           3  adm/npc/beastseller.c:do_choose, adm/npc/horseboss.c:do_selete
+agree            1  adm/npc/luban.c:do_agree
+ban              1  adm/npc/feng.c:do_ban
+changedesc       1  adm/npc/luban.c:do_changedesc
+changetype       1  adm/npc/luban.c:do_changetype
+delete           1  adm/npc/luban.c:do_delete
+demolish         1  adm/npc/luban.c:do_demolish
+h                1  adm/npc/referee.c:do_halt
+ok               1  adm/npc/luban.c:do_finish
+puzzle           1  u/mudren/npc/LiSouci.c:do_puzzle
+qiao             1  adm/npc/feng.c:do_qiao
+read             1  d/city/npc/shanzi/shan-book.c:do_read
+reject           1  adm/npc/luban.c:do_reject
+type             1  adm/npc/luban.c:do_type
+完成               1  adm/npc/ganjiang.c:do_finish
+合计纯输出型: 16 个 / 21 次调用
+
+=== 死功能（函数体开头就无条件 return，后续全是死代码）===
+join            10  d/beijing/npc/fangang.c:do_join, d/beijing/npc/fengjizhong.c:do_join
+合计死功能: 1 个 / 10 次调用 —— 这些**不需要移植**
+
+=== 附：物品侧（/obj/，不属于 NPC 通道）===
+物品 .c 文件: 1426 / add_action 调用: 158 / 不同 verb: 58
+其中私有 verb: 42 个 / 72 次
+  前 10: play=11, move=6, du=5, xi=4, read=4, pretend=3, bian=2, tear=2, dian=2, wish=1
+
+=== 疑似已有实现、只缺顶层动词接线 ===
+verb         calls  疑似已有实现的模块
+join            10  lib/.../league_command.ex
+show             4  lib/.../help_command.ex, lib/.../scheme_command.ex, lib/.../version_command.ex
+desc             2  lib/.../horse_command.ex
+name             1  lib/.../assist_command.ex, lib/.../daub_command.ex, lib/.../detach_command.ex, lib/.../drug_command.ex
+start            1  lib/.../scheme_command.ex
+type             1  lib/.../daub_command.ex, lib/.../ride_command.ex, lib/.../wash_command.ex
+命名               1  lib/.../assist_command.ex, lib/.../daub_command.ex, lib/.../detach_command.ex, lib/.../drug_command.ex
+
+=== 私有动作按顶层分区 ===
+  d        61 次
+  adm      42 次
+  b        9 次
+  clone    2 次
+  u        2 次
+
+written: C:\files\git\wuxia_mud_ex\scripts\tmp\npc_private_actions.json

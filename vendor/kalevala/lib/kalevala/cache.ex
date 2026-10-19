@@ -61,6 +61,18 @@ defmodule Kalevala.Cache do
       end
 
       @doc """
+      Delete a key from the cache
+
+      The backing ETS table is `:protected`, so writes (including deletes)
+      must go through the cache process. Tests that seed a global cache need
+      this to undo their writes, otherwise the leftover entry leaks into
+      whichever test runs next.
+      """
+      def delete(key) do
+        Kalevala.Cache.delete(__MODULE__, key)
+      end
+
+      @doc """
       Get a value from the cache
       """
       def get(key) do
@@ -114,6 +126,13 @@ defmodule Kalevala.Cache do
   end
 
   @doc """
+  Delete a key from the cache
+  """
+  def delete(name, key) do
+    GenServer.call(name, {:delete, key})
+  end
+
+  @doc """
   Get a list of all keys in a table
   """
   def keys(ets_key) do
@@ -150,6 +169,13 @@ defmodule Kalevala.Cache do
   @impl true
   def handle_call({:set, key, value}, _from, state) do
     _put(state, key, value)
+
+    {:reply, :ok, state}
+  end
+
+  @impl true
+  def handle_call({:delete, key}, _from, state) do
+    :ets.delete(state.ets_key, key)
 
     {:reply, :ok, state}
   end

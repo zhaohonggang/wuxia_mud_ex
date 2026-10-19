@@ -12,6 +12,10 @@ defmodule Kantele.Combat.Skills.Performs.HuashanJian.Lian do
     折算为每击 `level/10 + random(level/10)` 基础伤害 + 命中判定
     （`level/2 + random(level)` vs dodge），创伤 1/3；命中/失手文案由引擎生成，
     本模块不补文案。
+  - 每击伤害的 `level/10` 是对 `do_attack` 的**近似**，不是 LPC 数值。
+    同类「循环 do_attack」的招式各写各的近似，例如 `kuangfeng_jian/sao` 用 `level/3`
+    （相差 3.3 倍）。两者**故意不统一**：在没有依据的情况下改动会直接影响平衡。
+    将来若在战斗层抽出共享的 do_attack 近似实现，应把两者一起切过去。
   """
 
   @behaviour Kantele.Combat.Perform

@@ -317,18 +317,20 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
       assert output_text(conn) =~ "不够熟练"
     end
 
-    test "成功：扣内力挂 buff 并按修为档文案" do
+    test "成功：扣内力挂 buff 并按 LPC 男女分支文案" do
       conn = perform([skills: %{"lingbo-weibu" => 200}], "lingbo-weibu", "ling", "staff")
 
       updated = conn.private.update_character
       assert updated.meta.vitals.neili == 1600
       assert updated.meta.combat.busy == 2
       assert Combat.buff_active?(updated.meta.combat, "lingbo")
-      assert published_text(conn) =~ "洛神凌波"
-      refute published_text(conn) =~ "宛如洛神再世"
 
-      conn = perform([skills: %{"lingbo-weibu" => 301}], "lingbo-weibu", "ling", "staff")
-      assert published_text(conn) =~ "宛如洛神再世"
+      # LPC ling.c 的文案按性别分两支，不是按修为分档：
+      #   女性 →「$N仿如洛神再生……微步凌波」
+      #   其余 →「只见$N意态飘逸，影子乱飞……」
+      # 测试角色没有 gender 字段，走 else 支。
+      assert published_text(conn) =~ "意态飘逸"
+      refute published_text(conn) =~ "洛神再生"
     end
   end
 
@@ -454,7 +456,7 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
           "sword"
         )
 
-      assert output_text(conn) =~ "不够纯熟"
+      assert output_text(conn) =~ "还不到家"
     end
 
     test "成功放招投递目标侧事件" do
@@ -469,7 +471,8 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
           "sword"
         )
 
-      assert published_text(conn) =~ "剑掌齐发"
+      # LPC lian.c: HIY "$N使出华山派绝技「剑掌五连环」，身法陡然加快！"
+      assert published_text(conn) =~ "使出华山派绝技「剑掌五连环」"
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
@@ -491,11 +494,13 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
         })
 
       updated = conn.private.update_character
-      # rng=_->1 → Engine.rand=0：每击 level/10=10，5 击=50（失败扣血），
-      # 忙乱命中 random(5)==0 → 目标忙乱 1；feedback 忙乱 1+rand(3)=1
+      # rng=_->1 → Engine.rand=0：每击 level/10=10，5 击=50。
+      # LPC 的目标忙乱是 `!target->is_busy() && random(3) == 1`，rand=0 不触发，
+      # 故 busy 保持 0；feedback 忙乱 1+rand(3)=1。
+      # 目标侧命中/失手文案由引擎生成、本模块不补文案（见 moduledoc TODO(migrate)），
+      # 因此不断言目标侧广播。
       assert updated.meta.vitals.qi == Vitals.new().qi - 50
-      assert updated.meta.combat.busy == 1
-      assert published_text(conn) =~ "连中数招"
+      assert updated.meta.combat.busy == 0
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-feedback",
@@ -513,7 +518,6 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
         })
 
       assert conn.private.update_character.meta.vitals.qi == Vitals.new().qi
-      assert published_text(conn) =~ "左闪右避"
       assert_receive %Kalevala.Event{topic: "combat/perform-feedback", data: %{neili_cost: 120}}
     end
   end
@@ -522,20 +526,8 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
     test "剑法不足被拒" do
       conn =
         perform(
-          [skills: %{"kuangfeng-jian" => 99, "force" => 200}],
-          "kuangfeng-jian",
-          "sao",
-          "sword"
-        )
-
-      assert output_text(conn) =~ "火候不够"
-    end
-
-    test "成功放招投递目标侧事件（含 attack_bonus）" do
-      conn =
-        perform(
           [
-            skills: %{"kuangfeng-jian" => 150, "force" => 200, "sword" => 150},
+            skills: %{"kuangfeng-jian" => 99, "force" => 200},
             mapped: %{"sword" => "kuangfeng-jian"}
           ],
           "kuangfeng-jian",
@@ -543,17 +535,39 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
           "sword"
         )
 
-      assert published_text(conn) =~ "横扫"
+      # LPC sao.c: "你的狂风剑法还不到家，无法施展「风扫落叶」！"
+      assert output_text(conn) =~ "还不到家"
+    end
+
+    test "成功放招投递目标侧事件（含 attack_bonus）" do
+      conn =
+        perform(
+          [
+            skills: %{"kuangfeng-jian" => 150, "force" => 200, "sword" => 150, "dodge" => 150},
+            mapped: %{"sword" => "kuangfeng-jian"}
+          ],
+          "kuangfeng-jian",
+          "sao",
+          "sword"
+        )
+
+      # LPC sao.c: HIC "$N大喝一声，手中的" + weapon->name() +
+      #            "犹如狂风疾电一般劈刺向$n！"
+      assert published_text(conn) =~ "犹如狂风疾电"
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
         data: %{
           perform_id: "kuangfeng-jian/sao",
           level: 150,
-          attack_bonus: 0,
           attacker: %{id: "player-1"}
-        }
+        } = data
       }
+
+      # LPC: count = random(me->query_skill("kuangfeng-jian", 1))
+      # 实现用真实 :rand.uniform，无法注入固定 rng，故只断言取值范围。
+      assert is_integer(data.attack_bonus)
+      assert data.attack_bonus >= 0 and data.attack_bonus < 150
     end
   end
 
@@ -561,7 +575,13 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
     defp attacker, do: %{id: "player-1", pid: self(), name: "张三", room_id: @room}
 
     test "6 击命中造成伤害并回执" do
-      character = build_character(skills: %{"dodge" => 0})
+      # 目标气血给足，避免被钳到 0 而看不出伤害公式
+      character =
+        build_character(
+          skills: %{"dodge" => 0},
+          vitals: %{Vitals.new() | qi: 500, max_qi: 500}
+        )
+
       data = %{perform_id: "kuangfeng-jian/sao", level: 120, attack_bonus: 0, rng: fn _ -> 1 end}
 
       conn =
@@ -570,11 +590,11 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
         })
 
       updated = conn.private.update_character
-      # rng=_->1 → Engine.rand=0：每击 level/10=12，6 击=72；
-      # 忙乱命中 random(2)==0 → 目标忙乱 1；feedback 忙乱 1+rand(6)=1
-      assert updated.meta.vitals.qi == Vitals.new().qi - 72
-      assert updated.meta.combat.busy == 1
-      assert published_text(conn) =~ "毫无还手之力"
+      # rng=_->1 → Engine.rand=0：每击 level/3=40，6 击=240。
+      # LPC 的目标忙乱是 `!target->is_busy() && random(2) == 1`，rand=0 不触发 → 0。
+      # 目标侧命中文案由引擎生成、本模块不补文案，故不断言广播。
+      assert updated.meta.vitals.qi == 500 - 240
+      assert updated.meta.combat.busy == 0
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-feedback",
@@ -596,7 +616,9 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
           "blade"
         )
 
-      assert output_text(conn) =~ "还没有加入任何队伍"
+      # LPC makearray.c 的第一道门就是 `sizeof(me->query_team()) != 2`
+      # →「反两仪刀共需两人，少一个多一个都不行。」（没有「未加入队伍」的文案）
+      assert output_text(conn) =~ "共需两人"
     end
 
     test "队伍人数不对被拒" do
@@ -626,8 +648,8 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
         id: "t1",
         leader_pid: self(),
         members: [
-          %{id: "player-1", pid: self(), name: "张三"},
-          %{id: "mob-1", pid: self(), name: "李四"}
+          %{id: "player-1", pid: self(), name: "张三", room_id: @room},
+          %{id: "mob-1", pid: self(), name: "李四", room_id: @room}
         ]
       }
 
@@ -639,7 +661,8 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
           "blade"
         )
 
-      assert output_text(conn) =~ "你必须使用反两仪刀法"
+      # LPC makearray.c: `ob->name() + "必须使用反两仪刀法。\n"` —— 带人名前缀
+      assert output_text(conn) =~ "必须使用反两仪刀法"
     end
 
     test "刀法不足被拒" do
@@ -746,12 +769,14 @@ defmodule Kantele.Combat.T2SelfBuffsTest do
   end
 
   defp team_two() do
+    # 队员快照必须带 room_id：makearray 的 same_room/2 对应 LPC
+    # `environment(leader) != environment(ob)`，缺字段会直接 KeyError 崩掉。
     %{
       id: "t1",
       leader_pid: self(),
       members: [
-        %{id: "player-1", pid: self(), name: "张三"},
-        %{id: "mob-1", pid: self(), name: "李四"}
+        %{id: "player-1", pid: self(), name: "张三", room_id: @room},
+        %{id: "mob-1", pid: self(), name: "李四", room_id: @room}
       ]
     }
   end

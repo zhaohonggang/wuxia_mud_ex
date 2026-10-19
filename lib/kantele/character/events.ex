@@ -218,6 +218,10 @@ defmodule Kantele.Character.Events do
     module(BiEvent) do
       event("bi/result", :result)
     end
+
+    module(YitianEvent) do
+      event("yitian/result", :result)
+    end
   end
 end
 
@@ -324,6 +328,10 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(BiEvent) do
       event("bi/begin", :begin_event)
+    end
+
+    module(YitianEvent) do
+      event("yitian/begin", :begin_event)
     end
   end
 end
