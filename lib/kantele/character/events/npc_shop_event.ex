@@ -294,8 +294,23 @@ defmodule Kantele.Character.NpcAskEvent do
     case answer do
       script when is_map(script) -> handle_map_answer(conn, data, script)
       a when is_atom(a) -> handle_special_answer(conn, data, a)
-      text -> publish_tell(conn, asker_id, text)
+      text when is_binary(text) -> handle_text_answer(conn, asker_id, text)
+      _ -> conn
     end
+  end
+
+  # 未实现的闭包占位静默不回应，避免向玩家泄露源码形态；
+  # 普通文本仍正常回显。
+  defp handle_text_answer(conn, asker_id, text) do
+    if closure_literal?(text) do
+      conn
+    else
+      publish_tell(conn, asker_id, text)
+    end
+  end
+
+  defp closure_literal?(text) do
+    Regex.match?(~r/^\(\s*:\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*\)$/, String.trim(text))
   end
 
   # 脚本 map：`kind` 走库存型问询，其余走 Q6 数据驱动效果

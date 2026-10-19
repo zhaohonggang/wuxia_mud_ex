@@ -75,6 +75,34 @@ defmodule Kantele.Character.NpcScriptEventTest do
       refute_receive %Event{topic: "npc/learn"}, 100
       refute_receive %Event{topic: "npc/faction"}, 100
     end
+
+    test "闭包字面量问询不回显原文（未实现占位）" do
+      npc = npc(%{"苗人凤" => "(: ask_me :)"})
+
+      conn = NpcAskEvent.call(build_conn(npc), ask_event("苗人凤"))
+
+      assert conn != nil
+      # 未实现闭包不应向玩家发任何 tell：channel_changes 保持空
+      assert conn.private.channel_changes == []
+      refute_receive %Event{topic: "npc/give"}, 100
+      refute_receive %Event{topic: "npc/learn"}, 100
+      refute_receive %Event{topic: "npc/faction"}, 100
+    end
+
+    test "普通文本问询正常回显到玩家频道" do
+      npc = npc(%{"莫邪" => "她是吾妻。\n"})
+
+      conn = NpcAskEvent.call(build_conn(npc), ask_event("莫邪"))
+
+      publishes =
+        Enum.filter(conn.private.channel_changes, fn
+          {:publish, "characters:player-1", _, _, _} -> true
+          _ -> false
+        end)
+
+      assert length(publishes) == 1
+      refute_receive %Event{topic: "npc/give"}, 100
+    end
   end
 
   describe "库存型问询分发（NpcAskEvent → npc/inquiry）" do
