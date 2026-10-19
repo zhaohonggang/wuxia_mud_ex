@@ -21,6 +21,7 @@ defmodule Kantele.Character.NpcScriptEvent do
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
   alias Kantele.SectMaster
+  alias Kantele.World.InquiryHandlers
   alias Kantele.World.Items
 
   def give_result(conn, %{
@@ -211,6 +212,22 @@ defmodule Kantele.Character.NpcScriptEvent do
   end
 
   def perform_result(conn, _event), do: conn
+
+  # 库存型问询（kind 分发）：落库/文案交给 `InquiryHandlers` 注册的模块。
+  def inquiry_result(conn, %{data: %{kind: kind, asker_id: asker_id} = data}) do
+    case asker_id == conn.character.id do
+      false ->
+        conn
+
+      true ->
+        case InquiryHandlers.lookup(kind) do
+          nil -> conn
+          module -> module.run(conn, Map.get(data, :config) || %{}, data)
+        end
+    end
+  end
+
+  def inquiry_result(conn, _event), do: conn
 
   defp deduct_gongxian(%Stats{} = stats, cost) when is_integer(cost) and cost > 0 do
     %{stats | gongxian: max((stats.gongxian || 0) - cost, 0)}

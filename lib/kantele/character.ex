@@ -289,6 +289,8 @@ defmodule Kantele.Character.NonPlayerMeta do
 
   - `goods` 出售商品 item id 列表（A10/N2 商店；nil = 非商人）
   - `inquiries` 问答表 `%{关键词 => 回答}`（A10/N4；nil = 无问答）
+  - `inquiry_state` 问询可消耗库存 `%{"huju_count" => 20, ...}`（LPC
+    `set("huju_count", N)`；问询发放时由 NPC 进程自减，重载/重生恢复初值）
   - `teach` 教学配置（A11/D4）：`%{family: 门派名, teach_skills: %{技能 => %{max: 上限,
     gongxian: 价目}}, no_teach: [...]}`；本期只解析落位供展示，消费端等 b 期 learn 重构
   - `turn_in` 任务交付（A11/N6 v0）：`%{quest: id, item: item_id, prompt: 引导文案,
@@ -321,6 +323,7 @@ defmodule Kantele.Character.NonPlayerMeta do
     :combat,
     :goods,
     :inquiries,
+    {:inquiry_state, %{}},
     :teach,
     :apprentice,
     :turn_in,

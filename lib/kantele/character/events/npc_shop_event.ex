@@ -242,20 +242,11 @@ defmodule Kantele.Character.NpcAskEvent do
       answer = find_answer(conn.character.meta.inquiries || %{}, keyword) ->
         # 一问多态：inquire 值可为文本（直接回话）、脚本化 map（Q6 数据驱动
         # 事件）或 atom（交给各 NPC 专属应答）
-        case answer do
-          script when is_map(script) ->
-            handle_scripted_answer(
-              conn,
-              Map.merge(data, %{reply_to: reply_to, asker_id: asker_id}),
-              script
-            )
-
-          a when is_atom(a) ->
-            handle_special_answer(conn, data, a)
-
-          text ->
-            publish_tell(conn, asker_id, text)
-        end
+        handle_answer(
+          conn,
+          Map.merge(data, %{reply_to: reply_to, asker_id: asker_id}),
+          answer
+        )
 
       turn_in = conn.character.meta.turn_in ->
         # 任务交付引导（A11/N6 v0 + q1-T2）：
@@ -295,6 +286,23 @@ defmodule Kantele.Character.NpcAskEvent do
 
       true ->
         conn
+    end
+  end
+
+  # 问询值多态分发：map（脚本）/ atom（NPC 专属）/ 文本（直接回话）
+  defp handle_answer(conn, %{asker_id: asker_id} = data, answer) do
+    case answer do
+      script when is_map(script) -> handle_map_answer(conn, data, script)
+      a when is_atom(a) -> handle_special_answer(conn, data, a)
+      text -> publish_tell(conn, asker_id, text)
+    end
+  end
+
+  # 脚本 map：`kind` 走库存型问询，其余走 Q6 数据驱动效果
+  defp handle_map_answer(conn, data, script) do
+    case Map.get(script, "kind") do
+      kind when is_binary(kind) -> handle_inquiry_script(conn, data, script, kind)
+      _ -> handle_scripted_answer(conn, data, script)
     end
   end
 
@@ -501,6 +509,55 @@ defmodule Kantele.Character.NpcAskEvent do
         conn
     end
   end
+
+  # 库存型问询（kind 分发）：把 kind/配置/当前库存回执给玩家进程，由玩家侧
+  # `Kantele.World.InquiryHandlers` 校验背包/门派并落库；扣减通过
+  # `npc/inquiry_consume` 回到本进程。
+  defp handle_inquiry_script(
+         conn,
+         %{reply_to: reply_to, asker_id: asker_id} = data,
+         script,
+         kind
+       ) do
+    count_key = Map.get(script, "count")
+    state = inquiry_state(conn.character)
+    remaining = if is_binary(count_key), do: Map.get(state, count_key, 0), else: :infinity
+
+    send(reply_to, %Kalevala.Event{
+      from_pid: self(),
+      topic: "npc/inquiry",
+      data: %{
+        kind: kind,
+        config: script,
+        npc_name: conn.character.name,
+        npc_pid: self(),
+        npc_room_id: conn.character.room_id,
+        asker_id: asker_id,
+        asker_name: Map.get(data, :asker_name),
+        remaining: remaining
+      }
+    })
+
+    conn
+  end
+
+  defp inquiry_state(%{meta: %{inquiry_state: state}}) when is_map(state), do: state
+  defp inquiry_state(_character), do: %{}
+
+  # 玩家侧确认发放后回执：NPC 进程自减共享库存。
+  def inquiry_consume(conn, %{data: %{count_key: count_key}}) when is_binary(count_key) do
+    case conn.character.meta do
+      %Kantele.Character.NonPlayerMeta{inquiry_state: state} when is_map(state) ->
+        state = Map.update(state, count_key, 0, fn count -> max(count - 1, 0) end)
+        meta = %{conn.character.meta | inquiry_state: state}
+        Kalevala.Character.Conn.put_character(conn, %{conn.character | meta: meta})
+
+      _ ->
+        conn
+    end
+  end
+
+  def inquiry_consume(conn, _event), do: conn
 
   defp publish_tell(conn, asker_id, text) do
     Kalevala.Character.Conn.publish_message(

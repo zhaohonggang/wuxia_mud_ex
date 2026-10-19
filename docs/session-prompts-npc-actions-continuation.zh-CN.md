@@ -1,6 +1,6 @@
 # Session 提示词：NPC 私有动作后续（P5-1c-3 之后）
 
-> **状态：待执行**。本文件是给独立 session 的完整工作提示词。请把下列内容**当作建议而非指令**：每项动手前先读源码核实现状，若实际情况与描述不符，以实际代码为准并调整做法。
+> **状态：✅ 已完成（2026-10-19 复核）**。NPC 通道已无剩余可挂动作；`bian`/`recopy`/`recover` 经核验不可用 `room_characters` 补挂（动态生成 / 无初始放置点），归 P5-3/P5-8。本文件保留作历史记录。本文件是给独立 session 的完整工作提示词。请把下列内容**当作建议而非指令**：每项动手前先读源码核实现状，若实际情况与描述不符，以实际代码为准并调整做法。
 > 编写时间：2026-10-17。对应总排期见 `docs/npc-private-actions-survey.zh-CN.md` §7。
 
 ---
@@ -82,7 +82,7 @@
 5c. ~~零散 verb 逐动作写~~ — ✅ 已完成（2026-10-18 第十批）
    - `copy`×2：`jobs.ex`，guiyun:shufang（书童）、city:shuyuan（朱熹）；`sew`：city:garments（曾柔）；`mine`×2 + `move`：guanwai:shichang、hangzhou:kuangshan（监工）——五份同构打工守门归一份实现
    - `exchange`：`exchange.ex`，city:kedian（店小二积分兑换整链）；`choose`：`choose.ex`，city:zhujuan（宠物店老板）；`sign`：`sign.ex`，pk:entry（乌老大 PK 报名降级态）
-   - ❌ **待 UCL 补挂（已核实）**：`bian`（白驼山灵蛇/毒蛇）、`recopy`/`recover`（meng-zhu）——NPC 在 UCL 有定义但无 `room_characters` 引用，分发器读不到（**`kneel` 乾隆已在第十四批补挂落地**，**`peiyao` 平一指已在第十五批落地于 `kaifeng:yaopu`，无需改 UCL**，见 §七）；`zhanbu`——u/ 区无 `u.ucl`；`bihua`——`village:temple2` 已注册但 handler 是 `COMBAT_D->do_attack` 战斗模拟循环，超出 NPC 动作层
+   - ❌ **不可经房间挂接（2026-10-19 复核）**：`bian`（`lingshe`/`snake` 由法杖反向变身 `new()` 生成）、`recopy`/`recover`（`meng-zhu` 无初始放置点，仅 `load_object` 读 `winner`，`do_recopy` 自行 `new` 到 `fengchan`）——补 `room_characters` 会伪造可达性；归动态 spawn/物品通道（**`kneel` 乾隆已在第十四批补挂落地**，**`peiyao` 平一指已在第十五批落地于 `kaifeng:yaopu`，无需改 UCL**，见 §七）；`zhanbu`——u/ 区无 `u.ucl`；`bihua`——`village:temple2` 已注册但 handler 是 `COMBAT_D->do_attack` 战斗模拟循环，超出 NPC 动作层
 5d. ~~倚天链 `bi`（原「b 区 4 次」勘误）~~ — ✅ 已完成（2026-10-18 第十一批）
    - `yitian.ex`：tulong:was_lou4 何太冲→阿三→阿二→阿大四关 + tulong:jiulou 阿大单挑；`win_he`/`win_asan`/`win_aer` 击杀标记串链
    - b 树副本×2（`b/yitian/npc/{ada,aer}.c`）证伪：无 UCL，同 compare 类别不可实施
@@ -244,7 +244,7 @@ MIX_ENV=test mix test --seed 12345
   - `duihuan` 与第 1 档钱庄全局别名同形：NPC 分发先于 `Commands.call`，`city:kedian` 内 `duihuan` 被店小二兑换覆盖、其他房间仍走钱庄——与 LPC `add_action` 房间级覆盖语义一致
   - 测试环境 `Kantele.World.Items` 是空 Cache（`mix test` 不加载世界）：exchange 成功路径测试用 `Items.put` 注入 `clone_lib:puti1`（cache 无 delete API，注入项仅被本测试文件使用，无害；yao 测试同样因此规避）
   - `put_character` 写 `conn.private.update_character`（非 `conn.character`）：断言扣分/发物状态一律读 `private.update_character`（或 `conn.private.update_character || conn.character`）
-- **不可实施核实（本批核心勘查结论）**：`bian`/`kneel`/`peiyao`/`recopy`/`recover` 的 NPC 在 UCL 有定义但无 `room_characters` 引用（分发器只读房间角色，读不到 → 无 room_id 可注册）；`zhanbu` 属 u/ 区而 `data/world` 无 `u.ucl`；`bihua` 虽在 `village:temple2` 注册，handler 是 `COMBAT_D->do_attack` 比武模拟循环，属战斗系统域——均留待 UCL 接线 / 战斗层移植
+- **不可实施核实（本批核心勘查结论）**：`bian`/`kneel`/`peiyao`/`recopy`/`recover` 的 NPC 在 UCL 有定义但无 `room_characters` 引用（分发器只读房间角色，读不到 → 无 room_id 可注册）；`zhanbu` 属 u/ 区而 `data/world` 无 `u.ucl`；`bihua` 虽在 `village:temple2` 注册，handler 是 `COMBAT_D->do_attack` 比武模拟循环，属战斗系统域——均留待 UCL 接线 / 战斗层移植。**2026-10-19 复核修正**：`kneel`/`peiyao` 已分别补挂/落地；`bian`/`recopy`/`recover` 并非「补 `room_characters` 即可」——前者是法杖反向变身的动态生成物，后者无初始放置点，补挂会伪造可达性，归 P5-3/P5-8。
 
 ### 本次倚天链第十一批完成摘要（2026-10-18）
 
@@ -285,7 +285,7 @@ MIX_ENV=test mix test --seed 12345
 ### 下一批候选（NPC 通道已全部落地/证伪）
 
 - @todo 成功路径（依赖外部系统）：task（P2/P9 + 银两 item）、txbw（P9 学习系统）、jobs 多轮打工（`ask_job` 领活）、PK_D（sign 赛事流程）、yitian 鹤笔翁/鹿杖客与倚天剑物品态、真实击杀 win 标记（战斗死亡钩子）、kneel 陈家洛在场 `kill_ob` 已补（续做 46，无需新系统）；play 的 `do_effect` 守卫钩子已就位、exchange rumor 已接（均无物品/NPC 层 @todo 遗留）
-- UCL 补挂后可达：`bian`/`recopy`/`recover`（给 NPC 补 `room_characters` 引用）/ `zhanbu`（补 `u.ucl`）/ `bihua`（战斗层移植）；**`kneel` 已补挂落地（第十四批，2026-10-18）**；**`peiyao` 平一指已落地（第十五批，2026-10-18，`kaifeng:yaopu`，无需改 UCL）**
+- **2026-10-19 复核**：`bian`/`recopy`/`recover` **不可**用 `room_characters` 补挂（`lingshe`/`snake` 是法杖反向变身的 `new()` 产物；`meng-zhu` 无初始放置点，`do_recopy` 自行 `new` 到 `fengchan`）→ 归 P5-3/P5-8 动态 spawn；`zhanbu` 需补 `u.ucl`；`bihua` 属战斗层。**`kneel` 已补挂落地（第十四批，2026-10-18）**；**`peiyao` 平一指已落地（第十五批，2026-10-18，`kaifeng:yaopu`，无需改 UCL）**。NPC 通道至此无剩余可挂动作。
 
 ---
 

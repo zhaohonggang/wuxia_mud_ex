@@ -80,6 +80,7 @@ defmodule Kantele.Character.Events do
       event("npc/faction", :faction_result)
       event("npc/perform", :perform_result)
       event("npc/register_summon", :register_result)
+      event("npc/inquiry", :inquiry_result)
     end
 
     module(AssistEvent) do
@@ -298,6 +299,7 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("characters/ask", :call)
       event("quest/ask", :call)
       event("quest/cancel", :call)
+      event("npc/inquiry_consume", :inquiry_consume)
     end
 
     module(NpcCutEvent) do

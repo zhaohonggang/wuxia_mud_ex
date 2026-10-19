@@ -3520,12 +3520,79 @@ chats = [
     str = 20
   }
 
-  # skipped inquiry "铁护腕": value "(: ask_me_1, 'huwan' :)" is unparseable by elias (digit immediately before a comma)
-  # skipped inquiry "铁护腰": value "(: ask_me_1, 'huyao' :)" is unparseable by elias (digit immediately before a comma)
-  # skipped inquiry "皮手套": value "(: ask_me_1, 'shoutao' :)" is unparseable by elias (digit immediately before a comma)
-  # skipped inquiry "皮围脖": value "(: ask_me_1, 'weibo' :)" is unparseable by elias (digit immediately before a comma)
-  # skipped inquiry "铁指套": value "(: ask_me_1, 'zhitao' :)" is unparseable by elias (digit immediately before a comma)
-  # skipped inquiry "铁背心": value "(: ask_me_2, 'beixin' :)" is unparseable by elias (digit immediately before a comma)
+  # LPC: set("inquiry", ...) 的第二张表（第一张「郭靖/黄蓉」被覆盖）。
+  # 五件少林防具共用 huju_count，铁背心单独用 beixin_count。
+  inquiry_state = {
+    huju_count = 20
+    beixin_count = 2
+  }
+
+  inquiries = {
+    铁护腕 = {
+      kind = "give_item"
+      item = "shaolin:huwan"
+      match = "huwan"
+      count = "huju_count"
+      unique = true
+      success = "拿去吧。不过要记住，防具只可防身练武，不可凭此妨害他人。"
+      already = "你现在身上不是有这样防具吗，怎麽又来要了？ 真是贪得无餍！"
+      exhausted = "抱歉，你来得不是时候，防具已经发完了。"
+    }
+
+    铁护腰 = {
+      kind = "give_item"
+      item = "shaolin:huyao"
+      match = "huyao"
+      count = "huju_count"
+      unique = true
+      success = "拿去吧。不过要记住，防具只可防身练武，不可凭此妨害他人。"
+      already = "你现在身上不是有这样防具吗，怎麽又来要了？ 真是贪得无餍！"
+      exhausted = "抱歉，你来得不是时候，防具已经发完了。"
+    }
+
+    皮手套 = {
+      kind = "give_item"
+      item = "shaolin:shoutao"
+      match = "shoutao"
+      count = "huju_count"
+      unique = true
+      success = "拿去吧。不过要记住，防具只可防身练武，不可凭此妨害他人。"
+      already = "你现在身上不是有这样防具吗，怎麽又来要了？ 真是贪得无餍！"
+      exhausted = "抱歉，你来得不是时候，防具已经发完了。"
+    }
+
+    皮围脖 = {
+      kind = "give_item"
+      item = "shaolin:weibo"
+      match = "weibo"
+      count = "huju_count"
+      unique = true
+      success = "拿去吧。不过要记住，防具只可防身练武，不可凭此妨害他人。"
+      already = "你现在身上不是有这样防具吗，怎麽又来要了？ 真是贪得无餍！"
+      exhausted = "抱歉，你来得不是时候，防具已经发完了。"
+    }
+
+    铁指套 = {
+      kind = "give_item"
+      item = "shaolin:zhitao"
+      match = "zhitao"
+      count = "huju_count"
+      unique = true
+      success = "拿去吧。不过要记住，防具只可防身练武，不可凭此妨害他人。"
+      already = "你现在身上不是有这样防具吗，怎麽又来要了？ 真是贪得无餍！"
+      exhausted = "抱歉，你来得不是时候，防具已经发完了。"
+    }
+
+    铁背心 = {
+      kind = "give_item"
+      item = "shaolin:beixin"
+      match = "beixin"
+      count = "beixin_count"
+      unique = false
+      success = "拿去吧。不过要记住，铁背心乃是防身宝物，不可凭此妨害他人。"
+      exhausted = "抱歉，你来得不是时候，武器已经发完了。"
+    }
+  }
 
   skills = [
     { skill = "force" level = 50 },

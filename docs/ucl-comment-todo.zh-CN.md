@@ -197,9 +197,13 @@ me->query('gender') == '女性'   ->  恒假（放行）
 
 ---
 
-## 六、E：`xiangyang` 铁匠 inquiry 6 条（新功能）
+## 六、E：`xiangyang:wuxiuwen` inquiry 6 条（已完成 · P5-4a）
 
-### 现状
+> **标题纠正（2026-10-19）**：本节旧标题写作「铁匠」，实际源文件是
+> `d/xiangyang/npc/wuxiuwen.c`（武修文，郭靖二弟子，负责后勤）。`smith` 的
+> `(: ask_me :)` 工作链是另一件事，归 P5-9 一次性场景，见文末「剩余」。
+
+### 原状
 
 数据里是 LPC 闭包，elias 无法解析：
 
@@ -216,14 +220,34 @@ me->query('gender') == '女性'   ->  恒假（放行）
 | 铁指套 | `ask_me_1` | `zhitao` |
 | 铁背心 | `ask_me_2` | `beixin` |
 
-### 做法
+### 回源结论
 
-`ask_me_N` 是该 NPC 内的函数（按图样判定材料/费用、扣除材料、给成品）。
-还原需要：读 `d/xiangyang/*.c` 里 `ask_me_N` 的完整逻辑 → 为每个图样注册一个
-行为 handler（材料检查 + 扣料 + 产出物品）→ 把 `inquiries` 的值改成 UCL 可表达的句柄
-（如 `value = {kind = "smith", pattern = "huwan"}`）→ `ask` 命令侧按句柄分发。
+`ask_me_1/2` **不是铁匠图纸**（没有材料检查、扣料、打造），只是：
 
-**这是新功能，不是数据转换**，工作量与 A/B/C 同量级，建议独立排期。
+1. 门派门控（仅 `dao-xiang.c`；`wuxiuwen.c` 无）；
+2. `present(name, me)` 限一件（仅 `ask_me_1`；`ask_me_2` 没有）；
+3. 共享库存 `huju_count` / `beixin_count` 小于 1 → 耗尽文案；
+4. `new("/d/shaolin/obj/" + name)` → `move(this_player())` → `message_vision` → 返回成功文案。
+
+因此按通用 `kind = "give_item"` 落地，而不是建 `smith` 行为。
+
+### 已完成（2026-10-19）
+
+- **数据**：`xiangyang:wuxiuwen` 6 条（`huju_count=20` / `beixin_count=2`、无门派门控）；
+  `clone_lib:shaolin_dao_xiang` 7 条（`huju_count=50` / `beixin_count=5`、限「少林派」、
+  `vision_name="道相"`）。逐字保留 LPC 文案，包括铁背心耗尽的「武器已经发完了」原文。
+- **代码**：`Kantele.World.InquiryHandlers`（kind 注册表）+ `...GiveItem`
+  （玩家侧发放/去重/库存/门派/广播/回执）；NPC 侧 `NpcAskEvent` 按 `kind` 发
+  `npc/inquiry`，玩家侧 `NpcScriptEvent.inquiry_result` 落库后回发
+  `npc/inquiry_consume`，NPC 侧自减 `NonPlayerMeta.inquiry_state`；loader 新增
+  `parse_inquiry_state/1`（elias 的 `"true"/"false"` 字符串归一）。
+- **测试**：`npc_script_event_test.exs`（23）+ `loader_inquiry_state_test.exs`（2），
+  子集 **25/0**；相关 loader/NPC 子集 **64/0**。
+
+### 剩余
+
+`xiangyang.ucl:3315` 附近 `smith` 的 `(: ask_me :)` 工作链（job/working/halt_working
+与材料/费用）属 P5-9 一次性场景，需逐房写模块；不在本次 `give_item` 范围内。
 
 ---
 

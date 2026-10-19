@@ -77,6 +77,190 @@ defmodule Kantele.Character.NpcScriptEventTest do
     end
   end
 
+  describe "库存型问询分发（NpcAskEvent → npc/inquiry）" do
+    test "kind 脚本 → 回执 kind/配置/当前库存" do
+      inquiries = %{
+        "铁护腕" => %{
+          "kind" => "give_item",
+          "item" => "shaolin:huwan",
+          "count" => "huju_count"
+        }
+      }
+
+      npc = %{
+        npc(inquiries)
+        | meta: %Kantele.Character.NonPlayerMeta{
+            inquiries: inquiries,
+            inquiry_state: %{"huju_count" => 3}
+          }
+      }
+
+      NpcAskEvent.call(build_conn(npc), ask_event("铁护腕"))
+
+      assert_receive %Event{
+        topic: "npc/inquiry",
+        data: %{
+          kind: "give_item",
+          remaining: 3,
+          npc_name: "干将",
+          asker_id: "player-1",
+          config: %{"item" => "shaolin:huwan"}
+        }
+      }
+    end
+
+    test "未配置 count 时库存为 :infinity" do
+      inquiries = %{"铁护腕" => %{"kind" => "give_item", "item" => "shaolin:huwan"}}
+
+      NpcAskEvent.call(build_conn(npc(inquiries)), ask_event("铁护腕"))
+
+      assert_receive %Event{topic: "npc/inquiry", data: %{remaining: :infinity}}
+    end
+  end
+
+  describe "玩家侧库存问询（NpcScriptEvent.npc/inquiry）" do
+    setup do
+      Items.put("shaolin:huwan", %Item{
+        id: "shaolin:huwan",
+        name: "铁护腕",
+        verbs: [],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{weight: 100, value: 100}
+      })
+
+      Items.put("shaolin:weibo", %Item{
+        id: "shaolin:weibo",
+        name: "皮围脖",
+        verbs: [],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{weight: 100, value: 100}
+      })
+
+      Items.put("shaolin:beixin", %Item{
+        id: "shaolin:beixin",
+        name: "铁背心",
+        verbs: [],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{weight: 100, value: 100}
+      })
+
+      :ok
+    end
+
+    test "背包没有 → 发放、渲染返回值并回执扣库存" do
+      conn = NpcScriptEvent.inquiry_result(build_conn(player()), inquiry_event(give_config()))
+
+      character = conn.private.update_character
+      assert Enum.any?(character.inventory, &(&1.item_id == "shaolin:huwan"))
+      assert output_text(conn) =~ "拿去吧。"
+      assert_receive %Event{topic: "npc/inquiry_consume", data: %{count_key: "huju_count"}}
+    end
+
+    test "背包已有 → 不发放，回已有文案" do
+      instance = %Item.Instance{
+        id: "instance-1",
+        item_id: "shaolin:huwan",
+        created_at: DateTime.utc_now()
+      }
+
+      character = %{player() | inventory: [instance]}
+      conn = NpcScriptEvent.inquiry_result(build_conn(character), inquiry_event(give_config()))
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "你现在身上不是有这样防具吗"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+    end
+
+    test "皮围脖按 item_id 尾段识别（别名表没有 weibo）" do
+      instance = %Item.Instance{
+        id: "instance-2",
+        item_id: "shaolin:weibo",
+        created_at: DateTime.utc_now()
+      }
+
+      character = %{player() | inventory: [instance]}
+
+      config =
+        Map.merge(give_config(), %{
+          "item" => "shaolin:weibo",
+          "match" => "weibo"
+        })
+
+      conn = NpcScriptEvent.inquiry_result(build_conn(character), inquiry_event(config))
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "你现在身上不是有这样防具吗"
+    end
+
+    test "unique = \"false\" 时不查重（铁背心可再要）" do
+      instance = %Item.Instance{
+        id: "instance-3",
+        item_id: "shaolin:beixin",
+        created_at: DateTime.utc_now()
+      }
+
+      character = %{player() | inventory: [instance]}
+
+      config =
+        Map.merge(give_config(), %{
+          "item" => "shaolin:beixin",
+          "match" => "beixin",
+          "count" => "beixin_count",
+          "unique" => "false"
+        })
+
+      conn = NpcScriptEvent.inquiry_result(build_conn(character), inquiry_event(config))
+
+      character = conn.private.update_character
+      assert Enum.count(character.inventory, &(&1.item_id == "shaolin:beixin")) == 2
+      assert output_text(conn) =~ "拿去吧。"
+      assert_receive %Event{topic: "npc/inquiry_consume", data: %{count_key: "beixin_count"}}
+    end
+
+    test "库存耗尽 → 不发放，回发完文案" do
+      conn =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player()),
+          inquiry_event(give_config(), remaining: 0)
+        )
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "防具已经发完了"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+    end
+
+    test "门派不符 → 不发放，回拒答文案" do
+      config = Map.put(give_config(), "family", "少林派")
+      conn = NpcScriptEvent.inquiry_result(build_conn(player()), inquiry_event(config))
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "与本派素无来往"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+    end
+  end
+
+  describe "NPC 侧库存扣减（npc/inquiry_consume）" do
+    test "收到回执后自减" do
+      conn =
+        NpcAskEvent.inquiry_consume(
+          build_conn(npc_with_state(3)),
+          %Event{topic: "npc/inquiry_consume", data: %{count_key: "huju_count"}}
+        )
+
+      assert conn.private.update_character.meta.inquiry_state["huju_count"] == 2
+    end
+
+    test "库存到 0 后不再减成负数" do
+      conn =
+        NpcAskEvent.inquiry_consume(
+          build_conn(npc_with_state(0)),
+          %Event{topic: "npc/inquiry_consume", data: %{count_key: "huju_count"}}
+        )
+
+      assert conn.private.update_character.meta.inquiry_state["huju_count"] == 0
+    end
+  end
+
   describe "玩家侧领物（NpcScriptEvent.npc/give）" do
     setup do
       Items.put("signature:jinggang", %Item{
@@ -243,6 +427,46 @@ defmodule Kantele.Character.NpcScriptEventTest do
           "cost_gongxian" => 400
         }
       }
+    }
+  end
+
+  defp npc_with_state(count) do
+    %{
+      npc(%{})
+      | meta: %Kantele.Character.NonPlayerMeta{
+          inquiries: %{},
+          inquiry_state: %{"huju_count" => count}
+        }
+    }
+  end
+
+  defp inquiry_event(config, opts \\ []) do
+    %Event{
+      topic: "npc/inquiry",
+      from_pid: self(),
+      data: %{
+        kind: "give_item",
+        config: config,
+        npc_name: "武修文",
+        npc_pid: self(),
+        npc_room_id: "test:room",
+        asker_id: "player-1",
+        asker_name: "张三",
+        remaining: Keyword.get(opts, :remaining, :infinity)
+      }
+    }
+  end
+
+  defp give_config do
+    %{
+      "kind" => "give_item",
+      "item" => "shaolin:huwan",
+      "match" => "huwan",
+      "count" => "huju_count",
+      "unique" => true,
+      "success" => "拿去吧。",
+      "already" => "你现在身上不是有这样防具吗，怎麽又来要了？ 真是贪得无餍！",
+      "exhausted" => "抱歉，你来得不是时候，防具已经发完了。"
     }
   end
 

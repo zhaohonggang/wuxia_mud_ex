@@ -354,7 +354,10 @@ defmodule Kantele.World.Loader do
   # P5-1：房间级 verb→handler 映射（LPC add_action("verb","handler") 的回源回填结果）。
   # UCL: actions = { convert = "bian"  climb = "pan" }。缺省 %{}（无行为变化，P7）。
   defp parse_room_actions(nil), do: %{}
-  defp parse_room_actions(actions) when is_map(actions), do: Map.new(actions, fn {k, v} -> {to_string(k), to_string(v)} end)
+
+  defp parse_room_actions(actions) when is_map(actions),
+    do: Map.new(actions, fn {k, v} -> {to_string(k), to_string(v)} end)
+
   defp parse_room_actions(_), do: %{}
 
   # 房间墙上器物/菜单（LPC set("item_desc", ...)）：keyword -> 文本
@@ -500,6 +503,7 @@ defmodule Kantele.World.Loader do
         combat: Kantele.Character.Combat.new(),
         goods: parse_goods(Map.get(character_data, :goods)),
         inquiries: parse_inquiries(Map.get(character_data, :inquiries)),
+        inquiry_state: parse_inquiry_state(Map.get(character_data, :inquiry_state)),
         aliases: parse_aliases(Map.get(character_data, :aliases)),
         teach: parse_teach(Map.get(character_data, :teach)),
         apprentice: parse_apprentice(Map.get(character_data, :apprentice)),
@@ -733,6 +737,16 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_inquiries(_), do: nil
+
+  # 问询可消耗库存（LPC `set("huju_count", 20)`）：UCL
+  # `inquiry_state = { huju_count = 20 }` → `%{"huju_count" => 20}`。
+  defp parse_inquiry_state(nil), do: %{}
+
+  defp parse_inquiry_state(state) when is_map(state) do
+    Enum.into(state, %{}, fn {key, value} -> {to_string(key), value} end)
+  end
+
+  defp parse_inquiry_state(_), do: %{}
 
   defp parse_inquiry_value(value) when is_map(value) do
     Enum.into(value, %{}, fn {key, val} ->
