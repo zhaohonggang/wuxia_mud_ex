@@ -34,6 +34,7 @@ defmodule Kantele.World.Room do
     flags: [],
     dynamic_exits: %{},
     timers: %{},
+    state: %{},
     item_desc: %{},
     exit_vetoes: [],
 
@@ -521,6 +522,46 @@ defmodule Kantele.World.Room do
   end
 
   def has_exit_by_id?(_room_id, _exit_name), do: false
+
+  @doc """
+  运行期：读取房间进程上的临时状态（对应 LPC `query_temp/1`）。
+
+  房间进程不存在时返回 `nil`（安全降级，不崩溃）。LPC 的 `set_temp/query_temp`
+  只存在于房间对象生命周期内，本实现同样不落库。
+  """
+  def get_state_by_id(room_id, key) when is_binary(room_id) and is_binary(key) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        data = state.data || %{}
+        Map.get(Map.get(data, :state, %{}) || %{}, key)
+
+      _ ->
+        nil
+    end
+  end
+
+  def get_state_by_id(_room_id, _key), do: nil
+
+  @doc "运行期：设置房间临时状态（对应 LPC `set_temp/2`）；无进程返回 `:error`。"
+  def put_state_by_id(room_id, key, value) when is_binary(room_id) and is_binary(key) do
+    update_room_data(room_id, fn room ->
+      room_state = Map.get(room, :state, %{}) || %{}
+      Map.put(room, :state, Map.put(room_state, key, value))
+    end)
+  end
+
+  def put_state_by_id(_room_id, _key, _value), do: :error
+
+  @doc "运行期：删除房间临时状态（对应 LPC `delete_temp/1`）；无进程返回 `:error`。"
+  def delete_state_by_id(room_id, key) when is_binary(room_id) and is_binary(key) do
+    update_room_data(room_id, fn room ->
+      room_state = Map.get(room, :state, %{}) || %{}
+      Map.put(room, :state, Map.delete(room_state, key))
+    end)
+  end
+
+  def delete_state_by_id(_room_id, _key), do: :error
 
   defp update_room_data(room_id, fun) do
     case :global.whereis_name({Kalevala.World.Room, room_id}) do

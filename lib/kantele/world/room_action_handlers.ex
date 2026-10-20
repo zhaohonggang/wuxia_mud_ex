@@ -68,7 +68,11 @@ defmodule Kantele.World.RoomActionHandlers do
       "do_pan" => {Kantele.World.RoomActions.Lingxiao.Juegu.Pan, :run}
     },
     "hengyang:furong1" => %{
-      "do_climb" => {Kantele.World.RoomActions.Hengyang.Furong1.Climb, :run}
+      "do_climb" => {Kantele.World.RoomActions.Hengyang.Furong1.Climb, :run},
+      "do_pull" => {Kantele.World.RoomActions.Hengyang.Furong1.Pull, :run}
+    },
+    "hengyang:zigaihole" => %{
+      "do_move" => {Kantele.World.RoomActions.Hengyang.Zigaihole.Move, :run}
     },
     "changan:kzsleep" => %{
       "do_bed" => {Kantele.World.RoomActions.Changan.Kzsleep.Bed, :run}

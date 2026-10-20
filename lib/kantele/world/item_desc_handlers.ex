@@ -26,6 +26,15 @@ defmodule Kantele.World.ItemDescHandlers do
     },
     "beijing:aofu_shufang" => %{
       "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run}
+    },
+    "hengyang:furong1" => %{
+      "room_temp" => {Kantele.World.ItemDescHandlers.RoomTempText, :run}
+    },
+    "hengyang:zigaihole" => %{
+      "room_temp" => {Kantele.World.ItemDescHandlers.RoomTempText, :run}
+    },
+    "guanwai:jingxiu" => %{
+      "room_occupancy" => {Kantele.World.ItemDescHandlers.RoomOccupancyText, :run}
     }
   }
 

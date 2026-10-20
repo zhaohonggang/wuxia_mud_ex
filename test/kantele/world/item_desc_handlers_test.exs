@@ -1,14 +1,36 @@
+defmodule Kantele.World.ItemDescHandlersTest.FakeRoom do
+  use GenServer
+
+  def start_link(room_id) do
+    GenServer.start_link(__MODULE__, room_id, name: {:global, {Kalevala.World.Room, room_id}})
+  end
+
+  @impl true
+  def init(room_id) do
+    {:ok,
+     %{
+       data: %Kantele.World.Room{id: room_id},
+       private: %{characters: [], item_instances: []}
+     }}
+  end
+end
+
 defmodule Kantele.World.ItemDescHandlersTest do
   use ExUnit.Case, async: true
 
   alias Kalevala.Character.Conn
+  alias Kantele.World.ItemDescHandlersTest.FakeRoom
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.World.ItemDescHandlers
   alias Kantele.World.ItemDescHandlers.GatedText
+  alias Kantele.World.ItemDescHandlers.RoomOccupancyText
+  alias Kantele.World.ItemDescHandlers.RoomTempText
   alias Kantele.World.ItemDescHandlers.ScoreTiers
   alias Kantele.World.Room
+  alias Kantele.World.RoomActions.Hengyang.Furong1.Pull
   alias Kantele.World.RoomActions.Hengyang.Inzhushendong.Gua
+  alias Kantele.World.RoomActions.Hengyang.Zigaihole.Move
 
   @config %{
     "kind" => "gated_text",
@@ -126,6 +148,129 @@ defmodule Kantele.World.ItemDescHandlersTest do
 
     assert conn_output(conn) == "你要刮什么？\n"
     assert conn.private.update_character == nil
+  end
+
+  test "lookup/2 resolves the room-state handlers" do
+    assert ItemDescHandlers.lookup("hengyang:furong1", "room_temp") ==
+             {:ok, {RoomTempText, :run}}
+
+    assert ItemDescHandlers.lookup("hengyang:zigaihole", "room_temp") ==
+             {:ok, {RoomTempText, :run}}
+
+    assert ItemDescHandlers.lookup("guanwai:jingxiu", "room_occupancy") ==
+             {:ok, {RoomOccupancyText, :run}}
+  end
+
+  test "RoomTempText switches on room temp state" do
+    target_room = "test:room_temp"
+    looker_room = "test:looker_temp"
+    start_supervised!({FakeRoom, target_room})
+    context = %Kalevala.World.Room.Context{data: %Room{id: looker_room}}
+
+    config = %{
+      "kind" => "room_temp",
+      "room_id" => target_room,
+      "key" => "marks/拉",
+      "hidden" => "蜘蛛网完好。",
+      "shown" => "蜘蛛网已被拉破。"
+    }
+
+    hidden = RoomTempText.run(context, requester(%{}), %{config: config, room_id: looker_room})
+    assert context_output(hidden) == "蜘蛛网完好。\n"
+
+    assert :ok = Room.put_state_by_id(target_room, "marks/拉", 1)
+
+    shown = RoomTempText.run(context, requester(%{}), %{config: config, room_id: looker_room})
+    assert context_output(shown) == "蜘蛛网已被拉破。\n"
+  end
+
+  test "RoomTempText reads the current room from context without a process call" do
+    room_id = "test:current_room"
+
+    context = %Kalevala.World.Room.Context{
+      data: %Room{id: room_id, state: %{"marks/拉" => 1}}
+    }
+
+    config = %{
+      "kind" => "room_temp",
+      "key" => "marks/拉",
+      "hidden" => "蜘蛛网完好。",
+      "shown" => "蜘蛛网已被拉破。"
+    }
+
+    shown = RoomTempText.run(context, requester(%{}), %{config: config, room_id: room_id})
+    assert context_output(shown) == "蜘蛛网已被拉破。\n"
+  end
+
+  test "RoomOccupancyText reads the target room snapshot" do
+    target_room = "test:occupancy"
+    looker_room = "test:jingxiu"
+    pid = start_supervised!({FakeRoom, target_room})
+    context = %Kalevala.World.Room.Context{data: %Room{id: looker_room}}
+
+    config = %{
+      "kind" => "room_occupancy",
+      "room_id" => target_room,
+      "hidden" => "门上挂了个牌子：休息室",
+      "shown" => "门上挂了个牌子：休息中、请毋打扰"
+    }
+
+    empty =
+      RoomOccupancyText.run(context, requester(%{}), %{config: config, room_id: looker_room})
+
+    assert context_output(empty) == "门上挂了个牌子：休息室\n"
+
+    :sys.replace_state(pid, fn state ->
+      put_in(state.private.characters, [self()])
+    end)
+
+    busy = RoomOccupancyText.run(context, requester(%{}), %{config: config, room_id: looker_room})
+    assert context_output(busy) == "门上挂了个牌子：休息中、请毋打扰\n"
+  end
+
+  test "RoomOccupancyText uses context.characters for the current room" do
+    room_id = "test:current_occupancy"
+    context = %Kalevala.World.Room.Context{data: %Room{id: room_id}, characters: [self()]}
+
+    config = %{
+      "kind" => "room_occupancy",
+      "hidden" => "门上挂了个牌子：休息室",
+      "shown" => "门上挂了个牌子：休息中、请毋打扰"
+    }
+
+    busy = RoomOccupancyText.run(context, requester(%{}), %{config: config, room_id: room_id})
+    assert context_output(busy) == "门上挂了个牌子：休息中、请毋打扰\n"
+  end
+
+  test "Pull sets the room temp and reports state" do
+    room_id = "test:furong1"
+    start_supervised!({FakeRoom, room_id})
+
+    opened = Pull.run(%Conn{}, %{trailing: "net", room_id: room_id})
+    assert conn_output(opened) == "\n你把蜘蛛网拉了下来。\n"
+    assert Room.get_state_by_id(room_id, "marks/拉") == 1
+
+    again = Pull.run(%Conn{}, %{trailing: "net", room_id: room_id})
+    assert conn_output(again) == "蜘蛛网已经被拉破了。\n"
+
+    invalid = Pull.run(%Conn{}, %{trailing: "wall", room_id: room_id})
+    assert conn_output(invalid) == "你要拉什么？\n"
+  end
+
+  test "Zigaihole Move toggles the room temp" do
+    room_id = "test:zigaihole"
+    start_supervised!({FakeRoom, room_id})
+
+    opened = Move.run(%Conn{}, %{trailing: "desk", room_id: room_id})
+    assert conn_output(opened) == "\n你用力一推，石桌下面竟露出一个坑(keng)来。\n\n"
+    assert Room.get_state_by_id(room_id, "marks/移") == 1
+
+    closed = Move.run(%Conn{}, %{trailing: "石桌", room_id: room_id})
+    assert conn_output(closed) == "\n你用力一推，将石桌移回了原处。\n\n"
+    assert Room.get_state_by_id(room_id, "marks/移") == nil
+
+    invalid = Move.run(%Conn{}, %{trailing: "bed", room_id: room_id})
+    assert conn_output(invalid) == "你想移什么？\n"
   end
 
   defp requester(temp) do

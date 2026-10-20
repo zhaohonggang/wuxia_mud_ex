@@ -371,6 +371,14 @@ zones "guanwai" {
   x = -6
   y = 6
   z = -4
+  item_desc = {
+    men = {
+      kind = "room_occupancy"
+      room_id = "guanwai:xiuxishi"
+      hidden = "门上挂了个牌子：休息室"
+      shown = "门上挂了个牌子：休息中、请毋打扰"
+    }
+  }
   actions = {
     kick = "do_kick"
     knock = "do_knock"

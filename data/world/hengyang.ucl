@@ -276,6 +276,12 @@ item_desc = {
   z = 1
 item_desc = {
  dong = "阳光从洞外射进来，四周怪石(stone)突出，似乎可以从这里爬(climb)上去。"
+ net = {
+  kind = "room_temp"
+  key = "marks/拉"
+  hidden = "你走进细看，石壁上几只蜘蛛还在不停地吐丝织网，透过蛛网竟能隐约看见石壁上残留的一些文字。你不禁想拉开(pull)蛛网看个究竟。"
+  shown = "一张被拉破的蜘蛛网悬在半空。"
+ }
  stone = "只见这些突石有的坚韧如刀，有的层错如梯，各显其异。"
 }
   actions = {
@@ -2371,6 +2377,14 @@ behavior_config = {
   x = 0
   y = -1
   z = 9
+  item_desc = {
+    desk = {
+      kind = "room_temp"
+      key = "marks/移"
+      hidden = "一张石桌，上面已布满了灰尘。"
+      shown = "石桌像是已被人推开，下面露出一个坑(keng)来。"
+    }
+  }
   actions = {
     move = "do_move"
     pick = "do_pick"

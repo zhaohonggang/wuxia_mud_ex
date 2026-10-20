@@ -18,6 +18,7 @@
   - **P5-4c 已执行**：静态回填 **88 房间 / 95 键 / 26 文件**（详见 §3 P5-4c 执行结果）。
   - **P5-4d pilot 已执行**：`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3` + `gua` 动作（详见 §3 P5-4d 执行结果）。
   - **P5-4e score 门控已执行**：`shaolin:putiyuan` 的 `look_jing`（`jing` / `铜镜`，3 档）与 `beijing:aofu_shufang` 的 `look_hua`（`hua`，2 档 + `marks/画1`）（详见 §3 P5-4e 执行结果）。
+  - **P5-4f 房间 temp 三例已执行**：`hengyang:furong1` 的 `look_net` + `pull`、`hengyang:zigaihole` 的 `look_desk` + `move`、`guanwai:jingxiu` 的 `look_men`（读 `guanwai:xiuxishi` 占用）（详见 §3 P5-4f 执行结果）。
 
 ### 实测佐证
 - `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
@@ -61,6 +62,8 @@
 | 物品/其它 | `look_pet`, `look_pic1/2/3`, `look_door`, `look_sword2/3`, `call_killer` | `xiyu/houdong.c`, `hengyang/inzhushendong.c` 等 |
 
 > **P5-4e 进度**：`look_jing` / `look_hua` 已接入 `score_tiers`；`show_hua` 是纯静态闭包，P5-4c 已回填到 `hengyang:baihuzhai`（无需 handler）。
+>
+> **P5-4f 进度**：`look_net` / `look_desk` 已接入 `room_temp`（房间 temp `marks/拉` / `marks/移`），`look_men` 已接入 `room_occupancy`（目标房 `guanwai:xiuxishi`）。`look_table`（猪圈小游戏）、`look_hole`（书数 + 状态）、`look_fen`（对象存在 + 移动）、`look_liang`（玩家 temp + 房间移动副作用）仍待后续；`look_kong` 为 `sort_msg` 包裹的静态文本，可静态抽取。
 
 另有 **9** 个其它表达式值（变量/调用），需逐个确认。
 
@@ -163,6 +166,33 @@
   `mix format --check-formatted` 通过；`mix credo` 新文件 0 issue。
 - 未跑：`mix test`（本机无 Postgres）。
 
+### P5-4f：房间 temp / 占用状态条件闭包
+
+- **房间 temp**：新增 `Room.state`（defstruct 新字段，P7 add-only）与
+  `get_state_by_id/2` / `put_state_by_id/3` / `delete_state_by_id/2`，对应 LPC
+  `query_temp/set_temp/delete_temp`，仅存活于房间进程、不落库。
+- **handler `room_temp`**：按 `key`（如 `marks/拉`）选 `hidden` / `shown`；
+  `room_id` 省略取当前房间。**当前房间在房间进程内执行，直接读 `context.data.state`**，
+  跨房间才 `Room.get_state_by_id/2`，避免 `:sys.get_state(self())` 死锁。
+- **handler `room_occupancy`**：`room_id` 指向目标房间，`shown` = 有人、`hidden` = 无人。
+  当前房读 `context.characters`，跨房读 `Room.snapshot/1`；无进程视为无人。
+  与 LPC `person_inside` 的差异：快照包含 NPC（近似口径）。
+- **动作**：`Furong1.Pull`（`pull net`，置 `marks/拉`）、`Zigaihole.Move`
+  （`move desk` / `move 石桌`，切换 `marks/移`），文案与 LPC 一致。
+- **数据**：`hengyang:furong1` `item_desc.net`、`hengyang:zigaihole`
+  `item_desc.desk`、`guanwai:jingxiu` `item_desc.men`（`room_id = "guanwai:xiuxishi"`）。
+
+#### P5-4f 执行结果（2026-10-19）
+
+- 代码：`Room` 新增 `state` + 3 个公开函数；新增 `RoomTempText`、
+  `RoomOccupancyText`；新增 `Pull`、`Move`；注册表补 3 房间 / 2 handler / 2 action。
+- 数据：`hengyang.ucl` +14 行、`guanwai.ucl` +8 行；`Loader.parse_room` 归一化出
+  `net` / `desk` / `men` 的动态配置。
+- 校验：`Elias.parse` 两文件通过；`validate_ucl.py` 两文件全绿；`mix compile` 通过；
+  单测 **16/0**（含跨房/当前房 temp、占用快照/当前 context、Pull、Move）；
+  `mix format` 新文件通过；`room.ex` 仅新增块，未保留 `mix format` 的既有代码重排。
+- 未跑：`mix test`（本机无 Postgres）。
+
 ## 4. 约束与风险
 
 - **P1**：不得改 `scripts/lpc_converter.py`、`lib/kantele/world/lpc_converter.ex`、`lib/mix/tasks/kantele.convert_lpc.ex`；P5-4c 仅 import 只读。
@@ -177,5 +207,8 @@
 
 1. ~~实现 **P5-4c**~~ ✅ 已完成（88 房间 / 95 键；见上）。
 2. ~~实现 **P5-4d pilot**~~ ✅ 已完成（`look_bi` + `pic1/2/3` + `gua`，`hengyang:inzhushendong`；见上）。
-3. ~~score 门控~~ ✅ 已完成（P5-4e：`look_jing` / `look_hua`；`show_hua` P5-4c 已静态回填）；继续 temp → daemon，最后补 9 个表达式值。
+3. ~~score 门控~~ ✅ 已完成（P5-4e：`look_jing` / `look_hua`；`show_hua` P5-4c 已静态回填）。
+   ~~房间 temp 首批~~ ✅ 已完成（P5-4f：`look_net` / `look_desk` / `look_men`）；继续
+   `look_kong`（静态）、`look_liang`、`look_hole`、`look_fen`，`look_table` 暂缓；
+   之后 daemon/helper，最后补 9 个表达式值。
 4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。
