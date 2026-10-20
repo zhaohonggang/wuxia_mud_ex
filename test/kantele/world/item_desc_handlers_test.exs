@@ -24,6 +24,7 @@ defmodule Kantele.World.ItemDescHandlersTest do
   alias Kantele.Character.Stats
   alias Kantele.World.ItemDescHandlers
   alias Kantele.World.ItemDescHandlers.GatedText
+  alias Kantele.World.ItemDescHandlers.PlayerTempBranch
   alias Kantele.World.ItemDescHandlers.RoomOccupancyText
   alias Kantele.World.ItemDescHandlers.RoomTempText
   alias Kantele.World.ItemDescHandlers.ScoreTiers
@@ -58,6 +59,16 @@ defmodule Kantele.World.ItemDescHandlersTest do
         "set_temp" => "marks/画1"
       }
     ]
+  }
+
+  @liang_config %{
+    "kind" => "player_temp_branch",
+    "gate_temp" => "marks/辟1",
+    "no_access" => "你要看什么？",
+    "room_key" => "move",
+    "hidden" => "一根楠木做的房梁，可惜年代太久，已经腐烂得不成样子了。",
+    "shown" => "一根楠木做的房梁，上面有崭新的刮痕，似乎不久前才有人动过。",
+    "set_temp" => "marks/辟2"
   }
 
   test "item_desc_entry/2 distinguishes static and dynamic entries" do
@@ -159,6 +170,12 @@ defmodule Kantele.World.ItemDescHandlersTest do
 
     assert ItemDescHandlers.lookup("guanwai:jingxiu", "room_occupancy") ==
              {:ok, {RoomOccupancyText, :run}}
+
+    assert ItemDescHandlers.lookup("fuzhou:mishi", "score_tiers") ==
+             {:ok, {ScoreTiers, :run}}
+
+    assert ItemDescHandlers.lookup("fuzhou:mishi", "player_temp_branch") ==
+             {:ok, {PlayerTempBranch, :run}}
   end
 
   test "RoomTempText switches on room temp state" do
@@ -240,6 +257,52 @@ defmodule Kantele.World.ItemDescHandlersTest do
 
     busy = RoomOccupancyText.run(context, requester(%{}), %{config: config, room_id: room_id})
     assert context_output(busy) == "门上挂了个牌子：休息中、请毋打扰\n"
+  end
+
+  test "PlayerTempBranch requires the player temp before revealing anything" do
+    context = %Kalevala.World.Room.Context{data: %Room{id: "fuzhou:mishi"}}
+
+    denied =
+      PlayerTempBranch.run(context, requester(%{}), %{
+        config: @liang_config,
+        room_id: "fuzhou:mishi"
+      })
+
+    assert context_output(denied) == "你要看什么？\n"
+    assert denied.events == []
+  end
+
+  test "PlayerTempBranch sets the follow-up temp when the room flag is absent" do
+    context = %Kalevala.World.Room.Context{data: %Room{id: "fuzhou:mishi"}}
+
+    revealed =
+      PlayerTempBranch.run(context, requester(%{"marks/辟1" => 1}), %{
+        config: @liang_config,
+        room_id: "fuzhou:mishi"
+      })
+
+    assert context_output(revealed) == "一根楠木做的房梁，可惜年代太久，已经腐烂得不成样子了。\n"
+
+    assert [
+             {pid, %{topic: "character/effects", data: %{effects: [{:set_temp, "marks/辟2", 1}]}}}
+           ] = revealed.events
+
+    assert pid == self()
+  end
+
+  test "PlayerTempBranch shows the moved text when the room flag is set" do
+    context = %Kalevala.World.Room.Context{
+      data: %Room{id: "fuzhou:mishi", state: %{"move" => 1}}
+    }
+
+    moved =
+      PlayerTempBranch.run(context, requester(%{"marks/辟1" => 1}), %{
+        config: @liang_config,
+        room_id: "fuzhou:mishi"
+      })
+
+    assert context_output(moved) == "一根楠木做的房梁，上面有崭新的刮痕，似乎不久前才有人动过。\n"
+    assert moved.events == []
   end
 
   test "Pull sets the room temp and reports state" do

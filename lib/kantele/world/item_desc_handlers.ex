@@ -35,6 +35,10 @@ defmodule Kantele.World.ItemDescHandlers do
     },
     "guanwai:jingxiu" => %{
       "room_occupancy" => {Kantele.World.ItemDescHandlers.RoomOccupancyText, :run}
+    },
+    "fuzhou:mishi" => %{
+      "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run},
+      "player_temp_branch" => {Kantele.World.ItemDescHandlers.PlayerTempBranch, :run}
     }
   }
 

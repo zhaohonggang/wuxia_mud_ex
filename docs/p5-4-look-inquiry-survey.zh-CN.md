@@ -19,6 +19,7 @@
   - **P5-4d pilot 已执行**：`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3` + `gua` 动作（详见 §3 P5-4d 执行结果）。
   - **P5-4e score 门控已执行**：`shaolin:putiyuan` 的 `look_jing`（`jing` / `铜镜`，3 档）与 `beijing:aofu_shufang` 的 `look_hua`（`hua`，2 档 + `marks/画1`）（详见 §3 P5-4e 执行结果）。
   - **P5-4f 房间 temp 三例已执行**：`hengyang:furong1` 的 `look_net` + `pull`、`hengyang:zigaihole` 的 `look_desk` + `move`、`guanwai:jingxiu` 的 `look_men`（读 `guanwai:xiuxishi` 占用）（详见 §3 P5-4f 执行结果）。
+  - **P5-4g 玩家 temp 分支已执行**：`fuzhou:mishi` 的 `look_hua`（3 档 + `marks/辟1`）与 `look_liang`（`marks/辟1` 解锁，按房间 `move` 分支，置 `marks/辟2`）；`jueqing:undertan` 的 `look_kong` 静态回填（详见 §3 P5-4g 执行结果）。
 
 ### 实测佐证
 - `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
@@ -63,7 +64,9 @@
 
 > **P5-4e 进度**：`look_jing` / `look_hua` 已接入 `score_tiers`；`show_hua` 是纯静态闭包，P5-4c 已回填到 `hengyang:baihuzhai`（无需 handler）。
 >
-> **P5-4f 进度**：`look_net` / `look_desk` 已接入 `room_temp`（房间 temp `marks/拉` / `marks/移`），`look_men` 已接入 `room_occupancy`（目标房 `guanwai:xiuxishi`）。`look_table`（猪圈小游戏）、`look_hole`（书数 + 状态）、`look_fen`（对象存在 + 移动）、`look_liang`（玩家 temp + 房间移动副作用）仍待后续；`look_kong` 为 `sort_msg` 包裹的静态文本，可静态抽取。
+> **P5-4f 进度**：`look_net` / `look_desk` 已接入 `room_temp`（房间 temp `marks/拉` / `marks/移`），`look_men` 已接入 `room_occupancy`（目标房 `guanwai:xiuxishi`）。
+>
+> **P5-4g 进度**：`fuzhou:mishi` 的 `look_hua` 用 `score_tiers`（3 档，最高档置 `marks/辟1`），`look_liang` 用 `player_temp_branch`（`marks/辟1` 门控 + 房间 `move` 分支 + `marks/辟2`）；`jueqing:undertan` 的 `look_kong` 已静态回填。`look_table`（猪圈小游戏）、`look_hole`（书数 + 状态）、`look_fen`（对象存在 + 移动）仍待后续；`jump liang` / `move big stone` 等动作仍未接线。
 
 另有 **9** 个其它表达式值（变量/调用），需逐个确认。
 
@@ -193,6 +196,31 @@
   `mix format` 新文件通过；`room.ex` 仅新增块，未保留 `mix format` 的既有代码重排。
 - 未跑：`mix test`（本机无 Postgres）。
 
+### P5-4g：玩家 temp 解锁 + 房间 temp 分支
+
+- **`look_hua`（`fuzhou:mishi`）**：与 `beijing:aofu_shufang` 同名但不同文案/阈值；
+  用 `score_tiers` 3 档（0 / 1000 / 3000），最高档 `set_temp = "marks/辟1"`。
+- **`look_liang`**：新增 `PlayerTempBranch`（`kind = "player_temp_branch"`）：
+  `gate_temp` 未设置 → `no_access`；否则按当前房间 `room_key` 是否存在选
+  `shown` / `hidden`，`hidden` 分支可 `set_temp`（发 `character/effects` 事件）。
+- **`look_kong`（`jueqing:undertan`）**：`sort_msg` 仅重排文本，内容为静态字符串，
+  按 P5-4c 口径直接回填 `item_desc.kong`（换行折叠为空格）。
+- **数据**：`fuzhou:mishi` 新增 `item_desc.hua` + `item_desc.liang`；
+  `jueqing:undertan` 新增 `item_desc.kong`。
+- **未接线**：`jump liang`（`do_jump`）与 `move big stone`（`do_move`）仍未实现，
+  因此 `room_key = "move"` 分支在实机中暂不可达，仅 handler/测试可验证；
+  `look_fen` 的剑对象存在性同理留待动作批次。
+
+#### P5-4g 执行结果（2026-10-19）
+
+- 代码：新增 `PlayerTempBranch`；`ItemDescHandlers` 注册 `fuzhou:mishi`
+  （`score_tiers` + `player_temp_branch`）。
+- 数据：`fuzhou.ucl` +19 行、`jueqing.ucl` +1 行；`Loader.parse_room` 归一化出
+  `hua` / `liang` / `kong`。
+- 校验：`Elias.parse` 两文件通过；`validate_ucl.py` 两文件全绿；`mix compile` 通过；
+  单测 **19/0**（+3：未解锁 / 解锁置 `marks/辟2` / 房间 `move` 已置）。
+- 未跑：`mix test`（本机无 Postgres）。
+
 ## 4. 约束与风险
 
 - **P1**：不得改 `scripts/lpc_converter.py`、`lib/kantele/world/lpc_converter.ex`、`lib/mix/tasks/kantele.convert_lpc.ex`；P5-4c 仅 import 只读。
@@ -208,7 +236,8 @@
 1. ~~实现 **P5-4c**~~ ✅ 已完成（88 房间 / 95 键；见上）。
 2. ~~实现 **P5-4d pilot**~~ ✅ 已完成（`look_bi` + `pic1/2/3` + `gua`，`hengyang:inzhushendong`；见上）。
 3. ~~score 门控~~ ✅ 已完成（P5-4e：`look_jing` / `look_hua`；`show_hua` P5-4c 已静态回填）。
-   ~~房间 temp 首批~~ ✅ 已完成（P5-4f：`look_net` / `look_desk` / `look_men`）；继续
-   `look_kong`（静态）、`look_liang`、`look_hole`、`look_fen`，`look_table` 暂缓；
-   之后 daemon/helper，最后补 9 个表达式值。
+   ~~房间 temp 首批~~ ✅ 已完成（P5-4f：`look_net` / `look_desk` / `look_men`）。
+   ~~玩家 temp 分支~~ ✅ 已完成（P5-4g：`look_hua` / `look_liang` / 静态 `look_kong`）；
+   继续 `look_hole`、`look_fen`，`look_table` 暂缓；之后 daemon/helper，最后补
+   9 个表达式值。
 4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。

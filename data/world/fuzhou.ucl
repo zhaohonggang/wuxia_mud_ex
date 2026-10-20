@@ -670,6 +670,25 @@ item_desc = {
   x = -1
   y = 0
   z = 1
+  item_desc = {
+    hua = {
+      kind = "score_tiers"
+      tiers = [
+        { min_score = 0 text = "一幅陈旧的画卷，画中乃是达摩老祖，没有什么不同。" },
+        { min_score = 1000 text = "一幅陈旧的画卷，画中达摩老祖左手握个剑诀，慈祥安和。" },
+        { min_score = 3000 text = "一幅陈旧的画卷，画中达摩老祖左手握个剑诀，正指向房梁(liang)处。" set_temp = "marks/辟1" }
+      ]
+    }
+    liang = {
+      kind = "player_temp_branch"
+      gate_temp = "marks/辟1"
+      no_access = "你要看什么？"
+      room_key = "move"
+      hidden = "一根楠木做的房梁，可惜年代太久，已经腐烂得不成样子了。"
+      shown = "一根楠木做的房梁，上面有崭新的刮痕，似乎不久前才有人动过。"
+      set_temp = "marks/辟2"
+    }
+  }
   actions = {
     jump = "do_jump"
   }
