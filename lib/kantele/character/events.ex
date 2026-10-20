@@ -39,6 +39,11 @@ defmodule Kantele.Character.Events do
       event("jingzuo/wakeup", :wakeup)
     end
 
+    module(EffectEvent) do
+      # 通用角色副作用（房间进程判定 -> 角色进程执行，见 Kantele.Character.EffectEvent）
+      event("character/effects", :run)
+    end
+
     module(TrapEvent) do
       # 出口陷阱副作用（房间进程判定 -> 角色进程执行，见 Kantele.Character.TrapEvent）
       event("trap/effect", :run)

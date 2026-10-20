@@ -20,6 +20,12 @@ defmodule Kantele.World.ItemDescHandlers do
   @registry %{
     "hengyang:inzhushendong" => %{
       "gated_text" => {Kantele.World.ItemDescHandlers.GatedText, :run}
+    },
+    "shaolin:putiyuan" => %{
+      "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run}
+    },
+    "beijing:aofu_shufang" => %{
+      "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run}
     }
   }
 

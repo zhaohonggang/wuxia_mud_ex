@@ -17,6 +17,7 @@
   - 房间构成：**73** 个房间「全动态」（当前 UCL **完全无** `item_desc` block）/ **15** 个「混合」（UCL 仅写了静态对）。
   - **P5-4c 已执行**：静态回填 **88 房间 / 95 键 / 26 文件**（详见 §3 P5-4c 执行结果）。
   - **P5-4d pilot 已执行**：`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3` + `gua` 动作（详见 §3 P5-4d 执行结果）。
+  - **P5-4e score 门控已执行**：`shaolin:putiyuan` 的 `look_jing`（`jing` / `铜镜`，3 档）与 `beijing:aofu_shufang` 的 `look_hua`（`hua`，2 档 + `marks/画1`）（详见 §3 P5-4e 执行结果）。
 
 ### 实测佐证
 - `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
@@ -58,6 +59,8 @@
 | 房间/玩家 temp | `look_bi`(gua), `look_table`(pigging_seat), `look_men`(另一房间 temp), `look_net`(marks/拉), `look_desk`, `look_hole`, `look_kong`, `look_fen`, `look_liang` | `hengyang/inzhushendong.c` 等 |
 | 外部 daemon / helper | `look_gaoshi`, `look_scoreboard`, `look_tiaofu`, `look_board` | `chengdu/eastgate.c`, `city/eproom.c`, `city/leitai.c`, `inherit/room/chatroom.c` |
 | 物品/其它 | `look_pet`, `look_pic1/2/3`, `look_door`, `look_sword2/3`, `call_killer` | `xiyu/houdong.c`, `hengyang/inzhushendong.c` 等 |
+
+> **P5-4e 进度**：`look_jing` / `look_hua` 已接入 `score_tiers`；`show_hua` 是纯静态闭包，P5-4c 已回填到 `hengyang:baihuzhai`（无需 handler）。
 
 另有 **9** 个其它表达式值（变量/调用），需逐个确认。
 
@@ -122,13 +125,51 @@
   `mix run --no-start` 验证 `GatedText` 在 temp 未设/已设时分别输出 `hidden` / `shown`。
 - 未跑：`mix test`（本机无 Postgres，`test` alias 强制 `ecto.create`）。
 
+### P5-4e：score 门控条件闭包
+
+- **UCL 表示**：`kind = "score_tiers"`，`tiers` 数组按 `min_score` 升序；handler 选
+  `min_score <= score` 的最大层，对应 LPC 的多段
+  `if (me->query("score") < N) return ...`。
+  ```ucl
+  item_desc = {
+    jing = {
+      kind = "score_tiers"
+      tiers = [
+        { min_score = 0 text = "..." },
+        { min_score = 1000 text = "..." },
+        { min_score = 5000 text = "..." }
+      ]
+    }
+  }
+  ```
+- **副作用**：`look_hua` 在 `score >= 3000` 时 `set_temp("marks/画1", 1)`。房间
+  handler 只发 `"character/effects"` 事件（`{:set_temp, key, 1}`），由角色进程执行
+  并落盘；新增 `Kantele.Character.EffectEvent`（复用 `TrapEvent` 的效果列表）。
+- **数据**：`shaolin:putiyuan`（`jing` + `铜镜`，3 档）、`beijing:aofu_shufang`
+  （`hua`，2 档）。
+- **顺带修复**：`shaolin:zoulang2` 的 ASCII 图字符串含 2 个半角逗号（`*｜*,*` /
+  `＼┃**,*`），elias 无法 lex，导致整个 `shaolin.ucl` 解析失败（HEAD 即如此）。
+  改为全角逗号 `，`（视觉不变），`Elias.parse` 恢复；`validate_ucl.py` 仍只报既有
+  的 `", 41, "` 注释行（L7442，非本次引入）。
+
+#### P5-4e 执行结果（2026-10-19）
+
+- 代码：`ScoreTiers`（选层 + 可选 `set_temp` 事件）、`EffectEvent`（`character/effects`
+  → `TrapEvent`）、`ItemDescHandlers` 注册 `shaolin:putiyuan` / `beijing:aofu_shufang`。
+- 数据：`shaolin.ucl` +18 行、`beijing.ucl` +9 行；`Loader.parse_room` 归一化出
+  `"jing"` / `"铜镜"` / `"hua"` 的 `tiers`（`min_score` 保留整数）。
+- 校验：`Elias.parse` 两文件通过（`shaolin` 修复后）；`validate_ucl.py beijing`
+  全绿、`shaolin` 仅既有 `", 41, "`；`mix compile` 通过；单测 **9/0**；
+  `mix format --check-formatted` 通过；`mix credo` 新文件 0 issue。
+- 未跑：`mix test`（本机无 Postgres）。
+
 ## 4. 约束与风险
 
 - **P1**：不得改 `scripts/lpc_converter.py`、`lib/kantele/world/lpc_converter.ex`、`lib/mix/tasks/kantele.convert_lpc.ex`；P5-4c 仅 import 只读。
 - **P2/P4**：不得用 `convert_file` 重写 UCL；只增、幂等，不删 `.comments.txt`。
 - **颜色宏**：现有 UCL `item_desc` 已剥离颜色；P5-4c 必须保持一致，避免同一房间两种风格。
 - **`@TEXT`**：Elixir converter 口径未证实（实测被丢弃）；P5-4c 自行按字面抽取，不依赖 converter。
-- **关键词**：UCL 键必须是标识符（`_normalize_item_keyword`；CJK key 归一为空 → 跳过）。
+- **关键词**：静态回填脚本沿用 `_normalize_item_keyword`（CJK key 归一为空 → 跳过）；但运行时 UCL **允许** CJK key（P5-4e `putiyuan` 的 `铜镜` 已验证），手写数据可直接使用。
 - **同名函数**：`look_*` 跨房间/继承可能多定义；P5-4c 先只处理同文件定义，继承链单独记账。
 - **P7**：room/数据结构只增字段，不改既有语义。
 
@@ -136,5 +177,5 @@
 
 1. ~~实现 **P5-4c**~~ ✅ 已完成（88 房间 / 95 键；见上）。
 2. ~~实现 **P5-4d pilot**~~ ✅ 已完成（`look_bi` + `pic1/2/3` + `gua`，`hengyang:inzhushendong`；见上）。
-3. 逐批处理条件闭包（score → temp → daemon），最后补 9 个表达式值。
+3. ~~score 门控~~ ✅ 已完成（P5-4e：`look_jing` / `look_hua`；`show_hua` P5-4c 已静态回填）；继续 temp → daemon，最后补 9 个表达式值。
 4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。

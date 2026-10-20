@@ -175,6 +175,15 @@ direction = "north"
   x = -4
   y = 6
   z = 0
+item_desc = {
+ hua = {
+  kind = "score_tiers"
+  tiers = [
+   { min_score = 0 text = "这是一幅陈旧的画卷，没有什么不同。" },
+   { min_score = 3000 text = "这是一幅陈旧的画卷，画中一处微微隆起，你忍不住便想掀开看看。" set_temp = "marks/画1" }
+  ]
+ }
+}
   actions = {
     turn = "do_turn"
     xian = "do_xian"
