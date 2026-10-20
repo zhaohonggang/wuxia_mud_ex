@@ -1210,6 +1210,9 @@ valid_leave = [
     open = "do_open"
     order = "do_order"
   }
+item_desc = {
+ menu = "order party:    浓情幽会    (200两银子)          order end  :    结束狂欢          close door  :   关闭房门          open door   :   打开房门"
+}
     }
 
   room_exits "loveroom" {

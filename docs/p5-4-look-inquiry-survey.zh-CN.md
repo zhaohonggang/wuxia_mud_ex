@@ -15,6 +15,7 @@
   - 111 个闭包值：**59 对纯静态 return（可零代码回填）** / **52 对条件分支（需运行时 handler）**。
   - 闭包去重后 **54** 个函数：31 静态 / 23 条件。
   - 房间构成：**73** 个房间「全动态」（当前 UCL **完全无** `item_desc` block）/ **15** 个「混合」（UCL 仅写了静态对）。
+  - **P5-4c 已执行**：静态回填 **88 房间 / 95 键 / 26 文件**（详见 §3 P5-4c 执行结果）。
 
 ### 实测佐证
 - `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
@@ -66,13 +67,22 @@
 - **新脚本** `scripts/backfill_room_item_desc_static.py`（P3：新逻辑放新脚本）。
 - **只读复用** `scripts/lpc_converter.py` 的 `_parse_mapping_pairs` / `_parse_lpc_value` / `_item_desc_text` / `_escape_set_string` / `_normalize_item_keyword`（P1 只禁编辑，不禁 import）。
 - 对每个房间：
-  1. 解析 `set("item_desc", ([ ... ]))`；
+  1. 解析 `set("item_desc", ([ ... ]))`（按带引号的 key 位置切分，避免值内逗号/换行截断）；
   2. 闭包值：取 `(: fn :)`，在**同文件**（后续再扩继承链）找函数体；仅当「纯静态 return / 局部字符串变量赋值 + return」时抽取文本；
-  3. `@TEXT` 值：按字面多行文本抽取；
-  4. 颜色宏统一按 `_process_literal_string` 剥离，与现有 UCL 口径一致。
+  3. heredoc 值：`@TEXT` / `@WALL` / `@SHADOWS ...` 按字面多行文本抽取（兼容 `HIY @TEXT ... TEXT NOR` 包裹）；
+  4. 颜色宏统一按 `_process_literal_string` 剥离，与现有 UCL 口径一致；
+  5. 安全化：`\`+空白折叠为空格（elias 无法 lex，如 `huashan/sgyhole.c` 石壁图）。
 - **数据写入**：P4 只增——仅补缺失的 `item_desc = { ... }` block 或缺失键，**不动已有行**、不重排。幂等可重跑。
 - 流程：dry-run 统计 → 备份 → 写 UCL → `scripts/validate_ucl.py` → 目标区 `mix test`。
-- 预期覆盖：约 **96+ 对**（59 静态闭包 + 37 `@TEXT`），涉及约 73 个全动态房间的大部分。
+- 预期覆盖：约 **95 对**（56 静态闭包 + 39 heredoc），实测 88 房间。
+
+#### P5-4c 执行结果（2026-10-19）
+
+- 覆盖：**88 房间 / 95 键 / 26 个 UCL 文件**，`+261` 行、`0` 删除。
+- 主要批次：`xiakedao` 24 间 `wall`（`@WALL`）、`death/inn1` `shadows`、`death/inn2` `wall`、`shaolin` 9 间（`stone/tower/drum/out/bell/floor/gate/writing/picture/duizi/poem`）、`huashan/sgyhole1-4` `wall`、`emei` 4 间、`hengyang` 4 间等。
+- 校验：`validate_ucl.py` 的失败集与落盘前**逐条一致**（仅既有 5 项：`huashan` 双右括号、`lingxiao` L2951 语法、`shaolin` L7381、`wudu` `$N`、`xiangyang` L4066）；未新增失败。
+- 幂等：写后重跑 dry-run = **0 房间 / 0 键**。
+- 说明：UCL 字符串按既有约定折叠换行（`_sanitize_ucl_sval`），ASCII 图会变成长单行；与全库 `description`/`item_desc` 口径一致，非本次引入。
 
 ### P5-4d：动态 `item_desc` handler（条件闭包）
 
@@ -99,7 +109,7 @@
 
 ## 5. 下一步
 
-1. 实现 **P5-4c**：先 `hengyang` / `shaolin` 两区试跑，diff 抽查后全量；提交「静态 item_desc 回填」。
+1. ~~实现 **P5-4c**~~ ✅ 已完成（88 房间 / 95 键；见上）。
 2. 实现 **P5-4d pilot**：`look_bi` + `gua`（`hengyang:inzhushendong`），含 handler 注册表与事件路由。
 3. 逐批处理条件闭包（score → temp → daemon），最后补 9 个表达式值。
 4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。

@@ -683,6 +683,9 @@ item_desc = {
   actions = {
     bet = "do_bet"
   }
+item_desc = {
+ paizi = "赌骰子方法: bet <kind> <amount> <money>  只收现银，概不赊欠。  kind:     头彩 <tc>（骰数由每次开盘前确定）      ：一赢三十六     双对 <sd>（两骰号相同，且为偶数）      ：一赢十二     七星 <qx>（两骰之和为七）              ：一赢六     散星 <sx>（两骰之和为三，五，九，十一）：一赢三"
+}
     }
 
   room_exits "duchang" {
@@ -709,6 +712,9 @@ item_desc = {
   actions = {
     bet = "do_bet"
   }
+item_desc = {
+ sign = "赌骰子方法: bet <kind> <amount> <money>   只收现银，概不赊欠。  kind:     头彩 <tc>（骰数由每次开盘前确定）      ：一赢三十六     双对 <sd>（两骰号相同，且为偶数）      ：一赢十二     七星 <qx>（两骰之和为七）              ：一赢六     散星 <sx>（两骰之和为三，五，九，十一）：一赢三"
+}
     }
 
   room_exits "duchang2" {
@@ -2063,6 +2069,9 @@ direction = ~
 }
 
 ]
+item_desc = {
+ gaoshi = "规定: １．不可以带武器上楼。 ２．不许闹事，否则后果自负。"
+}
     }
 
   room_exits "qunyulou" {
@@ -2574,6 +2583,9 @@ item_desc = {
   x = 3
   y = -1
   z = 0
+item_desc = {
+ poem = "易水萧萧西风冷，壮士一去不复还！         拼死但凭三尺剑，深情唯有负红颜！"
+}
     }
 
   room_exits "weapon_shop" {

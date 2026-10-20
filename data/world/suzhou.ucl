@@ -606,6 +606,9 @@ item_desc = {
   flags = [
     "no_beg"
   ]
+item_desc = {
+ paizi = "本钱庄提供以下服务：       存钱        deposit或者cun       取钱        withdraw或者qu       钱币兑换    convert或者duihuan       查帐        check或者chazhang"
+}
     }
 
   room_exits "jubaozhai" {

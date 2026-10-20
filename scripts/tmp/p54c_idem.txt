@@ -1,0 +1,4 @@
+﻿=== P5-4c 静态 item_desc 回填（dry-run）===
+候选来源统计: {'dynamic_macro_concat': 222, 'closure_conditional': 52, 'dynamic_string_concat': 192, 'text_macro_ok': 39, 'skip_bad_key': 13, 'closure_ok': 56, 'dynamic_expr': 11}
+待补房间: 0 / 待补键: 0 / 涉及 UCL 文件: 0
+未落盘（加 --write 执行）。计划 → C:\files\git\wuxia_mud_ex\scripts\tmp\p54c_backfill_plan.json

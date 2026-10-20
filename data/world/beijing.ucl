@@ -2510,6 +2510,9 @@ item_desc = {
   x = 1
   y = 3
   z = 0
+item_desc = {
+ gaoshi = "镇远镖局的镖师可以免费骑马至以下城市。   扬州城:  rideyz    苏州城:  ridesz  杭州城:  ridehz    福州城:  ridefz  大理城:  ridedl    襄阳城:  ridexy  永登城:  rideyd    伊犁镇:  rideyl  佛山镇:  ridefs    峨嵋山:  rideem"
+}
     }
 
   room_exits "majuan" {

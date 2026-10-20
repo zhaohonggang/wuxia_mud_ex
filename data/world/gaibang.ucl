@@ -118,6 +118,9 @@ item_desc = {
   actions = {
     goto = "do_goto"
   }
+item_desc = {
+ map = "凡丐帮帮众均可通过密道直达以下城市： ----------------------------------------  长安(changan)         洛阳(luoyang)  大理(dali)            北京(beijing)  杭州(hangzhou)        开封(kaifeng)  苏州(suzhou)          衡阳(hengyang)  襄阳(xiangyang)       福州(fuzhou)  成都(chengdu)         荆州(jingzhou)  南阳(nanyang)         佛山(foshan)  中州(zhongzhou) ---------------------------------------- 即来即走(goto)无需等待，仅限丐帮帮众。"
+}
     }
 
   room_exits "undertre" {

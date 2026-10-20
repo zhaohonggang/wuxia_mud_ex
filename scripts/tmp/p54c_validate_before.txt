@@ -1,0 +1,52 @@
+﻿### data/world/beijing.ucl
+鉁?All checks passed: data/world/beijing.ucl
+### data/world/changan.ucl
+鉁?All checks passed: data/world/changan.ucl
+### data/world/city.ucl
+鉁?All checks passed: data/world/city.ucl
+### data/world/death.ucl
+鉁?All checks passed: data/world/death.ucl
+### data/world/emei.ucl
+鉁?All checks passed: data/world/emei.ucl
+### data/world/gaibang.ucl
+鉁?All checks passed: data/world/gaibang.ucl
+### data/world/gaochang.ucl
+鉁?All checks passed: data/world/gaochang.ucl
+### data/world/hangzhou.ucl
+鉁?All checks passed: data/world/hangzhou.ucl
+### data/world/hengyang.ucl
+鉁?All checks passed: data/world/hengyang.ucl
+### data/world/huashan.ucl
+鉂?Chars: double closing brace
+### data/world/jingzhou.ucl
+鉁?All checks passed: data/world/jingzhou.ucl
+### data/world/jueqing.ucl
+鉁?All checks passed: data/world/jueqing.ucl
+### data/world/lingjiu.ucl
+鉁?All checks passed: data/world/lingjiu.ucl
+### data/world/lingxiao.ucl
+鉂?Syntax: expected '=' (line 2951)
+### data/world/luoyang.ucl
+鉁?All checks passed: data/world/luoyang.ucl
+### data/world/mingjiao.ucl
+鉁?All checks passed: data/world/mingjiao.ucl
+### data/world/quanzhen.ucl
+鉁?All checks passed: data/world/quanzhen.ucl
+### data/world/quanzhou.ucl
+鉁?All checks passed: data/world/quanzhou.ucl
+### data/world/shaolin.ucl
+鉂?Chars: elias-unlexable value at line 7381 (digit immediately before a comma inside a quoted value): b'", 41, "'
+### data/world/suzhou.ucl
+鉁?All checks passed: data/world/suzhou.ucl
+### data/world/tiezhang.ucl
+鉁?All checks passed: data/world/tiezhang.ucl
+### data/world/wudang.ucl
+鉁?All checks passed: data/world/wudang.ucl
+### data/world/wudu.ucl
+鉂?Chars: raw $N placeholder (should be {npc}); raw $n placeholder (should be {name})
+### data/world/xiakedao.ucl
+鉁?All checks passed: data/world/xiakedao.ucl
+### data/world/xiangyang.ucl
+鉂?Syntax: expected '=' (line 4066)
+### data/world/xiyu.ucl
+鉁?All checks passed: data/world/xiyu.ucl
