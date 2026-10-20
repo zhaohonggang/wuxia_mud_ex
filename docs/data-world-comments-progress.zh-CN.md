@@ -47,7 +47,7 @@
 | **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | 🟨 | `8e734307` | **P5-4a inquiry 首切片已落地**（inventory `give_item`，13 条），其余 8 子系统待排 |
 | **P6** | 防回归 | 2 个脚本 | — | 🟨 | | |
 
-**P5 进度**：`0 / 9` 个子系统完整完成；**P5-4 首个切片（inquiry）已落地**（`kind = "give_item"`，`8e734307`），`look_*` 勘查完成（`docs/p5-4-look-inquiry-survey.zh-CN.md`），**静态回填已完成**（P5-4c，88 房间 / 95 键），条件 handler 待续。
+**P5 进度**：`0 / 9` 个子系统完整完成；**P5-4 首个切片（inquiry）已落地**（`kind = "give_item"`，`8e734307`），`look_*` 勘查完成（`docs/p5-4-look-inquiry-survey.zh-CN.md`），**静态回填已完成**（P5-4c，88 房间 / 95 键），**动态 handler pilot 已完成**（P5-4d，`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3` + `gua`）。
 
 ---
 
@@ -398,7 +398,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | 1 | **逐对象 `add_action` 通道** | 646 行 / 215 名 / 63 区 | ✅ | ⬜ | | **收益最大**；UCL `actions = [ {verb, handler} ]` |
 | 2 | 战斗回调 | 259 行 / 12 名 / 37 区 | ✅ | ⬜ | | **方案 A：新脚本重抽 `engage`**，不改转换器 |
 | 3 | 动态出口 | 含在 `do_*` 内 | ⚠️ | ⬜ | | 需先加运行时增删出口 API |
-| 4 | look / inquiry | 185 行 / 86 名 | ✅ | ✅ | `8e734307` | **P5-4a inquiry 首切片已落地**（inventory `give_item`，13 条）；与 `wuxiuwen` inquiry 6 条合并完成；**P5-4c 静态 `item_desc` 回填 88 房间 / 95 键**（本提交）；§13-543/545 行同批次 |
+| 4 | look / inquiry | 185 行 / 86 名 | ✅ | ✅ | `8e734307` | **P5-4a inquiry 首切片已落地**（inventory `give_item`，13 条）；与 `wuxiuwen` inquiry 6 条合并完成；**P5-4c 静态 `item_desc` 回填 88 房间 / 95 键**（本提交）；**P5-4d 动态 `item_desc` pilot**（`gated_text` + `gua`，`hengyang:inzhushendong`）；§13-543/545/547 行同批次 |
 | 5 | effect / invocation | 108 行 / 2 名 | ⚠️ | ⬜ | | 需 buff/effect 子系统 |
 | 6 | 门 / 容器 | 40 行 | ✅ | ⬜ | | 需要有状态的门 |
 | 7 | 学徒 / 门派 | 52 行 / 2 名 | ✅ | ⬜ | | 名数少、行数多 |
@@ -544,6 +544,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | 2026-10-19 | **P5-4b（inquiry 闭包兜底：未实现闭包不再回显原文）** | `29d0897e` | `NpcAskEvent.handle_answer` 对 `(: ask_N :)` 闭包字面量不再 `publish_tell` 原文，改为静默不回应（`channel_changes` 保持空）；普通文本仍正常回显。新增回归测试 2 条（闭包不回显 / 普通文本回显）。662 处 UCL `inquiries` 闭包占位止损，待逐 NPC/逐 `ask_*` 实现 | 代码 1 文件 / +~15 行；测试 1 文件 / +~25 行；`npc_script_event_test` 编译通过，本地无 Postgres 无法跑 `mix test` 别名（触发 `ecto.create`）|
 | 2026-10-19 | **P5-4 look 勘查（item_desc 动态闭包）** | `f60317c4` | 新增只读脚本 `scripts/survey_p54_look.py` + 文档 `docs/p5-4-look-inquiry-survey.zh-CN.md`。结论：463 房间含 `item_desc` / 576 对 = 197 静态字符串（已入 UCL）+ 268 非闭包（222 颜色宏拼接已转 / 37 `@TEXT` 丢失 / 9 表达式丢失）+ 111 闭包（59 纯静态可零代码回填 / 52 条件需 handler）；闭包去重 54 = 31 静态 / 23 条件；73 房间全动态（UCL 无 block）/ 15 混合。实测：`changan paizi` 已入 UCL，`beijing majuan gaoshi`（`@TEXT`）丢失。切片：P5-4c 静态回填（新脚本只读复用 `lpc_converter.py`，P4 只增）；P5-4d 条件 handler（`kind` 映射 + `ItemDescHandlers`，pilot `look_bi`+`gua`） | **2 文件**（脚本 1 + 文档 1）；纯只读勘查，无数据/运行时改动 |
 | 2026-10-19 | **P5-4c（静态 item_desc 回填：闭包 / heredoc）** | 本提交 | 新增 `scripts/backfill_room_item_desc_static.py`（只读复用 `lpc_converter.py`）：把 LPC 中**纯静态**的 `set("item_desc", ...)` 值补回 UCL——① 静态闭包 `(: look_x :)`（单 return / 局部字符串变量）② heredoc `@TEXT`/`@WALL`/`@SHADOWS`（兼容颜色宏包裹）。按带引号 key 位置切分值，避免值内逗号/换行截断；`\`+空白折叠（elias 限制）。P4 只增、幂等。覆盖 **88 房间 / 95 键 / 26 文件**（`xiakedao` 24 间 wall、`death` inn1/inn2、`shaolin` 9 间、`huashan` sgyhole 等）。`validate_ucl.py` 失败集与落盘前逐条一致（仅既有 5 项），写后重跑 dry-run = 0/0 | **脚本 1 + 数据 26 文件 / +261 行 / 0 删除**；未新增校验失败；`mix test` 因本机无 Postgres（别名强制 `ecto.create`）未跑 |
+| 2026-10-19 | **P5-4d（动态 item_desc pilot：`look_bi` + `pic1/2/3` + `gua`）** | 本提交 | 回源 `d/hengyang/inzhushendong.c`：`item_desc` 的 `bi`/`pic1/2/3` 是条件闭包（`!me->query_temp("gua")` 时返回尘土/无物文案），`gua bi` 动作 `set_temp("gua", 1)` 解锁。**UCL 坑**：elias key 不能含数字，`pic1` 不能写成 map key，故新增 `item_desc_dynamic = [ { keyword = "pic1" ... } ]` 数组，loader 按 `keyword` 合并进 `Room.item_desc`；普通关键词仍可用 map 值 `%{kind: ...}`。代码：`Room.item_desc_entry/2` 返回 `{:static, text}` / `{:dynamic, config}`；`LookEvent` 动态分支查 `ItemDescHandlers`（房间级 `(room_id, kind)` 注册表）；新增 `GatedText`（按 `gate_temp` 选 `hidden`/`shown`）与房间动作 `Gua`（busy/fighting/arg 校验、文案、`PlayerMeta.put_temp` + `conn.private.update_character` 持久化）。数据：`hengyang:inzhushendong` +33 行（4 条动态 + `actions = { gua = "do_gua" }`）。校验：`Elias.parse` 正常解析动态数组；`validate_ucl.py data/world/hengyang.ucl` 全绿；`mix compile` 通过；`mix run --no-start` 验证 temp 未设/已设分别输出 hidden/shown | **lib 3 文件改动 + 3 新模块 + 数据 1 文件 / +33 行**；`mix test` 因本机无 Postgres 未跑 |
 
 ---
 

@@ -776,6 +776,39 @@ item_desc = {
   x = 0
   y = 0
   z = 3
+item_desc_dynamic = [
+ {
+  keyword = "bi"
+  kind = "gated_text"
+  gate_temp = "gua"
+  hidden = "尘土已将其掩盖，不知道后面藏有什么。你不禁想将尘土刮去看看后面是什么样的。"
+  shown = "只见山壁上刻有三副巨图。图中人物个持宝剑，与人比武。第一副(pic1)的人物欲退反进，以守为攻。第二副(pic2)的人物手中之剑却突然化为无数把攻向对手。第三副(pic3)更为奇怪，那人物却突然一分为五，分使五种不同招式。你越看越奇怪，忍不住想跟着参悟起来。"
+ },
+ {
+  keyword = "pic1"
+  kind = "gated_text"
+  gate_temp = "gua"
+  hidden = "这里没有你要看的东西。"
+  shown = "图中人物以守为攻，欲退反进，攻其不备。"
+ },
+ {
+  keyword = "pic2"
+  kind = "gated_text"
+  gate_temp = "gua"
+  hidden = "这里没有你要看的东西。"
+  shown = "图中人物千剑齐发，令对手无从招架。"
+ },
+ {
+  keyword = "pic3"
+  kind = "gated_text"
+  gate_temp = "gua"
+  hidden = "这里没有你要看的东西。"
+  shown = "图中人物一分为五，分使五招，但见招招精妙，气压群山。"
+ }
+]
+  actions = {
+    gua = "do_gua"
+  }
     }
 
   room_exits "inzhushendong" {

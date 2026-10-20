@@ -16,6 +16,7 @@
   - 闭包去重后 **54** 个函数：31 静态 / 23 条件。
   - 房间构成：**73** 个房间「全动态」（当前 UCL **完全无** `item_desc` block）/ **15** 个「混合」（UCL 仅写了静态对）。
   - **P5-4c 已执行**：静态回填 **88 房间 / 95 键 / 26 文件**（详见 §3 P5-4c 执行结果）。
+  - **P5-4d pilot 已执行**：`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3` + `gua` 动作（详见 §3 P5-4d 执行结果）。
 
 ### 实测佐证
 - `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
@@ -86,16 +87,40 @@
 
 ### P5-4d：动态 `item_desc` handler（条件闭包）
 
-- **UCL 表示**（与 P5-4a inquiry 的 `kind` 一致）：缺失键写成映射值，例如
+- **UCL 表示**（与 P5-4a inquiry 的 `kind` 一致）：值为映射，`kind` 选择 handler。
+  普通关键词可直接作为 key：
   ```ucl
   item_desc = {
-    bi = { kind = "look_bi" }
+    bi = { kind = "gated_text" gate_temp = "gua" hidden = "..." shown = "..." }
   }
   ```
-- `loader.parse_item_desc/1` 扩展：值为 map 时保留为 `%{kind: ...}`（P7 add-only，不改字符串形态）。
-- **新模块** `lib/kantele/world/item_desc_handlers.ex`（注册表）+ `.../item_desc_handlers/<kind>.ex`（参照 `InquiryHandlers` / `NpcActionHandlers`）。
-- `room/item_desc` 事件：动态条目 → `Handlers.lookup(kind)` → `run(room, character, config)` → render；未注册 → 回「这里没有这个东西。」（安全兜底）。
-- **pilot**：`hengyang:inzhushendong` 的 `look_bi`（依赖 temp `gua`，需同时接 `gua` 动作 / 房间状态）——最能验证「状态 + 文案」全链路。
+  但 elias 的 UCL key **不能含数字**（`pic1` 会被 lex 成 word + digit），因此含数字
+  的关键词（`pic1/2/3`）放到新增的 `item_desc_dynamic` 数组里，用 `keyword` 字段声明：
+  ```ucl
+  item_desc_dynamic = [
+    { keyword = "pic1" kind = "gated_text" gate_temp = "gua" hidden = "..." shown = "..." }
+  ]
+  ```
+- `loader.parse_item_desc/1`：值为 map 时保留配置（键归一为字符串）；新增
+  `parse_item_desc_dynamic/1` 把数组按 `keyword` 合并进 `Room.item_desc`（P7 add-only）。
+- **新模块** `lib/kantele/world/item_desc_handlers.ex`（房间级 `(room_id, kind)` 注册表）
+  + `.../item_desc_handlers/gated_text.ex`（按 `gate_temp` 选 `hidden` / `shown`）。
+- `Room.item_desc_entry/2` 返回 `{:static, text}` / `{:dynamic, config}`；`room/item_desc`
+  事件动态分支查注册表，未注册回「这里没有这个东西。」（安全兜底）。
+- **pilot**：`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3`，由 `gua bi` 动作
+  `set_temp("gua", 1)` 解锁（`Kantele.World.RoomActions.Hengyang.Inzhushendong.Gua`）。
+
+#### P5-4d pilot 执行结果（2026-10-19）
+
+- 数据：`data/world/hengyang.ucl` 的 `inzhushendong` 新增 `item_desc_dynamic`
+  （4 条：`bi` / `pic1` / `pic2` / `pic3`）与 `actions = { gua = "do_gua" }`（+33 行）。
+- 代码：loader 动态条目解析；`Room.item_desc_entry/2` + `LookEvent` 路由；
+  `ItemDescHandlers` + `GatedText`；`Gua` 房间动作（busy/fighting/arg 校验 + 文案 +
+  `PlayerMeta.put_temp` → `conn.private.update_character`）。
+- 校验：`Elias.parse` 正常解析 `item_desc_dynamic`（数组元素为 `keyword` 映射）；
+  `validate_ucl.py data/world/hengyang.ucl` 全绿；`mix compile` 通过；
+  `mix run --no-start` 验证 `GatedText` 在 temp 未设/已设时分别输出 `hidden` / `shown`。
+- 未跑：`mix test`（本机无 Postgres，`test` alias 强制 `ecto.create`）。
 
 ## 4. 约束与风险
 
@@ -110,6 +135,6 @@
 ## 5. 下一步
 
 1. ~~实现 **P5-4c**~~ ✅ 已完成（88 房间 / 95 键；见上）。
-2. 实现 **P5-4d pilot**：`look_bi` + `gua`（`hengyang:inzhushendong`），含 handler 注册表与事件路由。
+2. ~~实现 **P5-4d pilot**~~ ✅ 已完成（`look_bi` + `pic1/2/3` + `gua`，`hengyang:inzhushendong`；见上）。
 3. 逐批处理条件闭包（score → temp → daemon），最后补 9 个表达式值。
 4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。

@@ -213,18 +213,34 @@ defmodule Kantele.World.Room do
   @doc """
   查看房间墙上器物/菜单文本（对应 LPC set("item_desc", ...) 的 look <关键词>）。
 
-  按关键词精确匹配，退化到前缀匹配（LPC 物品 con 名惯例）；找不到返回 nil。
+  按关键词精确匹配，退化到前缀匹配（LPC 物品 con 名惯例）；静态条目返回文本，
+  动态闭包条目返回 nil（由 `item_desc_entry/2` 交给 handler）。
   """
-  def item_desc(room, keyword) when is_binary(keyword) and keyword != "" do
-    case Enum.find(room.item_desc, fn {key, _text} ->
-           key == keyword or String.starts_with?(key, keyword)
-         end) do
-      {_key, text} when is_binary(text) and text != "" -> text <> "\n"
+  def item_desc(room, keyword) do
+    case item_desc_entry(room, keyword) do
+      {:static, text} -> text <> "\n"
       _ -> nil
     end
   end
 
-  def item_desc(_room, _keyword), do: nil
+  @doc """
+  解析 item_desc 条目（P5-4d）。
+
+  - `{:static, text}`：普通文本条目
+  - `{:dynamic, config}`：LPC closure 条目，`config["kind"]` 指定 handler
+  - `nil`：未找到
+  """
+  def item_desc_entry(room, keyword) when is_binary(keyword) and keyword != "" do
+    case Enum.find(room.item_desc, fn {key, _value} ->
+           key == keyword or String.starts_with?(key, keyword)
+         end) do
+      {_key, text} when is_binary(text) and text != "" -> {:static, text}
+      {_key, %{} = config} -> {:dynamic, config}
+      _ -> nil
+    end
+  end
+
+  def item_desc_entry(_room, _keyword), do: nil
 
   @doc "房间内玩家列表（对应 LPC present/1）"
   def present(room) do
@@ -2540,7 +2556,7 @@ defmodule Kantele.World.Room.LookEvent do
       when is_binary(keyword) and keyword != "" do
     requester = Enum.find(context.characters, &(&1.pid == event.from_pid))
 
-    case {requester, Kantele.World.Room.item_desc(context.data, keyword)} do
+    case {requester, Kantele.World.Room.item_desc_entry(context.data, keyword)} do
       {nil, _} ->
         context
 
@@ -2549,8 +2565,23 @@ defmodule Kantele.World.Room.LookEvent do
           text: "这里没有这个东西。\n"
         })
 
-      {_requester, text} ->
-        render(context, event.from_pid, CommandView, "text", %{text: text})
+      {_requester, {:static, text}} ->
+        render(context, event.from_pid, CommandView, "text", %{text: text <> "\n"})
+
+      {requester, {:dynamic, config}} ->
+        case Kantele.World.ItemDescHandlers.lookup(context.data.id, config["kind"]) do
+          {:ok, {module, function}} ->
+            apply(module, function, [
+              context,
+              requester,
+              %{keyword: keyword, room_id: context.data.id, config: config}
+            ])
+
+          {:unimplemented, _kind} ->
+            render(context, event.from_pid, CommandView, "text", %{
+              text: "这里没有这个东西。\n"
+            })
+        end
     end
   end
 

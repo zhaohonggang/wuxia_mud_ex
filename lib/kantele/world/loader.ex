@@ -337,7 +337,11 @@ defmodule Kantele.World.Loader do
       z: room_data.z,
       flags: parse_flags(Map.get(room_data, :flags)),
       features: parse_features(room_data, zone_data),
-      item_desc: parse_item_desc(Map.get(room_data, :item_desc)),
+      item_desc:
+        Map.merge(
+          parse_item_desc(Map.get(room_data, :item_desc)),
+          parse_item_desc_dynamic(Map.get(room_data, :item_desc_dynamic))
+        ),
       exit_vetoes: parse_room_vetoes(Map.get(room_data, :valid_leave)),
       behavior: Map.get(room_data, :behavior),
       behavior_config: parse_behavior_config(Map.get(room_data, :behavior_config)),
@@ -393,11 +397,60 @@ defmodule Kantele.World.Loader do
 
   defp parse_item_desc(item_desc) when is_map(item_desc) do
     Enum.reduce(item_desc, %{}, fn {key, value}, acc ->
-      Map.put(acc, keyword_to_string(key), to_string(value))
+      Map.put(acc, keyword_to_string(key), parse_item_desc_value(value))
     end)
   end
 
   defp parse_item_desc(_), do: %{}
+
+  # P5-4d: `item_desc_dynamic` 用数组承载含数字的关键词（如 `pic1`）。
+  # elias 的 UCL key 不能含数字（word + digit），故不能写成 map key。
+  defp parse_item_desc_dynamic(nil), do: %{}
+
+  defp parse_item_desc_dynamic(entries) when is_list(entries) do
+    Enum.reduce(entries, %{}, fn entry, acc ->
+      with %{} <- entry,
+           keyword when is_binary(keyword) and keyword != "" <-
+             Map.get(entry, :keyword) || Map.get(entry, "keyword") do
+        config =
+          entry
+          |> Map.delete(:keyword)
+          |> Map.delete("keyword")
+
+        Map.put(acc, keyword, parse_item_desc_value(config))
+      else
+        _ -> acc
+      end
+    end)
+  end
+
+  defp parse_item_desc_dynamic(_), do: %{}
+
+  # P5-4d: 动态 item_desc（LPC closure，如 `(: look_bi :)`）以 map 保留配置；
+  # 纯文本仍为字符串，保持已回填数据与 P7 兼容。
+  defp parse_item_desc_value(%{} = value) do
+    Map.new(value, fn {key, val} ->
+      {keyword_to_string(key), normalize_item_desc_value(val)}
+    end)
+  end
+
+  defp parse_item_desc_value(value), do: to_string(value)
+
+  defp normalize_item_desc_value(value) when is_binary(value), do: value
+
+  defp normalize_item_desc_value(value) when is_atom(value) and not is_nil(value),
+    do: to_string(value)
+
+  defp normalize_item_desc_value(value) when is_list(value),
+    do: Enum.map(value, &normalize_item_desc_value/1)
+
+  defp normalize_item_desc_value(%{} = value) do
+    Map.new(value, fn {key, val} ->
+      {keyword_to_string(key), normalize_item_desc_value(val)}
+    end)
+  end
+
+  defp normalize_item_desc_value(value), do: value
 
   # 出口阻挡兜底消息（LPC valid_leave 的 notify_fail）：结构化保留，不做数据驱动拦截
   defp parse_room_vetoes(nil), do: []

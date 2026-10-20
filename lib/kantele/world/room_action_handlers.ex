@@ -108,6 +108,10 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "wudu:minju10" => %{
       "do_move" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
+    # 状态变更：刮去山壁尘土（set_temp("gua")）解锁 look bi/pic1..3
+    "hengyang:inzhushendong" => %{
+      "do_gua" => {Kantele.World.RoomActions.Hengyang.Inzhushendong.Gua, :run}
     }
   }
 
