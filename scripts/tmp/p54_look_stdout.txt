@@ -1,0 +1,73 @@
+﻿=== P5-4 动态 item_desc 勘查 ===
+含 item_desc 的房间文件: 463
+item_desc 键值对: 576（静态字符串 197 / 闭包 111 / 动态表达式 268）
+非闭包动态值细分: {'macro_concat': 222, 'text_macro': 37, 'expr': 9}
+动态整表（非 mapping 字面量）文件: 0
+去重闭包函数: 54（未定位函数体: 0）
+闭包分类（函数级）: 纯静态 return 31 / 条件分支 23
+闭包分类（键值对级）: 纯静态 59 / 条件 52
+闭包房间构成: 全动态(无 UCL block) 73 / 混合 15
+纯静态闭包函数: look_bei, look_bell, look_bian, look_dazi, look_ditu, look_drum, look_dui, look_duilian, look_duizi, look_floor, look_fu, look_gate, look_ge, look_hongshui, look_jiebei, look_map, look_out, look_pai, look_picture, look_poem, look_pool, look_shibei, look_stone, look_sword, look_ta, look_tower, look_wall, look_writing, look_xiang, look_zi, show_hua
+
+Top 20 闭包函数:
+  look_gaoshi            17  (17 文件)
+  look_duilian           10  (10 文件)
+  look_bi                 6  (6 文件)
+  look_table              4  (4 文件)
+  look_scoreboard         4  (4 文件)
+  look_stone              4  (4 文件)
+  look_gate               3  (3 文件)
+  look_wall               3  (3 文件)
+  look_bei                3  (3 文件)
+  look_ge                 3  (1 文件)
+  look_bian               3  (3 文件)
+  look_hua                2  (2 文件)
+  look_shibei             2  (2 文件)
+  look_dui                2  (2 文件)
+  look_pai                2  (2 文件)
+  look_tower              2  (2 文件)
+  look_out                2  (2 文件)
+  look_jing               2  (1 文件)
+  look_xiang              2  (1 文件)
+  look_tiaofu             1  (1 文件)
+
+Top 15 关键词:
+  paizi              52
+  wall               42
+  gaoshi             21
+  yunti              17
+  window             16
+  dong               12
+  stone              12
+  table              11
+  teng               11
+  duilian            10
+  gate               10
+  desk               10
+  bi                  9
+  bian                8
+  men                 7
+
+按 zone（房间数）:
+  xiakedao           41
+  city               31
+  hangzhou           27
+  huashan            27
+  death              24
+  shaolin            22
+  hengyang           19
+  beijing            13
+  changan            13
+  gumu               12
+  shenfeng           11
+  lingxiao           10
+  quanzhen           10
+  tiezhang           10
+  wudu               10
+  heimuya             9
+  jueqing             9
+  mingjiao            8
+  suzhou              8
+  xiyu                8
+
+完整结果 → C:\files\git\wuxia_mud_ex\scripts\tmp\p54_look_survey.json

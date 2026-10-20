@@ -1,0 +1,105 @@
+# P5-4（look / inquiry）勘查与切片计划
+
+> 日期：2026-10-19　分支：`kalevala`
+> 勘查脚本：`scripts/survey_p54_look.py`（只读、可重跑）
+> 产物：`scripts/tmp/p54_look_survey.json`（逐房间明细 + 闭包函数体 + 分类）、`scripts/tmp/p54_look_stdout.txt`
+> 源语料：`C:/files/git/mud`（LPC 权威，只读）
+
+## 0. 结论速览
+
+- **inquiry（ask）**：P5-4a 已落地库存型 `give_item`（13 条），P5-4b 已加闭包字面量兜底（`(: ask_x :)` 不再回显原文）。余下 86 个 `ask_*` 函数 / 662 处闭包占位待逐批实现。
+- **look（`set("item_desc", ...)`）**：
+  - 463 个房间文件含 `item_desc`，共 **576** 个键值对。
+  - 197 个静态字符串（已由转换器写入 UCL）。
+  - 268 个非闭包表达式值：**222** 颜色宏拼接（已转换）、**37** `@TEXT` 多行宏（**丢失**）、**9** 其它表达式（**丢失**）。
+  - 111 个闭包值：**59 对纯静态 return（可零代码回填）** / **52 对条件分支（需运行时 handler）**。
+  - 闭包去重后 **54** 个函数：31 静态 / 23 条件。
+  - 房间构成：**73** 个房间「全动态」（当前 UCL **完全无** `item_desc` block）/ **15** 个「混合」（UCL 仅写了静态对）。
+
+### 实测佐证
+- `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
+- `beijing/majuan.c` 的 `gaoshi`（`@TEXT ... TEXT`）→ `data/world/beijing.ucl` 的 `majuan` 房间**无** `item_desc`，证明 `text_macro` 类被丢弃。
+
+## 1. 现有链路（为什么动态值不生效）
+
+| 环节 | 位置 | 行为 |
+|------|------|------|
+| 转换器（Elixir，已冻结） | `lib/kantele/world/lpc_converter.ex` `generate_room_item_desc/1` | 只保留 `{:string}` / `{:array, string}`；闭包、`@TEXT`、表达式 → `item_desc_text(_) -> ""` → **整条丢弃** |
+| Python 端口（只读复用） | `scripts/lpc_converter.py` `_parse_lpc_value/1`、`_item_desc_text/1` | 闭包 `(: look_x :)` → `("var", ...)`；`_item_desc_text` 返回 `""` |
+| 载入 | `lib/kantele/world/loader.ex` `parse_item_desc/1` | `keyword -> to_string(value)`（只认字符串） |
+| 运行时 | `lib/kantele/world/room.ex` `item_desc/2` | key 精确/前缀匹配，返回 `text <> "\n"` |
+| 命令 | `look <kw>` → `room/item_desc` 事件 → `Room.call/2` | 命中回显；未命中回「这里没有这个东西。」 |
+
+因此：**静态字符串 `item_desc` 已生效；闭包/`@TEXT`/表达式完全缺失。**
+
+## 2. 分类明细
+
+### 2.1 可静态回填（P5-4c，零运行时改动）
+
+**31 个纯静态闭包**（函数体为纯字符串 return）：
+
+`look_bei, look_bell, look_bian, look_dazi, look_ditu, look_drum, look_dui, look_duilian, look_duizi, look_floor, look_fu, look_gate, look_ge, look_hongshui, look_jiebei, look_map, look_out, look_pai, look_picture, look_poem, look_pool, look_shibei, look_stone, look_sword, look_ta, look_tower, look_wall, look_writing, look_xiang, look_zi, show_hua`
+
+（来源示例：`city/shan.c` duilian、`gaochang/zoulange.c` wall、`huashan/jianzhong.c` stone、`mingjiao/mjdimen1.c` pai、`emei/bgsgate.c` gate、`shaolin/beilin1.c` tower、`shaolin/gulou7.c` out/drum、`emei/qingyinge.c` shibei、`wudang/nanyangong.c` xiang。注：`closure_bodies` 的 `file` 为全库首次命中，同名函数可能有多处定义。）
+
+**37 个 `@TEXT ... TEXT`** 值同为字面文本，可一并静态抽取。
+
+高频关键词（全量 576 对）：`paizi 52 / wall 42 / gaoshi 21 / yunti 17 / window 16 / dong 12 / stone 12 / table 11 / teng 11 / duilian 10 / gate 10 / desk 10 / bi 9 / bian 8 / men 7`。
+
+### 2.2 需运行时 handler（P5-4d）
+
+**23 个条件闭包**（按依赖归类）：
+
+| 依赖 | 函数 | 源（首次命中） |
+|------|------|----------------|
+| `score` 门控 | `look_jing`, `look_hua`, `show_hua` | `shaolin/putiyuan.c`, `beijing/aofu_shufang.c`, `hengyang/baihuzhai.c` |
+| 房间/玩家 temp | `look_bi`(gua), `look_table`(pigging_seat), `look_men`(另一房间 temp), `look_net`(marks/拉), `look_desk`, `look_hole`, `look_kong`, `look_fen`, `look_liang` | `hengyang/inzhushendong.c` 等 |
+| 外部 daemon / helper | `look_gaoshi`, `look_scoreboard`, `look_tiaofu`, `look_board` | `chengdu/eastgate.c`, `city/eproom.c`, `city/leitai.c`, `inherit/room/chatroom.c` |
+| 物品/其它 | `look_pet`, `look_pic1/2/3`, `look_door`, `look_sword2/3`, `call_killer` | `xiyu/houdong.c`, `hengyang/inzhushendong.c` 等 |
+
+另有 **9** 个其它表达式值（变量/调用），需逐个确认。
+
+## 3. 切片方案
+
+### P5-4c：静态 `item_desc` 回填（推荐先做）
+
+- **新脚本** `scripts/backfill_room_item_desc_static.py`（P3：新逻辑放新脚本）。
+- **只读复用** `scripts/lpc_converter.py` 的 `_parse_mapping_pairs` / `_parse_lpc_value` / `_item_desc_text` / `_escape_set_string` / `_normalize_item_keyword`（P1 只禁编辑，不禁 import）。
+- 对每个房间：
+  1. 解析 `set("item_desc", ([ ... ]))`；
+  2. 闭包值：取 `(: fn :)`，在**同文件**（后续再扩继承链）找函数体；仅当「纯静态 return / 局部字符串变量赋值 + return」时抽取文本；
+  3. `@TEXT` 值：按字面多行文本抽取；
+  4. 颜色宏统一按 `_process_literal_string` 剥离，与现有 UCL 口径一致。
+- **数据写入**：P4 只增——仅补缺失的 `item_desc = { ... }` block 或缺失键，**不动已有行**、不重排。幂等可重跑。
+- 流程：dry-run 统计 → 备份 → 写 UCL → `scripts/validate_ucl.py` → 目标区 `mix test`。
+- 预期覆盖：约 **96+ 对**（59 静态闭包 + 37 `@TEXT`），涉及约 73 个全动态房间的大部分。
+
+### P5-4d：动态 `item_desc` handler（条件闭包）
+
+- **UCL 表示**（与 P5-4a inquiry 的 `kind` 一致）：缺失键写成映射值，例如
+  ```ucl
+  item_desc = {
+    bi = { kind = "look_bi" }
+  }
+  ```
+- `loader.parse_item_desc/1` 扩展：值为 map 时保留为 `%{kind: ...}`（P7 add-only，不改字符串形态）。
+- **新模块** `lib/kantele/world/item_desc_handlers.ex`（注册表）+ `.../item_desc_handlers/<kind>.ex`（参照 `InquiryHandlers` / `NpcActionHandlers`）。
+- `room/item_desc` 事件：动态条目 → `Handlers.lookup(kind)` → `run(room, character, config)` → render；未注册 → 回「这里没有这个东西。」（安全兜底）。
+- **pilot**：`hengyang:inzhushendong` 的 `look_bi`（依赖 temp `gua`，需同时接 `gua` 动作 / 房间状态）——最能验证「状态 + 文案」全链路。
+
+## 4. 约束与风险
+
+- **P1**：不得改 `scripts/lpc_converter.py`、`lib/kantele/world/lpc_converter.ex`、`lib/mix/tasks/kantele.convert_lpc.ex`；P5-4c 仅 import 只读。
+- **P2/P4**：不得用 `convert_file` 重写 UCL；只增、幂等，不删 `.comments.txt`。
+- **颜色宏**：现有 UCL `item_desc` 已剥离颜色；P5-4c 必须保持一致，避免同一房间两种风格。
+- **`@TEXT`**：Elixir converter 口径未证实（实测被丢弃）；P5-4c 自行按字面抽取，不依赖 converter。
+- **关键词**：UCL 键必须是标识符（`_normalize_item_keyword`；CJK key 归一为空 → 跳过）。
+- **同名函数**：`look_*` 跨房间/继承可能多定义；P5-4c 先只处理同文件定义，继承链单独记账。
+- **P7**：room/数据结构只增字段，不改既有语义。
+
+## 5. 下一步
+
+1. 实现 **P5-4c**：先 `hengyang` / `shaolin` 两区试跑，diff 抽查后全量；提交「静态 item_desc 回填」。
+2. 实现 **P5-4d pilot**：`look_bi` + `gua`（`hengyang:inzhushendong`），含 handler 注册表与事件路由。
+3. 逐批处理条件闭包（score → temp → daemon），最后补 9 个表达式值。
+4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。
