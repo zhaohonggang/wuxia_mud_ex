@@ -76,12 +76,15 @@ defmodule Kantele.World.RoomActionHandlersTest do
                  "gumu:taiyi2",
                  "hangzhou:liuzhuang",
                  "hengyang:furong1",
+                 "hengyang:inzhushendong",
+                 "hengyang:zigaihole",
                  "huanggong:inwell",
                  "huashan:lianhua",
                  "lingxiao:juegu",
                  "mingjiao:gudi3",
                  "mingjiao:tohsq3",
                  "register:prison",
+                 "shaolin:putiyuan",
                  "wudu:dijiao",
                  "wudu:minju10",
                  "wudu:minju7",
@@ -109,6 +112,9 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert RoomActionHandlers.registered?("mingjiao:tohsq3", "do_jump")
       assert RoomActionHandlers.registered?("wudu:dijiao", "do_move")
       assert RoomActionHandlers.registered?("wudu:minju10", "do_move")
+      # P5-4h：首个覆盖全局命令（get）的移植，另一 verb 为新增
+      assert RoomActionHandlers.registered?("shaolin:putiyuan", "do_get")
+      assert RoomActionHandlers.registered?("shaolin:putiyuan", "do_xian")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
       # do_climb 只在 hengyang:furong1 与 gumu:taiyi2 移植

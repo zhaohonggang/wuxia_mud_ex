@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 #
 # If you're looking to update variables, you probably want to:
@@ -7,12 +7,17 @@ use Mix.Config
 #
 
 # Configure your database
-# 固定连测试库（Repo.init 会优先采用这里设置的 url）。
-# 注意：不要读 DATABASE_URL 环境变量——容器/compose 里该变量指向 dev 库，
-# 读了会让测试误连开发库
+# 权威运行环境是容器（见 AGENTS.md），Windows 原生只是辅助。
+# 默认值给宿主机用：compose 把 db 的 5432 映射到宿主 15432。
+# 容器内**没有** localhost:15432，所以在容器里跑测试必须显式传 TEST_DATABASE_URL：
+#   docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test \
+#     -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test app mix test
+# 注意：**不要**读 DATABASE_URL —— compose 里它指向 dev 库，读了会让测试误连开发库。
 config :ex_venture, ExVenture.Repo,
   pool: Ecto.Adapters.SQL.Sandbox,
-  url: "postgresql://postgres:postgres@localhost:15432/ex_venture_test"
+  url:
+    System.get_env("TEST_DATABASE_URL") ||
+      "postgresql://postgres:postgres@localhost:15432/ex_venture_test"
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.

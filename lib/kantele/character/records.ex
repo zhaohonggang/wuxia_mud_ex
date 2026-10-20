@@ -136,6 +136,13 @@ defmodule Kantele.Character.Records do
 
   @doc """
   保存玩家属性（仅 PlayerMeta 生效；失败只记日志，绝不影响游戏进程）
+
+  这里的「失败」包含两类，缺一不可：
+
+    * **异常**（`rescue`）—— 如 `DBConnection.OwnershipError`（测试沙盒没签出连接）
+    * **进程退出**（`catch :exit`）—— 连接池取用失败是 exit 而不是 raise：
+      `DBConnection.Holder.checkout/3` 会抛 `{:shutdown, "owner <pid> exited"}`、
+      `:timeout` 等
   """
   def save(%{meta: %Kantele.Character.PlayerMeta{}, name: name} = character) do
     meta = character.meta
@@ -200,6 +207,14 @@ defmodule Kantele.Character.Records do
           Logger.error("Failed to save character metadata - #{inspect(error)}")
           :error
       end
+  catch
+    # 连接池的取用失败是 **exit**（`DBConnection.Holder.checkout` 抛
+    # `{:shutdown, "owner <pid> exited"}` / `:timeout`），`rescue` 抓不到。
+    # 不在这里兜住，一次落库失败就会把角色进程打死，与本函数承诺的
+    # 「失败只记日志，绝不影响游戏进程」相反。
+    :exit, reason ->
+      Logger.error("Failed to save character metadata - exit: #{inspect(reason)}")
+      :error
   end
 
   def save(_character), do: :error

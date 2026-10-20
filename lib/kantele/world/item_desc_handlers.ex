@@ -22,7 +22,8 @@ defmodule Kantele.World.ItemDescHandlers do
       "gated_text" => {Kantele.World.ItemDescHandlers.GatedText, :run}
     },
     "shaolin:putiyuan" => %{
-      "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run}
+      "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run},
+      "room_state_tiers" => {Kantele.World.ItemDescHandlers.RoomStateTiers, :run}
     },
     "beijing:aofu_shufang" => %{
       "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run}

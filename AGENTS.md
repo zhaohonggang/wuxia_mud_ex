@@ -58,8 +58,13 @@ mix compile
 docker compose -f docker-compose.dev.yml run --rm app sh
 
 # 一次性容器跑测试：app 容器若在跑 phx.server（PID1），docker exec 会因 4000/4646
-# 端口占用报 eaddrinuse，故用一次性容器（复用镜像/挂载/db，不发布端口）：
-docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test app mix test
+# 端口占用报 eaddrinuse，故用一次性容器（复用镜像/挂载/db，不发布端口）。
+# ⚠️ 必须显式传 TEST_DATABASE_URL：config/test.exs 的默认值
+# `localhost:15432` 是**宿主机**的映射端口，容器内那个地址是空的。
+docker compose -f docker-compose.dev.yml run --rm \
+  -e MIX_ENV=test \
+  -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test \
+  app mix test
 
 # 安装依赖 / 编译
 mix deps.get && mix compile
@@ -70,25 +75,43 @@ mix format --check-formatted
 # Lint（CI）
 mix credo --all --format=oneline
 
-# 全量测试（需 Postgres）
-MIX_ENV=test mix test
+# 全量测试 / 单文件 / 指定 seed —— 一律在容器内跑（容器是权威环境）
+# 把最后一个参数换成测试文件路径或 --seed 即可：
+#   ... app mix test test/kantele/world/mirror_daemon_test.exs
+#   ... app mix test --seed 731933
+docker compose -f docker-compose.dev.yml run --rm \
+  -e MIX_ENV=test \
+  -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test \
+  app mix test
 
-# 单个测试文件
-MIX_ENV=test mix test test/kantele/world/mirror_daemon_test.exs
-
-# 指定 seed 复现 flaky
-MIX_ENV=test mix test --seed 731933
-
-# [Windows 辅助] 进入与 Docker 对齐的本地 shell（Elixir 1.13.4 / OTP 25）
-# 进入后：set MIX_ENV=test && mix test <显式文件路径>
+# [Windows 辅助，非权威] 只在不想起容器时做单文件冒烟。
+# 注意：宿主 `_build_win13` 与容器 `_build` 不通用；两者结果不一致时以容器为准。
 win_toolchain.cmd
+# 进入后：set MIX_ENV=test && mix test <显式文件路径>
 ```
 
 ## Test Conventions
 
 - **Test helper**: `test/support/test_helpers.ex` — `build_conn/1`, `build_character/1`, `player/0`
 - **ConnCase/ChannelCase/DataCase** in `test/support/`
+- **Fake rooms must not squat production `:global` names** (see R16): `Room.npc_characters_by_id/1`
+  resolves `{:global, {Kalevala.World.Room, room_id}}`, and real world loads register the *same*
+  ids. `:global.register_name/3` returns `:no` **silently** when the name is taken (the resolver
+  is never called), so a fixture that ignores the return value will read someone else's process
+  and fail later as a bare `assert_receive` timeout. Rules: (1) prefer a unique id
+  (`"ytest:#{System.unique_integer([:positive])}"`); (2) when the id is hardcoded in the module
+  under test, `unregister_name` the old holder first and restore it in `on_exit`; (3) always
+  `register_name/2` + assert `:yes`.
 - **Flaky tests**: Use `--seed 731933` (CI seed) to reproduce
+- **Sandbox handover window** (see R17): the three Case templates put the SQL sandbox into
+  `{:shared, self()}` for `async: false` tests — a **global** mode. When the owning test process
+  exits, the manager only reverts to `:manual` after it handles the `DOWN`; in that window the
+  next bare `ExUnit.Case` test can borrow the *dead* owner's connection and get
+  `** (EXIT) shutdown: "owner <pid> exited"` (an exit, so `rescue` cannot catch it). Both sides are
+  guarded now: `on_exit` resets the mode synchronously, and `Records.save/1` has `catch :exit`.
+  Do not remove either. Regression guard: `test/kantele/db_sandbox_handover_test.exs`.
+- **`Records.save/1` never raises/exits**: it returns `:ok | :error`. Tests that never check out a
+  connection (48 files, ~134 call sites) rely on it swallowing `DBConnection.OwnershipError`.
 - **Key test files** (from README):
   - `test/kantele/quest/chain_walk_test.exs` — quest chains
   - `test/kantele/world/signature_npc_test.exs` — signature NPCs
@@ -174,8 +197,8 @@ This ensures future passes can complete the conversion without re-reading LPC.
 
 1. Edit code in `lib/kantele/`
 2. `mix format && mix credo` (pre-commit)
-3. `MIX_ENV=test mix test test/kantele/...` (targeted)
-4. Full suite: `MIX_ENV=test mix test --seed 731933`
+3. Targeted test in container: `docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test app mix test test/kantele/...`
+4. Full suite: same command, add `--seed 731933`
 5. **Pre-commit check**: Before committing modified tracked files, compare with `git show HEAD:<file>` — if the new version loses significant info or is noticeably smaller, **do not commit**; investigate or report to user
 6. Commit by sect/family (not per-skill): `git commit -m "Shaolin: implement damo-jian performs"`
 
@@ -229,5 +252,6 @@ Get-Process beam.smp -ErrorAction SilentlyContinue | Stop-Process -Force
 ## References
 
 - `README.md` — full architecture, test guide, UCL examples
+- `docs/dev-test-config.zh-CN.md` — dev / test 配置总表（每个开关的取值 + `文件:行`，改端口/换库/查开关先看它）
 - `lpc_example/ex/MIGRATION_PLAN.md` — skill migration phases (Q1-Q6 done)
 - `scripts/migration/` — batch tools for skill migration

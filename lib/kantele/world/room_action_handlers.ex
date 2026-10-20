@@ -27,12 +27,16 @@ defmodule Kantele.World.RoomActionHandlers do
   handler 被真正移植并注册后，该房间的该动作才被拦截激活。
   """
   # 房间级注册表：room_id -> (handler_name -> {module, function})。
-  # 已注册的动词均**不在全局命令表**、激活后不影响任何全局命令：
+  # 绝大多数已注册动词**不在全局命令表**，激活后不影响任何全局命令：
   #   - huashan:lianhua do_tiao：纯 write 文本（专用模块 Tiao）
   #   - emei:shierpan3 do_clap：message_vision 房间广播（专用模块 Clap）
   #   - hangzhou:liuzhuang do_knock / huanggong:inwell do_reach：纯消息/分支
   #     （数据驱动 MessageOnly，见 room_actions/message_only.ex）
   #   - baituo:neishi do_move：状态变更（开/关 down 密道）专用模块 Move
+  #
+  # **唯一例外**是 shaolin:putiyuan 的 do_get（P5-4h）：`get` 是核心全局命令，
+  # 该 handler 必须把「不认识的输入」全部 `:not_handled` 放行（LPC 原文三处
+  # `return 0`），只接管 `book/jing from|in hole`。改动它时务必保住这个契约。
   @registry %{
     "huashan:lianhua" => %{
       "do_tiao" => {Kantele.World.RoomActions.Huashan.Lianhua.Tiao, :run}
@@ -116,6 +120,13 @@ defmodule Kantele.World.RoomActionHandlers do
     # 状态变更：刮去山壁尘土（set_temp("gua")）解锁 look bi/pic1..3
     "hengyang:inzhushendong" => %{
       "do_gua" => {Kantele.World.RoomActions.Hengyang.Inzhushendong.Gua, :run}
+    },
+    # 首个**覆盖全局命令**的移植：do_get 只在 `book/jing from|in hole` 且洞已开时
+    # 接管，其余输入一律 `:not_handled` 交回全局 GetCommand（LPC 的三处 `return 0`）。
+    # do_xian 不在全局命令表，纯新增。详见 P5-4h（菩提院取易筋经）。
+    "shaolin:putiyuan" => %{
+      "do_get" => {Kantele.World.RoomActions.Shaolin.Putiyuan.Get, :run},
+      "do_xian" => {Kantele.World.RoomActions.Shaolin.Putiyuan.Xian, :run}
     }
   }
 

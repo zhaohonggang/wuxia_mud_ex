@@ -20,14 +20,42 @@ defmodule Kantele.World.NpcActions.KneelTest do
 
     @impl true
     def init(state), do: {:ok, state}
+
+    # 真实世界加载（`Kickoff.start_room/1`）发现全局名已被占用时，不会另起房间，
+    # 而是给**当前持有者**发 `{:update, room}` / `{:update_items, items}`。夹具房间
+    # 不是真的 `Kalevala.World.Room`，默认实现会让它崩掉并连带杀死测试进程。
+    # 这里静默吞掉：夹具的房间快照由用例自己决定，不接受外部覆盖。
+    @impl true
+    def handle_call({:update, _room}, _from, state), do: {:reply, :ok, state}
+    def handle_call({:update_items, _items}, _from, state), do: {:reply, :ok, state}
   end
 
+  # 假房间必须挂在**生产常量** `hangzhou:liuhe9` 上：`Kneel.run/2` 用 `@room_id` 校验，
+  # `chen_attacks/2` 也按该 id 读房间快照，换不了唯一 id。
+  #
+  # 代价是这个全局名可能与真实房间撞车（真实世界加载会给同一 id 注册房间）。而
+  # `:global.register_name/3` 在名字被占用时**静默返回 `:no`**、resolver 根本不会被
+  # 调用（实测 OTP 29）—— 旧写法忽略返回值，测试于是读到真实房间：里面没有测试的
+  # `player-1`，`NpcAttack.kill_ob` 直接跳过，用例以「assert_receive 超时 + mailbox
+  # 为空」失败，看不出真因。这里改成「先摘下旧名 → 注册夹具 → 用例结束把旧名还回去」。
   defp register_room(room_id, characters) do
     state = %{private: %{characters: characters, item_instances: []}}
     {:ok, pid} = FakeRoom.start_link(state)
-    :global.register_name({Kalevala.World.Room, room_id}, pid, fn _n, _p, _r -> :yes end)
+    name = {Kalevala.World.Room, room_id}
 
-    on_exit(fn -> :global.unregister_name({Kalevala.World.Room, room_id}) end)
+    previous = :global.whereis_name(name)
+    if is_pid(previous), do: :global.unregister_name(name)
+
+    :yes = :global.register_name(name, pid)
+
+    on_exit(fn ->
+      :global.unregister_name(name)
+
+      if is_pid(previous) and Process.alive?(previous) do
+        :global.register_name(name, previous)
+      end
+    end)
+
     pid
   end
 

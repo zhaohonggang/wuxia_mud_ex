@@ -19,8 +19,9 @@ defmodule Kantele.World.NpcActions.YitianTest do
   alias Kantele.World.NpcActionHandlers
   alias Kantele.World.NpcActions.Yitian
 
-  @was_lou4 "tulong:was_lou4"
-  @jiulou "tulong:jiulou"
+  # 注册表里的**真实**房间 id：只用于「注册表命中」断言，不注册任何房间进程。
+  @real_was_lou4 "tulong:was_lou4"
+  @real_jiulou "tulong:jiulou"
 
   # ---- 假房间 ----
 
@@ -33,14 +34,42 @@ defmodule Kantele.World.NpcActions.YitianTest do
     def init(state), do: {:ok, state}
   end
 
+  # 每个用例一组**唯一**房间 id（见下方 `was_lou4/0` 的说明）。夹具房间绝不能
+  # 挂在真实房间 id 上：生产代码（Kickoff / 真实房间）同样会注册
+  # `{:global, {Kalevala.World.Room, "tulong:was_lou4"}}`，谁先注册谁赢。
+  setup do
+    Process.put(:was_lou4, "ytest:#{System.unique_integer([:positive])}")
+    Process.put(:jiulou, "ytest-jl:#{System.unique_integer([:positive])}")
+    :ok
+  end
+
   defp register_room(room_id, characters, items \\ []) do
     state = %{private: %{characters: characters, item_instances: items}}
     {:ok, pid} = FakeRoom.start_link(state)
-    :global.register_name({Kalevala.World.Room, room_id}, pid, fn _n, _p, _r -> :yes end)
+    name = {Kalevala.World.Room, room_id}
 
-    on_exit(fn -> :global.unregister_name({Kalevala.World.Room, room_id}) end)
+    # `:global.register_name/3` 在名字已被占用时**静默返回 `:no`**（resolver 根本不会
+    # 被调用，实测 OTP 29）。旧写法忽略返回值，于是测试会安安静静读到别人的进程、
+    # 最后以「assert_receive 超时 + mailbox 为空」的形式失败 —— 完全看不出真因。
+    # 用 `register_name/2` + 断言，把这类串扰变成一句能看懂的失败。
+    :yes = :global.register_name(name, pid)
+
+    on_exit(fn -> :global.unregister_name(name) end)
     pid
   end
+
+  # 本用例的假房间 id（`setup` 里按用例唯一生成）。
+  #
+  # 为什么不用真实的 `tulong:was_lou4` / `tulong:jiulou`：`Room.npc_characters_by_id/1`
+  # 只按 `:global` 名字找进程，而真实世界加载（`Kickoff.apply_world/3`）会给**同一批
+  # id** 注册真实房间。两者撞名时 `:global.register_name` 静默失败，测试读到真实房间
+  # （4~6 个真 NPC、带真实 pid），`NpcAttack.kill_ob` 于是把事件发给了真实 NPC 进程，
+  # 用例收不到 `combat/start` / `yitian/begin`，表现为随机 `assert_receive` 超时。
+  #
+  # `Yitian.run/2` 只用 `room_id` 读房间快照与拼频道名，不校验它属于哪个区，
+  # 因此换成唯一 id 对被测逻辑零影响；真实 id 只在「注册表命中」用例里用。
+  defp was_lou4, do: Process.get(:was_lou4)
+  defp jiulou, do: Process.get(:jiulou)
 
   # ---- 角色构造 ----
 
@@ -48,7 +77,7 @@ defmodule Kantele.World.NpcActions.YitianTest do
     %Kalevala.Character{
       id: id,
       name: name,
-      room_id: @was_lou4,
+      room_id: was_lou4(),
       status: Keyword.get(opts, :status),
       meta: %Kantele.Character.NonPlayerMeta{
         aliases: aliases,
@@ -75,7 +104,7 @@ defmodule Kantele.World.NpcActions.YitianTest do
     %Kalevala.Character{
       id: "player-1",
       name: "玩家",
-      room_id: Keyword.get(opts, :room_id, @was_lou4),
+      room_id: Keyword.get(opts, :room_id, was_lou4()),
       meta: %PlayerMeta{
         temp: temp,
         combat: %Combat{equipped: if(weapon, do: %{weapon: weapon}, else: %{})}
@@ -128,42 +157,46 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
   describe "run/2（分发）" do
     test "无房间进程 → :not_handled（放行全局）" do
-      assert :not_handled = Yitian.run(conn(player()), params(@was_lou4))
+      assert :not_handled = Yitian.run(conn(player()), params(was_lou4()))
     end
 
     test "非 bi 动词 → :not_handled" do
-      with_room(@was_lou4, full_cast())
-      assert :not_handled = Yitian.run(conn(player()), %{params(@was_lou4) | verb: "get"})
+      with_room(was_lou4(), full_cast())
+      assert :not_handled = Yitian.run(conn(player()), %{params(was_lou4()) | verb: "get"})
     end
 
     test "注册表：was_lou4 与 jiulou 的 bi 命中 Yitian" do
-      assert {:ok, {Kantele.World.NpcActions.Yitian, :run}} = NpcActionHandlers.lookup(@was_lou4, "bi")
-      assert {:ok, {Kantele.World.NpcActions.Yitian, :run}} = NpcActionHandlers.lookup(@jiulou, "bi")
-      assert @was_lou4 in NpcActionHandlers.registered_rooms()
+      assert {:ok, {Kantele.World.NpcActions.Yitian, :run}} =
+               NpcActionHandlers.lookup(@real_was_lou4, "bi")
+
+      assert {:ok, {Kantele.World.NpcActions.Yitian, :run}} =
+               NpcActionHandlers.lookup(@real_jiulou, "bi")
+
+      assert @real_was_lou4 in NpcActionHandlers.registered_rooms()
     end
   end
 
   describe "何太冲（第一关，无标记守卫，必须剑类兵器）" do
     test "无兵器：广播「只能和你比剑」+ 私聊拒绝" do
-      with_room(@was_lou4, full_cast())
-      conn2 = Yitian.run(conn(player()), params(@was_lou4))
+      with_room(was_lou4(), full_cast())
+      conn2 = Yitian.run(conn(player()), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "何太冲说道：我内力全失，现在只能和你比剑！"))
       assert String.contains?(out_text(conn2), "看起来何太冲并不想跟你较量。")
     end
 
     test "非剑兵器（钢刀）同样拒绝" do
-      with_room(@was_lou4, full_cast())
+      with_room(was_lou4(), full_cast())
       p = player(weapon: blade_weapon())
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert String.contains?(out_text(conn2), "看起来何太冲并不想跟你较量。")
     end
 
     test "持剑：广播进招 + 两仪剑文案，互发 combat/start，NPC 收 yitian/begin" do
-      with_room(@was_lou4, full_cast())
+      with_room(was_lou4(), full_cast())
       p = player(weapon: sword_weapon())
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "何太冲说道：进招吧！"))
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "手中竹剑对准"))
@@ -182,8 +215,8 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
   describe "阿三 / 阿二 / 阿大（后续关：win_* 标记守卫）" do
     test "何太冲在场且无 win_he：链条落到何太冲（阿三的守卫不生效）" do
-      with_room(@was_lou4, full_cast())
-      conn2 = Yitian.run(conn(player()), params(@was_lou4))
+      with_room(was_lou4(), full_cast())
+      conn2 = Yitian.run(conn(player()), params(was_lou4()))
 
       # say 走广播，notify_fail 走私聊
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "何太冲说道：我内力全失"))
@@ -191,18 +224,18 @@ defmodule Kantele.World.NpcActions.YitianTest do
     end
 
     test "阿三：有 win_he 但持兵器 → 拒绝（比空手）" do
-      with_room(@was_lou4, cast_after(:he))
+      with_room(was_lou4(), cast_after(:he))
       p = player(temp: %{"win_he" => 1}, weapon: sword_weapon())
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿三说道：我和你比空手，请将竹剑放下。"))
       assert String.contains?(out_text(conn2), "看起来阿三并不想跟你较量。")
     end
 
     test "阿三：win_he + 空手 → 开打（好！+ 大力金刚指）" do
-      with_room(@was_lou4, cast_after(:he))
+      with_room(was_lou4(), cast_after(:he))
       p = player(temp: %{"win_he" => 1})
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿三说道：好！"))
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "大力金刚指"))
@@ -212,18 +245,18 @@ defmodule Kantele.World.NpcActions.YitianTest do
     end
 
     test "阿二：win_asan 缺失 → 拣便宜拒绝（何太冲/阿三已倒下）" do
-      with_room(@was_lou4, cast_after(:asan))
+      with_room(was_lou4(), cast_after(:asan))
       p = player(temp: %{"win_he" => 1})
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿二说道：阁下是谁？为何刚才不出战"))
       assert String.contains?(out_text(conn2), "看起来阿二并不想跟你较量。")
     end
 
     test "阿二：win_asan + 空手 → 开打（我出招了 + 般若掌）" do
-      with_room(@was_lou4, cast_after(:asan))
+      with_room(was_lou4(), cast_after(:asan))
       p = player(temp: %{"win_he" => 1, "win_asan" => 1})
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿二说道：我出招了。"))
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "双掌平推，掌劲如巨浪般汹涌而出"))
@@ -233,27 +266,27 @@ defmodule Kantele.World.NpcActions.YitianTest do
     end
 
     test "阿大：win_aer 缺失 → 拒绝（阿三/阿二已倒下，如玩家真实击杀未落标记）" do
-      with_room(@was_lou4, cast_after(:aer))
+      with_room(was_lou4(), cast_after(:aer))
       p = player(temp: %{"win_he" => 1, "win_asan" => 1})
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿大说道：阁下是谁？为何刚才不出战"))
       assert String.contains?(out_text(conn2), "看起来阿大并不想跟你较量。")
     end
 
     test "阿大：win_aer + 无兵器 → 只比兵器功夫拒绝" do
-      with_room(@was_lou4, cast_after(:aer))
+      with_room(was_lou4(), cast_after(:aer))
       p = player(temp: %{"win_he" => 1, "win_asan" => 1, "win_aer" => 1})
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿大说道：我只和你比兵器功夫！"))
       assert String.contains?(out_text(conn2), "看起来阿大并不想跟你较量。")
     end
 
     test "阿大：win_aer + 兵器、屋内无倚天剑 → 静默开打（LPC 无剑分支）" do
-      with_room(@was_lou4, cast_after(:aer))
+      with_room(was_lou4(), cast_after(:aer))
       p = player(temp: %{"win_he" => 1, "win_asan" => 1, "win_aer" => 1}, weapon: sword_weapon())
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       # 无 say/广播，只有 bi 标记与开战事件
       assert vision_texts(conn2) == []
@@ -268,14 +301,16 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
   describe "阿大倚天剑分支（屋内有 tulong:yitianjian）" do
     test "地上有剑 → 完整倚天剑 sequence 广播" do
-      with_room(@was_lou4, cast_after(:aer), [%Kalevala.World.Item.Instance{
-        id: "inst-jian",
-        item_id: "tulong:yitianjian",
-        created_at: ~U[2026-10-18 00:00:00Z]
-      }])
+      with_room(was_lou4(), cast_after(:aer), [
+        %Kalevala.World.Item.Instance{
+          id: "inst-jian",
+          item_id: "tulong:yitianjian",
+          created_at: ~U[2026-10-18 00:00:00Z]
+        }
+      ])
 
       p = player(temp: %{"win_he" => 1, "win_asan" => 1, "win_aer" => 1}, weapon: sword_weapon())
-      conn2 = Yitian.run(conn(p), params(@was_lou4))
+      conn2 = Yitian.run(conn(p), params(was_lou4()))
 
       texts = vision_texts(conn2)
       # broadcast_vision 把 $N 归一化为 {npc}（展示期再转「你」/玩家名）
@@ -289,18 +324,18 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
   describe "tulong:jiulou 阿大单挑" do
     test "无 win_aer → 拒绝（何太冲/阿三/阿二不在场，链条落到阿大守卫）" do
-      register_room(@jiulou, [player(room_id: @jiulou), ada()])
-      p = player(room_id: @jiulou)
-      conn2 = Yitian.run(conn(p), params(@jiulou))
+      register_room(jiulou(), [player(room_id: jiulou()), ada()])
+      p = player(room_id: jiulou())
+      conn2 = Yitian.run(conn(p), params(jiulou()))
 
       assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "阿大说道：阁下是谁？为何刚才不出战"))
       assert String.contains?(out_text(conn2), "看起来阿大并不想跟你较量。")
     end
 
     test "win_aer + 兵器 → 开打" do
-      register_room(@jiulou, [player(room_id: @jiulou), ada()])
-      p = player(room_id: @jiulou, temp: %{"win_aer" => 1}, weapon: sword_weapon())
-      conn2 = Yitian.run(conn(p), params(@jiulou))
+      register_room(jiulou(), [player(room_id: jiulou()), ada()])
+      p = player(room_id: jiulou(), temp: %{"win_aer" => 1}, weapon: sword_weapon())
+      conn2 = Yitian.run(conn(p), params(jiulou()))
 
       assert bi_temp(conn2) == 1
       assert_receive %Kalevala.Event{topic: "yitian/begin", data: data}, 500
@@ -321,7 +356,7 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
     test "玩家仍在敌人列表：resolve → yitian/result（win_he + 死亡文案）+ 落死" do
       he_npc = he(enemies: [%{id: "player-1", pid: self(), name: "玩家"}])
-      register_room(@was_lou4, [player(), he_npc])
+      register_room(was_lou4(), [player(), he_npc])
 
       begin_event = %Kalevala.Event{
         from_pid: self(),
@@ -331,7 +366,7 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
       npc_conn = %Conn{
         character: he_npc,
-        private: %Conn.Private{room: %Kantele.World.Room{id: @was_lou4}, channel_changes: []},
+        private: %Conn.Private{room: %Kantele.World.Room{id: was_lou4()}, channel_changes: []},
         output: []
       }
 
@@ -355,11 +390,11 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
     test "玩家已不在敌人列表（先死/逃了）：resolve 静默跳过" do
       he_npc = he(enemies: [])
-      register_room(@was_lou4, [player(), he_npc])
+      register_room(was_lou4(), [player(), he_npc])
 
       npc_conn = %Conn{
         character: he_npc,
-        private: %Conn.Private{room: %Kantele.World.Room{id: @was_lou4}, channel_changes: []},
+        private: %Conn.Private{room: %Kantele.World.Room{id: was_lou4()}, channel_changes: []},
         output: []
       }
 
@@ -371,11 +406,11 @@ defmodule Kantele.World.NpcActions.YitianTest do
 
     test "阿大关 resolve：flag 为 nil，clear 三个前置标记" do
       ada_npc = ada(enemies: [%{id: "player-1", pid: self(), name: "玩家"}])
-      register_room(@was_lou4, [player(), ada_npc])
+      register_room(was_lou4(), [player(), ada_npc])
 
       npc_conn = %Conn{
         character: ada_npc,
-        private: %Conn.Private{room: %Kantele.World.Room{id: @was_lou4}, channel_changes: []},
+        private: %Conn.Private{room: %Kantele.World.Room{id: was_lou4()}, channel_changes: []},
         output: []
       }
 

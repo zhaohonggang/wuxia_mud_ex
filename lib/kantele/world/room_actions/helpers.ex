@@ -14,8 +14,13 @@ defmodule Kantele.World.RoomActions.Helpers do
   - `write(msg)` → `render_to_player/2`：只把文本推给当前玩家，不广播。
   - `this_player()->move(__DIR__"xxx")` → `move_to/2`：把玩家瞬移到目标房间。
   """
+  import Kalevala.Character.Conn, only: [put_character: 2]
+
   alias Kalevala.Character.Conn
+  alias Kalevala.World.Item
+  alias Kantele.Character.Records
   alias Kantele.Character.Teleport
+  alias Kantele.World.Items
 
   @doc """
   `message_vision(msg, this_player())` 等价。
@@ -86,6 +91,53 @@ defmodule Kantele.World.RoomActions.Helpers do
   def move_to(conn, to_room_id) when is_binary(to_room_id) do
     Teleport.teleport(conn, to_room_id)
   end
+
+  @doc """
+  `ob = new(<item_id>); ob->move(me)`：把 `item_id` 的一件实例放进玩家背包。
+
+  `opts[:meta]`（map）非空时合并进实例的 `meta`（对应 LPC 发放时对副本
+  `obj->set("no_sell", ...)` / `obj->set("value", ...)` 的按件改写）。
+  定义缺失（`{:error, :not_found}`）时不动 `conn`。
+
+  与 NPC 侧 `Kantele.World.NpcActions.Helpers.give_item/3` 是**同一个实现**
+  （后者现在委托到这里）：房间动作（如少林菩提院 `get book from hole` 取易筋经）
+  与 NPC 赠礼走同一条「实例化 + 落盘 + `put_character`」链路，不重复造。
+  """
+  def give_item(conn, item_id, opts \\ []) do
+    case Items.get(item_id) do
+      {:ok, _item} ->
+        instance =
+          %Item.Instance{
+            id: Item.Instance.generate_id(),
+            item_id: item_id,
+            created_at: DateTime.utc_now()
+          }
+          |> put_instance_meta(Keyword.get(opts, :meta, %{}))
+
+        character = current(conn)
+        character = %{character | inventory: [instance | character.inventory]}
+        Records.save(character)
+        put_character(conn, character)
+
+      _ ->
+        conn
+    end
+  end
+
+  @doc "同 `give_item/3`，发 `count` 件（LPC 田嫂发两个包子）。"
+  def give_items(conn, item_id, count, opts \\ []) when is_integer(count) and count > 0 do
+    Enum.reduce(1..count, conn, fn _i, conn -> give_item(conn, item_id, opts) end)
+  end
+
+  defp current(%{private: %{update_character: character}}) when not is_nil(character),
+    do: character
+
+  defp current(%{character: character}), do: character
+
+  defp put_instance_meta(instance, meta) when meta == %{} or meta == nil, do: instance
+
+  defp put_instance_meta(instance, meta),
+    do: %{instance | meta: Map.merge(instance.meta || %{}, meta)}
 
   @doc false
   def publish_error(conn, _error), do: conn

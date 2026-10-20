@@ -2786,6 +2786,10 @@ direction = "west"
   flags = [
     "startroom"
   ]
+  state = {
+    status = 0
+    book_count = 1
+  }
 item_desc = {
  jing = {
   kind = "score_tiers"
@@ -2801,6 +2805,14 @@ item_desc = {
    { min_score = 0 text = "你看了半天，只看到自己的影子，没发现什么。" },
    { min_score = 1000 text = "你觉得上面镌的经偈似乎有些不同。" },
    { min_score = 5000 text = "你发现上面镌的经偈光泽和别处不一样，难道可以掀(xian)开？" }
+  ]
+ }
+ hole = {
+  kind = "room_state_tiers"
+  tiers = [
+   { match = { status = 4  book_count = 1 } text = "这是铜镜下面的一个小洞，里面放着一本残破的旧经书(book)。" },
+   { match = { status = 4  book_count = 0 } text = "这是铜镜下面的一个小洞，里面空空如也，什么也没有。" },
+   { text = "哪里有什么洞？抓老鼠么？" }
   ]
  }
 }

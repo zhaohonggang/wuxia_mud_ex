@@ -349,11 +349,25 @@ defmodule Kantele.World.Loader do
       room_name: Map.get(room_data, :room_name),
       room_position: Map.get(room_data, :room_position),
       room_owner_id: Map.get(room_data, :room_owner_id),
-      actions: parse_room_actions(Map.get(room_data, :actions))
+      actions: parse_room_actions(Map.get(room_data, :actions)),
+      state: parse_room_state(Map.get(room_data, :state))
     }
 
     {key, room}
   end
+
+  # P5-4h：房间初始 temp（LPC `create()` 里的 `set("status", 0)` /
+  # `set("book_count", 1)`）。UCL: `state = { status = 0  book_count = 1 }`。
+  # 缺省 `%{}` —— 未回填 state 的房间行为完全不变（P7）。
+  # 只把顶层键转成字符串；值原样保留（整数/布尔/字符串），因为运行时
+  # `Room.put_state_by_id/3` 写的也是原样值，比较时要精确相等。
+  defp parse_room_state(nil), do: %{}
+
+  defp parse_room_state(state) when is_map(state) do
+    Map.new(state, fn {key, value} -> {keyword_to_string(key), value} end)
+  end
+
+  defp parse_room_state(_), do: %{}
 
   # P5-1：房间级 verb→handler 映射（LPC add_action("verb","handler") 的回源回填结果）。
   # UCL: actions = { convert = "bian"  climb = "pan" }。缺省 %{}（无行为变化，P7）。

@@ -30,6 +30,10 @@ defmodule Web.ChannelCase do
 
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(ExVenture.Repo, {:shared, self()})
+
+      # 见 `test/support/conn_case.ex` 同处注释：同步用例结束后立刻把沙盒
+      # 模式切回 `:manual`，避免共享连接在属主刚退出时被下一个用例借到（R17）。
+      on_exit(fn -> Ecto.Adapters.SQL.Sandbox.mode(ExVenture.Repo, :manual) end)
     end
 
     :ok

@@ -20,6 +20,7 @@
   - **P5-4e score 门控已执行**：`shaolin:putiyuan` 的 `look_jing`（`jing` / `铜镜`，3 档）与 `beijing:aofu_shufang` 的 `look_hua`（`hua`，2 档 + `marks/画1`）（详见 §3 P5-4e 执行结果）。
   - **P5-4f 房间 temp 三例已执行**：`hengyang:furong1` 的 `look_net` + `pull`、`hengyang:zigaihole` 的 `look_desk` + `move`、`guanwai:jingxiu` 的 `look_men`（读 `guanwai:xiuxishi` 占用）（详见 §3 P5-4f 执行结果）。
   - **P5-4g 玩家 temp 分支已执行**：`fuzhou:mishi` 的 `look_hua`（3 档 + `marks/辟1`）与 `look_liang`（`marks/辟1` 解锁，按房间 `move` 分支，置 `marks/辟2`）；`jueqing:undertan` 的 `look_kong` 静态回填（详见 §3 P5-4g 执行结果）。
+  - **P5-4h 机关状态双键已执行**：`shaolin:putiyuan` 的 `look_hole`（`room_state_tiers`，`status` + `book_count` 双键 3 档）+ `xian` 字序机关 + `get book from hole` 发易筋经 + 8s `close_hole`；顺带为房间引入 UCL `state` 播种（详见 §3 P5-4h 执行结果）。
 
 ### 实测佐证
 - `changan/bank.c` 的 `paizi`（`HIG"..."NOR` 拼接）→ **已**写入 `data/world/changan.ucl:84`，证明 `macro_concat` 类已被转换器处理。
@@ -66,7 +67,9 @@
 >
 > **P5-4f 进度**：`look_net` / `look_desk` 已接入 `room_temp`（房间 temp `marks/拉` / `marks/移`），`look_men` 已接入 `room_occupancy`（目标房 `guanwai:xiuxishi`）。
 >
-> **P5-4g 进度**：`fuzhou:mishi` 的 `look_hua` 用 `score_tiers`（3 档，最高档置 `marks/辟1`），`look_liang` 用 `player_temp_branch`（`marks/辟1` 门控 + 房间 `move` 分支 + `marks/辟2`）；`jueqing:undertan` 的 `look_kong` 已静态回填。`look_table`（猪圈小游戏）、`look_hole`（书数 + 状态）、`look_fen`（对象存在 + 移动）仍待后续；`jump liang` / `move big stone` 等动作仍未接线。
+> **P5-4g 进度**：`fuzhou:mishi` 的 `look_hua` 用 `score_tiers`（3 档，最高档置 `marks/辟1`），`look_liang` 用 `player_temp_branch`（`marks/辟1` 门控 + 房间 `move` 分支 + `marks/辟2`）；`jueqing:undertan` 的 `look_kong` 已静态回填。`look_table`（猪圈小游戏）、`look_fen`（对象存在 + 移动）仍待后续；`jump liang` / `move big stone` 等动作仍未接线。
+>
+> **P5-4h 进度**：`look_hole` 已接入 `room_state_tiers`（`status` + `book_count` 双键 3 档，对应 `shaolin:putiyuan` 的三段 `if`），并补齐同房间的 `xian` / `get` / `close_hole`。`look_table`、`look_fen` 仍待后续。
 
 另有 **9** 个其它表达式值（变量/调用），需逐个确认。
 
@@ -221,6 +224,51 @@
   单测 **19/0**（+3：未解锁 / 解锁置 `marks/辟2` / 房间 `move` 已置）。
 - 未跑：`mix test`（本机无 Postgres）。
 
+### P5-4h：机关状态双键分支 + 房间 state 播种（少林菩提院）
+
+`d/shaolin/putiyuan.c` 是第一个「`item_desc` + 房间动作 + 定时回调 + 发物」四件套
+齐全的谜题，也是第一个**覆盖全局命令**的移植。
+
+- **`look_hole`**：新增 `RoomStateTiers`（`kind = "room_state_tiers"`）。与
+  `room_temp` 的「有/无」两分支不同，这里由 **`status`（0/1/2/4）+ `book_count`
+  （1/0）两个键**共同决定三段文案。`tiers` 按顺序取第一个 `match` 全命中的层级，
+  无 `match` 的层级是兜底项（须放最后）；`match` 要求房间 state 同名键**精确相等**，
+  缺键不算命中。
+- **`status` / `book_count` 是房间属性，不是房间 temp**：源文件 `create()` 里是
+  `set("status", 0)` / `set("book_count", 1)`（`set/query`），此前调研记为「房间
+  temp」不准确。落地方式：UCL 新增 `state = { status = 0  book_count = 1 }`，
+  `Loader.parse_room/4` 增加 `parse_room_state/1` 播种到 `Room.state`（缺省 `%{}`，
+  未回填的房间行为不变）。
+- **`xian <字> [序号]`**：字序机关。`一` 是重置键；`梦`（status 1→2）、`如 3`
+  （2→3，`如` 在偈中出现三次故必须带序号且只有第三个有效）、`是`（3→4）。
+  任何一步错误都把 `status` 归零；`status == 4` 时再掀任意字会把铜镜按回去。
+- **`get book from hole`**：四种写法（`book|jing` × `from|in`）才接管，其余输入
+  一律 `:not_handled` 交回全局 `GetCommand` —— 对应 LPC 的三处 `return 0`。
+- **8 秒 `close_hole`**：**没有**用 `Room.set_timer/3`（它把
+  `{:room_timer, ...}` 投给 `self()`，而房间进程没有对应 `handle_info/2`，
+  详见该函数的说明），改用 `:timer.apply_after/4` 回调 `Xian.close_hole/1`，
+  回调体只用按 room_id 的运行时原语：`Room.put_state_by_id/3` + `Room.tell_room/2`。
+- **发物**：`give_item/3` 从 `NpcActions.Helpers` 下移到 `RoomActions.Helpers`
+  （房间动作也要发物），NPC 侧保留薄委托，历史调用点零改动。
+
+#### P5-4h 执行结果（2026-10-20）
+
+- 代码：新增 `RoomStateTiers`、`RoomActions.Shaolin.Putiyuan.Xian`、
+  `RoomActions.Shaolin.Putiyuan.Get`；`ItemDescHandlers` / `RoomActionHandlers`
+  各注册 `shaolin:putiyuan`；`Loader` 增 `parse_room_state/1`；
+  `RoomActions.Helpers` 增 `give_item/3`、`give_items/4`。
+- 数据：`shaolin.ucl` 的 `rooms "putiyuan"` 增 `state` 块与 `item_desc.hole`
+  （3 档）。
+- 校验（容器内，权威）：新增单测 **22/0**；全量套件见
+  `docs/data-world-comments-progress.zh-CN.md` 的 M9 行。
+- **与 LPC 的唯一差异**：LPC 在 `load_object(MIJI)` **之前**就把 `book_count`
+  置 0，物品定义缺失时书永久消失、谜题不可再解；本实现先 `Items.get/1` 校验定义
+  存在，缺失时只报「系统出现故障」而不改 `book_count`。世界数据正常时两者等价。
+- **顺带发现（未修）**：`RoomActions.Helpers.broadcast_vision/4` 传的
+  `&__MODULE__.publish_error/1` 与实际定义的 `publish_error/2` 不匹配，
+  编译期即有 warning；真正走到错误分支时会 `UndefinedFunctionError`。
+  与 P5-4h 无关，单独记账。
+
 ## 4. 约束与风险
 
 - **P1**：不得改 `scripts/lpc_converter.py`、`lib/kantele/world/lpc_converter.ex`、`lib/mix/tasks/kantele.convert_lpc.ex`；P5-4c 仅 import 只读。
@@ -237,7 +285,9 @@
 2. ~~实现 **P5-4d pilot**~~ ✅ 已完成（`look_bi` + `pic1/2/3` + `gua`，`hengyang:inzhushendong`；见上）。
 3. ~~score 门控~~ ✅ 已完成（P5-4e：`look_jing` / `look_hua`；`show_hua` P5-4c 已静态回填）。
    ~~房间 temp 首批~~ ✅ 已完成（P5-4f：`look_net` / `look_desk` / `look_men`）。
-   ~~玩家 temp 分支~~ ✅ 已完成（P5-4g：`look_hua` / `look_liang` / 静态 `look_kong`）；
-   继续 `look_hole`、`look_fen`，`look_table` 暂缓；之后 daemon/helper，最后补
-   9 个表达式值。
-4. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。
+   ~~玩家 temp 分支~~ ✅ 已完成（P5-4g：`look_hua` / `look_liang` / 静态 `look_kong`）。
+4. ~~机关状态双键 + 房间 state 播种~~ ✅ 已完成（P5-4h：`look_hole` / `xian` /
+   `get book from hole` / 8s `close_hole`，`shaolin:putiyuan`；见上）。
+   `look_fen`（对象存在性 + 移动）与 `look_table`（猪圈小游戏）仍暂缓；之后
+   daemon/helper，最后补 9 个表达式值。
+5. inquiry 侧继续：`ask_skill1..10`（≈247 处）/ 86 个 `ask_*` 函数，按门派分批。

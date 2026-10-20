@@ -157,9 +157,37 @@ defmodule Kantele.World.Room do
   # ---- 房间定时器（对应 LPC set_timer/cancel_timer/call_out） ----
 
   @doc """
-  房间级一次性定时器（对应 LPC call_out/set_timer）
+  房间级一次性定时器（对应 LPC `call_out/set_timer`）—— **当前不可用**。
 
-  返回 `timer_ref`；到期后向房间路由投递 `{:timer, ref, data}`。
+  ## 为什么不可用
+
+  本函数把 `{:room_timer, ref, data, room_id}` 投给 `self()`，即**调用方**，
+  而不是房间进程；而房间进程（`Kalevala.World.Room`）**没有**
+  `handle_info({:room_timer, ...})` 子句。所以：
+
+  - 在角色进程里调用 → 该消息落到角色 Foreman，无匹配子句（只记日志）；
+  - 在房间进程里调用 → 房间 GenServer 无匹配子句。
+
+  也就是说「到期后回调房间逻辑」这层语义**从未接通**，全库也**没有任何调用方**
+  （`grep` 可验）。保留本函数只为不破坏既有 API 形状，**不要用它移植
+  `call_out`**。
+
+  ## 移植 `call_out` 该用什么
+
+  `:timer.apply_after/4` 在独立进程里回调一个模块函数，回调体只用**按 room_id**
+  的运行时原语，不需要 `conn`：
+
+      :timer.apply_after(8_000, __MODULE__, :close_hole, [room_id])
+
+      def close_hole(room_id) do
+        Room.put_state_by_id(room_id, "status", 0)
+        Room.tell_room(%Room{id: room_id}, "一阵轧轧声过后，铜镜又缓缓的落下。\\n")
+      end
+
+  `Room.put_state_by_id/3` 走 `:sys.replace_state/2`（任何进程可调，房间不存在时
+  返回 `:error`），`Room.tell_room/2` 只做 `send` —— 两者都不会因调用方不是房间
+  进程而失败。现成范例见 `lib/kantele/scheduler.ex` 的 `schedule_once/2` 与
+  `Kantele.World.RoomActions.Shaolin.Putiyuan.Xian.close_hole/1`。
   """
   def set_timer(room, ms, data) do
     ref = make_ref()

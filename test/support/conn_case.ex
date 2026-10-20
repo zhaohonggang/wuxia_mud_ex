@@ -36,6 +36,15 @@ defmodule Web.ConnCase do
 
     unless tags[:async] do
       Ecto.Adapters.SQL.Sandbox.mode(ExVenture.Repo, {:shared, self()})
+
+      # 共享模式是**全局**的：属主（本用例进程）退出后，沙盒管理器要等
+      # 进程 DOWN 才把模式切回 `:manual`。这段空窗里，紧接着跑的裸
+      # `ExUnit.Case` 用例会借到这条已死的连接，报
+      # `** (EXIT) shutdown: "owner <pid> exited"`（随机失败，见 R17）。
+      # 在 `on_exit` 里同步切回 `:manual`，把空窗关掉：后面的用例要么拿到
+      # 自己的连接，要么稳定地拿到 `OwnershipError`。
+      # 只对同步用例做——异步用例并发跑，切模式会把别人的连接一起 checkin。
+      on_exit(fn -> Ecto.Adapters.SQL.Sandbox.mode(ExVenture.Repo, :manual) end)
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

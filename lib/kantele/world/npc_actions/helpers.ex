@@ -5,10 +5,9 @@ defmodule Kantele.World.NpcActions.Helpers do
   与 `Kantele.World.RoomActions.Helpers` 同构（广播/私发桥接），另补充 NPC 私有
   动作常需的**发物**与**存在性判断**：
 
-  - `give_item/2,3` —— 把物品定义实例化后放进玩家背包并落盘（对应 LPC
-    `ob = new(...); ob->move(me)`），发给玩家的「物品」链路与 NPC 脚本赠礼
-    (`Kantele.Character.NpcScriptEvent.give_result`) 完全一致：
-    `%Item.Instance{}` + `Records.save/1` + `put_character/2`。
+  - `give_item/2,3`、`give_items/3,4` —— 把物品定义实例化后放进玩家背包并落盘
+    （对应 LPC `ob = new(...); ob->move(me)`）。**实现已下移到
+    `Kantele.World.RoomActions.Helpers`**（房间动作也要发物），本模块只留委托。
   - `carries?/2` —— LPC `present(<name>, me)`：背包内是否有匹配该 id/别名的物品。
   - `room_has_item?/2` —— LPC `present(<name>, environment())`：房间地上是否有。
   - `family_name/1` —— 玩家门派名（`meta.family`）。
@@ -18,11 +17,9 @@ defmodule Kantele.World.NpcActions.Helpers do
   """
   import Kalevala.Character.Conn, only: [put_character: 2]
 
-  alias Kalevala.World.Item
   alias Kantele.Character.Family
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
-  alias Kantele.World.Items
   alias Kantele.World.Room
   alias Kantele.World.RoomActions.Helpers, as: RoomHelpers
 
@@ -43,32 +40,16 @@ defmodule Kantele.World.NpcActions.Helpers do
   `opts[:meta]`（map）非空时合并进实例的 `meta`（对应 LPC 发放时对副本
   `obj->set("no_sell", ...)` / `obj->set("value", ...)` 的按件改写）。
   定义缺失（`{:error, :not_found}`）时不动 `conn`。
+
+  实现已下移到 `Kantele.World.RoomActions.Helpers.give_item/3` —— 房间动作
+  （少林菩提院 `get book from hole`）也要发物，发物不该只挂在 NPC 侧。本函数
+  保留为薄委托，历史调用点无需改动。
   """
-  def give_item(conn, item_id, opts \\ []) do
-    case Items.get(item_id) do
-      {:ok, _item} ->
-        instance =
-          %Item.Instance{
-            id: Item.Instance.generate_id(),
-            item_id: item_id,
-            created_at: DateTime.utc_now()
-          }
-          |> put_instance_meta(Keyword.get(opts, :meta, %{}))
-
-        character = current(conn)
-        character = %{character | inventory: [instance | character.inventory]}
-        Records.save(character)
-        put_character(conn, character)
-
-      _ ->
-        conn
-    end
-  end
+  def give_item(conn, item_id, opts \\ []), do: RoomHelpers.give_item(conn, item_id, opts)
 
   @doc "同 `give_item/3`，发 `count` 件（LPC 田嫂发两个包子）。"
-  def give_items(conn, item_id, count, opts \\ []) when is_integer(count) and count > 0 do
-    Enum.reduce(1..count, conn, fn _i, conn -> give_item(conn, item_id, opts) end)
-  end
+  def give_items(conn, item_id, count, opts \\ []),
+    do: RoomHelpers.give_items(conn, item_id, count, opts)
 
   @doc "`present(<name>, me)`：背包内是否有 id/别名匹配 `name` 的物品"
   def carries?(character, name) do
@@ -218,9 +199,4 @@ defmodule Kantele.World.NpcActions.Helpers do
     do: character
 
   defp current(%{character: character}), do: character
-
-  defp put_instance_meta(instance, meta) when meta == %{} or meta == nil, do: instance
-
-  defp put_instance_meta(instance, meta),
-    do: %{instance | meta: Map.merge(instance.meta || %{}, meta)}
 end
