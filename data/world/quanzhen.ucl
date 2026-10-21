@@ -3613,6 +3613,17 @@ chats = [
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/daodejing-i.c by LPCConverter
@@ -3622,6 +3633,24 @@ chats = [
       name = "道德经「上卷」"
       aliases = ["jing", "daode jing"]
       description = "这是一册道德经「上卷」，由体道第一始至去用第四十止。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          max_skill = 99
+          exp_required = 50000
+          jing_cost = 20
+          difficulty = 25
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/daodejing-ii.c by LPCConverter
@@ -3631,6 +3660,25 @@ chats = [
       name = "道德经「下卷」"
       aliases = ["jing", "daode jing"]
       description = "这是一册道德经「下卷」，由同异第四十一始至显质第八十一止。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "taoism"
+          min_skill = 100
+          max_skill = 179
+          exp_required = 150000
+          jing_cost = 20
+          difficulty = 35
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/gangdao.c by LPCConverter
@@ -3640,6 +3688,26 @@ chats = [
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "blade"
+        value = 300
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/gangjian.c by LPCConverter
@@ -3649,6 +3717,26 @@ chats = [
       name = "钢剑"
       aliases = ["jian", "sword"]
       description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "sword"
+        value = 400
+        weight = 6000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/gao.c by LPCConverter
@@ -3658,6 +3746,15 @@ chats = [
       name = "NPC"
       aliases = ["guiling gao", "guiling", "gao"]
       description = "这是一块用乌龟甲和茯苓配置成的龟苓膏，功能延年益寿。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/goupi.c by LPCConverter
@@ -3667,6 +3764,18 @@ chats = [
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 5000
+        unit = "块"
+        material = "fur"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/grayrobe.c by LPCConverter
@@ -3676,6 +3785,17 @@ chats = [
       name = "灰色道袍"
       aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的灰布道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1200
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/greenrobe.c by LPCConverter
@@ -3685,6 +3805,17 @@ chats = [
       name = "青色道袍"
       aliases = ["pao", "cloth", "dao pao"]
       description = "这是件质地柔软的青色道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1500
+        unit = "件"
+        material = "silk"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/greyrobe.c by LPCConverter
@@ -3694,6 +3825,17 @@ chats = [
       name = "灰色道袍"
       aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的灰布道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1200
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/jinduan.c by LPCConverter
@@ -3703,6 +3845,18 @@ chats = [
       name = "锦缎"
       aliases = ["jin duan", "jin", "duan"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 3000
+        unit = "件"
+        material = "丝"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/junfu.c by LPCConverter
@@ -3712,6 +3866,18 @@ chats = [
       name = "军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的官兵服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/shanshen.c by LPCConverter
@@ -3721,6 +3887,15 @@ chats = [
       name = "老山参"
       aliases = ["laoshan shen", "shen"]
       description = "这是一株沾满山泥的老山参。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        unit = "株"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/shouwu.c by LPCConverter
@@ -3730,6 +3905,16 @@ chats = [
       name = "NPC"
       aliases = ["he shouwu", "he", "shouwu"]
       description = "这是一支已成人形的何首乌，看来可以入药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 800
+        unit = "支"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/tie-ling.c by LPCConverter
@@ -3739,6 +3924,17 @@ chats = [
       name = "重阳令"
       aliases = ["chongyang ling", "ling", "iron"]
       description = "这是一块用于通行重阳宫的铁铸令牌。 由丹阳真人签发，邀各路英雄入宫观礼。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 100
+        unit = "块"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/obj/tiejia.c by LPCConverter
@@ -3748,6 +3944,18 @@ chats = [
       name = "铁甲"
       aliases = ["armor"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 20000
+        unit = "件"
+        material = "steel"
+        armor = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhen/obj/bowl.c by LPCConverter

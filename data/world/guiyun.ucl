@@ -1734,6 +1734,26 @@ item_desc = {
       name = "砍柴斧"
       aliases = ["fu"]
       description = "一柄砍柴用的短斧，斧刃上有几个缺口。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "axe"
+        value = 1500
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/biandan.c by LPCConverter
@@ -1743,6 +1763,26 @@ item_desc = {
       name = "熟铁扁担"
       aliases = ["bian dan"]
       description = "通身黑油油地，中间微弯，两头各有一个突起的鞘子。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "staff"
+        value = 1500
+        weight = 50000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/gancheng.c by LPCConverter
@@ -1752,6 +1792,26 @@ item_desc = {
       name = "杆秤"
       aliases = ["gan cheng"]
       description = "一杆闹市货物常用的杆秤。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一杆{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "club"
+        value = 1500
+        weight = 5000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/green_cloth.c by LPCConverter
@@ -1761,6 +1821,17 @@ item_desc = {
       name = "青布衣"
       aliases = ["green cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/jiandao.c by LPCConverter
@@ -1770,6 +1841,26 @@ item_desc = {
       name = "尖刀"
       aliases = ["jian dao", "blade"]
       description = "一柄杀猪刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 10
+        skill_type = "blade"
+        value = 1500
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/jiujiebian.c by LPCConverter
@@ -1779,6 +1870,26 @@ item_desc = {
       name = "九节鞭"
       aliases = ["jiujie bian", "bian"]
       description = "这是一条九节鞭，由精钢铸就而成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "whip"
+        value = 100
+        weight = 500
+        unit = "柄"
+        material = "steal"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/red_cloth.c by LPCConverter
@@ -1788,6 +1899,17 @@ item_desc = {
       name = "红绫袄"
       aliases = ["red cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/shortblade.c by LPCConverter
@@ -1797,6 +1919,19 @@ item_desc = {
       name = "短刀"
       aliases = ["short blade", "dao"]
       description = "这是一捆飞刀。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 25
+        skill_type = "throwing"
+        value = 0
+        weight = 7000
+        unit = "柄"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/zheshan.c by LPCConverter
@@ -1806,6 +1941,26 @@ item_desc = {
       name = "油纸折扇"
       aliases = ["zhe shan", "shan"]
       description = "这是一对用镔铁为骨的油纸折扇。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从怀中掏出一只{name}握在手中。"
+    unwield = "{npc}将手中的{name}揣回怀里。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "dagger"
+        value = 2000
+        weight = 12000
+        unit = "对"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/obj/zongzi.c by LPCConverter

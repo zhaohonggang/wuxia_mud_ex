@@ -2451,6 +2451,26 @@ chats = [
       name = "铁莲子"
       aliases = ["tie lianzi", "lianzi", "tie"]
       description = "铁莲子是一种以量取胜的暗器，沉颠颠的。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}迅速地从暗器袋中掏出一些铁莲子，捏在手中就待发出！\n"
+    unwield = "{npc}将手里剩下的铁莲子尽数放回暗器袋中。\n"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "throwing"
+        value = 0
+        weight = 300
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/chengdu/obj/jiaonei.c by LPCConverter

@@ -3097,6 +3097,26 @@ chats = [
       name = "旱烟袋"
       aliases = ["han yan", "yan"]
       description = "这是一只用了好多年的铜烟袋。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一只{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰带中。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "sword"
+        value = 100
+        weight = 500
+        unit = "只"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/npc/obj/jiandao.c by LPCConverter
@@ -3106,6 +3126,26 @@ chats = [
       name = "五毒神剪"
       aliases = ["wudu shenjian", "jian", "shenjian"]
       description = "这是一柄奇门兵器，好似一只大剪刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声掏出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}挂在腰间。"
+  }
+
+      meta = {
+        damage = 70
+        skill_type = "sword"
+        value = 10000
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/npc/obj/jinyi.c by LPCConverter
@@ -3115,6 +3155,18 @@ chats = [
       name = "锦衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/npc/obj/xingjunsan.c by LPCConverter
@@ -3124,6 +3176,16 @@ chats = [
       name = "NPC"
       aliases = ["xingjun san", "xingjun", "san"]
       description = "这是一包预防瘴气的药散，带在身上可以预防瘴气。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1
+        weight = 200
+        unit = "包"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wudu/obj/book2.c by LPCConverter

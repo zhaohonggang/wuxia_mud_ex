@@ -1890,6 +1890,17 @@ direction = ~
       name = "青布长衫"
       aliases = ["shan", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/cloth.c by LPCConverter
@@ -1899,6 +1910,17 @@ direction = ~
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/fuchen.c by LPCConverter
@@ -1908,6 +1930,26 @@ direction = ~
       name = "拂尘"
       aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}别回颈中。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "whip"
+        value = 30
+        weight = 300
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/tiexiang.c by LPCConverter
@@ -1922,6 +1964,16 @@ direction = ~
     greet_delay = 0
     add_actions = ["climb"]
   }
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 200000
+        unit = "只"
+        material = "steal"
+      }
     }
 
 # Generated from C:/files/git/mud/d/fuzhou/obj/jiasha.c by LPCConverter

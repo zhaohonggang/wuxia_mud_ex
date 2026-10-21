@@ -2160,6 +2160,18 @@ chats = [
       name = "日本豆腐"
       aliases = ["riben doufu", "doufu"]
       description = "一碗嫩白油滑的日本豆腐。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        unit = "碗"
+        material = "meat"
+        food = 25
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/npc/obj/huotui.c by LPCConverter
@@ -2169,6 +2181,18 @@ chats = [
       name = "樱桃火腿"
       aliases = ["yingtao huotui", "huotui"]
       description = "一盆香喷喷热气腾腾的樱桃火腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        unit = "盆"
+        material = "meat"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/npc/obj/potato.c by LPCConverter
@@ -2178,6 +2202,18 @@ chats = [
       name = "土豆炖牛肉"
       aliases = ["potato"]
       description = "一碗热气腾腾的土豆炖牛肉，散发出诱人的香气。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 100
+        unit = "碗"
+        material = "meat"
+        food = 35
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/npc/obj/soup.c by LPCConverter
@@ -2187,6 +2223,16 @@ chats = [
       name = "荷叶冬笋汤"
       aliases = ["soup"]
       description = "一碗香气扑鼻的荷叶冬笋汤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 150
+        weight = 50
+        unit = "碗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/npc/obj/xianggu.c by LPCConverter
@@ -2196,6 +2242,18 @@ chats = [
       name = "清炒香菇"
       aliases = ["qingchao xianggu", "xianggu"]
       description = "一碟香喷喷的清炒香菇。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 120
+        unit = "碟"
+        material = "meat"
+        food = 25
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/npc/obj/xiaren.c by LPCConverter
@@ -2205,6 +2263,18 @@ chats = [
       name = "菱白虾仁"
       aliases = ["lingbai xiaren", "xiaren"]
       description = "一盆香喷喷热气腾腾的菱白虾仁。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 180
+        unit = "盆"
+        material = "meat"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/npc/obj/yayifu.c by LPCConverter
@@ -2214,6 +2284,18 @@ chats = [
       name = "衙役服"
       aliases = ["yayi cloth", "cloth"]
       description = "这是一件崭新的白棉布衙役服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 150
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/suzhou/obj/box.c by LPCConverter

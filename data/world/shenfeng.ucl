@@ -1369,6 +1369,26 @@ chats = [
       name = "哈萨克弯刀"
       aliases = ["hasake wandao", "hasake", "wandao", "dao", "blade"]
       description = "这是一柄亮晃晃的哈萨克短刀, 是哈萨克人的防身武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从腰间拔出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "blade"
+        value = 500
+        weight = 4000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/duanjian.c by LPCConverter
@@ -1378,6 +1398,26 @@ chats = [
       name = "短剑"
       aliases = ["duan jian", "duan", "jian", "sword"]
       description = "这是一柄剑身短小的精钢剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "sword"
+        value = 500
+        weight = 2000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/qcloth.c by LPCConverter
@@ -1387,6 +1427,18 @@ chats = [
       name = "哈萨克袄裙"
       aliases = ["ao qun", "qun"]
       description = "这是一件织著红花绿草的袄裙，哈萨克女孩常穿的衣着。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/ycloth.c by LPCConverter
@@ -1396,6 +1448,18 @@ chats = [
       name = "羊皮袄"
       aliases = ["yangpi ao", "ao"]
       description = "这是一件灰色的羊皮袄。牧羊人不管春夏秋冬都穿着它。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/shenfeng/obj/skeleton.c by LPCConverter

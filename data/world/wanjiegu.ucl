@@ -1011,6 +1011,18 @@ chats = [
       name = "孔雀羽衣"
       aliases = ["feather"]
       description = "这件孔雀羽衣是用孔雀羽毛织成的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 600
+        unit = "件"
+        material = "feature"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/fu-cloth.c by LPCConverter
@@ -1092,6 +1104,26 @@ chats = [
       name = "木鱼锤"
       aliases = ["muyu"]
       description = "这是一把很沉的铁木鱼锤"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，试了试重量，然後握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "hammer"
+        value = 10000
+        weight = 8000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/pink-cloth.c by LPCConverter
@@ -1101,6 +1133,18 @@ chats = [
       name = "粉红绸衫"
       aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣著几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/pink-dress.c by LPCConverter
@@ -1182,6 +1226,26 @@ chats = [
       name = "细铁杆"
       aliases = ["tie-gan"]
       description = "这是一根又细又张的铁杆。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}放下。"
+  }
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 10000
+        weight = 8000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/xian-cloth.c by LPCConverter

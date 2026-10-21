@@ -937,6 +937,18 @@ item_desc = {
       name = "兔肉"
       aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 300
+        unit = "块"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/xueshan/npc/x_lama.c by LPCConverter

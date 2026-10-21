@@ -3006,6 +3006,18 @@ behavior_config = {
       name = "蟒蛇肉"
       aliases = ["she rou", "she"]
       description = "一大块蟒蛇肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 500
+        weight = 3000
+        unit = "块"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/tian.c by LPCConverter
@@ -3081,6 +3093,18 @@ chats = [
       name = "兔肉"
       aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 300
+        unit = "块"
+        food = 50
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/xiangke.c by LPCConverter
@@ -3311,6 +3335,17 @@ chats = [
       name = "黑色布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/female-shoe.c by LPCConverter
@@ -3320,6 +3355,18 @@ chats = [
       name = "绣花小鞋"
       aliases = ["flower shoes", "shoes"]
       description = "一双女人穿的缝制得很精美的绣花鞋。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/female1.c by LPCConverter
@@ -3329,6 +3376,18 @@ chats = [
       name = "湖绿长裙"
       aliases = ["green skirt", "cloth"]
       description = "一件清新可人的湖绿长裙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/luo_cloth.c by LPCConverter
@@ -3338,6 +3397,17 @@ chats = [
       name = "熟罗长袍"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/tanmuqin.c by LPCConverter
@@ -3352,6 +3422,17 @@ chats = [
     greet_delay = 0
     add_actions = ["play"]
   }
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 600
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/hengyang/obj/jia.c by LPCConverter

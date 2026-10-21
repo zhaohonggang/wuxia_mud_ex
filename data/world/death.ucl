@@ -3322,6 +3322,17 @@ chats = [
       name = "金盔"
       aliases = ["head"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/bi.c by LPCConverter
@@ -3331,6 +3342,16 @@ chats = [
       name = "判官笔"
       aliases = ["bi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 200
+        unit = "支"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/blade1.c by LPCConverter
@@ -3340,6 +3361,21 @@ chats = [
       name = "枯骨刀"
       aliases = ["blade"]
       description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 250
+        skill_type = "blade"
+        value = 30
+        weight = 300
+        unit = "把"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/book.c by LPCConverter
@@ -3349,6 +3385,16 @@ chats = [
       name = "生死薄"
       aliases = ["book"]
       description = "一本记载人间生死的名册。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 200
+        unit = "本"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth1.c by LPCConverter
@@ -3358,6 +3404,17 @@ chats = [
       name = "无常袍"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth2.c by LPCConverter
@@ -3367,6 +3424,17 @@ chats = [
       name = "阎罗袍"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth3.c by LPCConverter
@@ -3376,6 +3444,17 @@ chats = [
       name = "云裳"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth4.c by LPCConverter
@@ -3385,6 +3464,17 @@ chats = [
       name = "鬼王袍"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth5.c by LPCConverter
@@ -3394,6 +3484,17 @@ chats = [
       name = "阴王袍"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/jiasuo.c by LPCConverter
@@ -3403,6 +3504,19 @@ chats = [
       name = "枷锁"
       aliases = ["jia suo", "suo", "jia"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 50
+        skill_type = "hammer"
+        value = 30
+        weight = 300
+        unit = "根"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/npc/obj/suolian.c by LPCConverter
@@ -3412,6 +3526,19 @@ chats = [
       name = "锁链"
       aliases = ["suo lian", "suo", "lian"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 50
+        skill_type = "whip"
+        value = 30
+        weight = 300
+        unit = "根"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/obj/hugu.c by LPCConverter
@@ -6597,6 +6724,26 @@ chats = [
       name = "赤剑"
       aliases = ["chi jian", "jian", "sword", "chi", "chijian"]
       description = "一柄四尺来长的长剑，整个剑身呈红色。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背后抽出赤剑，顿时腾起一股凛冽的杀气。\n"
+    unwield = "{npc}叹了口气，将赤剑插回背后。\n"
+  }
+
+      meta = {
+        damage = 250
+        skill_type = "sword"
+        value = 200000
+        weight = 12000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/chiyoujian.c by LPCConverter
@@ -6606,6 +6753,25 @@ chats = [
       name = "玄蚩神剑"
       aliases = ["chiyou jian", "sword", "jian"]
       description = "一柄玄铁铸造的长剑，剑柄上雕有蚩尤的头像。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出玄蚩神剑挥舞了个剑花，只感到一阵寒气扑面而来。\n"
+  }
+
+      meta = {
+        damage = 200
+        skill_type = "sword"
+        value = 100000
+        weight = 20000
+        unit = "柄"
+        material = "gold"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/feidao.c by LPCConverter
@@ -6615,6 +6781,26 @@ chats = [
       name = "小李飞刀"
       aliases = ["xiaoli feidao", "feidao"]
       description = "一柄看似普通的飞刀，刀柄上刻了个小小的“李”字。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}手臂微微一抖，手中已多了柄明晃晃的飞刀。\n"
+    unwield = "{npc}手臂微微一抖，手中的飞刀便已消逝不见。\n"
+  }
+
+      meta = {
+        damage = 300
+        skill_type = "throwing"
+        value = 6000
+        weight = 300
+        unit = "柄"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/hands.c by LPCConverter
@@ -6624,6 +6810,18 @@ chats = [
       name = "残血手套"
       aliases = ["canxue shoutao", "shoutao", "canxue", "hand", "tao"]
       description = "传说中的上古神器。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100000
+        weight = 20000
+        unit = "双"
+        material = "steel"
+        armor = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/jingzhongyue.c by LPCConverter
@@ -6633,6 +6831,26 @@ chats = [
       name = "井中月"
       aliases = ["jingzhong yue", "blade", "dao", "yue", "jingzhong"]
       description = "一柄四尺来长的单刀，重达百斤，刀身散发着乌黑的光泽。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}一声狂笑，从背后抽出井中月高高举起。\n"
+    unwield = "{npc}哈哈一笑，将井中月插回背后。\n"
+  }
+
+      meta = {
+        damage = 200
+        skill_type = "blade"
+        value = 100000
+        weight = 20000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/pangukai.c by LPCConverter
@@ -6642,6 +6860,20 @@ chats = [
       name = "盘古铠"
       aliases = ["pangu kai", "kai", "armor"]
       description = "一见黑黝黝的铁甲，上面雕有盘古的头像。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+      meta = {
+        value = 100000
+        weight = 10000
+        unit = "见"
+        material = "cloth"
+        armor = 200
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/renou.c by LPCConverter
@@ -6651,6 +6883,16 @@ chats = [
       name = "人偶"
       aliases = ["renou"]
       description = "一块未完工的木偶，但已经可以辨认出是个女子的雕像。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 200
+        unit = "块"
+      }
     }
 
 # Generated from C:/files/git/mud/d/death/sky/obj/heshibi.c by LPCConverter

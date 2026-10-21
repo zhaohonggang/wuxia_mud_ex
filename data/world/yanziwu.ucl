@@ -1418,6 +1418,26 @@ chats = [
       name = "长剑"
       aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 200
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/cloth.c by LPCConverter
@@ -1427,6 +1447,18 @@ chats = [
       name = "布衣"
       aliases = ["buyi", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/flower_shoe.c by LPCConverter
@@ -1436,6 +1468,18 @@ chats = [
       name = "绣花小鞋"
       aliases = ["flower shoes", "shoes"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 900
+        unit = "双"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/goldring.c by LPCConverter
@@ -1445,6 +1489,18 @@ chats = [
       name = "金戒指"
       aliases = ["golden ring", "ring"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 400
+        unit = "个"
+        material = "gold"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/green_cloth.c by LPCConverter
@@ -1454,6 +1510,18 @@ chats = [
       name = "翠绿绸衫"
       aliases = ["green cloth", "cloth"]
       description = "这件翠绿色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/necklace.c by LPCConverter
@@ -1463,6 +1531,18 @@ chats = [
       name = "金项链"
       aliases = ["golden necklace", "necklace", "lace"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2500
+        weight = 500
+        unit = "串"
+        material = "gold"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/pink_cloth.c by LPCConverter
@@ -1472,6 +1552,18 @@ chats = [
       name = "粉红绸衫"
       aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/yanziwu/obj/cha.c by LPCConverter

@@ -2525,6 +2525,19 @@ item_desc = {
       name = "月牙匕"
       aliases = ["yueya bi", "yueya", "bi", "dagger"]
       description = "一柄做工精细的玉制匕首。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 35
+        skill_type = "dagger"
+        value = 10000
+        weight = 800
+        unit = "柄"
+        material = "stone"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/cloth.c by LPCConverter
@@ -2534,6 +2547,17 @@ item_desc = {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/dadao.c by LPCConverter
@@ -2543,6 +2567,25 @@ item_desc = {
       name = "大刀"
       aliases = ["da dao", "dao"]
       description = "这是一柄铁打的大刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一把{name}握在手中。"
+  }
+
+      meta = {
+        damage = 10
+        skill_type = "blade"
+        value = 200
+        weight = 5000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/dafu.c by LPCConverter
@@ -2552,6 +2595,26 @@ item_desc = {
       name = "开山斧"
       aliases = ["kaishan fu", "kaishan", "fu"]
       description = "一柄十分锋利的大斧。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}回手从身后抽出一柄大斧。\n"
+    unwield = "{npc}手往后一别，把大斧插在后腰上。\n"
+  }
+
+      meta = {
+        damage = 60
+        skill_type = "hammer"
+        value = 100
+        weight = 5000
+        unit = "柄"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/hongchouxiaoshan.c by LPCConverter
@@ -2561,6 +2624,17 @@ item_desc = {
       name = "红绸小杉"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/jinpao.c by LPCConverter
@@ -2570,6 +2644,18 @@ item_desc = {
       name = "日月锦袍"
       aliases = ["jin pao", "jin", "pao", "cloth"]
       description = "这是一件日月神教长老所穿戴的华丽锦袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 10000
+        weight = 10
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/leizhendang.c by LPCConverter
@@ -2579,6 +2665,26 @@ item_desc = {
       name = "雷震挡"
       aliases = ["leizhen dang", "leizhen", "dang"]
       description = "一杆十分沉重的雷震挡。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}回手从身后抽出一杆雷震挡。\n"
+    unwield = "{npc}手往后一扣，把雷震挡放在身后。\n"
+  }
+
+      meta = {
+        damage = 60
+        skill_type = "hammer"
+        value = 10000
+        weight = 8000
+        unit = "杆"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/shenzhen.c by LPCConverter
@@ -2588,6 +2694,19 @@ item_desc = {
       name = "黑血神针"
       aliases = ["heixue shenzhen", "heixue", "shenzhen", "zhen"]
       description = "这是一些暗灰色的细长金针，长约寸许。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 50
+        skill_type = "throwing"
+        value = 0
+        weight = 200
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/shutonggun.c by LPCConverter
@@ -2597,6 +2716,26 @@ item_desc = {
       name = "熟铜棍"
       aliases = ["shutong gun", "shutong", "gun", "club"]
       description = "一杆十分灵便的熟铜棍。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}回手从身后抽出一杆熟铜棍。\n"
+    unwield = "{npc}手往后一扣，把熟铜棍放在身后。\n"
+  }
+
+      meta = {
+        damage = 60
+        skill_type = "club"
+        value = 1000
+        weight = 2000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/tongchui.c by LPCConverter
@@ -2606,6 +2745,26 @@ item_desc = {
       name = "铜锤"
       aliases = ["tong chui", "tong", "chui", "hammer"]
       description = "这是一对由青铜铸造的大锤，显得极是沉重。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}振臂一挥，抡出一对沉重的{name}。"
+    unwield = "{npc}将手中的{name}慢慢收回。"
+  }
+
+      meta = {
+        damage = 40
+        skill_type = "hammer"
+        value = 3000
+        weight = 15000
+        unit = "对"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/yaoshi.c by LPCConverter
@@ -2615,6 +2774,15 @@ item_desc = {
       name = "地牢钥匙"
       aliases = ["dilao key", "key"]
       description = "这是一把很普通的钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 10
+        unit = "把"
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/zaohong.c by LPCConverter
@@ -2624,6 +2792,18 @@ item_desc = {
       name = "枣红缎面皮袍"
       aliases = ["zaohong pao", "zaohong", "pao"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 4000
+        unit = "件"
+        material = "cloth"
+        armor = 6
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/zichoush.c by LPCConverter
@@ -2633,6 +2813,18 @@ item_desc = {
       name = "紫绸衫"
       aliases = ["zichou shan", "zichou", "shan", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 400
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/heimuya/obj/heimu-ling.c by LPCConverter

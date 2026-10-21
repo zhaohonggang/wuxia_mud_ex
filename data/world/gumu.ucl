@@ -1562,6 +1562,18 @@ item_desc = {
       name = "白袍"
       aliases = ["bai pao", "pao"]
       description = "这是件轻纱制成的白色长袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 2000
+        unit = "件"
+        material = "silk"
+        armor = 8
+      }
     }
 
 # Generated from C:/files/git/mud/d/gumu/obj/bingpo-zhen.c by LPCConverter

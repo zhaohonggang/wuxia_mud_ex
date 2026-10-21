@@ -1147,6 +1147,26 @@ chats = [
       name = "菜刀"
       aliases = ["cai dao", "blade"]
       description = "这是一柄亮晃晃的菜刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回裤腰。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "blade"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/npc/obj/goupi.c by LPCConverter
@@ -1156,6 +1176,18 @@ chats = [
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 5000
+        unit = "块"
+        material = "fur"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/npc/obj/magcloth.c by LPCConverter
@@ -1165,6 +1197,18 @@ chats = [
       name = "紫袍"
       aliases = ["zi pao", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 500
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/foshan/obj/hua1.c by LPCConverter

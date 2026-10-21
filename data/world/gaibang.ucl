@@ -524,6 +524,17 @@ item_desc = {
       name = "NPC"
       aliases = ["cloth"]
       description = "这是一件满是油腻的破布衣。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/jiaohuaji.c by LPCConverter
@@ -533,6 +544,18 @@ item_desc = {
       name = "叫化鸡"
       aliases = ["jiaohua ji", "jiaohua", "ji"]
       description = "这是一只被烤得流油，香味扑鼻的叫化鸡。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 200
+        weight = 200
+        unit = "只"
+        food = 100
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/po-bu.c by LPCConverter
@@ -542,6 +565,16 @@ item_desc = {
       name = "NPC"
       aliases = ["po bu", "po", "bu", "piece"]
       description = "这是一块破布，不知道有什么用。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 80
+        unit = "块"
+        material = "cloth"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/qingzhu-ling.c by LPCConverter
@@ -551,6 +584,16 @@ item_desc = {
       name = "NPC"
       aliases = ["qingzhu ling", "qingzhu", "ling"]
       description = "这是一面用青竹做成的令牌，凭此可向帮内师兄挑战。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 500
+        unit = "面"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/staff.c by LPCConverter
@@ -560,6 +603,25 @@ item_desc = {
       name = "NPC"
       aliases = ["zhu bang", "zhu", "bang"]
       description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        weight = 1500
+        unit = "根"
+        material = "wood"
+      }
     }
 
 

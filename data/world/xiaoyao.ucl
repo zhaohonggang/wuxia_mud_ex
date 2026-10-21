@@ -586,6 +586,26 @@ zones "xiaoyao" {
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "blade"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiaoyao/npc/obj/cloth.c by LPCConverter
@@ -595,6 +615,17 @@ zones "xiaoyao" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiaoyao/obj/bowl.c by LPCConverter

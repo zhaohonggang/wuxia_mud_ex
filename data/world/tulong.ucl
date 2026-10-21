@@ -962,6 +962,18 @@ item_desc = {
       name = "NPC"
       aliases = ["bosi cloth", "bosi", "cloth"]
       description = "这是一件波斯明教总舵的教服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 3000
+        unit = "件"
+        material = "silk"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/flag.c by LPCConverter
@@ -971,6 +983,26 @@ item_desc = {
       name = "大旗"
       aliases = ["flag", "qi"]
       description = "旗上绣着一头大鹰，双翅伸展，甚是威武。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一面{name}，挥舞示意。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 10
+        skill_type = "club"
+        value = 300
+        weight = 15000
+        unit = "面"
+        material = "silk"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/hammer.c by LPCConverter
@@ -980,6 +1012,26 @@ item_desc = {
       name = "NPC"
       aliases = ["green xigua", "xigua", "hammer"]
       description = "这西瓜由精钢铸成，瓜上漆成绿黑间条之色，共有一对，系以钢链。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一对{name}，试了试重量，然後握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 80
+        skill_type = "hammer"
+        value = 3000
+        weight = 160000
+        unit = "对"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/jiaofu.c by LPCConverter
@@ -989,6 +1041,18 @@ item_desc = {
       name = "天鹰教服"
       aliases = ["ying cloth", "cloth"]
       description = "这是一件天鹰教服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 3000
+        unit = "件"
+        material = "silk"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/ling.c by LPCConverter
@@ -998,6 +1062,21 @@ item_desc = {
       name = "NPC"
       aliases = ["bintie ling", "bintie", "ling"]
       description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 300
+        weight = 1500
+        unit = "支"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/tulong/obj/ding.c by LPCConverter
@@ -2880,6 +2959,17 @@ direction = "down"
       name = "点金盘龙弓"
       aliases = ["panlong gong", "gong", "panlong"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 8000
+        weight = 500
+        unit = "支"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/jian.c by LPCConverter
@@ -2889,6 +2979,25 @@ direction = "down"
       name = "NPC"
       aliases = ["yitian jian", "yitian", "jian", "sword"]
       description = "这便与天下至尊的屠龙宝刀并称的倚天剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的抽出{name}，顿时闻到一股奇异的香味。\n仔细一看，原来这柄倚天剑竟是木头制成的。\n"
+  }
+
+      meta = {
+        damage = 10
+        skill_type = "sword"
+        value = 500
+        weight = 5000
+        unit = "柄"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/spear.c by LPCConverter
@@ -2898,6 +3007,19 @@ direction = "down"
       name = "镔铁长枪"
       aliases = ["chang qiang", "qiang", "spear"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 10
+        skill_type = "club"
+        value = 300
+        weight = 15000
+        unit = "支"
+        material = "silk"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tiezhang.c by LPCConverter
@@ -2907,6 +3029,19 @@ direction = "down"
       name = "精铁杖"
       aliases = ["tie zhang", "tie", "zhang"]
       description = "一柄用镔铁打造的杖。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 20
+        skill_type = "staff"
+        value = 2000
+        weight = 20000
+        unit = "柄"
+        material = "gold"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tongbo.c by LPCConverter
@@ -2916,6 +3051,19 @@ direction = "down"
       name = "铜钹"
       aliases = ["tong bo", "tong", "bo"]
       description = "一柄用熟铜打造的钹。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 20
+        skill_type = "hammer"
+        value = 2000
+        weight = 10000
+        unit = "柄"
+        material = "gold"
+      }
     }
 
 # Generated from C:/files/git/mud/d/tulong/yitian/obj/shelf.c by LPCConverter

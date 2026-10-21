@@ -1087,6 +1087,17 @@ item_desc = {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/fuchen.c by LPCConverter
@@ -1096,6 +1107,26 @@ item_desc = {
       name = "拂尘"
       aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声从颈中抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}别回颈中。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "whip"
+        value = 30
+        weight = 300
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/huoqiang.c by LPCConverter
@@ -1105,6 +1136,26 @@ item_desc = {
       name = "荷兰火枪"
       aliases = ["helan huoqiang", "huoqiang"]
       description = "一支荷兰火枪。可惜只能放一枪。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一支乌油的木柄火枪握在手中。"
+    unwield = "{npc}把手中的火枪背回背上。"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "staff"
+        value = 10000
+        weight = 5000
+        unit = "支"
+        material = "bamboo"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/tiexiang.c by LPCConverter
@@ -1119,6 +1170,16 @@ item_desc = {
     greet_delay = 0
     add_actions = ["climb"]
   }
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 200000
+        unit = "只"
+        material = "steal"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/wodao.c by LPCConverter
@@ -1128,6 +1189,26 @@ item_desc = {
       name = "倭刀"
       aliases = ["wo dao", "blade"]
       description = "这是一柄亮晃晃的弧形弯刀，十分锋利。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 35
+        skill_type = "blade"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/obj/flower_shoe.c by LPCConverter

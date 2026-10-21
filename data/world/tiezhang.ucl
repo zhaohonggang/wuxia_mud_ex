@@ -1766,6 +1766,17 @@ chats = [
       name = "黑衣"
       aliases = ["cloth"]
       description = "这是一件绣着红色火焰的黑色圣衣。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/tiezhang/npc/obj/green-cloth.c by LPCConverter
@@ -1775,6 +1786,17 @@ chats = [
       name = "绿色圣衣"
       aliases = ["cloth"]
       description = "这是一件绣着红色火焰的绿色圣衣。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/tiezhang/npc/obj/hupi.c by LPCConverter
@@ -1784,6 +1806,18 @@ chats = [
       name = "虎皮"
       aliases = ["hu pi", "pi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 2000
+        unit = "块"
+        material = "fur"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/tiezhang/obj/axe.c by LPCConverter

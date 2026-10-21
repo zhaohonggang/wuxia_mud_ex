@@ -5313,6 +5313,24 @@ chats = [
       name = "板斧"
       aliases = ["axe"]
       description = "这是一把沉重的大板斧，砍起东西来非常顺手。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，握在手中当作武器。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        value = 500
+        weight = 6000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/bingfu.c by LPCConverter
@@ -5322,6 +5340,18 @@ chats = [
       name = "兵服"
       aliases = ["cloth", "bingfu"]
       description = "一件兵服，前后有铜镜护心，中间绣了一个兵字．"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/book.c by LPCConverter
@@ -5331,6 +5361,24 @@ chats = [
       name = "NPC"
       aliases = ["book", "shu"]
       description = "一本可以学习易容术的书。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 600
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "pretending"
+          max_skill = 200
+          exp_required = 1000
+          jing_cost = 20
+          difficulty = 30
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/changbian.c by LPCConverter
@@ -5340,6 +5388,26 @@ chats = [
       name = "长鞭"
       aliases = ["changbian", "bian"]
       description = "这是一柄普通的长鞭，由水牛精工编织而成。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}卷回腰间。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "whip"
+        value = 100
+        weight = 500
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/changpao.c by LPCConverter
@@ -5349,6 +5417,18 @@ chats = [
       name = "长袍"
       aliases = ["chang pao", "cloth"]
       description = "一件长袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/choupao.c by LPCConverter
@@ -5358,6 +5438,18 @@ chats = [
       name = "绸袍"
       aliases = ["choupao", "cloth"]
       description = "一件丝绸长袍，质的和裁剪都不错．"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 4
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/cloth.c by LPCConverter
@@ -5367,6 +5459,17 @@ chats = [
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/gangdao.c by LPCConverter
@@ -5376,6 +5479,26 @@ chats = [
       name = "钢刀"
       aliases = ["blade", "dao"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "blade"
+        value = 300
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/gangzhang.c by LPCConverter
@@ -5385,6 +5508,26 @@ chats = [
       name = "钢杖"
       aliases = ["gangzhang"]
       description = "这是一根粗重的钢杖。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "staff"
+        value = 200
+        weight = 5000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/hmeigui.c by LPCConverter
@@ -5394,6 +5537,20 @@ chats = [
       name = "玫瑰"
       aliases = ["rose", "meigui"]
       description = "一朵红色的玫瑰，花瓣里透出一股凄然。"
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+      meta = {
+        value = 10
+        weight = 10
+        unit = "朵"
+        material = "plant"
+        armor = 0
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/jinzhuang.c by LPCConverter
@@ -5403,6 +5560,18 @@ chats = [
       name = "蓝色劲装"
       aliases = ["jin zhuang"]
       description = "这是一套短打劲装。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/laofang-key.c by LPCConverter
@@ -5412,6 +5581,15 @@ chats = [
       name = "牢房钥匙"
       aliases = ["laofang key", "key"]
       description = "一把牢房钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 100
+        unit = "把"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/letter.c by LPCConverter
@@ -5421,6 +5599,15 @@ chats = [
       name = "家书"
       aliases = ["xin", "letter"]
       description = "一封滴满泪痕的信．"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/linen.c by LPCConverter
@@ -5430,6 +5617,18 @@ chats = [
       name = "布衣"
       aliases = ["linen"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/sengpao.c by LPCConverter
@@ -5439,6 +5638,17 @@ chats = [
       name = "僧袍"
       aliases = ["seng pao", "pao", "cloth"]
       description = "这是一件寻常的僧袍，是和尚们的普通装束。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/sengyi.c by LPCConverter
@@ -5448,6 +5658,17 @@ chats = [
       name = "僧衣"
       aliases = ["sengyi", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/shawei.c by LPCConverter
@@ -5457,6 +5678,19 @@ chats = [
       name = "杀威棒"
       aliases = ["shawei bang", "bang"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 20
+        skill_type = "staff"
+        value = 200
+        weight = 3000
+        unit = "把"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/skirt.c by LPCConverter
@@ -5466,6 +5700,18 @@ chats = [
       name = "轻纱长裙"
       aliases = ["skirt", "cloth"]
       description = "一条朦朦胧胧的纱裙，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 0
+        weight = 1000
+        unit = "条"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/sword.c by LPCConverter
@@ -5475,6 +5721,26 @@ chats = [
       name = "长剑"
       aliases = ["sword"]
       description = "这是一把看起相当普通的长剑，份量大约有十来斤左右。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」地一声抽出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}插入腰间的剑鞘。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 400
+        weight = 7000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/yayifu.c by LPCConverter
@@ -5484,6 +5750,18 @@ chats = [
       name = "衙役服"
       aliases = ["yayi fu", "cloth"]
       description = "一件黑色短装，嵌以红边，是长安府的衙役穿的．"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/yupei.c by LPCConverter
@@ -5493,6 +5771,18 @@ chats = [
       name = "龙凤玉佩"
       aliases = ["yu pei"]
       description = "一枚玉佩，上面雕刻着龙凤图案．"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 800
+        unit = "个"
+        material = "steel"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/changan/npc/obj/zhanjia.c by LPCConverter
@@ -5502,6 +5792,18 @@ chats = [
       name = "战甲"
       aliases = ["zhan armor", "zhanjia", "jia", "armor"]
       description = "一件精钢造就的战甲。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 40000
+        unit = "件"
+        material = "steel"
+        armor = 40
+      }
     }
 
 # Source: C:/files/git/mud/d/changan/npc/obj/bai-chahua.c

@@ -2582,6 +2582,18 @@ chats = [
       name = "包子"
       aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/beixin.c by LPCConverter
@@ -2591,6 +2603,20 @@ chats = [
       name = "皮背心"
       aliases = ["pi beixin", "beixin"]
       description = ""
+  verbs = [
+    "get",
+    "drop",
+    "wear",
+    "remove"
+  ]
+
+      meta = {
+        value = 1000
+        weight = 1000
+        unit = "件"
+        material = "leather"
+        armor = 6
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/changjian.c by LPCConverter
@@ -2600,6 +2626,26 @@ chats = [
       name = "长剑"
       aliases = ["changjian", "sword", "chang jian", "jian"]
       description = "这是一把看起相当普通的长剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」地一声抽出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}插入腰间的剑鞘。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 1000
+        weight = 7000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/gangdao.c by LPCConverter
@@ -2609,6 +2655,26 @@ chats = [
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "blade"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/goupi.c by LPCConverter
@@ -2618,6 +2684,18 @@ chats = [
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 1200
+        unit = "件"
+        material = "leather"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/jitui.c by LPCConverter
@@ -2627,6 +2705,25 @@ chats = [
       name = "炸鸡腿"
       aliases = ["jitui", "tui", "leg"]
       description = "一根啃得姬的炸鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一根油腻腻的{name}，握在手中当武器。"
+  }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/kusang.c by LPCConverter
@@ -2636,6 +2733,26 @@ chats = [
       name = "哭丧棒"
       aliases = ["kusang bang", "kusang", "bang"]
       description = "这是一根精铁打铸的哭丧棒。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 35
+        skill_type = "staff"
+        value = 800
+        weight = 2000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/lingpai.c by LPCConverter
@@ -2645,6 +2762,26 @@ chats = [
       name = "铁灵牌"
       aliases = ["tie lingpai", "tie", "lingpai"]
       description = "这是一副精铁打铸的铁灵牌。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一副{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 35
+        skill_type = "staff"
+        value = 800
+        weight = 2000
+        unit = "副"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/yaofang.c by LPCConverter
@@ -2654,6 +2791,16 @@ chats = [
       name = "残破药方"
       aliases = ["yaofang"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 100
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/zhaohun.c by LPCConverter
@@ -2663,6 +2810,26 @@ chats = [
       name = "招魂幡"
       aliases = ["zhaohun fan", "zhaohun", "fan"]
       description = "这是一面精铁打铸的招魂幡。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一面{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 35
+        skill_type = "staff"
+        value = 800
+        weight = 2000
+        unit = "面"
+        material = "steel"
+      }
     }
 
 # Source: /clone/shop/zhongzhou_shop

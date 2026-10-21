@@ -2633,6 +2633,26 @@ item_desc = {
       name = "碧水剑"
       aliases = ["green sword", "jian"]
       description = "这是一把通体晶莹剔透的剑，美丽之极，"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」地一声抽出一把{name}握在手中。"
+    unwield = "{npc}将手中的{name}插入腰间的剑鞘。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "sword"
+        value = 400
+        weight = 7000
+        unit = "把"
+        material = "crimsonsteel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huashan/npc/obj/letter.c by LPCConverter
@@ -2642,6 +2662,16 @@ item_desc = {
       name = "手信"
       aliases = ["hand letter"]
       description = "这是华山派掌门岳不群的手信，请冯铁匠把打好的宝剑交给执信弟子。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 100
+        unit = "封"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huashan/obj/longquan.c by LPCConverter

@@ -1096,6 +1096,15 @@ item_desc = {
       name = "白云熊胆丸"
       aliases = ["baiyunxiudan wan", "wan"]
       description = "这是一颗武林人士梦寐以求的疗伤圣药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50000
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/diaogan.c by LPCConverter
@@ -1105,6 +1114,26 @@ item_desc = {
       name = "钓竿"
       aliases = ["diao gan", "diao", "gan"]
       description = "这是一根桦木制的钓竿，制作得颇为奇特。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 35
+        skill_type = "club"
+        value = 50
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/jieyao.c by LPCConverter
@@ -1114,6 +1143,16 @@ item_desc = {
       name = "药丸"
       aliases = ["yao wan", "yao", "wan"]
       description = "一颗浑圆的药丸，乃是乌老大所配制的独门解药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 20
+        unit = "颗"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/jinzhen.c by LPCConverter
@@ -1123,6 +1162,19 @@ item_desc = {
       name = "斓蜈金针"
       aliases = ["lanwu jinzhen", "lanwu", "jinzhen", "zhen"]
       description = "这是一些血红色的细长金针，长约寸许。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 50
+        skill_type = "throwing"
+        value = 0
+        weight = 200
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/yuping.c by LPCConverter
@@ -1132,6 +1184,16 @@ item_desc = {
       name = "玉瓶"
       aliases = ["yu ping", "yu", "ping"]
       description = "一支白玉雕制的玉瓶，瓶上的木塞已甚为古旧。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 3000
+        weight = 150
+        unit = "支"
+      }
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/obj/changpao.c by LPCConverter

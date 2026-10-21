@@ -6488,6 +6488,18 @@ chats = [
       name = "兔肉"
       aliases = ["tu rou", "rou"]
       description = "一只烧烤得香香的兔肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 300
+        unit = "只"
+        food = 25
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/weishi.c by LPCConverter
@@ -6960,6 +6972,18 @@ chats = [
       name = "摆夷短裙"
       aliases = ["duan qun"]
       description = "这是一件摆夷短裙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 250
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/cynrobe.c by LPCConverter
@@ -6969,6 +6993,17 @@ chats = [
       name = "青色道袍"
       aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的青布道袍。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/diaogan.c by LPCConverter
@@ -6978,6 +7013,26 @@ chats = [
       name = "钓杆"
       aliases = ["diao gan", "diao", "gan"]
       description = "这是一根细长的铁杆，猛然一看不过是根普通钓鱼用的吊杆。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "whip"
+        value = 1500
+        weight = 5000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/hupi.c by LPCConverter
@@ -6987,6 +7042,18 @@ chats = [
       name = "虎皮"
       aliases = ["hu pi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 20000
+        weight = 20000
+        unit = "张"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/jjunfu.c by LPCConverter
@@ -6996,6 +7063,18 @@ chats = [
       name = "锦衣军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件颜色鲜亮的锦衣军服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/junfu.c by LPCConverter
@@ -7005,6 +7084,18 @@ chats = [
       name = "黄衣军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的黄衣军服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/kandao.c by LPCConverter
@@ -7014,6 +7105,26 @@ chats = [
       name = "砍刀"
       aliases = ["kan dao", "dao", "blade"]
       description = "这是一柄很粗笨的砍刀，大概砍柴砍竹笋还凑合。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "blade"
+        value = 10
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/lace.c by LPCConverter
@@ -7023,6 +7134,17 @@ chats = [
       name = "贝壳项链"
       aliases = ["shell lace", "lace"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2500
+        weight = 500
+        unit = "串"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/magcloth.c by LPCConverter
@@ -7032,6 +7154,18 @@ chats = [
       name = "紫袍"
       aliases = ["zi pao", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/mandao.c by LPCConverter
@@ -7041,6 +7175,26 @@ chats = [
       name = "蛮刀"
       aliases = ["man dao", "dao", "blade"]
       description = "这是一柄亮晃晃的蛮刀，是云贵少数民族首领的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 40
+        skill_type = "blade"
+        value = 10000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/maotan.c by LPCConverter
@@ -7050,6 +7204,18 @@ chats = [
       name = "毛毯"
       aliases = ["mao tan"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 20000
+        unit = "张"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/tduanqun.c by LPCConverter
@@ -7059,6 +7225,18 @@ chats = [
       name = "台夷短裙"
       aliases = ["duan qun"]
       description = "这是一件台夷短裙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/tiedi.c by LPCConverter
@@ -7068,6 +7246,26 @@ chats = [
       name = "铁笛"
       aliases = ["tie di"]
       description = "一支黑铁做成的长笛，看上去坚忍异常。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}大袖一挥，手中已多了一支乌黑油光的铁笛。"
+    unwield = "{npc}手中铁笛一转，眨眼间铁笛已然不见影踪。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 1000
+        weight = 500
+        unit = "支"
+        material = "bamboo"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/tiejia.c by LPCConverter
@@ -7077,6 +7275,18 @@ chats = [
       name = "铁甲"
       aliases = ["armor"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2000
+        weight = 20000
+        unit = "件"
+        material = "steel"
+        armor = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/tongqun.c by LPCConverter
@@ -7086,6 +7296,18 @@ chats = [
       name = "筒裙"
       aliases = ["tong qun"]
       description = "这是一件台夷筒裙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/ttoujin.c by LPCConverter
@@ -7095,6 +7317,17 @@ chats = [
       name = "台夷头巾"
       aliases = ["tou jin"]
       description = "这是一条台夷头巾，用以缠绕头部。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 1500
+        weight = 2000
+        unit = "条"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/wchangqun.c by LPCConverter
@@ -7104,6 +7337,18 @@ chats = [
       name = "乌夷长裙"
       aliases = ["chang qun"]
       description = "这是一件乌夷长裙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 2
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/wdahui.c by LPCConverter
@@ -7113,6 +7358,18 @@ chats = [
       name = "乌夷大麾"
       aliases = ["da hui"]
       description = "这是一件乌夷大麾。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/whitecloth.c by LPCConverter
@@ -7122,6 +7379,18 @@ chats = [
       name = "白衣"
       aliases = ["bai yi", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/whitecloth1.c by LPCConverter
@@ -7131,6 +7400,18 @@ chats = [
       name = "白绸衫"
       aliases = ["white cloth", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/xiaoao.c by LPCConverter
@@ -7140,6 +7421,18 @@ chats = [
       name = "圆领小袄"
       aliases = ["xiao ao", "cloth"]
       description = "这是一件台夷族的圆领小袄。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/yaoqin.c by LPCConverter
@@ -7154,6 +7447,26 @@ chats = [
     greet_delay = 0
     add_actions = ["play"]
   }
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背上解下一把{name}，然後横在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "hammer"
+        value = 300
+        weight = 5000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/chahua11.c by LPCConverter

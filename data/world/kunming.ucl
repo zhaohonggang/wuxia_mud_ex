@@ -1485,6 +1485,18 @@ direction = "west"
       name = "铁甲"
       aliases = ["armor", "jia"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 4000
+        weight = 28000
+        unit = "件"
+        material = "leather"
+        armor = 25
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/baozi.c by LPCConverter
@@ -1494,6 +1506,18 @@ direction = "west"
       name = "包子"
       aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/changjian.c by LPCConverter
@@ -1503,6 +1527,26 @@ direction = "west"
       name = "长剑"
       aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+
+      meta = {
+        damage = 25
+        skill_type = "sword"
+        value = 1500
+        weight = 5000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/gangdao.c by LPCConverter
@@ -1512,6 +1556,26 @@ direction = "west"
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回刀鞘。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "blade"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/guanfu.c by LPCConverter
@@ -1521,6 +1585,18 @@ direction = "west"
       name = "官服"
       aliases = ["guan fu", "fu"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 5000
+        weight = 3000
+        unit = "件"
+        material = "丝"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/huasheng.c by LPCConverter
@@ -1530,6 +1606,18 @@ direction = "west"
       name = "油炸花生"
       aliases = ["huasheng", "peanut"]
       description = "一碟香喷喷的花生米。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 30
+        weight = 60
+        unit = "碟"
+        food = 30
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/huoqiang.c by LPCConverter
@@ -1539,6 +1627,25 @@ direction = "west"
       name = "金火枪"
       aliases = ["jin huoqiang", "jin", "huoqiang"]
       description = "一支由黄金铸成，做工精细的火枪。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}摸出一支金黄色的火枪握在手中。\n"
+    unwield = "{npc}把手中的金火枪放入怀中。\n"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "hammer"
+        value = 25000
+        weight = 5000
+        unit = "支"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/jitui.c by LPCConverter
@@ -1548,6 +1655,25 @@ direction = "west"
       name = "烤鸡腿"
       aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一根{name}，握在手中当武器。"
+  }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/jiudai.c by LPCConverter
@@ -1557,6 +1683,16 @@ direction = "west"
       name = "牛皮酒袋"
       aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/niurou.c by LPCConverter
@@ -1566,6 +1702,18 @@ direction = "west"
       name = "熟牛肉"
       aliases = ["niu rou", "rou"]
       description = "一块香喷喷的熟牛肉。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 150
+        weight = 200
+        unit = "只"
+        food = 60
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/npc/obj/yantong.c by LPCConverter
@@ -1580,6 +1728,26 @@ direction = "west"
     greet_delay = 0
     add_actions = ["fire"]
   }
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从身后抽出{name}握在手中当做武器。"
+    unwield = "{npc}将手中的{name}放了回去。"
+  }
+
+      meta = {
+        damage = 10
+        skill_type = "staff"
+        value = 100
+        weight = 50
+        unit = "个"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kunming/obj/book14_1.c by LPCConverter

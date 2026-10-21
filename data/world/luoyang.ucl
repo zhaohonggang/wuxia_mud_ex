@@ -4387,6 +4387,18 @@ chats = [
     greet_delay = 0
     add_actions = ["zhonghua"]
   }
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 1
+        weight = 100
+        unit = "粒"
+        food = 10
+      }
     }
 
 # Source: C:/files/git/mud/d/luoyang/npc/obj/guo1.c

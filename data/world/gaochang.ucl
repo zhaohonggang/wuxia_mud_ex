@@ -766,6 +766,19 @@ chats = [
       name = "流星锤"
       aliases = ["liuxing chui", "liuxing", "chui"]
       description = "一柄金光闪闪的流星锤。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 40
+        skill_type = "whip"
+        value = 2000
+        weight = 4500
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaochang/npc/obj/map.c by LPCConverter
@@ -775,6 +788,17 @@ chats = [
       name = "高昌迷宫地图"
       aliases = ["map", "ditu"]
       description = "这是一张高昌迷宫地图，依照图示，按以下方位即可进入。  ##==========================================## ## ###东##东##南##东##北##北##东##东##南###### ##==========================================##"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "张"
+        material = "paper"
+      }
     }
 
 # Generated from C:/files/git/mud/d/gaochang/obj/fake_map.c by LPCConverter

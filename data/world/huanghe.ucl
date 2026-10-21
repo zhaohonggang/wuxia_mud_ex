@@ -1875,6 +1875,26 @@ item_desc = {
       name = "丧门斧"
       aliases = ["sangmen fu"]
       description = "这是一杆三尖开刃的三股叉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}掣出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}反别腰后。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "axe"
+        value = 1500
+        weight = 5000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/bi.c by LPCConverter
@@ -1884,6 +1904,26 @@ item_desc = {
       name = "判官笔"
       aliases = ["panguan bi"]
       description = "这是一枝精铁打就的判官笔。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}掣出一枝{name}握在手中。"
+    unwield = "{npc}将手中的{name}反别腰后。"
+  }
+
+      meta = {
+        damage = 20
+        skill_type = "dagger"
+        value = 1500
+        weight = 5000
+        unit = "枝"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/changpao.c by LPCConverter
@@ -1893,6 +1933,17 @@ item_desc = {
       name = "葛布长袍"
       aliases = ["gebu changpao", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 3
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/fenshuici.c by LPCConverter
@@ -1902,6 +1953,26 @@ item_desc = {
       name = "分水刺"
       aliases = ["fenshui ci", "ci"]
       description = "这是一只水中分水峨嵋刺。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一只{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回袖中。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "dagger"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/fork.c by LPCConverter
@@ -1911,6 +1982,26 @@ item_desc = {
       name = "三股叉"
       aliases = ["sangu cha"]
       description = "这是一杆三尖开刃的三股叉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}掣出一杆{name}握在手中。"
+    unwield = "{npc}将手中的{name}反别身后。"
+  }
+
+      meta = {
+        damage = 15
+        skill_type = "club"
+        value = 1500
+        weight = 5000
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/futou.c by LPCConverter
@@ -1920,6 +2011,26 @@ item_desc = {
       name = "大斧头"
       aliases = ["futou", "da futou"]
       description = "这是一把砍柴的大斧头。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回后腰。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "axe"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/shuikao.c by LPCConverter
@@ -1929,6 +2040,17 @@ item_desc = {
       name = "夜行水靠"
       aliases = ["Shui kao", "kao"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/tieqiao.c by LPCConverter
@@ -1938,6 +2060,26 @@ item_desc = {
       name = "铁锹"
       aliases = ["tie qiao", "qiao"]
       description = "这是一把挖矿的铁锹。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回后腰。"
+  }
+
+      meta = {
+        damage = 2
+        skill_type = "club"
+        value = 1000
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
     characters "zaohongma" {

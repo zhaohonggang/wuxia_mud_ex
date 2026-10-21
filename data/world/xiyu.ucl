@@ -1988,6 +1988,15 @@ chats = [
       name = "沙虫壳"
       aliases = ["shachong ke", "ke"]
       description = "这是一只沙虫的干壳，是制备毒药的原料。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiyu/npc/shaonv.c by LPCConverter

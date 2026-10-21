@@ -1133,6 +1133,17 @@ chats = [
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/village/npc/obj/hothammer.c by LPCConverter
@@ -1142,6 +1153,26 @@ chats = [
       name = "烧红的铁锤"
       aliases = ["hot hammer"]
       description = "这是一把沈重的铁锤，打造的相当坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一把{name}，试了试重量，然後握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 45
+        skill_type = "hammer"
+        value = 300
+        weight = 8000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/village/npc/obj/youlong.c by LPCConverter
@@ -1151,6 +1182,25 @@ chats = [
       name = "游龙剑"
       aliases = ["youlong sword", "youlong", "sword"]
       description = "这是把看起来很普通的长剑，但仔细一看，剑身上有几条细纹闪烁不定。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "只听见「飕」地一声，{npc}的手中已经多了一把寒光四射的宝剑----{name}。"
+  }
+
+      meta = {
+        damage = 80
+        skill_type = "sword"
+        value = 2400
+        weight = 8000
+        unit = "把"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/village/obj/zhujian.c by LPCConverter

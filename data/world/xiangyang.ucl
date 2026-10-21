@@ -3823,6 +3823,26 @@ chats = [
       name = "木刀"
       aliases = ["mu dao", "blade", "dao"]
       description = "这是一柄木匠做的木刀，手工相当精细。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰带里抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰带上。"
+  }
+
+      meta = {
+        damage = 3
+        skill_type = "blade"
+        value = 50
+        weight = 500
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/npc/obj/mugun.c by LPCConverter
@@ -3832,6 +3852,26 @@ chats = [
       name = "木棍"
       aliases = ["mu gun", "club", "gun"]
       description = "这是一杆木匠做的木棍，手工相当精细。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰带里抽出一杆{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰带上。"
+  }
+
+      meta = {
+        damage = 3
+        skill_type = "club"
+        value = 50
+        weight = 500
+        unit = "杆"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/npc/obj/mujian.c by LPCConverter
@@ -3841,6 +3881,26 @@ chats = [
       name = "木剑"
       aliases = ["mu jian", "sword", "jian"]
       description = "这是一柄木匠做的木剑，手工相当精细。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰带里抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰带上。"
+  }
+
+      meta = {
+        damage = 3
+        skill_type = "sword"
+        value = 50
+        weight = 500
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/xiangyang/obj/rice.c by LPCConverter

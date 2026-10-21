@@ -4338,6 +4338,18 @@ chats = [
       name = "大白菜"
       aliases = ["bai cai", "bai", "cai"]
       description = "新鲜的白菜。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "棵"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/caidao.c by LPCConverter
@@ -4347,6 +4359,26 @@ chats = [
       name = "菜刀"
       aliases = ["cai dao", "blade"]
       description = "这是一柄亮晃晃的菜刀。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回裤腰。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "blade"
+        value = 100
+        weight = 7000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/caikuang.c by LPCConverter
@@ -4356,6 +4388,16 @@ chats = [
       name = "菜筐子"
       aliases = ["cai kuang"]
       description = "一只翠绿细竹子竹筐。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 500
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/chaihe1.c by LPCConverter
@@ -4365,6 +4407,18 @@ chats = [
       name = "柴禾"
       aliases = ["chai he", "staff"]
       description = "这是一根粗长的树枝。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        weight = 2000
+        unit = "根"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/cheng-cloth.c by LPCConverter
@@ -4374,6 +4428,17 @@ chats = [
       name = "金边黑布袈裟"
       aliases = ["jia sha", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/chuihuo.c by LPCConverter
@@ -4383,6 +4448,25 @@ chats = [
       name = "吹火管"
       aliases = ["chui huoguan", "guan"]
       description = "在一端吹气,使灶火旺盛的竹管."
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「呼」地一声抽出一把{name}握在手中。"
+  }
+
+      meta = {
+        damage = 5
+        skill_type = "staff"
+        value = 10
+        weight = 1000
+        unit = "根"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/dao-cloth.c by LPCConverter
@@ -4392,6 +4476,17 @@ chats = [
       name = "灰布镶边袈裟"
       aliases = ["jia sha", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 5000
+        unit = "件"
+        material = "cloth"
+        armor = 6
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/dayu.c by LPCConverter
@@ -4401,6 +4496,16 @@ chats = [
       name = "禹王神像"
       aliases = ["xiang"]
       description = "大禹治水，历四十年，后人为纪念而设。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/fozhu.c by LPCConverter
@@ -4410,6 +4515,17 @@ chats = [
       name = "紫檀佛串"
       aliases = ["fo chuan"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 1000
+        unit = "条"
+        material = "wood"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/guanyin.c by LPCConverter
@@ -4419,6 +4535,16 @@ chats = [
       name = "千手观音神像"
       aliases = ["xiang"]
       description = "从身上伸出一千只手，每只手掌上都有一只眼睛。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/guanyu.c by LPCConverter
@@ -4428,6 +4554,16 @@ chats = [
       name = "关帝神像"
       aliases = ["xiang"]
       description = "红面长须，一手持刀，一手拿着《春秋》。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jindi.c by LPCConverter
@@ -4437,6 +4573,26 @@ chats = [
       name = "金笛"
       aliases = ["jin di", "jin", "di"]
       description = "一根由纯金打铸的笛子，在阳光下闪闪生辉。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从腰间抽出一根金笛握在手中，轻轻玩弄。\n"
+    unwield = "{npc}微微一笑，将手中的金笛插回腰间。\n"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "sword"
+        value = 25000
+        weight = 10000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing1.c by LPCConverter
@@ -4446,6 +4602,24 @@ chats = [
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing2.c by LPCConverter
@@ -4455,6 +4629,24 @@ chats = [
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing3.c by LPCConverter
@@ -4464,6 +4656,24 @@ chats = [
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing4.c by LPCConverter
@@ -4473,6 +4683,24 @@ chats = [
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 500
+        weight = 200
+        unit = "本"
+        material = "paper"
+        book = {
+          skill = "buddhism"
+          max_skill = 100
+          exp_required = 0
+          jing_cost = 20
+          difficulty = 20
+        }
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jinzhen.c by LPCConverter
@@ -4482,6 +4710,19 @@ chats = [
       name = "芙蓉金针"
       aliases = ["furong jinzhen", "furong", "jinzhen", "zhen"]
       description = "这是一些细长的金针，长约寸许。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        damage = 50
+        skill_type = "throwing"
+        value = 0
+        weight = 200
+        unit = "些"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/milexiang.c by LPCConverter
@@ -4491,6 +4732,16 @@ chats = [
       name = "八宝弥勒佛像"
       aliases = ["xiang"]
       description = "身上缀满各类宝石,翡翠,黄金的弥勒佛像."
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/qingcai.c by LPCConverter
@@ -4500,6 +4751,18 @@ chats = [
       name = "大青菜"
       aliases = ["qing cai", "qing", "cai"]
       description = "新鲜的青菜。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 2
+        weight = 100
+        unit = "棵"
+        food = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/rulaixiang.c by LPCConverter
@@ -4509,6 +4772,16 @@ chats = [
       name = "如来佛像"
       aliases = ["xiang"]
       description = "佛教中的至尊，坐八宝莲花。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/sanqingxiang.c by LPCConverter
@@ -4518,6 +4791,16 @@ chats = [
       name = "三清神像"
       aliases = ["xiang"]
       description = "道家的三清神像，据说老子一气化三清。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiebian.c by LPCConverter
@@ -4527,6 +4810,26 @@ chats = [
       name = "铁鞭"
       aliases = ["tie bian", "tie", "bian"]
       description = "这是一柄粗大的铁鞭，总有三十来斤重。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抖出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}别回腰间。"
+  }
+
+      meta = {
+        damage = 40
+        skill_type = "staff"
+        value = 100
+        weight = 500
+        unit = "柄"
+        material = "leather"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiefutu.c by LPCConverter
@@ -4536,6 +4839,16 @@ chats = [
       name = "青铜浮屠"
       aliases = ["futu"]
       description = "这是佛门中的浮屠，上面雕刻着金刚经。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiejiang.c by LPCConverter
@@ -4545,6 +4858,26 @@ chats = [
       name = "铁桨"
       aliases = ["tie jiang", "tie", "jiang"]
       description = "这是一根铁桨，举可齐眉，看来很是沉重，可攻击大片敌人。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}抽出一根{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回腰间。"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "staff"
+        value = 200
+        weight = 3000
+        unit = "根"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/xuan-cloth.c by LPCConverter
@@ -4554,6 +4887,17 @@ chats = [
       name = "护法袈裟"
       aliases = ["jia sha", "cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 8000
+        unit = "件"
+        material = "cloth"
+        armor = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/yudixiang.c by LPCConverter
@@ -4563,6 +4907,16 @@ chats = [
       name = "白玉雕玉皇像"
       aliases = ["xiang"]
       description = "玉帝手持玉版，端坐微笑不语。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 50
+        weight = 500000
+        unit = "座"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/zaopeng.c by LPCConverter
@@ -4572,6 +4926,16 @@ chats = [
       name = "木澡盆"
       aliases = ["zaopen"]
       description = "木头的澡盆,已经很陈旧。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 500000
+        unit = "只"
+      }
     }
 
 # Generated from C:/files/git/mud/d/kaifeng/obj/rice.c by LPCConverter

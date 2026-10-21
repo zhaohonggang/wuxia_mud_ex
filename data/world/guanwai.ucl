@@ -2165,6 +2165,26 @@ chats = [
       name = "铁琵琶"
       aliases = ["tiepipa"]
       description = "这是一把奇形铁琵琶，打造的相当精巧坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}从背上解下一把{name}，然後横在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 45
+        skill_type = "hammer"
+        value = 3
+        weight = 50000
+        unit = "把"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/npc/obj/tongren.c by LPCConverter
@@ -2174,6 +2194,26 @@ chats = [
       name = "独脚铜人"
       aliases = ["tongren"]
       description = "这是一只沉重的独脚铜人，打造的相当粗大坚实。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一只{name}，试了试重量，然後握在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 50
+        skill_type = "hammer"
+        value = 3
+        weight = 50000
+        unit = "只"
+        material = "iron"
+      }
     }
 
 # Generated from C:/files/git/mud/d/guanwai/obj/axe.c by LPCConverter

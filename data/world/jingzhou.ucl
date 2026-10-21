@@ -2655,6 +2655,18 @@ chats = [
       name = "包子"
       aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "个"
+        food = 20
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/cloth.c by LPCConverter
@@ -2664,6 +2676,17 @@ chats = [
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/gangjian.c by LPCConverter
@@ -2673,6 +2696,26 @@ chats = [
       name = "钢剑"
       aliases = ["jian", "sword"]
       description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回剑鞘。"
+  }
+
+      meta = {
+        damage = 30
+        skill_type = "sword"
+        value = 2000
+        weight = 6000
+        unit = "柄"
+        material = "steel"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/gfkey.c by LPCConverter
@@ -2682,6 +2725,15 @@ chats = [
       name = "闺房钥匙"
       aliases = ["guifang key", "key"]
       description = "这是一把很普通的钥匙。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 10
+        unit = "把"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/jitui.c by LPCConverter
@@ -2691,6 +2743,25 @@ chats = [
       name = "烤鸡腿"
       aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
+  verbs = [
+    "get",
+    "drop",
+    "eat"
+  ]
+
+  messages = {
+    wield = "{npc}抓起一根{name}，握在手中当武器。"
+  }
+
+      meta = {
+        damage = 1
+        skill_type = "hammer"
+        value = 80
+        weight = 350
+        unit = "根"
+        material = "bone"
+        food = 15
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/jiudai.c by LPCConverter
@@ -2700,6 +2771,16 @@ chats = [
       name = "牛皮酒袋"
       aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 700
+        unit = "个"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/juhua.c by LPCConverter
@@ -2709,6 +2790,16 @@ chats = [
       name = "野菊花"
       aliases = ["ye juhua", "juhua"]
       description = "一朵平平常常的野菊花，香味淡淡的。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 10
+        unit = "朵"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/juhua1.c by LPCConverter
@@ -2718,6 +2809,16 @@ chats = [
       name = "绿菊花"
       aliases = ["lv juhua", "juhua"]
       description = "一盆淡绿的菊花，叫做“春水碧波”。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 100
+        unit = "盆"
+        material = "wood"
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/junfu.c by LPCConverter
@@ -2727,6 +2828,18 @@ chats = [
       name = "军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的官兵服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 200
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 10
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/necklace.c by LPCConverter
@@ -2736,6 +2849,18 @@ chats = [
       name = "金项链"
       aliases = ["golden necklace", "necklace", "lace"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 2500
+        weight = 500
+        unit = "串"
+        material = "gold"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/pink_cloth.c by LPCConverter
@@ -2753,6 +2878,18 @@ chats = [
       name = "衙役服"
       aliases = ["yayi cloth", "cloth"]
       description = "这是一件崭新的白棉布衙役服。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 150
+        weight = 2000
+        unit = "件"
+        material = "cloth"
+        armor = 5
+      }
     }
 
 # Generated from C:/files/git/mud/d/jingzhou/obj/armor.c by LPCConverter

@@ -5105,6 +5105,17 @@ chats = [
       name = "布衣"
       aliases = ["cloth"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 3000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/npc/obj/goupi.c by LPCConverter
@@ -5114,6 +5125,18 @@ chats = [
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 300
+        weight = 5000
+        unit = "块"
+        material = "fur"
+        armor = 1
+      }
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/obj/eluanshi.c by LPCConverter
