@@ -59,7 +59,8 @@ defmodule Kantele.Character.MakeCommand do
         list_known_recipes(conn, character)
 
       String.ends_with?(arg, " ?") ->
-        show_recipe_requirements(conn, character, String.slice(arg, 0..-3))
+        # `0..-3` 已被默认步长 -1 弃用，且 String.slice 不支持负步长；`//1` 才是正解
+        show_recipe_requirements(conn, character, String.slice(arg, 0..-3//1))
 
       true ->
         start_making(conn, character, arg)
@@ -95,19 +96,20 @@ defmodule Kantele.Character.MakeCommand do
       |> render(CommandView, "text", %{text: "你还不会配这种药啊！\n"})
       |> prompt(CommandView, "prompt", %{})
     else
-      lines = ["炼制#{recipe.name}需要以下这些药材："]
+      # 药材 / 技能两段必须用 `Enum.map` 收集：早先在 `Enum.each` 里
+      # `lines = lines ++ [...]` 只是重绑了被丢弃的局部变量，两段都没输出（R20）。
+      herb_lines =
+        Enum.map(recipe.herbs, fn {herb, count} ->
+          "#{count}#{get_herb_unit(herb)}#{get_herb_name(herb)}"
+        end)
 
-      Enum.each(recipe.herbs, fn {herb, count} ->
-        lines = lines ++ ["#{count}#{get_herb_unit(herb)}#{get_herb_name(herb)}"]
-      end)
-
-      # 技能要求
-      Enum.each(recipe.skills, fn {skill, level} ->
-        lines = lines ++ ["#{get_skill_name(skill)}: #{level}级"]
-      end)
+      skill_lines =
+        Enum.map(recipe.skills, fn {skill, level} -> "#{get_skill_name(skill)}: #{level}级" end)
 
       lines =
-        lines ++
+        ["炼制#{recipe.name}需要以下这些药材："] ++
+          herb_lines ++
+          skill_lines ++
           [
             "精力消耗: #{recipe.jing}",
             "内力消耗: #{recipe.neili}",
@@ -233,26 +235,24 @@ defmodule Kantele.Character.MakeCommand do
   end
 
   defp consume_herbs(inventory, recipe) do
-    new_inv = inventory
-    msg_parts = []
+    # 必须用 `Enum.reduce` 把两个累加器带出来。早先在 `Enum.each` 里重绑
+    # `new_inv` / `msg_parts` 全被丢弃：药材**一件都没扣**（可以无限炼同一炉），
+    # 「你选出」后面也永远是空的（R20）。
+    {new_inv, msg_parts} =
+      Enum.reduce(recipe.herbs, {inventory, []}, fn {herb, count}, {inv, parts} ->
+        inv =
+          Enum.map(inv, fn inst ->
+            item = Items.get!(inst.item_id)
 
-    Enum.each(recipe.herbs, fn {herb, count} ->
-      new_inv =
-        Enum.map(new_inv, fn inst ->
-          item = Items.get!(inst.item_id)
-
-          if item.callback_module.matches?(item, herb) do
-            %{
+            if item.callback_module.matches?(item, herb) do
+              %{inst | amount: (inst.amount || 1) - count}
+            else
               inst
-              | amount: (inst.amount || 1) - count
-            }
-          else
-            inst
-          end
-        end)
+            end
+          end)
 
-      msg_parts = msg_parts ++ ["#{count}#{get_herb_unit(herb)}#{get_herb_name(herb)}"]
-    end)
+        {inv, parts ++ ["#{count}#{get_herb_unit(herb)}#{get_herb_name(herb)}"]}
+      end)
 
     msg = "你选出#{Enum.join(msg_parts, "、")}"
 

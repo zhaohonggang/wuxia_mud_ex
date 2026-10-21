@@ -23,8 +23,13 @@ zones "kaifeng" {
   room_characters "8bao" {
     room_id = rooms.8bao.id
     characters = [
-      { id = characters.jiansi.id },
-      { id = characters.milexiang.id }    ]
+      { id = characters.jiansi.id }    ]
+  }
+
+  room_items "8bao" {
+    room_id = rooms.8bao.id
+    items = [
+      { id = items.milexiang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/caidi.c by LPCConverter
@@ -136,8 +141,13 @@ zones "kaifeng" {
 
   room_characters "caifang" {
     room_id = rooms.caifang.id
-    characters = [
-      { id = characters.chaihe1.id }    ]
+    characters = []
+  }
+
+  room_items "caifang" {
+    room_id = rooms.caifang.id
+    items = [
+      { id = items.chaihe1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/cangjing.c by LPCConverter
@@ -184,11 +194,16 @@ zones "kaifeng" {
 
   room_characters "cangjing2" {
     room_id = rooms.cangjing2.id
-    characters = [
-      { id = characters.jing4.id },
-      { id = characters.jing3.id },
-      { id = characters.jing2.id },
-      { id = characters.jing1.id }    ]
+    characters = []
+  }
+
+  room_items "cangjing2" {
+    room_id = rooms.cangjing2.id
+    items = [
+      { id = items.jing4.id },
+      { id = items.jing3.id },
+      { id = items.jing2.id },
+      { id = items.jing1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/chufang.c by LPCConverter
@@ -408,8 +423,13 @@ zones "kaifeng" {
 
   room_characters "daxiong" {
     room_id = rooms.daxiong.id
-    characters = [
-      { id = characters.rulaixiang.id }    ]
+    characters = []
+  }
+
+  room_items "daxiong" {
+    room_id = rooms.daxiong.id
+    items = [
+      { id = items.rulaixiang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/eroad.c by LPCConverter
@@ -681,8 +701,13 @@ zones "kaifeng" {
 
   room_characters "guandi" {
     room_id = rooms.guandi.id
-    characters = [
-      { id = characters.guanyu.id }    ]
+    characters = []
+  }
+
+  room_items "guandi" {
+    room_id = rooms.guandi.id
+    items = [
+      { id = items.guanyu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/gulou.c by LPCConverter
@@ -1987,8 +2012,13 @@ direction = ~
   room_characters "qianshou" {
     room_id = rooms.qianshou.id
     characters = [
-      { id = characters.oldwomen.id },
-      { id = characters.guanyin.id }    ]
+      { id = characters.oldwomen.id }    ]
+  }
+
+  room_items "qianshou" {
+    room_id = rooms.qianshou.id
+    items = [
+      { id = items.guanyin.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/qianyuan.c by LPCConverter
@@ -2158,8 +2188,13 @@ direction = ~
   room_characters "sanqing" {
     room_id = rooms.sanqing.id
     characters = [
-      { id = characters.sanqingxiang.id },
-      { id = characters.xianghuo.id }    ]
+      { id = characters.xianghuo.id }        ]
+  }
+
+  room_items "sanqing" {
+    room_id = rooms.sanqing.id
+    items = [
+      { id = items.sanqingxiang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/shanlu1.c by LPCConverter
@@ -2636,8 +2671,13 @@ direction = ~
 
   room_characters "yuhuang2" {
     room_id = rooms.yuhuang2.id
-    characters = [
-      { id = characters.yudixiang.id }    ]
+    characters = []
+  }
+
+  room_items "yuhuang2" {
+    room_id = rooms.yuhuang2.id
+    items = [
+      { id = items.yudixiang.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/yushi.c by LPCConverter
@@ -2683,8 +2723,13 @@ direction = ~
 
   room_characters "yushi2" {
     room_id = rooms.yushi2.id
-    characters = [
-      { id = characters.zaopeng.id }    ]
+    characters = []
+  }
+
+  room_items "yushi2" {
+    room_id = rooms.yushi2.id
+    items = [
+      { id = items.zaopeng.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/yuwang.c by LPCConverter
@@ -2730,8 +2775,13 @@ direction = ~
 
   room_characters "yuwangmiao" {
     room_id = rooms.yuwangmiao.id
-    characters = [
-      { id = characters.dayu.id }    ]
+    characters = []
+  }
+
+  room_items "yuwangmiao" {
+    room_id = rooms.yuwangmiao.id
+    items = [
+      { id = items.dayu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/zhonglou.c by LPCConverter
@@ -2772,8 +2822,13 @@ direction = ~
 
   room_characters "zhongyuan" {
     room_id = rooms.zhongyuan.id
-    characters = [
-      { id = characters.tiefutu.id }    ]
+    characters = []
+  }
+
+  room_items "zhongyuan" {
+    room_id = rooms.zhongyuan.id
+    items = [
+      { id = items.tiefutu.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kaifeng/zhulin.c by LPCConverter
@@ -4279,25 +4334,16 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/baicai.c by LPCConverter
 # Zone: kaifeng
 
-    characters "baicai" {
+    items "baicai" {
       name = "大白菜"
       aliases = ["bai cai", "bai", "cai"]
       description = "新鲜的白菜。"
     }
 
-# Generated from C:/files/git/mud/d/kaifeng/npc/obj/bibohu.c by LPCConverter
-# Zone: kaifeng
-
-    characters "bibohu" {
-      name = "胭脂碧波瓠"
-      aliases = ["bibo hai", "bibo", "hai"]
-      description = "碧绿的瓷壁上留着点点胭脂红,乃是磁中绝品。"
-    }
-
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/caidao.c by LPCConverter
 # Zone: kaifeng
 
-    characters "caidao" {
+    items "caidao" {
       name = "菜刀"
       aliases = ["cai dao", "blade"]
       description = "这是一柄亮晃晃的菜刀。"
@@ -4306,7 +4352,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/caikuang.c by LPCConverter
 # Zone: kaifeng
 
-    characters "caikuang" {
+    items "caikuang" {
       name = "菜筐子"
       aliases = ["cai kuang"]
       description = "一只翠绿细竹子竹筐。"
@@ -4315,7 +4361,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/chaihe1.c by LPCConverter
 # Zone: kaifeng
 
-    characters "chaihe1" {
+    items "chaihe1" {
       name = "柴禾"
       aliases = ["chai he", "staff"]
       description = "这是一根粗长的树枝。"
@@ -4324,7 +4370,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/cheng-cloth.c by LPCConverter
 # Zone: kaifeng
 
-    characters "cheng_cloth" {
+    items "cheng_cloth" {
       name = "金边黑布袈裟"
       aliases = ["jia sha", "cloth"]
       description = ""
@@ -4333,25 +4379,16 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/chuihuo.c by LPCConverter
 # Zone: kaifeng
 
-    characters "chuihuo" {
+    items "chuihuo" {
       name = "吹火管"
       aliases = ["chui huoguan", "guan"]
       description = "在一端吹气,使灶火旺盛的竹管."
     }
 
-# Generated from C:/files/git/mud/d/kaifeng/npc/obj/ciwan.c by LPCConverter
-# Zone: kaifeng
-
-    characters "ciwan" {
-      name = "白天目磁碗"
-      aliases = ["baitianmu ciwan", "ciwan", "bai"]
-      description = "纯白无瑕,薄如纸的上佳瓷器。"
-    }
-
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/dao-cloth.c by LPCConverter
 # Zone: kaifeng
 
-    characters "dao_cloth" {
+    items "dao_cloth" {
       name = "灰布镶边袈裟"
       aliases = ["jia sha", "cloth"]
       description = ""
@@ -4360,7 +4397,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/dayu.c by LPCConverter
 # Zone: kaifeng
 
-    characters "dayu" {
+    items "dayu" {
       name = "禹王神像"
       aliases = ["xiang"]
       description = "大禹治水，历四十年，后人为纪念而设。"
@@ -4369,7 +4406,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/fozhu.c by LPCConverter
 # Zone: kaifeng
 
-    characters "fozhu" {
+    items "fozhu" {
       name = "紫檀佛串"
       aliases = ["fo chuan"]
       description = ""
@@ -4378,7 +4415,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/guanyin.c by LPCConverter
 # Zone: kaifeng
 
-    characters "guanyin" {
+    items "guanyin" {
       name = "千手观音神像"
       aliases = ["xiang"]
       description = "从身上伸出一千只手，每只手掌上都有一只眼睛。"
@@ -4387,7 +4424,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/guanyu.c by LPCConverter
 # Zone: kaifeng
 
-    characters "guanyu" {
+    items "guanyu" {
       name = "关帝神像"
       aliases = ["xiang"]
       description = "红面长须，一手持刀，一手拿着《春秋》。"
@@ -4396,7 +4433,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jindi.c by LPCConverter
 # Zone: kaifeng
 
-    characters "jindi" {
+    items "jindi" {
       name = "金笛"
       aliases = ["jin di", "jin", "di"]
       description = "一根由纯金打铸的笛子，在阳光下闪闪生辉。"
@@ -4405,7 +4442,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing1.c by LPCConverter
 # Zone: kaifeng
 
-    characters "jing1" {
+    items "jing1" {
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
@@ -4414,7 +4451,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing2.c by LPCConverter
 # Zone: kaifeng
 
-    characters "jing2" {
+    items "jing2" {
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
@@ -4423,7 +4460,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing3.c by LPCConverter
 # Zone: kaifeng
 
-    characters "jing3" {
+    items "jing3" {
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
@@ -4432,7 +4469,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jing4.c by LPCConverter
 # Zone: kaifeng
 
-    characters "jing4" {
+    items "jing4" {
       name = "NPC"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
@@ -4441,25 +4478,16 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/jinzhen.c by LPCConverter
 # Zone: kaifeng
 
-    characters "jinzhen" {
+    items "jinzhen" {
       name = "芙蓉金针"
       aliases = ["furong jinzhen", "furong", "jinzhen", "zhen"]
       description = "这是一些细长的金针，长约寸许。"
     }
 
-# Generated from C:/files/git/mud/d/kaifeng/npc/obj/luowenhai.c by LPCConverter
-# Zone: kaifeng
-
-    characters "luowenhai" {
-      name = "淡青螺纹醢"
-      aliases = ["luowen hai"]
-      description = "淡青色，内外都有螺旋形的条纹。"
-    }
-
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/milexiang.c by LPCConverter
 # Zone: kaifeng
 
-    characters "milexiang" {
+    items "milexiang" {
       name = "八宝弥勒佛像"
       aliases = ["xiang"]
       description = "身上缀满各类宝石,翡翠,黄金的弥勒佛像."
@@ -4468,7 +4496,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/qingcai.c by LPCConverter
 # Zone: kaifeng
 
-    characters "qingcai" {
+    items "qingcai" {
       name = "大青菜"
       aliases = ["qing cai", "qing", "cai"]
       description = "新鲜的青菜。"
@@ -4477,7 +4505,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/rulaixiang.c by LPCConverter
 # Zone: kaifeng
 
-    characters "rulaixiang" {
+    items "rulaixiang" {
       name = "如来佛像"
       aliases = ["xiang"]
       description = "佛教中的至尊，坐八宝莲花。"
@@ -4486,7 +4514,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/sanqingxiang.c by LPCConverter
 # Zone: kaifeng
 
-    characters "sanqingxiang" {
+    items "sanqingxiang" {
       name = "三清神像"
       aliases = ["xiang"]
       description = "道家的三清神像，据说老子一气化三清。"
@@ -4495,7 +4523,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiebian.c by LPCConverter
 # Zone: kaifeng
 
-    characters "tiebian" {
+    items "tiebian" {
       name = "铁鞭"
       aliases = ["tie bian", "tie", "bian"]
       description = "这是一柄粗大的铁鞭，总有三十来斤重。"
@@ -4504,7 +4532,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiefutu.c by LPCConverter
 # Zone: kaifeng
 
-    characters "tiefutu" {
+    items "tiefutu" {
       name = "青铜浮屠"
       aliases = ["futu"]
       description = "这是佛门中的浮屠，上面雕刻着金刚经。"
@@ -4513,7 +4541,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/tiejiang.c by LPCConverter
 # Zone: kaifeng
 
-    characters "tiejiang" {
+    items "tiejiang" {
       name = "铁桨"
       aliases = ["tie jiang", "tie", "jiang"]
       description = "这是一根铁桨，举可齐眉，看来很是沉重，可攻击大片敌人。"
@@ -4522,7 +4550,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/xuan-cloth.c by LPCConverter
 # Zone: kaifeng
 
-    characters "xuan_cloth" {
+    items "xuan_cloth" {
       name = "护法袈裟"
       aliases = ["jia sha", "cloth"]
       description = ""
@@ -4531,7 +4559,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/yudixiang.c by LPCConverter
 # Zone: kaifeng
 
-    characters "yudixiang" {
+    items "yudixiang" {
       name = "白玉雕玉皇像"
       aliases = ["xiang"]
       description = "玉帝手持玉版，端坐微笑不语。"
@@ -4540,7 +4568,7 @@ chats = [
 # Generated from C:/files/git/mud/d/kaifeng/npc/obj/zaopeng.c by LPCConverter
 # Zone: kaifeng
 
-    characters "zaopeng" {
+    items "zaopeng" {
       name = "木澡盆"
       aliases = ["zaopen"]
       description = "木头的澡盆,已经很陈旧。"
@@ -4592,6 +4620,7 @@ chats = [
 
     items "bibohu" {
       name = "胭脂碧波瓠"
+      aliases = ["bibo hai", "bibo", "hai"]
       description = "碧绿的瓷壁上留着点点胭脂红,乃是磁中绝品。"
   verbs = [
     "get",
@@ -4611,6 +4640,7 @@ chats = [
 
     items "ciwan" {
       name = "白天目磁碗"
+      aliases = ["baitianmu ciwan", "ciwan", "bai"]
       description = "纯白无瑕,薄如纸的上佳瓷器。"
   verbs = [
     "get",
@@ -4630,6 +4660,7 @@ chats = [
 
     items "luowenhai" {
       name = "淡青螺纹醢"
+      aliases = ["luowen hai"]
       description = "淡青色，内外都有螺旋形的条纹。"
   verbs = [
     "get",

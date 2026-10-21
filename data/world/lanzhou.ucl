@@ -1308,103 +1308,13 @@ chats = [
   }
     }
 
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/bottle.c by LPCConverter
-# Zone: lanzhou
-
-    characters "bottle" {
-      name = "水壶"
-      aliases = ["water bottle", "bottle"]
-      description = "一个不知道用什么动物的皮制成的水壶。"
-    }
-
 # Generated from C:/files/git/mud/d/lanzhou/npc/obj/cloth.c by LPCConverter
 # Zone: lanzhou
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/gourou.c by LPCConverter
-# Zone: lanzhou
-
-    characters "gourou" {
-      name = "红烧狗肉"
-      aliases = ["gou rou", "gou"]
-      description = "一碗香喷喷的红烧狗肉"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/jiouhulu.c by LPCConverter
-# Zone: lanzhou
-
-    characters "jiouhulu" {
-      name = "酒葫芦"
-      aliases = ["jiouhulu", "hulu"]
-      description = "一个用葫芦制成的酒壶。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/jiudai.c by LPCConverter
-# Zone: lanzhou
-
-    characters "jiudai" {
-      name = "牛皮酒袋"
-      aliases = ["jiudai", "wineskin", "skin"]
-      description = "一个用来装酒的大酒袋，大概装得八、九升的酒。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/kaoya.c by LPCConverter
-# Zone: lanzhou
-
-    characters "kaoya" {
-      name = "烤鸭"
-      aliases = ["kaoya", "ya"]
-      description = "一只肥得流油的北京烤鸭。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/maoniurou.c by LPCConverter
-# Zone: lanzhou
-
-    characters "maoniurou" {
-      name = "耗牛肉"
-      aliases = ["maoniu rou", "rou"]
-      description = "一块烧烤得香喷喷的耗牛肉。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/shoes.c by LPCConverter
-# Zone: lanzhou
-
-    characters "shoes" {
-      name = "麻鞋"
-      aliases = ["gunny shoes", "shoes"]
-      description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/stick.c by LPCConverter
-# Zone: lanzhou
-
-    characters "stick" {
-      name = "手杖"
-      aliases = ["walking stick", "stick"]
-      description = "这是一根爬山用的手杖。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/tangbo.c by LPCConverter
-# Zone: lanzhou
-
-    characters "tangbo" {
-      name = "汤包"
-      aliases = ["tangbo"]
-      description = "一个香喷喷的鲜肉汤包。"
-    }
-
-# Generated from C:/files/git/mud/d/lanzhou/npc/obj/tanghulu.c by LPCConverter
-# Zone: lanzhou
-
-    characters "tanghulu" {
-      name = "冰糖葫芦"
-      aliases = ["bingtang hulu", "bingtang", "hulu"]
-      description = "一串火红的冰糖葫芦"
     }
 
 # Source: C:/files/git/mud/d/lanzhou/npc/obj/bottle.c
@@ -1412,6 +1322,7 @@ chats = [
 
     items "bottle" {
       name = "水壶"
+      aliases = ["water bottle", "bottle"]
       description = "一个不知道用什么动物的皮制成的水壶。"
   verbs = [
     "get",
@@ -1430,6 +1341,7 @@ chats = [
 
     items "gourou" {
       name = "红烧狗肉"
+      aliases = ["gou rou", "gou"]
       description = "一碗香喷喷的红烧狗肉"
   verbs = [
     "get",
@@ -1450,6 +1362,7 @@ chats = [
 
     items "jiouhulu" {
       name = "酒葫芦"
+      aliases = ["jiouhulu", "hulu"]
       description = "一个用葫芦制成的酒壶。"
   verbs = [
     "get",
@@ -1468,6 +1381,7 @@ chats = [
 
     items "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装酒的大酒袋，大概装得八、九升的酒。"
   verbs = [
     "get",
@@ -1486,6 +1400,7 @@ chats = [
 
     items "kaoya" {
       name = "烤鸭"
+      aliases = ["kaoya", "ya"]
       description = "一只肥得流油的北京烤鸭。"
   verbs = [
     "get",
@@ -1506,6 +1421,7 @@ chats = [
 
     items "maoniurou" {
       name = "耗牛肉"
+      aliases = ["maoniu rou", "rou"]
       description = "一块烧烤得香喷喷的耗牛肉。"
   verbs = [
     "get",
@@ -1526,6 +1442,7 @@ chats = [
 
     items "shoes" {
       name = "麻鞋"
+      aliases = ["gunny shoes", "shoes"]
       description = "这是一双麻布鞋，不易大滑，供游人登山使用。"
   verbs = [
     "get",
@@ -1546,6 +1463,7 @@ chats = [
 
     items "stick" {
       name = "手杖"
+      aliases = ["walking stick", "stick"]
       description = "这是一根爬山用的手杖。"
   verbs = [
     "get",
@@ -1569,6 +1487,7 @@ chats = [
 
     items "tangbo" {
       name = "汤包"
+      aliases = ["tangbo"]
       description = "一个香喷喷的鲜肉汤包。"
   verbs = [
     "get",
@@ -1589,6 +1508,7 @@ chats = [
 
     items "tanghulu" {
       name = "冰糖葫芦"
+      aliases = ["bingtang hulu", "bingtang", "hulu"]
       description = "一串火红的冰糖葫芦"
   verbs = [
     "get",

@@ -2444,76 +2444,13 @@ chats = [
   ]
     }
 
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/baozi.c by LPCConverter
-# Zone: chengdu
-
-    characters "baozi" {
-      name = "包子"
-      aliases = ["baozi", "dumpling"]
-      description = "一个香喷喷的肉包子。"
-    }
-
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/feihuangshi.c by LPCConverter
-# Zone: chengdu
-
-    characters "feihuangshi" {
-      name = "飞蝗石"
-      aliases = ["feihuang shi", "shi"]
-      description = "仔细挑选的鹅卵石，大小一致，个个都滴溜溜圆。"
-    }
-
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/flower-leaf.c by LPCConverter
-# Zone: chengdu
-
-    characters "flower_leaf" {
-      name = "花瓣"
-      aliases = ["flower leaf", "hua ban", "ban"]
-      description = "新鲜的玫瑰花的花瓣，上面还挂这晶莹的露珠。"
-    }
-
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/jitui.c by LPCConverter
-# Zone: chengdu
-
-    characters "jitui" {
-      name = "烤鸡腿"
-      aliases = ["jitui", "tui"]
-      description = "一枝烤得香喷喷的鸡腿。"
-    }
-
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/jiudai.c by LPCConverter
-# Zone: chengdu
-
-    characters "jiudai" {
-      name = "牛皮酒袋"
-      aliases = ["jiudai", "wineskin", "skin"]
-      description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
-    }
-
 # Generated from C:/files/git/mud/d/chengdu/npc/obj/lianzi.c by LPCConverter
 # Zone: chengdu
 
-    characters "lianzi" {
+    items "lianzi" {
       name = "铁莲子"
       aliases = ["tie lianzi", "lianzi", "tie"]
       description = "铁莲子是一种以量取胜的暗器，沉颠颠的。"
-    }
-
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/tea-leaf.c by LPCConverter
-# Zone: chengdu
-
-    characters "tea_leaf" {
-      name = "茶叶"
-      aliases = ["tea leaf", "tea"]
-      description = "才采的新茶，发出一股淡淡的香气。"
-    }
-
-# Generated from C:/files/git/mud/d/chengdu/npc/obj/tielianzi.c by LPCConverter
-# Zone: chengdu
-
-    characters "tielianzi" {
-      name = "铁莲子"
-      aliases = ["tie lianzi", "lianzi", "zi"]
-      description = "精铁打制的莲子状暗器。"
     }
 
 # Generated from C:/files/git/mud/d/chengdu/obj/jiaonei.c by LPCConverter
@@ -2555,6 +2492,7 @@ chats = [
 
     items "baozi" {
       name = "包子"
+      aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
   verbs = [
     "get",
@@ -2575,6 +2513,7 @@ chats = [
 
     items "feihuangshi" {
       name = "飞蝗石"
+      aliases = ["feihuang shi", "shi"]
       description = "仔细挑选的鹅卵石，大小一致，个个都滴溜溜圆。"
   verbs = [
     "get",
@@ -2596,6 +2535,7 @@ chats = [
 
     items "flower_leaf" {
       name = "花瓣"
+      aliases = ["flower leaf", "hua ban", "ban"]
       description = "新鲜的玫瑰花的花瓣，上面还挂这晶莹的露珠。"
   verbs = [
     "get",
@@ -2617,6 +2557,7 @@ chats = [
 
     items "jitui" {
       name = "烤鸡腿"
+      aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
   verbs = [
     "get",
@@ -2641,6 +2582,7 @@ chats = [
 
     items "jiudai" {
       name = "牛皮酒袋"
+      aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
   verbs = [
     "get",
@@ -2659,6 +2601,7 @@ chats = [
 
     items "tea_leaf" {
       name = "茶叶"
+      aliases = ["tea leaf", "tea"]
       description = "才采的新茶，发出一股淡淡的香气。"
   verbs = [
     "get",
@@ -2680,6 +2623,7 @@ chats = [
 
     items "tielianzi" {
       name = "铁莲子"
+      aliases = ["tie lianzi", "lianzi", "zi"]
       description = "精铁打制的莲子状暗器。"
   verbs = [
     "get",

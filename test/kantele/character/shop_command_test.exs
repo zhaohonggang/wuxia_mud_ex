@@ -62,6 +62,30 @@ defmodule Kantele.Character.ShopCommandTest do
       assert output_text(conn) =~ "还没有摆摊"
     end
 
+    # R20：货品行曾写在 `Enum.each` 里重绑局部变量，结果被丢弃，
+    # 列表永远是空的（只剩一行标题 + 「共有 N 件」都没有）。
+    test "有摊位时列出货品（编号、名称、价格）" do
+      p = player()
+
+      p = %{
+        p
+        | meta: %{p.meta | stall: "药铺", shop_stock: [%{"name" => "金创药", "price" => 100}]}
+      }
+
+      conn = ShopCommand.run(build_conn(p), %{})
+      text = output_text(conn)
+
+      assert text =~ "你的摊位「药铺」当前货品："
+      assert text =~ "  1. 金创药 100文"
+    end
+
+    test "摊位没有货时提示" do
+      p = %{player() | meta: %{player().meta | stall: "药铺", shop_stock: []}}
+
+      conn = ShopCommand.run(build_conn(p), %{})
+      assert output_text(conn) =~ "目前没有摆上货物"
+    end
+
     test "路由解析" do
       {:ok, parsed} = Kantele.Character.Commands.parse("shop")
       assert parsed.module == ShopCommand

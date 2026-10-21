@@ -22,10 +22,7 @@ zones "gaibang" {
   room_characters "chucang" {
     room_id = rooms.chucang.id
     characters = [
-      { id = characters.5dai.id },
-      { id = characters.staff.id },
-      { id = characters.staff.id },
-      { id = characters.staff.id }    ]
+      { id = characters.5dai.id }    ]
   }
 
 
@@ -33,7 +30,8 @@ zones "gaibang" {
   room_items "chucang" {
     room_id = rooms.chucang.id
     items = [
-      { id = items.gangdao.id }    ]
+      { id = items.gangdao.id },
+      { id = items.staff.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/gaibang/inhole.c by LPCConverter
@@ -522,7 +520,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/cloth.c by LPCConverter
 # Zone: gaibang
 
-    characters "cloth" {
+    items "cloth" {
       name = "NPC"
       aliases = ["cloth"]
       description = "这是一件满是油腻的破布衣。"
@@ -531,7 +529,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/jiaohuaji.c by LPCConverter
 # Zone: gaibang
 
-    characters "jiaohuaji" {
+    items "jiaohuaji" {
       name = "叫化鸡"
       aliases = ["jiaohua ji", "jiaohua", "ji"]
       description = "这是一只被烤得流油，香味扑鼻的叫化鸡。"
@@ -540,7 +538,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/po-bu.c by LPCConverter
 # Zone: gaibang
 
-    characters "po_bu" {
+    items "po_bu" {
       name = "NPC"
       aliases = ["po bu", "po", "bu", "piece"]
       description = "这是一块破布，不知道有什么用。"
@@ -549,7 +547,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/qingzhu-ling.c by LPCConverter
 # Zone: gaibang
 
-    characters "qingzhu_ling" {
+    items "qingzhu_ling" {
       name = "NPC"
       aliases = ["qingzhu ling", "qingzhu", "ling"]
       description = "这是一面用青竹做成的令牌，凭此可向帮内师兄挑战。"
@@ -558,7 +556,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/gaibang/npc/obj/staff.c by LPCConverter
 # Zone: gaibang
 
-    characters "staff" {
+    items "staff" {
       name = "NPC"
       aliases = ["zhu bang", "zhu", "bang"]
       description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"

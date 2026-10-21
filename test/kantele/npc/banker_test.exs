@@ -32,6 +32,32 @@ defmodule Kantele.Npc.BankerTest do
     assert match?({:error, _}, Banker.convert(pouch(), 5, "gold", "nonexist"))
   end
 
+  # R11：命令层文案必须先问这里拿成交枚数，不能自己按总价值再算一遍。
+  describe "convert_quote/3（成交枚数的单一来源）" do
+    test "小面额换大面额：向下取整到整份" do
+      assert Banker.convert_quote(100, "coin", "silver") == {100, 1}
+      assert Banker.convert_quote(250, "coin", "silver") == {200, 2}
+      assert Banker.convert_quote(99, "coin", "silver") == {0, 0}
+    end
+
+    test "大面额换小面额：按比例放大" do
+      assert Banker.convert_quote(5, "silver", "coin") == {5, 500}
+      assert Banker.convert_quote(1, "gold", "coin") == {1, 10_000}
+      assert Banker.convert_quote(2, "gold", "silver") == {2, 200}
+      assert Banker.convert_quote(10, "silver", "gold") == {0, 0}
+    end
+
+    test "与 convert/4 的实际成交一致（quote 是唯一的取整实现）" do
+      # 都喂同一份可直接对比的 money_map：coin 100 换 silver
+      {:ok, new_map} = Banker.convert(%{"coin" => 100, "silver" => 0, "gold" => 0}, 100, "coin", "silver")
+
+      {from_amount, to_amount} = Banker.convert_quote(100, "coin", "silver")
+
+      assert new_map["coin"] == 100 - from_amount
+      assert new_map["silver"] == to_amount
+    end
+  end
+
   test "deposit: 存钱累加 balance，扣面额" do
     assert Banker.deposit(pouch(), 0, 2, "gold") ==
              {:ok, 20_000, %{"gold" => 0, "silver" => 10, "coin" => 100}}

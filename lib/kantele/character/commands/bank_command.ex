@@ -222,10 +222,15 @@ defmodule Kantele.Character.BankCommand do
           character = Map.put(conn.character, :meta, meta)
           Records.save(character)
 
-          from_value = denom_base(from_denom) * amount
-          to_value = denom_base(to_denom) * amount
+          # 文案是「源面额枚数 + 源单位」→「目标面额枚数 + 目标单位」（LPC do_convert）。
+          # 不能拿总价值去 `money_str/1`：那样 5 两白银换 500 文会渲染成
+          # 「五两白银兑换成了五两白银」（R11）。成交枚数由 `Banker` 统一给出，
+          # 与 `convert/4` 的取整逻辑共用，不会再漂移。
+          {from_amount, to_amount} = Banker.convert_quote(amount, from_denom, to_denom)
 
-          text = "你把#{Money.money_str(from_value)}兑换成了#{Money.money_str(to_value)}。\n"
+          text =
+            "你把#{Money.denom_str(from_amount, from_denom)}兑换成了" <>
+              "#{Money.denom_str(to_amount, to_denom)}。\n"
 
           conn
           |> put_character(character)

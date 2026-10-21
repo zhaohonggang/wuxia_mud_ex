@@ -106,20 +106,80 @@ defmodule Kantele.Economy.Money do
   defp unit_of("silver"), do: "两白银"
   defp unit_of("coin"), do: "文铜钱"
 
-  defp chinese(n) when n in 0..9, do: Enum.at(~w(零 一 二 三 四 五 六 七 八 九), n)
+  @doc """
+  按**指定面额**格式化枚数（对应 LPC `chinese_number(n) + 单位`）。
 
-  defp chinese(n) when n in 10..19 do
-    rest = rem(n, 10)
-    "十" <> if rest > 0, do: chinese(rest), else: ""
+  与 `money_str/1` 的区别：`money_str/1` 收的是**总价值**，会按 金 → 银 → 铜
+  自动拆成最简组合；本函数收的是「某一种面额的枚数」，原样显示、不折算。
+
+  `bank convert` 的成交文案需要后者 —— LPC 说的是「五两白银换五百文铜钱」，
+  两边的**单位不同**，用 `money_str/1` 会把 500 文渲染成「五两白银」。
+
+      iex> Money.denom_str(5, "silver")
+      "五两白银"
+
+      iex> Money.denom_str(500, "coin")
+      "五百文铜钱"
+  """
+  def denom_str(count, denom) when is_integer(count) and count >= 0 do
+    chinese(count) <> unit_of(denom)
   end
 
-  defp chinese(n) when n in 20..99 do
-    tens = div(n, 10)
-    ones = rem(n, 10)
-    chinese(tens) <> "十" <> if ones > 0, do: chinese(ones), else: ""
+  @digits ~w(零 一 二 三 四 五 六 七 八 九)
+
+  defp chinese(0), do: "零"
+
+  defp chinese(n) when n < 10_000, do: group(n)
+
+  defp chinese(n) when n < 100_000_000 do
+    high = div(n, 10_000)
+    low = rem(n, 10_000)
+
+    cond do
+      low == 0 -> group(high) <> "万"
+      low < 1_000 -> group(high) <> "万零" <> group(low)
+      true -> group(high) <> "万" <> group(low)
+    end
   end
 
+  # 超过亿级没有中文读法的必要（钱数是有限资源），退化为阿拉伯数字
   defp chinese(n), do: Integer.to_string(n)
+
+  # 1..9999 的中文读法（10..19 读「十X」而不是「一十X」，与 LPC chinese_number 一致）
+  defp group(n) do
+    digits = Integer.digits(n)
+    count = length(digits)
+
+    {parts, _state} =
+      digits
+      |> Enum.with_index()
+      |> Enum.reduce({[], :start}, fn {digit, index}, {acc, state} ->
+        position = count - index
+
+        cond do
+          digit == 0 ->
+            {acc, :zero}
+
+          state == :start and digit == 1 and position == 2 ->
+            {acc ++ ["十"], :normal}
+
+          state == :zero ->
+            {acc ++ ["零", digit_of(digit) <> unit(position)], :normal}
+
+          true ->
+            {acc ++ [digit_of(digit) <> unit(position)], :normal}
+        end
+      end)
+
+    Enum.join(parts)
+  end
+
+  defp digit_of(digit), do: Enum.at(@digits, digit)
+
+  defp unit(1), do: ""
+  defp unit(2), do: "十"
+  defp unit(3), do: "百"
+  defp unit(4), do: "千"
 
   @doc "确保 money_map 含全部三面额键（缺省 0）"
   def normalize(money_map) when is_map(money_map) do

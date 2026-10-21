@@ -38,13 +38,35 @@ defmodule Kantele.Npc.Banker do
   end
 
   defp convert_ok(money_map, amount, from, to, from_base, to_base) do
-    # 从大面额换小面额时，不够整份的舍去
-    amount =
-      if from_base < to_base, do: amount - rem(amount, div(to_base, from_base)), else: amount
+    amount = round_down(amount, from_base, to_base)
 
     if amount == 0,
       do: {:error, "不够换"},
       else: do_convert(money_map, amount, from, to, from_base, to_base)
+  end
+
+  @doc """
+  兑换的成交枚数（纯换算，不校验余额、不动 money_map）：`{from_amount, to_amount}`
+
+  - `from_amount`：实际扣掉的源面额**枚数**（大面额换小面额时，不足整份的舍去）
+  - `to_amount`：换得的目标面额**枚数**（`div(from_amount * from_base, to_base)`）
+
+  与 `convert/4` 共用同一套取整逻辑。命令层文案据此显示，避免「实得五百文、
+  提示却说五文」这类不一致（R11：文案不能再自己按总价值算一遍）。
+  """
+  def convert_quote(amount, from, to) when is_integer(amount) and amount >= 0 do
+    from_base = Money.denominations()[from]
+    to_base = Money.denominations()[to]
+    amount = round_down(amount, from_base, to_base)
+
+    {amount, div(amount * from_base, to_base)}
+  end
+
+  # 从大面额换小面额时，不足整份的舍去（对应 LPC do_convert 的向下取整）
+  defp round_down(amount, from_base, to_base) do
+    if from_base < to_base,
+      do: amount - rem(amount, div(to_base, from_base)),
+      else: amount
   end
 
   defp do_convert(money_map, amount, from, to, from_base, to_base) do

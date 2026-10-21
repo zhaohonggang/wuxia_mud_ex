@@ -762,7 +762,7 @@ chats = [
 # Generated from C:/files/git/mud/d/gaochang/npc/obj/liuxingchui.c by LPCConverter
 # Zone: gaochang
 
-    characters "liuxingchui" {
+    items "liuxingchui" {
       name = "流星锤"
       aliases = ["liuxing chui", "liuxing", "chui"]
       description = "一柄金光闪闪的流星锤。"
@@ -771,7 +771,7 @@ chats = [
 # Generated from C:/files/git/mud/d/gaochang/npc/obj/map.c by LPCConverter
 # Zone: gaochang
 
-    characters "map" {
+    items "map" {
       name = "高昌迷宫地图"
       aliases = ["map", "ditu"]
       description = "这是一张高昌迷宫地图，依照图示，按以下方位即可进入。  ##==========================================## ## ###东##东##南##东##北##北##东##东##南###### ##==========================================##"

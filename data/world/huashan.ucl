@@ -2629,7 +2629,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huashan/npc/obj/green_water_sword.c by LPCConverter
 # Zone: huashan
 
-    characters "green_water_sword" {
+    items "green_water_sword" {
       name = "碧水剑"
       aliases = ["green sword", "jian"]
       description = "这是一把通体晶莹剔透的剑，美丽之极，"
@@ -2638,7 +2638,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huashan/npc/obj/letter.c by LPCConverter
 # Zone: huashan
 
-    characters "letter" {
+    items "letter" {
       name = "手信"
       aliases = ["hand letter"]
       description = "这是华山派掌门岳不群的手信，请冯铁匠把打好的宝剑交给执信弟子。"

@@ -5098,85 +5098,22 @@ chats = [
   chat_msg_combat = ["powerup", "sword.xin"]
     }
 
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/baozi.c by LPCConverter
-# Zone: hangzhou
-
-    characters "baozi" {
-      name = "百果油包"
-      aliases = ["baozi", "dumpling"]
-      description = "一个煎得油澄澄、香喷喷的百果油包。"
-    }
-
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/chicken.c by LPCConverter
-# Zone: hangzhou
-
-    characters "chicken" {
-      name = "叫化童鸡"
-      aliases = ["chicken"]
-      description = "一只被烤得流油，香味扑鼻的叫化鸡。"
-    }
-
 # Generated from C:/files/git/mud/d/hangzhou/npc/obj/cloth.c by LPCConverter
 # Zone: hangzhou
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
     }
 
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/fish.c by LPCConverter
-# Zone: hangzhou
-
-    characters "fish" {
-      name = "西湖醋鱼"
-      aliases = ["fish"]
-      description = "一盘清甜可人的西湖醋鱼，用西湖中的金色鲤鱼 烧制而成，是西湖第一名菜。"
-    }
-
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/geng.c by LPCConverter
-# Zone: hangzhou
-
-    characters "geng" {
-      name = "桂花鲜栗羹"
-      aliases = ["Guihua geng", "guihua", "geng"]
-      description = "一碗香气馥郁的桂花鲜栗羹。"
-    }
-
 # Generated from C:/files/git/mud/d/hangzhou/npc/obj/goupi.c by LPCConverter
 # Zone: hangzhou
 
-    characters "goupi" {
+    items "goupi" {
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
-    }
-
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/jiuping.c by LPCConverter
-# Zone: hangzhou
-
-    characters "jiuping" {
-      name = "酒瓶"
-      aliases = ["jiuping", "bottle"]
-      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的竹叶青。"
-    }
-
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/pork.c by LPCConverter
-# Zone: hangzhou
-
-    characters "pork" {
-      name = "东坡肉"
-      aliases = ["pork"]
-      description = "一碗香喷喷的东坡肉，用文火煨肥猪肉而成， 苏东坡在牧守杭州时看到民间吃肉而烧制不得法，遗惠此法至千年以下。"
-    }
-
-# Generated from C:/files/git/mud/d/hangzhou/npc/obj/shrimp.c by LPCConverter
-# Zone: hangzhou
-
-    characters "shrimp" {
-      name = "龙井虾仁"
-      aliases = ["shrimp"]
-      description = "酽酽浓浓的一盘龙井虾仁。"
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/obj/eluanshi.c by LPCConverter
@@ -5271,6 +5208,7 @@ chats = [
 
     items "baozi" {
       name = "百果油包"
+      aliases = ["baozi", "dumpling"]
       description = "一个煎得油澄澄、香喷喷的百果油包。"
   verbs = [
     "get",
@@ -5291,6 +5229,7 @@ chats = [
 
     items "chicken" {
       name = "叫化童鸡"
+      aliases = ["chicken"]
       description = "一只被烤得流油，香味扑鼻的叫化鸡。"
   verbs = [
     "get",
@@ -5311,6 +5250,7 @@ chats = [
 
     items "fish" {
       name = "西湖醋鱼"
+      aliases = ["fish"]
       description = "一盘清甜可人的西湖醋鱼，用西湖中的金色鲤鱼烧制而成，是西湖第一名菜。"
   verbs = [
     "get",
@@ -5331,6 +5271,7 @@ chats = [
 
     items "geng" {
       name = "桂花鲜栗羹"
+      aliases = ["Guihua geng", "guihua", "geng"]
       description = "一碗香气馥郁的桂花鲜栗羹。"
   verbs = [
     "get",
@@ -5351,6 +5292,7 @@ chats = [
 
     items "jiuping" {
       name = "酒瓶"
+      aliases = ["jiuping", "bottle"]
       description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的竹叶青。"
   verbs = [
     "get",
@@ -5369,6 +5311,7 @@ chats = [
 
     items "pork" {
       name = "东坡肉"
+      aliases = ["pork"]
       description = "一碗香喷喷的东坡肉，用文火煨肥猪肉而成，苏东坡在牧守杭州时看到民间吃肉而烧制不得法，遗惠此法至千年以下。"
   verbs = [
     "get",
@@ -5389,6 +5332,7 @@ chats = [
 
     items "shrimp" {
       name = "龙井虾仁"
+      aliases = ["shrimp"]
       description = "酽酽浓浓的一盘龙井虾仁。"
   verbs = [
     "get",

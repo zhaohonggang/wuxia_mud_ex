@@ -933,7 +933,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/xueshan/npc/turou.c by LPCConverter
 # Zone: xueshan
 
-    characters "turou" {
+    items "turou" {
       name = "兔肉"
       aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"

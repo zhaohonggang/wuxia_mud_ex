@@ -1558,7 +1558,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/gumu/npc/obj/baipao.c by LPCConverter
 # Zone: gumu
 
-    characters "baipao" {
+    items "baipao" {
       name = "白袍"
       aliases = ["bai pao", "pao"]
       description = "这是件轻纱制成的白色长袍。"

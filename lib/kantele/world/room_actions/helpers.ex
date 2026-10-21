@@ -55,7 +55,7 @@ defmodule Kantele.World.RoomActions.Helpers do
       "rooms:#{room_id}",
       text,
       options,
-      &__MODULE__.publish_error/1
+      &__MODULE__.publish_error/2
     )
   end
 

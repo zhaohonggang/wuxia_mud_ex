@@ -582,7 +582,7 @@ zones "xiaoyao" {
 # Generated from C:/files/git/mud/d/xiaoyao/npc/obj/blade.c by LPCConverter
 # Zone: xiaoyao
 
-    characters "blade" {
+    items "blade" {
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
@@ -591,7 +591,7 @@ zones "xiaoyao" {
 # Generated from C:/files/git/mud/d/xiaoyao/npc/obj/cloth.c by LPCConverter
 # Zone: xiaoyao
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""

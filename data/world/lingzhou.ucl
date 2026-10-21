@@ -1736,29 +1736,12 @@ item_desc = {
 
     }
 
-# Generated from C:/files/git/mud/d/lingzhou/npc/obj/kaoyangtui.c by LPCConverter
-# Zone: lingzhou
-
-    characters "kaoyangtui" {
-      name = "烤羊腿"
-      aliases = ["kao yangtui", "yangtui", "leg"]
-      description = "一条香喷喷的烤羊腿。"
-    }
-
-# Generated from C:/files/git/mud/d/lingzhou/npc/obj/paomo.c by LPCConverter
-# Zone: lingzhou
-
-    characters "paomo" {
-      name = "羊肉泡馍"
-      aliases = ["yangrou paomo", "yangrou", "paomo"]
-      description = "一碗香喷喷的羊肉泡馍。"
-    }
-
 # Source: C:/files/git/mud/d/lingzhou/npc/obj/kaoyangtui.c
 # Zone: lingzhou
 
     items "kaoyangtui" {
       name = "烤羊腿"
+      aliases = ["kao yangtui", "yangtui", "leg"]
       description = "一条香喷喷的烤羊腿。"
   verbs = [
     "get",
@@ -1779,6 +1762,7 @@ item_desc = {
 
     items "paomo" {
       name = "羊肉泡馍"
+      aliases = ["yangrou paomo", "yangrou", "paomo"]
       description = "一碗香喷喷的羊肉泡馍。"
   verbs = [
     "get",

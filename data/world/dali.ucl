@@ -828,8 +828,7 @@ zones "dali" {
 
   room_characters "chufang" {
     room_id = rooms.chufang.id
-    characters = [
-      { id = characters.puercha.id }    ]
+    characters = []
   }
 
 
@@ -837,7 +836,8 @@ zones "dali" {
   room_items "chufang" {
     room_id = rooms.chufang.id
     items = [
-      { id = items.xueli.id }    ]
+      { id = items.xueli.id },
+      { id = items.puercha.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/dali/dadieshui.c by LPCConverter
@@ -6484,7 +6484,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/turou.c by LPCConverter
 # Zone: dali
 
-    characters "turou" {
+    items "turou" {
       name = "兔肉"
       aliases = ["tu rou", "rou"]
       description = "一只烧烤得香香的兔肉。"
@@ -6956,7 +6956,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/bduanqun.c by LPCConverter
 # Zone: dali
 
-    characters "bduanqun" {
+    items "bduanqun" {
       name = "摆夷短裙"
       aliases = ["duan qun"]
       description = "这是一件摆夷短裙。"
@@ -6965,7 +6965,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/cynrobe.c by LPCConverter
 # Zone: dali
 
-    characters "cynrobe" {
+    items "cynrobe" {
       name = "青色道袍"
       aliases = ["pao", "cloth", "dao pao"]
       description = "一件普普通通的青布道袍。"
@@ -6974,43 +6974,16 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/diaogan.c by LPCConverter
 # Zone: dali
 
-    characters "diaogan" {
+    items "diaogan" {
       name = "钓杆"
       aliases = ["diao gan", "diao", "gan"]
       description = "这是一根细长的铁杆，猛然一看不过是根普通钓鱼用的吊杆。"
     }
 
-# Generated from C:/files/git/mud/d/dali/npc/obj/doupeng.c by LPCConverter
-# Zone: dali
-
-    characters "doupeng" {
-      name = "斗篷"
-      aliases = ["dou peng"]
-      description = "这是一件绿色宽大的斗篷。"
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/guazi.c by LPCConverter
-# Zone: dali
-
-    characters "guazi" {
-      name = "对衿褂子"
-      aliases = ["duijin guazi"]
-      description = "这是一件少数民族常用的对衿褂子。"
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/huotui.c by LPCConverter
-# Zone: dali
-
-    characters "huotui" {
-      name = "宣威火腿"
-      aliases = ["xuanwei huotui", "huotui"]
-      description = "这是一块用蜜饯莲子煮过，流着红油的香喷喷的宣威火腿。"
-    }
-
 # Generated from C:/files/git/mud/d/dali/npc/obj/hupi.c by LPCConverter
 # Zone: dali
 
-    characters "hupi" {
+    items "hupi" {
       name = "虎皮"
       aliases = ["hu pi"]
       description = ""
@@ -7019,7 +6992,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/jjunfu.c by LPCConverter
 # Zone: dali
 
-    characters "jjunfu" {
+    items "jjunfu" {
       name = "锦衣军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件颜色鲜亮的锦衣军服。"
@@ -7028,7 +7001,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/junfu.c by LPCConverter
 # Zone: dali
 
-    characters "junfu" {
+    items "junfu" {
       name = "黄衣军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的黄衣军服。"
@@ -7037,25 +7010,16 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/kandao.c by LPCConverter
 # Zone: dali
 
-    characters "kandao" {
+    items "kandao" {
       name = "砍刀"
       aliases = ["kan dao", "dao", "blade"]
       description = "这是一柄很粗笨的砍刀，大概砍柴砍竹笋还凑合。"
     }
 
-# Generated from C:/files/git/mud/d/dali/npc/obj/kenao.c by LPCConverter
-# Zone: dali
-
-    characters "kenao" {
-      name = "窄裉袄"
-      aliases = ["ken ao"]
-      description = "这是一件少数民族常用的窄裉袄。"
-    }
-
 # Generated from C:/files/git/mud/d/dali/npc/obj/lace.c by LPCConverter
 # Zone: dali
 
-    characters "lace" {
+    items "lace" {
       name = "贝壳项链"
       aliases = ["shell lace", "lace"]
       description = ""
@@ -7064,7 +7028,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/magcloth.c by LPCConverter
 # Zone: dali
 
-    characters "magcloth" {
+    items "magcloth" {
       name = "紫袍"
       aliases = ["zi pao", "cloth"]
       description = ""
@@ -7073,7 +7037,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/mandao.c by LPCConverter
 # Zone: dali
 
-    characters "mandao" {
+    items "mandao" {
       name = "蛮刀"
       aliases = ["man dao", "dao", "blade"]
       description = "这是一柄亮晃晃的蛮刀，是云贵少数民族首领的常备武器。"
@@ -7082,61 +7046,16 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/maotan.c by LPCConverter
 # Zone: dali
 
-    characters "maotan" {
+    items "maotan" {
       name = "毛毯"
       aliases = ["mao tan"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/mixian.c by LPCConverter
-# Zone: dali
-
-    characters "mixian" {
-      name = "过桥米线"
-      aliases = ["guoqiao mixian", "mixian"]
-      description = "这是一碗热气腾腾的油浸的米粉，正是大理名菜过桥米线。"
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/puercha.c by LPCConverter
-# Zone: dali
-
-    characters "puercha" {
-      name = "茶壶"
-      aliases = ["chahu", "hu", "bottle"]
-      description = "一个用来装茶的大茶壶，大概装得八、九杯的茶。"
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/qiguoji.c by LPCConverter
-# Zone: dali
-
-    characters "qiguoji" {
-      name = "汽锅鸡"
-      aliases = ["qiguo ji", "chicken", "ji"]
-      description = "这是一锅热气腾腾的汽锅鸡。"
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/qun.c by LPCConverter
-# Zone: dali
-
-    characters "qun" {
-      name = "白纱挑线镶边裙"
-      aliases = ["xiangbian qun"]
-      description = "这是一件当地土著常用的白纱挑线镶边裙。"
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/shoes.c by LPCConverter
-# Zone: dali
-
-    characters "shoes" {
-      name = "绣花小鞋"
-      aliases = ["flower shoes", "shoes"]
       description = ""
     }
 
 # Generated from C:/files/git/mud/d/dali/npc/obj/tduanqun.c by LPCConverter
 # Zone: dali
 
-    characters "tduanqun" {
+    items "tduanqun" {
       name = "台夷短裙"
       aliases = ["duan qun"]
       description = "这是一件台夷短裙。"
@@ -7145,7 +7064,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/tiedi.c by LPCConverter
 # Zone: dali
 
-    characters "tiedi" {
+    items "tiedi" {
       name = "铁笛"
       aliases = ["tie di"]
       description = "一支黑铁做成的长笛，看上去坚忍异常。"
@@ -7154,7 +7073,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/tiejia.c by LPCConverter
 # Zone: dali
 
-    characters "tiejia" {
+    items "tiejia" {
       name = "铁甲"
       aliases = ["armor"]
       description = ""
@@ -7163,7 +7082,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/tongqun.c by LPCConverter
 # Zone: dali
 
-    characters "tongqun" {
+    items "tongqun" {
       name = "筒裙"
       aliases = ["tong qun"]
       description = "这是一件台夷筒裙。"
@@ -7172,7 +7091,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/ttoujin.c by LPCConverter
 # Zone: dali
 
-    characters "ttoujin" {
+    items "ttoujin" {
       name = "台夷头巾"
       aliases = ["tou jin"]
       description = "这是一条台夷头巾，用以缠绕头部。"
@@ -7181,7 +7100,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/wchangqun.c by LPCConverter
 # Zone: dali
 
-    characters "wchangqun" {
+    items "wchangqun" {
       name = "乌夷长裙"
       aliases = ["chang qun"]
       description = "这是一件乌夷长裙。"
@@ -7190,7 +7109,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/wdahui.c by LPCConverter
 # Zone: dali
 
-    characters "wdahui" {
+    items "wdahui" {
       name = "乌夷大麾"
       aliases = ["da hui"]
       description = "这是一件乌夷大麾。"
@@ -7199,7 +7118,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/whitecloth.c by LPCConverter
 # Zone: dali
 
-    characters "whitecloth" {
+    items "whitecloth" {
       name = "白衣"
       aliases = ["bai yi", "cloth"]
       description = ""
@@ -7208,7 +7127,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/whitecloth1.c by LPCConverter
 # Zone: dali
 
-    characters "whitecloth1" {
+    items "whitecloth1" {
       name = "白绸衫"
       aliases = ["white cloth", "cloth"]
       description = ""
@@ -7217,7 +7136,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/xiaoao.c by LPCConverter
 # Zone: dali
 
-    characters "xiaoao" {
+    items "xiaoao" {
       name = "圆领小袄"
       aliases = ["xiao ao", "cloth"]
       description = "这是一件台夷族的圆领小袄。"
@@ -7226,7 +7145,7 @@ chats = [
 # Generated from C:/files/git/mud/d/dali/npc/obj/yaoqin.c by LPCConverter
 # Zone: dali
 
-    characters "yaoqin" {
+    items "yaoqin" {
       name = "瑶琴"
       aliases = ["yao qin"]
       description = "这是一把歌女用的瑶琴，制做得相当精巧细腻。"
@@ -7235,15 +7154,6 @@ chats = [
     greet_delay = 0
     add_actions = ["play"]
   }
-    }
-
-# Generated from C:/files/git/mud/d/dali/npc/obj/yeerba.c by LPCConverter
-# Zone: dali
-
-    characters "yeerba" {
-      name = "叶儿粑"
-      aliases = ["ye er ba", "ba"]
-      description = "这是一块飘着清香的叶ㄦ粑。"
     }
 
 # Generated from C:/files/git/mud/d/dali/obj/chahua11.c by LPCConverter
@@ -7430,6 +7340,7 @@ chats = [
 
     items "doupeng" {
       name = "斗篷"
+      aliases = ["dou peng"]
       description = "这是一件绿色宽大的斗篷。"
   verbs = [
     "get",
@@ -7450,6 +7361,7 @@ chats = [
 
     items "guazi" {
       name = "对衿褂子"
+      aliases = ["duijin guazi"]
       description = "这是一件少数民族常用的对衿褂子。"
   verbs = [
     "get",
@@ -7470,6 +7382,7 @@ chats = [
 
     items "huotui" {
       name = "宣威火腿"
+      aliases = ["xuanwei huotui", "huotui"]
       description = "这是一块用蜜饯莲子煮过，流着红油的香喷喷的宣威火腿。"
   verbs = [
     "get",
@@ -7490,6 +7403,7 @@ chats = [
 
     items "kenao" {
       name = "窄裉袄"
+      aliases = ["ken ao"]
       description = "这是一件少数民族常用的窄裉袄。"
   verbs = [
     "get",
@@ -7510,6 +7424,7 @@ chats = [
 
     items "mixian" {
       name = "过桥米线"
+      aliases = ["guoqiao mixian", "mixian"]
       description = "这是一碗热气腾腾的油浸的米粉，正是大理名菜过桥米线。"
   verbs = [
     "get",
@@ -7530,6 +7445,7 @@ chats = [
 
     items "puercha" {
       name = "茶壶"
+      aliases = ["chahu", "hu", "bottle"]
       description = "一个用来装茶的大茶壶，大概装得八、九杯的茶。"
   verbs = [
     "get",
@@ -7548,6 +7464,7 @@ chats = [
 
     items "qiguoji" {
       name = "汽锅鸡"
+      aliases = ["qiguo ji", "chicken", "ji"]
       description = "这是一锅热气腾腾的汽锅鸡。"
   verbs = [
     "get",
@@ -7568,6 +7485,7 @@ chats = [
 
     items "qun" {
       name = "白纱挑线镶边裙"
+      aliases = ["xiangbian qun"]
       description = "这是一件当地土著常用的白纱挑线镶边裙。"
   verbs = [
     "get",
@@ -7588,6 +7506,7 @@ chats = [
 
     items "shoes" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = "绣花小鞋"
   verbs = [
     "get",
@@ -7608,6 +7527,7 @@ chats = [
 
     items "yeerba" {
       name = "叶儿粑"
+      aliases = ["ye er ba", "ba"]
       description = "这是一块飘着清香的叶ㄦ粑。"
   verbs = [
     "get",

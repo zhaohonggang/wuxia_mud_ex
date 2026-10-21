@@ -1,3 +1,13 @@
+defmodule Kantele.World.RoomActions.HelpersTest.FailingCommunication do
+  @moduledoc """
+  桩：`publish/3` 恒定失败，用来验证 `broadcast_vision/4` 的错误分支不崩溃（R15）。
+  """
+
+  def publish(_channel_name, _event, _options), do: {:error, :boom}
+  def subscribe(_channel_name, _options), do: :ok
+  def unsubscribe(_channel_name, _options), do: :ok
+end
+
 defmodule Kantele.World.RoomActions.HelpersTest do
   use ExUnit.Case, async: true
 
@@ -5,6 +15,7 @@ defmodule Kantele.World.RoomActions.HelpersTest do
   alias Kalevala.Character.Conn
   alias Kalevala.Character.Conn.Private
   alias Kantele.World.RoomActions.Helpers
+  alias Kantele.World.RoomActions.HelpersTest.FailingCommunication
 
   describe "render_to_player/2（LPC write 等价）" do
     test "把文本推入 conn.output（仅本人可见，不广播）" do
@@ -76,6 +87,42 @@ defmodule Kantele.World.RoomActions.HelpersTest do
         })
 
       assert listen.text == "某人 笑了笑。"
+    end
+  end
+
+  # R15 回归：`broadcast_vision/4` 的错误回调曾写成 `publish_error/1`，
+  # 而 `Foreman.Channel` 调的是 `error_fun.(conn, {:error, reason})`（两个参数），
+  # 一旦发布失败就会 `UndefinedFunctionError`，把「静默降级」变成「崩溃」。
+  describe "broadcast_vision/4 的发布失败降级（R15 回归）" do
+    test "error_fun 是 /2，按 Foreman 的调用形状返回原 conn 而不崩溃" do
+      conn = %Conn{
+        character: %Character{name: "张三", room_id: "z:r"},
+        private: %Private{channel_changes: []},
+        output: []
+      }
+
+      conn2 = Helpers.broadcast_vision(conn, "z:r", "$N 拍了拍手。\n")
+
+      assert [{:publish, _channel, _event, _opts, error_fun}] = conn2.private.channel_changes
+      assert is_function(error_fun, 2)
+
+      # 与 `Kalevala.Character.Foreman.Channel` 的调用方式完全一致
+      assert error_fun.(conn2, {:error, :not_subscribed}) == conn2
+    end
+
+    test "发布失败时 handle_channels/2 不崩溃（端到端走 Foreman）" do
+      conn = %Conn{
+        character: %Character{name: "张三", room_id: "z:r"},
+        private: %Private{channel_changes: []},
+        output: []
+      }
+
+      conn2 = Helpers.broadcast_vision(conn, "z:r", "$N 拍了拍手。\n")
+
+      state = %{communication_module: FailingCommunication}
+
+      assert %Conn{} = result = Kalevala.Character.Foreman.Channel.handle_channels(conn2, state)
+      assert result.output == conn2.output
     end
   end
 end

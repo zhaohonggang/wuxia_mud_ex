@@ -9344,7 +9344,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/caoyao.c by LPCConverter
 # Zone: beijing
 
-    characters "caoyao" {
+    items "caoyao" {
       name = "不知名草药"
       aliases = ["cao yao", "yao", "cao"]
       description = "这是一株生长在密林中的不知名的草药，一般人都会误认成杂草。"
@@ -9353,7 +9353,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_1.c by LPCConverter
 # Zone: beijing
 
-    characters "danA_1" {
+    items "danA_1" {
       name = "养精丹"
       aliases = ["yangjing dan", "dan"]
       description = ""
@@ -9362,7 +9362,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_2.c by LPCConverter
 # Zone: beijing
 
-    characters "danA_2" {
+    items "danA_2" {
       name = "蓄精丹"
       aliases = ["xujing dan", "dan"]
       description = ""
@@ -9371,7 +9371,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_3.c by LPCConverter
 # Zone: beijing
 
-    characters "danA_3" {
+    items "danA_3" {
       name = "补精丹"
       aliases = ["bujing dan", "dan"]
       description = ""
@@ -9380,7 +9380,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_4.c by LPCConverter
 # Zone: beijing
 
-    characters "danA_4" {
+    items "danA_4" {
       name = "引心丹"
       aliases = ["yinxin dan", "dan"]
       description = ""
@@ -9389,7 +9389,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_5.c by LPCConverter
 # Zone: beijing
 
-    characters "danA_5" {
+    items "danA_5" {
       name = "九皇补心丹"
       aliases = ["buxin dan", "dan"]
       description = ""
@@ -9398,7 +9398,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_1.c by LPCConverter
 # Zone: beijing
 
-    characters "danB_1" {
+    items "danB_1" {
       name = "小还丹"
       aliases = ["xiaohuan dan", "dan"]
       description = ""
@@ -9407,7 +9407,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_2.c by LPCConverter
 # Zone: beijing
 
-    characters "danB_2" {
+    items "danB_2" {
       name = "大还丹"
       aliases = ["dahuan dan", "dan"]
       description = ""
@@ -9416,7 +9416,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_3.c by LPCConverter
 # Zone: beijing
 
-    characters "danB_3" {
+    items "danB_3" {
       name = "大补丹"
       aliases = ["dabu dan", "dan"]
       description = ""
@@ -9425,7 +9425,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_4.c by LPCConverter
 # Zone: beijing
 
-    characters "danB_4" {
+    items "danB_4" {
       name = "十全大还丹"
       aliases = ["shiquan dan", "dan"]
       description = ""
@@ -9434,7 +9434,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_5.c by LPCConverter
 # Zone: beijing
 
-    characters "danB_5" {
+    items "danB_5" {
       name = "还魂丹"
       aliases = ["huanhun dan", "dan"]
       description = ""
@@ -9443,7 +9443,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_6.c by LPCConverter
 # Zone: beijing
 
-    characters "danB_6" {
+    items "danB_6" {
       name = "回阳无极丹"
       aliases = ["huiyang dan", "dan"]
       description = ""
@@ -9452,7 +9452,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danC_1.c by LPCConverter
 # Zone: beijing
 
-    characters "danC_1" {
+    items "danC_1" {
       name = "小云丹"
       aliases = ["xiaoyun dan", "dan"]
       description = ""
@@ -9461,7 +9461,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danC_2.c by LPCConverter
 # Zone: beijing
 
-    characters "danC_2" {
+    items "danC_2" {
       name = "大云丹"
       aliases = ["dayun dan", "dan"]
       description = ""
@@ -9470,7 +9470,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danC_3.c by LPCConverter
 # Zone: beijing
 
-    characters "danC_3" {
+    items "danC_3" {
       name = "锁泉丹"
       aliases = ["suoquan dan", "dan"]
       description = ""
@@ -9479,7 +9479,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danC_4.c by LPCConverter
 # Zone: beijing
 
-    characters "danC_4" {
+    items "danC_4" {
       name = "玉泉丹"
       aliases = ["yuquan dan", "dan"]
       description = ""
@@ -9488,7 +9488,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danC_5.c by LPCConverter
 # Zone: beijing
 
-    characters "danC_5" {
+    items "danC_5" {
       name = "NPC"
       aliases = ["xiuluo dan", "dan"]
       description = ""
@@ -9497,7 +9497,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danD_1.c by LPCConverter
 # Zone: beijing
 
-    characters "danD_1" {
+    items "danD_1" {
       name = "小金丹"
       aliases = ["gold dan", "dan"]
       description = ""
@@ -9506,7 +9506,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danD_2.c by LPCConverter
 # Zone: beijing
 
-    characters "danD_2" {
+    items "danD_2" {
       name = "雪参丹"
       aliases = ["xueshen dan", "dan"]
       description = ""
@@ -9515,7 +9515,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danD_3.c by LPCConverter
 # Zone: beijing
 
-    characters "danD_3" {
+    items "danD_3" {
       name = "归元丹"
       aliases = ["guiyuan dan", "dan"]
       description = ""
@@ -9524,7 +9524,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danD_4.c by LPCConverter
 # Zone: beijing
 
-    characters "danD_4" {
+    items "danD_4" {
       name = "火麒丹"
       aliases = ["huoqi dan", "dan"]
       description = ""
@@ -9533,7 +9533,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danD_5.c by LPCConverter
 # Zone: beijing
 
-    characters "danD_5" {
+    items "danD_5" {
       name = "血麒丹"
       aliases = ["xueqi dan", "dan"]
       description = ""
@@ -9542,7 +9542,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danD_6.c by LPCConverter
 # Zone: beijing
 
-    characters "danD_6" {
+    items "danD_6" {
       name = "NPC"
       aliases = ["luosha dan", "dan"]
       description = ""
@@ -9551,7 +9551,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_1.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_1" {
+    items "danM_1" {
       name = "龙涎丹"
       aliases = ["longxian dan", "dan"]
       description = ""
@@ -9560,7 +9560,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_2.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_2" {
+    items "danM_2" {
       name = "龟苓丹"
       aliases = ["guiling dan", "dan"]
       description = ""
@@ -9569,7 +9569,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_3.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_3" {
+    items "danM_3" {
       name = "龙王丹"
       aliases = ["longwang dan", "dan"]
       description = ""
@@ -9578,7 +9578,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_4.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_4" {
+    items "danM_4" {
       name = "万寿丹"
       aliases = ["wanshou dan", "dan"]
       description = ""
@@ -9587,7 +9587,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_5.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_5" {
+    items "danM_5" {
       name = "NPC"
       aliases = ["yinyang dan", "dan"]
       description = ""
@@ -9596,7 +9596,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_6.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_6" {
+    items "danM_6" {
       name = "映月丹"
       aliases = ["yingyue dan", "dan"]
       description = ""
@@ -9605,7 +9605,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_7.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_7" {
+    items "danM_7" {
       name = "邀月丹"
       aliases = ["yaoyue dan", "dan"]
       description = ""
@@ -9614,7 +9614,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_8.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_8" {
+    items "danM_8" {
       name = "皓月丹"
       aliases = ["haoyue dan", "dan"]
       description = ""
@@ -9623,7 +9623,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danM_9.c by LPCConverter
 # Zone: beijing
 
-    characters "danM_9" {
+    items "danM_9" {
       name = "嫦娥仙丹"
       aliases = ["change dan", "dan"]
       description = ""
@@ -9632,7 +9632,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danS_1.c by LPCConverter
 # Zone: beijing
 
-    characters "danS_1" {
+    items "danS_1" {
       name = "NPC"
       aliases = ["xuanyuan dan", "dan"]
       description = ""
@@ -9641,7 +9641,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danS_2.c by LPCConverter
 # Zone: beijing
 
-    characters "danS_2" {
+    items "danS_2" {
       name = "NPC"
       aliases = ["zhuque dan", "dan"]
       description = ""
@@ -9650,7 +9650,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danS_3.c by LPCConverter
 # Zone: beijing
 
-    characters "danS_3" {
+    items "danS_3" {
       name = "NPC"
       aliases = ["xuanwu dan", "dan"]
       description = ""
@@ -9659,7 +9659,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danS_4.c by LPCConverter
 # Zone: beijing
 
-    characters "danS_4" {
+    items "danS_4" {
       name = "NPC"
       aliases = ["baihu dan", "dan"]
       description = ""
@@ -9668,7 +9668,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danS_5.c by LPCConverter
 # Zone: beijing
 
-    characters "danS_5" {
+    items "danS_5" {
       name = "NPC"
       aliases = ["qinglong dan", "dan"]
       description = ""
@@ -9677,25 +9677,16 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/axe.c by LPCConverter
 # Zone: beijing
 
-    characters "axe" {
+    items "axe" {
       name = "大板斧"
       aliases = ["bigaxe", "axe"]
       description = "这是一把沉重的大板斧，砍起东西来非常顺手。"
     }
 
-# Generated from C:/files/git/mud/d/beijing/npc/obj/blade.c by LPCConverter
-# Zone: beijing
-
-    characters "blade" {
-      name = "钢刀"
-      aliases = ["gang dao", "gangdao", "dao", "blade"]
-      description = "这是一寻常的单刀，份量大约六、七斤重。"
-    }
-
 # Generated from C:/files/git/mud/d/beijing/npc/obj/blade1.c by LPCConverter
 # Zone: beijing
 
-    characters "blade1" {
+    items "blade1" {
       name = "钢刀"
       aliases = ["gang dao", "dao", "blade"]
       description = "一柄钢铁打造的刀。"
@@ -9704,7 +9695,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/blade2.c by LPCConverter
 # Zone: beijing
 
-    characters "blade2" {
+    items "blade2" {
       name = "短刀"
       aliases = ["duan dao", "dao", "blade"]
       description = "一柄锈迹斑斑的短刀，看样子值不了两个钱。"
@@ -9713,25 +9704,16 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/blade3.c by LPCConverter
 # Zone: beijing
 
-    characters "blade3" {
+    items "blade3" {
       name = "大刀"
       aliases = ["da dao", "dao", "blade"]
       description = "一柄锋利的大刀。"
     }
 
-# Generated from C:/files/git/mud/d/beijing/npc/obj/body.c by LPCConverter
-# Zone: beijing
-
-    characters "body" {
-      name = "铁甲"
-      aliases = ["tie jia", "tiejia", "jia", "armor", "body"]
-      description = "一件沉甸甸的铁甲。"
-    }
-
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
@@ -9740,7 +9722,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth1.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth1" {
+    items "cloth1" {
       name = "青布长衫"
       aliases = ["cloth"]
       description = ""
@@ -9749,7 +9731,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth2.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth2" {
+    items "cloth2" {
       name = "灰白长衫"
       aliases = ["chang shan", "cloth"]
       description = "一件灰白色的普通长衫。"
@@ -9758,7 +9740,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth3.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth3" {
+    items "cloth3" {
       name = "马褂"
       aliases = ["cloth"]
       description = "一件普通的马褂。"
@@ -9767,7 +9749,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth4.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth4" {
+    items "cloth4" {
       name = "白色长衫"
       aliases = ["cloth"]
       description = ""
@@ -9776,7 +9758,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth5.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth5" {
+    items "cloth5" {
       name = "粗布衣"
       aliases = ["cloth"]
       description = ""
@@ -9785,37 +9767,19 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/cloth6.c by LPCConverter
 # Zone: beijing
 
-    characters "cloth6" {
+    items "cloth6" {
       name = "短打劲装"
       aliases = ["cloth"]
       description = ""
     }
 
-# Generated from C:/files/git/mud/d/beijing/npc/obj/dagger.c by LPCConverter
-# Zone: beijing
-
-    characters "dagger" {
-      name = "匕首"
-      aliases = ["bi shou", "bishou", "dagger"]
-      description = "这是一把看起相当普通的匕首。"
-    }
-
 # Generated from C:/files/git/mud/d/beijing/npc/obj/diaoqiu.c by LPCConverter
 # Zone: beijing
 
-    characters "diaoqiu" {
+    items "diaoqiu" {
       name = "貂裘"
       aliases = ["diao qiu", "cloth"]
       description = "一件用貂皮制作，做工细致的皮外套，很是名贵。"
-    }
-
-# Generated from C:/files/git/mud/d/beijing/npc/obj/feet.c by LPCConverter
-# Zone: beijing
-
-    characters "feet" {
-      name = "战靴"
-      aliases = ["zhan xue", "xue", "feet", "zhanxue", "boots"]
-      description = "一双皮靴，上等牛皮制成。靴子虽很结实，但颇轻战斗时穿非常方便适用。"
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/obj/fork.c by LPCConverter
@@ -9830,7 +9794,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/fuchen.c by LPCConverter
 # Zone: beijing
 
-    characters "fuchen" {
+    items "fuchen" {
       name = "拂尘"
       aliases = ["fu chen", "fu", "chen"]
       description = "这是一柄普通的拂尘。"
@@ -9839,7 +9803,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/goldcloth1.c by LPCConverter
 # Zone: beijing
 
-    characters "goldcloth1" {
+    items "goldcloth1" {
       name = "黄马褂"
       aliases = ["huang magua", "cloth"]
       description = "皇上御赐的黄马褂。"
@@ -9848,7 +9812,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/goldcloth2.c by LPCConverter
 # Zone: beijing
 
-    characters "goldcloth2" {
+    items "goldcloth2" {
       name = "镶边黄马褂"
       aliases = ["huang magua", "cloth"]
       description = "皇上御赐的黄马褂。"
@@ -9857,7 +9821,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/guanfu1.c by LPCConverter
 # Zone: beijing
 
-    characters "guanfu1" {
+    items "guanfu1" {
       name = "御前侍卫装"
       aliases = ["cloth"]
       description = "御前侍卫的统一装束。"
@@ -9866,7 +9830,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/guanfu2.c by LPCConverter
 # Zone: beijing
 
-    characters "guanfu2" {
+    items "guanfu2" {
       name = "一品侍卫装"
       aliases = ["cloth"]
       description = "御前侍卫的统一装束。"
@@ -9875,7 +9839,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/guanfu3.c by LPCConverter
 # Zone: beijing
 
-    characters "guanfu3" {
+    items "guanfu3" {
       name = "二品侍卫装"
       aliases = ["cloth"]
       description = "御前侍卫的统一装束。"
@@ -9884,7 +9848,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/guanfu4.c by LPCConverter
 # Zone: beijing
 
-    characters "guanfu4" {
+    items "guanfu4" {
       name = "官服"
       aliases = ["cloth"]
       description = "官兵所穿戴的制服。"
@@ -9893,7 +9857,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/guanfu5.c by LPCConverter
 # Zone: beijing
 
-    characters "guanfu5" {
+    items "guanfu5" {
       name = "锦团官服"
       aliases = ["cloth"]
       description = "上品官兵所穿戴的制服。"
@@ -9902,25 +9866,16 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/guanfu6.c by LPCConverter
 # Zone: beijing
 
-    characters "guanfu6" {
+    items "guanfu6" {
       name = "兵服"
       aliases = ["cloth"]
       description = "普通官兵所穿戴的制服。"
     }
 
-# Generated from C:/files/git/mud/d/beijing/npc/obj/hammer.c by LPCConverter
-# Zone: beijing
-
-    characters "hammer" {
-      name = "铁锤"
-      aliases = ["hammer"]
-      description = "这是一把沈重的铁锤，打造的相当坚实。"
-    }
-
 # Generated from C:/files/git/mud/d/beijing/npc/obj/hat.c by LPCConverter
 # Zone: beijing
 
-    characters "hat" {
+    items "hat" {
       name = "帽子"
       aliases = ["hat"]
       description = ""
@@ -9929,16 +9884,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/head.c by LPCConverter
 # Zone: beijing
 
-    characters "head" {
-      name = "钢盔"
-      aliases = ["gang kui", "gangkui", "kui", "helmet"]
-      description = "一顶结实的钢盔。"
-    }
-
-# Generated from C:/files/git/mud/d/beijing/npc/obj/helmet.c by LPCConverter
-# Zone: beijing
-
-    characters "helmet" {
+    items "head" {
       name = "钢盔"
       aliases = ["gang kui", "gangkui", "kui", "helmet"]
       description = "一顶结实的钢盔。"
@@ -9947,7 +9893,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/hupi.c by LPCConverter
 # Zone: beijing
 
-    characters "hupi" {
+    items "hupi" {
       name = "白虎皮裘"
       aliases = ["cloth"]
       description = "一件用白虎皮所制作的短袄。"
@@ -9956,7 +9902,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/jiasha.c by LPCConverter
 # Zone: beijing
 
-    characters "jiasha" {
+    items "jiasha" {
       name = "红色袈裟"
       aliases = ["jia sha", "cloth"]
       description = "一件火红色的袈裟。"
@@ -9965,7 +9911,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/jinbiao.c by LPCConverter
 # Zone: beijing
 
-    characters "jinbiao" {
+    items "jinbiao" {
       name = "金镖"
       aliases = ["jin biao", "jin", "biao"]
       description = ""
@@ -9974,7 +9920,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/jinvcloth.c by LPCConverter
 # Zone: beijing
 
-    characters "jinvcloth" {
+    items "jinvcloth" {
       name = "胸部半开纱衣"
       aliases = ["cloth"]
       description = ""
@@ -9983,7 +9929,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/longpao.c by LPCConverter
 # Zone: beijing
 
-    characters "longpao" {
+    items "longpao" {
       name = "龙袍"
       aliases = ["cloth", "longpao"]
       description = ""
@@ -9992,7 +9938,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/mace.c by LPCConverter
 # Zone: beijing
 
-    characters "mace" {
+    items "mace" {
       name = "熟铜锏"
       aliases = ["copper mace", "mace", "coppermace", "tongjian", "jian"]
       description = "一柄沉甸甸的熟铜锏，上面铜锈斑斑。"
@@ -10001,25 +9947,16 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/nvcloth.c by LPCConverter
 # Zone: beijing
 
-    characters "nvcloth" {
+    items "nvcloth" {
       name = "短裙"
       aliases = ["duan qun"]
       description = ""
     }
 
-# Generated from C:/files/git/mud/d/beijing/npc/obj/staff.c by LPCConverter
-# Zone: beijing
-
-    characters "staff" {
-      name = "禅杖"
-      aliases = ["staff", "zhang"]
-      description = "这是一把禅杖，上面几个铁环叮当作响．"
-    }
-
 # Generated from C:/files/git/mud/d/beijing/npc/obj/stone.c by LPCConverter
 # Zone: beijing
 
-    characters "stone" {
+    items "stone" {
       name = "补天石"
       aliases = ["magic stone", "butian shi", "shi"]
       description = "传说这是女娲补天剩下的五彩石，不知是真是假。"
@@ -10028,25 +9965,16 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/stone2.c by LPCConverter
 # Zone: beijing
 
-    characters "stone2" {
+    items "stone2" {
       name = "冰蚕丝"
       aliases = ["white silk", "bingcan si", "si"]
       description = "一束晶莹剔透的细丝，隐然泛出白光。"
     }
 
-# Generated from C:/files/git/mud/d/beijing/npc/obj/sword.c by LPCConverter
-# Zone: beijing
-
-    characters "sword" {
-      name = "长剑"
-      aliases = ["chang jian", "changjian", "jian", "sword"]
-      description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
-    }
-
 # Generated from C:/files/git/mud/d/beijing/npc/obj/sword1.c by LPCConverter
 # Zone: beijing
 
-    characters "sword1" {
+    items "sword1" {
       name = "长剑"
       aliases = ["chang jian", "sword", "jian"]
       description = "一柄普通的长剑。"
@@ -10055,7 +9983,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/sword2.c by LPCConverter
 # Zone: beijing
 
-    characters "sword2" {
+    items "sword2" {
       name = "钢剑"
       aliases = ["gang jian", "sword", "jian"]
       description = "一柄锋利的长剑。"
@@ -10064,7 +9992,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/sword3.c by LPCConverter
 # Zone: beijing
 
-    characters "sword3" {
+    items "sword3" {
       name = "镔铁长剑"
       aliases = ["chang jian", "sword", "jian"]
       description = "一柄锋利的长剑。"
@@ -10073,7 +10001,7 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/sword4.c by LPCConverter
 # Zone: beijing
 
-    characters "sword4" {
+    items "sword4" {
       name = "官府用剑"
       aliases = ["chang jian", "sword", "jian"]
       description = "一柄官府卫兵特用的长剑。"
@@ -10082,37 +10010,10 @@ chats = [
 # Generated from C:/files/git/mud/d/beijing/npc/obj/sword5.c by LPCConverter
 # Zone: beijing
 
-    characters "sword5" {
+    items "sword5" {
       name = "东厂铸剑"
       aliases = ["dongchang jian", "dongchang", "jian"]
       description = "一柄官府卫兵特用的长剑，剑脊上铸有“东厂”二字。"
-    }
-
-# Generated from C:/files/git/mud/d/beijing/npc/obj/throwing.c by LPCConverter
-# Zone: beijing
-
-    characters "throwing" {
-      name = "飞璜石"
-      aliases = ["shi"]
-      description = "飞璜石是一种十分常见的暗器。"
-    }
-
-# Generated from C:/files/git/mud/d/beijing/npc/obj/waist.c by LPCConverter
-# Zone: beijing
-
-    characters "waist" {
-      name = "护心镜"
-      aliases = ["huxin jing", "mirror", "huxinjing", "jing", "huxin", "waist"]
-      description = "一面黄铜做的护心镜。"
-    }
-
-# Generated from C:/files/git/mud/d/beijing/npc/obj/whip.c by LPCConverter
-# Zone: beijing
-
-    characters "whip" {
-      name = "皮鞭"
-      aliases = ["pi bian", "pibian", "bian", "whip"]
-      description = "一条长长的皮鞭．"
     }
 
 # Generated from C:/files/git/mud/d/beijing/obj/baicai.c by LPCConverter

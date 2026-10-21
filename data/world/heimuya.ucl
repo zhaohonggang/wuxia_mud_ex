@@ -2521,7 +2521,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/bishou.c by LPCConverter
 # Zone: heimuya
 
-    characters "bishou" {
+    items "bishou" {
       name = "月牙匕"
       aliases = ["yueya bi", "yueya", "bi", "dagger"]
       description = "一柄做工精细的玉制匕首。"
@@ -2530,7 +2530,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/cloth.c by LPCConverter
 # Zone: heimuya
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
@@ -2539,7 +2539,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/dadao.c by LPCConverter
 # Zone: heimuya
 
-    characters "dadao" {
+    items "dadao" {
       name = "大刀"
       aliases = ["da dao", "dao"]
       description = "这是一柄铁打的大刀。"
@@ -2548,7 +2548,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/dafu.c by LPCConverter
 # Zone: heimuya
 
-    characters "dafu" {
+    items "dafu" {
       name = "开山斧"
       aliases = ["kaishan fu", "kaishan", "fu"]
       description = "一柄十分锋利的大斧。"
@@ -2557,7 +2557,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/hongchouxiaoshan.c by LPCConverter
 # Zone: heimuya
 
-    characters "hongchouxiaoshan" {
+    items "hongchouxiaoshan" {
       name = "红绸小杉"
       aliases = ["cloth"]
       description = ""
@@ -2566,7 +2566,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/jinpao.c by LPCConverter
 # Zone: heimuya
 
-    characters "jinpao" {
+    items "jinpao" {
       name = "日月锦袍"
       aliases = ["jin pao", "jin", "pao", "cloth"]
       description = "这是一件日月神教长老所穿戴的华丽锦袍。"
@@ -2575,7 +2575,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/leizhendang.c by LPCConverter
 # Zone: heimuya
 
-    characters "leizhendang" {
+    items "leizhendang" {
       name = "雷震挡"
       aliases = ["leizhen dang", "leizhen", "dang"]
       description = "一杆十分沉重的雷震挡。"
@@ -2584,7 +2584,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/shenzhen.c by LPCConverter
 # Zone: heimuya
 
-    characters "shenzhen" {
+    items "shenzhen" {
       name = "黑血神针"
       aliases = ["heixue shenzhen", "heixue", "shenzhen", "zhen"]
       description = "这是一些暗灰色的细长金针，长约寸许。"
@@ -2593,7 +2593,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/shutonggun.c by LPCConverter
 # Zone: heimuya
 
-    characters "shutonggun" {
+    items "shutonggun" {
       name = "熟铜棍"
       aliases = ["shutong gun", "shutong", "gun", "club"]
       description = "一杆十分灵便的熟铜棍。"
@@ -2602,7 +2602,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/tongchui.c by LPCConverter
 # Zone: heimuya
 
-    characters "tongchui" {
+    items "tongchui" {
       name = "铜锤"
       aliases = ["tong chui", "tong", "chui", "hammer"]
       description = "这是一对由青铜铸造的大锤，显得极是沉重。"
@@ -2611,7 +2611,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/yaoshi.c by LPCConverter
 # Zone: heimuya
 
-    characters "yaoshi" {
+    items "yaoshi" {
       name = "地牢钥匙"
       aliases = ["dilao key", "key"]
       description = "这是一把很普通的钥匙。"
@@ -2620,7 +2620,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/zaohong.c by LPCConverter
 # Zone: heimuya
 
-    characters "zaohong" {
+    items "zaohong" {
       name = "枣红缎面皮袍"
       aliases = ["zaohong pao", "zaohong", "pao"]
       description = ""
@@ -2629,7 +2629,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/zichoush.c by LPCConverter
 # Zone: heimuya
 
-    characters "zichoush" {
+    items "zichoush" {
       name = "紫绸衫"
       aliases = ["zichou shan", "zichou", "shan", "cloth"]
       description = ""

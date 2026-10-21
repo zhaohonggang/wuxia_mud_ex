@@ -70,8 +70,13 @@ zones "kunming" {
   room_characters "chapu" {
     room_id = rooms.chapu.id
     characters = [
-      { id = characters.chaxiaoer.id },
-      { id = characters.yantong.id }    ]
+      { id = characters.chaxiaoer.id }    ]
+  }
+
+  room_items "chapu" {
+    room_id = rooms.chapu.id
+    items = [
+      { id = items.yantong.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/kunming/dangpu.c by LPCConverter
@@ -1476,7 +1481,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/armor.c by LPCConverter
 # Zone: kunming
 
-    characters "armor" {
+    items "armor" {
       name = "铁甲"
       aliases = ["armor", "jia"]
       description = ""
@@ -1485,7 +1490,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/baozi.c by LPCConverter
 # Zone: kunming
 
-    characters "baozi" {
+    items "baozi" {
       name = "包子"
       aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
@@ -1494,7 +1499,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/changjian.c by LPCConverter
 # Zone: kunming
 
-    characters "changjian" {
+    items "changjian" {
       name = "长剑"
       aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
@@ -1503,7 +1508,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/gangdao.c by LPCConverter
 # Zone: kunming
 
-    characters "gangdao" {
+    items "gangdao" {
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
@@ -1512,7 +1517,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/guanfu.c by LPCConverter
 # Zone: kunming
 
-    characters "guanfu" {
+    items "guanfu" {
       name = "官服"
       aliases = ["guan fu", "fu"]
       description = ""
@@ -1521,7 +1526,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/huasheng.c by LPCConverter
 # Zone: kunming
 
-    characters "huasheng" {
+    items "huasheng" {
       name = "油炸花生"
       aliases = ["huasheng", "peanut"]
       description = "一碟香喷喷的花生米。"
@@ -1530,7 +1535,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/huoqiang.c by LPCConverter
 # Zone: kunming
 
-    characters "huoqiang" {
+    items "huoqiang" {
       name = "金火枪"
       aliases = ["jin huoqiang", "jin", "huoqiang"]
       description = "一支由黄金铸成，做工精细的火枪。"
@@ -1539,7 +1544,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/jitui.c by LPCConverter
 # Zone: kunming
 
-    characters "jitui" {
+    items "jitui" {
       name = "烤鸡腿"
       aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
@@ -1548,7 +1553,7 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/jiudai.c by LPCConverter
 # Zone: kunming
 
-    characters "jiudai" {
+    items "jiudai" {
       name = "牛皮酒袋"
       aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
@@ -1557,34 +1562,16 @@ direction = "west"
 # Generated from C:/files/git/mud/d/kunming/npc/obj/niurou.c by LPCConverter
 # Zone: kunming
 
-    characters "niurou" {
+    items "niurou" {
       name = "熟牛肉"
       aliases = ["niu rou", "rou"]
       description = "一块香喷喷的熟牛肉。"
     }
 
-# Generated from C:/files/git/mud/d/kunming/npc/obj/wan.c by LPCConverter
-# Zone: kunming
-
-    characters "wan" {
-      name = "大碗茶"
-      aliases = ["wan", "da wan", "ci wan"]
-      description = "一个粗磁大碗。"
-    }
-
-# Generated from C:/files/git/mud/d/kunming/npc/obj/yan.c by LPCConverter
-# Zone: kunming
-
-    characters "yan" {
-      name = "水烟"
-      aliases = ["shui yan", "shui", "yan"]
-      description = "这是一卷水烟丝。"
-    }
-
 # Generated from C:/files/git/mud/d/kunming/npc/obj/yantong.c by LPCConverter
 # Zone: kunming
 
-    characters "yantong" {
+    items "yantong" {
       name = "水烟筒"
       aliases = ["yan tong", "yan", "tong"]
       description = "这是一支云南人喜爱的水烟筒。你可以用(fire)来吸烟。"
@@ -1638,6 +1625,7 @@ direction = "west"
 
     items "wan" {
       name = "大碗茶"
+      aliases = ["wan", "da wan", "ci wan"]
       description = "一个粗磁大碗。"
   verbs = [
     "get",
@@ -1656,6 +1644,7 @@ direction = "west"
 
     items "yan" {
       name = "水烟"
+      aliases = ["shui yan", "shui", "yan"]
       description = "这是一卷水烟丝。"
   verbs = [
     "get",

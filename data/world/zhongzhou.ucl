@@ -2578,7 +2578,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/baozi.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "baozi" {
+    items "baozi" {
       name = "包子"
       aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
@@ -2587,7 +2587,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/beixin.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "beixin" {
+    items "beixin" {
       name = "皮背心"
       aliases = ["pi beixin", "beixin"]
       description = ""
@@ -2596,7 +2596,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/changjian.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "changjian" {
+    items "changjian" {
       name = "长剑"
       aliases = ["changjian", "sword", "chang jian", "jian"]
       description = "这是一把看起相当普通的长剑。"
@@ -2605,7 +2605,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/gangdao.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "gangdao" {
+    items "gangdao" {
       name = "钢刀"
       aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
@@ -2614,7 +2614,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/goupi.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "goupi" {
+    items "goupi" {
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
@@ -2623,7 +2623,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/jitui.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "jitui" {
+    items "jitui" {
       name = "炸鸡腿"
       aliases = ["jitui", "tui", "leg"]
       description = "一根啃得姬的炸鸡腿。"
@@ -2632,7 +2632,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/kusang.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "kusang" {
+    items "kusang" {
       name = "哭丧棒"
       aliases = ["kusang bang", "kusang", "bang"]
       description = "这是一根精铁打铸的哭丧棒。"
@@ -2641,7 +2641,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/lingpai.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "lingpai" {
+    items "lingpai" {
       name = "铁灵牌"
       aliases = ["tie lingpai", "tie", "lingpai"]
       description = "这是一副精铁打铸的铁灵牌。"
@@ -2650,7 +2650,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/yaofang.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "yaofang" {
+    items "yaofang" {
       name = "残破药方"
       aliases = ["yaofang"]
       description = ""
@@ -2659,7 +2659,7 @@ chats = [
 # Generated from C:/files/git/mud/d/zhongzhou/npc/obj/zhaohun.c by LPCConverter
 # Zone: zhongzhou
 
-    characters "zhaohun" {
+    items "zhaohun" {
       name = "招魂幡"
       aliases = ["zhaohun fan", "zhaohun", "fan"]
       description = "这是一面精铁打铸的招魂幡。"

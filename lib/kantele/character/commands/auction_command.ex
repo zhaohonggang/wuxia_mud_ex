@@ -125,20 +125,19 @@ defmodule Kantele.Character.AuctionCommand do
       |> prompt(CommandView, "prompt", %{})
     else
       sep = String.pad_trailing("≡", 59, "─") <> "≡"
-      lines = ["目前正在拍卖的物品有以下这些：", sep]
 
-      for record <- auctions do
-        bidder_name = if record.now_bidder_name, do: record.now_bidder_name, else: "无"
+      # `for` 的返回值才是结果：早先在 body 里 `lines = lines ++ [line]`
+      # 只是重新绑定了一个被丢弃的局部变量，列表永远是空的（R20）。
+      item_lines =
+        for record <- auctions do
+          bidder_name = if record.now_bidder_name, do: record.now_bidder_name, else: "无"
 
-        line =
-          "  #{record.character_name}的#{record.goods_name}，#{money_str(record.value)}，竞价者：#{
-            bidder_name
-          }"
+          "  #{record.character_name}的#{record.goods_name}，#{money_str(record.value)}，竞价者：#{bidder_name}"
+        end
 
-        lines = lines ++ [line]
-      end
-
-      lines = lines ++ [sep, "共有 #{length(auctions)} 件拍卖品。"]
+      lines =
+        ["目前正在拍卖的物品有以下这些：", sep] ++
+          item_lines ++ [sep, "共有 #{length(auctions)} 件拍卖品。"]
 
       conn
       |> render(CommandView, "text", %{text: Enum.join(lines, "\n") <> "\n"})
@@ -182,7 +181,8 @@ defmodule Kantele.Character.AuctionCommand do
     end
   end
 
+  # 同上：`money_str/1` 收总价值，别再套 `Money.split/1`（R18）
   defp money_str(n) when is_integer(n) do
-    Kantele.Economy.Money.money_str(Kantele.Economy.Money.split(n))
+    Kantele.Economy.Money.money_str(n)
   end
 end

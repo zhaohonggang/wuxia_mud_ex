@@ -1730,7 +1730,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/axe.c by LPCConverter
 # Zone: guiyun
 
-    characters "axe" {
+    items "axe" {
       name = "砍柴斧"
       aliases = ["fu"]
       description = "一柄砍柴用的短斧，斧刃上有几个缺口。"
@@ -1739,7 +1739,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/biandan.c by LPCConverter
 # Zone: guiyun
 
-    characters "biandan" {
+    items "biandan" {
       name = "熟铁扁担"
       aliases = ["bian dan"]
       description = "通身黑油油地，中间微弯，两头各有一个突起的鞘子。"
@@ -1748,7 +1748,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/gancheng.c by LPCConverter
 # Zone: guiyun
 
-    characters "gancheng" {
+    items "gancheng" {
       name = "杆秤"
       aliases = ["gan cheng"]
       description = "一杆闹市货物常用的杆秤。"
@@ -1757,7 +1757,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/green_cloth.c by LPCConverter
 # Zone: guiyun
 
-    characters "green_cloth" {
+    items "green_cloth" {
       name = "青布衣"
       aliases = ["green cloth"]
       description = ""
@@ -1766,7 +1766,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/jiandao.c by LPCConverter
 # Zone: guiyun
 
-    characters "jiandao" {
+    items "jiandao" {
       name = "尖刀"
       aliases = ["jian dao", "blade"]
       description = "一柄杀猪刀。"
@@ -1775,7 +1775,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/jiujiebian.c by LPCConverter
 # Zone: guiyun
 
-    characters "jiujiebian" {
+    items "jiujiebian" {
       name = "九节鞭"
       aliases = ["jiujie bian", "bian"]
       description = "这是一条九节鞭，由精钢铸就而成。"
@@ -1784,7 +1784,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/red_cloth.c by LPCConverter
 # Zone: guiyun
 
-    characters "red_cloth" {
+    items "red_cloth" {
       name = "红绫袄"
       aliases = ["red cloth"]
       description = ""
@@ -1793,25 +1793,16 @@ item_desc = {
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/shortblade.c by LPCConverter
 # Zone: guiyun
 
-    characters "shortblade" {
+    items "shortblade" {
       name = "短刀"
       aliases = ["short blade", "dao"]
       description = "这是一捆飞刀。"
     }
 
-# Generated from C:/files/git/mud/d/guiyun/npc/obj/xin.c by LPCConverter
-# Zone: guiyun
-
-    characters "xin" {
-      name = "书信"
-      aliases = ["guiyun shuxin", "shu xin", "xin"]
-      description = "这是一封陆冠英写的邀请进入归云庄的书信。"
-    }
-
 # Generated from C:/files/git/mud/d/guiyun/npc/obj/zheshan.c by LPCConverter
 # Zone: guiyun
 
-    characters "zheshan" {
+    items "zheshan" {
       name = "油纸折扇"
       aliases = ["zhe shan", "shan"]
       description = "这是一对用镔铁为骨的油纸折扇。"

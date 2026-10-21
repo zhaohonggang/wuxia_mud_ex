@@ -40,8 +40,17 @@ defmodule Kantele.Economy.Auction do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  @doc "列出所有进行中的拍卖"
-  def list_auctions, do: :ets.tab2list(@table)
+  @doc """
+  列出所有进行中的拍卖（返回 record 列表，不含 ETS 主键）
+
+  ETS 是 `set` 表，存的是 `{character_id, record}`；两个调用方
+  （`auction check` / `auction <价> to <人>`）都按 record 取字段，
+  直接返回 `tab2list` 会在有拍卖品时 `BadMapError`（R19）。
+  """
+  def list_auctions do
+    :ets.tab2list(@table)
+    |> Enum.map(fn {_character_id, record} -> record end)
+  end
 
   @doc "添加拍卖品（玩家对自己物品发起拍卖）"
   def add_auction(character, item_instance, price) when is_integer(price) and price > 0 do
@@ -200,8 +209,10 @@ defmodule Kantele.Economy.Auction do
       :ok
   end
 
+  # `Money.money_str/1` 收的是**总价值**，不是面额 map —— 早先这里多套了一层
+  # `Money.split/1`，任何一次拍卖播报都会 `FunctionClauseError`（R18）。
   defp money_str(n) when is_integer(n) do
-    Kantele.Economy.Money.money_str(Kantele.Economy.Money.split(n))
+    Kantele.Economy.Money.money_str(n)
   end
 
   defp chinese_number(n) when is_integer(n) do

@@ -1092,7 +1092,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/baiyunwan.c by LPCConverter
 # Zone: lingjiu
 
-    characters "baiyunwan" {
+    items "baiyunwan" {
       name = "白云熊胆丸"
       aliases = ["baiyunxiudan wan", "wan"]
       description = "这是一颗武林人士梦寐以求的疗伤圣药。"
@@ -1101,7 +1101,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/diaogan.c by LPCConverter
 # Zone: lingjiu
 
-    characters "diaogan" {
+    items "diaogan" {
       name = "钓竿"
       aliases = ["diao gan", "diao", "gan"]
       description = "这是一根桦木制的钓竿，制作得颇为奇特。"
@@ -1110,7 +1110,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/jieyao.c by LPCConverter
 # Zone: lingjiu
 
-    characters "jieyao" {
+    items "jieyao" {
       name = "药丸"
       aliases = ["yao wan", "yao", "wan"]
       description = "一颗浑圆的药丸，乃是乌老大所配制的独门解药。"
@@ -1119,7 +1119,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/jinzhen.c by LPCConverter
 # Zone: lingjiu
 
-    characters "jinzhen" {
+    items "jinzhen" {
       name = "斓蜈金针"
       aliases = ["lanwu jinzhen", "lanwu", "jinzhen", "zhen"]
       description = "这是一些血红色的细长金针，长约寸许。"
@@ -1128,7 +1128,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/yuping.c by LPCConverter
 # Zone: lingjiu
 
-    characters "yuping" {
+    items "yuping" {
       name = "玉瓶"
       aliases = ["yu ping", "yu", "ping"]
       description = "一支白玉雕制的玉瓶，瓶上的木塞已甚为古旧。"

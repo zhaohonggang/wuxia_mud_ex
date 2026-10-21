@@ -3315,19 +3315,10 @@ chats = [
 
     }
 
-# Generated from C:/files/git/mud/d/death/npc/obj/armor1.c by LPCConverter
-# Zone: death
-
-    characters "armor1" {
-      name = "银甲"
-      aliases = ["armor"]
-      description = ""
-    }
-
 # Generated from C:/files/git/mud/d/death/npc/obj/armor2.c by LPCConverter
 # Zone: death
 
-    characters "armor2" {
+    items "armor2" {
       name = "金盔"
       aliases = ["head"]
       description = ""
@@ -3336,7 +3327,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/bi.c by LPCConverter
 # Zone: death
 
-    characters "bi" {
+    items "bi" {
       name = "判官笔"
       aliases = ["bi"]
       description = ""
@@ -3345,7 +3336,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/blade1.c by LPCConverter
 # Zone: death
 
-    characters "blade1" {
+    items "blade1" {
       name = "枯骨刀"
       aliases = ["blade"]
       description = ""
@@ -3354,7 +3345,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/book.c by LPCConverter
 # Zone: death
 
-    characters "book" {
+    items "book" {
       name = "生死薄"
       aliases = ["book"]
       description = "一本记载人间生死的名册。"
@@ -3363,7 +3354,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth1.c by LPCConverter
 # Zone: death
 
-    characters "cloth1" {
+    items "cloth1" {
       name = "无常袍"
       aliases = ["cloth"]
       description = ""
@@ -3372,7 +3363,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth2.c by LPCConverter
 # Zone: death
 
-    characters "cloth2" {
+    items "cloth2" {
       name = "阎罗袍"
       aliases = ["cloth"]
       description = ""
@@ -3381,7 +3372,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth3.c by LPCConverter
 # Zone: death
 
-    characters "cloth3" {
+    items "cloth3" {
       name = "云裳"
       aliases = ["cloth"]
       description = ""
@@ -3390,7 +3381,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth4.c by LPCConverter
 # Zone: death
 
-    characters "cloth4" {
+    items "cloth4" {
       name = "鬼王袍"
       aliases = ["cloth"]
       description = ""
@@ -3399,7 +3390,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/cloth5.c by LPCConverter
 # Zone: death
 
-    characters "cloth5" {
+    items "cloth5" {
       name = "阴王袍"
       aliases = ["cloth"]
       description = ""
@@ -3408,7 +3399,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/jiasuo.c by LPCConverter
 # Zone: death
 
-    characters "jiasuo" {
+    items "jiasuo" {
       name = "枷锁"
       aliases = ["jia suo", "suo", "jia"]
       description = ""
@@ -3417,7 +3408,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/npc/obj/suolian.c by LPCConverter
 # Zone: death
 
-    characters "suolian" {
+    items "suolian" {
       name = "锁链"
       aliases = ["suo lian", "suo", "lian"]
       description = ""
@@ -6602,7 +6593,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/chijian.c by LPCConverter
 # Zone: death
 
-    characters "chijian" {
+    items "chijian" {
       name = "赤剑"
       aliases = ["chi jian", "jian", "sword", "chi", "chijian"]
       description = "一柄四尺来长的长剑，整个剑身呈红色。"
@@ -6611,7 +6602,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/chiyoujian.c by LPCConverter
 # Zone: death
 
-    characters "chiyoujian" {
+    items "chiyoujian" {
       name = "玄蚩神剑"
       aliases = ["chiyou jian", "sword", "jian"]
       description = "一柄玄铁铸造的长剑，剑柄上雕有蚩尤的头像。"
@@ -6620,7 +6611,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/feidao.c by LPCConverter
 # Zone: death
 
-    characters "feidao" {
+    items "feidao" {
       name = "小李飞刀"
       aliases = ["xiaoli feidao", "feidao"]
       description = "一柄看似普通的飞刀，刀柄上刻了个小小的“李”字。"
@@ -6629,7 +6620,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/hands.c by LPCConverter
 # Zone: death
 
-    characters "hands" {
+    items "hands" {
       name = "残血手套"
       aliases = ["canxue shoutao", "shoutao", "canxue", "hand", "tao"]
       description = "传说中的上古神器。"
@@ -6638,7 +6629,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/jingzhongyue.c by LPCConverter
 # Zone: death
 
-    characters "jingzhongyue" {
+    items "jingzhongyue" {
       name = "井中月"
       aliases = ["jingzhong yue", "blade", "dao", "yue", "jingzhong"]
       description = "一柄四尺来长的单刀，重达百斤，刀身散发着乌黑的光泽。"
@@ -6647,7 +6638,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/pangukai.c by LPCConverter
 # Zone: death
 
-    characters "pangukai" {
+    items "pangukai" {
       name = "盘古铠"
       aliases = ["pangu kai", "kai", "armor"]
       description = "一见黑黝黝的铁甲，上面雕有盘古的头像。"
@@ -6656,7 +6647,7 @@ chats = [
 # Generated from C:/files/git/mud/d/death/sky/npc/obj/renou.c by LPCConverter
 # Zone: death
 
-    characters "renou" {
+    items "renou" {
       name = "人偶"
       aliases = ["renou"]
       description = "一块未完工的木偶，但已经可以辨认出是个女子的雕像。"
@@ -6879,6 +6870,7 @@ chats = [
 
     items "armor1" {
       name = "银甲"
+      aliases = ["armor"]
       description = "银甲"
   verbs = [
     "get",

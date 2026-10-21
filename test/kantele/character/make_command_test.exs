@@ -88,5 +88,22 @@ defmodule Kantele.Character.MakeCommandTest do
       assert parsed.module == MakeCommand
       assert parsed.params["arg"] == "xiaohuandan"
     end
+
+    # R20：药材段与技能段曾写在 `Enum.each` 里重绑局部变量，结果被丢弃，
+    # 只剩「需要以下这些药材：」一行、药材和技能一条都不显示。
+    test "`make <药方> ?` 列出药材与技能要求" do
+      conn = MakeCommand.run(build_conn(player()), %{"arg" => "xiaohuandan ?"})
+      text = output_text(conn)
+
+      assert text =~ "炼制小还丹需要以下这些药材："
+      # 药材（顺序由 map 的项序决定：danggui → fuling → renshen）
+      assert text =~ "3两当归"
+      assert text =~ "3两茯苓"
+      assert text =~ "2两人参"
+      # 技能要求
+      assert text =~ "内功: 60级"
+      assert text =~ "医术: 60级"
+      assert text =~ "最低制药等级: 50"
+    end
   end
 end

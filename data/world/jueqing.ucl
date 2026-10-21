@@ -1270,7 +1270,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/jueqing/npc/obj/lvshan.c by LPCConverter
 # Zone: jueqing
 
-    characters "lvshan" {
+    items "lvshan" {
       name = "绿衫"
       aliases = ["lv shan", "lv", "shan", "cloth"]
       description = ""
@@ -1279,7 +1279,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/jueqing/npc/obj/mantou.c by LPCConverter
 # Zone: jueqing
 
-    characters "mantou" {
+    items "mantou" {
       name = "馒头"
       aliases = ["man tou", "man", "tou"]
       description = "一个馒头。"
@@ -1288,7 +1288,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/jueqing/npc/obj/water.c by LPCConverter
 # Zone: jueqing
 
-    characters "water" {
+    items "water" {
       name = "清水"
       aliases = ["water", "shui"]
       description = "一碗清水。"

@@ -958,7 +958,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/bosi.c by LPCConverter
 # Zone: tulong
 
-    characters "bosi" {
+    items "bosi" {
       name = "NPC"
       aliases = ["bosi cloth", "bosi", "cloth"]
       description = "这是一件波斯明教总舵的教服。"
@@ -967,7 +967,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/flag.c by LPCConverter
 # Zone: tulong
 
-    characters "flag" {
+    items "flag" {
       name = "大旗"
       aliases = ["flag", "qi"]
       description = "旗上绣着一头大鹰，双翅伸展，甚是威武。"
@@ -976,7 +976,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/hammer.c by LPCConverter
 # Zone: tulong
 
-    characters "hammer" {
+    items "hammer" {
       name = "NPC"
       aliases = ["green xigua", "xigua", "hammer"]
       description = "这西瓜由精钢铸成，瓜上漆成绿黑间条之色，共有一对，系以钢链。"
@@ -985,7 +985,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/jiaofu.c by LPCConverter
 # Zone: tulong
 
-    characters "jiaofu" {
+    items "jiaofu" {
       name = "天鹰教服"
       aliases = ["ying cloth", "cloth"]
       description = "这是一件天鹰教服。"
@@ -994,7 +994,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/ling.c by LPCConverter
 # Zone: tulong
 
-    characters "ling" {
+    items "ling" {
       name = "NPC"
       aliases = ["bintie ling", "bintie", "ling"]
       description = ""
@@ -2876,7 +2876,7 @@ direction = "down"
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/gong.c by LPCConverter
 # Zone: tulong
 
-    characters "gong" {
+    items "gong" {
       name = "点金盘龙弓"
       aliases = ["panlong gong", "gong", "panlong"]
       description = ""
@@ -2885,7 +2885,7 @@ direction = "down"
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/jian.c by LPCConverter
 # Zone: tulong
 
-    characters "jian" {
+    items "jian" {
       name = "NPC"
       aliases = ["yitian jian", "yitian", "jian", "sword"]
       description = "这便与天下至尊的屠龙宝刀并称的倚天剑。"
@@ -2894,7 +2894,7 @@ direction = "down"
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/spear.c by LPCConverter
 # Zone: tulong
 
-    characters "spear" {
+    items "spear" {
       name = "镔铁长枪"
       aliases = ["chang qiang", "qiang", "spear"]
       description = ""
@@ -2903,7 +2903,7 @@ direction = "down"
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tiezhang.c by LPCConverter
 # Zone: tulong
 
-    characters "tiezhang" {
+    items "tiezhang" {
       name = "精铁杖"
       aliases = ["tie zhang", "tie", "zhang"]
       description = "一柄用镔铁打造的杖。"
@@ -2912,7 +2912,7 @@ direction = "down"
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/obj/tongbo.c by LPCConverter
 # Zone: tulong
 
-    characters "tongbo" {
+    items "tongbo" {
       name = "铜钹"
       aliases = ["tong bo", "tong", "bo"]
       description = "一柄用熟铜打造的钹。"

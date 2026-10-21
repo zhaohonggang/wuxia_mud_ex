@@ -1362,19 +1362,10 @@ chats = [
 
     }
 
-# Generated from C:/files/git/mud/d/shenfeng/npc/obj/dogrou.c by LPCConverter
-# Zone: shenfeng
-
-    characters "dogrou" {
-      name = "狗肉"
-      aliases = ["gou rou", "rou"]
-      description = "一块香喷喷的狗肉。"
-    }
-
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/duandao.c by LPCConverter
 # Zone: shenfeng
 
-    characters "duandao" {
+    items "duandao" {
       name = "哈萨克弯刀"
       aliases = ["hasake wandao", "hasake", "wandao", "dao", "blade"]
       description = "这是一柄亮晃晃的哈萨克短刀, 是哈萨克人的防身武器。"
@@ -1383,25 +1374,16 @@ chats = [
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/duanjian.c by LPCConverter
 # Zone: shenfeng
 
-    characters "duanjian" {
+    items "duanjian" {
       name = "短剑"
       aliases = ["duan jian", "duan", "jian", "sword"]
       description = "这是一柄剑身短小的精钢剑。"
     }
 
-# Generated from C:/files/git/mud/d/shenfeng/npc/obj/hulu.c by LPCConverter
-# Zone: shenfeng
-
-    characters "hulu" {
-      name = "酒葫芦"
-      aliases = ["jiu hulu", "hulu", "jiu"]
-      description = "一个用来装酒的大葫芦，外皮金黄，里面能装好几斤酒。"
-    }
-
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/qcloth.c by LPCConverter
 # Zone: shenfeng
 
-    characters "qcloth" {
+    items "qcloth" {
       name = "哈萨克袄裙"
       aliases = ["ao qun", "qun"]
       description = "这是一件织著红花绿草的袄裙，哈萨克女孩常穿的衣着。"
@@ -1410,7 +1392,7 @@ chats = [
 # Generated from C:/files/git/mud/d/shenfeng/npc/obj/ycloth.c by LPCConverter
 # Zone: shenfeng
 
-    characters "ycloth" {
+    items "ycloth" {
       name = "羊皮袄"
       aliases = ["yangpi ao", "ao"]
       description = "这是一件灰色的羊皮袄。牧羊人不管春夏秋冬都穿着它。"
@@ -1567,6 +1549,7 @@ chats = [
 
     items "dogrou" {
       name = "狗肉"
+      aliases = ["gou rou", "rou"]
       description = "一块香喷喷的狗肉。"
   verbs = [
     "get",
@@ -1587,6 +1570,7 @@ chats = [
 
     items "hulu" {
       name = "酒葫芦"
+      aliases = ["jiu hulu", "hulu", "jiu"]
       description = "一个用来装酒的大葫芦，外皮金黄，里面能装好几斤酒。"
   verbs = [
     "get",

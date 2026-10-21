@@ -1984,7 +1984,7 @@ chats = [
 # Generated from C:/files/git/mud/d/xiyu/npc/shachongke.c by LPCConverter
 # Zone: xiyu
 
-    characters "shachongke" {
+    items "shachongke" {
       name = "沙虫壳"
       aliases = ["shachong ke", "ke"]
       description = "这是一只沙虫的干壳，是制备毒药的原料。"

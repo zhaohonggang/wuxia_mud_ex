@@ -3002,7 +3002,7 @@ behavior_config = {
 # Generated from C:/files/git/mud/d/hengyang/npc/sherou.c by LPCConverter
 # Zone: hengyang
 
-    characters "sherou" {
+    items "sherou" {
       name = "蟒蛇肉"
       aliases = ["she rou", "she"]
       description = "一大块蟒蛇肉。"
@@ -3077,7 +3077,7 @@ chats = [
 # Generated from C:/files/git/mud/d/hengyang/npc/turou.c by LPCConverter
 # Zone: hengyang
 
-    characters "turou" {
+    items "turou" {
       name = "兔肉"
       aliases = ["tu rou", "tu"]
       description = "一块鲜血淋漓肥的野兔肉。"
@@ -3307,7 +3307,7 @@ chats = [
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/blackcloth.c by LPCConverter
 # Zone: hengyang
 
-    characters "blackcloth" {
+    items "blackcloth" {
       name = "黑色布衣"
       aliases = ["cloth"]
       description = ""
@@ -3316,7 +3316,7 @@ chats = [
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/female-shoe.c by LPCConverter
 # Zone: hengyang
 
-    characters "female_shoe" {
+    items "female_shoe" {
       name = "绣花小鞋"
       aliases = ["flower shoes", "shoes"]
       description = "一双女人穿的缝制得很精美的绣花鞋。"
@@ -3325,30 +3325,16 @@ chats = [
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/female1.c by LPCConverter
 # Zone: hengyang
 
-    characters "female1" {
+    items "female1" {
       name = "湖绿长裙"
       aliases = ["green skirt", "cloth"]
       description = "一件清新可人的湖绿长裙。"
     }
 
-# Generated from C:/files/git/mud/d/hengyang/npc/obj/huqin.c by LPCConverter
-# Zone: hengyang
-
-    characters "huqin" {
-      name = "NPC"
-      aliases = ["hu qin", "hu", "qin"]
-      description = "这是一把普通的胡琴。"
-
-  init = {
-    greet_delay = 0
-    add_actions = ["play"]
-  }
-    }
-
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/luo_cloth.c by LPCConverter
 # Zone: hengyang
 
-    characters "luo_cloth" {
+    items "luo_cloth" {
       name = "熟罗长袍"
       aliases = ["cloth"]
       description = ""
@@ -3357,24 +3343,10 @@ chats = [
 # Generated from C:/files/git/mud/d/hengyang/npc/obj/tanmuqin.c by LPCConverter
 # Zone: hengyang
 
-    characters "tanmuqin" {
+    items "tanmuqin" {
       name = "NPC"
       aliases = ["tanmu qin", "tanmu", "qin"]
       description = "一把檀木所制的木琴，古典雅致。"
-
-  init = {
-    greet_delay = 0
-    add_actions = ["play"]
-  }
-    }
-
-# Generated from C:/files/git/mud/d/hengyang/npc/obj/zhuxiao.c by LPCConverter
-# Zone: hengyang
-
-    characters "zhuxiao" {
-      name = "NPC"
-      aliases = ["zhu xiao", "zhu", "xiao"]
-      description = "一把翠竹所制的洞萧，隐隐泛出绿光。"
 
   init = {
     greet_delay = 0
@@ -3887,6 +3859,11 @@ chats = [
 
     items "huqin" {
       name = "胡琴"
+      aliases = ["hu qin", "hu", "qin"]
+      init = {
+    greet_delay = 0
+    add_actions = ["play"]
+  }
       description = "这是一把普通的胡琴。"
   verbs = [
     "get",
@@ -3907,6 +3884,11 @@ chats = [
 
     items "zhuxiao" {
       name = "翠竹萧"
+      aliases = ["zhu xiao", "zhu", "xiao"]
+      init = {
+    greet_delay = 0
+    add_actions = ["play"]
+  }
       description = "一把翠竹所制的洞萧，隐隐泛出绿光。"
   verbs = [
     "get",

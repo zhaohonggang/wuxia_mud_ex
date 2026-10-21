@@ -450,18 +450,23 @@ defmodule Kantele.World.LoaderMetaTest do
     zone = %Kantele.World.Zone{id: "test"}
 
     {_key, item} =
-      Kantele.World.Loader.parse_item(zone, "muqin", %{
-        name: "木琴",
-        description: "一个平凡的木琴。",
-        verbs: ["get"],
-        actions: [
-          %{verb: "play", handler: "play_qin"},
-          %{verb: "", handler: "play_qin"},
-          %{verb: "read"},
-          "not-a-map"
-        ],
-        read_text: "  羽毛扇始于周昭王时。\n"
-      }, %{})
+      Kantele.World.Loader.parse_item(
+        zone,
+        "muqin",
+        %{
+          name: "木琴",
+          description: "一个平凡的木琴。",
+          verbs: ["get"],
+          actions: [
+            %{verb: "play", handler: "play_qin"},
+            %{verb: "", handler: "play_qin"},
+            %{verb: "read"},
+            "not-a-map"
+          ],
+          read_text: "  羽毛扇始于周昭王时。\n"
+        },
+        %{}
+      )
 
     assert item.id == "test:muqin"
     assert item.meta.actions == [%{verb: "play", handler: "play_qin"}]
@@ -472,11 +477,16 @@ defmodule Kantele.World.LoaderMetaTest do
     zone = %Kantele.World.Zone{id: "test"}
 
     {_key, item} =
-      Kantele.World.Loader.parse_item(zone, "changjian", %{
-        name: "长剑",
-        description: "青钢剑",
-        verbs: ["get"]
-      }, %{})
+      Kantele.World.Loader.parse_item(
+        zone,
+        "changjian",
+        %{
+          name: "长剑",
+          description: "青钢剑",
+          verbs: ["get"]
+        },
+        %{}
+      )
 
     assert item.meta.actions == []
     assert item.meta.read_text == nil
@@ -486,13 +496,46 @@ defmodule Kantele.World.LoaderMetaTest do
     zone = %Kantele.World.Zone{id: "test"}
 
     {_key, item} =
-      Kantele.World.Loader.parse_item(zone, "book", %{
-        name: "书",
-        description: "空书",
-        verbs: [],
-        read_text: "   "
-      }, %{})
+      Kantele.World.Loader.parse_item(
+        zone,
+        "book",
+        %{
+          name: "书",
+          description: "空书",
+          verbs: [],
+          read_text: "   "
+        },
+        %{}
+      )
 
     assert item.meta.read_text == nil
+  end
+
+  # ---- R7：`verbs` 是可选键 ----
+  #
+  # `npc/obj/*` 下被误分类成 `characters` 的物品块（R7 改名回 `items`）带的是
+  # NPC 形状的键（aliases/description/name），从来没有 `verbs`。原本
+  # `parse_item/4` 对 `item_data.verbs` 是裸访问，一改名就
+  # `key :verbs not found in: ...` 把整个区加载打翻（实测 78 个用例连带红）。
+  # 同函数里 meta/aliases/messages/actions/read_text 全都走 Map.get 容错，
+  # 唯独 verbs 漏了 —— 这里补回归。
+  test "parse_item：缺 verbs 键时取空动词表，不抛 KeyError" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(
+        zone,
+        "baiyunxiudan",
+        %{
+          name: "白云熊胆丸",
+          aliases: ["baiyunxiudan wan", "wan"],
+          description: "这是一颗武林人士梦寐以求的疗伤圣药。"
+        },
+        %{}
+      )
+
+    assert item.id == "test:baiyunxiudan"
+    assert item.meta.aliases == ["baiyunxiudan wan", "wan"]
+    assert item.verbs == []
   end
 end

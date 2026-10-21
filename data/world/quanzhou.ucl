@@ -1083,7 +1083,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/cloth.c by LPCConverter
 # Zone: quanzhou
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
@@ -1092,7 +1092,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/fuchen.c by LPCConverter
 # Zone: quanzhou
 
-    characters "fuchen" {
+    items "fuchen" {
       name = "拂尘"
       aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
@@ -1101,7 +1101,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/huoqiang.c by LPCConverter
 # Zone: quanzhou
 
-    characters "huoqiang" {
+    items "huoqiang" {
       name = "荷兰火枪"
       aliases = ["helan huoqiang", "huoqiang"]
       description = "一支荷兰火枪。可惜只能放一枪。"
@@ -1110,7 +1110,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/tiexiang.c by LPCConverter
 # Zone: quanzhou
 
-    characters "tiexiang" {
+    items "tiexiang" {
       name = "铁箱"
       aliases = ["tie xiang", "xiang", "box"]
       description = "一只有大又笨的铁箱子，有些生锈了。"
@@ -1124,37 +1124,10 @@ item_desc = {
 # Generated from C:/files/git/mud/d/quanzhou/npc/obj/wodao.c by LPCConverter
 # Zone: quanzhou
 
-    characters "wodao" {
+    items "wodao" {
       name = "倭刀"
       aliases = ["wo dao", "blade"]
       description = "这是一柄亮晃晃的弧形弯刀，十分锋利。"
-    }
-
-# Generated from C:/files/git/mud/d/quanzhou/npc/obj/xiuhua.c by LPCConverter
-# Zone: quanzhou
-
-    characters "xiuhua" {
-      name = "绣花针"
-      aliases = ["xiuhua zhen", "zhen", "needle"]
-      description = "这是一根精钢细磨的绣花针，是绣花用的绝佳工具。"
-    }
-
-# Generated from C:/files/git/mud/d/quanzhou/npc/obj/yadan.c by LPCConverter
-# Zone: quanzhou
-
-    characters "yadan" {
-      name = "臭鸭蛋"
-      aliases = ["chou yadan", "yadan", "egg"]
-      description = "臭鸭蛋闻着臭，吃着香。"
-    }
-
-# Generated from C:/files/git/mud/d/quanzhou/npc/obj/zongzi.c by LPCConverter
-# Zone: quanzhou
-
-    characters "zongzi" {
-      name = "粽子"
-      aliases = ["zongzi"]
-      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
     }
 
 # Generated from C:/files/git/mud/d/quanzhou/obj/flower_shoe.c by LPCConverter
@@ -1213,6 +1186,7 @@ item_desc = {
 
     items "yadan" {
       name = "臭鸭蛋"
+      aliases = ["chou yadan", "yadan", "egg"]
       description = "臭鸭蛋闻着臭，吃着香。"
   verbs = [
     "get",
@@ -1238,6 +1212,7 @@ item_desc = {
 
     items "zongzi" {
       name = "粽子"
+      aliases = ["zongzi"]
       description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
   verbs = [
     "get",
@@ -1263,6 +1238,7 @@ item_desc = {
 
     items "xiuhua" {
       name = "绣花针"
+      aliases = ["xiuhua zhen", "zhen", "needle"]
       description = "这是一根精钢细磨的绣花针，是绣花用的绝佳工具。"
   verbs = [
     "get",

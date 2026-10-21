@@ -1055,7 +1055,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/meizhuang/npc/obj/heiyi.c by LPCConverter
 # Zone: meizhuang
 
-    characters "heiyi" {
+    items "heiyi" {
       name = "黑色长衫"
       aliases = ["chang shan", "cloth"]
       description = ""
@@ -1064,7 +1064,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/meizhuang/npc/obj/lingpai.c by LPCConverter
 # Zone: meizhuang
 
-    characters "lingpai" {
+    items "lingpai" {
       name = "梅花令牌"
       aliases = ["ling pai", "ling"]
       description = ""
@@ -1073,7 +1073,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/meizhuang/npc/obj/panguan-bi.c by LPCConverter
 # Zone: meizhuang
 
-    characters "panguan_bi" {
+    items "panguan_bi" {
       name = "镔铁判官笔"
       aliases = ["panguan bi", "bi", "dagger"]
       description = "这是一对用镔铁打造的判官笔。"
@@ -1082,7 +1082,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/meizhuang/npc/obj/qingyi.c by LPCConverter
 # Zone: meizhuang
 
-    characters "qingyi" {
+    items "qingyi" {
       name = "绣梅青衣"
       aliases = ["cloth"]
       description = ""

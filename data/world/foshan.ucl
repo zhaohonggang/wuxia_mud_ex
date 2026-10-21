@@ -1143,7 +1143,7 @@ chats = [
 # Generated from C:/files/git/mud/d/foshan/npc/obj/caidao.c by LPCConverter
 # Zone: foshan
 
-    characters "caidao" {
+    items "caidao" {
       name = "菜刀"
       aliases = ["cai dao", "blade"]
       description = "这是一柄亮晃晃的菜刀。"
@@ -1152,7 +1152,7 @@ chats = [
 # Generated from C:/files/git/mud/d/foshan/npc/obj/goupi.c by LPCConverter
 # Zone: foshan
 
-    characters "goupi" {
+    items "goupi" {
       name = "狗皮"
       aliases = ["gou pi", "pi"]
       description = ""
@@ -1161,7 +1161,7 @@ chats = [
 # Generated from C:/files/git/mud/d/foshan/npc/obj/magcloth.c by LPCConverter
 # Zone: foshan
 
-    characters "magcloth" {
+    items "magcloth" {
       name = "紫袍"
       aliases = ["zi pao", "cloth"]
       description = ""

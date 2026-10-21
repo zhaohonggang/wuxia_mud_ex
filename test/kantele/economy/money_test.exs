@@ -53,4 +53,27 @@ defmodule Kantele.Economy.MoneyTest do
     assert Money.money_str(250) == "二两白银又五十文铜钱"
     assert Money.money_str(5) == "五文铜钱"
   end
+
+  # R11 的配套：`denom_str/2` 按**指定面额**渲染枚数，不折算成大面额。
+  # `bank convert` 的文案必须用它（「五两白银换五百文铜钱」两边单位不同）。
+  test "denom_str 按指定面额渲染枚数（不折算）" do
+    assert Money.denom_str(5, "silver") == "五两白银"
+    assert Money.denom_str(500, "coin") == "五百文铜钱"
+    assert Money.denom_str(1, "gold") == "一两黄金"
+    assert Money.denom_str(0, "coin") == "零文铜钱"
+
+    # 同样是 500：按铜钱渲染是「五百文」，按总价值渲染是「五两白银」
+    assert Money.denom_str(500, "coin") == "五百文铜钱"
+    assert Money.money_str(500) == "五两白银"
+  end
+
+  test "denom_str 的中文数字覆盖到万级（LPC chinese_number 语义）" do
+    assert Money.denom_str(10, "coin") == "十文铜钱"
+    assert Money.denom_str(11, "coin") == "十一文铜钱"
+    assert Money.denom_str(100, "coin") == "一百文铜钱"
+    assert Money.denom_str(105, "coin") == "一百零五文铜钱"
+    assert Money.denom_str(1_010, "coin") == "一千零一十文铜钱"
+    assert Money.denom_str(9_999, "coin") == "九千九百九十九文铜钱"
+    assert Money.denom_str(10_000, "coin") == "一万文铜钱"
+  end
 end

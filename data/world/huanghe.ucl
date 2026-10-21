@@ -1871,7 +1871,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/axe.c by LPCConverter
 # Zone: huanghe
 
-    characters "axe" {
+    items "axe" {
       name = "丧门斧"
       aliases = ["sangmen fu"]
       description = "这是一杆三尖开刃的三股叉。"
@@ -1880,7 +1880,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/bi.c by LPCConverter
 # Zone: huanghe
 
-    characters "bi" {
+    items "bi" {
       name = "判官笔"
       aliases = ["panguan bi"]
       description = "这是一枝精铁打就的判官笔。"
@@ -1889,7 +1889,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/changpao.c by LPCConverter
 # Zone: huanghe
 
-    characters "changpao" {
+    items "changpao" {
       name = "葛布长袍"
       aliases = ["gebu changpao", "cloth"]
       description = ""
@@ -1898,7 +1898,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/fenshuici.c by LPCConverter
 # Zone: huanghe
 
-    characters "fenshuici" {
+    items "fenshuici" {
       name = "分水刺"
       aliases = ["fenshui ci", "ci"]
       description = "这是一只水中分水峨嵋刺。"
@@ -1907,7 +1907,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/fork.c by LPCConverter
 # Zone: huanghe
 
-    characters "fork" {
+    items "fork" {
       name = "三股叉"
       aliases = ["sangu cha"]
       description = "这是一杆三尖开刃的三股叉。"
@@ -1916,7 +1916,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/futou.c by LPCConverter
 # Zone: huanghe
 
-    characters "futou" {
+    items "futou" {
       name = "大斧头"
       aliases = ["futou", "da futou"]
       description = "这是一把砍柴的大斧头。"
@@ -1925,7 +1925,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/shuikao.c by LPCConverter
 # Zone: huanghe
 
-    characters "shuikao" {
+    items "shuikao" {
       name = "夜行水靠"
       aliases = ["Shui kao", "kao"]
       description = ""
@@ -1934,7 +1934,7 @@ item_desc = {
 # Generated from C:/files/git/mud/d/huanghe/npc/obj/tieqiao.c by LPCConverter
 # Zone: huanghe
 
-    characters "tieqiao" {
+    items "tieqiao" {
       name = "铁锹"
       aliases = ["tie qiao", "qiao"]
       description = "这是一把挖矿的铁锹。"

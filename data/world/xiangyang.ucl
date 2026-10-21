@@ -3819,7 +3819,7 @@ chats = [
 # Generated from C:/files/git/mud/d/xiangyang/npc/obj/mudao.c by LPCConverter
 # Zone: xiangyang
 
-    characters "mudao" {
+    items "mudao" {
       name = "木刀"
       aliases = ["mu dao", "blade", "dao"]
       description = "这是一柄木匠做的木刀，手工相当精细。"
@@ -3828,7 +3828,7 @@ chats = [
 # Generated from C:/files/git/mud/d/xiangyang/npc/obj/mugun.c by LPCConverter
 # Zone: xiangyang
 
-    characters "mugun" {
+    items "mugun" {
       name = "木棍"
       aliases = ["mu gun", "club", "gun"]
       description = "这是一杆木匠做的木棍，手工相当精细。"
@@ -3837,7 +3837,7 @@ chats = [
 # Generated from C:/files/git/mud/d/xiangyang/npc/obj/mujian.c by LPCConverter
 # Zone: xiangyang
 
-    characters "mujian" {
+    items "mujian" {
       name = "木剑"
       aliases = ["mu jian", "sword", "jian"]
       description = "这是一柄木匠做的木剑，手工相当精细。"

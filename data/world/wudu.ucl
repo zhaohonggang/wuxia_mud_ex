@@ -3090,46 +3090,10 @@ chats = [
 
     }
 
-# Generated from C:/files/git/mud/d/wudu/npc/obj/baozi.c by LPCConverter
-# Zone: wudu
-
-    characters "baozi" {
-      name = "肉包子"
-      aliases = ["baozi", "bao"]
-      description = "一个香喷喷的肉包子,不知道是用什么肉做的。"
-    }
-
-# Generated from C:/files/git/mud/d/wudu/npc/obj/baozi2.c by LPCConverter
-# Zone: wudu
-
-    characters "baozi2" {
-      name = "蛇肉包子"
-      aliases = ["baozi", "bao"]
-      description = "一个香喷喷的蛇肉包子。"
-    }
-
-# Generated from C:/files/git/mud/d/wudu/npc/obj/flagon.c by LPCConverter
-# Zone: wudu
-
-    characters "flagon" {
-      name = "酒壶"
-      aliases = ["jiu hu", "hu", "flagon"]
-      description = "一个用来装烧酒的大酒壶。"
-    }
-
-# Generated from C:/files/git/mud/d/wudu/npc/obj/ganggou.c by LPCConverter
-# Zone: wudu
-
-    characters "ganggou" {
-      name = "钢钩"
-      aliases = ["ganggou", "gou"]
-      description = "这是一柄特殊的精钢剑，剑端带着一个倒钩。"
-    }
-
 # Generated from C:/files/git/mud/d/wudu/npc/obj/hanyan.c by LPCConverter
 # Zone: wudu
 
-    characters "hanyan" {
+    items "hanyan" {
       name = "旱烟袋"
       aliases = ["han yan", "yan"]
       description = "这是一只用了好多年的铜烟袋。"
@@ -3138,7 +3102,7 @@ chats = [
 # Generated from C:/files/git/mud/d/wudu/npc/obj/jiandao.c by LPCConverter
 # Zone: wudu
 
-    characters "jiandao" {
+    items "jiandao" {
       name = "五毒神剪"
       aliases = ["wudu shenjian", "jian", "shenjian"]
       description = "这是一柄奇门兵器，好似一只大剪刀。"
@@ -3147,25 +3111,16 @@ chats = [
 # Generated from C:/files/git/mud/d/wudu/npc/obj/jinyi.c by LPCConverter
 # Zone: wudu
 
-    characters "jinyi" {
+    items "jinyi" {
       name = "锦衣"
       aliases = ["cloth"]
       description = ""
     }
 
-# Generated from C:/files/git/mud/d/wudu/npc/obj/jitui.c by LPCConverter
-# Zone: wudu
-
-    characters "jitui" {
-      name = "烤山鸡腿"
-      aliases = ["jitui", "tui"]
-      description = "一枝烤得香喷喷的山鸡腿。"
-    }
-
 # Generated from C:/files/git/mud/d/wudu/npc/obj/xingjunsan.c by LPCConverter
 # Zone: wudu
 
-    characters "xingjunsan" {
+    items "xingjunsan" {
       name = "NPC"
       aliases = ["xingjun san", "xingjun", "san"]
       description = "这是一包预防瘴气的药散，带在身上可以预防瘴气。"
@@ -3826,6 +3781,7 @@ chats = [
 
     items "baozi" {
       name = "肉包子"
+      aliases = ["baozi", "bao"]
       description = "一个香喷喷的肉包子,不知道是用什么肉做的。"
   verbs = [
     "get",
@@ -3853,6 +3809,7 @@ chats = [
 
     items "flagon" {
       name = "酒壶"
+      aliases = ["jiu hu", "hu", "flagon"]
       description = "一个用来装烧酒的大酒壶。"
   verbs = [
     "get",
@@ -3878,6 +3835,7 @@ chats = [
 
     items "jitui" {
       name = "烤山鸡腿"
+      aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的山鸡腿。"
   verbs = [
     "get",

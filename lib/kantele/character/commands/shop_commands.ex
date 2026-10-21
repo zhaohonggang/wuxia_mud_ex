@@ -100,15 +100,14 @@ defmodule Kantele.Character.ShopCommand do
         if items == [] do
           "你的摊位「#{meta.stall}」目前没有摆上货物。\n"
         else
-          lines = ["你的摊位「#{meta.stall}」当前货品："]
+          # `Enum.each` 里 `lines = lines ++ [...]` 只会重绑被丢弃的局部变量，
+          # 摊位货品一行都列不出来（R20）。用 `Enum.map` 收结果。
+          item_lines =
+            items
+            |> Enum.with_index(1)
+            |> Enum.map(fn {item, idx} -> "  #{idx}. #{item["name"]} #{item["price"]}文" end)
 
-          items
-          |> Enum.with_index(1)
-          |> Enum.each(fn {item, idx} ->
-            lines = lines ++ ["  #{idx}. #{item["name"]} #{item["price"]}文"]
-          end)
-
-          lines |> Enum.join("\n")
+          (["你的摊位「#{meta.stall}」当前货品："] ++ item_lines) |> Enum.join("\n")
         end
       else
         "你还没有摆摊。使用 baitan 命令开始摆摊。\n"

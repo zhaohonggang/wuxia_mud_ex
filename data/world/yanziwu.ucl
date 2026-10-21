@@ -1414,7 +1414,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/changjian.c by LPCConverter
 # Zone: yanziwu
 
-    characters "changjian" {
+    items "changjian" {
       name = "长剑"
       aliases = ["changjian", "jian"]
       description = "这是一柄普通的精钢剑，一般的剑客都配带此剑。"
@@ -1423,7 +1423,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/cloth.c by LPCConverter
 # Zone: yanziwu
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["buyi", "cloth"]
       description = ""
@@ -1432,7 +1432,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/flower_shoe.c by LPCConverter
 # Zone: yanziwu
 
-    characters "flower_shoe" {
+    items "flower_shoe" {
       name = "绣花小鞋"
       aliases = ["flower shoes", "shoes"]
       description = ""
@@ -1441,7 +1441,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/goldring.c by LPCConverter
 # Zone: yanziwu
 
-    characters "goldring" {
+    items "goldring" {
       name = "金戒指"
       aliases = ["golden ring", "ring"]
       description = ""
@@ -1450,7 +1450,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/green_cloth.c by LPCConverter
 # Zone: yanziwu
 
-    characters "green_cloth" {
+    items "green_cloth" {
       name = "翠绿绸衫"
       aliases = ["green cloth", "cloth"]
       description = "这件翠绿色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
@@ -1459,7 +1459,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/necklace.c by LPCConverter
 # Zone: yanziwu
 
-    characters "necklace" {
+    items "necklace" {
       name = "金项链"
       aliases = ["golden necklace", "necklace", "lace"]
       description = ""
@@ -1468,7 +1468,7 @@ chats = [
 # Generated from C:/files/git/mud/d/yanziwu/npc/obj/pink_cloth.c by LPCConverter
 # Zone: yanziwu
 
-    characters "pink_cloth" {
+    items "pink_cloth" {
       name = "粉红绸衫"
       aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"

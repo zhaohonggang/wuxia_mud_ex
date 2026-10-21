@@ -89,6 +89,41 @@ defmodule Kantele.Character.BankCommandTest do
     assert output_text(conn) =~ "没有这种货币"
   end
 
+  # R11：文案曾把「目标面额的**枚数**」当「总价值」再走 `money_str/1`，
+  # 于是 5 两白银（=500 文）被说成「兑换成了五文铜钱」。
+  test "兑换：5 两白银 → 铜钱，文案说五百文（不是五文）" do
+    p = %{player() | meta: %{player().meta | coins: 500}}
+    conn = BankCommand.run(build_conn(p), %{"rest" => "convert 5 silver to coin"})
+
+    assert output_text(conn) =~ "你把五两白银兑换成了五百文铜钱。"
+    assert updated_meta(conn).coins == 500
+  end
+
+  test "兑换：2 两白银 → 铜钱，文案说二百文" do
+    p = %{player() | meta: %{player().meta | coins: 500}}
+    conn = BankCommand.run(build_conn(p), %{"rest" => "兑换 2 银 to coin"})
+
+    assert output_text(conn) =~ "你把二两白银兑换成了二百文铜钱。"
+    # 200 文仍在身上（换汇不改总价值）
+    assert updated_meta(conn).coins == 500
+  end
+
+  test "兑换：1 两黄金 → 白银，文案说一百两白银" do
+    p = %{player() | meta: %{player().meta | coins: 10_000}}
+    conn = BankCommand.run(build_conn(p), %{"rest" => "convert 1 gold to silver"})
+
+    assert output_text(conn) =~ "你把一两黄金兑换成了一百两白银。"
+    assert updated_meta(conn).coins == 10_000
+  end
+
+  test "兑换：1 两黄金 → 铜钱，文案说一万文（中文数字进位到万）" do
+    p = %{player() | meta: %{player().meta | coins: 10_000}}
+    conn = BankCommand.duihuan(build_conn(p), %{"rest" => "1 gold to coin"})
+
+    assert output_text(conn) =~ "你把一两黄金兑换成了一万文铜钱。"
+    assert updated_meta(conn).coins == 10_000
+  end
+
   test "bank/银行 路由解析" do
     {:ok, parsed} = Kantele.Character.Commands.parse("bank")
     assert parsed.module == Kantele.Character.BankCommand

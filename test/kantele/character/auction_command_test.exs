@@ -89,5 +89,34 @@ defmodule Kantele.Character.AuctionCommandTest do
       assert parsed.module == AuctionCommand
       assert parsed.params["rest"] == "check"
     end
+
+    # R18：`Auction` / `AuctionCommand` 的私有 `money_str/1` 曾把面额 map
+    # 传给 `Money.money_str/1`（只接受总价值整数），任何一次拍卖播报都会
+    # `FunctionClauseError` —— 而 `auction check` 是最容易走到的入口。
+    test "auction check 能渲染有拍卖品的列表（金额按总价值格式化）" do
+      record = %{
+        character_id: "seller-1",
+        character_name: "李四",
+        goods_id: "goods-1",
+        goods_name: "铁剑",
+        goods_item_id: "tiejian",
+        value: 500,
+        lot: 20,
+        state: 1,
+        time: System.system_time(:second),
+        now_bidder_id: nil,
+        now_bidder_name: nil
+      }
+
+      :ets.insert(:kantele_auctions, {"seller-1", record})
+      on_exit(fn -> :ets.delete(:kantele_auctions, "seller-1") end)
+
+      conn = AuctionCommand.run(build_conn(player()), %{"rest" => "check"})
+      text = output_text(conn)
+
+      assert text =~ "铁剑"
+      # 500 文 = 五两白银：说明拿到的是**总价值**而不是面额 map
+      assert text =~ "五两白银"
+    end
   end
 end

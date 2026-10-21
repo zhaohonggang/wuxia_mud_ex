@@ -112,6 +112,16 @@ win_toolchain.cmd
   Do not remove either. Regression guard: `test/kantele/db_sandbox_handover_test.exs`.
 - **`Records.save/1` never raises/exits**: it returns `:ok | :error`. Tests that never check out a
   connection (48 files, ~134 call sites) rely on it swallowing `DBConnection.OwnershipError`.
+- **Never rebind an accumulator inside `Enum.each` / `for`**: the rebinding is a fresh local that
+  gets discarded, so `lines = lines ++ [line]` inside `Enum.each` silently produces nothing — no
+  compile warning, and `mix credo` misses it. Use `Enum.map` or `Enum.reduce` and carry the
+  accumulator out. This exact bug shipped 4 times (R20) and one instance made `make` (medicine
+  crafting) never consume herbs, i.e. infinite crafting.
+- **A "list source" and its "list renderer" must agree on shape**: `Auction.list_auctions/0` was
+  returning ETS `{id, record}` tuples while both callers demangled them as records (R19), and
+  `Money.money_str/1` only takes an integer while two callers passed a denomination map (R18).
+  Both compiled fine and only blew up with real data. When adding a helper that reads ETS or
+  money, add one test that inserts a row / a non-zero amount.
 - **Key test files** (from README):
   - `test/kantele/quest/chain_walk_test.exs` — quest chains
   - `test/kantele/world/signature_npc_test.exs` — signature NPCs

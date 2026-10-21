@@ -1324,8 +1324,14 @@ defmodule Kantele.World.Loader do
   以及顶层的 `actions`（物品 add_action 动词表）/ `read_text`（书册文案）。
   """
   def parse_item(zone, key, item_data, verbs) do
+    # `verbs` 是**可选**的：R7 把 `npc/obj/*` 下被误分类成 `characters` 的物品块
+    # 改名回 `items` 后，它们带着的是 NPC 形状的键（aliases/description/name），
+    # 从来没有 `verbs`。同函数里 meta/aliases/messages/actions/read_text 全都走
+    # `Map.get` 容错，唯独这里原本是裸访问 —— 一改名就 `KeyError` 把整个区加载
+    # 打翻（实测：`key :verbs not found in: %{aliases: ..., name: ...}`）。
+    # 缺失即空动词表：`Item.verbs` 为 `[]`，消费端按空遍历，无行为变化。
     item_verbs =
-      item_data.verbs
+      Map.get(item_data, :verbs, [])
       |> Enum.map(&String.to_atom/1)
       |> Enum.map(fn verb ->
         Map.get(verbs, verb)

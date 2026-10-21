@@ -685,8 +685,13 @@ valid_leave = [
 
   room_characters "huayuan" {
     room_id = rooms.huayuan.id
-    characters = [
-      { id = characters.juhua1.id }    ]
+    characters = []
+  }
+
+  room_items "huayuan" {
+    room_id = rooms.huayuan.id
+    items = [
+      { id = items.juhua1.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/jingzhou/jail.c by LPCConverter
@@ -1878,8 +1883,7 @@ direction = "north"
 
   room_characters "xiaoyuan" {
     room_id = rooms.xiaoyuan.id
-    characters = [
-      { id = characters.juhua.id }    ]
+    characters = []
   }
 
 
@@ -1887,7 +1891,8 @@ direction = "north"
   room_items "xiaoyuan" {
     room_id = rooms.xiaoyuan.id
     items = [
-      { id = items.lvju.id }    ]
+      { id = items.lvju.id },
+      { id = items.juhua.id }    ]
   }
 
 # Generated from C:/files/git/mud/d/jingzhou/xidajie1.c by LPCConverter
@@ -2646,7 +2651,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/baozi.c by LPCConverter
 # Zone: jingzhou
 
-    characters "baozi" {
+    items "baozi" {
       name = "包子"
       aliases = ["baozi", "dumpling"]
       description = "一个香喷喷的肉包子。"
@@ -2655,25 +2660,16 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/cloth.c by LPCConverter
 # Zone: jingzhou
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
     }
 
-# Generated from C:/files/git/mud/d/jingzhou/npc/obj/gangdao.c by LPCConverter
-# Zone: jingzhou
-
-    characters "gangdao" {
-      name = "钢刀"
-      aliases = ["blade"]
-      description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
-    }
-
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/gangjian.c by LPCConverter
 # Zone: jingzhou
 
-    characters "gangjian" {
+    items "gangjian" {
       name = "钢剑"
       aliases = ["jian", "sword"]
       description = "这是一柄精工制成的钢剑，这种剑在将领之间非常流行。"
@@ -2682,7 +2678,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/gfkey.c by LPCConverter
 # Zone: jingzhou
 
-    characters "gfkey" {
+    items "gfkey" {
       name = "闺房钥匙"
       aliases = ["guifang key", "key"]
       description = "这是一把很普通的钥匙。"
@@ -2691,7 +2687,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/jitui.c by LPCConverter
 # Zone: jingzhou
 
-    characters "jitui" {
+    items "jitui" {
       name = "烤鸡腿"
       aliases = ["jitui", "tui"]
       description = "一枝烤得香喷喷的鸡腿。"
@@ -2700,7 +2696,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/jiudai.c by LPCConverter
 # Zone: jingzhou
 
-    characters "jiudai" {
+    items "jiudai" {
       name = "牛皮酒袋"
       aliases = ["jiudai", "wineskin", "skin"]
       description = "一个用来装米酒的大酒袋，大概装得八、九升的酒。"
@@ -2709,7 +2705,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/juhua.c by LPCConverter
 # Zone: jingzhou
 
-    characters "juhua" {
+    items "juhua" {
       name = "野菊花"
       aliases = ["ye juhua", "juhua"]
       description = "一朵平平常常的野菊花，香味淡淡的。"
@@ -2718,7 +2714,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/juhua1.c by LPCConverter
 # Zone: jingzhou
 
-    characters "juhua1" {
+    items "juhua1" {
       name = "绿菊花"
       aliases = ["lv juhua", "juhua"]
       description = "一盆淡绿的菊花，叫做“春水碧波”。"
@@ -2727,7 +2723,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/junfu.c by LPCConverter
 # Zone: jingzhou
 
-    characters "junfu" {
+    items "junfu" {
       name = "军服"
       aliases = ["junfu", "cloth"]
       description = "这是一件有点旧的官兵服。"
@@ -2736,7 +2732,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/necklace.c by LPCConverter
 # Zone: jingzhou
 
-    characters "necklace" {
+    items "necklace" {
       name = "金项链"
       aliases = ["golden necklace", "necklace", "lace"]
       description = ""
@@ -2753,7 +2749,7 @@ chats = [
 # Generated from C:/files/git/mud/d/jingzhou/npc/obj/yayifu.c by LPCConverter
 # Zone: jingzhou
 
-    characters "yayifu" {
+    items "yayifu" {
       name = "衙役服"
       aliases = ["yayi cloth", "cloth"]
       description = "这是一件崭新的白棉布衙役服。"
@@ -3757,6 +3753,7 @@ chats = [
 
     items "gangdao" {
       name = "钢刀"
+      aliases = ["blade"]
       description = "这是一柄亮晃晃的钢刀，普通官兵的常备武器。"
   verbs = [
     "get",

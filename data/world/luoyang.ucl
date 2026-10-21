@@ -4375,127 +4375,10 @@ chats = [
   }
     }
 
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/armor1.c by LPCConverter
-# Zone: luoyang
-
-    characters "armor1" {
-      name = "金环锁子甲"
-      aliases = ["suozi jia", "jia"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/blade1.c by LPCConverter
-# Zone: luoyang
-
-    characters "blade1" {
-      name = "赤金刀"
-      aliases = ["chijin dao", "chijin", "blade", "dao"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/club1.c by LPCConverter
-# Zone: luoyang
-
-    characters "club1" {
-      name = "赤金棍"
-      aliases = ["chijin gun", "chijin", "club", "gun"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/dagger1.c by LPCConverter
-# Zone: luoyang
-
-    characters "dagger1" {
-      name = "赤金匕首"
-      aliases = ["chijin bishou", "chijin", "dagger", "bishou"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/finger.c by LPCConverter
-# Zone: luoyang
-
-    characters "finger" {
-      name = "黄金指套"
-      aliases = ["gold finger", "finger", "zhitao"]
-      description = "这是五个环环相链的黄金指套，可以加强指法、手法和爪法的伤害力。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo1.c by LPCConverter
-# Zone: luoyang
-
-    characters "guo1" {
-      name = "苹果"
-      aliases = ["pingguo"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo2.c by LPCConverter
-# Zone: luoyang
-
-    characters "guo2" {
-      name = "橘子"
-      aliases = ["juzi"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo3.c by LPCConverter
-# Zone: luoyang
-
-    characters "guo3" {
-      name = "香蕉"
-      aliases = ["xiangjiao"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo4.c by LPCConverter
-# Zone: luoyang
-
-    characters "guo4" {
-      name = "荔枝"
-      aliases = ["lizhi"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/guo5.c by LPCConverter
-# Zone: luoyang
-
-    characters "guo5" {
-      name = "西瓜"
-      aliases = ["xigua"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/hammer1.c by LPCConverter
-# Zone: luoyang
-
-    characters "hammer1" {
-      name = "赤金锤"
-      aliases = ["chijin chui", "chijin", "hammer", "chui"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/hand.c by LPCConverter
-# Zone: luoyang
-
-    characters "hand" {
-      name = "黄金手掌"
-      aliases = ["gold hand", "hand"]
-      description = "这是一块黄金制成的掌套，可以加强拳法、掌法和拳脚的伤害力。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/head1.c by LPCConverter
-# Zone: luoyang
-
-    characters "head1" {
-      name = "琉金盔"
-      aliases = ["liujin kui", "kui"]
-      description = ""
-    }
-
 # Generated from C:/files/git/mud/d/luoyang/npc/obj/huazhong.c by LPCConverter
 # Zone: luoyang
 
-    characters "huazhong" {
+    items "huazhong" {
       name = "花种"
       aliases = ["hua zhong", "hua", "zhong"]
       description = "一枚无法确定品种的花种。"
@@ -4506,119 +4389,12 @@ chats = [
   }
     }
 
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/staff1.c by LPCConverter
-# Zone: luoyang
-
-    characters "staff1" {
-      name = "赤金杖"
-      aliases = ["chijin zhang", "chijin", "staff", "zhang"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/sword1.c by LPCConverter
-# Zone: luoyang
-
-    characters "sword1" {
-      name = "赤金剑"
-      aliases = ["chijin jian", "chijin", "sword", "jian"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci" {
-      name = "翡翠鼻烟壶"
-      aliases = ["biyan hu", "biyan"]
-      description = "陶瓷烧得便如翡翠一般，以此陶瓷所制的鼻烟壶。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci2.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci2" {
-      name = "碧玉瓷马"
-      aliases = ["biyu cima", "biyu", "cima"]
-      description = "经唐三彩烧制的碧玉陶瓷马，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci3.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci3" {
-      name = "淡朱菩提树"
-      aliases = ["puti shu", "puti", "shu"]
-      description = "经唐三彩烧制的淡朱菩提树，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci4.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci4" {
-      name = "八宝莲花座"
-      aliases = ["lianhua zuo", "lianhua", "zuo"]
-      description = "经唐三彩烧制的八宝莲花座，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci5.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci5" {
-      name = "玲珑飞天佩"
-      aliases = ["feitian pei", "feitian", "pei"]
-      description = "经唐三彩烧制的玲珑飞天佩，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci6.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci6" {
-      name = "白瓷观音像"
-      aliases = ["guanyin xiang", "guanyin", "xiang"]
-      description = "经唐三彩烧制的白瓷观音像，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci7.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci7" {
-      name = "七窍墨云斗"
-      aliases = ["moyun dou", "moyun", "dou"]
-      description = "经唐三彩烧制的七窍墨云斗，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/taoci8.c by LPCConverter
-# Zone: luoyang
-
-    characters "taoci8" {
-      name = "碧海青天爵"
-      aliases = ["qingtian jue", "qingtian", "jue"]
-      description = "经唐三彩烧制的碧海青天爵，非常的昂贵。"
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/wanlun1.c by LPCConverter
-# Zone: luoyang
-
-    characters "wanlun1" {
-      name = "绞金腕轮"
-      aliases = ["jiaojin wanlun", "wanlun"]
-      description = ""
-    }
-
-# Generated from C:/files/git/mud/d/luoyang/npc/obj/whip1.c by LPCConverter
-# Zone: luoyang
-
-    characters "whip1" {
-      name = "赤金鞭"
-      aliases = ["chijin bian", "chijin", "whip", "bian"]
-      description = ""
-    }
-
 # Source: C:/files/git/mud/d/luoyang/npc/obj/guo1.c
 # Zone: luoyang
 
     items "guo1" {
       name = "苹果"
+      aliases = ["pingguo"]
       description = "苹果"
   verbs = [
     "get",
@@ -4639,6 +4415,7 @@ chats = [
 
     items "guo2" {
       name = "橘子"
+      aliases = ["juzi"]
       description = "橘子"
   verbs = [
     "get",
@@ -4659,6 +4436,7 @@ chats = [
 
     items "guo3" {
       name = "香蕉"
+      aliases = ["xiangjiao"]
       description = "香蕉"
   verbs = [
     "get",
@@ -4679,6 +4457,7 @@ chats = [
 
     items "guo4" {
       name = "荔枝"
+      aliases = ["lizhi"]
       description = "荔枝"
   verbs = [
     "get",
@@ -4699,6 +4478,7 @@ chats = [
 
     items "guo5" {
       name = "西瓜"
+      aliases = ["xigua"]
       description = "西瓜"
   verbs = [
     "get",
@@ -4719,6 +4499,7 @@ chats = [
 
     items "taoci" {
       name = "翡翠鼻烟壶"
+      aliases = ["biyan hu", "biyan"]
       description = "陶瓷烧得便如翡翠一般，以此陶瓷所制的鼻烟壶。"
   verbs = [
     "get",
@@ -4737,6 +4518,7 @@ chats = [
 
     items "taoci2" {
       name = "碧玉瓷马"
+      aliases = ["biyu cima", "biyu", "cima"]
       description = "经唐三彩烧制的碧玉陶瓷马，非常的昂贵。"
   verbs = [
     "get",
@@ -4755,6 +4537,7 @@ chats = [
 
     items "taoci3" {
       name = "淡朱菩提树"
+      aliases = ["puti shu", "puti", "shu"]
       description = "经唐三彩烧制的淡朱菩提树，非常的昂贵。"
   verbs = [
     "get",
@@ -4773,6 +4556,7 @@ chats = [
 
     items "taoci4" {
       name = "八宝莲花座"
+      aliases = ["lianhua zuo", "lianhua", "zuo"]
       description = "经唐三彩烧制的八宝莲花座，非常的昂贵。"
   verbs = [
     "get",
@@ -4791,6 +4575,7 @@ chats = [
 
     items "taoci5" {
       name = "玲珑飞天佩"
+      aliases = ["feitian pei", "feitian", "pei"]
       description = "经唐三彩烧制的玲珑飞天佩，非常的昂贵。"
   verbs = [
     "get",
@@ -4809,6 +4594,7 @@ chats = [
 
     items "taoci6" {
       name = "白瓷观音像"
+      aliases = ["guanyin xiang", "guanyin", "xiang"]
       description = "经唐三彩烧制的白瓷观音像，非常的昂贵。"
   verbs = [
     "get",
@@ -4827,6 +4613,7 @@ chats = [
 
     items "taoci7" {
       name = "七窍墨云斗"
+      aliases = ["moyun dou", "moyun", "dou"]
       description = "经唐三彩烧制的七窍墨云斗，非常的昂贵。"
   verbs = [
     "get",
@@ -4845,6 +4632,7 @@ chats = [
 
     items "taoci8" {
       name = "碧海青天爵"
+      aliases = ["qingtian jue", "qingtian", "jue"]
       description = "经唐三彩烧制的碧海青天爵，非常的昂贵。"
   verbs = [
     "get",
@@ -4863,6 +4651,7 @@ chats = [
 
     items "armor1" {
       name = "金环锁子甲"
+      aliases = ["suozi jia", "jia"]
       description = "金环锁子甲"
   verbs = [
     "get",
@@ -4883,6 +4672,7 @@ chats = [
 
     items "blade1" {
       name = "赤金刀"
+      aliases = ["chijin dao", "chijin", "blade", "dao"]
       description = "赤金刀"
   verbs = [
     "get",
@@ -4906,6 +4696,7 @@ chats = [
 
     items "club1" {
       name = "赤金棍"
+      aliases = ["chijin gun", "chijin", "club", "gun"]
       description = "赤金棍"
   verbs = [
     "get",
@@ -4929,6 +4720,7 @@ chats = [
 
     items "dagger1" {
       name = "赤金匕首"
+      aliases = ["chijin bishou", "chijin", "dagger", "bishou"]
       description = "赤金匕首"
   verbs = [
     "get",
@@ -4952,6 +4744,7 @@ chats = [
 
     items "finger" {
       name = "黄金指套"
+      aliases = ["gold finger", "finger", "zhitao"]
       description = "这是五个环环相链的黄金指套，可以加强指法、手法和爪法的伤害力。"
   verbs = [
     "get",
@@ -4972,6 +4765,7 @@ chats = [
 
     items "hammer1" {
       name = "赤金锤"
+      aliases = ["chijin chui", "chijin", "hammer", "chui"]
       description = "赤金锤"
   verbs = [
     "get",
@@ -4995,6 +4789,7 @@ chats = [
 
     items "hand" {
       name = "黄金手掌"
+      aliases = ["gold hand", "hand"]
       description = "这是一块黄金制成的掌套，可以加强拳法、掌法和拳脚的伤害力。"
   verbs = [
     "get",
@@ -5015,6 +4810,7 @@ chats = [
 
     items "head1" {
       name = "琉金盔"
+      aliases = ["liujin kui", "kui"]
       description = "琉金盔"
   verbs = [
     "get",
@@ -5035,6 +4831,7 @@ chats = [
 
     items "staff1" {
       name = "赤金杖"
+      aliases = ["chijin zhang", "chijin", "staff", "zhang"]
       description = "赤金杖"
   verbs = [
     "get",
@@ -5058,6 +4855,7 @@ chats = [
 
     items "sword1" {
       name = "赤金剑"
+      aliases = ["chijin jian", "chijin", "sword", "jian"]
       description = "赤金剑"
   verbs = [
     "get",
@@ -5081,6 +4879,7 @@ chats = [
 
     items "wanlun1" {
       name = "绞金腕轮"
+      aliases = ["jiaojin wanlun", "wanlun"]
       description = "绞金腕轮"
   verbs = [
     "get",
@@ -5101,6 +4900,7 @@ chats = [
 
     items "whip1" {
       name = "赤金鞭"
+      aliases = ["chijin bian", "chijin", "whip", "bian"]
       description = "赤金鞭"
   verbs = [
     "get",

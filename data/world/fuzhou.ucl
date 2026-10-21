@@ -1538,15 +1538,6 @@ direction = ~
 
     }
 
-# Generated from C:/files/git/mud/d/fuzhou/npc/flower_shoe.c by LPCConverter
-# Zone: fuzhou
-
-    characters "flower_shoe" {
-      name = "绣花小鞋"
-      aliases = ["flower shoes", "shoes"]
-      description = ""
-    }
-
 # Generated from C:/files/git/mud/d/fuzhou/npc/geshiha.c by LPCConverter
 # Zone: fuzhou
 
@@ -1895,7 +1886,7 @@ direction = ~
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/bluecloth.c by LPCConverter
 # Zone: fuzhou
 
-    characters "bluecloth" {
+    items "bluecloth" {
       name = "青布长衫"
       aliases = ["shan", "cloth"]
       description = ""
@@ -1904,43 +1895,25 @@ direction = ~
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/cloth.c by LPCConverter
 # Zone: fuzhou
 
-    characters "cloth" {
+    items "cloth" {
       name = "布衣"
       aliases = ["cloth"]
       description = ""
     }
 
-# Generated from C:/files/git/mud/d/fuzhou/npc/obj/fotiaoqiang.c by LPCConverter
-# Zone: fuzhou
-
-    characters "fotiaoqiang" {
-      name = "佛跳墙"
-      aliases = ["fotiaoqiang"]
-      description = "一碗香喷喷的佛跳墙，是福建第一名菜。"
-    }
-
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/fuchen.c by LPCConverter
 # Zone: fuzhou
 
-    characters "fuchen" {
+    items "fuchen" {
       name = "拂尘"
       aliases = ["fuchen"]
       description = "这是一柄拂尘，做工精细，是很阴毒的兵器。"
     }
 
-# Generated from C:/files/git/mud/d/fuzhou/npc/obj/jiuping.c by LPCConverter
-# Zone: fuzhou
-
-    characters "jiuping" {
-      name = "酒瓶"
-      aliases = ["jiuping", "bottle"]
-      description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的福建老酒。"
-    }
-
 # Generated from C:/files/git/mud/d/fuzhou/npc/obj/tiexiang.c by LPCConverter
 # Zone: fuzhou
 
-    characters "tiexiang" {
+    items "tiexiang" {
       name = "铁箱"
       aliases = ["tie xiang", "xiang", "box"]
       description = "一只有大又笨的铁箱子，有些生锈了。"
@@ -1949,33 +1922,6 @@ direction = ~
     greet_delay = 0
     add_actions = ["climb"]
   }
-    }
-
-# Generated from C:/files/git/mud/d/fuzhou/npc/obj/xiuhua.c by LPCConverter
-# Zone: fuzhou
-
-    characters "xiuhua" {
-      name = "绣花针"
-      aliases = ["xiuhua zhen", "zhen", "needle"]
-      description = "这是一根精钢细磨的绣花针，是绣花用的工具。"
-    }
-
-# Generated from C:/files/git/mud/d/fuzhou/npc/obj/yadan.c by LPCConverter
-# Zone: fuzhou
-
-    characters "yadan" {
-      name = "臭鸭蛋"
-      aliases = ["chou yadan", "yadan", "egg"]
-      description = "臭鸭蛋闻着臭，吃着香。"
-    }
-
-# Generated from C:/files/git/mud/d/fuzhou/npc/obj/zongzi.c by LPCConverter
-# Zone: fuzhou
-
-    characters "zongzi" {
-      name = "粽子"
-      aliases = ["zongzi"]
-      description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
     }
 
 # Generated from C:/files/git/mud/d/fuzhou/obj/jiasha.c by LPCConverter
@@ -2028,6 +1974,7 @@ direction = ~
 
     items "fotiaoqiang" {
       name = "佛跳墙"
+      aliases = ["fotiaoqiang"]
       description = "一碗香喷喷的佛跳墙，是福建第一名菜。"
   verbs = [
     "get",
@@ -2053,6 +2000,7 @@ direction = ~
 
     items "jiuping" {
       name = "酒瓶"
+      aliases = ["jiuping", "bottle"]
       description = "一个晶莹碧绿的的大酒瓶，装了熏熏醉人的福建老酒。"
   verbs = [
     "get",
@@ -2076,6 +2024,7 @@ direction = ~
 
     items "yadan" {
       name = "臭鸭蛋"
+      aliases = ["chou yadan", "yadan", "egg"]
       description = "臭鸭蛋闻着臭，吃着香。"
   verbs = [
     "get",
@@ -2101,6 +2050,7 @@ direction = ~
 
     items "zongzi" {
       name = "粽子"
+      aliases = ["zongzi"]
       description = "一个香喷喷的肉粽子，包它的粽子叶泛出一股清香。"
   verbs = [
     "get",
@@ -2126,6 +2076,7 @@ direction = ~
 
     items "flower_shoe" {
       name = "绣花小鞋"
+      aliases = ["flower shoes", "shoes"]
       description = "绣花小鞋"
   verbs = [
     "get",
@@ -2151,6 +2102,7 @@ direction = ~
 
     items "xiuhua" {
       name = "绣花针"
+      aliases = ["xiuhua zhen", "zhen", "needle"]
       description = "这是一根精钢细磨的绣花针，是绣花用的工具。"
   verbs = [
     "get",

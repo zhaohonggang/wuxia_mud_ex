@@ -1007,7 +1007,7 @@ chats = [
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/feature.c by LPCConverter
 # Zone: wanjiegu
 
-    characters "feature" {
+    items "feature" {
       name = "孔雀羽衣"
       aliases = ["feather"]
       description = "这件孔雀羽衣是用孔雀羽毛织成的。"
@@ -1088,7 +1088,7 @@ chats = [
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/muyu.c by LPCConverter
 # Zone: wanjiegu
 
-    characters "muyu" {
+    items "muyu" {
       name = "木鱼锤"
       aliases = ["muyu"]
       description = "这是一把很沉的铁木鱼锤"
@@ -1097,7 +1097,7 @@ chats = [
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/pink-cloth.c by LPCConverter
 # Zone: wanjiegu
 
-    characters "pink_cloth" {
+    items "pink_cloth" {
       name = "粉红绸衫"
       aliases = ["pink cloth", "cloth"]
       description = "这件粉红色的绸衫上面绣著几只黄鹊，闻起来还有一股淡香。"
@@ -1178,7 +1178,7 @@ chats = [
 # Generated from C:/files/git/mud/d/wanjiegu/npc/obj/tie-gan.c by LPCConverter
 # Zone: wanjiegu
 
-    characters "tie_gan" {
+    items "tie_gan" {
       name = "细铁杆"
       aliases = ["tie-gan"]
       description = "这是一根又细又张的铁杆。"

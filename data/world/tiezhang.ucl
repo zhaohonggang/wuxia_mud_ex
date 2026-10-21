@@ -1762,7 +1762,7 @@ chats = [
 # Generated from C:/files/git/mud/d/tiezhang/npc/obj/black-cloth.c by LPCConverter
 # Zone: tiezhang
 
-    characters "black_cloth" {
+    items "black_cloth" {
       name = "黑衣"
       aliases = ["cloth"]
       description = "这是一件绣着红色火焰的黑色圣衣。"
@@ -1771,7 +1771,7 @@ chats = [
 # Generated from C:/files/git/mud/d/tiezhang/npc/obj/green-cloth.c by LPCConverter
 # Zone: tiezhang
 
-    characters "green_cloth" {
+    items "green_cloth" {
       name = "绿色圣衣"
       aliases = ["cloth"]
       description = "这是一件绣着红色火焰的绿色圣衣。"
@@ -1780,7 +1780,7 @@ chats = [
 # Generated from C:/files/git/mud/d/tiezhang/npc/obj/hupi.c by LPCConverter
 # Zone: tiezhang
 
-    characters "hupi" {
+    items "hupi" {
       name = "虎皮"
       aliases = ["hu pi", "pi"]
       description = ""
