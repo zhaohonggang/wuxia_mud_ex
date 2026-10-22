@@ -63,6 +63,12 @@ zones "lanzhou" {
   x = 0
   y = 3
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n         兰州知府\n                     耶律巡\n"
+    }
+  }
     }
 
   room_exits "beimen" {
@@ -295,6 +301,12 @@ zones "lanzhou" {
   x = 2
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n         兰州知府\n                     耶律巡\n"
+    }
+  }
     }
 
   room_exits "dongmen" {
@@ -593,6 +605,12 @@ direction = "west"
   x = 0
   y = -3
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n         兰州知府\n                     耶律巡\n"
+    }
+  }
     }
 
   room_exits "nanmen" {
@@ -885,6 +903,12 @@ direction = "west"
   x = -2
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n         兰州知府\n                     耶律巡\n"
+    }
+  }
     }
 
   room_exits "ximen" {

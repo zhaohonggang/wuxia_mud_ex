@@ -59,6 +59,12 @@ zones "city" {
   x = 0
   y = 3
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n扬州知府\n程药发\n"
+    }
+  }
     }
 
   room_exits "beimen" {
@@ -308,6 +314,12 @@ item_desc = {
   x = 3
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n扬州知府\n程药发\n"
+    }
+  }
     }
 
   room_exits "dongmen" {
@@ -435,7 +447,18 @@ item_desc = {
   z = 1
 item_desc = {
  paper = "请务必读 help pig_cmds 和 help pig_rules。"
+ table = {
+   kind = "pig_table"
+ }
 }
+ state = {
+  pig_phase = "initting"
+  pig_north = ""
+  pig_west = ""
+  pig_south = ""
+  pig_east = ""
+  pig_server = ""
+ }
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -550,7 +573,13 @@ valid_leave = [
 item_desc = {
  dong = "这是一个黑不溜湫的大洞，里面不知道有些什么古怪。"
  tree = "这是一棵巨大古老的大榕树，枝叶非常的茂密。"
+ gaoshi = {
+   kind = "gaoshi_visitor"
+ }
 }
+  state = {
+    visitor = 365
+  }
   flags = [
     "no_sleep_room"
   ]
@@ -985,7 +1014,14 @@ direction = "west"
     lclose = "do_lclose"
     lopen = "do_lopen"
   }
+      item_desc = {
+    tiaofu = {
+      kind = "arena_state"
+      open_text = "本擂台现在自由开放，如有兴趣自行比武，失手伤人致命，概不负责。\n\n注：巫师请用lopen/lclose命令开放关闭擂台。"
+      closed_text = "本擂台现在被{name}暂时关闭，组织比武，闲杂人等勿要喧哗。\n巫师请用invite命令邀请他人上台，或在台下使用pass命令\n指定某人上台比武，用kickout踢某人下台。"
     }
+  }
+}
 
   room_exits "leitai" {
     room_id = rooms.leitai.id
@@ -1784,6 +1820,12 @@ direction = "enter"
   x = 0
   y = -3
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n扬州知府\n程药发\n"
+    }
+  }
     }
 
   room_exits "nanmen" {
@@ -1842,7 +1884,18 @@ direction = "enter"
   z = 1
 item_desc = {
  paper = "请务必读 help pig_cmds 和 help pig_rules。"
+ table = {
+   kind = "pig_table"
+ }
 }
+ state = {
+  pig_phase = "initting"
+  pig_north = ""
+  pig_west = ""
+  pig_south = ""
+  pig_east = ""
+  pig_server = ""
+ }
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -2025,7 +2078,18 @@ item_desc = {
   z = 1
 item_desc = {
  paper = "请务必读 help pig_cmds 和 help pig_rules。"
+ table = {
+   kind = "pig_table"
+ }
 }
+ state = {
+  pig_phase = "initting"
+  pig_north = ""
+  pig_west = ""
+  pig_south = ""
+  pig_east = ""
+  pig_server = ""
+ }
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -2110,7 +2174,18 @@ direction = ~
   z = 1
 item_desc = {
  paper = "请务必读 help pig_cmds 和 help pig_rules。"
+ table = {
+   kind = "pig_table"
+ }
 }
+ state = {
+  pig_phase = "initting"
+  pig_north = ""
+  pig_west = ""
+  pig_south = ""
+  pig_east = ""
+  pig_server = ""
+ }
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -2447,6 +2522,12 @@ direction = ~
   x = -3
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n扬州知府\n程药发\n"
+    }
+  }
     }
 
   room_exits "ximen" {

@@ -161,6 +161,8 @@ defmodule Kantele.World do
       {ZoneCache, [id: ZoneCache, name: ZoneCache]},
       # 擂台关闭状态（room.ex 的 movement_request 要跨房间读它）
       {Kantele.World.Arena, [id: Kantele.World.Arena, name: Kantele.World.Arena]},
+      # FINGER_D 通缉告示牌（16 城门/关卡的 look_gaoshi 读它；P5-4p）
+      {Kantele.World.FingerD, [id: Kantele.World.FingerD, name: Kantele.World.FingerD]},
       {Kantele.World.Items, [id: Kantele.World.Items, name: Kantele.World.Items]},
       {Kalevala.World, [name: Kantele.World]},
       {Kantele.World.Kickoff, [name: Kantele.World.Kickoff, start: kickoff]}

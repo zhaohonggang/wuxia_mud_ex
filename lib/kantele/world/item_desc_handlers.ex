@@ -21,6 +21,10 @@ defmodule Kantele.World.ItemDescHandlers do
     "hengyang:inzhushendong" => %{
       "gated_text" => {Kantele.World.ItemDescHandlers.GatedText, :run}
     },
+    # 剑冢 `fen` / `sec sword` / `thi sword` 按房间 state 多键分支（P5-4i）。
+    "huashan:jianzhong" => %{
+      "room_state_tiers" => {Kantele.World.ItemDescHandlers.RoomStateTiers, :run}
+    },
     "shaolin:putiyuan" => %{
       "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run},
       "room_state_tiers" => {Kantele.World.ItemDescHandlers.RoomStateTiers, :run}
@@ -37,10 +41,63 @@ defmodule Kantele.World.ItemDescHandlers do
     "guanwai:jingxiu" => %{
       "room_occupancy" => {Kantele.World.ItemDescHandlers.RoomOccupancyText, :run}
     },
+    # outzigai1 `look_bi`：按房间 temp `marks/破` / `marks/推` 三态选择文本（P5-4l）。
+    "hengyang:outzigai1" => %{
+      "room_temp_tiers" => {Kantele.World.ItemDescHandlers.RoomTempTiers, :run}
+    },
     "fuzhou:mishi" => %{
       "score_tiers" => {Kantele.World.ItemDescHandlers.ScoreTiers, :run},
       "player_temp_branch" => {Kantele.World.ItemDescHandlers.PlayerTempBranch, :run}
-    }
+    },
+    # 石洞群 `look_bi`：按识字技能等级选择蝌蚪文 / 壁画文本（P5-4k）。
+    "xiakedao:shidong2" => %{
+      "player_skill" => {Kantele.World.ItemDescHandlers.PlayerSkill, :run}
+    },
+    "xiakedao:shidong4" => %{
+      "player_skill" => {Kantele.World.ItemDescHandlers.PlayerSkill, :run}
+    },
+    "xiakedao:shidong7" => %{
+      "player_skill" => {Kantele.World.ItemDescHandlers.PlayerSkill, :run}
+    },
+    "xiakedao:shidong10" => %{
+      "player_skill" => {Kantele.World.ItemDescHandlers.PlayerSkill, :run}
+    },
+    # houdong `look_pet`：星宿派且星宿奇术 >= 160 才见五圣剧毒（P5-4m）。
+    "xiyu:houdong" => %{
+      "player_skill" => {Kantele.World.ItemDescHandlers.PlayerSkill, :run}
+    },
+    # city:leitai `look_tiaofu`：按擂台关闭状态（Arena.close_by）显示开放 / 被某人关闭（P5-4n）。
+    "city:leitai" => %{
+      "arena_state" => {Kantele.World.ItemDescHandlers.ArenaState, :run}
+    },
+    # 城门/关卡告示牌 look_gaoshi：FINGER_D 通缉名单 + 各城落款（P5-4p / FINGER_D 子系统）。
+    # footer 为各城知府/提督落款，详见 adm/daemons/fingerd.c get_killer() 的拼接。
+    "chengdu:eastgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "chengdu:northgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "chengdu:southgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "chengdu:westgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "city:beimen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "city:dongmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "city:nanmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "city:ximen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "lanzhou:beimen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "lanzhou:dongmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "lanzhou:nanmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "lanzhou:ximen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "suzhou:beimen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "suzhou:dongmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "suzhou:nanmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "suzhou:ximen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    # city:guangchang `look_gaoshi`：扬州府通告访客计数条幅（P5-4q）。
+    # 读房间 state.visitor（UCL state 播种）转中文数字拼装定宽 ASCII 条幅。
+    "city:guangchang" => %{"gaoshi_visitor" => {Kantele.World.ItemDescHandlers.GaoshiVisitor, :run}}
+
+    # city:eproom/nproom/sproom/wproom `look_table`：拱猪牌桌显示（P5-4r）。
+    # 读角色 temp pigging_seat 与房间 state 中的 pig_*，渲染座位/牌桌状态。
+    "city:eproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
+    "city:nproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
+    "city:sproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
+    "city:wproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
   }
 
   @doc """

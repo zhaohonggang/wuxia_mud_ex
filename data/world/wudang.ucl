@@ -892,6 +892,7 @@ direction = "southup"
   }
 item_desc = {
  xiang = "三清坐像纯铜打就，镀以纯金，光照满殿。只是好象三个坐像摆得并不很整齐。"
+ 三清坐像 = "三清坐像纯铜打就，镀以纯金，光照满殿。只是好象三个坐像摆得并不很整齐。"
 }
     }
 
@@ -3022,3 +3023,702 @@ chats = [
     { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
   ]
     }
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/zhang.c by LPCConverter (manual backfill)
+# 张三丰 — 武当派开山祖师，11 门绝招（ask_skill1..11）均映射为 inquiries perform_id 脚本。
+# 无需新 handler：map（无 kind）→ NpcAskEvent.handle_scripted_answer → npc/perform
+# → NpcScriptEvent.perform_result → SectMaster.inquiry_grant → Stats.learn_perform。
+characters "wudang_zhang" {
+  name = "张三丰"
+  aliases = ["zhang sanfeng", "zhang", "sanfeng"]
+  nickname = "太极真人"
+  description = "他就是武当派开山鼻祖、当今武林的泰山北斗张三丰真人。只见他身着一身污秽的灰色道袍，不修边幅。身材高大，年满百岁，满脸红光，须眉皆白。"
+  gender = "男性"
+  age = 100
+  attitude = "friendly"
+  shen_type = 1
+
+  combat = {
+    str = 31
+    int = 39
+    con = 40
+    dex = 32
+    max_qi = 10000
+    max_jing = 10000
+    max_neili = 12000
+    combat_exp = 5000000
+    score = 1200000
+    skills = {
+      taiji_shengong = 420
+      wudang_xinfa = 400
+      taiji_quan = 420
+      wudang_zhang = 400
+      taiji_jian = 420
+      taiji_dao = 400
+      tiyunzong = 420
+      unarmed = 420
+      xuangong_quan = 400
+      strike = 400
+      yitian_zhang = 400
+      zhenshan_zhang = 400
+      hand = 400
+      paiyun_shou = 400
+      claw = 400
+      huzhua_shou = 400
+      parry = 420
+      sword = 420
+      wudang_jiuyang = 200
+      shenmen_jian = 400
+      rouyun_jian = 400
+      raozhi_roujian = 400
+      liangyi_jian = 400
+      blade = 400
+      xuanxu_dao = 400
+      throwing = 400
+      furong_jinzhen = 400
+      taoism = 400
+      literate = 280
+      medical = 240
+      wudang_yaoli = 240
+      martial_cognize = 400
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", 1, "开山祖师")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC no_teach = ([ "wudang-jiuyang" : (: try_to_learn_jy :) ])
+  #   wudang-jiuyang 走 ask_jiuyang 闭包，不走 perform_id 管道；此处不回填。
+  no_teach = ["wudang-jiuyang"]
+
+  # LPC set("class", "taoist")
+  class = "taoist"
+
+  # 11 门 ask_skill 绝招 → inquiries perform_id 脚本。
+  # 注意：ask_skill6「太极图」还校验 max_jingli >= 1000、potential >= learned_points + 100，
+  #       并把 can_perform/taiji-quan/tu 做计数器（>=10 封顶），以上均不在 inquiry_grant
+  #       管道内，本批只回填可表达字段，后续如需严格还原可另设 kind 处理器。
+  inquiries = {
+    鹤嘴劲 = {
+      perform_id = "taiji-shengong/dian"
+      skill = "taiji-shengong"
+      min_levels = {
+        taiji_shengong = 100
+      }
+      min_gongxian = 800
+      min_shen = 150000
+      cost_gongxian = 800
+    }
+
+    震字诀 = {
+      perform_id = "taiji-quan/zhen"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 300
+      min_shen = 100000
+      cost_gongxian = 300
+    }
+
+    引字诀 = {
+      perform_id = "taiji-quan/yin"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 200
+      min_shen = 100000
+      cost_gongxian = 200
+    }
+
+    挤字诀 = {
+      perform_id = "taiji-quan/ji"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 400
+      min_shen = 120000
+      cost_gongxian = 400
+    }
+
+    粘字诀 = {
+      perform_id = "taiji-quan/zhan"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 500
+      min_shen = 140000
+      cost_gongxian = 500
+    }
+
+    太极图 = {
+      perform_id = "taiji-quan/tu"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 250
+        taiji_shengong = 300
+        taoism = 300
+      }
+      min_gongxian = 3000
+      min_shen = 250000
+      cost_gongxian = 3000
+    }
+
+    缠字诀 = {
+      perform_id = "taiji-jian/chan"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 80
+      }
+      min_gongxian = 300
+      min_shen = 80000
+      cost_gongxian = 300
+    }
+
+    随字诀 = {
+      perform_id = "taiji-jian/sui"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 60
+      }
+      min_gongxian = 200
+      min_shen = 80000
+      cost_gongxian = 200
+    }
+
+    驾字诀 = {
+      perform_id = "taiji-jian/jia"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 150
+      }
+      min_gongxian = 600
+      min_shen = 100000
+      cost_gongxian = 600
+    }
+
+    剑轮岚转 = {
+      perform_id = "taiji-jian/zhuan"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 160
+      }
+      min_gongxian = 800
+      min_shen = 120000
+      cost_gongxian = 800
+    }
+
+    真武除邪 = {
+      perform_id = "taiji-jian/zhenwu"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 180
+      }
+      min_gongxian = 2000
+      min_shen = 120000
+      cost_gongxian = 2000
+    }
+  }
+
+  # 随身装备（LPC carry_object("/d/wudang/obj/greyrobe")->wear()）
+  carry = [
+    { id = items.greyrobe.id }
+  ]
+}
+
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/guxu.c by LPCConverter (manual backfill)
+# 谷虚道长 — 武当派 ask_me NPC，give_item 发书
+characters "wudang_guxu" {
+  name = "谷虚道长"
+  aliases = ["guxu daozhang", "guxu", "daozhang"]
+  description = "他就是俞莲舟的弟子谷虚道长。他今年四十岁，主管武当派的俗事。"
+  gender = "男性"
+  age = 40
+  attitude = "peaceful"
+  shen_type = 1
+
+  combat = {
+    str = 22
+    int = 25
+    con = 26
+    dex = 23
+    max_qi = 3000
+    max_jing = 1800
+    max_neili = 3200
+    neili = 3200
+    jiali = 50
+    combat_exp = 500000
+    score = 30000
+    skills = {
+      force = 120
+      wudang_xinfa = 120
+      dodge = 100
+      tiyunzong = 100
+      strike = 120
+      wudang_zhang = 120
+      parry = 120
+      sword = 100
+      wudang_jian = 100
+      taoism = 120
+      literate = 100
+      martial_cognize = 100
+    }
+    map_skill = {
+      force = "wudang-xinfa"
+      dodge = "tiyunzong"
+      unarmed = "taiji-quan"
+      parry = "wudang-jian"
+      sword = "wudang-jian"
+      strike = "wudang-zhang"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC set("class", "taoist")
+  class = "taoist"
+
+  # ask_me 绝招 → inquiries 脚本。
+  inquiries = {
+    道德经 = {
+      kind = "give_item"
+      item = "clone_lib:daodejing_i"
+      match = "daodejing_i"
+      unique = true
+      family = "武当派"
+      vision_name = "谷虚道长"
+      success = "好吧，这本「道德经」你拿回去好好钻研。"
+      already = "你不是已经拿着道德经「上卷」了吗？"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+    }
+  }
+
+  # 随身装备（LPC carry_object(...)->wear()）
+  carry = [
+    { id = items.greenrobe.id }
+  ]
+}
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/qingxu.c by LPCConverter (manual backfill)
+# 清虚道长 — 武当派 ask_me NPC，give_item 发书
+characters "wudang_qingxu" {
+  name = "清虚道长"
+  aliases = ["qingxu daozhang", "qingxu"]
+  description = "他就是俞莲舟的弟子清虚道长。他今年二十多岁，主管复真观的杂事。专门在这里看守本派的各种道经。"
+  gender = "男性"
+  age = 40
+  attitude = "peaceful"
+  shen_type = 1
+
+  combat = {
+    str = 22
+    int = 22
+    con = 22
+    dex = 22
+    max_qi = 1800
+    max_jing = 1000
+    max_neili = 1500
+    neili = 1500
+    jiali = 30
+    combat_exp = 300000
+    score = 10000
+    skills = {
+      force = 100
+      wudang_xinfa = 100
+      dodge = 80
+      tiyunzong = 80
+      strike = 100
+      wudang_zhang = 100
+      parry = 80
+      sword = 80
+      wudang_jian = 80
+      taoism = 100
+      literate = 80
+      martial_cognize = 60
+    }
+    map_skill = {
+      force = "wudang-xinfa"
+      dodge = "tiyunzong"
+      unarmed = "taiji-quan"
+      parry = "wudang-jian"
+      sword = "wudang-jian"
+      strike = "wudang-zhang"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC set("class", "taoist")
+  class = "taoist"
+
+  # ask_me 绝招 → inquiries 脚本。
+  inquiries = {
+    道德经 = {
+      kind = "give_item"
+      item = "clone_lib:daodejing_ii"
+      match = "daodejing_ii"
+      unique = true
+      family = "武当派"
+      vision_name = "清虚道长"
+      success = "好吧，这本「道德经」你拿回去好好钻研。"
+      already = "你不是已经拿着道德经「下卷」了吗？"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+    }
+  }
+
+}
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/shan.c by LPCConverter (manual backfill)
+# 张翠山 — 武当派 ask_me NPC，perform_id 绝招
+characters "wudang_shan" {
+  name = "张翠山"
+  aliases = ["zhang cuishan", "zhang", "cuishan"]
+  nickname = "武当五侠"
+  description = "他就是张三丰的五弟子、武当七侠之中的张翠山。身穿一件干干净净的白色道袍。"
+  gender = "男性"
+  age = 31
+  attitude = "peaceful"
+  shen_type = 1
+
+  combat = {
+    str = 28
+    int = 35
+    con = 28
+    dex = 28
+    max_qi = 5000
+    max_jing = 5000
+    max_neili = 4500
+    neili = 4500
+    jiali = 150
+    combat_exp = 1400000
+    score = 60000
+    skills = {
+      force = 220
+      wudang_xinfa = 220
+      taiji_shengong = 200
+      dodge = 220
+      tiyunzong = 220
+      unarmed = 200
+      taiji_quan = 180
+      strike = 220
+      yitian_zhang = 220
+      wudang_zhang = 200
+      hand = 200
+      paiyun_shou = 200
+      parry = 200
+      sword = 220
+      wudang_jian = 220
+      taiji_jian = 200
+      taoism = 200
+      literate = 180
+      martial_cognize = 200
+    }
+    map_skill = {
+      force = "taiji-shengong"
+      dodge = "tiyunzong"
+      unarmed = "taiji-quan"
+      parry = "taiji-quan"
+      sword = "taiji-jian"
+      strike = "yitian-zhang"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
+  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
+
+  # ask_me 绝招 → inquiries 脚本。
+  inquiries = {
+    谁与争锋 = {
+      perform_id = "yitian-zhang/zheng"
+      skill = "yitian-zhang"
+      min_levels = {
+        yitian_zhang = 120
+      }
+      min_gongxian = 200
+      min_shen = 12000
+      cost_gongxian = 200
+    }
+  }
+
+  # 随身装备（LPC carry_object(...)->wear()）
+  carry = [
+    { id = items.whiterobe.id }
+  ]
+}
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/xi.c by LPCConverter (manual backfill)
+# 张松溪 — 武当派 ask_me NPC，perform_id 绝招
+characters "wudang_xi" {
+  name = "张松溪"
+  aliases = ["zhang songxi", "zhang", "songxi"]
+  nickname = "武当四侠"
+  description = "他就是张三丰的四弟子张松溪。他今年四十岁，精明能干，以足智多谋著称。"
+  gender = "男性"
+  age = 40
+  attitude = "peaceful"
+  shen_type = 1
+
+  combat = {
+    str = 26
+    int = 33
+    con = 26
+    dex = 28
+    max_qi = 5000
+    max_jing = 5000
+    max_neili = 4500
+    neili = 4500
+    jiali = 150
+    combat_exp = 1400000
+    score = 60000
+    skills = {
+      force = 220
+      wudang_xinfa = 220
+      taiji_shengong = 200
+      dodge = 220
+      tiyunzong = 220
+      unarmed = 200
+      taiji_quan = 180
+      strike = 200
+      wudang_zhang = 200
+      hand = 200
+      paiyun_shou = 200
+      parry = 200
+      sword = 200
+      wudang_jian = 200
+      blade = 220
+      xuanxu_dao = 220
+      taiji_jian = 180
+      taoism = 220
+      literate = 160
+      martial_cognize = 200
+    }
+    map_skill = {
+      force = "taiji-shengong"
+      dodge = "tiyunzong"
+      unarmed = "taiji-quan"
+      parry = "xuanxu-dao"
+      sword = "wudang-jian"
+      blade = "xuanxu-dao"
+      strike = "wudang-zhang"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
+  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
+
+  # ask_me 绝招 → inquiries 脚本。
+  inquiries = {
+    乱环诀 = {
+      perform_id = "xuanxu-dao/huan"
+      skill = "xuanxu-dao"
+      min_levels = {
+        xuanxu_dao = 100
+      }
+      min_gongxian = 150
+      min_shen = 10000
+      cost_gongxian = 150
+    }
+  }
+
+  # 随身装备（LPC carry_object(...)->wear()）
+  carry = [
+    { id = items.whiterobe.id }
+  ]
+}
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/yin.c by LPCConverter (manual backfill)
+# 殷梨亭 — 武当派 ask_me NPC，perform_id 绝招
+characters "wudang_yin" {
+  name = "殷梨亭"
+  aliases = ["yin liting", "yin", "liting"]
+  nickname = "武当六侠"
+  description = "他就是张三丰的六弟子殷梨亭。他今年三十岁，精明能干，嫉恶如仇，性如烈火。"
+  gender = "男性"
+  age = 30
+  attitude = "heroism"
+  shen_type = 1
+
+  combat = {
+    str = 26
+    int = 30
+    con = 26
+    dex = 28
+    max_qi = 4000
+    max_jing = 2000
+    max_neili = 4200
+    neili = 4200
+    jiali = 100
+    combat_exp = 1000000
+    score = 100000
+    skills = {
+      force = 180
+      wudang_xinfa = 180
+      taiji_shengong = 160
+      dodge = 180
+      tiyunzong = 180
+      unarmed = 180
+      taiji_quan = 160
+      strike = 180
+      wudang_zhang = 180
+      hand = 180
+      paiyun_shou = 180
+      parry = 180
+      sword = 180
+      wudang_jian = 180
+      raozhi_roujian = 180
+      taiji_jian = 180
+      taoism = 180
+      literate = 160
+      martial_cognize = 180
+    }
+    map_skill = {
+      force = "wudang-xinfa"
+      dodge = "tiyunzong"
+      unarmed = "taiji-quan"
+      parry = "wudang-jian"
+      sword = "raozhi-roujian"
+      strike = "wudang-zhang"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
+  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
+
+  # ask_me 绝招 → inquiries 脚本。
+  inquiries = {
+    柔月穿空 = {
+      perform_id = "raozhi-roujian/chuankong"
+      skill = "raozhi-roujian"
+      min_levels = {
+        raozhi_roujian = 100
+        force = 150
+      }
+      min_gongxian = 250
+      min_shen = 15000
+      cost_gongxian = 250
+    }
+  }
+
+  # 随身装备（LPC carry_object(...)->wear()）
+  carry = [
+    { id = items.whiterobe.id }
+  ]
+}
+
+# Generated from C:/files/git/mud/kungfu/class/wudang/yu.c by LPCConverter (manual backfill)
+# 俞莲舟 — 武当派 ask_me NPC，perform_id 绝招
+characters "wudang_yu" {
+  name = "俞莲舟"
+  aliases = ["yu lianzhou", "yu", "lianzhou"]
+  nickname = "武当二侠"
+  description = "他就是张三丰的二弟子俞莲舟。他今年五十岁，身材魁梧，气度凝重。虽在武当七侠中排名第二，功夫却是最精。"
+  gender = "男性"
+  age = 50
+  attitude = "peaceful"
+  shen_type = 1
+
+  combat = {
+    str = 30
+    int = 30
+    con = 32
+    dex = 32
+    max_qi = 5800
+    max_jing = 4600
+    max_neili = 6500
+    neili = 6500
+    jiali = 200
+    combat_exp = 1800000
+    score = 100000
+    skills = {
+      force = 250
+      wudang_xinfa = 250
+      taiji_shengong = 240
+      dodge = 240
+      tiyunzong = 240
+      unarmed = 240
+      taiji_quan = 220
+      claw = 250
+      huzhua_shou = 250
+      strike = 240
+      wudang_zhang = 240
+      zhenshan_zhang = 240
+      hand = 240
+      paiyun_shou = 240
+      parry = 240
+      sword = 250
+      wudang_jian = 250
+      taiji_jian = 240
+      taoism = 230
+      literate = 200
+      medical = 180
+      wudang_yaoli = 180
+      martial_cognize = 240
+    }
+    map_skill = {
+      force = "taiji-shengong"
+      dodge = "tiyunzong"
+      unarmed = "taiji-quan"
+      parry = "taiji-quan"
+      sword = "taiji-jian"
+      strike = "zhenshan-zhang"
+      hand = "paiyun-shou"
+      claw = "huzhua-shou"
+      medical = "wudang-yaoli"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
+  teach = {
+    family = "武当派"
+  }
+
+  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
+  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
+
+  # ask_me 绝招 → inquiries 脚本。
+  inquiries = {
+    绝户神抓 = {
+      perform_id = "huzhua-shou/juehu"
+      skill = "huzhua-shou"
+      min_levels = {
+        huzhua_shou = 120
+        force = 180
+      }
+      min_gongxian = 400
+      min_shen = 100000
+      cost_gongxian = 400
+    }
+  }
+
+  # 随身装备（LPC carry_object(...)->wear()）
+  carry = [
+    { id = items.whiterobe.id }
+  ]
+}

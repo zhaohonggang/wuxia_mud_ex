@@ -52,6 +52,28 @@ jobs:
       env:
         MIX_ENV: test
 
+  unhandled-baseline:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Checkout LPC corpus
+      uses: actions/checkout@v4
+      with:
+        repository: zhaohonggang/mud
+        ref: d34c4ccbdb8282a63ebde96f20e20568c97282e5
+        path: lpc-corpus
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Build manifest and assert frozen baseline
+      env:
+        LPC_CORPUS: ${{ github.workspace }}/lpc-corpus
+      run: |
+        python scripts/build_unhandled_manifest.py --corpus "$LPC_CORPUS"
+        python scripts/resolve_unhandled_variants.py
+        python scripts/tier_unhandled_manifest.py
+        python scripts/assert_unhandled_baseline.py
+
   javascript:
     runs-on: ubuntu-20.04
     defaults:

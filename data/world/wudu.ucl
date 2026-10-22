@@ -4001,8 +4001,8 @@ chats = [
   ]
 
   messages = {
-    wield = "$N「唰」的一声抽出一柄$n握在手中。"
-    unwield = "$N将手中的$n插回鞘中。"
+    wield = "{npc}「唰」的一声抽出一柄{name}握在手中。"
+    unwield = "{npc}将手中的{name}插回鞘中。"
     remove = "{npc}将竹篓从背上放了下来。"
     wear = "{npc}将竹篓背在背上。"
   }
@@ -4059,3 +4059,136 @@ chats = [
         food = 20
       }
     }
+
+# Generated from C:/files/git/mud/kungfu/class/wudu/qiyunao.c by LPCConverter (manual backfill)
+# 齐云敖 — 五毒教长老，人称锦衣毒丐。3 门绝招（ask_skill1..3）映射为 inquiries perform_id 脚本，
+# 1 门 ask_me（毒经中篇）映射为 kind = "give_item" 发放 items.dujing2。
+# ask_skill 无需新 handler：map（无 kind）→ npc/perform → SectMaster.inquiry_grant → Stats.learn_perform。
+# ask_me 走现有 GiveItem：kind = "give_item" → InquiryHandlers.lookup("give_item") → GiveItem.run/3。
+characters "wudu_qiyunao" {
+  name = "齐云敖"
+  aliases = ["qi yunao", "qi", "yunao"]
+  nickname = "锦衣毒丐"
+  title = "五毒教长老"
+  description = "他就是五毒教的长老，人称锦衣毒丐的齐云敖。乃是教主的同门师兄，在教中一向飞扬跋扈，大权独揽。他长的身材魁梧，面目狰狞，身穿一件五彩锦衣，太阳穴高高坟起。"
+  gender = "男性"
+  age = 45
+  attitude = "friendly"
+  shen_type = -1
+
+  combat = {
+    attitude = "friendly"
+    str = 30
+    int = 40
+    con = 30
+    dex = 30
+    max_qi = 4500
+    max_jing = 4000
+    max_neili = 5000
+    neili = 5000
+    jiali = 120
+    combat_exp = 1800000
+    score = 10000
+    skills = {
+      force = 220
+      wudu_xinfa = 220
+      xiuluo_yinshagong = 180
+      dodge = 180
+      jinshe_youshenbu = 180
+      strike = 200
+      tianchan_zhang = 200
+      claw = 200
+      wusheng_zhao = 200
+      parry = 200
+      sword = 200
+      jinwu_goufa = 180
+      whip = 180
+      xiewei_bian = 180
+      ruanhong_zhusuo = 180
+      throwing = 180
+      literate = 100
+      poison = 250
+      wudu_qishu = 250
+      martial_cognize = 200
+    }
+    map_skill = {
+      force = "xiuluo-yinshagong"
+      dodge = "jinshe-youshenbu"
+      strike = "tianchan-zhang"
+      claw = "wusheng-zhao"
+      parry = "wusheng-zhao"
+      sword = "jinwu-goufa"
+      whip = "ruanhong-zhusuo"
+      poison = "wudu-qishu"
+    }
+  }
+
+  # 门派身份（供 inquiry_grant 同门校验，LPC create_family("五毒教", 11, "长老")）
+  teach = {
+    family = "五毒教"
+  }
+
+  # LPC no_teach = ([ "xiuluo-yinshagong" : ... , "ruanhong-zhusuo" : ... ])
+  no_teach = ["xiuluo-yinshagong", "ruanhong-zhusuo"]
+
+  # 3 门 ask_skill 绝招 → inquiries perform_id 脚本。
+  # TODO：LPC 校验 shen > -20000/-35000/-40000 即拒（需足够邪恶，shen <= 负阈值），
+  #       而 inquiry_grant 管道检查 `shen < min_shen`（shen >= min_shen 才过），方向相反。
+  #       本批 min_shen 置 -999999999（ sentinel：不拦杀气，等价关闭该门槛），
+  #       后续如需严格还原可另设 max_shen 处理器。
+  inquiries = {
+    腾蛇诀 = {
+      perform_id = "xiewei-bian/tengshe"
+      skill = "xiewei-bian"
+      min_levels = {
+        xiewei_bian = 100
+      }
+      min_gongxian = 100
+      min_shen = -999999999
+      cost_gongxian = 100
+    }
+
+    毒蟾掌 = {
+      perform_id = "tianchan-zhang/chan"
+      skill = "tianchan-zhang"
+      min_levels = {
+        tianchan_zhang = 120
+        force = 150
+      }
+      min_gongxian = 200
+      min_shen = -999999999
+      cost_gongxian = 200
+    }
+
+    夺命连环 = {
+      perform_id = "wusheng-zhao/lian"
+      skill = "wusheng-zhao"
+      min_levels = {
+        wusheng_zhao = 120
+        force = 150
+      }
+      min_gongxian = 300
+      min_shen = -999999999
+      cost_gongxian = 300
+    }
+
+    # LPC ask_me → 毒经中篇（/clone/lonely/book/dujing2），限五毒教，玩家已有时不重发。
+    # kind = "give_item" 走现有 GiveItem 处理器（inquiry_handlers.ex），无需新 handler。
+    毒经中篇 = {
+      kind = "give_item"
+      item = "wudu:dujing2"
+      match = "dujing2"
+      unique = true
+      family = "五毒教"
+      vision_name = "齐云敖"
+      success = "你拿去看吧，若有不解之处可以来问我。"
+      already = "不就是你拿着么？怎么反倒问我来了？"
+      family_deny = "你是哪里来的？跑来跟我罗嗦什么！"
+    }
+  }
+
+  # 随身装备（LPC carry_object("/d/wudu/npc/obj/jinyi")->wear()）
+  carry = [
+    { id = items.jinyi.id }
+  ]
+}

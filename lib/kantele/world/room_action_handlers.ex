@@ -41,6 +41,13 @@ defmodule Kantele.World.RoomActionHandlers do
     "huashan:lianhua" => %{
       "do_tiao" => {Kantele.World.RoomActions.Huashan.Lianhua.Tiao, :run}
     },
+    # 剑冢：`move big stone` / `pick fir|sec|thi sword` / `jump lianhua` 与
+    # `look fen` 组成独孤求败埋剑谜题（P5-4i）。
+    "huashan:jianzhong" => %{
+      "do_move" => {Kantele.World.RoomActions.Huashan.Jianzhong.Move, :run},
+      "do_pick" => {Kantele.World.RoomActions.Huashan.Jianzhong.Pick, :run},
+      "do_jump" => {Kantele.World.RoomActions.Huashan.Jianzhong.Jump, :run}
+    },
     "emei:shierpan3" => %{
       "do_clap" => {Kantele.World.RoomActions.Emei.Shierpan3.Clap, :run}
     },

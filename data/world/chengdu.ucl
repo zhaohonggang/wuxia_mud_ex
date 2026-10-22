@@ -102,6 +102,12 @@ zones "chengdu" {
   x = 3
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n成都提督\n吴天德\n"
+    }
+  }
     }
 
   room_exits "eastgate" {
@@ -477,6 +483,12 @@ direction = "west"
   x = 0
   y = 3
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n成都提督\n吴天德\n"
+    }
+  }
     }
 
   room_exits "northgate" {
@@ -1181,6 +1193,12 @@ direction = "south"
   x = 0
   y = -3
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n成都提督\n吴天德\n"
+    }
+  }
     }
 
   room_exits "southgate" {
@@ -1407,6 +1425,12 @@ valid_leave = [
   x = -3
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n成都提督\n吴天德\n"
+    }
+  }
     }
 
   room_exits "westgate" {

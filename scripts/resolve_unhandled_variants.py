@@ -33,6 +33,8 @@ import os
 import re
 import sys
 
+from lpc_paths import resolve_source_path
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(SCRIPT_DIR)
 MUD_ROOT = os.environ.get("LPC_CORPUS", "C:/files/git/mud")
@@ -271,7 +273,8 @@ def read_text(path, cache):
 
 def resolve_record(rec, corpus_hits, cache):
     name = rec["name"]
-    sp = os.path.normpath(rec["source_path"]) if rec.get("source_path") else None
+    sp = os.path.normpath(
+        resolve_source_path(rec["source_path"], MUD_ROOT)) if rec.get("source_path") else None
     ev = {
         "id": rec["id"],
         "zone": rec["zone"],

@@ -34,6 +34,8 @@ import re
 import sys
 from collections import Counter, defaultdict
 
+from lpc_paths import resolve_source_path
+
 # --- sidecar grammar --------------------------------------------------------
 
 GEN_RE = re.compile(r"^# Generated from (\S+) by LPCConverter\s*$")
@@ -394,7 +396,7 @@ def main():
     for rec in records:
         if rec["kind"] != "function":
             continue
-        sp = rec["source_path"]
+        sp = resolve_source_path(rec["source_path"], args.corpus)
         if sp not in src_cache:
             if os.path.isfile(sp):
                 src_cache[sp] = decode(open(sp, "rb").read())
@@ -426,7 +428,8 @@ def main():
         index = build_corpus_index(args.corpus, os.path.join("tmp", "lpc_function_index.json"))
         for rec in unresolved:
             for p in index.get(rec["name"], []):
-                if os.path.normpath(p) == os.path.normpath(rec["source_path"]):
+                if os.path.normpath(p) == os.path.normpath(
+                        resolve_source_path(rec["source_path"], args.corpus)):
                     continue
                 try:
                     text = decode(open(p, "rb").read())
@@ -452,7 +455,7 @@ def main():
             key = (rec["source_path"], rec["function"])
             if key in owner_bodies:
                 continue
-            sp = rec["source_path"]
+            sp = resolve_source_path(rec["source_path"], args.corpus)
             if sp not in src_cache:
                 src_cache[sp] = decode(open(sp, "rb").read()) if os.path.isfile(sp) else None
             text = src_cache[sp]

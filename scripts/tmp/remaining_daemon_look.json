@@ -1,0 +1,236 @@
+{
+  "look_board": [
+    {
+      "usage": "C::chatroom",
+      "keyword": "chalkboard",
+      "source_file": "C:/files/git/mud/inherit/room/chatroom.c",
+      "class": "conditional",
+      "snippet": "private string look_board()\n{\n    string topic;\n\n    if (! stringp(topic = query(\"topic\")))\n        return \"海阔凭鱼跃，天高任鸟飞 - 畅所欲言。\\n\";\n\n    return \"今天的话题是：\" + topic + \"\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    }
+  ],
+  "look_pet": [
+    {
+      "usage": "xiyu:houdong",
+      "keyword": "pet",
+      "source_file": "xiyu/houdong.c",
+      "class": "conditional",
+      "snippet": "string look_pet()\n{\n       object me = this_player();\n\n       if (me->query(\"family/family_name\") != \"星宿派\" ||\n           me->query_skill(\"xingxiu-qishu\", 1) < 160)\n               return NOR + YEL \"上面刻有蜈蚣，蜘蛛，蝎子，蛇，蟾蜍五种毒物。\\n\" NOR;\n\n       return NOR + WHT \"上面刻有\" HIY \"金蜈蚣\" NOR + WHT \"，\" NOR + BLU \"黑寡妇\" NOR + WHT\n              \"，\"HIR \"赤蝎子\" NOR + WHT \"，\" HIW \"千年灵蛇\" NOR + WHT \"，\" HIY \"花\" HIM \n              \"斑\" NOR + GRN \"毒蟾 \" NOR + WHT\"。你心中一惊：“难道这便是五圣剧毒？”\\n\" NOR;\n}",
+      "set_term": [],
+      "query_term": []
+    }
+  ],
+  "look_tiaofu": [
+    {
+      "usage": "city:leitai",
+      "keyword": "tiaofu",
+      "source_file": "city/leitai.c",
+      "class": "conditional",
+      "snippet": "string look_tiaofu()\n{\n        object ob;\n\n        ob = query(\"close_by\");\n        if (! objectp(ob))\n                return \"本擂台现在自由开放，如有兴趣自行比\"\n                       \"武，失手伤人致命，概不负责。\\n\\n\"\n                       \"注：巫师请用\" HIY \"lopen\" NOR \"/\"\n                       HIY \"lclose\" NOR \"命令开放关闭擂台。\\n\";\n\n        return \"本擂台现在被\" + ob->name(1) + \"暂时关闭，\"\n               \"组织比武，闲杂人等勿要喧哗。\\n\"\n               \"巫师请用\" HIY \"invite\" NOR \"命令邀请他人上台，\"\n               \"或在台下使用\" HIY \"pass\" NOR \"命令\\n\"\n               \"指定某人上台比武",
+      "set_term": [],
+      "query_term": []
+    }
+  ],
+  "look_gaoshi": [
+    {
+      "usage": "chengdu:eastgate",
+      "keyword": "gaoshi",
+      "source_file": "chengdu/eastgate.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n成都提督\\n吴天德\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "chengdu:northgate",
+      "keyword": "gaoshi",
+      "source_file": "chengdu/northgate.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n成都提督\\n吴天德\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "chengdu:southgate",
+      "keyword": "gaoshi",
+      "source_file": "chengdu/southgate.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n成都提督\\n吴天德\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "chengdu:westgate",
+      "keyword": "gaoshi",
+      "source_file": "chengdu/westgate.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n成都提督\\n吴天德\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "city:beimen",
+      "keyword": "gaoshi",
+      "source_file": "city/beimen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n扬州知府\\n程药发\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "city:dongmen",
+      "keyword": "gaoshi",
+      "source_file": "city/dongmen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n扬州知府\\n程药发\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "city:guangchang",
+      "keyword": "gaoshi",
+      "source_file": "city/guangchang.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    string returnback;\n    int count, sp;\n    count = query(\"visitor\");\n    returnback = \"\\n\" +\n                 \"******************************************************************\\n\" +\n                 \"********                                                  ********\\n\" +\n                 \"********                    扬州府通告                    ********\\n\" +\n                 \"********                                                  ********\\n\" +\n                 \"********",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "city:nanmen",
+      "keyword": "gaoshi",
+      "source_file": "city/nanmen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n扬州知府\\n程药发\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "city:ximen",
+      "keyword": "gaoshi",
+      "source_file": "city/ximen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n扬州知府\\n程药发\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "lanzhou:beimen",
+      "keyword": "gaoshi",
+      "source_file": "lanzhou/beimen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n        return FINGER_D->get_killer() + \"\\n         兰州知府\\n                     耶律巡\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "lanzhou:dongmen",
+      "keyword": "gaoshi",
+      "source_file": "lanzhou/dongmen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n        return FINGER_D->get_killer() + \"\\n         兰州知府\\n                     耶律巡\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "lanzhou:nanmen",
+      "keyword": "gaoshi",
+      "source_file": "lanzhou/nanmen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n        return FINGER_D->get_killer() + \"\\n         兰州知府\\n                     耶律巡\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "lanzhou:ximen",
+      "keyword": "gaoshi",
+      "source_file": "lanzhou/ximen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n        return FINGER_D->get_killer() + \"\\n         兰州知府\\n                     耶律巡\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "suzhou:beimen",
+      "keyword": "gaoshi",
+      "source_file": "suzhou/beimen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n苏州知府\\n冯正东\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "suzhou:dongmen",
+      "keyword": "gaoshi",
+      "source_file": "suzhou/dongmen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n苏州知府\\n冯正东\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "suzhou:nanmen",
+      "keyword": "gaoshi",
+      "source_file": "suzhou/nanmen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n苏州知府\\n冯正东\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    },
+    {
+      "usage": "suzhou:ximen",
+      "keyword": "gaoshi",
+      "source_file": "suzhou/ximen.c",
+      "class": "conditional",
+      "snippet": "string look_gaoshi()\n{\n    return FINGER_D->get_killer() + \"\\n苏州知府\\n冯正东\\n\";\n}",
+      "set_term": [],
+      "query_term": []
+    }
+  ],
+  "look_table": [
+    {
+      "usage": "city:eproom",
+      "keyword": "table",
+      "source_file": "city/eproom.c",
+      "class": "conditional",
+      "snippet": "string look_table()\n{\n    if (this_player()->query_temp(\"pigging_seat\"))\n        return table_str(this_player()->query_temp(\"pigging_seat\"));\n    return table_str(\"\");\n}",
+      "set_term": [],
+      "query_term": [
+        "pigging_seat"
+      ]
+    },
+    {
+      "usage": "city:nproom",
+      "keyword": "table",
+      "source_file": "city/nproom.c",
+      "class": "conditional",
+      "snippet": "string look_table()\n{\n    if (this_player()->query_temp(\"pigging_seat\"))\n        return table_str(this_player()->query_temp(\"pigging_seat\"));\n    return table_str(\"\");\n}",
+      "set_term": [],
+      "query_term": [
+        "pigging_seat"
+      ]
+    },
+    {
+      "usage": "city:sproom",
+      "keyword": "table",
+      "source_file": "city/sproom.c",
+      "class": "conditional",
+      "snippet": "string look_table()\n{\n    if (this_player()->query_temp(\"pigging_seat\"))\n        return table_str(this_player()->query_temp(\"pigging_seat\"));\n    return table_str(\"\");\n}",
+      "set_term": [],
+      "query_term": [
+        "pigging_seat"
+      ]
+    },
+    {
+      "usage": "city:wproom",
+      "keyword": "table",
+      "source_file": "city/wproom.c",
+      "class": "conditional",
+      "snippet": "string look_table()\n{\n    if (this_player()->query_temp(\"pigging_seat\"))\n        return table_str(this_player()->query_temp(\"pigging_seat\"));\n    return table_str(\"\");\n}",
+      "set_term": [],
+      "query_term": [
+        "pigging_seat"
+      ]
+    }
+  ]
+}

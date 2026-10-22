@@ -97,6 +97,12 @@ zones "suzhou" {
   x = 0
   y = 4
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n苏州知府\n冯正东\n"
+    }
+  }
     }
 
   room_exits "beimen" {
@@ -150,7 +156,10 @@ zones "suzhou" {
   x = 0
   y = 1
   z = 0
-    }
+      item_desc = {
+  lian = "          #============#            #============#\\n          #||--------||#            #||--------||#\\n          #||#      #||#            #||#      #||#\\n          #||#　舞　#||#            #||#  歌  #||#\\n          #||#　 　 #||#            #||#      #||#\\n          #||#  低  #||#            #||#  尽  #||#\\n          #||#      #||#            #||#      #||#\\n          #||#  杨  #||#            #||#  桃  #||#\\n          #||#      #||#            #||#      #||#\\n          #||#  柳  #||#            #||#  花  #||#\\n          #||#      #||#            #||#      #||#\\n          #||#  搂  #||#            #||#  扇  #||#\\n          #||#    　#||#            #||#      #||#\\n          #||#  心  #||#            #||#  底  #||#\\n          #||#    　#||#            #||#      #||#\\n          #||#  月  #||#            #||#  风  #||#\\n          #||#    　#||#            #||#      #||#\\n          #||--------||#            #||--------||#\\n          #============#            #============#"
+  }
+}
 
   room_exits "canlangting" {
     room_id = rooms.canlangting.id
@@ -326,6 +335,12 @@ item_desc = {
   x = 3
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n苏州知府\n冯正东\n"
+    }
+  }
     }
 
   room_exits "dongmen" {
@@ -859,6 +874,12 @@ direction = "west"
   x = 0
   y = -5
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n苏州知府\n冯正东\n"
+    }
+  }
     }
 
   room_exits "nanmen" {
@@ -1291,6 +1312,12 @@ direction = "west"
   x = -3
   y = 0
   z = 0
+      item_desc = {
+    gaoshi = {
+      kind = "finger_d_killer"
+      footer = "\n苏州知府\n冯正东\n"
+    }
+  }
     }
 
   room_exits "ximen" {

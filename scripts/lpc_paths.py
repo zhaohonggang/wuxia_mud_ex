@@ -291,3 +291,27 @@ def resolve_type(path, depth=0):
         return 'npc'
 
     return 'generic'
+
+def resolve_source_path(source_path, corpus):
+    """Map a converter-embedded absolute path onto a checked-out corpus."""
+    if not source_path:
+        return source_path
+
+    raw = str(source_path)
+    for cand in (raw, raw.replace("\\", "/")):
+        if os.path.isfile(cand):
+            return cand
+
+    normalized = raw.replace("\\", "/")
+    marker = '/mud/'
+    idx = normalized.lower().rfind(marker)
+    if idx >= 0:
+        cand = os.path.join(corpus, normalized[idx + len(marker):])
+        if os.path.isfile(cand):
+            return cand
+
+    if os.path.isabs(normalized):
+        return normalized
+
+    cand = os.path.join(corpus, normalized.lstrip('/'))
+    return cand if os.path.isfile(cand) else normalized

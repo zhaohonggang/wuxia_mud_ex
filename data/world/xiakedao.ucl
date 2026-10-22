@@ -846,7 +846,16 @@ item_desc = {
   actions = {
     canwu = "do_canwu"
   }
-    }
+      item_desc = {
+  bi = {
+    kind = "player_skill"
+    skill = "literate"
+    min_level = 1
+    has_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字。你仔细推敲这些文字却一无所获。"
+    no_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字，由于你从未读过书，所以你并没有在\n意那些文字。你猛然看到文字下面有很多图画，是用利\n器所刻。但见画中人物神情怪异，手舞足蹈，似乎是什\n么厉害的神功绝技。你禁不住想……"
+  }
+  }
+}
 
   room_exits "shidong10" {
     room_id = rooms.shidong10.id
@@ -877,7 +886,16 @@ item_desc = {
   actions = {
     think = "do_think"
   }
-    }
+      item_desc = {
+  bi = {
+    kind = "player_skill"
+    skill = "literate"
+    min_level = 1
+    has_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字。你仔细推敲这些文字却一无所获。"
+    no_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字，由于你从未读过书，所以你并没有在\n意那些文字。你猛然看到文字下面有很多图画，是用利\n器所刻，上面画着各式各样的人物，却都全身裸露，但\n可见其全身各处经络及经络走向。你越想越离奇，感觉\n全身各处经脉微微颤动，禁不住自己想要跟着图中所刻\n的经络走向学(think)起来。"
+  }
+  }
+}
 
   room_exits "shidong2" {
     room_id = rooms.shidong2.id
@@ -918,7 +936,16 @@ item_desc = {
   actions = {
     think = "do_think"
   }
-    }
+      item_desc = {
+  bi = {
+    kind = "player_skill"
+    skill = "literate"
+    min_level = 1
+    has_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字。你仔细推敲这些文字却一无所获。"
+    no_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字，由于你从未读过书，所以你并没有在\n意那些文字。你猛然看到文字下面有很多图画，是用利\n器所刻。上面画着各式各样的人物，有的站成马步，有\n的手成掌状，劈空而出……  但是上面人物却仍旧裸露\n全身，其周身经脉走向清晰无比，配合着各种招式，更\n是精妙无比，你忍不住想跟着学(think)起来了。"
+  }
+  }
+}
 
   room_exits "shidong4" {
     room_id = rooms.shidong4.id
@@ -975,6 +1002,13 @@ item_desc = {
   z = 0
 item_desc = {
  weapon = "图中人物手持刀剑，互相挥砍……"
+   bi = {
+     kind = "player_skill"
+     skill = "literate"
+     min_level = 1
+     has_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字。你仔细推敲这些文字却一无所获。"
+     no_text = "你走到石壁前，仔细观看石壁上的内容，发现石壁布满\n蝌蚪形状的文字，由于你从未读过书，所以你并没有在\n意那些文字。你猛然看到文字下面有很多图画，是用利\n器所刻。上面画着各式各样的人物，有的手持长剑，有\n的手握钢刀……但见图中人物手中兵器(weapon)不尽相\n同，每个人物的武功招式也不同，但是上面人物却仍旧\n裸露全身，其周身经脉走向清晰无比，配合着各种招式，\n你似乎隐隐觉得其中隐藏着太玄功更高深绝招，似乎是\n跟武器运用有密切关系， 但你一时却也参悟(canwu)不\n透，尽管如此，你却忍不住想跟着学(think)起来。"
+   }
 }
   actions = {
     canwu = "do_canwu"

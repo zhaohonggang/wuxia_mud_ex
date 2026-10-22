@@ -27,7 +27,15 @@ defmodule Kantele.World.ItemDescHandlersTest do
   alias Kantele.World.ItemDescHandlers.PlayerTempBranch
   alias Kantele.World.ItemDescHandlers.RoomOccupancyText
   alias Kantele.World.ItemDescHandlers.RoomTempText
+  alias Kantele.World.ItemDescHandlers.RoomTempTiers
   alias Kantele.World.ItemDescHandlers.ScoreTiers
+  alias Kantele.World.ItemDescHandlers.PlayerSkill
+  alias Kantele.World.ItemDescHandlers.ArenaState
+  alias Kantele.World.ItemDescHandlers.FingerDKiller
+  alias Kantele.World.ItemDescHandlers.GaoshiVisitor
+  alias Kantele.World.ItemDescHandlers.PigTable
+  alias Kantele.World.Arena
+  alias Kantele.World.FingerD
   alias Kantele.World.Room
   alias Kantele.World.RoomActions.Hengyang.Furong1.Pull
   alias Kantele.World.RoomActions.Hengyang.Inzhushendong.Gua
@@ -69,6 +77,51 @@ defmodule Kantele.World.ItemDescHandlersTest do
     "hidden" => "一根楠木做的房梁，可惜年代太久，已经腐烂得不成样子了。",
     "shown" => "一根楠木做的房梁，上面有崭新的刮痕，似乎不久前才有人动过。",
     "set_temp" => "marks/辟2"
+  }
+
+  @bi_config %{
+    "kind" => "player_skill",
+    "skill" => "literate",
+    "min_level" => 1,
+    "has_text" => "识字者看到的蝌蚪文。",
+    "no_text" => "文盲看到的壁画。"
+  }
+
+  @pet_config %{
+    "kind" => "player_skill",
+    "family" => "星宿派",
+    "skill" => "xingxiu-qishu",
+    "min_level" => 160,
+    "has_text" => "上面刻有金蜈蚣，黑寡妇，赤蝎子，千年灵蛇，花斑毒蟾。你心中一惊：“难道这便是五圣剧毒？”",
+    "no_text" => "上面刻有蜈蚣，蜘蛛，蝎子，蛇，蟾蜍五种毒物。"
+  }
+
+  @tiaofu_config %{
+    "kind" => "arena_state",
+    "open_text" => "本擂台现在自由开放。",
+    "closed_text" => "本擂台现在被 {name} 暂时关闭。"
+  }
+
+  @gaoshi_config %{
+    "kind" => "finger_d_killer",
+    "footer" => "\n成都提督\n吴天德\n"
+  }
+
+  @gaoshi_visitor_config %{
+    "kind" => "gaoshi_visitor"
+  }
+
+  @pig_table_config %{
+    "kind" => "pig_table"
+  }
+
+  @bi_tiers_config %{
+    "kind" => "room_temp_tiers",
+    "tiers" => [
+      %{"key" => "marks/破", "text" => "石壁已经被打破了。"},
+      %{"key" => "marks/推", "text" => "石门已经被推开了，却露出一个山洞来。"}
+    ],
+    "default" => "这块石壁看起来很坚实。"
   }
 
   test "item_desc_entry/2 distinguishes static and dynamic entries" do
@@ -259,6 +312,85 @@ defmodule Kantele.World.ItemDescHandlersTest do
     assert context_output(busy) == "门上挂了个牌子：休息中、请毋打扰\n"
   end
 
+  test "lookup/2 resolves the player_skill (literacy) rooms" do
+    for room <- [
+          "xiakedao:shidong2",
+          "xiakedao:shidong4",
+          "xiakedao:shidong7",
+          "xiakedao:shidong10"
+        ] do
+      assert ItemDescHandlers.lookup(room, "player_skill") == {:ok, {PlayerSkill, :run}}
+    end
+  end
+
+  test "PlayerSkill shows the literate text when the skill meets the threshold" do
+    context = %Kalevala.World.Room.Context{data: %Room{}}
+
+    literate = PlayerSkill.run(context, requester_with_skill(1), %{config: @bi_config})
+    assert context_output(literate) == "识字者看到的蝌蚪文。\n"
+  end
+
+  test "PlayerSkill shows the illiterate text below the threshold" do
+    context = %Kalevala.World.Room.Context{data: %Room{}}
+
+    illiterate = PlayerSkill.run(context, requester_with_skill(0), %{config: @bi_config})
+    assert context_output(illiterate) == "文盲看到的壁画。\n"
+  end
+
+  test "lookup/2 resolves the player_skill (family-gated) room" do
+    assert ItemDescHandlers.lookup("xiyu:houdong", "player_skill") ==
+             {:ok, {PlayerSkill, :run}}
+  end
+
+  test "PlayerSkill shows the special text when family matches and skill meets the threshold" do
+    context = %Kalevala.World.Room.Context{data: %Room{}}
+
+    got = PlayerSkill.run(context, requester_with_family("星宿派", 160), %{config: @pet_config})
+    assert context_output(got) ==
+             "上面刻有金蜈蚣，黑寡妇，赤蝎子，千年灵蛇，花斑毒蟾。你心中一惊：“难道这便是五圣剧毒？”\n"
+  end
+
+  test "PlayerSkill shows the plain text when the player is not in the required family" do
+    context = %Kalevala.World.Room.Context{data: %Room{}}
+
+    got = PlayerSkill.run(context, requester_with_family("少林派", 200), %{config: @pet_config})
+    assert context_output(got) == "上面刻有蜈蚣，蜘蛛，蝎子，蛇，蟾蜍五种毒物。\n"
+  end
+
+  test "PlayerSkill shows the plain text when skill is below threshold even if family matches" do
+    context = %Kalevala.World.Room.Context{data: %Room{}}
+
+    got = PlayerSkill.run(context, requester_with_family("星宿派", 100), %{config: @pet_config})
+    assert context_output(got) == "上面刻有蜈蚣，蜘蛛，蝎子，蛇，蟾蜍五种毒物。\n"
+  end
+
+
+
+  test "lookup/2 resolves the room_temp_tiers room" do
+    assert ItemDescHandlers.lookup("hengyang:outzigai1", "room_temp_tiers") ==
+             {:ok, {RoomTempTiers, :run}}
+  end
+
+  test "RoomTempTiers returns the default when no room temp is set" do
+    context = %Kalevala.World.Room.Context{data: %Room{}}
+    assert context_output(RoomTempTiers.run(context, requester(%{}), %{config: @bi_tiers_config})) ==
+             "这块石壁看起来很坚实。\n"
+  end
+
+  test "RoomTempTiers prefers the matching temp tier" do
+    context = %Kalevala.World.Room.Context{data: %Room{state: %{"marks/推" => 1}}}
+
+    assert context_output(RoomTempTiers.run(context, requester(%{}), %{config: @bi_tiers_config})) ==
+             "石门已经被推开了，却露出一个山洞来。\n"
+  end
+
+  test "RoomTempTiers yields to the earlier tier when several are set" do
+    context = %Kalevala.World.Room.Context{data: %Room{state: %{"marks/破" => 1, "marks/推" => 1}}}
+
+    assert context_output(RoomTempTiers.run(context, requester(%{}), %{config: @bi_tiers_config})) ==
+             "石壁已经被打破了。\n"
+  end
+
   test "PlayerTempBranch requires the player temp before revealing anything" do
     context = %Kalevala.World.Room.Context{data: %Room{id: "fuzhou:mishi"}}
 
@@ -305,6 +437,247 @@ defmodule Kantele.World.ItemDescHandlersTest do
     assert moved.events == []
   end
 
+  test "lookup/2 resolves the arena_state (leitai) room" do
+    assert ItemDescHandlers.lookup("city:leitai", "arena_state") ==
+             {:ok, {ArenaState, :run}}
+  end
+
+  test "ArenaState renders the open text when the arena is not closed" do
+    room_id = "test:leitai_open"
+    on_exit(fn -> Arena.open(room_id) end)
+    Arena.open(room_id)
+
+    context = %Kalevala.World.Room.Context{data: %Room{id: room_id}}
+
+    assert context_output(
+             ArenaState.run(context, requester(%{}), %{config: @tiaofu_config, room_id: room_id})
+           ) == "本擂台现在自由开放。\n"
+  end
+
+  test "ArenaState interpolates the closer's name into the closed text" do
+    room_id = "test:leitai_closed"
+    on_exit(fn -> Arena.open(room_id) end)
+    Arena.open(room_id)
+
+    context = %Kalevala.World.Room.Context{data: %Room{id: room_id}}
+
+    # 默认（未关闭）→ 开放文本
+    assert context_output(
+             ArenaState.run(context, requester(%{}), %{config: @tiaofu_config, room_id: room_id})
+           ) == "本擂台现在自由开放。\n"
+
+    # 关闭后 → 把 {name} 替换为关闭者的名字
+    Arena.close(room_id, %{name: "张三"})
+
+    assert context_output(
+             ArenaState.run(context, requester(%{}), %{config: @tiaofu_config, room_id: room_id})
+           ) == "本擂台现在被 张三 暂时关闭。\n"
+  end
+
+  @tag :finger_d
+  test "lookup/2 resolves the 16 gate rooms to the FINGER_D killer handler" do
+    for room <- [
+          "chengdu:eastgate",
+          "chengdu:northgate",
+          "chengdu:southgate",
+          "chengdu:westgate",
+          "city:beimen",
+          "city:dongmen",
+          "city:nanmen",
+          "city:ximen",
+          "lanzhou:beimen",
+          "lanzhou:dongmen",
+          "lanzhou:nanmen",
+          "lanzhou:ximen",
+          "suzhou:beimen",
+          "suzhou:dongmen",
+          "suzhou:nanmen",
+          "suzhou:ximen"
+        ] do
+      assert ItemDescHandlers.lookup(room, "finger_d_killer") ==
+               {:ok, {FingerDKiller, :run}}
+    end
+  end
+
+  @tag :finger_d
+  test "FingerDKiller appends the per-city footer to the notice board" do
+    context = %Kalevala.World.Room.Context{data: %Room{id: "city:beimen"}}
+
+    output =
+      context_output(
+        FingerDKiller.run(context, requester(%{}), %{config: @gaoshi_config, room_id: "city:beimen"})
+      )
+
+    # 无论当前有无通缉犯，落款（footer）一定被拼到正文后面
+    assert output =~ "成都提督"
+    assert output =~ "吴天德"
+    # 正文要么「治安良好」要么「缉拿以下人犯」，二者必居其一
+    assert output =~ ~r/^(本城治安良好|现在本城正在缉拿以下人犯)/u
+  end
+
+  @tag :finger_d
+  test "FingerDKiller renders wanted killers from the FINGER_D registry" do
+    name = "通缉犯_#{System.unique_integer([:positive])}"
+    on_exit(fn -> FingerD.clear_killer(name) end)
+    FingerD.mark_killer(name)
+
+    context = %Kalevala.World.Room.Context{data: %Room{id: "chengdu:eastgate"}}
+
+    output =
+      context_output(
+        FingerDKiller.run(context, requester(%{}), %{config: @gaoshi_config, room_id: "chengdu:eastgate"})
+      )
+
+    # 通缉名单里出现了被 mark 的名字，且落款仍在
+    assert output =~ name
+    assert output =~ "现在本城正在缉拿以下人犯"
+    assert output =~ "成都提督"
+  end
+
+  @tag :finger_d
+  test "FingerD.get_killer_text/0 is fail-safe and returns a string" do
+    # 不假设共享 ETS 的空/非空状态（async 下其它测试可能并发 mark），
+    # 只验证返回值是字符串、且内容要么是治安良好、要么是缉拿名单。
+    text = FingerD.get_killer_text()
+    assert is_binary(text)
+    assert text =~ ~r/^(本城治安良好|现在本城正在缉拿以下人犯)/u
+  end
+
+  @tag :gaoshi_visitor
+  test "lookup/2 resolves city:guangchang to the gaoshi_visitor handler" do
+    assert ItemDescHandlers.lookup("city:guangchang", "gaoshi_visitor") ==
+             {:ok, {GaoshiVisitor, :run}}
+  end
+
+  @tag :gaoshi_visitor
+  test "GaoshiVisitor renders the 扬州府通告 banner with the seeded visitor count" do
+    room_id = "city:guangchang"
+
+    context =
+      %Kalevala.World.Room.Context{
+        data: %Room{id: room_id, state: %{"visitor" => 365}}
+      }
+
+    output =
+      context_output(
+        GaoshiVisitor.run(context, requester(%{}), %{
+          config: @gaoshi_visitor_config,
+          room_id: room_id
+        })
+      )
+
+    # 关键标点与中文数字必须出现
+    assert output =~ "扬州府通告"
+    assert output =~ "近期共有"
+    assert output =~ "三百六十五"
+    assert output =~ "人通过此地"
+
+    # 顶/底边框为 65 个 *，且整段以换行收尾（与 LPC look_gaoshi 逐字一致）
+    assert String.starts_with?(output, "\n" <> String.duplicate("*", 65) <> "\n")
+    assert String.ends_with?(output, String.duplicate("*", 65) <> "\n")
+  end
+
+  @tag :gaoshi_visitor
+  test "GaoshiVisitor falls back to 零 when the visitor count is absent" do
+    room_id = "city:guangchang"
+    context = %Kalevala.World.Room.Context{data: %Room{id: room_id}}
+
+    output =
+      context_output(
+        GaoshiVisitor.run(context, requester(%{}), %{
+          config: @gaoshi_visitor_config,
+          room_id: room_id
+        })
+      )
+
+    assert output =~ "近期共有零人通过此地"
+  end
+
+  @tag :pig_table
+  test "lookup/2 解析四间拱猪房到 pig_table handler" do
+    for room <- ["city:eproom", "city:nproom", "city:sproom", "city:wproom"] do
+      assert ItemDescHandlers.lookup(room, "table") ==
+               {:ok, {PigTable, :run}}
+    end
+  end
+
+  @tag :pig_table
+  test "PigTable 空桌：四个座位均空，给出 sit 提示" do
+    room_id = "city:eproom"
+    context =
+      %Kalevala.World.Room.Context{
+        data: %Room{
+          id: room_id,
+          state: %{
+            "pig_phase" => "initting",
+            "pig_north" => "",
+            "pig_west" => "",
+            "pig_south" => "",
+            "pig_east" => "",
+            "pig_server" => ""
+          }
+        }
+      }
+
+    output =
+      context_output(
+        PigTable.run(context, requester(%{}), %{
+          config: @pig_table_config,
+          room_id: room_id
+        })
+      )
+
+    assert output =~ "这是一张专门用于拱猪的四方桌。"
+    assert output =~ "北边的椅子是空的。 想玩可用 sit north 坐上去。"
+    assert output =~ "西边的椅子是空的。 想玩可用 sit west 坐上去。"
+    assert output =~ "南边的椅子是空的。 想玩可用 sit south 坐上去。"
+    assert output =~ "东边的椅子是空的。 想玩可用 sit east 坐上去。"
+  end
+
+  @tag :pig_table
+  test "PigTable 已有玩家坐下：显示座位玩家名，桌长标注 (桌长)" do
+    room_id = "city:nproom"
+    context =
+      %Kalevala.World.Room.Context{
+        data: %Room{
+          id: room_id,
+          state: %{
+            "pig_phase" => "initting",
+            "pig_north" => "",
+            "pig_west" => "张三",
+            "pig_south" => "李四",
+            "pig_east" => "",
+            "pig_server" => "张三"
+          }
+        }
+      }
+
+    # 未坐玩家（pigging_seat 为空）
+    output =
+      context_output(
+        PigTable.run(context, requester(%{}), %{
+          config: @pig_table_config,
+          room_id: room_id
+        })
+      )
+
+    assert output =~ "北边的椅子是空的。"
+    assert output =~ "西边的椅子上坐的是：张三(桌长)。"
+    assert output =~ "南边的椅子上坐的是：李四。"
+    assert output =~ "东边的椅子是空的。"
+
+    # 坐在 south 位的玩家再看一次（视角不影响座位状态视图）
+    output_south =
+      context_output(
+        PigTable.run(context, requester(%{"pigging_seat" => "south"}), %{
+          config: @pig_table_config,
+          room_id: room_id
+        })
+      )
+
+    assert output_south =~ "南边的椅子上坐的是：李四。"
+  end
+
   test "Pull sets the room temp and reports state" do
     room_id = "test:furong1"
     start_supervised!({FakeRoom, room_id})
@@ -342,6 +715,20 @@ defmodule Kantele.World.ItemDescHandlersTest do
 
   defp requester_with_score(score) do
     %{pid: self(), meta: %PlayerMeta{stats: %Stats{score: score}}}
+  end
+
+  defp requester_with_skill(level) do
+    %{pid: self(), meta: %PlayerMeta{stats: %Stats{skills: %{"literate" => level}}}}
+  end
+
+  defp requester_with_family(family_name, level) do
+    %{
+      pid: self(),
+      meta: %PlayerMeta{
+        family: %{name: family_name},
+        stats: %Stats{skills: %{"xingxiu-qishu" => level}}
+      }
+    }
   end
 
   defp run_score(context, score, config) do
