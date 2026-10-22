@@ -3388,7 +3388,7 @@ item_desc = {
 
   inquiries = [
     { key = "王老五" value = "哈哈哈！有趣有趣，可惜你认错人了。" },
-    { key = "鬼刀" value = "(: ask_me :)" }
+    { key = "鬼刀" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -3795,7 +3795,7 @@ chats = [
 
   inquiries = [
     { key = "史松" value = "谁杀了史松这奸贼，我可以帮他提高江湖威望。" },
-    { key = "断字诀" value = "(: ask_skill1 :)" }
+    { key = "断字诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   chat_chance = 2
@@ -3945,9 +3945,9 @@ chats = [
 
 
   inquiries = [
-    { key = "job" value = "(: ask_job :)" },
-    { key = "工作" value = "(: ask_job :)" },
-    { key = "配药" value = "(: ask_job :)" }
+    { key = "job" value = " inquire about job (unimplemented)" },
+    { key = "工作" value = " inquire about job (unimplemented)" },
+    { key = "配药" value = " inquire about job (unimplemented)" }
   ]
 
   skills = [
@@ -4229,12 +4229,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "job" value = "(: ask_job :)" },
+    { key = "job" value = " inquire about job (unimplemented)" },
     { key = "书" value = "先生那里书多得很。" },
     { key = "买书" value = "还是找朱先生吧！我这里可不管。" },
     { key = "借书" value = "借？我可没有书借给你呀！" },
-    { key = "工作" value = "(: ask_job :)" },
-    { key = "抄书" value = "(: ask_job :)" }
+    { key = "工作" value = " inquire about job (unimplemented)" },
+    { key = "抄书" value = " inquire about job (unimplemented)" }
   ]
 
   skills = [
@@ -4287,9 +4287,9 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = "(: ask_me :)" },
-    { key = "工作" value = "(: ask_me :)" },
-    { key = "血海无边" value = "(: ask_back :)" }
+    { key = "job" value = " inquire about me (unimplemented)" },
+    { key = "工作" value = " inquire about me (unimplemented)" },
+    { key = "血海无边" value = " inquire about back (unimplemented)" }
   ]
 
   carry = [
@@ -4318,7 +4318,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "金轮九转" value = "(: ask_back :)" }
+    { key = "金轮九转" value = " inquire about back (unimplemented)" }
   ]
 
   skills = [
@@ -4987,8 +4987,8 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = "(: ask_job :)" },
-    { key = "工作" value = "(: ask_job :)" }
+    { key = "job" value = " inquire about job (unimplemented)" },
+    { key = "工作" value = " inquire about job (unimplemented)" }
   ]
 
   skills = [
@@ -5035,12 +5035,12 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = "(: ask_job :)" },
+    { key = "job" value = " inquire about job (unimplemented)" },
     { key = "书" value = "唉！书到用时方恨少。" },
-    { key = "买书" value = "(: ask_buy :)" },
+    { key = "买书" value = " inquire about buy (unimplemented)" },
     { key = "借书" value = "借？你不还我到哪里找你？哼！" },
-    { key = "工作" value = "(: ask_job :)" },
-    { key = "抄书" value = "(: ask_job :)" }
+    { key = "工作" value = " inquire about job (unimplemented)" },
+    { key = "抄书" value = " inquire about job (unimplemented)" }
   ]
 
   chat_chance = 1

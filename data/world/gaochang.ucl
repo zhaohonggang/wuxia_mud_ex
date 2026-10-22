@@ -674,12 +674,12 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "父母" value = "(: ask_parent :)" },
-    { key = "父母之仇" value = "(: ask_parent :)" },
+    { key = "父母" value = " inquire about parent (unimplemented)" },
+    { key = "父母之仇" value = " inquire about parent (unimplemented)" },
     { key = "白马李三" value = "他是我父亲，可是在我懂事之前，父母便都已去世了。" },
-    { key = "苏普" value = "(: ask_supu :)" },
-    { key = "高昌地图" value = "(: ask_gaochang:)" },
-    { key = "高昌迷宫" value = "(: ask_gaochang:)" }
+    { key = "苏普" value = " inquire about supu (unimplemented)" },
+    { key = "高昌地图" value = " inquire about gaochang (unimplemented)" },
+    { key = "高昌迷宫" value = " inquire about gaochang (unimplemented)" }
   ]
 
   chat_chance = 3
@@ -733,7 +733,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "回去" value = "(: ask_back :)" },
+    { key = "回去" value = " inquire about back (unimplemented)" },
     { key = "宝藏" value = "高昌迷宫一无所有，这一个房间是我住的。" },
     { key = "李文秀" value = "她是一个好姑娘，也不知何时才能再见到她。" },
     { key = "高昌迷宫" value = "高昌迷宫一无所有，这一个房间是我住的。" }

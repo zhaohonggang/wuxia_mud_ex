@@ -2593,14 +2593,14 @@ chats = [
 
   inquiries = [
     { key = "here" value = "此乃炼丹房，可以在这里练制(lianzhi)各种毒药。" },
-    { key = "上篇" value = "(: ask_me :)" },
-    { key = "原料" value = "(: ask_me :)" },
+    { key = "上篇" value = " inquire about me (unimplemented)" },
+    { key = "原料" value = " inquire about me (unimplemented)" },
     { key = "毒经" value = "你打算炼毒么？可惜我这里只有毒经上篇。" },
-    { key = "毒经上篇" value = "(: ask_me :)" },
+    { key = "毒经上篇" value = " inquire about me (unimplemented)" },
     { key = "毒药" value = "阁下可以在这里练制(lianzhi)各种毒药。" },
-    { key = "毒药配方" value = "(: ask_me :)" },
-    { key = "练毒" value = "(: ask_me :)" },
-    { key = "配方" value = "(: ask_me :)" }
+    { key = "毒药配方" value = " inquire about me (unimplemented)" },
+    { key = "练毒" value = " inquire about me (unimplemented)" },
+    { key = "配方" value = " inquire about me (unimplemented)" }
   ]
 
   chat_chance = 2
@@ -3063,10 +3063,10 @@ chats = [
     { key = "here" value = "此乃卧龙岗，乃我先祖读书之地也。" },
     { key = "name" value = "在下乃诸葛武候之第二十三代孙诸葛不亮是也。" },
     { key = "孔明先生" value = "此乃吾之先祖也，曾七擒孟获，平定了南疆。故而阁下若去 南疆，或许鄙人能助君一臂之力。" },
-    { key = "桃花峪" value = "(: ask_me :)" },
-    { key = "瘴气" value = "(: ask_me :)" },
+    { key = "桃花峪" value = " inquire about me (unimplemented)" },
+    { key = "瘴气" value = " inquire about me (unimplemented)" },
     { key = "诸葛亮" value = "阁下怎好直呼我先祖名讳？" },
-    { key = "诸葛行军散" value = "(: ask_me :)" }
+    { key = "诸葛行军散" value = " inquire about me (unimplemented)" }
   ]
 
   chat_chance = 2

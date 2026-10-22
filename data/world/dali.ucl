@@ -5457,11 +5457,11 @@ behavior_config = {
   }
 
   inquiries = [
-    { key = "gongzi" value = "(: ask_for_gongzi :)" },
-    { key = "payment" value = "(: ask_for_gongzi :)" },
-    { key = "salary" value = "(: ask_for_gongzi :)" },
-    { key = "工资" value = "(: ask_for_gongzi :)" },
-    { key = "薪水" value = "(: ask_for_gongzi :)" }
+    { key = "gongzi" value = " inquire about for gongzi (unimplemented)" },
+    { key = "payment" value = " inquire about for gongzi (unimplemented)" },
+    { key = "salary" value = " inquire about for gongzi (unimplemented)" },
+    { key = "工资" value = " inquire about for gongzi (unimplemented)" },
+    { key = "薪水" value = " inquire about for gongzi (unimplemented)" }
   ]
 
   skills = [
@@ -5506,7 +5506,7 @@ behavior_config = {
   }
 
   inquiries = [
-    { key = "指点武功" value = "(: ask_me :)" }
+    { key = "指点武功" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [

@@ -1501,7 +1501,7 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "上官剑南" value = "(: ask_jiannan :)" },
+    { key = "上官剑南" value = " inquire about jiannan (unimplemented)" },
     { key = "二瞻" value = "他乃是当今一位大画家。" },
     { key = "伊璜" value = "查伊璜, 也就是查继佐, 因大力将军所助, 免罪不究。" },
     { key = "反清复明" value = "你也要学一学当年岳武穆尽忠报国, 刺字以决你心?" },
@@ -1509,9 +1509,9 @@ item_desc = {
     { key = "吴六奇" value = "吴六奇将军身在曹营心在汉, 实际上是天地会洪顺堂香主。" },
     { key = "大力" value = "大力将军乃广东提督吴六奇将军。" },
     { key = "天地会" value = "天地会是台湾国姓爷延平郡王郑成功手下谋主陈永华所创。" },
-    { key = "岳武穆" value = "(: ask_wumu :)" },
+    { key = "岳武穆" value = " inquire about wumu (unimplemented)" },
     { key = "查士标" value = "二瞻先生有位本家伊璜先生牵连在这场‘明史’大案中。" },
-    { key = "武穆遗书" value = "(: ask_yishu :)" },
+    { key = "武穆遗书" value = " inquire about yishu (unimplemented)" },
     { key = "画" value = "这是二瞻先生的丹青。" },
     { key = "陈永华" value = "陈先生暗中联络老兄弟，胸口所刺八字便是会里的口号。" }
   ]

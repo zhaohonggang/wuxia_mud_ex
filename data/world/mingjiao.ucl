@@ -2966,7 +2966,7 @@ direction = ~
   }
 
   inquiries = [
-    { key = "疗伤" value = "(:ask_me:)" }
+    { key = "疗伤" value = "明教弟子，我可为你疗伤。你若受伤，可来问我。" }
   ]
 
   skills = [

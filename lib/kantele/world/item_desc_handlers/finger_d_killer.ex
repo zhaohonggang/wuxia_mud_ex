@@ -18,7 +18,7 @@ defmodule Kantele.World.ItemDescHandlers.FingerDKiller do
 
   import Kalevala.World.Room.Context
 
-  alias Kalevala.Character.CommandView
+  alias Kantele.Character.CommandView
   alias Kantele.World.FingerD
 
   @default_text "这里没有这个东西。\n"

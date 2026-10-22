@@ -1428,8 +1428,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "job" value = "(: ask_job :)" },
-    { key = "工作" value = "(: ask_job :)" },
+    { key = "job" value = " inquire about job (unimplemented)" },
+    { key = "工作" value = " inquire about job (unimplemented)" },
     { key = "工具" value = "你去物品房找修文要吧。" }
   ]
 

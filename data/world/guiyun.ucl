@@ -1565,7 +1565,7 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "归云庄" value = "(: ask_me :)" }
+    { key = "归云庄" value = "归云庄中，黄帮主待客以礼。看这位大侠，可有兴趣一探归云？(decide)" }
   ]
 
   skills = [

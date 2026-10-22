@@ -5183,8 +5183,14 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "老乔" value = "(: ask_qiao :)" },
-    { key = "铁手掌" value = "(: ask_armor :)" }
+    { key = "老乔" value = "老乔就住在少室山山脚下，好象在东头…还是西头？看我这记性！" },
+    { key = "铁手掌"
+      kind = "give_item"
+      item = "shaolin:tieshou"
+      match = "iron hand"
+      unique = true
+      success = "铁手掌？ 这玩意儿有啥用？老乔送了一大堆给我，你要的话，就拿一个去罢。"
+      already = "你不已经有一块了吗？ 这玩意儿有啥用？" }
   ]
 
   chat_chance = 3
@@ -5248,7 +5254,7 @@ chats = [
 
   inquiries = [
     { key = "打遍天下无敌手" value = "这话说说而已，岂能当真？" },
-    { key = "胡一刀" value = "(: ask_me :)" }
+    { key = "胡一刀" value = "当年不幸中了奸人毒计伤了他，令人遗憾终生！你既然也是胡家的后人，可对我苗家剑法感兴趣？" }
   ]
 
   skills = [

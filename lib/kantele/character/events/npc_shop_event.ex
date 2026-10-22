@@ -234,6 +234,9 @@ defmodule Kantele.Character.NpcAskEvent do
   alias Kantele.World.Items
   alias Kantele.Quest
   alias Kantele.Npc.Quester
+  alias Kantele.World.Room
+  alias Kantele.World.RoomActions.Helpers
+  alias Kantele.World.NpcActions.NpcAttack
 
   def call(conn, %{data: %{reply_to: reply_to, asker_id: asker_id} = data}) do
     keyword = Map.get(data, :keyword) || ""
@@ -292,6 +295,7 @@ defmodule Kantele.Character.NpcAskEvent do
   # 问询值多态分发：map（脚本）/ atom（NPC 专属）/ 文本（直接回话）
   defp handle_answer(conn, %{asker_id: asker_id} = data, answer) do
     case answer do
+      %{"kind" => "hostile"} = script -> handle_hostile_answer(conn, data, script)
       script when is_map(script) -> handle_map_answer(conn, data, script)
       a when is_atom(a) -> handle_special_answer(conn, data, a)
       text when is_binary(text) -> handle_text_answer(conn, asker_id, text)
@@ -307,6 +311,29 @@ defmodule Kantele.Character.NpcAskEvent do
     else
       publish_tell(conn, asker_id, text)
     end
+  end
+
+  # hostile: NPC 愤怒，广播 vision 消息并触发战斗（对应 LPC kill_ob）
+  defp handle_hostile_answer(conn, data, script) do
+    room_id = conn.character.room_id
+    asker_id = Map.get(data, :asker_id)
+    asker_name = Map.get(data, :asker_name) || "你"
+
+    message =
+      script
+      |> Map.get("message", "")
+      |> String.replace("{name}", asker_name)
+
+    conn = Helpers.broadcast_vision(conn, room_id, message)
+
+    player = Enum.find(Room.npc_characters_by_id(room_id), &(Map.get(&1, :id) == asker_id))
+    npc_ref = %{id: conn.character.id, pid: self(), name: conn.character.name, room_id: room_id}
+
+    if player do
+      NpcAttack.kill_ob(npc_ref, player)
+    end
+
+    conn
   end
 
   defp closure_literal?(text) do

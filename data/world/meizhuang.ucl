@@ -956,8 +956,8 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "剑法" value = "(: ask_bijian :)" },
-    { key = "比剑" value = "(: ask_bijian :)" },
+    { key = "剑法" value = " inquire about bijian (unimplemented)" },
+    { key = "比剑" value = " inquire about bijian (unimplemented)" },
     { key = "黑木令" value = "要拿黑木令？老夫想先看看你的剑法！" }
   ]
 

@@ -385,12 +385,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "澎湃" value = "(: ask_me :)" },
+    { key = "澎湃" value = " inquire about me (unimplemented)" },
     { key = "玄铁令" value = "两枚玄铁令我已经收回。" },
     { key = "石破天" value = "狗杂种那个白痴还没死么？" },
-    { key = "碧针清掌" value = "(: ask_me :)" },
-    { key = "绝技" value = "(: ask_me :)" },
-    { key = "绝招" value = "(: ask_me :)" }
+    { key = "碧针清掌" value = " inquire about me (unimplemented)" },
+    { key = "绝技" value = " inquire about me (unimplemented)" },
+    { key = "绝招" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [

@@ -3018,9 +3018,9 @@ chats = [
 
 
   inquiries = [
-    { key = "何首乌" value = "(: ask_me :)" },
-    { key = "药材" value = "(: ask_me :)" },
-    { key = "首乌" value = "(: ask_me :)" }
+    { key = "何首乌" value = " inquire about me (unimplemented)" },
+    { key = "药材" value = " inquire about me (unimplemented)" },
+    { key = "首乌" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [
@@ -3345,7 +3345,7 @@ chats = [
 
   inquiries = [
     { key = "全真教" value = "我全真教是天下道家玄门正宗。" },
-    { key = "道德经" value = "(: ask_me :)" }
+    { key = "道德经" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -3402,7 +3402,7 @@ chats = [
 
   inquiries = [
     { key = "全真教" value = "我全真教是天下道家玄门正宗。" },
-    { key = "道德经" value = "(: ask_me :)" }
+    { key = "道德经" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [

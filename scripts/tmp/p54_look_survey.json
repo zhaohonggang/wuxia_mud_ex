@@ -6228,9 +6228,9 @@
       "body": "string look_bi()\n{\n      object me = this_player();\n\n      if (! me->query_temp(\"gua\"))\n          return NOR + WHT \"尘土已将其掩盖，不知道后面藏有什么。你不禁想将尘土刮去看看\"\n                 \"后面是什么样的。\\n\" NOR;\n\n      return HIY \"\\n只见山壁上刻有三副巨图。图中人物个持宝剑，与人比武。\\n\"\n             \"第一副(pic1)的人物欲退反进，以守为攻。\\n\"\n             \"第二副(pic2)的人物手中之剑却突然化为无数把攻向对手。\\n\"\n             \"第三副(pic3)更为奇怪，那人物却突然一分为五，分使五种不同招式。\\n\"\n             \"你越看越奇怪，忍不住想跟着参悟起来。\\n\\n\" NOR;\n\n}",
       "class": "conditional"
     },
-    "look_pic3": {
+    "look_pic1": {
       "file": "C:/files/git/mud/d/hengyang/inzhushendong.c",
-      "body": "string look_pic3()\n{\n      object me = this_player();\n\n      if (! me->query_temp(\"gua\"))\n          return NOR + WHT \"这里没有你要看的东西。\\n\" NOR;\n\n     return HIY \"\\n图中人物一分为五，分使五招，但见招招精妙，气压群山。\\n\" NOR;\n}",
+      "body": "string look_pic1()\n{\n      object me = this_player();\n\n      if (! me->query_temp(\"gua\"))\n          return NOR + WHT \"这里没有你要看的东西。\\n\" NOR;\n\n     return HIY \"\\n图中人物以守为攻，欲退反进，攻其不备。\\n\" NOR;\n}",
       "class": "conditional"
     },
     "look_pic2": {
@@ -6238,9 +6238,9 @@
       "body": "string look_pic2()\n{\n      object me = this_player();\n\n      if (! me->query_temp(\"gua\"))\n          return NOR + WHT \"这里没有你要看的东西。\\n\" NOR;\n\n     return HIY \"\\n图中人物千剑齐发，令对手无从招架。\\n\" NOR;\n}",
       "class": "conditional"
     },
-    "look_pic1": {
+    "look_pic3": {
       "file": "C:/files/git/mud/d/hengyang/inzhushendong.c",
-      "body": "string look_pic1()\n{\n      object me = this_player();\n\n      if (! me->query_temp(\"gua\"))\n          return NOR + WHT \"这里没有你要看的东西。\\n\" NOR;\n\n     return HIY \"\\n图中人物以守为攻，欲退反进，攻其不备。\\n\" NOR;\n}",
+      "body": "string look_pic3()\n{\n      object me = this_player();\n\n      if (! me->query_temp(\"gua\"))\n          return NOR + WHT \"这里没有你要看的东西。\\n\" NOR;\n\n     return HIY \"\\n图中人物一分为五，分使五招，但见招招精妙，气压群山。\\n\" NOR;\n}",
       "class": "conditional"
     },
     "look_desk": {
@@ -6323,14 +6323,14 @@
       "body": "string look_tower()\n{\n    return WHT\n    \"\\n\"\n    \"    ########################################\\n\"\n    \"    ########　　　　　　　　　　　　########\\n\"\n    \"    ########　万物一般，众生平等。　########\\n\"\n    \"    ########　　　　　　　　　　　　########\\n\"\n    \"    ########　圣贤畜生，一视同仁。　########\\n\"\n    \"    ########　　　　　　　　　　　　########\\n\"\n    \"    ########　红颜白骨，亦幻一真。　########\\n\"\n    \"    ########　　　　　　　　　　　　########\\n\"\n    \"    ########　恩怨荣辱，俱在灰尘。　########\\n\"\n    \"    ########　　　　　　　　　　　　########\\n\"\n    \"    ########################################\\n\" NOR;\n}",
       "class": "static"
     },
-    "look_drum": {
-      "file": "C:/files/git/mud/d/shaolin/gulou7.c",
-      "body": "string look_drum()\n{\n    return\n    \"############################################\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"########　　　　　佛语有曰：　　　　########\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"########　『求一次菩萨，击一次鼓』　########\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"########　　（ｈｉｔ　ｄｒｕｍ）　　########\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"############################################\\n\";\n}",
-      "class": "static"
-    },
     "look_out": {
       "file": "C:/files/git/mud/d/shaolin/gulou7.c",
       "body": "string look_out()\n{\n    return  \"这里是鼓楼顶层的窗台，从这里可以遥望整个少室山脉，\\n\"\n\"以及高耸入云的嵩山。浮世烟尘，尽在眼底。据说在此地\\n\"\n\"可以与天界诸佛直接交流，对禅修大有益处。\\n\";\n}",
+      "class": "static"
+    },
+    "look_drum": {
+      "file": "C:/files/git/mud/d/shaolin/gulou7.c",
+      "body": "string look_drum()\n{\n    return\n    \"############################################\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"########　　　　　佛语有曰：　　　　########\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"########　『求一次菩萨，击一次鼓』　########\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"########　　（ｈｉｔ　ｄｒｕｍ）　　########\\n\"\n    \"########　　　　　　　　　　　　　　########\\n\"\n    \"############################################\\n\";\n}",
       "class": "static"
     },
     "look_jiebei": {
@@ -6338,14 +6338,14 @@
       "body": "string look_jiebei()\n{\n    return \"由此往前，通向山顶。道路尚未修好。\\n--时空书于侠客行\\n\";\n}",
       "class": "static"
     },
-    "look_jing": {
-      "file": "C:/files/git/mud/d/shaolin/putiyuan.c",
-      "body": "string look_jing()\n{\n    object me;\n\n    me = this_player();\n    if (me->query(\"score\") < 1000)\n        return \"你看了半天，只看到自己的影子，没发现什么。\\n\";\n\n    if (me->query(\"score\") < 5000)\n        return \"你觉得上面镌的经偈似乎有些不同。\\n\";\n\n    return \"你发现上面镌的经偈光泽和别处不一样，难道可以掀(xian)开？\\n\";\n}",
-      "class": "conditional"
-    },
     "look_hole": {
       "file": "C:/files/git/mud/d/shaolin/putiyuan.c",
       "body": "string look_hole()\n{\n    if (query(\"status\") != 4)\n        return \"哪里有什么洞？抓老鼠么？\\n\";\n\n    if (query(\"book_count\"))\n        return \"这是铜镜下面的一个小洞，里面放着一本残破的旧经书(book)。\\n\";\n\n    return \"这是铜镜下面的一个小洞，里面空空如也，什么也没有。\\n\";\n}",
+      "class": "conditional"
+    },
+    "look_jing": {
+      "file": "C:/files/git/mud/d/shaolin/putiyuan.c",
+      "body": "string look_jing()\n{\n    object me;\n\n    me = this_player();\n    if (me->query(\"score\") < 1000)\n        return \"你看了半天，只看到自己的影子，没发现什么。\\n\";\n\n    if (me->query(\"score\") < 5000)\n        return \"你觉得上面镌的经偈似乎有些不同。\\n\";\n\n    return \"你发现上面镌的经偈光泽和别处不一样，难道可以掀(xian)开？\\n\";\n}",
       "class": "conditional"
     },
     "look_floor": {

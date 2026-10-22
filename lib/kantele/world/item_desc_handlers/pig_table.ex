@@ -61,6 +61,7 @@ defmodule Kantele.World.ItemDescHandlers.PigTable do
     cond do
       phase == "playing" and seated_count(pl) == 4 ->
         render_playing(state, seat, pl, server)
+
       true ->
         render_seats(pl, server)
     end
@@ -69,6 +70,7 @@ defmodule Kantele.World.ItemDescHandlers.PigTable do
   # 观察者所在座位：来自角色 temp `pigging_seat`；未坐则为 ""（对应 LPC table_str("")）。
   defp viewer_seat(requester) do
     temp = Map.get(Map.get(requester, :meta, %{}), :temp, %{}) || %{}
+
     case Map.get(temp, "pigging_seat") do
       nil -> ""
       s when is_binary(s) and s != "" -> s
@@ -76,11 +78,16 @@ defmodule Kantele.World.ItemDescHandlers.PigTable do
     end
   end
 
-  # 从 string-keyed state 取出 pig_pl，缺失时全部空位。
+  # 从 string-keyed state 取出座位：优先 `pig_pl` map，其次扁平 `pig_<seat>`
+  # （UCL `state` 直接播种时用扁平键）。缺失时全部空位。
   defp pig_pl(state) do
-    Map.get(state, "pig_pl", %{
-      "north" => nil, "west" => nil, "south" => nil, "east" => nil
-    })
+    Map.get(state, "pig_pl") ||
+      %{
+        "north" => Map.get(state, "pig_north"),
+        "west" => Map.get(state, "pig_west"),
+        "south" => Map.get(state, "pig_south"),
+        "east" => Map.get(state, "pig_east")
+      }
   end
 
   defp seated_count(pl) when is_map(pl) do
@@ -118,6 +125,13 @@ defmodule Kantele.World.ItemDescHandlers.PigTable do
     end
   end
 
+  defp player_of(pl, seat) do
+    case Map.get(pl, seat) do
+      value when is_binary(value) -> value
+      _ -> ""
+    end
+  end
+
   defp seat_empty_line(seat) do
     "#{@chinese_seat[seat]}的椅子是空的。 想玩可用 sit #{seat} 坐上去。\n"
   end
@@ -132,9 +146,15 @@ defmodule Kantele.World.ItemDescHandlers.PigTable do
   defp render_playing(_state, _seat, _pl, _server) do
     # 待牌局状态机接线后完整实现；当前按座位状态兜底，避免空房间报错。
     # TODO: 接入 roundcards / round_order / bidcard_str 等，渲染出牌行与手牌。
-    render_seats(%{
-      "north" => nil, "west" => nil, "south" => nil, "east" => nil
-    }, "")
+    render_seats(
+      %{
+        "north" => nil,
+        "west" => nil,
+        "south" => nil,
+        "east" => nil
+      },
+      ""
+    )
   end
 
   defp ensure_newline(text) when is_binary(text), do: String.trim_trailing(text) <> "\n"

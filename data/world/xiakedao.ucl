@@ -2586,9 +2586,9 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "rent" value = "(: ask_rent :)" },
-    { key = "同门" value = "(: ask_rent :)" },
-    { key = "师兄" value = "(: ask_rent :)" }
+    { key = "rent" value = " inquire about rent (unimplemented)" },
+    { key = "同门" value = " inquire about rent (unimplemented)" },
+    { key = "师兄" value = " inquire about rent (unimplemented)" }
   ]
 
   carry = [

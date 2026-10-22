@@ -1776,8 +1776,8 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = "(: ask_me :)" },
-    { key = "工作" value = "(: ask_me :)" }
+    { key = "job" value = " inquire about me (unimplemented)" },
+    { key = "工作" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [

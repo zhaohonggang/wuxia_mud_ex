@@ -2442,7 +2442,11 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "周芷若" value = "(: ask_for_zhou :)" }
+    { key = "周芷若" value = {
+      kind = "hostile"
+      message = "{name}你是什么东西？敢直呼芷若的名字？"
+    }
+    }
   ]
 
   skills = [

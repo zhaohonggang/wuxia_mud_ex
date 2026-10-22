@@ -72,31 +72,55 @@ defmodule Kantele.World.ItemDescHandlers do
     },
     # 城门/关卡告示牌 look_gaoshi：FINGER_D 通缉名单 + 各城落款（P5-4p / FINGER_D 子系统）。
     # footer 为各城知府/提督落款，详见 adm/daemons/fingerd.c get_killer() 的拼接。
-    "chengdu:eastgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "chengdu:northgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "chengdu:southgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "chengdu:westgate" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "chengdu:eastgate" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "chengdu:northgate" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "chengdu:southgate" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "chengdu:westgate" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
     "city:beimen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
     "city:dongmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
     "city:nanmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
     "city:ximen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "lanzhou:beimen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "lanzhou:dongmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "lanzhou:nanmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "lanzhou:ximen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "suzhou:beimen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "suzhou:dongmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
-    "suzhou:nanmen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
+    "lanzhou:beimen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "lanzhou:dongmen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "lanzhou:nanmen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "lanzhou:ximen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "suzhou:beimen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "suzhou:dongmen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
+    "suzhou:nanmen" => %{
+      "finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}
+    },
     "suzhou:ximen" => %{"finger_d_killer" => {Kantele.World.ItemDescHandlers.FingerDKiller, :run}},
     # city:guangchang `look_gaoshi`：扬州府通告访客计数条幅（P5-4q）。
     # 读房间 state.visitor（UCL state 播种）转中文数字拼装定宽 ASCII 条幅。
-    "city:guangchang" => %{"gaoshi_visitor" => {Kantele.World.ItemDescHandlers.GaoshiVisitor, :run}}
+    "city:guangchang" => %{
+      "gaoshi_visitor" => {Kantele.World.ItemDescHandlers.GaoshiVisitor, :run}
+    },
 
     # city:eproom/nproom/sproom/wproom `look_table`：拱猪牌桌显示（P5-4r）。
     # 读角色 temp pigging_seat 与房间 state 中的 pig_*，渲染座位/牌桌状态。
-    "city:eproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
-    "city:nproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
-    "city:sproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
+    "city:eproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}},
+    "city:nproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}},
+    "city:sproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}},
     "city:wproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
   }
 

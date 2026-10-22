@@ -2489,8 +2489,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "丁典" value = "(: ask_me :)" },
-    { key = "丁大哥" value = "(: ask_me :)" }
+    { key = "丁典" value = " inquire about me (unimplemented)" },
+    { key = "丁大哥" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [

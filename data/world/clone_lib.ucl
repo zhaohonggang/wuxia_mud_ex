@@ -8756,9 +8756,9 @@ chats = [
 
 
   inquiries = [
-    { key = "job" value = "(: ask_job :)" },
-    { key = "工作" value = "(: ask_job :)" },
-    { key = "配药" value = "(: ask_job :)" }
+    { key = "job" value = " inquire about job (unimplemented)" },
+    { key = "工作" value = " inquire about job (unimplemented)" },
+    { key = "配药" value = " inquire about job (unimplemented)" }
   ]
 
   skills = [
@@ -8812,9 +8812,9 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = "(: ask_me :)" },
-    { key = "工作" value = "(: ask_me :)" },
-    { key = "血海无边" value = "(: ask_back :)" }
+    { key = "job" value = " inquire about me (unimplemented)" },
+    { key = "工作" value = " inquire about me (unimplemented)" },
+    { key = "血海无边" value = " inquire about back (unimplemented)" }
   ]
 
   carry = [
@@ -9288,12 +9288,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "父母" value = "(: ask_parent :)" },
-    { key = "父母之仇" value = "(: ask_parent :)" },
+    { key = "父母" value = " inquire about parent (unimplemented)" },
+    { key = "父母之仇" value = " inquire about parent (unimplemented)" },
     { key = "白马李三" value = "他是我父亲，可是在我懂事之前，父母便都已去世了。" },
-    { key = "苏普" value = "(: ask_supu :)" },
-    { key = "高昌地图" value = "(: ask_gaochang:)" },
-    { key = "高昌迷宫" value = "(: ask_gaochang:)" }
+    { key = "苏普" value = " inquire about supu (unimplemented)" },
+    { key = "高昌地图" value = " inquire about gaochang (unimplemented)" },
+    { key = "高昌迷宫" value = " inquire about gaochang (unimplemented)" }
   ]
 
   chat_chance = 3
@@ -9348,8 +9348,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "入关" value = "(: ask_me :)" },
-    { key = "回去" value = "(: ask_me :)" }
+    { key = "入关" value = " inquire about me (unimplemented)" },
+    { key = "回去" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [
@@ -10390,9 +10390,9 @@ chats = [
 
 
   inquiries = [
-    { key = "何首乌" value = "(: ask_me :)" },
-    { key = "药材" value = "(: ask_me :)" },
-    { key = "首乌" value = "(: ask_me :)" }
+    { key = "何首乌" value = " inquire about me (unimplemented)" },
+    { key = "药材" value = " inquire about me (unimplemented)" },
+    { key = "首乌" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [
@@ -11605,7 +11605,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "凤栖于梧" value = "(: ask_skill1 :)" }
+    { key = "凤栖于梧" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -11794,10 +11794,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "乾阳神指" value = "(: ask_skill1 :)" },
-    { key = "惊天一剑" value = "(: ask_skill4 :)" },
-    { key = "金玉满堂" value = "(: ask_skill3 :)" },
-    { key = "风云变幻" value = "(: ask_skill2 :)" }
+    { key = "乾阳神指" value = " inquire about skill1 (unimplemented)" },
+    { key = "惊天一剑" value = " inquire about skill4 (unimplemented)" },
+    { key = "金玉满堂" value = " inquire about skill3 (unimplemented)" },
+    { key = "风云变幻" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -11862,12 +11862,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "一指乾坤" value = "(: ask_skill4 :)" },
-    { key = "五绝连环" value = "(: ask_skill1 :)" },
-    { key = "玉颧神脉经" value = "(: ask_maijing2 :)" },
-    { key = "王叔和脉经" value = "(: ask_maijing1 :)" },
-    { key = "神指点穴" value = "(: ask_skill3 :)" },
-    { key = "起死回生" value = "(: ask_skill2 :)" },
+    { key = "一指乾坤" value = " inquire about skill4 (unimplemented)" },
+    { key = "五绝连环" value = " inquire about skill1 (unimplemented)" },
+    { key = "玉颧神脉经" value = " inquire about maijing2 (unimplemented)" },
+    { key = "王叔和脉经" value = " inquire about maijing1 (unimplemented)" },
+    { key = "神指点穴" value = " inquire about skill3 (unimplemented)" },
+    { key = "起死回生" value = " inquire about skill2 (unimplemented)" },
     { key = "阳关三叠" value = "唉…说来惭愧，这一招连我自己都还未领悟透彻。" }
   ]
 
@@ -12094,7 +12094,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "错字诀" value = "(: ask_skill1 :)" }
+    { key = "错字诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -12152,7 +12152,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "弑元诀" value = "(: ask_skill1 :)" }
+    { key = "弑元诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -12210,14 +12210,14 @@ chats = [
 
   inquiries = [
     { key = "传授" value = "我可以传授你禅宗心法和梵文，其它的找你的师父学习吧。" },
-    { key = "先天功乾阳剑气" value = "(: ask_skill2 :)" },
+    { key = "先天功乾阳剑气" value = " inquire about skill2 (unimplemented)" },
     { key = "周伯通" value = "呵呵，那人武功高强，可是心机却如顽童一般。" },
     { key = "王重阳" value = "中神通王重阳名动江湖，老衲很是佩服。" },
     { key = "瑛姑" value = "那是老衲出家前的一段孽缘，不提也罢。" },
     { key = "知识" value = "我可以传授你禅宗心法和梵文，其它的找你的师父学习吧。" },
     { key = "老顽童" value = "呵呵，那人武功高强，可是心机却如顽童一般。" },
     { key = "郭靖" value = "哦，那个憨小子心地善良，忠厚老实，没黄蓉一定要吃亏。" },
-    { key = "阳关三叠" value = "(: ask_skill1 :)" },
+    { key = "阳关三叠" value = " inquire about skill1 (unimplemented)" },
     { key = "黄蓉" value = "是郭靖那憨小子的伴侣吧，人倒很是机灵。" }
   ]
 
@@ -12290,7 +12290,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "透骨钉" value = "(: ask_skill1 :)" }
+    { key = "透骨钉" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -12501,8 +12501,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "伤药" value = "(: ask_yao :)" },
-    { key = "武器" value = "(: ask_jian :)" }
+    { key = "伤药" value = " inquire about yao (unimplemented)" },
+    { key = "武器" value = " inquire about jian (unimplemented)" }
   ]
 
   skills = [
@@ -12558,8 +12558,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "云海明灯" value = "(: ask_skill1 :)" },
-    { key = "佛光普照" value = "(: ask_skill2 :)" },
+    { key = "云海明灯" value = " inquire about skill1 (unimplemented)" },
+    { key = "佛光普照" value = " inquire about skill2 (unimplemented)" },
     { key = "出家" value = "要剃度找静玄。" },
     { key = "剃度" value = "要剃度找静玄。" }
   ]
@@ -12689,8 +12689,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -12756,8 +12756,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -12823,8 +12823,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -12890,8 +12890,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "back" value = "(: ask_back :)" },
-    { key = "上山" value = "(: ask_back :)" }
+    { key = "back" value = " inquire about back (unimplemented)" },
+    { key = "上山" value = " inquire about back (unimplemented)" }
   ]
 
   skills = [
@@ -13004,21 +13004,21 @@ chats = [
 
   inquiries = [
     { key = "云海明灯" value = "自张无忌应我三掌之约，而我败于他后，我已发誓不用飘雪穿云掌了。" },
-    { key = "伏魔剑诀" value = "(: ask_skill9 :)" },
-    { key = "佛光初现" value = "(: ask_skill8 :)" },
+    { key = "伏魔剑诀" value = " inquire about skill9 (unimplemented)" },
+    { key = "佛光初现" value = " inquire about skill8 (unimplemented)" },
     { key = "佛光普照" value = "哼，自从光明顶一战后，我早已将这招封存，你找别人吧。" },
-    { key = "八式合一" value = "(: ask_skill4 :)" },
-    { key = "凌空指穴" value = "(: ask_skill6 :)" },
+    { key = "八式合一" value = " inquire about skill4 (unimplemented)" },
+    { key = "凌空指穴" value = " inquire about skill6 (unimplemented)" },
     { key = "出家" value = "要剃度找静玄。" },
     { key = "剃度" value = "要剃度找静玄。" },
-    { key = "截筋断脉" value = "(: ask_skill5 :)" },
-    { key = "无形幻影" value = "(: ask_skill7 :)" },
-    { key = "星罗棋布" value = "(: ask_skill3 :)" },
-    { key = "灭剑" value = "(: ask_skill1 :)" },
-    { key = "绝剑" value = "(: ask_skill2 :)" },
+    { key = "截筋断脉" value = " inquire about skill5 (unimplemented)" },
+    { key = "无形幻影" value = " inquire about skill7 (unimplemented)" },
+    { key = "星罗棋布" value = " inquire about skill3 (unimplemented)" },
+    { key = "灭剑" value = " inquire about skill1 (unimplemented)" },
+    { key = "绝剑" value = " inquire about skill2 (unimplemented)" },
     { key = "绝技" value = "我峨眉派绝学如此之多，你到底要问什么绝技？" },
     { key = "绝招" value = "我峨眉派绝学如此之多，你到底要问什么绝招？" },
-    { key = "还俗" value = "(: ask_for_quit :)" }
+    { key = "还俗" value = " inquire about for quit (unimplemented)" }
   ]
 
   skills = [
@@ -13292,8 +13292,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -13360,8 +13360,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -13427,8 +13427,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -13494,8 +13494,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -13561,8 +13561,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -13628,8 +13628,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" },
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -13779,9 +13779,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "傲尘剑" value = "(: ask_skill1 :)" },
-    { key = "焚阳剑" value = "(: ask_skill2 :)" },
-    { key = "观日神诀" value = "(: ask_skill3 :)" }
+    { key = "傲尘剑" value = " inquire about skill1 (unimplemented)" },
+    { key = "焚阳剑" value = " inquire about skill2 (unimplemented)" },
+    { key = "观日神诀" value = " inquire about skill3 (unimplemented)" }
   ]
 
   skills = [
@@ -13850,7 +13850,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "缠丝擒拿" value = "(: ask_skill1 :)" }
+    { key = "缠丝擒拿" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -13913,18 +13913,18 @@ chats = [
   }
 
   inquiries = [
-    { key = "亢龙有悔" value = "(: ask_skill11 :)" },
-    { key = "仙游诀" value = "(: ask_skill1 :)" },
-    { key = "双龙取水" value = "(: ask_skill8 :)" },
-    { key = "天下无狗" value = "(: ask_skill7 :)" },
-    { key = "封字诀" value = "(: ask_skill5 :)" },
-    { key = "戳字诀" value = "(: ask_skill4 :)" },
-    { key = "玉竹杖" value = "(: ask_me :)" },
-    { key = "绊字诀" value = "(: ask_skill6 :)" },
-    { key = "缠字诀" value = "(: ask_skill3 :)" },
-    { key = "金针渡劫" value = "(: ask_skill2 :)" },
-    { key = "震惊百里" value = "(: ask_skill9 :)" },
-    { key = "飞龙在天" value = "(: ask_skill10 :)" }
+    { key = "亢龙有悔" value = " inquire about skill11 (unimplemented)" },
+    { key = "仙游诀" value = " inquire about skill1 (unimplemented)" },
+    { key = "双龙取水" value = " inquire about skill8 (unimplemented)" },
+    { key = "天下无狗" value = " inquire about skill7 (unimplemented)" },
+    { key = "封字诀" value = " inquire about skill5 (unimplemented)" },
+    { key = "戳字诀" value = " inquire about skill4 (unimplemented)" },
+    { key = "玉竹杖" value = " inquire about me (unimplemented)" },
+    { key = "绊字诀" value = " inquire about skill6 (unimplemented)" },
+    { key = "缠字诀" value = " inquire about skill3 (unimplemented)" },
+    { key = "金针渡劫" value = " inquire about skill2 (unimplemented)" },
+    { key = "震惊百里" value = " inquire about skill9 (unimplemented)" },
+    { key = "飞龙在天" value = " inquire about skill10 (unimplemented)" }
   ]
 
   skills = [
@@ -14006,7 +14006,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "青竹令" value = "(: ask_me :)" }
+    { key = "青竹令" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -14073,8 +14073,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "五丁开山" value = "(: ask_skill1 :)" },
-    { key = "绝命一踢" value = "(: ask_skill2 :)" }
+    { key = "五丁开山" value = " inquire about skill1 (unimplemented)" },
+    { key = "绝命一踢" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -14258,7 +14258,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "铁爪锁喉" value = "(: ask_skill1 :)" }
+    { key = "铁爪锁喉" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -14325,7 +14325,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "群魔乱舞" value = "(: ask_skill1 :)" }
+    { key = "群魔乱舞" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -14448,8 +14448,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "乌龙探海" value = "(: ask_skill1 :)" },
-    { key = "闪刀诀" value = "(: ask_skill2 :)" }
+    { key = "乌龙探海" value = " inquire about skill1 (unimplemented)" },
+    { key = "闪刀诀" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -14515,7 +14515,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "风火轮" value = "(: ask_skill1 :)" }
+    { key = "风火轮" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -14577,7 +14577,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "冰魄银针" value = "(: ask_zhen :)" },
+    { key = "冰魄银针" value = " inquire about zhen (unimplemented)" },
     { key = "小龙女" value = "那是我的师妹。你问她想干什么？" },
     { key = "林朝英" value = "那是我的师祖，不该你问的你别问，小心我宰了你。" }
   ]
@@ -14710,7 +14710,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "玉蜂针" value = "(: ask_zhen :)" }
+    { key = "玉蜂针" value = " inquire about zhen (unimplemented)" }
   ]
 
   skills = [
@@ -14845,7 +14845,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "海市蜃楼" value = "(: ask_skill1 :)" }
+    { key = "海市蜃楼" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15191,7 +15191,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "催魂掌" value = "(: ask_skill1 :)" }
+    { key = "催魂掌" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15297,13 +15297,13 @@ chats = [
   }
 
   inquiries = [
-    { key = "剑盾珠索" value = "(: ask_jiansuo :)" },
-    { key = "化蝶" value = "(: ask_skill3 :)" },
-    { key = "千头万绪" value = "(: ask_skill2 :)" },
-    { key = "战神轰天诀" value = "(: ask_skill6 :)" },
-    { key = "百花错乱" value = "(: ask_skill4 :)" },
-    { key = "百花错易" value = "(: ask_skill5 :)" },
-    { key = "缚字诀" value = "(: ask_skill1 :)" }
+    { key = "剑盾珠索" value = " inquire about jiansuo (unimplemented)" },
+    { key = "化蝶" value = " inquire about skill3 (unimplemented)" },
+    { key = "千头万绪" value = " inquire about skill2 (unimplemented)" },
+    { key = "战神轰天诀" value = " inquire about skill6 (unimplemented)" },
+    { key = "百花错乱" value = " inquire about skill4 (unimplemented)" },
+    { key = "百花错易" value = " inquire about skill5 (unimplemented)" },
+    { key = "缚字诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15422,11 +15422,11 @@ chats = [
   }
 
   inquiries = [
-    { key = "三环套月" value = "(: ask_skill2 :)" },
-    { key = "玄功无极劲" value = "(: ask_skill3 :)" },
-    { key = "白龙剑" value = "(: ask_jian :)" },
-    { key = "芙蓉金针" value = "(: ask_zhen :)" },
-    { key = "金针现影" value = "(: ask_skill1 :)" }
+    { key = "三环套月" value = " inquire about skill2 (unimplemented)" },
+    { key = "玄功无极劲" value = " inquire about skill3 (unimplemented)" },
+    { key = "白龙剑" value = " inquire about jian (unimplemented)" },
+    { key = "芙蓉金针" value = " inquire about zhen (unimplemented)" },
+    { key = "金针现影" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15484,7 +15484,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "刀影重重" value = "(: ask_skill1 :)" }
+    { key = "刀影重重" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15590,7 +15590,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "雷霆万钧" value = "(: ask_skill1 :)" }
+    { key = "雷霆万钧" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15752,8 +15752,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "回龙璧" value = "(: ask_bi :)" },
-    { key = "掌藏龙" value = "(: ask_skill1 :)" }
+    { key = "回龙璧" value = " inquire about bi (unimplemented)" },
+    { key = "掌藏龙" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -15858,32 +15858,32 @@ chats = [
   }
 
   inquiries = [
-    { key = "乌龙探海" value = "(: ask_skill3 :)" },
-    { key = "作茧自缚" value = "(: ask_skill4 :)" },
-    { key = "八方藏刀势" value = "(: ask_skill11 :)" },
-    { key = "冷月宝刀" value = "(: ask_baodao :)" },
-    { key = "卸甲锥心势" value = "(: ask_skill10 :)" },
-    { key = "奔拳快打" value = "(: ask_skill2 :)" },
-    { key = "推天献印势" value = "(: ask_skill9 :)" },
-    { key = "星光闪烁" value = "(: ask_skill6 :)" },
+    { key = "乌龙探海" value = " inquire about skill3 (unimplemented)" },
+    { key = "作茧自缚" value = " inquire about skill4 (unimplemented)" },
+    { key = "八方藏刀势" value = " inquire about skill11 (unimplemented)" },
+    { key = "冷月宝刀" value = " inquire about baodao (unimplemented)" },
+    { key = "卸甲锥心势" value = " inquire about skill10 (unimplemented)" },
+    { key = "奔拳快打" value = " inquire about skill2 (unimplemented)" },
+    { key = "推天献印势" value = " inquire about skill9 (unimplemented)" },
+    { key = "星光闪烁" value = " inquire about skill6 (unimplemented)" },
     { key = "横扫千军" value = "咦？这是什么招数，我没听说过。" },
     { key = "程灵素" value = "现在我也不知道她在哪里，只是曾经听她说过好像要去襄阳。" },
     { key = "穹外飞星" value = "这招只有你自己去领悟。" },
     { key = "胡一刀" value = "辽东大侠胡一刀是我爹。不过我从没见过他。" },
-    { key = "胡家刀谱" value = "(: ask_daopu :)" },
-    { key = "胡家拳经" value = "(: ask_quanjing :)" },
+    { key = "胡家刀谱" value = " inquire about daopu (unimplemented)" },
+    { key = "胡家拳经" value = " inquire about quanjing (unimplemented)" },
     { key = "苗人凤" value = "苗人凤和家父齐名，本可成为知交好友，然而家父却死在他的剑下。" },
     { key = "苗若兰" value = "不知什么时候还能再见到若兰姑娘。" },
     { key = "若兰" value = "不知什么时候还能再见到若兰姑娘。" },
     { key = "袁紫衣" value = "算了，别提这伤心事了。" },
     { key = "赵半山" value = "我赵三哥啊！他刚来关外看我呢。" },
-    { key = "闪刀诀" value = "(: ask_skill8 :)" },
-    { key = "闯王军刀" value = "(: ask_jundao :)" },
+    { key = "闪刀诀" value = " inquire about skill8 (unimplemented)" },
+    { key = "闯王军刀" value = " inquire about jundao (unimplemented)" },
     { key = "阎基" value = "阎基这个狗贼我非杀了他不可。" },
-    { key = "雄霸群山" value = "(: ask_skill7 :)" },
-    { key = "风卷霹雳" value = "(: ask_skill1 :)" },
-    { key = "风卷霹雳上九天" value = "(: ask_skill1 :)" },
-    { key = "飞天神行" value = "(: ask_skill5 :)" }
+    { key = "雄霸群山" value = " inquire about skill7 (unimplemented)" },
+    { key = "风卷霹雳" value = " inquire about skill1 (unimplemented)" },
+    { key = "风卷霹雳上九天" value = " inquire about skill1 (unimplemented)" },
+    { key = "飞天神行" value = " inquire about skill5 (unimplemented)" }
   ]
 
   skills = [
@@ -15945,7 +15945,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "百胜刀法" value = "(: ask_me :)" },
+    { key = "百胜刀法" value = " inquire about me (unimplemented)" },
     { key = "美刀王" value = "美刀王已经死了，还提他做甚？" },
     { key = "陈园园" value = "唉！我也没能和她说上几句话。" },
     { key = "陈圆圆" value = "唉！我也没能和她说上几句话。" }
@@ -16285,7 +16285,7 @@ chats = [
     { key = "任盈盈" value = "你要干什么？想找麻烦吗？" },
     { key = "冲灵剑法" value = "(: learn_chongling :)" },
     { key = "清心普善咒" value = "这可是莹莹交给我的..." },
-    { key = "琴谱" value = "(: ask_me :)" },
+    { key = "琴谱" value = " inquire about me (unimplemented)" },
     { key = "笑傲江湖" value = "这是曲洋长老和刘正风师叔留下来的...唉！" },
     { key = "风清扬" value = "唉，已经很久没有见到他老人家了。你问这干嘛？" }
   ]
@@ -16666,8 +16666,8 @@ chats = [
 
   inquiries = [
     { key = "域外梵音" value = "这招你找我丈夫学去，别来烦我。" },
-    { key = "损筋诀" value = "(: ask_skill1 :)" },
-    { key = "无声无色" value = "(: ask_skill2 :)" },
+    { key = "损筋诀" value = " inquire about skill1 (unimplemented)" },
+    { key = "无声无色" value = " inquire about skill2 (unimplemented)" },
     { key = "流星电闪" value = "这招你找我丈夫学去，别来烦我。" },
     { key = "玉碎昆冈" value = "这招你找我丈夫学去，别来烦我。" },
     { key = "石破天惊" value = "这招你找我丈夫学去，别来烦我。" },
@@ -16792,18 +16792,18 @@ chats = [
   }
 
   inquiries = [
-    { key = "剑经" value = "(: ask_jing :)" },
-    { key = "域外梵音" value = "(: ask_skill4 :)" },
+    { key = "剑经" value = " inquire about jing (unimplemented)" },
+    { key = "域外梵音" value = " inquire about skill4 (unimplemented)" },
     { key = "损筋诀" value = "嗯，这招你去找我内子求教吧。" },
     { key = "无声无色" value = "嗯，这招你去找我内子求教吧。" },
-    { key = "流星电闪" value = "(: ask_skill2 :)" },
-    { key = "玉碎昆冈" value = "(: ask_skill5 :)" },
-    { key = "石破天惊" value = "(: ask_skill1 :)" },
+    { key = "流星电闪" value = " inquire about skill2 (unimplemented)" },
+    { key = "玉碎昆冈" value = " inquire about skill5 (unimplemented)" },
+    { key = "石破天惊" value = " inquire about skill1 (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
-    { key = "迅雷一击" value = "(: ask_skill3 :)" },
-    { key = "迅雷剑经" value = "(: ask_jing :)" },
-    { key = "铁琴剑" value = "(: ask_jian :)" }
+    { key = "迅雷一击" value = " inquire about skill3 (unimplemented)" },
+    { key = "迅雷剑经" value = " inquire about jing (unimplemented)" },
+    { key = "铁琴剑" value = " inquire about jian (unimplemented)" }
   ]
 
   skills = [
@@ -16868,13 +16868,13 @@ chats = [
   }
 
   inquiries = [
-    { key = "两极剑" value = "(: ask_jian :)" },
-    { key = "乾坤劲" value = "(: ask_skill1 :)" },
-    { key = "日入空山" value = "(: ask_skill4 :)" },
-    { key = "日月乾坤" value = "(: ask_skill2 :)" },
+    { key = "两极剑" value = " inquire about jian (unimplemented)" },
+    { key = "乾坤劲" value = " inquire about skill1 (unimplemented)" },
+    { key = "日入空山" value = " inquire about skill4 (unimplemented)" },
+    { key = "日月乾坤" value = " inquire about skill2 (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
-    { key = "逆转乾坤" value = "(: ask_skill3 :)" }
+    { key = "逆转乾坤" value = " inquire about skill3 (unimplemented)" }
   ]
 
   skills = [
@@ -17225,7 +17225,7 @@ chats = [
   inquiries = [
     { key = "五斗米神功" value = "这…这个……这是由地火功演化而来的一门功夫。" },
     { key = "地火功" value = "地火功是我海南岛五指山赤焰洞一派的基本功夫。" },
-    { key = "归去来兮" value = "(: ask_me :)" },
+    { key = "归去来兮" value = " inquire about me (unimplemented)" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -17426,8 +17426,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "云霞幻生" value = "(: ask_skill :)" },
-    { key = "截筋断脉" value = "(: ask_skill2 :)" },
+    { key = "云霞幻生" value = " inquire about skill (unimplemented)" },
+    { key = "截筋断脉" value = " inquire about skill2 (unimplemented)" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -17532,8 +17532,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "幻遁寒星" value = "(: ask_skill :)" },
-    { key = "斓蜈金针" value = "(: ask_me :)" },
+    { key = "幻遁寒星" value = " inquire about skill (unimplemented)" },
+    { key = "斓蜈金针" value = " inquire about me (unimplemented)" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -17648,14 +17648,14 @@ chats = [
   }
 
   inquiries = [
-    { key = "寰阳式" value = "(: ask_skill7 :)" },
-    { key = "幻剑诀" value = "(: ask_skill2 :)" },
-    { key = "折梅式" value = "(: ask_skill4 :)" },
-    { key = "海渊式" value = "(: ask_skill5 :)" },
-    { key = "生死符" value = "(: ask_skill6 :)" },
-    { key = "破神诀" value = "(: ask_skill8 :)" },
-    { key = "聚剑诀" value = "(: ask_skill3 :)" },
-    { key = "闪剑诀" value = "(: ask_skill1 :)" }
+    { key = "寰阳式" value = " inquire about skill7 (unimplemented)" },
+    { key = "幻剑诀" value = " inquire about skill2 (unimplemented)" },
+    { key = "折梅式" value = " inquire about skill4 (unimplemented)" },
+    { key = "海渊式" value = " inquire about skill5 (unimplemented)" },
+    { key = "生死符" value = " inquire about skill6 (unimplemented)" },
+    { key = "破神诀" value = " inquire about skill8 (unimplemented)" },
+    { key = "聚剑诀" value = " inquire about skill3 (unimplemented)" },
+    { key = "闪剑诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -17829,7 +17829,7 @@ chats = [
   inquiries = [
     { key = "剑法" value = "我的周公剑天下无双，除了主公，没第二人能够敌过。" },
     { key = "剑神" value = "论空手，自然是我主公虚竹子第一。但若是论剑法嘛，还得是我。" },
-    { key = "剑芒" value = "(: ask_me :)" },
+    { key = "剑芒" value = " inquire about me (unimplemented)" },
     { key = "周公剑" value = "此乃天下第一剑法。" },
     { key = "天山童姥" value = "她杀尽我一字慧剑门满门师徒，幸亏她死得早！" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
@@ -17886,7 +17886,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "乾坤无量" value = "(: ask_me :)" },
+    { key = "乾坤无量" value = " inquire about me (unimplemented)" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -17946,12 +17946,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "冷剑决" value = "(: ask_skill1 :)" },
-    { key = "凌霄总诀" value = "(: ask_skill2 :)" },
-    { key = "雪花六出" value = "(: ask_skill6 :)" },
-    { key = "风回雪舞" value = "(: ask_skill5 :)" },
-    { key = "飞絮飘零" value = "(: ask_skill3 :)" },
-    { key = "鹤冲九霄" value = "(: ask_skill4 :)" }
+    { key = "冷剑决" value = " inquire about skill1 (unimplemented)" },
+    { key = "凌霄总诀" value = " inquire about skill2 (unimplemented)" },
+    { key = "雪花六出" value = " inquire about skill6 (unimplemented)" },
+    { key = "风回雪舞" value = " inquire about skill5 (unimplemented)" },
+    { key = "飞絮飘零" value = " inquire about skill3 (unimplemented)" },
+    { key = "鹤冲九霄" value = " inquire about skill4 (unimplemented)" }
   ]
 
   skills = [
@@ -18009,9 +18009,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "三连环" value = "(: ask_skill2 :)" },
-    { key = "剑气封喉" value = "(: ask_skill1 :)" },
-    { key = "神倒鬼跌三连环" value = "(: ask_skill2 :)" },
+    { key = "三连环" value = " inquire about skill2 (unimplemented)" },
+    { key = "剑气封喉" value = " inquire about skill1 (unimplemented)" },
+    { key = "神倒鬼跌三连环" value = " inquire about skill2 (unimplemented)" },
     { key = "雪花六出" value = "这招你让吾儿教你便成，用不着来麻烦老夫。" },
     { key = "风回雪舞" value = "这招你让吾儿教你便成，用不着来麻烦老夫。" }
   ]
@@ -18330,7 +18330,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "赤焰暴长" value = "(: ask_skill1 :)" }
+    { key = "赤焰暴长" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -18394,10 +18394,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "墨剑" value = "(: ask_jian :)" },
+    { key = "墨剑" value = " inquire about jian (unimplemented)" },
     { key = "封万里" value = "我亏欠他实在太多，实在太多。" },
-    { key = "浊流剑" value = "(: ask_skill1 :)" },
-    { key = "清流剑" value = "(: ask_skill2 :)" },
+    { key = "浊流剑" value = " inquire about skill1 (unimplemented)" },
+    { key = "清流剑" value = " inquire about skill2 (unimplemented)" },
     { key = "玄铁令" value = "哎……如果有此令，便能请到谢烟客帮忙做三件事。" },
     { key = "白万剑" value = "他是凌宵城主威德先生之子，号称“气寒西北”，剑法很是了得。" },
     { key = "白自在" value = "凌宵城主“威德先生”白自在号称天下武功第一，剑法举世无双。" },
@@ -18616,11 +18616,11 @@ chats = [
   inquiries = [
     { key = "东方不败" value = "东方教主武功深不可测，天下无敌。" },
     { key = "任我行" value = "任我行乃日月神教上代教主，不过已经失踪很久了。" },
-    { key = "日月神教" value = "(: ask_riyue :)" },
+    { key = "日月神教" value = " inquire about riyue (unimplemented)" },
     { key = "溪山行旅图" value = "我一直想看看北宋范中立《溪山行旅图》究竟是怎样的。" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
-    { key = "醉里乾坤" value = "(: ask_skill1 :)" }
+    { key = "醉里乾坤" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -18680,7 +18680,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "电光四射" value = "(: ask_skill1 :)" },
+    { key = "电光四射" value = " inquire about skill1 (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" }
   ]
@@ -18739,14 +18739,14 @@ chats = [
   inquiries = [
     { key = "东方不败" value = "东方教主武功深不可测，天下无敌。" },
     { key = "任我行" value = "任我行乃日月神教上代教主，不过已经失踪很久了。" },
-    { key = "冰坚地狱" value = "(: ask_skill3 :)" },
+    { key = "冰坚地狱" value = " inquire about skill3 (unimplemented)" },
     { key = "呕血谱" value = "那是传说中的东西，根本不存在。" },
-    { key = "射日诀" value = "(: ask_skill1 :)" },
-    { key = "日月神教" value = "(: ask_riyue :)" },
-    { key = "玄铁棋盘" value = "(: ask_qipan :)" },
+    { key = "射日诀" value = " inquire about skill1 (unimplemented)" },
+    { key = "日月神教" value = " inquire about riyue (unimplemented)" },
+    { key = "玄铁棋盘" value = " inquire about qipan (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
-    { key = "风雷四击" value = "(: ask_skill2 :)" }
+    { key = "风雷四击" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -18811,17 +18811,17 @@ chats = [
   }
 
   inquiries = [
-    { key = "七弦无形音" value = "(: ask_skill1 :)" },
-    { key = "七弦连环诛" value = "(: ask_skill3 :)" },
-    { key = "七弦黄龙闪" value = "(: ask_skill2 :)" },
+    { key = "七弦无形音" value = " inquire about skill1 (unimplemented)" },
+    { key = "七弦连环诛" value = " inquire about skill3 (unimplemented)" },
+    { key = "七弦黄龙闪" value = " inquire about skill2 (unimplemented)" },
     { key = "东方不败" value = "东方教主武功深不可测，天下无敌。" },
     { key = "任我行" value = "任我行乃日月神教上代教主，不过已经失踪很久了。" },
     { key = "广陵散" value = "唉，传说现在《广陵散琴谱》竟已现世，不知是真是假。" },
-    { key = "日月神教" value = "(: ask_riyue :)" },
-    { key = "白玉瑶琴" value = "(: ask_qin :)" },
+    { key = "日月神教" value = " inquire about riyue (unimplemented)" },
+    { key = "白玉瑶琴" value = " inquire about qin (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
-    { key = "绿玉洞箫" value = "(: ask_xiao :)" }
+    { key = "绿玉洞箫" value = " inquire about xiao (unimplemented)" }
   ]
 
   skills = [
@@ -18893,12 +18893,12 @@ chats = [
   inquiries = [
     { key = "东方不败" value = "东方教主武功深不可测，天下无敌。" },
     { key = "任我行" value = "任我行乃日月神教上代教主，不过已经失踪很久了。" },
-    { key = "日月神教" value = "(: ask_riyue :)" },
+    { key = "日月神教" value = " inquire about riyue (unimplemented)" },
     { key = "率意帖" value = "唐朝张旭的《率意帖》乃书中一绝，不过我却无缘一见。" },
-    { key = "神笔封穴" value = "(: ask_skill1 :)" },
+    { key = "神笔封穴" value = " inquire about skill1 (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
-    { key = "诗意纵横" value = "(: ask_skill2 :)" }
+    { key = "诗意纵横" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -19358,16 +19358,16 @@ chats = [
   }
 
   inquiries = [
-    { key = "ge" value = "(: ask_ge :)" },
-    { key = "gold" value = "(: ask_gold :)" },
-    { key = "jian" value = "(: ask_jian :)" },
-    { key = "wuji" value = "(: ask_wuji :)" },
-    { key = "乾坤大挪移" value = "(: ask_qiankun :)" },
-    { key = "乾坤大挪移心法" value = "(: ask_qiankun :)" },
-    { key = "倚天剑" value = "(: ask_jian :)" },
-    { key = "张无忌" value = "(: ask_wuji :)" },
-    { key = "歌" value = "(: ask_ge :)" },
-    { key = "黄金" value = "(: ask_gold :)" }
+    { key = "ge" value = " inquire about ge (unimplemented)" },
+    { key = "gold" value = " inquire about gold (unimplemented)" },
+    { key = "jian" value = " inquire about jian (unimplemented)" },
+    { key = "wuji" value = " inquire about wuji (unimplemented)" },
+    { key = "乾坤大挪移" value = " inquire about qiankun (unimplemented)" },
+    { key = "乾坤大挪移心法" value = " inquire about qiankun (unimplemented)" },
+    { key = "倚天剑" value = " inquire about jian (unimplemented)" },
+    { key = "张无忌" value = " inquire about wuji (unimplemented)" },
+    { key = "歌" value = " inquire about ge (unimplemented)" },
+    { key = "黄金" value = " inquire about gold (unimplemented)" }
   ]
 
   chat_chance = 3
@@ -19695,8 +19695,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "map" value = "(: ask_map :)" },
-    { key = "地图" value = "(: ask_map :)" }
+    { key = "map" value = " inquire about map (unimplemented)" },
+    { key = "地图" value = " inquire about map (unimplemented)" }
   ]
 
   carry = [
@@ -19726,9 +19726,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "绝技" value = "(: ask_me :)" },
-    { key = "绝招" value = "(: ask_me :)" },
-    { key = "风雨交加" value = "(: ask_me :)" }
+    { key = "绝技" value = " inquire about me (unimplemented)" },
+    { key = "绝招" value = " inquire about me (unimplemented)" },
+    { key = "风雨交加" value = " inquire about me (unimplemented)" }
   ]
 
   chat_chance = 1
@@ -19943,12 +19943,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "千蛇万噬" value = "(: ask_skill3 :)" },
-    { key = "千蛇出洞" value = "(: ask_skill2 :)" },
-    { key = "古筝技法" value = "(: ask_music_book :)" },
-    { key = "横行无忌" value = "(: ask_skill1 :)" },
-    { key = "灵蛇杖" value = "(: ask_zhang :)" },
-    { key = "筝谱" value = "(: ask_music_book :)" }
+    { key = "千蛇万噬" value = " inquire about skill3 (unimplemented)" },
+    { key = "千蛇出洞" value = " inquire about skill2 (unimplemented)" },
+    { key = "古筝技法" value = " inquire about music book (unimplemented)" },
+    { key = "横行无忌" value = " inquire about skill1 (unimplemented)" },
+    { key = "灵蛇杖" value = " inquire about zhang (unimplemented)" },
+    { key = "筝谱" value = " inquire about music book (unimplemented)" }
   ]
 
   chat_chance = 2
@@ -20025,8 +20025,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "引路神蛇" value = "(: ask_shenshe :)" },
-    { key = "神蛇" value = "(: ask_shenshe :)" }
+    { key = "引路神蛇" value = " inquire about shenshe (unimplemented)" },
+    { key = "神蛇" value = " inquire about shenshe (unimplemented)" }
   ]
 
   chat_chance = 2
@@ -20303,7 +20303,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "破穹云蛟" value = "(: ask_skill1 :)" }
+    { key = "破穹云蛟" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -20467,8 +20467,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "连环掌" value = "(: ask_skill1 :)" },
-    { key = "重阳连环掌" value = "(: ask_skill1 :)" }
+    { key = "连环掌" value = " inquire about skill1 (unimplemented)" },
+    { key = "重阳连环掌" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -20533,7 +20533,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "玄门金锁" value = "(: ask_skill1 :)" }
+    { key = "玄门金锁" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -20703,7 +20703,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "玉石俱焚" value = "(: ask_skill1 :)" }
+    { key = "玉石俱焚" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -20822,7 +20822,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "朝拜天罡" value = "(: ask_skill1 :)" }
+    { key = "朝拜天罡" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -20884,7 +20884,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "三花聚顶" value = "(: ask_skill1 :)" }
+    { key = "三花聚顶" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -20949,13 +20949,13 @@ chats = [
   }
 
   inquiries = [
-    { key = "一气化三清" value = "(: ask_skill2 :)" },
-    { key = "五气朝元" value = "(: ask_skill1 :)" },
-    { key = "五阴焚灭" value = "(: ask_skill4 :)" },
+    { key = "一气化三清" value = " inquire about skill2 (unimplemented)" },
+    { key = "五气朝元" value = " inquire about skill1 (unimplemented)" },
+    { key = "五阴焚灭" value = " inquire about skill4 (unimplemented)" },
     { key = "全真教" value = "我全真教是天下道家玄门正宗。" },
-    { key = "化三清" value = "(: ask_skill2 :)" },
-    { key = "天地混元" value = "(: ask_skill3 :)" },
-    { key = "神威浩荡" value = "(: ask_skill5 :)" },
+    { key = "化三清" value = " inquire about skill2 (unimplemented)" },
+    { key = "天地混元" value = " inquire about skill3 (unimplemented)" },
+    { key = "神威浩荡" value = " inquire about skill5 (unimplemented)" },
     { key = "绝技" value = "你想学什么绝招？" },
     { key = "绝招" value = "你想学什么绝招？" }
   ]
@@ -21031,8 +21031,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "定阳针" value = "(: ask_skill2 :)" },
-    { key = "缠字诀" value = "(: ask_skill1 :)" }
+    { key = "定阳针" value = " inquire about skill2 (unimplemented)" },
+    { key = "缠字诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -21141,9 +21141,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "三连环" value = "(: ask_skill3 :)" },
-    { key = "剑指南山" value = "(: ask_skill1 :)" },
-    { key = "群星璀璨" value = "(: ask_skill2 :)" }
+    { key = "三连环" value = " inquire about skill3 (unimplemented)" },
+    { key = "剑指南山" value = " inquire about skill1 (unimplemented)" },
+    { key = "群星璀璨" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -21306,8 +21306,8 @@ chats = [
     { key = "刘瑛" value = "嗯…这个…嗯…嗯？" },
     { key = "段皇爷" value = "段……段皇爷？人家是皇爷，我不认识！" },
     { key = "瑛姑" value = "这个…嗯…你…刚才你说啥来着？" },
-    { key = "空明若玄" value = "(: ask_skill1 :)" },
-    { key = "空空如也" value = "(: ask_skill2 :)" }
+    { key = "空明若玄" value = " inquire about skill1 (unimplemented)" },
+    { key = "空空如也" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -21809,8 +21809,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "开天辟地" value = "(: ask_skill1 :)" },
-    { key = "破阳神斧" value = "(: ask_fu :)" }
+    { key = "开天辟地" value = " inquire about skill1 (unimplemented)" },
+    { key = "破阳神斧" value = " inquire about fu (unimplemented)" }
   ]
 
   skills = [
@@ -21871,11 +21871,11 @@ chats = [
   }
 
   inquiries = [
-    { key = "上崖" value = "(: ask_back :)" },
-    { key = "乾坤一击" value = "(: ask_skill1 :)" },
-    { key = "南海神木" value = "(: ask_gun :)" },
-    { key = "回去" value = "(: ask_back :)" },
-    { key = "回崖" value = "(: ask_back :)" }
+    { key = "上崖" value = " inquire about back (unimplemented)" },
+    { key = "乾坤一击" value = " inquire about skill1 (unimplemented)" },
+    { key = "南海神木" value = " inquire about gun (unimplemented)" },
+    { key = "回去" value = " inquire about back (unimplemented)" },
+    { key = "回崖" value = " inquire about back (unimplemented)" }
   ]
 
   skills = [
@@ -21935,7 +21935,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "惊虹一笔" value = "(: ask_skill1 :)" }
+    { key = "惊虹一笔" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -21995,7 +21995,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "环环相扣" value = "(: ask_skill1 :)" }
+    { key = "环环相扣" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -22107,10 +22107,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "天蝎藏针" value = "(: ask_skill3 :)" },
-    { key = "星罗棋布" value = "(: ask_skill2 :)" },
-    { key = "破靛神砂" value = "(: ask_skill1 :)" },
-    { key = "黑血神针" value = "(: ask_me :)" }
+    { key = "天蝎藏针" value = " inquire about skill3 (unimplemented)" },
+    { key = "星罗棋布" value = " inquire about skill2 (unimplemented)" },
+    { key = "破靛神砂" value = " inquire about skill1 (unimplemented)" },
+    { key = "黑血神针" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -22177,9 +22177,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "断脉破岳" value = "(: ask_skill2 :)" },
-    { key = "无痕杀" value = "(: ask_skill1 :)" },
-    { key = "百鬼恸哭" value = "(: ask_skill3 :)" }
+    { key = "断脉破岳" value = " inquire about skill2 (unimplemented)" },
+    { key = "无痕杀" value = " inquire about skill1 (unimplemented)" },
+    { key = "百鬼恸哭" value = " inquire about skill3 (unimplemented)" }
   ]
 
   skills = [
@@ -22353,9 +22353,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "绝命七杀" value = "(: ask_skill2 :)" },
-    { key = "赤龙金索" value = "(: ask_bian :)" },
-    { key = "跗骨缠魂" value = "(: ask_skill1 :)" }
+    { key = "绝命七杀" value = " inquire about skill2 (unimplemented)" },
+    { key = "赤龙金索" value = " inquire about bian (unimplemented)" },
+    { key = "跗骨缠魂" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -22615,17 +22615,17 @@ chats = [
   }
 
   inquiries = [
-    { key = "八卦震" value = "(: ask_skill1 :)" },
-    { key = "劈天神芒" value = "(: ask_skill6 :)" },
+    { key = "八卦震" value = " inquire about skill1 (unimplemented)" },
+    { key = "劈天神芒" value = " inquire about skill6 (unimplemented)" },
     { key = "天刀八势" value = "(: give_letter :)" },
-    { key = "寒芒暴卷" value = "(: ask_skill5 :)" },
-    { key = "杀龙无悔" value = "(: ask_skill7 :)" },
-    { key = "混沌初开" value = "(: ask_skill2 :)" },
-    { key = "神卦天印" value = "(: ask_skill4 :)" },
-    { key = "紫金八卦刀" value = "(: ask_dao :)" },
+    { key = "寒芒暴卷" value = " inquire about skill5 (unimplemented)" },
+    { key = "杀龙无悔" value = " inquire about skill7 (unimplemented)" },
+    { key = "混沌初开" value = " inquire about skill2 (unimplemented)" },
+    { key = "神卦天印" value = " inquire about skill4 (unimplemented)" },
+    { key = "紫金八卦刀" value = " inquire about dao (unimplemented)" },
     { key = "胡一刀" value = "哦？听说此人刀法甚是了得，可惜我没见过他。" },
     { key = "苗人凤" value = "哼，这贼鸟厮居然敢号称天下无敌，改天一定要去会会。" },
-    { key = "金莲幻生" value = "(: ask_skill3 :)" }
+    { key = "金莲幻生" value = " inquire about skill3 (unimplemented)" }
   ]
 
   skills = [
@@ -22694,10 +22694,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "劈卦拳" value = "(: ask_skill1 :)" },
-    { key = "天残剑诀" value = "(: ask_skill4 :)" },
-    { key = "犀牛望月" value = "(: ask_skill3 :)" },
-    { key = "背心钉" value = "(: ask_skill2 :)" }
+    { key = "劈卦拳" value = " inquire about skill1 (unimplemented)" },
+    { key = "天残剑诀" value = " inquire about skill4 (unimplemented)" },
+    { key = "犀牛望月" value = " inquire about skill3 (unimplemented)" },
+    { key = "背心钉" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -23710,16 +23710,16 @@ chats = [
   }
 
   inquiries = [
-    { key = "乱气剑" value = "(: ask_luan :)" },
-    { key = "伤神剑" value = "(: ask_shang :)" },
-    { key = "折元剑" value = "(: ask_zhe :)" },
-    { key = "清心剑" value = "(: ask_qingxin :)" },
+    { key = "乱气剑" value = " inquire about luan (unimplemented)" },
+    { key = "伤神剑" value = " inquire about shang (unimplemented)" },
+    { key = "折元剑" value = " inquire about zhe (unimplemented)" },
+    { key = "清心剑" value = " inquire about qingxin (unimplemented)" },
     { key = "绝技" value = "你想学什么绝技？" },
     { key = "绝招" value = "你想学什么绝招？" },
-    { key = "达摩乱气剑" value = "(: ask_luan :)" },
-    { key = "达摩伤神剑" value = "(: ask_shang :)" },
-    { key = "达摩折元剑" value = "(: ask_zhe :)" },
-    { key = "达摩清心剑" value = "(: ask_qingxin :)" }
+    { key = "达摩乱气剑" value = " inquire about luan (unimplemented)" },
+    { key = "达摩伤神剑" value = " inquire about shang (unimplemented)" },
+    { key = "达摩折元剑" value = " inquire about zhe (unimplemented)" },
+    { key = "达摩清心剑" value = " inquire about qingxin (unimplemented)" }
   ]
 
   skills = [
@@ -23824,11 +23824,11 @@ chats = [
   }
 
   inquiries = [
-    { key = "戒刀" value = "(: ask_me, 'jiedao' :)" },
-    { key = "皮鞭" value = "(: ask_me, 'changbian' :)" },
-    { key = "禅杖" value = "(: ask_me, 'chanzhang' :)" },
-    { key = "长剑" value = "(: ask_me, 'changjian' :)" },
-    { key = "齐眉棍" value = "(: ask_me, 'qimeigun' :)" }
+    { key = "戒刀" value = " inquire about me (unimplemented)" },
+    { key = "皮鞭" value = " inquire about me (unimplemented)" },
+    { key = "禅杖" value = " inquire about me (unimplemented)" },
+    { key = "长剑" value = " inquire about me (unimplemented)" },
+    { key = "齐眉棍" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -23928,9 +23928,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "修木人" value = "(: ask_me :)" },
-    { key = "修理" value = "(: ask_me :)" },
-    { key = "木人" value = "(: ask_me :)" }
+    { key = "修木人" value = " inquire about me (unimplemented)" },
+    { key = "修理" value = " inquire about me (unimplemented)" },
+    { key = "木人" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -24239,7 +24239,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "金创药" value = "(: ask_me_1 :)" }
+    { key = "金创药" value = " inquire about me 1 (unimplemented)" }
   ]
 
   skills = [
@@ -24385,7 +24385,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "九环锡杖" value = "(: ask_me :)" }
+    { key = "九环锡杖" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -24470,7 +24470,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "锦襕袈裟" value = "(: ask_me :)" }
+    { key = "锦襕袈裟" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -24549,7 +24549,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "神草结" value = "(: ask_me :)" }
+    { key = "神草结" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -24632,8 +24632,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "葵花宝典" value = "(: ask_me :)" },
-    { key = "辟邪剑法" value = "(: ask_me :)" }
+    { key = "葵花宝典" value = " inquire about me (unimplemented)" },
+    { key = "辟邪剑法" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -24700,7 +24700,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "买铁" value = "(: ask_me :)" }
+    { key = "买铁" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -25256,8 +25256,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" }
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" }
   ]
 
   skills = [
@@ -25359,9 +25359,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "七十二绝艺" value = "(: ask_me_1 :)" },
-    { key = "手谕" value = "(: ask_me_1 :)" },
-    { key = "达摩令" value = "(: ask_me_2 :)" }
+    { key = "七十二绝艺" value = " inquire about me 1 (unimplemented)" },
+    { key = "手谕" value = " inquire about me 1 (unimplemented)" },
+    { key = "达摩令" value = " inquire about me 2 (unimplemented)" }
   ]
 
   skills = [
@@ -25734,7 +25734,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "万佛朝宗" value = "(: ask_skill1 :)" }
+    { key = "万佛朝宗" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -25948,8 +25948,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "pfm" value = "(: ask_me :)" },
-    { key = "绝招" value = "(: ask_me :)" }
+    { key = "pfm" value = " inquire about me (unimplemented)" },
+    { key = "绝招" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -26081,8 +26081,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "十八罗汉阵" value = "(: ask_me :)" },
-    { key = "罗汉大阵" value = "(: ask_me :)" }
+    { key = "十八罗汉阵" value = " inquire about me (unimplemented)" },
+    { key = "罗汉大阵" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -26159,8 +26159,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "十八罗汉阵" value = "(: ask_me :)" },
-    { key = "罗汉大阵" value = "(: ask_me :)" }
+    { key = "十八罗汉阵" value = " inquire about me (unimplemented)" },
+    { key = "罗汉大阵" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -26282,14 +26282,14 @@ chats = [
 
   inquiries = [
     { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)。" },
-    { key = "摧心断肠" value = "(: ask_cui :)" },
+    { key = "摧心断肠" value = " inquire about cui (unimplemented)" },
     { key = "教主" value = "我就是神龙教教主。" },
     { key = "洪安通" value = "你不想活了是不是？" },
-    { key = "神龙再现" value = "(: ask_xian :)" },
+    { key = "神龙再现" value = " inquire about xian (unimplemented)" },
     { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)。" },
     { key = "绝技" value = "你想学什么绝技啊？" },
     { key = "绝招" value = "你想学什么绝技啊？" },
-    { key = "飞仙法" value = "(: ask_fei :)" }
+    { key = "飞仙法" value = " inquire about fei (unimplemented)" }
   ]
 
   skills = [
@@ -26359,7 +26359,7 @@ chats = [
     { key = "教主" value = "教主脾气不好,要讨他欢心才好。" },
     { key = "洪安通" value = "教主脾气不好,要讨他欢心才好。" },
     { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
-    { key = "秘籍" value = "(: ask_me :)" }
+    { key = "秘籍" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -26419,7 +26419,7 @@ chats = [
     { key = "教主" value = "教主脾气不好，要讨他欢心才好。" },
     { key = "洪安通" value = "教主脾气不好，要讨他欢心才好。" },
     { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
-    { key = "神龙飞天" value = "(: ask_back :)" }
+    { key = "神龙飞天" value = " inquire about back (unimplemented)" }
   ]
 
   skills = [
@@ -26606,7 +26606,7 @@ chats = [
     { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" },
     { key = "教主" value = "教主脾气不好,要讨他欢心才好。" },
     { key = "洪安通" value = "教主脾气不好,要讨他欢心才好。" },
-    { key = "百花腹蛇膏" value = "(: ask_gao :)" },
+    { key = "百花腹蛇膏" value = " inquire about gao (unimplemented)" },
     { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." }
   ]
 
@@ -26978,13 +26978,13 @@ chats = [
     { key = "东邪" value = "家师人称东邪！呵呵。" },
     { key = "北丐" value = "北丐洪七公是丐帮帮主，现在扬州城外。" },
     { key = "南帝" value = "听家师说段王爷现在出家当了和尚，法名一灯。" },
-    { key = "学艺" value = "(: ask_learn :)" },
-    { key = "带我过迷阵，否则弄死你，信不信？" value = "(: ask_provoke :)" },
-    { key = "投师" value = "(: ask_me :)" },
-    { key = "拜师" value = "(: ask_me :)" },
+    { key = "学艺" value = " inquire about learn (unimplemented)" },
+    { key = "带我过迷阵，否则弄死你，信不信？" value = " inquire about provoke (unimplemented)" },
+    { key = "投师" value = " inquire about me (unimplemented)" },
+    { key = "拜师" value = " inquire about me (unimplemented)" },
     { key = "桃花岛" value = "这儿就是桃花岛，你若不是本派弟子，要过桃花阵。" },
     { key = "桃花阵" value = "往南就是了。" },
-    { key = "碧浪滔天" value = "(: ask_skill1 :)" },
+    { key = "碧浪滔天" value = " inquire about skill1 (unimplemented)" },
     { key = "西毒" value = "欧阳锋是与家师并世齐名的高手，人称老毒物。" },
     { key = "黄药师" value = "你要拜访家师？" },
     { key = "黄蓉" value = "她是师父的爱女。" }
@@ -27057,34 +27057,34 @@ chats = [
     { key = "九花玉露丸" value = "这个东西难制得紧，你好好学学桃花药理，以后自己制吧。" },
     { key = "九阴真经" value = "如果你能帮我取得真经，我一定重重谢你。" },
     { key = "九阴神功" value = "九阴神功恢弘正大，乃盖世奇功！" },
-    { key = "九阴神手" value = "(: ask_shou :)" },
-    { key = "九阴神指" value = "(: ask_zhi :)" },
-    { key = "九阴神掌" value = "(: ask_zhang :)" },
+    { key = "九阴神手" value = " inquire about shou (unimplemented)" },
+    { key = "九阴神指" value = " inquire about zhi (unimplemented)" },
+    { key = "九阴神掌" value = " inquire about zhang (unimplemented)" },
     { key = "兰花手" value = "兰花拂穴手…唉…可惜我几个弟子都算不得成才！" },
-    { key = "兰花拂穴" value = "(: ask_skill2 :)" },
-    { key = "啸沧海" value = "(: ask_skill8 :)" },
-    { key = "天地情长" value = "(: ask_skill5 :)" },
-    { key = "天外清音" value = "(: ask_skill4 :)" },
-    { key = "奇门五转" value = "(: ask_skill1 :)" },
-    { key = "定昆仑" value = "(: ask_skill7 :)" },
+    { key = "兰花拂穴" value = " inquire about skill2 (unimplemented)" },
+    { key = "啸沧海" value = " inquire about skill8 (unimplemented)" },
+    { key = "天地情长" value = " inquire about skill5 (unimplemented)" },
+    { key = "天外清音" value = " inquire about skill4 (unimplemented)" },
+    { key = "奇门五转" value = " inquire about skill1 (unimplemented)" },
+    { key = "定昆仑" value = " inquire about skill7 (unimplemented)" },
     { key = "弹指神通" value = "…唉…我一身绝艺竟然无人可以继承？" },
-    { key = "影落飞花" value = "(: ask_skill3 :)" },
+    { key = "影落飞花" value = " inquire about skill3 (unimplemented)" },
     { key = "披星戴月" value = "这招你去让陆乘风教你吧。" },
-    { key = "旋风扫叶腿" value = "(: ask_book3 :)" },
+    { key = "旋风扫叶腿" value = " inquire about book3 (unimplemented)" },
     { key = "无常丹" value = "…嗯…等你学通了桃花药理的奥妙，自己慢慢制吧。" },
-    { key = "桃花药理" value = "(: ask_book1 :)" },
-    { key = "河图" value = "(: ask_book4 :)" },
-    { key = "洛书" value = "(: ask_book4 :)" },
+    { key = "桃花药理" value = " inquire about book1 (unimplemented)" },
+    { key = "河图" value = " inquire about book4 (unimplemented)" },
+    { key = "洛书" value = " inquire about book4 (unimplemented)" },
     { key = "狂风绝技" value = "这招你去让陆乘风教你吧。" },
-    { key = "玉箫" value = "(: ask_yuxiao :)" },
+    { key = "玉箫" value = " inquire about yuxiao (unimplemented)" },
     { key = "玉萧剑法" value = "不是性情中人，如何能够领会这剑法？" },
-    { key = "破九域" value = "(: ask_skill9 :)" },
+    { key = "破九域" value = " inquire about skill9 (unimplemented)" },
     { key = "碧波神功" value = "…唉…我桃花岛的内功何等厉害，可惜…" },
     { key = "碧浪滔天" value = "这招你去让冯默风教你吧。" },
-    { key = "碧海潮生" value = "(: ask_skill6 :)" },
-    { key = "离岛" value = "(: ask_leave :)" },
-    { key = "箫谱" value = "(: ask_book2 :)" },
-    { key = "转乾坤" value = "(: ask_skill10 :)" },
+    { key = "碧海潮生" value = " inquire about skill6 (unimplemented)" },
+    { key = "离岛" value = " inquire about leave (unimplemented)" },
+    { key = "箫谱" value = " inquire about book2 (unimplemented)" },
+    { key = "转乾坤" value = " inquire about skill10 (unimplemented)" },
     { key = "阴阳八卦" value = "(: try_to_learn_count :)" },
     { key = "随波逐流" value = "这招你去让曲灵风教你吧。" },
     { key = "黄蓉" value = "你敢直称我女儿的闺名？" }
@@ -27174,10 +27174,10 @@ chats = [
     { key = "东邪" value = "家师人称东邪！呵呵。" },
     { key = "北丐" value = "北丐洪七公是丐帮帮主，现在扬州城外。" },
     { key = "南帝" value = "听家师说段王爷现在出家当了和尚，法名一灯。" },
-    { key = "披星戴月" value = "(: ask_skill1 :)" },
+    { key = "披星戴月" value = " inquire about skill1 (unimplemented)" },
     { key = "桃花岛" value = "这儿就是桃花岛，你若不是本派弟子，要过桃花阵。" },
     { key = "桃花阵" value = "往南就是了。" },
-    { key = "狂风绝技" value = "(: ask_skill2 :)" },
+    { key = "狂风绝技" value = " inquire about skill2 (unimplemented)" },
     { key = "西毒" value = "欧阳锋是与家师并世齐名的高手，人称老毒物。" },
     { key = "黄药师" value = "你要拜访家师？" },
     { key = "黄蓉" value = "她是师父的爱女。" }
@@ -27242,7 +27242,7 @@ chats = [
   inquiries = [
     { key = "东邪" value = "那是我师父的绰号。" },
     { key = "九阴真经" value = "那是我师父的秘籍！你可别打注意！" },
-    { key = "九阴神爪" value = "(: ask_skill :)" },
+    { key = "九阴神爪" value = " inquire about skill (unimplemented)" },
     { key = "北丐" value = "北丐统领中原的丐帮，势力颇为强大。" },
     { key = "南帝" value = "段王爷已出家当和尚去了，法名叫一灯。" },
     { key = "梅超风" value = "不就是我么？你是白痴啊？" },
@@ -27318,10 +27318,10 @@ chats = [
     { key = "南帝" value = "听家师说段王爷现在出家当了和尚，法名一灯。" },
     { key = "桃花岛" value = "这儿就是桃花岛，你若不是本派弟子，要过桃花阵。" },
     { key = "桃花阵" value = "往南就是了。" },
-    { key = "河图" value = "(: ask_book1 :)" },
-    { key = "洛书" value = "(: ask_book2 :)" },
+    { key = "河图" value = " inquire about book1 (unimplemented)" },
+    { key = "洛书" value = " inquire about book2 (unimplemented)" },
     { key = "西毒" value = "欧阳锋是与家师并世齐名的高手，人称老毒物。" },
-    { key = "随波逐流" value = "(: ask_skill1 :)" },
+    { key = "随波逐流" value = " inquire about skill1 (unimplemented)" },
     { key = "黄药师" value = "你要拜访家师？" },
     { key = "黄蓉" value = "她是师父的爱女。" }
   ]
@@ -27657,9 +27657,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "六脉神剑" value = "(: ask_me :)" },
-    { key = "六脉神剑剑谱" value = "(: ask_me :)" },
-    { key = "六脉神剑谱" value = "(: ask_me :)" }
+    { key = "六脉神剑" value = " inquire about me (unimplemented)" },
+    { key = "六脉神剑剑谱" value = " inquire about me (unimplemented)" },
+    { key = "六脉神剑谱" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28085,7 +28085,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "道德经" value = "(: ask_me :)" }
+    { key = "道德经" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28177,8 +28177,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "太极初升" value = "(: ask_skill2 :)" },
-    { key = "隔山打牛" value = "(: ask_skill1 :)" }
+    { key = "太极初升" value = " inquire about skill2 (unimplemented)" },
+    { key = "隔山打牛" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -28277,7 +28277,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "道德经" value = "(: ask_me :)" }
+    { key = "道德经" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28333,7 +28333,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "谁与争锋" value = "(: ask_me :)" }
+    { key = "谁与争锋" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28450,9 +28450,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "太极十三式" value = "(: ask_book2 :)" },
-    { key = "武当药理" value = "(: ask_book1 :)" },
-    { key = "神门刺" value = "(: ask_skill :)" }
+    { key = "太极十三式" value = " inquire about book2 (unimplemented)" },
+    { key = "武当药理" value = " inquire about book1 (unimplemented)" },
+    { key = "神门刺" value = " inquire about skill (unimplemented)" }
   ]
 
   skills = [
@@ -28559,7 +28559,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "乱环诀" value = "(: ask_me :)" }
+    { key = "乱环诀" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28622,7 +28622,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "周芷若" value = "(: ask_for_zhou :)" }
+    { key = "周芷若" value = " inquire about for zhou (unimplemented)" }
   ]
 
   skills = [
@@ -28760,7 +28760,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "柔月穿空" value = "(: ask_me :)" }
+    { key = "柔月穿空" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28823,7 +28823,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "绝户神抓" value = "(: ask_me :)" }
+    { key = "绝户神抓" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -28893,22 +28893,22 @@ chats = [
   }
 
   inquiries = [
-    { key = "九阳真经" value = "(: ask_jiuyang :)" },
-    { key = "九阳神功" value = "(: ask_jiuyang :)" },
-    { key = "剑轮岚转" value = "(: ask_skill10 :)" },
-    { key = "太极图" value = "(: ask_skill6 :)" },
-    { key = "引字诀" value = "(: ask_skill3 :)" },
-    { key = "挤字诀" value = "(: ask_skill4 :)" },
-    { key = "武当九阳功" value = "(: ask_jiuyang :)" },
-    { key = "真武剑" value = "(: ask_jian :)" },
-    { key = "真武除邪" value = "(: ask_skill11 :)" },
-    { key = "粘字诀" value = "(: ask_skill5 :)" },
-    { key = "缠字诀" value = "(: ask_skill7 :)" },
-    { key = "觉远" value = "(: ask_jiuyang :)" },
-    { key = "随字诀" value = "(: ask_skill8 :)" },
-    { key = "震字诀" value = "(: ask_skill2 :)" },
-    { key = "驾字诀" value = "(: ask_skill9 :)" },
-    { key = "鹤嘴劲" value = "(: ask_skill1 :)" }
+    { key = "九阳真经" value = " inquire about jiuyang (unimplemented)" },
+    { key = "九阳神功" value = " inquire about jiuyang (unimplemented)" },
+    { key = "剑轮岚转" value = " inquire about skill10 (unimplemented)" },
+    { key = "太极图" value = " inquire about skill6 (unimplemented)" },
+    { key = "引字诀" value = " inquire about skill3 (unimplemented)" },
+    { key = "挤字诀" value = " inquire about skill4 (unimplemented)" },
+    { key = "武当九阳功" value = " inquire about jiuyang (unimplemented)" },
+    { key = "真武剑" value = " inquire about jian (unimplemented)" },
+    { key = "真武除邪" value = " inquire about skill11 (unimplemented)" },
+    { key = "粘字诀" value = " inquire about skill5 (unimplemented)" },
+    { key = "缠字诀" value = " inquire about skill7 (unimplemented)" },
+    { key = "觉远" value = " inquire about jiuyang (unimplemented)" },
+    { key = "随字诀" value = " inquire about skill8 (unimplemented)" },
+    { key = "震字诀" value = " inquire about skill2 (unimplemented)" },
+    { key = "驾字诀" value = " inquire about skill9 (unimplemented)" },
+    { key = "鹤嘴劲" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -29135,10 +29135,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "五毒教" value = "(: ask_me :)" },
-    { key = "回五毒教" value = "(: ask_me :)" },
-    { key = "回去" value = "(: ask_me :)" },
-    { key = "回教" value = "(: ask_me :)" }
+    { key = "五毒教" value = " inquire about me (unimplemented)" },
+    { key = "回五毒教" value = " inquire about me (unimplemented)" },
+    { key = "回去" value = " inquire about me (unimplemented)" },
+    { key = "回教" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -29208,24 +29208,24 @@ chats = [
   inquiries = [
     { key = "万毒窟" value = "只有我的弟子才能进入万毒窟。" },
     { key = "上篇" value = "毒经上篇你去问炼毒室的道人要吧。" },
-    { key = "下篇" value = "(: ask_jing :)" },
+    { key = "下篇" value = " inquire about jing (unimplemented)" },
     { key = "中篇" value = "毒经中篇在齐长老手中，你去问他要吧。" },
-    { key = "千蛛万毒手" value = "(: ask_skill6 :)" },
-    { key = "含沙射影" value = "(: ask_she :)" },
-    { key = "搏虎诀" value = "(: ask_skill2 :)" },
-    { key = "无影针" value = "(: ask_skill5 :)" },
+    { key = "千蛛万毒手" value = " inquire about skill6 (unimplemented)" },
+    { key = "含沙射影" value = " inquire about she (unimplemented)" },
+    { key = "搏虎诀" value = " inquire about skill2 (unimplemented)" },
+    { key = "无影针" value = " inquire about skill5 (unimplemented)" },
     { key = "毒经" value = "你是要毒经上篇、中篇还是下篇？" },
     { key = "毒经上篇" value = "毒经上篇你去问炼毒室的道人要吧。" },
-    { key = "毒经下篇" value = "(: ask_jing :)" },
+    { key = "毒经下篇" value = " inquire about jing (unimplemented)" },
     { key = "毒经中篇" value = "毒经中篇在齐长老手中，你去问他要吧。" },
-    { key = "盘鹰诀" value = "(: ask_skill1 :)" },
+    { key = "盘鹰诀" value = " inquire about skill1 (unimplemented)" },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
     { key = "腾蛇诀" value = "这一招你去找齐长老学吧。" },
-    { key = "软红蛛索" value = "(: ask_suo :)" },
-    { key = "金蜈钩" value = "(: ask_gou :)" },
-    { key = "金钩夺魄" value = "(: ask_skill4 :)" },
-    { key = "锁龙诀" value = "(: ask_skill3 :)" }
+    { key = "软红蛛索" value = " inquire about suo (unimplemented)" },
+    { key = "金蜈钩" value = " inquire about gou (unimplemented)" },
+    { key = "金钩夺魄" value = " inquire about skill4 (unimplemented)" },
+    { key = "锁龙诀" value = " inquire about skill3 (unimplemented)" }
   ]
 
   skills = [
@@ -29413,14 +29413,14 @@ chats = [
   inquiries = [
     { key = "上篇" value = "这个…毒经上篇你去问炼毒室的道人要吧。" },
     { key = "下篇" value = "毒经下篇在教主手里，你去问她要吧。" },
-    { key = "中篇" value = "(: ask_me :)" },
-    { key = "夺命连环" value = "(: ask_skill3 :)" },
+    { key = "中篇" value = " inquire about me (unimplemented)" },
+    { key = "夺命连环" value = " inquire about skill3 (unimplemented)" },
     { key = "毒经" value = "你是要毒经上篇、中篇还是下篇？" },
     { key = "毒经上篇" value = "这个…毒经上篇你去问炼毒室的道人要吧。" },
     { key = "毒经下篇" value = "毒经下篇在教主手里，你去问她要吧。" },
-    { key = "毒经中篇" value = "(: ask_me :)" },
-    { key = "毒蟾掌" value = "(: ask_skill2 :)" },
-    { key = "腾蛇诀" value = "(: ask_skill1 :)" }
+    { key = "毒经中篇" value = " inquire about me (unimplemented)" },
+    { key = "毒蟾掌" value = " inquire about skill2 (unimplemented)" },
+    { key = "腾蛇诀" value = " inquire about skill1 (unimplemented)" }
   ]
 
   chat_chance = 2
@@ -29491,10 +29491,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "back" value = "(: ask_back :)" },
+    { key = "back" value = " inquire about back (unimplemented)" },
     { key = "侠客岛" value = "这个岛是我和木兄弟无意中发现的。" },
-    { key = "离岛" value = "(: ask_back :)" },
-    { key = "腊八粥" value = "(: ask_zhou :)" }
+    { key = "离岛" value = " inquire about back (unimplemented)" },
+    { key = "腊八粥" value = " inquire about zhou (unimplemented)" }
   ]
 
   skills = [
@@ -29549,10 +29549,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "back" value = "(: ask_back :)" },
+    { key = "back" value = " inquire about back (unimplemented)" },
     { key = "侠客岛" value = "这个岛是我和龙兄弟无意中发现的。" },
-    { key = "离岛" value = "(: ask_back :)" },
-    { key = "腊八粥" value = "(: ask_zhou :)" }
+    { key = "离岛" value = " inquire about back (unimplemented)" },
+    { key = "腊八粥" value = " inquire about zhou (unimplemented)" }
   ]
 
   skills = [
@@ -29776,8 +29776,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "布阵箱" value = "(: ask_item2 :)" },
-    { key = "铁八卦" value = "(: ask_item1 :)" }
+    { key = "布阵箱" value = " inquire about item2 (unimplemented)" },
+    { key = "铁八卦" value = " inquire about item1 (unimplemented)" }
   ]
 
   skills = [
@@ -29836,7 +29836,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "论语" value = "(:ask_me:)" }
+    { key = "论语" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -29998,9 +29998,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "如意六刀" value = "(: ask_skill3 :)" },
-    { key = "捕风捉影" value = "(: ask_skill1 :)" },
-    { key = "攀阳邀月" value = "(: ask_skill2 :)" }
+    { key = "如意六刀" value = " inquire about skill3 (unimplemented)" },
+    { key = "捕风捉影" value = " inquire about skill1 (unimplemented)" },
+    { key = "攀阳邀月" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -30120,16 +30120,16 @@ chats = [
   }
 
   inquiries = [
-    { key = "化妖功" value = "(: ask_skill8 :)" },
-    { key = "天升剑诀" value = "(: ask_skill2 :)" },
-    { key = "寰阳式" value = "(: ask_skill5 :)" },
-    { key = "折梅式" value = "(: ask_skill6 :)" },
-    { key = "掌门人信物" value = "(: ask_zhihuan :)" },
-    { key = "洛神凌波" value = "(: ask_skill3 :)" },
-    { key = "流月剑诀" value = "(: ask_skill1 :)" },
-    { key = "海渊式" value = "(: ask_skill7 :)" },
-    { key = "生死符" value = "(: ask_skill4 :)" },
-    { key = "逍遥神仙环" value = "(: ask_zhihuan :)" }
+    { key = "化妖功" value = " inquire about skill8 (unimplemented)" },
+    { key = "天升剑诀" value = " inquire about skill2 (unimplemented)" },
+    { key = "寰阳式" value = " inquire about skill5 (unimplemented)" },
+    { key = "折梅式" value = " inquire about skill6 (unimplemented)" },
+    { key = "掌门人信物" value = " inquire about zhihuan (unimplemented)" },
+    { key = "洛神凌波" value = " inquire about skill3 (unimplemented)" },
+    { key = "流月剑诀" value = " inquire about skill1 (unimplemented)" },
+    { key = "海渊式" value = " inquire about skill7 (unimplemented)" },
+    { key = "生死符" value = " inquire about skill4 (unimplemented)" },
+    { key = "逍遥神仙环" value = " inquire about zhihuan (unimplemented)" }
   ]
 
   skills = [
@@ -30375,12 +30375,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "星宿毒经" value = "(: ask_me :)" },
-    { key = "毒经" value = "(: ask_me :)" },
-    { key = "碧磷针" value = "(: ask_du1 :)" },
+    { key = "星宿毒经" value = " inquire about me (unimplemented)" },
+    { key = "毒经" value = " inquire about me (unimplemented)" },
+    { key = "碧磷针" value = " inquire about du1 (unimplemented)" },
     { key = "神木王鼎" value = "哼，你休想打它的注意，小心我一掌毙了！" },
-    { key = "逍遥三笑散" value = "(: ask_du2 :)" },
-    { key = "香料" value = "(: ask_xiangliao :)" }
+    { key = "逍遥三笑散" value = " inquire about du2 (unimplemented)" },
+    { key = "香料" value = " inquire about xiangliao (unimplemented)" }
   ]
 
   skills = [
@@ -30596,9 +30596,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "天山器法" value = "(: ask_book :)" },
-    { key = "炼心弹" value = "(: ask_me :)" },
-    { key = "秘籍" value = "(: ask_book :)" }
+    { key = "天山器法" value = " inquire about book (unimplemented)" },
+    { key = "炼心弹" value = " inquire about me (unimplemented)" },
+    { key = "秘籍" value = " inquire about book (unimplemented)" }
   ]
 
   skills = [
@@ -30893,22 +30893,22 @@ chats = [
   }
 
   inquiries = [
-    { key = "修罗降世" value = "(: ask_skill3 :)" },
+    { key = "修罗降世" value = " inquire about skill3 (unimplemented)" },
     { key = "冰河开封" value = "这一招你去让胜谛教你好了。" },
-    { key = "噬血穹苍" value = "(: ask_skill9 :)" },
-    { key = "密道" value = "(: ask_midao :)" },
-    { key = "无影神刀" value = "(: ask_skill6 :)" },
+    { key = "噬血穹苍" value = " inquire about skill9 (unimplemented)" },
+    { key = "密道" value = " inquire about midao (unimplemented)" },
+    { key = "无影神刀" value = " inquire about skill6 (unimplemented)" },
     { key = "流星火雨" value = "这一招你去让宝象教你好了。" },
-    { key = "浴血重生" value = "(: ask_skill1 :)" },
-    { key = "祭血神刀" value = "(: ask_skill8 :)" },
-    { key = "秘道" value = "(: ask_midao :)" },
-    { key = "若悲" value = "(: ask_skill4 :)" },
-    { key = "血刀" value = "(: ask_dao :)" },
-    { key = "血刀经" value = "(: ask_book :)" },
+    { key = "浴血重生" value = " inquire about skill1 (unimplemented)" },
+    { key = "祭血神刀" value = " inquire about skill8 (unimplemented)" },
+    { key = "秘道" value = " inquire about midao (unimplemented)" },
+    { key = "若悲" value = " inquire about skill4 (unimplemented)" },
+    { key = "血刀" value = " inquire about dao (unimplemented)" },
+    { key = "血刀经" value = " inquire about book (unimplemented)" },
     { key = "血海无边" value = "操！老子让你去跟铁匠接口，你来问我干嘛？" },
-    { key = "赤炼神刀" value = "(: ask_skill7 :)" },
-    { key = "金刚印" value = "(: ask_skill2 :)" },
-    { key = "降魔" value = "(: ask_skill5 :)" }
+    { key = "赤炼神刀" value = " inquire about skill7 (unimplemented)" },
+    { key = "金刚印" value = " inquire about skill2 (unimplemented)" },
+    { key = "降魔" value = " inquire about skill5 (unimplemented)" }
   ]
 
   skills = [
@@ -30972,8 +30972,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" }
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" }
   ]
 
   skills = [
@@ -31034,8 +31034,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "轰雷万钧" value = "(: ask_skill1 :)" },
-    { key = "镇魂舞" value = "(: ask_skill2 :)" }
+    { key = "轰雷万钧" value = " inquire about skill1 (unimplemented)" },
+    { key = "镇魂舞" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -31095,24 +31095,24 @@ chats = [
   }
 
   inquiries = [
-    { key = "五轮连转" value = "(: ask_skill7 :)" },
-    { key = "修罗降世" value = "(: ask_skill2 :)" },
-    { key = "圆满势" value = "(: ask_skill6 :)" },
-    { key = "密道" value = "(: ask_midao :)" },
-    { key = "日月金轮" value = "(: ask_lun :)" },
+    { key = "五轮连转" value = " inquire about skill7 (unimplemented)" },
+    { key = "修罗降世" value = " inquire about skill2 (unimplemented)" },
+    { key = "圆满势" value = " inquire about skill6 (unimplemented)" },
+    { key = "密道" value = " inquire about midao (unimplemented)" },
+    { key = "日月金轮" value = " inquire about lun (unimplemented)" },
     { key = "真般若极" value = "这是传说中的招式，便是我也未能领悟。" },
     { key = "破元通虚" value = "这一招你去让霍都教你好了。" },
-    { key = "破立势" value = "(: ask_skill5 :)" },
-    { key = "秘道" value = "(: ask_midao :)" },
-    { key = "般若极" value = "(: ask_skill10 :)" },
-    { key = "若悲" value = "(: ask_skill3 :)" },
-    { key = "象跌势" value = "(: ask_skill9 :)" },
+    { key = "破立势" value = " inquire about skill5 (unimplemented)" },
+    { key = "秘道" value = " inquire about midao (unimplemented)" },
+    { key = "般若极" value = " inquire about skill10 (unimplemented)" },
+    { key = "若悲" value = " inquire about skill3 (unimplemented)" },
+    { key = "象跌势" value = " inquire about skill9 (unimplemented)" },
     { key = "轰雷万钧" value = "这一招你去让达而巴教你好了。" },
-    { key = "金刚印" value = "(: ask_skill1 :)" },
+    { key = "金刚印" value = " inquire about skill1 (unimplemented)" },
     { key = "金轮九转" value = "我让你去跟唐楠接口，你来跟我说干嘛？" },
     { key = "镇魂舞" value = "这一招你去让达而巴教你好了。" },
-    { key = "降魔" value = "(: ask_skill4 :)" },
-    { key = "龙吞势" value = "(: ask_skill8 :)" },
+    { key = "降魔" value = " inquire about skill4 (unimplemented)" },
+    { key = "龙吞势" value = " inquire about skill8 (unimplemented)" },
     { key = "龙象袈裟" value = "这是我的随身物品，你打听这个做甚？" }
   ]
 
@@ -31178,8 +31178,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" }
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" }
   ]
 
   skills = [
@@ -31237,7 +31237,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "破元通虚" value = "(: ask_skill1 :)" }
+    { key = "破元通虚" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -31299,8 +31299,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" }
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" }
   ]
 
   skills = [
@@ -31358,8 +31358,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" }
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" }
   ]
 
   skills = [
@@ -31417,8 +31417,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = "(: ask_for_join :)" },
-    { key = "剃度" value = "(: ask_for_join :)" }
+    { key = "出家" value = " inquire about for join (unimplemented)" },
+    { key = "剃度" value = " inquire about for join (unimplemented)" }
   ]
 
   skills = [
@@ -31480,14 +31480,14 @@ chats = [
   }
 
   inquiries = [
-    { key = "tuihui" value = "(: ask_tuihui :)" },
+    { key = "tuihui" value = " inquire about tuihui (unimplemented)" },
     { key = "入会" value = "还不快快如天地会一同反清复明。" },
-    { key = "凝血神爪" value = "(: ask_me :)" },
+    { key = "凝血神爪" value = " inquire about me (unimplemented)" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "疾电" value = "(: ask_me :)" },
-    { key = "绝技" value = "(: ask_me :)" },
-    { key = "绝招" value = "(: ask_me :)" },
-    { key = "退会" value = "(: ask_tuihui :)" }
+    { key = "疾电" value = " inquire about me (unimplemented)" },
+    { key = "绝技" value = " inquire about me (unimplemented)" },
+    { key = "绝招" value = " inquire about me (unimplemented)" },
+    { key = "退会" value = " inquire about tuihui (unimplemented)" }
   ]
 
   skills = [
@@ -31777,9 +31777,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "劈卦拳" value = "(: ask_skill1 :)" },
-    { key = "背心钉" value = "(: ask_skill2 :)" },
-    { key = "蝰蟒盘身" value = "(: ask_skill3 :)" }
+    { key = "劈卦拳" value = " inquire about skill1 (unimplemented)" },
+    { key = "背心钉" value = " inquire about skill2 (unimplemented)" },
+    { key = "蝰蟒盘身" value = " inquire about skill3 (unimplemented)" }
   ]
 
   skills = [
@@ -31841,8 +31841,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "掌中夹镖" value = "(: ask_skill1 :)" },
-    { key = "镖中现掌" value = "(: ask_skill2 :)" }
+    { key = "掌中夹镖" value = " inquire about skill1 (unimplemented)" },
+    { key = "镖中现掌" value = " inquire about skill2 (unimplemented)" }
   ]
 
   skills = [
@@ -31905,14 +31905,14 @@ chats = [
   }
 
   inquiries = [
-    { key = "乾坤一掷" value = "(: ask_skill3 :)" },
-    { key = "八卦震" value = "(: ask_skill1 :)" },
-    { key = "劈天神芒" value = "(: ask_skill5 :)" },
-    { key = "厚背紫金刀" value = "(: ask_dao :)" },
-    { key = "天刀八势" value = "(: ask_skill6 :)" },
-    { key = "杀龙无悔" value = "(: ask_skill7 :)" },
-    { key = "神卦天印" value = "(: ask_skill2 :)" },
-    { key = "翻卦连环掌" value = "(: ask_skill4 :)" }
+    { key = "乾坤一掷" value = " inquire about skill3 (unimplemented)" },
+    { key = "八卦震" value = " inquire about skill1 (unimplemented)" },
+    { key = "劈天神芒" value = " inquire about skill5 (unimplemented)" },
+    { key = "厚背紫金刀" value = " inquire about dao (unimplemented)" },
+    { key = "天刀八势" value = " inquire about skill6 (unimplemented)" },
+    { key = "杀龙无悔" value = " inquire about skill7 (unimplemented)" },
+    { key = "神卦天印" value = " inquire about skill2 (unimplemented)" },
+    { key = "翻卦连环掌" value = " inquire about skill4 (unimplemented)" }
   ]
 
   skills = [

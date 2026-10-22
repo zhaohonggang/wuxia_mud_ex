@@ -920,7 +920,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "王小二" value = "(: ask_me :)" },
+    { key = "王小二" value = " inquire about me (unimplemented)" },
     { key = "翠花" value = "翠花是个小寡妇，她家就在打谷场西边。" },
     { key = "鸡" value = "鸡是王小二弄来的，味道还真不错。" }
   ]
@@ -1006,11 +1006,11 @@ chats = [
 
   inquiries = [
     { key = "here" value = "这里是小人糊口的铺子，小人就住在後边的屋子。" },
-    { key = "job" value = "(: ask_me :)" },
+    { key = "job" value = " inquire about me (unimplemented)" },
     { key = "name" value = "小人姓冯，村里人都叫我冯铁匠。" },
     { key = "剑" value = "哦，那是给华山派岳掌门打的，小人用了三个月，总算没浪费那块好铁。 嗯，岳掌门前不久率门徒下山去了，不知什麽时候才会派人来取剑。" },
     { key = "取剑" value = "小人一定要见了岳掌门的手信才能给剑。" },
-    { key = "工作" value = "(: ask_me :)" },
+    { key = "工作" value = " inquire about me (unimplemented)" },
     { key = "铁锤" value = "铁锤？小人做的铁锤坚固又耐用，一把只要三百文钱。" },
     { key = "锄头" value = "锄头... 抱歉，锄头已经卖光了..." }
   ]
@@ -1059,9 +1059,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "偷鸡" value = "(: ask_me :)" },
+    { key = "偷鸡" value = " inquire about me (unimplemented)" },
     { key = "王小二" value = "那就是我啊..." },
-    { key = "鸡" value = "(: ask_me :)" }
+    { key = "鸡" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [

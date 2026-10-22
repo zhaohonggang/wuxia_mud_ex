@@ -2557,8 +2557,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "转世" value = "(: ask_zhuan :)" },
-    { key = "麒麟靴" value = "(: ask_xue :)" }
+    { key = "转世" value = " inquire about zhuan (unimplemented)" },
+    { key = "麒麟靴" value = " inquire about xue (unimplemented)" }
   ]
 
   skills = [
@@ -2755,10 +2755,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "tang" value = "(: ask_me :)" },
-    { key = "喝汤" value = "(: ask_me :)" },
-    { key = "孟婆汤" value = "(: ask_me :)" },
-    { key = "汤" value = "(: ask_me :)" }
+    { key = "tang" value = " inquire about me (unimplemented)" },
+    { key = "喝汤" value = " inquire about me (unimplemented)" },
+    { key = "孟婆汤" value = " inquire about me (unimplemented)" },
+    { key = "汤" value = " inquire about me (unimplemented)" }
   ]
 
   chat_chance = 1
@@ -3148,22 +3148,22 @@ chats = [
     { key = "here" value = "这便是阎罗地府，到阳间一谈，嘿嘿，没人不怕！" },
     { key = "name" value = "哼！连老夫都不认得，想来是活的太久了！" },
     { key = "七色璎珞" value = "听传闻，这东西好象是落在了秦广王的手里。" },
-    { key = "交差" value = "(: ask_quest :)" },
-    { key = "任务" value = "(: ask_quest :)" },
-    { key = "原料" value = "(: ask_quest :)" },
+    { key = "交差" value = " inquire about quest (unimplemented)" },
+    { key = "任务" value = " inquire about quest (unimplemented)" },
+    { key = "原料" value = " inquire about quest (unimplemented)" },
     { key = "地藏王" value = "他是这里的老大，没人惹得起他。" },
     { key = "地阴血脉" value = "这东西可以在地府轮回司里寻找到。…嗯…要诀是‘三三逢缘’。" },
     { key = "宝物" value = "地府有个神石名曰「七色璎珞」，倒是个不得多见的宝物。" },
     { key = "寂灭司" value = "寂灭司就在阎罗殿的东边。" },
     { key = "指南车" value = "那是黄帝流传下来的法宝之一，后来流落到了这里，不过我没见过。" },
-    { key = "期限" value = "(: ask_quest :)" },
+    { key = "期限" value = " inquire about quest (unimplemented)" },
     { key = "朱羽" value = "那东西本身是没什么用的，可却是我制作锁阳丹的原料。" },
     { key = "朱雀" value = "有人在阴阳塔顶见到过神兽朱雀，不过听说那扁毛畜生不落无宝之地，要寻它身上必须要带有宝物。" },
     { key = "朱雀羽毛" value = "那东西本身是没什么用的，可却是我制作锁阳丹的原料。" },
     { key = "武甲" value = "玄武甲壳用来铸盔甲倒是挺好，可难弄啊！我找了好久都没找到。" },
     { key = "死人肉" value = "我操，这个你也问我？你去称两斤吃吃看就知道了。" },
-    { key = "炼丹" value = "(: ask_quest :)" },
-    { key = "炼制" value = "(: ask_quest :)" },
+    { key = "炼丹" value = " inquire about quest (unimplemented)" },
+    { key = "炼制" value = " inquire about quest (unimplemented)" },
     { key = "玄武" value = "那臭乌龟整年躲在血池地狱里吃死人肉，怎么弄都不出来。" },
     { key = "玄武甲壳" value = "那壳用来铸盔甲倒是挺好，可难弄啊！我找了好久都没找到。" },
     { key = "甲壳" value = "玄武甲壳用来铸盔甲倒是挺好，可难弄啊！我找了好久都没找到。" },
@@ -3171,12 +3171,12 @@ chats = [
     { key = "白虎骨" value = "我正需要一根白虎的骨头来炼锁阳丹，怎么，你有么？" },
     { key = "碧水寒潭" value = "碧水寒潭就在奈河桥下面，你站在桥上往下跳就到了，不过你下去最好带上「地阴血脉」。" },
     { key = "秦广王" value = "他和我一样，也是阴间十王之一。" },
-    { key = "药引" value = "(: ask_quest :)" },
+    { key = "药引" value = " inquire about quest (unimplemented)" },
     { key = "虎骨" value = "我正需要一根白虎的骨头来炼锁阳丹，怎么，你有么？" },
     { key = "血池地狱" value = "血池地狱就在阎罗殿的北边，你要下去必须得穿上「麒麟靴」。" },
-    { key = "转世" value = "(: ask_zhuan :)" },
+    { key = "转世" value = " inquire about zhuan (unimplemented)" },
     { key = "轮回司" value = "轮回司就在阎罗殿的东边。" },
-    { key = "锁阳丹" value = "(: ask_quest :)" },
+    { key = "锁阳丹" value = " inquire about quest (unimplemented)" },
     { key = "阎罗殿" value = "这个你也问我？你是笨死的啊？" },
     { key = "阳间" value = "还阳容易，想不有损失就难了！" },
     { key = "阴阳塔" value = "就是西边的那座塔，是地府里最高的建筑，平时由马面看守。" },

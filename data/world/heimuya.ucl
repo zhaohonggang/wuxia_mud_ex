@@ -3093,13 +3093,13 @@ item_desc = {
 
   inquiries = [
     { key = "任我行" value = "哼 ……，我当初真该杀了他。" },
-    { key = "无双无对" value = "(: ask_skill5 :)" },
-    { key = "无声无息" value = "(: ask_skill1 :)" },
-    { key = "无法无天" value = "(: ask_skill4 :)" },
-    { key = "无穷无尽" value = "(: ask_skill2 :)" },
-    { key = "无边无际" value = "(: ask_skill3 :)" },
+    { key = "无双无对" value = " inquire about skill5 (unimplemented)" },
+    { key = "无声无息" value = " inquire about skill1 (unimplemented)" },
+    { key = "无法无天" value = " inquire about skill4 (unimplemented)" },
+    { key = "无穷无尽" value = " inquire about skill2 (unimplemented)" },
+    { key = "无边无际" value = " inquire about skill3 (unimplemented)" },
     { key = "杨莲亭" value = "莲弟 ……" },
-    { key = "葵花魔功" value = "(: ask_kuihua :)" }
+    { key = "葵花魔功" value = " inquire about kuihua (unimplemented)" }
   ]
 
   skills = [

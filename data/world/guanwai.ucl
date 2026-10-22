@@ -1655,8 +1655,8 @@ behavior_config = {
   }
 
   inquiries = [
-    { key = "人参" value = "(: ask_me :)" },
-    { key = "山参" value = "(: ask_me :)" }
+    { key = "人参" value = " inquire about me (unimplemented)" },
+    { key = "山参" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [
@@ -1689,11 +1689,11 @@ behavior_config = {
 
   inquiries = [
     { key = "job" value = "你是想采矿(mine)啊，还是运货(transit)？" },
-    { key = "mine" value = "(: ask_mine :)" },
-    { key = "transit" value = "(: ask_transit :)" },
+    { key = "mine" value = " inquire about mine (unimplemented)" },
+    { key = "transit" value = " inquire about transit (unimplemented)" },
     { key = "工作" value = "你是想采矿(mine)啊，还是运货(transit)？" },
-    { key = "运货" value = "(: ask_transit :)" },
-    { key = "采矿" value = "(: ask_mine :)" }
+    { key = "运货" value = " inquire about transit (unimplemented)" },
+    { key = "采矿" value = " inquire about mine (unimplemented)" }
   ]
 
   chat_chance = 9
@@ -1888,8 +1888,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "入关" value = "(: ask_me :)" },
-    { key = "回去" value = "(: ask_me :)" }
+    { key = "入关" value = " inquire about me (unimplemented)" },
+    { key = "回去" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [

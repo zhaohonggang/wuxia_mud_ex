@@ -1033,8 +1033,8 @@ item_desc = {
 
   inquiries = [
     { key = "弹琴" value = "(: inquiry_tanqin :)" },
-    { key = "易容" value = "(: ask_me :)" },
-    { key = "易容术" value = "(: ask_me :)" },
+    { key = "易容" value = " inquire about me (unimplemented)" },
+    { key = "易容术" value = " inquire about me (unimplemented)" },
     { key = "曼陀山庄" value = "我才不敢去曼陀山庄，王夫人太霸道了!" },
     { key = "王语嫣" value = "哎，只有她才配得上我们公子，也不知她现在怎么样了!" },
     { key = "阿碧" value = "那小丫头也不只跑哪儿去了。" }

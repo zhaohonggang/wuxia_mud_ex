@@ -2831,7 +2831,7 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "海市蜃楼" value = "(: ask_skill1 :)" }
+    { key = "海市蜃楼" value = " inquire about skill1 (unimplemented)" }
   ]
 
   skills = [
@@ -4327,11 +4327,11 @@ chats = [
 
   inquiries = [
     { key = "job" value = "你是想采矿(mine)啊，还是运货(transit)？" },
-    { key = "mine" value = "(: ask_mine :)" },
-    { key = "transit" value = "(: ask_transit :)" },
+    { key = "mine" value = " inquire about mine (unimplemented)" },
+    { key = "transit" value = " inquire about transit (unimplemented)" },
     { key = "工作" value = "你是想采矿(mine)啊，还是运货(transit)？" },
-    { key = "运货" value = "(: ask_transit :)" },
-    { key = "采矿" value = "(: ask_mine :)" }
+    { key = "运货" value = " inquire about transit (unimplemented)" },
+    { key = "采矿" value = " inquire about mine (unimplemented)" }
   ]
 
   chat_chance = 9
@@ -4848,8 +4848,8 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = "(: ask_me :)" },
-    { key = "工作" value = "(: ask_me :)" }
+    { key = "job" value = " inquire about me (unimplemented)" },
+    { key = "工作" value = " inquire about me (unimplemented)" }
   ]
 
   carry = [

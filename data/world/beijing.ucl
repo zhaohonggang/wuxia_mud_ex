@@ -5631,8 +5631,8 @@ chats = [
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "反清复明" value = "去屠宰场和棺材店仔细瞧瞧吧！" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可不容易啊。" }
   ]
 
@@ -5736,8 +5736,8 @@ chats = [
     { key = "入会" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可不容易啊。" }
   ]
 
@@ -6009,8 +6009,8 @@ chats = [
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "反清复明" value = "去屠宰场和棺材店仔细瞧瞧吧！" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可不容易啊。" }
   ]
 
@@ -6322,8 +6322,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "zigong" value = "(: ask_for_zigong :)" },
-    { key = "自宫" value = "(: ask_for_zigong :)" }
+    { key = "zigong" value = " inquire about for zigong (unimplemented)" },
+    { key = "自宫" value = " inquire about for zigong (unimplemented)" }
   ]
 
   skills = [
@@ -6647,8 +6647,8 @@ chats = [
     { key = "入会" value = "只要入了我天地会，可以向会中各位好手学武艺。" },
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可不容易啊。" }
   ]
 
@@ -6859,10 +6859,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "reward" value = "(: ask_reward :)" },
-    { key = "请赏" value = "(: ask_reward :)" },
-    { key = "赏赐" value = "(: ask_reward :)" },
-    { key = "领赏" value = "(: ask_reward :)" }
+    { key = "reward" value = " inquire about reward (unimplemented)" },
+    { key = "请赏" value = " inquire about reward (unimplemented)" },
+    { key = "赏赐" value = " inquire about reward (unimplemented)" },
+    { key = "领赏" value = " inquire about reward (unimplemented)" }
   ]
 
   skills = [
@@ -7096,11 +7096,11 @@ chats = [
   }
 
   inquiries = [
-    { key = "yaocai" value = "(: ask_caiyao :)" },
-    { key = "草药" value = "(: ask_caiyao :)" },
-    { key = "药" value = "(: ask_caiyao :)" },
-    { key = "药材" value = "(: ask_caiyao :)" },
-    { key = "采药" value = "(: ask_caiyao :)" }
+    { key = "yaocai" value = " inquire about caiyao (unimplemented)" },
+    { key = "草药" value = " inquire about caiyao (unimplemented)" },
+    { key = "药" value = " inquire about caiyao (unimplemented)" },
+    { key = "药材" value = " inquire about caiyao (unimplemented)" },
+    { key = "采药" value = " inquire about caiyao (unimplemented)" }
   ]
 
   accept = [
@@ -7140,17 +7140,17 @@ chats = [
     { key = "liandan" value = "(:do_liandan:)" },
     { key = "quest" value = "在我这里可以帮着我「炼丹」，如果愿意可以向我询问。" },
     { key = "yaocai" value = "去找我的小童，他会帮你处理。" },
-    { key = "医术" value = "(: ask_me :)" },
+    { key = "医术" value = " inquire about me (unimplemented)" },
     { key = "原料" value = "去找我的小童，他会帮你处理。" },
-    { key = "基本医术" value = "(: ask_me :)" },
+    { key = "基本医术" value = " inquire about me (unimplemented)" },
     { key = "徐天川" value = "那老猴儿便是我给医治的，怎么你也知道。" },
     { key = "本草术理" value = "掌握本草常识才能领悟高深的本草术理。" },
     { key = "炼丹" value = "(:do_liandan:)" },
-    { key = "炼丹术" value = "(: ask_me :)" },
+    { key = "炼丹术" value = " inquire about me (unimplemented)" },
     { key = "药材" value = "去找我的小童，他会帮你处理。" },
-    { key = "针灸" value = "(: ask_yinzhen :)" },
-    { key = "针灸术" value = "(: ask_me :)" },
-    { key = "银针" value = "(: ask_yinzhen :)" }
+    { key = "针灸" value = " inquire about yinzhen (unimplemented)" },
+    { key = "针灸术" value = " inquire about me (unimplemented)" },
+    { key = "银针" value = " inquire about yinzhen (unimplemented)" }
   ]
 
   skills = [
@@ -7590,8 +7590,8 @@ chats = [
     { key = "利息" value = "想要利息先入会！" },
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可没那么容易。" }
   ]
 
@@ -7681,8 +7681,8 @@ chats = [
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "反清复明" value = "去屠宰场和棺材店仔细瞧瞧吧！" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可不容易啊。" }
   ]
 
@@ -7982,7 +7982,7 @@ chats = [
   }
 
   inquiries = [
-    { key = "你愿不愿意跟我走" value = "(: ask_go :)" }
+    { key = "你愿不愿意跟我走" value = " inquire about go (unimplemented)" }
   ]
 
   skills = [
@@ -8769,8 +8769,8 @@ chats = [
     { key = "入会" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "加入" value = "只要入了我天地会，大家就可以一起反青复明。" },
     { key = "天地会" value = "只要是英雄好汉，都可以入我天地会(join tiandihui)。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" },
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" },
     { key = "陈近南" value = "想见总舵主可不容易啊。" }
   ]
 
@@ -9049,10 +9049,10 @@ chats = [
   }
 
   inquiries = [
-    { key = "reward" value = "(: ask_reward :)" },
-    { key = "请赏" value = "(: ask_reward :)" },
-    { key = "赏赐" value = "(: ask_reward :)" },
-    { key = "领赏" value = "(: ask_reward :)" }
+    { key = "reward" value = " inquire about reward (unimplemented)" },
+    { key = "请赏" value = " inquire about reward (unimplemented)" },
+    { key = "赏赐" value = " inquire about reward (unimplemented)" },
+    { key = "领赏" value = " inquire about reward (unimplemented)" }
   ]
 
   skills = [
@@ -9311,8 +9311,8 @@ chats = [
 
   inquiries = [
     { key = "吴之荣" value = "把他送到庄府去有好处。" },
-    { key = "威望" value = "(: ask_weiwang :)" },
-    { key = "江湖威望" value = "(: ask_weiwang :)" }
+    { key = "威望" value = " inquire about weiwang (unimplemented)" },
+    { key = "江湖威望" value = " inquire about weiwang (unimplemented)" }
   ]
 
   chat_chance = 5

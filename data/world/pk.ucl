@@ -297,11 +297,11 @@ direction = "north"
   }
 
   inquiries = [
-    { key = "屠人大赛" value = "(: ask_me :)" },
-    { key = "屠人比赛" value = "(: ask_me :)" },
-    { key = "屠人赛" value = "(: ask_me :)" },
-    { key = "瀑落九霄" value = "(: ask_skill :)" },
-    { key = "绿波香露刀" value = "(: ask_dao :)" }
+    { key = "屠人大赛" value = " inquire about me (unimplemented)" },
+    { key = "屠人比赛" value = " inquire about me (unimplemented)" },
+    { key = "屠人赛" value = " inquire about me (unimplemented)" },
+    { key = "瀑落九霄" value = " inquire about skill (unimplemented)" },
+    { key = "绿波香露刀" value = " inquire about dao (unimplemented)" }
   ]
 
   skills = [
