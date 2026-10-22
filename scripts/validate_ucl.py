@@ -459,6 +459,103 @@ def _find_elias_unlexable(data):
     return (_line_of_offset(data, m.start()), m.group(0).strip())
 
 
+def check_elias_strings(data):
+    """Reject double-quoted strings that Elias' lexer/grammar cannot accept.
+
+    The hand-written ``read_string`` above is deliberately lenient (it treats
+    ``\\`` as a generic escape and even allows a backslash-newline line
+    continuation).  ``elias_lexer.xrl`` + ``elias_parser.yrl`` are stricter:
+
+      * ``BackSlash`` is its own token and ``Word`` excludes it, so the only
+        legal in-string uses are ``back_slash quotes`` (\\" or \\') and
+        ``back_slash word`` (\\n, \\t, ...).  A *double* backslash therefore
+        has no matching production -> syntax error.
+      * ``words`` has no ``newline`` production, so a real newline inside a
+        double-quoted string is a syntax error.  A backslash immediately
+        followed by a newline is the same failure (``back_slash`` then
+        ``newline``), and it is how a botched ``\\\\n`` -> newline rewrite
+        shows up on disk.
+      * ``Word`` also excludes ``[`` and ``]``, and ``words`` has no
+        ``array_open`` / ``array_close`` production -> a literal bracket
+        inside a string is a syntax error too.
+      * Arrays cannot end with a comma: ``array_inner -> array_value comma
+        array_inner`` requires another value after the comma, so ``, ]``
+        has no production.
+
+    All of these made ``data/world/hengyang.ucl`` fail world load on
+    2026-10-21 while this validator stayed green, so the rules live here too.
+
+    ``#`` line comments and ``/* */`` block comments are skipped, and a ``#``
+    inside a string is *not* a comment (Elias allows ``pound`` in ``words``,
+    e.g. suzhou's ASCII-art ``lian``).
+    """
+    i, n, line = 0, len(data), 1
+    in_string = False
+    last_significant = b""
+    while i < n:
+        c = data[i:i + 1]
+        if in_string:
+            if c == b'"':
+                in_string = False
+                last_significant = c
+                i += 1
+                continue
+            if c == b"\\":
+                nxt = data[i + 1:i + 2]
+                if nxt == b"\n":
+                    return (False, "line %d: backslash at end of line inside string "
+                                   "(elias has no line continuation)" % line)
+                if nxt == b"\\":
+                    return (False, "line %d: double backslash inside string "
+                                   "(elias lexer rejects '\\\\\\\\')" % line)
+                if nxt == b"\r":
+                    return (False, "line %d: CR after backslash inside string" % line)
+                i += 2
+                continue
+            if c == b"\n":
+                return (False, "line %d: raw newline inside double-quoted string" % line)
+            if c == b"\r":
+                return (False, "line %d: raw CR inside double-quoted string" % line)
+            if c in (b"[", b"]", b";"):
+                return (False, "line %d: literal '%s' inside double-quoted string "
+                               "(elias lexer treats it as a bracket/semicolon token, "
+                               "which the string grammar has no production for)"
+                        % (line, c.decode()))
+            i += 1
+            continue
+
+        # outside a string
+        if c == b'"':
+            in_string = True
+            last_significant = c
+            i += 1
+            continue
+        if c == b"#":
+            j = data.find(b"\n", i)
+            i = n if j < 0 else j
+            continue
+        if c == b"/" and data[i + 1:i + 2] == b"*":
+            j = data.find(b"*/", i + 2)
+            if j < 0:
+                return (False, "line %d: unterminated block comment" % line)
+            line += data.count(b"\n", i, j)
+            i = j + 2
+            continue
+        if c == b"]" and last_significant == b",":
+            return (False, "line %d: trailing comma before ']' "
+                           "(elias array grammar needs a value after every comma)" % line)
+        if c == b"\n":
+            line += 1
+            i += 1
+            continue
+        if c not in (b" ", b"\t", b"\r"):
+            last_significant = c
+        i += 1
+    if in_string:
+        return (False, "line %d: unterminated double-quoted string" % line)
+    return (True, None)
+
+
 def _strip_comments(data):
     """Blank out `#` comment tails while preserving byte offsets and line numbers.
 
@@ -581,6 +678,7 @@ def _run_checks(data):
     checks = [
         ("Encoding", check_encoding, data),
         ("Syntax", check_syntax, data),
+        ("EliasStrings", check_elias_strings, body),
         ("Structure", check_structure, body),
         ("Integrity", check_integrity, body),
         ("Chars", check_chars, body),

@@ -134,10 +134,16 @@ def decode_lpc_escapes(s):
 
 def encode_ucl_string(s):
     """elias 不支持多行双引号字符串（详见 shaolin.ucl 的 poem 其实是单行），
-    故把运行期真实换行/制表符重新写成 `\\n`/`\\t` 单行转义，并转义反斜杠与双引号，
-    得到合法的单行 UCL 字符串，且运行期渲染与 LPC 一致。"""
-    s = s.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r")
+    故把运行期真实换行/制表符重新写成 `\\n`/`\\t` 单行转义，并转义双引号，
+    得到合法的单行 UCL 字符串，且运行期渲染与 LPC 一致。
+
+    ⚠️ 顺序至关重要：必须**先**转义反斜杠/双引号，**再**把真实换行写成 `\\n`。
+    若反过来（旧版 bug），`\\n` 会被第二步的 `\\\\` 二次转义成 `\\\\\\\\n`，
+    Elias 词法不接受双反斜杠 -> 整区 UCL 解析失败（hengyang wall / huashan sword /
+    suzhou lian 三处即此因，2026-10-21 修复）。
+    """
     s = s.replace("\\", "\\\\").replace('"', '\\"')
+    s = s.replace("\n", "\\n").replace("\t", "\\t").replace("\r", "\\r")
     return s
 
 

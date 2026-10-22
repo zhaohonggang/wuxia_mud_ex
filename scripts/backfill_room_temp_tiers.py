@@ -79,13 +79,15 @@ def encode_ucl_string(s):
 
 
 def build_entry(po, pt, df):
+    # ⚠️ Elias 数组不允许尾随逗号：`array_inner -> array_value comma array_inner`
+    # 要求逗号后必须还有元素，`, ]` 无产生式（2026-10-21 hengyang.ucl:1327 解析失败即此因）。
     return (
         '  item_desc = {\n'
         '    %s = {\n'
         '      kind = "room_temp_tiers"\n'
         '      tiers = [\n'
         '        { key = "marks/破" text = "%s" },\n'
-        '        { key = "marks/推" text = "%s" },\n'
+        '        { key = "marks/推" text = "%s" }\n'
         '      ]\n'
         '      default = "%s"\n'
         '    }\n'

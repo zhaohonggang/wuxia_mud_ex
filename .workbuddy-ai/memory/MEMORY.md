@@ -9,6 +9,16 @@
   - Member keys cannot be quoted strings starting with `"` (Elias `read_bare` stops at `"`). Use bare keys, including bare Chinese keys (accepted).
   - Inline objects: multi-line `key = { subkey = value }`, NOT single-line `key = { a = 1 b = 2 }`.
   - `newline=""` when writing UCL files (avoid CRLF on Windows).
+  - **String escapes (verified against `deps/elias/src/elias_lexer.xrl` + `elias_parser.yrl`)**:
+    - Inside a double-quoted string the ONLY legal backslash uses are `\"` / `\'` (rule `words -> back_slash quotes words`) and `\` + word, e.g. `\n` / `\t` (rule `words -> back_slash word words`).
+    - **`\\` (double backslash) is a syntax error** — no `back_slash back_slash` production.
+    - **A real newline inside a string is a syntax error** — `words` has no `newline` production. So no multi-line double-quoted strings, and `\` + newline (line continuation) also fails.
+    - Elias does NOT unescape: `\n` stays as the two characters `\` + `n` in the parsed value (rendering/unescaping, if any, happens elsewhere).
+    - When encoding runtime text: escape backslash/quote **first**, then real newline → `\n`. Doing it in the opposite order double-escapes `\n` into `\\n` and breaks the whole zone file (root cause of the 2026-10-21 hengyang/huashan/suzhou load failure in `backfill_static_look_text.py`).
+    - `validate_ucl.py` now has an `EliasStrings` check for these three failure modes; the older `read_string` was lenient and let them through.
+  - **Arrays**: elements comma-separated, but **NO trailing comma** (`array_inner -> array_value comma array_inner` needs a value after every comma; `, ]` has no production). `[ {…}, {…}, ]` is a syntax error — earlier note claiming it was OK was wrong.
+  - **Chars illegal inside a double-quoted string**: `[`, `]`, `;` (lexer emits `array_open`/`array_close`/`semi_colon`, none of which `words` accepts). Legal inside strings: `,` `=` `*` `#` `-` `:` `/` `'` `{` `}` digits spaces (`,` is NOT excluded by the `Word` regex, so 292 corpus occurrences are fine).
+  - Inline single-line blocks like `{ key = "x" text = "y" }` ARE legal (assignments may be space-separated).
 - **Backfill discipline (G1–G8)**: dry-run → backup (`tmp/backup-*-<timestamp>/`) → apply (`newline=""`) → `validate_ucl.py` green → idempotent re-run = 0 pending.
 - **Backup location**: `tmp/backup-<name>-<YYYYMMDD-HHMMSS>/<zone>.ucl`.
 
