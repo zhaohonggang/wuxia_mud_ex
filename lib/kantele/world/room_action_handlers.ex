@@ -374,8 +374,13 @@ defmodule Kantele.World.RoomActionHandlers do
     #   - wudu:huating2：move lu 开 down→midao + 8s
     #   - hengyang:outzigai1：push/tui bi（neili>=1500 + unarmed>=80）开 enter↔zigaihole 双向
     #     + 13s；房间级 temp marks/推 同步回收（look bi 的 room_temp_tiers 依赖它）
-    # 延后：shenfeng:shenfeng do_push（失败分支 me->move + receive_wound + unconcious，
-    # 需引擎位移/受伤/昏厥支持）。
+    #   - shenfeng:shenfeng：move sand 清沙 6 层（房间 mark/sand 计数 + busy 2）；
+    #     push gate（force>=300 + sand>=5 + neili>=1500）开 enter↔yongdao1 双向并扣 1000 内力，
+    #     失败则震落山脚（move + receive_wound("qi",200) + unconcious）
+    "shenfeng:shenfeng" => %{
+      "do_move" => {Kantele.World.RoomActions.Shenfeng.Shenfeng.Sand, :run},
+      "do_push" => {Kantele.World.RoomActions.Shenfeng.Shenfeng.Push, :run}
+    },
     "emei:hcadadian" => %{
       "do_move" => {Kantele.World.RoomActions.Emei.Hcadadian.Move, :run}
     },
@@ -408,6 +413,83 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "hengyang:outzigai1" => %{
       "do_push" => {Kantele.World.RoomActions.Hengyang.Outzigai1.Push, :run}
+    },
+    "room:qianting" => %{
+      "do_push" => {Kantele.World.RoomActions.Room.Panlong.Qianting.Push, :run},
+      "do_close" => {Kantele.World.RoomActions.Room.Panlong.Qianting.Close, :run}
+    },
+    "room:zoudao" => %{
+      "do_push" => {Kantele.World.RoomActions.Room.Panlong.Zoudao.Push, :run},
+      "do_close" => {Kantele.World.RoomActions.Room.Panlong.Zoudao.Close, :run}
+    },
+    # ---- 地形穿越类消费端（P5-4aq-A）：攀爬/跳跃/渡水/穿潭 ----
+    # 11 间房共用 `RoomActions.TerrainMove` 数据驱动 handler（按 {room_id, 归一化动词}
+    # 查表）。动词别名在 handler 内归一：pa→climb、tiao→jump、you→swim。
+    #   - hengyang:outzhushendong：climb teng（qi<100 摔落）
+    #   - hengyang:outzigai：climb stone（静默提示+位移）/ tiao stone（必摔晕）
+    #   - hengyang:shuiliandong：tiao pubu/瀑布（按轻功分三档）
+    #   - hengyang:xuanyadi：climb teng（qi 门控）/ tree（静默位移）
+    #   - jueqing:eyutan1/eyutan3：cross tan（轻功>120 过潭/落深潭）
+    #   - jueqing:eyutan2：swim bank（游回岸上）
+    #   - jueqing:ontree1：jump down（跳下枣树）/ ontree3：climb teng（爬出石窟）
+    #   - jueqing:undertan：climb tree（爬上枣树）/ underya2：jump tan（入潭到寒潭尽头）
+    "hengyang:outzhushendong" => %{
+      "do_climb" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "hengyang:outzigai" => %{
+      "do_climb" => {Kantele.World.RoomActions.TerrainMove, :run},
+      "do_tiao" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "hengyang:shuiliandong" => %{
+      "do_tiao" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "hengyang:xuanyadi" => %{
+      "do_climb" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:eyutan1" => %{
+      "do_cross" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:eyutan2" => %{
+      "do_swim" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:eyutan3" => %{
+      "do_cross" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:ontree1" => %{
+      "do_jump" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:ontree3" => %{
+      "do_climb" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:undertan" => %{
+      "do_climb" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    "jueqing:underya2" => %{
+      "do_jump" => {Kantele.World.RoomActions.TerrainMove, :run}
+    },
+    # ---- 绝情谷「硬房」消费端（P5-4aq-B）：duanchang/underya/xiangfang1/jianshi ----
+    # 这 4 间房 LPC 的 `do_*` 含「延时移动（call_out）」「房间 state 机关位」
+    # 「单例物品实例化」三类语义，无法走数据驱动的 TerrainMove，各写一个专用模块。
+    #   - duanchang：do_jump（tiao/jump）两步跳崖 → 延时 trap/effect 落到 underya + 昏厥
+    #   - underya：do_bao（抱石）/do_climb（爬藤）/do_jump（潜水）含延时出水回岸
+    #   - xiangfang1：do_turn（转花盆开/关暗道房间 state marks/转）/do_jump（跳洞
+    #     须机关已开，延时落到 eyutan2，并跨房向 eyutan1 广播）
+    #   - jianshi：do_pull（拉画置 marks/拉）/do_pick（取君子剑/淑女剑，单例物品实例化）
+    "jueqing:duanchang" => %{
+      "do_jump" => {Kantele.World.RoomActions.Jueqing.Duanchang, :run}
+    },
+    "jueqing:underya" => %{
+      "do_bao" => {Kantele.World.RoomActions.Jueqing.Underya, :run},
+      "do_climb" => {Kantele.World.RoomActions.Jueqing.Underya, :run},
+      "do_jump" => {Kantele.World.RoomActions.Jueqing.Underya, :run}
+    },
+    "jueqing:xiangfang1" => %{
+      "do_turn" => {Kantele.World.RoomActions.Jueqing.Xiangfang1, :run},
+      "do_jump" => {Kantele.World.RoomActions.Jueqing.Xiangfang1, :run}
+    },
+    "jueqing:jianshi" => %{
+      "do_pull" => {Kantele.World.RoomActions.Jueqing.Jianshi, :run},
+      "do_pick" => {Kantele.World.RoomActions.Jueqing.Jianshi, :run}
     }
   }
 

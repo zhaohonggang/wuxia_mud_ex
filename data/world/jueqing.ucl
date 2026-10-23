@@ -173,6 +173,10 @@ zones "jueqing" {
 item_desc = {
  zi = "##############        ############## 	##############        ############## 	####      ####        ####      #### 	####　十　####        ####  夫  #### 	####　 　 ####        ####      #### 	####　六　####        ####  妻  #### 	####　 　 ####        ####      #### 	####　年　####        ####  情  #### 	####　 　 ####        ####      #### 	####　后　####        ####  深  #### 	####　 　 ####        ####      #### 	####　在　####        ####  莫  #### 	####　 　 ####        ####      #### 	####　此　####        ####  失  #### 	####　 　 ####        ####      #### 	####　相　####        ####  信  #### 	####　 　 ####        ####      #### 	####　聚　####        ####  约  #### 	####　 　 ####        ####      #### 	##############        ############## 	##############        ##############"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+  }
     }
 
   room_exits "duanchang" {
@@ -194,6 +198,9 @@ item_desc = {
 item_desc = {
  tan = "潭中鄂鱼成群，凶猛无比。 恐怕只有施展轻功穿(cross)过去了。"
 }
+  actions = {
+    cross = "do_cross"
+  }
     }
   room_exits "eyutan1" {
     room_id = rooms.eyutan1.id
@@ -210,6 +217,10 @@ item_desc = {
   x = 0
   y = 0
   z = 2
+  actions = {
+    swim = "do_swim"
+    you = "do_swim"
+  }
     }
   room_exits "eyutan2" {
     room_id = rooms.eyutan2.id
@@ -235,6 +246,9 @@ item_desc = {
   x = 0
   y = 0
   z = 3
+  actions = {
+    cross = "do_cross"
+  }
     }
 
   room_exits "eyutan3" {
@@ -384,6 +398,10 @@ item_desc = {
   x = 0
   y = 6
   z = 0
+  actions = {
+    pick = "do_pick"
+    pull = "do_pull"
+  }
     }
 
   room_exits "jianshi" {
@@ -451,6 +469,10 @@ item_desc = {
   x = 0
   y = 0
   z = 5
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+  }
     }
 
   room_exits "ontree1" {
@@ -488,6 +510,10 @@ item_desc = {
 item_desc = {
  teng = "看来可以借这根树藤爬(climb)出石窟。"
 }
+  actions = {
+    climb = "do_climb"
+    pa = "do_climb"
+  }
     }
 
   room_exits "ontree3" {
@@ -867,6 +893,10 @@ item_desc = {
  kong = "抬头向头顶透光的洞穴望去，只见那洞离地少说也有一百来丈，树下虽长着一株大枣树，但不过四五丈高，就算二十株枣树叠起，也到不了顶，凝思半晌，实是束手无策。"
  tree = "但见枣树参天耸立，竟有百丈之高。"
 }
+  actions = {
+    climb = "do_climb"
+    pa = "do_climb"
+  }
     }
 
   room_exits "undertan" {
@@ -899,6 +929,13 @@ item_desc = {
  stone = "石头有半人多高，看似非常沉重。"
  teng = "这根树藤看上去很结实，可作攀爬之用。"
 }
+  actions = {
+    bao = "do_bao"
+    climb = "do_climb"
+    jump = "do_jump"
+    pa = "do_climb"
+    tiao = "do_jump"
+  }
     }
   room_exits "underya" {
     room_id = rooms.underya.id
@@ -917,6 +954,10 @@ item_desc = {
 item_desc = {
  house = "但见茅屋破旧不堪，似乎很久没人来过了。"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+  }
     }
 
   room_exits "underya2" {
@@ -936,6 +977,12 @@ item_desc = {
 item_desc = {
  pen = "这个花盆看上去很奇怪，似乎连接着什么机关。"
 }
+  actions = {
+    jump = "do_jump"
+    tiao = "do_jump"
+    turn = "do_turn"
+    zhuan = "do_turn"
+  }
     }
 
   room_exits "xiangfang1" {

@@ -201,10 +201,14 @@ defmodule Kantele.Character.NpcScriptEvent do
             character = %{character | meta: %{character.meta | stats: stats}}
             Records.save(character)
 
+            # LPC tell_object(me, "你学会了「<问询键>」")：问询键是中文绝招名，
+            # 无问询键（老数据）时退回 perform_id
+            perform_name = Map.get(data, :perform_name) || perform_id
+
             conn
             |> put_character(character)
             |> render(CommandView, "text", %{
-              text: "#{npc_name}在你耳边轻声说了几句精要，你学会了「#{perform_id}」。\n"
+              text: "#{npc_name}在你耳边轻声说了几句精要，你学会了「#{perform_name}」。\n"
             })
             |> prompt(CommandView, "prompt", %{})
         end
@@ -236,14 +240,36 @@ defmodule Kantele.Character.NpcScriptEvent do
   defp deduct_gongxian(stats, _cost), do: stats
 
   # 玩家门派身份在 meta.family（map），而 inquiry_grant 同门校验读 stats 的
-  # :family；调用前把门派名并进去（yu.c ask_me 的「不是我们武当派的人」分支）
+  # :family；调用前把门派名并进去（yu.c ask_me 的「不是我们武当派的人」分支）。
+  # 同时并入 meta.vitals.max_neili（LPC `query("max_neili")` 内力门槛）。
+  # 注意：`Map.from_struct/1` 会丢非结构体键，故先转成普通 map 再补。
   defp stats_with_family(character) do
+    base =
+      case character.meta.stats do
+        %Stats{} = stats -> Map.from_struct(stats)
+        stats when is_map(stats) -> stats
+        _ -> %{}
+      end
+
+    base
+    |> put_family(character)
+    |> put_max_neili(character)
+  end
+
+  defp put_family(stats, character) do
     case character.meta.family do
       family when is_map(family) and map_size(family) > 0 ->
-        Map.put(character.meta.stats, :family, Family.name(family))
+        Map.put(stats, :family, Family.name(family))
 
       _ ->
-        character.meta.stats
+        stats
+    end
+  end
+
+  defp put_max_neili(stats, character) do
+    case Map.get(character.meta.vitals || %{}, :max_neili) do
+      neili when is_integer(neili) -> Map.put(stats, :max_neili, neili)
+      _ -> stats
     end
   end
 

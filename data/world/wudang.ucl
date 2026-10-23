@@ -3097,9 +3097,9 @@ characters "wudang_zhang" {
   class = "taoist"
 
   # 11 门 ask_skill 绝招 → inquiries perform_id 脚本。
-  # 注意：ask_skill6「太极图」还校验 max_jingli >= 1000、potential >= learned_points + 100，
-  #       并把 can_perform/taiji-quan/tu 做计数器（>=10 封顶），以上均不在 inquiry_grant
-  #       管道内，本批只回填可表达字段，后续如需严格还原可另设 kind 处理器。
+  # 例外：ask_skill6「太极图」是计数器式渐进授招（can_perform/taiji-quan/tu +1/次、
+  # 10 次学会，另校验 max_jingli/potential），走 kind = "counter_perform" 专用管道，
+  # 见下方该条注释；其余 10 门仍走 perform_id → inquiry_grant。
   inquiries = {
     鹤嘴劲 = {
       perform_id = "taiji-shengong/dian"
@@ -3156,17 +3156,52 @@ characters "wudang_zhang" {
       cost_gongxian = 500
     }
 
+    # 太极图（ask_skill6）不走 inquiry_grant 布尔管道：LPC 把
+    # can_perform/taiji-quan/tu 当计数器（+1/次，10 次才学会），并校验
+    # max_jingli >= 1000、potential >= learned_points + 100，完成时
+    # improve_skill 一队技能 + 扣 gongxian 3000 —— 走 kind = "counter_perform"
+    # （InquiryHandlers.CounterPerform，镜像 kungfu/class/wudang/zhang.c:463）。
     太极图 = {
+      kind = "counter_perform"
       perform_id = "taiji-quan/tu"
       skill = "taiji-quan"
+      counter_key = "can_perform/taiji-quan/tu"
+      max_count = 10
+      family = "武当派"
       min_levels = {
         taiji_quan = 250
         taiji_shengong = 300
         taoism = 300
       }
+      level_deny = {
+        taiji_quan = "你的太极拳法还不到家，要多练练！"
+        taiji_shengong = "你的太极神功还不到家，好好修行吧！"
+        taoism = "你的道学心法研究的还不够明白，要下功夫苦学才是！"
+      }
       min_gongxian = 3000
       min_shen = 250000
+      max_jingli = 1000
+      potential_cost = 100
       cost_gongxian = 3000
+      improve_skills = {
+        taiji_shengong = 3
+        force = 3
+        unarmed = 3
+        taiji_quan = 3
+        taoism = 3
+        martial_cognize = 1
+      }
+      maxed = "该学的你都已经学了，以后要善加利用！"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      jingli_deny = "你的精力不济，就算传给你太极图你也难以运用。"
+      potential_deny = "你看了半天，没有研究出什么新的东西，看来是潜能还不够！"
+      insight = "你对太极图有了一点领悟。"
+      learned = "你学会了道家密技「太极图」。"
+      npc_say = "你看懂了多少？"
+      vision = "点点头，双手轻轻划了一个圈子，地上土雾无端吸起，又渐渐落下。"
     }
 
     缠字诀 = {

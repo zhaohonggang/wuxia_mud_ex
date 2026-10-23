@@ -44,6 +44,7 @@ defmodule Kantele.World.RoomActions.MoveStone do
   """
   import Kalevala.Character.Conn, only: [put_character: 2]
 
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kantele.World.Room
   alias Kantele.World.RoomActions.DynamicExit
@@ -66,6 +67,16 @@ defmodule Kantele.World.RoomActions.MoveStone do
 
   @doc "`me->query_skill(name, 1)`（基本技能等级）。"
   def skill(char, name), do: Stats.skill(char.meta.stats, name)
+
+  @doc "`me->is_busy()`。"
+  def busy?(char), do: Combat.busy?(char.meta.combat)
+
+  @doc "`me->start_busy(n)`（忙乱轮数，由 combat/tick 逐轮递减）。"
+  def start_busy(conn, rounds) when is_integer(rounds) and rounds > 0 do
+    c = current(conn)
+    combat = Combat.start_busy(c.meta.combat, rounds)
+    put_character(conn, %{c | meta: %{c.meta | combat: combat}})
+  end
 
   @doc "`me->query(\"family/family_name\")`（无门派为 nil）。"
   def family_name(char) do
@@ -171,7 +182,17 @@ defmodule Kantele.World.RoomActions.MoveStone do
   选项同 `reveal/6`：`:seconds`、`:self_msg`、`:neighbor_msg`、`:only_if_open`。
   定时关默认删**两边**（`DynamicExit.do_close_after` 的 targets 各含一条）。
   """
-  def reveal_both(conn, room_id, dir, target, neighbor_id, neighbor_dir, vision, neighbor_vision, opts \\ []) do
+  def reveal_both(
+        conn,
+        room_id,
+        dir,
+        target,
+        neighbor_id,
+        neighbor_dir,
+        vision,
+        neighbor_vision,
+        opts \\ []
+      ) do
     conn = DynamicExit.open(conn, room_id, dir, target, vision)
 
     Room.set_exit(neighbor_id, neighbor_dir, room_id)

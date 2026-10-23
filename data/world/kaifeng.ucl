@@ -5129,8 +5129,80 @@ chats = [
         }
       }
 
+      # LPC: kungfu/class/honghua/wuchen.c ask_skill1..3 —— 三门绝招问答授艺。
+      # fidelity 缺口（不影响门控语义）：
+      #   - ask_skill3 的「须先会 zhuihun-jian/zhui」前置绝招条件未进管线；
+      #   - message_vision 演示描写 / command("haha"|"say") 台词未回填；
+      #   - force 与轻功/绝招技能各有独立等级文案，此处合用一条 level_deny
+      #     （取 LPC 先判的 force 文案）。
+      inquiries = {
+        夺命连环 = {
+          perform_id = "lianhuan-mizongtui/lian"
+          skill = "lianhuan-mizongtui"
+          min_gongxian = 600
+          min_shen = 50000
+          min_max_neili = 1800
+          min_levels = {
+            force = 150
+            dodge = 150
+            lianhuan_mizongtui = 120
+          }
+          cost_gongxian = 600
+          maxed = "这招俺不是已经教给你了吗？"
+          family_deny = "大侠和本会素无瓜葛，何出此言？"
+          skill_deny = "你连连环迷踪腿都没学，还谈什么绝招可言？"
+          gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+          shen_deny = "你侠义正事做得不够，这招我不能传你。"
+          level_deny = "你的内功火候不足，学不成这招。"
+          max_neili_deny = "你的内力修为不够，学不成这招。"
+        }
+
+        追魂夺命 = {
+          perform_id = "zhuihun-jian/zhui"
+          skill = "zhuihun-jian"
+          min_gongxian = 300
+          min_shen = 35000
+          min_max_neili = 800
+          min_levels = {
+            force = 120
+            zhuihun_jian = 100
+          }
+          cost_gongxian = 300
+          maxed = "自己下去练，别跟我纠缠个没完！"
+          family_deny = "大侠和本会素无瓜葛，何出此言？"
+          skill_deny = "你连追魂夺命剑都没学，还谈什么绝招可言？"
+          gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+          shen_deny = "你侠义正事做得不够，这招我不能传你。"
+          level_deny = "你的内功火候不足，学不成这招。"
+          max_neili_deny = "你的内力修为不够，学不成这招。"
+        }
+
+        诛天刹神 = {
+          perform_id = "zhuihun-jian/zhu"
+          skill = "zhuihun-jian"
+          min_gongxian = 1200
+          min_shen = 80000
+          min_max_neili = 1800
+          min_levels = {
+            force = 200
+            zhuihun_jian = 160
+          }
+          cost_gongxian = 1200
+          maxed = "多说无益，赶快去练功，以后行侠仗义就靠你们了。"
+          family_deny = "大侠和本会素无瓜葛，何出此言？"
+          skill_deny = "你连追魂夺命剑都没学，还谈什么绝招可言？"
+          gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+          shen_deny = "你侠义正事做得不够，这招我不能传你。"
+          level_deny = "你的内功火候不足，学不成这招。"
+          max_neili_deny = "你的内力修为不够，学不成这招。"
+        }
+      }
+
       # LPC: kungfu/class/honghua/wuchen.c
-      #   create_family("红花会", 4, "当家")
+      #   create_family("红花会", 4, "当家") —— 门派身份供同门校验/授技读取
+      teach = {
+        family = "红花会"
+      }
       #   carry_object("/clone/weapon/changjian")
       #   carry_object("/d/wudang/obj/greyrobe")
     }

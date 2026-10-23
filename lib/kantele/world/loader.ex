@@ -826,7 +826,20 @@ defmodule Kantele.World.Loader do
 
   # 授绝招配置的 min_levels 是嵌套 map：键归一为字符串（下划线->连字符，与
   # Stats.skills 键一致），否则 inquiry_grant 的技能门槛查不到等级。
+  # level_deny（counter_perform 的每技能拒绝文案）同形同理，键与 min_levels 对齐。
   defp normalize_inquiry_field("min_levels", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} ->
+      {String.replace(to_string(skill), "_", "-"), level}
+    end)
+  end
+
+  defp normalize_inquiry_field("level_deny", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} ->
+      {String.replace(to_string(skill), "_", "-"), text}
+    end)
+  end
+
+  defp normalize_inquiry_field("max_skill_levels", levels) when is_map(levels) do
     Enum.into(levels, %{}, fn {skill, level} ->
       {String.replace(to_string(skill), "_", "-"), level}
     end)

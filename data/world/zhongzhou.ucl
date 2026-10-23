@@ -2937,6 +2937,14 @@ chats = [
       # LPC: kungfu/class/miao/miao.c
       #   create_family("中原苗家", 6, "传人")
       #   carry_object("/clone/cloth/cloth")
+
+      # LPC kungfu/class/miao/miao.c：苗人凤（中原苗家师父）的问询（纯字符串条目）
+    inquiries = [
+      { key = "云中探爪" value = "这招太过狠毒，我早已不用，你若有兴趣可到我书房自行翻书参悟。" },
+      { key = "苗家剑谱" value = "你是问剑谱上册还是剑谱下册？" },
+      { key = "胡家刀法" value = "胡家刀法乃是我当年从胡世兄处习得，当真精妙无比。" },
+      { key = "胡一刀" value = "当年我中了奸人毒计杀害了他，令我遗憾终生！" }
+    ]
     }
 
     characters "zaohongma" {

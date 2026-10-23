@@ -7,6 +7,10 @@ defmodule Kantele.World.RoomActionHandlersTest do
   alias Kantele.World.RoomActions.Emei.Shierpan3.Clap
   alias Kantele.World.RoomActions.Hengyang.Furong1.Climb
   alias Kantele.World.RoomActions.Huashan.Lianhua.Tiao
+  alias Kantele.World.RoomActions.Jueqing.Duanchang
+  alias Kantele.World.RoomActions.Jueqing.Jianshi
+  alias Kantele.World.RoomActions.Jueqing.Underya
+  alias Kantele.World.RoomActions.Jueqing.Xiangfang1
   alias Kantele.World.RoomActions.Lingxiao.Juegu.Pan
   alias Kantele.World.RoomActions.MessageOnly
   alias Kantele.World.RoomActions.VisionMove
@@ -41,6 +45,17 @@ defmodule Kantele.World.RoomActionHandlersTest do
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("mingjiao:tohsq3", "do_jump")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("wudu:dijiao", "do_move")
       assert {:ok, {VisionMove, :run}} = RoomActionHandlers.lookup("wudu:minju10", "do_move")
+    end
+
+    test "绝情谷硬房（P5-4aq-B）四个房间解析成功" do
+      assert {:ok, {Duanchang, :run}} = RoomActionHandlers.lookup("jueqing:duanchang", "do_jump")
+      assert {:ok, {Underya, :run}} = RoomActionHandlers.lookup("jueqing:underya", "do_bao")
+      assert {:ok, {Underya, :run}} = RoomActionHandlers.lookup("jueqing:underya", "do_climb")
+      assert {:ok, {Underya, :run}} = RoomActionHandlers.lookup("jueqing:underya", "do_jump")
+      assert {:ok, {Xiangfang1, :run}} = RoomActionHandlers.lookup("jueqing:xiangfang1", "do_turn")
+      assert {:ok, {Xiangfang1, :run}} = RoomActionHandlers.lookup("jueqing:xiangfang1", "do_jump")
+      assert {:ok, {Jianshi, :run}} = RoomActionHandlers.lookup("jueqing:jianshi", "do_pull")
+      assert {:ok, {Jianshi, :run}} = RoomActionHandlers.lookup("jueqing:jianshi", "do_pick")
     end
 
     test "房间未注册 → {:unimplemented, name}" do
@@ -101,7 +116,11 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "hengyang:inhole2",
                 "hengyang:inzhushendong",
                 "hengyang:liufugate",
+                "hengyang:outzhushendong",
+                "hengyang:outzigai",
                 "hengyang:outzigai1",
+                "hengyang:shuiliandong",
+                "hengyang:xuanyadi",
                 "hengyang:zigaihole",
                 "huanggong:inwell",
                 "huashan:jianzhong",
@@ -113,6 +132,17 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "jingzhou:luan2",
                 "jinshe:shanbi",
                 "jinshe:yongdao2",
+                "jueqing:duanchang",
+                "jueqing:eyutan1",
+                "jueqing:eyutan2",
+                "jueqing:eyutan3",
+                "jueqing:jianshi",
+                "jueqing:ontree1",
+                "jueqing:ontree3",
+                "jueqing:undertan",
+                "jueqing:underya",
+                "jueqing:underya2",
+                "jueqing:xiangfang1",
                 "kaifeng:hh_xiaozhu",
                 "lingxiao:didi",
                 "lingxiao:gate",
@@ -128,10 +158,13 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "quanzhen:diziju",
                 "quanzhen:fu_woshi",
                 "register:prison",
+                "room:qianting",
+                "room:zoudao",
                 "shaolin:beilin2",
                 "shaolin:guangchang1",
                 "shaolin:putiyuan",
                 "shaolin:smdian",
+                "shenfeng:shenfeng",
                 "shenfeng:yongdao3",
                 "shenfeng:yushi",
                 "shenlong:lin1",
@@ -247,12 +280,43 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
       assert RoomActionHandlers.registered?("wudang:nanyangong", "do_move")
       assert RoomActionHandlers.registered?("wudu:huating2", "do_move")
       assert RoomActionHandlers.registered?("hengyang:outzigai1", "do_push")
+      # 神峰清沙 + 推门（P5-4ap）
+      assert RoomActionHandlers.registered?("shenfeng:shenfeng", "do_move")
+      assert RoomActionHandlers.registered?("shenfeng:shenfeng", "do_push")
+      # 盘龙居前庭<->走道双向木门（P5-4ap）
+      assert RoomActionHandlers.registered?("room:qianting", "do_push")
+      assert RoomActionHandlers.registered?("room:qianting", "do_close")
+      assert RoomActionHandlers.registered?("room:zoudao", "do_push")
+      assert RoomActionHandlers.registered?("room:zoudao", "do_close")
+      # 地形穿越类一批（P5-4aq-A）：11 间房共用 TerrainMove
+      assert RoomActionHandlers.registered?("hengyang:outzhushendong", "do_climb")
+      assert RoomActionHandlers.registered?("hengyang:outzigai", "do_climb")
+      assert RoomActionHandlers.registered?("hengyang:outzigai", "do_tiao")
+      assert RoomActionHandlers.registered?("hengyang:shuiliandong", "do_tiao")
+      assert RoomActionHandlers.registered?("hengyang:xuanyadi", "do_climb")
+      assert RoomActionHandlers.registered?("jueqing:eyutan1", "do_cross")
+      assert RoomActionHandlers.registered?("jueqing:eyutan2", "do_swim")
+      assert RoomActionHandlers.registered?("jueqing:eyutan3", "do_cross")
+      assert RoomActionHandlers.registered?("jueqing:ontree1", "do_jump")
+      assert RoomActionHandlers.registered?("jueqing:ontree3", "do_climb")
+      assert RoomActionHandlers.registered?("jueqing:undertan", "do_climb")
+      assert RoomActionHandlers.registered?("jueqing:underya2", "do_jump")
+      # 绝情谷「硬房」消费端（P5-4aq-B）：duanchang/underya/xiangfang1/jianshi 四房
+      assert RoomActionHandlers.registered?("jueqing:duanchang", "do_jump")
+      assert RoomActionHandlers.registered?("jueqing:underya", "do_bao")
+      assert RoomActionHandlers.registered?("jueqing:underya", "do_climb")
+      assert RoomActionHandlers.registered?("jueqing:underya", "do_jump")
+      assert RoomActionHandlers.registered?("jueqing:xiangfang1", "do_turn")
+      assert RoomActionHandlers.registered?("jueqing:xiangfang1", "do_jump")
+      assert RoomActionHandlers.registered?("jueqing:jianshi", "do_pull")
+      assert RoomActionHandlers.registered?("jueqing:jianshi", "do_pick")
       # 拱猪四房（P5-4ad）
       assert RoomActionHandlers.registered?("city:eproom", "do_play")
       assert RoomActionHandlers.registered?("city:wproom", "do_claim")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
-      # do_climb 只在 hengyang:furong1 与 gumu:taiyi2 移植
+      # do_climb 在 hengyang:furong1、gumu:taiyi2 与 P5-4aq-A 的地形房（outzhushendong/
+      # outzigai/xuanyadi/ontree3/undertan）移植，其余房间不应串
       refute RoomActionHandlers.registered?("lingxiao:juegu", "do_climb")
       refute RoomActionHandlers.registered?("gumu:taiyi1", "do_climb")
     end

@@ -2530,6 +2530,17 @@ chats = [
         }
       }
 
+      # LPC: kungfu/class/hu/pingsi.c 的问询表。
+      # 出关/办事/出去 三门走 ask_me 闭包（同门派 + 在本房才受理，然后把玩家
+      # 送去 /d/beijing/majiu 并播报马车）：那是「传送服务」而非问答，引擎暂无
+      # 对应 kind，暂不回填（见 docs/lpc-port-gaps.zh-CN.md）。
+      inquiries = [
+        { key = "阎基" value = "阎基…哼…这个狗贼。" },
+        { key = "胡一刀" value = "那……那是老主人，唉。" },
+        { key = "苗人凤" value = "苗大侠可不是坏人。" },
+        { key = "赵半山" value = "他对我家主人的交情那是没得说的。" }
+      ]
+
       meta = {
         guarder = {
           family = "关外胡家"

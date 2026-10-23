@@ -4132,10 +4132,8 @@ characters "wudu_qiyunao" {
   no_teach = ["xiuluo-yinshagong", "ruanhong-zhusuo"]
 
   # 3 门 ask_skill 绝招 → inquiries perform_id 脚本。
-  # TODO：LPC 校验 shen > -20000/-35000/-40000 即拒（需足够邪恶，shen <= 负阈值），
-  #       而 inquiry_grant 管道检查 `shen < min_shen`（shen >= min_shen 才过），方向相反。
-  #       本批 min_shen 置 -999999999（ sentinel：不拦杀气，等价关闭该门槛），
-  #       后续如需严格还原可另设 max_shen 处理器。
+  # LPC 校验 `shen > -20000/-35000/-40000` 即拒（需足够邪恶），故用 max_shen
+  # （inquiry_grant 支持 `shen > max_shen` 拒绝；-20000 本身可通过）。
   inquiries = {
     腾蛇诀 = {
       perform_id = "xiewei-bian/tengshe"
@@ -4144,7 +4142,7 @@ characters "wudu_qiyunao" {
         xiewei_bian = 100
       }
       min_gongxian = 100
-      min_shen = -999999999
+      max_shen = -20000
       cost_gongxian = 100
     }
 
@@ -4156,7 +4154,7 @@ characters "wudu_qiyunao" {
         force = 150
       }
       min_gongxian = 200
-      min_shen = -999999999
+      max_shen = -35000
       cost_gongxian = 200
     }
 
@@ -4168,7 +4166,7 @@ characters "wudu_qiyunao" {
         force = 150
       }
       min_gongxian = 300
-      min_shen = -999999999
+      max_shen = -40000
       cost_gongxian = 300
     }
 
@@ -4180,11 +4178,46 @@ characters "wudu_qiyunao" {
       match = "dujing2"
       unique = true
       family = "五毒教"
+      # LPC ask_me：shen > -10000 / combat_exp < 100000 / poison > 119 三门槛
+      max_shen = -10000
+      min_combat_exp = 100000
+      max_skill_levels = {
+        poison = 119
+      }
+      max_shen_deny = "你是怎么搞的？连杀人都不会？"
+      min_exp_deny = "你现在经验太浅，不用忙着去阅读毒经。"
+      max_skill_deny = "你用毒的造诣已经不浅了，这毒经不看也罢。"
       vision_name = "齐云敖"
       success = "你拿去看吧，若有不解之处可以来问我。"
       already = "不就是你拿着么？怎么反倒问我来了？"
       family_deny = "你是哪里来的？跑来跟我罗嗦什么！"
     }
+
+    # LPC "中篇" 与 "毒经中篇" 同指 ask_me（毒经中篇），复制同一份 give_item 配置
+    中篇 = {
+      kind = "give_item"
+      item = "wudu:dujing2"
+      match = "dujing2"
+      unique = true
+      family = "五毒教"
+      max_shen = -10000
+      min_combat_exp = 100000
+      max_skill_levels = {
+        poison = 119
+      }
+      max_shen_deny = "你是怎么搞的？连杀人都不会？"
+      min_exp_deny = "你现在经验太浅，不用忙着去阅读毒经。"
+      max_skill_deny = "你用毒的造诣已经不浅了，这毒经不看也罢。"
+      vision_name = "齐云敖"
+      success = "你拿去看吧，若有不解之处可以来问我。"
+      already = "不就是你拿着么？怎么反倒问我来了？"
+      family_deny = "你是哪里来的？跑来跟我罗嗦什么！"
+    }
+    毒经 = "你是要毒经上篇、中篇还是下篇？"
+    上篇 = "这个…毒经上篇你去问炼毒室的道人要吧。"
+    毒经上篇 = "这个…毒经上篇你去问炼毒室的道人要吧。"
+    下篇 = "毒经下篇在教主手里，你去问她要吧。"
+    毒经下篇 = "毒经下篇在教主手里，你去问她要吧。"
   }
 
   # 随身装备（LPC carry_object("/d/wudu/npc/obj/jinyi")->wear()）

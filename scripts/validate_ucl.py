@@ -565,14 +565,16 @@ def _strip_comments(data):
     1-based line number still refers to the original data.
     """
     out = bytearray(data)
+    # 用累加偏移而不是 data.find(line)：同一行注释在文件里出现多次时
+    # find 只会命中第一处，后面的同名行不会被剥离（误报 elias-unlexable）。
+    offset = 0
     for line in data.split(b"\n"):
-        idx = data.find(line)
         hash_at = line.find(b"#")
-        if hash_at == -1:
-            continue
-        for pos in range(idx + hash_at, idx + len(line)):
-            if out[pos] != 0x0A:
-                out[pos] = 0x20
+        if hash_at != -1:
+            for pos in range(offset + hash_at, offset + len(line)):
+                if out[pos] != 0x0A:
+                    out[pos] = 0x20
+        offset += len(line) + 1
     return bytes(out)
 
 

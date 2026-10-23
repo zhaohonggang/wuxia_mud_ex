@@ -109,16 +109,24 @@ defmodule Kantele.World.RoomActions.Break do
   defp close_message({_seconds, message}), do: message
 
   @doc """
-  LPC `me->unconcious()`：内力清零 + 昏厥（置 qi/jing=0、安排复活、广播晕倒）。
+  LPC `me->unconcious()`（不动内力）：置 qi/jing=0、安排复活、广播晕倒。
   """
-  def pass_out(conn) do
-    conn = set_neili(conn, 0)
+  def unconcious(conn) do
     c = current(conn)
 
     case Damage.unconcious(c) do
       {:ok, new_c} -> put_character(conn, new_c)
       _ -> conn
     end
+  end
+
+  @doc """
+  LPC `me->unconcious()`：内力清零 + 昏厥（置 qi/jing=0、安排复活、广播晕倒）。
+  """
+  def pass_out(conn) do
+    conn
+    |> set_neili(0)
+    |> unconcious()
   end
 
   @doc "LPC `me->receive_wound(\"qi\", n)`：扣 qi（用于神峰甬道空手砸门）。"

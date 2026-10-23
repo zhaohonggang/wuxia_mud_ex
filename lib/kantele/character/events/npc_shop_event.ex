@@ -526,6 +526,8 @@ defmodule Kantele.Character.NpcAskEvent do
             npc_family: teach_family(conn.character),
             config: script,
             perform_id: perform_id,
+            # 问询键即中文绝招名（LPC tell_object(me, "你学会了「<键>」")）
+            perform_name: keyword,
             asker_id: asker_id
           }
         })

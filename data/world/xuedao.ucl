@@ -759,6 +759,37 @@ behavior_config = {
         }
       }
 
+      # LPC: create_family("血刀门", 5, "弟子") —— 门派身份供同门校验读取
+      # （SectMaster.inquiry_grant 走 meta.teach.family；缺省则不拦）。
+      # teach_skills 空：LPC 的 set_skill 只是 NPC 自身武功，不等于可传授清单。
+      teach = {
+        family = "血刀门"
+      }
+
+      # LPC: kungfu/class/xuedao/baoxiang.c ask_skill1 —— 红莲刀法「流星火雨」。
+      # fidelity 缺口：message_vision 演示描写 / command("bored"|"say") 台词未回填。
+      inquiries = {
+        流星火雨 = {
+          perform_id = "honglian-dao/huo"
+          skill = "honglian-dao"
+          min_gongxian = 80
+          max_shen = -8000
+          min_max_neili = 800
+          min_levels = {
+            force = 120
+            honglian_dao = 80
+          }
+          cost_gongxian = 80
+          maxed = "我不是都已经教过你了吗？"
+          family_deny = "你又不是我血刀门的，再罗嗦我宰了你！"
+          skill_deny = "你连红莲刀法都没学，还罗嗦什么？"
+          gongxian_deny = "老祖说了，咋们的绝技不传无功之人。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功修为实在太差，快去多练练再来。"
+          max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
+        }
+      }
+
       meta = {
         guarder = {
           family = "血刀门"
@@ -808,6 +839,35 @@ behavior_config = {
         }
         map_skill = {
           force = "mizong-neigong"
+        }
+      }
+
+      # LPC: create_family("血刀门", 5, "弟子") —— 门派身份供同门校验读取
+      teach = {
+        family = "血刀门"
+      }
+
+      # LPC: kungfu/class/xuedao/shengdi.c ask_skill1 —— 雪山刀法「冰河开封」。
+      # fidelity 缺口：message_vision 演示描写 / command("nod"|"say") 台词未回填。
+      inquiries = {
+        冰河开封 = {
+          perform_id = "xueshan-dao/kai"
+          skill = "xueshan-dao"
+          min_gongxian = 50
+          max_shen = -3000
+          min_max_neili = 600
+          min_levels = {
+            force = 100
+            xueshan_dao = 80
+          }
+          cost_gongxian = 50
+          maxed = "我不是都已经教过你了吗？"
+          family_deny = "你又不是我血刀门的，再罗嗦我宰了你！"
+          skill_deny = "你连雪山刀法都没学，还罗嗦什么？"
+          gongxian_deny = "老祖说了，咋们的绝技不传无功之人。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功修为实在太差，快去多练练再来。"
+          max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
         }
       }
 

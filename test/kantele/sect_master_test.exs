@@ -221,6 +221,33 @@ defmodule Kantele.SectMasterTest do
              Kantele.SectMaster.inquiry_grant(stats, %{}, yu_juehu_config())
   end
 
+  test "inquiry_grant/3：max_shen 上限（五毒 ask_skill1 shen > -20000 拒）" do
+    config = %{
+      "perform_id" => "xiewei-bian/tengshe",
+      "skill" => "xiewei-bian",
+      "min_levels" => %{"xiewei-bian" => 100},
+      "min_gongxian" => 100,
+      "max_shen" => -20_000,
+      "cost_gongxian" => 100
+    }
+
+    allowed = %Stats{
+      skills: %{"xiewei-bian" => 100},
+      gongxian: 100,
+      shen: -20_000,
+      performs: MapSet.new()
+    }
+
+    # LPC `shen > -20000` 才拒；恰好 -20000 可通过
+    assert Kantele.SectMaster.inquiry_grant(allowed, %{}, config) ==
+             {:ok, "xiewei-bian/tengshe", 100}
+
+    denied = %{allowed | shen: -19_999}
+
+    assert {:error, "像你这样心慈手软，就算学了这招也干不了大事！\n"} =
+             Kantele.SectMaster.inquiry_grant(denied, %{}, config)
+  end
+
   test "inquiry_grant/3：min_levels 技能门槛（yu.c force 180 / huzhua-shou 120）" do
     low_force = qualify_stats(%{skills: %{"huzhua-shou" => 120, "force" => 179}})
 
@@ -236,6 +263,138 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：缺 perform_id 时拒（配置不完整）" do
     assert {:error, "这门绝招暂不外传。\n"} =
              Kantele.SectMaster.inquiry_grant(qualify_stats(), %{}, %{"skill" => "huzhua-shou"})
+  end
+
+  # ---- min_max_neili 内力门槛 + *_deny 文案覆盖（P5-4at） ----
+  # 镜像 kungfu/class/{riyue/ren.c, honghua/wuchen.c, xuedao/*.c} 的
+  # `query("max_neili") < N` 分支；max_neili 由调用方从 meta.vitals 并入 stats。
+
+  defp neili_config(overrides \\ %{}) do
+    Map.merge(
+      %{
+        "perform_id" => "guzhuo-zhang/zhuo",
+        "skill" => "guzhuo-zhang",
+        "min_levels" => %{"guzhuo-zhang" => 150, "force" => 220},
+        "min_gongxian" => 600,
+        "max_shen" => -120_000,
+        "min_max_neili" => 1800,
+        "cost_gongxian" => 600
+      },
+      overrides
+    )
+  end
+
+  defp neili_player(overrides \\ %{}) do
+    Map.merge(
+      %Stats{
+        skills: %{"guzhuo-zhang" => 150, "force" => 220},
+        gongxian: 600,
+        shen: -150_000,
+        performs: MapSet.new()
+      },
+      overrides
+    )
+  end
+
+  test "inquiry_grant/3：min_max_neili 达标（LPC max_neili >= 1800）" do
+    player = neili_player(%{max_neili: 1800})
+
+    assert {:ok, "guzhuo-zhang/zhuo", 600} =
+             Kantele.SectMaster.inquiry_grant(player, %{}, neili_config())
+  end
+
+  test "inquiry_grant/3：min_max_neili 不足即拒（ren.c ask_skill3 内力分支）" do
+    player = neili_player(%{max_neili: 1799})
+
+    assert {:error, "你的内力修为不够，学不成这招。\n"} =
+             Kantele.SectMaster.inquiry_grant(player, %{}, neili_config())
+  end
+
+  test "inquiry_grant/3：缺 min_max_neili 键不拦（老配置不受影响）" do
+    player = neili_player(%{max_neili: 0})
+
+    assert {:ok, "guzhuo-zhang/zhuo", 600} =
+             Kantele.SectMaster.inquiry_grant(
+               player,
+               %{},
+               Map.delete(neili_config(), "min_max_neili")
+             )
+  end
+
+  test "inquiry_grant/3：max_neili 缺省按 0 计（调用方未并入 vitals 时从严）" do
+    assert {:error, "你的内力修为不够，学不成这招。\n"} =
+             Kantele.SectMaster.inquiry_grant(neili_player(), %{}, neili_config())
+  end
+
+  test "inquiry_grant/3：max_neili 经 %Stats{} 归一后仍在（Map.from_struct 不丢键）" do
+    # 调用方 stats_with_family/1 把 vitals.max_neili 补进 %Stats{} 再传进来
+    player = Map.put(neili_player(), :max_neili, 3600)
+
+    assert {:ok, "guzhuo-zhang/zhuo", 600} =
+             Kantele.SectMaster.inquiry_grant(player, %{}, neili_config())
+  end
+
+  test "inquiry_grant/3：*_deny 键逐条覆盖通用文案（门派问询每招文案不同）" do
+    config =
+      neili_config(%{
+        "maxed" => "这一招我不是已经教过你了吗？",
+        "family_deny" => "你又不是我日月神教的，跑来捣什么乱？",
+        "skill_deny" => "你连古拙掌法都没学，还谈什么绝招可言？",
+        "max_shen_deny" => "你这样心慈手软，就算学会这招又有什么用？",
+        "gongxian_deny" => "你在教内甚无作为，这招我暂时还不能传你。",
+        "level_deny" => "你的古拙掌法还练得不到家，自己下去练练再来吧！",
+        "max_neili_deny" => "你的内力太差，怎么修炼上乘武功？"
+      })
+
+    assert {:error, "这一招我不是已经教过你了吗？"} =
+             Kantele.SectMaster.inquiry_grant(
+               neili_player(%{performs: MapSet.new(["guzhuo-zhang/zhuo"]), max_neili: 3600}),
+               %{},
+               config
+             )
+
+    assert {:error, "你又不是我日月神教的，跑来捣什么乱？"} =
+             Kantele.SectMaster.inquiry_grant(
+               neili_player(%{max_neili: 3600}) |> Map.from_struct() |> Map.put(:family, "峨眉派"),
+               %{family: "日月神教"},
+               config
+             )
+
+    assert {:error, "你连古拙掌法都没学，还谈什么绝招可言？"} =
+             Kantele.SectMaster.inquiry_grant(
+               neili_player(%{skills: %{"guzhuo-zhang" => 0, "force" => 220}, max_neili: 3600}),
+               %{},
+               config
+             )
+
+    assert {:error, "你这样心慈手软，就算学会这招又有什么用？"} =
+             Kantele.SectMaster.inquiry_grant(
+               neili_player(%{shen: -119_999, max_neili: 3600}),
+               %{},
+               config
+             )
+
+    assert {:error, "你在教内甚无作为，这招我暂时还不能传你。"} =
+             Kantele.SectMaster.inquiry_grant(
+               neili_player(%{gongxian: 599, max_neili: 3600}),
+               %{},
+               config
+             )
+
+    assert {:error, "你的古拙掌法还练得不到家，自己下去练练再来吧！"} =
+             Kantele.SectMaster.inquiry_grant(
+               neili_player(%{skills: %{"guzhuo-zhang" => 149, "force" => 220}, max_neili: 3600}),
+               %{},
+               config
+             )
+
+    assert {:error, "你的内力太差，怎么修炼上乘武功？"} =
+             Kantele.SectMaster.inquiry_grant(neili_player(%{max_neili: 1799}), %{}, config)
+  end
+
+  test "inquiry_grant/3：未提供 *_deny 时仍走通用文案（回归）" do
+    assert {:error, "你的内力修为不够，学不成这招。\n"} =
+             Kantele.SectMaster.inquiry_grant(neili_player(%{max_neili: 0}), %{}, neili_config())
   end
 
   # ---- wudang_zhang ask_skill1..11 → perform_id 门槛测试（kungfu/class/wudang/zhang.c） ----
@@ -288,7 +447,15 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudang 鹤嘴劲 — 未习核心技能拒绝" do
     assert {:error, "你连taiji-shengong都没学，还谈什么绝招可言？\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudang_player(%{skills: %{"taiji-shengong" => 0, "taiji-quan" => 420, "taiji-jian" => 420, "taoism" => 400, "force" => 420}}),
+               wudang_player(%{
+                 skills: %{
+                   "taiji-shengong" => 0,
+                   "taiji-quan" => 420,
+                   "taiji-jian" => 420,
+                   "taoism" => 400,
+                   "force" => 420
+                 }
+               }),
                %{family: "武当派"},
                cfg_dian()
              )
@@ -315,7 +482,15 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudang 鹤嘴劲 — min_levels 不足拒绝" do
     assert {:error, "你的修为还不够，练高了再来吧。\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudang_player(%{skills: %{"taiji-shengong" => 99, "taiji-quan" => 420, "taiji-jian" => 420, "taoism" => 400, "force" => 420}}),
+               wudang_player(%{
+                 skills: %{
+                   "taiji-shengong" => 99,
+                   "taiji-quan" => 420,
+                   "taiji-jian" => 420,
+                   "taoism" => 400,
+                   "force" => 420
+                 }
+               }),
                %{family: "武当派"},
                cfg_dian()
              )
@@ -415,7 +590,13 @@ defmodule Kantele.SectMasterTest do
              Kantele.SectMaster.inquiry_grant(
                wudang_player(%{
                  shen: 300_000,
-                 skills: %{"taiji-quan" => 249, "taiji-shengong" => 420, "taiji-jian" => 420, "taoism" => 400, "force" => 420}
+                 skills: %{
+                   "taiji-quan" => 249,
+                   "taiji-shengong" => 420,
+                   "taiji-jian" => 420,
+                   "taoism" => 400,
+                   "force" => 420
+                 }
                }),
                %{family: "武当派"},
                cfg_tu()
@@ -508,9 +689,22 @@ defmodule Kantele.SectMasterTest do
   end
 
   test "inquiry_grant/3：wudang 11 门 ask_skill 已会则不重复授予（can_perform 分支）" do
-    for cfg <- [cfg_dian(), cfg_zhen(), cfg_yin(), cfg_ji(), cfg_zhan(), cfg_tu(), cfg_chan(), cfg_sui(), cfg_jia(), cfg_zhuan(), cfg_zhenwu()] do
+    for cfg <- [
+          cfg_dian(),
+          cfg_zhen(),
+          cfg_yin(),
+          cfg_ji(),
+          cfg_zhan(),
+          cfg_tu(),
+          cfg_chan(),
+          cfg_sui(),
+          cfg_jia(),
+          cfg_zhuan(),
+          cfg_zhenwu()
+        ] do
       perform_id = Map.get(cfg, "perform_id")
       stats = wudang_player(%{performs: MapSet.new([perform_id])})
+
       assert {:error, "这一招你不是已经会了吗？\n"} =
                Kantele.SectMaster.inquiry_grant(stats, %{family: "武当派"}, cfg)
     end
@@ -582,7 +776,14 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudu 腾蛇诀 — 未习核心技能拒绝" do
     assert {:error, "你连xiewei-bian都没学，还谈什么绝招可言？\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudu_player(%{skills: %{"xiewei-bian" => 0, "tianchan-zhang" => 200, "wusheng-zhao" => 200, "force" => 220}}),
+               wudu_player(%{
+                 skills: %{
+                   "xiewei-bian" => 0,
+                   "tianchan-zhang" => 200,
+                   "wusheng-zhao" => 200,
+                   "force" => 220
+                 }
+               }),
                %{family: "五毒教"},
                cfg_tengshe()
              )
@@ -600,7 +801,14 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudu 腾蛇诀 — min_levels 不足拒绝" do
     assert {:error, "你的修为还不够，练高了再来吧。\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudu_player(%{skills: %{"xiewei-bian" => 99, "tianchan-zhang" => 200, "wusheng-zhao" => 200, "force" => 220}}),
+               wudu_player(%{
+                 skills: %{
+                   "xiewei-bian" => 99,
+                   "tianchan-zhang" => 200,
+                   "wusheng-zhao" => 200,
+                   "force" => 220
+                 }
+               }),
                %{family: "五毒教"},
                cfg_tengshe()
              )
@@ -638,7 +846,14 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudu 毒蟾掌 — 未习核心技能拒绝" do
     assert {:error, "你连tianchan-zhang都没学，还谈什么绝招可言？\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudu_player(%{skills: %{"xiewei-bian" => 180, "tianchan-zhang" => 0, "wusheng-zhao" => 200, "force" => 220}}),
+               wudu_player(%{
+                 skills: %{
+                   "xiewei-bian" => 180,
+                   "tianchan-zhang" => 0,
+                   "wusheng-zhao" => 200,
+                   "force" => 220
+                 }
+               }),
                %{family: "五毒教"},
                cfg_tianchan()
              )
@@ -656,7 +871,14 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudu 毒蟾掌 — min_levels 不足拒绝" do
     assert {:error, "你的修为还不够，练高了再来吧。\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudu_player(%{skills: %{"xiewei-bian" => 180, "tianchan-zhang" => 119, "wusheng-zhao" => 200, "force" => 150}}),
+               wudu_player(%{
+                 skills: %{
+                   "xiewei-bian" => 180,
+                   "tianchan-zhang" => 119,
+                   "wusheng-zhao" => 200,
+                   "force" => 150
+                 }
+               }),
                %{family: "五毒教"},
                cfg_tianchan()
              )
@@ -691,7 +913,14 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudu 夺命连环 — 未习核心技能拒绝" do
     assert {:error, "你连wusheng-zhao都没学，还谈什么绝招可言？\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudu_player(%{skills: %{"xiewei-bian" => 180, "tianchan-zhang" => 200, "wusheng-zhao" => 0, "force" => 220}}),
+               wudu_player(%{
+                 skills: %{
+                   "xiewei-bian" => 180,
+                   "tianchan-zhang" => 200,
+                   "wusheng-zhao" => 0,
+                   "force" => 220
+                 }
+               }),
                %{family: "五毒教"},
                cfg_lian()
              )
@@ -709,7 +938,14 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudu 夺命连环 — min_levels 不足拒绝" do
     assert {:error, "你的修为还不够，练高了再来吧。\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudu_player(%{skills: %{"xiewei-bian" => 180, "tianchan-zhang" => 200, "wusheng-zhao" => 119, "force" => 150}}),
+               wudu_player(%{
+                 skills: %{
+                   "xiewei-bian" => 180,
+                   "tianchan-zhang" => 200,
+                   "wusheng-zhao" => 119,
+                   "force" => 150
+                 }
+               }),
                %{family: "五毒教"},
                cfg_lian()
              )
@@ -719,6 +955,7 @@ defmodule Kantele.SectMasterTest do
     for cfg <- [cfg_tengshe(), cfg_tianchan(), cfg_lian()] do
       perform_id = Map.get(cfg, "perform_id")
       stats = wudu_player(%{performs: MapSet.new([perform_id])})
+
       assert {:error, "这一招你不是已经会了吗？\n"} =
                Kantele.SectMaster.inquiry_grant(stats, %{family: "五毒教"}, cfg)
     end
@@ -750,10 +987,10 @@ defmodule Kantele.SectMasterTest do
 
   test "inquiry_grant/3：wudang 谁与争锋（yitian-zhang/zheng）全门槛达标 → {:ok}" do
     assert Kantele.SectMaster.inquiry_grant(
-      wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "yitian-zhang", 150)}),
-      %{family: "武当派"},
-      cfg_shan()
-    ) == {:ok, "yitian-zhang/zheng", 200}
+             wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "yitian-zhang", 150)}),
+             %{family: "武当派"},
+             cfg_shan()
+           ) == {:ok, "yitian-zhang/zheng", 200}
   end
 
   test "inquiry_grant/3：wudang 谁与争锋 — 非同门拒绝" do
@@ -778,7 +1015,9 @@ defmodule Kantele.SectMasterTest do
   # 否则会先撞上「你连yitian-zhang都没学」（`inquiry_grant/3` 的检查顺序：
   # 已会 → 同门 → 必修技能 → 贡献 → 杀气 → min_levels）。
   defp shan_learned(overrides) do
-    wudang_ask_me_player(Map.put(overrides, :skills, Map.put(wudang_player().skills, "yitian-zhang", 150)))
+    wudang_ask_me_player(
+      Map.put(overrides, :skills, Map.put(wudang_player().skills, "yitian-zhang", 150))
+    )
   end
 
   test "inquiry_grant/3：wudang 谁与争锋 — gongxian 不足拒绝" do
@@ -802,7 +1041,9 @@ defmodule Kantele.SectMasterTest do
   test "inquiry_grant/3：wudang 谁与争锋 — min_levels 不足拒绝" do
     assert {:error, "你的修为还不够，练高了再来吧。\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "yitian-zhang", 119)}),
+               wudang_ask_me_player(%{
+                 skills: Map.put(wudang_player().skills, "yitian-zhang", 119)
+               }),
                %{family: "武当派"},
                cfg_shan()
              )
@@ -822,10 +1063,10 @@ defmodule Kantele.SectMasterTest do
 
   test "inquiry_grant/3：wudang 乱环诀（xuanxu-dao/huan）全门槛达标 → {:ok}" do
     assert Kantele.SectMaster.inquiry_grant(
-      wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "xuanxu-dao", 150)}),
-      %{family: "武当派"},
-      cfg_xi()
-    ) == {:ok, "xuanxu-dao/huan", 150}
+             wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "xuanxu-dao", 150)}),
+             %{family: "武当派"},
+             cfg_xi()
+           ) == {:ok, "xuanxu-dao/huan", 150}
   end
 
   test "inquiry_grant/3：wudang 乱环诀 — gongxian 不足拒绝" do
@@ -866,16 +1107,27 @@ defmodule Kantele.SectMasterTest do
 
   test "inquiry_grant/3：wudang 柔月穿空（raozhi-roujian/chuankong）全门槛达标 → {:ok}" do
     assert Kantele.SectMaster.inquiry_grant(
-      wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "raozhi-roujian", 150)}),
-      %{family: "武当派"},
-      cfg_chuankong()
-    ) == {:ok, "raozhi-roujian/chuankong", 250}
+             wudang_ask_me_player(%{
+               skills: Map.put(wudang_player().skills, "raozhi-roujian", 150)
+             }),
+             %{family: "武当派"},
+             cfg_chuankong()
+           ) == {:ok, "raozhi-roujian/chuankong", 250}
   end
 
   test "inquiry_grant/3：wudang 柔月穿空 — 多项 min_levels 任一不足拒绝" do
     assert {:error, "你的修为还不够，练高了再来吧。\n"} =
              Kantele.SectMaster.inquiry_grant(
-               wudang_ask_me_player(%{skills: %{"taiji-shengong" => 420, "taiji-quan" => 420, "taiji-jian" => 420, "taoism" => 400, "force" => 149, "raozhi-roujian" => 150}}),
+               wudang_ask_me_player(%{
+                 skills: %{
+                   "taiji-shengong" => 420,
+                   "taiji-quan" => 420,
+                   "taiji-jian" => 420,
+                   "taoism" => 400,
+                   "force" => 149,
+                   "raozhi-roujian" => 150
+                 }
+               }),
                %{family: "武当派"},
                cfg_chuankong()
              )
@@ -888,17 +1140,17 @@ defmodule Kantele.SectMasterTest do
       "skill" => "huzhua-shou",
       "min_levels" => %{"huzhua-shou" => 120, "force" => 180},
       "min_gongxian" => 400,
-      "min_shen" => 100000,
+      "min_shen" => 100_000,
       "cost_gongxian" => 400
     }
   end
 
   test "inquiry_grant/3：wudang 绝户神抓（huzhua-shou/juehu）全门槛达标 → {:ok}" do
     assert Kantele.SectMaster.inquiry_grant(
-      wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "huzhua-shou", 150)}),
-      %{family: "武当派"},
-      cfg_yu()
-    ) == {:ok, "huzhua-shou/juehu", 400}
+             wudang_ask_me_player(%{skills: Map.put(wudang_player().skills, "huzhua-shou", 150)}),
+             %{family: "武当派"},
+             cfg_yu()
+           ) == {:ok, "huzhua-shou/juehu", 400}
   end
 
   test "inquiry_grant/3：wudang 绝户神抓 — shen 不足拒绝" do
@@ -918,6 +1170,7 @@ defmodule Kantele.SectMasterTest do
     for cfg <- [cfg_shan(), cfg_xi(), cfg_chuankong(), cfg_yu()] do
       perform_id = Map.get(cfg, "perform_id")
       stats = wudang_ask_me_player(%{performs: MapSet.new([perform_id])})
+
       assert {:error, "这一招你不是已经会了吗？\n"} =
                Kantele.SectMaster.inquiry_grant(stats, %{family: "武当派"}, cfg)
     end

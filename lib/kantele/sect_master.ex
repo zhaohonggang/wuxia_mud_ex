@@ -93,8 +93,17 @@ defmodule Kantele.SectMaster do
     - `"perform_id"` 授予的绝招 id（如 `"huzhua-shou/juehu"`）
     - `"skill"` 必修技能（等级 < 1 即拒，对应 yu.c「连…都没学」）
     - `"min_levels"` 额外技能门槛 `%{技能 => 等级}`（yu.c 的 force 180 / huzhua-shou 120）
-    - `"min_gongxian"` / `"min_shen"` 贡献（400）/ 杀气（100000）门槛
+    - `"min_gongxian"` / `"min_shen"` 贡献（400）/ 杀气下限（100000）门槛
+    - `"max_shen"` 杀气上限（阴毒门派，如五毒 `shen > -20000` 即拒）
     - `"cost_gongxian"` 授予后扣除的贡献（400）
+    - `"min_max_neili"` 内力上限门槛（LPC `query("max_neili") < N` 即拒）；
+      玩家侧 `max_neili` 由调用方从 `meta.vitals` 并入 stats map 后传入
+
+  各门槛的拒绝文案可用同名 `*_deny` 键覆盖（`maxed` / `family_deny` /
+  `skill_deny` / `max_shen_deny` / `gongxian_deny` / `shen_deny` /
+  `level_deny` / `max_neili_deny` / `perform_deny`），缺省用通用文案。
+  门派问询的 LPC 文案每招每NPC 都不同（如血刀门「再罗嗦我宰了你」），
+  故按配置回填而不是写死在引擎里。
 
   同门校验：`player_stats`/`npc_stats` 若带 `:family` 则比较，缺失则不拦（yu.c
   「不是我们武当派的人」分支）。入参可为 `%Stats{}` 或等形 map（跨进程宿主由
@@ -111,33 +120,51 @@ defmodule Kantele.SectMaster do
     skill = Map.get(config, "skill")
     cost = Map.get(config, "cost_gongxian", 0) || 0
     min_gongxian = Map.get(config, "min_gongxian", 0) || 0
-    min_shen = Map.get(config, "min_shen", 0) || 0
+    min_shen = Map.get(config, "min_shen")
+    max_shen = Map.get(config, "max_shen")
     min_levels = Map.get(config, "min_levels", %{}) || %{}
 
     cond do
       is_nil(perform_id) ->
-        {:error, "这门绝招暂不外传。\n"}
+        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
 
       perform_known?(player, perform_id) ->
-        {:error, "这一招你不是已经会了吗？\n"}
+        {:error, deny(config, "maxed", "这一招你不是已经会了吗？\n")}
 
       not same_family?(player, npc) ->
-        {:error, "你我并非同门，何来讨教绝招之说？\n"}
+        {:error, deny(config, "family_deny", "你我并非同门，何来讨教绝招之说？\n")}
 
       is_binary(skill) and skill_level_of(player, skill) < 1 ->
-        {:error, "你连#{skill}都没学，还谈什么绝招可言？\n"}
+        {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？\n")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error, deny(config, "max_shen_deny", "像你这样心慈手软，就算学了这招也干不了大事！\n")}
 
       stat(player, :gongxian) < min_gongxian ->
-        {:error, "你为本派效力还不够，这招我先不忙传你。\n"}
+        {:error, deny(config, "gongxian_deny", "你为本派效力还不够，这招我先不忙传你。\n")}
 
-      stat(player, :shen) < min_shen ->
-        {:error, "这一招太过阴恨，若被你用去我恐怕不放心！\n"}
+      is_integer(min_shen) and stat(player, :shen) < min_shen ->
+        {:error, deny(config, "shen_deny", "这一招太过阴恨，若被你用去我恐怕不放心！\n")}
 
       not meets_levels?(player, min_levels) ->
-        {:error, "你的修为还不够，练高了再来吧。\n"}
+        {:error, deny(config, "level_deny", "你的修为还不够，练高了再来吧。\n")}
+
+      below_max_neili?(player, config) ->
+        {:error, deny(config, "max_neili_deny", "你的内力修为不够，学不成这招。\n")}
 
       true ->
         {:ok, perform_id, cost}
+    end
+  end
+
+  # 配置覆盖的拒绝文案；缺省走通用文案
+  defp deny(config, key, default), do: Map.get(config, key) || default
+
+  # LPC `query("max_neili") < N`：缺 key 不拦；玩家侧未并入 max_neili 时按 0 计
+  defp below_max_neili?(player, config) do
+    case Map.get(config, "min_max_neili") do
+      min when is_integer(min) -> stat(player, :max_neili) < min
+      _ -> false
     end
   end
 
@@ -195,8 +222,14 @@ defmodule Kantele.SectMaster do
 
   # ---- inquiry_grant 内部（%Stats{} / map 归一为 map，family 走 Map.get） ----
 
-  defp normalize_stats(%Stats{} = stats),
-    do: stats |> Map.from_struct() |> Map.put(:family, Map.get(stats, :family))
+  # `Map.from_struct/1` 会丢掉调用方补的非结构体键（:family / :max_neili），
+  # 故归一后把这两个键显式搬回来（缺省 nil 由同门/内力门控自己判「不拦」）。
+  defp normalize_stats(%Stats{} = stats) do
+    stats
+    |> Map.from_struct()
+    |> Map.put(:family, Map.get(stats, :family))
+    |> Map.put(:max_neili, Map.get(stats, :max_neili))
+  end
 
   defp normalize_stats(%{} = stats), do: stats
   defp normalize_stats(_), do: %{}

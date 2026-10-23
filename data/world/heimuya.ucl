@@ -3022,8 +3022,117 @@ item_desc = {
         }
       }
 
+      # LPC: kungfu/class/riyue/ren.c ask_skill1..5 —— 五门绝招问答授艺。
+      # 门派同门校验走 SectMaster.inquiry_grant（NPC 侧 teach.family = 日月神教）。
+      # 每门：gongxian >= N + shen <= -N（max_shen）+ min_levels + 扣 gongxian。
+      # fidelity 缺口（LPC 有、引擎无对应物，均不影响门控语义）：
+      #   - ask_skill5 的「须先会 guzhuo-zhang/zhuo 与 yu」前置绝招条件未进管线；
+      #   - message_sort 的演示描写 / command("say") 台词未回填（走通用学会文案）；
+      #   - LPC 的 force 与绝招技能各有独立等级拒绝文案，此处合用一条 level_deny
+      #     （取 LPC 先判的 force 文案）。
+      inquiries = {
+        天地归元 = {
+          perform_id = "yuanshi-jian/gui"
+          skill = "yuanshi-jian"
+          min_gongxian = 500
+          max_shen = -120000
+          min_levels = {
+            force = 200
+            yuanshi_jian = 140
+          }
+          cost_gongxian = 500
+          maxed = "这一招我不是已经教过你了吗？"
+          family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+          skill_deny = "你连原始剑法都没学，还谈什么绝招可言？"
+          gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+        }
+
+        天旋地转 = {
+          perform_id = "yuanshi-jian/xuan"
+          skill = "yuanshi-jian"
+          min_gongxian = 1400
+          max_shen = -130000
+          min_levels = {
+            force = 260
+            yuanshi_jian = 180
+          }
+          cost_gongxian = 1400
+          maxed = "这一招我不是已经教过你了吗？"
+          family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+          skill_deny = "你连原始剑法都没学，还谈什么绝招可言？"
+          gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+        }
+
+        大巧若拙 = {
+          perform_id = "guzhuo-zhang/zhuo"
+          skill = "guzhuo-zhang"
+          min_gongxian = 600
+          max_shen = -120000
+          min_max_neili = 1800
+          min_levels = {
+            force = 220
+            guzhuo_zhang = 150
+          }
+          cost_gongxian = 600
+          maxed = "这一招我不是已经教过你了吗？"
+          family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+          skill_deny = "你连古拙掌法都没学，何谈绝招可言？"
+          gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          max_neili_deny = "你的内力太差，怎么修炼上乘武功？"
+        }
+
+        大智若愚 = {
+          perform_id = "guzhuo-zhang/yu"
+          skill = "guzhuo-zhang"
+          min_gongxian = 1200
+          max_shen = -150000
+          min_max_neili = 2800
+          min_levels = {
+            force = 260
+            guzhuo_zhang = 180
+          }
+          cost_gongxian = 1200
+          maxed = "这一招我不是已经教过你了吗？"
+          family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+          skill_deny = "你连古拙掌法都没学，何谈绝招可言？"
+          gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          max_neili_deny = "你的内力太差，怎么修炼上乘武功？"
+        }
+
+        反璞归真 = {
+          perform_id = "guzhuo-zhang/zhen"
+          skill = "guzhuo-zhang"
+          min_gongxian = 2200
+          max_shen = -200000
+          min_max_neili = 3600
+          min_levels = {
+            force = 300
+            guzhuo_zhang = 220
+          }
+          cost_gongxian = 2200
+          maxed = "这一招我不是已经教过你了吗？"
+          family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+          skill_deny = "你连古拙掌法都没学，何谈绝招可言？"
+          gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+          max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          max_neili_deny = "你的内力太差，怎么修炼上乘武功？"
+        }
+      }
+
       # LPC: kungfu/class/riyue/ren.c
-      #   create_family("日月神教", 13, "教主")
+      #   create_family("日月神教", 13, "教主") —— 门派身份供同门校验/授技读取
+      teach = {
+        family = "日月神教"
+      }
       #   carry_object("/d/heimuya/npc/obj/zaohong")
     }
 

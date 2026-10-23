@@ -878,3 +878,85 @@ set("skill", ([ "name": skills[i], ... ]));
 - `jueqing/house`：两分支内容完全相同（均为 2× `/d/gumu/obj/fengmi`，原
   `/kungfu/class/gumu/yang` 行是注释），转换器折叠回单一 `room_items` ——
   随机选一支等于选那一支，无行为差异，属无损表示。
+---
+
+## 十五、NPC 问询（`set("inquiry")`）闭合度survey 与两批回填 🟢
+
+**工具**：`scripts/survey_inquiry_closures.py`（全库扫描 LPC `set("inquiry")`
+→ 分类 → 与 Elixir UCL 的 `inquiries` 逐键比对，产出 `tmp/inquiry_survey.json`）。
+`scripts/backfill_inquiry_strings.py`（纯字符串条目批量回填，dry-run /
+`--apply` / 备份 / 幂等）。
+
+### survey 修过的 5 个自身 Bug（都会造成误报）
+
+1. ** inquiries 块正则非贪婪**：`inquiries\s*=\s*\{(.*?)\n\s*\}` 停在第一个
+   内层条目的收括号，每个 NPC 只看到第一条问询。改为花括号配平 + 逐行深度扫描。
+2. **NPC 定位**：LPC 文件名用连字符（`a-xiu`）、UCL 键用下划线（`a_xiu`）；
+   短键跨区撞车（`kungfu/class/emei/ji.c` 的 "ji" 单点命中 `shenfeng/ji`）。
+   现按「宿主区一致 → 中文名唯一 → 文件名键唯一」三级解析，**键类候选必须
+   有区名背书**，名字类才允许唯一命中。
+3. **`kungfu/class/**` 门派师父无区可依**：它们不在世界里，靠各区练功房
+   `CLASS_D("<sect>")+"/<npc>"` 克隆进场，转换器把被克隆者**内联进宿主区**。
+   新增 `SECT_ZONE_ALIAS`（由全库 `CLASS_D` 引用统计得出，riyue→heimuya、
+   miao→zhongzhou、hu→guanwai 等 38 项）。
+4. **同区同名 NPC 歧义**（`wuguan` 的 `guanjia5`/`guanjia6` 都叫「菜园管事」）：
+   区名过滤后任意取第一个会错比，改为文件名键优先。
+5. **块内最后一条字符串条目被漏**：`STRING_ENTRY` 的 lookahead 要求后面跟
+   `"` 或 `]`，而 `INQUIRY_BLOCK` 捕获把结尾 `]` 吃掉了 → 每个表的末条
+   （如 `miao.c` 的「胡一刀」）都不计数。lookahead 增加 `\s*$` 分支；
+   条目后紧跟 LPC 注释行的（`taohua/huang.c` 的「无常丹」）由回填脚本的
+   `EXTRA` 表手工补齐。
+
+### 已回填（两批，共 68 键 / 17 个 NPC）
+
+**第一批（P5-4at，`ask_skillN` 绝招 + give_item）**：任我行 5 门、无尘道长 3 门、
+宝象 1 门、胜谛 1 门、齐云敖 3 门 + 毒经中篇（give_item）、平四 4 条文本。
+引擎侧新增 `SectMaster` 的 `min_max_neili` 门控与 7 个 `*_deny` 文案覆写键。
+
+**第二批（本批，纯字符串 55 键 / 12 NPC）**：封不平 4、劳德诺 2、张淡月 5、
+齐云敖 5、石破天 6、南贤 2、武修文 2、苗人凤 4、黄药师 13、商剑鸣 1、
+干将 5、莫邪 4（另有石破天 2 条、菜园管事「浇水/锄草」2 条转换器本就转了）。
+
+### 剩余缺口（survey 现状：**92 键 / 11 NPC，text-backfillable 0**）
+
+全部是**闭包**条目，需要逐 NPC 读 LPC 移植：
+
+| NPC | 键数 | 内容 |
+|---|---|---|
+| `taohua/huang` 黄药师 | 21 | ask_skill1..10 绝招 + 4 本 ask_book + 离岛/玉箫/九阴神指/神掌/神手 + 阴阳八卦 |
+| `adm/npc/moye` 莫邪 | 24 | 炼器系统（炼制/铸剑/炼X 一整套 ask_* 闭包） |
+| `miao/miao` 苗人凤 | 15 | ask_skill1..10 + 剑谱上/下册（ask_jianpu1/2） |
+| `shang/ming` 商剑鸣 | 9 | ask_skill* |
+| `adm/npc/ganjiang` 干将 | 5 | 炼器系统 |
+| `wudang/zhang` 张三丰 | 5 | 太极图 prerequisite 链（`max_jingli`/`potential`/`can_perform` 未进管线） |
+| `riyue/sang` 桑三娘 | 4 | ask_skill* |
+| `hu/pingsi` 平四 | 3 | 出关/办事/出去 —— 「传送服务」非问答，引擎无对应 kind，**有意不回填** |
+| `quanzhen/liu` 刘处玄 | 2 | ask_skill* |
+| `adm/npc/qingyangzi` 青阳子 | 2 | 传闻系统 |
+| `d/lingxiao/npc/cheng` | 2 | LPC 自身缺陷：`new("/d/lingxiao/obj/yupai")` 目标文件不存在，运行期即报错 |
+
+另有 14 个文件是「NPC 未移植」（纪晓芙、单正、鸠摩智、独孤求败、霍山、
+葵花太监、北丑、鲁班、子虚等），问询键随角色一并缺失。
+
+### 已知 LPC 缺陷（survey 内置 `KNOWN_LPC_DEAD`，不追）
+
+- `xiangyang/wuxiuwen`：`set("inquiry")` 二次调用整体覆盖首表
+  （`dbase.c` 的 `set()` 是覆盖语义），首表 6 键是死代码。
+- `lingxiao/cheng`：`new("/d/lingxiao/obj/yupai")` 指向不存在的文件。
+
+### 有意不回填
+
+- `d/minimal_world/**`（柳溪镇 dev-target 区）：Elixir 侧叫 `liuxi` 且内容已
+  演化（玉佩问询变成 `turn_in` quest、店小二文案重写），survey 整区跳过。
+- `adm/npc/{ganjiang,moye,nanxian,qingyangzi,beichou,luban,zixu}` 的系统级
+  功能（炼器/传闻/刺青/建房）超出问答范畴。
+
+### ⚠️ 遗留数据问题：同一 NPC 在「区副本 + clone_lib 原型」各一份
+
+`taohua:dating` 的 `room_characters` 同时引用 `characters.huangyaoshi.id`
+（区副本，本批回填的 13 条字符串）与 `characters.taohua_huang.id`
+（clone_lib 原型，34 键但 21 条是转换器的 `" inquire about X (unimplemented)"`
+占位）。LPC `d/taohua/dating.c` 只列 `/kungfu/class/taohua/huang` 一份，
+所以这是转换器的重复内联。全库 `room_characters` 有 762/3437 处引用
+clone_lib 独有角色（多数是故意的通用 NPC），但**同名同房**的重复需要逐个排。
+下一步移植黄药师 21 个闭包时应落在玩家真正碰到的那份上，并考虑去掉重复引用。

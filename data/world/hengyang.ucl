@@ -1275,6 +1275,10 @@ item_desc = {
  bi = "光突突的峭壁上垂下数根长腾(teng)。"
  teng = "看来很结实，可做攀爬之用。"
 }
+  actions = {
+    climb = "do_climb"
+    pa = "do_climb"
+  }
     }
 
   room_exits "outzhushendong" {
@@ -1294,6 +1298,12 @@ item_desc = {
 item_desc = {
  stone = "只见突石怪异嶙峋，水流正好顺其而下。石头上面却已经长满了青苔。"
 }
+  actions = {
+    climb = "do_climb"
+    jump = "do_tiao"
+    pa = "do_climb"
+    tiao = "do_tiao"
+  }
     }
   room_exits "outzigai" {
     room_id = rooms.outzigai.id
@@ -1831,6 +1841,10 @@ direction = "down"
 item_desc = {
  pubu = "只见瀑布飞泻而下，气势磅礴，景致壮观，下面却是万丈深渊， 一望无底，水莲洞却偏偏生瀑布之后。"
 }
+  actions = {
+    jump = "do_tiao"
+    tiao = "do_tiao"
+  }
     }
 
   room_exits "shuiliandong" {
@@ -2056,6 +2070,10 @@ item_desc = {
  teng = "这根树藤看起来很结实，可以用它爬(climb)上悬崖。"
  tree = "参天古树，树干粗大结实，但是有根树枝已经被折断了。"
 }
+  actions = {
+    climb = "do_climb"
+    pa = "do_climb"
+  }
     }
   room_exits "xuanyadi" {
     room_id = rooms.xuanyadi.id

@@ -265,6 +265,94 @@ defmodule Kantele.Character.NpcScriptEventTest do
       assert output_text(conn) =~ "与本派素无来往"
       refute_receive %Event{topic: "npc/inquiry_consume"}, 100
     end
+
+    test "杀气上限（五毒 ask_me shen > -10000 拒）" do
+      config =
+        Map.merge(give_config(), %{
+          "max_shen" => -10_000,
+          "max_shen_deny" => "你是怎么搞的？连杀人都不会？"
+        })
+
+      denied =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{shen: -9_999})),
+          inquiry_event(config)
+        )
+
+      assert denied.private.update_character == nil
+      assert output_text(denied) =~ "连杀人都不会"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      # 恰好 -10000 可通过（LPC `shen > -10000` 才拒）
+      allowed =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{shen: -10_000})),
+          inquiry_event(config)
+        )
+
+      assert Enum.any?(
+               allowed.private.update_character.inventory,
+               &(&1.item_id == "shaolin:huwan")
+             )
+    end
+
+    test "经验下限（五毒 ask_me combat_exp < 100000 拒）" do
+      config =
+        Map.merge(give_config(), %{
+          "min_combat_exp" => 100_000,
+          "min_exp_deny" => "你现在经验太浅，不用忙着去阅读毒经。"
+        })
+
+      denied =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{combat_exp: 99_999})),
+          inquiry_event(config)
+        )
+
+      assert denied.private.update_character == nil
+      assert output_text(denied) =~ "经验太浅"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      allowed =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{combat_exp: 100_000})),
+          inquiry_event(config)
+        )
+
+      assert Enum.any?(
+               allowed.private.update_character.inventory,
+               &(&1.item_id == "shaolin:huwan")
+             )
+    end
+
+    test "技能上限（五毒 ask_me poison > 119 拒）" do
+      config =
+        Map.merge(give_config(), %{
+          "max_skill_levels" => %{"poison" => 119},
+          "max_skill_deny" => "你用毒的造诣已经不浅了，这毒经不看也罢。"
+        })
+
+      denied =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{skills: %{"poison" => 120}})),
+          inquiry_event(config)
+        )
+
+      assert denied.private.update_character == nil
+      assert output_text(denied) =~ "造诣已经不浅"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      allowed =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{skills: %{"poison" => 119}})),
+          inquiry_event(config)
+        )
+
+      assert Enum.any?(
+               allowed.private.update_character.inventory,
+               &(&1.item_id == "shaolin:huwan")
+             )
+    end
   end
 
   describe "NPC 侧库存扣减（npc/inquiry_consume）" do

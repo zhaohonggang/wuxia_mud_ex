@@ -16,6 +16,12 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         already = "你现在身上..."      # 已有时的返回值（自动加敬称）
         family_deny = "与本派..."      # 非本门时的返回值（自动加敬称）
         exhausted = "抱歉...发完了。"  # 库存耗尽时的返回值
+        max_shen = -10000             # 杀气上限（LPC `shen > -10000` 即拒）
+        min_combat_exp = 100000       # 经验下限
+        max_skill_levels = { poison = 119 }  # 技能上限（LPC `query_skill("poison") > 119` 即拒）
+        max_shen_deny = "..."         # 杀气过高时的返回值
+        min_exp_deny = "..."          # 经验不足时的返回值
+        max_skill_deny = "..."        # 技能过高时的返回值
       }
 
   ## 与 LPC 的差异
@@ -56,6 +62,9 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     cond do
       family_denied?(character, config) ->
         reply(conn, Helpers.respect(character) <> family_deny_text(config))
+
+      gate = gate_denial(character, config) ->
+        reply(conn, gate)
 
       unique?(config) and carries?(character, config) ->
         reply(conn, Helpers.respect(character) <> already_text(config))
@@ -144,6 +153,55 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp family_name(%{meta: %{family: family}}) when is_map(family), do: Family.name(family)
   defp family_name(_character), do: nil
+
+  # LPC ask_me 的额外门槛：杀气上限 / 经验下限 / 技能上限（kungfu/class/wudu/qiyunao.c ask_me）。
+  defp gate_denial(character, config) do
+    stats = stats_of(character)
+
+    cond do
+      exceeds_max_shen?(stats, config) ->
+        Map.get(config, "max_shen_deny") || "像你这样心慈手软，这东西给了你也干不了大事。"
+
+      below_min_exp?(stats, config) ->
+        Map.get(config, "min_exp_deny") || "你现在经验太浅，不用忙着来要这个。"
+
+      exceeds_max_skill?(stats, config) ->
+        Map.get(config, "max_skill_deny") || "你这方面的造诣已经不浅了，这个不看也罢。"
+
+      true ->
+        nil
+    end
+  end
+
+  defp stats_of(%{meta: %{stats: stats}}) when not is_nil(stats), do: stats
+  defp stats_of(_character), do: %{}
+
+  defp stat(stats, key), do: Map.get(stats, key, 0) || 0
+
+  defp exceeds_max_shen?(stats, config) do
+    case Map.get(config, "max_shen") do
+      max when is_integer(max) -> stat(stats, :shen) > max
+      _ -> false
+    end
+  end
+
+  defp below_min_exp?(stats, config) do
+    case Map.get(config, "min_combat_exp") do
+      min when is_integer(min) -> stat(stats, :combat_exp) < min
+      _ -> false
+    end
+  end
+
+  defp exceeds_max_skill?(stats, config) do
+    case Map.get(config, "max_skill_levels") do
+      levels when is_map(levels) ->
+        skills = Map.get(stats, :skills) || %{}
+        Enum.any?(levels, fn {skill, max} -> Map.get(skills, skill, 0) > max end)
+
+      _ ->
+        false
+    end
+  end
 
   defp family_deny_text(config),
     do: Map.get(config, "family_deny") || "与本派素无来往，不知此话从何谈起？"

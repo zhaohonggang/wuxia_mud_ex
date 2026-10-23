@@ -1269,6 +1269,15 @@ chats = [
           msgs = {}
         }
       }
+
+      # LPC kungfu/class/shenlong/zhang.c：张淡月的问询（纯字符串条目）
+    inquiries = [
+      { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
+      { key = "洪安通" value = "教主脾气不好,要讨他欢心才好。" },
+      { key = "教主" value = "教主脾气不好,要讨他欢心才好。" },
+      { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
+      { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" }
+    ]
     }
 
     characters "dushe" {

@@ -7528,6 +7528,11 @@ chats = [
       #   create_family("商家堡", 3, "堡主")
       #   carry_object("/clone/misc/cloth")
       #   carry_object("/d/beijing/npc/obj/jinbiao")
+
+      # LPC kungfu/class/shang/ming.c：商剑鸣的问询（纯字符串条目）
+    inquiries = [
+      { key = "胡一刀" value = "哦？听说此人刀法甚是了得，可惜我没见过他。" }
+    ]
     }
 
     characters "zaohongma" {

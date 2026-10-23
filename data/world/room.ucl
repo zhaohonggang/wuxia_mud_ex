@@ -616,7 +616,6 @@ zones "room" {
 
   room_exits "zoudao" {
     room_id = rooms.zoudao.id
-    south = rooms.qianting.id
     north = rooms.yingke.id
     }
 
