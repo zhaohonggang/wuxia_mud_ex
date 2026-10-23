@@ -37,6 +37,23 @@ defmodule Kantele.World.RoomActionHandlers do
   # **唯一例外**是 shaolin:putiyuan 的 do_get（P5-4h）：`get` 是核心全局命令，
   # 该 handler 必须把「不认识的输入」全部 `:not_handled` 放行（LPC 原文三处
   # `return 0`），只接管 `book/jing from|in hole`。改动它时务必保住这个契约。
+
+  # 拱猪房（P5-4ad）：`inherit/room/pigroom.c` 的 `init()` 里 add_action 了十个动词，
+  # 四间房（eproom/nproom/sproom/wproom）完全共用，故先抽成一份再挂四份。
+  # 全部 handler 名都进同一个模块，靠 `params.verb` 再分派（见 PigRoom.dispatch/4）。
+  # 注意 `sell` 与 `bid` 在 LPC 里就是同一个 `do_bid`。
+  @pig_actions %{
+    "do_sit" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_leave" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_deal" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_bid" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_pass" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_play" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_refresh" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_skip" => {Kantele.World.RoomActions.City.PigRoom, :run},
+    "do_claim" => {Kantele.World.RoomActions.City.PigRoom, :run}
+  }
+
   @registry %{
     "huashan:lianhua" => %{
       "do_tiao" => {Kantele.World.RoomActions.Huashan.Lianhua.Tiao, :run}
@@ -134,6 +151,263 @@ defmodule Kantele.World.RoomActionHandlers do
     "shaolin:putiyuan" => %{
       "do_get" => {Kantele.World.RoomActions.Shaolin.Putiyuan.Get, :run},
       "do_xian" => {Kantele.World.RoomActions.Shaolin.Putiyuan.Xian, :run}
+    },
+    # 拱猪四房：十个动词全部由 PigRoom 接管（牌局状态在房间 state["pig_game"]）。
+    "city:eproom" => @pig_actions,
+    "city:nproom" => @pig_actions,
+    "city:sproom" => @pig_actions,
+    "city:wproom" => @pig_actions,
+    # ---- 动态出口消费端首批（P5-4ae）----
+    # LPC `set/delete("exits/<dir>", ...)` 的玩家触发路径。共用
+    # `RoomActions.DynamicExit`（判在 / 开 / 关 / 定时关）。
+    # 注意 handler 名以 UCL `actions` 的值为准（转换器抽的是 `add_action` 的第二个
+    # 参数，不是函数名）：`meizhuang:didao3` 的 `pull` 动词挂的是 `do_open`。
+    # `open`/`close` 是全局命令，这些房间都没有 `doors` 配置，遮蔽不损失既有功能，
+    # 且与 LPC `add_action` 优先级一致。
+    "changan:xunbufang" => %{
+      "do_open" => {Kantele.World.RoomActions.Changan.Xunbufang.Open, :run}
+    },
+    "guanwai:xiuxishi" => %{
+      "do_open" => {Kantele.World.RoomActions.Guanwai.Xiuxishi.Open, :run},
+      "do_close" => {Kantele.World.RoomActions.Guanwai.Xiuxishi.Close, :run}
+    },
+    "huashan:xiuxishi" => %{
+      "do_open" => {Kantele.World.RoomActions.Huashan.Xiuxishi.Open, :run},
+      "do_close" => {Kantele.World.RoomActions.Huashan.Xiuxishi.Close, :run}
+    },
+    "lingxiao:shanya" => %{
+      "do_open" => {Kantele.World.RoomActions.Lingxiao.Shanya.Open, :run}
+    },
+    "foshan:pm_restroom" => %{
+      "do_open" => {Kantele.World.RoomActions.Foshan.PmRestroom.Open, :run},
+      "do_close" => {Kantele.World.RoomActions.Foshan.PmRestroom.Close, :run}
+    },
+    "meizhuang:didao3" => %{
+      "do_open" => {Kantele.World.RoomActions.Meizhuang.Didao3.Pull, :run}
+    },
+    # ---- 动态出口消费端第二批（P5-4ag）----
+    # 峨眉舍身崖下「深潭」三连房：`wang`（四处张望）随机冒出四向出口、3 秒后自灭；
+    # 只有 `st2` 的 north 有 1/4 概率通向 `emei:ssyb`（脱困唯一出路）。
+    # 三房共用同一模块，按 room_id 查出口表。
+    "emei:st0" => %{
+      "do_wang" => {Kantele.World.RoomActions.Emei.Shentan.Wang, :run}
+    },
+    "emei:st1" => %{
+      "do_wang" => {Kantele.World.RoomActions.Emei.Shentan.Wang, :run}
+    },
+    "emei:st2" => %{
+      "do_wang" => {Kantele.World.RoomActions.Emei.Shentan.Wang, :run}
+    },
+    # 凌霄内门吊桥（`shanya` 的另一端）与少林山门殿大门：双向门 + 10 秒自动关，
+    # `close` 走同一回调但延迟 2 秒（LPC `remove_call_out` 顶掉 `open` 的定时器）。
+    "lingxiao:gate" => %{
+      "do_open" => {Kantele.World.RoomActions.Lingxiao.Gate.Open, :run},
+      "do_close" => {Kantele.World.RoomActions.Lingxiao.Gate.Close, :run}
+    },
+    "shaolin:smdian" => %{
+      "do_open" => {Kantele.World.RoomActions.Shaolin.Smdian.Open, :run},
+      "do_close" => {Kantele.World.RoomActions.Shaolin.Smdian.Close, :run}
+    },
+    # ---- 动态出口消费端（P5-4ak）：do_open/do_close 收尾（2 房）----
+    # `hangzhou:loveroom`：`open`/`close` 动词，开/关 `down`→`hangzhou:jiulou`
+    # （单向、无定时关，出口常开；附带 `temp["plugin"]` 置位 + 江湖通告广播）。
+    # `meizhuang:tianjing`：`open` 动词，开 `south`→`meizhuang:gate` 双向门 + 10s
+    # 定时自关（`close_gate` 定时器，无玩家手动 close）。
+    "hangzhou:loveroom" => %{
+      "do_open" => {Kantele.World.RoomActions.Hangzhou.Loveroom.Open, :run},
+      "do_close" => {Kantele.World.RoomActions.Hangzhou.Loveroom.Close, :run}
+    },
+    "meizhuang:tianjing" => %{
+      "do_open" => {Kantele.World.RoomActions.Meizhuang.Tianjing.Open, :run}
+    },
+    # ---- 动态出口消费端第三批（P5-4ah）----
+    # `do_break` 砸墙/砸门/砸冰壁/劈石门一类：10 个房间共用 `RoomActions.Break`
+    # 共享原语（内力/最大内力/武力门控、开出口、扣内力、定时关、昏厥、扣 qi、
+    # 卸武器），各房只留「参数校验 + 条件门控 + 文案」。守卫统一用
+    # `Break.open?/2`（出口是否已开）等价 LPC `query("break")`，因为 break 标志与
+    # 出口存在在本批各房里 1:1 同步。
+    "beijing:zhuang3" => %{
+      "do_break" => {Kantele.World.RoomActions.Beijing.Zhuang3.Break, :run}
+    },
+    "chengdu:eastroad3" => %{
+      "do_break" => {Kantele.World.RoomActions.Chengdu.Eastroad3.Break, :run}
+    },
+    "fuzhou:houyuan" => %{
+      "do_break" => {Kantele.World.RoomActions.Fuzhou.Houyuan.Break, :run}
+    },
+    "fuzhou:laozhai" => %{
+      "do_break" => {Kantele.World.RoomActions.Fuzhou.Laozhai.Break, :run}
+    },
+    "huashan:sgyhole1" => %{
+      "do_break" => {Kantele.World.RoomActions.Huashan.Sgyhole1.Break, :run}
+    },
+    "jinshe:shanbi" => %{
+      "do_break" => {Kantele.World.RoomActions.Jinshe.Shanbi.Break, :run}
+    },
+    "lingxiao:wave" => %{
+      "do_break" => {Kantele.World.RoomActions.Lingxiao.Wave.Break, :run}
+    },
+    "mingjiao:shandong" => %{
+      "do_break" => {Kantele.World.RoomActions.Mingjiao.Shandong.Break, :run}
+    },
+    "xiakedao:midao4" => %{
+      "do_break" => {Kantele.World.RoomActions.Xiakedao.Midao4.Break, :run}
+    },
+    "shenfeng:yongdao3" => %{
+      "do_break" => {Kantele.World.RoomActions.Shenfeng.Yongdao3.Break, :run}
+    },
+    # ---- 动态出口消费端第四批（P5-4aj）----
+    # `do_push` 推门/推石壁/推草丛/推大床一类：8 个房间共用 `RoomActions.Push`
+    # 共享原语（内力/最大内力/臂力/技能门控、开出口、扣内力、定时关、邻居占用判定）。
+    # 各房只留「参数校验 + 条件门控 + 文案」。
+    #   - guanwai:jingxiu / huashan:xiaolu2：双向门 + 邻居 xiuxishi 占用判定 + 10s 自关
+    #   - hengyang:liufugate：需玩家临时标记 marks + 5s 自关
+    #   - lingxiao:didi：max_neili>=500 + 5s 自关（无参，恒拦截）
+    #   - wanjiegu:entrance：草丛/grass + 10s 自关
+    #   - xiakedao:dating：neili>=100 开屏风后甬道、扣 100、5s 自关
+    #   - xiakedao:yadi：需 yadi_swim 临时标记 + neili>150、扣 150、5s 自关
+    #   - changan:qunyuys8：query_str>=30 开床下暗格、5s 自关
+    "guanwai:jingxiu" => %{
+      "do_push" => {Kantele.World.RoomActions.Guanwai.Jingxiu.Push, :run}
+    },
+    "huashan:xiaolu2" => %{
+      "do_push" => {Kantele.World.RoomActions.Huashan.Xiaolu2.Push, :run}
+    },
+    "hengyang:liufugate" => %{
+      "do_push" => {Kantele.World.RoomActions.Hengyang.Liufugate.Push, :run}
+    },
+    "lingxiao:didi" => %{
+      "do_push" => {Kantele.World.RoomActions.Lingxiao.Didi.Push, :run}
+    },
+    "wanjiegu:entrance" => %{
+      "do_push" => {Kantele.World.RoomActions.Wanjiegu.Entrance.Push, :run}
+    },
+    "xiakedao:dating" => %{
+      "do_push" => {Kantele.World.RoomActions.Xiakedao.Dating.Push, :run}
+    },
+    "xiakedao:yadi" => %{
+      "do_push" => {Kantele.World.RoomActions.Xiakedao.Yadi.Push, :run}
+    },
+    "changan:qunyuys8" => %{
+      "do_push" => {Kantele.World.RoomActions.Changan.Qunyuys8.Push, :run}
+    },
+    # ---- 动态出口消费端第五批（P5-4al）：do_knock / do_pull ----
+    # 敲门/拉柜一类「参数命中即开单向或双向出口 + 定时关」的开门机关，共用
+    # `RoomActions.KnockPull` 共享原语。`knock`/`pull` 均非全局命令，遮蔽不损失既有功能。
+    #   - shaolin:guangchang1：knock gate/north 开 north↔smdian 双向门 + 10s 自关
+    #   - wanjiegu:grassland：knock 段/duan 开 north→xiaoting 单向 + 10s 自关
+    #   - quanzhen:diziju：pull cabinet 开 down→mishi 单向 + 8s 自关
+    #   - quanzhen:fu_woshi：pull drawer 开 down→fu-midao 单向 + 5s 自关
+    #   - wanjiegu:tree_hole：pull 大铁环/ring 开 enter→tunnel1 单向 + 10s 自关
+    #   - meizhuang:gate：knock 铜环暗号 4-2-5-3 集齐后开 north↔tianjing 双向门 + 10s 自关
+    #     （与 meizhuang:tianjing 的 open 打通同一组双向出口；暗号进度存 meta.temp["knock_step"]）
+    "shaolin:guangchang1" => %{
+      "do_knock" => {Kantele.World.RoomActions.Shaolin.Guangchang1.Knock, :run}
+    },
+    "wanjiegu:grassland" => %{
+      "do_knock" => {Kantele.World.RoomActions.Wanjiegu.Grassland.Knock, :run}
+    },
+    "quanzhen:diziju" => %{
+      "do_pull" => {Kantele.World.RoomActions.Quanzhen.Diziju.Pull, :run}
+    },
+    "quanzhen:fu_woshi" => %{
+      "do_pull" => {Kantele.World.RoomActions.Quanzhen.FuWoshi.Pull, :run}
+    },
+    "wanjiegu:tree_hole" => %{
+      "do_pull" => {Kantele.World.RoomActions.Wanjiegu.TreeHole.Pull, :run}
+    },
+    "meizhuang:gate" => %{
+      "do_knock" => {Kantele.World.RoomActions.Meizhuang.Gate.Knock, :run}
+    },
+    # ---- 动态出口消费端第六批（P5-4am）：触发器型 do_circle/do_kan/do_mai/do_turn/do_unlock/do_use/do_zhan ----
+    # 「参数命中 + 条件门控（臂力/内力/武器/钥匙/火折/临时标记）→ 开出口（多数定时自关）」
+    # 型房间，共用 `RoomActions.Trigger` 共享原语。
+    #   - heimuya:huoting：circle wan（str>=12）旋碗开/关 down↔didao1 双向，无定时关
+    #   - shenlong:lin1：kan bush（持刀/剑 + neili>100，扣 50）开 north→lin2 + 20s 自关
+    #   - xiakedao:gudi：mai/bury gu（neili>100，扣 100）开 east→midao6 + 5s 自关
+    #   - beijing:aofu_shufang：turn bashou（marks/画2）开 down→aofu_mishi + 8s 自关
+    #   - xueshan:chanshi：turn lunpan 开 down→midao + 8s 自关
+    #   - jingzhou:houyuan：unlock men/east（须持 guifang key，钥匙消耗）开 east→dongxiang，无定时关
+    #   - hengyang:inhole2：use fire（须持 fire）开 west→zigai1 + north→zigai2，无定时关
+    #   - gumu:mishi1：ci brick（须持兵器，置 tmarks/砖）+ zhan brick（tmarks/砖>=1）
+    #     开 down→houting + 5s 自关；do_ci 虽不改出口，但是 do_zhan 的前置门槛，一并移植
+    # 跳过：huanggong:shufang（press desk 的暗门目标 huanggong:mishi 在 LPC 源中不存在，
+    # 空目标死内容）。
+    "heimuya:huoting" => %{
+      "do_circle" => {Kantele.World.RoomActions.Heimuya.Huoting.Circle, :run}
+    },
+    "shenlong:lin1" => %{
+      "do_kan" => {Kantele.World.RoomActions.Shenlong.Lin1.Kan, :run}
+    },
+    "xiakedao:gudi" => %{
+      "do_mai" => {Kantele.World.RoomActions.Xiakedao.Gudi.Mai, :run}
+    },
+    "beijing:aofu_shufang" => %{
+      "do_turn" => {Kantele.World.RoomActions.Beijing.AofuShufang.Turn, :run}
+    },
+    "xueshan:chanshi" => %{
+      "do_turn" => {Kantele.World.RoomActions.Xueshan.Chanshi.Turn, :run}
+    },
+    "jingzhou:houyuan" => %{
+      "do_unlock" => {Kantele.World.RoomActions.Jingzhou.Houyuan.Unlock, :run}
+    },
+    "hengyang:inhole2" => %{
+      "do_use" => {Kantele.World.RoomActions.Hengyang.Inhole2.Use, :run}
+    },
+    "gumu:mishi1" => %{
+      "do_ci" => {Kantele.World.RoomActions.Gumu.Mishi1.Ci, :run},
+      "do_zhan" => {Kantele.World.RoomActions.Gumu.Mishi1.Zhan, :run}
+    },
+    # ---- 动态出口消费端第七批（P5-4an）：移像/推石/推桌型 do_move + do_push ----
+    # 「参数命中 + 属性门控（臂力/内力/最大内力/基本内功/基本拳）→ 推开出口（多数定时自关）」
+    # 型房间，共用 `RoomActions.MoveStone` 共享原语。
+    #   - emei:hcadadian：move xiang 开 down→midao + 8s
+    #   - gumu:mumen：move shi 开 south→qianting + 5s
+    #   - jingzhou:luan2 / tiezhang:wmfeng：move bei（str>=30 + force>=100）开 enter→tomb/shijie_1
+    #     + 10s；玩家 write + 房间广播（排除行动者）
+    #   - jinshe:yongdao2：move stone（neili>=1500 + str>=35，扣 1000）开 north→shandong + 5s
+    #   - kaifeng:hh_xiaozhu：move zhuo（max_neili>=1000；非红花会且余鱼同在席被喝退）
+    #     开 down→hh_mishi + 10s；成功也清内力
+    #   - shaolin:beilin2：move stone（max_neili>=1000）开 down→beilin3，无定时关
+    #   - shenfeng:yushi：move table（须 marks/爬1，读完即删）开 enter↔yongdao5 双向，无定时关
+    #   - wudang:nanyangong：move xiang 开 down↔nanyan0 双向 + 3s（两侧播报、只删本房）
+    #   - wudu:huating2：move lu 开 down→midao + 8s
+    #   - hengyang:outzigai1：push/tui bi（neili>=1500 + unarmed>=80）开 enter↔zigaihole 双向
+    #     + 13s；房间级 temp marks/推 同步回收（look bi 的 room_temp_tiers 依赖它）
+    # 延后：shenfeng:shenfeng do_push（失败分支 me->move + receive_wound + unconcious，
+    # 需引擎位移/受伤/昏厥支持）。
+    "emei:hcadadian" => %{
+      "do_move" => {Kantele.World.RoomActions.Emei.Hcadadian.Move, :run}
+    },
+    "gumu:mumen" => %{
+      "do_move" => {Kantele.World.RoomActions.Gumu.Mumen.Move, :run}
+    },
+    "jingzhou:luan2" => %{
+      "do_move" => {Kantele.World.RoomActions.Jingzhou.Luan2.Move, :run}
+    },
+    "tiezhang:wmfeng" => %{
+      "do_move" => {Kantele.World.RoomActions.Tiezhang.Wmfeng.Move, :run}
+    },
+    "jinshe:yongdao2" => %{
+      "do_move" => {Kantele.World.RoomActions.Jinshe.Yongdao2.Move, :run}
+    },
+    "kaifeng:hh_xiaozhu" => %{
+      "do_move" => {Kantele.World.RoomActions.Kaifeng.HhXiaozhu.Move, :run}
+    },
+    "shaolin:beilin2" => %{
+      "do_move" => {Kantele.World.RoomActions.Shaolin.Beilin2.Move, :run}
+    },
+    "shenfeng:yushi" => %{
+      "do_move" => {Kantele.World.RoomActions.Shenfeng.Yushi.Move, :run}
+    },
+    "wudang:nanyangong" => %{
+      "do_move" => {Kantele.World.RoomActions.Wudang.Nanyangong.Move, :run}
+    },
+    "wudu:huating2" => %{
+      "do_move" => {Kantele.World.RoomActions.Wudu.Huating2.Move, :run}
+    },
+    "hengyang:outzigai1" => %{
+      "do_push" => {Kantele.World.RoomActions.Hengyang.Outzigai1.Push, :run}
     }
   }
 

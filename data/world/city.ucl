@@ -450,15 +450,25 @@ item_desc = {
  table = {
    kind = "pig_table"
  }
-}
- state = {
-  pig_phase = "initting"
-  pig_north = ""
-  pig_west = ""
-  pig_south = ""
-  pig_east = ""
-  pig_server = ""
+ scoreboard = {
+   kind = "pig_scoreboard"
  }
+}
+  actions = {
+    sit = "do_sit"
+    leave = "do_leave"
+    deal = "do_deal"
+    bid = "do_bid"
+    sell = "do_bid"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    skip = "do_skip"
+    claim = "do_claim"
+  }
+  flags = [
+    "no_fight"
+  ]
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -1887,15 +1897,25 @@ item_desc = {
  table = {
    kind = "pig_table"
  }
-}
- state = {
-  pig_phase = "initting"
-  pig_north = ""
-  pig_west = ""
-  pig_south = ""
-  pig_east = ""
-  pig_server = ""
+ scoreboard = {
+   kind = "pig_scoreboard"
  }
+}
+  actions = {
+    sit = "do_sit"
+    leave = "do_leave"
+    deal = "do_deal"
+    bid = "do_bid"
+    sell = "do_bid"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    skip = "do_skip"
+    claim = "do_claim"
+  }
+  flags = [
+    "no_fight"
+  ]
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -2081,15 +2101,25 @@ item_desc = {
  table = {
    kind = "pig_table"
  }
-}
- state = {
-  pig_phase = "initting"
-  pig_north = ""
-  pig_west = ""
-  pig_south = ""
-  pig_east = ""
-  pig_server = ""
+ scoreboard = {
+   kind = "pig_scoreboard"
  }
+}
+  actions = {
+    sit = "do_sit"
+    leave = "do_leave"
+    deal = "do_deal"
+    bid = "do_bid"
+    sell = "do_bid"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    skip = "do_skip"
+    claim = "do_claim"
+  }
+  flags = [
+    "no_fight"
+  ]
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"
@@ -2177,15 +2207,25 @@ item_desc = {
  table = {
    kind = "pig_table"
  }
-}
- state = {
-  pig_phase = "initting"
-  pig_north = ""
-  pig_west = ""
-  pig_south = ""
-  pig_east = ""
-  pig_server = ""
+ scoreboard = {
+   kind = "pig_scoreboard"
  }
+}
+  actions = {
+    sit = "do_sit"
+    leave = "do_leave"
+    deal = "do_deal"
+    bid = "do_bid"
+    sell = "do_bid"
+    pass = "do_pass"
+    play = "do_play"
+    refresh = "do_refresh"
+    skip = "do_skip"
+    claim = "do_claim"
+  }
+  flags = [
+    "no_fight"
+  ]
 valid_leave = [
 {
    condition = "me->query_temp('pigging_seat')"

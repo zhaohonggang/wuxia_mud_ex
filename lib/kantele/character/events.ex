@@ -225,6 +225,12 @@ defmodule Kantele.Character.Events do
       event("bi/result", :result)
     end
 
+    # 拱猪座位同步：动作 handler 判定，角色进程落地 `temp["pigging_seat"]`
+    # （meta 只有本进程能安全修改；见 Kantele.Character.PigEvent）。
+    module(PigEvent) do
+      event("pig/seat", :seat)
+    end
+
     module(YitianEvent) do
       event("yitian/result", :result)
     end

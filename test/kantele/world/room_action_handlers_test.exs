@@ -63,33 +63,94 @@ defmodule Kantele.World.RoomActionHandlersTest do
 
   describe "registered?/2 与 registered_rooms/0" do
     test "已注册房间与 handler 覆盖（样板 + MessageOnly + Move + 全局覆盖 + 位移 + VisionMove 两批）" do
-      assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
-               [
-                 "baituo:neishi",
-                 "changan:kzsleep",
-                 "chengdu:guangchang",
-                 "emei:hcawest",
-                 "emei:shierpan3",
-                 "emei:ssyb",
-                 "emei:xiaoshulin1",
-                 "gumu:taiyi1",
-                 "gumu:taiyi2",
-                 "hangzhou:liuzhuang",
-                 "hengyang:furong1",
-                 "hengyang:inzhushendong",
-                 "hengyang:zigaihole",
-                 "huanggong:inwell",
-                 "huashan:lianhua",
-                 "lingxiao:juegu",
-                 "mingjiao:gudi3",
-                 "mingjiao:tohsq3",
-                 "register:prison",
-                 "shaolin:putiyuan",
-                 "wudu:dijiao",
-                 "wudu:minju10",
-                 "wudu:minju7",
-                 "xiakedao:xiaowu"
-               ]
+assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
+         [
+                "baituo:neishi",
+                "beijing:aofu_shufang",
+                "beijing:zhuang3",
+                "changan:kzsleep",
+                "changan:qunyuys8",
+                "changan:xunbufang",
+                "chengdu:eastroad3",
+                "chengdu:guangchang",
+                "city:eproom",
+                "city:nproom",
+                "city:sproom",
+                "city:wproom",
+                "emei:hcadadian",
+                "emei:hcawest",
+                "emei:shierpan3",
+                "emei:ssyb",
+                "emei:st0",
+                "emei:st1",
+                "emei:st2",
+                "emei:xiaoshulin1",
+                "foshan:pm_restroom",
+                "fuzhou:houyuan",
+                "fuzhou:laozhai",
+                "guanwai:jingxiu",
+                "guanwai:xiuxishi",
+                "gumu:mishi1",
+                "gumu:mumen",
+                "gumu:taiyi1",
+                "gumu:taiyi2",
+                "hangzhou:liuzhuang",
+                "hangzhou:loveroom",
+                "heimuya:huoting",
+                "hengyang:furong1",
+                "hengyang:inhole2",
+                "hengyang:inzhushendong",
+                "hengyang:liufugate",
+                "hengyang:outzigai1",
+                "hengyang:zigaihole",
+                "huanggong:inwell",
+                "huashan:jianzhong",
+                "huashan:lianhua",
+                "huashan:sgyhole1",
+                "huashan:xiaolu2",
+                "huashan:xiuxishi",
+                "jingzhou:houyuan",
+                "jingzhou:luan2",
+                "jinshe:shanbi",
+                "jinshe:yongdao2",
+                "kaifeng:hh_xiaozhu",
+                "lingxiao:didi",
+                "lingxiao:gate",
+                "lingxiao:juegu",
+                "lingxiao:shanya",
+                "lingxiao:wave",
+                "meizhuang:didao3",
+                "meizhuang:gate",
+                "meizhuang:tianjing",
+                "mingjiao:gudi3",
+                "mingjiao:shandong",
+                "mingjiao:tohsq3",
+                "quanzhen:diziju",
+                "quanzhen:fu_woshi",
+                "register:prison",
+                "shaolin:beilin2",
+                "shaolin:guangchang1",
+                "shaolin:putiyuan",
+                "shaolin:smdian",
+                "shenfeng:yongdao3",
+                "shenfeng:yushi",
+                "shenlong:lin1",
+                "tiezhang:wmfeng",
+                "wanjiegu:entrance",
+                "wanjiegu:grassland",
+                "wanjiegu:tree_hole",
+                "wudang:nanyangong",
+                "wudu:dijiao",
+                "wudu:huating2",
+                "wudu:minju10",
+                "wudu:minju7",
+                "xiakedao:dating",
+                "xiakedao:gudi",
+                "xiakedao:midao4",
+                "xiakedao:xiaowu",
+                "xiakedao:yadi",
+                "xueshan:chanshi",
+              ]
 
       assert RoomActionHandlers.registered?("huashan:lianhua", "do_tiao")
       assert RoomActionHandlers.registered?("emei:shierpan3", "do_clap")
@@ -115,6 +176,80 @@ defmodule Kantele.World.RoomActionHandlersTest do
       # P5-4h：首个覆盖全局命令（get）的移植，另一 verb 为新增
       assert RoomActionHandlers.registered?("shaolin:putiyuan", "do_get")
       assert RoomActionHandlers.registered?("shaolin:putiyuan", "do_xian")
+      # P5-4ae：动态出口消费端首批
+      assert RoomActionHandlers.registered?("changan:xunbufang", "do_open")
+      assert RoomActionHandlers.registered?("guanwai:xiuxishi", "do_open")
+      assert RoomActionHandlers.registered?("guanwai:xiuxishi", "do_close")
+      assert RoomActionHandlers.registered?("huashan:xiuxishi", "do_open")
+      assert RoomActionHandlers.registered?("huashan:xiuxishi", "do_close")
+      assert RoomActionHandlers.registered?("lingxiao:shanya", "do_open")
+      assert RoomActionHandlers.registered?("foshan:pm_restroom", "do_open")
+      assert RoomActionHandlers.registered?("foshan:pm_restroom", "do_close")
+      assert RoomActionHandlers.registered?("meizhuang:didao3", "do_open")
+      # 剑冢埋剑谜题（P5-4i）
+      assert RoomActionHandlers.registered?("huashan:jianzhong", "do_move")
+      assert RoomActionHandlers.registered?("huashan:jianzhong", "do_pick")
+      assert RoomActionHandlers.registered?("huashan:jianzhong", "do_jump")
+      # 峨眉深潭「四处张望」（P5-4ag）
+      assert RoomActionHandlers.registered?("emei:st0", "do_wang")
+      assert RoomActionHandlers.registered?("emei:st1", "do_wang")
+      assert RoomActionHandlers.registered?("emei:st2", "do_wang")
+      # 砸墙/砸门一批（P5-4ah）
+      assert RoomActionHandlers.registered?("beijing:zhuang3", "do_break")
+      assert RoomActionHandlers.registered?("chengdu:eastroad3", "do_break")
+      assert RoomActionHandlers.registered?("fuzhou:houyuan", "do_break")
+      assert RoomActionHandlers.registered?("fuzhou:laozhai", "do_break")
+      assert RoomActionHandlers.registered?("huashan:sgyhole1", "do_break")
+      assert RoomActionHandlers.registered?("jinshe:shanbi", "do_break")
+      assert RoomActionHandlers.registered?("lingxiao:wave", "do_break")
+      assert RoomActionHandlers.registered?("mingjiao:shandong", "do_break")
+      assert RoomActionHandlers.registered?("xiakedao:midao4", "do_break")
+      assert RoomActionHandlers.registered?("shenfeng:yongdao3", "do_break")
+      # 推门/推石壁/推草丛/推大床一批（P5-4aj）
+      assert RoomActionHandlers.registered?("guanwai:jingxiu", "do_push")
+      assert RoomActionHandlers.registered?("huashan:xiaolu2", "do_push")
+      assert RoomActionHandlers.registered?("hengyang:liufugate", "do_push")
+      assert RoomActionHandlers.registered?("lingxiao:didi", "do_push")
+      assert RoomActionHandlers.registered?("wanjiegu:entrance", "do_push")
+      assert RoomActionHandlers.registered?("xiakedao:dating", "do_push")
+      assert RoomActionHandlers.registered?("xiakedao:yadi", "do_push")
+      assert RoomActionHandlers.registered?("changan:qunyuys8", "do_push")
+      # do_open/do_close 收尾（P5-4ak）
+      assert RoomActionHandlers.registered?("hangzhou:loveroom", "do_open")
+      assert RoomActionHandlers.registered?("hangzhou:loveroom", "do_close")
+      assert RoomActionHandlers.registered?("meizhuang:tianjing", "do_open")
+      # 敲门/拉柜开门一批（P5-4al）
+      assert RoomActionHandlers.registered?("shaolin:guangchang1", "do_knock")
+      assert RoomActionHandlers.registered?("wanjiegu:grassland", "do_knock")
+      assert RoomActionHandlers.registered?("meizhuang:gate", "do_knock")
+      assert RoomActionHandlers.registered?("quanzhen:diziju", "do_pull")
+      assert RoomActionHandlers.registered?("quanzhen:fu_woshi", "do_pull")
+      assert RoomActionHandlers.registered?("wanjiegu:tree_hole", "do_pull")
+      # 触发器型一批（P5-4am）
+      assert RoomActionHandlers.registered?("heimuya:huoting", "do_circle")
+      assert RoomActionHandlers.registered?("shenlong:lin1", "do_kan")
+      assert RoomActionHandlers.registered?("xiakedao:gudi", "do_mai")
+      assert RoomActionHandlers.registered?("beijing:aofu_shufang", "do_turn")
+      assert RoomActionHandlers.registered?("xueshan:chanshi", "do_turn")
+      assert RoomActionHandlers.registered?("jingzhou:houyuan", "do_unlock")
+      assert RoomActionHandlers.registered?("hengyang:inhole2", "do_use")
+      assert RoomActionHandlers.registered?("gumu:mishi1", "do_ci")
+      assert RoomActionHandlers.registered?("gumu:mishi1", "do_zhan")
+      # 移像/推石/推桌一批（P5-4an）
+      assert RoomActionHandlers.registered?("emei:hcadadian", "do_move")
+      assert RoomActionHandlers.registered?("gumu:mumen", "do_move")
+      assert RoomActionHandlers.registered?("jingzhou:luan2", "do_move")
+      assert RoomActionHandlers.registered?("tiezhang:wmfeng", "do_move")
+      assert RoomActionHandlers.registered?("jinshe:yongdao2", "do_move")
+      assert RoomActionHandlers.registered?("kaifeng:hh_xiaozhu", "do_move")
+      assert RoomActionHandlers.registered?("shaolin:beilin2", "do_move")
+      assert RoomActionHandlers.registered?("shenfeng:yushi", "do_move")
+      assert RoomActionHandlers.registered?("wudang:nanyangong", "do_move")
+      assert RoomActionHandlers.registered?("wudu:huating2", "do_move")
+      assert RoomActionHandlers.registered?("hengyang:outzigai1", "do_push")
+      # 拱猪四房（P5-4ad）
+      assert RoomActionHandlers.registered?("city:eproom", "do_play")
+      assert RoomActionHandlers.registered?("city:wproom", "do_claim")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
       # do_climb 只在 hengyang:furong1 与 gumu:taiyi2 移植

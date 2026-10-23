@@ -20,6 +20,7 @@ defmodule Kantele.World.RoomActions.Helpers do
   alias Kalevala.World.Item
   alias Kantele.Character.Records
   alias Kantele.Character.Teleport
+  alias Kantele.World.Item, as: ItemDef
   alias Kantele.World.Items
 
   @doc """
@@ -133,6 +134,46 @@ defmodule Kantele.World.RoomActions.Helpers do
     do: character
 
   defp current(%{character: character}), do: character
+
+  @doc """
+  `present(<name>, me)`：背包内是否有 id/别名匹配 `name` 的物品。
+
+  参数是**角色结构体**（不是 `conn`）—— 与 `Kantele.World.NpcActions.Helpers`
+  的旧签名一致，方便两侧共用。实现自 P5-4ae 起落在本模块，NPC 侧保留薄委托
+  （同 `give_item/3` 的处理方式）：长安巡捕房 `open door` 要查「牢房钥匙」，
+  房间动作也得能用。
+  """
+  def carries?(character, name) do
+    Enum.any?(inventory(character), fn inst ->
+      ItemDef.matches?(ItemDef.instance_item(inst), name)
+    end)
+  end
+
+  @doc """
+  `ob = present(<name>, me); destruct(ob)` 等价：从背包移除第一件匹配 `name`
+  的实例，返回 `{removed?, conn}`。
+
+  `removed?` 供 handler 决定是否播报后续文案（LPC `present(...)` 命中与否）。
+  未命中时不动 `conn`、不落盘。
+  """
+  def take_item(conn, name) do
+    character = current(conn)
+
+    case Enum.split_while(inventory(character), fn inst ->
+           not ItemDef.matches?(ItemDef.instance_item(inst), name)
+         end) do
+      {_before, []} ->
+        {false, conn}
+
+      {before, [_taken | rest]} ->
+        character = %{character | inventory: before ++ rest}
+        Records.save(character)
+        {true, put_character(conn, character)}
+    end
+  end
+
+  defp inventory(%{inventory: inventory}) when is_list(inventory), do: inventory
+  defp inventory(_character), do: []
 
   defp put_instance_meta(instance, meta) when meta == %{} or meta == nil, do: instance
 

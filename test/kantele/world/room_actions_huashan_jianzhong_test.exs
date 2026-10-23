@@ -144,7 +144,9 @@ defmodule Kantele.World.RoomActions.Huashan.JianzhongTest do
     test "首次移开石头 → 文案 + state.moved = 1" do
       room_id = start_room()
 
-      assert move("big stone", room_id) |> output() == "$N用力将剑冢上面的石头一块块地移开 ……\n"
+      result = move("big stone", room_id)
+
+      assert published(result) == ["{npc}用力将剑冢上面的石头一块块地移开 ……\n"]
       assert Room.get_state_by_id(room_id, "moved") == 1
     end
 
@@ -180,18 +182,17 @@ defmodule Kantele.World.RoomActions.Huashan.JianzhongTest do
     end
 
     test "sec sword 力量不足 → 脱手火花" do
-      character = %{stats: %Stats{str: 10}, combat: %Combat{}}
-      assert pick("sec sword", start_room(%{"moved" => 1}, character: character)) |> output() ==
+      assert pick("sec sword", start_room(%{"moved" => 1}), full_character(str: 10)) |> output() ==
                "你将铁剑只提起数尺，呛的一声，竟然脱手掉下，在石上一碰，火花四溅，不禁吓了一跳。\n"
     end
 
     test "sec sword 成功 → 发玄铁重剑 + state.xuantie_taken=1 + 播报" do
-      room_id = start_room(%{"moved" => 1}, character: full_character(str: 40))
+      room_id = start_room(%{"moved" => 1})
 
       result = pick("sec sword", room_id)
 
       assert output(result) == "" 
-      assert published(result) == ["$N将玄铁重剑提了起来。\n"]
+      assert published(result) == ["{npc}将玄铁重剑提了起来。\n"]
       assert Room.get_state_by_id(room_id, "xuantie_taken") == 1
       assert [%{item_id: "clone_lib:xuantiejian"}] = character_of(result).inventory
     end
@@ -202,11 +203,11 @@ defmodule Kantele.World.RoomActions.Huashan.JianzhongTest do
     end
 
     test "thi sword 成功 → 发无名剑 + state.noname_taken=1 + 播报" do
-      room_id = start_room(%{"moved" => 1}, character: full_character(str: 40))
+      room_id = start_room(%{"moved" => 1})
 
       result = pick("thi sword", room_id)
 
-      assert published(result) == ["$N将无名剑提了起来。\n"]
+      assert published(result) == ["{npc}将无名剑提了起来。\n"]
       assert Room.get_state_by_id(room_id, "noname_taken") == 1
       assert [%{item_id: "clone_lib:noname"}] = character_of(result).inventory
     end
@@ -222,17 +223,17 @@ defmodule Kantele.World.RoomActions.Huashan.JianzhongTest do
 
     test "qi 不足 → 你力气不加" do
       character = full_character(qi: 100)
-      assert jump("lianhua", start_room(character: character)) |> output() == "你力气不加。\n"
+      assert jump("lianhua", start_room(), character) |> output() == "你力气不加。\n"
     end
 
     test "忙乱中 → 等你忙完了再说" do
       character = full_character(qi: 999, combat: %Combat{busy: 2})
-      assert jump("lianhua", start_room(character: character)) |> output() == "等你忙完了再说。\n"
+      assert jump("lianhua", start_room(), character) |> output() == "等你忙完了再说。\n"
     end
 
     test "战斗中 → 等你忙完了再说" do
       character = full_character(qi: 999, combat: %Combat{enemies: [%{id: "enemy1"}]})
-      assert jump("lianhua", start_room(character: character)) |> output() == "等你忙完了再说。\n"
+      assert jump("lianhua", start_room(), character) |> output() == "等你忙完了再说。\n"
     end
   end
 
@@ -257,37 +258,51 @@ defmodule Kantele.World.RoomActions.Huashan.JianzhongTest do
     }
   end
 
-  defp move(arg, room_id) do
-    Move.run(conn(room_id), %{verb: "move", trailing: arg, room_id: room_id})
+  defp move(arg, room_id, character \\ nil) do
+    Move.run(conn(room_id, character), %{verb: "move", trailing: arg, room_id: room_id})
   end
 
-  defp pick(arg, room_id) do
-    Pick.run(conn(room_id), %{verb: "pick", trailing: arg, room_id: room_id})
+  defp pick(arg, room_id, character \\ nil) do
+    Pick.run(conn(room_id, character), %{verb: "pick", trailing: arg, room_id: room_id})
   end
 
-  defp jump(arg, room_id) do
-    Jump.run(conn(room_id), %{verb: "jump", trailing: arg, room_id: room_id})
+  defp jump(arg, room_id, character \\ nil) do
+    Jump.run(conn(room_id, character), %{verb: "jump", trailing: arg, room_id: room_id})
   end
 
-  defp conn(room_id \\ @room) do
+  # `character` 非空时替换默认角色 —— 原先把 `character:` 传给 `start_room/2`，
+  # 但 FakeRoom 只读 `:characters`（复数），等于没生效，相关用例永远测默认角色。
+  defp conn(room_id \\ @room, character \\ nil) do
+    character =
+      case character do
+        nil ->
+          %Kalevala.Character{
+            name: "玩家",
+            room_id: room_id,
+            meta: %PlayerMeta{
+              stats: %Stats{str: 40},
+              combat: %Combat{},
+              vitals: %Vitals{qi: 999, max_qi: 999}
+            },
+            inventory: []
+          }
+
+        %Kalevala.Character{} = custom ->
+          %{custom | room_id: room_id}
+      end
+
     %Conn{
-      character: %Kalevala.Character{
-        name: "玩家",
-        room_id: room_id,
-        meta: %PlayerMeta{
-          stats: %Stats{str: 40},
-          combat: %Combat{},
-          vitals: %Vitals{qi: 999, max_qi: 999}
-        },
-        inventory: []
-      },
+      character: character,
       private: %Conn.Private{channel_changes: []},
       output: []
     }
   end
 
   defp fen_text(state) do
-    context = %Kantele.World.Room.Context{data: %Room{id: @room, state: state}}
+    # 房间上下文结构体在 vendor 引擎里（`Kalevala.World.Room.Context`）；
+    # `Kantele.World.Room.Context` 不存在 —— 原写法导致本文件整体编译失败，
+    # P5-4i 的测试因此一直没真正跑起来（P5-4ae 跑整目录时发现）。
+    context = %Kalevala.World.Room.Context{data: %Room{id: @room, state: state}}
 
     context
     |> RoomStateTiers.run(%{pid: self()}, %{config: @fen_config, room_id: @room})

@@ -1,5 +1,22 @@
 defmodule Kantele.World.Room.Pigroom do
   @moduledoc """
+  ⚠️ **已废弃 / 未接线（P5-4ad 起）** —— 拱猪的实际实现在别处，不要再用本模块。
+
+  本模块是早期按 `lpc_example/ex/inherit_room_pigroom` 直译的半成品：它自定义了
+  一整套 `defstruct`（含 `seats` / `server` 等字段），而拱猪房在 `data/world/city.ucl`
+  里就是**普通 `Room`**，没有这些字段；全库也**没有任何调用方**（`grep` 可验）。
+
+  P5-4ad 的拱猪子系统改走三层，与本模块无关：
+
+  - `Kantele.World.PigGame` —— 纯逻辑状态机（牌面工具 / 十个动作 / 计分 / 渲染）
+  - `Kantele.World.RoomActions.City.PigRoom` —— verb 分发 + 事件落地
+  - `Kantele.Character.PigEvent` —— `pig/seat` 事件在角色进程里写 `temp["pigging_seat"]`
+
+  牌局状态存在房间 `state["pig_game"]`（`Room.put_state_by_id/3`），座位存在角色
+  `meta.temp["pigging_seat"]`。保留本文件只是为避免误删历史参考；**新增功能请改上面三层**。
+
+  ---
+
   拱猪房（对应 ExKantele.World.Room.BasePigRoom / inherit_room_pigroom.ex）
 
   功能：

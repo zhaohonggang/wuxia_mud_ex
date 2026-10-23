@@ -36,6 +36,7 @@ defmodule Kantele.World.ItemDescHandlersTest do
   alias Kantele.World.ItemDescHandlers.PigTable
   alias Kantele.World.Arena
   alias Kantele.World.FingerD
+  alias Kantele.World.PigGame
   alias Kantele.World.Room
   alias Kantele.World.RoomActions.Hengyang.Furong1.Pull
   alias Kantele.World.RoomActions.Hengyang.Inzhushendong.Gua
@@ -594,30 +595,21 @@ defmodule Kantele.World.ItemDescHandlersTest do
   end
 
   @tag :pig_table
-  test "lookup/2 解析四间拱猪房到 pig_table handler" do
+  test "lookup/2 解析四间拱猪房的 table / scoreboard（键是 kind，不是关键词）" do
     for room <- ["city:eproom", "city:nproom", "city:sproom", "city:wproom"] do
-      assert ItemDescHandlers.lookup(room, "table") ==
-               {:ok, {PigTable, :run}}
+      assert ItemDescHandlers.lookup(room, "pig_table") == {:ok, {PigTable, :run}}
+
+      assert ItemDescHandlers.lookup(room, "pig_scoreboard") ==
+               {:ok, {PigTable, :run_scoreboard}}
     end
   end
 
   @tag :pig_table
   test "PigTable 空桌：四个座位均空，给出 sit 提示" do
     room_id = "city:eproom"
-    context =
-      %Kalevala.World.Room.Context{
-        data: %Room{
-          id: room_id,
-          state: %{
-            "pig_phase" => "initting",
-            "pig_north" => "",
-            "pig_west" => "",
-            "pig_south" => "",
-            "pig_east" => "",
-            "pig_server" => ""
-          }
-        }
-      }
+    context = %Kalevala.World.Room.Context{
+      data: %Room{id: room_id, state: %{"pig_game" => PigGame.new()}}
+    }
 
     output =
       context_output(
@@ -637,20 +629,12 @@ defmodule Kantele.World.ItemDescHandlersTest do
   @tag :pig_table
   test "PigTable 已有玩家坐下：显示座位玩家名，桌长标注 (桌长)" do
     room_id = "city:nproom"
-    context =
-      %Kalevala.World.Room.Context{
-        data: %Room{
-          id: room_id,
-          state: %{
-            "pig_phase" => "initting",
-            "pig_north" => "",
-            "pig_west" => "张三",
-            "pig_south" => "李四",
-            "pig_east" => "",
-            "pig_server" => "张三"
-          }
-        }
-      }
+    {:ok, game, _} = PigGame.sit(PigGame.new(), %{id: "p1", name: "张三"}, "west")
+    {:ok, game, _} = PigGame.sit(game, %{id: "p2", name: "李四"}, "south")
+
+    context = %Kalevala.World.Room.Context{
+      data: %Room{id: room_id, state: %{"pig_game" => game}}
+    }
 
     # 未坐玩家（pigging_seat 为空）
     output =
@@ -676,6 +660,42 @@ defmodule Kantele.World.ItemDescHandlersTest do
       )
 
     assert output_south =~ "南边的椅子上坐的是：李四。"
+  end
+
+  @tag :pig_table
+  test "PigTable 无牌局状态时回落到空桌（房间进程重启后不崩）" do
+    room_id = "city:sproom"
+    context = %Kalevala.World.Room.Context{data: %Room{id: room_id, state: %{}}}
+
+    output =
+      context_output(
+        PigTable.run(context, requester(%{}), %{
+          config: @pig_table_config,
+          room_id: room_id
+        })
+      )
+
+    assert output =~ "这是一张专门用于拱猪的四方桌。"
+    assert output =~ "北边的椅子是空的。"
+  end
+
+  @tag :pig_table
+  test "look scoreboard 渲染成绩表表头" do
+    room_id = "city:wproom"
+    context = %Kalevala.World.Room.Context{
+      data: %Room{id: room_id, state: %{"pig_game" => PigGame.new()}}
+    }
+
+    output =
+      context_output(
+        PigTable.run_scoreboard(context, requester(%{}), %{
+          config: %{"kind" => "pig_scoreboard"},
+          room_id: room_id
+        })
+      )
+
+    assert output =~ "拱猪成绩表(Scoreboard)"
+    assert output =~ "姓名"
   end
 
   test "Pull sets the room temp and reports state" do

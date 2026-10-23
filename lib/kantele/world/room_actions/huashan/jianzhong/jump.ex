@@ -47,20 +47,21 @@ defmodule Kantele.World.RoomActions.Huashan.Jianzhong.Jump do
             Helpers.render_to_player(conn, @busy)
 
           true ->
-            character = current(conn)
-            meta = %{character.meta | combat: Combat.start_busy(character.meta.combat, 1 + :rand.uniform(3))}
-            character = %{character | meta: meta}
-            conn = put_character(conn, character)
-            Helpers.render_to_player(conn, @jump_text)
-            Helpers.broadcast_vision(conn, room_id, @jump_text)
-            Helpers.move_to(conn, @target)
+            meta =
+              %{character.meta | combat: Combat.start_busy(character.meta.combat, 1 + :rand.uniform(3))}
+
+            conn = put_character(conn, %{character | meta: meta})
+
+            # LPC 只有 `message_sort`（行动者也在接收列表里），没有单独的 `write`；
+            # 两处副作用必须串起来，否则移动会覆盖掉播报。
+            conn
+            |> Helpers.broadcast_vision(room_id, @jump_text)
+            |> Helpers.move_to(@target)
         end
 
       _ ->
         Helpers.render_to_player(conn, @invalid)
     end
-
-    conn
   end
 
   defp current(%{private: %{update_character: character}}) when not is_nil(character),

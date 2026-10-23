@@ -97,8 +97,6 @@ defmodule Kantele.World.RoomActions.Huashan.Jianzhong.Pick do
       _ ->
         Helpers.render_to_player(conn, @what_pick)
     end
-
-    conn
   end
 
   defp take_item(conn, room_id, item_id, key, vision) do

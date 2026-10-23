@@ -1,9 +1,8 @@
 defmodule Kantele.World.ItemDescHandlers.PigTable do
   @moduledoc """
-  数据驱动动态 `item_desc`：拱猪牌桌显示（look_table）。
+  数据驱动动态 `item_desc`：拱猪牌桌 / 成绩表（`look table` / `look scoreboard`）。
 
-  对应 LPC `inherit PIG_ROOM` / `d/city/eproom.c`（nproom/sproom/wproom 同源）的
-  `look_table()`：
+  对应 LPC `d/city/eproom.c`（nproom/sproom/wproom 同源）：
 
       string look_table()
       {
@@ -12,149 +11,65 @@ defmodule Kantele.World.ItemDescHandlers.PigTable do
           return table_str("");
       }
 
-  玩家坐席记在角色 temp `pigging_seat`（座位名："north"/"west"/"south"/"east"，未坐则为空）；
-  房间牌局状态记在 `Room.state`（UCL `state` 播种）。handler 只负责 `look_table` 渲染，
-  不承担坐下/发牌/叫牌/出牌等动作（后续子系统接线时再扩展）。
+      string look_scoreboard() { return scoreboard_str(); }
+
+  渲染全部委托给 `Kantele.World.PigGame`（`table_str/2` / `scoreboard_str/1`），
+  本模块只负责「从房间 state 里取出牌局 + 从角色 temp 里取出观察者座位」。
+
+  ## 状态位置
+
+  - 牌局：房间 `state["pig_game"]`（`Room.put_state_by_id/3` 写入，仅内存）。
+    读的时候直接取 `context.data.state`，不必跨进程调用房间。
+  - 观察者座位：角色 `meta.temp["pigging_seat"]`（`Kantele.Character.PigEvent`
+    与 `RoomActions.City.PigRoom` 维护）。未入座 → `""`，与 LPC `table_str("")`
+    一致（此时按北家视角渲染）。
+
+  房间进程重启 / 首次进房时 `state["pig_game"]` 不存在，回落到 `PigGame.new/0`
+  （空桌视图），不会报错。
 
   UCL 示例：
 
       item_desc = {
        table = { kind = "pig_table" }
+       scoreboard = { kind = "pig_scoreboard" }
       }
-      state = {
-        pig_phase = "initting"
-        pig_pl = { north = nil west = nil south = nil east = nil }
-        pig_server = ""
-      }
-
-  非游戏中或未满四人时，输出“这是一张专门用于拱猪的四方桌。”及各座位状态：
-  空位提示「想玩可用 sit X 坐上去」；已坐则显示玩家名，桌长标注「(桌长)」。
   """
 
   import Kalevala.World.Room.Context
 
   alias Kantele.Character.CommandView
+  alias Kantele.World.PigGame
 
   @default_text "这里没有这个东西。\n"
 
-  @seats ["north", "west", "south", "east"]
-
-  @chinese_seat %{
-    "north" => "北边",
-    "west" => "西边",
-    "south" => "南边",
-    "east" => "东边"
-  }
-
   def run(context, requester, _params) do
-    text = render_text(context, requester)
+    text = context |> game() |> PigGame.table_str(viewer_seat(requester))
     render(context, requester.pid, CommandView, "text", %{text: ensure_newline(text)})
   end
 
-  defp render_text(context, requester) do
-    seat = viewer_seat(requester)
+  def run_scoreboard(context, requester, _params) do
+    text = context |> game() |> PigGame.scoreboard_str()
+    render(context, requester.pid, CommandView, "text", %{text: ensure_newline(text)})
+  end
+
+  # 房间 state 里的牌局；缺失/类型不对时给一局全新的空桌。
+  defp game(context) do
     state = Map.get(context.data, :state, %{}) || %{}
-    phase = Map.get(state, "pig_phase", "initting")
-    pl = pig_pl(state)
-    server = Map.get(state, "pig_server", "")
 
-    cond do
-      phase == "playing" and seated_count(pl) == 4 ->
-        render_playing(state, seat, pl, server)
-
-      true ->
-        render_seats(pl, server)
+    case Map.get(state, "pig_game") do
+      %{stage: _} = game -> game
+      _ -> PigGame.new()
     end
   end
 
-  # 观察者所在座位：来自角色 temp `pigging_seat`；未坐则为 ""（对应 LPC table_str("")）。
+  # 观察者座位：来自角色 temp `pigging_seat`；未坐则为 ""（对应 LPC table_str("")）。
   defp viewer_seat(requester) do
     temp = Map.get(Map.get(requester, :meta, %{}), :temp, %{}) || %{}
 
     case Map.get(temp, "pigging_seat") do
-      nil -> ""
       s when is_binary(s) and s != "" -> s
       _ -> ""
     end
-  end
-
-  # 从 string-keyed state 取出座位：优先 `pig_pl` map，其次扁平 `pig_<seat>`
-  # （UCL `state` 直接播种时用扁平键）。缺失时全部空位。
-  defp pig_pl(state) do
-    Map.get(state, "pig_pl") ||
-      %{
-        "north" => Map.get(state, "pig_north"),
-        "west" => Map.get(state, "pig_west"),
-        "south" => Map.get(state, "pig_south"),
-        "east" => Map.get(state, "pig_east")
-      }
-  end
-
-  defp seated_count(pl) when is_map(pl) do
-    pl
-    |> Map.values()
-    |> Enum.filter(&(&1 != nil and &1 != ""))
-    |> length()
-  end
-
-  # ---- 非游戏中 / 未满四人：座位状态视图（对应 LPC table_str 的 else 分支） ----
-
-  defp render_seats(pl, server) do
-    status =
-      Enum.reduce(@seats, "", fn seat, acc ->
-        cond do
-          seat_empty?(pl, seat) ->
-            acc <> seat_empty_line(seat)
-
-          player_of(pl, seat) == server ->
-            acc <> seat_taken_line(seat, player_of(pl, seat), true)
-
-          true ->
-            acc <> seat_taken_line(seat, player_of(pl, seat), false)
-        end
-      end)
-
-    "这是一张专门用于拱猪的四方桌。\n" <> status
-  end
-
-  defp seat_empty?(pl, seat) do
-    case Map.get(pl, seat) do
-      nil -> true
-      "" -> true
-      _ -> false
-    end
-  end
-
-  defp player_of(pl, seat) do
-    case Map.get(pl, seat) do
-      value when is_binary(value) -> value
-      _ -> ""
-    end
-  end
-
-  defp seat_empty_line(seat) do
-    "#{@chinese_seat[seat]}的椅子是空的。 想玩可用 sit #{seat} 坐上去。\n"
-  end
-
-  defp seat_taken_line(seat, name, is_server) do
-    suffix = if is_server, do: "(桌长)", else: ""
-    "#{@chinese_seat[seat]}的椅子上坐的是：#{name}#{suffix}。\n"
-  end
-
-  # ---- 游戏中且四人齐：牌桌视图（对应 LPC table_str 的 playing 分支，骨架） ----
-
-  defp render_playing(_state, _seat, _pl, _server) do
-    # 待牌局状态机接线后完整实现；当前按座位状态兜底，避免空房间报错。
-    # TODO: 接入 roundcards / round_order / bidcard_str 等，渲染出牌行与手牌。
-    render_seats(
-      %{
-        "north" => nil,
-        "west" => nil,
-        "south" => nil,
-        "east" => nil
-      },
-      ""
-    )
   end
 
   defp ensure_newline(text) when is_binary(text), do: String.trim_trailing(text) <> "\n"

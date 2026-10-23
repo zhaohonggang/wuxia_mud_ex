@@ -116,12 +116,27 @@ defmodule Kantele.World.ItemDescHandlers do
       "gaoshi_visitor" => {Kantele.World.ItemDescHandlers.GaoshiVisitor, :run}
     },
 
-    # city:eproom/nproom/sproom/wproom `look_table`：拱猪牌桌显示（P5-4r）。
-    # 读角色 temp pigging_seat 与房间 state 中的 pig_*，渲染座位/牌桌状态。
-    "city:eproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}},
-    "city:nproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}},
-    "city:sproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}},
-    "city:wproom" => %{"table" => {Kantele.World.ItemDescHandlers.PigTable, :run}}
+    # city:eproom/nproom/sproom/wproom `look_table` / `look_scoreboard`：拱猪牌桌与
+    # 成绩表（P5-4r 骨架 → P5-4ad 接上 PigGame 状态机）。
+    # 键是 UCL 里的 **kind**（`lookup/2` 用 `config["kind"]` 查表），不是 item_desc
+    # 的关键词 —— P5-4r 曾把键写成 "table"，于是 `look table` 一直落到
+    # 「这里没有这个东西。」（已修正为 kind 值 "pig_table"）。
+    "city:eproom" => %{
+      "pig_table" => {Kantele.World.ItemDescHandlers.PigTable, :run},
+      "pig_scoreboard" => {Kantele.World.ItemDescHandlers.PigTable, :run_scoreboard}
+    },
+    "city:nproom" => %{
+      "pig_table" => {Kantele.World.ItemDescHandlers.PigTable, :run},
+      "pig_scoreboard" => {Kantele.World.ItemDescHandlers.PigTable, :run_scoreboard}
+    },
+    "city:sproom" => %{
+      "pig_table" => {Kantele.World.ItemDescHandlers.PigTable, :run},
+      "pig_scoreboard" => {Kantele.World.ItemDescHandlers.PigTable, :run_scoreboard}
+    },
+    "city:wproom" => %{
+      "pig_table" => {Kantele.World.ItemDescHandlers.PigTable, :run},
+      "pig_scoreboard" => {Kantele.World.ItemDescHandlers.PigTable, :run_scoreboard}
+    }
   }
 
   @doc """

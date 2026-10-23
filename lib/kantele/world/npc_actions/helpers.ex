@@ -8,7 +8,9 @@ defmodule Kantele.World.NpcActions.Helpers do
   - `give_item/2,3`、`give_items/3,4` —— 把物品定义实例化后放进玩家背包并落盘
     （对应 LPC `ob = new(...); ob->move(me)`）。**实现已下移到
     `Kantele.World.RoomActions.Helpers`**（房间动作也要发物），本模块只留委托。
-  - `carries?/2` —— LPC `present(<name>, me)`：背包内是否有匹配该 id/别名的物品。
+  - `carries?/2`、`take_item/2` —— LPC `present(<name>, me)` / `destruct(ob)`：
+    背包内是否有匹配该 id/别名的物品、移除第一件。**实现已下移到
+    `Kantele.World.RoomActions.Helpers`**（房间动作也要用），本模块只留委托。
   - `room_has_item?/2` —— LPC `present(<name>, environment())`：房间地上是否有。
   - `family_name/1` —— 玩家门派名（`meta.family`）。
   - `flag?/2` —— 玩家 LPC `query("<flag>")`（读 `attributes` / `meta.env`）。
@@ -19,7 +21,6 @@ defmodule Kantele.World.NpcActions.Helpers do
 
   alias Kantele.Character.Family
   alias Kantele.Character.PlayerMeta
-  alias Kantele.Character.Records
   alias Kantele.World.Room
   alias Kantele.World.RoomActions.Helpers, as: RoomHelpers
 
@@ -51,12 +52,13 @@ defmodule Kantele.World.NpcActions.Helpers do
   def give_items(conn, item_id, count, opts \\ []),
     do: RoomHelpers.give_items(conn, item_id, count, opts)
 
-  @doc "`present(<name>, me)`：背包内是否有 id/别名匹配 `name` 的物品"
-  def carries?(character, name) do
-    Enum.any?(character.inventory, fn inst ->
-      Kantele.World.Item.matches?(Kantele.World.Item.instance_item(inst), name)
-    end)
-  end
+  @doc """
+  `present(<name>, me)`：背包内是否有 id/别名匹配 `name` 的物品
+
+  实现自 P5-4ae 起下移到 `Kantele.World.RoomActions.Helpers.carries?/2`
+  （房间动作也要用，同 `give_item/3` 的处理方式）。本函数保留为薄委托。
+  """
+  def carries?(character, name), do: RoomHelpers.carries?(character, name)
 
   @doc "`present(<name>, environment())`：房间地上是否有匹配 `name` 的物品"
   def room_has_item?(room_id, name) when is_binary(room_id) do
@@ -142,22 +144,12 @@ defmodule Kantele.World.NpcActions.Helpers do
 
   返回 `{removed?, conn}`。`removed?` 供 handler 决定是否播报「注销」之类文案
   （LPC `present(...)` 命中与否）。
+
+  实现自 P5-4ae 起下移到 `Kantele.World.RoomActions.Helpers.take_item/2`
+  （长安巡捕房 `open door` 要 `destruct(key)`，房间动作也要用）。本函数保留为
+  薄委托。
   """
-  def take_item(conn, name) do
-    character = current(conn)
-
-    case Enum.split_while(character.inventory, fn inst ->
-           not Kantele.World.Item.matches?(Kantele.World.Item.instance_item(inst), name)
-         end) do
-      {_before, []} ->
-        {false, conn}
-
-      {before, [_taken | rest]} ->
-        character = %{character | inventory: before ++ rest}
-        Records.save(character)
-        {true, put_character(conn, character)}
-    end
-  end
+  def take_item(conn, name), do: RoomHelpers.take_item(conn, name)
 
   @doc """
   `RANK_D->query_respect(me)` 等价：对玩家的敬称。

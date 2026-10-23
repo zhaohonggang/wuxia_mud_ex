@@ -1328,6 +1328,12 @@ direction = "down"
       default = "这块石壁看起来很坚实，也许是由于长年被水流冲蚀，上面已\n经出现了一条细小的裂缝。一丝阳光从缝中投射进来，看来外\n面应该有出路了。"
     }
   }
+  actions = {
+    jump = "do_tiao"
+    push = "do_push"
+    tiao = "do_tiao"
+    tui = "do_push"
+  }
 }
 
   room_exits "outzigai1" {
