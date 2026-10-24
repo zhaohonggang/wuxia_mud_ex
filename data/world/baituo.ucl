@@ -1554,7 +1554,8 @@ chats = [
       family = "欧阳世家"
       msgs = {}
     }
-  }}
+  }
+}
 
 # Generated from C:/files/git/mud/d/baituo/npc/playboy.c by LPCConverter
 # Zone: baituo
@@ -2354,6 +2355,9 @@ chats = [
         unit = "根"
         material = "steel"
       }
+    actions = [
+      { verb = "convert" handler = "convert_lingshe" }
+    ]
     }
 
 # Generated from C:/files/git/mud/d/baituo/obj/mangshe-dan.c by LPCConverter
@@ -2573,6 +2577,9 @@ chats = [
         unit = "根"
         material = "steel"
       }
+    actions = [
+      { verb = "convert" handler = "convert_snake" }
+    ]
     }
 
 # Generated from C:/files/git/mud/d/baituo/obj/shoe.c by LPCConverter

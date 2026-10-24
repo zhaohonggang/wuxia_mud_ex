@@ -1,0 +1,53 @@
+files with inquiry: 371
+total inquiry keys: 1656
+
+  string_value           852 keys /  234 files
+  text_only              593 keys /  198 files
+  item_grant             155 keys /   24 files
+  closure_not_found       34 keys /   17 files
+  random_reply            20 keys /    5 files
+  combat                   2 keys /    1 files
+
+per-zone LPC files with inquiry (top 20):
+  kungfu            194
+  beijing            18
+  city               15
+  adm                10
+  wuguan              9
+  guiyun              8
+  xiakedao            7
+  hangzhou            6
+  quanzhen            6
+  yanziwu             6
+  baituo              5
+  village             5
+  wudu                5
+  death               4
+  guanwai             4
+  hengyang            4
+  shaolin             4
+  shenfeng            4
+  xiangyang           4
+  changan             3
+
+per-file GAP (LPC keys missing from Elixir UCL):
+  [NPC absent] adm/daemons/task/npc/zixu.c: 角色未移植，4 个问询键随之缺失
+  [NPC absent] adm/npc/beastseller.c: 角色未移植，1 个问询键随之缺失
+  [NPC absent] adm/npc/beichou.c: 角色未移植，19 个问询键随之缺失
+  [NPC absent] adm/npc/luban.c: 角色未移植，48 个问询键随之缺失
+  d/lingxiao/npc/cheng.c                       missing   2 (text-backfillable   0)
+  [NPC absent] kungfu/class/emei/ji.c: 角色未移植，5 个问询键随之缺失
+  kungfu/class/hu/pingsi.c                     missing   3 (text-backfillable   0)
+  [NPC absent] kungfu/class/misc/shanzheng.c: 角色未移植，4 个问询键随之缺失
+  [NPC absent] kungfu/class/shenlong/shou.c: 角色未移植，5 个问询键随之缺失
+  [NPC absent] kungfu/class/shenlong/wugen.c: 角色未移植，5 个问询键随之缺失
+  [NPC absent] kungfu/class/shenlong/xu.c: 角色未移植，6 个问询键随之缺失
+  [NPC absent] kungfu/class/tianlongsi/jiumozhi.c: 角色未移植，2 个问询键随之缺失
+  [NPC absent] kungfu/class/ultra/dugu.c: 角色未移植，6 个问询键随之缺失
+  [NPC absent] kungfu/class/ultra/huang.c: 角色未移植，5 个问询键随之缺失
+  [NPC absent] kungfu/class/ultra/huoshan.c: 角色未移植，4 个问询键随之缺失
+  [NPC absent] kungfu/class/ultra/kuihua.c: 角色未移植，4 个问询键随之缺失
+  [known LPC defect] lingxiao/cheng: LPC new(/d/lingxiao/obj/yupai) 目标文件不存在
+  [known LPC defect] xiangyang/wuxiuwen: LPC set("inquiry") 二次调用覆盖首表
+
+TOTAL missing keys: 5 across 2 NPCs (text-backfillable 0); NPC-absent files: 14

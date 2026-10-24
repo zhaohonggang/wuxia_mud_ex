@@ -907,6 +907,27 @@ set("skill", ([ "name": skills[i], ... ]));
    条目后紧跟 LPC 注释行的（`taohua/huang.c` 的「无常丹」）由回填脚本的
    `EXTRA` 表手工补齐。
 
+6. **`resolve()` 把 clone_lib 主定义库的同名 NPC 误判「全部缺失」**（P5-4aw 修）：
+   门派师父（桑三娘/刘处玄/商剑鸣）的 canonical 定义在 `clone_lib.ucl`，但宿主区
+   UCL（heimuya/shaolin）另有同名角色（如 shaolin:shang_jianming），策略 1 的
+   `all_*` 回退见「同区存在同名角色」即返回空 frozenset → 误报「全部缺失」；
+   且 Python set 迭代顺序随机使 `pool[0]` 在命中 clone_lib/命中宿主副本间抖动
+   （ming.c 缺口在 2↔9 跳）。修正：把 `clone_lib` 当通用区匹配、决定性优先
+   `clone_lib`→`by_stem`→`in_zone`→`pool[0]`。修后真实缺口由旧记 77 校正为 46。
+
+7. **`resolve()` 通用名 + clone_lib 误抢在区精确命中之前**（P5-4ax 修）：策略 1
+   的候选循环按 `name_cands + key_cands` 顺序、且 `clone_hit` 优先于 `by_stem`，
+   导致通用中文名（「小贩」「老船夫」）跨区撞上 clone_lib 里的**异区同名异人**
+   （`clone_lib:quanzhen_seller` 属 quanzhen 区货郎、`clone_lib:shenlong_chuanfu`
+   属 shenlong 区船夫），抢在本区文件名精确命中（`fuzhou:xiaofan` /
+   `taohua:chuanfu`）之前，把这两个本已回填的问询误报成「text-backfillable」。
+   修正：引入 `name_zks`（与 LPC 中文名同名的 `(区,键)` 集合），`by_stem` 限定为
+   「文件名 stem 命中且确为同人（∈ name_zks）」，并把它提升为**最高优先**
+   `by_stem → clone_hit → in_zone → pool[0]`。门派师父（黄药师/张三丰/商剑鸣）
+   的 clone_lib 键是 `huang_yaoshi`/`zhang_sanfeng`/`shang_ming`，不等于裸文件名，
+   `by_stem` 恒空 → 不触发，仍走 `clone_hit` 认权威副本，不受影响。修后真实缺口
+   由 46 → **44 键 / 8 NPC（text-backfillable 2→0）**，证实 xiaofan/chuanfu 早已回填。
+
 ### 已回填（两批，共 68 键 / 17 个 NPC）
 
 **第一批（P5-4at，`ask_skillN` 绝招 + give_item）**：任我行 5 门、无尘道长 3 门、
@@ -917,23 +938,45 @@ set("skill", ([ "name": skills[i], ... ]));
 齐云敖 5、石破天 6、南贤 2、武修文 2、苗人凤 4、黄药师 13、商剑鸣 1、
 干将 5、莫邪 4（另有石破天 2 条、菜园管事「浇水/锄草」2 条转换器本就转了）。
 
-### 剩余缺口（survey 现状：**92 键 / 11 NPC，text-backfillable 0**）
+**第三批（P5-4au，苗人凤 ask_skill1..10 绝招——闭包 skill grant）**：苗人凤
+`kungfu/class/miao/miao.c` 的 `ask_skill1..10` 是「授绝招」闭包，门控
+（maxed/family/base<1/gongxian/min_shen 侠义下限/force·base 等级/max_neili）
+与任我行批同构，无需改引擎——直接在 `zhongzhou.ucl` 的 `characters "miao"`
+补 `teach.family="中原苗家"` + 把 `inquiries` 转 map 形式、加 10 条
+`{ perform_id / skill / min_gongxian / min_shen / min_max_neili / min_levels /
+cost_gongxian + *_deny }`。落 `test/kantele/world/inquiry_sect_masters_test.exs`
+数据回填 + 门控联验用例。苗人凤 15 → 剩 5（见下，全为 item_grant）。
 
-全部是**闭包**条目，需要逐 NPC 读 LPC 移植：
+**第四批（P5-4av，桑三娘 + 刘处玄 ask_skill 绝招闭包）**：延续 P5-4au 的「绝招闭包」移植模式——survey 曾把这两个 NPC 标成 `text_only`，但读 LPC 本体 `sang.c`/`liu.c` 发现它们是 `set("can_perform/...")` 真·授绝招闭包、门控以 `return 1` 收尾，与苗人凤同构，引擎零改动。
+- ⚠️ **clone_lib 去重（本批关键坑）**：桑三娘/刘处玄 在 `clone_lib.ucl` 另有主定义 `riyue_sang`/`quanzhen_liu`（同名「桑三娘」/「刘处玄」），原 `inquiries` 是 list 形式的 `unimplemented` 占位；**房间实际加载的是 clone_lib 这份**，zone 文件 `heimuya.ucl` `sang_sanniang` / `quanzhen.ucl` `liu_chuxuan` 是被按名合并覆盖的同体别名。首轮把数据写进 zone 文件导致 `meta.teach`/`meta.inquiries` 全空（回归 3 失败），改投 `clone_lib.ucl` 两处才生效。
+- 桑三娘 `kungfu/class/riyue/sang.c` 的 `ask_skill1..3` 是「日月神教」阴面绝招，`max_shen` 用负值（越阴越能学）。在 `clone_lib.ucl` `characters "riyue_sang"` 补 `teach = { family = "日月神教" }` + 把 list 占位 `inquiries` 转 map 形式加 3 条 `{ perform_id / skill / min_gongxian / max_shen / min_levels / cost_gongxian + *_deny }`：破靛神砂(lansha-shou/po, gx200, max_shen=-20000, {force150,lansha-shou100})、星罗棋布(heixue-shenzhen/luo, gx400, max_shen=-35000, {force200,heixue-shenzhen140})、天蝎藏针(jifeng-cixuefa/cang, gx200, max_shen=-15000, {force120,dodge120,jifeng_cixuefa100})。剩 `ask_me`(黑血神针) 为 item_grant（待 GiveItem 扩 `min_shen`/`min_skill`，本批未列）。zone 文件 `heimuya.ucl` `sang_sanniang` 的冗余同名块已 `git checkout` 回退去重。
+- 刘处玄 `kungfu/class/quanzhen/liu.c` 的 `ask_skill1` 同一闭包别名两键（`连环掌`/`重阳连环掌`），阳面 `min_shen=10000`。在 `clone_lib.ucl` `characters "quanzhen_liu"` 补 `teach = { family = "全真教" }` + 把 list 占位 `inquiries` 转 map 形式加 2 条 `{ chongyang-shenzhang/lian, gx100, min_shen=10000, {force120,chongyang_shenzhang100} }`。zone 文件 `quanzhen.ucl` `liu_chuxuan` 冗余块已回退去重。
+- 测试：`inquiry_sect_masters_test.exs` 加桑三娘 3 门数据回填 + 刘处玄 2 键数据 + 桑三娘 `max_shen` 门控（shen>-20000→max_shen_deny；shen=-20000→学会 lansha-shou/po）共 3 用例（非 6：前两「数据回填」各为单 test 断言多键）。
+- `validate_ucl.py` 对 `clone_lib.ucl` 报 32xxx 行 `expected '='` / 尾斜杠（LPC 续行未折叠）**系 HEAD 既有转换器缺陷**（HEAD 同文件同错，Elias 加载容错正常），非本批回归；survey 复跑：桑三娘 4→1、刘处玄 2→0，总缺口 **82→77 键 / 10 NPC**。**全量回归 `test/kantele/world/`+sect_master_test+f3 e2e = 1483/0（原 1483 含 3 失败，本批修绿）。**
+
+**第五批（P5-4aw，商剑鸣 ask_skill1..7 绝招闭包 + survey `resolve()` 修 bug）**：延续「绝招闭包」模式——读 LPC `kungfu/class/shang/ming.c` 确认 survey 曾把 商剑鸣 ask_skill1..7 标成 `item_grant`，实则全是 `set("can_perform/...")` 授绝招闭包（与任我行批同构），引擎零改动；仅 `ask_dao`(紫金八卦刀) 真 item_grant、`give_letter`(天刀八势) skill+发信 留待 GiveItem 扩 `min_skill`。
+- 落点 `clone_lib.ucl` `characters "shang_ming"`（shaolin:shang_dating 加载，canonical 即 clone_lib 份）：补 `teach = { family = "商家堡" }` + map 形 `inquiries` 7 门（wai-bagua/zhen gx100 max_shen=-5000、baisheng-quan/kai gx300 max_shen=-20000、jinbiao-jue/huan gx300 max_shen=-15000、bazhen-zhang/yin gx500 max_shen=-20000、shangjia-dao/juan gx80 max_shen=-1000、bagua-dao/mang gx1000 max_shen=-50000、bagua-dao/sha gx1800 max_shen=-80000；各自 `min_levels` 含 force + 主技能）。`min_levels` 键须用**下划线**（Elias 拒连字符裸键，loader 归一 `_`→`-`）。2 条纯字符串问询（胡一刀/苗人凤）保留。
+- 测试：`inquiry_sect_masters_test.exs` 加 2 用例（UCL 数据回填 7 门全字段 + 共享 deny 文案 + 紫金八卦刀/天刀八势未回填断言；max_shen 门控：八卦震 shen>-5000→拒、shen=-5000 临界过门，杀龙无悔 shen>-80000→拒、shen=-80000 过门）。全量 `test/kantele/world/` 回归 **1412/0**。
+- ⚠️ **survey `resolve()` 修重大 bug（旧缺口数全错）**：策略 1 的 `all_*` 回退在「宿主区存在同名但无 inquiry 块的角色」（如 shaolin:shang_jianming 顶替 clone_lib:shang_ming）时误报「全部缺失」；且 Python set 迭代顺序随机 → 同一 `pool[0]` 在 2↔9 间抖动。修正：把 `clone_lib` 当通用区匹配、决定性优先 `clone_lib`→`by_stem`→`in_zone`→`pool[0]`。校正后真实剩余缺口 **77 → 46 键 / 10 NPC（含 2 text-backfillable）**；并证实 **黄药师(taohua/huang.c)/张三丰(wudang/zhang.c) 早已 0 缺失**（旧 survey 误报 21/5），旧「平四3」实为 guanwai 平四(已办结)、现剩 hu/平四(hu/pingsi.c) 3 键另一 NPC。见下「剩余缺口」表。
+
+### 剩余缺口（survey 现状，已校正：**44 键 / 8 NPC，text-backfillable 0**）
+
+> ⚠️ 旧记「77 键」系 `resolve()` clone_lib 解析 bug 虚高；P5-4ax 又修掉通用名 +
+> clone_lib 误抢本区精确命中，把早已回填的 xiaofan/chuanfu 误报成 text-backfillable。
+> 以下为 P5-4ax 修 bug 后的真实基线（survey 复跑可验证）。
+
+全部是**闭包**条目（无 text-backfillable），需要逐 NPC 读 LPC 移植：
 
 | NPC | 键数 | 内容 |
 |---|---|---|
-| `taohua/huang` 黄药师 | 21 | ask_skill1..10 绝招 + 4 本 ask_book + 离岛/玉箫/九阴神指/神掌/神手 + 阴阳八卦 |
 | `adm/npc/moye` 莫邪 | 24 | 炼器系统（炼制/铸剑/炼X 一整套 ask_* 闭包） |
-| `miao/miao` 苗人凤 | 15 | ask_skill1..10 + 剑谱上/下册（ask_jianpu1/2） |
-| `shang/ming` 商剑鸣 | 9 | ask_skill* |
 | `adm/npc/ganjiang` 干将 | 5 | 炼器系统 |
-| `wudang/zhang` 张三丰 | 5 | 太极图 prerequisite 链（`max_jingli`/`potential`/`can_perform` 未进管线） |
-| `riyue/sang` 桑三娘 | 4 | ask_skill* |
-| `hu/pingsi` 平四 | 3 | 出关/办事/出去 —— 「传送服务」非问答，引擎无对应 kind，**有意不回填** |
-| `quanzhen/liu` 刘处玄 | 2 | ask_skill* |
+| `miao/miao` 苗人凤 | 5 | item_grant（腾龙剑·剑谱上/下册，ask_jian/ask_jianpu1-2）；ask_skill1..10 绝招已回填（P5-4au） |
+| `shang/ming` 商剑鸣 | 2 | `紫金八卦刀`(ask_dao, item_grant) + `天刀八势`(give_letter, skill+发信)；ask_skill1..7 绝招已回填（P5-4aw） |
+| `riyue/sang` 桑三娘 | 1 | ask_me(黑血神针) item_grant（待 GiveItem 扩 min_shen/min_skill） |
 | `adm/npc/qingyangzi` 青阳子 | 2 | 传闻系统 |
 | `d/lingxiao/npc/cheng` | 2 | LPC 自身缺陷：`new("/d/lingxiao/obj/yupai")` 目标文件不存在，运行期即报错 |
+| `hu/pingsi` 平四 | 3 | 胡家平四（hu 区另一 NPC；guanwai 平四已 P5-4at 办结），闭包待移植 |
 
 另有 14 个文件是「NPC 未移植」（纪晓芙、单正、鸠摩智、独孤求败、霍山、
 葵花太监、北丑、鲁班、子虚等），问询键随角色一并缺失。

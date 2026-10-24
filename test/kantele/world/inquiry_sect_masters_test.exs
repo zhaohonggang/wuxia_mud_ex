@@ -7,7 +7,7 @@ defmodule Kantele.World.InquirySectMastersTest do
     - kaifeng/wuchen  无尘道长 3 门（红花会）
     - xuedao/baoxiang 宝象     1 门（血刀门）
     - xuedao/shengdi  胜谛     1 门（血刀门）
-    - guanwai/pingsi  平四     4 条纯文本问询
+    - guanwai/pingsi  平四     4 条纯文本问询 + 3 条传送服务（出关/办事/出去 → teleport_service）
 
   断言分两层：① UCL 数据经 Loader 归一后的门控字段（含 min_levels 的
   `_`→`-` 键归一）；② 用**加载出来的真实配置**喂 `SectMaster.inquiry_grant/3`，
@@ -138,7 +138,7 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert kai["min_levels"] == %{"force" => 100, "xueshan-dao" => 80}
     end
 
-    test "平四 4 条纯文本问询（出关/办事/出去 走 ask_me 传送，未回填）", %{world: world} do
+    test "平四 4 条纯文本问询 + 3 条传送服务（出关/办事/出去 已回填 teleport_service）", %{world: world} do
       pingsi = npc(world, "平四", "guanwai:xiaoyuan")
       assert pingsi, "平四应随世界加载（guanwai:xiaoyuan）"
 
@@ -147,10 +147,166 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert inquiry(pingsi, "苗人凤") == "苗大侠可不是坏人。"
       assert inquiry(pingsi, "赵半山") == "他对我家主人的交情那是没得说的。"
 
+      # 出关/办事/出去 已回填为 kind="teleport_service" 传送服务
       for key <- ~w(出关 办事 出去) do
-        refute Map.has_key?(pingsi.meta.inquiries, key),
-               "「#{key}」是传送服务（ask_me），暂无对应 kind，不应以问答形式回填"
+        cfg = inquiry(pingsi, key)
+        assert cfg, "平四应能回答「#{key}」"
+        assert cfg["kind"] == "teleport_service"
+        assert cfg["target_room"] == "beijing:majiu"
+        assert cfg["startroom"] == "guanwai:xiaoyuan"
+        assert cfg["family"] == "关外胡家"
+        assert cfg["vision_name"] == "平四"
+        assert cfg["success"] == "马车已备，请上车。"
+        assert cfg["family_deny"] == "你自己没长腿么？"
+        assert cfg["room_deny"] == "我这里还有事，你就自己走回去吧。"
       end
+    end
+
+    test "苗人凤 10 门绝招：中原苗家门派 + min_shen 侠义下限 + 内力门槛", %{world: world} do
+      npc = npc(world, "苗人凤", "zhongzhou:miaojia_houting")
+      assert npc, "苗人凤应随世界加载（zhongzhou:miaojia_houting）"
+      assert npc.meta.teach.family == "中原苗家"
+
+      dan = inquiry(npc, "丹阳劲")
+      assert dan["perform_id"] == "miaojia-zhang/dan"
+      assert dan["skill"] == "miaojia-zhang"
+      assert dan["min_gongxian"] == 50
+      assert dan["min_shen"] == 2000
+      assert dan["min_max_neili"] == 200
+      assert dan["min_levels"] == %{"force" => 50, "miaojia-zhang" => 40}
+      assert dan["cost_gongxian"] == 50
+      assert dan["family_deny"] == "给我走开！"
+      assert dan["skill_deny"] == "你连苗家掌法都未学，何谈绝招可言？"
+
+      gan = inquiry(npc, "流星赶月")
+      assert gan["perform_id"] == "miaojia-jian/gan"
+      assert gan["min_gongxian"] == 2200
+      assert gan["min_shen"] == 35_000
+      assert gan["min_max_neili"] == 3000
+      assert gan["min_levels"] == %{"force" => 280, "miaojia-jian" => 200}
+      assert gan["skill_deny"] == "你连苗家剑法都未学，何谈绝招可言？"
+
+      # 4 条纯字符串问询（batch-2 回填）仍保留
+      assert inquiry(npc, "胡一刀") == "当年我中了奸人毒计杀害了他，令我遗憾终生！"
+    end
+
+    test "桑三娘 3 门绝招：日月神教 + max_shen 阴面门派", %{world: world} do
+      npc = npc(world, "桑三娘", "heimuya:tian1")
+      assert npc, "桑三娘应随世界加载（heimuya:tian1）"
+      assert npc.meta.teach.family == "日月神教"
+
+      po = inquiry(npc, "破靛神砂")
+      assert po["perform_id"] == "lansha-shou/po"
+      assert po["skill"] == "lansha-shou"
+      assert po["min_gongxian"] == 200
+      assert po["max_shen"] == -20_000
+      assert po["min_levels"] == %{"force" => 150, "lansha-shou" => 100}
+      assert po["cost_gongxian"] == 200
+      assert po["max_shen_deny"] == "你这样心慈手软，就算学会这招又有什么用？"
+
+      luo = inquiry(npc, "星罗棋布")
+      assert luo["perform_id"] == "heixue-shenzhen/luo"
+      assert luo["max_shen"] == -35_000
+      assert luo["min_levels"] == %{"force" => 200, "heixue-shenzhen" => 140}
+      assert luo["skill_deny"] == "你连黑血神针都没学，还谈什么绝招可言？"
+
+      cang = inquiry(npc, "天蝎藏针")
+      assert cang["perform_id"] == "jifeng-cixuefa/cang"
+      assert cang["max_shen"] == -15_000
+      assert cang["min_levels"] == %{"force" => 120, "dodge" => 120, "jifeng-cixuefa" => 100}
+    end
+
+    test "刘处玄 连环掌/重阳连环掌 同闭包：全真教 + min_shen 阳面门派", %{world: world} do
+      npc = npc(world, "刘处玄", "quanzhen:jingxiushi")
+      assert npc, "刘处玄应随世界加载（quanzhen:jingxiushi）"
+      assert npc.meta.teach.family == "全真教"
+
+      lian = inquiry(npc, "连环掌")
+      assert lian["perform_id"] == "chongyang-shenzhang/lian"
+      assert lian["skill"] == "chongyang-shenzhang"
+      assert lian["min_gongxian"] == 100
+      assert lian["min_shen"] == 10_000
+      assert lian["min_levels"] == %{"force" => 120, "chongyang-shenzhang" => 100}
+      assert lian["cost_gongxian"] == 100
+      assert lian["shen_deny"] == "你的侠义正事还做得不够，这招我暂时还不能传你。"
+
+      # 重阳连环掌 是同一闭包 ask_skill1 的第二个问询键，配置相同
+      lian2 = inquiry(npc, "重阳连环掌")
+      assert lian2["perform_id"] == "chongyang-shenzhang/lian"
+      assert lian2["min_shen"] == 10_000
+    end
+
+    test "商剑鸣 7 门绝招：商家堡 + max_shen 阴面门派（ask_skill1-7 均为绝招授艺）", %{world: world} do
+      npc = npc(world, "商剑鸣", "shaolin:shang_dating")
+      assert npc, "商剑鸣应随世界加载（shaolin:shang_dating）"
+      assert npc.meta.teach.family == "商家堡"
+
+      # 7 招：{key, perform_id, min_gongxian, max_shen, min_levels, cost}
+      expected = [
+        {"八卦震", "wai-bagua/zhen", 100, -5000, %{"force" => 100, "wai-bagua" => 60}, 100},
+        {"混沌初开", "baisheng-quan/kai", 300, -20000, %{"force" => 140, "baisheng-quan" => 100}, 300},
+        {"金莲幻生", "jinbiao-jue/huan", 300, -15000, %{"force" => 140, "jinbiao-jue" => 100}, 300},
+        {"神卦天印", "bazhen-zhang/yin", 500, -20000, %{"force" => 180, "bazhen-zhang" => 130}, 500},
+        {"寒芒暴卷", "shangjia-dao/juan", 80, -1000, %{"force" => 80, "shangjia-dao" => 50}, 80},
+        {"劈天神芒", "bagua-dao/mang", 1000, -50000, %{"force" => 200, "bagua-dao" => 140, "wai-bagua" => 140}, 1000},
+        {"杀龙无悔", "bagua-dao/sha", 1800, -80000, %{"force" => 250, "bagua-dao" => 180}, 1800}
+      ]
+
+      for {key, perform_id, gongxian, max_shen, levels, cost} <- expected do
+        cfg = inquiry(npc, key)
+        assert cfg, "商剑鸣应能回答「#{key}」"
+
+        assert cfg["perform_id"] == perform_id
+        assert cfg["skill"] == String.split(perform_id, "/") |> List.first()
+        assert cfg["min_gongxian"] == gongxian
+        assert cfg["max_shen"] == max_shen
+        assert cfg["cost_gongxian"] == cost
+        assert cfg["min_levels"] == levels
+      end
+
+      # 共享拒绝文案（阴面门派 max_shen_deny / 同门 family_deny）
+      zhen = inquiry(npc, "八卦震")
+      assert zhen["family_deny"] == "与我商家堡素无来往，何出此言？"
+      assert zhen["max_shen_deny"] == "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      assert zhen["skill_deny"] == "你连外八卦都没学，谈什么绝招？"
+
+      # 各招「已会」文案不同（LPC 直搬）
+      assert inquiry(npc, "八卦震")["maxed"] == "自己下去练，罗嗦什么！"
+      assert inquiry(npc, "神卦天印")["maxed"] == "这招我已经教过你了，自己下去练吧。"
+      assert inquiry(npc, "杀龙无悔")["maxed"] == "唉…你自己下去练吧。"
+
+      # 2 条纯字符串问询（LPC 直答）仍保留
+      assert inquiry(npc, "胡一刀") == "哦？听说此人刀法甚是了得，可惜我没见过他。"
+      assert inquiry(npc, "苗人凤") == "哼，这贼鸟厮居然敢号称天下无敌，改天一定要去会会。"
+
+      # 紫金八卦刀（item_grant，P5-4ay 回填）：kind=give_item，master_id + max_shen + min_skill 门控
+      dao = inquiry(npc, "紫金八卦刀")
+      assert dao["kind"] == "give_item"
+      assert dao["item"] == "clone_lib:baguadao"
+      assert dao["unique"] == "true"
+      assert dao["family"] == "商家堡"
+      assert dao["master_id"] == "true"
+      assert dao["max_shen"] == -50000
+      assert dao["min_skill_levels"] == %{"bagua_dao" => 150}
+      assert dao["max_shen_deny"] == "像你这样的心慈手软之辈，这刀你不用也罢。"
+      assert dao["master_deny"] == "只有我的弟子才配用这八卦刀，你别拿去丢脸。"
+
+      # 天刀八势（give_letter，P5-4ay 回填）：kind=give_item，perform_id + cost_gongxian + 多重门控
+      letter = inquiry(npc, "天刀八势")
+      assert letter["kind"] == "give_item"
+      assert letter["item"] == "clone_lib:sjmletter"
+      assert letter["unique"] == "true"
+      assert letter["family"] == "商家堡"
+      assert letter["perform_id"] == "bagua-dao/tian"
+      assert letter["cost_gongxian"] == 2200
+      assert letter["min_gongxian"] == 2200
+      assert letter["max_neili"] == 3200
+      assert letter["min_skill_levels"] == %{"bagua_dao" => 200, "wai_bagua" => 200, "nei_bagua" => 200}
+      assert letter["maxed"] == "你不是已经会了吗？"
+      assert letter["already"] == "快到镇远镖局找我师傅去吧！"
+      assert letter["min_gongxian_deny"] == "你在镖局内碌碌无为，这一招我暂时还不能传你。"
+      assert letter["max_neili_deny"] == "你的内力修为不足，施展不出这招，等你内力有所攀升后再来找我吧。"
+      assert letter["min_skill_deny"] == "你的八卦刀法还练得不到家，自己下去练练再来吧！"
     end
   end
 
@@ -259,6 +415,129 @@ defmodule Kantele.World.InquirySectMastersTest do
       # 同门但心慈手软 → max_shen_deny
       assert {:error, "你这样心慈手软，就算学会这招又有什么用？"} =
                SectMaster.inquiry_grant(%{player | family: "血刀门"}, %{family: "血刀门"}, cfg)
+    end
+
+    test "中原苗家弟子全达标 → 学会「丹阳劲」并扣 50 贡献", %{world: world} do
+      cfg = inquiry(npc(world, "苗人凤", "zhongzhou:miaojia_houting"), "丹阳劲")
+
+      player =
+        disciple(%{
+          skills: %{"miaojia-zhang" => 40, "force" => 50},
+          gongxian: 50,
+          shen: 2000,
+          max_neili: 200,
+          family: "中原苗家"
+        })
+
+      assert {:ok, "miaojia-zhang/dan", 50} =
+               SectMaster.inquiry_grant(player, %{family: "中原苗家"}, cfg)
+    end
+
+    test "侠义不足（shen < 2000）→ shen_deny；非苗家 → family_deny", %{world: world} do
+      cfg = inquiry(npc(world, "苗人凤", "zhongzhou:miaojia_houting"), "丹阳劲")
+
+      low_shen =
+        disciple(%{
+          skills: %{"miaojia-zhang" => 40, "force" => 50},
+          gongxian: 50,
+          shen: 1999,
+          max_neili: 200,
+          family: "中原苗家"
+        })
+
+      assert {:error, "你侠义正事做得不够，这招我先不忙传你。"} =
+               SectMaster.inquiry_grant(low_shen, %{family: "中原苗家"}, cfg)
+
+      outsider =
+        disciple(%{
+          skills: %{"miaojia-zhang" => 40, "force" => 50},
+          gongxian: 50,
+          shen: 2000,
+          max_neili: 200,
+          family: "武当派"
+        })
+
+      assert {:error, "给我走开！"} =
+               SectMaster.inquiry_grant(outsider, %{family: "中原苗家"}, cfg)
+    end
+
+    test "桑三娘 max_shen 阴面门派：shen > -20000 → max_shen_deny；够阴过门", %{world: world} do
+      cfg = inquiry(npc(world, "桑三娘", "heimuya:tian1"), "破靛神砂")
+
+      too_good =
+        disciple(%{
+          skills: %{"lansha-shou" => 100, "force" => 150},
+          gongxian: 200,
+          shen: -19_999,
+          family: "日月神教"
+        })
+
+      assert {:error, "你这样心慈手软，就算学会这招又有什么用？"} =
+               SectMaster.inquiry_grant(too_good, %{family: "日月神教"}, cfg)
+
+      evil =
+        disciple(%{
+          skills: %{"lansha-shou" => 100, "force" => 150},
+          gongxian: 200,
+          shen: -20_000,
+          family: "日月神教"
+        })
+
+      assert {:ok, "lansha-shou/po", 200} =
+               SectMaster.inquiry_grant(evil, %{family: "日月神教"}, cfg)
+    end
+
+    test "商剑鸣 max_shen 阴面门派：shen > 阈值 → max_shen_deny；够阴过门（八卦震 / 杀龙无悔）", %{world: world} do
+      npc = npc(world, "商剑鸣", "shaolin:shang_dating")
+
+      zhen = inquiry(npc, "八卦震")
+
+      too_good =
+        disciple(%{
+          skills: %{"wai-bagua" => 60, "force" => 100},
+          gongxian: 100,
+          shen: -4999,
+          family: "商家堡"
+        })
+
+      assert {:error, "哼！你这样的心慈手软之徒，就算学了这招又有何用？"} =
+               SectMaster.inquiry_grant(too_good, %{family: "商家堡"}, zhen)
+
+      evil =
+        disciple(%{
+          skills: %{"wai-bagua" => 60, "force" => 100},
+          gongxian: 100,
+          shen: -5000,
+          family: "商家堡"
+        })
+
+      assert {:ok, "wai-bagua/zhen", 100} =
+               SectMaster.inquiry_grant(evil, %{family: "商家堡"}, zhen)
+
+      # 杀龙无悔：最高门槛（gongxian 1800 / shen -80000 / bagua-dao 180 / force 250）
+      sha = inquiry(npc, "杀龙无悔")
+
+      below =
+        disciple(%{
+          skills: %{"bagua-dao" => 180, "force" => 250},
+          gongxian: 1800,
+          shen: -79_999,
+          family: "商家堡"
+        })
+
+      assert {:error, "哼！你这样的心慈手软之徒，就算学了这招又有何用？"} =
+               SectMaster.inquiry_grant(below, %{family: "商家堡"}, sha)
+
+      full =
+        disciple(%{
+          skills: %{"bagua-dao" => 180, "force" => 250},
+          gongxian: 1800,
+          shen: -80_000,
+          family: "商家堡"
+        })
+
+      assert {:ok, "bagua-dao/sha", 1800} =
+               SectMaster.inquiry_grant(full, %{family: "商家堡"}, sha)
     end
   end
 end

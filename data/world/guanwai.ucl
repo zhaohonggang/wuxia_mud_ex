@@ -2532,13 +2532,48 @@ chats = [
 
       # LPC: kungfu/class/hu/pingsi.c 的问询表。
       # 出关/办事/出去 三门走 ask_me 闭包（同门派 + 在本房才受理，然后把玩家
-      # 送去 /d/beijing/majiu 并播报马车）：那是「传送服务」而非问答，引擎暂无
-      # 对应 kind，暂不回填（见 docs/lpc-port-gaps.zh-CN.md）。
+      # 送去 /d/beijing/majiu 并播报马车）：已回填为 kind="teleport_service"。
       inquiries = [
         { key = "阎基" value = "阎基…哼…这个狗贼。" },
         { key = "胡一刀" value = "那……那是老主人，唉。" },
         { key = "苗人凤" value = "苗大侠可不是坏人。" },
-        { key = "赵半山" value = "他对我家主人的交情那是没得说的。" }
+        { key = "赵半山" value = "他对我家主人的交情那是没得说的。" },
+        { key = "出关" value = {
+          kind = "teleport_service"
+          target_room = "beijing:majiu"
+          startroom = "guanwai:xiaoyuan"
+          family = "关外胡家"
+          vision_name = "平四"
+          success = "马车已备，请上车。"
+          family_deny = "你自己没长腿么？"
+          room_deny = "我这里还有事，你就自己走回去吧。"
+          vision = "平四朝远方一招手，顿时几个参客赶着马车驶了过来，笑道「我家小主人要出关办点事，今趟就劳驾你们送送。」参客听后连忙陪笑着答应，{npc} 见状急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+        }
+        },
+        { key = "办事" value = {
+          kind = "teleport_service"
+          target_room = "beijing:majiu"
+          startroom = "guanwai:xiaoyuan"
+          family = "关外胡家"
+          vision_name = "平四"
+          success = "马车已备，请上车。"
+          family_deny = "你自己没长腿么？"
+          room_deny = "我这里还有事，你就自己走回去吧。"
+          vision = "平四朝远方一招手，顿时几个参客赶着马车驶了过来，笑道「我家小主人要出关办点事，今趟就劳驾你们送送。」参客听后连忙陪笑着答应，{npc} 见状急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+        }
+        },
+        { key = "出去" value = {
+          kind = "teleport_service"
+          target_room = "beijing:majiu"
+          startroom = "guanwai:xiaoyuan"
+          family = "关外胡家"
+          vision_name = "平四"
+          success = "马车已备，请上车。"
+          family_deny = "你自己没长腿么？"
+          room_deny = "我这里还有事，你就自己走回去吧。"
+          vision = "平四朝远方一招手，顿时几个参客赶着马车驶了过来，笑道「我家小主人要出关办点事，今趟就劳驾你们送送。」参客听后连忙陪笑着答应，{npc} 见状急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+        }
+        }
       ]
 
       meta = {

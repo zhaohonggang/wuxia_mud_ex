@@ -19,9 +19,20 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         max_shen = -10000             # 杀气上限（LPC `shen > -10000` 即拒）
         min_combat_exp = 100000       # 经验下限
         max_skill_levels = { poison = 119 }  # 技能上限（LPC `query_skill("poison") > 119` 即拒）
+        min_skill_levels = { bagua_dao = 150 }  # 技能下限（LPC `query_skill(...) < 150` 即拒）
+        min_gongxian = 2200           # 门派贡献下限（LPC `query("gongxian") < 2200` 即拒）
+        max_neili = 3200              # 内力上限下限（LPC `query("max_neili") < 3200` 即拒）
+        master_id = true              # 仅本门师父亲传弟子（family/master_id == npc id）
+        perform_id = "bagua-dao/tian" # 发放同时习得绝招（LPC set can_perform/...=1）
+        cost_gongxian = 2200          # 发放后扣除贡献（LPC add("gongxian", -2200)）
         max_shen_deny = "..."         # 杀气过高时的返回值
         min_exp_deny = "..."          # 经验不足时的返回值
         max_skill_deny = "..."        # 技能过高时的返回值
+        min_skill_deny = "..."        # 技能不足时的返回值
+        min_gongxian_deny = "..."     # 贡献不足时的返回值
+        max_neili_deny = "..."        # 内力不足时的返回值
+        master_deny = "..."           # 非本师弟子时的返回值
+        maxed = "..."                 # perform_id 已习得时的返回值
       }
 
   ## 与 LPC 的差异
@@ -38,10 +49,12 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   NPC 侧预留（先减，玩家侧失败时回补）。
   """
 
-  import Kalevala.Character.Conn, only: [render: 4, prompt: 4]
+  import Kalevala.Character.Conn, only: [render: 4, prompt: 4, put_character: 2]
 
   alias Kantele.Character.CommandView
   alias Kantele.Character.Family
+  alias Kantele.Character.Records
+  alias Kantele.Character.Stats
   alias Kantele.World.Item
   alias Kantele.World.Items
   alias Kantele.World.NpcActions.Helpers
@@ -60,11 +73,17 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp run_for(conn, character, config, data) do
     cond do
+      already_known?(character, config) ->
+        reply(conn, Helpers.respect(character) <> maxed_text(config))
+
       family_denied?(character, config) ->
         reply(conn, Helpers.respect(character) <> family_deny_text(config))
 
       gate = gate_denial(character, config) ->
         reply(conn, gate)
+
+      master_denied?(character, config, data) ->
+        reply(conn, Helpers.respect(character) <> master_deny_text(config))
 
       unique?(config) and carries?(character, config) ->
         reply(conn, Helpers.respect(character) <> already_text(config))
@@ -83,6 +102,8 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     case Items.get(item_id) do
       {:ok, item} ->
         conn = Helpers.give_item(conn, item_id)
+        conn = give_perform(conn, config)
+        conn = deduct_cost(conn, config)
         conn = reply(conn, Map.get(config, "success") || "拿去吧。")
         conn = broadcast(conn, data, config, item, item_id)
         consume(data, config)
@@ -92,6 +113,46 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         conn
     end
   end
+
+  # LPC set("can_perform/<perform_id>", 1)：发放同时习得绝招（如 商剑鸣「天刀八势」）。
+  defp give_perform(conn, %{"perform_id" => perform_id})
+       when is_binary(perform_id) do
+    character = current(conn)
+
+    case character.meta.stats do
+      %Stats{} = stats ->
+        updated = Stats.learn_perform(stats, perform_id)
+        character = %{character | meta: %{character.meta | stats: updated}}
+        conn = put_character(conn, character)
+        Records.save(character)
+        conn
+
+      _ ->
+        conn
+    end
+  end
+
+  defp give_perform(conn, _config), do: conn
+
+  # LPC add("gongxian", -N)：发放后扣除门派贡献。
+  defp deduct_cost(conn, %{"cost_gongxian" => cost})
+       when is_integer(cost) and cost > 0 do
+    character = current(conn)
+
+    case character.meta.stats do
+      %Stats{} = stats ->
+        updated = %{stats | gongxian: max((stats.gongxian || 0) - cost, 0)}
+        character = %{character | meta: %{character.meta | stats: updated}}
+        conn = put_character(conn, character)
+        Records.save(character)
+        conn
+
+      _ ->
+        conn
+    end
+  end
+
+  defp deduct_cost(conn, _config), do: conn
 
   defp broadcast(conn, data, config, item, item_id) do
     case Map.get(data, :npc_room_id) do
@@ -168,6 +229,15 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
       exceeds_max_skill?(stats, config) ->
         Map.get(config, "max_skill_deny") || "你这方面的造诣已经不浅了，这个不看也罢。"
 
+      below_min_skill?(stats, config) ->
+        Map.get(config, "min_skill_deny") || "你这门功夫还练得不到家，自己下去练练再来吧！"
+
+      below_min_gongxian?(stats, config) ->
+        Map.get(config, "min_gongxian_deny") || "你在我这里碌碌无为，这东西暂时还不能给你。"
+
+      below_max_neili?(character, config) ->
+        Map.get(config, "max_neili_deny") || "你的内力修为不足，施展不出这招。"
+
       true ->
         nil
     end
@@ -203,11 +273,78 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     end
   end
 
+  # LPC `query_skill("<skill>", 1) < N`：任一技能未达下限即拒。
+  defp below_min_skill?(stats, config) do
+    case Map.get(config, "min_skill_levels") do
+      levels when is_map(levels) ->
+        skills = Map.get(stats, :skills) || %{}
+        Enum.any?(levels, fn {skill, min} -> Map.get(skills, skill, 0) < min end)
+
+      _ ->
+        false
+    end
+  end
+
+  # LPC `query("gongxian") < N`。
+  defp below_min_gongxian?(stats, config) do
+    case Map.get(config, "min_gongxian") do
+      min when is_integer(min) -> stat(stats, :gongxian) < min
+      _ -> false
+    end
+  end
+
+  # LPC `query("max_neili") < N`：内力上限存于 meta.vitals.max_neili。
+  defp below_max_neili?(character, config) do
+    case Map.get(config, "max_neili") do
+      min when is_integer(min) -> max_neili_of(character) < min
+      _ -> false
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: 0
+
   defp family_deny_text(config),
     do: Map.get(config, "family_deny") || "与本派素无来往，不知此话从何谈起？"
 
   defp already_text(config),
     do: Map.get(config, "already") || "你现在身上已经有这样东西了。"
+
+  # LPC `can_perform/<perform_id>` 已习得：发放前先确认（如 商剑鸣「你不是已经会了吗？」）。
+  defp already_known?(%{meta: %{stats: %Stats{} = stats}}, config) do
+    case Map.get(config, "perform_id") do
+      perform_id when is_binary(perform_id) -> Stats.perform_known?(stats, perform_id)
+      _ -> false
+    end
+  end
+
+  defp already_known?(_character, _config), do: false
+
+  defp maxed_text(config),
+    do: Map.get(config, "maxed") || "这招我已经教过你了，自己下去练吧。"
+
+  # LPC `query("family/master_id") != query("id")`：仅本师亲传弟子可取。
+  # UCL 解析器把 `master_id = true` 读为字符串 "true"；仅显式 true/"true" 开启门控，
+  # 未配置（nil）时不拦。
+  defp master_denied?(character, config, data) do
+    case Map.get(config, "master_id") do
+      true -> not own_disciple?(character, Map.get(data, :npc_id))
+      "true" -> not own_disciple?(character, Map.get(data, :npc_id))
+      _ -> false
+    end
+  end
+
+  defp own_disciple?(%{meta: %{family: family}}, npc_id) when is_map(family) do
+    master_id = Map.get(family, :master_id) || Map.get(family, "master_id")
+    is_binary(master_id) and master_id == npc_id
+  end
+
+  defp own_disciple?(_character, _npc_id), do: false
+
+  defp master_deny_text(config),
+    do:
+      Map.get(config, "master_deny") ||
+        "只有我的弟子才配用这个，你别拿去丢脸。"
 
   defp reply(conn, text) when is_binary(text) do
     conn

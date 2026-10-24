@@ -845,6 +845,14 @@ defmodule Kantele.World.Loader do
     end)
   end
 
+  # min_skill_levels 键与 Stats.skills 保持一致（字符串 + 下划线，不做 _→- 归一），
+  # 方便 give_item 的 below_min_skill? 直接 Map.get(skills, skill) 命中。
+  defp normalize_inquiry_field("min_skill_levels", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} ->
+      {to_string(skill), level}
+    end)
+  end
+
   defp normalize_inquiry_field(_key, val), do: val
 
   # 欢迎台词池：UCL greetings = [ { line = "..." } ]，归一为字符串列表

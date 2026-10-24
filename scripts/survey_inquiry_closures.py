@@ -416,23 +416,58 @@ def main():
         # 靠区名排除；riyue/ren 则靠 alias 把 meizhuang/ren 排除、认 heimuya/ren。
         if lz is not None:
             stem_variants = {npc, npc.replace("-", "_"), npc.replace("_", "-")}
+            # clone_lib 是主定义库：同名角色在 clone_lib 的副本即权威来源，与 LPC
+            # 宿主区同等对待（商剑鸣/桑三娘/刘处玄 等门派师父均 clone_lib-inlined）。
+            # 否则策略 1 的 all_* 回退会在「宿主区存在同名但无 inquiry 块的角色」时
+            # 误判「全部缺失」（如 shaolin:shang_jianming 顶替 clone_lib:shang_ming）。
+            zones = {lz, "clone_lib"}
+            # 名字确认集：与 LPC 中文名（含首词）相同的所有 (区,键)——即「确实是同一
+            # 个 NPC」的候选。用于把 by_stem 限定为「文件名 stem 命中且确为同人」，避免
+            # 误把同区同名异人（如 taohua:huang 黄伯流）当成本 NPC。
+            name_zks = set()
+            if chinese_name:
+                name_zks |= by_name.get(chinese_name, set())
+                if " " in chinese_name:
+                    name_zks |= by_name.get(chinese_name.split()[0], set())
             for hit in name_cands + key_cands:
                 if not hit:
                     continue
-                same = [zk for zk in hit if zk[0] == lz]
+                same = [zk for zk in hit if zk[0] in zones]
                 if not same:
                     continue
-                # 同区多个同名 NPC（wuguan 的 guanjia5 / guanjia6 都叫「菜园管事」）：
-                # 文件名键对得上哪个就认哪个，否则退回第一个（保持旧行为）。
-                by_stem = [zk for zk in same if zk[1] in stem_variants]
-                pick = by_stem[0] if by_stem else same[0]
+                # 优先有 inquiry 块的（clone_lib 主定义，或同区有问询的副本）
+                have_hit = [zk for zk in same if zk in entries]
+                pool = have_hit or same
+                # by_stem：文件名 stem 精确对应宿主区 UCL 角色键，且**确为同人**（在
+                # name_zks 内）。这是最精确的「文件即此 NPC」证据：
+                #   xiaofan→fuzhou:xiaofan、chuanfu→taohua:chuanfu 因此胜过 clone_lib
+                #   里的异区同名副本（quanzhen_seller / shenlong_chuanfu）。
+                # 门派师父（黄药师/张三丰/商剑鸣）的 clone_lib 键是 huang_yaoshi /
+                # zhang_sanfeng / shang_ming，不等于裸文件名，by_stem 为空 → 不触发，
+                # 仍走 clone_hit 认 clone_lib 权威副本（其数据最完整，loader 亦以
+                # clone_lib 副本为权威）。
+                by_stem = [zk for zk in pool if zk[1] in stem_variants and zk in name_zks]
+                clone_hit = [zk for zk in pool if zk[0] == "clone_lib"]
+                in_zone = [zk for zk in pool if zk[0] == lz]
+                # 决定性挑选（Python set 迭代顺序随机，不能靠 pool[0]）：
+                # 1) by_stem（同人+文件名精确命中，优先本区数据）；2) clone_lib 主定义；
+                # 3) 同宿主区副本；4) 兜底首条。
+                pick = (
+                    by_stem[0]
+                    if by_stem
+                    else clone_hit[0]
+                    if clone_hit
+                    else in_zone[0]
+                    if in_zone
+                    else pool[0]
+                )
                 return entries.get(pick, frozenset())
-            # 同区角色存在但**没有** inquiry 块（如 zhongzhou/miao 苗人凤）：
+            # 同区（含 clone_lib）角色存在但**没有** inquiry 块（如 zhongzhou/miao 苗人凤）：
             # 判「全部缺失」而不是回退到别的区的同名 NPC。
             for hit in all_name_cands + all_key_cands:
                 if not hit:
                     continue
-                if any(zk[0] == lz for zk in hit):
+                if any(zk[0] in zones for zk in hit):
                     return frozenset()
 
         # 策略 2：名字类唯一命中即认（中文名/别名跨区重名极少，且此时 LPC 区未知

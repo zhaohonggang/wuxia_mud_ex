@@ -574,6 +574,7 @@ defmodule Kantele.Character.NpcAskEvent do
         kind: kind,
         config: script,
         npc_name: conn.character.name,
+        npc_id: conn.character.id,
         npc_pid: self(),
         npc_room_id: conn.character.room_id,
         asker_id: asker_id,

@@ -172,6 +172,22 @@ defmodule Kantele.Character.NpcScriptEventTest do
         meta: %Meta{weight: 100, value: 100}
       })
 
+      Items.put("clone_lib:baguadao", %Item{
+        id: "clone_lib:baguadao",
+        name: "紫金八卦刀",
+        verbs: [],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{weight: 1000, value: 5000}
+      })
+
+      Items.put("clone_lib:sjmletter", %Item{
+        id: "clone_lib:sjmletter",
+        name: "天刀八势信",
+        verbs: [],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{weight: 50, value: 0}
+      })
+
       :ok
     end
 
@@ -352,6 +368,249 @@ defmodule Kantele.Character.NpcScriptEventTest do
                allowed.private.update_character.inventory,
                &(&1.item_id == "shaolin:huwan")
              )
+    end
+
+    # ---- 新增门控（P5-4ay 商剑鸣 item_grant）----
+
+    test "技能下限（紫金八卦刀 bagua_dao < 150 拒）" do
+      config =
+        Map.merge(give_config(), %{
+          "item" => "clone_lib:baguadao",
+          "match" => "baguadao",
+          "min_skill_levels" => %{"bagua_dao" => 150},
+          "min_skill_deny" => "你连八卦刀法都没学好，就算宝刀在手也是白搭。"
+        })
+
+      denied =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{skills: %{"bagua_dao" => 140}})),
+          inquiry_event(config)
+        )
+
+      assert denied.private.update_character == nil
+      assert output_text(denied) =~ "白搭"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      allowed =
+        NpcScriptEvent.inquiry_result(
+          build_conn(player(stats: %{skills: %{"bagua_dao" => 150}})),
+          inquiry_event(config)
+        )
+
+      assert Enum.any?(
+               allowed.private.update_character.inventory,
+               &(&1.item_id == "clone_lib:baguadao")
+             )
+    end
+
+    test "杀气上限且非本师弟子（紫金八卦刀 shen > -50000 / master_id 拒）" do
+      config =
+        Map.merge(give_config(), %{
+          "item" => "clone_lib:baguadao",
+          "match" => "baguadao",
+          "unique" => true,
+          "family" => "商家堡",
+          "master_id" => true,
+          "max_shen" => -50_000,
+          "max_shen_deny" => "像你这样的心慈手软之辈，这刀你不用也罢。",
+          "master_deny" => "只有我的弟子才配用这八卦刀，你别拿去丢脸。"
+        })
+
+      # 杀气过高（shen > -50000），门派匹配但杀气不够
+      denied_shen =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{shen: -49_999},
+              family: %{name: "商家堡", master_id: "signature:shang_ming"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      assert denied_shen.private.update_character == nil
+      assert output_text(denied_shen) =~ "不用也罢"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      # 杀气达标但非本师弟子（family/master_id != npc_id）
+      denied_master =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{shen: -60_000},
+              family: %{name: "商家堡", master_id: "other:npc"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      assert denied_master.private.update_character == nil
+      assert output_text(denied_master) =~ "别拿去丢脸"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      # 本师弟子且杀气达标 → 发放
+      allowed =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{shen: -60_000},
+              family: %{name: "商家堡", master_id: "signature:shang_ming"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      assert Enum.any?(
+               allowed.private.update_character.inventory,
+               &(&1.item_id == "clone_lib:baguadao")
+             )
+      assert output_text(allowed) =~ "拿去吧"
+    end
+
+    test "天刀八势：min_gongxian / max_neili / min_skill_levels 门控（不足则拒）" do
+      config =
+        Map.merge(give_config(), %{
+          "item" => "clone_lib:sjmletter",
+          "match" => "sjmletter",
+          "unique" => true,
+          "family" => "商家堡",
+          "min_gongxian" => 2200,
+          "max_neili" => 3200,
+          "min_skill_levels" => %{
+            "bagua_dao" => 200,
+            "wai_bagua" => 200,
+            "nei_bagua" => 200
+          },
+          "min_gongxian_deny" => "你在镖局内碌碌无为，这一招我暂时还不能传你。",
+          "max_neili_deny" => "你的内力修为不足，施展不出这招。",
+          "min_skill_deny" => "你的八卦刀法还练得不到家，自己下去练练再来吧！"
+        })
+
+      # 贡献不足（技能已达标，避免被 min_skill 先拦）
+      denied_gongxian =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{
+                gongxian: 2199,
+                skills: %{"bagua_dao" => 200, "wai_bagua" => 200, "nei_bagua" => 200}
+              },
+              family: %{name: "商家堡"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      assert denied_gongxian.private.update_character == nil
+      assert output_text(denied_gongxian) =~ "碌碌无为"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      # 内力上限不足（技能、贡献均达标）
+      denied_neili =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{
+                gongxian: 2200,
+                skills: %{"bagua_dao" => 200, "wai_bagua" => 200, "nei_bagua" => 200}
+              },
+              vitals: %{max_neili: 3199},
+              family: %{name: "商家堡"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      assert denied_neili.private.update_character == nil
+      assert output_text(denied_neili) =~ "内力修为不足"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+
+      # 技能不足
+      denied_skill =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(stats: %{skills: %{"bagua_dao" => 199}}, family: %{name: "商家堡"})
+          ),
+          inquiry_event(config)
+        )
+
+      assert denied_skill.private.update_character == nil
+      assert output_text(denied_skill) =~ "练练再来吧"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
+    end
+
+    test "天刀八势：全部达标则赠信并习得绝招、扣贡献（perform_id + cost_gongxian）" do
+      config =
+        Map.merge(give_config(), %{
+          "item" => "clone_lib:sjmletter",
+          "match" => "sjmletter",
+          "unique" => true,
+          "family" => "商家堡",
+          "perform_id" => "bagua-dao/tian",
+          "cost_gongxian" => 2200,
+          "min_gongxian" => 2200,
+          "max_neili" => 3200,
+          "min_skill_levels" => %{
+            "bagua_dao" => 200,
+            "wai_bagua" => 200,
+            "nei_bagua" => 200
+          },
+          "maxed" => "你不是已经会了吗？",
+          "success" => "现在我就修书一封，你送到镇远镖局总镖头王维扬处，他自会传你绝技！"
+        })
+
+      conn =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{
+                gongxian: 2200,
+                skills: %{"bagua_dao" => 200, "wai_bagua" => 200, "nei_bagua" => 200}
+              },
+              vitals: %{max_neili: 3200},
+              family: %{name: "商家堡", master_id: "signature:shang_ming"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      character = conn.private.update_character
+
+      # 信入背包
+      assert Enum.any?(character.inventory, &(&1.item_id == "clone_lib:sjmletter"))
+      # 习得绝招（perform_id 持久化到 stats.performs）
+      assert character.meta.stats.performs |> MapSet.member?("bagua-dao/tian")
+      # 扣贡献
+      assert character.meta.stats.gongxian == 0
+      assert output_text(conn) =~ "绝技"
+    end
+
+    test "perform_id 已习得 → maxed 文案，不重复发放" do
+      config =
+        Map.merge(give_config(), %{
+          "item" => "clone_lib:sjmletter",
+          "match" => "sjmletter",
+          "unique" => true,
+          "family" => "商家堡",
+          "perform_id" => "bagua-dao/tian",
+          "maxed" => "你不是已经会了吗？"
+        })
+
+      conn =
+        NpcScriptEvent.inquiry_result(
+          build_conn(
+            player(
+              stats: %{gongxian: 3000, performs: MapSet.new(["bagua-dao/tian"])},
+              vitals: %{max_neili: 4000},
+              family: %{name: "商家堡"}
+            )
+          ),
+          inquiry_event(config)
+        )
+
+      assert conn.private.update_character == nil
+      assert output_text(conn) =~ "已经会了吗"
+      refute_receive %Event{topic: "npc/inquiry_consume"}, 100
     end
   end
 
@@ -564,6 +823,7 @@ defmodule Kantele.Character.NpcScriptEventTest do
         kind: "give_item",
         config: config,
         npc_name: "武修文",
+        npc_id: Keyword.get(opts, :npc_id, "signature:shang_ming"),
         npc_pid: self(),
         npc_room_id: "test:room",
         asker_id: "player-1",
@@ -588,6 +848,7 @@ defmodule Kantele.Character.NpcScriptEventTest do
 
   defp player(opts \\ []) do
     stats = struct(Stats.new(), Keyword.get(opts, :stats, %{}))
+    vitals = struct(Vitals.new(), Keyword.get(opts, :vitals, %{}))
 
     %Kalevala.Character{
       id: "player-1",
@@ -595,7 +856,7 @@ defmodule Kantele.Character.NpcScriptEventTest do
       pid: self(),
       room_id: "test:room",
       meta: %PlayerMeta{
-        vitals: Vitals.new(),
+        vitals: vitals,
         stats: stats,
         combat: Kantele.Character.Combat.new(),
         family: Keyword.get(opts, :family)

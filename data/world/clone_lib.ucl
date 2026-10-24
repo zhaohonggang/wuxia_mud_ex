@@ -5095,6 +5095,23 @@ zones "clone_lib" {
   }
     }
 
+# LPC: /clone/special/sjmletter（商剑鸣「天刀八势」问询赠出的引荐信）
+# 持信赴镇远镖局总镖头王维扬处可习得天刀八势（见 kungfu/class/shang/ming.c give_letter）。
+    items "sjmletter" {
+      name = "天刀八势信"
+      aliases = ["sjm_letter", "tian_dao_letter", "天刀信", "八势信"]
+      description = "一封商剑鸣亲笔所写的引荐信，信中命持信人赴镇远镖局总镖头王维扬处修习天刀八势。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        weight = 50
+        unit = "封"
+      }
+    }
+
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
 
     items "bailongjian" {
@@ -5820,6 +5837,52 @@ zones "clone_lib" {
     wield = "{npc}唰的抽出一柄利剑握在手中，剑身青光荡漾，寒气逼人。"
     unwield = "{npc}空舞了数个剑花，将腾龙宝剑插回腰间。"
   }
+    }
+
+    items "miaojia1" {
+      name = "「苗家剑谱」上册"
+      description = "这是一本薄薄的书册，书皮已然发黄，封面上写着「苗家剑谱」四个字。"
+    verbs = [
+      "get",
+      "drop"
+    ]
+    meta = {
+      value = 1
+      weight = 500
+      unit = "本"
+      material = "paper"
+      book = {
+        skill = "suqin-beijian"
+        min_skill = 0
+        max_skill = 119
+        exp_required = 10000
+        jing_cost = 100
+        difficulty = 40
+      }
+    }
+    }
+
+    items "miaojia2" {
+      name = "「苗家剑谱」下册"
+      description = "这是一本薄薄的书册，书皮已然发黄，封面上写着「苗家剑谱」四个字。"
+    verbs = [
+      "get",
+      "drop"
+    ]
+    meta = {
+      value = 1
+      weight = 500
+      unit = "本"
+      material = "paper"
+      book = {
+        skill = "sword"
+        min_skill = 150
+        max_skill = 199
+        exp_required = 300000
+        jing_cost = 120
+        difficulty = 80
+      }
+    }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -20466,10 +20529,52 @@ chats = [
     str = 30
   }
 
-  inquiries = [
-    { key = "连环掌" value = " inquire about skill1 (unimplemented)" },
-    { key = "重阳连环掌" value = " inquire about skill1 (unimplemented)" }
-  ]
+  # LPC kungfu/class/quanzhen/liu.c：刘处玄（全真教）绝招问询（P5-4av）
+  # ask_skill1 走 SectMaster.inquiry_grant（全真阳面门派 → min_shen）。
+  # 连环掌 / 重阳连环掌 为同一闭包 ask_skill1 的两个问询键。
+  # 本角色由 clone_lib 主定义；quanzhen.ucl 的 liu_chuxuan 是同体别名，
+  # 实际加载以本处为准（见 project memory 的 clone_lib 去重）。
+  teach = {
+    family = "全真教"
+  }
+
+  inquiries = {
+    连环掌 = {
+      perform_id = "chongyang-shenzhang/lian"
+      skill = "chongyang-shenzhang"
+      min_gongxian = 100
+      min_shen = 10000
+      min_levels = {
+        force = 120
+        chongyang_shenzhang = 100
+      }
+      cost_gongxian = 100
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      skill_deny = "你连重阳神掌都没学，何谈绝招可言？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+
+    重阳连环掌 = {
+      perform_id = "chongyang-shenzhang/lian"
+      skill = "chongyang-shenzhang"
+      min_gongxian = 100
+      min_shen = 10000
+      min_levels = {
+        force = 120
+        chongyang_shenzhang = 100
+      }
+      cost_gongxian = 100
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      skill_deny = "你连重阳神掌都没学，何谈绝招可言？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+  }
 
   skills = [
     { skill = "force" level = 240 },
@@ -22106,12 +22211,88 @@ chats = [
     str = 36
   }
 
-  inquiries = [
-    { key = "天蝎藏针" value = " inquire about skill3 (unimplemented)" },
-    { key = "星罗棋布" value = " inquire about skill2 (unimplemented)" },
-    { key = "破靛神砂" value = " inquire about skill1 (unimplemented)" },
-    { key = "黑血神针" value = " inquire about me (unimplemented)" }
-  ]
+  # LPC kungfu/class/riyue/sang.c：桑三娘（日月神教）绝招问询（P5-4av）
+  # ask_skill1-3 走 SectMaster.inquiry_grant（max_shen 阴面门派 → max_shen_deny）。
+  # 本角色由 clone_lib 主定义；heimuya.ucl 的 sang_sanniang 是同体别名，
+  # 实际加载以本处为准（见 project memory 的 clone_lib 去重）。
+  # ask_me（黑血神针）为 item_grant，留待 GiveItem 扩展后回填，此处不列。
+  teach = {
+    family = "日月神教"
+  }
+
+  inquiries = {
+    破靛神砂 = {
+      perform_id = "lansha-shou/po"
+      skill = "lansha-shou"
+      min_gongxian = 200
+      max_shen = -20000
+      min_levels = {
+        force = 150
+        lansha_shou = 100
+      }
+      cost_gongxian = 200
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      skill_deny = "你连蓝砂手都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    星罗棋布 = {
+      perform_id = "heixue-shenzhen/luo"
+      skill = "heixue-shenzhen"
+      min_gongxian = 400
+      max_shen = -35000
+      min_levels = {
+        force = 200
+        heixue_shenzhen = 140
+      }
+      cost_gongxian = 400
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      skill_deny = "你连黑血神针都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    天蝎藏针 = {
+      perform_id = "jifeng-cixuefa/cang"
+      skill = "jifeng-cixuefa"
+      min_gongxian = 200
+      max_shen = -15000
+      min_levels = {
+        force = 120
+        dodge = 120
+        jifeng_cixuefa = 100
+      }
+      cost_gongxian = 200
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      skill_deny = "你连疾风刺穴法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    黑血神针 = {
+      kind = "give_item"
+      item = "heimuya:shenzhen"
+      match = "shenzhen"
+      unique = true
+      family = "日月神教"
+      max_shen = -30000
+      min_skill_levels = {
+        heixue_shenzhen = 140
+      }
+      vision_name = "桑三娘"
+      success = "我这儿的黑血神针你先拿去用吧。"
+      family_deny = "给我滚开！少在我面前罗嗦。"
+      max_shen_deny = "像你这样心慈手软，拿了这神针去也没什么用。"
+      min_skill_deny = "你黑血神针的手法还不到家，拿了这神针去也没什么用。"
+    }
+  }
 
   skills = [
     { skill = "force" level = 180 },
@@ -22614,19 +22795,200 @@ chats = [
     str = 45
   }
 
-  inquiries = [
-    { key = "八卦震" value = " inquire about skill1 (unimplemented)" },
-    { key = "劈天神芒" value = " inquire about skill6 (unimplemented)" },
-    { key = "天刀八势" value = "(: give_letter :)" },
-    { key = "寒芒暴卷" value = " inquire about skill5 (unimplemented)" },
-    { key = "杀龙无悔" value = " inquire about skill7 (unimplemented)" },
-    { key = "混沌初开" value = " inquire about skill2 (unimplemented)" },
-    { key = "神卦天印" value = " inquire about skill4 (unimplemented)" },
-    { key = "紫金八卦刀" value = " inquire about dao (unimplemented)" },
-    { key = "胡一刀" value = "哦？听说此人刀法甚是了得，可惜我没见过他。" },
-    { key = "苗人凤" value = "哼，这贼鸟厮居然敢号称天下无敌，改天一定要去会会。" },
-    { key = "金莲幻生" value = " inquire about skill3 (unimplemented)" }
-  ]
+  # LPC kungfu/class/shang/ming.c：商剑鸣（商家堡）绝招问询（P5-4aw）
+  # ask_skill1-7 经核对均为绝招授艺闭包（set can_perform / improve_skill / add gongxian -N），
+  # 走 SectMaster.inquiry_grant（max_shen 阴面门派 → max_shen_deny），引擎零改动。
+  # 本角色由 clone_lib 主定义（zone 文件无同名块，加载以本处为准）。
+  # 注：ask_skill6/7 在 LPC 另有 wai-bagua < 1 的次级「未学」门控，引擎 skill 字段仅支持单
+  # 一门，故 wai-bagua 未学归入 min_levels（1..139 段文案 fidelity 略损，门控仍生效）。
+  # ask_dao（紫金八卦刀）/ give_letter（天刀八势）为 item_grant 闭包，P5-4ay 经 GiveItem
+  # 扩展（min_skill / min_gongxian / max_neili / master_id / perform_id / cost_gongxian）回填。
+  teach = {
+    family = "商家堡"
+  }
+
+  inquiries = {
+    八卦震 = {
+      perform_id = "wai-bagua/zhen"
+      skill = "wai-bagua"
+      min_gongxian = 100
+      max_shen = -5000
+      min_levels = {
+        force = 100
+        wai_bagua = 60
+      }
+      cost_gongxian = 100
+      maxed = "自己下去练，罗嗦什么！"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连外八卦都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    混沌初开 = {
+      perform_id = "baisheng-quan/kai"
+      skill = "baisheng-quan"
+      min_gongxian = 300
+      max_shen = -20000
+      min_levels = {
+        force = 140
+        baisheng_quan = 100
+      }
+      cost_gongxian = 300
+      maxed = "自己下去练，罗嗦什么！"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连百胜神拳都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    金莲幻生 = {
+      perform_id = "jinbiao-jue/huan"
+      skill = "jinbiao-jue"
+      min_gongxian = 300
+      max_shen = -15000
+      min_levels = {
+        force = 140
+        jinbiao_jue = 100
+      }
+      cost_gongxian = 300
+      maxed = "自己下去练，罗嗦什么！"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连金镖诀都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    神卦天印 = {
+      perform_id = "bazhen-zhang/yin"
+      skill = "bazhen-zhang"
+      min_gongxian = 500
+      max_shen = -20000
+      min_levels = {
+        force = 180
+        bazhen_zhang = 130
+      }
+      cost_gongxian = 500
+      maxed = "这招我已经教过你了，自己下去练吧。"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连八阵八卦掌都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    寒芒暴卷 = {
+      perform_id = "shangjia-dao/juan"
+      skill = "shangjia-dao"
+      min_gongxian = 80
+      max_shen = -1000
+      min_levels = {
+        force = 80
+        shangjia_dao = 50
+      }
+      cost_gongxian = 80
+      maxed = "我不是已经教会你了吗？"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连商家刀法都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "嗯，你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    劈天神芒 = {
+      perform_id = "bagua-dao/mang"
+      skill = "bagua-dao"
+      min_gongxian = 1000
+      max_shen = -50000
+      min_levels = {
+        force = 200
+        bagua_dao = 140
+        wai_bagua = 140
+      }
+      cost_gongxian = 1000
+      maxed = "我不是已经教会你了吗？"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连八卦刀法都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    杀龙无悔 = {
+      perform_id = "bagua-dao/sha"
+      skill = "bagua-dao"
+      min_gongxian = 1800
+      max_shen = -80000
+      min_levels = {
+        force = 250
+        bagua_dao = 180
+      }
+      cost_gongxian = 1800
+      maxed = "唉…你自己下去练吧。"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连八卦刀法都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = "嗯，你的内功火候尚需提高，练好了再来找我吧。"
+    }
+
+    胡一刀 = "哦？听说此人刀法甚是了得，可惜我没见过他。"
+    苗人凤 = "哼，这贼鸟厮居然敢号称天下无敌，改天一定要去会会。"
+
+    # LPC ask_dao：仅本师亲传弟子（family/master_id == npc id）且八卦刀法≥150、杀气≤-50000 可取紫金八卦刀。
+    # 注：LPC 另有 is_good() 先行分支（弟子/外人不同斥语）与「他人已持刀」特判，此处以
+    # master_id + max_shen + min_skill 近似，文案 fidelity 略损（属有意简化，门控仍生效）。
+    紫金八卦刀 = {
+      kind = "give_item"
+      item = "clone_lib:baguadao"
+      match = "baguadao"
+      unique = true
+      family = "商家堡"
+      master_id = true
+      max_shen = -50000
+      min_skill_levels = {
+        bagua_dao = 150
+      }
+      vision_name = "商剑鸣"
+      success = "我这柄紫金八卦刀你就拿去，在江湖上多扬扬商家堡的威风！"
+      already = "我的八卦刀现在不是你拿着在用吗？"
+      family_deny = "哪里来的野种，居然敢窥视我的宝刀？"
+      master_deny = "只有我的弟子才配用这八卦刀，你别拿去丢脸。"
+      max_shen_deny = "像你这样的心慈手软之辈，这刀你不用也罢。"
+      min_skill_deny = "你连八卦刀法都没学好，就算宝刀在手也是白搭。"
+    }
+
+    # LPC give_letter：同门（商家堡）且八卦刀/外八卦/内八卦均≥200、贡献≥2200、内力上限≥3200，
+    # 赠天刀八势信（信到手即习得天刀八势，并扣贡献 2200）。已会则「你不是已经会了吗？」，
+    # 已持信则「快到镇远镖局找我师傅去吧！」。
+    天刀八势 = {
+      kind = "give_item"
+      item = "clone_lib:sjmletter"
+      match = "sjmletter"
+      unique = true
+      family = "商家堡"
+      perform_id = "bagua-dao/tian"
+      cost_gongxian = 2200
+      min_gongxian = 2200
+      max_neili = 3200
+      min_skill_levels = {
+        bagua_dao = 200
+        wai_bagua = 200
+        nei_bagua = 200
+      }
+      vision_name = "商剑鸣"
+      success = "嗯，看你在武学方面还有所造诣，而且多年来对商家堡做出了不少贡献…现在我就修书一封，你送到镇远镖局总镖头王维扬处，他自会传你绝技！"
+      maxed = "你不是已经会了吗？"
+      already = "快到镇远镖局找我师傅去吧！"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      min_gongxian_deny = "你在镖局内碌碌无为，这一招我暂时还不能传你。"
+      max_neili_deny = "你的内力修为不足，施展不出这招，等你内力有所攀升后再来找我吧。"
+      min_skill_deny = "你的八卦刀法还练得不到家，自己下去练练再来吧！"
+    }
+  }
 
   skills = [
     { skill = "force" level = 240 },

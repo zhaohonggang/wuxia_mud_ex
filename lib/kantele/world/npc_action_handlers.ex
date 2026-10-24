@@ -206,22 +206,36 @@ defmodule Kantele.World.NpcActionHandlers do
     }
   }
 
+  # 全局动词兜底：对动态 spawn 的 NPC（如灵蛇/毒蛇）生效，
+  # 它们不绑定特定房间，room_id 级注册表中查不到。
+  @global_verbs %{
+    "bian" => {Kantele.World.NpcActions.ConvertBian, :run}
+  }
+
   @doc """
   解析 (room_id, verb) 到 Elixir `{module, function}`。
 
   返回 `{:ok, {module, function}}` 或 `{:unimplemented, verb}`。
+  先查房间级注册表，未命中再查全局兜底（用于动态 spawn NPC）。
   房间未注册 / verb 未在该房间移植 → 均视为未实现（安全降级）。
   """
   def lookup(room_id, verb) when is_binary(room_id) and is_binary(verb) do
     case Map.get(@registry, room_id) do
       nil ->
-        {:unimplemented, verb}
+        lookup_global(verb)
 
       room_map ->
         case Map.get(room_map, verb) do
-          nil -> {:unimplemented, verb}
+          nil -> lookup_global(verb)
           {module, function} -> {:ok, {module, function}}
         end
+    end
+  end
+
+  defp lookup_global(verb) do
+    case Map.get(@global_verbs, verb) do
+      nil -> {:unimplemented, verb}
+      {module, function} -> {:ok, {module, function}}
     end
   end
 

@@ -38,7 +38,9 @@ defmodule Kantele.World.ItemActionHandlers do
     "play_qin" => {Kantele.World.ItemActions.Play, :run},
     "play_xiao" => {Kantele.World.ItemActions.Play, :run},
     "play_zheng" => {Kantele.World.ItemActions.Play, :run},
-    "do_read" => {Kantele.World.ItemActions.Read, :run}
+    "do_read" => {Kantele.World.ItemActions.Read, :run},
+    "convert_lingshe" => {Kantele.World.ItemActions.ConvertBian, :run},
+    "convert_snake" => {Kantele.World.ItemActions.ConvertBian, :run}
   }
 
   @doc "按 LPC handler 名查注册表。返回 `{:ok, {module, function}}` 或 `{:unimplemented, handler}`"

@@ -11,7 +11,8 @@ defmodule Kantele.World.InquiryHandlers do
 
   @handlers %{
     "give_item" => Kantele.World.InquiryHandlers.GiveItem,
-    "counter_perform" => Kantele.World.InquiryHandlers.CounterPerform
+    "counter_perform" => Kantele.World.InquiryHandlers.CounterPerform,
+    "teleport_service" => Kantele.World.InquiryHandlers.TeleportService
   }
 
   @doc "按 `kind` 查处理模块；未知 kind 返回 nil（静默忽略）"
