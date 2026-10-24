@@ -107,6 +107,17 @@ defmodule Kantele.World.NpcActionHandlers do
     放进剑架）、阿大倒后鹤笔翁/鹿杖客动态 spawn、窗口内真实击杀无
     `win_*`（战斗死亡钩子属红区）、社交动作 heng/grin/nod/shake
     （`emoted.c` 无定义，原世界即静默）。
+
+  - `gu` / `dapi` / `cuihuo` / `repair` / `xiuli` 五连（襄阳铁匠，
+    `xiangyang:tiejiangpu`）：`Kantele.World.NpcActions.Smith`，
+    LPC `/inherit/char/smith.c` 打工链完整落地——`is_busy` 守卫、
+    未领活斥责广播、reward 结算（工钱入 `meta.coins` + 经验/潜能
+    + `mark/job_smith` 计数 + 掉气 + `start_busy(3)`）；派活入口在
+    inquiry 层 `InquiryHandlers.SmithJob`（kind = "smith_job"）。
+    `repair` 两段确认链（报价/扣钱/consistence 归 100）已落地，但
+    世界数据无一件物品定义 consistence，当前恒走「似乎不需要在这里
+    修理吧？」忠实分支（@todo：物品 consistence 数据 + 实例 meta
+    持久化）。
   """
   # 房间级注册表：room_id -> (verb -> {module, function})。
   @registry %{
@@ -203,6 +214,13 @@ defmodule Kantele.World.NpcActionHandlers do
     },
     "kaifeng:yaopu" => %{
       "peiyao" => {Kantele.World.NpcActions.Peiyao, :run}
+    },
+    "xiangyang:tiejiangpu" => %{
+      "gu" => {Kantele.World.NpcActions.Smith, :run},
+      "dapi" => {Kantele.World.NpcActions.Smith, :run},
+      "cuihuo" => {Kantele.World.NpcActions.Smith, :run},
+      "repair" => {Kantele.World.NpcActions.Smith, :run},
+      "xiuli" => {Kantele.World.NpcActions.Smith, :run}
     }
   }
 

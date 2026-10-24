@@ -16,7 +16,7 @@ defmodule Kantele.World.NpcActions.ConvertBianTest do
 
   @room_id "baituo:xiaoyuan"
 
-  defp conn(npc) do
+  defp conn(_npc) do
     %Conn{
       character: %Kalevala.Character{name: "玩家", room_id: @room_id},
       private: %Conn.Private{

@@ -68,10 +68,12 @@ defmodule Kantele.World.ItemActions.ConvertBian do
   defp do_convert(conn, _handler, npc_key, item, instance, room_id) do
     character = current(conn)
 
-    npc = build_npc(npc_key, room_id)
+    zone_id = room_id |> String.split(":") |> hd()
+
+    npc = build_npc(npc_key, room_id, zone_id)
 
     config = [
-      supervisor_name: Kalevala.World.CharacterSupervisor.global_name("baituo"),
+      supervisor_name: Kalevala.World.CharacterSupervisor.global_name(zone_id),
       communication_module: Kantele.Communication,
       initial_controller: Kantele.Character.SpawnController,
       quit_view: {Kantele.Character.QuitView, "disconnected"}
@@ -146,7 +148,7 @@ defmodule Kantele.World.ItemActions.ConvertBian do
 
   # ---- NPC 构建 ----------------------------------------------------------
 
-  defp build_npc("lingshe", room_id) do
+  defp build_npc("lingshe", room_id, zone_id) do
     %Kalevala.Character{
       id: "lingshe-#{System.unique_integer([:positive])}",
       name: "灵蛇",
@@ -155,7 +157,8 @@ defmodule Kantele.World.ItemActions.ConvertBian do
       room_id: room_id,
       inventory: [],
       meta: %Kantele.Character.NonPlayerMeta{
-        zone_id: "baituo",
+        zone_id: zone_id,
+        initial_events: [],
         init: %{add_actions: ["bian"], greet_delay: 0},
         stats: %Kantele.Character.Stats{
           combat_exp: 100_000,
@@ -178,7 +181,7 @@ defmodule Kantele.World.ItemActions.ConvertBian do
     }
   end
 
-  defp build_npc("snake", room_id) do
+  defp build_npc("snake", room_id, zone_id) do
     %Kalevala.Character{
       id: "snake-#{System.unique_integer([:positive])}",
       name: "毒蛇",
@@ -187,7 +190,8 @@ defmodule Kantele.World.ItemActions.ConvertBian do
       room_id: room_id,
       inventory: [],
       meta: %Kantele.Character.NonPlayerMeta{
-        zone_id: "baituo",
+        zone_id: zone_id,
+        initial_events: [],
         init: %{add_actions: ["bian"], greet_delay: 0},
         stats: %Kantele.Character.Stats{
           combat_exp: 1000,
@@ -210,5 +214,5 @@ defmodule Kantele.World.ItemActions.ConvertBian do
     }
   end
 
-  defp build_npc(_key, _room_id), do: nil
+  defp build_npc(_key, _room_id, _zone_id), do: nil
 end

@@ -3315,10 +3315,23 @@ chats = [
     { id = clone_lib.items.tiejia.id }
   ]
 
-  inquiries = [
-    { key = "job" value = " inquire about me (unimplemented)" },
-    { key = "工作" value = " inquire about me (unimplemented)" }
-  ]
+  # LPC setup()：job/工作 → (: ask_me :)（派活问询，kind 分发到
+  # InquiryHandlers.SmithJob）；repair/修理 → 固定回话文本。
+  # 原占位 " inquire about me (unimplemented)" 是转换器对闭包的填充，
+  # 现由 P5-9 一次性场景落地（见 docs/ucl-comment-todo.zh-CN.md 六-E 剩余）。
+  inquiries = {
+    job = { kind = "smith_job" }
+    工作 = { kind = "smith_job" }
+    repair = "你想要修(repair)点什么？"
+    修理 = "你想要修(repair)点什么？"
+  }
+
+  # LPC init()：add_action("do_gu", "gu") / do_dapi / do_cuihuo /
+  # do_repair（repair 与 xiuli 同一 handler）。
+  init = {
+    greet_delay = 0
+    add_actions = ["gu", "dapi", "cuihuo", "repair", "xiuli"]
+  }
 
   carry = [
     { id = items.cloth.id }
@@ -4125,8 +4138,8 @@ chats = [
   carry = [
     { id = items.cloth.id }
   ]
+    }
 
-    
 # d/xiangyang/npc/mujiang.c 木匠（本区商人 NPC）
   characters "mujiang" {
     name = "木匠"
@@ -4159,4 +4172,3 @@ chats = [
     ]
     money = { coin = 100 }
   }
-}
