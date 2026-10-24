@@ -1,7 +1,7 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. P6 housekeeping pending user approval.
+- No `git commit` unless explicitly asked. **2026-10-21~24 用户已通过简短指令（items/remove/envs/board/connect/fix/exit/npc_script_event.ex/cl/c）批准并分批提交，P5-1c~P5-9 代码全部已落库（最新 `beda630e`）**；memory 各日志里「未提交待批准」仅对当时成立，勿再当作现状。文档类改动仍未提交。
 - No local Erlang — Docker is the verify path:
   `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
   （URL 必须整串引号，否则丢 `//`。）
@@ -48,9 +48,8 @@
 
 ## Next steps (backlog)
 - **14 NPC-absent 文件**：out of scope。
-- **ucl-comment-todo B/C/D/F/G**：`guarded_exit`(16 房)，`check_dirs`/`check_out`/`ob->refuse`(18)，player gender(11)，`city:mudren` `enter` 门户(exempt)，更新 plan docs。
-- **Await `git commit` 审批**（iron law）。
-- **Update `docs/ucl-comment-implementation-plan.zh-CN.md`**（G，严重滞后）。
+- **ucl-comment-todo 已清空（2026-10-24）**：B（guarded_exit 16 房，`check_guarders`+`Guarder.permit_pass`）、C（18 条自定义函数走 `Kantele.World.Trap` 副作用通道）、D（gender migration `20261003000000` + `meta.env` 写入）、E（P5-4a/P5-9）、F（city:mudren enter 正式免除）、G（两份文档已同步为「计划 vs 实际」）均已完成/决议。
+- **进度文档已大补写（2026-10-24）**：`docs/data-world-comments-progress.zh-CN.md` §13 补 14 行（10-23/24 全批次）、看板/M9/§9/§10/§11/§12(+D25/D26)/§14(+R21/R22) 同步更新；该文档是「唯一记录做到哪了」的文件，**每完成批次必须回填它**（§0 四件事）。
 
 ## Current focus
-P5-3/P5-8、P5-9 全绿。下一步：full `mix test` 回归确认、或取得 `git commit` 批准。
+进度文档补齐完毕。full `mix test` 4606/0；可达性 4190/4409 (95.0%)；valid_leave 177 条中 173 生效（155 纯条件 + 18 Trap）；survey 问询缺口 2 键/1 NPC（LPC 缺陷）。下一步：接新任务（如 P5 剩余 `look_table`/daemon 类闭包、37 个非 ask_* 闭包、R21 clone_lib 同名同房排查）或提交文档改动。
