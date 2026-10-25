@@ -42,7 +42,8 @@ end
 
 defmodule Kantele.World.RoomActions.DoBreakTest do
   @moduledoc """
-  P5-4ah：`do_break` 砸墙/砸门/劈石门 一批（10 个房间）的移植测试。
+  P5-4ah：`do_break` 砸墙/砸门/劈石门 一批（10 个房间）的移植测试；
+  另含 P5-6 门/容器收尾批的 2 房（瑶琴暗器、砸船桅杆）。
 
   覆盖点：
   - 注册：10 房都挂 `do_break`（注册表断言见 `room_action_handlers_test.exs`）。
@@ -74,6 +75,8 @@ defmodule Kantele.World.RoomActions.DoBreakTest do
   alias Kantele.World.RoomActions.Mingjiao.Shandong.Break, as: MingjiaoShandong
   alias Kantele.World.RoomActions.Xiakedao.Midao4.Break, as: XiakedaoMidao4
   alias Kantele.World.RoomActions.Shenfeng.Yongdao3.Break, as: ShenfengYongdao3
+  alias Kantele.World.RoomActions.Tulong.Boat2.Break, as: TulongBoat2
+  alias Kantele.World.RoomActions.Yanziwu.Tingyu.Break, as: YanziwuTingyu
   alias Kantele.World.RoomActions.DoBreakTest.FakeRoom
 
   @room_ids [
@@ -88,7 +91,10 @@ defmodule Kantele.World.RoomActions.DoBreakTest do
     "xiakedao:midao4",
     "shenfeng:yongdao3",
     # 神峰甬道双向门需要邻居房进程
-    "shenfeng:yongdao4"
+    "shenfeng:yongdao4",
+    # P5-6 收尾：瑶琴暗器 + 砸船桅杆
+    "yanziwu:tingyu",
+    "tulong:boat2"
   ]
 
   setup_all do
@@ -113,10 +119,10 @@ defmodule Kantele.World.RoomActions.DoBreakTest do
     :ok
   end
 
-  # ---- 注册表（10 房都挂 do_break）----
+  # ---- 注册表（12 房都挂 do_break）----
 
   describe "注册表" do
-    test "10 个房间都挂了 do_break" do
+    test "12 个房间都挂了 do_break" do
       for room_id <- [
             "beijing:zhuang3",
             "chengdu:eastroad3",
@@ -127,7 +133,9 @@ defmodule Kantele.World.RoomActions.DoBreakTest do
             "lingxiao:wave",
             "mingjiao:shandong",
             "xiakedao:midao4",
-            "shenfeng:yongdao3"
+            "shenfeng:yongdao3",
+            "yanziwu:tingyu",
+            "tulong:boat2"
           ] do
         assert RoomActionHandlers.registered?(room_id, "do_break")
       end
@@ -394,22 +402,122 @@ defmodule Kantele.World.RoomActions.DoBreakTest do
     end
   end
 
+  # ---- P5-6：yanziwu:tingyu（瑶琴暗器，qi 门槛分生死）----
+
+  describe "yanziwu:tingyu" do
+    test "错词（非 qin）→ 提示「你要击开什么？」" do
+      conn = YanziwuTingyu.run(conn("yanziwu:tingyu", qi: 500), params("yanziwu:tingyu", "men"))
+
+      assert output_text(conn) =~ "你要击开什么？"
+      assert published(conn) == []
+    end
+
+    test "qi >= 200 → 梅花镖文案 + 昏厥（qi 归零）" do
+      conn = YanziwuTingyu.run(conn("yanziwu:tingyu", qi: 500), params("yanziwu:tingyu", "qin"))
+
+      assert [vision] = published(conn)
+      assert vision =~ "{npc}一掌击开瑶琴，只听“唰”的一声，突然银光一闪，"
+      assert vision =~ "一枚梅花镖倏的射出,“噗”的一声射入了{npc}的人中穴。"
+      assert qi_of(conn) == 0
+    end
+
+    test "qi < 200 → 同一套文案 + 死亡结算（玩家：qi=1 + 幽灵态）" do
+      conn =
+        YanziwuTingyu.run(
+          conn("yanziwu:tingyu", qi: 199, id: "player:test"),
+          params("yanziwu:tingyu", "qin")
+        )
+
+      assert [vision] = published(conn)
+      assert vision =~ "一枚梅花镖倏的射出"
+
+      # 引擎玩家死亡模型（Damage.die/2）：qi/jing 置 1 + damage.ghost=true
+      assert qi_of(conn) == 1
+      assert applied(conn).meta.damage[:ghost] == true
+    end
+  end
+
+  # ---- P5-6：tulong:boat2（持石砸船，3s 后桅杆尽倒 + 房述改写）----
+
+  describe "tulong:boat2" do
+    test "错词（非 boat/船）→ 提示「你要打碎什么？」" do
+      conn = TulongBoat2.run(conn("tulong:boat2"), params("tulong:boat2", "men"))
+
+      assert output_text(conn) =~ "你要打碎什么？"
+    end
+
+    test "中文「船」也认" do
+      conn = TulongBoat2.run(conn("tulong:boat2", inventory: [stone()]), params("tulong:boat2", "船"))
+
+      assert [vision] = published(conn)
+      assert vision =~ "举起手中大石头，向船上的桅杆砸去"
+    end
+
+    test "没拿石头 → 提示「你准备拿什么砸船呀？」" do
+      conn = TulongBoat2.run(conn("tulong:boat2"), params("tulong:boat2", "boat"))
+
+      assert output_text(conn) =~ "你准备拿什么砸船呀？"
+      assert published(conn) == []
+    end
+
+    test "已砸过（房间 state dao）→ 提示「早就倒了」，且先于查石头" do
+      Room.put_state_by_id("tulong:boat2", "dao", 1)
+
+      conn = TulongBoat2.run(conn("tulong:boat2"), params("tulong:boat2", "boat"))
+
+      assert output_text(conn) =~ "船上的桅杆早就倒了，还砸什么？"
+    end
+
+    test "有石头 → 举起文案 + 3s 后桅杆尽倒、房述改写、玩家 temp dao" do
+      conn =
+        TulongBoat2.run(
+          conn("tulong:boat2", pid: self(), inventory: [stone()]),
+          params("tulong:boat2", "boat")
+        )
+
+      assert [vision] = published(conn)
+      assert vision =~ "举起手中大石头，向船上的桅杆砸去"
+
+      # 定时未到：房间尚无 dao、房述未改
+      refute Room.get_state_by_id("tulong:boat2", "dao")
+      assert Room.long_description(%Kantele.World.Room{id: "tulong:boat2", state: %{}}) == nil
+
+      # do_dao 到点：房间 dao=1 + long 覆盖 + 玩家 temp（按 pid 下发 trap/effect）
+      flush_room_messages()
+      Process.sleep(3_300)
+
+      assert Room.get_state_by_id("tulong:boat2", "dao") == 1
+      assert Room.get_state_by_id("tulong:boat2", "long") =~ "只是桅杆都被砸断了"
+      assert Room.long_description(%Kantele.World.Room{
+               id: "tulong:boat2",
+               state: %{"long" => "砸过了"}
+             }) == "砸过了"
+
+      assert_receive %Kalevala.Event{topic: "trap/effect", data: %{effects: effects}}, 0
+
+      assert {:text, "\n只听得喀喇、喀喇之声不绝，耸立的船桅一根根倒将下来。\n砰嘭之声不绝，顷刻之间，众桅杆或倒或斜，无一得免。\n"} in effects
+      assert {:set_temp, "dao", 1} in effects
+    end
+  end
+
   # ---- helpers --------------------------------------------------------------
 
   defp params(room_id, trailing \\ ""),
     do: %{verb: "break", trailing: trailing, room_id: room_id}
 
-  defp player(room_id, opts \\ []) do
+  defp player(room_id, opts) do
     neili = Keyword.get(opts, :neili, 200)
     max_neili = Keyword.get(opts, :max_neili, 200)
     force = Keyword.get(opts, :force, 20)
+    qi = Keyword.get(opts, :qi, 300)
 
-    vitals = %{Vitals.new() | neili: neili, max_neili: max_neili}
+    vitals = %{Vitals.new() | neili: neili, max_neili: max_neili, qi: qi}
     stats = %{Stats.new() | skills: Map.put(Stats.new().skills, "force", force)}
 
     %Kalevala.Character{
-      id: "test-player",
+      id: Keyword.get(opts, :id, "test-player"),
       name: "玩家",
+      pid: Keyword.get(opts, :pid, nil),
       room_id: room_id,
       attributes: %{"wiz_level" => 0},
       meta: %PlayerMeta{
@@ -420,7 +528,20 @@ defmodule Kantele.World.RoomActions.DoBreakTest do
         temp: %{},
         env: %{}
       },
-      inventory: []
+      inventory: Keyword.get(opts, :inventory, [])
+    }
+  end
+
+  # `d/tulong/tulong/obj/stone.c` 的实例（name/aliases 与 `tulong.ucl` items "stone" 对齐）
+  defp stone do
+    %Kalevala.World.Item.Instance{
+      id: "test-stone",
+      item_id: "tulong:stone",
+      item: %Kalevala.World.Item{
+        id: "tulong:stone",
+        name: "大石头",
+        meta: %{aliases: ["stone", "shitou"]}
+      }
     }
   end
 

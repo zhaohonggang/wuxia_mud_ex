@@ -150,6 +150,48 @@ defmodule Kantele.World.RoomActions.Helpers do
   end
 
   @doc """
+  `present(<name>, me)` 等价：返回背包里第一件匹配 `name` 的**物品定义**（或 nil）。
+
+  给要把物品名拼进文案的 handler 用（LPC `inv->query("name")`，如
+  `tulong:boat2` 的「举起手中<石头名>砸去」）。只需要布尔判定的用 `carries?/2`。
+  """
+  def carried_item(character, name) do
+    Enum.find_value(inventory(character), fn inst ->
+      item = ItemDef.instance_item(inst)
+      if ItemDef.matches?(item, name), do: item
+    end)
+  end
+
+  @doc """
+  玩家 LPC `query("<flag>")` 等价：依次读 `character.attributes[flag]`、
+  `character.meta.env[flag]`，缺省 `false`。
+
+  实现自 P5-6 起落在本模块（房间动作也要读玩家属性）：`wudu:mishi` 的
+  `do_open` 要查 `can_learn/qianzhu-wandushou`。NPC 侧
+  （`Kantele.World.NpcActions.Helpers` 的 vendor 系统）保留薄委托。
+
+  系统未建模时恒 `false`（与 LPC `query` 查不到返回 0 一致）。
+  """
+  def flag?(%{attributes: attrs} = character, flag) do
+    case Map.get(attrs || %{}, flag) do
+      nil -> env_flag?(character, flag)
+      value -> truthy?(value)
+    end
+  end
+
+  def flag?(character, flag), do: env_flag?(character, flag)
+
+  defp env_flag?(%{meta: %{env: env}}, flag), do: truthy?(Map.get(env || %{}, flag))
+  defp env_flag?(_character, _flag), do: false
+
+  # LPC 真值语义：0 / "" / nil / false 为假，其余为真。
+  defp truthy?(nil), do: false
+  defp truthy?(false), do: false
+  defp truthy?(0), do: false
+  defp truthy?(""), do: false
+  defp truthy?(_value), do: true
+
+  @doc """
   `ob = present(<name>, me); destruct(ob)` 等价：从背包移除第一件匹配 `name`
   的实例，返回 `{removed?, conn}`。
 

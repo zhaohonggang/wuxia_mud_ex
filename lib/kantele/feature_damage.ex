@@ -227,9 +227,14 @@ defmodule Kantele.Feature.Damage do
       |> put_damage_defeated_by(competitor)
 
     # DPS 记录
-    if competitor && is_player?(character) && killing?(character, competitor.id) do
-      character = record_defeat(character, competitor)
-    end
+    # P5-6 修正：同 `process_death/2`——`if` 块内的重新绑定不外泄，原来
+    # `record_defeat` 的结果被静默丢弃。
+    character =
+      if competitor && is_player?(character) && killing?(character, competitor.id) do
+        record_defeat(character, competitor)
+      else
+        character
+      end
 
     character = clear_enemies(character)
 
@@ -387,18 +392,24 @@ defmodule Kantele.Feature.Damage do
     character = clear_die_flags(character)
     character = put_temp(character, "die_reason", nil)
 
-    if is_player?(character) do
-      character = if busy?(character), do: interrupt_me(character), else: character
-      # 玩家死亡：气精置 1，进入幽灵态，移至死亡房间
-      character =
-        character
-        |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
+    # P5-6 修正：Elixir 的 `if` 块内重新绑定不会泄漏到外层，原来这段
+    # `character = ...` / `update_damage(...)` 全部被丢弃——玩家死亡后 qi 不降、
+    # 不变幽灵态（只是被移动到死亡房间）。改成把 `if` 的**返回值**赋给
+    # `character`，并顺手让 ghost 标记真正生效（原来也被丢）。
+    character =
+      if is_player?(character) do
+        character = if busy?(character), do: interrupt_me(character), else: character
+        # 玩家死亡：气精置 1，进入幽灵态，移至死亡房间
+        character =
+          character
+          |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
 
-      update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
-    else
-      # NPC 直接析构（留钩子给 World）
-      destruct_npc(character)
-    end
+        update_damage(character, fn dmg -> Map.put(dmg, :ghost, true) end)
+      else
+        # NPC 直接析构（留钩子给 World）
+        destruct_npc(character)
+        character
+      end
 
     {:ok, character}
   end
@@ -702,7 +713,10 @@ defmodule Kantele.Feature.Damage do
     Scheduler.schedule_revive(_player_id, _ms)
   end
 
-  defp ghost?(%{meta: %{damage: dmg}}), do: dmg.ghost || false
+  # P5-6 修正：原来是 `dmg.ghost || false`——点号取值在键缺失时抛 KeyError，
+  # 而 `PlayerMeta` 的 damage 初值是 `%{}`（:ghost 只在真正变鬼/复活时才写），
+  # 于是「玩家第一次死亡」必崩在 `process_death/2`。改 Map.get 默认 false。
+  defp ghost?(%{meta: %{damage: dmg}}), do: Map.get(dmg, :ghost, false)
   defp return(_v), do: :ok
 
   # ---- Damage State 访问器 ----

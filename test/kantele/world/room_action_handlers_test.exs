@@ -164,11 +164,14 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "shaolin:guangchang1",
                 "shaolin:putiyuan",
                 "shaolin:smdian",
+                "shaolin:zhonglou7",
                 "shenfeng:shenfeng",
                 "shenfeng:yongdao3",
                 "shenfeng:yushi",
                 "shenlong:lin1",
+                "tiezhang:mishi",
                 "tiezhang:wmfeng",
+                "tulong:boat2",
                 "wanjiegu:entrance",
                 "wanjiegu:grassland",
                 "wanjiegu:tree_hole",
@@ -177,12 +180,15 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "wudu:huating2",
                 "wudu:minju10",
                 "wudu:minju7",
+                "wudu:mishi",
                 "xiakedao:dating",
                 "xiakedao:gudi",
                 "xiakedao:midao4",
                 "xiakedao:xiaowu",
                 "xiakedao:yadi",
                 "xueshan:chanshi",
+                "yanziwu:lanyue",
+                "yanziwu:tingyu",
               ]
 
       assert RoomActionHandlers.registered?("huashan:lianhua", "do_tiao")
@@ -238,6 +244,8 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
       assert RoomActionHandlers.registered?("mingjiao:shandong", "do_break")
       assert RoomActionHandlers.registered?("xiakedao:midao4", "do_break")
       assert RoomActionHandlers.registered?("shenfeng:yongdao3", "do_break")
+      assert RoomActionHandlers.registered?("yanziwu:tingyu", "do_break")
+      assert RoomActionHandlers.registered?("tulong:boat2", "do_break")
       # 推门/推石壁/推草丛/推大床一批（P5-4aj）
       assert RoomActionHandlers.registered?("guanwai:jingxiu", "do_push")
       assert RoomActionHandlers.registered?("huashan:xiaolu2", "do_push")
@@ -253,6 +261,7 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
       assert RoomActionHandlers.registered?("meizhuang:tianjing", "do_open")
       # 敲门/拉柜开门一批（P5-4al）
       assert RoomActionHandlers.registered?("shaolin:guangchang1", "do_knock")
+      assert RoomActionHandlers.registered?("shaolin:zhonglou7", "do_knock")
       assert RoomActionHandlers.registered?("wanjiegu:grassland", "do_knock")
       assert RoomActionHandlers.registered?("meizhuang:gate", "do_knock")
       assert RoomActionHandlers.registered?("quanzhen:diziju", "do_pull")

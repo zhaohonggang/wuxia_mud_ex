@@ -10,7 +10,6 @@ defmodule Kantele.World.RoomActions.Hengyang.Liufugate.Push do
 
   alias Kantele.World.RoomActions.Push
 
-  @room_id "hengyang:liufugate"
   @opened "$N走到门前，把门随便一推，居然就推开了大门！\n"
   @locked "门关得牢牢的，急切打不开！\n"
   @closed "大门又缓缓地关上了。\n"
@@ -33,8 +32,21 @@ defmodule Kantele.World.RoomActions.Hengyang.Liufugate.Push do
     end
   end
 
-  defp has_marks?(%{meta: %{temp: temp}}) when is_map(temp),
-    do: Map.get(temp, "marks") != nil and Map.get(temp, "marks") != false
+  @doc """
+  玩家是否已带 marks 标记（LPC `me->query_temp("marks")`）。
 
-  defp has_marks?(_char), do: false
+  LPC 里 `set_temp("marks/liufu", 1)` 建的是 **marks 映射**，`query_temp("marks")`
+  返回整个映射——只要映射非空即为真。引擎侧 `marks/<key>` 按扁平键存
+  （同 `player_temp_branch`），因此这里判定「任一 `marks/` 前缀键存在」。
+
+  P5-6 修正：此前只读扁平键 `"marks"`，而语料里没有任何地方写它（knock 写的
+  是 `marks/liufu`）→ 门永远打不开；补齐 `do_knock` 后此判定才与 LPC 对齐。
+  """
+  def has_marks?(%{meta: %{temp: temp}}) when is_map(temp) do
+    Enum.any?(temp, fn {key, value} ->
+      String.starts_with?(key, "marks/") and value not in [nil, false]
+    end)
+  end
+
+  def has_marks?(_char), do: false
 end

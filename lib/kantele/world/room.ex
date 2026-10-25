@@ -557,6 +557,23 @@ defmodule Kantele.World.Room do
   房间进程不存在时返回 `nil`（安全降级，不崩溃）。LPC 的 `set_temp/query_temp`
   只存在于房间对象生命周期内，本实现同样不落库。
   """
+  @doc """
+  LPC `set("long", ...)` 等价：房间描述可被运行期覆盖。
+
+  房间 state 的 `"long"` 键优先（`tulong/tulong/boat2.c` 的 `do_dao` 砸断桅杆后
+  改写房间描述），缺省回静态 `description`（`nil` 表示没有覆盖）。
+  写入侧用 `Room.put_state_by_id(room_id, "long", text)`；`Room.LookEvent`
+  在渲染 `look` 时优先读它。
+  """
+  def long_description(%{state: state}) when is_map(state) do
+    case Map.get(state, "long") do
+      text when is_binary(text) and text != "" -> text
+      _other -> nil
+    end
+  end
+
+  def long_description(_room), do: nil
+
   def get_state_by_id(room_id, key) when is_binary(room_id) and is_binary(key) do
     case :global.whereis_name({Kalevala.World.Room, room_id}) do
       pid when is_pid(pid) ->
@@ -2672,13 +2689,24 @@ defmodule Kantele.World.Room.LookEvent do
       end)
 
     context
-    |> assign(:room, context.data)
+    |> assign(:room, with_long_description(context.data))
     |> assign(:characters, characters)
     |> assign(:item_instances, item_instances)
     |> assign(:mini_map, mini_map)
     |> render(event.from_pid, LookView, "look")
     |> render(event.from_pid, LookView, "mini_map")
     |> render(event.from_pid, LookView, "look.extra")
+  end
+
+  # 运行期房述覆盖（对应 LPC `set("long", ...)`）。**仅当存在覆盖时才替换**：
+  # `long_description/1` 无覆盖返回 nil，而无条件写 `description: nil` 会让
+  # `LookView` 把 nil 混进文本列表 → `Kalevala.Output.Tags.parse_string(nil, ...)`
+  # FunctionClauseError（任何一次 look 都崩，websocket 连接进程直接退出）。
+  defp with_long_description(room) do
+    case Kantele.World.Room.long_description(room) do
+      text when is_binary(text) and text != "" -> %{room | description: text}
+      _other -> room
+    end
   end
 
   defp dead?(%{status: status, id: id}) when is_binary(status) do

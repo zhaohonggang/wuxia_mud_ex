@@ -223,12 +223,12 @@ defmodule Kantele.World.RoomActions.DoPushTest do
     end
 
     test "错词 ≠ gate → :not_handled" do
-      assert HengyangLiufugate.run(conn("hengyang:liufugate", temp: %{"marks" => true}),
+      assert HengyangLiufugate.run(conn("hengyang:liufugate", temp: %{"marks/liufu" => 1}),
                params("hengyang:liufugate", "door")) == :not_handled
     end
 
     test "有 marks → 开 enter→hengyang:liufudayuan、5s 定时器" do
-      HengyangLiufugate.run(conn("hengyang:liufugate", temp: %{"marks" => true}),
+      HengyangLiufugate.run(conn("hengyang:liufugate", temp: %{"marks/liufu" => 1}),
         params("hengyang:liufugate", "gate")
       )
 

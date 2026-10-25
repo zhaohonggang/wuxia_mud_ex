@@ -121,6 +121,20 @@ defmodule Kantele.World.RoomActions.Break do
   end
 
   @doc """
+  LPC `me->die()`：死亡结算（置 qi/jing=0、安排复活、广播死亡）。
+
+  与 `unconcious/1` 同款 API（`Damage.die/2`，无 killer）。
+  """
+  def die(conn) do
+    c = current(conn)
+
+    case Damage.die(c) do
+      {:ok, new_c} -> put_character(conn, new_c)
+      _ -> conn
+    end
+  end
+
+  @doc """
   LPC `me->unconcious()`：内力清零 + 昏厥（置 qi/jing=0、安排复活、广播晕倒）。
   """
   def pass_out(conn) do

@@ -2445,6 +2445,8 @@ item_desc = {
     { key = "周芷若" value = {
       kind = "hostile"
       message = "{name}你是什么东西？敢直呼芷若的名字？"
+      say = true
+      emote = "哼了一声"
     }
     }
   ]

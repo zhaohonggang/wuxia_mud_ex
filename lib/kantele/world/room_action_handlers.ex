@@ -185,8 +185,7 @@ defmodule Kantele.World.RoomActionHandlers do
     "meizhuang:didao3" => %{
       "do_open" => {Kantele.World.RoomActions.Meizhuang.Didao3.Pull, :run}
     },
-    # ---- 动态出口消费端第二批（P5-4ag）----
-    # 峨眉舍身崖下「深潭」三连房：`wang`（四处张望）随机冒出四向出口、3 秒后自灭；
+    # ---- 动态出口消费端第二批（P5-4ag）----    # 峨眉舍身崖下「深潭」三连房：`wang`（四处张望）随机冒出四向出口、3 秒后自灭；
     # 只有 `st2` 的 north 有 1/4 概率通向 `emei:ssyb`（脱困唯一出路）。
     # 三房共用同一模块，按 room_id 查出口表。
     "emei:st0" => %{
@@ -219,6 +218,23 @@ defmodule Kantele.World.RoomActionHandlers do
     },
     "meizhuang:tianjing" => %{
       "do_open" => {Kantele.World.RoomActions.Meizhuang.Tianjing.Open, :run}
+    },
+    # ---- 门/容器第二批（P5-6）：开石盒/石匣发秘籍（2 房）----
+    # `tiezhang:mishi`：`open he|shi he` 取铁掌掌谱（`present` 判重，可重复获得
+    # 的条件是身上没有）。`wudu:mishi`：`open xia` 取千蛛万毒手秘笈 —— 房间状态
+    # `mishi_book` + 玩家 `can_learn/qianzhu-wandushou` 双门控（该 flag 全语料无
+    # set 点，发秘笈分支当前不可达，见模块 moduledoc），其它参数 `:not_handled`
+    # 放行全局 `open`。
+    "tiezhang:mishi" => %{
+      "do_open" => {Kantele.World.RoomActions.Tiezhang.Mishi.Open, :run}
+    },
+    "wudu:mishi" => %{
+      "do_open" => {Kantele.World.RoomActions.Wudu.Mishi.Open, :run}
+    },
+    # `shaolin:zhonglou7`：`knock bell` 敲钟（扣 qi 20 + 广播 + random(2) 加减
+    # combat_exp；LPC 文案含繁体「麽」，逐字保留）。
+    "shaolin:zhonglou7" => %{
+      "do_knock" => {Kantele.World.RoomActions.Shaolin.Zhonglou7.Knock, :run}
     },
     # ---- 动态出口消费端第三批（P5-4ah）----
     # `do_break` 砸墙/砸门/砸冰壁/劈石门一类：10 个房间共用 `RoomActions.Break`
@@ -256,6 +272,16 @@ defmodule Kantele.World.RoomActionHandlers do
     "shenfeng:yongdao3" => %{
       "do_break" => {Kantele.World.RoomActions.Shenfeng.Yongdao3.Break, :run}
     },
+    # ---- 门/容器收尾批（P5-6）：瑶琴暗器 + 砸船桅杆 ----
+    #   - yanziwu:tingyu：break qin → 梅花镖，qi<200 死、否则昏厥（无出口变化）
+    #   - tulong:boat2：break boat/船（需背包持 stone）→ 3s 后桅杆尽倒 +
+    #     房间 state "dao" + "long" 运行期房述覆盖（Room.LookEvent.long_description/1）
+    "yanziwu:tingyu" => %{
+      "do_break" => {Kantele.World.RoomActions.Yanziwu.Tingyu.Break, :run}
+    },
+    "tulong:boat2" => %{
+      "do_break" => {Kantele.World.RoomActions.Tulong.Boat2.Break, :run}
+    },
     # ---- 动态出口消费端第四批（P5-4aj）----
     # `do_push` 推门/推石壁/推草丛/推大床一类：8 个房间共用 `RoomActions.Push`
     # 共享原语（内力/最大内力/臂力/技能门控、开出口、扣内力、定时关、邻居占用判定）。
@@ -268,13 +294,23 @@ defmodule Kantele.World.RoomActionHandlers do
     #   - xiakedao:yadi：需 yadi_swim 临时标记 + neili>150、扣 150、5s 自关
     #   - changan:qunyuys8：query_str>=30 开床下暗格、5s 自关
     "guanwai:jingxiu" => %{
-      "do_push" => {Kantele.World.RoomActions.Guanwai.Jingxiu.Push, :run}
+      "do_push" => {Kantele.World.RoomActions.Guanwai.Jingxiu.Push, :run},
+      # P5-6 收尾：do_knock 与 guanwai:jingxiu 的 do_push 同房，共用 RestKnock 原语
+      "do_knock" => {Kantele.World.RoomActions.Guanwai.Jingxiu.Knock, :run}
     },
     "huashan:xiaolu2" => %{
-      "do_push" => {Kantele.World.RoomActions.Huashan.Xiaolu2.Push, :run}
+      "do_push" => {Kantele.World.RoomActions.Huashan.Xiaolu2.Push, :run},
+      # P5-6 收尾：do_knock 与 huashan:xiaolu2 的 do_push 同房，共用 RestKnock 原语
+      "do_knock" => {Kantele.World.RoomActions.Huashan.Xiaolu2.Knock, :run}
     },
     "hengyang:liufugate" => %{
-      "do_push" => {Kantele.World.RoomActions.Hengyang.Liufugate.Push, :run}
+      "do_push" => {Kantele.World.RoomActions.Hengyang.Liufugate.Push, :run},
+      # P5-6 收尾：knock 写 marks/liufu，正是本房 do_push 的开门条件
+      "do_knock" => {Kantele.World.RoomActions.Hengyang.Liufugate.Knock, :run}
+    },
+    # P5-6 收尾：揽月居暗语谜题入口（whisper/do_say 未实现，见进度文档）
+    "yanziwu:lanyue" => %{
+      "do_knock" => {Kantele.World.RoomActions.Yanziwu.Lanyue.Knock, :run}
     },
     "lingxiao:didi" => %{
       "do_push" => {Kantele.World.RoomActions.Lingxiao.Didi.Push, :run}

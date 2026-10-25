@@ -3970,6 +3970,9 @@ direction = ~
     close = "do_close"
     open = "do_open"
   }
+  item_desc = {
+    gate = "一道三丈来高的朱红杉木包铜大门。"
+  }
 item_desc = {
  gate = "一道三丈来高的朱红杉木包铜大门。"
 }
