@@ -1,7 +1,7 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. **2026-10-21~24 用户已通过简短指令批准并分批提交，P5-1c~P5-9 代码全部已落库；#9 六切片（casino ×2 / banquet / qiyuan / loveroom order / chaoyang）与 P5-5 丹药子系统、P5-8 on_board、P5-6 门容器批、R23/R24 修复均待 `git commit` 批准（~19+ 文件，含源码+测试+注册表+events+docs+memory）**；memory 各日志里「未提交待批准」仅对当时成立，勿再当作现状。
+- No `git commit` unless explicitly asked. **2026-10-21~24 用户已通过简短指令批准并分批提交，P5-1c~P5-9 代码全部已落库；#9 六切片（casino ×2 / banquet / qiyuan / loveroom order / chaoyang，commit `e515b04d`）已落库；P5-5 丹药子系统、P5-8 on_board、P5-6 门容器批、R23/R24 修复仍待 `git commit` 批准（~10+ 文件）**；memory 各日志里「未提交待批准」仅对当时成立，勿再当作现状。
 - No local Erlang — Docker is the verify path:
   `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
   （URL 必须整串引号，否则丢 `//`。）
