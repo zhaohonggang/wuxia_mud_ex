@@ -1641,14 +1641,22 @@ chats = [
       name = "黑玉断续膏"
       aliases = ["heiyugao"]
       description = "这是一粒千年极其难配制的的黑玉断续膏,据说能起死回生。"
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         unit = "粒"
-      }
+      
+        medicine = { jing = 1000 qi = 2000 }
+        effect = {
+          kind = "pill"
+          self_text = "你只觉一股热流在七经八脉中循环了一个周天，立刻神采奕奕了！\n"
+          stack = true
+        }
+}
     }
 
 

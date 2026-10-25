@@ -70,7 +70,7 @@ defmodule Kantele.World.NpcActions.Helpers do
   def room_has_item?(_room_id, _name), do: false
 
   @doc "玩家门派名（`me->query(\"family/family_name\")`）"
-  def family_name(%{meta: %{family: family}}), do: Family.name(family)
+  def family_name(%{meta: %{family: family}}) when is_map(family), do: Family.name(family)
   def family_name(_character), do: nil
 
   @doc """

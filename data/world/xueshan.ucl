@@ -1481,15 +1481,23 @@ item_desc = {
       name = "天山雪莲"
       aliases = ["xuelian", "lian", "lotus"]
       description = "这是一支只有在寒冷的地方才能生长的雪莲。"
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 100
         unit = "支"
-      }
+      
+        medicine = { qi = 200 }
+        effect = {
+          kind = "pill"
+          vision_text = "{npc}小心地吃下一株雪莲，顿时觉得神清气爽了不少！\n"
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/xueshan/obj/y-jiasha.c by LPCConverter

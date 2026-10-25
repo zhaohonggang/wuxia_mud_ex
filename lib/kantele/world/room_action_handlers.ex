@@ -526,6 +526,28 @@ defmodule Kantele.World.RoomActionHandlers do
     "jueqing:jianshi" => %{
       "do_pull" => {Kantele.World.RoomActions.Jueqing.Jianshi, :run},
       "do_pick" => {Kantele.World.RoomActions.Jueqing.Jianshi, :run}
+    },
+    # ---- P5-8 通信中继·载具：`on_board` 定时载具（heimuya 吊篮 / guiyun 渡船）----
+    # 这 4 间房 UCL 已有 `actions`（insert / yell / cross / shang），转换器直写出
+    # handler 名；本批把它们统一接到 `Vehicle.Trigger`（数据驱动，按 room_id 查配置
+    # 启动 check_trigger→on_board→arrive→close_passage 四步定时链路）。详见
+    # `room_actions/vehicle.ex` 与 `room_actions/vehicle_trigger.ex`。
+    #   - heimuya:up2 / up3：insert 吊篮（basket）→ up3 / up4
+    #   - guiyun:taihu / matou：yell / cross / shang 渡船（duchuan）→ matou / taihu
+    "heimuya:up2" => %{
+      "do_insert" => {Kantele.World.RoomActions.Vehicle.Trigger, :run}
+    },
+    "heimuya:up3" => %{
+      "do_insert" => {Kantele.World.RoomActions.Vehicle.Trigger, :run}
+    },
+    "guiyun:taihu" => %{
+      "do_yell" => {Kantele.World.RoomActions.Vehicle.Trigger, :run},
+      "do_cross" => {Kantele.World.RoomActions.Vehicle.Trigger, :run}
+    },
+    "guiyun:matou" => %{
+      "do_yell" => {Kantele.World.RoomActions.Vehicle.Trigger, :run},
+      "do_cross" => {Kantele.World.RoomActions.Vehicle.Trigger, :run},
+      "do_shang" => {Kantele.World.RoomActions.Vehicle.Trigger, :run}
     }
   }
 

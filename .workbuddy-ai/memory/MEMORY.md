@@ -27,12 +27,25 @@
   - `item_action_handlers.ex` / `npc_action_handlers.ex` 已注册 ✅。
   - 测试三件套 **15/0**：`item_actions_convert_bian_test.exs`(8) + `npc_actions_convert_bian_test.exs`(6) + `integration_convert_spawn_test.exs`(1)。
   - `test/kantele/world/` 整库 **1427/0**，无回归。
+- **P5-5 effect/invocation 数据驱动丹药子系统（DONE）**：`do_effect` 15 丹药数据驱动（`invocation` 18 战斗驱动出范围）。
+  - `lib/.../item/effect/pill.ex`：`Pill.plan/2`（冷却/满状态/非pill/放行）+ `apply_cooldown/2`（戳 `PlayerMeta.pill_cooldowns[key]`）+ `apply_busy/2`（`Combat.start_busy`）；治愈数学委托既有 `Effect.consume/3`（读 `meta.medicine` 的 `@restorable` qi/jing/neili）。
+  - `lib/.../character/commands/eat_command.ex`：`pill?`→`Pill.plan`→`Effect.consume`→`apply_cooldown`/`apply_busy`→掉实例→`render_actor_vision`（含 `self_text`，`{npc}`→`你`）→广播。
+  - `lib/.../character.ex`：`PlayerMeta` 加 `:pill_cooldowns`；`lib/.../world/item.ex`：`Item.Meta` 加 `:effect`；`lib/.../world/loader.ex`：`parse_item_meta` 读 `meta.effect`。
+  - 回填脚本 `scripts/backfill_pill_effects.py --apply`：6 UCL 文件 15 丹药（beijing 10 / city / lingjiu / shaolin / xueshan / yanziwu），`validate_ucl.py` 全过。
+  - 测试：`pill_test.exs`(11) + `eat_command_test.exs` 集成(4) + `pill_backfill_test.exs`(3) = 18 新；回归 `test/kantele/item/` 113/0、character eat/drink 26/0，全绿。
+  - 余 `do_effect` 53 项（解毒/毒/永久加属性 `add("max_*")`/`potential`）无引擎模型 → §11 免实现；原文档「108 行 / 2 名」为复制粘贴误植（真实 `do_effect`=68 + `invocation`=18）。**代码+文档均待 `git commit` 批准**。
 - **P5-9 smith job/working 链（DONE）**：襄阳铁匠 `xiangyang:tiejiangpu`。
   - `lib/.../npc_actions/smith.ex`：gu/dapi/cuihuo（busy 守卫→未领活斥责广播→reward：工钱入 `meta.coins` + 经验/潜能 `Stats.improve_potential` + `mark/job_smith` + 掉气 + `Combat.start_busy(3)`）+ repair/xiuli 两段确认链（consistence 在实例 `meta`，世界数据无一定位恒走「似乎不需要在这里修理吧？」忠实分支）。
   - `lib/.../inquiry_handlers/smith_job.ex`（kind="smith_job"）：ask_me 判定链 + random(3) 派活写 `smith/*` temp。
   - UCL：smith inquiries 占位改 map（job/工作 kind=smith_job）+ add_actions 五连。
   - 顺修 719700be 数据 bug：liumang 缺 `}` + 尾部多 `}`（相抵致 mujiang 被 elias 吞掉、validate 红）；修复后 validate ✅、mujiang 恢复。
   - 测试：`npc_actions_smith_test.exs`(23) + `inquiry_handlers_smith_job_test.exs`(12) + handlers 注册表(26 房)。
+- **P5-8 `on_board` 定时载具（DONE，半条 #8）**：heimuya 吊篮（up2→basket→up3 / up3→basket→up4）+ guiyun 渡船（taihu↔matou via duchuan）。
+  - `lib/.../world/room_actions/vehicle.ex`：共享原语 `check_trigger/3` + `on_board/2` + `arrive/2` + `close_passage/2` + `schedule/cancel`（`:timer.apply_after`，tref 存房间 state 等价 remove_call_out）。复用 `Room.set_exit/delete_exit/has_exit_by_id?/tell_room/put_state_by_id/get_state_by_id/delete_state_by_id`（同 DynamicExit 的 `:sys.replace_state` 通道）。
+  - `lib/.../world/room_actions/vehicle_trigger.ex`：`use RoomAction` 数据驱动，4 触发房按 room_id 查配置（文案逐字取自 LPC up2.c/up3.c/taihu.c/matou.c），`run/2` → `Vehicle.check_trigger`；附 `config/1` 供测试取真配置。
+  - 注册表 `room_action_handlers.ex`：4 房 verb 绑定（heimuya:up2/up3 do_insert；guiyun:taihu/matou do_yell/do_cross/do_shang）。UCL 已由转换器写出 `actions` 块，无需改 UCL。
+  - 测试 `test/kantele/world/room_actions_vehicle_test.exs` **14/0**（注册表 + 触发链路 + on_board/arrive/close_passage 三回调直接单元 + already/busy 门控）；room_actions 子集回归 **500/0**。
+  - **未提交，待 `git commit` 批准**。#8 另一半 `relay_emote`（NPC 对玩家社交动词表情回应，city tao1–6、huashan lao-denuo）需新引擎 hook，待建。
 
 ## Test gotchas
 - **「无值返回 nil」的函数，调用点必须判空**（R24，2026-10-25 线上实击）：`%{map | key: f(x)}` 会把 nil
@@ -57,6 +70,8 @@
 - **Elixir `0` 是 truthy，LPC `query_temp` 的 0 是假**——「恰好派了一个活」类断言须显式排除 0/false/nil/""。
 
 ## Next steps (backlog)
+- **P5-5 代码+文档均待 `git commit` 批准**（归 ~29 pending files）。
+- 剩余 P5 子系统：#8 `on_board` 定时载具已落地（`relay_emote` 半条待建，需新引擎 hook）、#9 一次性场景（8 区 `room_actions/` 已建，其余逐房待建）。
 - **14 NPC-absent 文件**：out of scope。
 - **ucl-comment-todo 已清空（2026-10-24）**：B（guarded_exit 16 房，`check_guarders`+`Guarder.permit_pass`）、C（18 条自定义函数走 `Kantele.World.Trap` 副作用通道）、D（gender migration `20261003000000` + `meta.env` 写入）、E（P5-4a/P5-9）、F（city:mudren enter 正式免除）、G（两份文档已同步为「计划 vs 实际」）均已完成/决议。
 - **#7 学徒/门派早已落地（2026-10-24 核实，勿重复实现）**：`NpcFamilyEvent.apprentice`（npc_shop_event.ex L140）+ `FamilyEvent.result` + `SectMaster.recruit_gate?/3` 全链，`f3_sect_master_e2e_test.exs` 15/0。数据仅 `signature.ucl` 俞莲舟 1 处配 `apprentice`；其余 17 处 teach 无配置（LPC `kungfu/class/**` 不在语料，§11 exempt，min 全 0 恒过不误拦）。
@@ -69,6 +84,6 @@ full `mix test` **4660 tests / 0 failures**（2026-10-25 R24 修复后分 4 块�
 **R24（2026-10-25 已修）**：P5-6 批的 `Room.LookEvent` 房述覆盖把 `nil` 写进 `room.description` → 每次 `look` 都
 `parse_string/4` FunctionClauseError、websocket 掉线（bot 实击 4 次）。已改「仅非空 binary 才覆盖」+ 补
 `room_look_event_test.exs` 4/0（revert 后 3/4 红，与线上报错逐字相同）。容器重启后 `grant` 重连零崩溃。
-剩余：#5 effect/invocation、#8 通信中继·载具、#9 一次性场景（246 名/8 区已建）、P3 五个等框架字段、
+剩余：#8 `relay_emote`（NPC 表情回应，city tao1–6、huashan lao-denuo，需新引擎 hook）、#9 一次性场景（246 名/8 区已建）、P3 五个等框架字段、
 37 个非 ask_* 闭包、R21 clone_lib 同名同房排查、`yanziwu:lanyue` 的 `whisper`（do_say，答「光复大燕」进 huanshi，非 door verb 批次）。
-下一步：接 #8 通信中继·载具（规模较大）或取得 `git commit` 批准（P5-6 批 + R23/R24 共 ~31 个文件待提交）。
+下一步：接 #8 `relay_emote` 半条（需新引擎 hook）或取得 `git commit` 批准（P5-5 + P5-8 on_board + P5-6 批 + R23/R24 共 ~31 个文件待提交）。

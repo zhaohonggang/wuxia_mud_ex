@@ -5682,15 +5682,23 @@ chats = [
       name = "老山叁"
       aliases = ["laoshan shen", "shen"]
       description = "这是一株沾满山泥的长白老山叁。"
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 10000
         unit = "株"
-      }
+      
+        medicine = { qi = 200 }
+        effect = {
+          kind = "pill"
+          vision_text = "{npc}吃下一株老山叁，只觉得浑身一股热气兜底冒了上来！\n"
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/city/npc/obj/shouwu.c by LPCConverter

@@ -6670,15 +6670,24 @@ chats = [
       name = "金创药"
       aliases = ["jin chuangyao", "yao"]
       description = "这是一包别具灵效的少林金创药，专治内外伤等。"
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 2000
         unit = "包"
-      }
+      
+        medicine = { qi = 50 }
+        effect = {
+          kind = "pill"
+          vision_text = "{npc}吃下一包金创药，只觉精神振"
+          busy = 1
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/shaolin/obj/jingang-zhao.c by LPCConverter

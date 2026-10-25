@@ -9366,15 +9366,28 @@ chats = [
       name = "养精丹"
       aliases = ["yangjing dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 50
         unit = "粒"
-      }
+      
+        medicine = { jing = 100 }
+        effect = {
+          kind = "pill"
+          cooldown = 5
+          cooldown_key = "last_eat/dan(A)"
+          full_vital = "jing"
+          full_text = "你现在精神状态很好，无需服用养精丹"
+          vision_text = "{npc}吃下一粒养精丹，感到灵台处一片清净。\n"
+          busy = 1
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_2.c by LPCConverter
@@ -9384,15 +9397,28 @@ chats = [
       name = "蓄精丹"
       aliases = ["xujing dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 60
         unit = "粒"
-      }
+      
+        medicine = { jing = 250 }
+        effect = {
+          kind = "pill"
+          cooldown = 7
+          cooldown_key = "last_eat/dan(A)"
+          full_vital = "jing"
+          full_text = "你现在精神状态很好，无需服用蓄精丹"
+          vision_text = "{npc}吃下一粒蓄精丹，感到灵台处一片清净。\n"
+          busy = 2
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_3.c by LPCConverter
@@ -9402,15 +9428,28 @@ chats = [
       name = "补精丹"
       aliases = ["bujing dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 70
         unit = "粒"
-      }
+      
+        medicine = { jing = 500 }
+        effect = {
+          kind = "pill"
+          cooldown = 10
+          cooldown_key = "last_eat/dan(A)"
+          full_vital = "jing"
+          full_text = "你现在精神状态很好，无需服用补精丹"
+          vision_text = "{npc}吃下一粒补精丹，感到灵台处无比的清净。\n"
+          busy = 3
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_4.c by LPCConverter
@@ -9420,15 +9459,28 @@ chats = [
       name = "引心丹"
       aliases = ["yinxin dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 80
         unit = "粒"
-      }
+      
+        medicine = { jing = 1000 }
+        effect = {
+          kind = "pill"
+          cooldown = 12
+          cooldown_key = "last_eat/dan(A)"
+          full_vital = "jing"
+          full_text = "你现在精神状态很好，无需服用引心丹"
+          vision_text = "{npc}吃下一粒引心丹，感到灵台处无比的清净。\n"
+          busy = 4
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danA_5.c by LPCConverter
@@ -9438,15 +9490,28 @@ chats = [
       name = "九皇补心丹"
       aliases = ["buxin dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 150
         unit = "粒"
-      }
+      
+        medicine = { jing = 3000 }
+        effect = {
+          kind = "pill"
+          cooldown = 15
+          cooldown_key = "last_eat/dan(A)"
+          full_vital = "jing"
+          full_text = "你现在精神状态很好，无需服用九皇补心丹"
+          vision_text = "{npc}吃下一粒九皇补心丹，精神一振，神采奕奕。\n"
+          busy = 5
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_1.c by LPCConverter
@@ -9456,15 +9521,28 @@ chats = [
       name = "小还丹"
       aliases = ["xiaohuan dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 50
         unit = "粒"
-      }
+      
+        medicine = { qi = 100 }
+        effect = {
+          kind = "pill"
+          cooldown = 5
+          cooldown_key = "last_eat/dan(B)"
+          full_vital = "qi"
+          full_text = "你现在体力充沛，无需服用小还丹"
+          vision_text = "{npc}吃下一粒小还丹，感到内息得到了调整。\n"
+          busy = 1
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_2.c by LPCConverter
@@ -9474,15 +9552,28 @@ chats = [
       name = "大还丹"
       aliases = ["dahuan dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 60
         unit = "粒"
-      }
+      
+        medicine = { qi = 300 }
+        effect = {
+          kind = "pill"
+          cooldown = 7
+          cooldown_key = "last_eat/dan(B)"
+          full_vital = "qi"
+          full_text = "你现在体力充沛，无需服用大还丹"
+          vision_text = "{npc}吃下一粒大还丹，感到内息得到了调整。\n"
+          busy = 2
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_3.c by LPCConverter
@@ -9492,15 +9583,28 @@ chats = [
       name = "大补丹"
       aliases = ["dabu dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 70
         unit = "粒"
-      }
+      
+        medicine = { qi = 800 }
+        effect = {
+          kind = "pill"
+          cooldown = 10
+          cooldown_key = "last_eat/dan(B)"
+          full_vital = "qi"
+          full_text = "你现在体力充沛，无需服用大补丹"
+          vision_text = "{npc}吃下一粒大补丹，感到内息得到了比较大的调整。\n"
+          busy = 3
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_4.c by LPCConverter
@@ -9510,15 +9614,28 @@ chats = [
       name = "十全大还丹"
       aliases = ["shiquan dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 80
         unit = "粒"
-      }
+      
+        medicine = { qi = 2000 }
+        effect = {
+          kind = "pill"
+          cooldown = 12
+          cooldown_key = "last_eat/dan(B)"
+          full_vital = "qi"
+          full_text = "你现在体力充沛，无需服用十全大还丹"
+          vision_text = "{npc}吃下一粒十全大还丹，感到内息得到了比较大的调整。\n"
+          busy = 4
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_5.c by LPCConverter
@@ -9528,15 +9645,28 @@ chats = [
       name = "还魂丹"
       aliases = ["huanhun dan", "dan"]
       description = ""
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 90
         unit = "粒"
-      }
+      
+        medicine = { qi = 5000 }
+        effect = {
+          kind = "pill"
+          cooldown = 15
+          cooldown_key = "last_eat/dan(B)"
+          full_vital = "qi"
+          full_text = "你现在体力充沛，无需服用还魂丹"
+          vision_text = "{npc}吃下一粒还魂丹，内息得到了极大的补充。\n"
+          busy = 5
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/beijing/npc/dan/danB_6.c by LPCConverter

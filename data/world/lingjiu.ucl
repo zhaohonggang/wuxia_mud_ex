@@ -1096,15 +1096,23 @@ item_desc = {
       name = "白云熊胆丸"
       aliases = ["baiyunxiudan wan", "wan"]
       description = "这是一颗武林人士梦寐以求的疗伤圣药。"
-  verbs = [
+    verbs = [
     "get",
-    "drop"
+    "drop",
+    "eat"
   ]
 
       meta = {
         value = 50000
         unit = "颗"
-      }
+      
+        medicine = { qi = 800 jing = 400 }
+        effect = {
+          kind = "pill"
+          vision_text = "{npc}吃下一颗白云熊胆丸，只觉精气上升，气色大好。\n"
+          stack = true
+        }
+}
     }
 
 # Generated from C:/files/git/mud/d/lingjiu/npc/obj/diaogan.c by LPCConverter

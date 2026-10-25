@@ -267,6 +267,7 @@ defmodule Kantele.World.Item.Meta do
     :material,
     :food,
     :medicine,
+    :effect,
     :book,
     :armor_type,
     :weapon_prop,

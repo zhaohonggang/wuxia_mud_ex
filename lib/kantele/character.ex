@@ -60,7 +60,8 @@ defmodule Kantele.Character.PlayerMeta do
     schedule: nil,
     tianshu_books: nil,
     jifen: nil,
-    marks: %{}
+    marks: %{},
+    pill_cooldowns: %{}
   ]
 
   defimpl Kalevala.Meta.Trim do

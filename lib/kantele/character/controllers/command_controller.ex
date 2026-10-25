@@ -10,6 +10,7 @@ defmodule Kantele.Character.CommandController do
   alias Kantele.Character.IncomingEvents
   alias Kantele.World.ItemActionDispatcher
   alias Kantele.World.NpcActionDispatcher
+  alias Kantele.World.RelayEmoteDispatcher
   alias Kantele.World.RoomActionDispatcher
 
   @impl true
@@ -68,13 +69,8 @@ defmodule Kantele.Character.CommandController do
                 end
 
               :not_handled ->
-                case Commands.call(conn, data) do
-                  {:error, :unknown} ->
-                    conn
-                    |> render(CommandView, "unknown", %{})
-                    |> prompt(CommandView, "prompt", %{})
-
-                  conn ->
+                case RelayEmoteDispatcher.dispatch(conn, data) do
+                  {:handled, conn} ->
                     case Map.get(conn.assigns, :prompt, true) do
                       true ->
                         prompt(conn, CommandView, "prompt", %{})
@@ -82,11 +78,28 @@ defmodule Kantele.Character.CommandController do
                       false ->
                         conn
                     end
+
+                  :not_handled ->
+                    case Commands.call(conn, data) do
+                      {:error, :unknown} ->
+                        conn
+                        |> render(CommandView, "unknown", %{})
+                        |> prompt(CommandView, "prompt", %{})
+
+                      conn ->
+                        case Map.get(conn.assigns, :prompt, true) do
+                          true ->
+                            prompt(conn, CommandView, "prompt", %{})
+
+                          false ->
+                            conn
+                        end
+                    end
                 end
             end
         end
     end
-    end
+  end
 
   @impl true
   def recv_event(conn, event) do
