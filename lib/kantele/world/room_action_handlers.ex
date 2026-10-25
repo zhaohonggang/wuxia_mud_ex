@@ -358,9 +358,10 @@ defmodule Kantele.World.RoomActionHandlers do
       # P5-6 收尾：knock 写 marks/liufu，正是本房 do_push 的开门条件
       "do_knock" => {Kantele.World.RoomActions.Hengyang.Liufugate.Knock, :run}
     },
-    # P5-6 收尾：揽月居暗语谜题入口（whisper/do_say 未实现，见进度文档）
+    # P5-6 收尾：揽月居暗语谜题入口（whisper/do_say 已实现）
     "yanziwu:lanyue" => %{
-      "do_knock" => {Kantele.World.RoomActions.Yanziwu.Lanyue.Knock, :run}
+      "do_knock" => {Kantele.World.RoomActions.Yanziwu.Lanyue.Knock, :run},
+      "do_say" => {Kantele.World.RoomActions.Yanziwu.Lanyue.Say, :run}
     },
     "lingxiao:didi" => %{
       "do_push" => {Kantele.World.RoomActions.Lingxiao.Didi.Push, :run}

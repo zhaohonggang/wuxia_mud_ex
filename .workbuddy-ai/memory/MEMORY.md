@@ -85,15 +85,15 @@
 - **14 NPC-absent 文件**：out of scope。
 - **ucl-comment-todo 已清空（2026-10-24）**：B（guarded_exit 16 房，`check_guarders`+`Guarder.permit_pass`）、C（18 条自定义函数走 `Kantele.World.Trap` 副作用通道）、D（gender migration `20261003000000` + `meta.env` 写入）、E（P5-4a/P5-9）、F（city:mudren enter 正式免除）、G（两份文档已同步为「计划 vs 实际」）均已完成/决议。
 - **#7 学徒/门派早已落地（2026-10-24 核实，勿重复实现）**：`NpcFamilyEvent.apprentice`（npc_shop_event.ex L140）+ `FamilyEvent.result` + `SectMaster.recruit_gate?/3` 全链，`f3_sect_master_e2e_test.exs` 15/0。数据仅 `signature.ucl` 俞莲舟 1 处配 `apprentice`；其余 17 处 teach 无配置（LPC `kungfu/class/**` 不在语料，§11 exempt，min 全 0 恒过不误拦）。
-- **#6 门/容器已完结（2026-10-24 深夜，勿再当缺口）**：36 房 door verbs 全部落地——收尾批做了 5 `do_knock`（`guanwai:jingxiu`/`huashan:xiaolu2` 共用 `RoomActions.RestKnock`；`hengyang:liufugate`；`shaolin:zhonglou7`；`yanziwu:lanyue` 暗语链）+ 2 `do_open`（`tiezhang:mishi`/`wudu:mishi`）+ 2 `do_break`（`yanziwu:tingyu`/`tulong:boat2`），P5 进度 6/9。新原语：`Helpers.carried_item/2`、`Room.long_description/1`（房 state `"long"` 覆盖静态 description）。**注册表铁律**：新 verb 要合并进该房已有 `%{verb => handler}` 条目；另起同名 key 会 `will be overridden` 告警并丢掉原 verb。另修 4 个引擎 bug：`Damage.ghost?` KeyError（玩家首死必崩）、`process_death`/`handle_unconcious` 的 `if` 块重绑定不外泄、`liufugate` `do_push` 恒锁（读 `temp["marks"]` 而 knock 写 `marks/liufu`）。
+- **#6 门/容器已完结（2026-10-24 深夜，勿再当缺口）**：36 房 door verbs 全部落地——收尾批做了 5 `do_knock`（`guanwai:jingxiu`/`huashan:xiaolu2` 共用 `RoomActions.RestKnock`；`hengyang:liufugate`；`shaolin:zhonglou7`；`yanziwu:lanyue` 暗语链 knock+say 均已落地）+ 2 `do_open`（`tiezhang:mishi`/`wudu:mishi`）+ 2 `do_break`（`yanziwu:tingyu`/`tulong:boat2`），P5 进度 6/9。新原语：`Helpers.carried_item/2`、`Room.long_description/1`（房 state `"long"` 覆盖静态 description）。**注册表铁律**：新 verb 要合并进该房已有 `%{verb => handler}` 条目；另起同名 key 会 `will be overridden` 告警并丢掉原 verb。另修 4 个引擎 bug：`Damage.ghost?` KeyError（玩家首死必崩）、`process_death`/`handle_unconcious` 的 `if` 块重绑定不外泄、`liufugate` `do_push` 恒锁（读 `temp["marks"]` 而 knock 写 `marks/liufu`）。
 - **进度文档已大补写（2026-10-24）**：`docs/data-world-comments-progress.zh-CN.md` §13 补 14 行（10-23/24 全批次）、看板/M9/§9/§10/§11/§12(+D25/D26)/§14(+R21/R22) 同步更新；该文档是「唯一记录做到哪了」的文件，**每完成批次必须回填它**（§0 四件事）。
 
 ## Current focus
 P5-9 #9 一次性场景 **6 个切片全部完成**（赌场 ×2 / 长安大堂 / 宴席三厅 / 棋苑三室 / 杭州楼外楼 order / 华山朝阳 chaoyang），P5 进度 **9/9**；整体约 **92%**。
-`room_action*` 全集 **630/0**（586 + 棋苑 44 + loveroom 11 + chaoyang 27）；`weiqi_test` 21/0。
+`room_action*` 全集 **638/0**（586 + 棋苑 44 + loveroom 11 + chaoyang 27 + lanyue say 8）；`weiqi_test` 21/0。
 #9 已无剩余切片，全部落库并验证绿。
 **R24（2026-10-25 已修）**：P5-6 批的 `Room.LookEvent` 房述覆盖把 `nil` 写进 `room.description` → 每次 `look` 都
 `parse_string/4` FunctionClauseError、websocket 掉线（bot 实击 4 次）。已改「仅非空 binary 才覆盖」+ 补
 `room_look_event_test.exs` 4/0（revert 后 3/4 红，与线上报错逐字相同）。容器重启后 `grant` 重连零崩溃。
-剩余：P3 五个等框架字段、37 个非 ask_* 闭包、R21 clone_lib 同名同房排查、`yanziwu:lanyue` 的 `whisper`（do_say，答「光复大燕」进 huanshi，非 door verb 批次）。
-下一步：等待用户批准 `git commit`（**~19+ 待提交文件**：#9 六切片源码+测试+注册表+events + P5-5 丹药子系统 + P5-8 on_board + P5-6 门容器批 + R23/R24 修复 + docs 与 memory 回填）。无需新增代码，#9 已完结。
+剩余：P3 五个等框架字段、37 个非 ask_* 闭包、R21 clone_lib 同名同房排查。
+下一步：等待用户批准 `git commit`（**~10+ 待提交文件**：lanyue say 源码+测试+注册表 + P5-5 丹药子系统 + P5-8 on_board + P5-6 门容器批 + R23/R24 修复 + docs 与 memory 回填）。#9 六切片已全部落库（e515b04d）。

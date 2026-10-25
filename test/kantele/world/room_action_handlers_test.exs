@@ -273,6 +273,9 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
       assert RoomActionHandlers.registered?("hangzhou:loveroom", "do_close")
       assert RoomActionHandlers.registered?("hangzhou:loveroom", "do_order")
       assert RoomActionHandlers.registered?("meizhuang:tianjing", "do_open")
+      # 揽月居暗语谜题（P5-6 收尾）
+      assert RoomActionHandlers.registered?("yanziwu:lanyue", "do_knock")
+      assert RoomActionHandlers.registered?("yanziwu:lanyue", "do_say")
       # 敲门/拉柜开门一批（P5-4al）
       assert RoomActionHandlers.registered?("shaolin:guangchang1", "do_knock")
       assert RoomActionHandlers.registered?("shaolin:zhonglou7", "do_knock")
