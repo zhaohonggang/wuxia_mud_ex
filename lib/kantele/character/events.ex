@@ -231,6 +231,12 @@ defmodule Kantele.Character.Events do
       event("pig/seat", :seat)
     end
 
+    # 赌场赢钱落地：房间进程结算后发 `casino/payout`，角色进程加扁平铜钱
+    # （meta 只有本进程能安全修改；见 Kantele.Character.CasinoPayoutEvent）。
+    module(CasinoPayoutEvent) do
+      event("casino/payout", :credit)
+    end
+
     module(YitianEvent) do
       event("yitian/result", :result)
     end

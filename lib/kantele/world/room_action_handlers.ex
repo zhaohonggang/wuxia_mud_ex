@@ -54,6 +54,18 @@ defmodule Kantele.World.RoomActionHandlers do
     "do_claim" => {Kantele.World.RoomActions.City.PigRoom, :run}
   }
 
+  # 棋苑围棋/五子棋（P5-9 #9）：`qiyuan2/3/4` 三间棋室 `init()` 共用七动词，
+  # 抽一份挂三份；对局状态在房间 state["qiyuan"]，棋盘规则在 `Kantele.World.Weiqi`。
+  @qiyuan_actions %{
+    "do_sit" => {Kantele.World.RoomActions.City.Qiyuan, :run},
+    "do_leave" => {Kantele.World.RoomActions.City.Qiyuan, :run},
+    "do_play" => {Kantele.World.RoomActions.City.Qiyuan, :run},
+    "do_pass" => {Kantele.World.RoomActions.City.Qiyuan, :run},
+    "do_new" => {Kantele.World.RoomActions.City.Qiyuan, :run},
+    "do_undo" => {Kantele.World.RoomActions.City.Qiyuan, :run},
+    "do_refresh" => {Kantele.World.RoomActions.City.Qiyuan, :run}
+  }
+
   @registry %{
     "huashan:lianhua" => %{
       "do_tiao" => {Kantele.World.RoomActions.Huashan.Lianhua.Tiao, :run}
@@ -64,6 +76,12 @@ defmodule Kantele.World.RoomActionHandlers do
       "do_move" => {Kantele.World.RoomActions.Huashan.Jianzhong.Move, :run},
       "do_pick" => {Kantele.World.RoomActions.Huashan.Jianzhong.Pick, :run},
       "do_jump" => {Kantele.World.RoomActions.Huashan.Jianzhong.Jump, :run}
+    },
+    # 朝阳峰：`la teng` 抓住青藤 → `jump ya` 跳崖（没拉藤且 dex<30 会摔死进 xuanya，
+    # 否则进 jinshedong 金蛇洞）。UCL 已写 `actions = { la, jump }`，零 UCL 改动。
+    "huashan:chaoyang" => %{
+      "do_la" => {Kantele.World.RoomActions.Huashan.Chaoyang, :run},
+      "do_jump" => {Kantele.World.RoomActions.Huashan.Chaoyang, :run}
     },
     "emei:shierpan3" => %{
       "do_clap" => {Kantele.World.RoomActions.Emei.Shierpan3.Clap, :run}
@@ -157,6 +175,37 @@ defmodule Kantele.World.RoomActionHandlers do
     "city:nproom" => @pig_actions,
     "city:sproom" => @pig_actions,
     "city:wproom" => @pig_actions,
+    # 赌场（P5-9 #9 一次性场景）：`bet` 动词（UCL 映射 do_bet）由 City.Bet 接管，
+    # 骰局状态在房间 state["casino"]；庄家 NPC（changan_zhuangjia）由 UCL room_characters 载入。
+    "city:bet" => %{
+      "do_bet" => {Kantele.World.RoomActions.City.Bet, :run}
+    },
+    # 长安赌场大堂（`changan:duchang`，移植自 `d/changan/duchang.c`）是同一套骰局的
+    # 第二个实例：UCL 同样挂 `actions = { bet = "do_bet" }` 并载入 `characters.zhuangjia`
+    # 庄家，骰局状态各自按 room_id 隔离在 state["casino"]。复用 City.Bet，零 UCL 改动。
+    "changan:duchang" => %{
+      "do_bet" => {Kantele.World.RoomActions.City.Bet, :run}
+    },
+    # 醉仙楼宴厅「承办酒席」（P5-9 #9 一次性场景）：`order`/`broadcast` 由 Banquet 接管，
+    # 宴会状态在房间 state["banquet"]。三厅 LPC（furong/meigui/mudan）逻辑完全一致，
+    # 仅「厅名」不同；UCL 已挂 `actions = { order = "do_order", broadcast = "do_broadcast" }`，
+    # 零 UCL 改动。
+    "city:furong" => %{
+      "do_order" => {Kantele.World.RoomActions.Banquet, :run},
+      "do_broadcast" => {Kantele.World.RoomActions.Banquet, :run}
+    },
+    "city:meigui" => %{
+      "do_order" => {Kantele.World.RoomActions.Banquet, :run},
+      "do_broadcast" => {Kantele.World.RoomActions.Banquet, :run}
+    },
+    "city:mudan" => %{
+      "do_order" => {Kantele.World.RoomActions.Banquet, :run},
+      "do_broadcast" => {Kantele.World.RoomActions.Banquet, :run}
+    },
+    # 棋苑围棋/五子棋（P5-9 #9 一次性场景）：三间棋室七动词全部由 Qiyuan 接管。
+    "city:qiyuan2" => @qiyuan_actions,
+    "city:qiyuan3" => @qiyuan_actions,
+    "city:qiyuan4" => @qiyuan_actions,
     # ---- 动态出口消费端首批（P5-4ae）----
     # LPC `set/delete("exits/<dir>", ...)` 的玩家触发路径。共用
     # `RoomActions.DynamicExit`（判在 / 开 / 关 / 定时关）。

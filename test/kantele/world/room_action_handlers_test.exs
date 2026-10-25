@@ -83,13 +83,21 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "baituo:neishi",
                 "beijing:aofu_shufang",
                 "beijing:zhuang3",
+                "changan:duchang",
                 "changan:kzsleep",
                 "changan:qunyuys8",
                 "changan:xunbufang",
                 "chengdu:eastroad3",
                 "chengdu:guangchang",
+                "city:bet",
                 "city:eproom",
+                "city:furong",
+                "city:meigui",
+                "city:mudan",
                 "city:nproom",
+                "city:qiyuan2",
+                "city:qiyuan3",
+                "city:qiyuan4",
                 "city:sproom",
                 "city:wproom",
                 "emei:hcadadian",
@@ -105,6 +113,8 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "fuzhou:laozhai",
                 "guanwai:jingxiu",
                 "guanwai:xiuxishi",
+                "guiyun:matou",
+                "guiyun:taihu",
                 "gumu:mishi1",
                 "gumu:mumen",
                 "gumu:taiyi1",
@@ -112,6 +122,8 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "hangzhou:liuzhuang",
                 "hangzhou:loveroom",
                 "heimuya:huoting",
+                "heimuya:up2",
+                "heimuya:up3",
                 "hengyang:furong1",
                 "hengyang:inhole2",
                 "hengyang:inzhushendong",
@@ -123,6 +135,7 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "hengyang:xuanyadi",
                 "hengyang:zigaihole",
                 "huanggong:inwell",
+                "huashan:chaoyang",
                 "huashan:jianzhong",
                 "huashan:lianhua",
                 "huashan:sgyhole1",
@@ -322,6 +335,14 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
       # 拱猪四房（P5-4ad）
       assert RoomActionHandlers.registered?("city:eproom", "do_play")
       assert RoomActionHandlers.registered?("city:wproom", "do_claim")
+      # 赌场（P5-9 #9 一次性场景）
+      assert RoomActionHandlers.registered?("city:bet", "do_bet")
+      assert RoomActionHandlers.registered?("changan:duchang", "do_bet")
+      # 醉仙楼宴厅承办酒席（P5-9 #9 一次性场景）
+      assert RoomActionHandlers.registered?("city:furong", "do_order")
+      assert RoomActionHandlers.registered?("city:furong", "do_broadcast")
+      assert RoomActionHandlers.registered?("city:meigui", "do_order")
+      assert RoomActionHandlers.registered?("city:mudan", "do_order")
       refute RoomActionHandlers.registered?("huashan:lianhua", "do_move")
       refute RoomActionHandlers.registered?("baituo:neishi", "do_climb")
       # do_climb 在 hengyang:furong1、gumu:taiyi2 与 P5-4aq-A 的地形房（outzhushendong/
