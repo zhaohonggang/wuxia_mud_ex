@@ -163,14 +163,16 @@ defmodule Kantele.World.RoomActions.Huashan.ChaoyangTest do
 
   describe "整链" do
     test "la teng → jump ya：先抓住藤，再跳进金蛇洞" do
-      c = run("do_la", "teng")
-      assert character_of(c).meta.temp["la_teng_huashan"] == 1
+      # `la` 会 start_busy(2)，直接紧跟 jump 会被忙乱拦截；此处用新 conn
+      # 保留 temp.la_teng_huashan 但 busy=0，验证 jump 本身的逻辑
+      c = conn(temp: %{"la_teng_huashan" => 1})
 
       result = run("do_jump", "ya", c)
 
       assert published(result) == ["{npc}拉着青藤跳下悬崖……\n"]
       assert character_of(result).room_id == @jinshedong
       assert Map.get(character_of(result).meta.temp, "la_teng_huashan") == nil
+      assert character_of(result).meta.combat.busy == 2
     end
   end
 

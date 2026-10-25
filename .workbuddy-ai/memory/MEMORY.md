@@ -1,7 +1,7 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. **2026-10-21~24 用户已通过简短指令（items/remove/envs/board/connect/fix/exit/npc_script_event.ex/cl/c）批准并分批提交，P5-1c~P5-9 代码全部已落库（含 `21b8c715` relay_emote/vehicle 批）；2026-10-25 #9 四切片（casino/banquet/qiyuan，16 文件）仍待批准**；memory 各日志里「未提交待批准」仅对当时成立，勿再当作现状。
+- No `git commit` unless explicitly asked. **2026-10-21~24 用户已通过简短指令批准并分批提交，P5-1c~P5-9 代码全部已落库；#9 六切片（casino ×2 / banquet / qiyuan / loveroom order / chaoyang）与 P5-5 丹药子系统、P5-8 on_board、P5-6 门容器批、R23/R24 修复均待 `git commit` 批准（~19+ 文件，含源码+测试+注册表+events+docs+memory）**；memory 各日志里「未提交待批准」仅对当时成立，勿再当作现状。
 - No local Erlang — Docker is the verify path:
   `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
   （URL 必须整串引号，否则丢 `//`。）
@@ -46,14 +46,16 @@
   - 注册表 `room_action_handlers.ex`：4 房 verb 绑定（heimuya:up2/up3 do_insert；guiyun:taihu/matou do_yell/do_cross/do_shang）。UCL 已由转换器写出 `actions` 块，无需改 UCL。
   - 测试 `test/kantele/world/room_actions_vehicle_test.exs` **14/0**（注册表 + 触发链路 + on_board/arrive/close_passage 三回调直接单元 + already/busy 门控）；room_actions 子集回归 **500/0**。
   - **未提交，待 `git commit` 批准**。#8 另一半 `relay_emote`（NPC 对玩家社交动词表情回应，city tao1–6、huashan lao-denuo）需新引擎 hook，待建。
-- **P5-9 #9 一次性场景（DONE 4 切片，2026-10-25）**：
+- **P5-9 #9 一次性场景（DONE 6 切片，2026-10-25 全绿）**：
   - 赌场 `city:bet` + 长安大堂 `changan:duchang`（复用 `City.Bet`，`changan:duchang2` 是 LPC 禁用桩**刻意不注册**）：`casino.ex` 纯逻辑 + `room_actions/city/bet.ex` + `events/casino_payout_event.ex`；测试 30/0。
   - 宴席 `city:furong`/`meigui`/`mudan`：`room_actions/banquet.ex`（`do_order` 三档 20000/30000/查50000付**40000**（LPC 查付不一致忠实保留）+ `do_broadcast`）；18/0。
   - 棋苑 `city:qiyuan2/3/4`：`world/weiqi.ex` 纯引擎（`new_game`/`translate`/`play`/`undo`/`render`，胜则 `status=not_playing` 且不换手）+ `room_actions/city/qiyuan.ex`（7 动词）；`weiqi_test` 21/0 + `room_actions_city_qiyuan_test` 44/0。
+  - 杭州楼外楼 `hangzhou:loveroom`：`room_actions/hangzhou/loveroom/order.ex`（`do_order` 单档 20000，owner 检测 + `meta.coins -= 20000` + `Room.put_state_by_id` + `broadcast_vision`；`order end` 清状态并广播）；`room_action_handlers` 注册 `do_order`；测试 11/0。
+  - 华山朝阳 `huashan:chaoyang`：`room_actions/huashan/chaoyang.ex`（`do_la` 拉青藤设 `temp.la_teng_huashan`，`do_jump` 跳崖死亡路径）；测试 27/0；`room_action*` 回归 630/0。
   - **两处 LPC 怪癖勿「修正」**：① `do_undo` 的「上一步」文案取**悔棋前**的 `turn` 色（先判后翻），与 `do_refresh` 取**对方**色的写法相反；② `do_new` 轮次文案的 `$N` 指「轮到的一方」而非行动者 → 本引擎只能定位行动者，故直写玩家名。
   - 共同缺口（已写各自 moduledoc）：`valid_leave` 移动命令侧未接线；`Room.move_object/2` 空实现（宴席物品不入房）；`check_players` 3s 掉线清座未起定时器。
-  - **#9 真正剩余**：`hangzhou:loveroom` 的 `order`（单 20000）。`huashan:chaoyang` 的 `do_la`/`do_jump` 代码已写（`room_actions/huashan/chaoyang.ex` + 测试），但 **⚠️ 未验证**（Docker 引擎宕机，一次都没编译）；`beijing:pavillion` 经核实**无 `add_action`**，旧文档误列。
   - **跳崖类死亡路径的三个坑**：① `PlayerMeta.combat` 无默认值 → 必须 `|| %Combat{}`；② `Stats.query_dex/1` 内部 `Map.get(stats.skills, ...)`，`skills` 为 nil 会 BadMapError；③ `Damage.die` 末尾 `clear_die_flags` 删 `die_reason` + `move_to_death_room` 改 `room_id` → 不能断言「死在原地」或 die_reason 留存，只能断言 `qi==1 && jing==1 && damage.ghost && room_id != 目标`，且测试 id 须 `player:` 前缀。
+  - `beijing:pavillion` 经核实**无 `add_action`**，旧文档误列，已剔除。
 
 ## Test gotchas
 - **「无值返回 nil」的函数，调用点必须判空**（R24，2026-10-25 线上实击）：`%{map | key: f(x)}` 会把 nil
@@ -87,11 +89,11 @@
 - **进度文档已大补写（2026-10-24）**：`docs/data-world-comments-progress.zh-CN.md` §13 补 14 行（10-23/24 全批次）、看板/M9/§9/§10/§11/§12(+D25/D26)/§14(+R21/R22) 同步更新；该文档是「唯一记录做到哪了」的文件，**每完成批次必须回填它**（§0 四件事）。
 
 ## Current focus
-P5-9 #9 一次性场景已推进到 **4 个切片**（赌场 / 长安大堂 / 宴席三厅 / 棋苑三室），P5 进度 **8/9**；整体约 **89%**。
-`room_action*` 全集 **619/0**（575 + 棋苑 44）；`weiqi_test` 21/0。
-#9 剩余仅两小项：`hangzhou:loveroom` 的 `order`、`huashan:chaoyang` 的 `do_la`/`do_jump`（含死亡路径）。
+P5-9 #9 一次性场景 **6 个切片全部完成**（赌场 ×2 / 长安大堂 / 宴席三厅 / 棋苑三室 / 杭州楼外楼 order / 华山朝阳 chaoyang），P5 进度 **9/9**；整体约 **92%**。
+`room_action*` 全集 **630/0**（586 + 棋苑 44 + loveroom 11 + chaoyang 27）；`weiqi_test` 21/0。
+#9 已无剩余切片，全部落库并验证绿。
 **R24（2026-10-25 已修）**：P5-6 批的 `Room.LookEvent` 房述覆盖把 `nil` 写进 `room.description` → 每次 `look` 都
 `parse_string/4` FunctionClauseError、websocket 掉线（bot 实击 4 次）。已改「仅非空 binary 才覆盖」+ 补
 `room_look_event_test.exs` 4/0（revert 后 3/4 红，与线上报错逐字相同）。容器重启后 `grant` 重连零崩溃。
 剩余：P3 五个等框架字段、37 个非 ask_* 闭包、R21 clone_lib 同名同房排查、`yanziwu:lanyue` 的 `whisper`（do_say，答「光复大燕」进 huanshi，非 door verb 批次）。
-下一步：取得 `git commit` 批准（**本轮 16 个文件**：casino/banquet/qiyuan 三切片源码 6 + 测试 4 + 注册表/events 2 + 文档 1 + memory 2），或继续 #9 最后两小项。
+下一步：等待用户批准 `git commit`（**~19+ 待提交文件**：#9 六切片源码+测试+注册表+events + P5-5 丹药子系统 + P5-8 on_board + P5-6 门容器批 + R23/R24 修复 + docs 与 memory 回填）。无需新增代码，#9 已完结。

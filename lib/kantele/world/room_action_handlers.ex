@@ -262,6 +262,7 @@ defmodule Kantele.World.RoomActionHandlers do
     # `meizhuang:tianjing`：`open` 动词，开 `south`→`meizhuang:gate` 双向门 + 10s
     # 定时自关（`close_gate` 定时器，无玩家手动 close）。
     "hangzhou:loveroom" => %{
+      "do_order" => {Kantele.World.RoomActions.Hangzhou.Loveroom.Order, :run},
       "do_open" => {Kantele.World.RoomActions.Hangzhou.Loveroom.Open, :run},
       "do_close" => {Kantele.World.RoomActions.Hangzhou.Loveroom.Close, :run}
     },
