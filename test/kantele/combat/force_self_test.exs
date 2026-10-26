@@ -80,7 +80,14 @@ defmodule Kantele.Combat.ForceSelfTest do
       attributes: attributes
     }
 
-    build_conn(character)
+    # condition 框架把条件存在 **session["conditions"]**（`ConditionEvent` 写入的
+    # 同一处），`meta.conditions` 全库无人写入 —— 故这里模拟真实形状。
+    conn = build_conn(character)
+
+    case Map.get(opts, :session_conditions) do
+      nil -> conn
+      conds -> Kalevala.Character.Conn.put_session(conn, "conditions", conds)
+    end
   end
 
   defp output_text(conn) do
@@ -192,15 +199,20 @@ defmodule Kantele.Combat.ForceSelfTest do
     test "成功清空 conditions 并扣内力" do
       conn =
         exert(
-          build_test_conn(vitals: %{@vitals | neili: 500}, conditions: %{poison: 10, blind: 5}),
+          build_test_conn(
+            vitals: %{@vitals | neili: 500},
+            session_conditions: %{"poison" => %{"duration" => 10}, "duyan" => %{"duration" => 5}}
+          ),
           "dispel"
         )
 
       updated = conn.private.update_character
 
       assert updated.meta.vitals.neili == 400
-      assert updated.meta.conditions == %{}
+      # 条件在 session，不在 meta.conditions（后者全库无人写入）
+      assert conn.session["conditions"] == nil
       assert published_text(conn) =~ "排除身体中的异常症状"
+      assert published_text(conn) =~ "你调息完毕，将内力收回丹田。"
     end
 
     test "无 conditions 时给出提示" do
@@ -208,8 +220,53 @@ defmodule Kantele.Combat.ForceSelfTest do
       updated = conn.private.update_character
 
       assert updated.meta.vitals.neili == 400
-      # LPC: "结果你没发现自己有任何异常" + "眉角微微一动"
-      assert published_text(conn) =~ "异常症状"
+      assert published_text(conn) =~ "结果你没发现自己有任何异常。"
+    end
+
+    test "meta.conditions 有值但 session 为空：不再误判为有异常" do
+      # 回归：修复前读的就是这个字段，故「有值即清空」的假阳性必须消失
+      conn =
+        exert(
+          build_test_conn(vitals: %{@vitals | neili: 500}, conditions: %{poison: 10}),
+          "dispel"
+        )
+
+      assert published_text(conn) =~ "结果你没发现自己有任何异常。"
+      refute published_text(conn) =~ "你调息完毕"
+    end
+
+    test "drunk 内力火候不足：条件保留 + 失败文案" do
+      conn =
+        exert(
+          build_test_conn(
+            vitals: %{@vitals | neili: 500},
+            skills: %{"force" => 100},
+            session_conditions: %{"drunk" => %{"duration" => 120}}
+          ),
+          "dispel"
+        )
+
+      # LPC: need = duration + 50 = 170 > force 100 -> 拒绝，醉度保留
+      assert conn.session["conditions"]["drunk"]["duration"] == 120
+      assert published_text(conn) =~ "内功火候尚有欠缺"
+      assert published_text(conn) =~ "你调息良久，没有一点效果。"
+    end
+
+    test "drunk 内力足够：解酒成功并清空" do
+      conn =
+        exert(
+          build_test_conn(
+            vitals: %{@vitals | neili: 500},
+            skills: %{"force" => 400},
+            session_conditions: %{"drunk" => %{"duration" => 100}}
+          ),
+          "dispel"
+        )
+
+      # need = 100 + 50 = 150 <= 400
+      assert conn.session["conditions"] == nil
+      assert published_text(conn) =~ "再没有半点醉酒的感觉"
+      assert published_text(conn) =~ "你调息完毕，将内力收回丹田。"
     end
   end
 

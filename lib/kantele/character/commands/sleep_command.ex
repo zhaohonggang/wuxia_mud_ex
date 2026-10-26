@@ -9,6 +9,8 @@ defmodule Kantele.Character.SleepCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.ConditionRegistry
+  alias Kantele.Character.Conditions
   alias Kantele.Character.Records
   alias Kantele.World.Items
 
@@ -16,6 +18,8 @@ defmodule Kantele.Character.SleepCommand do
     character = conn.character
     # 从实时快照/注入获取房间信息
     room = get_room(conn)
+    # LPC: cnd = me->query_condition(); 有拦路条件则睡不着
+    blocking = sleep_blocking_condition(conn)
 
     cond do
       not can_sleep_here?(character, room) ->
@@ -43,10 +47,8 @@ defmodule Kantele.Character.SleepCommand do
         |> render(CommandView, "text", %{text: "你现在接近昏迷，睡不着觉。\n"})
         |> prompt(CommandView, "prompt", %{})
 
-      conditions_prevent_sleep?(character) ->
-        conn
-        |> render(CommandView, "text", %{text: "你想合上眼睛好好睡上一觉，可是身体不适，辗转反侧就是睡不着。\n"})
-        |> prompt(CommandView, "prompt", %{})
+      is_binary(blocking) ->
+        refuse_by_condition(conn, blocking)
 
       true ->
         start_sleep(conn, character, room)
@@ -87,19 +89,45 @@ defmodule Kantele.Character.SleepCommand do
     qi < 0 || jing < 0
   end
 
-  defp conditions_prevent_sleep?(character) do
-    conditions = Map.get(character.meta, :conditions, %{})
-
-    Enum.any?(conditions, fn {_cnd_name, cnd_info} ->
-      # 简化：如果有任意 condition 且 qi/jing 低于阈值
-      min_qi = cnd_info["min_qi"] || 0
-      min_jing = cnd_info["min_jing"] || 0
-      qi = Map.get(character.attributes, "qi", 0)
-      jing = Map.get(character.attributes, "jing", 0)
-
-      qi < min_qi || jing < min_jing
-    end)
+  # LPC `cmds/std/sleep.c`：
+  #
+  #   cnd = me->query_condition();
+  #   if (cnd && sizeof(cnd))
+  #       for (i = 0; i < sizeof(kc); i++)
+  #           if (CONDITION_D(kc[i])->min_qi_needed(me) > qi ||
+  #               CONDITION_D(kc[i])->min_jing_needed(me) > jing)
+  #                   message("vision", me->name() + "看样子是想睡觉，可是辗转反侧，"
+  #                           "就是睡不着。\n", environment(me), me);
+  #                   tell_object(me, "你想合上眼睛好好睡上一觉，可是" +
+  #                               to_chinese(kc[i]) + "不断折磨着你，让你辗转难眠。\n");
+  #                   return 1;
+  #
+  defp sleep_blocking_condition(conn) do
+    Conditions.blocked_by_vitals(
+      get_session(conn, "conditions") || %{},
+      conn.character.attributes || %{},
+      &ConditionRegistry.daemon/1
+    )
   end
+
+  # LPC 同时发两条：房间 vision（不含自己）+ 本人带条件名的 tell。
+  defp refuse_by_condition(conn, cnd) do
+    name = ConditionRegistry.chinese_name(cnd)
+
+    conn
+    |> publish_message(
+      "rooms:#{conn.character.room_id}",
+      "{npc}看样子是想睡觉，可是辗转反侧，就是睡不着。\n",
+      [type: "vision"],
+      &publish_error/2
+    )
+    |> render(CommandView, "text", %{
+      text: "你想合上眼睛好好睡上一觉，可是#{name}不断折磨着你，让你辗转难眠。\n"
+    })
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  defp publish_error(conn, _error), do: conn
 
   defp start_sleep(conn, character, room) do
     room_attrs = Map.get(room, :attrs, %{})

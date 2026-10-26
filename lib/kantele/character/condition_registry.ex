@@ -4,8 +4,8 @@ defmodule Kantele.Character.ConditionRegistry do
 
   与 `Kantele.Combat.Skills` 同款模式：
 
-  - 静态内建表 `@daemons`（起步仅 `"poison" => Kantele.Poison`；后续随 kungfu
-    `condition/*.c` 逐个迁移补充，无需重启进程）。
+  - 静态内建表 `@daemons`（起步 `poison`/`fire_poison`/`nishui`/`duyan`/`drunk`；
+    后续随 kungfu `condition/*.c` 逐个迁移补充，无需重启进程）。
   - 运行时可热增/热删（`:persistent_term` 覆盖静态表同名项，F1 验收里
     "假 condition/demo" 即走这条路径验证注册表热增）。
 
@@ -18,7 +18,8 @@ defmodule Kantele.Character.ConditionRegistry do
     "poison" => Kantele.Poison,
     "fire_poison" => Kantele.Poison,
     "nishui" => Kantele.Nishui,
-    "duyan" => Kantele.Duyan
+    "duyan" => Kantele.Duyan,
+    "drunk" => Kantele.Drunk
   }
 
   @doc "给条件名返回 `{:ok, mod} | :error`（先查运行时增量，再查静态表）"
@@ -51,6 +52,30 @@ defmodule Kantele.Character.ConditionRegistry do
   def all() do
     Map.keys(@daemons) |> Kernel.++(Map.keys(extras())) |> Enum.uniq()
   end
+
+  # 条件 id → 中文名（对应 LPC `to_chinese(kc[i])`）。
+  #
+  # **本地补白**：LPC 的 `to_chinese` 走 `CHINESE_D->chinese()` 查 dict 表，
+  # 而 dict 里**没有** `ill_*` / `drunk` 这些 condition id 的条目 → 原 mud
+  # 输出的是「可是ill_shanghan不断折磨着你」这种中英混杂串。这里按 daemon
+  # 已登记的范围补上中文名；未收录的回落 id 原样（与 `force/dispel.ex`
+  # 的 `to_chinese/1` 同一约定）。
+  @chinese_names %{
+    "ill_dongshang" => "冻伤",
+    "ill_fashao" => "发烧",
+    "ill_kesou" => "咳嗽",
+    "ill_shanghan" => "伤寒",
+    "ill_zhongshu" => "中暑",
+    "poison" => "中毒",
+    "fire_poison" => "火毒",
+    "nishui" => "溺水",
+    "duyan" => "毒烟",
+    "drunk" => "醉意"
+  }
+
+  @doc "条件 id → 中文名（未收录回落 id 原样）"
+  def chinese_name(cnd) when is_binary(cnd), do: Map.get(@chinese_names, cnd, cnd)
+  def chinese_name(cnd), do: cnd
 
   defp extras(), do: :persistent_term.get({__MODULE__, :extras}, %{})
 end

@@ -82,6 +82,27 @@ defmodule Kantele.World.MirrorZixuTest do
       assert conn != nil
       refute_receive %Event{topic: "mirror/give"}, 100
     end
+
+    test "非 ask_* 闭包问询值（含 () 语法）静默不回应，不向玩家发布 tell" do
+      npc = %Kalevala.Character{
+        id: "test:npc",
+        name: "测试NPC",
+        pid: self(),
+        room_id: "test:room",
+        meta: %Kantele.Character.NonPlayerMeta{
+          inquiries: %{
+            "信" => "(: execute_ask() :)",
+            "教我" => "(: teach_me : )"
+          }
+        }
+      }
+
+      conn = NpcAskEvent.call(build_conn(npc), ask_event("信"))
+
+      assert conn != nil
+      # 闭包占位应静默：不产生任何 channel publish（tell），避免泄露源码形态
+      assert [] == conn.private.channel_changes
+    end
   end
 
   describe "玩家侧领镜（MirrorEvent.mirror/give）" do

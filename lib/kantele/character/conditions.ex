@@ -141,7 +141,140 @@ defmodule Kantele.Character.Conditions do
   def query_last_applyer(%{cond_applyer: apl}, cnd) when is_map(apl), do: Map.get(apl, cnd)
   def query_last_applyer(_state, _cnd), do: nil
 
+  @doc """
+  逐条件尝试驱散（对应 LPC `feature/condition.c dispel_condition` +
+  `kungfu/skill/force/dispel.c` 的 `for` 循环）。
+
+  daemon 可选导出 `dispel_condition/2`（名字照搬 LPC `feature/condition.c`
+  的 `dispel_condition()`），签名 `dispel_condition(info, ctx)`，返回：
+
+  - `:ok` / `{:ok, message}` — 驱散成功（该条件从 `conditions` 移除）
+  - `{:fail, message}` — 驱散失败（保留该条件，LPC `still_ill = 1`）
+  - `:skip` — 不处理（保留，不算失败）
+
+  `ctx` 至少含 `%{force: integer, self?: boolean}`；驱散他人时调用方还可给
+  `:target_name`。
+
+  **与 LPC 的差异（有意）**：LPC `dispel_condition` 对**未实现该函数的
+  condition 返回 0**（`case 0: continue` → 不驱散）；本引擎对未导出的 daemon
+  默认 `:ok`（驱散），否则 `poison`/`nishui`/`duyan` 全部驱不掉、`排除异常`
+  退化成摆设。需要抗性/门槛的 condition 自己导出 `dispel_condition/2` 即可。
+
+  返回 `{remaining_conditions_or_nil, results}`，
+  `results :: [{cnd, :ok | {:ok, msg} | {:fail, msg} | :skip}]`。
+  """
+  def dispel(conditions, ctx, daemon) when is_map(conditions) do
+    {remaining, results} =
+      Enum.reduce(conditions, {%{}, []}, fn {cnd, info}, {acc, res} ->
+        case daemon.(cnd) do
+          :error ->
+            # 无法解析的条件不擅自删（保持既有 update_condition 的宽容语义）
+            {Map.put(acc, cnd, info), [{cnd, :skip} | res]}
+
+          {:ok, mod} ->
+            case dispel_one(mod, info, ctx) do
+              :ok ->
+                {acc, [{cnd, :ok} | res]}
+
+              {:ok, msg} ->
+                {acc, [{cnd, {:ok, msg}} | res]}
+
+              {:fail, msg} ->
+                {Map.put(acc, cnd, info), [{cnd, {:fail, msg}} | res]}
+
+              :skip ->
+                {Map.put(acc, cnd, info), [{cnd, :skip} | res]}
+            end
+        end
+      end)
+
+    {if(map_size(remaining) == 0, do: nil, else: remaining), Enum.reverse(results)}
+  end
+
+  def dispel(_conditions, _ctx, _daemon), do: {nil, []}
+
+  @doc """
+  逐条件问 daemon 的 `min_qi_needed/1` / `min_jing_needed/1`，返回**第一个**
+  当前 `qi`/`jing` 不达标的条件名；全都不拦则返回 `nil`。
+
+  对应 LPC `cmds/std/sleep.c` 的门控：
+
+  ```c
+  if (CONDITION_D(kc[i])->min_qi_needed(me) > qi ||
+      CONDITION_D(kc[i])->min_jing_needed(me) > jing)
+          return 1;   // 睡不着
+  ```
+
+  `attributes` 传角色的 `attributes` 映射。本引擎有**两套键约定**并存：玩家
+  `attributes` 是字符串键（`"qi"`），而 `ConditionEvent` 给 daemon 组装的
+  `attributes` 是原子键（`con:`/`jing:`，见 `Kantele.Drunk.limit/1`）——
+  这里两套都认，避免调用方踩坑。
+
+  **门槛缺省按 0 计**（不拦），与 LPC「未实现该函数即返回 0」一致 ——
+  目前 `kungfu/condition/` 下只有 `ill_*` 五族实现了这两个函数
+  （`ill_dongshang`/`ill_fashao`/`ill_kesou` = 10，`ill_zhongshu` = 15，
+  `ill_shanghan` = 20），`poison`/`drunk`/`nishui`/`duyan` 都不拦睡觉。
+  """
+  def blocked_by_vitals(conditions, attributes, daemon) when is_map(conditions) do
+    attributes = attributes || %{}
+    qi = vital(attributes, "qi", :qi)
+    jing = vital(attributes, "jing", :jing)
+
+    Enum.find_value(conditions, fn {cnd, _info} ->
+      case daemon.(cnd) do
+        :error ->
+          nil
+
+        {:ok, mod} ->
+          if min_needed(mod, :min_qi_needed, attributes) > qi or
+               min_needed(mod, :min_jing_needed, attributes) > jing do
+            cnd
+          end
+      end
+    end)
+  end
+
+  def blocked_by_vitals(_conditions, _attributes, _daemon), do: nil
+
   # ---- internal ----
+
+  # 同时接受 "qi"（玩家 attributes）与 :qi（ConditionEvent 给 daemon 的 attributes）
+  defp vital(attributes, string_key, atom_key) do
+    case Map.get(attributes, string_key) do
+      n when is_integer(n) ->
+        n
+
+      _ ->
+        case Map.get(attributes, atom_key) do
+          n when is_integer(n) -> n
+          _ -> 0
+        end
+    end
+  end
+
+  defp min_needed(mod, fun, attributes) do
+    if function_exported?(mod, fun, 1) do
+      case apply(mod, fun, [attributes]) do
+        n when is_integer(n) -> n
+        _ -> 0
+      end
+    else
+      0
+    end
+  end
+
+  defp dispel_one(mod, info, ctx) do
+    if function_exported?(mod, :dispel_condition, 2) do
+      case mod.dispel_condition(info, ctx) do
+        result when result in [:ok, :skip] -> result
+        {:ok, msg} -> {:ok, msg}
+        {:fail, msg} -> {:fail, msg}
+        _ -> :skip
+      end
+    else
+      :ok
+    end
+  end
 
   defp remove_then_nil(map, key) do
     m = Map.delete(map, key)

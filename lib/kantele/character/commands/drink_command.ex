@@ -12,21 +12,33 @@ defmodule Kantele.Character.DrinkCommand do
 
   ## 与 LPC 的已知差异
 
-  - LPC `drink.c` 在 `liquid/type == "alcohol"` 时给玩家挂 `condition/drunk`
-    （醉度，见 `kungfu/condition/drunk.c`：过量昏厥、半量扣精等）。
-    本移植的 condition 子系统只注册了 `poison`/`fire_poison`/`nishui`/`duyan`，
-    `drunk` daemon 尚未移植 → 醉酒副作用暂缺，只保留「喝」本身。
-    登记见 `docs/data-world-comments-progress.zh-CN.md` §11。
   - LPC 的 `water` 摄入（`me->add("water", 30)`）与 `max_water_capacity()`
-    属饥饿/口渴子系统（未建），同样不实现。
+    属饥饿/口渴子系统（未建），不实现。
   - LPC 支持 `drink <液体> in <容器>` / `in all <包裹>` 的语法，
     本引擎的解析器只给单个 `item_name`，故只支持直接指定容器。
+
+  ## 醉酒（`condition/drunk`）
+
+  按 `cmds/std/drink.c` 原顺序，**最后一口不挂醉度**：
+
+      ob->add("liquid/remaining", -1);
+      message_vision(…);
+      me->add("water", 30);
+      ob->do_effect();
+      if (!ob->query("liquid/remaining")) { …「喝得一滴也不剩」…; return 1; }   // ← 提前返回
+      switch (ob->query("liquid/type")) { case "alcohol": apply_condition("drunk", …); }
+
+  即 `remaining` 归零的那一口走提前返回，**跳过** `switch` → 不累加醉度。
+  这是 LPC 源码的既有行为（对 1 口装的小瓶尤其明显），此处忠实保留。
+  醉度本身见 `Kantele.Drunk`（三档发作 + 过量昏厥）。
   """
 
   use Kalevala.Character.Command
 
   alias Kalevala.Verb
   alias Kantele.Character.CommandView
+  alias Kantele.Character.ConditionEvent
+  alias Kantele.Character.Conditions
   alias Kantele.Character.Records
   alias Kantele.Item.Effect
   alias Kantele.World.Item.Liquid
@@ -119,11 +131,31 @@ defmodule Kantele.Character.DrinkCommand do
         })
         |> prompt(CommandView, "prompt", %{})
       else
-        conn
+        # LPC 的 `switch` 在「喝空提前返回」之后，故最后一口不挂醉度（见 moduledoc）
+        apply_drunk(conn, liquid)
       end
 
     save(conn)
   end
+
+  # LPC: case "alcohol": apply_condition("drunk", query_condition("drunk") + drunk_apply)
+  defp apply_drunk(conn, %{type: "alcohol"} = liquid) do
+    apply = liquid.drunk_apply || 0
+
+    if apply > 0 do
+      current =
+        case Conditions.query_condition(%{conditions: get_session(conn, "conditions")}, "drunk") do
+          %{"duration" => d} when is_integer(d) -> d
+          _ -> 0
+        end
+
+      ConditionEvent.grant(conn, "drunk", %{"duration" => current + apply})
+    else
+      conn
+    end
+  end
+
+  defp apply_drunk(conn, _liquid), do: conn
 
   defp fighting?(character) do
     combat = character.meta.combat || %Kantele.Character.Combat{}

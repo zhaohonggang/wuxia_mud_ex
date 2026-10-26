@@ -19,6 +19,11 @@ defmodule Kantele.Combat.Skills.Performs.Force.Dispel do
   - 本引擎 exert 无目标参数，故以敌列表首个引用快照代理「他人」；无目标即走自身路；
   - 引擎未实现逐条件驱散抗性（LPC `dispel_condition`），`still_ill` 分支当前不可达，
     但按 `.c` 保留完整文案；
+  - ⚠️ **本文件是死代码**：未被任何注册表引用，真实运行为
+    `Kantele.Combat.Skills.Force.Dispel`（`skills/force_dispel.ex`）。后者已改为读
+    `session["conditions"]` 并逐条走 `Conditions.dispel/3`；本副本仍读
+    `character.meta.conditions`（全库无人写入的字段），仅供文案对齐，
+    **不要照抄它的 conditions 读写**；
   - 敌列表仅存引用快照，`target->is_fighting()` / `is_busy()` 无据可查，保守放行；
   - `tell_object(target, ...)` 无跨进程等价物，以房间广播替代；
   - `to_chinese(force)` 折算为映射 id 原样（引擎未维护内功 id→中文名 表）。
@@ -256,8 +261,14 @@ defmodule Kantele.Combat.Skills.Performs.Force.Dispel do
   #      if (conditions) { for (...) switch(target->dispel_condition(me, cnds[i]))
   #        { case 0: continue; case -1: still_ill = 1; continue; } <成功分支：return 1> }
   #      if (still_ill) { <失败分支> } else { <无异常分支> }
-  # 引擎以 `character.meta.conditions` 存异常，未实现逐条件驱散抗性，
-  # 故：无异常 → :no_anomaly；有异常 → 视为全部驱散成功 :cleared。
+  #
+  # ⚠️ 本文件是**死代码**（未被任何注册表引用；真实运行为
+  # `Kantele.Combat.Skills.Force.Dispel`，见 `skills/force_dispel.ex`），
+  # 仅作文案对齐保留。下面 `conditions/1` 读的 `character.meta.conditions`
+  # **全库无人写入** —— condition 框架把条件存 `session["conditions"]`
+  # （见 `Kantele.Character.ConditionEvent`）。真实实现已改读 session 并
+  # 走 `Conditions.dispel/3` 逐条问 daemon；此处若将来启用，必须先照它改，
+  # 否则「排除异常」会是空操作。
   defp dispel_outcome(conds) do
     if map_size(conds) == 0, do: :no_anomaly, else: :cleared
   end

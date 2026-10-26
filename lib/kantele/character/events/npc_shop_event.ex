@@ -336,8 +336,10 @@ defmodule Kantele.Character.NpcAskEvent do
     conn
   end
 
+  # 兼容 `(: fname :)` 与 `(: fname() :) / (: fname() : )` 两种 LPC 闭包语法，
+  # 统一按“未实现占位，静默不回应”处理，避免向玩家泄露源码形态。
   defp closure_literal?(text) do
-    Regex.match?(~r/^\(\s*:\s*[A-Za-z_][A-Za-z0-9_]*\s*:\s*\)$/, String.trim(text))
+    Regex.match?(~r/^\(\s*:\s*[A-Za-z_][A-Za-z0-9_]*(?:\s*\(\s*\))?\s*:\s*\)$/, String.trim(text))
   end
 
   # 脚本 map：`kind` 走库存型问询，其余走 Q6 数据驱动效果

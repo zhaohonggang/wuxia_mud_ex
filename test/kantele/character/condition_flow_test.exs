@@ -6,6 +6,7 @@ defmodule Kantele.Character.ConditionFlowTest do
   alias Kalevala.Character.Conn
   alias Kalevala.Event
   alias Kantele.Character.Combat
+  alias Kantele.Character.Conditions
   alias Kantele.Character.Events
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
@@ -143,5 +144,77 @@ defmodule Kantele.Character.ConditionFlowTest do
       _ -> []
     end)
     |> Enum.join("")
+  end
+
+  describe "Conditions.dispel/3（排除异常逐条驱散）" do
+    # 故意不导出 dispel_condition/2（LPC 里没实现 dispel() 的 condition）
+    defmodule NoDispel do
+      def marker, do: :ok
+    end
+
+    defmodule Rejecting do
+      def dispel_condition(_info, _ctx), do: {:fail, "驱不掉\n"}
+    end
+
+    defmodule Skipping do
+      def dispel_condition(_info, _ctx), do: :skip
+    end
+
+    test "未导出 dispel_condition/2 的 daemon 默认驱散（与 LPC 相反，见 moduledoc）" do
+      daemon = fn
+        "plain" -> {:ok, NoDispel}
+        _ -> :error
+      end
+
+      assert {nil, [{"plain", :ok}]} = Conditions.dispel(%{"plain" => %{}}, %{force: 1}, daemon)
+    end
+
+    test "{:fail, msg} 保留该条件" do
+      daemon = fn
+        "hard" -> {:ok, Rejecting}
+        _ -> :error
+      end
+
+      assert {%{"hard" => %{}}, [{"hard", {:fail, "驱不掉\n"}}]} =
+               Conditions.dispel(%{"hard" => %{}}, %{force: 1}, daemon)
+    end
+
+    test ":skip 保留条件但不算失败" do
+      daemon = fn
+        "skip" -> {:ok, Skipping}
+        _ -> :error
+      end
+
+      assert {%{"skip" => %{}}, [{"skip", :skip}]} =
+               Conditions.dispel(%{"skip" => %{}}, %{force: 1}, daemon)
+    end
+
+    test "daemon 解析不到的条件不擅自删" do
+      daemon = fn _ -> :error end
+      assert {%{"x" => %{}}, [{"x", :skip}]} = Conditions.dispel(%{"x" => %{}}, %{force: 1}, daemon)
+    end
+
+    test "部分成功：剩余只留失败的（结果按 key 序，与 map 迭代一致）" do
+      daemon = fn
+        "plain" -> {:ok, NoDispel}
+        "hard" -> {:ok, Rejecting}
+        _ -> :error
+      end
+
+      assert {%{"hard" => %{}}, results} =
+               Conditions.dispel(%{"plain" => %{}, "hard" => %{}}, %{force: 1}, daemon)
+
+      assert Enum.sort(results) == [{"hard", {:fail, "驱不掉\n"}}, {"plain", :ok}]
+    end
+
+    test "全部驱散时剩余返回 nil（不是空 map）" do
+      daemon = fn _ -> {:ok, NoDispel} end
+      assert {nil, _} = Conditions.dispel(%{"a" => %{}, "b" => %{}}, %{force: 1}, daemon)
+    end
+
+    test "非 map 输入安全返回空结果" do
+      assert {nil, []} = Conditions.dispel(nil, %{force: 1}, fn _ -> :error end)
+      assert {nil, []} = Conditions.dispel([], %{force: 1}, fn _ -> :error end)
+    end
   end
 end

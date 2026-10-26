@@ -2,6 +2,7 @@ defmodule Kantele.World.CloneFallbackTest do
   use ExUnit.Case, async: true
 
   alias Kantele.World.Loader
+  alias Elias
 
   # LPC 里有一层「全服共享对象」：`/clone/**`（clone/item、clone/weapon、
   # clone/fam…），共 1003 个 .c。它们**每个只有一份**，任何区的 NPC 都能引用。
@@ -93,6 +94,38 @@ defmodule Kantele.World.CloneFallbackTest do
 
       # 找一个引用了 clone_lib 物品的区：加载后该物品实例应存在于 world.items
       assert Enum.any?(world.items, &(&1.id == "clone_lib:#{short}"))
+    end
+  end
+
+  describe "R21: clone_lib 文件级括号平衡（wuji4 缺收尾 `}` 回归）" do
+    # 历史缺陷：items "wuji4" 块缺少收尾 `}`，其后四个块
+    # (global_longsword / global_potion / clone_tong_ren / adm_zixu) 被解析器
+    # 吞入 wuji4 内部（items.wuji4.items.* / items.wuji4.characters.*），
+    # 从而在顶层 items / characters 映射里消失。
+    # 修复：补 wuji4 收尾 `}` + 删除文件末尾多余的 `}`。
+
+    test "wuji4 之后的 2 个物品块出现在顶层 clone_lib items", %{world: world} do
+      assert item(world, "#{@clone}:global_longsword"), "global_longsword 应存在于顶层 items"
+      assert item(world, "#{@clone}:global_potion"), "global_potion 应存在于顶层 items"
+    end
+
+    test "wuji4 之后的 2 个 NPC 块出现在 clone_lib 解析结果顶层 characters", %{world: world} do
+      # clone_lib 是纯物品区，NPC 模板不进入 world.characters（只在被房间
+      # 引用时实例化）；这里直接解析 ucl 校验它们位于顶层 characters 映射，
+      # 且未被吞入 wuji4 内部（修复前的故障形态）。
+      parsed = File.read!("data/world/clone_lib.ucl") |> Elias.parse()
+      chars = Map.get(parsed, :characters, %{})
+      assert Map.has_key?(chars, :clone_tong_ren), "clone_tong_ren 应位于顶层 characters"
+      assert Map.has_key?(chars, :adm_zixu), "adm_zixu 应位于顶层 characters"
+
+      wuji4 = Map.get(Map.get(parsed, :items, %{}), :wuji4, %{})
+      refute Map.has_key?(wuji4, :characters), "clone_tong_ren/adm_zixu 不应嵌套进 wuji4"
+      refute Map.has_key?(wuji4, :items), "global_longsword/global_potion 不应嵌套进 wuji4"
+    end
+
+    test "wuji4 自身仍是干净的 book 物品", %{world: world} do
+      wuji4 = item(world, "#{@clone}:wuji4")
+      assert wuji4, "wuji4 应存在"
     end
   end
 end

@@ -262,8 +262,12 @@ defmodule Kantele.World.VetoEffectivenessTest do
     assert map_size(seen) > 0, "应记录到若干悬空引用"
 
     kinds = seen |> Map.keys() |> Enum.map(fn {_z, k, _r} -> k end) |> Enum.uniq() |> Enum.sort()
+    # 真实数据里 room_characters 仍有悬空（lingxiao 4 条），但 room_items 的悬空
+    # 是否存在取决于数据清洗进度——R21 修复（wuji4 括号泄漏）把被吞进 wuji4 的
+    # global_longsword / global_potion 等物品归位后，世界里的 room_items 悬空引用
+    # 可能清零，导致「真实数据必含 :item 悬空」的假设不再成立。:item 维度改由
+    # 下方 probe 显式守卫，避免「数据修好反而让测试挂」的脆弱依赖。
     assert :character in kinds, "room_characters 的悬空也应被记录"
-    assert :item in kinds, "room_items 的悬空也应被记录"
 
     # 值的形状是 {次数, 最后一个房间}，别直接 Enum.sum
     total_refs = seen |> Map.values() |> Enum.map(fn {c, _room} -> c end) |> Enum.sum()
@@ -319,15 +323,11 @@ defmodule Kantele.World.VetoEffectivenessTest do
     # 数字变大说明数据退化了（或者又漏了一个区）。
     assert total_refs <= 20, "悬空引用不该变多，当前 #{total_refs}（上限 20）"
 
-    # 头部现在只剩 clone_tong_ren/adm_zixu 两个跨区引用（静态分析不跨区，仍显示悬空；
-    # 运行时经 clone_lib 回退可解析）。其余 cheng/liang/liao/qi/mujiang 已补齐本区定义。
-    for id <- ~w(clone_tong_ren adm_zixu) do
-      assert Enum.any?(seen, fn
-               {{_z, :character, r}, _} -> String.ends_with?(r, "." <> id <> ".id")
-               _ -> false
-             end),
-             "#{id} 还应被记录在悬空里（若已补齐，请从这里移除并下调上面的上限）"
-    end
+    # R21（wuji4 括号泄漏修复）把被吞进 items.wuji4 的 clone_tong_ren / adm_zixu
+    # 归位到 clone_lib 顶层 characters，运行时经 clone_lib 回退可解析，因此**不再**算悬空；
+    # 这俩 id 已从「必须悬空」清单移除（若将来数据又把它们挪成本区定义，这里无需改动）。
+    # 其余 cheng/liang/liao/qi/mujiang 早已补齐本区定义，本就不在悬空清单里。
+
 
     Kantele.World.Loader.reset_unresolved_warnings()
   end

@@ -8,6 +8,18 @@ defmodule Kantele.Character.ConditionEvent do
 
   自毒接线：`daub_command` 一发 `poison/apply`（target "self"）→ 这里落到宿主，
   应用混合毒并开动心跳。
+
+  ## 出站通道（daemon → 玩家）
+
+  daemon 是纯函数、拿不到 conn。需要发声或触发状态变更时，往 `state` 上写：
+
+  - `state.condition_messages` — `[{:tell, text} | {:vision, text}]` 列表，
+    每跳由本模块 flush（`{:tell, _}` 只发本人；`{:vision, _}` 走
+    `publish_message/5` 房间广播，`{npc}` 由 VisionView 渲染）。
+  - `state.condition_unconcious` — `true` 时调
+    `Kantele.World.RoomActions.Break.unconcious/1`（对应 LPC `me->unconcious()`）。
+
+  首个使用者是 `Kantele.Drunk`（醉度三档发作 + 过量昏厥）。
   """
 
   use Kalevala.Character.Event
@@ -19,6 +31,7 @@ defmodule Kantele.Character.ConditionEvent do
   alias Kantele.Character.CommandView
   alias Kantele.Character.ConditionRegistry
   alias Kantele.Character.Conditions
+  alias Kantele.Character.Stats
   alias Kantele.Poison
 
   @tick_interval 1000
@@ -112,6 +125,12 @@ defmodule Kantele.Character.ConditionEvent do
           qi: vitals.qi,
           jingli: vitals.jingli,
           neili: vitals.neili,
+          # `drunk` 的 limit = (con + max_neili/50) * 2；回精回气要夹 max
+          # （LPC `receive_healing` 语义）。其余 daemon 用不到这些键，属纯增量。
+          con: query_con(character),
+          max_qi: vitals.max_qi,
+          max_jing: vitals.max_jing,
+          max_neili: vitals.max_neili,
           special_skills: Map.get(character.attributes, "special_skills") || %{}
         }
       }
@@ -124,8 +143,49 @@ defmodule Kantele.Character.ConditionEvent do
     |> put_character(%{character | meta: %{character.meta | vitals: vitals}})
     |> put_session_cond("conditions", state.conditions)
     |> put_session_cond("cond_applyer", state.cond_applyer)
+    |> flush_output(state)
     |> maybe_schedule_next()
   end
+
+  # daemon 拿不到 conn，故「本人提示 / 房间广播 / 昏厥」经 state 上的三个键
+  # 交给宿主落地：
+  #
+  #   state.condition_messages    [{:tell, text} | {:vision, text}]
+  #   state.condition_unconcious  true
+  #
+  # `{npc}` 占位由 VisionView 按接收者渲染（自己→「你」，他人→行动者名），
+  # 与 drink/wield 等命令的 vision 广播同一套。
+  defp flush_output(conn, state) do
+    conn
+    |> flush_messages(Map.get(state, :condition_messages) || [])
+    |> maybe_unconcious(Map.get(state, :condition_unconcious, false))
+  end
+
+  defp flush_messages(conn, []), do: conn
+
+  defp flush_messages(conn, messages) do
+    Enum.reduce(messages, conn, fn
+      {:tell, text}, conn ->
+        render(conn, CommandView, "text", %{text: text})
+
+      {:vision, text}, conn ->
+        publish_message(
+          conn,
+          "rooms:#{conn.character.room_id}",
+          text,
+          [type: "vision"],
+          &publish_error/2
+        )
+    end)
+  end
+
+  defp maybe_unconcious(conn, true), do: Kantele.World.RoomActions.Break.unconcious(conn)
+  defp maybe_unconcious(conn, _), do: conn
+
+  defp publish_error(conn, _error), do: conn
+
+  defp query_con(%{meta: %{stats: %Stats{} = stats}}), do: Stats.query_con(stats)
+  defp query_con(_), do: 0
 
   defp update_lifecycle(state) do
     daemon = &ConditionRegistry.daemon/1

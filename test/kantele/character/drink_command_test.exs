@@ -323,4 +323,48 @@ defmodule Kantele.Character.DrinkCommandTest do
       assert length(updated.inventory) == 1
     end
   end
+
+  describe "drink 醉酒（LPC condition/drunk）" do
+    # LPC cmds/std/drink.c:
+    #   case "alcohol": apply_condition("drunk", query_condition("drunk") + drunk_apply)
+    test "喝米酒（type=alcohol）累加 drunk_apply 到醉度" do
+      # @wine_id: remaining 2, drunk_apply 3 -> 喝一口剩 1（>0）→ 挂 3 点醉度
+      p = player_with_instance(@wine_id, "bag-d1")
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      assert conn.session["conditions"]["drunk"]["duration"] == 3
+    end
+
+    test "已醉时再喝：醉度累加而不是覆盖" do
+      p = player_with_instance(@wine_id, "bag-d2")
+      conn = build_conn(p, %{"conditions" => %{"drunk" => %{"duration" => 10}}})
+
+      conn = DrinkCommand.run(conn, %{"item_name" => "酒袋"})
+
+      assert conn.session["conditions"]["drunk"]["duration"] == 13
+    end
+
+    test "LPC 怪癖：喝空的那一口不挂醉度（switch 在提前返回之后）" do
+      # 剩 1 口：喝完 remaining=0 → LPC 走 `return 1` 提前返回，跳过 switch
+      p = player_with_instance(@wine_id, "bag-d3", %{"liquid_remaining" => 1})
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      assert output_text(conn) =~ "喝得一滴也不剩"
+      assert conn.session["conditions"] == nil
+    end
+
+    test "非酒类（清水）不挂醉度" do
+      p = player_with_instance(@noname_id, "bag-d4", %{"liquid_remaining" => 3})
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "水壶"})
+
+      assert conn.session["conditions"] == nil
+    end
+
+    test "drunk_apply 为 0 的酒不挂空醉度" do
+      p = player_with_instance(@wine_id, "bag-d5", %{"liquid_drunk_apply" => 0})
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      assert conn.session["conditions"] == nil
+    end
+  end
 end
