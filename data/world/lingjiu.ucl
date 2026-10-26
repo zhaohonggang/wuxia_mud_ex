@@ -1334,6 +1334,11 @@ item_desc = {
         weight = 1000
         unit = "碗"
         max_liquid = 10
+        liquid = {
+            name = "酸梅汤"
+            remaining = 8
+            type = "water"
+        }
       }
     }
 

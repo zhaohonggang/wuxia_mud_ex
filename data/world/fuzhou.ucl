@@ -1009,6 +1009,9 @@ item_desc = {
   x = -9
   y = 4
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "wuyishan2" {
@@ -1060,6 +1063,9 @@ item_desc = {
   x = -10
   y = 4
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "wuyishan5" {

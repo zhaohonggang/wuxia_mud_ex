@@ -213,6 +213,9 @@ zones "jingzhou" {
   x = -1
   y = -1
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chaliao" {
@@ -2780,6 +2783,12 @@ chats = [
         value = 100
         weight = 700
         unit = "个"
+        liquid = {
+            type = "alcohol"
+            name = "米酒"
+            remaining = 15
+            drunk_apply = 3
+        }
       }
     }
 
@@ -3247,6 +3256,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 20
+        liquid = {
+            type = "alcohol"
+            name = "花雕酒"
+            remaining = 20
+            drunk_apply = 6
+        }
       }
     }
 

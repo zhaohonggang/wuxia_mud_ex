@@ -107,6 +107,9 @@ zones "huanggong" {
   x = -2
   y = 0
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "houyuan" {
@@ -130,6 +133,9 @@ zones "huanggong" {
     reach = "do_reach"
     tiao = "do_jump"
   }
+  flags = [
+    "water"
+  ]
     }
   room_exits "inwell" {
     room_id = rooms.inwell.id
@@ -434,6 +440,12 @@ item_desc = {
         weight = 700
         unit = "坛"
         max_liquid = 15
+        liquid = {
+            type = "alcohol"
+            name = "女儿红酒"
+            remaining = 3
+            drunk_supply = 6
+        }
       }
     }
 

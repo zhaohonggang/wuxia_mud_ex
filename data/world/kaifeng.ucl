@@ -4935,6 +4935,12 @@ chats = [
         value = 100
         weight = 500000
         unit = "只"
+        liquid = {
+            type = "alcohol"
+            name = "洗澡水"
+            remaining = 15
+            drunk_apply = 3
+        }
       }
     }
 
@@ -4976,6 +4982,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 
@@ -4996,6 +5008,12 @@ chats = [
         weight = 5000
         unit = "只"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 
@@ -5016,6 +5034,12 @@ chats = [
         weight = 5000
         unit = "只"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 
@@ -5036,6 +5060,12 @@ chats = [
         weight = 5000
         unit = "只"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 
@@ -5297,6 +5327,12 @@ chats = [
         unit = "柄"
         material = "steel"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 
@@ -5320,6 +5356,12 @@ chats = [
         unit = "柄"
         material = "steel"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 
@@ -5343,6 +5385,12 @@ chats = [
         unit = "根"
         material = "bamboo"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲫鱼汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 

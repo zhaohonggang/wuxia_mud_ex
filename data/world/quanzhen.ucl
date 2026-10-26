@@ -245,6 +245,9 @@ item_desc = {
   x = 7
   y = -3
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -3975,6 +3978,11 @@ chats = [
         weight = 400
         unit = "个"
         max_liquid = 15
+        liquid = {
+            type = "water"
+            name = "水"
+            remaining = 10
+        }
       }
     }
 

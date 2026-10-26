@@ -306,6 +306,9 @@ zones "xiangyang" {
   x = 1
   y = 4
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chaguan" {
@@ -3956,6 +3959,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "野菜汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 

@@ -425,6 +425,9 @@ item_desc = {
   actions = {
     zhuo = "do_zhuo"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "gudi5" {
@@ -4117,6 +4120,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 10
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 10
+            drunk_supply = 10
+        }
       }
     }
 
@@ -4376,6 +4385,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 10
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 10
+            drunk_supply = 10
+        }
       }
     }
 

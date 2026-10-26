@@ -144,6 +144,9 @@ zones "guanwai" {
   x = -6
   y = 7
   z = -4
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -2414,6 +2417,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2436,6 +2445,12 @@ chats = [
         unit = "块"
         food = 40
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2456,6 +2471,12 @@ chats = [
         weight = 700
         unit = "碗"
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2477,6 +2498,12 @@ chats = [
         unit = "张"
         material = "paper"
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2499,6 +2526,12 @@ chats = [
         material = "cloth"
         armor = 10
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2674,6 +2707,12 @@ chats = [
         unit = "把"
         material = "wood"
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2758,6 +2797,12 @@ chats = [
         unit = "柄"
         material = "iron"
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 
@@ -2778,6 +2823,12 @@ chats = [
         material = "cloth"
         armor = 10
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "热粥"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 

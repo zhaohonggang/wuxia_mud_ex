@@ -134,6 +134,9 @@ zones "chengdu" {
   x = 2
   y = 1
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "eastroad1" {

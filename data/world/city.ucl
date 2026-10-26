@@ -158,6 +158,9 @@ item_desc = {
   x = -1
   y = -2
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chaguan" {
@@ -6003,6 +6006,13 @@ chats = [
         weight = 700
         unit = "杯"
         max_liquid = 5
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 5
+            supply = 10
+            drunk_apply = 3
+        }
       }
     }
 
@@ -6023,6 +6033,13 @@ chats = [
         weight = 700
         unit = "杯"
         max_liquid = 5
+        liquid = {
+            type = "alcohol"
+            name = "米酒"
+            remaining = 5
+            supply = 15
+            drunk_apply = 3
+        }
       }
     }
 

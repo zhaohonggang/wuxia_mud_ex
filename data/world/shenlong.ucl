@@ -44,6 +44,9 @@ zones "shenlong" {
   x = 2
   y = 0
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -1116,6 +1119,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 15
+        liquid = {
+            type = "alcohol"
+            name = "米酒"
+            remaining = 15
+            drunk_supply = 6
+        }
       }
     }
 

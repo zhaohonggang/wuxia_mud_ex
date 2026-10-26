@@ -1425,6 +1425,7 @@ defmodule Kantele.World.Loader do
       owner_id: Map.get(meta, :owner_id),
       female_only: to_bool(Map.get(meta, :female_only)),
       max_liquid: Map.get(meta, :max_liquid),
+      liquid: parse_liquid(Map.get(meta, :liquid)),
       can_make: Map.get(meta, :can_make),
       not_make: Map.get(meta, :not_make),
       power_point: Map.get(meta, :power_point),
@@ -1439,6 +1440,54 @@ defmodule Kantele.World.Loader do
   defp parse_medicine(nil), do: nil
   defp parse_medicine(medicine) when is_map(medicine), do: medicine
   defp parse_medicine(_), do: nil
+
+  # LPC `set("liquid", ([ "type":"alcohol" "name":"米酒"
+  #                       "remaining":15 "drunk_apply":3 ]))`
+  # → `%{type: "alcohol", name: "米酒", remaining: 15, drunk_apply: 3}`。
+  #
+  # elias 把 UCL 的 `{ k = v }` 表解析成 **atom 键** map，数值字段按整型给出，
+  # 故这里只需把数值键归一（字符串 "15" 也收），其余原样保留。
+  #
+  # 缺 `remaining` / 非 map → nil：`drink_command` 退回原有
+  # `Effect.consume`（药水）路径，坏数据不拖垮加载（P7）。
+  defp parse_liquid(nil), do: nil
+
+  defp parse_liquid(liquid) when is_map(liquid) do
+    case to_int(Map.get(liquid, :remaining)) do
+      nil ->
+        nil
+
+      remaining ->
+        liquid
+        |> Map.put(:remaining, remaining)
+        |> put_int_if_present(:max, Map.get(liquid, :max))
+        |> put_int_if_present(:drunk_apply, Map.get(liquid, :drunk_apply))
+        |> put_int_if_present(:drunk_supply, Map.get(liquid, :drunk_supply))
+        |> put_int_if_present(:supply, Map.get(liquid, :supply))
+    end
+  end
+
+  defp parse_liquid(_), do: nil
+
+  defp put_int_if_present(map, _key, nil), do: map
+
+  defp put_int_if_present(map, key, value) do
+    case to_int(value) do
+      nil -> map
+      int -> Map.put(map, key, int)
+    end
+  end
+
+  defp to_int(value) when is_integer(value), do: value
+
+  defp to_int(value) when is_binary(value) do
+    case Integer.parse(String.trim(value)) do
+      {int, ""} -> int
+      _ -> nil
+    end
+  end
+
+  defp to_int(_), do: nil
 
   # 物品侧 add_action 动词表（第十二批）：`[{ verb = "play" handler = "play_qin" }]`。
   # elias 把 UCL 的 `{ k = v }` 表解析成 atom 键 map；逐条校验 verb/handler

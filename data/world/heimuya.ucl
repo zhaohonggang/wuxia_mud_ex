@@ -2884,6 +2884,12 @@ item_desc = {
         weight = 30
         unit = "碗"
         max_liquid = 20
+        liquid = {
+            type = "water"
+            name = "香茶"
+            remaining = 20
+            drunk_supply = 40
+        }
       }
     }
 

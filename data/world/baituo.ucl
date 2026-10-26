@@ -289,6 +289,9 @@ direction = "in"
   x = 1
   y = 7
   z = 3
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -632,6 +635,9 @@ behavior_config = {
   x = 1
   y = -2
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "jiudian" {
@@ -1156,6 +1162,9 @@ direction = "west"
   x = 0
   y = 0
   z = 2
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "zhailuo" {
@@ -2130,6 +2139,12 @@ chats = [
         weight = 50
         unit = "只"
         max_liquid = 6
+        liquid = {
+            type = "water"
+            name = "水"
+            remaining = 0
+            drunk_apply = 0
+        }
       }
     }
 
@@ -2269,6 +2284,10 @@ chats = [
         weight = 50
         unit = "个"
         max_liquid = 5
+        liquid = {
+            name = "豆浆"
+            remaining = 8
+        }
       }
     }
 

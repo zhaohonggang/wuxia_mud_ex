@@ -1590,6 +1590,9 @@ item_desc = {
   actions = {
     dive = "do_dive"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "water" {
@@ -2797,6 +2800,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "雪鹤汤"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
 

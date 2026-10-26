@@ -538,4 +538,87 @@ defmodule Kantele.World.LoaderMetaTest do
     assert item.meta.aliases == ["baiyunxiudan wan", "wan"]
     assert item.verbs == []
   end
+
+  # ---- P3：容器液体 `liquid`（LPC `set("liquid", ([...]))`） ----
+
+  test "parse_item：liquid 映射解析，数值键归一为整数" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(
+        zone,
+        "jiudai",
+        %{
+          name: "酒袋",
+          description: "一个用来装米酒的大酒袋。",
+          verbs: ["get"],
+          meta: %{
+            max_liquid: 15,
+            liquid: %{type: "alcohol", name: "米酒", remaining: 15, drunk_apply: 3}
+          }
+        },
+        %{}
+      )
+
+    assert item.meta.max_liquid == 15
+    assert item.meta.liquid == %{type: "alcohol", name: "米酒", remaining: 15, drunk_apply: 3}
+  end
+
+  test "parse_item：liquid 的字符串数值被接受（elias 把 true/数字写成字符串的兜底）" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(
+        zone,
+        "tea",
+        %{
+          name: "盖碗茶",
+          description: "一碗茶。",
+          verbs: [],
+          meta: %{liquid: %{type: "tea", name: "茶水", remaining: "4", supply: "10"}}
+        },
+        %{}
+      )
+
+    assert item.meta.liquid.remaining == 4
+    assert item.meta.liquid.supply == 10
+  end
+
+  test "parse_item：liquid 缺 remaining 或非 map 时归一为 nil（不拖垮加载）" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, missing} =
+      Kantele.World.Loader.parse_item(
+        zone,
+        "a",
+        %{name: "A", description: "a", verbs: [], meta: %{liquid: %{type: "water"}}},
+        %{}
+      )
+
+    assert missing.meta.liquid == nil
+
+    {_key, bad} =
+      Kantele.World.Loader.parse_item(
+        zone,
+        "b",
+        %{name: "B", description: "b", verbs: [], meta: %{liquid: "not-a-map"}},
+        %{}
+      )
+
+    assert bad.meta.liquid == nil
+  end
+
+  test "parse_item：无 liquid 的物品该字段为 nil" do
+    zone = %Kantele.World.Zone{id: "test"}
+
+    {_key, item} =
+      Kantele.World.Loader.parse_item(
+        zone,
+        "jian",
+        %{name: "剑", description: "一柄剑", verbs: [], meta: %{damage: 10}},
+        %{}
+      )
+
+    assert item.meta.liquid == nil
+  end
 end

@@ -11185,6 +11185,12 @@ chats = [
         weight = 50
         unit = "个"
         max_liquid = 4
+        liquid = {
+            type = "tea"
+            name = "茶水"
+            remaining = 4
+            drunk_supply = 0
+        }
       }
     }
 
@@ -11205,6 +11211,12 @@ chats = [
         weight = 50
         unit = "个"
         max_liquid = 4
+        liquid = {
+            type = "tea"
+            name = "茶水"
+            remaining = 4
+            drunk_supply = 0
+        }
       }
     }
 
@@ -11225,6 +11237,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 4
+        liquid = {
+            type = "tea"
+            name = "茶水"
+            remaining = 4
+            drunk_supply = 0
+        }
       }
     }
 
@@ -11245,6 +11263,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 4
+        liquid = {
+            type = "tea"
+            name = "茶水"
+            remaining = 4
+            drunk_supply = 0
+        }
       }
     }
 

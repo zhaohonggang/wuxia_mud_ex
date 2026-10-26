@@ -315,6 +315,9 @@ direction = "west"
   x = -2
   y = -1
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "luzhou" {
@@ -1112,6 +1115,9 @@ item_desc = {
   x = -3
   y = 5
   z = 2
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "wuchang2" {
@@ -1453,6 +1459,9 @@ behavior_config = {
   x = -2
   y = 5
   z = 2
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "xxroad6" {
@@ -1514,6 +1523,9 @@ behavior_config = {
   x = 0
   y = 0
   z = 2
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "yueerquan" {
@@ -2289,6 +2301,12 @@ chats = [
         weight = 700
         unit = "只"
         max_liquid = 15
+        liquid = {
+            type = "alcohol"
+            name = "马奶酒"
+            remaining = 15
+            drunk_supply = 6
+        }
       }
     }
 
@@ -2309,6 +2327,11 @@ chats = [
         weight = 400
         unit = "个"
         max_liquid = 30
+        liquid = {
+            type = "water"
+            name = "甘泉水"
+            remaining = 40
+        }
       }
     }
 
@@ -2539,6 +2562,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 20
+        liquid = {
+            type = "alcohol"
+            name = "花雕酒"
+            remaining = 20
+            drunk_apply = 6
+        }
       }
     }
 

@@ -975,6 +975,9 @@ item_desc = {
   x = -1
   y = 3
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -2003,7 +2006,8 @@ item_desc = {
   y = 3
   z = 0
   flags = [
-    "startroom"
+    "startroom",
+    "water"
   ]
     }
 
@@ -2146,6 +2150,9 @@ item_desc = {
   x = -1
   y = 6
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "hsyuan4" {
@@ -6562,6 +6569,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 10
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 10
+            drunk_supply = 10
+        }
       }
     }
 
@@ -6930,6 +6943,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 10
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 10
+            drunk_supply = 10
+        }
       }
     }
 
@@ -7018,6 +7037,12 @@ chats = [
         weight = 50
         unit = "碗"
         max_liquid = 8
+        liquid = {
+            type = "water"
+            name = "酸菜粉丝汤"
+            remaining = 12
+            drunk_supply = 40
+        }
       }
     }
 

@@ -11,6 +11,9 @@ zones "taishan" {
   x = -1
   y = -8
   z = -9
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "baihe" {

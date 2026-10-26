@@ -255,6 +255,9 @@ item_desc = {
     jump = "do_jump"
     tiao = "do_jump"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "feicui1" {
@@ -580,6 +583,9 @@ item_desc = {
   x = 1
   y = 0
   z = 1
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "lake1" {

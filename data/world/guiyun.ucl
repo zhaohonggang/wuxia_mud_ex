@@ -14,6 +14,9 @@ zones "guiyun" {
   actions = {
     serve = "do_serve"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {

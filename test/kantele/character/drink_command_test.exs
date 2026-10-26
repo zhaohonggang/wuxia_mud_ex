@@ -13,6 +13,9 @@ defmodule Kantele.Character.DrinkCommandTest do
 
   @potion_id "test:potion"
   @nondrinkable_id "test:water"
+  @wine_id "test:jiudai"
+  @empty_id "test:emptybag"
+  @noname_id "test:nonamebag"
 
   setup_all do
     Items.put(@potion_id, %Item{
@@ -29,6 +32,39 @@ defmodule Kantele.Character.DrinkCommandTest do
       verbs: [],
       callback_module: Kantele.World.Item,
       meta: %{}
+    })
+
+    # 容器液体（P3）：LPC `set("liquid", ([...]))`，喝的是容器余量而不是药效。
+    # 注意容器路径**不看 verbs** —— LPC `drink.c` 只要求 `mapp(ob->query("liquid"))`。
+    Items.put(@wine_id, %Item{
+      id: @wine_id,
+      name: "酒袋",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Kantele.World.Item.Meta{
+        max_liquid: 15,
+        liquid: %{type: "alcohol", name: "米酒", remaining: 2, drunk_apply: 3}
+      }
+    })
+
+    Items.put(@empty_id, %Item{
+      id: @empty_id,
+      name: "空酒袋",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Kantele.World.Item.Meta{
+        max_liquid: 15,
+        liquid: %{type: "alcohol", name: "米酒", remaining: 0}
+      }
+    })
+
+    # 没有液体名的容器（LPC 空容器分支「是空的」）
+    Items.put(@noname_id, %Item{
+      id: @noname_id,
+      name: "水壶",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %Kantele.World.Item.Meta{max_liquid: 5, liquid: %{type: "water", remaining: 0}}
     })
 
     :ok
@@ -169,6 +205,17 @@ defmodule Kantele.Character.DrinkCommandTest do
     }
   end
 
+  defp player_with_instance(item_id, instance_id, instance_meta \\ %{}) do
+    instance = %Kalevala.World.Item.Instance{
+      id: instance_id,
+      item_id: item_id,
+      created_at: DateTime.utc_now(),
+      meta: instance_meta
+    }
+
+    %{player() | inventory: [instance]}
+  end
+
   defp output_text(conn) do
     conn.output
     |> Enum.flat_map(fn
@@ -214,6 +261,66 @@ defmodule Kantele.Character.DrinkCommandTest do
       text = output_text(conn)
 
       assert text =~ "可没法往嘴里灌"
+    end
+  end
+
+  # ---- P3：容器液体（liquid / max_liquid 消费端，LPC cmds/std/drink.c） ----
+
+  describe "drink 容器液体" do
+    test "喝一口：余量减一，容器留在背包里（不消耗物品）" do
+      p = player_with_instance(@wine_id, "bag-1")
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      updated = conn.private.update_character || conn.character
+      assert [instance] = updated.inventory
+      assert instance.meta["liquid_remaining"] == 1
+      # 没喝完 → 不出现「喝得一滴也不剩」
+      refute output_text(conn) =~ "一滴也不剩"
+    end
+
+    test "喝最后一口：余量归零并提示喝完" do
+      p = player_with_instance(@wine_id, "bag-2", %{"liquid_remaining" => 1})
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      updated = conn.private.update_character || conn.character
+      assert [instance] = updated.inventory
+      assert instance.meta["liquid_remaining"] == 0
+      assert output_text(conn) =~ "你已经将酒袋里的米酒喝得一滴也不剩了"
+    end
+
+    test "实例余量优先于定义（定义 2 口，实例只剩 3 → 喝到 2）" do
+      p = player_with_instance(@wine_id, "bag-3", %{"liquid_remaining" => 3})
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      updated = conn.private.update_character || conn.character
+      assert hd(updated.inventory).meta["liquid_remaining"] == 2
+    end
+
+    test "空容器：提示「已经被喝得一滴也不剩了」" do
+      p = player_with_instance(@empty_id, "bag-4")
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "空酒袋"})
+
+      assert output_text(conn) =~ "空酒袋里的米酒已经被喝得一滴也不剩了"
+      # 余量不动
+      updated = conn.private.update_character || conn.character
+      assert hd(updated.inventory).meta["liquid_remaining"] in [nil, 0]
+    end
+
+    test "空容器且无液体名：提示「是空的」" do
+      p = player_with_instance(@noname_id, "bag-5")
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "水壶"})
+
+      assert output_text(conn) =~ "水壶是空的"
+    end
+
+    test "容器优先于药效路径（同一件物品有 liquid 就不走 Effect.consume）" do
+      p = player_with_instance(@wine_id, "bag-6")
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      # 药水路径会移除实例并输出「你仰头喝下」
+      refute output_text(conn) =~ "你仰头喝下"
+      updated = conn.private.update_character || conn.character
+      assert length(updated.inventory) == 1
     end
   end
 end

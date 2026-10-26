@@ -39,6 +39,9 @@ zones "taohua" {
   actions = {
     serve = "do_serve"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -1145,6 +1148,11 @@ item_desc = {
         weight = 1000
         unit = "杯"
         max_liquid = 10
+        liquid = {
+            name = "醉仙茶"
+            remaining = 8
+            type = "water"
+        }
       }
     }
 

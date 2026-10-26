@@ -100,6 +100,9 @@ zones "qingcheng" {
   x = 3
   y = 2
   z = 5
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "maguchi" {
@@ -391,6 +394,9 @@ item_desc = {
   x = 1
   y = 2
   z = 5
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "yuanyangjing" {

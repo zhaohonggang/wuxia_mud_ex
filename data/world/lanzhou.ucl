@@ -834,6 +834,9 @@ direction = "west"
   x = -1
   y = 2
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "xiaochidian" {

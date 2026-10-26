@@ -216,6 +216,9 @@ zones "xiaoyao" {
   actions = {
     order = "do_order"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "shantang" {
@@ -645,6 +648,11 @@ zones "xiaoyao" {
         weight = 400
         unit = "个"
         max_liquid = 60
+        liquid = {
+            type = "water"
+            name = "水"
+            remaining = 60
+        }
       }
     }
 

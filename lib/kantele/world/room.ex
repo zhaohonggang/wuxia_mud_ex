@@ -317,7 +317,11 @@ defmodule Kantele.World.Room do
             "short" => Map.get(data, :name, room_id),
             "sleep_room" => "sleep_room" in flags,
             "no_sleep_room" => "no_sleep_room" in flags,
-            "hotel" => "hotel" in flags
+            "hotel" => "hotel" in flags,
+            # LPC `set("resource/water", 1)`：可取水/灌水的地点（`fill` 命令的
+            # 前置条件，对应 `cmds/std/fill.c` 的 `environment(me)->query("resource/water")`）。
+            # 与 sleep_room/hotel 同路：房间 flags 成员判定 → attrs 布尔。
+            "water" => "water" in flags
           }
         }
 

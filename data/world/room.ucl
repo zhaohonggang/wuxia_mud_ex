@@ -295,7 +295,8 @@ zones "room" {
   y = 0
   z = 5
   flags = [
-    "no_sleep_room"
+    "no_sleep_room",
+    "water"
   ]
     }
 
@@ -907,5 +908,11 @@ zones "room" {
         weight = 50
         unit = "只"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "菜汤"
+            remaining = 6
+            drunk_supply = 30
+        }
       }
     }

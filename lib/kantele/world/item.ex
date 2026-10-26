@@ -229,6 +229,9 @@ defmodule Kantele.World.Item.Meta do
   - `unit` 量词（如 "个"、"本"，用于文案展示）
   - `material` 材质（如 "silk"、"bone"）
   - `food` 饱食度供给（对应 LPC food_supply；饥饿系统消费端属 O4）
+  - `liquid` 容器液体初始状态 map（`%{type: "alcohol", name: "米酒", remaining: 15, drunk_apply: 3}`）；
+    运行时余量在**实例** `meta["liquid_remaining"]`，消费端是 `drink_command.ex`
+  - `max_liquid` 容器容量上限（整数，LPC `set("max_liquid", N)`）
   - `medicine` 药效 map（原样透传，如 `%{qi: 50, stats: %{str: 1}}`；消费端见 A7）
   - `book` 秘籍五元组 `%Meta.Book{}`（消费端研习命令属 b 期）
   - `flag` 武器类型位掩码（LPC weapon.h：ONE_HANDED=0x1, SECONDARY=0x2, TWO_HANDED=0x4；缺省 0x1 单手）
@@ -304,6 +307,19 @@ defmodule Kantele.World.Item.Meta do
     # 暂无消费端（Q3 ❌），字段先加（默认 nil）、loader 只读取，不产生行为变化（P7）。
     # 待消费端（倒/喝命令）接线后再生效；由 scripts/backfill_item_max_liquid.py 回填。
     {:max_liquid, nil},
+
+    # LPC `set("liquid", ([ "type": "alcohol", "name": "米酒",
+    #                       "remaining": 15, "drunk_apply": 3 ]))`：
+    # 容器内液体的**初始**状态。`remaining` 是当前存量（创建时恒等于
+    # `max_liquid`），`type` 决定饮用副作用（"alcohol" → 醉度），
+    # `name` 是液体显示名（「米酒」「茶水」）。
+    #
+    # 转换器从未输出该 mapping（源 82 处 / UCL 0 处），由
+    # `scripts/backfill_item_liquid.py` 回填。**运行时剩余量不写在这里** ——
+    # 物品定义是全局共享的，喝一口不能改到所有玩家；实际余量记在
+    # `%Kalevala.World.Item.Instance{}.meta["liquid_remaining"]`（每实例独立）。
+    # 消费端：`drink_command.ex` 的容器路径（对应 LPC `cmds/std/drink.c`）。
+    :liquid,
 
     # LPC 打造系统字段（转换器未输出，全库丢失）：
     # - can_make / not_make：可/不可打造的装备类型，字符串列表（"all"/"甲" 或列表）

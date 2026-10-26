@@ -762,6 +762,9 @@ valid_leave = [
   x = 4
   y = 6
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "qingxinquan" {

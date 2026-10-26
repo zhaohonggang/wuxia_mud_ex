@@ -1177,6 +1177,9 @@ item_desc = {
 item_desc = {
  jing = "井水清澈见底，井底部有一些豆状小颗粒叠起的小堆。"
 }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "longjing" {
@@ -2111,6 +2114,9 @@ item_desc = {
   x = -6
   y = -5
   z = 2
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "shuiledong" {

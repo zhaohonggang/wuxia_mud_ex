@@ -295,6 +295,9 @@ direction = ~
   actions = {
     serve = "do_serve"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -1946,6 +1949,9 @@ item_desc = {
   actions = {
     jump = "do_jump"
   }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "yunuci" {
@@ -2039,6 +2045,9 @@ item_desc = {
 item_desc = {
  jing = "井中水色碧透，掬手可饮。"
 }
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "zhenyue" {
@@ -2823,6 +2832,12 @@ item_desc = {
         weight = 50
         unit = "碗"
         max_liquid = 4
+        liquid = {
+            type = "water"
+            name = "鲜菇汤"
+            remaining = 6
+            drunk_supply = 25
+        }
       }
     }
 

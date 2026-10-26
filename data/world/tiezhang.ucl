@@ -2102,6 +2102,12 @@ chats = [
         weight = 700
         unit = "个"
         max_liquid = 10
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 10
+            drunk_supply = 10
+        }
       }
     }
 

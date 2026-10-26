@@ -183,6 +183,9 @@ zones "suzhou" {
   x = 1
   y = -3
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chaguan" {
@@ -2259,6 +2262,12 @@ chats = [
         value = 150
         weight = 50
         unit = "碗"
+        liquid = {
+            type = "water"
+            name = "荷叶冬笋汤"
+            remaining = 12
+            drunk_supply = 20
+        }
       }
     }
 

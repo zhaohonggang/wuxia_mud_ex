@@ -119,6 +119,9 @@ zones "yanziwu" {
   x = 0
   y = 3
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -1583,6 +1586,11 @@ chats = [
         weight = 1000
         unit = "杯"
         max_liquid = 10
+        liquid = {
+            name = "碧螺春"
+            remaining = 8
+            type = "water"
+        }
       }
     }
 

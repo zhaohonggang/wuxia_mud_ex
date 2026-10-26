@@ -169,7 +169,7 @@ defmodule Kantele.Character.Records do
           skills: meta.stats.skills,
           mapped: meta.stats.mapped,
           performs: MapSet.to_list(meta.stats.performs),
-          inventory: Enum.map(character.inventory, &%{item_id: &1.item_id}),
+          inventory: Enum.map(character.inventory, &serialize_inventory_item/1),
           equipment: serialized_equipment(meta.combat.equipped),
           nickname: meta.nickname,
           title: meta.title || "",
@@ -401,6 +401,15 @@ defmodule Kantele.Character.Records do
     map |> Enum.reject(fn {_k, v} -> is_nil(v) end) |> Map.new()
   end
 
+  # 背包项：只存 `item_id` + 容器液体余量（`Liquid.serialize/1`）。
+  #
+  # **不**存 `instance.meta` 全量 —— 秘籍的随机标题/技能按 LPC
+  # 「驱动重启后重跑 `create()`」的语义每次登录重掷（见 restore_inventory/2 注释），
+  # 一旦被存档固化就再也不会变。液体余量不同：LPC 里它是对象状态，跨登录要保留。
+  defp serialize_inventory_item(instance) do
+    Map.merge(%{item_id: instance.item_id}, Kantele.World.Item.Liquid.serialize(instance))
+  end
+
   # 存档里有背包记录则按 item_id 重建实例；空记录保留默认新手物品
   defp restore_inventory(default_inventory, []) do
     default_inventory
@@ -421,7 +430,9 @@ defmodule Kantele.Character.Records do
         meta: %{}
       }
 
-      Kantele.World.Item.materialize_book(instance)
+      instance
+      |> Kantele.World.Item.Liquid.restore(entry)
+      |> Kantele.World.Item.materialize_book()
     end)
   end
 

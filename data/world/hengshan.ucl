@@ -266,6 +266,9 @@ zones "hengshan" {
   x = 1
   y = 0
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "kutianjing" {

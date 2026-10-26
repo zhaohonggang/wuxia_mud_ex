@@ -1717,5 +1717,11 @@ chats = [
         weight = 700
         unit = "杯"
         max_liquid = 5
+        liquid = {
+            type = "water"
+            name = "花茶"
+            remaining = 5
+            drunk_apply = 5
+        }
       }
     }

@@ -281,6 +281,9 @@ item_desc = {
   x = 1
   y = 1
   z = 0
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "chufang" {
@@ -700,6 +703,9 @@ item_desc = {
   x = -2
   y = 2
   z = 2
+  flags = [
+    "water"
+  ]
     }
 
   room_exits "shenghu" {
@@ -1349,6 +1355,12 @@ item_desc = {
         weight = 200
         unit = "个"
         max_liquid = 10
+        liquid = {
+            type = "suyou cha"
+            name = "酥油茶"
+            remaining = 10
+            drunk_supply = 20
+        }
       }
     }
 

@@ -1371,5 +1371,11 @@ item_desc = {
         value = 10
         weight = 50
         unit = "碗"
+        liquid = {
+            type = "water"
+            name = "清水"
+            remaining = 6
+            drunk_supply = 20
+        }
       }
     }
