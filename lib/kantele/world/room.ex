@@ -1107,6 +1107,10 @@ defmodule Kantele.World.Room.Events do
       event("steal/attempt", :call)
     end
 
+    module(BegRequestEvent) do
+      event("beg/attempt", :call)
+    end
+
     module(GuardRequestEvent) do
       event("guard/guard", :call)
       event("guard/cancel", :call)
@@ -1946,6 +1950,154 @@ defmodule Kantele.World.Room.StealRequestEvent do
             if c.id == char_id, do: updated_character, else: c
           end)
     }
+  end
+end
+
+defmodule Kantele.World.Room.BegRequestEvent do
+  @moduledoc """
+  乞讨请求处理：转发 beg/attempt，完成乞讨判定并跨进程结算。
+
+  对应 LPC cmds/std/beg.c。仅 丐帮 可乞讨（命令层已拦）。房间进程解析 victim、
+  广播 vision、裁定成败，再分别向 victim → `beg/debit`、beggar → `beg/credit`
+  发跨进程事件（与 casino/payout 同款：房间事件不回写 context.characters，
+  跨角色改币必须在角色进程落盘）。
+
+  ## 与 LPC 差异
+  - LPC 钱是 4 个独立钱物对象，`beg.c` 取 victim 面值最大的那个、转移其 amount/5
+    （至少 1）；本引擎 `meta.coins` 是单一扁平整数池，故转移 victim 整池 1/5。
+  - LPC 用 `call_out("compelete_beg", 3, ...)` 做 3 秒延迟；本引擎房间定时器不可用，
+    且裁定同步进行（无异步窗口），故 `query_temp("begging")` 并发闸门一并省略。
+  - LPC `dp = victim.jing + ob.value()/5`，扁平模型无钱物 value，取 `dp = victim.jing`。
+  - LPC `RANK_D->query_respect(victim)` 敬称简化为固定「这位大侠」。
+  """
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
+  alias Kantele.World.NpcActions.Helpers
+
+  def call(context, %{data: %{target: target_name}} = _event) do
+    requester = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case {requester, is_binary(target_name) and target_name != ""} do
+      {nil, _} ->
+        context
+
+      {_requester, false} ->
+        context
+
+      {requester, true} ->
+        target =
+          Enum.find(context.characters, fn character ->
+            character.pid != requester.pid and
+              Kantele.World.Room.NameMatch.matches?(character, target_name)
+          end)
+
+        case target do
+          nil ->
+            render(context, requester.pid, CommandView, "text", %{
+              text: "你想乞讨的对象不在这里。\n"
+            })
+
+          _target when target.id == requester.id ->
+            render(context, requester.pid, CommandView, "text", %{
+              text: "你想乞讨的对象不在这里。\n"
+            })
+
+          target ->
+            process_beg(context, requester, target)
+        end
+    end
+  end
+
+  defp process_beg(context, requester, victim) do
+    cond do
+      not victim.is_character ->
+        render(context, requester.pid, CommandView, "text", %{text: "你要向谁乞讨？\n"})
+
+      Helpers.family_name(victim) == "丐帮" ->
+        render(context, requester.pid, CommandView, "text", %{
+          text: "那家伙也是乞丐，乞讨不出什么。\n"
+        })
+
+      victim_fighting?(victim) ->
+        render(context, requester.pid, CommandView, "text", %{
+          text: "#{victim.name}正在打架，没空理你。\n"
+        })
+
+      victim_coins(victim) <= 0 ->
+        render(context, requester.pid, CommandView, "text", %{
+          text: "看起来#{victim.name}身上没有什么让你感兴趣的东西。\n"
+        })
+
+      true ->
+        resolve(context, requester, victim)
+    end
+  end
+
+  defp resolve(context, requester, victim) do
+    context = broadcast_beg_vision(context, requester, victim)
+
+    begging = Map.get((requester.meta.stats || %{}).skills || %{}, "begging", 0)
+    sp = max(1, trunc(:math.pow(begging, 3) / 10))
+    victim_jing = victim.attributes["jing"] || 1
+    dp = victim_jing
+
+    victim_coins = victim_coins(victim)
+    bcount = max(1, div(victim_coins, 5))
+
+    if :rand.uniform(sp + dp) > dp do
+      context = broadcast_result_vision(context, requester, victim, :success)
+
+      context
+      |> event(victim.pid, self(), "beg/debit", %{amount: bcount})
+      |> event(requester.pid, self(), "beg/credit", %{result: :success, amount: bcount})
+    else
+      kind = if :rand.uniform(sp) > div(dp, 2), do: :fail_roll, else: :fail_ignore
+      context = broadcast_result_vision(context, requester, victim, kind)
+
+      event(context, requester.pid, self(), "beg/credit", %{result: kind, amount: 0})
+    end
+  end
+
+  # ---- vision 广播：按接收者替换 $N(行乞者) / $n(被乞者) ----
+  defp broadcast_beg_vision(context, beggar, victim) do
+    broadcast(context, beggar, victim,
+      "$N可怜巴巴地向$n伸手说道：这位大侠，行行好，赏我点钱吧。\n")
+  end
+
+  defp broadcast_result_vision(context, beggar, victim, kind) do
+    template =
+      case kind do
+        :success -> "$n皱了皱眉，接着叹了口气，摸出些铜钱扔给$N。\n"
+        :fail_roll -> "$n狠狠地瞪了$N一眼，喝道：滚开。$N只好灰溜溜地走开了。\n"
+        :fail_ignore -> "$n扭过头去，冷哼一声，对$N理都不理。\n"
+      end
+
+    broadcast(context, beggar, victim, template)
+  end
+
+  defp broadcast(context, beggar, victim, template) do
+    Enum.reduce(context.characters, context, fn char, acc ->
+      text = substitute(template, char.pid == beggar.pid, char.pid == victim.pid, beggar.name, victim.name)
+      render(acc, char.pid, CommandView, "text", %{text: text})
+    end)
+  end
+
+  defp substitute(template, true, _is_victim, _beggar_name, victim_name),
+    do: String.replace(String.replace(template, "$N", "你"), "$n", victim_name)
+
+  defp substitute(template, _is_beggar, true, beggar_name, _victim_name),
+    do: String.replace(String.replace(template, "$N", beggar_name), "$n", "你")
+
+  defp substitute(template, _is_beggar, _is_victim, beggar_name, victim_name),
+    do: String.replace(String.replace(template, "$N", beggar_name), "$n", victim_name)
+
+  defp victim_coins(victim), do: victim.meta.coins || 0
+
+  defp victim_fighting?(victim) do
+    combat = victim.meta.combat || %Combat{}
+    Combat.fighting?(combat)
   end
 end
 

@@ -237,6 +237,16 @@ defmodule Kantele.Character.Events do
       event("casino/payout", :credit)
     end
 
+    # 乞讨结算落地：房间进程裁定后，victim 扣币（beg/debit）、beggar 加币+技能
+    # （beg/credit）。meta 只有本进程能安全修改，跨进程事件与 casino/payout 同款。
+    module(BegDebitEvent) do
+      event("beg/debit", :run)
+    end
+
+    module(BegCreditEvent) do
+      event("beg/credit", :run)
+    end
+
     module(YitianEvent) do
       event("yitian/result", :result)
     end

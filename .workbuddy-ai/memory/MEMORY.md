@@ -1,7 +1,7 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. 5 个本地提交已推送（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、`67a6694d` water、**`3a79771c` tong_ren**），`HEAD == origin/kalevala`，无需 `git push`。**当前工作区唯一未提交项**：`docs/data-world-comments-progress.zh-CN.md`（§2 M9 刷新 4954/0 + §13 补 4 行：R21 wuji4 括号根因修复 / 非 `ask_*` 闭包泄漏修复 / `veto_effectiveness_test` 适配 / 全量回归 4954/0 + §14 R21 状态由「未系统排查」更正为「已定位并修复」），待用户批准提交。
+- No `git commit` unless explicitly asked. 此前 5 个本地提交已推送（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、`67a6694d` water、**`3a79771c` tong_ren**），`HEAD == origin/kalevala`。**P5 乞讨系统已于 2026-10-27 提交为本地 1 commit（领先 origin/kalevala，待用户决定是否 push）**。当前唯一其余未提交项（待用户批准）：① `docs/data-world-comments-progress.zh-CN.md`（§2 M9 刷新 4954/0 + §13 补 4 行）。
 - No local Erlang — Docker is the verify path:
   `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
   （URL 必须整串引号，否则丢 `//`。）
@@ -17,6 +17,7 @@
 - **P3 收尾（2026-10-26）**：`liquid`/`max_liquid` 全链打通 —— `Item.Meta.liquid` + `loader.parse_liquid/1`（缺 `remaining`/非 map→nil 回落药水）+ 新建 `lib/kantele/world/item_liquid.ex`（**定义侧 `Item.Meta.liquid` 是全局共享只读，喝一口只能写实例侧 `liquid_*` 四键**，否则一人喝光全服酒袋皆空）+ `drink_command` 三路 cond（容器→药水→不可饮）+ `fill_command` 按 LPC `fill.c` 顺序重写 + `room.ex` snapshot 加 `"water" in flags` + `Records` 只序列化液体四键（**秘籍 `:book` 刻意不存**，保持重启重掷语义）+ `scripts/backfill_item_liquid.py` 回填 32 区/59 块/+348 行。`sleep_room` DoD 补 `test/kantele/character/sleep_room_flags_test.exs`（起真房间走 `Room.snapshot/1` 全链）。
 - P5-9 #9 一次性场景 6 切片全部完成（赌场 ×2 / 长安大堂 / 宴席三厅 / 棋苑三室 / 杭州楼外楼 order / 华山朝阳 chaoyang），P5 进度 **9/9**。`room_action*` 全集 **638/0**；`weiqi_test` 21/0。
 - P5-6 暗语链 `yanziwu:lanyue` knock+say 已落地（`do_say` 答「光复大燕」→传送 `yanziwu:huanshi`），8 测试，已合入 `54a4e70e`。
+- **P5 乞讨系统（2026-10-27，已提交）**：忠实移植 LPC `cmds/std/beg.c`（4 种钱币对象 → 扁平 `meta.coins` 整数池）。`beg_command.ex` 重写门控链（非丐帮 / `no_beg`+`no_fight` 旗 / 非法币种 / 战斗 / 忙碌 → 发 `beg/attempt`）；`room.ex` 新增 `BegRequestEvent`（目标查找 + 受害者门控 + `sp=trunc(begging^3/10)` vs `dp=victim.jing` 掷骰 + 按接收者替换 `$N/$n` 的 vision 广播）；`beg_debit_event`/`beg_credit_event`（跨进程转账 + `improve_skill("begging")` + 潜力/战斗经验 +1 + `start_busy`）；`commands.ex`/`events.ex` 路由注册。17 测试（命令门控/房间解析/借记贷记）全绿；4 块 Docker 全量回归全绿（~4979 + 17，0 失败）。架构要点：跨角色改币必须在**角色进程**内经事件完成（room→`Context.event(victim_pid,..,"beg/debit")` + `Context.event(beggar_pid,..,"beg/credit")`），因 room 进程不回写 `context.characters`；同步解析故弃用 LPC `query_temp("begging")` 并发锁。
 - 其余已落库：动态出口、TerrainMove、绝情谷、拱猪、Inquiry 门控/太极图/苗人凤/桑三娘刘处玄/商剑鸣、pingsi 传送、survey resolve、P5-3/P5-8 动态 spawn、P5-9 smith job/working、P5-8 on_board 载具、#9 六切片。
 
 ## Test gotchas
@@ -38,7 +39,7 @@
 
 ## Next steps (backlog)
 - P3 剩余 3 组字段（框架均已就绪，消费端等 P5 子系统）：
-  - `no_beg`：框架✅（room.flags），消费端❌（beg_command.ex 是桩）→ 等 P5 乞讨系统
+  - `no_beg`：✅ 已完成（beg_command.ex 重写 + room.ex BegRequestEvent，见下「P5 乞讨系统」）
   - `can_make`/`not_make`/`power_point`/`item_origin`：框架✅（Item.Meta 已加），消费端❌（打造命令未建）→ 等 P5 打造子系统
   - `chat_msg_combat`/`chat_chance_combat`：框架✅（NonPlayerMeta 已加，254/256 NPC 有数据），消费端❌（NPC AI 聊天未接线）→ 等 P5 NPC AI 聊天子系统
 - P3 `liquid` 遗留（已登记 §11，非本轮范围）：`water` 摄入（饥渴系统）、`Kantele.Item.Liquid.extra_long/1` 与 `Kantele.Item.ExtraLong` 全族零生产调用点（未建「look 物品详述」子系统）。`condition/drunk` 已补（2026-10-26）。

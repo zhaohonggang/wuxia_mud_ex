@@ -1538,7 +1538,15 @@ defmodule Kantele.Character.Commands do
   end
 
   module(BegCommand) do
-    parse("beg", :run)
+    parse("beg", :run, fn command ->
+      command
+      |> spaces()
+      |> word(:coin)
+      |> spaces()
+      |> string("from")
+      |> spaces()
+      |> text(:target)
+    end)
   end
 
   module(CheckCommand) do

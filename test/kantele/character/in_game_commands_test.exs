@@ -18,6 +18,7 @@ defmodule Kantele.Character.InGameCommandsTest do
     "auction",
     "baitan",
     "bank",
+    "beg",
     "beep",
     "brothers",
     "buy",
