@@ -1866,7 +1866,10 @@ defmodule Kantele.Character.Commands do
   end
 
   module(FuseCommand) do
-    parse("fuse", :run)
+    parse("fuse", :run, fn command ->
+      command
+      |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(DeriveCommand) do

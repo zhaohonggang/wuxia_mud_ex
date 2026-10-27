@@ -1,7 +1,7 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. 此前 5 个本地提交已推送（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、`67a6694d` water、**`3a79771c` tong_ren**），`HEAD == origin/kalevala`。**P5 乞讨系统已于 2026-10-27 提交为本地 1 commit（领先 origin/kalevala，待用户决定是否 push）**。当前唯一其余未提交项（待用户批准）：① `docs/data-world-comments-progress.zh-CN.md`（§2 M9 刷新 4954/0 + §13 补 4 行）。
+- No `git commit` unless explicitly asked. 此前 5 个本地提交已推送（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、`67a6694d` water、**`3a79771c` tong_ren**），`HEAD == origin/kalevala`。**P5 乞讨系统已于 2026-10-27 提交为本地 1 commit（领先 origin/kalevala，待用户决定是否 push）**。当前其余未提交项（待用户批准，均受铁律约束不主动 commit）：① `docs/data-world-comments-progress.zh-CN.md`（§2 M9 刷新 4954/0 + §13 补 4 行）；② **P5 打造子系统 fuse 熔炼切片**：`lib/kantele/character/commands/fuse_command.ex`（新建，忠实移植 LPC `cmds/skill/fuse.c`）、`test/kantele/character/fuse_command_test.exs`（新建 12/0）、`data/world/clone_lib.ucl`（追加 5 灵石 stone1..5，value=LPC base_value）、`lib/kantele/character/commands.ex`（fuse 路由补 `text(:rest)` 解析，原 stub 丢参数）。③ **P5 NPC 战斗闲聊 (#144)**：`lib/kantele/character/events/combat_event.ex`（`tick` 心跳钩子 + `maybe_combat_chat`/`publish_combat_say`）、`test/kantele/character/events/combat_event_chat_test.exs`（新建 6/0）。
 - No local Erlang — Docker is the verify path:
   `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
   （URL 必须整串引号，否则丢 `//`。）
@@ -19,6 +19,8 @@
 - P5-6 暗语链 `yanziwu:lanyue` knock+say 已落地（`do_say` 答「光复大燕」→传送 `yanziwu:huanshi`），8 测试，已合入 `54a4e70e`。
 - **P5 乞讨系统（2026-10-27，已提交）**：忠实移植 LPC `cmds/std/beg.c`（4 种钱币对象 → 扁平 `meta.coins` 整数池）。`beg_command.ex` 重写门控链（非丐帮 / `no_beg`+`no_fight` 旗 / 非法币种 / 战斗 / 忙碌 → 发 `beg/attempt`）；`room.ex` 新增 `BegRequestEvent`（目标查找 + 受害者门控 + `sp=trunc(begging^3/10)` vs `dp=victim.jing` 掷骰 + 按接收者替换 `$N/$n` 的 vision 广播）；`beg_debit_event`/`beg_credit_event`（跨进程转账 + `improve_skill("begging")` + 潜力/战斗经验 +1 + `start_busy`）；`commands.ex`/`events.ex` 路由注册。17 测试（命令门控/房间解析/借记贷记）全绿；4 块 Docker 全量回归全绿（~4979 + 17，0 失败）。架构要点：跨角色改币必须在**角色进程**内经事件完成（room→`Context.event(victim_pid,..,"beg/debit")` + `Context.event(beggar_pid,..,"beg/credit")`），因 room 进程不回写 `context.characters`；同步解析故弃用 LPC `query_temp("begging")` 并发锁。
 - 其余已落库：动态出口、TerrainMove、绝情谷、拱猪、Inquiry 门控/太极图/苗人凤/桑三娘刘处玄/商剑鸣、pingsi 传送、survey resolve、P5-3/P5-8 动态 spawn、P5-9 smith job/working、P5-8 on_board 载具、#9 六切片。
+- **P5 打造子系统 —— fuse 熔炼切片（2026-10-27，待提交）**：忠实移植 LPC `cmds/skill/fuse.c`。`fuse_command.ex` 重写（原为只打印占位提示的 stub）：门控链（空参/busy/战斗/内功<300/最大内力<5000/当前内力<3000/身上无物）→ 读 `Item.Meta` `can_make`+`item_origin`（缺则「这东西似乎熔炼不出什么。」）→ `power_point`：<50 化作青烟不留物；否则 `p=:rand.uniform(trunc(pp*3/2))` 按阈值 (120/90/70/50) 给 stone5..1，灵石 `value/300` 决定灵慧 `mp=5+:rand.uniform(max(1,div(value,300)))` 夹 [5,100]，写入 `attributes["magic_points"]`；扣除 `vitals.max_neili-1`/`vitals.neili-3000` + `start_busy(5)`；房间 vision 用 `{npc}` 广播。5 灵石 `stone1..5` 追加进 `clone_lib.ucl`（value=LPC base_value 30000/50000/100000/180000/500000），同时解 `combine_command` 乾坤圣水配方对 stone5 的依赖（注：`stone5-1` 配方原料仍缺，属 combine 子系统范围）。`commands.ex` fuse 路由补 `text(:rest)`（原 stub 无解析、丢参数）。12 测试（门控/查找/条件/成功/低 pp 青烟）全绿；combine+loader_meta+clone_fallback 55/0 全绿；`in_game_commands_test` 裸输入 fuse 用例修复后通过；**全量 4 块回归 4972/0 全绿**。
+- **P5 NPC 战斗闲聊（#144，2026-10-27，待提交）**：忠实移植 LPC `inherit/char/npc.c#chat` 的战斗分支。`CombatEvent.tick/2`（`lib/kantele/character/events/combat_event.ex`）心跳在「进入战斗且未忙乱」时按 `NonPlayerMeta.chat_chance_combat` 概率从 `chat_msg_combat` 随机挑一句，经 `Kantele.World.Room.tell_room/2` 广播给房间（与 `MoveEvent.greet` 同款原语，渲染为玩家所见 NPC 发言）。玩家（PlayerMeta）/`chat_chance_combat=0`/空台词/忙乱/无敌人 均不触发。注意：首次实现误用 `Conn.publish_message` 到 `rooms:` 频道（无法触达 `Room.tell_room` 的订阅者），改为 `Room.tell_room` 后测试通过。6 测试（战斗触发/玩家不触发/概率0/空台词/忙乱/无敌人）全绿；combat+events 套件 574/0 全绿；全量 4 块回归进行中。
 
 ## Test gotchas
 - **condition daemon 是纯函数、拿不到 conn** → 要发声或改状态就写 `state.condition_messages` / `state.condition_unconcious`，由 `ConditionEvent` 每跳 flush。别在 daemon 里 `send`/`publish`。
@@ -40,8 +42,8 @@
 ## Next steps (backlog)
 - P3 剩余 3 组字段（框架均已就绪，消费端等 P5 子系统）：
   - `no_beg`：✅ 已完成（beg_command.ex 重写 + room.ex BegRequestEvent，见下「P5 乞讨系统」）
-  - `can_make`/`not_make`/`power_point`/`item_origin`：框架✅（Item.Meta 已加），消费端❌（打造命令未建）→ 等 P5 打造子系统
-  - `chat_msg_combat`/`chat_chance_combat`：框架✅（NonPlayerMeta 已加，254/256 NPC 有数据），消费端❌（NPC AI 聊天未接线）→ 等 P5 NPC AI 聊天子系统
+  - `can_make`/`not_make`/`power_point`/`item_origin`：框架✅（Item.Meta 已加）。消费端 **fuse 熔炼切片已建（2026-10-27）**——`fuse_command.ex` 读作 `Item.Meta` 的 `can_make`/`item_origin`/`power_point`，按阈值产出灵石并给 `attributes["magic_points"]`（灵慧）。**剩余未建**：`ganjiang.c`/`moye.c` 交互式定制打造（动态文件生成，体量更大，独立 mechanic）。
+  - `chat_msg_combat`/`chat_chance_combat`：框架✅（NonPlayerMeta 已加，254/256 NPC 有数据）。消费端 **NPC 战斗闲聊已建（2026-10-27，#144）**——`CombatEvent.tick` 心跳进入战斗且未忙乱时按 `chat_chance_combat` 概率从 `chat_msg_combat` 随机挑一句，经 `Kantele.World.Room.tell_room` 广播给房间（与 `MoveEvent.greet` 同款原语）。非战斗闲聊 `chat_msg`/`chat_chance` 由 brain `ChatAction` 处理，不在本任务范围。
 - P3 `liquid` 遗留（已登记 §11，非本轮范围）：`water` 摄入（饥渴系统）、`Kantele.Item.Liquid.extra_long/1` 与 `Kantele.Item.ExtraLong` 全族零生产调用点（未建「look 物品详述」子系统）。`condition/drunk` 已补（2026-10-26）。
 - **已知缺陷待修（§11 已登记）**：无 —— `Force.Dispel` / `sleep` condition 门控 已修（2026-10-26）。
 - 37 个非 ask_* 闭包：已完结。扫出 39 条非 `ask_*` 闭包型问询值（22 唯一函数/13 UCL 文件），已被 `NpcAskEvent.handle_text_answer`+`closure_literal?/` 按「未实现占位，静默不回应」兜底；其中 4 条 `(: execute_ask() :)`（changan.ucl 信/家/父亲/letter）因括号未被旧正则匹配、会泄露源码文本给玩家，已在 `npc_shop_event.ex` 扩正则并新增 `mirror_zixu_test.exs` 回归测试。其余 23 个函数无需新增 handler（设计即占位）。

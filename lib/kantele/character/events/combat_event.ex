@@ -140,6 +140,10 @@ defmodule Kantele.Character.CombatEvent do
         combat = clean_enemies(combat)
         combat = decrement_busy(combat)
 
+        # NPC 战斗闲聊（#144）：心跳进入战斗且未忙乱时，按 chat_chance_combat 概率
+        # 从 chat_msg_combat 随机挑一句说给房间（忠实移植 LPC inherit/char/npc.c#chat 战斗分支）
+        conn = maybe_combat_chat(conn, character, combat)
+
         case combat.enemies do
           [] ->
             # 助战结束且已脱离战斗：清敌并（若在助战）回 startroom
@@ -861,6 +865,36 @@ defmodule Kantele.Character.CombatEvent do
     do: %{combat | busy: busy - 1}
 
   defp decrement_busy(combat), do: combat
+
+  # NPC 战斗闲聊（#144）：忠实移植 LPC inherit/char/npc.c#chat 的战斗分支。
+  # 仅 NPC（NonPlayerMeta）在战斗中、且未忙乱（is_busy() 检查）时触发；
+  # 以 chat_chance_combat 概率从 chat_msg_combat 随机挑一句，以普通说话发到房间频道
+  # （与 Kantele.Character.ChatAction 同款 publish_message 渲染，玩家可见为 NPC 发言）。
+  defp maybe_combat_chat(conn, %{meta: %Kantele.Character.NonPlayerMeta{}} = character, combat) do
+    if Combat.fighting?(combat) and not Combat.busy?(combat) do
+      chance = character.meta.chat_chance_combat
+      msgs = character.meta.chat_msg_combat
+
+      if is_integer(chance) and chance > 0 and is_list(msgs) and msgs != [] and
+           :rand.uniform(100) <= chance do
+        line = Enum.random(msgs)
+        publish_combat_say(conn, character, line)
+      else
+        conn
+      end
+    else
+      conn
+    end
+  end
+
+  defp maybe_combat_chat(conn, _character, _combat), do: conn
+
+  defp publish_combat_say(conn, character, line) do
+    # 与 MoveEvent.greet 同款房间广播原语（LPC say/tell_room）：把台词发给房间内所有人
+    room = %Kantele.World.Room{id: character.room_id}
+    Kantele.World.Room.tell_room(room, line)
+    conn
+  end
 
   defp notify_left(conn, character, enemy) do
     send(enemy.pid, %Event{
