@@ -1,7 +1,7 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. 4 个本地提交（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、**`67a6694d` water**）**已推送**，`HEAD == origin/kalevala`，无需 `git push`。工作区**未提交**批次（待批准）：①`Force.Dispel`/`sleep` condition 门控（≈10 改 + 4 新）②clone_lib 清理（删 2 死 `items` 块 `clone_tong_ren`/`adm_zixu` + 修 `wuji4` 缺收尾 `}`/删文件末尾多余 `}`）③非 `ask_*` 闭包正则泄漏修复（`npc_shop_event.ex`）+ 回归测试 ④本轮新增 `clone_fallback_test.exs` 的 wuji4 括号回归测试。
+- No `git commit` unless explicitly asked. 5 个本地提交已推送（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、`67a6694d` water、**`3a79771c` tong_ren**），`HEAD == origin/kalevala`，无需 `git push`。**当前工作区唯一未提交项**：`docs/data-world-comments-progress.zh-CN.md`（§2 M9 刷新 4954/0 + §13 补 4 行：R21 wuji4 括号根因修复 / 非 `ask_*` 闭包泄漏修复 / `veto_effectiveness_test` 适配 / 全量回归 4954/0 + §14 R21 状态由「未系统排查」更正为「已定位并修复」），待用户批准提交。
 - No local Erlang — Docker is the verify path:
   `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
   （URL 必须整串引号，否则丢 `//`。）
@@ -44,7 +44,7 @@
 - P3 `liquid` 遗留（已登记 §11，非本轮范围）：`water` 摄入（饥渴系统）、`Kantele.Item.Liquid.extra_long/1` 与 `Kantele.Item.ExtraLong` 全族零生产调用点（未建「look 物品详述」子系统）。`condition/drunk` 已补（2026-10-26）。
 - **已知缺陷待修（§11 已登记）**：无 —— `Force.Dispel` / `sleep` condition 门控 已修（2026-10-26）。
 - 37 个非 ask_* 闭包：已完结。扫出 39 条非 `ask_*` 闭包型问询值（22 唯一函数/13 UCL 文件），已被 `NpcAskEvent.handle_text_answer`+`closure_literal?/` 按「未实现占位，静默不回应」兜底；其中 4 条 `(: execute_ask() :)`（changan.ucl 信/家/父亲/letter）因括号未被旧正则匹配、会泄露源码文本给玩家，已在 `npc_shop_event.ex` 扩正则并新增 `mirror_zixu_test.exs` 回归测试。其余 23 个函数无需新增 handler（设计即占位）。
-- `git push`：已无需。`HEAD == origin/kalevala`（67a6694d），4 个本地提交已推送；「push 尚未执行」已过时。
+- `git push`：已无需。`HEAD == origin/kalevala`（**`3a79771c` tong_ren**，5 个本地提交已推送）；「push 尚未执行」已过时。
 - R21 clone_lib 同名同房排查：**根因已定位并修复（2026-10-26 续）**。原以为 `clone_tong_ren`/`adm_zixu` 被 Elias 跳过是「解析器预存在缺陷」，实际根因是 **`items "wuji4"` 块（无名秘籍，line 32518）缺少收尾 `}`**：其 `meta`/`book` 正确闭合后，外层 `items "wuji4" {` 始终未闭合，导致其后 `global_longsword`/`global_potion`/`clone_tong_ren`/`adm_zixu` 四个块被解析器吞入 `items.wuji4` 内部（`items.wuji4.items.*` / `items.wuji4.characters.*`），顶层 `characters`/`items` 映射里消失。原文件靠**文件末尾多余的 `}`（line 32654）** 借位闭合 wuji4 才勉强平衡，故世界能加载但 4 块丢失。修复：补 wuji4 收尾 `}` + 删文件末尾多余 `}`。验证：`Elias.parse` 后 characters 489 / items 537（修复前 487/535），4 块均回到顶层；`clone_fallback_test.exs` 新增 3 条回归（8/0 全绿）。
 
 ## Notes
