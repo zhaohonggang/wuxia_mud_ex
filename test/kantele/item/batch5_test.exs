@@ -42,10 +42,11 @@ defmodule Kantele.Item.Batch5Test do
     end
 
     test "apply_damage 等级平方加权 + bless" do
-      # rank(50000)=9, p=50, d=1.0*81/81*50=50, 返回 100
+      # rank(50000)=9, p=50, d=trunc(1.0*81/81*50)=50, 返回 100
       assert Craft.apply_damage(50_000, 100, 0) == 100
-      # rank(100)=4, p=50, d=1.0*16/81*50=9.87→10, +bless*2, 返回 60
-      assert Craft.apply_damage(100, 100, 0) == 60
+      # rank(100)=4, p=50, d=trunc(1.0*16/81*50)=trunc(9.876)=9, +bless*2, 返回 59
+      # （LPC itemmake.c L324 把 double 赋给 int d，按 C 语义向零截断，非四舍五入）
+      assert Craft.apply_damage(100, 100, 0) == 59
     end
 
     test "chinese_s 魔力属性" do

@@ -230,16 +230,17 @@ defmodule Kantele.World.NpcActionHandlersTest do
   end
 
   describe "registered_rooms/0" do
-    # 明细（共 26 个房间）：4 yun、1 ride*、2 bi/get、3 yao、2 decide(+join/unjoin)、
+    # 明细（共 27 个房间）：4 yun、1 ride*、2 bi/get、3 yao、2 decide(+join/unjoin)、
     # 2 serve、1 puzzle、1 task、1 txbw、1 exchange(+duihuan)、1 choose、1 sign、
-    # 5 jobs(copy×2/sew/mine×2/move)、1 yitian、1 kneel、1 peiyao、1 smith。
+    # 5 jobs(copy×2/sew/mine×2/move)、1 yitian、1 kneel、1 peiyao、1 smith、
+    # 1 gongxian(list+duihuan，changan:qunyulou2 浮云门贡商人)。
     #
     # ⚠️ 测试名不要写太长：ExUnit 会把 "test <名字>" 转成 atom，而 BEAM 原子表的长度
     # 字段只有 8 位（上限 255 字节，不是 255 个字符——中文按 UTF-8 每字 3 字节）。
     # 原名 281 字节，编译期直接让 OTP 25 的 beam_asm 崩在
     # `*** argument 1: not an iolist term`，整个测试套件无法启动。
     # 该崩溃与平台无关（Linux 容器同样复现），不是 Windows 独有。
-    test "返回已注册房间 id 列表（26 个）" do
+    test "返回已注册房间 id 列表（27 个）" do
       rooms = NpcActionHandlers.registered_rooms()
 
       assert "tulong:huichang_back" in rooms
@@ -268,7 +269,8 @@ defmodule Kantele.World.NpcActionHandlersTest do
       assert "hangzhou:liuhe9" in rooms
       assert "kaifeng:yaopu" in rooms
       assert "xiangyang:tiejiangpu" in rooms
-      assert length(rooms) == 26
+      assert "changan:qunyulou2" in rooms
+      assert length(rooms) == 27
     end
   end
 end

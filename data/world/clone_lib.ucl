@@ -32729,3 +32729,232 @@ chats = [
         material = "stone"
       }
     }
+
+# Source: C:/files/git/mud/clone/fam/gift/str3.c
+# Zone: clone_lib
+
+    items "str3" {
+      name = "蚩尤诛元仙丹"
+      aliases = ["zhuyuan xiandan", "zhuyuan", "xiandan", "dan"]
+      description = "传说此丹乃是天宫中的神品，凡人吃了可以平增膂力。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 50
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/gift/int3.c
+# Zone: clone_lib
+
+    items "int3" {
+      name = "神恩通慧仙丹"
+      aliases = ["tonghui xiandan", "tonghui", "xiandan", "dan"]
+      description = "传说此丹乃是天宫中的神品，凡人吃了可以平增悟性。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 50
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/gift/con3.c
+# Zone: clone_lib
+
+    items "con3" {
+      name = "洗髓再造仙丹"
+      aliases = ["xisui xiandan", "xisui", "xiandan", "dan"]
+      description = "传说此丹乃是天宫中的神品，凡人吃了可以平增根骨。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 50
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/gift/dex3.c
+# Zone: clone_lib
+
+    items "dex3" {
+      name = "破阳无极仙丹"
+      aliases = ["wuji xiandan", "wuji", "xiandan", "dan"]
+      description = "传说此丹乃是天宫中的神品，凡人吃了可以平增身法。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 50
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/item/yanluo.c
+# Zone: clone_lib
+
+    items "yanluo" {
+      name = "阎罗绸"
+      aliases = ["yanluo chou", "yanluo", "chou"]
+      description = "闪烁着阵阵紫光的绸缎，不知由何物所织，坚韧有如玄铁。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 30000
+        weight = 1200
+        unit = "张"
+        item_origin = 1
+        material_attrib = "stone"
+        material_name = "阎罗绸"
+        can_make = ["战衣", "腰带", "护腕", "靴子", "鞭"]
+        power_point = 80
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/item/lihuo.c
+# Zone: clone_lib
+
+    items "lihuo" {
+      name = "离火玄冰玉"
+      aliases = ["lihuo yu", "lihuo", "yu"]
+      description = "此乃不世宝玉，玉身一半奇热，另一半却奇寒，且能自动分水离火。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 30000
+        weight = 3400
+        unit = "块"
+        item_origin = 1
+        material_attrib = "stone"
+        material_name = "离火玄冰玉"
+        can_make = ["all"]
+        not_make = ["战衣", "腰带", "护腕", "靴子", "鞭"]
+        power_point = 80
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/max/tianshu1.c
+# Zone: clone_lib
+
+    items "tianshu1" {
+      name = "「忘情天书」"
+      aliases = ["wangqing tianshu", "wangqing", "tianshu"]
+      description = "传说中的奇书，可忘却尘世间所有烦恼。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 500000
+        weight = 3000
+        unit = "本"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/max/tianshu2.c
+# Zone: clone_lib
+
+    items "tianshu2" {
+      name = "「无字天书」"
+      aliases = ["wuzi tianshu", "wuzi", "tianshu"]
+      description = "传说中蛋生获仙人所赠的奇书，整本书不见一字。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 500000
+        weight = 3000
+        unit = "本"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/obj/guo.c
+# Zone: clone_lib
+
+    items "guo" {
+      name = "许愿无花果"
+      aliases = ["wuhua guo", "guo"]
+      description = "传说中的仙果，先许愿(wish)再吃(eat)，据说能帮人消除以往吃丹失败的痛苦经历！"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 10
+        unit = "个"
+        no_sell = 1
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/max/longjia.c
+# Zone: clone_lib
+
+    items "longjia" {
+      name = "子午龙甲丹"
+      aliases = ["longjia dan", "longjia", "dan"]
+      description = "灵药中的神品，服用后不但可以医治任何内伤，而且可平增一个甲子以上的功力。更有相传说此丹散发出的异香可缭绕周围数十万方圆。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 300
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/max/xuanhuang.c
+# Zone: clone_lib
+
+    items "xuanhuang" {
+      name = "玄黄紫箐丹"
+      aliases = ["xuanhuang dan", "xuanhuang", "dan"]
+      description = "一颗紫中泛黄的精致奇丹，具有着神话般的功效，传说吃了之后能平增数十年的功力，乃是练武之人梦寐以求的神丹妙药。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 100000
+        weight = 300
+        unit = "颗"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/item/bless_water.c
+# Zone: clone_lib
+
+    items "bless_water" {
+      name = "乾坤圣水"
+      aliases = ["bless water", "water"]
+      description = "一瓶莹剔透圣水，散射出绚目的光彩。他可以用来圣化（bless）兵器或防具。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+      meta = {
+        value = 1
+        weight = 30
+        unit = "瓶"
+        no_sell = 1
+      }
+    }

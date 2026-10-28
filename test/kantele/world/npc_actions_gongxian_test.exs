@@ -7,6 +7,7 @@ defmodule Kantele.World.NpcActions.GongxianTest do
 
   @room_id "changan:qunyulou2"
   @stone "signature:qiankun_stone"
+  @gift "clone_lib:str3"
 
   defp conn(gongxian, inventory \\ []) do
     %Conn{
@@ -35,6 +36,15 @@ defmodule Kantele.World.NpcActions.GongxianTest do
       id: @stone,
       name: "乾坤石 Qiankun Stone",
       meta: %Kantele.World.Item.Meta{value: 30_000, weight: 100, unit: "块"}
+    })
+
+    # str3 已补入 data/world/clone_lib.ucl，这里注入最小可用定义，用来验证
+    # 「物品已定义」时 duihuan 走成功路径（扣门贡 + 入包）。其余 convert_list
+    # 物品仍不注入，用于保留「没货」分支的回归。
+    Kantele.World.Items.put(@gift, %Kalevala.World.Item{
+      id: @gift,
+      name: "蚩尤诛元仙丹",
+      meta: %Kantele.World.Item.Meta{value: 100_000, weight: 50, unit: "颗"}
     })
 
     :ok
@@ -142,12 +152,25 @@ defmodule Kantele.World.NpcActions.GongxianTest do
       assert Enum.all?(char_of(conn2).inventory, &(&1.item_id == @stone))
     end
 
-    test "定义缺失的物品 → 「没货」，不扣门贡（LPC 侧 new() 必成功）" do
-      conn2 = Gongxian.run(conn(99_999), params("duihuan", "1 1"))
+    test "定义缺失的物品 → 「没货」，不扣门贡（本测试只注入了乾坤石与 str3）" do
+      # 编号 2 = int3（神恩通慧仙丹）：测试缓存里没有注入它（clone_lib.ucl 虽已
+      # 补定义，但本测试不加载世界数据），故仍走「没货」分支，验证缺失定义时的
+      # 兜底行为（不扣门贡、不入包）。
+      conn2 = Gongxian.run(conn(99_999), params("duihuan", "2 1"))
 
       assert out_text(conn2) =~ "这东西一时没货，改日再来吧。"
       assert gongxian_of(conn2) == 99_999
       assert char_of(conn2).inventory == []
+    end
+
+    test "物品已定义（str3）→ 扣门贡 + 入包，真实兑换成功" do
+      # 编号 1 = str3（蚩尤诛元仙丹），门贡单价 1000；setup 已注入该物品定义，
+      # 故 duihuan 走成功路径：扣 1000 门贡、把物品放入背包、提示欢迎语。
+      conn2 = Gongxian.run(conn(99_999), params("duihuan", "1 1"))
+
+      assert out_text(conn2) =~ "浮云拿出一些蚩尤诛元仙丹，笑眯眯的说：欢迎下次光临。"
+      assert gongxian_of(conn2) == 98_999
+      assert [%{item_id: @gift}] = char_of(conn2).inventory
     end
 
     test "恰好够钱（gongxian == gx）→ 允许" do

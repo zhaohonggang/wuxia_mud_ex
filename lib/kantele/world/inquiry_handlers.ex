@@ -14,6 +14,7 @@ defmodule Kantele.World.InquiryHandlers do
     "counter_perform" => Kantele.World.InquiryHandlers.CounterPerform,
     "teleport_service" => Kantele.World.InquiryHandlers.TeleportService,
     "smith_job" => Kantele.World.InquiryHandlers.SmithJob,
+    "yelvqi_job" => Kantele.World.InquiryHandlers.YelvqiJob,
     "hostile" => Kantele.World.InquiryHandlers.Hostile
   }
 

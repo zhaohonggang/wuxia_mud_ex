@@ -19,7 +19,8 @@ defmodule Kantele.Character.ConditionRegistry do
     "fire_poison" => Kantele.Poison,
     "nishui" => Kantele.Nishui,
     "duyan" => Kantele.Duyan,
-    "drunk" => Kantele.Drunk
+    "drunk" => Kantele.Drunk,
+    "wuguan_job" => Kantele.WuguanJob
   }
 
   @doc "给条件名返回 `{:ok, mod} | :error`（先查运行时增量，再查静态表）"
