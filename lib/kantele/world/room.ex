@@ -470,6 +470,32 @@ defmodule Kantele.World.Room do
   def npc_characters_by_id(_), do: []
 
   @doc """
+  取 `conn` 所在房间的角色快照。
+
+  生产路径走房间进程（`npc_characters_by_id/1`）；单测可直接注入
+  `conn.private.room = %{characters: [...]}`（与 `NpcActionDispatcher` 同一约定），
+  免得为了「玩家在不在场」造一个真房间进程。
+  """
+  def characters_for_conn(conn) do
+    case Map.get(conn, :private) do
+      %{room: room} when is_map(room) ->
+        case Map.get(room, :characters) do
+          list when is_list(list) and list != [] -> list
+          _ -> conn_room_characters(conn)
+        end
+
+      _ ->
+        conn_room_characters(conn)
+    end
+  end
+
+  defp conn_room_characters(%{character: %{room_id: room_id}}) when is_binary(room_id) do
+    npc_characters_by_id(room_id)
+  end
+
+  defp conn_room_characters(_), do: []
+
+  @doc """
   按 room_id 取房间内地面上物品实例（`state.private.item_instances`）。
 
   同 `npc_characters_by_id/1` 的取数路径，供 NPC 私有动作（如田嫂 `do_yao` 的

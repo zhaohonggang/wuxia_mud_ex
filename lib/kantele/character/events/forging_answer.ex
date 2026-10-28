@@ -1,4 +1,4 @@
-defmodule Kantele.World.ForgingAnswer do
+defmodule Kantele.Character.ForgingAnswer do
   @moduledoc """
   forge 品类选择（对应 LPC moye.c `do_answer`，L484–554）。
 
@@ -18,6 +18,7 @@ defmodule Kantele.World.ForgingAnswer do
   alias Kalevala.Character.Conn
   alias Kantele.Character.Records
   alias Kantele.World.Forging
+  alias Kantele.World.ForgingTimeout
   alias Kantele.World.Items
   alias Kantele.World.Room
 
@@ -71,7 +72,7 @@ defmodule Kantele.World.ForgingAnswer do
           prop: entry.prop
         })
 
-      ganjiang = find_ganjiang(npc, opts)
+      ganjiang = find_ganjiang(conn, opts)
 
       if is_nil(ganjiang) do
         refund(conn, npc, session, reply_to)
@@ -81,13 +82,13 @@ defmodule Kantele.World.ForgingAnswer do
     end
   end
 
-  defp find_ganjiang(npc, opts) do
+  defp find_ganjiang(conn, opts) do
     case Keyword.get(opts, :ganjiang_pid) do
       pid when is_pid(pid) ->
-        %{pid: pid, id: "ganjiang", name: "干将"}
+        %{pid: pid, id: Forging.ganjiang_id(), name: "干将"}
 
       _ ->
-        Enum.find(Room.npc_characters_by_id(npc.room_id) || [], &(&1.id == "ganjiang"))
+        Enum.find(Room.characters_for_conn(conn), &(Map.get(&1, :id) == Forging.ganjiang_id()))
     end
   end
 
@@ -119,7 +120,12 @@ defmodule Kantele.World.ForgingAnswer do
     new_inventory = Enum.reject(npc.inventory, &(&1.id == session.material_instance_id))
     new_npc = %{npc | inventory: new_inventory}
     Records.save(new_npc)
+
+    # LPC L551 `remove_call_out("time_out")`：交干将后报价超时作废。
+    # 顺序要紧：先写新会话（`new_session` 仍带着排程时的旧令牌），再 `cancel/1`
+    # 换一个新令牌 —— 反过来会被 `new_session` 里的旧令牌覆盖回去，等于没取消。
     Forging.put(session.owner_id, new_session)
+    ForgingTimeout.cancel(session.owner_id)
 
     room_say(conn, npc,
       "#{npc.name}对#{from_name}道：就打造「#{type}」吧！\n" <>

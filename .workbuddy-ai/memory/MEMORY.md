@@ -37,10 +37,15 @@
 - `Stats.effective/3` = LPC `query_skill`：`div(skills[usage],2) + skills[special] + apply`。基本技能**折半**！装备 `armor_prop` 走 `Combat.skill_applies/1` 传入。
 - LPC 数字文案一律 `Kantele.Util.ChineseNumber.to_chinese/1`（照抄 `chinesed.c`：110→「一百十」、1010→「一千零十」）。`Money` 已委托它，勿再写第二份。
 - 锻造币值：报价「两黄金」、记账「文」，1 两 = 10000 文（`moye.c` `val *= 10000`）。
+- **事件模块命名铁律**：`use Kalevala.Event.Router` 的 `module(X)` 按 `scope` 前缀拼名。`scope(Kantele.Character)` 下写 `module(Foo)` 得到 `Kantele.Character.Foo`，写成 `Kantele.World.Foo` 会在**运行时** UndefinedFunctionError（编译不报）。新事件模块一律放 `Kantele.Character.*`。
+- `conn.private` 是 `%Kalevala.Character.Conn.Private{}` **结构体**（不是 map）：注入房间快照用 `%{conn | private: %{conn.private | room: %{characters: [...]}}}`，`put_in(conn.private[:room], ...)` 会炸。`Room.characters_for_conn/1` 认这个字段。
+- 房间角色 `:id` 是**带 zone 的完整 id**（`signature:ganjiang`），不是裸名；按裸名比对永远找不到（`npc_shop_event` / `kneel` 都是按 `character.id` 比）。
+- 锻造定时：`Kantele.World.ForgingTimeout.schedule/4` + `Process.send_after` 投回 NPC 进程；取消用 `:timer_token` 令牌（不是 ref）。`forge_timing_scale` 生产 1 / 测试 0。
+- **顺序陷阱**：`Forging.put(new_session)` 之后再 `ForgingTimeout.cancel/1` —— 反了会被 new_session 里的旧令牌覆盖，等于没取消。
 
 ## Next steps (backlog)
-- S2 Task #155 (干将接收 forge/handoff + 6 段 vision): ✅ 完成 (ganjiang_event.ex), 测试 2/2 绿。
-- S2 Task #156: ✅ 完成 `注内力` 命令 (zhuneili_command.ex): 门控 status="inputing" && can_help=true; 门槛 jing≥180/qi≥300/neili≥800/max_neili≥1000; 扣 jing180/qi300/neili200/max_neili200; point += point*force/800; can_help→false; 路由已注册; 测试 9/9 绿。
+- S2 Task #155 (干将接收 forge/handoff + 7 段 vision): ✅ 完成 (ganjiang_event.ex)，2026-10-28 改为 LPC `call_out` 分步时序（prepare 1s → step1 5s → step2 6s → step3 3s → step4 5s → step5 3s → step6 2s），step6 才 `inputing` 并排 240s 等待。`ganjiang_event_test` 6/0。
+- S2 Task #156: ✅ 完成 `注内力` 命令 (zhuneili_command.ex)：门控恢复 LPC 精确的 `status=="waiting" && can_help`（**6 秒窗口**，inputing 必须拒绝）；门槛 jing≥180/qi≥300/neili≥800/max_neili≥1000；扣 jing180/qi300/neili200/max_neili200；point += point*force/800；can_help→false；测试 12/12 绿。
 - S2 Task #157: 注内力命令 route 已注册；需运行 S1b/S1c/S2 + 回归 Docker，确保 0 失败。
 - S3 #152: ✅ 完成 ForgeCustomizeCommand (name/desc/wieldmsg/unwieldmsg/finish) + 动态物品模板注册 + 持久化; 13 测试全绿 (Docker verified). 关键修复: %Item{} → %Kalevala.World.Item{} (ItemDef alias), Kantele.World.Item.Instance 不存在 → 用 Kalevala.World.Item.Instance, CommandView 别名需是 Kantele.Character.CommandView, 会话字段写入用 Map.put 而非 \|> 更新语法, 各子动词需独立 handler 函数 (run_name/run_desc/run_wieldmsg/run_unwieldmsg/run_finish) 因为路由会剥离动词前缀, rest 参数不含动词名.
 - S4 #153: discard/refund ((value*8/10+9999)/10000 金, 仅 item_make && owner_id==player), 乾坤袋 branch, timeout.

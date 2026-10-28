@@ -466,9 +466,13 @@ defmodule Kantele.Character.GiveEvent do
     |> prompt(CommandView, "prompt", %{})
   end
 
-  # ---- forge 退款（莫邪进程 → 玩家进程，对应 LPC do_answer 干将不在场） ----
+  # ---- forge 退款（莫邪进程 → 玩家进程，对应 LPC do_answer 干将不在场 / time_out 超时） ----
   # 莫邪把材料与定金一并交还玩家：重新入背包并落盘。
-  def forge_refund(conn, %{data: %{material_instance: material_instance, money_instance: money_instance}} = _event) do
+  # `message` 可覆盖默认文案（超时退款用「想好再来吧」那条）。
+  def forge_refund(conn, %{data: data} = _event) do
+    material_instance = Map.get(data, :material_instance)
+    money_instance = Map.get(data, :money_instance)
+    message = Map.get(data, :message) || "莫邪把材料与定金交还给了你。\n"
     character = conn.character
 
     inventory =
@@ -481,7 +485,14 @@ defmodule Kantele.Character.GiveEvent do
 
     conn
     |> put_character(character)
-    |> render(CommandView, "text", %{text: "莫邪把材料与定金交还给了你。\n"})
+    |> render(CommandView, "text", %{text: message})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  # 干将的私有提示（LPC `tell_rules` 的 tell_object）
+  def forge_notice(conn, %{data: %{text: text}}) do
+    conn
+    |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
   end
 end

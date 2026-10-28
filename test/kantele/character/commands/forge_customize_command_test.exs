@@ -272,6 +272,81 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
     end
   end
 
+  # session.point 默认 100；`ctype` 决定 type_entry（unit/stype/type）。
+  defp forge_meta(ctype, point, sid) do
+    Forging.put(@owner_id, session(%{ctype: ctype, point: point, name: "测试物", sid: sid}))
+    ForgeCustomizeCommand.run_finish(build_conn(player()), %{})
+    {:ok, item} = Items.get("forge:#{@owner_id}-#{sid}")
+    item.meta
+  end
+
+  describe "生成物属性（LPC itemmake + moye item_type 表）" do
+    test "武器：damage = apply_damage()（owner 为空 → point/2），无 armor" do
+      meta = forge_meta("剑", 100, "xuantiejian")
+
+      assert meta.damage == 50
+      assert meta.armor == nil
+      assert meta.armor_prop == nil
+    end
+
+    test "战衣（prop 为 0）：armor = apply_armor() = point，无额外 armor_prop" do
+      meta = forge_meta("战衣", 100, "xuantiejian")
+
+      assert meta.armor == 100
+      assert meta.armor_prop == nil
+      assert meta.damage == nil
+    end
+
+    test "护甲：armor = point，armor_prop/parry = point/15 + 1" do
+      meta = forge_meta("护甲", 80, "xuantiejian")
+
+      assert meta.armor == 80
+      assert meta.armor_prop == %{parry: 6}
+    end
+
+    test "靴子：armor = point，armor_prop/dodge = point/10 + 1" do
+      meta = forge_meta("靴子", 40, "xuantiejian")
+
+      assert meta.armor == 40
+      assert meta.armor_prop == %{dodge: 5}
+    end
+
+    test "护腕：armor = point，15 个技能各 point/6 + 1" do
+      meta = forge_meta("护腕", 25, "xuantiejian")
+
+      assert meta.armor == 25
+      assert map_size(meta.armor_prop) == 15
+      assert Enum.all?(meta.armor_prop, fn {_skill, value} -> value == 5 end)
+      assert meta.armor_prop.parry == 5
+      assert meta.armor_prop.sword == 5
+    end
+
+    test "铁掌：armor 写死 10（不吃 point），unarmed_damage = apply_damage()" do
+      meta = forge_meta("铁掌", 100, "xuantiejian")
+
+      assert meta.armor == 10
+      assert meta.armor_prop == %{cuff: 10, strike: 10, unarmed: 10, unarmed_damage: 50}
+    end
+
+    test "指套：armor 写死 10，claw/finger/hand 各 10" do
+      meta = forge_meta("指套", 100, "xuantiejian")
+
+      assert meta.armor == 10
+      assert meta.armor_prop == %{claw: 10, finger: 10, hand: 10, unarmed_damage: 50}
+    end
+
+    test "armor_prop 随 JSON 落盘（重启后仍能还原）" do
+      meta = forge_meta("护甲", 80, "xuantiejian2")
+      assert meta.armor_prop == %{parry: 6}
+
+      path = Path.join(ForgeTemplates.dir(), ForgeTemplates.file_name("forge:#{@owner_id}-xuantiejian2"))
+      decoded = Jason.decode!(File.read!(path))
+
+      assert decoded["meta"]["armor"] == 80
+      assert decoded["meta"]["armor_prop"] == %{"parry" => 6}
+    end
+  end
+
   describe "会话门控" do
     test "无活跃会话 → 拒绝" do
       Forging.delete(@owner_id)

@@ -14,6 +14,12 @@ defmodule Kantele.Character.ForgeCustomizeCommand do
 
   生成物品（§1.5）：
     - item_id = "forge:<owner_id>-<sid>"
+    - 攻/防属性按 LPC `feature/itemmake.c` + `adm/npc/moye.c` 的 prop 表求值：
+      武器 `damage = apply_damage()`（owner 为空时 = point/2），防具
+      `armor = apply_armor()`（= point，铁掌/指套写死 10）外加
+      `armor_prop`（护甲 parry、靴子 dodge、护腕 15 技能、铁掌/指套
+      unarmed_damage），详见 `Kantele.World.Forging.armor_value/2` 与
+      `armor_prop/2`
     - 经 Kantele.World.Items.put 注册到 ETS，并落盘 data/forge/<item_id>.json
     - 实例化入玩家背包，清会话
   """
@@ -231,8 +237,9 @@ defmodule Kantele.Character.ForgeCustomizeCommand do
           weight: weight,
           material: material.meta.material_attrib,
           material_name: material_name,
-          damage: (if entry.type == "weapon", do: session.point, else: nil),
-          armor: (if entry.type == "armor", do: session.point, else: nil),
+          damage: damage_of(entry, session),
+          armor: armor_of(entry, session),
+          armor_prop: Forging.armor_prop(session.ctype, session.point),
           value: session.value,
           item_make: true,
           owner: session.owner_name,
@@ -280,4 +287,18 @@ defmodule Kantele.Character.ForgeCustomizeCommand do
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
   end
+
+  # 武器伤害：LPC `init_<stype>(apply_damage())`，不是 point 原值
+  # （ganjiang.c L1024）。`apply_damage()` 在 owner 为空时等于 point/2。
+  defp damage_of(%{type: "weapon"}, session),
+    do: Forging.weapon_damage(session.ctype, session.point)
+
+  defp damage_of(_entry, _session), do: nil
+
+  # 防具防御：LPC `apply_armor()`（= point），铁掌/指套写死 10
+  # （ganjiang.c L1071 / moye.c L32-91 的 prop 表）。
+  defp armor_of(%{type: "armor"}, session),
+    do: Forging.armor_value(session.ctype, session.point)
+
+  defp armor_of(_entry, _session), do: nil
 end

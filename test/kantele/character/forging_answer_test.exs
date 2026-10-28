@@ -1,4 +1,4 @@
-defmodule Kantele.World.ForgingAnswerTest do
+defmodule Kantele.Character.ForgingAnswerTest do
   use ExUnit.Case, async: false
 
   import Kalevala.ConnTest
@@ -11,7 +11,7 @@ defmodule Kantele.World.ForgingAnswerTest do
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
   alias Kantele.World.Forging
-  alias Kantele.World.ForgingAnswer
+  alias Kantele.Character.ForgingAnswer
   alias Kantele.World.Item.Meta
   alias Kantele.World.Items
   alias Kantele.Character.AnswerCommand
@@ -134,6 +134,32 @@ defmodule Kantele.World.ForgingAnswerTest do
       assert data.material_instance.id == "inst-xuantie"
       assert data.session.ctype == "剑"
       assert data.from_id == @from_id
+    end
+  end
+
+  describe "干将在场（按房间快照查找）" do
+    # 回归：早先 `find_ganjiang/2` 拿裸 `"ganjiang"` 比对房间角色的 `:id`，
+    # 而真实 id 是 `signature:ganjiang` —— 生产路径永远找不到干将，
+    # 整条锻造链只能走「我夫君呢？」退款。测试因为注入了 `ganjiang_pid` 没暴露。
+    test "房间快照里的 signature:ganjiang 能被找到 → handoff 而不是 refund" do
+      Forging.put(@from_id, session())
+
+      conn = build_conn(moye())
+
+      conn = %{
+        conn
+        | private: %{
+            conn.private
+            | room: %{characters: [%{id: Forging.ganjiang_id(), pid: self(), name: "干将 Ganjiang"}]}
+          }
+      }
+
+      _conn = ForgingAnswer.answer(conn, moye(), answer_event("剑"))
+
+      assert_receive %Kalevala.Event{topic: "forge/handoff", data: data}, 1_000
+      assert data.session.ctype == "剑"
+      refute Forging.get(@from_id) == nil
+      refute_received %Kalevala.Event{topic: "forge/refund"}
     end
   end
 

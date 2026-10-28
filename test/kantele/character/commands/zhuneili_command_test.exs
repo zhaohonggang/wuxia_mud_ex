@@ -43,7 +43,7 @@ defmodule Kantele.Character.ZhuneiliCommandTest do
 
   defp session(extra \\ %{}) do
     %{
-      status: "inputing",
+      status: "waiting",
       can_help: true,
       point: 100,
       owner_id: @owner_id,
@@ -119,7 +119,7 @@ defmodule Kantele.Character.ZhuneiliCommandTest do
       assert Forging.get(@owner_id) == nil
     end
 
-    test "status 不在 waiting/inputing → 没你什么业务" do
+    test "status 不是 waiting → 没你什么业务" do
       Forging.put(@owner_id, session(%{status: "handoff"}))
       conn = ZhuneiliCommand.run(build_conn(player()), %{})
       assert output_text(conn) =~ "没你什么业务。"
@@ -129,11 +129,15 @@ defmodule Kantele.Character.ZhuneiliCommandTest do
       assert s.can_help == true
     end
 
-    test "status = waiting 也放行（LPC 用的是 waiting）" do
-      Forging.put(@owner_id, session(%{status: "waiting"}))
+    # LPC `do_help` 判的就是 `item/status == "waiting"`；起名阶段（inputing）
+    # 已经过了注内力窗口，必须拒绝 —— 早先本仓放行 inputing，是折叠时序留下的偏差。
+    test "status = inputing（起名阶段）→ 拒绝" do
+      Forging.put(@owner_id, session(%{status: "inputing"}))
       conn = ZhuneiliCommand.run(build_conn(player()), %{})
-      assert Forging.get(@owner_id).can_help == false
-      assert vision_text(conn) =~ "白光直冲霄汉"
+
+      assert output_text(conn) =~ "没你什么业务。"
+      assert Forging.get(@owner_id).can_help == true
+      assert Forging.get(@owner_id).point == 100
     end
 
     test "can_help == false → 现在不是你帮忙的时候" do

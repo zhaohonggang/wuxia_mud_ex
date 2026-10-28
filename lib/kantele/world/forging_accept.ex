@@ -17,6 +17,7 @@ defmodule Kantele.World.ForgingAccept do
   alias Kantele.World.Items
   alias Kantele.Item, as: KItem
   alias Kantele.World.Forging
+  alias Kantele.World.ForgingTimeout
 
   def handle(conn, npc, item_instance, data, from_name) do
     from_id = Map.get(data, :from_id)
@@ -83,11 +84,14 @@ defmodule Kantele.World.ForgingAccept do
           material_instance_id: item_instance.id,
           owner_id: from_id,
           owner_name: Map.get(data, :from_name),
+          player_pid: reply_to,
           types: nil,
           qiankun: true
         }
 
         Forging.put(from_id, session)
+        # LPC L367-368：报价后 30 秒没交款就退料
+        ForgingTimeout.schedule(from_id, "forge/quote_timeout", ForgingTimeout.quote_timeout_seconds())
 
         npc = %{npc | inventory: [item_instance | npc.inventory]}
         Records.save(npc)
@@ -132,10 +136,13 @@ defmodule Kantele.World.ForgingAccept do
       material_instance_id: item_instance.id,
       owner_id: from_id,
       owner_name: Map.get(data, :from_name),
+      player_pid: reply_to,
       types: nil
     }
 
     Forging.put(from_id, session)
+    # LPC L396-398：报价后 30 秒没交款就退料
+    ForgingTimeout.schedule(from_id, "forge/quote_timeout", ForgingTimeout.quote_timeout_seconds())
 
     npc = %{npc | inventory: [item_instance | npc.inventory]}
     Records.save(npc)

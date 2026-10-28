@@ -159,10 +159,13 @@ ob->set("item/value", val);                                    // L389
 - `answer_command.ex` 扩展 `answer` 动词（`text(:rest)`），活跃会话时经 `room/forge_answer` 转交莫邪；`room.ex` 新增 `ForgeAnswerRequestEvent`；`events.ex` 注册 `forge/answer`(NonPlayerEvents) 与 `forge/refund`(GiveEvent)；`give_event.ex` 玩家侧 `forge_refund/2` 重新入背包。
 - **验收**：`forging_answer_test.exs` 8/0（handoff 填字段+转交+事件 / refund 退材料退钱清会话+事件 / 非法类型会话不变 / 无会话返回 / AnswerCommand 解析与 stub 路由）；S1b 10/0、show 7/0 全绿。
 
-### S2 — 干将锻造链
-- 干将进程收 `forge/handoff`：移材料、即时 6 段 vision、`status=inputing`、提示 `name`/`show_order` 规则。
-- `注内力` 命令（新 verb，门控 `waiting`+`can_help`）：stat 门槛 + 扣内力 + `point += point*force/800`。
-- **验收**：锻造链 vision 序列、注内力门槛与加成、单次限制。
+### S2 — 干将锻造链 ✅ 已完成（时序于 2026-10-28 按 LPC 补全，见 §6.6）
+- 干将进程收 `forge/handoff`：材料入包 → `status="waiting"` → 按 LPC `call_out`
+  时序分七跳广播 vision（`prepare` 1s → step1 5s → step2 6s → step3 3s →
+  step4 5s → step5 3s → step6 2s）→ step6 才 `status="inputing"` 并排 240s 等待。
+- `注内力` 命令（新 verb，门控 `status=="waiting"` + `can_help`，即 step1→step2 的
+  6 秒窗口）：stat 门槛 + 扣内力 + `point += point*force/800`。
+- **验收**：`ganjiang_event_test` 6/0、`zhuneili_command_test` 12/0、`forging_timeout_event_test` 8/0。
 
 ### S3 — 定制 + 生成物品
 - `ForgeCustomizeCommand`：`name`（中/英代号、长度/非法字符校验）、`desc`/`wieldmsg`/`unwieldmsg`（默认文案、非法字符）、`finish`（展示摘要 → 确认 → 动态模板 + 实例化 + 入包 + 清会话）。
@@ -179,7 +182,7 @@ ob->set("item/value", val);                                    // L389
 ### S4 — 边界：退款/乾坤袋/超时
 - `discard` 退款：`n=(value*8/10+9999)/10000` 金，仅 `item_make && owner_id==玩家`，移除物品、给退款。✅ 已完成（#153）
 - 乾坤袋：`qiankun stone` 分支 → 背包 +5。✅ 已完成（见下）
-- time_out：暂不自动触发（偏差，§6）；玩家可 `discard`/重 `give` 取回。
+- time_out：✅ 已实现（`forge/quote_timeout`，30s；玩家不在场则把材料/定金掉在房间地上）。
 - **验收**：退款金额、非本人/非自制拒绝、乾坤袋分支。
 
 #### S4 乾坤袋 — 已完成
@@ -218,8 +221,10 @@ LPC 三条路径（`moye.c` `do_show` L213 / `accept_object` L328-366 / 付钱 L
 #146 总 umbrella · #147 S0 · #148 S1a · #149 S1b · #150 S1c · #151 S2 · #152 S3 · #153 S4 · #154 全量回归。
 
 ## 6. 已知偏差与风险
-1. **无 `call_out`**：锻造链折叠为即时 vision；「注内力」由 `can_help` 标志而非时间窗门控。
-2. **time_out 跳过**：不自动退款；玩家手动 `discard`/重 `give` 取回材料（可接受简化）。
+1. **`call_out`**：已用 `Process.send_after` + 令牌复刻（`Kantele.World.ForgingTimeout`，
+   见 §6.6）。仍有一处语义差异：LPC `in_input(me)`（玩家正在输入编辑器里）本仓没有
+   对应概念，`waiting` 的「催促」分支一律按「不在输入」处理。
+2. **time_out**：已实现（`forge/quote_timeout`，30s 退料退款；玩家不在场则掉地上）。
 3. **护甲 `armor_prop`**：LPC 用 `apply_armor()` 动态公式，v0 简化为按 `point` 推导 armor 值（在 `prop_segment` 阶段明确标注为近似）。
 4. **物品持久化**：LPC 写 `.c` 文件 → ETS 模板 + `data/forge/*.json` 落盘，启动加载。
 5. **货币**：LPC 内部以「文」存储（`val*=10000`）、显示「X 两黄金」。本系统币制以 `Item.is_currency?`/`currency_amount` 为准（实现 S0/S1b 时确认），估价与退款映射到对应币种。
@@ -262,6 +267,70 @@ LPC 三条路径（`moye.c` `do_show` L213 / `accept_object` L328-366 / 付钱 L
 `riyue_bian_test`（ap 200→150、240→180）、`room_actions_terrain_move_test`
 （eyutan 轻功阈值 dodge 200/100 → 260/240，因为判据是有效等级）。
 新增 `stats_effective_test`（11 例）锁住 `effective/3` 与 `skill_applies/1` 的语义。
+
+## 6.6 `call_out` 定时链（2026-10-28，S2/S3 时序补全）
+
+LPC 的锻造是**有时序**的：开炉 1 秒、注内力窗口 6 秒、报价 30 秒不付就退款、
+起名最多拖 4×5 分钟。此前本仓把整条链折叠成 `handoff` 里的即时广播，
+`can_help` 一置上就再没清过，等于「注内力」随时可用、材料永不退回。
+
+### 机制
+
+本仓没有 `call_out`，用 `Process.send_after/3` 把事件投回**排程的那个 NPC 进程**
+（`exercise/tick`、`combat/tick` 同一套做法），再由 `Kalevala.Character.Foreman`
+的 `%Event{}` 分支分发。
+
+- `Kantele.World.ForgingTimeout` —— 排程原语：`schedule/4`、`cancel/1`、`valid?/2`
+  + 四个 LPC 常量（30 / 240 / 300 / 4）。
+- `Kantele.Character.ForgingTimeoutEvent` —— 两个处理器：
+  `forge/quote_timeout`（莫邪进程）、`forge/waiting`（干将进程）。
+- `Kantele.Character.GanjiangEvent.step/2` —— `forge/step`，`prepare` 与 `1..6` 七跳。
+
+**取消机制用令牌而非 ref**：每次排程往会话写 `:timer_token`，事件带上排程时的令牌，
+触发时与会话不符即视为已被新排程取代。这样跨进程（莫邪排程、玩家进程 `answer`）
+也能取消 —— LPC 的 `remove_call_out` 在跨进程场景下本来也做不到。
+
+**时间缩放**：`config :ex_venture, :forge_timing_scale`（生产 1，测试 0）。
+
+### 时序表（LPC 秒数）
+
+| 跳 | 间隔 | 内容 | 会话变化 |
+|---|---|---|---|
+| `start_work` | — | 材料入干将背包 | `status="waiting"`，`waited=4` |
+| `prepare` | 1 | 开炉、抛料入炉 | — |
+| `step 1` | 5 | 炉火转绿 + 请「注内力」 | `can_help=true`（玩家在场时） |
+| `step 2` | 6 | 炉火转红 | `can_help=false` ← **窗口只有这 6 秒** |
+| `step 3` | 3 | 锤打成型 | — |
+| `step 4` | 5 | 淬火 | — |
+| `step 5` | 3 | 抽出成品 | — |
+| `step 6` | 2 | 起名提示 + `tell_rules`（私发 `forge/notice`） | `status="inputing"`，排 240s |
+| `waiting` | 240 / 之后每 300 | 催prompt（在场）/「人怎么跑掉了」（不在场） | `waited` 递减 |
+| 超时 | — | **销毁成品、不退款** | 会话清空 |
+
+### 顺带修掉两个「整条链走不通」的 bug
+
+1. **`find_ganjiang` 的 id 比对错了**（S1c 起就存在）：`ForgingAnswer` 拿裸
+   `"ganjiang"` 比对房间角色的 `:id`，而真实 id 是 `signature:ganjiang`
+   —— 生产路径**永远找不到干将**，`answer` 之后一律走「我夫君呢？」退款，
+   S2/S3 整条链根本到不了。测试因为注入了 `ganjiang_pid` 没暴露。
+   现统一用 `Forging.ganjiang_id/0`、`Forging.moye_id/0`。
+2. **`forge/answer` 注册到了不存在的模块**：`events.ex` 里 `module(ForgingAnswer)`
+   在 `scope(Kantele.Character)` 下展开成 `Kantele.Character.ForgingAnswer`，
+   而模块实际叫 `Kantele.World.ForgingAnswer` —— 路由到 `apply/3` 会
+   `UndefinedFunctionError`。已把该模块移入 `Kantele.Character` 命名空间
+   （`lib/kantele/character/events/forging_answer.ex`），与 `GanjiangEvent` 一致。
+   `ForgingTimeout` 同样拆成「World 原语 + Character 事件」两层。
+
+### 验收
+
+- `forging_timeout_event_test.exs` 8/0（报价超时在场退款 / 不在场掉地上 / 已付款
+  连定金一起退 / 令牌过期不动作 / 催促并重排 / 归零销毁不退款 / 玩家进程消失 /
+  玩家离开房间只提醒）
+- `ganjiang_event_test.exs` 6/0（`start_work` 状态、七段文案按序、`$N` 留 `{npc}`、
+  `can_help` 开关、step 6 进 `inputing` 并排等待、莫邪/玩家缺席的两条中止分支、
+  陈旧令牌不生效）
+- `forging_answer_test.exs` 新增「房间快照里能找到 `signature:ganjiang`」回归
+
 
 ## 7. 铁律
 - 未经明确许可**不 commit**。

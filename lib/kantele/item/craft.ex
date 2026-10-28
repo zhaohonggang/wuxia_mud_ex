@@ -6,7 +6,8 @@ defmodule Kantele.Item.Craft do
   - `weapon_level/1`: 按 `owner` 累积 & `/100` clamps 到等级阈值；满级 + magic → ULTRA
   - `armor_level/1`: 防御等级（暂恒 0）
   - `is_equiped_weapon?/1` / `is_unarmed_weapon?/1`: 武器/空手判型
-  - `apply_damage/1` / `apply_armor/1`: 攻/防结算
+  - `apply_damage/3` / `apply_armor/2`: 攻/防结算（`apply_armor` 恒等于 point，
+    见该函数文档里 LPC 未初始化变量的说明）
   - `chinese_s/1`: 魔力属性中文（cold/fire/magic/lighting）
   - `item_owner/2`: 由物品 id 解析主人（LPC 由文件名解析）
 
@@ -43,18 +44,43 @@ defmodule Kantele.Item.Craft do
   @doc "item_long 是否走武器长描述"
   def item_long?(meta), do: is_equiped_weapon?(meta) or is_unarmed_weapon?(meta)
 
-  @doc "apply_damage：按等级平方/81 加权 point，再加圣化 bless*2"
+  @doc """
+  apply_damage：按等级平方/81 加权 point，再加圣化 bless*2
+
+  LPC `feature/itemmake.c` L309-326：
+
+      p = query("point") / 2;
+      d = 1.0 * (lvl * lvl) / (9 * 9) * p + query("bless") * 2;
+      return d + p;
+
+  `d` 是 `int`，浮点结果赋给它时是**截断**（C 的 `(int)` 语义），不是四舍五入
+  —— 新建武器（`lvl = 1`、`point = 100`）算出 `1/81*50 = 0.617`，LPC 得 0，
+  本函数必须同样得 0，否则凭空多出 1 点伤害。
+  """
   def apply_damage(level, point, bless) do
     lvl = Level.rank(level)
     p = div(point, 2)
-    d = trunc(Float.round(1.0 * (lvl * lvl) / (9 * 9) * p)) + bless * 2
+    d = trunc(1.0 * (lvl * lvl) / (9 * 9) * p) + bless * 2
     d + p
   end
 
-  @doc "apply_armor：point + bless*2（LPC 简化算法）"
-  def apply_armor(point, bless) do
-    point + bless * 2
-  end
+  @doc """
+  apply_armor：返回值恒等于 `point`（LPC 原式如此）
+
+  LPC `feature/itemmake.c` L329-339：
+
+      int d;                     // ← 未初始化
+      int p;
+      defense_lvl = armor_level();
+      p = query("point");
+      if (d > p * 3 / 2) d = p * 3 / 2 + query("bless") * 2;
+      return d + p;
+
+  `d` 从未赋值，LPC 里局部 int 默认 0，于是 `0 > p*3/2` 恒假，`bless` 那一行
+  是**死代码**，函数恒返回 `0 + p = point`。圣化次数（bless）对防御值没有任何
+  影响 —— 这是 LPC 侧的真实行为，照搬。
+  """
+  def apply_armor(point, _bless \\ 0), do: point
 
   @doc "魔力属性中文 (chinese_s)：cold/fire/magic/lighting"
   def chinese_s(nil), do: "无"

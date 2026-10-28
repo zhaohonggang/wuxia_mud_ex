@@ -112,6 +112,76 @@ defmodule Kantele.World.Forging do
   @doc "取某 ctype 的类型表条目（S3 生成物品时用）。"
   def type_entry(ctype), do: Map.get(@type_table, ctype)
 
+  # ---- 生成物攻防属性（S3 finish，对应 moye.c L22-92 的 ITEM_PROP 列） ----
+  #
+  # moye.c 的类型表第 6 项（`#define ITEM_PROP 5`）是「特殊变量」：要么是 0，
+  # 要么是一张 `armor_prop` mapping。ganjiang.c 落盘时（L1070-1073）：
+  #
+  #     if (!info["prop"])  set("armor_prop/armor", apply_armor());
+  #     else                prop_segment(info["prop"], "");   // 逐键展开
+  #
+  # 所以「无 prop」的类型只拿一条 `armor_prop/armor`，「有 prop」的类型拿整张表
+  # （表里自己带 `armor` 键）。两边的 `apply_armor()` / `apply_damage()` 都是
+  # **在生成文件 create() 时求值**的，参数只取决于 point 与 owner，故这里直接算成
+  # 整数（`Craft.apply_armor/2` 恒等于 point，`Craft.apply_damage/3` 在 owner 为空
+  # 时为 point/2）。
+  #
+  # 注意 `armor_prop/armor` 在本仓走 `%Meta{armor: ...}`（快照 `:armor` →
+  # `applies[:armor]`），其余键走 `%Meta{armor_prop: ...}`（快照 `:prop` 并入
+  # `applies`），两者最终落点一致，都是 LPC 的 `query_temp("apply/...")`。
+
+  # 护腕的 15 个技能键（moye.c L51-66；源文件里 `"whip"` 写了两遍，mapping 字面量
+  # 后写覆盖前写，去重后仍是这 15 个）。
+  @wrist_skills ~w(sword staff blade club hammer whip dagger stick unarmed claw cuff hand strike finger parry)a
+
+  @doc """
+  防具的有效防御值（LPC `apply_armor()` 的求值结果）。
+
+  - 铁掌 / 指套：LPC 的 prop 表把 `armor` 写死成 `"10"`，不吃 point
+  - 其余（护甲/战衣/靴子/头盔/腰带/护腕）：`apply_armor()` = point
+  """
+  def armor_value("铁掌", _point), do: 10
+  def armor_value("指套", _point), do: 10
+  def armor_value(_ctype, point) when is_integer(point), do: point
+  def armor_value(_ctype, _point), do: 0
+
+  @doc """
+  防具的额外 `armor_prop` 表（不含 `armor` 键，那个走 `armor_value/2`）。
+
+  无 prop 的类型（战衣/头盔/腰带）返回 nil —— LPC 只给它们写一条
+  `armor_prop/armor`。
+  """
+  def armor_prop("护甲", point) when is_integer(point), do: %{parry: div(point, 15) + 1}
+  def armor_prop("靴子", point) when is_integer(point), do: %{dodge: div(point, 10) + 1}
+
+  def armor_prop("护腕", point) when is_integer(point),
+    do: Map.new(@wrist_skills, fn skill -> {skill, div(point, 6) + 1} end)
+
+  def armor_prop("铁掌", point) when is_integer(point),
+    do: %{cuff: 10, strike: 10, unarmed: 10, unarmed_damage: unarmed_damage(point)}
+
+  def armor_prop("指套", point) when is_integer(point),
+    do: %{claw: 10, finger: 10, hand: 10, unarmed_damage: unarmed_damage(point)}
+
+  def armor_prop(_ctype, _point), do: nil
+
+  @doc """
+  武器的伤害值（LPC `init_<stype>(apply_damage())`）。
+
+  `apply_damage()` 取 `weapon_level()`，而新打造的物品 `owner` 还是空表 →
+  等级 0 → 分档 1 → `d = 1/81 * point/2` 截断为 0，只剩 `point / 2`。
+  本仓没有移植「击杀累积 owner → 武器升级」这条链（`Meta.owner` 存的是主人
+  姓名而非 LPC 的 `id => exp` 映射），故生成时按 owner 为空求值，武器不会随
+  使用变强。
+  """
+  def weapon_damage(_ctype, point) when is_integer(point),
+    do: Kantele.Item.Craft.apply_damage(0, point, 0)
+
+  def weapon_damage(_ctype, _point), do: 0
+
+  # LPC `apply_damage()`，铁掌/指套的 `armor_prop/unarmed_damage` 用它
+  defp unarmed_damage(point), do: weapon_damage("铁掌", point)
+
   # ---- 乾坤袋（S4 边界分支，对应 LPC moye.c do_show L213 / accept_object L328-366 / L433） ----
 
   # 乾坤石与如意乾坤袋的 item_id。LPC 用 `query("id") == "qiankun stone"` 判定；
@@ -128,6 +198,21 @@ defmodule Kantele.World.Forging do
   @doc "是否乾坤石（LPC `ob->query(\"id\") == \"qiankun stone\"`）"
   def qiankun_stone?(%{id: id}), do: id == @qiankun_stone_id
   def qiankun_stone?(_), do: false
+
+  # ---- 锻造两位 NPC 的完整角色 id ----
+  #
+  # LPC 用 `present("ganjiang", environment())` 按**别名**找对象；本仓房间角色列表
+  # 里 `:id` 是带 zone 前缀的完整 id（`signature:ganjiang`），不是裸名。
+  # 早先 `ForgingAnswer.find_ganjiang/2` 拿裸 `"ganjiang"` 比对，永远匹配不上，
+  # 于是生产路径每次都走「我夫君呢？」退款分支 —— 整条锻造链根本到不了干将。
+  @moye_id "signature:moye"
+  @ganjiang_id "signature:ganjiang"
+
+  @doc "莫邪完整角色 id"
+  def moye_id, do: @moye_id
+
+  @doc "干将完整角色 id"
+  def ganjiang_id, do: @ganjiang_id
 
   @doc """
   玩家当前背包扩展格总数（LPC `me->query("storage_bag")`）。

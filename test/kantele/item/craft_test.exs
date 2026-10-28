@@ -349,4 +349,28 @@ defmodule Kantele.Item.CraftTest do
       assert get_in(result, [:weight]) == 12
     end
   end
+
+  # LPC `feature/itemmake.c` L309-339。这两条公式的「怪」处都是真实行为：
+  # apply_armor 的 `d` 从未赋值（恒 0），apply_damage 的浮点结果被赋给 int（截断）。
+  describe "apply_armor / apply_damage（LPC 原式）" do
+    test "apply_armor 恒等于 point，bless 是死代码" do
+      assert Craft.apply_armor(80) == 80
+      assert Craft.apply_armor(80, 0) == 80
+      assert Craft.apply_armor(80, 5) == 80
+      assert Craft.apply_armor(0, 9) == 0
+    end
+
+    test "apply_damage 新建武器（等级 0）＝ point/2，且小数被截断" do
+      # point=100 → p=50, lvl=1 → d = 1/81*50 = 0.617 → (int) 0
+      assert Craft.apply_damage(0, 100, 0) == 50
+      # point=80 → p=40, d = 40/81 = 0.49 → 0
+      assert Craft.apply_damage(0, 80, 0) == 40
+    end
+
+    test "apply_damage 满级（50000）＝ p + p，圣化另加 bless*2" do
+      # lvl = 9 → d = 81/81 * 50 = 50 → 50 + 50
+      assert Craft.apply_damage(50_000, 100, 0) == 100
+      assert Craft.apply_damage(50_000, 100, 3) == 106
+    end
+  end
 end

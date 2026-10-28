@@ -45,3 +45,7 @@ config :stein_storage, backend: :test
 # 锻造模板落盘目录：指到 tmp 下，避免测试把 `data/forge/*.json` 写进仓库。
 # 具体用例需要真落盘时用 `Application.put_env(:ex_venture, :forge_dir, ...)` 覆盖。
 config :ex_venture, :forge_dir, "tmp/forge_test"
+
+# 锻造定时器：测试里全部立即投递（`assert_receive` 拿到事件后手动驱动下一跳），
+# 否则 `注内力` 的 6 秒窗口、报价 30 秒超时这些用例会真等上几分钟。
+config :ex_venture, :forge_timing_scale, 0

@@ -75,6 +75,8 @@ defmodule Kantele.Character.Events do
       event("xiaoer/process_give", :xiaoer_process_give)
       event("forge/accept", :forge_accept)
       event("forge/refund", :forge_refund)
+      # 干将的私有提示（`tell_rules` 的 tell_object）
+      event("forge/notice", :forge_notice)
     end
 
     module(MirrorEvent) do
@@ -326,10 +328,19 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(GanjiangEvent) do
       event("forge/handoff", :handoff)
+      # 锻造链分步定时（LPC `call_out("work_step_N", ...)`）
+      event("forge/step", :step)
     end
 
     module(ForgingAnswer) do
       event("forge/answer", :answer)
+    end
+
+    module(ForgingTimeoutEvent) do
+      # LPC `moye.c time_out`：报价 30 秒未付款 → 退料退款
+      event("forge/quote_timeout", :quote_timeout)
+      # LPC `ganjiang.c waiting`：起名阶段超时 → 催prompt / 销毁不退款
+      event("forge/waiting", :waiting)
     end
 
     module(NpcAskEvent) do

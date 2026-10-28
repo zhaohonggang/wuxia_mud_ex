@@ -44,6 +44,10 @@ config :porcelain, driver: Porcelain.Driver.Basic
 # 启动时会把该目录下所有 `*.json` 灌回 `Kantele.World.Items`。
 config :ex_venture, :forge_dir, "data/forge"
 
+# 锻造链 `call_out` 定时的秒数缩放（`Kantele.World.ForgingTimeout`）。
+# 1 = 真实时间（开炉 1s、注内力窗口 6s、报价超时 30s、起名等待 240s…）。
+config :ex_venture, :forge_timing_scale, 1
+
 if File.exists?("config/#{config_env()}.exs") do
   import_config "#{config_env()}.exs"
 end

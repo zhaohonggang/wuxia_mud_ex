@@ -9,10 +9,14 @@ defmodule Kantele.Character.ZhuneiliCommand do
       if (status != "waiting")      → "没你什么业务。"
       if (!can_help)                → "现在不是你帮忙的时候！"
 
-  LPC 判的是玩家 temp `item/status == "waiting"`（`start_work` 置位）。本仓把
-  干将的 6 段 vision 合并成即时广播，`waiting` 与 `inputing`（起名阶段）同时
-  成立，所以两个状态都放行 —— 真正的窗口判据是 `can_help`（LPC 在
-  `work_step_1` 置位、`work_step_2` 删除）。
+  LPC 判的是玩家 temp `item/status == "waiting"`（`start_work` 置位，`work_step_6`
+  才改成 `inputing`）。本仓的干将 6 段 vision 也按 LPC 的 `call_out` 时序分步
+  （见 `Kantele.Character.GanjiangEvent`），所以这里可以照抄精确状态：
+
+  - `waiting` —— 开炉到锤打淬火这段时间（`work_step_1`..`work_step_6` 之间）
+  - `can_help` —— 只有 `work_step_1` 到 `work_step_2` 之间的 **6 秒**为真
+
+  两者同时成立才能注入内力，也就是「炉火转绿」那句提示出现后的 6 秒窗口。
 
   ## 体力链（**注意失败是有代价的**）
 
@@ -68,7 +72,7 @@ defmodule Kantele.Character.ZhuneiliCommand do
       is_nil(session) ->
         fail(conn, "没你什么业务。\n")
 
-      session.status not in ["waiting", "inputing"] ->
+      session.status != "waiting" ->
         fail(conn, "没你什么业务。\n")
 
       not Map.get(session, :can_help, false) ->

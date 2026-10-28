@@ -108,6 +108,12 @@ defmodule Kantele.World.NpcActionHandlers do
     `win_*`（战斗死亡钩子属红区）、社交动作 heng/grin/nod/shake
     （`emoted.c` 无定义，原世界即静默）。
 
+  - `duihuan` / `list` 二连（浮云，`changan:qunyulou2`，门贡商人）：
+    `Kantele.World.NpcActions.Gongxian`，`fuyun.c` 的 `do_list` / `do_duihuan`
+    整链落地——16 项兑换表（编号/门贡单价照抄）、`list` 列宽逐字符对齐、
+    门贡扣减 + 发物。乾坤石（编号 7，1500 门贡）由此获得 LPC 里唯一的可重复
+    来源；其余 13 种物品本仓世界数据未落库，走「没货」分支且不扣门贡。
+
   - `gu` / `dapi` / `cuihuo` / `repair` / `xiuli` 五连（襄阳铁匠，
     `xiangyang:tiejiangpu`）：`Kantele.World.NpcActions.Smith`，
     LPC `/inherit/char/smith.c` 打工链完整落地——`is_busy` 守卫、
@@ -180,6 +186,10 @@ defmodule Kantele.World.NpcActionHandlers do
     "city:kedian" => %{
       "exchange" => {Kantele.World.NpcActions.Exchange, :run},
       "duihuan" => {Kantele.World.NpcActions.Exchange, :run}
+    },
+    "changan:qunyulou2" => %{
+      "duihuan" => {Kantele.World.NpcActions.Gongxian, :run},
+      "list" => {Kantele.World.NpcActions.Gongxian, :run}
     },
     "city:zhujuan" => %{
       "choose" => {Kantele.World.NpcActions.Choose, :run}
