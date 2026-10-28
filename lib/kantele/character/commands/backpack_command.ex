@@ -378,11 +378,12 @@ defmodule Kantele.Character.BackpackCommand do
   end
 
   # {是否解锁, storage_bag 扩展格之和}
+  #
+  # 走 `Forging.instance_extra/1`：实例 meta `"storage_bag"` 覆盖定义 meta，
+  # 这样乾坤袋升级（+5）只作用于该玩家的那件背包实例，不改全局物品定义。
   defp bag_state(conn) do
     Enum.reduce(conn.character.inventory, {false, 0}, fn instance, {found, acc} ->
-      item = safe_item(instance)
-
-      case item && item.meta.storage_bag do
+      case Kantele.World.Forging.instance_extra(instance) do
         n when is_integer(n) and n > 0 -> {true, acc + n}
         _ -> {found, acc}
       end

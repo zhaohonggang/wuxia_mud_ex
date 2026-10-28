@@ -55,7 +55,8 @@ defmodule Kantele.Character.SkillCommandTest do
 
     assert text =~ "关于「sword」的详细属性"
     assert text =~ "技能等级：  30"
-    assert text =~ "有效等级：  30"
+    # 未映射特技时有效等级 = div(30,2) = 15（LPC 基本技能折半）
+    assert text =~ "有效等级：  15"
   end
 
   test "映射特技参与有效等级计算" do
@@ -67,7 +68,8 @@ defmodule Kantele.Character.SkillCommandTest do
 
     text = run(p, %{"skill_name" => "force"}) |> output_text()
 
-    assert text =~ "有效等级：  30"
+    # div(10,2) + 20 = 25（基本折半 + 特技全值）
+    assert text =~ "有效等级：  25"
     assert text =~ "映射特技：  liuxi-neigong（20级）"
   end
 

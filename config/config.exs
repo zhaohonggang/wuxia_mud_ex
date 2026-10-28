@@ -40,6 +40,10 @@ config :phoenix, :json_library, Jason
 
 config :porcelain, driver: Porcelain.Driver.Basic
 
+# 自定义锻造物品模板的落盘目录（`Kantele.World.ForgeTemplates`）。
+# 启动时会把该目录下所有 `*.json` 灌回 `Kantele.World.Items`。
+config :ex_venture, :forge_dir, "data/forge"
+
 if File.exists?("config/#{config_env()}.exs") do
   import_config "#{config_env()}.exs"
 end

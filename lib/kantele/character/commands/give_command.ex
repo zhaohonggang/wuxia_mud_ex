@@ -16,7 +16,9 @@ defmodule Kantele.Character.GiveCommand do
 
   use Kalevala.Character.Command
 
+  alias Kantele.Admin.Access
   alias Kantele.Character.CommandView
+  alias Kantele.World.Forging
   alias Kantele.World.Items
   alias Kantele.World.MirrorDaemon
 
@@ -105,13 +107,17 @@ defmodule Kantele.Character.GiveCommand do
           handle_task_give(conn, target, item_instance, item)
         else
           # 普通赠送走 room/give 事件
+          # bag_extra：玩家背包扩展格总数，供莫邪判定乾坤石走「升级」还是「报价」
+          # wizard：巫师打造只收 1 文（LPC moye.c wizardp 分支）
           conn
           |> event("room/give", %{
             target: target,
             item_instance: item_instance,
             item_name: item.name,
             from_id: conn.character.id,
-            from_name: conn.character.name
+            from_name: conn.character.name,
+            bag_extra: Forging.bag_extra(conn.character),
+            wizard: Access.wizardp(conn.character)
           })
           |> assign(:prompt, false)
         end

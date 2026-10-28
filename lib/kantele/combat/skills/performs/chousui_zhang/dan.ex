@@ -24,6 +24,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
   alias Kantele.Combat.Messages
   alias Kantele.Combat.Performs
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.ConditionEvent
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
@@ -209,7 +210,8 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
         pos: pos,
         damage: damage,
         an: vitals.max_neili + div(vitals.neili, 4),
-        ap: Stats.effective(stats, "strike") + Stats.skill(stats, "poison"),
+        ap: Stats.effective(stats, "strike", Combat.skill_applies(character)) +
+          Stats.skill(stats, "poison"),
         userp: true
       }
     })
@@ -266,6 +268,7 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
     rng = Map.get(data, :rng, &:rand.uniform/1)
     vitals = character.meta.vitals
     stats = character.meta.stats
+    applies = Combat.skill_applies(character)
 
     bindings = [n1: attacker.name, n2: character.name]
 
@@ -287,9 +290,10 @@ defmodule Kantele.Combat.Skills.Performs.ChousuiZhang.Dan do
 
         dp =
           if Map.get(data, :userp, true) do
-            Stats.effective(stats, "dodge") + Stats.effective(stats, "martial-cognize")
+            Stats.effective(stats, "dodge", applies) +
+              Stats.effective(stats, "martial-cognize", applies)
           else
-            Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
+            Stats.effective(stats, "dodge", applies) + Stats.effective(stats, "parry", applies)
           end
 
         if Engine.rand(rng, max(ap, 1)) + div(ap, 2) > dp do

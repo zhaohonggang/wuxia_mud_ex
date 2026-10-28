@@ -459,11 +459,12 @@ defmodule Kantele.World.RoomActions.TerrainMove do
   end
 
   defp dodge(conn, mode) do
-    stats = current(conn).meta.stats
+    character = current(conn)
+    stats = character.meta.stats
 
     case mode do
       :raw -> Stats.skill(stats, "dodge")
-      :effective -> Stats.effective(stats, "dodge")
+      :effective -> Stats.effective(stats, "dodge", Combat.skill_applies(character))
     end
   end
 

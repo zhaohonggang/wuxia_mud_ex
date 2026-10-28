@@ -43,7 +43,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.Chan do
         data: %{
           attacker: ref(character),
           perform_id: @perform,
-          ap: Stats.effective(stats, "whip"),
+          ap: Stats.effective(stats, "whip", Combat.skill_applies(character)),
           level: Stats.skill(stats, "riyue-bian")
         }
       })
@@ -121,7 +121,8 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.Chan do
     level = Map.get(data, :level, 0)
     bindings = [n1: attacker.name, n2: character.name]
 
-    if div(ap, 2) + Engine.rand(rng, ap) > Stats.effective(character.meta.stats, "parry") do
+    if div(ap, 2) + Engine.rand(rng, ap) >
+           Stats.effective(character.meta.stats, "parry", Combat.skill_applies(character)) do
       combat = Combat.start_busy(character.meta.combat, div(level, 20) + 2)
       character = %{character | meta: %{character.meta | combat: combat}}
       Performs.feedback(attacker, 0, 1)

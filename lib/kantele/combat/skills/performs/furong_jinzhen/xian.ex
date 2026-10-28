@@ -20,6 +20,7 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
 
   alias Kalevala.Event
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Combat
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
   alias Kantele.Combat.Broadcast
@@ -42,7 +43,8 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
          :ok <- level(stats),
          :ok <- force(stats),
          :ok <- neili(character) do
-      ap = Stats.effective(stats, "force") + Stats.effective(stats, "throwing")
+      applies = Combat.skill_applies(character)
+      ap = Stats.effective(stats, "force", applies) + Stats.effective(stats, "throwing", applies)
 
       send(target.pid, %Event{
         from_pid: self(),
@@ -139,7 +141,8 @@ defmodule Kantele.Combat.Skills.Performs.FurongJinzhen.Xian do
 
     bindings = [n1: attacker.name, n2: character.name]
 
-    dp = Stats.effective(stats, "dodge") + Stats.effective(stats, "parry")
+    applies = Combat.skill_applies(character)
+    dp = Stats.effective(stats, "dodge", applies) + Stats.effective(stats, "parry", applies)
 
     if div(ap, 2) + Engine.rand(rng, ap) > dp do
       damage = div(ap, 5) + Engine.rand(rng, max(div(ap, 5), 1))

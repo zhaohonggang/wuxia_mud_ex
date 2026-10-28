@@ -36,7 +36,7 @@ defmodule Kantele.Character.CutCommand do
           weapon_skill_type: weapon_skill_type(conn.character),
           weapon_name: weapon_name(conn.character),
           skills: conn.character.meta.stats.skills,
-          force: Stats.effective(conn.character.meta.stats, "force")
+          force: Stats.effective(conn.character.meta.stats, "force", Combat.skill_applies(conn.character))
         })
         |> assign(:prompt, false)
     end

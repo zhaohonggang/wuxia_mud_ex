@@ -283,7 +283,8 @@ defmodule Kantele.Combat.Performs.Simple do
   defp eval(value, _ctx, _rng) when is_integer(value), do: value
 
   defp eval({:skill, skill_id}, ctx, _rng), do: Stats.skill(ctx.stats, skill_id)
-  defp eval({:effective, skill_id}, ctx, _rng), do: Stats.effective(ctx.stats, skill_id)
+  defp eval({:effective, skill_id}, ctx, _rng),
+    do: Stats.effective(ctx.stats, skill_id, Combat.skill_applies(ctx.character))
 
   defp eval({:add, a, b}, ctx, rng), do: eval(a, ctx, rng) + eval(b, ctx, rng)
   defp eval({:sub, a, b}, ctx, rng), do: eval(a, ctx, rng) - eval(b, ctx, rng)

@@ -164,8 +164,8 @@ defmodule Kantele.Character.CutCommandTest do
       assert [%Event{topic: "room/cut", data: data}] = conn.events
       assert data.weapon_skill_type == "sword"
       assert data.weapon_name == "长剑"
-      # Stats.new() 默认 force 20，Stats.effective 无映射加成
-      assert data.force == 20
+      # Stats.new() 默认 force 20，无映射 → 有效 force = div(20,2) = 10（LPC 折半）
+      assert data.force == 10
     end
   end
 

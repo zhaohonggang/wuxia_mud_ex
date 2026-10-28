@@ -69,6 +69,10 @@ LPC 在莫邪、玩家、干将三个进程各持一份 `item/*` 临时变量。
 
 ### 1.5 物品生成（S3）
 - 新模板 `item_id = "forge:#{owner_id}-#{sid}"`，经 `Kalevala.Cache.put`（ETS，需确认 `Kantele.World.Items` 的 put API）注册，并落盘 `data/forge/<item_id>.json` 以便重启恢复（启动期加载，挂在 loader 或 forge bootstrap）。
+  - **实现（S3 后续）**：落盘/恢复统一走 `Kantele.World.ForgeTemplates`（`encode/1`、`decode/1`、`save/1`、`load_all/1`、`file_name/1`）；启动加载挂在 `Kantele.World.Items.initialize/1`（`Kalevala.Cache` 建表后的 `{:continue, :initialize}` 回调，早于 Kickoff）。
+  - **不能直接用 `Jason.encode!(%Kalevala.World.Item{})`**：该 struct 的 `Jason.Encoder` 走 `Kalevala.Meta.Trim`，而 `Kantele.World.Item.Meta` 的 trim 只留 `:damage`/`:armor`（那是给事件传输裁剪的）。直接落盘会丢 `item_make`/`owner_id`/`owner`/`skill_type`/`unit`/`weight`/`value`/`material`/`messages`，重启后 `discard` 退款失效、自定义文案消失。故改用显式字段编码 + `version`。
+  - **落盘文件名**：`item_id` 里的 `:` 在 Windows 是非法文件名字符（Docker Desktop 绑定挂载会写成私用区 `U+F03A`，仓库里出现过这种文件），`file_name/1` 统一换成 `-`；`id` 仍从 JSON 内容读，不受文件名影响。
+  - **目录可配**：`config :ex_venture, :forge_dir`（默认 `data/forge`；`config/test.exs` 指到 `tmp/forge_test`，避免测试把 JSON 写进仓库）。
 - 字段计算：
   - `type`=weapon/armor，`stype`（sword/blade/…/armor/cloth/…），`unit` ← 类型表（§2）。
   - `weight = material.meta.weight * wscale / 100`。
@@ -127,6 +131,29 @@ LPC 在莫邪、玩家、干将三个进程各持一份 `item/*` 临时变量。
 - `give_event.ex` 加 `kind:"forge"` 分支 + 玩家侧 `forge_accept/2`。
 - **验收**：`forging_accept_test.exs` 10/0（材料估价+记 item_gived、钱币足额枚举 types+answer_type、金额不足拒绝、未交先给拒绝、非材料非钱拒绝、玩家侧 ok:true 移除+ok:false 保留、端到端 GiveEvent.receive 命中 forge、Forging.types_for 全量/剔除/列表/字符串）。
 
+#### S1b 勘误 — 币值单位漏乘 10000（2026-10-28 修正）
+初版 `handle_material` 把 `power_point*2+20` 直接写进 `session.value`，但该值是要跟
+`KItem.currency_amount/1`（单位**文**）比较的。对照 LPC `moye.c`：
+
+```c
+val = ob->query("power_point") * 2 + 20;                       // L377 报价（两黄金）
+message_vision(..."需要" + chinese_number(val) + "两黄金。\n"...);  // L378
+val *= 10000;                                                  // L381 ← 换算成文
+if (wizardp(me)) { ... val = 1; }                              // L382-388
+ob->set("item/value", val);                                    // L389
+```
+
+`ob->value()` 的定义在 `inherit/item/money.c` L6：`query_amount() * base_value`，而
+`clone/money/gold.c` 的 `base_value = 10000`，确实是文。少了这个 `* 10000`，
+实际只收 220 **文**而不是 220 **两黄金**（差 1 万倍），等于白送。
+
+- 修正：`value = price * 10_000`；报价文案仍用 `price`（两黄金）。
+- 顺带补上 LPC L382-388 的**巫师特权**：`wizardp(me)` 时多一句「原来是巫师啊，那么你随便给点好了。」且实收 1 文。
+  巫师标记沿 `give` 事件链下发（`give_command` 用 `Kantele.Admin.Access.wizardp/1` 取值 → `room/give` 的 `wizard:` → `characters/give`），因为莫邪进程看不到玩家角色本体。
+- 连带修正：`session.value` 是文，`forge_customize` 把它写进 `item.meta.value`（LPC `ganjiang.c` L1018 `set("value", info["value"])` 同源），`discard` 退款 `(value*8/10+9999)/10000` 才得出「两黄金」——整条链因此自洽。
+- 测试：`forging_accept_test` 金额断言改为 `2_200_000` 文；新增「巫师 → value=1 + 巫师文案」用例。
+
+
 ### S1c — AnswerCommand 选型 ✅ 已完成（2026-10-27）
 - `lib/kantele/world/forging_answer.ex`（`ForgingAnswer.answer`，对应 LPC `moye.c do_answer` L484-554）：校验 `type ∈ session.types` 且 `type_entry` 存在 → 填 `ctype/stype/unit/point/owner*/wscale/prop`；干将在场→`status=handoff`+发 `forge/handoff`；不在→退材料退钱+清会话+发 `forge/refund`。
 - `answer_command.ex` 扩展 `answer` 动词（`text(:rest)`），活跃会话时经 `room/forge_answer` 转交莫邪；`room.ex` 新增 `ForgeAnswerRequestEvent`；`events.ex` 注册 `forge/answer`(NonPlayerEvents) 与 `forge/refund`(GiveEvent)；`give_event.ex` 玩家侧 `forge_refund/2` 重新入背包。
@@ -142,11 +169,39 @@ LPC 在莫邪、玩家、干将三个进程各持一份 `item/*` 临时变量。
 - 动态模板注册（§1.5）+ 落盘。
 - **验收**：完整走通生成物品且字段正确；未起名拒绝 finish；默认文案兜底。
 
+#### S3 后续 — 持久化可恢复（已完成）
+原实现用 `Jason.encode!(%Kalevala.World.Item{})` 落盘，且**没有任何启动加载**，等于「写了但恢复不了、且写的内容还缺字段」。本次补齐：
+- 新增 `lib/kantele/world/forge_templates.ex`：显式字段编码（保留 `meta` 全量字段）、`decode` 还原 `%Meta{}` 并把 `messages` 键还原成 atom（消费端 `wield_command` 用 `Map.get(messages, :wield)`）、`save` 写盘、`load_all` 容错加载（坏文件跳过 + warning）。
+- `Kantele.World.Items.initialize/1` 调 `load_all/0`，`try/rescue` 兜底（模板坏了不能让物品缓存起不来）。
+- `config :ex_venture, :forge_dir`（dev `data/forge` / test `tmp/forge_test`）；`forge_customize_command_test` 改用临时目录，删除误提交的 `data/forge/forge：player-....json`。
+- **验收**：`forge_templates_test.exs` 9/0（往返保真 / messages atom 键 / 未知键忽略 / save+load_all / 坏文件跳过 / 目录缺失 / 启动钩子 / 目录不可用仍 `:ok`）；`forge_customize_command_test` 13/0 且新增「落盘保留 item_make/owner_id/messages」断言。
+
 ### S4 — 边界：退款/乾坤袋/超时
-- `discard` 退款：`n=(value*8/10+9999)/10000` 金，仅 `item_make && owner_id==玩家`，移除物品、给退款。
-- 乾坤袋：`qiankun stone` 分支 → 背包 +5（需确认角色 `storage_bag` 模型，可能依赖既有背包系统，若缺则标记待定）。
+- `discard` 退款：`n=(value*8/10+9999)/10000` 金，仅 `item_make && owner_id==玩家`，移除物品、给退款。✅ 已完成（#153）
+- 乾坤袋：`qiankun stone` 分支 → 背包 +5。✅ 已完成（见下）
 - time_out：暂不自动触发（偏差，§6）；玩家可 `discard`/重 `give` 取回。
-- **验收**：退款金额、非本人/非自制拒绝、乾坤袋分支（若实现）。
+- **验收**：退款金额、非本人/非自制拒绝、乾坤袋分支。
+
+#### S4 乾坤袋 — 已完成
+LPC 三条路径（`moye.c` `do_show` L213 / `accept_object` L328-366 / 付钱 L433）：
+- `show 乾坤石` → 两段说明（可炼制 500 两黄金 / 可免费升级 +5 格），**不是**估价 → `ShowCommand`。
+- `give 乾坤石`（玩家无背包）→ 报价 `value/60` = 500 两黄金，`status=item_gived`、`qiankun: true`，石头收进莫邪背包 → `ForgingAccept.handle_qiankun/7`。
+- `give 乾坤石`（已有背包）→ 免费 +5 格，**不建会话**；`≥100` → 「已经强化到极限了」。
+  - 偏差：LPC 对 `space == 100` 无分支（掉到函数末尾返回 0），这里按「已到极限」处理。
+- 付足钱 → 给如意乾坤袋（`grant_item_id`），石头 `destruct`（从莫邪背包移除），清会话。
+
+关键实现约束：**本仓没有角色级 `storage_bag` 属性**，扩展格挂在背包**实例** meta 上。
+- 玩家背包格数由 `give_command` 随 `room/give` → `characters/give` 事件带到莫邪进程（`bag_extra`），莫邪据此判定「升级 or 报价」。
+- 升级由**玩家进程**落地（`forge/accept` 回执带 `upgrade_bag: 5`），只写该实例 `meta["storage_bag"]`，
+  绝不改全局物品定义 —— 否则一个玩家的升级会摊到所有人身上。
+- `Forging.instance_extra/1` 统一「实例 meta 覆盖定义 meta」的取值规则，`backpack_command.bag_state/1` 也改走它，
+  这样升级后 `bag`/`store`/`take` 的容量立即生效。
+
+数据（`data/world/signature.ucl`）：新增 `qiankun_stone`（value=30000 → 报价 500 两黄金，别名 `qiankun stone`）
+与 `qiankun_bag`（`storage_bag = 1`）。乾坤石目前**没有刷新点**（无掉落/任务来源），属有意留白。
+
+**验收**：`forging_qiankun_test.exs` 7/0（show 两段说明 / 无背包报价 / 有背包 +5 / 达 100 拒绝 / 付钱给袋+销毁石头 / 玩家侧给袋 / 玩家侧升级且定义不变）；
+`signature_npc_test` 同步物品清单并校验元数据。
 
 ---
 
@@ -169,7 +224,44 @@ LPC 在莫邪、玩家、干将三个进程各持一份 `item/*` 临时变量。
 4. **物品持久化**：LPC 写 `.c` 文件 → ETS 模板 + `data/forge/*.json` 落盘，启动加载。
 5. **货币**：LPC 内部以「文」存储（`val*=10000`）、显示「X 两黄金」。本系统币制以 `Item.is_currency?`/`currency_amount` 为准（实现 S0/S1b 时确认），估价与退款映射到对应币种。
 6. **动词**：`help` 被帮助系统占用，锻造「注内力」改用 `注内力`；`answer` 为未开放 stub 可接管；`show`/`finish`/`discard` 实现时 grep 确认未被占用。
-7. **乾坤袋**：依赖角色背包(`storage_bag`)模型，若本仓库无对应系统则 S4 该支标记待定，不影响主线。
+7. **乾坤袋**：本仓背包系统（`storage_bag` + `bag/store/take`）已具备，S4 该支**已实现**。
+   与 LPC 的差异：LPC 用角色属性 `query("storage_bag")`，本仓用背包实例 meta（见 §3 S4 乾坤袋）；
+   `space == 100` 的 LPC 空分支按「已到极限」处理。乾坤石暂无刷新点。
+
+## 6.5 LPC 对齐复查（2026-10-28，逐条对照源文件后修正）
+
+用户要求「都按照 LPC 来做」，于是把此前只记录、未处理的偏差全部按源文件改掉：
+
+| # | 问题 | LPC 依据 | 处理 |
+|---|---|---|---|
+| 1 | 材料报价漏乘 10000（实收 220 文而非 220 两黄金） | `moye.c` L377-381 `val *= 10000`；`money.c` L6 + `gold.c` `base_value=10000` | ✅ 已修（见 §3 S1b 勘误） |
+| 2 | 巫师打造无折扣 | `moye.c` L382-388 `wizardp(me)` → `val = 1` + 专属台词 | ✅ 已补，标记沿 give 事件链下发 |
+| 3 | 报价用阿拉伯数字 | `moye.c` L240/L356/L379 `chinese_number(val)` | ✅ 新增 `Kantele.Util.ChineseNumber`（逐分支移植 `chinesed.c`），并让 `Kantele.Economy.Money` 也复用它 |
+| 4 | `注内力` 失败无代价 | `ganjiang.c` `do_help` L324-352：逐项扣、逐项判，失败把该项**归零**（jing→0 / qi→0 / neili→0），已扣的 jing/qi 不退 | ✅ 已按原语义重写 `ZhuneiliCommand`，文案也用原文 |
+| 5 | `注内力` 门控文案 | `do_help` L313-323：`没你什么业务。` / `现在不是你帮忙的时候！` | ✅ 已改（status 放行 `waiting` 与 `inputing`，见下注） |
+| 6 | `Stats.effective/2` 未折半 | `feature/skill.c query_skill(skill)`：`apply + skills[skill]/2 + skills[map[skill]]` | ✅ 改为 `div(skills[usage],2) + skills[special] + apply_of(applies)`，并新增可选 `applies` 参数 |
+| 7 | 6 段锻造 vision 从未送达玩家 | LPC `message_vision` 是房间广播 | ✅ `ganjiang_event` 改走 `Helpers.broadcast_vision/4`（原用 `Room.message_vision/3`，该函数发 `{:vision_message, ...}` 而角色进程只处理 `{:room_message, ...}`，等于扔进黑洞） |
+
+**关于 #5 的状态名**：LPC 判的是玩家 temp `item/status == "waiting"`。本仓把干将
+6 段 vision 合并成即时广播，`waiting` 与 `inputing`（起名阶段）同时成立，所以两者
+都放行；真正的窗口判据是 `can_help`（LPC 在 `work_step_1` 置位、`work_step_2` 删除）。
+
+**关于 #6 的 `apply` 部分**：`effective/3` 新增可选 `applies` 参数，并新增
+`Kantele.Character.Combat.skill_applies/1`（安全取值：角色无 `combat` 时返回 `%{}`）。
+全部 21 个调用点已接线，装备 `armor_prop`（如护腕加各兵器技能）现在会计入有效等级：
+
+- 命令：`cut` / `jingzuo` / `skill` / `skills` / `注内力`
+- 事件：`exercise` / `respirate` / `jingzuo`
+- 战斗：`performs/simple`（`{:effective, id}` 表达式）、`chousui_zhang/dan`、
+  `furong_jinzhen/xian`、`riyue_bian/chan`、`riyue_bian/he`
+- 地形：`terrain_move`（eyutan 轻功阈值）
+
+**连带影响**（折半后必须同步的既有断言，全部按 LPC 语义改为新值）：
+`skills_command_test`（有效 75→45）、`skill_command_test`（30→15、30→25）、
+`cut_command_test`（force 20→10）、`furong_jinzhen_test`（ap 180→90）、
+`riyue_bian_test`（ap 200→150、240→180）、`room_actions_terrain_move_test`
+（eyutan 轻功阈值 dodge 200/100 → 260/240，因为判据是有效等级）。
+新增 `stats_effective_test`（11 例）锁住 `effective/3` 与 `skill_applies/1` 的语义。
 
 ## 7. 铁律
 - 未经明确许可**不 commit**。

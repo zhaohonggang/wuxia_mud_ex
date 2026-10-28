@@ -31,7 +31,28 @@ defmodule Kantele.World.SignatureNpcTest do
         |> Enum.filter(&String.starts_with?(&1, "signature:"))
         |> Enum.sort()
 
-      assert items == ["signature:hantie", "signature:jinggang", "signature:lingpai"]
+      assert items == [
+               "signature:hantie",
+               "signature:jinggang",
+               "signature:lingpai",
+               "signature:qiankun_bag",
+               "signature:qiankun_stone"
+             ]
+    end
+
+    test "乾坤石 / 如意乾坤袋 元数据（S4 乾坤袋分支的数据前提）", %{world: world} do
+      stone = Enum.find(world.items, &(&1.id == "signature:qiankun_stone"))
+      bag = Enum.find(world.items, &(&1.id == "signature:qiankun_bag"))
+
+      assert stone, "乾坤石未加载"
+      assert bag, "如意乾坤袋未加载"
+
+      # 报价取 value/60 = 500 两黄金（对应 do_show 的「五百两黄金」）
+      assert stone.meta.value == 30_000
+      assert "qiankun stone" in stone.meta.aliases
+
+      # storage_bag=1 解锁 bag/store/take；升级只改实例 meta，不动这条定义
+      assert bag.meta.storage_bag == 1
     end
 
     test "六位特色 NPC 均定义在区角色表", %{world: world} do

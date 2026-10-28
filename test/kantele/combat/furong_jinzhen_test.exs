@@ -151,7 +151,8 @@ defmodule Kantele.Combat.FurongJinzhenTest do
         topic: "combat/perform-incoming",
         data: %{
           perform_id: "furong-jinzhen/xian",
-          ap: 180,
+          # ap = effective(force) + effective(throwing) = div(120,2) + div(60,2) = 90
+          ap: 90,
           level: 80,
           weapon_name: "飞针",
           unit: "枚",

@@ -8,6 +8,7 @@ defmodule Kantele.Character.SkillCommand do
 
   use Kalevala.Character.Command
 
+  alias Kantele.Character.Combat
   alias Kantele.Character.CommandView
   alias Kantele.Character.Stats
 
@@ -16,7 +17,7 @@ defmodule Kantele.Character.SkillCommand do
     stats = character.meta.stats
     level = Stats.skill(stats, skill_name)
     special = Stats.mapped(stats, skill_name)
-    effective = Stats.effective(stats, skill_name)
+    effective = Stats.effective(stats, skill_name, Combat.skill_applies(character))
 
     lines = [
       "关于「#{skill_name}」的详细属性：\n",

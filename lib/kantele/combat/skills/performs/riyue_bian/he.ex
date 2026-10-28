@@ -49,7 +49,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.He do
         data: %{
           attacker: ref(character),
           perform_id: @perform,
-          ap: Stats.effective(stats, "whip")
+          ap: Stats.effective(stats, "whip", Combat.skill_applies(character))
         }
       })
 
@@ -118,7 +118,7 @@ defmodule Kantele.Combat.Skills.Performs.RiyueBian.He do
     bindings = [n1: attacker.name, n2: character.name]
     stats = character.meta.stats
 
-    dp = Stats.effective(stats, "parry")
+    dp = Stats.effective(stats, "parry", Combat.skill_applies(character))
 
     {attack_time, count, hit} =
       if div(ap, 2) + Engine.rand(rng, ap * 2) > dp do

@@ -62,9 +62,11 @@ defmodule Kantele.Character.AnswerCommandTest do
       assert output_text(conn) =~ "回答什么"
     end
 
-    test "有参数时显示暂未开放" do
+    test "有参数但无 forge 议价会话时显示暂未开放" do
+      # S1c 之后路由把参数放进 "rest"（`parse("answer", :run, fn c -> c |> optional(empty() |> spaces() |> text(:rest)) end)`）；
+      # 只有处于 Forging status=="answer_type" 时才转交莫邪，否则走原 stub。
       p = player()
-      conn = AnswerCommand.run(build_conn(p), %{"message" => "好的"})
+      conn = AnswerCommand.run(build_conn(p), %{"rest" => "好的"})
       assert output_text(conn) =~ "暂未开放"
     end
 

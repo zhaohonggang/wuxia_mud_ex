@@ -125,61 +125,12 @@ defmodule Kantele.Economy.Money do
     chinese(count) <> unit_of(denom)
   end
 
-  @digits ~w(零 一 二 三 四 五 六 七 八 九)
-
-  defp chinese(0), do: "零"
-
-  defp chinese(n) when n < 10_000, do: group(n)
-
-  defp chinese(n) when n < 100_000_000 do
-    high = div(n, 10_000)
-    low = rem(n, 10_000)
-
-    cond do
-      low == 0 -> group(high) <> "万"
-      low < 1_000 -> group(high) <> "万零" <> group(low)
-      true -> group(high) <> "万" <> group(low)
-    end
-  end
-
-  # 超过亿级没有中文读法的必要（钱数是有限资源），退化为阿拉伯数字
-  defp chinese(n), do: Integer.to_string(n)
-
-  # 1..9999 的中文读法（10..19 读「十X」而不是「一十X」，与 LPC chinese_number 一致）
-  defp group(n) do
-    digits = Integer.digits(n)
-    count = length(digits)
-
-    {parts, _state} =
-      digits
-      |> Enum.with_index()
-      |> Enum.reduce({[], :start}, fn {digit, index}, {acc, state} ->
-        position = count - index
-
-        cond do
-          digit == 0 ->
-            {acc, :zero}
-
-          state == :start and digit == 1 and position == 2 ->
-            {acc ++ ["十"], :normal}
-
-          state == :zero ->
-            {acc ++ ["零", digit_of(digit) <> unit(position)], :normal}
-
-          true ->
-            {acc ++ [digit_of(digit) <> unit(position)], :normal}
-        end
-      end)
-
-    Enum.join(parts)
-  end
-
-  defp digit_of(digit), do: Enum.at(@digits, digit)
-
-  defp unit(1), do: ""
-  defp unit(2), do: "十"
-  defp unit(3), do: "百"
-  defp unit(4), do: "千"
+  # 统一走 Kantele.Util.ChineseNumber（= LPC chinesed.c 的 chinese_number/1）。
+  #
+  # 早先这里有一份私有实现，与 LPC 有两处偏差：`1010` 读成「一千零一十」
+  # （LPC 是「一千零十」），且 ≥1 亿直接退化成阿拉伯数字。改用公共模块后
+  # 两处都修正，也避免三份重复实现各自漂移。
+  defp chinese(n), do: Kantele.Util.ChineseNumber.to_chinese(n)
 
   @doc "确保 money_map 含全部三面额键（缺省 0）"
   def normalize(money_map) when is_map(money_map) do

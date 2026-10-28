@@ -288,8 +288,10 @@ defmodule Kantele.World.RoomActions.TerrainMoveTest do
   # ---- jueqing:eyutan1 / eyutan3 do_cross（轻功穿潭）----
 
   describe "jueqing:eyutan1 / eyutan3 do_cross（轻功>120 过潭，否则落深潭）" do
+    # 判据是 LPC `query_skill("dodge")`（有效等级）＝ div(基本,2) + 特技 + apply，
+    # 所以 dodge 260 → 有效 130（过），dodge 240 → 有效 120（不过，需 > 120）。
     test "eyutan1 cross tan，轻功>120 → 旧房(排除行动者)+玩家私发+新房到达+瞬移 eyutan3" do
-      conn = conn_in("jueqing:eyutan1", "cross", "do_cross", dodge: 200)
+      conn = conn_in("jueqing:eyutan1", "cross", "do_cross", dodge: 260)
 
       assert {:handled, conn2} = dispatch(conn, "cross tan")
 
@@ -309,7 +311,7 @@ defmodule Kantele.World.RoomActions.TerrainMoveTest do
     end
 
     test "eyutan1 cross tan，轻功<=120 → 旧房(排除行动者)+玩家私发+瞬移 eyutan2（无到达广播）" do
-      conn = conn_in("jueqing:eyutan1", "cross", "do_cross", dodge: 100)
+      conn = conn_in("jueqing:eyutan1", "cross", "do_cross", dodge: 240)
 
       assert {:handled, conn2} = dispatch(conn, "cross tan")
 
@@ -324,11 +326,11 @@ defmodule Kantele.World.RoomActions.TerrainMoveTest do
     end
 
     test "eyutan3 cross tan，轻功>120 → 瞬移 eyutan1；<=120 → 瞬移 eyutan2" do
-      conn_ok = conn_in("jueqing:eyutan3", "cross", "do_cross", dodge: 200)
+      conn_ok = conn_in("jueqing:eyutan3", "cross", "do_cross", dodge: 260)
       assert {:handled, ok2} = dispatch(conn_ok, "cross tan")
       assert new_room(ok2) == "jueqing:eyutan1"
 
-      conn_bad = conn_in("jueqing:eyutan3", "cross", "do_cross", dodge: 100)
+      conn_bad = conn_in("jueqing:eyutan3", "cross", "do_cross", dodge: 240)
       assert {:handled, bad2} = dispatch(conn_bad, "cross tan")
       assert new_room(bad2) == "jueqing:eyutan2"
     end

@@ -18,9 +18,17 @@ defmodule Kantele.Character.GanjiangEvent do
   alias Kantele.Character.Records
   alias Kantele.World.Forging
   alias Kantele.World.Items
-  alias Kantele.World.Room
+  alias Kantele.World.RoomActions.Helpers
 
-  # 六段锻造 vision（对应 work_step_1..6，$N=干将，$n=材料）
+  # 六段锻造 vision（对应 work_step_1..6）。
+  #
+  # `$N` 留给 `Helpers.broadcast_vision/4` 归一成 `{npc}`（由 `VisionView` 按
+  # 接收者渲染成「你」/干将名）；材料名、类型、单位是**与接收者无关**的字面量，
+  # 发布前直接替换。
+  #
+  # 早先这里用的是 `Room.message_vision/3`，而该函数发的是 `{:vision_message, ...}`
+  # —— 角色进程只处理 `{:room_message, ...}`（`Kalevala.Character.Foreman`），
+  # 所以这 6 段文案**一条都没送到玩家**。现改走房间频道的 vision 事件。
   @visions [
     ~s("$N说道：好，开炉锻炼！\n$N接过莫邪手中的$n，随手把它抛入炉内，霎时间，那$n已被火炉中的熊熊烈焰吞没。\n$N凝视着炉火，喃喃说道：天地之精华为其血脉，日月之光辉是其灵气……\n"),
     ~s("炉火渐渐的转成了绿色，火苗不断跳跃，你觉得屋内十分燥热，可是干将若无其事。\n$N对在场之人说道：如果你想炼得更好，需要注入自己的精气血脉，如是有此意，请「注内力」助炉火一臂之力。\n"),
@@ -56,19 +64,19 @@ defmodule Kantele.Character.GanjiangEvent do
 
     Forging.put(owner_id, new_session)
 
-    # 3. 即时广播 6 段 vision（$N/$n/$ctype/$unit 作字面替换，避开绑定键约定）
-    Enum.each(@visions, fn template ->
-      vision =
-        template
-        |> String.replace("$N", npc.name)
-        |> String.replace("$n", material_name)
-        |> String.replace("$ctype", ctype)
-        |> String.replace("$unit", unit)
+    # 3. 逐段广播 vision（`$N` → `{npc}` 由 helper 归一，其余字面量先替换）
+    conn =
+      Enum.reduce(@visions, conn, fn template, acc ->
+        Helpers.broadcast_vision(acc, room_id, substitute(template, material_name, ctype, unit))
+      end)
 
-      Room.message_vision(%{id: room_id}, vision, %{})
-    end)
+    put_character(conn, npc)
+  end
 
-    conn
-    |> put_character(npc)
+  defp substitute(template, material_name, ctype, unit) do
+    template
+    |> String.replace("$n", material_name)
+    |> String.replace("$ctype", ctype)
+    |> String.replace("$unit", unit)
   end
 end

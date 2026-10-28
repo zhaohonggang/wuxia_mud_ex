@@ -120,7 +120,7 @@ defmodule Kantele.Character.ShowCommandTest do
       p = player([instance("show:xuantie")])
       conn = ShowCommand.run(build_conn(p), %{"rest" => "玄铁"})
       text = output_text(conn)
-      assert text =~ "莫邪对你说道：这种原料打造道具，只需要 220 两黄金。"
+      assert text =~ "莫邪对你说道：这种原料打造道具，只需要二百二十两黄金。"
       assert text =~ "要是没有问题，请给我原料并付钱。"
     end
   end

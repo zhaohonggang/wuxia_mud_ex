@@ -72,7 +72,9 @@ defmodule Kantele.Economy.MoneyTest do
     assert Money.denom_str(11, "coin") == "十一文铜钱"
     assert Money.denom_str(100, "coin") == "一百文铜钱"
     assert Money.denom_str(105, "coin") == "一百零五文铜钱"
-    assert Money.denom_str(1_010, "coin") == "一千零一十文铜钱"
+    # LPC chinesed.c：i%1000 < 100 补「零」，再递归 chinese_number(10) = 「十」
+    # → 1010 读「一千零十」而不是「一千零一十」（旧私有实现读错，已统一）
+    assert Money.denom_str(1_010, "coin") == "一千零十文铜钱"
     assert Money.denom_str(9_999, "coin") == "九千九百九十九文铜钱"
     assert Money.denom_str(10_000, "coin") == "一万文铜钱"
   end

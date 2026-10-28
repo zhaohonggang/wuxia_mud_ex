@@ -2,6 +2,30 @@ defmodule Kantele.World.Items do
   @moduledoc false
 
   use Kalevala.Cache
+
+  # `Kalevala.Cache` 在 ETS 表建好后回调这里（`{:continue, :initialize}`），
+  # 正好用来灌入「不在世界数据里、只存在于落盘文件」的动态模板。
+  # 目前只有自定义锻造物品（`data/forge/*.json`，见 `Kantele.World.ForgeTemplates`）。
+  #
+  # 包一层 try/rescue：模板文件坏了、目录权限不对，都不该让整个物品缓存起不来
+  # （起不来的话所有角色登录都会 `get!` 失败）。
+  @impl true
+  def initialize(_state) do
+    try do
+      count = Kantele.World.ForgeTemplates.load_all()
+
+      if count > 0 do
+        require Logger
+        Logger.info("forge templates restored: #{count}")
+      end
+    rescue
+      error ->
+        require Logger
+        Logger.warning("forge template restore skipped: #{inspect(error)}")
+    end
+
+    :ok
+  end
 end
 
 defmodule Kantele.World.Item do

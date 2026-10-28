@@ -48,7 +48,7 @@ defmodule Kantele.Character.RespirateEvent do
     vitals = character.meta.vitals
     stats = character.meta.stats
 
-    gain = jingli_gain(stats)
+    gain = jingli_gain(character)
     gain = if gain > remaining, do: remaining, else: gain
 
     # 精不够本跳转化时：只转剩余的精，并立即结束
@@ -122,8 +122,9 @@ defmodule Kantele.Character.RespirateEvent do
 
   # 每跳精力转化量（LPC respirate.c respirating/1）
   # jingli_gain = 1 + (force/10)/2 + random(force/10)
-  defp jingli_gain(stats) do
-    unit = div(Stats.effective(stats, "force"), 10)
+  defp jingli_gain(character) do
+    stats = character.meta.stats
+    unit = div(Stats.effective(stats, "force", Combat.skill_applies(character)), 10)
 
     max(1, 1 + div(unit, 2) + lpc_random(unit))
   end

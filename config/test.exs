@@ -41,3 +41,7 @@ config :logger, level: :warn
 config :bcrypt_elixir, :log_rounds, 4
 
 config :stein_storage, backend: :test
+
+# 锻造模板落盘目录：指到 tmp 下，避免测试把 `data/forge/*.json` 写进仓库。
+# 具体用例需要真落盘时用 `Application.put_env(:ex_venture, :forge_dir, ...)` 覆盖。
+config :ex_venture, :forge_dir, "tmp/forge_test"

@@ -15,8 +15,10 @@ defmodule Kantele.Character.GiveEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.NPC.Xiaoer
   alias Kantele.World.Items
+  alias Kantele.World.Forging
   alias Kalevala.World.Item
   alias Kantele.Item, as: KItem
+  alias Kantele.Item.Backpack
 
   # ---- 收受端 ----
 
@@ -419,11 +421,15 @@ defmodule Kantele.Character.GiveEvent do
   #   ok:true  → 玩家侧移除该物品实例（完成物理转移），展示莫邪回复
   #   ok:false → 莫邪拒收，物品仍在玩家背包，仅展示拒绝文案
 
-  def forge_accept(conn, %{data: %{ok: true, instance_id: instance_id, message: message}} = _event) do
+  def forge_accept(conn, %{data: %{ok: true, instance_id: instance_id, message: message} = data}) do
     character = conn.character
 
     inventory = Enum.reject(character.inventory, fn item_instance -> item_instance.id == instance_id end)
     character = %{character | inventory: inventory}
+
+    # 乾坤袋：炼成给袋 / 已有背包则 +5 格
+    {character, message} = grant_or_upgrade(character, data, message)
+
     Records.save(character)
 
     conn
@@ -431,6 +437,28 @@ defmodule Kantele.Character.GiveEvent do
     |> render(CommandView, "text", %{text: message})
     |> prompt(CommandView, "prompt", %{})
   end
+
+  # 炼成如意乾坤袋：直接入包（LPC `me->set("storage_bag", 1)` 的等价物）
+  defp grant_or_upgrade(character, %{grant_item_id: item_id}, message) when is_binary(item_id) do
+    instance = %Item.Instance{
+      id: Item.Instance.generate_id(),
+      item_id: item_id,
+      created_at: DateTime.utc_now()
+    }
+
+    {%{character | inventory: [instance | character.inventory]}, message}
+  end
+
+  # 乾坤石强化背包：只改该玩家那件背包实例的 meta（`Forging.upgrade_bag/2`），
+  # 不动全局物品定义，否则一个玩家的升级会摊到所有人身上。
+  defp grant_or_upgrade(character, %{upgrade_bag: delta}, message) when is_integer(delta) do
+    {character, extra} = Forging.upgrade_bag(character, delta)
+    capacity = Backpack.capacity(character.meta.stats.combat_exp, extra)
+
+    {character, message <> "一道华光闪过，你的背包空间增加了，当前容量 #{capacity} 格。\n"}
+  end
+
+  defp grant_or_upgrade(character, _data, message), do: {character, message}
 
   def forge_accept(conn, %{data: %{ok: false, message: message}} = _event) do
     conn

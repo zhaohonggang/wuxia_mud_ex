@@ -56,7 +56,8 @@ defmodule Kantele.Character.SkillsCommandTest do
       text = SkillsCommand.format_skills(stats)
 
       assert text =~ "→"
-      assert text =~ "有效 75 级"
+      # LPC query_skill：基本技能折半 + 特技全值 → div(60,2) + 15 = 45
+      assert text =~ "有效 45 级"
     end
 
     test "未映射技能不显示有效等级" do

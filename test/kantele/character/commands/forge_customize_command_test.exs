@@ -9,6 +9,7 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
   alias Kantele.World.Forging
+  alias Kantele.World.ForgeTemplates
   alias Kalevala.World.Item, as: ItemDef
   alias Kantele.World.Items
   alias Kantele.World.Item
@@ -21,6 +22,12 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
   setup do
     Forging.ensure_table()
     Forging.delete(@owner_id)
+
+    # 落盘目录指到临时目录，别把 JSON 写进仓库的 data/forge（之前泄漏过
+    # `forge:player-forge-custom-1-.json`，被误提交）。
+    forge_dir = Path.join(System.tmp_dir!(), "forge_customize_test_#{System.unique_integer([:positive])}")
+    previous_forge_dir = Application.get_env(:ex_venture, :forge_dir)
+    Application.put_env(:ex_venture, :forge_dir, forge_dir)
 
     Items.put("forge:xuantie", %ItemDef{
       id: "forge:xuantie",
@@ -39,10 +46,17 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
 
     on_exit fn ->
       # 清理 S3 测试生成的动态模板与 JSON
-      item_id = "forge:#{@owner_id}-xuantiejian"
-      Items.delete(item_id)
-      path = Path.join("data/forge", "#{item_id}.json")
-      if File.regular?(path), do: File.rm(path)
+      for sid <- ["xuantiejian", "xuantiejian2"] do
+        Items.delete("forge:#{@owner_id}-#{sid}")
+      end
+
+      File.rm_rf(forge_dir)
+
+      if previous_forge_dir do
+        Application.put_env(:ex_venture, :forge_dir, previous_forge_dir)
+      else
+        Application.delete_env(:ex_venture, :forge_dir)
+      end
     end
 
     :ok
@@ -76,7 +90,7 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
       wscale: 150,
       material_item_id: "forge:xuantie",
       material_instance_id: "inst-xuantie",
-      value: 220
+      value: 2_200_000
     }
     |> Map.merge(Map.new(extra))
   end
@@ -205,11 +219,17 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
       assert Items.get(item_id) != {:error, :not_found}
 
       # JSON 落盘
-      path = Path.join("data/forge", "#{item_id}.json")
+      path = Path.join(ForgeTemplates.dir(), ForgeTemplates.file_name(item_id))
       assert File.regular?(path)
       content = File.read!(path)
       assert content =~ "玄铁剑"
       assert content =~ "xuantiejian"
+
+      # 落盘内容必须保留退款/文案所需字段（不能是 Meta.Trim 后的 damage/armor 子集）
+      decoded = Jason.decode!(content)
+      assert decoded["meta"]["item_make"] == true
+      assert decoded["meta"]["owner_id"] == @owner_id
+      assert decoded["meta"]["messages"]["wield"] == "你腰间悬起了玄铁剑。"
 
       # 实例入背包
       c = updated_char(conn)
@@ -247,7 +267,7 @@ defmodule Kantele.Character.ForgeCustomizeCommandTest do
       assert Forging.get(@owner_id) == nil
 
       Items.delete(item_id)
-      path = Path.join("data/forge", "#{item_id}.json")
+      path = Path.join(ForgeTemplates.dir(), ForgeTemplates.file_name(item_id))
       if File.regular?(path), do: File.rm(path)
     end
   end

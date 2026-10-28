@@ -148,6 +148,20 @@ defmodule Kantele.Character.Combat do
     end)
   end
 
+  @doc """
+  角色的技能 `apply/*` 加成表 —— 供 `Kantele.Character.Stats.effective/3` 的
+  `applies` 参数使用（LPC `query_temp("apply/" + skill)`）。
+
+  返回 `effective_applies/1`（临时加成 + 全部已装备槽位的 prop 合并）。护甲的
+  `armor_prop` 里就有技能键（如护腕的 `sword`/`parry`），所以穿装备会抬高对应
+  技能的有效等级。
+
+  角色没有 `combat` 状态（未初始化 / 部分测试夹具）时返回空表，不抛错 ——
+  `Stats.effective/3` 对空表等价于 LPC 的 `query_temp` 为空。
+  """
+  def skill_applies(%{meta: %{combat: %__MODULE__{} = combat}}), do: effective_applies(combat)
+  def skill_applies(_), do: %{}
+
   @doc "穿戴到指定槽位（weapon 或 armor_slots 内的槽位；同槽互斥由命令层把关）"
   def equip(%__MODULE__{} = combat, slot, meta) when is_atom(slot) do
     put_in(combat.equipped[slot], meta)

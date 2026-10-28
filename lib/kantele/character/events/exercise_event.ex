@@ -50,7 +50,7 @@ defmodule Kantele.Character.ExerciseEvent do
   defp step(conn, character, remaining) do
     vitals = character.meta.vitals
 
-    gain = neili_gain(character.meta.stats)
+    gain = neili_gain(character)
     gain = if gain > remaining, do: remaining, else: gain
 
     # 气不够本跳转化时：只转剩余的气，并立即结束（对应 LPC exercise_cost 清零）
@@ -129,8 +129,9 @@ defmodule Kantele.Character.ExerciseEvent do
     do: %{character | meta: Map.put(character.meta, :vitals, vitals)}
 
   # 每跳转化量（LPC exercise.c exercising/1），房间 exercise_improve 忽略
-  defp neili_gain(stats) do
-    unit = div(Stats.effective(stats, "force"), 5)
+  defp neili_gain(character) do
+    stats = character.meta.stats
+    unit = div(Stats.effective(stats, "force", Combat.skill_applies(character)), 5)
 
     max(1, 1 + div(unit, 2) + lpc_random(unit))
   end

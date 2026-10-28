@@ -46,7 +46,7 @@ defmodule Kantele.Character.JingzuoCommand do
         fail(conn, "你刚才静坐过，现在头脑一片空白。\n")
 
       # LPC：query_skill("mahayana", 1) < 40（暂改为 force 等效 40）
-      Stats.effective(character.meta.stats, "force") < 40 ->
+      Stats.effective(character.meta.stats, "force", Combat.skill_applies(character)) < 40 ->
         fail(conn, "你的内功修为还不够，没法静心静坐。\n")
 
       true ->

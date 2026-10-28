@@ -21,7 +21,8 @@ defmodule Kantele.World.ForgingAcceptTest do
   setup do
     Forging.delete(@from_id)
 
-    # 锻造材料：material_attrib + power_point + can_make="all" → value = 100*2+20 = 220
+    # 锻造材料：material_attrib + power_point + can_make="all"
+    # 报价 = 100*2+20 = 220 两黄金；内部记账 = 220 * 10000 = 2_200_000 文
     Items.put("forge:xuantie", %Item{
       id: "forge:xuantie",
       name: "玄铁 Xuantie",
@@ -30,22 +31,22 @@ defmodule Kantele.World.ForgingAcceptTest do
       meta: %Meta{material_attrib: "steel", material_name: "玄铁", power_point: 100, can_make: "all"}
     })
 
-    # 钱币（足够）：plain map meta 使 Kantele.Item.is_currency?/currency_amount 命中
+    # 钱币（足够）：220 两黄金 = 2_200_000 文（meta.amount 单位是文）
     Items.put("forge:gold", %Item{
       id: "forge:gold",
       name: "黄金 Gold",
       verbs: [],
       callback_module: Kantele.World.Item,
-      meta: %{"is_money" => true, "amount" => 220}
+      meta: %{"is_money" => true, "amount" => 2_200_000}
     })
 
-    # 钱币（不足）：amount 100 < 220
+    # 钱币（不足）：1_000_000 文 < 2_200_000 文
     Items.put("forge:gold_low", %Item{
       id: "forge:gold_low",
       name: "碎银 Silver",
       verbs: [],
       callback_module: Kantele.World.Item,
-      meta: %{"is_money" => true, "amount" => 100}
+      meta: %{"is_money" => true, "amount" => 1_000_000}
     })
 
     # 普通物品：无 material_attrib、非钱币
@@ -113,14 +114,31 @@ defmodule Kantele.World.ForgingAcceptTest do
 
       conn2 = ForgingAccept.handle(conn, conn.character, item, data_for(item), @from_name)
 
-      # 会话：item_gived + value=220
-      assert %{status: "item_gived", value: 220, material_item_id: "forge:xuantie"} = Forging.get(@from_id)
+      # 会话：item_gived + value=220 两 * 10000 = 2_200_000 文
+      assert %{status: "item_gived", value: 2_200_000, material_item_id: "forge:xuantie"} =
+               Forging.get(@from_id)
+
       # 莫邪背包收到材料
       assert Enum.any?(updated_char(conn2).inventory, fn i -> i.id == item.id end)
 
-      # 玩家侧收到 forge/accept ok，文案正确
+      # 玩家侧收到 forge/accept ok，文案正确（对外仍按「两黄金」报价）
       assert_receive %Kalevala.Event{topic: "forge/accept", data: %{ok: true, message: msg}}
-      assert msg =~ "莫邪对你说道：很好，用这块原料打造道具需要 220 两黄金。"
+      assert msg =~ "莫邪对你说道：很好，用这块原料打造道具需要二百二十两黄金。"
+      refute msg =~ "原来是巫师啊"
+    end
+
+    test "巫师 → 只收 1 文，并额外一句巫师提示" do
+      conn = build_conn(moye())
+      item = inst("forge:xuantie")
+
+      data = Map.put(data_for(item), :wizard, true)
+      ForgingAccept.handle(conn, conn.character, item, data, @from_name)
+
+      assert %{status: "item_gived", value: 1} = Forging.get(@from_id)
+
+      assert_receive %Kalevala.Event{topic: "forge/accept", data: %{ok: true, message: msg}}
+      assert msg =~ "需要二百二十两黄金。"
+      assert msg =~ "原来是巫师啊，那么你随便给点好了。"
     end
   end
 
@@ -128,7 +146,7 @@ defmodule Kantele.World.ForgingAcceptTest do
     setup do
       Forging.put(@from_id, %{
         status: "item_gived",
-        value: 220,
+        value: 2_200_000,
         material_item_id: "forge:xuantie",
         material_instance_id: "instance-forge:xuantie",
         owner_id: @from_id,
@@ -223,7 +241,7 @@ defmodule Kantele.World.ForgingAcceptTest do
 
       GiveEvent.receive(conn, %{data: data_for(item)})
 
-      assert %{status: "item_gived", value: 220} = Forging.get(@from_id)
+      assert %{status: "item_gived", value: 2_200_000} = Forging.get(@from_id)
       assert_receive %Kalevala.Event{topic: "forge/accept", data: %{ok: true}}
     end
   end

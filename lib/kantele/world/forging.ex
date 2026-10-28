@@ -111,4 +111,75 @@ defmodule Kantele.World.Forging do
 
   @doc "取某 ctype 的类型表条目（S3 生成物品时用）。"
   def type_entry(ctype), do: Map.get(@type_table, ctype)
+
+  # ---- 乾坤袋（S4 边界分支，对应 LPC moye.c do_show L213 / accept_object L328-366 / L433） ----
+
+  # 乾坤石与如意乾坤袋的 item_id。LPC 用 `query("id") == "qiankun stone"` 判定；
+  # 本仓物品 id 带 zone 前缀，故用固定 id 常量，避免按名字匹配。
+  @qiankun_stone_id "signature:qiankun_stone"
+  @qiankun_bag_id "signature:qiankun_bag"
+
+  @doc "乾坤石 item_id"
+  def qiankun_stone_id, do: @qiankun_stone_id
+
+  @doc "如意乾坤袋 item_id"
+  def qiankun_bag_id, do: @qiankun_bag_id
+
+  @doc "是否乾坤石（LPC `ob->query(\"id\") == \"qiankun stone\"`）"
+  def qiankun_stone?(%{id: id}), do: id == @qiankun_stone_id
+  def qiankun_stone?(_), do: false
+
+  @doc """
+  玩家当前背包扩展格总数（LPC `me->query("storage_bag")`）。
+
+  本仓没有角色级 `storage_bag` 属性，扩展格挂在**背包物品**上：
+  实例 meta `"storage_bag"`（升级后的绝对值）优先，否则退回定义 meta 的
+  `storage_bag`。总容量 = 基础格（按 combat_exp）+ 这里算出的扩展之和
+  （见 `backpack_command.ex` 的 `bag_state/1`）。
+  """
+  def bag_extra(%{inventory: inventory}) when is_list(inventory) do
+    Enum.reduce(inventory, 0, fn instance, acc -> acc + instance_extra(instance) end)
+  end
+
+  def bag_extra(_), do: 0
+
+  @doc """
+  取单件背包实例的扩展格数：实例 meta 覆盖定义 meta。
+
+  **必须写实例**：`%Kalevala.World.Item{}` 是全局共享只读定义，直接改定义会把
+  一个玩家的升级摊到所有玩家身上。
+  """
+  def instance_extra(%{item_id: item_id} = instance) do
+    override = Map.get(instance.meta || %{}, "storage_bag")
+
+    cond do
+      is_integer(override) ->
+        max(override, 0)
+
+      true ->
+        case Kantele.World.Items.get(item_id) do
+          {:ok, %{meta: %{storage_bag: n}}} when is_integer(n) and n > 0 -> n
+          _ -> 0
+        end
+    end
+  end
+
+  @doc """
+  给背包 +delta 格（升级），只改**实例** meta，不动全局定义。
+
+  返回 `{新 character, 升级后的扩展格总数}`；没有背包容器时原样返回。
+  """
+  def upgrade_bag(%{inventory: inventory} = character, delta) when delta > 0 do
+    case Enum.find_index(inventory, &(instance_extra(&1) > 0)) do
+      nil ->
+        {character, bag_extra(character)}
+
+      idx ->
+        instance = Enum.at(inventory, idx)
+        new_meta = Map.put(instance.meta || %{}, "storage_bag", instance_extra(instance) + delta)
+        updated = %{instance | meta: new_meta}
+        character = %{character | inventory: List.replace_at(inventory, idx, updated)}
+        {character, bag_extra(character)}
+    end
+  end
 end

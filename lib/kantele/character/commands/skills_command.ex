@@ -8,6 +8,7 @@ defmodule Kantele.Character.SkillsCommand do
 
   use Kalevala.Character.Command
 
+  alias Kantele.Character.Combat
   alias Kantele.Character.CommandView
   alias Kantele.Character.Stats
   alias Kantele.Combat.Skills
@@ -28,21 +29,21 @@ defmodule Kantele.Character.SkillsCommand do
     character = conn.character
     stats = character.meta.stats
 
-    text = format_skills(stats)
+    text = format_skills(stats, Combat.skill_applies(character))
 
     conn
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
   end
 
-  def format_skills(stats) do
+  def format_skills(stats, applies \\ %{}) do
     header = "你目前所学到的所有技能\n"
     separator = "≡------------------------------------------------------------≡\n"
 
     base_lines =
       @base_skills
       |> Enum.filter(fn skill -> Stats.skill(stats, skill) > 0 end)
-      |> Enum.map(fn skill -> format_base_skill(stats, skill) end)
+      |> Enum.map(fn skill -> format_base_skill(stats, skill, applies) end)
 
     special_lines =
       stats.skills
@@ -55,9 +56,9 @@ defmodule Kantele.Character.SkillsCommand do
     header <> separator <> Enum.join(lines, "") <> separator
   end
 
-  defp format_base_skill(stats, skill_id) do
+  defp format_base_skill(stats, skill_id, applies) do
     level = Stats.skill(stats, skill_id)
-    effective = Stats.effective(stats, skill_id)
+    effective = Stats.effective(stats, skill_id, applies)
     title = Map.get(@skill_titles, skill_id, skill_id)
     mapped = Stats.mapped(stats, skill_id)
 

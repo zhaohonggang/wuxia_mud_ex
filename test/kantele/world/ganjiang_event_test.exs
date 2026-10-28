@@ -114,4 +114,46 @@ defmodule Kantele.World.GanjiangEventTest do
       assert output_text(conn) == ""
     end
   end
+
+  describe "vision 真正发到房间频道" do
+    # 回归：早先走 `Room.message_vision/3`，它发 `{:vision_message, ...}` 而角色
+    # 进程只处理 `{:room_message, ...}`，导致 6 段文案全部丢失。现走
+    # `Helpers.broadcast_vision/4`（房间频道 vision 事件），必须真能发出去。
+    test "6 段 vision 全部 publish 到 rooms:test:room" do
+      Forging.put(@owner_id, session())
+      inst = %Instance{id: "inst-xuantie", item_id: "forge:xuantie"}
+      event = event(ganjiang(), "forge/handoff", %{material_instance: inst, session: session()})
+
+      conn = GanjiangEvent.handoff(build_conn(ganjiang()), event)
+
+      publishes =
+        conn.private.channel_changes
+        |> Enum.filter(fn
+          {:publish, _channel, %Kalevala.Event{data: data}, _opts, _fun} ->
+            Map.get(data, :type) == "vision"
+
+          _ ->
+            false
+        end)
+
+      assert length(publishes) == 6
+
+      texts =
+        Enum.map(publishes, fn {:publish, _c, %Kalevala.Event{data: data}, _o, _f} -> data.text end)
+
+      joined = Enum.join(texts, "")
+
+      # `$N`（干将）保留为 `{npc}`，由 VisionView 按接收者渲染「你」/姓名
+      assert joined =~ "{npc}"
+      refute joined =~ "$N"
+
+      # 与接收者无关的字面量在发布前已替换
+      assert joined =~ "玄铁 Xuantie"
+      assert joined =~ "成了剑的形状"
+      assert joined =~ "一柄好剑不能没有名字"
+
+      # 频道名带房间 id
+      assert Enum.all?(publishes, fn {:publish, channel, _e, _o, _f} -> channel == "rooms:test:room" end)
+    end
+  end
 end

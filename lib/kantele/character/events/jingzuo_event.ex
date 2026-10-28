@@ -10,6 +10,7 @@ defmodule Kantele.Character.JingzuoEvent do
   import Kalevala.Character.Conn
 
   alias Kantele.Character.CharacterView
+  alias Kantele.Character.Combat
   alias Kantele.Character.CommandView
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
@@ -19,7 +20,7 @@ defmodule Kantele.Character.JingzuoEvent do
     stats = character.meta.stats
     vitals = character.meta.vitals
 
-    skillslvl = Stats.effective(stats, "force")
+    skillslvl = Stats.effective(stats, "force", Combat.skill_applies(character))
     exppot = div(stats.combat_exp, 100_000)
     intpot = div(stats.int, 10)
 

@@ -159,7 +159,8 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
-        data: %{perform_id: "riyue-bian/chan", ap: 200, level: 100, attacker: %{id: "player-1"}}
+        # ap = effective(whip) = div(100,2) + 100 = 150（基本折半 + 特技全值）
+        data: %{perform_id: "riyue-bian/chan", ap: 150, level: 100, attacker: %{id: "player-1"}}
       }
     end
   end
@@ -265,7 +266,8 @@ defmodule Kantele.Combat.RiyueBianTest do
 
       assert_receive %Kalevala.Event{
         topic: "combat/perform-incoming",
-        data: %{perform_id: "riyue-bian/he", ap: 240, attacker: %{id: "player-1"}}
+        # ap = effective(whip) = div(120,2) + 120 = 180
+        data: %{perform_id: "riyue-bian/he", ap: 180, attacker: %{id: "player-1"}}
       }
     end
   end

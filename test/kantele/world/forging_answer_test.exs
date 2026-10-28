@@ -78,7 +78,8 @@ defmodule Kantele.World.ForgingAnswerTest do
   defp session do
     %{
       status: "answer_type",
-      value: 220,
+      # 220 两黄金 → 记账单位是文
+      value: 2_200_000,
       material_item_id: "forge:xuantie",
       material_instance_id: "inst-xuantie",
       owner_id: @from_id,

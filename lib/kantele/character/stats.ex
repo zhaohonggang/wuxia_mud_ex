@@ -92,18 +92,52 @@ defmodule Kantele.Character.Stats do
   def skill(_stats, _name), do: 0
 
   @doc """
-  查询某用法的有效等级：基本等级 + 映射特技等级（对应 LPC query_skill 不带 raw）
+  查询某用法的有效等级（对应 LPC `feature/skill.c query_skill(skill)` 不带 raw）
 
-  如 force 基本内功 30 级映射 liuxi-neigong 30 级时，有效 force 为 60。
+  LPC 原式：
+
+      s = query_temp("apply/" + skill);        // 装备/buff 的临时加成
+      s += skills[skill] / 2;                  // 基本技能 —— 只算一半
+      s += skills[skill_map[skill]];           // 已 map 的特技 —— 全值
+
+  三点都不可省：
+
+  1. **基本技能折半**。LPC 刻意让「基本功夫」只贡献一半，主力是特技。本仓早期
+     实现返回 `skills[skill]` 全值，等于把所有有效等级抬高近一倍（`dodge`/`parry`
+     的 ap/dp、`force` 的练功收益、`注内力` 的加成全被放大）。
+  2. **特技全值**。`mapped` 为空时该项为 0（LPC `skill_map[skill]` 未定义 → 跳过）。
+  3. **`apply/<usage>` 加成**。来自已装备物品的 `armor_prop`（护腕加各兵器技能）
+     与 buff。`applies` 通常传 `Kantele.Character.Combat.effective_applies/1`
+     的结果；不传则按 0 处理（等价于 LPC 的 `query_temp` 为空）。
+
+  例：基本内功 30 级 map 了 30 级特技，且身上有 `apply/force` +5 →
+  `div(30,2) + 30 + 5 = 50`。
   """
-  def effective(%__MODULE__{} = stats, usage) do
-    case mapped(stats, usage) do
-      nil ->
-        skill(stats, usage)
+  def effective(%__MODULE__{} = stats, usage, applies \\ %{}) do
+    special =
+      case mapped(stats, usage) do
+        nil -> 0
+        special_id -> skill(stats, special_id)
+      end
 
-      special_id ->
-        skill(stats, usage) + skill(stats, special_id)
-    end
+    div(skill(stats, usage), 2) + special + apply_of(applies, usage)
+  end
+
+  # apply/<usage> 查表：兼容 atom / 字符串键（combat.temp 用 atom，
+  # 从 JSON 恢复的 prop 可能是字符串）
+  defp apply_of(applies, usage) when is_map(applies) do
+    key = if is_atom(usage), do: usage, else: existing_atom(usage)
+    string_key = to_string(usage)
+
+    Map.get(applies, key) || Map.get(applies, string_key) || 0
+  end
+
+  defp apply_of(_applies, _usage), do: 0
+
+  defp existing_atom(value) when is_binary(value) do
+    String.to_existing_atom(value)
+  rescue
+    ArgumentError -> nil
   end
 
   @doc """

@@ -142,6 +142,46 @@ items "lingpai" {
   }
 }
 
+# 乾坤石：莫邪炼制/升级如意乾坤袋的材料（LPC moye.c `qiankun stone`）。
+# value=30000 是有意的：莫邪报价取 `value/60` = 500 两黄金（对应 do_show 的「五百两黄金」）。
+items "qiankun_stone" {
+  name = "乾坤石 Qiankun Stone"
+  description = "一块温润的灰白石子，内里似有云气流转。莫邪说这是炼制背包的材料。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 30000
+    weight = 100
+    unit = "块"
+    material = "stone"
+    aliases = ["qiankun stone", "qiankun"]
+  }
+}
+
+# 如意乾坤袋：莫邪以乾坤石炼成的背包（storage_bag=1 → 解锁 bag/store/take）。
+# 升级只改**实例** meta 的 "storage_bag"，不动这条全局定义。
+items "qiankun_bag" {
+  name = "如意乾坤袋 Ruyi Qiankun Bag"
+  description = "一只巴掌大的锦袋，袋口以银线绣着云纹。看似轻巧，内里却别有乾坤。"
+
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+  meta = {
+    value = 1000
+    weight = 20
+    unit = "个"
+    storage_bag = 1
+    aliases = ["qiankun bag", "bag"]
+  }
+}
+
 # ---------------------------------------------------------------------------
 # 角色（特色 NPC：数据驱动 skills/对话/事件，不写死模块）
 # ---------------------------------------------------------------------------

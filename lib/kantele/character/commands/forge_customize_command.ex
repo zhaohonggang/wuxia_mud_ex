@@ -25,11 +25,10 @@ defmodule Kantele.Character.ForgeCustomizeCommand do
   alias Kalevala.World.Item.Instance
   alias Kantele.Character.Records
   alias Kantele.World.Forging
+  alias Kantele.World.ForgeTemplates
   alias Kantele.World.Items
   alias Kantele.World.Item
   alias Kantele.World.Item.Meta
-
-  @forge_dir "data/forge"
 
   # ---- 入口：各子动词独立处理函数 ----
 
@@ -247,9 +246,10 @@ defmodule Kantele.Character.ForgeCustomizeCommand do
     Items.put(item_id, template)
 
     # 2. 落盘 JSON（重启恢复）
-    File.mkdir_p(@forge_dir)
-    path = Path.join(@forge_dir, "#{item_id}.json")
-    File.write!(path, Jason.encode!(template))
+    #
+    # 必须走 ForgeTemplates：`%Kalevala.World.Item{}` 自带的 Jason.Encoder 走
+    # Meta.Trim，只留 damage/armor，会把 item_make/owner_id/messages 全丢掉。
+    ForgeTemplates.save(template)
 
     # 3. 实例化入玩家背包
     instance =

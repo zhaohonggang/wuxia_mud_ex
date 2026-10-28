@@ -140,9 +140,26 @@ defmodule Kantele.World.Room do
   end
 
   @doc """
-  房间内 vision 消息（对应 LPC message_vision/1）
+  房间内 vision 消息 —— **已废弃，不要使用**（对应 LPC message_vision/1）
 
-  文案含 `$N/$n/$l/$w` 占位符，由 Kalevala 渲染层按 acting/target 替换。
+  ## 为什么废弃
+
+  本函数 `send(pid, {:vision_message, template, bindings})`，但全库**没有任何
+  进程处理 `{:vision_message, ...}`** —— 角色进程（`Kalevala.Character.Foreman`）
+  只处理 `{:room_message, ...}`。所以调用它等于把消息扔进黑洞，玩家看不到任何
+  东西。（`ganjiang_event` 的 6 段锻造 vision 曾因此全部丢失。）
+
+  ## 该用什么
+
+  从**持有 conn 的命令/事件**里广播，走房间频道的 vision 事件，由
+  `Kantele.Character.VisionEvent` + `VisionView` 按接收者渲染「你」/姓名：
+
+      alias Kantele.World.RoomActions.Helpers
+      Helpers.broadcast_vision(conn, room_id, "$N长啸一声……")
+
+  纯文本、不需要 `$N` 分流的场景用 `tell_room/3`（`{:room_message, ...}` 有处理器）。
+
+  保留本函数只为不破坏既有 API 形状；**新代码不要调用**。
   """
   def message_vision(room, template, bindings) do
     Enum.reduce(room.id |> get_characters_in_room(), room, fn pid, acc ->
@@ -1470,6 +1487,10 @@ defmodule Kantele.World.Room.GiveRequestEvent do
               item_name: data.item_name,
               from_id: data.from_id,
               from_name: data.from_name,
+              # 玩家背包扩展格数（乾坤石判定「升级」还是「报价」用）
+              bag_extra: Map.get(data, :bag_extra) || 0,
+              # 巫师打造折扣（LPC moye.c wizardp 分支）
+              wizard: Map.get(data, :wizard) || false,
               reply_to: requester.pid
             })
         end
