@@ -1430,6 +1430,9 @@ defmodule Kantele.World.Loader do
       not_make: Map.get(meta, :not_make),
       power_point: Map.get(meta, :power_point),
       item_origin: Map.get(meta, :item_origin),
+      material_attrib: Map.get(meta, :material_attrib),
+      material_name: Map.get(meta, :material_name),
+      item_make: to_bool(Map.get(meta, :item_make)),
       aliases: parse_aliases(Map.get(meta, :aliases))
     }
 

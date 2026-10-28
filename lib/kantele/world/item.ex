@@ -332,6 +332,20 @@ defmodule Kantele.World.Item.Meta do
     {:power_point, nil},
     {:item_origin, nil},
 
+    # LPC 锻造原料字段（S0 新增，配合打造子系统消费端）：
+    # - material_attrib：原料品类（"stone"/"steel"/"silk"/"iron"/"magic stone" 等），
+    #   干将/莫邪 `do_show`/`accept_object` 用它判定「这是不是锻造原料」。
+    #   源 .c 的 `set("material_attrib", "...")`；转换器从未输出，全库丢失，
+    #   由 scripts/backfill_forge_materials.py 从源 .c 回填。
+    # - material_name：原料展示名（"神铁"/"上古寒铁" 等，已去色码），
+    #   `create_file` 把 "这是由{material_name}炼制而成" 写进生成物描述。
+    # - item_make：生成物标记（"这是玩家自炼的"），仅 S3 生成物品时置 true，
+    #   用于 `discard` 退款判定；数据层不回填，默认 false。
+    # 暂无消费端时不产生行为变化（P7）；loader 仅读取。
+    {:material_attrib, nil},
+    {:material_name, nil},
+    {:item_make, false},
+
     # 物品侧 `add_action` 动词表（第十二批）。形如
     # `[%{verb: "play", handler: "play_qin"}]` —— verb 为玩家输入词，handler 为
     # LPC handler 函数名（`add_action` 的第一个参数）。分发/消费见

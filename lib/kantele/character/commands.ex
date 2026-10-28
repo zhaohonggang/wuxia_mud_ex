@@ -1560,7 +1560,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(AnswerCommand) do
-    parse("answer", :run)
+    parse("answer", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(AcceptCommand) do
@@ -1872,6 +1874,13 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(ShowCommand) do
+    parse("show", :run, fn command ->
+      command
+      |> optional(empty() |> spaces() |> text(:rest))
+    end)
+  end
+
   module(DeriveCommand) do
     parse("derive", :run)
   end
@@ -1882,6 +1891,37 @@ defmodule Kantele.Character.Commands do
 
   module(YanlianCommand) do
     parse("yanlian", :run)
+  end
+
+  module(ZhuneiliCommand) do
+    parse("注内力", :run)
+  end
+
+  module(ForgeCustomizeCommand) do
+    parse("name", :run_name, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("desc", :run_desc, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("wieldmsg", :run_wieldmsg, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("unwieldmsg", :run_unwieldmsg, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("finish", :run_finish)
+    parse("完成", :run_finish)
+  end
+
+  module(DiscardCommand) do
+    parse("discard", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
   end
 
   module(GotoCommand) do

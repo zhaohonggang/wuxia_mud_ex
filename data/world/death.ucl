@@ -3578,6 +3578,8 @@ chats = [
         can_make = ["战衣"]
         power_point = 100
         item_origin = 1
+        material_attrib = "silk"
+        material_name = "白虎毛皮"
       }
     }
 
@@ -3600,6 +3602,8 @@ chats = [
         can_make = ["护甲"]
         power_point = 100
         item_origin = 1
+        material_attrib = "silk"
+        material_name = "玄武甲壳"
       }
     }
 
@@ -3659,6 +3663,8 @@ chats = [
         can_make = ["鞭"]
         power_point = 100
         item_origin = 1
+        material_attrib = "silk"
+        material_name = "龙筋"
       }
     }
 
@@ -3705,6 +3711,8 @@ chats = [
         not_make = ["战衣", "腰带", "护腕", "靴子"]
         power_point = 100
         item_origin = 1
+        material_attrib = "ying luo"
+        material_name = "七色璎珞"
       }
     }
 
@@ -3763,6 +3771,8 @@ chats = [
         can_make = ["all"]
         power_point = 120
         item_origin = 1
+        material_attrib = "tian jing"
+        material_name = "寰宇天晶"
       }
     }
 
@@ -6915,6 +6925,8 @@ chats = [
         not_make = ["鞭", "甲"]
         power_point = 80
         item_origin = 1
+        material_attrib = "heshi bi"
+        material_name = "何氏壁"
       }
     }
 

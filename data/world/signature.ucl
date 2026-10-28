@@ -199,6 +199,11 @@ characters "moye" {
   name = "莫邪 Moye"
   description = "与干将齐名的铸剑师，面容清冷，指若削葱。她铸的剑轻灵如风，江湖人称「柔剑莫邪」。"
 
+  # 锻造工坊：玩家把材料/钱币交给莫邪时，触发 forge 议价状态机（Kantele.World.ForgingAccept）
+  accept = [{
+    kind = "forge"
+  }]
+
   inquiries = {
     寒铁 = {
       reply = "莫邪抬眸看你一眼：极北寒铁可遇不可求，我这儿恰好藏着一块，且予你开开眼界。"

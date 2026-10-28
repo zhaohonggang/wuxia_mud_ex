@@ -73,6 +73,8 @@ defmodule Kantele.Character.Events do
       event("characters/give", :receive)
       event("give/result", :result)
       event("xiaoer/process_give", :xiaoer_process_give)
+      event("forge/accept", :forge_accept)
+      event("forge/refund", :forge_refund)
     end
 
     module(MirrorEvent) do
@@ -320,6 +322,14 @@ defmodule Kantele.Character.NonPlayerEvents do
     module(NpcShopEvent) do
       event("shop/list", :list)
       event("shop/buy", :buy)
+    end
+
+    module(GanjiangEvent) do
+      event("forge/handoff", :handoff)
+    end
+
+    module(ForgingAnswer) do
+      event("forge/answer", :answer)
     end
 
     module(NpcAskEvent) do

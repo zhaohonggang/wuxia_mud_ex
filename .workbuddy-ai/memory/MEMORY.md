@@ -1,55 +1,42 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- No `git commit` unless explicitly asked. 此前 5 个本地提交已推送（`e515b04d` #9 loveroom+chaoyang、`d1bab7bd` MEMORY、`54a4e70e` lanyue say、`67a6694d` water、**`3a79771c` tong_ren**），`HEAD == origin/kalevala`。**P5 乞讨系统已于 2026-10-27 提交为本地 1 commit（领先 origin/kalevala，待用户决定是否 push）**。当前其余未提交项（待用户批准，均受铁律约束不主动 commit）：① `docs/data-world-comments-progress.zh-CN.md`（§2 M9 刷新 4954/0 + §13 补 4 行）；② **P5 打造子系统 fuse 熔炼切片**：`lib/kantele/character/commands/fuse_command.ex`（新建，忠实移植 LPC `cmds/skill/fuse.c`）、`test/kantele/character/fuse_command_test.exs`（新建 12/0）、`data/world/clone_lib.ucl`（追加 5 灵石 stone1..5，value=LPC base_value）、`lib/kantele/character/commands.ex`（fuse 路由补 `text(:rest)` 解析，原 stub 丢参数）。③ **P5 NPC 战斗闲聊 (#144)**：`lib/kantele/character/events/combat_event.ex`（`tick` 心跳钩子 + `maybe_combat_chat`/`publish_combat_say`）、`test/kantele/character/events/combat_event_chat_test.exs`（新建 6/0）。
-- No local Erlang — Docker is the verify path:
-  `docker exec -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test wuxia_mud_dev-app-1 sh -c "cd /app && mix test <path>"`
-  （URL 必须整串引号，否则丢 `//`。）
-- Full regression prefer chunked: `find test -name '*_test.exs' | grep -v reload_command_test | sort > /tmp/all_files.txt && split -n l/4 -d /tmp/all_files.txt /tmp/chunk_`，再逐块 `mix test $(cat /tmp/chunk_XX | tr '\n' ' ')`。
-- UCL (Elias): newline-separated blocks, NO commas, bare keys (incl. Chinese), `newline=""`. In `"..."` only `\"`/`\'` and `\`+word legal; `\\`/real newline syntax error. Arrays comma-separated, NO trailing comma. `validate_ucl.py` enforces `EliasStrings`.
-- clone_lib 去重铁律：NPC 有 clone_lib 主定义者，数据必须落 clone_lib；zone 同名块按名合并覆盖（写 zone 必被 shadow）。
-- Handler 回调：`run(conn, params)` 返回 `:not_handled` 放弃；需向玩家送达提示时**必须返回 conn**。`Family.name(nil)` 会崩，`family_ok?` 须 `is_map` 守卫。
+- No `git commit` unless explicitly asked. HEAD == origin/kalevala. P5 乞讨系统 (#143), fuse (#144 5 灵石), 战斗闲聊 (#144), S0/S1a/S1b/S1c 均为本地未提交，待用户决定 push。
+- No local Erlang — Docker 是验证路径：
+  `docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test app mix test <path>`
+- 全量回归分块：容器内 `find test -name '*_test.exs' | ... | split -n l/4`，逐块 `mix test $(cat /tmp/chunk_XX | tr '\n' ' ')`。
+- UCL (Elias): newline 分隔块、无逗号、裸 key（含中文）、`newline=""`；`"..."` 内仅 `\"`/`\'` 和 `\`+word 合法；数组逗号分隔、无尾逗号。
+- clone_lib 去重铁律：NPC 有 clone_lib 主定义者，数据必须落 clone_lib；zone 同名块按名合并覆盖。
+- Handler 回调：`run(conn, params)` 返回 `:not_handled` 放弃；需向玩家送达提示时**必须返回 conn**。
 
-## Completed work (tests green)
-- **`condition/drunk` 醉酒消费端（2026-10-26）**：新建 `Kantele.Drunk`（`limit=(con+max_neili/50)*2`；`>limit` 昏厥 / `>limit/2` 扣精 10 / `>limit/4` 回精 10 回气 15）+ `ConditionRegistry` 注册 `"drunk"` + `drink_command` 按 LPC `switch(type=alcohol)` 累加醉度（**忠实保留「喝空那口走提前返回、不挂醉度」的怪癖**）。**给 `ConditionEvent` 加了 daemon→玩家的出站通道**：`state.condition_messages`（`{:tell,text}` / `{:vision,text}`，vision 用 `publish_message` + `{npc}`）+ `state.condition_unconcious`（→ `RoomActions.Break.unconcious/1`）；`attributes` 增补 `con`/`max_qi`/`max_jing`/`max_neili`。这套通道同时解除了 `Kantele.Nishui`/`Duyan`/`Attrition` 的「daemon 无渲染通道」`@todo`。
-- **`Force.Dispel` + `sleep` condition 门控修复（2026-10-26）**：两者都读全库无人写入的 `character.meta.conditions` → 空操作。改读 `session["conditions"]`：**`Conditions.dispel/3`**（逐条问 daemon `dispel_condition/2`，未导出该回调的 daemon 默认 `:ok` 驱散，有意偏离 LPC 否则 `poison`/`nishui`/`duyan` 全驱不掉）；**`Kantele.Drunk.dispel_condition/2`**（`need = duration + 50` 自身 / `×3/2` 他人，比对 `force` 等级）；**`Conditions.blocked_by_vitals/3`**（LPC `sleep.c` 的 `min_qi_needed`/`min_jing_needed` 门槛，未实现按 0 不拦，玩家 `"qi"` 与 daemon `:qi` 两套键都认）；`sleep_command` 改读 session 并命中门槛时发「房间 vision + 本人点名症状」双消息（逐字 LPC）；`ConditionRegistry.chinese_name/1` 补 `ill_*`/`drunk` 中文名。踩坑：协议回调原名 `dispel/2` 与 `Kantele.Poison.dispel/2`（语义不同）撞名 → 改名 `dispel_condition/2`。`skills/performs/force/dispel.ex` 是死代码对齐副本，已加注释标注不要照抄。测试：`force_self_test` dispel 组 + 新增 `sleep_condition_gate_test.exs` 15/0 + `condition_flow_test.exs` dispel/3 组 + `condition_daemons_test.exs` dispel 组。
-- **房间 `water` flag 回填（2026-10-26）**：LPC 48 处 `set("resource/water",1)` → UCL 房间 `flags` 加 `"water"`（32 区 / 47 房：45 新建 flags 块 + 2 并入已有数组）。`scripts/backfill_room_water_flag.py` 是**独立脚本**而非扩 `backfill_l1_fields.py`——后者 ①`resource/water` 被折叠进 `key_field_map.json` 的父键 `resource`(manual) 选不到，②遇已有 `flags` 块整块跳过；并入数组要动一行（补逗号）故 insertion-only 硬闸不适用，改设 G1 校验器回归为空 / G2 flag 只增不减且只允许 water / G3 行数增量等于预期。`test/kantele/world/room_water_flag_backfill_test.exs` 走真实 `Loader.load()` 断言。
-- **P3 收尾（2026-10-26）**：`liquid`/`max_liquid` 全链打通 —— `Item.Meta.liquid` + `loader.parse_liquid/1`（缺 `remaining`/非 map→nil 回落药水）+ 新建 `lib/kantele/world/item_liquid.ex`（**定义侧 `Item.Meta.liquid` 是全局共享只读，喝一口只能写实例侧 `liquid_*` 四键**，否则一人喝光全服酒袋皆空）+ `drink_command` 三路 cond（容器→药水→不可饮）+ `fill_command` 按 LPC `fill.c` 顺序重写 + `room.ex` snapshot 加 `"water" in flags` + `Records` 只序列化液体四键（**秘籍 `:book` 刻意不存**，保持重启重掷语义）+ `scripts/backfill_item_liquid.py` 回填 32 区/59 块/+348 行。`sleep_room` DoD 补 `test/kantele/character/sleep_room_flags_test.exs`（起真房间走 `Room.snapshot/1` 全链）。
-- P5-9 #9 一次性场景 6 切片全部完成（赌场 ×2 / 长安大堂 / 宴席三厅 / 棋苑三室 / 杭州楼外楼 order / 华山朝阳 chaoyang），P5 进度 **9/9**。`room_action*` 全集 **638/0**；`weiqi_test` 21/0。
-- P5-6 暗语链 `yanziwu:lanyue` knock+say 已落地（`do_say` 答「光复大燕」→传送 `yanziwu:huanshi`），8 测试，已合入 `54a4e70e`。
-- **P5 乞讨系统（2026-10-27，已提交）**：忠实移植 LPC `cmds/std/beg.c`（4 种钱币对象 → 扁平 `meta.coins` 整数池）。`beg_command.ex` 重写门控链（非丐帮 / `no_beg`+`no_fight` 旗 / 非法币种 / 战斗 / 忙碌 → 发 `beg/attempt`）；`room.ex` 新增 `BegRequestEvent`（目标查找 + 受害者门控 + `sp=trunc(begging^3/10)` vs `dp=victim.jing` 掷骰 + 按接收者替换 `$N/$n` 的 vision 广播）；`beg_debit_event`/`beg_credit_event`（跨进程转账 + `improve_skill("begging")` + 潜力/战斗经验 +1 + `start_busy`）；`commands.ex`/`events.ex` 路由注册。17 测试（命令门控/房间解析/借记贷记）全绿；4 块 Docker 全量回归全绿（~4979 + 17，0 失败）。架构要点：跨角色改币必须在**角色进程**内经事件完成（room→`Context.event(victim_pid,..,"beg/debit")` + `Context.event(beggar_pid,..,"beg/credit")`），因 room 进程不回写 `context.characters`；同步解析故弃用 LPC `query_temp("begging")` 并发锁。
-- 其余已落库：动态出口、TerrainMove、绝情谷、拱猪、Inquiry 门控/太极图/苗人凤/桑三娘刘处玄/商剑鸣、pingsi 传送、survey resolve、P5-3/P5-8 动态 spawn、P5-9 smith job/working、P5-8 on_board 载具、#9 六切片。
-- **P5 打造子系统 —— fuse 熔炼切片（2026-10-27，待提交）**：忠实移植 LPC `cmds/skill/fuse.c`。`fuse_command.ex` 重写（原为只打印占位提示的 stub）：门控链（空参/busy/战斗/内功<300/最大内力<5000/当前内力<3000/身上无物）→ 读 `Item.Meta` `can_make`+`item_origin`（缺则「这东西似乎熔炼不出什么。」）→ `power_point`：<50 化作青烟不留物；否则 `p=:rand.uniform(trunc(pp*3/2))` 按阈值 (120/90/70/50) 给 stone5..1，灵石 `value/300` 决定灵慧 `mp=5+:rand.uniform(max(1,div(value,300)))` 夹 [5,100]，写入 `attributes["magic_points"]`；扣除 `vitals.max_neili-1`/`vitals.neili-3000` + `start_busy(5)`；房间 vision 用 `{npc}` 广播。5 灵石 `stone1..5` 追加进 `clone_lib.ucl`（value=LPC base_value 30000/50000/100000/180000/500000），同时解 `combine_command` 乾坤圣水配方对 stone5 的依赖（注：`stone5-1` 配方原料仍缺，属 combine 子系统范围）。`commands.ex` fuse 路由补 `text(:rest)`（原 stub 无解析、丢参数）。12 测试（门控/查找/条件/成功/低 pp 青烟）全绿；combine+loader_meta+clone_fallback 55/0 全绿；`in_game_commands_test` 裸输入 fuse 用例修复后通过；**全量 4 块回归 4972/0 全绿**。
-- **P5 NPC 战斗闲聊（#144，2026-10-27，待提交）**：忠实移植 LPC `inherit/char/npc.c#chat` 的战斗分支。`CombatEvent.tick/2`（`lib/kantele/character/events/combat_event.ex`）心跳在「进入战斗且未忙乱」时按 `NonPlayerMeta.chat_chance_combat` 概率从 `chat_msg_combat` 随机挑一句，经 `Kantele.World.Room.tell_room/2` 广播给房间（与 `MoveEvent.greet` 同款原语，渲染为玩家所见 NPC 发言）。玩家（PlayerMeta）/`chat_chance_combat=0`/空台词/忙乱/无敌人 均不触发。注意：首次实现误用 `Conn.publish_message` 到 `rooms:` 频道（无法触达 `Room.tell_room` 的订阅者），改为 `Room.tell_room` 后测试通过。6 测试（战斗触发/玩家不触发/概率0/空台词/忙乱/无敌人）全绿；combat+events 套件 574/0 全绿；全量 4 块回归进行中。
+## Completed (tests green)
+- condition/drunk (2026-10-26): Kantele.Drunk, ConditionRegistry 注册 "drunk", drink_command 累加醉度，ConditionEvent 出站通道 (state.condition_messages / state.condition_unconcious)。
+- Force.Dispel + sleep 门控 (2026-10-26): 读 session["conditions"] 替代 character.meta.conditions; Conditions.dispel/3, Kantele.Drunk.dispel_condition/2, Conditions.blocked_by_vitals/3, sleep_command 双消息; 测试 15/0。
+- 房间 water flag 回填: LPC 48 处 → UCL flags "water" (32 区/47 房), scripts/backfill_room_water_flag.py, room_water_flag_backfill_test.exs。
+- P3 liquid/max_liquid 全链: Item.Meta.liquid, parse_liquid/1, item_liquid.ex (定义侧共享只读，喝一口写实例侧 liquid_*), drink/fill 按 LPC, room.snapshot 加 "water", Records 只序列化液体四键 (:book 刻意不存), backfill_item_liquid.py (+348 行), sleep_room_flags_test.exs。
+- P5-9 #9 一次性场景 6 切片完成 (638/0); weiqi_test 21/0; P5-6 暗语链 yanziwu:lanyue (8 测试).
+- P5 乞讨系统 (2026-10-27): beg_command 门控链, room.ex BegRequestEvent, beg_debit/credit_event, 17 测试全绿; 全量回归 ~4996/0。
+- P5 fuse 熔炼切片 (2026-10-27): fuse_command.ex (12 测试), data/world/clone_lib.ucl stone1..5, commands.ex fuse 路由 text(:rest); 全量回归 4972/0。
+- P5 NPC 战斗闲聊 #144 (2026-10-27): combat_event.ex 心跳 chat, 6 测试全绿; combat+events 574/0; 全量回归进行中.
+- P5 打造 S1b+S1c: forging_accept.ex (KeyError 修复 + refund), forging_answer.ex (moye.c do_answer 移植), answer_command.ex, commands.ex, room.ex ForgeAnswerRequestEvent, events.ex 注册, give_event.ex forge_refund; forging_answer_test.exs 8/0。
+- R21 clone_lib 同名同房: wuji4 块缺收尾 `}` 导致 4 块吞掉，已修复 (characters 489 / items 537); clone_fallback_test 回归 8/0。
 
 ## Test gotchas
-- **condition daemon 是纯函数、拿不到 conn** → 要发声或改状态就写 `state.condition_messages` / `state.condition_unconcious`，由 `ConditionEvent` 每跳 flush。别在 daemon 里 `send`/`publish`。
-- **condition 生命周期与效果是拆开的两跳**：`update_condition/1` 先跑（递减/到期），`do_effect/3` 后跑 → 效果看到的是**递减后**的值；要「顺手删条件」只能把 duration 写回 `state.conditions`（`Kantele.Drunk` 的昏厥分支就是这么做的）。
-- **全量回归分块跑时，`split` 的输入清单必须在容器内生成**（宿主机 `/tmp` 与容器 `/tmp` 不共享）；`ls dir/*_test.exs` 会漏子目录（`test/kantele/world/{npc_actions,room}` 3 个文件），须用 `find`。Docker 引擎 2026-10-26 又崩 2 次（单目录 world 各死在 1m7s/1m30s），`docker start wuxia_mud_dev-app-1` 恢复后切块即全绿。
-- **`@type` 是 Elixir 保留属性**（typespec 专用）→ 写模块属性 `@type "liquid_type"` 编译期报 `invalid type specification: "liquid_type"`。字符串键常量一律加前缀（`@key_type`）。
-- 无值返回 nil 的函数，调用点必须判空（`%{map | key: f(x)}` 会灌 nil；`Conn.Text.data` 含 nil 在 `Kalevala.Output.Tags.parse_string/4` 才 FunctionClauseError → 掉线）。新原语须连调用点一起测；渲染结果喂给 `Kalevala.Output.Tags`。
-- **物品定义 vs 实例**：`%Kalevala.World.Item{}` 全局共享只读，`%Item.Instance{meta: %{}}` 才是每实例状态。任何「喝一口/用一次」只能写实例 meta（`Kantele.World.Item.Liquid` 是范例），写定义会污染全服。
-- `Records` 的 `inventory` 列只存 `item_id` → 需跨登录保留的实例状态必须显式进 `serialize_inventory_item/1`；反之每次登录该重掷的（秘籍 `:book`）**刻意不存**。
-- `Room.LookEvent` 测试 `test/kantele/world/room_look_event_test.exs`（4/0，`async: false`）；改 look/房述链路时跑它。
-- `:global` name race：`setup_all` 注册一次 + 每测试 `reset/1`。FakeRoom 房号 `System.unique_integer`，直接调 `Module.run/2` 显式传 room_id。
-- 延时回调测试字符须 `pid: self()`。conn 复用：`channel_changes` 累积，断言取 `List.last` 或逐次新建 conn。`Helpers.give_item/3` 收 `conn`，不能 pipeline。
-- `Kalevala.World.Room.start_link` 收 map（含 `genserver_options`），keyword list → `:badarg`。`Enum.none?/2` 此环境 undefined → 用 `not Enum.any?/2`。
-- `put_character/2` 返回新 conn，断言须取 handler 返回值。`Kalevala.World.Item` 无 `:value`/`:unit`（在 `item.meta["value"]/["unit"]`）。
-- Elixir `0` 为 truthy，LPC `query_temp` 的 0 为假——显式排除 0/false/nil/""。
-- 跳崖死亡路径：`PlayerMeta.combat` 须 `|| %Combat{}`；`Stats.query_dex/1` `skills` 须非 nil map；`Damage.die` 删 `die_reason` + `move_to_death_room` 改 `room_id` → 只能断言 `qi==1 && jing==1 && damage.ghost && room_id != 目标`，测试 id 须 `player:` 前缀。
-- **Elias UCL 括号吸收陷阱**：一个块漏写收尾 `}` 不会报错，而是把其后**所有同级兄弟块**吞入该块内部（直到某个 `}` 借位闭合），导致大量定义从顶层 `characters`/`items` 映射「静默消失」。排查法：`Elias.parse(file)` 后对结果深搜失踪 key（见 R21 wuji4 案例）；`validate_ucl.py` 报 `stray backslash` 之类是**另一独立预存在问题**（adm_zixu 描述里的 `\\"` LPC 续行未折叠），Elias 能容忍、世界照常加载。
+- condition daemon 是纯函数，不拿 conn → 发声/改状态走 state.condition_messages / state.condition_unconcious，由 ConditionEvent flush。
+- 生命周期两跳：update_condition/1 先递减，do_effect/3 后效果（看到递减后的值）。
+- `@type` 是 Elixir 保留属性，字符串键常量加前缀 (@key_type)。
+- 无值返回 nil 调用点须判空；Conn.Text.data 含 nil 在 Tags.parse_string/4 才 FunctionClauseError → 掉线。
+- 物品定义 vs 实例：%Kalevala.World.Item{} 全局共享只读，%Item.Instance{} 才是实例状态；写实例 meta，不污染定义。
+- Records.inventory 只存 item_id；跨登录保留的实例状态进 serialize_inventory_item/1；:book 刻意不存。
+- Conn.put_character 写 conn.private.update_character；断言读 `conn.private.update_character || conn.character`。
+- :global name race: setup_all 注册一次 + 每测试 reset/1。
+- put_character/2 返回新 conn；Kalevala.World.Item 无 :value/:unit（在 item.meta）；Elixir 0 为 truthy。
+- Elias UCL 括号吸收：块漏 `}` 会吞后续兄弟块；Elias.parse 后深搜失踪 key。
 
 ## Next steps (backlog)
-- P3 剩余 3 组字段（框架均已就绪，消费端等 P5 子系统）：
-  - `no_beg`：✅ 已完成（beg_command.ex 重写 + room.ex BegRequestEvent，见下「P5 乞讨系统」）
-  - `can_make`/`not_make`/`power_point`/`item_origin`：框架✅（Item.Meta 已加）。消费端 **fuse 熔炼切片已建（2026-10-27）**——`fuse_command.ex` 读作 `Item.Meta` 的 `can_make`/`item_origin`/`power_point`，按阈值产出灵石并给 `attributes["magic_points"]`（灵慧）。**剩余未建**：`ganjiang.c`/`moye.c` 交互式定制打造（动态文件生成，体量更大，独立 mechanic）。
-  - `chat_msg_combat`/`chat_chance_combat`：框架✅（NonPlayerMeta 已加，254/256 NPC 有数据）。消费端 **NPC 战斗闲聊已建（2026-10-27，#144）**——`CombatEvent.tick` 心跳进入战斗且未忙乱时按 `chat_chance_combat` 概率从 `chat_msg_combat` 随机挑一句，经 `Kantele.World.Room.tell_room` 广播给房间（与 `MoveEvent.greet` 同款原语）。非战斗闲聊 `chat_msg`/`chat_chance` 由 brain `ChatAction` 处理，不在本任务范围。
-- P3 `liquid` 遗留（已登记 §11，非本轮范围）：`water` 摄入（饥渴系统）、`Kantele.Item.Liquid.extra_long/1` 与 `Kantele.Item.ExtraLong` 全族零生产调用点（未建「look 物品详述」子系统）。`condition/drunk` 已补（2026-10-26）。
-- **已知缺陷待修（§11 已登记）**：无 —— `Force.Dispel` / `sleep` condition 门控 已修（2026-10-26）。
-- 37 个非 ask_* 闭包：已完结。扫出 39 条非 `ask_*` 闭包型问询值（22 唯一函数/13 UCL 文件），已被 `NpcAskEvent.handle_text_answer`+`closure_literal?/` 按「未实现占位，静默不回应」兜底；其中 4 条 `(: execute_ask() :)`（changan.ucl 信/家/父亲/letter）因括号未被旧正则匹配、会泄露源码文本给玩家，已在 `npc_shop_event.ex` 扩正则并新增 `mirror_zixu_test.exs` 回归测试。其余 23 个函数无需新增 handler（设计即占位）。
-- `git push`：已无需。`HEAD == origin/kalevala`（**`3a79771c` tong_ren**，5 个本地提交已推送）；「push 尚未执行」已过时。
-- R21 clone_lib 同名同房排查：**根因已定位并修复（2026-10-26 续）**。原以为 `clone_tong_ren`/`adm_zixu` 被 Elias 跳过是「解析器预存在缺陷」，实际根因是 **`items "wuji4"` 块（无名秘籍，line 32518）缺少收尾 `}`**：其 `meta`/`book` 正确闭合后，外层 `items "wuji4" {` 始终未闭合，导致其后 `global_longsword`/`global_potion`/`clone_tong_ren`/`adm_zixu` 四个块被解析器吞入 `items.wuji4` 内部（`items.wuji4.items.*` / `items.wuji4.characters.*`），顶层 `characters`/`items` 映射里消失。原文件靠**文件末尾多余的 `}`（line 32654）** 借位闭合 wuji4 才勉强平衡，故世界能加载但 4 块丢失。修复：补 wuji4 收尾 `}` + 删文件末尾多余 `}`。验证：`Elias.parse` 后 characters 489 / items 537（修复前 487/535），4 块均回到顶层；`clone_fallback_test.exs` 新增 3 条回归（8/0 全绿）。
-
-## Notes
-- `docs/data-world-comments-progress.zh-CN.md` 是「唯一记录做到哪了」的文件，每完成批次必须回填（§0 四件事）。
-- 14 NPC-absent 文件 out of scope。ucl-comment-todo 已清空。#7 学徒/门派、#6 门/容器已完结，勿重复实现。
+- S2 Task #155 (干将接收 forge/handoff + 6 段 vision): ✅ 完成 (ganjiang_event.ex), 测试 2/2 绿。
+- S2 Task #156: ✅ 完成 `注内力` 命令 (zhuneili_command.ex): 门控 status="inputing" && can_help=true; 门槛 jing≥180/qi≥300/neili≥800/max_neili≥1000; 扣 jing180/qi300/neili200/max_neili200; point += point*force/800; can_help→false; 路由已注册; 测试 9/9 绿。
+- S2 Task #157: 注内力命令 route 已注册；需运行 S1b/S1c/S2 + 回归 Docker，确保 0 失败。
+- S3 #152: ✅ 完成 ForgeCustomizeCommand (name/desc/wieldmsg/unwieldmsg/finish) + 动态物品模板注册 + 持久化; 13 测试全绿 (Docker verified). 关键修复: %Item{} → %Kalevala.World.Item{} (ItemDef alias), Kantele.World.Item.Instance 不存在 → 用 Kalevala.World.Item.Instance, CommandView 别名需是 Kantele.Character.CommandView, 会话字段写入用 Map.put 而非 \|> 更新语法, 各子动词需独立 handler 函数 (run_name/run_desc/run_wieldmsg/run_unwieldmsg/run_finish) 因为路由会剥离动词前缀, rest 参数不含动词名.
+- S4 #153: discard/refund ((value*8/10+9999)/10000 金, 仅 item_make && owner_id==player), 乾坤袋 branch, timeout.
+- #154: 全量 4 块 Docker 回归验证.

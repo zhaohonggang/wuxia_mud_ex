@@ -889,6 +889,8 @@ chats = [
         not_make = ["鞭", "甲"]
         power_point = 80
         item_origin = 1
+        material_attrib = "heshi bi"
+        material_name = "何氏壁"
       }
     }
 

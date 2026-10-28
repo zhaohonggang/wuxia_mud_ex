@@ -48,6 +48,9 @@ defmodule Kantele.Character.GiveEvent do
     rules = npc.meta.accept
 
     case match_accept_rule(item_instance, rules) do
+      {:forge} ->
+        Kantele.World.ForgingAccept.handle(conn, npc, item_instance, data, from_name)
+
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
 
@@ -117,10 +120,14 @@ defmodule Kantele.Character.GiveEvent do
           {:ok, _} ->
             acc
 
+          {:forge} ->
+            acc
+
           _ ->
             case rule_hit(rule, item) do
               :hit -> {:ok, take_message(rule, item)}
               :decline -> {:error, failure_message(rule, item)}
+              :forge -> {:forge}
               :miss -> acc
             end
         end
@@ -151,6 +158,9 @@ defmodule Kantele.Character.GiveEvent do
   defp rule_hit(%{kind: "any"} = rule, _item) do
     if rule.accept, do: :hit, else: :decline
   end
+
+  # forge 议价规则：命中即交给 Kantele.World.ForgingAccept 处理（莫邪锻造工坊）
+  defp rule_hit(%{kind: "forge"}, _item), do: :forge
 
   defp rule_hit(_rule, _item), do: :miss
 
@@ -403,4 +413,47 @@ defmodule Kantele.Character.GiveEvent do
   end
 
   def result(conn, _event), do: conn
+
+  # ---- forge 议价结果（莫邪进程 → 玩家进程） ----
+  # 玩家把材料/钱币交给莫邪后，莫邪进程通过 `forge/accept` 事件把回复与结算送达玩家：
+  #   ok:true  → 玩家侧移除该物品实例（完成物理转移），展示莫邪回复
+  #   ok:false → 莫邪拒收，物品仍在玩家背包，仅展示拒绝文案
+
+  def forge_accept(conn, %{data: %{ok: true, instance_id: instance_id, message: message}} = _event) do
+    character = conn.character
+
+    inventory = Enum.reject(character.inventory, fn item_instance -> item_instance.id == instance_id end)
+    character = %{character | inventory: inventory}
+    Records.save(character)
+
+    conn
+    |> put_character(character)
+    |> render(CommandView, "text", %{text: message})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  def forge_accept(conn, %{data: %{ok: false, message: message}} = _event) do
+    conn
+    |> render(CommandView, "text", %{text: message})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  # ---- forge 退款（莫邪进程 → 玩家进程，对应 LPC do_answer 干将不在场） ----
+  # 莫邪把材料与定金一并交还玩家：重新入背包并落盘。
+  def forge_refund(conn, %{data: %{material_instance: material_instance, money_instance: money_instance}} = _event) do
+    character = conn.character
+
+    inventory =
+      character.inventory
+      |> then(fn inv -> if money_instance, do: [money_instance | inv], else: inv end)
+      |> then(fn inv -> if material_instance, do: [material_instance | inv], else: inv end)
+
+    character = %{character | inventory: inventory}
+    Records.save(character)
+
+    conn
+    |> put_character(character)
+    |> render(CommandView, "text", %{text: "莫邪把材料与定金交还给了你。\n"})
+    |> prompt(CommandView, "prompt", %{})
+  end
 end
