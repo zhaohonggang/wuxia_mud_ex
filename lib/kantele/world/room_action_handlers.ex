@@ -599,6 +599,26 @@ defmodule Kantele.World.RoomActionHandlers do
       "do_yell" => {Kantele.World.RoomActions.Vehicle.Trigger, :run},
       "do_cross" => {Kantele.World.RoomActions.Vehicle.Trigger, :run},
       "do_shang" => {Kantele.World.RoomActions.Vehicle.Trigger, :run}
+    },
+    # ---- 郭府打工闭环（P5 补全 yelvqi 打工闭环）：五工作房动词 ----
+    # 各房 `actions` 由 UCL 绑定 verb→handler 名（sao/chu/jiao/pi/ju），全部复用
+    # 同一配置驱动模块 `Wuguan.Work`，按 room_id 查配置（job/参数词/进度 mark/
+    # 完成 mark/管事）。柴房(guofu_chaifang) 与木房(guofu_mufang) 的 verb 都映射
+    # 到 handler 名 "do_pi"，房间级注册表各自指向本模块即可。
+    "wuguan:guofu_mafang" => %{
+      "do_sao" => {Kantele.World.RoomActions.Wuguan.Work, :run}
+    },
+    "wuguan:guofu_caidi1" => %{
+      "do_chu" => {Kantele.World.RoomActions.Wuguan.Work, :run}
+    },
+    "wuguan:guofu_caidi2" => %{
+      "do_jiao" => {Kantele.World.RoomActions.Wuguan.Work, :run}
+    },
+    "wuguan:guofu_chaifang" => %{
+      "do_pi" => {Kantele.World.RoomActions.Wuguan.Work, :run}
+    },
+    "wuguan:guofu_mufang" => %{
+      "do_pi" => {Kantele.World.RoomActions.Wuguan.Work, :run}
     }
   }
 

@@ -15,6 +15,7 @@ defmodule Kantele.World.InquiryHandlers do
     "teleport_service" => Kantele.World.InquiryHandlers.TeleportService,
     "smith_job" => Kantele.World.InquiryHandlers.SmithJob,
     "yelvqi_job" => Kantele.World.InquiryHandlers.YelvqiJob,
+    "wuxiuwen_tools" => Kantele.World.InquiryHandlers.WuxiuwenTools,
     "hostile" => Kantele.World.InquiryHandlers.Hostile
   }
 

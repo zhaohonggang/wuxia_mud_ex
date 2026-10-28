@@ -1334,8 +1334,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "tools" value = "(: give_tools :)" },
-    { key = "工具" value = "(: give_tools :)" },
+    { key = "tools" value = { kind = "wuxiuwen_tools" } },
+    { key = "工具" value = { kind = "wuxiuwen_tools" } },
     { key = "郭靖" value = "那是我师父。" },
     { key = "黄蓉" value = "那是我师母。" }
   ]
@@ -1371,7 +1371,7 @@ chats = [
   }
 
   accept = [
-    { kind = "any" accept = true msg = ["你还没完成工作，怎么就回来还工具了，偷懒吗？", "你还错东西了吧，我从没有发过这样工具。", "我没有发给你过东西，你是不是还错了？", "干得不错，你现在去耶律师兄那儿领取酬劳吧。", "shake", "nod"] }
+    { kind = "wuxiuwen" accept = true msg = ["你还没完成工作，怎么就回来还工具了，偷懒吗？", "你还错东西了吧，我从没有发过这样工具。", "我没有发给你过东西，你是不是还错了？", "干得不错，你现在去耶律师兄那儿领取酬劳吧。", "shake", "nod"] }
   ]
   chat_chance_combat = 120
   chat_msg_combat = ["finger.qian", "finger.dian", "dodge.gui", "powerup", "recover"]

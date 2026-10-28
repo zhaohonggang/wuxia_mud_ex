@@ -77,6 +77,8 @@ defmodule Kantele.Character.Events do
       event("forge/refund", :forge_refund)
       # 干将的私有提示（`tell_rules` 的 tell_object）
       event("forge/notice", :forge_notice)
+      # 武修文收还工具回执（武修文进程 → 玩家进程，落 mark/还了）
+      event("wuxiuwen/returned", :wuxiuwen_returned)
     end
 
     module(MirrorEvent) do

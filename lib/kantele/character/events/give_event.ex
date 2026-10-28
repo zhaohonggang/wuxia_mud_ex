@@ -53,6 +53,9 @@ defmodule Kantele.Character.GiveEvent do
       {:forge} ->
         Kantele.World.ForgingAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:wuxiuwen} ->
+        Kantele.World.WuxiuwenAccept.handle(conn, npc, item_instance, data, from_name)
+
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
 
@@ -125,6 +128,9 @@ defmodule Kantele.Character.GiveEvent do
           {:forge} ->
             acc
 
+          {:wuxiuwen} ->
+            acc
+
           _ ->
             case rule_hit(rule, item) do
               :hit -> {:ok, take_message(rule, item)}
@@ -163,6 +169,9 @@ defmodule Kantele.Character.GiveEvent do
 
   # forge 议价规则：命中即交给 Kantele.World.ForgingAccept 处理（莫邪锻造工坊）
   defp rule_hit(%{kind: "forge"}, _item), do: :forge
+
+  # 武修文收还工具：命中即交给 Kantele.World.WuxiuwenAccept 处理（郭府打工闭环）
+  defp rule_hit(%{kind: "wuxiuwen"}, _item), do: :wuxiuwen
 
   defp rule_hit(_rule, _item), do: :miss
 
@@ -491,6 +500,75 @@ defmodule Kantele.Character.GiveEvent do
 
   # 干将的私有提示（LPC `tell_rules` 的 tell_object）
   def forge_notice(conn, %{data: %{text: text}}) do
+    conn
+    |> render(CommandView, "text", %{text: text})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  # ---- 武修文收还工具回执（武修文进程 → 玩家进程）----
+  # 玩家把工具交给武修文后，武修文进程 `WuxiuwenAccept` 发回此事件：玩家侧落
+  # `mark/还了`（LPC `set_temp("mark/还了", 1)`），并回话。完成标记 / job_name
+  # 的校验放在玩家侧（武修文进程看不见玩家 meta）。
+
+  # 五种打工活计的完成 mark（与 Wuguan.Work 写出的 done mark 对应；不含「挑完了」，
+  # LPC accept_object 仅查这五个）。
+  @wuguan_done_marks ~w(mark/劈完了 mark/浇完了 mark/锄完了 mark/锯完了 mark/扫完了)
+
+  def wuxiuwen_returned(conn, %{data: %{ok: true, message: message}}) do
+    character = current(conn)
+    meta = character.meta || %PlayerMeta{}
+    temp = meta.temp || %{}
+
+    completed = Enum.any?(@wuguan_done_marks, &present_temp?(temp, &1))
+    has_job = not blank?(Map.get(temp, "job_name"))
+
+    cond do
+      not completed ->
+        reject_reply(conn, "你还没完成工作，怎么就回来还工具了，偷懒吗？\n")
+
+      not has_job ->
+        reject_reply(conn, "我没有发给你过东西，你是不是还错了？\n")
+
+      true ->
+        new_meta = PlayerMeta.put_temp(meta, "mark/还了", 1)
+        new_character = %{character | meta: new_meta}
+        Records.save(new_character)
+
+        conn
+        |> put_character(new_character)
+        |> render(CommandView, "text", %{text: message})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  def wuxiuwen_returned(conn, %{data: %{ok: false, message: message}}) do
+    reject_reply(conn, message)
+  end
+
+  def wuxiuwen_returned(conn, _event), do: conn
+
+  defp present_temp?(temp, key) do
+    case Map.get(temp, key) do
+      nil -> false
+      false -> false
+      0 -> false
+      "" -> false
+      _ -> true
+    end
+  end
+
+  defp blank?(nil), do: true
+  defp blank?(false), do: true
+  defp blank?(0), do: true
+  defp blank?(""), do: true
+  defp blank?(_), do: false
+
+  defp current(%{private: %{update_character: character}}) when not is_nil(character),
+    do: character
+
+  defp current(%{character: character}), do: character
+
+  defp reject_reply(conn, text) do
     conn
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})

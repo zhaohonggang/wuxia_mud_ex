@@ -22,20 +22,17 @@ defmodule Kantele.World.NpcActions.Task do
      不影响判定）。
   5. 无 `temp mark/还了`（工具未还）→ 拒绝「还是先把工具还了再说吧。」
   6. 成功：`smile` + say「干得不错，这是给你的奖赏。」+ 发银两
-     （`clone/money/silver` 1+random(5) 枚）+ 加经验 50+random(20) / 潜能
-     25+random(10)（潜能超上限时降为 5）+ 清 `job_name`/`mark` temp +
-     记 `mark/guofu_job`。**整条被未移植系统阻塞**（@todo，见下）。
+     （等值 1+random(5) 两白银，写入扁平 `meta.coins`）+ 加经验
+     50+random(20) / 潜能 25+random(10)（走 `Stats.improve_potential/2` 封顶，
+     潜能超上限时按 LPC 语义额外给 5 点）+ 清 `job_name`/`mark/还了`/完成
+     mark temp + 记 `mark/guofu_job` + 落盘 `Records.save/1`。
 
-  本次只落地 2-5 四个守门分支和 6 的一句 say 文案（不发放任何奖励、不改状态，
-  等奖励链路就绪后一并接上）。
+  本次落地全部 6 个分支，包括成功路径的奖励发放与状态清理。
 
-  ## 未建模依赖（@todo）
+  ## 未建模依赖（@todo，不阻塞本 handler）
 
-  - **奖励发放**：`clone/money/silver` 无对应 item 定义（Kantele 物品库无银两
-    币）；经验/潜能属 P2/P9 成长系统，`combat_exp`/`potential` 写入与
-    `improve_potential` 语义未移植。成功分支暂只播 say 文案。
   - **`command("smile"/"hmm")` 社交动作**：NPC handler 无此能力（无 Helper、
-    无先例），未移植。
+    无先例），未移植（仅少一句房间内可见的社交反馈，不影响判定与奖励）。
   - **领工入口 `ask_job`**（inquiry「工作」）：下发 `job_name` 与
     `apply_condition("wuguan_job", ...)`，属普通 inquiry 层（不在本 verb 层）。
     未移植前分支 2/4 的前置状态无人写入（分支 2 恒拒绝、分支 4 恒不触发），
@@ -46,8 +43,11 @@ defmodule Kantele.World.NpcActions.Task do
 
   use Kantele.World.NpcAction
 
-  import Kalevala.Character.Conn, only: [get_session: 2]
+  import Kalevala.Character.Conn, only: [get_session: 2, put_character: 2]
 
+  alias Kantele.Character.Stats
+  alias Kantele.Economy.Money
+  alias Kantele.Character.Records
   alias Kantele.World.NpcActions.Helpers
 
   @room_id "wuguan:guofu_dayuan2"
@@ -55,6 +55,16 @@ defmodule Kantele.World.NpcActions.Task do
   # LPC names = {"打扫马房", "锯木头", "劈柴", "浇菜地", "锄草"} 五种活计，
   # 完成 mark 另有不在 names 里的「挑完了」，共六个（do_task 的判全集中列全）。
   @completion_marks ~w(mark/劈完了 mark/浇完了 mark/锄完了 mark/锯完了 mark/扫完了 mark/挑完了)
+
+  # LPC do_task 成功段奖励字面量：银两 1+random(5) 两、经验 50+random(20)、
+  # 潜能 25+random(10)（封顶，超上限降为 5）。
+  @silver_count_base 1
+  @silver_count_span 5        # 1 + random(5) 两白银
+  @exp_base 50
+  @exp_span 20                # 50 + random(20) 经验
+  @pot_base 25
+  @pot_span 10                # 25 + random(10) 潜能
+  @pot_min_when_capped 5      # 潜能超上限时的最小发放
 
   @impl true
   def run(conn, %{room_id: room_id, trailing: trailing}) when is_binary(room_id) do
@@ -88,10 +98,11 @@ defmodule Kantele.World.NpcActions.Task do
       blank_temp?(conn, "mark/还了") ->
         Helpers.render(conn, "耶律齐道：…嗯…你还是先把工具还了再说吧。\n")
 
-      # @todo 成功路径（发银两 + 经验/潜能 + 清 temp + 记 mark/guofu_job）待
-      # P2/P9 成长系统与银两 item 就绪后补全；暂只播 NPC 台词，不发奖励。
+      # 成功：发银两 + 经验/潜能 + 清 temp + 记 mark/guofu_job + 落盘 + 播文案
       true ->
-        Helpers.render(conn, "耶律齐点头道：干得不错，这是给你的奖赏。\n")
+        conn
+        |> reward()
+        |> persist()
     end
   end
 
@@ -122,4 +133,78 @@ defmodule Kantele.World.NpcActions.Task do
   defp truthy_condition?(false), do: false
   defp truthy_condition?(0), do: false
   defp truthy_condition?(_info), do: true
+
+  # 当前生效的 character：`put_character/2` 只写 `private.update_character`，
+  # 后续 helper 必须经此读取，否则会丢掉同一 handler 内先前的改动。
+  defp current(%{private: %{update_character: character}}) when not is_nil(character),
+    do: character
+
+  defp current(%{character: character}), do: character
+
+  # ---- reward：发银两 + 经验/潜能 + 清 temp + 记 mark/guofu_job ----
+
+  # LPC do_task 成功段：银两 1+random(5) 两、经验 50+random(20)、潜能
+  # 25+random(10)（封顶，超上限降为 5）。
+  defp reward(conn) do
+    character = current(conn)
+    meta = character.meta || %{}
+    stats = meta.stats || %Stats{}
+
+    silver_count = @silver_count_base + :rand.uniform(@silver_count_span) - 1   # 1 + random(5)
+    coin = silver_count * 100                                                   # 1 silver = 100 coin
+    exp = @exp_base + :rand.uniform(@exp_span) - 1                              # 50 + random(20)
+    pot_gain = @pot_base + :rand.uniform(@pot_span) - 1                         # 25 + random(10)
+
+    # LPC improve_potential：封顶发放；潜能超上限时按 LPC 语义降为 5。
+    after_pot = Stats.improve_potential(stats, pot_gain)
+    new_stats =
+      if after_pot.potential == stats.potential and pot_gain > 0 do
+        # 潜能已达上限，LPC 仍给最小值 5
+        Stats.add_potential(after_pot, @pot_min_when_capped)
+      else
+        after_pot
+      end
+    |> Map.put(:combat_exp, (stats.combat_exp || 0) + exp)
+
+    # 清会话 temp：job_name、完成 mark 六个、mark/还了
+    cleared_temp =
+      Enum.reduce(
+        ~w(job_name mark/还了) ++ @completion_marks,
+        meta.temp || %{},
+        &Map.delete(&2, &1)
+      )
+
+    # 记持久 mark：mark/guofu_job（落 meta.marks，随角色落盘）
+    new_marks = Map.put(meta.marks || %{}, "mark/guofu_job", 1)
+
+    conn =
+      put_character(conn, %{
+        character
+        | meta: %{
+            meta
+            | stats: new_stats,
+              coins: (meta.coins || 0) + coin,
+              marks: new_marks,
+              temp: cleared_temp
+          }
+      })
+
+    conn
+    |> Helpers.render("耶律齐点头道：干得不错，这是给你的奖赏。\n")
+    |> then(&Helpers.render(&1, "耶律齐给你#{Money.denom_str(silver_count, "silver")}。\n"))
+    |> then(&Helpers.render(&1, "你获得了#{exp}点经验和#{pot_gain}点潜能。\n"))
+  end
+
+  # 落盘 stats/coins/marks/consistence（put_character 只改内存态）。
+  # 仅对真实玩家落盘：单测 fixture 的 id 为 nil，跳过可避免 Records.save/1
+  # 在沙盒里刷 error 日志（同 smith.ex / peiyao.ex 惯例）。
+  defp persist(conn) do
+    character = current(conn)
+
+    if is_binary(character.id) and String.starts_with?(character.id, "player:") do
+      Records.save(character)
+    end
+
+    conn
+  end
 end
