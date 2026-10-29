@@ -1384,11 +1384,21 @@ item_desc = {
     { skill = "unarmed" level = 50 }
   ]
 
+  inquiries = [
+    { key = "copy" value = { kind = "jobs_job" } },
+    { key = "抄书" value = { kind = "jobs_job" } },
+    { key = "job" value = { kind = "jobs_job" } },
+    { key = "工作" value = { kind = "jobs_job" } }
+  ]
 
   carry = [
     { id = items.cloth.id }
   ]
 
+  init = {
+    greet_delay = 0
+    add_actions = ["copy"]
+  }
     }
 
 # Generated from C:/files/git/mud/d/guiyun/npc/wanyanhonglie.c by LPCConverter

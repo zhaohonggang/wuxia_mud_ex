@@ -16,7 +16,8 @@ defmodule Kantele.World.InquiryHandlers do
     "smith_job" => Kantele.World.InquiryHandlers.SmithJob,
     "yelvqi_job" => Kantele.World.InquiryHandlers.YelvqiJob,
     "wuxiuwen_tools" => Kantele.World.InquiryHandlers.WuxiuwenTools,
-    "hostile" => Kantele.World.InquiryHandlers.Hostile
+    "hostile" => Kantele.World.InquiryHandlers.Hostile,
+    "jobs_job" => Kantele.World.InquiryHandlers.JobsJob
   }
 
   @doc "按 `kind` 查处理模块；未知 kind 返回 nil（静默忽略）"

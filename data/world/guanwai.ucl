@@ -1691,12 +1691,12 @@ behavior_config = {
   }
 
   inquiries = [
-    { key = "job" value = "你是想采矿(mine)啊，还是运货(transit)？" },
-    { key = "mine" value = " inquire about mine (unimplemented)" },
+    { key = "job" value = { kind = "jobs_job" } },
+    { key = "mine" value = { kind = "jobs_job" } },
     { key = "transit" value = " inquire about transit (unimplemented)" },
-    { key = "工作" value = "你是想采矿(mine)啊，还是运货(transit)？" },
-    { key = "运货" value = " inquire about transit (unimplemented)" },
-    { key = "采矿" value = " inquire about mine (unimplemented)" }
+    { key = "工作" value = { kind = "jobs_job" } },
+    { key = "运货" value = { kind = "jobs_job" } },
+    { key = "采矿" value = { kind = "jobs_job" } }
   ]
 
   chat_chance = 9

@@ -5030,8 +5030,10 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = " inquire about job (unimplemented)" },
-    { key = "工作" value = " inquire about job (unimplemented)" }
+    { key = "job" value = { kind = "jobs_job" } },
+    { key = "工作" value = { kind = "jobs_job" } },
+    { key = "sew" value = { kind = "jobs_job" } },
+    { key = "缝补" value = { kind = "jobs_job" } }
   ]
 
   skills = [
@@ -5078,12 +5080,12 @@ chats = [
   ]
 
   inquiries = [
-    { key = "job" value = " inquire about job (unimplemented)" },
+    { key = "job" value = { kind = "jobs_job" } },
     { key = "书" value = "唉！书到用时方恨少。" },
     { key = "买书" value = " inquire about buy (unimplemented)" },
     { key = "借书" value = "借？你不还我到哪里找你？哼！" },
-    { key = "工作" value = " inquire about job (unimplemented)" },
-    { key = "抄书" value = " inquire about job (unimplemented)" }
+    { key = "工作" value = { kind = "jobs_job" } },
+    { key = "抄书" value = { kind = "jobs_job" } }
   ]
 
   chat_chance = 1
