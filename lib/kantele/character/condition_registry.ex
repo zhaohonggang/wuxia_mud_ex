@@ -4,8 +4,9 @@ defmodule Kantele.Character.ConditionRegistry do
 
   与 `Kantele.Combat.Skills` 同款模式：
 
-  - 静态内建表 `@daemons`（起步 `poison`/`fire_poison`/`nishui`/`duyan`/`drunk`；
-    后续随 kungfu `condition/*.c` 逐个迁移补充，无需重启进程）。
+  - 静态内建表 `@daemons`（起步 `poison`/`fire_poison`/`flower_poison`/`nishui`/
+    `duyan`/`drunk`/`wuguan_job`；后续随 kungfu `condition/*.c` 逐个迁移补充，
+    无需重启进程）。
   - 运行时可热增/热删（`:persistent_term` 覆盖静态表同名项，F1 验收里
     "假 condition/demo" 即走这条路径验证注册表热增）。
 
@@ -17,6 +18,7 @@ defmodule Kantele.Character.ConditionRegistry do
   @daemons %{
     "poison" => Kantele.Poison,
     "fire_poison" => Kantele.Poison,
+    "flower_poison" => Kantele.FlowerPoison,
     "nishui" => Kantele.Nishui,
     "duyan" => Kantele.Duyan,
     "drunk" => Kantele.Drunk,

@@ -99,6 +99,7 @@ defmodule Kantele.Character.MoveEvent do
   end
 
   def notice(conn, %{data: event}) do
+    conn = room_item_init(conn, event)
     greet(conn, event)
 
     conn
@@ -109,33 +110,99 @@ defmodule Kantele.Character.MoveEvent do
     |> prompt(CommandView, "prompt")
   end
 
+  # 房间内**物品**的 `init()`（LPC 玩家进屋时房间里每个对象收到 init）。
+  # 只对「自己」那条 notice 生效：`conn.character` 是 `player:*` 即为进入者。
+  defp room_item_init(conn, %{direction: :to}) do
+    case conn.character do
+      %{id: "player:" <> _, room_id: room_id} ->
+        Kantele.World.RoomItemInit.on_enter(conn, room_id)
+
+      _ ->
+        conn
+    end
+  end
+
+  defp room_item_init(conn, _event), do: conn
+
   # NPC 欢迎（对应 LPC greeting()）：有玩家进入房间且在欢迎台词，随机挑一句
   # 广播到房间。NPC 自己（player:*）或没有 greetings 的 NPC 直接跳过。
   # 台词自身已含 NPC 名与称谓（LPC say 的 "$N" 即说话者），直接原样广播。
   defp greet(conn, %{character: character, direction: :to}) do
     npc = conn.character
 
-    if is_nil(npc) || String.starts_with?(npc.id, "player:") do
-      :ok
-    else
-      case Map.get(npc.meta, :greetings) do
-        lines when is_list(lines) and lines != [] ->
-          room = %Kantele.World.Room{id: npc.room_id}
+    cond do
+      is_nil(npc) || String.starts_with?(npc.id, "player:") ->
+        :ok
 
-          Kantele.World.Room.tell_room(
-            room,
-            render_greeting(Enum.random(lines), npc, character.name)
-          )
+      true ->
+        # 先查逐 NPC 条件问候派发（LPC greeting() 忠实移植）；未注册回退静态池。
+        case Kantele.World.NpcGreeting.greet(npc, character) do
+          {:say, lines, action} when is_list(lines) ->
+            # 台词按序全广播后，再执行收尾动作（如老鸨骂完把太监踢出门）
+            Enum.each(lines, &emit_greeting(npc, character, &1))
+            run_greeting_action(npc, character, action)
 
-          :ok
+          {:say, lines} when is_list(lines) and lines != [] ->
+            # handler 返回的台词按序全广播（对应 LPC 多次 command("say")）
+            Enum.each(lines, &emit_greeting(npc, character, &1))
 
-        _ ->
-          :ok
-      end
+          :skip ->
+            :ok
+
+          _ ->
+            case Map.get(npc.meta, :greetings) do
+              lines when is_list(lines) and lines != [] ->
+                # 静态池是「择一」台词池（LPC switch random），随机取一句
+                say_greeting(npc, character, Enum.random(lines))
+
+              _ ->
+                :ok
+            end
+        end
     end
   end
 
   defp greet(_conn, _event), do: :ok
+
+  defp say_greeting(npc, character, line) do
+    room = %Kantele.World.Room{id: npc.room_id}
+    Kantele.World.Room.tell_room(room, render_greeting(line, npc, character.name))
+  end
+
+  # handler 台词条目：二进制 = `command("say ...")`；
+  # `{:vision, text}` / `{:vision, text, room_id, except}` = LPC `message("vision", ...)`
+  # （`room_id`/`except` 可为 nil：默认 NPC 所在房间、不排除任何人）。
+  defp emit_greeting(npc, character, {:vision, text, room_id, except}) when is_binary(text) do
+    room = %Kantele.World.Room{id: room_id || npc.room_id}
+    Kantele.World.Room.tell_room(room, render_greeting(text, npc, character.name), except)
+  end
+
+  defp emit_greeting(npc, character, {:vision, text}) when is_binary(text) do
+    emit_greeting(npc, character, {:vision, text, nil, nil})
+  end
+
+  defp emit_greeting(npc, character, text) when is_binary(text) do
+    say_greeting(npc, character, text)
+  end
+
+  # 台词播完后的收尾动作（对应 LPC greeting() 里 say 之后的副作用）。
+  # `{:teleport, room_id}` = `me->move(<room>)`：NPC 进程没有玩家 conn，
+  # 只能发事件让玩家进程自己走 `Teleport.teleport/2`。
+  defp run_greeting_action(npc, character, {:teleport, room_id}) when is_binary(room_id) do
+    # 两个 pid 都要是活的才投得动（房间快照里的 NPC/玩家理论上都有 pid，
+    # 单测里可能没挂，宁可什么都不做也不要 send/2 抛 ArgumentError）
+    if is_pid(Map.get(character, :pid)) and is_pid(Map.get(npc, :pid)) do
+      send(character.pid, %Kalevala.Event{
+        from_pid: npc.pid,
+        topic: "character/teleport",
+        data: %{room_id: room_id}
+      })
+    end
+
+    :ok
+  end
+
+  defp run_greeting_action(_npc, _character, _action), do: :ok
 
   defp render_greeting(line, npc, player_name) do
     line

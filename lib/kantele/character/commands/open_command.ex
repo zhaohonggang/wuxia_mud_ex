@@ -13,14 +13,21 @@ defmodule Kantele.Character.OpenCommand do
   def run(conn, %{"target" => target}) do
     character = conn.character
 
-    case open_door(get_room(conn), target, character) do
-      :ok ->
+    # 先查逐物品自定义 open（LPC `init()` 里 add_action 的移植，如明教油布包）
+    case Kantele.World.ItemOpen.open(conn, target, character) do
+      {:done, conn} ->
         conn
-        |> render(CommandView, "text", %{text: "你将#{target}打开了。\n"})
-        |> prompt(CommandView, "prompt", %{})
 
-      {:error, message} ->
-        render_error(conn, message)
+      :fallback ->
+        case open_door(get_room(conn), target, character) do
+          :ok ->
+            conn
+            |> render(CommandView, "text", %{text: "你将#{target}打开了。\n"})
+            |> prompt(CommandView, "prompt", %{})
+
+          {:error, message} ->
+            render_error(conn, message)
+        end
     end
   end
 

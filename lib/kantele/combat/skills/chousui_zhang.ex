@@ -2,14 +2,30 @@ defmodule Kantele.Combat.Skills.ChousuiZhang do
   @moduledoc """
   抽髓掌（对照 kungfu/skill/chousui-zhang.c）
 
-  招式表为纯数据（@actions，取 LPC action 表的 5 式静态招式）。源文件用了
-  `"dmage"` 拼写（缺 damage），此处按原值写入 `"damage"`；第 6 式「极意」
-  （lvl 200，动态力/攻/闪/架/伤）与 `valid_combine`（三阴蜈蚣爪）见 TODO(migrate)。
+  招式表为纯数据（`@actions`，5 式静态招式）。源文件第 5 式用了 `"dmage"` 拼写
+  （缺 `damage`），此处按原值写入 `"damage"`。
+
+  第 6 式「极意」（lvl 200）的力/攻/闪/架/伤由 `query_action/3` 按出招者的
+  `force`/`strike`/`dodge`/`parry` **实时生成**（见 `@ultimate` 与 `ultimate_values/2`）。
+
+  **未迁移**：`valid_combine`（三阴蜈蚣爪）—— 引擎无组合技回调，见 TODO(migrate)。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
+  # 第 6 式「极意」的静态部分；五项数值由 ultimate_values/2 出招时生成
+  @ultimate %{
+    "action" => "$N凝神静气，使出极招 抽髓掌之极意 ",
+    "lvl" => 200,
+    "skill_name" => "极意",
+    "damage_type" => "瘀伤"
+  }
+
+  @doc "第 6 式「极意」的静态部分（动态数值由 query_action/3 生成）"
+  def ultimate(), do: @ultimate
 
   @actions [
     %{
@@ -97,6 +113,45 @@ defmodule Kantele.Combat.Skills.ChousuiZhang do
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
+  end
+
+  @doc """
+  带角色上下文选招：等级 > 200 时把动态第 6 式「极意」并入招式表
+
+  LPC 原文（`kungfu/skill/chousui-zhang.c`）：
+
+      "force"  : query_skill("force",1)/2 + random(query_skill("force",1)),
+      "attack" : query_skill("strike",1)/4 + random(query_skill("strike",1)/2),
+      "dodge"  : query_skill("dodge",1)/6 + random(query_skill("force",1)/3),
+      "parry"  : query_skill("parry",1)/6 + random(query_skill("parry",1)/3),
+      "damage" : query_skill("force",1)/4 + random(query_skill("strike",1)/2),
+  """
+  @impl true
+  def query_action(level, rng, attacker) do
+    Kantele.Combat.Skill.pick_action_with_ultimate(
+      @actions,
+      level,
+      attacker,
+      @ultimate,
+      &ultimate_values/2,
+      rng
+    )
+  end
+
+  defp ultimate_values(attacker, rng) do
+    force = Skill.skill_of(attacker, "force")
+    strike = Skill.skill_of(attacker, "strike")
+    dodge = Skill.skill_of(attacker, "dodge")
+    parry = Skill.skill_of(attacker, "parry")
+    r = &Skill.lpc_random(rng, &1)
+
+    %{
+      "force" => div(force, 2) + r.(force),
+      "attack" => div(strike, 4) + r.(div(strike, 2)),
+      "dodge" => div(dodge, 6) + r.(div(force, 3)),
+      "parry" => div(parry, 6) + r.(div(parry, 3)),
+      "damage" => div(force, 4) + r.(div(strike, 2))
+    }
   end
 
   @impl true

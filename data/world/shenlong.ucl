@@ -35,6 +35,21 @@ zones "shenlong" {
     east = rooms.kongdi.id
     }
 
+# 草坪的花：LPC d/shenlong/caoping.c 的 set objects 里三次调用 flower()，
+# 而 flower() 是运行时随机函数，转换器无法静态展开，原先整块丢失（房间一朵花都没有）。
+# 随机分布：n==88(1/300)→翡翠兰 hua4，n<50(50/300)→百香花 hua，n<80(30/300)→无名花 hua2，
+# 其余(220/300)→断肠花 hua3。即断肠花是绝大多数，所以这间房几乎必定让人中毒
+# （见 Kantele.World.RoomItemInit 的进入判定）。
+# UCL 表达不了权重，这里取「最可能形态」：两朵断肠花 + 一朵装饰花（随机百香/无名）。
+# 翡翠兰 hua4（1/300，价值 1000000）属稀有刷新，留待 D3 动态 spawn 子系统。
+  room_items "caoping" {
+    room_id = rooms.caoping.id
+    items = [
+      { id = items.hua3.id },
+      { id = items.hua3.id },
+      { id = [items.hua.id,items.hua2.id] }    ]
+  }
+
 # Generated from C:/files/git/mud/d/shenlong/chufang.c by LPCConverter
 # Zone: shenlong
 

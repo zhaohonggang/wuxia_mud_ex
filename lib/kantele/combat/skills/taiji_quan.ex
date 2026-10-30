@@ -1,12 +1,15 @@
 defmodule Kantele.Combat.Skills.TaijiQuan do
   @moduledoc """
-  太极拳（对应 ExKantele.Combat.Skills.TaijiQuan）
+  太极拳（对照 kungfu/skill/taiji-quan.c）
 
-  招式表为纯数据（@actions），选择公式在 `Kantele.Combat.Skill`
+  招式表为纯数据（`@actions`，30 式静态招式），选择公式在 `Kantele.Combat.Skill`。
+  末式「极意」（lvl 350）的力/攻/闪/架/伤由 `query_action/3` 按出招者的
+  `force`/`unarmed`/`dodge`/`parry` **实时生成**（见 `@ultimate` 与 `ultimate_values/2`）。
   """
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -289,6 +292,9 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
     "damage_type" => "瘀伤"
   }
 
+  @doc "第 31 式「极意」的静态部分（动态数值由 query_action/3 生成）"
+  def ultimate(), do: @ultimate
+
   @impl true
   def id(), do: "taiji-quan"
 
@@ -320,7 +326,49 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
-    if level >= 350, do: @ultimate, else: Kantele.Combat.Skill.pick_action(@actions, level, rng)
+    Kantele.Combat.Skill.pick_action(@actions, level, rng)
+  end
+
+  @doc """
+  带角色上下文选招：等级 > 350 时把动态末式「极意」并入招式表
+
+  LPC 原文（`kungfu/skill/taiji-quan.c`）：
+
+      "force"  : query_skill("force",1)/4 + random(query_skill("force",1)/3),
+      "attack" : query_skill("unarmed",1)/5 + random(query_skill("unarmed",1)/3),
+      "dodge"  : query_skill("dodge",1)/4 + random(query_skill("force",1)/2),
+      "parry"  : query_skill("parry",1)/3 + random(query_skill("parry",1)),
+      "damage" : query_skill("force",1)/4 + random(query_skill("unarmed",1)/4),
+
+  注意 LPC 的极意**是招式表最后一项**（lvl 350），由 `NewRandom` 与其他招式一同抽取，
+  不是「到 350 级就必出」—— 旧实现写成 `if level >= 350, do: @ultimate` 是偏差，已修正。
+  """
+  @impl true
+  def query_action(level, rng, attacker) do
+    Kantele.Combat.Skill.pick_action_with_ultimate(
+      @actions,
+      level,
+      attacker,
+      @ultimate,
+      &ultimate_values/2,
+      rng
+    )
+  end
+
+  defp ultimate_values(attacker, rng) do
+    force = Skill.skill_of(attacker, "force")
+    unarmed = Skill.skill_of(attacker, "unarmed")
+    dodge = Skill.skill_of(attacker, "dodge")
+    parry = Skill.skill_of(attacker, "parry")
+    r = &Skill.lpc_random(rng, &1)
+
+    %{
+      "force" => div(force, 4) + r.(div(force, 3)),
+      "attack" => div(unarmed, 5) + r.(div(unarmed, 3)),
+      "dodge" => div(dodge, 4) + r.(div(force, 2)),
+      "parry" => div(parry, 3) + r.(parry),
+      "damage" => div(force, 4) + r.(div(unarmed, 4))
+    }
   end
 
   @doc "可组合的技能"
@@ -391,7 +439,7 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
 
   @doc "当前等级对应的最高招式名（query_skill_name）"
   def query_skill_name(level) do
-    @actions
+    (@actions ++ [@ultimate])
     |> Enum.reverse()
     |> Enum.find(fn action -> level >= Map.get(action, "lvl", 0) end)
     |> case do

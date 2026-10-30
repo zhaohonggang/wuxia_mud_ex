@@ -22,7 +22,30 @@ defmodule Kantele.Character.StudyCommand do
 
   def run(conn, params) do
     character = conn.character
+    arg = params["parse"]
 
+    if is_nil(arg) or arg == "" do
+      fail(conn, "你要读什么？\n格式：study <书籍名称> [次数]\n")
+    else
+      {book_name, times} = parse_arg(arg)
+
+      # 先查逐物品自定义 do_study（LPC `init()` 里 add_action 的移植）：
+      # 这类物品的门槛/消耗/文案与通用流程不同，且可能**必须**在战斗中
+      # （`lingxiao/obj/book-iron.c`），所以要抢在 busy/fighting 守卫之前。
+      case find_book(character.inventory, book_name) do
+        nil ->
+          run_generic(conn, book_name, times, character)
+
+        book_item ->
+          case Kantele.World.ItemStudy.study(conn, book_item, book_name, character) do
+            {:done, conn} -> conn
+            :fallback -> run_generic(conn, book_name, times, character)
+          end
+      end
+    end
+  end
+
+  defp run_generic(conn, book_name, times, character) do
     cond do
       Combat.busy?(character.meta.combat) ->
         fail(conn, "你现在正忙着呢。\n")
@@ -31,17 +54,7 @@ defmodule Kantele.Character.StudyCommand do
         fail(conn, "你无法在战斗中专心下来研读新知！\n")
 
       true ->
-        parse_and_study(conn, params["parse"], character)
-    end
-  end
-
-  defp parse_and_study(conn, arg, character) do
-    if is_nil(arg) or arg == "" do
-      fail(conn, "你要读什么？\n格式：study <书籍名称> [次数]\n")
-    else
-      # 解析 "书名 x3" 或 "书名 3" 格式
-      {book_name, times} = parse_arg(arg)
-      start_study(conn, book_name, times, character)
+        start_study(conn, book_name, times, character)
     end
   end
 

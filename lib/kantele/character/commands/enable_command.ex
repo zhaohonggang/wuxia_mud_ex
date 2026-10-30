@@ -22,7 +22,7 @@ defmodule Kantele.Character.EnableCommand do
       is_nil(module) ->
         render_error(conn, "没有这项武功。\n")
 
-      not module.valid_enable(usage) ->
+      not valid_enable?(module, usage, character) ->
         render_error(conn, "#{skill_title(skill_id)}不能enable到这个用法。\n")
 
       true ->
@@ -47,6 +47,13 @@ defmodule Kantele.Character.EnableCommand do
     conn
     |> render(CommandView, "text", %{text: message})
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  # LPC 里少数技能的 `valid_enable` 读 `this_player()`（如 `jiuyin-shengong` 的
+  # `me->query("reborn")`）。这类技能实现 `valid_enable/2(usage, character)`，
+  # 其余由宏默认实现回落到 `valid_enable/1`。
+  defp valid_enable?(module, usage, character) do
+    module.valid_enable(usage, character)
   end
 
   defp skill_title("liuxin-jian"), do: "柳心剑法"

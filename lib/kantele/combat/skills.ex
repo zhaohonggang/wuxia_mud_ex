@@ -201,7 +201,19 @@ defmodule Kantele.Combat.Skills do
     "dali-chu" => Kantele.Combat.Skills.DaliChu,
     "danding-dao" => Kantele.Combat.Skills.DandingDao,
     "daojian-guizhen" => Kantele.Combat.Skills.DaojianGuizhen,
-    "dongyang-dao" => Kantele.Combat.Skills.DongyangDao
+    "dongyang-dao" => Kantele.Combat.Skills.DongyangDao,
+    # 六个「绝学内功」（`inherit FORCE`）：LPC 招式表变量名是 `actionf`/`actionw`，
+    # 之前既没进注册表、招式表也在生成时整表丢失，等于 `enable` 报「没有这项武功」。
+    # 现按源补齐双表 + `valid_enable`（含九阳/九阴/太玄的 this_player 分支）。
+    "bluesea-force" => Kantele.Combat.Skills.BlueseaForce,
+    "jiuyang-shengong" => Kantele.Combat.Skills.JiuyangShengong,
+    "jiuyin-shengong" => Kantele.Combat.Skills.JiuyinShengong,
+    "kuihua-mogong" => Kantele.Combat.Skills.KuihuaMogong,
+    "taixuan-gong" => Kantele.Combat.Skills.TaixuanGong,
+    "zhonghua-aojue" => Kantele.Combat.Skills.ZhonghuaAojue,
+    # 不败神功：招式表变量名是 `action_default` / `action_whip`（按武器 skill_type 分表），
+    # 同样在生成时整表丢失 + 没进注册表。现按源补齐（`valid_enable` 11 项）。
+    "never-defeated" => Kantele.Combat.Skills.NeverDefeated
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

@@ -23,6 +23,9 @@
 - R21 clone_lib 同名同房: wuji4 块缺收尾 `}` 导致 4 块吞掉，已修复 (characters 489 / items 537); clone_fallback_test 回归 8/0。
 
 ## Test gotchas
+- **技能招式表两条通道**：`query_action/2`（无角色，只能空手表）与**可选** `query_action/3(level, rng, attacker)`（attacker 是 `%Fighter{}`，含 `:skills`/`:weapon_name`/`:weapon_skill_type`）。同理 `valid_enable/1` vs **可选** `valid_enable/2(usage, character)`（character 是 `%Kalevala.Character{}`，读 `meta.stats`/`meta.marks`）。宏里有默认实现回落，新技能只覆盖需要的那个。
+- `Skill.reborn?/1` 以 `stats.reborn` **任一非零加成**判定已转世（引擎无布尔标记、无 `reborn/count`）；`Skill.mark?/2` 读 `meta.marks` 顶替 LPC `can_learn/...`。
+- `Fighter.weapon_skill_type` 存**原始** `skill_type`（不套 `attack_skill` 的 `pin → sword` 归一），因为 `never-defeated` 按 `skill_type == "whip"` 分表。
 - condition daemon 是纯函数，不拿 conn → 发声/改状态走 state.condition_messages / state.condition_unconcious，由 ConditionEvent flush。
 - 生命周期两跳：update_condition/1 先递减，do_effect/3 后效果（看到递减后的值）。
 - `@type` 是 Elixir 保留属性，字符串键常量加前缀 (@key_type)。
@@ -33,6 +36,7 @@
 - :global name race: setup_all 注册一次 + 每测试 reset/1。
 - put_character/2 返回新 conn；Kalevala.World.Item 无 :value/:unit（在 item.meta）；Elixir 0 为 truthy。
 - Elias UCL 括号吸收：块漏 `}` 会吞后续兄弟块；Elias.parse 后深搜失踪 key。
+- Elias 另两坑（会让**整区加载失败**→ loader 测试大面积 invalid）：①**裸 `#` 行**（注释符后空）报 `syntax error before: "\n"`；②列表 `[a.id,b.id]` **逗号后不能有空格**（`[a.id, b.id]` 解析失败）。
 - `Room.message_vision/3` 是**死接口**：发 `{:vision_message, ...}`，Foreman 只处理 `{:room_message, ...}`。房间 vision 一律用 `Kantele.World.RoomActions.Helpers.broadcast_vision/4`（`$N`→`{npc}` 由 VisionView 分流「你」/姓名）。
 - `Stats.effective/3` = LPC `query_skill`：`div(skills[usage],2) + skills[special] + apply`。基本技能**折半**！装备 `armor_prop` 走 `Combat.skill_applies/1` 传入。
 - LPC 数字文案一律 `Kantele.Util.ChineseNumber.to_chinese/1`（照抄 `chinesed.c`：110→「一百十」、1010→「一千零十」）。`Money` 已委托它，勿再写第二份。
@@ -44,6 +48,10 @@
 - **顺序陷阱**：`Forging.put(new_session)` 之后再 `ForgingTimeout.cancel/1` —— 反了会被 new_session 里的旧令牌覆盖，等于没取消。
 
 ## Next steps (backlog)
+- C 相位 F4 武功迁移 ✅ **整桶收口 (2026-10-29)**：静态 `@actions` 表（202 保真空壳）+ `valid_enable`（70 空壳，69 保真）+ `performs/`（728 模块；414 条清单 `[ ]` 全部已实现并注册 `perform_list`，缺模块 0 / 未注册 0）。**F4 三桶功能完整、0 真缺口**；162KB `kungfu-f4-migration-checklist.zh-CN.md` 已加 ⚠️ 过时声明。余 1339 `TODO(migrate)` = `valid_learn`/`practice_skill`/`prepare_skill`/`valid_damage` 被动/`surge-force` 等动态公式门槛（文档化已知缺口，需 LPC 源 `/tmp/kungfu_skill` 方可逐条核验）。无 `git commit`。
+- C 相位 C0 ✅ 收口 (2026-10-29): 7 个技能（6 绝学内功 + never-defeated）招式表 + `valid_enable` + **`Skills.@static` 注册**全部落地。契约扩可选 `query_action/3`、`valid_enable/2`（宏默认回落，726 模块零改动）；`Fighter` 加 `:weapon_skill_type`。脚本 `migrate_actionf_skills.py` + `migrate_never_defeated.py`。`skills_actionf_test` 57/0、`skills_ultimate_test` 33/0；全量 **5338/0**。空壳 75→70（69 保真）、`@actions []` 209→202、`TODO(migrate)` 1346→1339。**yinyang_shiertian 已结案为保真空壳**（LPC 仅 `exert/powerup.c`，无技能定义 `.c`，jiuyang 侧引用全被注释，Elixir 空壳与源保真一致）。
+- C 相位 PVE 高频真缺口（2026-10-29）：`luohan-quan`（8 式，`skills_luohan_quan_test` **18/0**；已修正 `new_random` 计数边界：LPC `level > lvl` 严格，`NewRandom(2)` 恒返回索引 0 等同 `random(1)`）、`dagou-bang`（5 式 + lvl 200 动态「极意」，`query_action/3` 走 `pick_action_with_ultimate/6`）、`kuangfeng-jian`（4 式，`damage_type` 刺伤/刺伤/刺伤/割伤）、`banruo-zhang`（10 式 lvl 0/10/20/40/70/90/110/130/140/150，`damage_type` 瘀伤/劈伤，`valid_enable("strike"/"parry")`）、`cibei-dao`（8 式 lvl 0/10/30/50/80/100/120/150，全 `割伤`，`valid_enable("blade"/"parry")`）均按 LPC `kungfu/skill/*.c` 补齐 `@actions`+`query_action/2,/3`+`query_skill_name` 并注册 `Skills.@static`。**Docker 测试全绿：`skills_banruo_zhang_test.exs` **18/0**、`skills_cibei_dao_test.exs` **18/0**（新写，沿用 luohan/kuangfeng 范式）；连前序 `skills_dagou_bang_test.exs` **13/0**、`skills_kuangfeng_jian_test.exs` **13/0**、`skills_luohan_quan_test.exs` **18/0**。本次全量回归 4 块：aa 1438/0、ab 672/0、ac 1767/0、ad 1546/0（ad 首跑 1 失败为 DB auth 抖动 flaky，重跑 0）。**5423 tests，0 失败（0 本批次引入）。****修复点：dagou_bang End-to-End 战斗快照需补 force/staff/dodge/parry 技能等级，否则动态「极意」伤害为 0。****
+- **教训**：招式表补齐 ≠ 能用 —— 必须一并查 `Skills.@static`（195/733 白名单）。生成器改文件时旧占位符的**单行形式**（`@actions []`）最易漏，改完 `grep -n "^  @actions"` 数出现次数 >1 即残留。
 - S2 Task #155 (干将接收 forge/handoff + 7 段 vision): ✅ 完成 (ganjiang_event.ex)，2026-10-28 改为 LPC `call_out` 分步时序（prepare 1s → step1 5s → step2 6s → step3 3s → step4 5s → step5 3s → step6 2s），step6 才 `inputing` 并排 240s 等待。`ganjiang_event_test` 6/0。
 - S2 Task #156: ✅ 完成 `注内力` 命令 (zhuneili_command.ex)：门控恢复 LPC 精确的 `status=="waiting" && can_help`（**6 秒窗口**，inputing 必须拒绝）；门槛 jing≥180/qi≥300/neili≥800/max_neili≥1000；扣 jing180/qi300/neili200/max_neili200；point += point*force/800；can_help→false；测试 12/12 绿。
 - S2 Task #157: 注内力命令 route 已注册；需运行 S1b/S1c/S2 + 回归 Docker，确保 0 失败。

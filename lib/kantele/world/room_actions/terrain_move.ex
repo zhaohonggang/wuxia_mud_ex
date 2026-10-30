@@ -124,6 +124,34 @@ defmodule Kantele.World.RoomActions.TerrainMove do
     ]
   }
 
+  # 突石上 `do_tiao`：只能 `tiao down` 往下跳。轻功 <120 摔下去昏倒，否则稳稳落地。
+  # 这间房的 `down` 出口被 `valid_leave` 拦住（「这里又没有路，看来只有跳下去了」），
+  # 所以缺这个 handler 玩家会被**困在突石上**出不来。
+  @outzigai1_tiao %{
+    args: ["down"],
+    otherwise: {:write, "你要往哪儿跳？\n"},
+    branches: [
+      %{
+        :"when" => [{:dodge, :<, 120, :raw}],
+        :path => %{
+          before: "\n$N鼓起勇气纵身往下一跳...\n",
+          target: "hengyang:outzigai",
+          after: "$N从上面摔了下来，昏倒了。\n",
+          unconcious: true
+        }
+      },
+      %{
+        :"when" => :always,
+        :path => %{
+          before: "\n$N你纵身一跳，稳稳地落在了地上。\n\n",
+          target: "hengyang:outzigai",
+          after: "$N从上面跳了下来。\n",
+          after_excl: true
+        }
+      }
+    ]
+  }
+
   @shuiliandong_tiao %{
     args: ["pubu", "瀑布"],
     otherwise: {:write, "你想往哪儿跳？\n"},
@@ -336,6 +364,7 @@ defmodule Kantele.World.RoomActions.TerrainMove do
     {"hengyang:outzhushendong", "climb"} => @outzhushendong_climb,
     {"hengyang:outzigai", "climb"} => @outzigai_climb,
     {"hengyang:outzigai", "jump"} => @outzigai_tiao,
+    {"hengyang:outzigai1", "jump"} => @outzigai1_tiao,
     {"hengyang:shuiliandong", "jump"} => @shuiliandong_tiao,
     {"hengyang:xuanyadi", "climb"} => @xuanyadi_climb,
     {"jueqing:eyutan1", "cross"} => @eyutan1_cross,

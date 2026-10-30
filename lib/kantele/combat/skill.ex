@@ -33,6 +33,16 @@ defmodule Kantele.Combat.Skill do
   @doc "是否可 enable 到某用法（valid_enable/1）"
   @callback valid_enable(String.t()) :: boolean()
 
+  @doc """
+  带角色上下文的 `valid_enable`（对应 LPC 里读 `this_player()` 的实现）
+
+  极少数技能的 LPC `valid_enable` 依赖角色状态（如 `jiuyin-shengong` 的
+  `me->query("reborn")`：未转世只能 enable 到 `force`）。`valid_enable/1`
+  拿不到角色，故这类技能额外实现本回调；`EnableCommand` 优先调它，其余技能
+  由宏默认实现回落到 `valid_enable/1`。
+  """
+  @callback valid_enable(String.t(), term()) :: boolean()
+
   @doc "学习门槛校验（valid_learn/1）"
   @callback valid_learn(Stats.t()) :: :ok | {:error, String.t()}
 
@@ -47,9 +57,19 @@ defmodule Kantele.Combat.Skill do
   @doc "练习一次的消耗（practice_skill 的 qi/neili 消耗）"
   @callback practice_cost() :: %{qi: non_neg_integer(), neili: non_neg_integer()}
 
-  @doc "按等级加权随机选一招（query_action + NewRandom）"
+  @doc """
+  按等级加权随机选一招（query_action + NewRandom）
+
+  LPC 的 `query_action(object me, object weapon)` 有两个参数，其中 `weapon`
+  决定用哪张招式表（如绝学内功的 `actionw` / `actionf`）。引擎的
+  `query_action/1`、`query_action/2` 拿不到角色上下文，所以**武器相关**的技能
+  额外实现可选的 `query_action/3(level, rng, attacker)`；`attacker` 是
+  `Kantele.Combat.Fighter` 快照（含 `:weapon_name`、`:skills`）。
+  未实现者由宏默认实现回落到 `query_action/2`。
+  """
   @callback query_action(non_neg_integer()) :: map()
   @callback query_action(non_neg_integer(), rng()) :: map()
+  @callback query_action(non_neg_integer(), rng(), term()) :: map()
 
   @doc "绝招列表：短名 -> 实现 module（perform_action_file 映射）"
   @callback perform_list() :: %{String.t() => module()}
@@ -115,7 +135,9 @@ defmodule Kantele.Combat.Skill do
     query_effect_dodge: 1,
     skill_improved: 1,
     perform_action_file: 1,
-    do_effect: 2
+    do_effect: 2,
+    query_action: 3,
+    valid_enable: 2
   ]
 
   defmacro __using__(_opts) do
@@ -126,6 +148,16 @@ defmodule Kantele.Combat.Skill do
 
       @doc false
       def valid_learn(_stats), do: :ok
+
+      # 带角色上下文的 valid_enable：默认忽略角色，回落到 valid_enable/1。
+      # 只有 LPC 里读 `this_player()` 的技能（如 jiuyin-shengong 的 reborn 门控）才覆盖。
+      @doc false
+      def valid_enable(usage, _character), do: valid_enable(usage)
+
+      # 武器感知选招：默认忽略角色快照，回落到 query_action/2。
+      # 只有 LPC `query_action(me, weapon)` 分两张表的技能（绝学内功）才覆盖。
+      @doc false
+      def query_action(level, rng, _attacker), do: query_action(level, rng)
 
       @doc false
       def valid_force(_other), do: true
@@ -164,7 +196,9 @@ defmodule Kantele.Combat.Skill do
       def perform_action_file(name), do: Map.get(perform_list(), name)
 
       defoverridable valid_learn: 1,
+                     valid_enable: 2,
                      valid_force: 1,
+                     query_action: 3,
                      practice_cost: 0,
                      perform_list: 0,
                      exert_list: 0,
@@ -178,6 +212,74 @@ defmodule Kantele.Combat.Skill do
                      perform_action_file: 1
     end
   end
+
+  @doc """
+  武器感知选招：LPC `query_action(me, weapon)` 的 `weapon ? actionw[...] : actionf[...]`
+
+  全库只有 6 个「绝学内功」这么写（`actionf` 是空手表、`actionw` 是持械表），
+  其余技能的 `query_action` 只有一张表，用 `pick_action/3` 即可。
+
+  `attacker` 是 `Kantele.Combat.Fighter` 快照；`weapon_name` 非空即视为持械
+  （对应 LPC `objectp(weapon)`）。`weapon_actions` 为空时也回落到空手表 ——
+  避免某个技能只迁了一半表时出招为空。
+  """
+  @spec pick_action_for([map()], [map()], non_neg_integer(), term(), rng()) :: map()
+  def pick_action_for(actions, weapon_actions, level, attacker, rng \\ &:rand.uniform/1) do
+    if weapon?(attacker) and weapon_actions != [] do
+      pick_action(weapon_actions, level, rng)
+    else
+      pick_action(actions, level, rng)
+    end
+  end
+
+  @doc "攻击者是否持械（对应 LPC `objectp(weapon)`）"
+  def weapon?(%{weapon_name: name}), do: is_binary(name) and name != ""
+  def weapon?(_), do: false
+
+  @doc """
+  攻击者所持武器的原始 `skill_type`（对应 LPC `weapon->query("skill_type")`）
+
+  少数技能的 `query_action` 不只看「有没有武器」，而是**按武器类型分表**
+  （`never-defeated`：`whip` 走 `action_whip`，其余走 `action_default`）。
+  空手时为 `nil`（LPC 里 `weapon` 为 0，switch 走 `"default"` 分支）。
+  """
+  @spec weapon_skill_type(term()) :: String.t() | nil
+  def weapon_skill_type(%{weapon_skill_type: type}) when is_binary(type), do: type
+  def weapon_skill_type(_), do: nil
+
+  @doc """
+  角色是否已转世（对应 LPC `me->query("reborn")`）
+
+  本引擎把转世建模成 `stats.reborn` 的**属性加成表**（`%{str: n, int: n, ...}`），
+  没有独立布尔标记，也没有 `reborn/count`（`leiting_fu/sanda.ex` 亦记作未建模）。
+  这里以「有任一非零加成」判定已转世；未转世者全 0（`Stats.new/0` 默认值）→ false。
+
+  只有少数 `valid_enable` 读 `this_player()` 的技能（九阳/九阴/太玄）需要它。
+  """
+  @spec reborn?(term()) :: boolean()
+  def reborn?(%{meta: %{stats: %{reborn: reborn}}}), do: reborn_flag?(reborn)
+  def reborn?(_), do: false
+
+  defp reborn_flag?(reborn) when is_map(reborn),
+    do: Enum.any?(Map.values(reborn), &(&1 not in [nil, 0]))
+
+  defp reborn_flag?(reborn) when is_integer(reborn), do: reborn > 0
+  defp reborn_flag?(_), do: false
+
+  @doc """
+  读 `meta.marks` 里的任务标记（对应 LPC `me->query("can_learn/xxx/enable_weapon")`）
+
+  LPC 的 `can_learn/...` / `can_learned/...` 权限位在本引擎统一落在 `meta.marks`
+  （与 `mark/guofu_job`、`mark/还了` 同一仓库），值非 `nil/0/false` 即视为已获得。
+  """
+  @spec mark?(term(), String.t()) :: boolean()
+  def mark?(%{marks: marks}, key) when is_map(marks),
+    do: Map.get(marks, key) not in [nil, 0, false]
+
+  def mark?(%{meta: %{marks: marks}}, key) when is_map(marks),
+    do: Map.get(marks, key) not in [nil, 0, false]
+
+  def mark?(_character, _key), do: false
 
   @doc """
   从招式表中按等级选出可用招式并加权抽取一式
@@ -202,6 +304,64 @@ defmodule Kantele.Combat.Skill do
   end
 
   @doc """
+  取攻击方某技能等级（对应 LPC `me->query_skill(name, 1)`）
+
+  `attacker` 是 `Kantele.Combat.Fighter` 快照（`skills` 为「技能 id → 等级」）。
+  非 Fighter / 无该技能时返回 0 —— 与 LPC `query_skill` 未学时返回 0 一致。
+  """
+  @spec skill_of(term(), String.t()) :: non_neg_integer()
+  def skill_of(%{skills: skills}, name) when is_map(skills) do
+    case Map.get(skills, name, 0) do
+      n when is_integer(n) and n > 0 -> n
+      _ -> 0
+    end
+  end
+
+  # 角色形状（`valid_enable/2` 收到的是角色而非 Fighter）
+  def skill_of(%{meta: %{stats: stats}}, name), do: Kantele.Character.Stats.skill(stats, name)
+  def skill_of(_attacker, _name), do: 0
+
+  @doc """
+  LPC `random(n)`：返回 `0..n-1`（`n <= 0` 时为 0）
+
+  `rng` 遵循本模块约定 —— 返回 `1..n`（`&:rand.uniform/1`），故内部减一。
+  """
+  @spec lpc_random(rng(), integer()) :: non_neg_integer()
+  def lpc_random(_rng, n) when n < 1, do: 0
+  def lpc_random(rng, n), do: rng.(n) - 1
+
+  @doc """
+  表尾追加一条**运行时生成**的高阶招式后选招（LPC「极意」式）
+
+  少数技能（华山剑法 / 太极拳 / 抽髓掌）的 `action` 表最后一式，其
+  `force/attack/dodge/parry/damage` 不是字面量，而是
+  `this_player()->query_skill(...) / k + random(...)`。LPC 把这串表达式写在
+  **全局 `mapping *action` 初始化器**里 —— 那是 LPC 反模式（对象首次加载时求值一次，
+  取的是当时的 `this_player()`）。本引擎按**出招时**计算（与作者意图一致）。
+
+  仅当 `level > 该式 lvl` 时才生成，避免不可选中时白耗 `rng`。
+
+  - `ultimate`：静态部分（`"action"`/`"lvl"`/`"skill_name"`/`"damage_type"`）
+  - `values_fun`：`(attacker, rng) -> %{"force" => n, ...}`
+  """
+  @spec pick_action_with_ultimate(
+          [map()],
+          non_neg_integer(),
+          term(),
+          map(),
+          (term(), rng() -> map()),
+          rng()
+        ) :: map()
+  def pick_action_with_ultimate(actions, level, attacker, ultimate, values_fun, rng) do
+    if level > Map.get(ultimate, "lvl", 0) do
+      entry = Map.merge(ultimate, values_fun.(attacker, rng))
+      pick_action(actions ++ [entry], level, rng)
+    else
+      pick_action(actions, level, rng)
+    end
+  end
+
+  @doc """
   LPC NewRandom 加权随机：越靠后的招式权重越大
 
   精确移植 `inherit/skill/skill.c#NewRandom/3`（base/d 参数未参与计算，省略）
@@ -216,7 +376,7 @@ defmodule Kantele.Combat.Skill do
 
       _ ->
         sum = div(k * (k - 1), 2)
-        walk(n, k, rand(rng, sum), 0)
+        walk(n, k, lpc_random(rng, sum), 0)
     end
   end
 
@@ -229,7 +389,4 @@ defmodule Kantele.Combat.Skill do
   end
 
   defp walk(n, _k, _remaining, _i), do: n
-
-  defp rand(_rng, n) when n < 1, do: 0
-  defp rand(rng, n), do: rng.(n) - 1
 end

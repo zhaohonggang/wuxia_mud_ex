@@ -49,6 +49,11 @@ defmodule Kantele.Character.Events do
       event("trap/effect", :run)
     end
 
+    module(TeleportEvent) do
+      # 外部进程强制位移（LPC `ob->move(room)`：NPC 老鸨踢人出门）
+      event("character/teleport", :run)
+    end
+
     module(ShopEvent) do
       event("shop/list-result", :list_result)
       event("shop/buy-result", :buy_result)

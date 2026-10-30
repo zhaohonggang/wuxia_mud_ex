@@ -23,7 +23,9 @@ defmodule Kantele.Combat.Fighter do
     :neili,
     :no_kill,
     :attack_skill,
-    :weapon_name
+    :weapon_name,
+    :weapon_skill_type,
+    :marks
   ]
 
   def new() do
@@ -45,7 +47,9 @@ defmodule Kantele.Combat.Fighter do
       neili: 0,
       no_kill: false,
       attack_skill: "unarmed",
-      weapon_name: nil
+      weapon_name: nil,
+      weapon_skill_type: nil,
+      marks: %{}
     }
   end
 
@@ -88,7 +92,14 @@ defmodule Kantele.Combat.Fighter do
       neili: character.meta.vitals.neili,
       no_kill: no_kill?(character),
       attack_skill: attack_skill,
-      weapon_name: weapon && Map.get(weapon, :name)
+      weapon_name: weapon && Map.get(weapon, :name),
+      # LPC `query_action(me, weapon)` 里少数技能按 `weapon->query("skill_type")` 分表
+      # （如 never-defeated 的 `switch (weapon ? weapon->query("skill_type") : "default")`），
+      # 所以这里存**原始** skill_type（不套 attack_skill 的 `pin → sword` 归一）
+      weapon_skill_type: weapon && Map.get(weapon, :skill_type),
+      # LPC `me->query("can_learn/xxx/...")` 权限位：少数技能据此换招式表
+      # （dugu-jiujian 的 `can_learn/dugu-jiujian/nothing` → 无招表 action2）
+      marks: Map.get(character.meta, :marks) || %{}
     }
   end
 
@@ -422,6 +433,10 @@ defmodule Kantele.Combat.Engine do
 
   @doc """
   选定本轮招式：优先用映射特技的招式表（query_action），否则用通用拳脚
+
+  传 `attacker` 快照给 `query_action/3` —— LPC 的 `query_action(me, weapon)` 靠
+  `weapon` 决定用哪张表（6 个「绝学内功」各有 `actionw`/`actionf` 两张）。
+  未覆盖 `query_action/3` 的技能由宏默认实现回落到 `query_action/2`，行为不变。
   """
   def select_action(%Fighter{} = attacker) do
     mapped = Map.get(attacker.mapped, attacker.attack_skill)
@@ -433,7 +448,7 @@ defmodule Kantele.Combat.Engine do
 
       skill_module ->
         level = Map.get(attacker.skills, mapped, 0)
-        skill_module.query_action(level)
+        skill_module.query_action(level, &:rand.uniform/1, attacker)
     end
   end
 

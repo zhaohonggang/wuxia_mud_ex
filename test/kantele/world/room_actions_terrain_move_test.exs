@@ -95,11 +95,12 @@ defmodule Kantele.World.RoomActions.TerrainMoveTest do
   # ---- 覆盖度 ----
 
   describe "entries/0 覆盖度" do
-    test "12 个 {room, verb} 表项（11 间房）" do
+    test "13 个 {room, verb} 表项（12 间房）" do
       assert Map.keys(TerrainMove.entries()) |> Enum.sort() == [
                {"hengyang:outzhushendong", "climb"},
                {"hengyang:outzigai", "climb"},
                {"hengyang:outzigai", "jump"},
+               {"hengyang:outzigai1", "jump"},
                {"hengyang:shuiliandong", "jump"},
                {"hengyang:xuanyadi", "climb"},
                {"jueqing:eyutan1", "cross"},
@@ -190,6 +191,62 @@ defmodule Kantele.World.RoomActions.TerrainMoveTest do
 
       assert qi_of(conn2) == 0
       assert new_room(conn2) == "hengyang:outzigai"
+    end
+  end
+
+  # ---- hengyang:outzigai1 do_tiao（往下跳回突石盖）----
+  #
+  # 这间房的 `down` 出口被 `valid_leave` 拦住（「这里又没有路，看来只有跳下去了」），
+  # 所以缺这个 handler 玩家会被困在突石上。
+
+  describe "hengyang:outzigai1 do_tiao（往下跳）" do
+    test "轻功<120 → 旧房广播 + 摔落昏厥 + 瞬移 outzigai" do
+      conn = conn_in("hengyang:outzigai1", "tiao", "do_tiao", dodge: 60)
+
+      assert {:handled, conn2} = dispatch(conn, "tiao down")
+
+      assert publishes(conn2) == [
+               {"rooms:hengyang:outzigai1", "\n{npc}鼓起勇气纵身往下一跳...\n"},
+               {"rooms:hengyang:outzigai", "{npc}从上面摔了下来，昏倒了。\n"}
+             ]
+
+      assert qi_of(conn2) == 0
+      assert new_room(conn2) == "hengyang:outzigai"
+    end
+
+    test "轻功>=120 → 稳稳落地，到达广播排除行动者" do
+      conn = conn_in("hengyang:outzigai1", "tiao", "do_tiao", dodge: 150)
+
+      assert {:handled, conn2} = dispatch(conn, "tiao down")
+
+      assert publishes(conn2) == [
+               {"rooms:hengyang:outzigai1", "\n{npc}你纵身一跳，稳稳地落在了地上。\n\n"},
+               {"rooms:hengyang:outzigai", "{npc}从上面跳了下来。\n"}
+             ]
+
+      assert publish_metas(conn2) == [
+               {"rooms:hengyang:outzigai1", %{}},
+               {"rooms:hengyang:outzigai", %{exclude_actor: true}}
+             ]
+
+      assert qi_of(conn2) == 200
+      assert new_room(conn2) == "hengyang:outzigai"
+    end
+
+    test "jump down 与 tiao down 同义" do
+      conn = conn_in("hengyang:outzigai1", "jump", "do_tiao", dodge: 150)
+
+      assert {:handled, conn2} = dispatch(conn, "jump down")
+      assert new_room(conn2) == "hengyang:outzigai"
+    end
+
+    test "参数不是 down → 私发提示，不移动" do
+      conn = conn_in("hengyang:outzigai1", "tiao", "do_tiao")
+
+      assert {:handled, conn2} = dispatch(conn, "tiao up")
+
+      assert texts(conn2) == ["你要往哪儿跳？\n"]
+      assert new_room(conn2) == nil
     end
   end
 

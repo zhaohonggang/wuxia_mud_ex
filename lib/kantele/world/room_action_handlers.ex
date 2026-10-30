@@ -499,7 +499,10 @@ defmodule Kantele.World.RoomActionHandlers do
       "do_move" => {Kantele.World.RoomActions.Wudu.Huating2.Move, :run}
     },
     "hengyang:outzigai1" => %{
-      "do_push" => {Kantele.World.RoomActions.Hengyang.Outzigai1.Push, :run}
+      "do_push" => {Kantele.World.RoomActions.Hengyang.Outzigai1.Push, :run},
+      # `do_tiao`（tiao/jump down）走地形穿越数据表：轻功<120 摔落昏倒，否则稳稳落地。
+      # 本房 `valid_leave` 拦掉了 `down` 出口，缺此 handler 玩家会被困在突石上。
+      "do_tiao" => {Kantele.World.RoomActions.TerrainMove, :run}
     },
     "room:qianting" => %{
       "do_push" => {Kantele.World.RoomActions.Room.Panlong.Qianting.Push, :run},

@@ -33,6 +33,15 @@ defmodule Kantele.Character.Commands do
     parse("开", :run, fn command ->
       command |> spaces() |> word(:target)
     end)
+
+    # 明教油布包（d/mingjiao/obj/bag.c）的三个动词同义
+    parse("unpack", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+
+    parse("dakai", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
   end
 
   module(DelayedCommand) do

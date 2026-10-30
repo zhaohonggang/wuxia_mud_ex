@@ -13,9 +13,10 @@ defmodule Kantele.Character.ConditionEvent do
 
   daemon 是纯函数、拿不到 conn。需要发声或触发状态变更时，往 `state` 上写：
 
-  - `state.condition_messages` — `[{:tell, text} | {:vision, text}]` 列表，
-    每跳由本模块 flush（`{:tell, _}` 只发本人；`{:vision, _}` 走
-    `publish_message/5` 房间广播，`{npc}` 由 VisionView 渲染）。
+  - `state.condition_messages` — `[{:tell, text} | {:vision, text} | {:vision_excl, text}]`
+    列表，每跳由本模块 flush（`{:tell, _}` 只发本人；`{:vision, _}` 走
+    `publish_message/5` 房间广播，`{npc}` 由 VisionView 渲染；`{:vision_excl, _}`
+    同上但**排除本人**，对应 LPC `message("vision", msg, env, me)`）。
   - `state.condition_unconcious` — `true` 时调
     `Kantele.World.RoomActions.Break.unconcious/1`（对应 LPC `me->unconcious()`）。
 
@@ -131,13 +132,25 @@ defmodule Kantele.Character.ConditionEvent do
           max_qi: vitals.max_qi,
           max_jing: vitals.max_jing,
           max_neili: vitals.max_neili,
+          # `flower_poison` 的 `receive_wound` 削减上限、`query_skill("force") >= 300`
+          # 多减一跳。两个键都是纯增量，旧 daemon 不读即无影响。
+          force: query_force(character),
           special_skills: Map.get(character.attributes, "special_skills") || %{}
-        }
+        },
+        # `flower_poison` 的 `query_temp("nopoison")` 临时免疫
+        temp: Map.get(character.meta, :temp) || %{}
       }
       |> update_lifecycle()
       |> apply_effects()
 
-    vitals = %{vitals | jing: state.attributes.jing, qi: state.attributes.qi}
+    # 条件可能改了上限（`receive_wound`）：max_* 一并回写，否则削减丢失。
+    vitals = %{
+      vitals
+      | jing: state.attributes.jing,
+        qi: state.attributes.qi,
+        max_jing: Map.get(state.attributes, :max_jing, vitals.max_jing),
+        max_qi: Map.get(state.attributes, :max_qi, vitals.max_qi)
+    }
 
     conn
     |> put_character(%{character | meta: %{character.meta | vitals: vitals}})
@@ -176,6 +189,16 @@ defmodule Kantele.Character.ConditionEvent do
           [type: "vision"],
           &publish_error/2
         )
+
+      # LPC `message("vision", msg, env, me)`：广播但排除本人
+      {:vision_excl, text}, conn ->
+        publish_message(
+          conn,
+          "rooms:#{conn.character.room_id}",
+          text,
+          [type: "vision", meta: %{exclude_actor: true}],
+          &publish_error/2
+        )
     end)
   end
 
@@ -186,6 +209,11 @@ defmodule Kantele.Character.ConditionEvent do
 
   defp query_con(%{meta: %{stats: %Stats{} = stats}}), do: Stats.query_con(stats)
   defp query_con(_), do: 0
+
+  # `query_skill("force")`：`flower_poison` 用它判断是否多减一跳。
+  # 读**原始**技能等级（LPC `query_skill(..., 1)` 语义，不折半）。
+  defp query_force(%{meta: %{stats: %Stats{} = stats}}), do: Stats.skill(stats, "force")
+  defp query_force(_), do: 0
 
   defp update_lifecycle(state) do
     daemon = &ConditionRegistry.daemon/1

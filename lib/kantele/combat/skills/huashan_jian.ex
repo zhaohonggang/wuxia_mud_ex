@@ -2,16 +2,26 @@ defmodule Kantele.Combat.Skills.HuashanJian do
   @moduledoc """
   华山剑法（对照 kungfu/skill/huashan-jian.c）
 
-  招式表为纯数据（@actions，取 LPC action 表中的 6 式静态招式）。
-  第 7 式「极意」（lvl 200，力/攻/闪/架/伤按 force/sword/dodge/parry 动态生成）
-  依赖出招时的属性，暂以 TODO(migrate) 留待 query_action 拿到 stats 后补齐。
-  hit_ob「紫霞剑气」（华山+狂风快剑+紫霞神功均 300 且映射齐全时的额外创伤）
-  需要引擎提供命中钩子，见 TODO(migrate)。
+  招式表为纯数据（`@actions`，取 LPC `action` 表中的 6 式静态招式）。
+  第 7 式「极意」（lvl 200）的力/攻/闪/架/伤由 `query_action/3` 按出招者的
+  `force`/`sword`/`dodge`/`parry` **实时生成**（见 `@ultimate` 与 `ultimate_values/2`）。
+
+  **未迁移**：`hit_ob`「紫霞剑气」（华山剑法 + 狂风快剑 + 紫霞神功均 ≥300 且映射齐全时的
+  额外创伤）—— 引擎无命中后回调，见 TODO(migrate)。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
+  # 第 7 式「极意」的静态部分；五项数值由 ultimate_values/2 出招时生成
+  @ultimate %{
+    "action" => "$N凝神静气，使出极招 华山剑法之极意 ",
+    "lvl" => 200,
+    "skill_name" => "极意",
+    "damage_type" => "刺伤"
+  }
 
   @actions [
     %{
@@ -112,6 +122,45 @@ defmodule Kantele.Combat.Skills.HuashanJian do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
   end
 
+  @doc """
+  带角色上下文选招：等级 > 200 时把动态第 7 式「极意」并入招式表
+
+  LPC 原文（`kungfu/skill/huashan-jian.c`）：
+
+      "force"  : query_skill("force",1)/2 + random(query_skill("force",1)),
+      "attack" : query_skill("sword",1)/4 + random(query_skill("sword",1)/2),
+      "dodge"  : query_skill("dodge",1)/6 + random(query_skill("force",1)/3),
+      "parry"  : query_skill("parry",1)/6 + random(query_skill("parry",1)/3),
+      "damage" : query_skill("force",1)/4 + random(query_skill("sword",1)/2),
+  """
+  @impl true
+  def query_action(level, rng, attacker) do
+    Kantele.Combat.Skill.pick_action_with_ultimate(
+      @actions,
+      level,
+      attacker,
+      @ultimate,
+      &ultimate_values/2,
+      rng
+    )
+  end
+
+  defp ultimate_values(attacker, rng) do
+    force = Skill.skill_of(attacker, "force")
+    sword = Skill.skill_of(attacker, "sword")
+    dodge = Skill.skill_of(attacker, "dodge")
+    parry = Skill.skill_of(attacker, "parry")
+    r = &Skill.lpc_random(rng, &1)
+
+    %{
+      "force" => div(force, 2) + r.(force),
+      "attack" => div(sword, 4) + r.(div(sword, 2)),
+      "dodge" => div(dodge, 6) + r.(div(force, 3)),
+      "parry" => div(parry, 6) + r.(div(parry, 3)),
+      "damage" => div(force, 4) + r.(div(sword, 2))
+    }
+  end
+
   @impl true
   def perform_list() do
     %{
@@ -125,9 +174,12 @@ defmodule Kantele.Combat.Skills.HuashanJian do
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
 
-  @doc "当前等级对应的最高招式名（query_skill_name）"
+  @doc "第 7 式「极意」的静态部分（动态数值需角色上下文，见 `query_action/3`）"
+  def ultimate(), do: @ultimate
+
+  @doc "当前等级对应的最高招式名（query_skill_name，含极意）"
   def query_skill_name(level) do
-    @actions
+    (@actions ++ [@ultimate])
     |> Enum.reverse()
     |> Enum.find(fn action -> level >= Map.get(action, "lvl", 0) end)
     |> case do

@@ -7,6 +7,10 @@
 
 共 644 个骨架。
 
+> ⚠️ **本清单已过时（2026-10-29 复核）**：全部 644 个骨架（229 `[x]` + 414 `[ ]`）对应的 `lib/kantele/combat/skills/performs/*` 模块**均已存在并注册进 `perform_list()`**。
+> 实测方法：对 414 条 `[ ]` 逐条比对（skill/perf 的 `-` 转 `_` → `performs/<skill>/<perf>.ex` 存在性 + `<skill>.ex` 的 `perform_list()` 注册），结果 **缺模块 0 / 未注册 0**。
+> 结论：F4 `performs/` 迁移功能已完整，本清单仅供历史参考，**不再作为待办**。真正的剩余 backlog（1339 个 `TODO(migrate)` = `valid_learn`/`practice_skill`/`prepare_skill`/`valid_damage` 被动/`surge-force` 等动态公式，需 LPC 源 `/tmp/kungfu_skill`）见 `待办对照代码核查.zh-CN.md` §五/§6.2。
+
 | 档 | 含义 | 数量 |
 |---|---|---|
 | T1 | T1 自我增益 exert（无目标、无条件） | 86 |

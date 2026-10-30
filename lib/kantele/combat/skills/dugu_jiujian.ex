@@ -7,6 +7,7 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
 
   # 招式表：普通招式
   @actions [
@@ -262,13 +263,17 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   @impl true
   def id(), do: "dugu-jiujian"
 
-  # valid_enable 依赖等级：>=30 才可 enable sword，否则只能 parry
+  # LPC 的 valid_enable 读 this_player() 的独孤九剑等级：>=30 才可用于 sword，
+  # 否则只能 parry。无角色上下文时走保守分支（仅 parry）。
   @impl true
-  def valid_enable(usage, level \\ 0) do
-    cond do
-      usage == "parry" -> true
-      usage == "sword" and level >= 30 -> true
-      true -> false
+  def valid_enable(usage), do: usage == "parry"
+
+  @impl true
+  def valid_enable(usage, character) do
+    if Skill.skill_of(character, id()) >= 30 do
+      usage in ["sword", "parry"]
+    else
+      usage == "parry"
     end
   end
 
@@ -292,11 +297,22 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   @impl true
   def practice_cost(), do: %{qi: 0, neili: 0}
 
+  # LPC 的 query_action 是**均匀** random(sizeof(table))，既不按 lvl 过滤也不用 NewRandom；
+  # 两张表按 `me->query("can_learn/dugu-jiujian/nothing")` 切换（无招境界 → action2）。
   @impl true
-  def query_action(nothing?, level, rng \\ &:rand.uniform/1) do
-    table = if nothing?, do: @actions2, else: @actions
-    Enum.at(table, rng.(length(table)) - 1)
+  def query_action(_level, rng \\ &:rand.uniform/1), do: pick_uniform(@actions, rng)
+
+  @impl true
+  def query_action(_level, rng, attacker) do
+    if Skill.mark?(attacker, "can_learn/dugu-jiujian/nothing") do
+      pick_uniform(@actions2, rng)
+    else
+      pick_uniform(@actions, rng)
+    end
   end
+
+  defp pick_uniform([], _rng), do: %{}
+  defp pick_uniform(table, rng), do: Enum.at(table, Skill.lpc_random(rng, length(table)))
 
   @impl true
   def query_effect_parry(level) do
