@@ -7,8 +7,9 @@ defmodule Kantele.Combat.Skills.QiulinShiye do
   绝招实现见 `lib/kantele/combat/skills/performs/qiulin_shiye/`。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 门槛未建模；
-  - 招式表与 `practice_skill` 未建模。
+  - LPC `valid_learn` 为 `return 1`（无门槛），本版同样放行；
+  - LPC `practice_skill` 已迁移：qi<40 时拒（由 practice 流程的体力检查把关），扣 qi 30、不耗 neili；
+  - 招式表未建模。
   """
 
   use Kantele.Combat.Skill
@@ -22,9 +23,9 @@ defmodule Kantele.Combat.Skills.QiulinShiye do
   @impl true
   def valid_learn(_stats), do: :ok
 
-  @doc "只能学(learn)不能练"
+  @doc "练招消耗：LPC practice_skill 扣 qi 30（不耗 neili）"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 30, neili: 0}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

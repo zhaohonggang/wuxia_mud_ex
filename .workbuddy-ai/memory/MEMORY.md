@@ -52,12 +52,16 @@
 | 12 | `aee49cf8` | 暗器系 12：bagua-biao, bingpo-shenzhen, duoming-jinhua, fenglei-zifa, furong-jinzhen, hansha-sheying, heixue-shenzhen, jinbiao-jue, pidi-shenzhen, mantian-xing, mantianhuayu-zhen, pomie-jinzhen |
 | 13 | `d6441b03` | hanwang-qingdao, jingyue-bifa, lingshe-zhangfa, longcheng-shendao, nianhua-zhi, ningxue-zhang, pangen-cuojiefu, panlong-suo, qianye-shou, raozhi-roujian (10) |
 | 14 | `474db464` | jiandun-zhusuo, qishi-ji, ruanhong-zhusuo, riyue-bian, qiufeng-chenfa, ruyun→rouyun-steps, sougu, tangmen-throwing, tiangang-zhi, feixing-shu (10) |
+| 15 | `4007fdff` | 内功 7：beiming-shengong, sanku-shengong, duanshi-xinfa, kurong-changong, lengyue-shengong, miaojia-neigong, shenlong-xinfa |
+| 16 | 待提交 | 收官 9：daojian-guizhen, miaojia-jian, duanyun-fu, jinguan-yusuo, sun-finger, sanwu-shou, qiulin-shiye, shenxing-baibian, xixing-dafa |
 
-- 累计 74 个技能已迁移（`valid_learn/2` + `practice_cost`），每批均含专用测试文件 + docs 块 + 记忆同步。
+- 累计 **90 个技能**已迁移（`valid_learn/2` + `practice_cost`），每批均含专用测试文件 + docs 块（C-PVE7~20）+ 记忆同步。
+- **F4 `valid_learn`/`practice_skill` 长尾已收口（2026-10-30）**。余下 `TODO(migrate)` 属别的类别：`query_skill`(1121，多为基础技能基础类)、`prepare_skill`(62)、`valid_damage`(17)、`surge`(5)，以及「引擎未建模层」（alignment 性格门 / `ultrap` 大宗师 / `can_learn` 父类检查 / practice 专属门 / 须持械空手）。
 
 ## 待办（开放中）
-- **Batch 15（内功专项）✅ 已落 2026-10-30**：beiming-shengong（无性&lvl>49 / int>=32 / con>=24）、sanku-shengong（force>=40 先查 / 无性&lvl>49）、duanshi-xinfa、kurong-changong（无性**无条件**拒）、lengyue-shengong（LPC 拼错 `lenyue-shengong` → 门永不触发，**bug 保真**）、miaojia-neigong、shenlong-xinfa（均 practice_cost 保持 nil，LPC practice_skill 恒失败；性别门走 `meta.env[:gender]`）。假阳性：`xuehai-mogong`（LPC 仅 `return ::valid_learn(me)`）。
-- **剩余 ~15**：force 家族 5（force/force_lifeheal/power/roar/shot，疑假阳性）、daojian-guizhen（ultrap）、miaojia-jian（跨技能互斥）、duanyun-fu（neili 异常）、jinguan-yusuo（practice self≥200）、sun-finger（性别）、sanwu-shou（alignment）、qiulin-shiye + shenxing-baibian（只差 practice_cost）、xixing-dafa（需 alignment「光明磊落」+ `can_learn` 散功门控，未建模，暂缓）。
+- **第十六批待 commit+push**（9 lib + 9 test + C-PVE20 + 记忆）。
+- **假阳性结论（勿再当缺口）**：`force.c` `valid_learn` = `{return 1;}`；`force_lifeheal/power/roar/shot` 是 **Perform 模块**（`kungfu/skill/force/*.c` 为 exert 函数文件），不是技能。`xuehai-mogong` LPC 仅 `return ::valid_learn(me)`。
+- **引擎未建模层（要动需先补基础设施）**：alignment（`query("character")`，本仓无字段/设定入口；`meta.character` 只在 performs 里被读、实际恒 nil）、`ultrap`（大宗师）、`valid_practice` 回调（practice 专属门）、`valid_learn` 里的须持械/空手（`character` 快照不含持械）。
 - 打工闭环 / 注内力 / 锻造 等 S0-S4 任务见各日期日志。
 
 ## 已交付（历史，均已 push，详见 git log / 各日期日志）

@@ -8,8 +8,10 @@ defmodule Kantele.Combat.Skills.ShenxingBaibian do
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 无门槛（return 1），本版同样放行；
-  - LPC 招式表与 `practice_skill` 未建模（`query_action` 返回空、
-    `practice_cost` 为 nil）。
+  - LPC `practice_skill` 已迁移：qi<50 / neili<30 时拒（由 practice 流程的体力检查把关），
+    扣 qi 40；LPC 内力侧写作 `me->add("neill", -14)`（**拼写错误 `neill`**，该键不存在，
+    内力实际不减），故 `practice_cost` 的 neili 记 0 —— 原样 bug 保真；
+  - 招式表未建模（`query_action` 返回空）。
   """
 
   use Kantele.Combat.Skill
@@ -23,9 +25,9 @@ defmodule Kantele.Combat.Skills.ShenxingBaibian do
   @impl true
   def valid_learn(_stats), do: :ok
 
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
+  @doc "练招消耗：LPC practice_skill 扣 qi 40（内力侧因 `neill` 拼写 bug 实际不减，记 0）"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 40, neili: 0}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

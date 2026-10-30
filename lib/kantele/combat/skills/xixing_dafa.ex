@@ -6,9 +6,11 @@ defmodule Kantele.Combat.Skills.XixingDafa do
   LPC `valid_force` 恒真。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性格/性别/`max_neili`/`can_learn` 前置未实现。
-  - `valid_damage` 被动（吸化对方内力）未接入。
-  - `suck`（吸功）实现如下，含目标 max_neili 扣减与自身 max_neili 增加。
+  - LPC `valid_learn` 已迁移：con>=30 / force>=100 /「未获 `can_learn/xixing-dafa/ren` 且
+    max_neili>0 且 10<=等级<200」拒（散功诀窍门，走 `Skill.mark?/2` 读 `meta.marks`）；
+  - LPC 首门「性格为『光明磊落』则拒」为 alignment 门，本仓未建模，**未迁移**；
+  - `valid_damage` 被动（吸化对方内力）未接入；
+  - `suck`（吸功）实现如下，含目标 max_neili 扣减与自身 max_neili 增加；
   - `sangong`（散功）实现如下，扣除自身 max_neili。
   """
 
@@ -26,18 +28,31 @@ defmodule Kantele.Combat.Skills.XixingDafa do
   def valid_force(_force), do: true
 
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+    lvl = Stats.skill(stats, id())
+
     cond do
-      stats.con < 30 ->
+      Stats.con(stats) < 30 ->
         {:error, "你试着按照法门运转了一下内息，忽然觉得心火如焚，丹田却是一阵冰凉！\n"}
 
       Stats.skill(stats, "force") < 100 ->
         {:error, "你的基本内功修为不足，难以修炼吸星大法。\n"}
 
+      not Kantele.Combat.Skill.mark?(character, "can_learn/xixing-dafa/ren") and
+        not is_nil(max_neili) and max_neili > 0 and lvl >= 10 and lvl < 200 ->
+        {:error,
+         "你没有按照吸星大法的诀窍将内力散去，现在还不" <> "敢妄自继续修行大法。\n"}
+
       true ->
         :ok
     end
   end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @doc "只能学(learn)或从运用(exert)中增加熟练度（LPC practice_skill 返回失败）"
   @impl true
