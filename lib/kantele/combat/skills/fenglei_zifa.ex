@@ -7,12 +7,13 @@ defmodule Kantele.Combat.Skills.FengleiZifa do
 
   绝招实现见 `lib/kantele/combat/skills/performs/fenglei_zifa/`。
 
-  差异（TODO(migrate)）：
-  - LPC `valid_learn` 的 max_neili/force/throwing 门槛未实现（`valid_learn` 恒 :ok）。
-  - LPC `practice_skill` 训练（qi 35 / neili 48 消耗）未建模（`practice_cost` 返回 nil）。
+  学习门槛 `valid_learn/2`（max_neili>=500 / force>=80 / throwing>=self）与练招消耗
+  `practice_cost`（qi 35 / neili 48）已按 LPC 迁移（2026-10-30）。招式表沿用基类占位 TODO。
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @impl true
   def id(), do: "fenglei-zifa"
@@ -24,11 +25,30 @@ defmodule Kantele.Combat.Skills.FengleiZifa do
   def valid_force(force), do: force in ["basic-throwing", "fenglei-zifa"]
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
 
-  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
+    cond do
+      not is_nil(max_neili) and max_neili < 500 ->
+        {:error, "你的内力不够，没有办法练风雷子法。\n"}
+
+      Stats.skill(stats, "force") < 80 ->
+        {:error, "你的内功火候不够，没有办法练风雷子法。\n"}
+
+      Stats.skill(stats, "throwing") < Stats.skill(stats, id()) ->
+        {:error, "你的基本暗器水平有限，无法领会更高深的风雷子法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 35 / neili 48"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 35, neili: 48}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

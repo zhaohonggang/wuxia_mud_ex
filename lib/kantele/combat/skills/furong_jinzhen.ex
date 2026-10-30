@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.FurongJinzhen do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @impl true
   def id(), do: "furong-jinzhen"
 
@@ -22,11 +24,22 @@ defmodule Kantele.Combat.Skills.FurongJinzhen do
   def valid_force(force), do: force in ["basic-throwing", "furong-jinzhen"]
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, _character) do
+    cond do
+      Stats.skill(stats, "throwing") < 40 ->
+        {:error, "你的暗器技能不够娴熟。\n"}
 
-  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
+      Stats.skill(stats, "throwing") < Stats.skill(stats, id()) ->
+        {:error, "你的基本暗器水平有限，难以领会更精妙的芙蓉金针。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 70 / neili 50"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 70, neili: 50}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

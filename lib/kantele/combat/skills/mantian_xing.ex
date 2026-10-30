@@ -6,12 +6,13 @@ defmodule Kantele.Combat.Skills.MantianXing do
 
   绝招实现见 `lib/kantele/combat/skills/performs/mantian_xing/`。
 
-  差异（TODO(migrate)）：
-  - LPC `valid_learn` 门槛未建模；
-  - 招式表与 `practice_skill` 未建模。
+  学习门槛 `valid_learn/2` 与练招消耗 `practice_cost` 已按 LPC 迁移（2026-10-30）。
+  招式表沿用基类占位 TODO。
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @impl true
   def id(), do: "mantian-xing"
@@ -20,11 +21,28 @@ defmodule Kantele.Combat.Skills.MantianXing do
   def valid_enable(usage), do: usage in ["throwing", "parry"]
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, _character) do
+    cond do
+      Stats.skill(stats, "force") < 60 ->
+        {:error, "你的内功心法火候不够，无法学满天星。\n"}
 
-  @doc "只能学(learn)不能练"
+      Stats.skill(stats, "dodge") < 60 ->
+        {:error, "你的轻功火候不够，无法领悟满天星。\n"}
+
+      Stats.dex(stats) < 25 ->
+        {:error, "你的身法不够灵巧，无法领悟满天星。\n"}
+
+      Stats.skill(stats, "throwing") < Stats.skill(stats, id()) ->
+        {:error, "你的基本暗器水平有限，难以领会更高深的满天星。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 35"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 45, neili: 35}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
