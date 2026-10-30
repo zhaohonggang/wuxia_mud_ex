@@ -158,6 +158,53 @@ defmodule Kantele.Combat.SkillsBanruoZhangTest do
     end
   end
 
+  describe "valid_learn/2 学习门槛（LPC force>=30 / max_neili>=100 / strike>=self）" do
+    defp stats(force, strike, banruo) do
+      %{skills: %{"force" => force, "strike" => strike, "banruo-zhang" => banruo}}
+    end
+
+    defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+
+    test "force < 30 被拒（内功火候不够）" do
+      stats = stats(20, 100, 100)
+      assert BanruoZhang.valid_learn(stats, char_with_max_neili(200)) ==
+               {:error, "你的内功火候不够，无法练般若掌。\n"}
+    end
+
+    test "max_neili < 100 被拒（内力太弱）" do
+      stats = stats(30, 100, 100)
+      assert BanruoZhang.valid_learn(stats, char_with_max_neili(50)) ==
+               {:error, "你的内力太弱，无法练般若掌。\n"}
+    end
+
+    test "strike < banruo-zhang 被拒（基本掌法火候水平有限）" do
+      stats = stats(30, 50, 100)
+      assert BanruoZhang.valid_learn(stats, char_with_max_neili(200)) ==
+               {:error, "你的基本掌法火候水平有限，无法领会更高深的般若功。\n"}
+    end
+
+    test "三项全满足则放行" do
+      stats = stats(30, 100, 50)
+      assert BanruoZhang.valid_learn(stats, char_with_max_neili(200)) == :ok
+    end
+
+    test "character 为 nil 时跳过 max_neili 检查（与既有迁移一致）" do
+      stats = stats(30, 100, 50)
+      assert BanruoZhang.valid_learn(stats, nil) == :ok
+    end
+
+    test "character 无 meta/vitals 时跳过 max_neili 检查" do
+      stats = stats(30, 100, 50)
+      assert BanruoZhang.valid_learn(stats, %{}) == :ok
+    end
+  end
+
+  describe "practice_cost（LPC practice_skill 扣 qi 65 / neili 64）" do
+    test "返回 LPC 一致的消耗" do
+      assert BanruoZhang.practice_cost() == %{qi: 65, neili: 64}
+    end
+  end
+
   describe "Engine.select_action/1 端到端" do
     test "能选出般若掌招式" do
       fighter = %Fighter{

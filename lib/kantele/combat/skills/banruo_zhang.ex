@@ -10,9 +10,12 @@ defmodule Kantele.Combat.Skills.BanruoZhang do
 
   绝招实现见 `lib/kantele/combat/skills/performs/banruo_zhang/`。
 
-  **未迁移**：`valid_learn` 门槛（LPC 要求空手、force>=30、max_neili>=100、
-  strike>=banruo-zhang）—— 见 TODO(migrate)；`practice_skill`（空手、qi70/neili70）——
-  见 TODO(migrate)。
+  **已迁移**：`valid_learn` 门槛（LPC 要求空手、force>=30、max_neili>=100、
+  strike>=banruo-zhang）—— 已实现 `valid_learn(stats, character)`：force>=30 /
+  max_neili>=100（取 character.meta.vitals.max_neili）/ strike>=self 三道门；
+  空手检查因装备状态未接入 skill 回调暂略（与既有迁移一致）。`practice_skill`
+  已实现 `practice_cost()` = `%{qi: 65, neili: 64}`（LPC 扣 qi65/neili64），
+  qi/neili 下限由 PracticeCommand.check_vitals 统一把关。
   """
 
   use Kantele.Combat.Skill
@@ -139,13 +142,18 @@ defmodule Kantele.Combat.Skills.BanruoZhang do
   @impl true
   def valid_enable(usage), do: usage in ["strike", "parry"]
 
-  # LPC valid_learn 要求空手、force>=30、max_neili>=100、strike>=banruo-zhang；
-  # 本版以 force>=30 / strike>=self 代理（无 vitals、无武器检查）。
+  # LPC valid_learn：空手 + force>=30 + max_neili>=100 + strike>=banruo-zhang。
+  # 空手检查：装备状态未接入 skill 回调（与既有迁移一致，待统一装备通道）。
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
     cond do
       Stats.skill(stats, "force") < 30 ->
         {:error, "你的内功火候不够，无法练般若掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 100 ->
+        {:error, "你的内力太弱，无法练般若掌。\n"}
 
       Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
         {:error, "你的基本掌法火候水平有限，无法领会更高深的般若功。\n"}
@@ -155,9 +163,14 @@ defmodule Kantele.Combat.Skills.BanruoZhang do
     end
   end
 
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练习消耗：LPC practice_skill 扣 qi 65 / neili 64"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 65, neili: 64}
 
   @doc "按等级加权随机选一招（招式表 + NewRandom）"
   @impl true

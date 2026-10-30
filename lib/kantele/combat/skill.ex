@@ -47,6 +47,17 @@ defmodule Kantele.Combat.Skill do
   @callback valid_learn(Stats.t()) :: :ok | {:error, String.t()}
 
   @doc """
+  带角色上下文的学习门槛校验（可选 valid_learn/2）
+
+  LPC `valid_learn(object me)` 会读 `me` 的 `max_neili`（在 Vitals，不在 Stats）
+  以及临时装备状态（空手检查）。引擎的 `valid_learn/1` 只拿到 `Stats`，
+  故需要 `max_neili` / 装备判断的技能额外实现本回调；默认回落到 `valid_learn/1`
+  （忽略角色上下文，与既有迁移一致）。`character` 为 `%{meta: %{vitals: vitals}}`
+  形状的任意结构（学习事件传学徒的 vitals，练习命令传自身 character）。
+  """
+  @callback valid_learn(Stats.t(), term()) :: :ok | {:error, String.t()}
+
+  @doc """
   内功共存校验（valid_force/1，b5/P10）
 
   入参为另一门内功的 skill id；返回自身是否接受与其共存。
@@ -149,6 +160,12 @@ defmodule Kantele.Combat.Skill do
       @doc false
       def valid_learn(_stats), do: :ok
 
+      # 带角色上下文的学习门槛：默认忽略角色，回落到 valid_learn/1。
+      # 需要 max_neili / 装备判断的技能（LPC valid_learn 读 me->query("max_neili")、
+      # me->query_temp("weapon")）才覆盖本回调。
+      @doc false
+      def valid_learn(stats, _character), do: valid_learn(stats)
+
       # 带角色上下文的 valid_enable：默认忽略角色，回落到 valid_enable/1。
       # 只有 LPC 里读 `this_player()` 的技能（如 jiuyin-shengong 的 reborn 门控）才覆盖。
       @doc false
@@ -196,6 +213,7 @@ defmodule Kantele.Combat.Skill do
       def perform_action_file(name), do: Map.get(perform_list(), name)
 
       defoverridable valid_learn: 1,
+                     valid_learn: 2,
                      valid_enable: 2,
                      valid_force: 1,
                      query_action: 3,

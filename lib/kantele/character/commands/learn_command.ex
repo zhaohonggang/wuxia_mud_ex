@@ -23,6 +23,7 @@ defmodule Kantele.Character.LearnCommand do
       name: name,
       times: times,
       student_stats: conn.character.meta.stats,
+      student_vitals: conn.character.meta.vitals,
       student_family: conn.character.meta.family
     })
     |> assign(:prompt, false)
@@ -80,7 +81,7 @@ defmodule Kantele.Character.PracticeCommand do
     cost = module.practice_cost()
     vitals = character.meta.vitals
 
-    with :ok <- module.valid_learn(stats),
+    with :ok <- module.valid_learn(stats, character),
          :ok <- conflict_gate(stats, skill_id),
          :ok <- exp_gate(stats, skill_id),
          :ok <- check_jing(vitals),

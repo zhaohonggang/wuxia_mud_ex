@@ -28,6 +28,7 @@ defmodule Kantele.Character.SkillsEvent do
     character = conn.character
     reply_to = Map.fetch!(data, :reply_to)
     times = Map.get(data, :times, 1)
+    student_vitals = Map.get(data, :student_vitals)
     module = Skills.get(skill)
     base_skill? = skill in @base_skills
     # b2 捆绑门槛：潜能池(b1)/经验门(b4)/内功互斥(b5)，快照判定
@@ -47,11 +48,11 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       :ok ->
-        do_teach(conn, module, base_skill?, skill, times, student_stats, gate, reply_to)
+        do_teach(conn, module, base_skill?, skill, times, student_stats, student_vitals, gate, reply_to)
     end
   end
 
-  defp do_teach(conn, module, base_skill?, skill, times, student_stats, gate, reply_to) do
+  defp do_teach(conn, module, base_skill?, skill, times, student_stats, student_vitals, gate, reply_to) do
     character = conn.character
 
     cond do
@@ -83,7 +84,7 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       true ->
-        case module.valid_learn(student_stats) do
+        case module.valid_learn(student_stats, %{meta: %{vitals: student_vitals}}) do
           :ok ->
             grant(
               reply_to,
