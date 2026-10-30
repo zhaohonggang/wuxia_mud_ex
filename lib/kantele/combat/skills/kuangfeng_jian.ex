@@ -10,7 +10,8 @@ defmodule Kantele.Combat.Skills.KuangfengJian do
 
   绝招实现见 `lib/kantele/combat/skills/performs/kuangfeng_jian/`。
 
-  **未迁移**：`practice_skill`（须持剑 qi65/neili40）—— 见 TODO(migrate)。
+  练招消耗 `practice_cost`（LPC 扣 qi 60 / neili 36，须持剑）与学习门槛 `valid_learn/2`
+  （含 max_neili>=200；原 /1 版因无 vitals 漏判此项）已按 LPC 迁移（2026-10-30）。
   """
 
   use Kantele.Combat.Skill
@@ -71,11 +72,15 @@ defmodule Kantele.Combat.Skills.KuangfengJian do
   @impl true
   def valid_enable(usage), do: usage in ["sword", "parry"]
 
-  # LPC valid_learn 要求 max_neili>=200, dodge>=90, dex>=28, sword>=kuangfeng-jian；
-  # 本版以 dodge>=90 / dex>=28 / sword>=kuangfeng-jian 代理（无 vitals）。
+  # LPC valid_learn 要求 max_neili>=200, dodge>=90, dex>=28, sword>=kuangfeng-jian
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
     cond do
+      not is_nil(max_neili) and max_neili < 200 ->
+        {:error, "你的内力修为不够，无法修习狂风快剑。\n"}
+
       Stats.skill(stats, "dodge") < 90 ->
         {:error, "你的基本轻功火候太浅，无法修习狂风快剑。\n"}
 
@@ -90,9 +95,14 @@ defmodule Kantele.Combat.Skills.KuangfengJian do
     end
   end
 
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 60 / neili 36（须持剑，由 practice 流程把关）"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 60, neili: 36}
 
   @doc "按等级加权随机选一式（招式表 + NewRandom）"
   @impl true

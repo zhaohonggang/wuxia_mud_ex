@@ -155,4 +155,50 @@ defmodule Kantele.Combat.SkillsKuangfengJianTest do
       end
     end
   end
+
+  describe "valid_learn/2 学习门槛（LPC max_neili>=200 / dodge>=90 / dex>=28 / sword>=kuangfeng-jian）" do
+    defp stats(dex, dodge, sword, kuangfeng) do
+      %{dex: dex, skills: %{"dodge" => dodge, "sword" => sword, "kuangfeng-jian" => kuangfeng}}
+    end
+
+    defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+
+    test "max_neili < 200 被拒（内力修为不够）" do
+      assert KuangfengJian.valid_learn(stats(30, 100, 200, 50), char_with_max_neili(100)) ==
+               {:error, "你的内力修为不够，无法修习狂风快剑。\n"}
+    end
+
+    test "dodge < 90 被拒（基本轻功火候太浅）" do
+      assert KuangfengJian.valid_learn(stats(30, 50, 200, 50), char_with_max_neili(2000)) ==
+               {:error, "你的基本轻功火候太浅，无法修习狂风快剑。\n"}
+    end
+
+    test "dex < 28 被拒（身法不够灵活）" do
+      assert KuangfengJian.valid_learn(stats(20, 100, 200, 50), char_with_max_neili(2000)) ==
+               {:error, "你的身法还不够灵活，无法修习狂风快剑。\n"}
+    end
+
+    test "sword < kuangfeng-jian 被拒（基本剑法水平有限）" do
+      assert KuangfengJian.valid_learn(stats(30, 100, 100, 150), char_with_max_neili(2000)) ==
+               {:error, "你的基本剑法水平有限，无法领会更高深的狂风快剑。\n"}
+    end
+
+    test "四项全满足则放行" do
+      assert KuangfengJian.valid_learn(stats(30, 100, 200, 50), char_with_max_neili(2000)) == :ok
+    end
+
+    test "character 为 nil 时跳过 max_neili 检查" do
+      assert KuangfengJian.valid_learn(stats(30, 100, 200, 50), nil) == :ok
+    end
+
+    test "character 无 meta/vitals 时跳过 max_neili 检查" do
+      assert KuangfengJian.valid_learn(stats(30, 100, 200, 50), %{}) == :ok
+    end
+  end
+
+  describe "practice_cost（LPC practice_skill 扣 qi 60 / neili 36）" do
+    test "返回 LPC 一致的消耗" do
+      assert KuangfengJian.practice_cost() == %{qi: 60, neili: 36}
+    end
+  end
 end

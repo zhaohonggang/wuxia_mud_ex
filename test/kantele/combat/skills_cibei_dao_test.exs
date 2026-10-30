@@ -166,4 +166,45 @@ defmodule Kantele.Combat.SkillsCibeiDaoTest do
       end
     end
   end
+
+  describe "valid_learn/2 学习门槛（LPC max_neili>=100 / force>=30 / blade>=cibei-dao）" do
+    defp stats(force, blade, cibei) do
+      %{skills: %{"force" => force, "blade" => blade, "cibei-dao" => cibei}}
+    end
+
+    defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+
+    test "max_neili < 100 被拒（内力不够）" do
+      assert CibeiDao.valid_learn(stats(100, 200, 50), char_with_max_neili(50)) ==
+               {:error, "你的内力不够。\n"}
+    end
+
+    test "force < 30 被拒（内功火候不够）" do
+      assert CibeiDao.valid_learn(stats(20, 200, 50), char_with_max_neili(2000)) ==
+               {:error, "你的内功火候不够。\n"}
+    end
+
+    test "blade < cibei-dao 被拒（基本刀法水平有限）" do
+      assert CibeiDao.valid_learn(stats(100, 100, 150), char_with_max_neili(2000)) ==
+               {:error, "你的基本刀法水平有限，无法领会更高深的慈悲刀法。\n"}
+    end
+
+    test "三项全满足则放行" do
+      assert CibeiDao.valid_learn(stats(100, 200, 50), char_with_max_neili(2000)) == :ok
+    end
+
+    test "character 为 nil 时跳过 max_neili 检查" do
+      assert CibeiDao.valid_learn(stats(100, 200, 50), nil) == :ok
+    end
+
+    test "character 无 meta/vitals 时跳过 max_neili 检查" do
+      assert CibeiDao.valid_learn(stats(100, 200, 50), %{}) == :ok
+    end
+  end
+
+  describe "practice_cost（LPC practice_skill 扣 qi 55 / neili 58）" do
+    test "返回 LPC 一致的消耗" do
+      assert CibeiDao.practice_cost() == %{qi: 55, neili: 58}
+    end
+  end
 end

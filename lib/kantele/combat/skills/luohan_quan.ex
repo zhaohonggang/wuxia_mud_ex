@@ -7,10 +7,13 @@ defmodule Kantele.Combat.Skills.LuohanQuan do
 
   绝招实现见 `lib/kantele/combat/skills/performs/luohan_quan/`。
 
-  **未迁移**：`valid_learn` 门槛（LPC 要求 dex >= 30 且 max_neili >= 3000 + lvl * 15）—— 见 TODO(migrate)。
+  学习门槛 `valid_learn/2`（LPC 要求 空手 / force>=20 / max_neili>=50 / cuff>=luohan-quan；
+  空手由装备逻辑把关，本版实现 force/max_neili/cuff 三项）与练招消耗 `practice_cost`
+  （LPC 扣 qi 25 / neili 6，须空手）已按 LPC 迁移（2026-10-30）。
   """
 
   use Kantele.Combat.Skill
+  alias Kantele.Character.Stats
   alias Kantele.Combat.Skill
 
   @actions [
@@ -102,13 +105,34 @@ defmodule Kantele.Combat.Skills.LuohanQuan do
   @impl true
   def valid_enable(usage), do: usage in ["cuff", "parry"]
 
-  # LPC valid_learn 要求 dex >= 30 且 max_neili >= 3000 + lvl * 15，本引擎暂未建模
+  # LPC valid_learn 要求 空手 / force>=20 / max_neili>=50 / cuff>=luohan-quan
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
 
-  @doc "只能学(learn)不能练"
+    cond do
+      Stats.skill(stats, "force") < 20 ->
+        {:error, "你的内功火候不够，无法学罗汉拳。\n"}
+
+      not is_nil(max_neili) and max_neili < 50 ->
+        {:error, "你的内力太弱，无法练罗汉拳。\n"}
+
+      Stats.skill(stats, "cuff") < Stats.skill(stats, id()) ->
+        {:error, "你的基本拳法水平有限，无法领会更高深的罗汉拳。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 25 / neili 6（须空手，由 practice 流程把关）"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 25, neili: 6}
 
   @doc "按等级加权随机选一式（招式表 + NewRandom）"
   @impl true

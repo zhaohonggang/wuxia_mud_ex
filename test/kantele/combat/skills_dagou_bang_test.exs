@@ -131,4 +131,50 @@ defmodule Kantele.Combat.SkillsDagouBangTest do
       end
     end
   end
+
+  describe "valid_learn/2 学习门槛（LPC dex>=26 / max_neili>=1500 / staff>=100 且 staff>=dagou-bang）" do
+    defp stats(dex, staff, dagou) do
+      %{dex: dex, skills: %{"staff" => staff, "dagou-bang" => dagou}}
+    end
+
+    defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+
+    test "dex < 26 被拒（先天身法太差）" do
+      assert DagouBang.valid_learn(stats(20, 200, 50), char_with_max_neili(2000)) ==
+               {:error, "你的先天身法太差，无法学习打狗棒法。\n"}
+    end
+
+    test "max_neili < 1500 被拒（内力修为不足）" do
+      assert DagouBang.valid_learn(stats(30, 200, 50), char_with_max_neili(1000)) ==
+               {:error, "你的内力修为不足，无法学习打狗棒法。\n"}
+    end
+
+    test "staff < 100 被拒（基本杖法不够）" do
+      assert DagouBang.valid_learn(stats(30, 50, 50), char_with_max_neili(2000)) ==
+               {:error, "你的基本杖法不够，无法学习打狗棒法。\n"}
+    end
+
+    test "staff < dagou-bang 被拒（基本杖法水平有限）" do
+      assert DagouBang.valid_learn(stats(30, 100, 150), char_with_max_neili(2000)) ==
+               {:error, "你的基本杖法水平有限，无法领会更高深的打狗棒法。\n"}
+    end
+
+    test "三项全满足则放行" do
+      assert DagouBang.valid_learn(stats(30, 200, 50), char_with_max_neili(2000)) == :ok
+    end
+
+    test "character 为 nil 时跳过 max_neili 检查" do
+      assert DagouBang.valid_learn(stats(30, 200, 50), nil) == :ok
+    end
+
+    test "character 无 meta/vitals 时跳过 max_neili 检查" do
+      assert DagouBang.valid_learn(stats(30, 200, 50), %{}) == :ok
+    end
+  end
+
+  describe "practice_cost（LPC practice_skill 扣 qi 75 / neili 80）" do
+    test "返回 LPC 一致的消耗" do
+      assert DagouBang.practice_cost() == %{qi: 75, neili: 80}
+    end
+  end
 end

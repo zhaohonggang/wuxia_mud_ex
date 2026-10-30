@@ -15,12 +15,14 @@ defmodule Kantele.Combat.Skills.DagouBang do
 
   绝招实现见 `lib/kantele/combat/skills/performs/dagou_bang/`。
 
-  **未迁移**：`valid_learn` 门槛（LPC dex>=26, max_neili>=1500, staff>=100 且
-  staff>=dagou-bang）—— 见 TODO(migrate)。
+  学习门槛 `valid_learn/2`（LPC dex>=26 / max_neili>=1500 / staff>=100 且
+  staff>=dagou-bang）与练招消耗 `practice_cost`（LPC 扣 qi 75 / neili 80）已按
+  LPC 迁移（2026-10-30）。武器（须持棍）由 practice 流程把关，本模块不重复。
   """
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
   alias Kantele.Combat.Skill
 
   # 第 5 式「极意」的静态部分；五项数值由 ultimate_values/2 出招时生成
@@ -76,14 +78,37 @@ defmodule Kantele.Combat.Skills.DagouBang do
   @impl true
   def valid_enable(usage), do: usage in ["staff", "parry"]
 
-  # LPC valid_learn 要求 dex>=26, max_neili>=1500, staff>=100 且 staff>=dagou-bang，
-  # 引擎暂未建模。
+  # LPC valid_learn 要求 dex>=26, max_neili>=1500, staff>=100 且 staff>=dagou-bang
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
 
-  @doc "只能学(learn)不能练"
+    cond do
+      stats.dex < 26 ->
+        {:error, "你的先天身法太差，无法学习打狗棒法。\n"}
+
+      not is_nil(max_neili) and max_neili < 1500 ->
+        {:error, "你的内力修为不足，无法学习打狗棒法。\n"}
+
+      Stats.skill(stats, "staff") < 100 ->
+        {:error, "你的基本杖法不够，无法学习打狗棒法。\n"}
+
+      Stats.skill(stats, "staff") < Stats.skill(stats, id()) ->
+        {:error, "你的基本杖法水平有限，无法领会更高深的打狗棒法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 75 / neili 80（须持棍，由 practice 流程把关）"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 75, neili: 80}
 
   @doc "按等级加权随机选一式（招式表 + NewRandom；前 4 式 lvl 0，level>=1 均可选）"
   @impl true

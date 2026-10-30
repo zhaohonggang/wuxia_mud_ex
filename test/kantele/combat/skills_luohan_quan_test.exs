@@ -156,4 +156,45 @@ defmodule Kantele.Combat.SkillsLuohanQuanTest do
       end
     end
   end
+
+  describe "valid_learn/2 学习门槛（LPC force>=20 / max_neili>=50 / cuff>=luohan-quan）" do
+    defp stats(force, cuff, luohan) do
+      %{skills: %{"force" => force, "cuff" => cuff, "luohan-quan" => luohan}}
+    end
+
+    defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+
+    test "force < 20 被拒（内功火候不够）" do
+      assert LuohanQuan.valid_learn(stats(10, 200, 50), char_with_max_neili(2000)) ==
+               {:error, "你的内功火候不够，无法学罗汉拳。\n"}
+    end
+
+    test "max_neili < 50 被拒（内力太弱）" do
+      assert LuohanQuan.valid_learn(stats(100, 200, 50), char_with_max_neili(20)) ==
+               {:error, "你的内力太弱，无法练罗汉拳。\n"}
+    end
+
+    test "cuff < luohan-quan 被拒（基本拳法水平有限）" do
+      assert LuohanQuan.valid_learn(stats(100, 100, 150), char_with_max_neili(2000)) ==
+               {:error, "你的基本拳法水平有限，无法领会更高深的罗汉拳。\n"}
+    end
+
+    test "三项全满足则放行" do
+      assert LuohanQuan.valid_learn(stats(100, 200, 50), char_with_max_neili(2000)) == :ok
+    end
+
+    test "character 为 nil 时跳过 max_neili 检查" do
+      assert LuohanQuan.valid_learn(stats(100, 200, 50), nil) == :ok
+    end
+
+    test "character 无 meta/vitals 时跳过 max_neili 检查" do
+      assert LuohanQuan.valid_learn(stats(100, 200, 50), %{}) == :ok
+    end
+  end
+
+  describe "practice_cost（LPC practice_skill 扣 qi 25 / neili 6）" do
+    test "返回 LPC 一致的消耗" do
+      assert LuohanQuan.practice_cost() == %{qi: 25, neili: 6}
+    end
+  end
 end
