@@ -6,10 +6,13 @@ defmodule Kantele.Combat.Skills.MiaojiaNeigong do
   LPC `valid_force` 恒真。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 仅有「无性」性别限制（未实现），故此处恒为 :ok。
+  - LPC `valid_learn` 的「无性 & 等级 > 49」性别限制按 `meta.env[:gender]` 实装；
+    引擎无 LPC `::valid_learn` 的父类附加检查（如 `can_learn` 系列），此层未迁移。
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @impl true
   def id(), do: "miaojia-neigong"
@@ -21,7 +24,16 @@ defmodule Kantele.Combat.Skills.MiaojiaNeigong do
   def valid_force(_force), do: true
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, character) do
+    if gender_of(character) == "无性" and Stats.skill(stats, id()) > 49 do
+      {:error, "你无根无性，阴阳不调，难以领会高深的苗家内功。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

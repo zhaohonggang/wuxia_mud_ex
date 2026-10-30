@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.LengyueShengong do
   LPC `valid_force` 恒真。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「无性」性别限制未实现（本模型暂无性别字段）；
-    源文件技能查询误写为 `lenyue-shengong`（永不命中，失效代码）。
+  - LPC `valid_learn` 的「无性 & 等级 > 49」门**原样保真（含 bug）**：LPC 把等级查询误写为
+    `lenyue-shengong`（少一个 `g`），该技能不存在、恒返回 0，故门永不触发。此处照抄同一
+    错误 id，行为与 LPC 完全一致；若日后修正拼写，需同步放开此门。
+  - 引擎无 LPC `::valid_learn` 的父类附加检查（如 `can_learn` 系列），此层未迁移。
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @impl true
   def id(), do: "lengyue-shengong"
@@ -22,7 +26,17 @@ defmodule Kantele.Combat.Skills.LengyueShengong do
   def valid_force(_force), do: true
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, character) do
+    # LPC 原样：查询的是拼错的 "lenyue-shengong"，恒为 0，故此门永不触发。
+    if gender_of(character) == "无性" and Stats.skill(stats, "lenyue-shengong") > 49 do
+      {:error, "你无根无性，阴阳不调，难以领会高深的冷月神功。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

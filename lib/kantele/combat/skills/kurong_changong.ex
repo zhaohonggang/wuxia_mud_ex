@@ -6,7 +6,8 @@ defmodule Kantele.Combat.Skills.KurongChangong do
   `valid_force` 接受 先天功/全真心法/玄门内功/段氏心法 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 无条件拒绝「无性」性别，本模型暂无性别字段，故未实装。
+  - LPC `valid_learn` 的「无性」性别限制（**无条件**拒绝）按 `meta.env[:gender]` 实装；
+    引擎无 LPC `::valid_learn` 的父类附加检查（如 `can_learn` 系列），此层未迁移。
   """
 
   use Kantele.Combat.Skill
@@ -22,7 +23,16 @@ defmodule Kantele.Combat.Skills.KurongChangong do
     do: force in ["xiantian-gong", "quanzhen-xinfa", "xuanmen-neigong", "duanshi-xinfa"]
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(_stats, character) do
+    if gender_of(character) == "无性" do
+      {:error, "你无根无性，阴阳不调，难以领会枯荣禅功。\n"}
+    else
+      :ok
+    end
+  end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

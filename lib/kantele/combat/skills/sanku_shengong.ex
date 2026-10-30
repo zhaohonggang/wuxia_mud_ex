@@ -25,7 +25,23 @@ defmodule Kantele.Combat.Skills.SankuShengong do
   def valid_force(_force), do: true
 
   @impl true
-  def valid_learn(_stats), do: :ok
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "force") < 40 ->
+        {:error, "你的基本内功太差了。\n"}
+
+      gender_of(character) == "无性" and lvl > 49 ->
+        {:error, "唐门不要你这种无根无性的人，你无法领会高深的三苦神功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
