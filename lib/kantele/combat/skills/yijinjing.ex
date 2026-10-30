@@ -5,9 +5,10 @@ defmodule Kantele.Combat.Skills.Yijinjing do
   内功载体：`valid_enable("force")`；仅可学不可练。
   `valid_force` 接受 混元一气/太极神功/武当心法/少林心法 共存。
 
-  差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性别（必须男性）限制未实现（本模型暂无性别字段）。
-  - LPC 注释掉的 `freezing-force` 互斥检查未实现。
+  学习门槛 `valid_learn/2`（force>=100 / force>=yijinjing / 必须男性）已按 LPC 迁移
+  （2026-10-30）。性别判断走 `meta.env[:gender]`（records.apply_to_character 写入，
+  默认「男性」）。
+  LPC 注释掉的 `freezing-force` 互斥检查仍按原注释保留未实现。
   """
 
   use Kantele.Combat.Skill
@@ -24,8 +25,10 @@ defmodule Kantele.Combat.Skills.Yijinjing do
   def valid_force(force),
     do: force in ["hunyuan-yiqi", "taiji-shengong", "wudang-xinfa", "shaolin-xinfa"]
 
+  # LPC valid_learn 要求 force>=100 / force>=yijinjing / 必须男性
+  # （gender 走 meta.env[:gender]，records.apply_to_character 写入，默认「男性」）
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
     force = Stats.skill(stats, "force")
     level = Stats.skill(stats, id())
 
@@ -36,10 +39,16 @@ defmodule Kantele.Combat.Skills.Yijinjing do
       force < level ->
         {:error, "你的基本内功水平不够，难以领悟更高深的易筋经神功！\n"}
 
+      gender_of(character) != "男性" ->
+        {:error, "你不是男性，无法练习易筋经神功。\n"}
+
       true ->
         :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
