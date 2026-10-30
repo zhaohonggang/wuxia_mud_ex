@@ -49,7 +49,7 @@
 - **改动前检查铁律（2026-10-30 用户指示，已写入 Iron rules）**：认定真缺口动手前，先对 `C:\files\git\wuxia_mud_ex` 做关键词搜索（Grep 覆盖 `lib/`/`test/`/`docs/`）+ LPC 源 `/c/files/git/mud/kungfu/skill/`，确认没早已实现再改。实测：`valid_learn/1` 与 `practice_cost()` 在数百技能里**早已存在**（多为 `(_stats), do: :ok` / `nil` 占位），故真缺口多为「占位→LPC 保真」，非「从零新增」。
 - **回归统一收尾（2026-10-30 用户指示）**：Docker 易崩，改动过程中不零碎跑全量；所有改动做完后统一跑 4 块一次。抓摘要用 `grep --line-buffered "tests, "`，**不要** `| tail`。
 - 第二批 1339 `TODO(migrate)` 长尾已补 ✅（2026-10-30，代码+测试已落、待统一回归）：`kuangfeng-jian`/`cibei-dao`/`luohan-quan` 的 `valid_learn/2`（含 max_neili 门限）+ `practice_cost` 真实门槛均已照 LPC 迁移（moduledoc 同步）。下一轮继续 1339 长尾：按 LPC 源逐技能查 `valid_learn`/`practice_skill`/`prepare_skill`/`valid_damage`/`surge` 真实公式，每技能先 Grep 工作区 + LPC 源确认是「真缺口」再改；基类（`unarmed.c`/`sword.c` 等仅 `inherit SKILL` + 空 `skill_improved`）是假阳性缺口，别碰。
-- ac/ad 全量回归待 Docker 抖动恢复 + 所有长尾改动收齐后统一跑；本次（banruo + dagou + kuangfeng-jian + cibei-dao + luohan-quan）改动均未 `git commit`/push（用户未授权）。
+- ac/ad 全量回归待 Docker 抖动恢复 + 所有长尾改动收齐后统一跑（由用户自行执行，2026-10-30）；本次（banruo + dagou + kuangfeng-jian + cibei-dao + luohan-quan）改动已于 2026-10-30 经用户授权 `git commit` + `git push`（commit `f0bc5536`，12 文件）。
 - 打工闭环 / 注内力 / 锻造 等 S0-S4 任务见各日期日志（均已 push，详见 `2026-10-28.md` 等）。
 
 ## 已交付（历史，均已 push，详见 git log / 各日期日志）
