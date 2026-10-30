@@ -5,8 +5,12 @@ defmodule Kantele.Combat.Skills.TaijiShengong do
   内功载体：`valid_enable("force")`；仅可学不可练。
   `valid_force` 接受 混元一气功/易筋经/武当心法/临济庄/峨眉心法/少林心法 共存。
 
+  学习门槛 `valid_learn/2`（无性&taoism>19 / force>=100 / taoism>=100 /
+  (taoism<320 & taoism<level)）已按 LPC 迁移（2026-10-30）。「无性」性别限制经
+  `meta.env[:gender]`（默认「男性」）实现，取消原 TODO。
+  `query_neili_improve` 成长公式与 `dian` 的目标侧结算差异见下。
+
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「无性」性别限制未实现（本模型暂无性别字段）。
   - `query_neili_improve` 成长公式未接入。
   - `dian`（鹤嘴劲点龙跃窍）需非战斗且有明确目标；引擎 `exert` 无目标参数、
     目标取自敌人列表，故成功路径与 `force/lifeheal` 同理暂不可达，目标侧结算可测。
@@ -34,13 +38,18 @@ defmodule Kantele.Combat.Skills.TaijiShengong do
         "shaolin-xinfa"
       ]
 
+  # LPC valid_learn 顺序：无性&taoism>19 → force>=100 → taoism>=100 →
+  # (taoism<320 & taoism<level)。性别走 meta.env[:gender]（默认「男性」）。
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
     force = Stats.skill(stats, "force")
     taoism = Stats.skill(stats, "taoism")
     level = Stats.skill(stats, id())
 
     cond do
+      gender_of(character) == "无性" and taoism > 19 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的太极神功。\n"}
+
       force < 100 ->
         {:error, "你的基本内功火候还不够。\n"}
 
@@ -54,6 +63,9 @@ defmodule Kantele.Combat.Skills.TaijiShengong do
         :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
