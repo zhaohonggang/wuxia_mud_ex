@@ -92,6 +92,26 @@ defmodule Kantele.Character.Stats do
   def skill(_stats, _name), do: 0
 
   @doc """
+  查询基础属性（对应 LPC `me->query("int"/"dex"/"str"/"con")` 与 `me->query_dex()` 等）。
+  兼容 Stats 结构体与测试用裸 map；缺省按 0 处理（即「未达标」），与 LPC 默认属性行为一致。
+  """
+  def int(%__MODULE__{} = stats), do: stats.int
+  def int(%{int: int}) when is_integer(int), do: int
+  def int(_stats), do: 0
+
+  def dex(%__MODULE__{} = stats), do: stats.dex
+  def dex(%{dex: dex}) when is_integer(dex), do: dex
+  def dex(_stats), do: 0
+
+  def str(%__MODULE__{} = stats), do: stats.str
+  def str(%{str: str}) when is_integer(str), do: str
+  def str(_stats), do: 0
+
+  def con(%__MODULE__{} = stats), do: stats.con
+  def con(%{con: con}) when is_integer(con), do: con
+  def con(_stats), do: 0
+
+  @doc """
   查询某用法的有效等级（对应 LPC `feature/skill.c query_skill(skill)` 不带 raw）
 
   LPC 原式：
