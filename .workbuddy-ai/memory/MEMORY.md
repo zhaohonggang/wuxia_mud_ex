@@ -53,13 +53,13 @@
 | 13 | `d6441b03` | hanwang-qingdao, jingyue-bifa, lingshe-zhangfa, longcheng-shendao, nianhua-zhi, ningxue-zhang, pangen-cuojiefu, panlong-suo, qianye-shou, raozhi-roujian (10) |
 | 14 | `474db464` | jiandun-zhusuo, qishi-ji, ruanhong-zhusuo, riyue-bian, qiufeng-chenfa, ruyun→rouyun-steps, sougu, tangmen-throwing, tiangang-zhi, feixing-shu (10) |
 | 15 | `4007fdff` | 内功 7：beiming-shengong, sanku-shengong, duanshi-xinfa, kurong-changong, lengyue-shengong, miaojia-neigong, shenlong-xinfa |
-| 16 | 待提交 | 收官 9：daojian-guizhen, miaojia-jian, duanyun-fu, jinguan-yusuo, sun-finger, sanwu-shou, qiulin-shiye, shenxing-baibian, xixing-dafa |
+| 16 | `cf7d6b45` | 收官 9：daojian-guizhen, miaojia-jian, duanyun-fu, jinguan-yusuo, sun-finger, sanwu-shou, qiulin-shiye, shenxing-baibian, xixing-dafa |
 
 - 累计 **90 个技能**已迁移（`valid_learn/2` + `practice_cost`），每批均含专用测试文件 + docs 块（C-PVE7~20）+ 记忆同步。
 - **F4 `valid_learn`/`practice_skill` 长尾已收口（2026-10-30）**。余下 `TODO(migrate)` 属别的类别：`query_skill`(1121，多为基础技能基础类)、`prepare_skill`(62)、`valid_damage`(17)、`surge`(5)，以及「引擎未建模层」（alignment 性格门 / `ultrap` 大宗师 / `can_learn` 父类检查 / practice 专属门 / 须持械空手）。
 
 ## 待办（开放中）
-- **第十六批待 commit+push**（9 lib + 9 test + C-PVE20 + 记忆）。
+- **第十六批已 push `cf7d6b45`**（2026-10-30，9 lib + 9 test + C-PVE20 + 记忆）。
 - **假阳性结论（勿再当缺口）**：`force.c` `valid_learn` = `{return 1;}`；`force_lifeheal/power/roar/shot` 是 **Perform 模块**（`kungfu/skill/force/*.c` 为 exert 函数文件），不是技能。`xuehai-mogong` LPC 仅 `return ::valid_learn(me)`。
 - **引擎未建模层（要动需先补基础设施）**：alignment（`query("character")`，本仓无字段/设定入口；`meta.character` 只在 performs 里被读、实际恒 nil）、`ultrap`（大宗师）、`valid_practice` 回调（practice 专属门）、`valid_learn` 里的须持械/空手（`character` 快照不含持械）。
 - 打工闭环 / 注内力 / 锻造 等 S0-S4 任务见各日期日志。
