@@ -76,6 +76,48 @@ defmodule Kantele.Combat.Skills.DagouBang do
   def id(), do: "dagou-bang"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "dagou-bang", 0) < 100 or
+         is_nil(victim.weapon_name) or victim.weapon_skill_type != "staff" do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "force", 0) + mp
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + Map.get(victim.skills, "dagou-bang", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < div(dp * 3, 4) do
+        {0, dagou_msg(rng, victim.weapon_name)}
+      else
+        if mp >= 100 do
+          {damage, dagou_fail_msg(rng, victim.weapon_name)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp dagou_msg(rng, weapon) do
+    case rng.(2) - 1 do
+      0 ->
+        "$n巧妙的施展打狗棒「封」字诀，手中#{weapon}左封右闭，使得$N的攻势全然落空。\n"
+
+      _ ->
+        "$n急转手中#{weapon}，打狗棒「封」字诀发挥得淋漓尽致，顿将$N的招式驱于无形。\n"
+    end
+  end
+
+  defp dagou_fail_msg(rng, weapon) do
+    case rng.(2) - 1 do
+      0 ->
+        "$n蓦地施展出打狗棒「封」字诀，可是$N理也不理，当即挥招直入，进袭$n。\n"
+
+      _ ->
+        "$n急转手中#{weapon}，左封右闭，然而$N却是精演天数，丝毫不受$n的迷惑。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["staff", "parry"]
 
   # LPC valid_learn 要求 dex>=26, max_neili>=1500, staff>=100 且 staff>=dagou-bang

@@ -91,11 +91,25 @@ defmodule Kantele.Combat.Skill do
   @doc """
   伤害再判定钩子（对应 LPC valid_damage/4，如 taiji-quan 的借力打力）
 
-  在引擎算出本轮命中伤害后调用；返回 `{new_damage, message | nil}`。
+  命中伤害算定后调用；返回 `{new_damage, message | nil}` 或
+  `{new_damage, message, counter}`，其中 `counter` 为
+  `{counter_damage :: integer(), counter_msg :: String.t()} | nil`，
+  表示对攻击者造成的回弹/反击（由引擎累加进 `Round.counter_damage`）。
   `new_damage` 可为负表示完全化解并使伤害回弹；`message` 追加到战报文案。
+  `rng` 为注入的随机函数（0 基，对齐 LPC `random(n)`）。
+
+  引擎分两侧调用：攻击方映射技能（攻击特技）与防守方映射的招架/闪避技能
+  （LPC 的 `me`=防守方），两侧返回的伤害修改与反击被顺序折叠。
   """
-  @callback valid_damage(map(), map(), non_neg_integer(), map()) ::
+  @callback valid_damage(
+              map(),
+              map(),
+              non_neg_integer(),
+              map(),
+              (non_neg_integer() -> non_neg_integer())
+            ) ::
               {non_neg_integer(), String.t() | nil}
+              | {non_neg_integer(), String.t() | nil, {integer(), String.t()} | nil}
 
   @doc """
   命中回调（对应 LPC hit_ob/4，如 taiji-quan 蓄力连击）
@@ -138,7 +152,7 @@ defmodule Kantele.Combat.Skill do
   @optional_callbacks [
     perform_list: 0,
     exert_list: 0,
-    valid_damage: 4,
+    valid_damage: 5,
     hit_ob: 3,
     practice_check: 1,
     difficult_level: 1,
@@ -189,7 +203,7 @@ defmodule Kantele.Combat.Skill do
       def exert_list(), do: %{}
 
       @doc false
-      def valid_damage(_attacker, _victim, damage, _action), do: {damage, nil}
+      def valid_damage(_attacker, _victim, damage, _action, _rng), do: {damage, nil}
 
       @doc false
       def hit_ob(_attacker, _victim, _action), do: :unchanged
@@ -220,7 +234,7 @@ defmodule Kantele.Combat.Skill do
                      practice_cost: 0,
                      perform_list: 0,
                      exert_list: 0,
-                     valid_damage: 4,
+                     valid_damage: 5,
                      hit_ob: 3,
                      practice_check: 1,
                      difficult_level: 1,

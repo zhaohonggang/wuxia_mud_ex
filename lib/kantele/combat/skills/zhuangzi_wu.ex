@@ -18,6 +18,45 @@ defmodule Kantele.Combat.Skills.ZhuangziWu do
   def id(), do: "zhuangzi-wu"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "zhuangzi-wu", 0) < 100 do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "dodge", 0) + mp
+      dp = div(Map.get(victim.skills, "dodge", 0), 2) + Map.get(victim.skills, "zhuangzi-wu", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, zhuangzi_msg(rng)}
+      else
+        if mp >= 100 do
+          {damage, zhuangzi_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp zhuangzi_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "只见$n足尖在地面轻轻一点，整个身子顿时凌空飘起，轻而易举躲开了$N的招式。\n"
+      1 -> "可是$n蛮腰微微一颤，步法宛如行云流水，轻飘飘的落在一旁，顿时使$N的攻势落空。\n"
+      2 -> "但见$n微微一笑，身形轻展，整个人竟踏空飘起，待$N一招击空后，又翩翩而落，晃至$N跟前。\n"
+      _ -> "可$n竟丝毫不理会$N的招数，径自迎面奔上，幻出无数倩影翩翩起舞，$N勘不透虚实，唯有收招。\n"
+    end
+  end
+
+  defp zhuangzi_fail_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "只见$n足尖轻点地面，凌空飘然而起，可$N遁影擒踪，一声冷笑，随即飞身扑上。\n"
+      1 -> "$n蛮腰微微一颤，步法宛如行云流水，轻飘而落，可$N毫不理会，反手又攻出一招。\n"
+      2 -> "$n微微一笑，身形轻展，整个人竟踏空飘起，可又见$N也随即飘起，在半空攻出数招。\n"
+      _ -> "但见$n身形一展，幻出无数倩影翩翩起舞，可$N不假思索攻出一招，正是实影所在。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["dodge"]
 
   @impl true

@@ -151,6 +151,45 @@ defmodule Kantele.Combat.Skills.PixieJian do
   def id(), do: "pixie-jian"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "pixie-jian", 0) < 100 do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "dodge", 0) + mp
+      dp = div(Map.get(victim.skills, "dodge", 0), 2) + Map.get(victim.skills, "pixie-jian", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, pixie_msg(rng)}
+      else
+        if mp >= 100 do
+          {damage, pixie_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp pixie_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "$N眼睛一花，$n已没了踪影。突然$n从身后拍了一下$N的头，轻轻跃开。\n"
+      1 -> "$N眼前一花，似乎见到$n身形一晃，但随即又见$n回到原地，却似从未离开。\n"
+      2 -> "$n身形飘忽，有如鬼魅，转了几转，移步到$N的身后，躲过了$N这一招。\n"
+      _ -> "突然间白影急晃，$n向后滑出丈余，立时又回到了原地，躲过了$N这一招。\n"
+    end
+  end
+
+  defp pixie_fail_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "$N眼睛一花，$n已没了踪影。可是$N精通易理，丝毫不为所乱，尽自出招。\n"
+      1 -> "$N眼前一花，似乎见到$n身形一晃。$N一声冷笑，已瞬间看破招中虚实。\n"
+      2 -> "$n身形飘忽，有如鬼魅，转了几转，可是$N理也不理，连续数招径直攻出。\n"
+      _ -> "突然间白影急晃，$n向后滑出丈余，可是$N不假思索，追身攻上，更是巧妙无方。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["dodge", "parry", "sword", "unarmed"]
 
   @impl true

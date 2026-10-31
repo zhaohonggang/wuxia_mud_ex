@@ -333,7 +333,7 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   end
 
   @impl true
-  def valid_damage(attacker, victim, damage, _action) do
+  def valid_damage(attacker, victim, damage, _action, rng) do
     victim_dugu = Map.get(victim.skills, "dugu-jiujian", 0)
     victim_weapon = victim.weapon_name
     victim_busy = Map.get(victim, :busy, 0)
@@ -345,9 +345,9 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
       ap = Map.get(attacker.skills, "parry", 0) + mp
       dp = div(Map.get(victim.skills, "parry", 0), 2) + victim_dugu
 
-      if div(ap, 2) + random(ap) < dp do
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
         msg =
-          case random(9) do
+          case rng.(9) - 1 do
             0 -> "$n踏前一步，剑式斜指$P右臂，想要使$P闪身而退。\n"
             1 -> "$n以攻为守，以进为退，凝神运气向$P猛攻快打地挥出方位大异的泰山「快活三」三剑。\n"
             2 -> "$n剑法突变，剑势伸缩不定，奔腾矫夭，逆使嵩山剑法的「天外玉龙」企图迫使$P变招。\n"

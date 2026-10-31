@@ -144,6 +144,34 @@ defmodule Kantele.Combat.Skills.JiuyangShengong do
   def id(), do: "jiuyang-shengong"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "jiuyang-shengong", 0) < 150 or
+         Map.get(victim.mapped, "parry") != "jiuyang-shengong" or
+         Map.get(victim.mapped, "force") != "jiuyang-shengong" or
+         Map.get(victim.mapped, "unarmed") != "jiuyang-shengong" or
+         victim.neili < 500 or not is_nil(attacker.weapon_name) or
+         rng.(2) - 1 != 1 do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0) * 12 + attacker.max_neili
+      dp = Map.get(victim.skills, "force", 0) * 12 + victim.neili
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, jiuyang_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp jiuyang_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "$n默念九阳神功总诀，收敛内劲，承下$N这一招，$N只觉犹如石沉大海，丝毫不起作用。\n"
+      _ -> "$N一招击中$n上身，可却犹如击在棉花上一般，力道顿时消失得无影无踪。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage == "force"
 
   @doc """

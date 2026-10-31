@@ -25,6 +25,43 @@ defmodule Kantele.Combat.Skills.JinguanYusuo do
   def id(), do: "jinguan-yusuo"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "jinguan-yusuo", 0) < 100 do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "force", 0) + mp
+      dp = Map.get(victim.skills, "jinguan-yusuo", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < div(dp * 3, 4) do
+        {0, jinguan_msg(rng)}
+      else
+        if mp >= 100 do
+          {damage, jinguan_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp jinguan_msg(rng) do
+    case rng.(3) - 1 do
+      0 -> "$n面含微笑，双手回圈，顿时将$N的招数全全锁死。\n"
+      1 -> "$n单掌轻轻撩起，掌劲吞吐，竟凭空架起一道气墙，将$N的攻势全然阻隔在外。\n"
+      _ -> "却见$n掌出如风，飘忽不定，轻描淡写将$N的攻击卸之于无形。\n"
+    end
+  end
+
+  defp jinguan_fail_msg(rng) do
+    case rng.(3) - 1 do
+      0 -> "$n双手回圈，企图锁死$N的招数，可陡然间却见$N撤手回转，再攻出一招。\n"
+      1 -> "$n单掌轻轻撩起，欲以内劲阻挡$N的攻势，可$N蓦的变招，从另一方位攻入。\n"
+      _ -> "$n掌出如风，飘然护住全身，可$N理也不理，只管运足内劲，中破攻入。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["force", "parry"]
 
   @impl true

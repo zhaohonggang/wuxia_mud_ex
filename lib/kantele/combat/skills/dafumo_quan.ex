@@ -79,6 +79,31 @@ defmodule Kantele.Combat.Skills.DafumoQuan do
   def id(), do: "dafumo-quan"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "dafumo-quan", 0) < 100 or
+         not is_nil(victim.weapon_name) or not is_nil(attacker.weapon_name) do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0)
+      dp = div(Map.get(victim.skills, "unarmed", 0), 2) + Map.get(victim.skills, "dafumo-quan", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, dafumo_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp dafumo_msg(rng) do
+    case rng.(3) - 1 do
+      0 -> "$n左臂随意格挡，$N这招力道竟然落空。\n"
+      1 -> "$n怒喝一声，出拳格挡，拳风呼呼，$N顿觉得双臂酸麻。\n"
+      _ -> "$n不退反进，一拳直出，钢劲无比，$N连忙收招回缩，不敢硬碰。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["parry", "unarmed"]
 
   @impl true

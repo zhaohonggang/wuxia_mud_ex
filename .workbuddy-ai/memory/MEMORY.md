@@ -56,7 +56,13 @@
 | 16 | `cf7d6b45` | 收官 9：daojian-guizhen, miaojia-jian, duanyun-fu, jinguan-yusuo, sun-finger, sanwu-shou, qiulin-shiye, shenxing-baibian, xixing-dafa |
 
 - 累计 **90 个技能**已迁移（`valid_learn/2` + `practice_cost`），每批均含专用测试文件 + docs 块（C-PVE7~20）+ 记忆同步。
-- **F4 `valid_learn`/`practice_skill` 长尾已收口（2026-10-30）**。余下 `TODO(migrate)` 属别的类别：`query_skill`(1121，多为基础技能基础类)、`prepare_skill`(62)、`valid_damage`(17)、`surge`(5)，以及「引擎未建模层」（alignment 性格门 / `ultrap` 大宗师 / `can_learn` 父类检查 / practice 专属门 / 须持械空手）。
+- **F4 `valid_learn`/`practice_skill` 长尾已收口（2026-10-30）**。余下 `TODO(migrate)` 属别的类别：`query_skill`(1121，多为基础技能基础类)、`prepare_skill`(62)、`surge`(5)，以及「引擎未建模层」（alignment 性格门 / `ultrap` 大宗师 / `can_learn` 父类检查 / practice 专属门 / 须持械空手）。
+- **`valid_damage/5`（Option 2，防守方 invocation）已全部落地（2026-10-30，未 commit）**：
+  - 引擎：`skill.ex` `@callback valid_damage` 5 元 + `@optional_callbacks valid_damage: 5` + fallback `{damage, nil}`；`Fighter` 新增 `:max_neili`；`Round` 新增 `:counter_damage`；`engine.ex` `damage_calc` 调用 `apply_valid_damage`（攻击方映射技能）+ `apply_defender_valid_damage`（防守方 parry/dodge 映射技能），折叠 2/3 元返回、合并 `counter_damage`、拼接 `segments`；`Engine.rand` 已 0-indexed（`rng.(n)-1`，与 LPC `random` 对齐）。
+  - 27 技能 `valid_damage/5` 全按 LPC 保真迁移（`me`=防守方→`victim`，`ob`=攻击方→`attacker.skills`，`query_temp("weapon")`→`weapon_name`，`random(n)`→`rng.(n)-1`，`damage=-damage` 反弹→`{0, msg}`，剥 LPC 色码保留 `$N/$n/$l`）：pilot `kongming-quan`/`tianluo-diwang` + 更新 `dugu-jiujian`/`taiji-quan` 为 5 元+rng，新增 `beiming-shengong`/`dafumo-quan`/`dagou-bang`/`douzhuan-xingyi`/`huagong-dafa`/`jingang-buhuaiti`/`jinguan-yusuo`/`jinzhong-zhao`/`jiuyang-shengong`/`jiuyin-shengong`/`kuihua-mogong`/`lingbo-weibu`/`pixie-jian`/`qiankun-danuoyi`/`qingfu-shenfa`/`shexing-lifan`/`taiji-jian`/`taixuan-gong`/`tanzhi-shentong`/`wai-bagua`/`xixing-dafa`/`xixing-xiaofa`/`zhuangzi-wu`。
+  - 验证：`mix compile` 退出码 **0**（零新增告警；仅 `feature_attack.ex`/`drive_command.ex` 既有无关警告）。`test/kantele/combat/skills_valid_damage_test.exs` 已扩展覆盖 **全部 27 技能**（`zero_rng()` 恒 1 让化解胜出、`two_rng()` 恒 2 过 `random(2)==1` 门），**73 tests, 0 failures**（Docker + db）。helper 用 keyword-opts（`victim(skills: ..., weapon: ..., neili: ...)`），attacker/victim 均含 `:mapped`。
+  - 遗留：`counter_damage` 跨进程作用到攻击方（`combat_event.ex` `apply_hit` 仅本地）尚未接入；`mp>=100` 失败分支因 `count` 技能未普遍落入 `stats.skills` 而休眠（与 alignment/ultrap 同属引擎未建模层，待基础设施补齐）。
+  - 文档/记忆：`待办实施计划.zh-CN.md` 待新增 C-PVE 块；本条即为 MEMORY 同步。
 
 ## 待办（开放中）
 - **第十六批已 push `cf7d6b45`**（2026-10-30，9 lib + 9 test + C-PVE20 + 记忆）。

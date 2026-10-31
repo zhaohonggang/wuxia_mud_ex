@@ -22,6 +22,33 @@ defmodule Kantele.Combat.Skills.XixingDafa do
   def id(), do: "xixing-dafa"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "xixing-dafa", 0) < 80 or
+         attacker.jiali < 1 or
+         Map.get(attacker.mapped, "force") == "taixuan-gong" do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0)
+      dp = Map.get(victim.skills, "force", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, xixing_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp xixing_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "$N只觉得内力源源而泻，不由得大吃一惊。\n"
+      1 -> "$N只觉得发出的内力犹如石沉大海，不知所踪。\n"
+      2 -> "$N只觉得发出的内力犹无影无踪，浑然不知着落。\n"
+      _ -> "$N不住催动内力，但是只觉得$n竟似毫不费力。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage == "force"
 
   @impl true

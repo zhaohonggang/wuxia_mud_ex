@@ -19,6 +19,33 @@ defmodule Kantele.Combat.Skills.JinzhongZhao do
   def id(), do: "jinzhong-zhao"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "jinzhong-zhao", 0) < 150 or victim.neili < 400 or
+         not is_nil(attacker.weapon_name) do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0) * 12 + attacker.max_neili
+      dp = Map.get(victim.skills, "force", 0) * 12 + victim.neili
+
+      if div(dp, 2) + rng.(max(dp, 1)) - 1 > ap do
+        {0, jinzhong_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp jinzhong_msg(rng) do
+    case rng.(5) - 1 do
+      0 -> "$n不退反进，一股无形气流直把$N副得难以招架，连连退后。\n"
+      1 -> "只见$N移至$n身后，猛然一招朝$n的后心拍去，但不料反被震退数步。\n"
+      2 -> "$N冲破$n的无形真气，接着全力一掌拍在$n身上，可万万无料到另一股气墙直撞而出，将$N的攻击硬生生地弹开。\n"
+      3 -> "$N一招拍在$n身上，可见$n不闪不避，只是全身迅猛一抖，$N的力道反被护体罡气震退了开来。\n"
+      _ -> "$n见$N来势凶凶攻来，不由嘴角轻轻一笑，飞身一跃直往$N的力道撞去，竟把$N震个人仰马翻，狼狈不堪!\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage == "parry"
 
   @impl true

@@ -21,6 +21,7 @@ defmodule Kantele.Combat.Fighter do
     :busy,
     :jiali,
     :neili,
+    :max_neili,
     :no_kill,
     :attack_skill,
     :weapon_name,
@@ -45,6 +46,7 @@ defmodule Kantele.Combat.Fighter do
       busy: 0,
       jiali: 0,
       neili: 0,
+      max_neili: 0,
       no_kill: false,
       attack_skill: "unarmed",
       weapon_name: nil,
@@ -90,6 +92,7 @@ defmodule Kantele.Combat.Fighter do
       busy: combat.busy,
       jiali: combat.jiali,
       neili: character.meta.vitals.neili,
+      max_neili: character.meta.vitals.max_neili,
       no_kill: no_kill?(character),
       attack_skill: attack_skill,
       weapon_name: weapon && Map.get(weapon, :name),
@@ -134,7 +137,8 @@ defmodule Kantele.Combat.Round do
     :damage,
     :wounded,
     :jiali_spent,
-    segments: []
+    segments: [],
+    counter_damage: 0
   ]
 end
 
@@ -338,8 +342,16 @@ defmodule Kantele.Combat.Engine do
         damage
       end
 
-    # 攻击特技的 valid_damage 钩子（如 taiji-quan 借力打力：化解/回弹伤害）
-    {damage, hook_msg} = apply_valid_damage(attacker, victim, damage, round.action, rng)
+    # 攻击特技 valid_damage 钩子（攻击方映射技能）
+    {damage, atk_msg, atk_counter} =
+      apply_valid_damage(attacker, victim, damage, round.action, rng)
+
+    # 防守方招架/闪避映射技能的 valid_damage 钩子（LPC me=防守方）
+    {damage, def_msg, def_counter} =
+      apply_defender_valid_damage(attacker, victim, damage, round.action, rng)
+
+    {counter_damage, counter_msg} =
+      Enum.reduce([atk_counter, def_counter], {0, nil}, &accumulate_counter/2)
 
     segments =
       case damage > 0 do
@@ -351,45 +363,82 @@ defmodule Kantele.Combat.Engine do
           round.segments ++ [Messages.no_damage_msg()]
       end
 
-    segments =
-      case hook_msg do
-        nil -> segments
-        msg -> segments ++ ["\n" <> msg]
-      end
+    segments = append_hook(segments, atk_msg)
+    segments = append_hook(segments, def_msg)
+    segments = append_hook(segments, counter_msg)
 
     %Round{
       round
       | damage: damage,
         wounded: wounded,
         jiali_spent: jiali_spent,
+        counter_damage: counter_damage,
         segments: segments
     }
   end
 
   # 命中后调用攻击方映射特技的 valid_damage 钩子；无特技或未实现该回调则原样返回
-  defp apply_valid_damage(attacker, victim, damage, action, _rng) do
+  defp apply_valid_damage(attacker, victim, damage, action, rng) do
     mapped = Map.get(attacker.mapped, attacker.attack_skill)
 
     case mapped && Skills.get(mapped) do
-      skill_module ->
-        if function_exported?(skill_module, :valid_damage, 4) do
-          case skill_module.valid_damage(
-                 Map.from_struct(attacker),
-                 Map.from_struct(victim),
-                 damage,
-                 action
-               ) do
-            {new_damage, msg} when is_integer(new_damage) -> {new_damage, msg}
-            _ -> {damage, nil}
-          end
+      skill_module when is_atom(skill_module) ->
+        if function_exported?(skill_module, :valid_damage, 5) do
+          run_valid_damage(skill_module, attacker, victim, damage, action, rng)
         else
-          {damage, nil}
+          {damage, nil, nil}
         end
 
       _ ->
-        {damage, nil}
+        {damage, nil, nil}
     end
   end
+
+  # 命中后调用防守方映射（招架/闪避）技能的 valid_damage 钩子（LPC me=防守方）；
+  # 顺序折叠各技能返回的伤害修改、文案与反击
+  defp apply_defender_valid_damage(attacker, victim, damage, action, rng) do
+    mapped_ids =
+      [Map.get(victim.mapped, "parry"), Map.get(victim.mapped, "dodge")]
+      |> Enum.reject(&is_nil/1)
+      |> Enum.uniq()
+
+    Enum.reduce(mapped_ids, {damage, nil, nil}, fn skill_id, {dmg, msgs, counters} ->
+      case Skills.get(skill_id) do
+        skill_module when is_atom(skill_module) ->
+          if function_exported?(skill_module, :valid_damage, 5) do
+            {nd, m, c} = run_valid_damage(skill_module, attacker, victim, dmg, action, rng)
+            {nd, join_msg(msgs, m), counters ++ List.wrap(c)}
+          else
+            {dmg, msgs, counters}
+          end
+
+        _ ->
+          {dmg, msgs, counters}
+      end
+    end)
+  end
+
+  defp run_valid_damage(skill_module, attacker, victim, damage, action, rng) do
+    a = Map.from_struct(attacker)
+    v = Map.from_struct(victim)
+
+    case skill_module.valid_damage(a, v, damage, action, rng) do
+      {d, m} when is_integer(d) -> {d, m, nil}
+      {d, m, c} when is_integer(d) -> {d, m, c}
+      _ -> {damage, nil, nil}
+    end
+  end
+
+  defp append_hook(segments, nil), do: segments
+  defp append_hook(segments, msg) when is_binary(msg), do: segments ++ ["\n" <> msg]
+
+  defp join_msg(nil, nil), do: nil
+  defp join_msg(a, nil), do: a
+  defp join_msg(nil, b), do: b
+  defp join_msg(a, b), do: a <> "\n" <> b
+
+  defp accumulate_counter({acc_d, acc_m}, nil), do: {acc_d, acc_m}
+  defp accumulate_counter({acc_d, acc_m}, {d, m}), do: {acc_d + d, join_msg(acc_m, m)}
 
   # 创伤概率门（LPC random(3)==1 或主动杀意下同样判定 ≈ 1/2）：掷中才结算创伤
   defp wound_split(raw_wound, damage, _rng) when raw_wound < 1, do: {0, cap(damage)}

@@ -375,7 +375,7 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
   def valid_combine(combo), do: combo in ["wudang-zhang", "paiyun-shou"]
 
   @doc "借力打力（valid_damage）：太极拳核心反制"
-  def valid_damage(attacker, victim, damage, _action) do
+  def valid_damage(attacker, victim, damage, _action, rng) do
     taiji_lvl = Map.get(victim.skills, "taiji-quan", 0)
     victim_weapon = victim.weapon_name
 
@@ -384,9 +384,9 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
       ap = Map.get(attacker.skills, "force", 0) + mp
       dp = div(Map.get(victim.skills, "parry", 0), 2) + taiji_lvl
 
-      if div(ap, 2) + :rand.uniform(ap) < dp do
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
         msg =
-          case :rand.uniform(3) do
+          case rng.(3) - 1 do
             1 -> "$n面含微笑，双手齐出，划出了一个圆圈，竟然让$N的攻击全不着力。\n"
             2 -> "$n左右格档，使出四两拨千斤的手法，化解$N的攻势于无形。\n"
             _ -> "$n慢慢出拳，动作虽然缓慢，却让$N感到浑身粘滞，甚不舒畅。\n"

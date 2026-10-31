@@ -152,6 +152,46 @@ defmodule Kantele.Combat.Skills.KuihuaMogong do
   def id(), do: "kuihua-mogong"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "kuihua-mogong", 0) < 210 or
+         Map.get(victim.mapped, "dodge") != "kuihua-mogong" do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "dodge", 0) + mp
+      dp = div(Map.get(victim.skills, "dodge", 0), 2) + Map.get(victim.skills, "kuihua-mogong", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, kuihua_msg(rng)}
+      else
+        if mp >= 100 do
+          {damage, kuihua_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp kuihua_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "$N眼睛一花，$n已没了踪影。突然$n从身后拍了一下$N的头，轻轻跃开。\n"
+      1 -> "$N眼前一花，似乎见到$n身形一晃，但随即又见$n回到原地，却似从未离开。\n"
+      2 -> "$n尖啸一声，忽然身子一转已不见了踪影，$N只觉耳边风声不断，但随即又见$n回到了原地。\n"
+      _ -> "忽然间，只见$n腰枝一摆，顿时出现无数个$n的影子，$N却无法辨别出$n的方位。\n"
+    end
+  end
+
+  defp kuihua_fail_msg(rng) do
+    case rng.(4) - 1 do
+      0 -> "$N眼睛一花，$n已没了踪影。可是$N精通易理，丝毫不为所乱，尽自出招。\n"
+      1 -> "$N眼前一花，似乎见到$n身形一晃。$N一声冷笑，已瞬间看破招中虚实。\n"
+      2 -> "$n身形飘忽，有如鬼魅，转了几转，可是$N理也不理，连续数招径直攻出。\n"
+      _ -> "突然间白影急晃，$n身形顿时化分成万千身影，可是$N不假思索，追身攻上，更是巧妙无方。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["unarmed", "sword", "dodge", "parry", "force"]
 
   @impl true

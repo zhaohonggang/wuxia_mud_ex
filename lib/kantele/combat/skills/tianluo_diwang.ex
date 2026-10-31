@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.TianluoDiwang do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, query_effect_parry, valid_combine, valid_damage, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill, query_effect_parry, valid_combine, valid_learn
   - perform/exert 路由骨架见 tmp/perf_out/tianluo_diwang/
   """
 
@@ -87,6 +87,32 @@ defmodule Kantele.Combat.Skills.TianluoDiwang do
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    tianluo = Map.get(victim.skills, "tianluo-diwang", 0)
+
+    if tianluo < 100 or not is_nil(victim.weapon_name) do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "force", 0) + mp
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + tianluo
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, tianluo_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp tianluo_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "$n双臂飞舞，似有千掌拍出，密不透风，竟将$N的攻势化解。\n"
+      _ -> "$n掌势突然一变，骤然化为满天掌雨，护于胸前，$N竟无从攻击。\n"
+    end
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"

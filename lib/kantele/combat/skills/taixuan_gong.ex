@@ -157,6 +157,34 @@ defmodule Kantele.Combat.Skills.TaixuanGong do
   @impl true
   def id(), do: "taixuan-gong"
 
+  @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "taixuan-gong", 0) < 150 or
+         Map.get(victim.skills, "literate", 0) > 0 or
+         Map.get(victim.mapped, "parry") != "taixuan-gong" or
+         Map.get(victim.mapped, "force") != "taixuan-gong" or
+         Map.get(victim.mapped, "unarmed") != "taixuan-gong" or
+         victim.neili < 500 or not is_nil(attacker.weapon_name) do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0) * 12 + attacker.max_neili
+      dp = Map.get(victim.skills, "force", 0) * 12 + victim.neili
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, taixuan_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp taixuan_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "$n默念太玄功口诀，太玄内劲齐聚于全身，$N只觉这招攻在$n身上，犹如碰到铜墙铁壁一般，丝毫不起作用。\n"
+      _ -> "$N一招击中$n上身，可却犹如击在铜墙铁壁上一般，力道顿时消失得无影无踪。\n"
+    end
+  end
+
   @base_usages ["force", "unarmed", "dodge", "parry"]
 
   @impl true

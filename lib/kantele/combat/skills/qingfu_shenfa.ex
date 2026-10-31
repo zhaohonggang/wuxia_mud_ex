@@ -18,6 +18,41 @@ defmodule Kantele.Combat.Skills.QingfuShenfa do
   def id(), do: "qingfu-shenfa"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "qingfu-shenfa", 0) < 100 or rng.(2) - 1 != 1 do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "dodge", 0) + mp
+      dp = div(Map.get(victim.skills, "dodge", 0), 2) + Map.get(victim.skills, "qingfu-shenfa", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, qingfu_msg(rng)}
+      else
+        if mp >= 100 do
+          {damage, qingfu_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp qingfu_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "只见$n长啸一声犹如一只蝙蝠一样纵身而起，于半空倒立，$N这招却扑了个空。\n"
+      _ -> "但见$n身法轻盈无比，忽然跃高忽而落下，令$N完全无从攻击。\n"
+    end
+  end
+
+  defp qingfu_fail_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "只见$n长啸一声犹如一只蝙蝠一样纵身而起，于半空倒立，可是$N精通易理，将其中虚实辨得清清楚楚。\n"
+      _ -> "但见$n身法轻盈无比，忽然跃高忽而落下，$N不假思索，飞身出招，更是巧妙无方。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["dodge", "move"]
 
   @impl true

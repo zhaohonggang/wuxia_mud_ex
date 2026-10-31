@@ -18,6 +18,42 @@ defmodule Kantele.Combat.Skills.WaiBagua do
   def id(), do: "wai-bagua"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "wai-bagua", 0) < 100 do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "force", 0) + mp
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + Map.get(victim.skills, "wai-bagua", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < div(dp * 3, 4) do
+        {0, wai_bagua_msg(rng)}
+      else
+        if mp >= 100 do
+          {damage, wai_bagua_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp wai_bagua_msg(rng) do
+    case rng.(3) - 1 do
+      0 -> "$n身形忽然按照八卦方位转个不停，$N这一招竟然无从下手。\n"
+      1 -> "$n单掌利用八卦四方的巧劲轻轻一托，$N登时拿捏不准力道，不禁泛起一阵有心无力的感觉。\n"
+      _ -> "$N一招眼看击中了$n，然而$n轻轻一格，将$N的攻击利用八卦巧劲化于无形。\n"
+    end
+  end
+
+  defp wai_bagua_fail_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "$n轻轻挥拳阻搁，暗含八卦巧劲，可$N精通易理，丝毫不假思索，随即反身出招。\n"
+      _ -> "$n按照八卦阵方位转个不停，可却见$N一声冷笑，顺手便是一招，恰好破尽玄机。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["parry"]
 
   @impl true

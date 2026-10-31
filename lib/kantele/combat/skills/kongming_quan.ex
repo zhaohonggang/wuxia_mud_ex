@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.KongmingQuan do
   TODO(migrate): 人工迁移中...：
   - 动态招式 1 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, query_effect_parry, valid_damage, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill, query_effect_parry, valid_learn
   - perform/exert 路由骨架见 tmp/perf_out/kongming_quan/
   """
 
@@ -87,6 +87,31 @@ defmodule Kantele.Combat.Skills.KongmingQuan do
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    kongming = Map.get(victim.skills, "kongming-quan", 0)
+
+    if kongming < 100 or not is_nil(victim.weapon_name) or not is_nil(attacker.weapon_name) do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0)
+      dp = div(Map.get(victim.skills, "unarmed", 0), 2) + kongming
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, kongming_msg(rng)}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  defp kongming_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "$n双臂一格，$N登时觉得自己的力道全然落空。\n"
+      _ -> "$n随意格挡，让$N只觉得自己全然捕捉不到$n的力道。\n"
+    end
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"

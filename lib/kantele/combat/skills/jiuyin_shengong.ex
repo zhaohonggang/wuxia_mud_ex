@@ -143,6 +143,46 @@ defmodule Kantele.Combat.Skills.JiuyinShengong do
   def id(), do: "jiuyin-shengong"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "jiuyin-shengong", 0) < 150 or
+         Map.get(victim.mapped, "parry") != "jiuyin-shengong" or
+         Map.get(victim.mapped, "force") != "jiuyin-shengong" or
+         victim.neili < 500 or not is_nil(attacker.weapon_name) or
+         rng.(2) - 1 != 1 do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0) * 12 + attacker.max_neili
+      dp = Map.get(victim.skills, "force", 0) * 12 + victim.neili
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, jiuyin_msg(rng)}
+      else
+        if Map.get(attacker.skills, "count", 0) >= 100 do
+          {damage, jiuyin_fail_msg(rng)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp jiuyin_msg(rng) do
+    case rng.(3) - 1 do
+      0 -> "$n默运九阴神诀，护住全身。$N一招击中$n小腹，只觉落手处软绵绵的，力道竟消失得无影无踪。\n"
+      1 -> "$N一招攻出，$n怒喝一声，不退反进，竟将$N这招逼回。\n"
+      _ -> "$n面带微笑，轻描淡写间，已将$N所进攻招式全部封死。\n"
+    end
+  end
+
+  defp jiuyin_fail_msg(rng) do
+    case rng.(3) - 1 do
+      0 -> "$n默运九阴神诀，护住全身。但是$N内力深厚无比，长叹一声，一招竟结实地打在$n身上。\n"
+      1 -> "$n不退反进，试图将$N的招式逼回。但是$N招式陡然一变，$n顿时一惊，却已然中招。\n"
+      _ -> "$n面带微笑，轻描淡写间欲将$N的进攻招式封死。但是$N早已看去其中玄虚，冷笑一声，$N却已中招。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage == "force"
 
   @doc """

@@ -18,6 +18,26 @@ defmodule Kantele.Combat.Skills.TanzhiShentong do
   def id(), do: "tanzhi-shentong"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "tanzhi-shentong", 0) < 150 or
+         victim.busy != 0 or
+         Map.get(victim.mapped, "finger") != "tanzhi-shentong" or
+         Map.get(victim.mapped, "throwing") != "tanzhi-shentong" or
+         not is_nil(victim.weapon_name) do
+      {damage, nil}
+    else
+      ap = Map.get(attacker.skills, "force", 0)
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + Map.get(victim.skills, "tanzhi-shentong", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, "$n不理会$N的攻势，随意弹出一指，指劲正指向$N招式中的破绽。\n"}
+      else
+        {damage, nil}
+      end
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["finger", "parry", "throwing"]
 
   @impl true

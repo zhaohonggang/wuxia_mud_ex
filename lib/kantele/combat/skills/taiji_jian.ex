@@ -20,6 +20,43 @@ defmodule Kantele.Combat.Skills.TaijiJian do
   def id(), do: "taiji-jian"
 
   @impl true
+  def valid_damage(attacker, victim, damage, _action, rng) do
+    if Map.get(victim.skills, "taiji-jian", 0) < 100 or
+         is_nil(victim.weapon_name) or victim.weapon_skill_type != "sword" do
+      {damage, nil}
+    else
+      mp = Map.get(attacker.skills, "count", 0)
+      ap = Map.get(attacker.skills, "force", 0) + mp
+      dp = div(Map.get(victim.skills, "parry", 0), 2) + Map.get(victim.skills, "taiji-jian", 0)
+
+      if div(ap, 2) + rng.(max(ap, 1)) - 1 < dp do
+        {0, taiji_jian_msg(rng, victim.weapon_name)}
+      else
+        if mp >= 100 do
+          {damage, taiji_jian_fail_msg(rng, victim.weapon_name)}
+        else
+          {damage, nil}
+        end
+      end
+    end
+  end
+
+  defp taiji_jian_msg(rng, weapon) do
+    case rng.(3) - 1 do
+      0 -> "$n一抖手中的#{weapon}，划出了一个圆圈，竟然让$N的攻击全然落空。\n"
+      1 -> "$n手中#{weapon}轻挑，正指向$N攻势中的破绽。\n"
+      _ -> "$n晃动手中的#{weapon}，不住的变幻剑势，让$N完全无法捕捉到力道。\n"
+    end
+  end
+
+  defp taiji_jian_fail_msg(rng, weapon) do
+    case rng.(2) - 1 do
+      0 -> "$n一抖手中的#{weapon}，划出了一个圆圈，$N理也不理，当即挥招直入，进袭$n。\n"
+      _ -> "$n手中#{weapon}轻挑，正指向$N攻势中的破绽，可是$N身形一变，破绽立刻不成为破绽。\n"
+    end
+  end
+
+  @impl true
   def valid_enable(usage), do: usage in ["sword", "parry"]
 
   # LPC valid_learn 要求 int>=26 / max_neili>=1500 / force>=200 /
