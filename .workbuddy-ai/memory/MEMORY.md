@@ -72,7 +72,7 @@
 
 ## 待办（开放中）
 - **`valid_damage/5` 批次已 push `26672db1`**（2026-10-30，34 files；含 C-PVE21 + docs 核查表 + 记忆）。
-- **性别门 23 技能批次（2026-10-30，本轮；含 C-PVE22 + `skills_gender_gate_test.exs` + 授艺管线修复）**。
+- **性别门 23 技能批次已 push `da511099`**（2026-10-30；含 C-PVE22 + `skills_gender_gate_test.exs` + 授艺管线修复）。
 - **假阳性结论（勿再当缺口）**：`force.c` `valid_learn` = `{return 1;}`；`force_lifeheal/power/roar/shot` 是 **Perform 模块**（`kungfu/skill/force/*.c` 为 exert 函数文件），不是技能。`xuehai-mogong` LPC 仅 `return ::valid_learn(me)`。**「本模型暂无性别字段」全部是过时说法**（性别已建模）。
 - **引擎未建模层（要动需先补基础设施）**：alignment（`query("character")`，本仓无字段/设定入口；`meta.character` 只在 performs 里被读、实际恒 nil）、`ultrap`（大宗师）、`guilty`（屡犯僧戒，hunyuan-yiqi 用）、`valid_practice` 回调（practice 专属门）、`valid_learn` 里的须持械/空手（`character` 快照不含持械）。
 - 打工闭环 / 注内力 / 锻造 等 S0-S4 任务见各日期日志。
