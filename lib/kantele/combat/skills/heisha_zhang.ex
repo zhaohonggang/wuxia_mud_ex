@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.HeishaZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N跨前一步，双掌陡然攻出，带着丝丝阴风击向$n的$l",
@@ -108,8 +111,45 @@ defmodule Kantele.Combat.Skills.HeishaZhang do
   @impl true
   def id(), do: "heisha-zhang"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「砂毒」（duration = lvl/50 + random(lvl/20)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "sha_poison",
+      msg: "$n忽然感到一股莫名的恶心，全身瘫软，嘴皮乌紫。\n"
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
+
+  # LPC valid_learn：空手 / force>=30 / max_neili>=500 / strike>=本技能。
+  # 空手检查未建模（character 快照不含持械，见 MEMORY）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 30 ->
+        {:error, "你的内功火候不够，无法练习黑砂掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 500 ->
+        {:error, "你的内力太弱，无法练习黑砂掌。\n"}
+
+      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法水平有限，无法领会更高深的黑砂掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 40, neili: 60}

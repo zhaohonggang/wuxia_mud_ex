@@ -34,7 +34,7 @@ defmodule Kantele.Combat.SkillsPoguangDaoTest do
     end
 
     test "blade < poguang-dao 被拒（基本剑法水平有限）" do
-      assert PoguangDao.valid_learn(stats(200, 200, 150), char_with_max_neili(2000)) ==
+      assert PoguangDao.valid_learn(stats(200, 120, 150), char_with_max_neili(2000)) ==
                {:error, "你的基本剑法火候有限，无法领会更高深的破光刀法。\n"}
     end
 

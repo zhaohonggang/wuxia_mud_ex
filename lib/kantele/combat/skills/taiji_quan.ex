@@ -417,7 +417,8 @@ defmodule Kantele.Combat.Skills.TaijiQuan do
   def query_effect_parry(_), do: 0
 
   @doc "蓄力连击（hit_ob）"
-  def hit_ob(_attacker, _victim, _action), do: :unchanged
+  @impl true
+  def hit_ob(_attacker, _victim, _damage_bonus, _factor, _rng), do: {0, nil}
 
   @doc "练习 60 级自动领悟绝招「极意」"
   def perform_unlock_level(), do: 350

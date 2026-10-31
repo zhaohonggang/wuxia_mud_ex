@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.Shenzhaojing do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Engine
+
   @actions [
     %{
       "action" => "$N倏然跃近，击出一拳，这一拳无声无影，去势快极，向$n的胸口打去",
@@ -58,8 +61,85 @@ defmodule Kantele.Combat.Skills.Shenzhaojing do
   @impl true
   def id(), do: "shenzhaojing"
 
+  # LPC hit_ob（唯一「既追加创伤又上毒」的一条）：damage>=160、lvl>=180、
+  # neili>=300、空手、force/unarmed 双映射都是本技能时，`damage/6 > 对手 con`
+  # 则 receive_wound("qi", (damage-100)/3) 并上「神照经内劲」
+  # （duration = lvl/100 + random(lvl/10)）。
+  #
+  # 未建模：`query_skill_prepared("unarmed")`（本引擎无 prepare 槽），
+  # 以及 `query_temp("secondary_weapon")`（只有主手 weapon_name）。
   @impl true
-  def valid_enable(usage), do: usage in ["force", "parry", "unarmed"]
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+
+    blocked? =
+      damage < 160 or lvl < 180 or attacker.neili < 300 or attacker.weapon_name != nil or
+        Map.get(attacker.mapped, "force") != id() or
+        Map.get(attacker.mapped, "unarmed") != id()
+
+    if blocked? do
+      {0, nil}
+    else
+      if div(damage, 6) > victim.con do
+        flvl = attacker.jiali
+
+        {div(damage - 100, 3),
+         "$n一声惨嚎，全身骨骼格格格格爆声不绝，肋骨、臂骨、腿骨同时断折。\n",
+         [
+           {"shenzhao",
+            %{
+              "level" => flvl + Engine.rand(rng, flvl),
+              "id" => attacker.id,
+              "duration" => div(lvl, 100) + Engine.rand(rng, div(lvl, 10))
+            }}
+         ]}
+      else
+        {0, nil}
+      end
+    end
+  end
+
+  # LPC 生效的那条 `valid_enable` 只允许 "force"（文件里另一条把
+  # unarmed/parry 也放开的版本被 `}*/` 注释掉了）。
+  @impl true
+  def valid_enable(usage), do: usage == "force"
+
+  # LPC valid_learn：性别「无性」且本技能>29 拒绝 / force>=200 / max_neili>=4000 /
+  # force>=本技能 / 末了 `return ::valid_learn(me)`（FORCE 基类 = 恒 1）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      gender_of(character) == "无性" and Stats.skill(stats, id()) > 29 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的神照经神功。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的基本内功火候不足，不能学神照经神功。\n"}
+
+      not is_nil(max_neili) and max_neili < 4000 ->
+        {:error, "你的内力修为不足，不能学神照经神功。\n"}
+
+      Stats.skill(stats, "force") < Stats.skill(stats, id()) ->
+        {:error, "你的基本内功水平不够，难以锻炼更深厚的神照经神功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  # LPC practice_skill 恒返回 notify_fail("神照经神功只能用学(learn)的来增加熟练度。\n")
+  # → `nil`（本引擎语义：只能用学(learn)的来增加熟练度）
+  @impl true
+  def practice_cost(), do: nil
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

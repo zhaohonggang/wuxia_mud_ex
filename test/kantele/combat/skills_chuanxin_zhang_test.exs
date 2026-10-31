@@ -24,7 +24,7 @@ defmodule Kantele.Combat.SkillsChuanxinZhangTest do
     end
 
     test "strike < 30 被拒（基本掌法太差）" do
-      assert ChuanxinZhang.valid_learn(stats(100, 50), char_with_max_neili(2000)) ==
+      assert ChuanxinZhang.valid_learn(stats(10, 50), char_with_max_neili(2000)) ==
                {:error, "你的基本掌法太差，无法领会穿心掌。\n"}
     end
 

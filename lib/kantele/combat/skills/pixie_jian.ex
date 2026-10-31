@@ -150,6 +150,24 @@ defmodule Kantele.Combat.Skills.PixieJian do
   @impl true
   def id(), do: "pixie-jian"
 
+  # LPC hit_ob：damage_bonus>80、random(10)>=5、且（有 guimai 特技或本技能>=200 级）
+  # 时追加出血创伤。`special_skill/guimai` 未建模，仅按等级门；LPC 另有
+  # `receive_wound("jing", …)`，本模型 Round 只结算 qi 创伤，故仅保留 qi 部分。
+  @impl true
+  def hit_ob(attacker, _victim, damage_bonus, _factor, rng) do
+    lvl = Map.get(attacker.skills, "pixie-jian", 0)
+
+    if damage_bonus > 80 and rng.(10) - 1 >= 5 and lvl >= 200 do
+      if rng.(3) - 1 != 0 do
+        {div(damage_bonus - 80, 4), "只见$n不寒而栗，身上数处地方渗出血丝！\n"}
+      else
+        {div(damage_bonus - 80, 5), "只见$n神情恍惚，鲜血从身上数个穴位渗出！\n"}
+      end
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_damage(attacker, victim, damage, _action, rng) do
     if Map.get(victim.skills, "pixie-jian", 0) < 100 do

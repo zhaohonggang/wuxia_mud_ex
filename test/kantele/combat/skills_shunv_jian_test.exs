@@ -34,7 +34,7 @@ defmodule Kantele.Combat.SkillsShunvJianTest do
     end
 
     test "sword < shunv-jian 被拒（基本剑法水平有限）" do
-      assert ShunvJian.valid_learn(stats(50, 200, 200, 150), char_with_max_neili(2000)) ==
+      assert ShunvJian.valid_learn(stats(50, 200, 50, 150), char_with_max_neili(2000)) ==
                {:error, "你的基本剑法水平有限，无法领会更高深的淑女剑法。\n"}
     end
 

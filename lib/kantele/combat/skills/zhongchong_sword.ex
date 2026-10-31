@@ -29,6 +29,17 @@ defmodule Kantele.Combat.Skills.ZhongchongSword do
   @impl true
   def id(), do: "zhongchong-sword"
 
+  # LPC hit_ob：damage_bonus>=100 且 random(bonus/4) > 对手 str 时追加创伤
+  @impl true
+  def hit_ob(_attacker, victim, damage_bonus, _factor, rng) do
+    if damage_bonus >= 100 and
+         rng.(max(div(damage_bonus, 4), 1)) - 1 > Map.get(victim, :str, 0) do
+      {div(damage_bonus - 100, 2), "你听到「嗤啦」一声轻响，脸上竟溅到一些血滴！\n"}
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["finger", "parry"]
 

@@ -34,7 +34,7 @@ defmodule Kantele.Combat.SkillsBizhenQingzhangTest do
     end
 
     test "strike < bizhen-qingzhang 被拒（基本掌法水平有限）" do
-      assert BizhenQingzhang.valid_learn(stats(300, 200, 150), char_with_max_neili(2000)) ==
+      assert BizhenQingzhang.valid_learn(stats(300, 145, 150), char_with_max_neili(2000)) ==
                {:error, "你的基本掌法水平有限，无法领会更高深的碧针清掌。\n"}
     end
 

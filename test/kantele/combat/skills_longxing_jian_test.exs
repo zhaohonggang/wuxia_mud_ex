@@ -48,7 +48,7 @@ defmodule Kantele.Combat.SkillsLongxingJianTest do
     end
 
     test "sword < longxing-jian 被拒（基本剑法水平有限）" do
-      assert LongxingJian.valid_learn(stats(50, 50, 300, 300, 150), char_with_max_neili(9999)) ==
+      assert LongxingJian.valid_learn(stats(50, 50, 300, 250, 300), char_with_max_neili(9999)) ==
                {:error, "你的基本剑法水平有限，无法领会更高深的龙形剑法。\n"}
     end
 

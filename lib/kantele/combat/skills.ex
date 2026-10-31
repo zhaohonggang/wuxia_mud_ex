@@ -213,7 +213,42 @@ defmodule Kantele.Combat.Skills do
     "zhonghua-aojue" => Kantele.Combat.Skills.ZhonghuaAojue,
     # 不败神功：招式表变量名是 `action_default` / `action_whip`（按武器 skill_type 分表），
     # 同样在生成时整表丢失 + 没进注册表。现按源补齐（`valid_enable` 11 项）。
-    "never-defeated" => Kantele.Combat.Skills.NeverDefeated
+    "never-defeated" => Kantele.Combat.Skills.NeverDefeated,
+    # hit_ob 批次（C-PVE23）：这些模块早已生成且招式表非空（1~18 式），但从未
+    # 进注册表 → `Skills.get/1` 返回 nil，`enable` 报「没有这项武功」，且引擎
+    # 的 `hit_ob` / `valid_damage` 钩子永不触发（死代码）。此处一并注册。
+    "dabei-zhang" => Kantele.Combat.Skills.DabeiZhang,
+    "guanchong-sword" => Kantele.Combat.Skills.GuanchongSword,
+    "jiuqu-zhegufa" => Kantele.Combat.Skills.JiuquZhegufa,
+    "jiuyin-baiguzhao" => Kantele.Combat.Skills.JiuyinBaiguzhao,
+    "piaoxue-zhang" => Kantele.Combat.Skills.PiaoxueZhang,
+    "pixie-jian" => Kantele.Combat.Skills.PixieJian,
+    "sad-strike" => Kantele.Combat.Skills.SadStrike,
+    "shangyang-sword" => Kantele.Combat.Skills.ShangyangSword,
+    "shaochong-sword" => Kantele.Combat.Skills.ShaochongSword,
+    "shaoshang-sword" => Kantele.Combat.Skills.ShaoshangSword,
+    "shaoze-sword" => Kantele.Combat.Skills.ShaozeSword,
+    "shou-yin" => Kantele.Combat.Skills.ShouYin,
+    "tie-zhang" => Kantele.Combat.Skills.TieZhang,
+    "xianglong-zhang" => Kantele.Combat.Skills.XianglongZhang,
+    "zhongchong-sword" => Kantele.Combat.Skills.ZhongchongSword,
+    # hit_ob 中毒系批次（C-PVE23 选项 2）：同上，这些模块早已生成且招式表非空，
+    # 但从未进注册表 → `Skills.get/1` 返回 nil，引擎 hit_ob 钩子永不触发（死代码）。
+    # 现一并注册，使其 `hit_ob` 上毒效果生效。
+    "bingcan-duzhang" => Kantele.Combat.Skills.BingcanDuzhang,
+    "cuixin-zhang" => Kantele.Combat.Skills.CuixinZhang,
+    "dusha-zhang" => Kantele.Combat.Skills.DushaZhang,
+    "hanbing-mianzhang" => Kantele.Combat.Skills.HanbingMianzhang,
+    "heisha-zhang" => Kantele.Combat.Skills.HeishaZhang,
+    "huagu-mianzhang" => Kantele.Combat.Skills.HuaguMianzhang,
+    "lansha-shou" => Kantele.Combat.Skills.LanshaShou,
+    "ningxue-shenzhao" => Kantele.Combat.Skills.NingxueShenzhao,
+    "qianzhu-wandushou" => Kantele.Combat.Skills.QianzhuWandushou,
+    "shenzhaojing" => Kantele.Combat.Skills.Shenzhaojing,
+    "tougu-zhen" => Kantele.Combat.Skills.TouguZhen,
+    "xuanming-zhang" => Kantele.Combat.Skills.XuanmingZhang,
+    "xuantian-zhi" => Kantele.Combat.Skills.XuantianZhi,
+    "yinfeng-dao" => Kantele.Combat.Skills.YinfengDao
   }
 
   @doc "运行时注册一门武学（覆盖同名内建）"

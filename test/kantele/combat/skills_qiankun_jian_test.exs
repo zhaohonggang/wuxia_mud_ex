@@ -34,7 +34,7 @@ defmodule Kantele.Combat.SkillsQiankunJianTest do
     end
 
     test "sword < qiankun-jian 被拒（基本剑法水平有限）" do
-      assert QiankunJian.valid_learn(stats(200, 200, 150), char_with_max_neili(2000)) ==
+      assert QiankunJian.valid_learn(stats(200, 200, 300), char_with_max_neili(2000)) ==
                {:error, "你的基本剑法水平有限，无法领会更高深的乾坤神剑。\n"}
     end
 

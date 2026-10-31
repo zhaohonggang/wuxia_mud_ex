@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.HuaguMianzhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N身形微晃，一招「长恨深入骨」，十指如戟，插向$n的双肩锁骨",
@@ -106,8 +109,45 @@ defmodule Kantele.Combat.Skills.HuaguMianzhang do
   @impl true
   def id(), do: "huagu-mianzhang"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「化骨掌伤」（duration = lvl/50 + random(lvl/20)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "huagu",
+      msg: "“喀喇”一声响，$n大声惨叫，连退数步。\n"
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
+
+  # LPC valid_learn：空手 / force>=40 / max_neili>=250 / strike>=本技能。
+  # 空手检查未建模（character 快照不含持械，见 MEMORY）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 40 ->
+        {:error, "你的内功心法火候不够，练化骨绵掌会走火入魔。\n"}
+
+      not is_nil(max_neili) and max_neili < 250 ->
+        {:error, "你的内力太弱，无法练化骨绵掌。\n"}
+
+      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法火候有限，无法领会更高深的化骨绵掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 50, neili: 47}

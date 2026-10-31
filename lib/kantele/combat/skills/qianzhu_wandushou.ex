@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.QianzhuWandushou do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N身形一晃而至，一招「小鬼勾魂」，双掌带着一缕腥风拍向$n的前心",
@@ -118,8 +121,56 @@ defmodule Kantele.Combat.Skills.QianzhuWandushou do
   @impl true
   def id(), do: "qianzhu-wandushou"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「蛛蛊毒」（duration = lvl/50 + random(lvl/20)）。
+  # 注意 LPC 这里 affect_by 不在 `&&` 里（先上毒再无条件出文案），因 POISON
+  # daemon 的 do_effect 对合法 para 恒返回 1，两种写法结果等价。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "qianzhu_wandushou",
+      msg: "$n忽然感到一股莫名的恶心，毒气攻心，全身顿时瘫软。\n"
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["hand", "parry"]
+
+  # LPC valid_learn：`query("character")` 性格门（光明磊落 / 狡黠多变拒绝）+
+  # 空手 / force>=150 / max_neili>=1000 / hand>=80 且 >=本技能。
+  # 性格门属引擎未建模层（`meta.character` 恒 nil），未迁移；空手同理。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 150 ->
+        {:error, "你的内功火候不够，无法练习千蛛万毒手。\n"}
+
+      not is_nil(max_neili) and max_neili < 1000 ->
+        {:error, "你的内力太弱，无法练习千蛛万毒手。\n"}
+
+      Stats.skill(stats, "hand") < 80 ->
+        {:error, "你的基本手法火候不够，无法练千蛛万毒手。\n"}
+
+      Stats.skill(stats, "hand") < Stats.skill(stats, id()) ->
+        {:error, "你的基本手法水平有限，无法领会更高深的千蛛万毒手。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  # LPC practice_skill 恒返回 notify_fail("千蛛万毒手只有通过吸取毒虫的毒素练功来提高。\n")
+  # → `nil`（本引擎语义：只能用学(learn)的来增加熟练度）
+  @impl true
+  def practice_cost(), do: nil
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

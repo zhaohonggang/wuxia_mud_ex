@@ -39,6 +39,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CharacterView
   alias Kantele.Character.CommandView
+  alias Kantele.Character.ConditionEvent
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
@@ -280,6 +281,11 @@ defmodule Kantele.Character.CombatEvent do
     text = round.segments |> IO.iodata_to_binary() |> Messages.interpolate(bindings)
     conn = Broadcast.publish(conn, text)
 
+    # 命中附带的持续状态（LPC `victim->affect_by(cnd, para)`，由攻击技能
+    # `hit_ob` 返回）：在伤害落地**之前**落条件，与 LPC `do_attack` 里
+    # affect_by 先于 receive_damage 的顺序一致。
+    conn = apply_round_conditions(conn, round.conditions)
+
     case {round.outcome, round.damage > 0 or round.wounded > 0} do
       {:hit, true} ->
         apply_hit(conn, character, attacker, %{
@@ -291,6 +297,19 @@ defmodule Kantele.Character.CombatEvent do
         conn
     end
   end
+
+  # 把 `Round.conditions` 逐条落到防守方 session（`[{cnd, para}]`）
+  defp apply_round_conditions(conn, conditions) when is_list(conditions) do
+    Enum.reduce(conditions, conn, fn
+      {cnd, para}, conn when is_binary(cnd) and is_map(para) ->
+        ConditionEvent.apply_poison_condition(conn, cnd, para)
+
+      _other, conn ->
+        conn
+    end)
+  end
+
+  defp apply_round_conditions(conn, _conditions), do: conn
 
   # ---- 绝招命中结算（攻击型 perform：攻击方放招，防守方结算）----
   #

@@ -84,6 +84,20 @@ defmodule Kantele.Combat.Skills.PiaoxueZhang do
   @impl true
   def id(), do: "piaoxue-zhang"
 
+  # LPC hit_ob：damage_bonus>=180 且自身 >=160 级、bonus/6 > 对手 con 时追加断肋创伤
+  # （LPC 文案「一跟肋骨」为原样笔误，verbatim 保留）
+  @impl true
+  def hit_ob(attacker, victim, damage_bonus, _factor, _rng) do
+    lvl = Map.get(attacker.skills, "piaoxue-zhang", 0)
+
+    if damage_bonus >= 180 and lvl >= 160 and
+         div(damage_bonus, 6) > Map.get(victim, :con, 0) do
+      {div(damage_bonus - 140, 3), "只听$n前胸“喀嚓”一声闷响，竟似折断了一跟肋骨。\n"}
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
 

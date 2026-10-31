@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.TouguZhen do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N将内劲贯住指尖，携带着丝丝阴风一击凌空射向$n的$l",
@@ -73,8 +76,50 @@ defmodule Kantele.Combat.Skills.TouguZhen do
   @impl true
   def id(), do: "tougu-zhen"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「透骨寒针之扰」（duration = lvl/100 + random(lvl/10)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "tougu_zhen",
+      msg: "$n只感到从伤口处传来一阵切骨之痛，看来是受了对方透骨针内劲的干扰。\n",
+      div1: 100,
+      div2: 10
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["finger", "parry"]
+
+  # LPC valid_learn：空手 / force>=200 / max_neili>=1400 / finger>=100 且 >=本技能。
+  # 空手检查未建模（character 快照不含持械，见 MEMORY）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，无法练习透骨针。\n"}
+
+      not is_nil(max_neili) and max_neili < 1400 ->
+        {:error, "你的内力太弱，无法练习透骨针。\n"}
+
+      Stats.skill(stats, "finger") < 100 ->
+        {:error, "你的基本指法火候不够，无法练习透骨针。\n"}
+
+      Stats.skill(stats, "finger") < Stats.skill(stats, id()) ->
+        {:error, "你的基本指法水平有限，无法领会更高深的透骨针。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 80, neili: 80}

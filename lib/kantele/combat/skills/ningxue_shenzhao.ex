@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.NingxueShenzhao do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N全身拔地而起，半空中一个筋斗，一式「凶鹰袭兔」，迅猛地抓向$n的$l",
@@ -128,8 +131,56 @@ defmodule Kantele.Combat.Skills.NingxueShenzhao do
   @impl true
   def id(), do: "ningxue-shenzhao"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「凝血之扰」（duration = lvl/100 + random(lvl/10)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "ningxue_shenzhao",
+      msg: "只听$n一声惨嚎，看来受到了凝血神爪毒劲的干扰！\n",
+      div1: 100,
+      div2: 10
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["claw", "parry"]
+
+  # LPC valid_learn：空手 / max_neili>=800 / str>=40 / dex>=40 / force>=200 /
+  # claw>=180 且 >=本技能。空手检查未建模（character 快照不含持械，见 MEMORY）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 800 ->
+        {:error, "你的内力太弱，无法练凝血神爪。\n"}
+
+      Stats.str(stats) < 40 ->
+        {:error, "你现在膂力孱弱，还无法练凝血神爪。\n"}
+
+      Stats.dex(stats) < 40 ->
+        {:error, "你现在身法欠佳，还无法练凝血神爪。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功太差，无法练凝血神爪。\n"}
+
+      Stats.skill(stats, "claw") < 180 ->
+        {:error, "你的基本爪法太差，无法领会凝血神爪。\n"}
+
+      Stats.skill(stats, "claw") < Stats.skill(stats, id()) ->
+        {:error, "你的基本爪法火候不够，无法领会更高深的凝血神爪。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 100, neili: 300}

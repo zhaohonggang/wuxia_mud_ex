@@ -232,65 +232,65 @@ defmodule Kantele.Combat.T1ExertsTest do
     skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
     taiji = Skills.get("taiji-shengong")
-    assert taiji.valid_learn(skills.(%{"force" => 100, "taoism" => 100})) == :ok
-    assert {:error, _} = taiji.valid_learn(skills.(%{"force" => 99, "taoism" => 100}))
-    assert {:error, _} = taiji.valid_learn(skills.(%{"force" => 100, "taoism" => 99}))
+    assert taiji.valid_learn(skills.(%{"force" => 100, "taoism" => 100}), %{}) == :ok
+    assert {:error, _} = taiji.valid_learn(skills.(%{"force" => 99, "taoism" => 100}), %{})
+    assert {:error, _} = taiji.valid_learn(skills.(%{"force" => 100, "taoism" => 99}), %{})
 
     assert {:error, _} =
              taiji.valid_learn(
-               skills.(%{"force" => 100, "taoism" => 100, "taiji-shengong" => 200})
-             )
+               skills.(%{"force" => 100, "taoism" => 100, "taiji-shengong" => 200}),
+               %{})
 
     xiaowuxiang = Skills.get("xiaowuxiang")
-    assert xiaowuxiang.valid_learn(skills.(%{"force" => 80})) == :ok
-    assert {:error, _} = xiaowuxiang.valid_learn(skills.(%{"force" => 79}))
+    assert xiaowuxiang.valid_learn(skills.(%{"force" => 80}), %{}) == :ok
+    assert {:error, _} = xiaowuxiang.valid_learn(skills.(%{"force" => 79}), %{})
 
     xuanming = Skills.get("xuanming-shengong")
-    assert xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 32})) == :ok
-    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 31}))
-    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 50}, con: 40}))
+    assert xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 32}), %{}) == :ok
+    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 31}), %{})
+    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 50}, con: 40}), %{})
 
     zhanshen = Skills.get("zhanshen-xinjing")
-    assert zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 25})) == :ok
-    assert {:error, _} = zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 24}))
+    assert zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 25}), %{}) == :ok
+    assert {:error, _} = zhanshen.valid_learn(build.(%{skills: %{"force" => 100}, con: 24}), %{})
 
     for id <- ~w(xuantian-wujigong xuanmen-neigong) do
       module = Skills.get(id)
-      assert module.valid_learn(skills.(%{"force" => 60})) == :ok
-      assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}))
+      assert module.valid_learn(skills.(%{"force" => 60}), %{}) == :ok
+      assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}), %{})
     end
 
     zixia = Skills.get("zixia-shengong")
-    assert zixia.valid_learn(skills.(%{"force" => 100})) == :ok
-    assert {:error, _} = zixia.valid_learn(skills.(%{"force" => 99}))
+    assert zixia.valid_learn(skills.(%{"force" => 100}), %{}) == :ok
+    assert {:error, _} = zixia.valid_learn(skills.(%{"force" => 99}), %{})
 
     xinfa = Skills.get("shenghuo-xinfa")
-    assert xinfa.valid_learn(skills.(%{"force" => 10})) == :ok
-    assert {:error, _} = xinfa.valid_learn(skills.(%{"force" => 9}))
+    assert xinfa.valid_learn(skills.(%{"force" => 10}), %{}) == :ok
+    assert {:error, _} = xinfa.valid_learn(skills.(%{"force" => 9}), %{})
 
     shenghuo = Skills.get("shenghuo-shengong")
-    assert shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 32})) == :ok
-    assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 31}))
-    assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 179}, int: 40}))
+    assert shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 32}), %{}) == :ok
+    assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 180}, int: 31}), %{})
+    assert {:error, _} = shenghuo.valid_learn(build.(%{skills: %{"force" => 179}, int: 40}), %{})
 
     bingxin = Skills.get("bingxin-jue")
-    assert bingxin.valid_learn(build.(%{skills: %{"force" => 100}, con: 30})) == :ok
-    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}))
-    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 99}, int: 30}))
+    assert bingxin.valid_learn(build.(%{skills: %{"force" => 100}, con: 30}), %{}) == :ok
+    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}), %{})
+    assert {:error, _} = bingxin.valid_learn(build.(%{skills: %{"force" => 99}, int: 30}), %{})
 
     for id <- ~w(dahai-wuliang fushang-neigong) do
       module = Skills.get(id)
-      assert module.valid_learn(skills.(%{"force" => 50})) == :ok
-      assert {:error, _} = module.valid_learn(skills.(%{"force" => 49}))
+      assert module.valid_learn(skills.(%{"force" => 50}), %{}) == :ok
+      assert {:error, _} = module.valid_learn(skills.(%{"force" => 49}), %{})
     end
 
-    assert Skills.get("huntian-qigong").valid_learn(skills.(%{"force" => 30})) == :ok
-    assert {:error, _} = Skills.get("huntian-qigong").valid_learn(skills.(%{"force" => 29}))
+    assert Skills.get("huntian-qigong").valid_learn(skills.(%{"force" => 30}), %{}) == :ok
+    assert {:error, _} = Skills.get("huntian-qigong").valid_learn(skills.(%{"force" => 29}), %{})
 
-    assert Skills.get("fenxin-jue").valid_learn(skills.(%{"force" => 70})) == :ok
-    assert {:error, _} = Skills.get("fenxin-jue").valid_learn(skills.(%{"force" => 69}))
+    assert Skills.get("fenxin-jue").valid_learn(skills.(%{"force" => 70}), %{}) == :ok
+    assert {:error, _} = Skills.get("fenxin-jue").valid_learn(skills.(%{"force" => 69}), %{})
 
-    assert Skills.get("duanshi-xinfa").valid_learn(skills.(%{})) == :ok
+    assert Skills.get("duanshi-xinfa").valid_learn(skills.(%{}), %{}) == :ok
   end
 
   test "huntian-qigong/shield 无数值加成（LPC 用非 apply 的 str/dex 临时键）" do
@@ -314,40 +314,40 @@ defmodule Kantele.Combat.T1ExertsTest do
     skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
     hanbing = Skills.get("hanbing-zhenqi")
-    assert hanbing.valid_learn(skills.(%{"force" => 100})) == :ok
+    assert hanbing.valid_learn(skills.(%{"force" => 100}), %{}) == :ok
 
-    assert {:error, _} = hanbing.valid_learn(skills.(%{"force" => 100, "hanbing-zhenqi" => 150}))
+    assert {:error, _} = hanbing.valid_learn(skills.(%{"force" => 100, "hanbing-zhenqi" => 150}), %{})
 
     freezing = Skills.get("freezing-force")
-    assert freezing.valid_learn(skills.(%{"force" => 50})) == :ok
-    assert {:error, _} = freezing.valid_learn(skills.(%{"force" => 49}))
-    assert {:error, _} = freezing.valid_learn(skills.(%{"force" => 100, "freezing-force" => 120}))
+    assert freezing.valid_learn(skills.(%{"force" => 50}), %{}) == :ok
+    assert {:error, _} = freezing.valid_learn(skills.(%{"force" => 49}), %{})
+    assert {:error, _} = freezing.valid_learn(skills.(%{"force" => 100, "freezing-force" => 120}), %{})
 
-    assert Skills.get("kurong-changong").valid_learn(skills.(%{})) == :ok
+    assert Skills.get("kurong-changong").valid_learn(skills.(%{}), %{}) == :ok
 
     for id <- ~w(liangyi-shengong wuwang-shengong) do
       module = Skills.get(id)
-      assert module.valid_learn(skills.(%{"force" => 60})) == :ok
-      assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}))
+      assert module.valid_learn(skills.(%{"force" => 60}), %{}) == :ok
+      assert {:error, _} = module.valid_learn(skills.(%{"force" => 59}), %{})
     end
 
     luohan = Skills.get("luohan-fumogong")
-    assert luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 30})) == :ok
+    assert luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 30}), %{}) == :ok
 
     assert {:error, _} =
-             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 29, con: 30}))
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 29, con: 30}), %{})
 
     assert {:error, _} =
-             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 29}))
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 29}), %{})
 
-    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 99}, int: 30, con: 30}))
+    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 99}, int: 30, con: 30}), %{})
 
-    assert Skills.get("miaojia-neigong").valid_learn(skills.(%{})) == :ok
+    assert Skills.get("miaojia-neigong").valid_learn(skills.(%{}), %{}) == :ok
 
     nei = Skills.get("nei-bagua")
-    assert nei.valid_learn(skills.(%{"force" => 80, "wai-bagua" => 100})) == :ok
-    assert {:error, _} = nei.valid_learn(skills.(%{"force" => 79, "wai-bagua" => 100}))
-    assert {:error, _} = nei.valid_learn(skills.(%{"force" => 80, "wai-bagua" => 99}))
+    assert nei.valid_learn(skills.(%{"force" => 80, "wai-bagua" => 100}), %{}) == :ok
+    assert {:error, _} = nei.valid_learn(skills.(%{"force" => 79, "wai-bagua" => 100}), %{})
+    assert {:error, _} = nei.valid_learn(skills.(%{"force" => 80, "wai-bagua" => 99}), %{})
   end
 
   test "kurong-changong/powerup 文案按修为分档（message 函数）" do
@@ -385,92 +385,92 @@ defmodule Kantele.Combat.T1ExertsTest do
     build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
     skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
-    assert Skills.get("tianhuan-shenjue").valid_learn(skills.(%{"force" => 50})) == :ok
-    assert {:error, _} = Skills.get("tianhuan-shenjue").valid_learn(skills.(%{"force" => 49}))
+    assert Skills.get("tianhuan-shenjue").valid_learn(skills.(%{"force" => 50}), %{}) == :ok
+    assert {:error, _} = Skills.get("tianhuan-shenjue").valid_learn(skills.(%{"force" => 49}), %{})
 
-    assert Skills.get("xiuluo-yinshagong").valid_learn(skills.(%{"force" => 60})) == :ok
-    assert {:error, _} = Skills.get("xiuluo-yinshagong").valid_learn(skills.(%{"force" => 59}))
+    assert Skills.get("xiuluo-yinshagong").valid_learn(skills.(%{"force" => 60}), %{}) == :ok
+    assert {:error, _} = Skills.get("xiuluo-yinshagong").valid_learn(skills.(%{"force" => 59}), %{})
 
-    assert Skills.get("tianlei-shengong").valid_learn(skills.(%{"force" => 70})) == :ok
-    assert {:error, _} = Skills.get("tianlei-shengong").valid_learn(skills.(%{"force" => 69}))
+    assert Skills.get("tianlei-shengong").valid_learn(skills.(%{"force" => 70}), %{}) == :ok
+    assert {:error, _} = Skills.get("tianlei-shengong").valid_learn(skills.(%{"force" => 69}), %{})
 
     xixing = Skills.get("xixing-dafa")
-    assert xixing.valid_learn(build.(%{skills: %{"force" => 100}, con: 30})) == :ok
-    assert {:error, _} = xixing.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}))
-    assert {:error, _} = xixing.valid_learn(build.(%{skills: %{"force" => 99}, con: 40}))
+    assert xixing.valid_learn(build.(%{skills: %{"force" => 100}, con: 30}), %{}) == :ok
+    assert {:error, _} = xixing.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}), %{})
+    assert {:error, _} = xixing.valid_learn(build.(%{skills: %{"force" => 99}, con: 40}), %{})
 
     surge = Skills.get("surge-force")
-    assert surge.valid_learn(build.(%{skills: %{"force" => 150}, str: 45})) == :ok
-    assert {:error, _} = surge.valid_learn(build.(%{skills: %{"force" => 149}, str: 45}))
-    assert {:error, _} = surge.valid_learn(build.(%{skills: %{"force" => 150}, str: 44}))
+    assert surge.valid_learn(build.(%{skills: %{"force" => 150}, str: 45}), %{}) == :ok
+    assert {:error, _} = surge.valid_learn(build.(%{skills: %{"force" => 149}, str: 45}), %{})
+    assert {:error, _} = surge.valid_learn(build.(%{skills: %{"force" => 150}, str: 44}), %{})
 
     for id <- ~w(shenlong-xinfa lengyue-shengong) do
-      assert Skills.get(id).valid_learn(skills.(%{})) == :ok
+      assert Skills.get(id).valid_learn(skills.(%{}), %{}) == :ok
     end
 
     huagong = Skills.get("huagong-dafa")
 
-    assert huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 120}, con: 30})) ==
+    assert huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 120}, con: 30}), %{}) ==
              :ok
 
     assert {:error, _} =
-             huagong.valid_learn(build.(%{skills: %{"force" => 119, "poison" => 120}, con: 30}))
+             huagong.valid_learn(build.(%{skills: %{"force" => 119, "poison" => 120}, con: 30}), %{})
 
     assert {:error, _} =
-             huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 119}, con: 30}))
+             huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 119}, con: 30}), %{})
 
     assert {:error, _} =
-             huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 120}, con: 29}))
+             huagong.valid_learn(build.(%{skills: %{"force" => 120, "poison" => 120}, con: 29}), %{})
 
     assert {:error, _} =
              huagong.valid_learn(
                build.(%{
                  skills: %{"force" => 140, "poison" => 100, "huagong-dafa" => 150},
                  con: 30
-               })
-             )
+               }),
+               %{})
 
     assert {:error, _} =
              huagong.valid_learn(
                build.(%{
                  skills: %{"force" => 100, "poison" => 140, "huagong-dafa" => 150},
                  con: 30
-               })
-             )
+               }),
+               %{})
   end
 
   test "第 7 批 valid_learn 门槛" do
     build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
     skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
-    assert Skills.get("xiyang-neigong").valid_learn(skills.(%{"force" => 40})) == :ok
-    assert {:error, _} = Skills.get("xiyang-neigong").valid_learn(skills.(%{"force" => 39}))
+    assert Skills.get("xiyang-neigong").valid_learn(skills.(%{"force" => 40}), %{}) == :ok
+    assert {:error, _} = Skills.get("xiyang-neigong").valid_learn(skills.(%{"force" => 39}), %{})
 
-    assert Skills.get("xuehai-mogong").valid_learn(skills.(%{})) == :ok
+    assert Skills.get("xuehai-mogong").valid_learn(skills.(%{}), %{}) == :ok
 
     yijin = Skills.get("yijin-duangu")
-    assert yijin.valid_learn(build.(%{skills: %{"force" => 100}, con: 30})) == :ok
-    assert {:error, _} = yijin.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}))
-    assert {:error, _} = yijin.valid_learn(build.(%{skills: %{"force" => 99}, con: 40}))
+    assert yijin.valid_learn(build.(%{skills: %{"force" => 100}, con: 30}), %{}) == :ok
+    assert {:error, _} = yijin.valid_learn(build.(%{skills: %{"force" => 100}, con: 29}), %{})
+    assert {:error, _} = yijin.valid_learn(build.(%{skills: %{"force" => 99}, con: 40}), %{})
 
     yijinjing = Skills.get("yijinjing")
-    assert yijinjing.valid_learn(skills.(%{"force" => 100})) == :ok
-    assert {:error, _} = yijinjing.valid_learn(skills.(%{"force" => 99}))
-    assert {:error, _} = yijinjing.valid_learn(skills.(%{"force" => 100, "yijinjing" => 150}))
+    assert yijinjing.valid_learn(skills.(%{"force" => 100}), %{}) == :ok
+    assert {:error, _} = yijinjing.valid_learn(skills.(%{"force" => 99}), %{})
+    assert {:error, _} = yijinjing.valid_learn(skills.(%{"force" => 100, "yijinjing" => 150}), %{})
 
-    assert Skills.get("yujiashu").valid_learn(skills.(%{"force" => 100})) == :ok
-    assert {:error, _} = Skills.get("yujiashu").valid_learn(skills.(%{"force" => 99}))
+    assert Skills.get("yujiashu").valid_learn(skills.(%{"force" => 100}), %{}) == :ok
+    assert {:error, _} = Skills.get("yujiashu").valid_learn(skills.(%{"force" => 99}), %{})
 
-    assert Skills.get("yunlong-shengong").valid_learn(skills.(%{"force" => 30})) == :ok
-    assert {:error, _} = Skills.get("yunlong-shengong").valid_learn(skills.(%{"force" => 29}))
+    assert Skills.get("yunlong-shengong").valid_learn(skills.(%{"force" => 30}), %{}) == :ok
+    assert {:error, _} = Skills.get("yunlong-shengong").valid_learn(skills.(%{"force" => 29}), %{})
 
     yunv = Skills.get("yunv-xinjing")
-    assert yunv.valid_learn(build.(%{skills: %{"force" => 150}, int: 32})) == :ok
-    assert {:error, _} = yunv.valid_learn(build.(%{skills: %{"force" => 150}, int: 31}))
-    assert {:error, _} = yunv.valid_learn(build.(%{skills: %{"force" => 149}, int: 40}))
+    assert yunv.valid_learn(build.(%{skills: %{"force" => 150}, int: 32}), %{}) == :ok
+    assert {:error, _} = yunv.valid_learn(build.(%{skills: %{"force" => 150}, int: 31}), %{})
+    assert {:error, _} = yunv.valid_learn(build.(%{skills: %{"force" => 149}, int: 40}), %{})
 
-    assert Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 70})) == :ok
-    assert {:error, _} = Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 69}))
+    assert Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 70}), %{}) == :ok
+    assert {:error, _} = Skills.get("zhenyue-jue").valid_learn(skills.(%{"force" => 69}), %{})
   end
 
   test "第 8 批 valid_learn 门槛" do
@@ -480,44 +480,44 @@ defmodule Kantele.Combat.T1ExertsTest do
     longxiang = Skills.get("longxiang-gong")
 
     assert longxiang.valid_learn(
-             skills.(%{"force" => 100, "lamaism" => 100, "longxiang-gong" => 100})
-           ) == :ok
+             skills.(%{"force" => 100, "lamaism" => 100, "longxiang-gong" => 100}),
+             %{}) == :ok
 
     assert {:error, _} =
              longxiang.valid_learn(
-               skills.(%{"force" => 99, "lamaism" => 100, "longxiang-gong" => 100})
-             )
+               skills.(%{"force" => 99, "lamaism" => 100, "longxiang-gong" => 100}),
+               %{})
 
     assert {:error, _} =
              longxiang.valid_learn(
-               skills.(%{"force" => 100, "lamaism" => 99, "longxiang-gong" => 100})
-             )
+               skills.(%{"force" => 100, "lamaism" => 99, "longxiang-gong" => 100}),
+               %{})
 
     linji = Skills.get("linji-zhuang")
 
-    assert linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 50, "mahayana" => 100})) ==
+    assert linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 50, "mahayana" => 100}), %{}) ==
              :ok
 
-    assert {:error, _} = linji.valid_learn(skills.(%{"force" => 39, "mahayana" => 100}))
+    assert {:error, _} = linji.valid_learn(skills.(%{"force" => 39, "mahayana" => 100}), %{})
 
     assert {:error, _} =
-             linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 60, "mahayana" => 50}))
+             linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 60, "mahayana" => 50}), %{})
 
-    assert Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 20})) == :ok
-    assert {:error, _} = Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 19}))
+    assert Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 20}), %{}) == :ok
+    assert {:error, _} = Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 19}), %{})
 
     luohan = Skills.get("luohan-fumogong")
-    assert luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 30})) == :ok
+    assert luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 30}), %{}) == :ok
 
     assert {:error, _} =
-             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 29, con: 30}))
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 29, con: 30}), %{})
 
     assert {:error, _} =
-             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 29}))
+             luohan.valid_learn(build.(%{skills: %{"force" => 100}, int: 30, con: 29}), %{})
 
-    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 99}, int: 40, con: 40}))
+    assert {:error, _} = luohan.valid_learn(build.(%{skills: %{"force" => 99}, int: 40, con: 40}), %{})
 
-    assert Skills.get("sanku-shengong").valid_learn(skills.(%{})) == :ok
+    assert Skills.get("sanku-shengong").valid_learn(skills.(%{"force" => 100}), %{}) == :ok
   end
 
   test "luohan-fumogong/fireice 门槛与加成（需 180 级）" do
@@ -527,13 +527,13 @@ defmodule Kantele.Combat.T1ExertsTest do
     luohan = Skills.get("luohan-fumogong")
 
     assert luohan.valid_learn(
-             build.(%{skills: %{"force" => 180, "luohan-fumogong" => 180}, int: 30, con: 30})
-           ) == :ok
+             build.(%{skills: %{"force" => 180, "luohan-fumogong" => 180}, int: 30, con: 30}),
+             %{}) == :ok
 
     assert {:error, _} =
              luohan.valid_learn(
-               build.(%{skills: %{"force" => 100, "luohan-fumogong" => 150}, int: 30, con: 30})
-             )
+               build.(%{skills: %{"force" => 100, "luohan-fumogong" => 150}, int: 30, con: 30}),
+               %{})
 
     spec = luohan.exert_list()["fireice"].spec()
 

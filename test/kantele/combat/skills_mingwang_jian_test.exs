@@ -30,7 +30,7 @@ defmodule Kantele.Combat.SkillsMingwangJianTest do
 
     test "sword < mingwang-jian 被拒（基本剑法水平有限）" do
       assert MingwangJian.valid_learn(stats(200, 100, 150), char_with_max_neili(2000)) ==
-               {:error, "你的基本剑法水平有限，无法领会更高深的不动明王剑法。\n"}
+               {:error, "你的基本剑法火候有限，无法领会更高深的不动明王剑法。\n"}
     end
 
     test "三项全满足则放行" do

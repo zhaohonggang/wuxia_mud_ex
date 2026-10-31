@@ -288,4 +288,44 @@ defmodule Kantele.Character.ConditionEvent do
     |> put_session_cond("conditions", conds)
     |> schedule_next()
   end
+
+  @doc """
+  按**条件名**落毒/落伤（对应 LPC `ob->affect_by(cnd, para)` 的 POISON 分支）。
+
+  与 `apply_poison/2` 的区别：那个固定落 `"poison"` 槽位（供 `daub` / 绝招折算
+  使用），这个按 `cnd` 落各自槽位，供 `hit_ob` 的中毒家族
+  （`cuixin_zhang` / `sha_poison` / `ice_poison` / `xuanming_poison` …）使用。
+
+  `para` 需含 `"level"`（整数）、`"duration"`（整数）、`"id"`（字符串）——
+  对应 LPC `POISON::do_effect` 的三项类型检查，缺任一项即视为无效参数
+  （LPC 同：`return 0`，不落条件）。缺 `"remain"` 时按 LPC `mixed_poison`
+  折算 `level * duration`；缺 `"name"` 时用 `ConditionRegistry.chinese_name/1`
+  补（LPC：`p["name"] = this_object()->chinese_name()`）。
+
+  已有同种条件时走 `Poison.mixed_poison/2` 叠加。
+  """
+  def apply_poison_condition(conn, cnd, para) when is_binary(cnd) and is_map(para) do
+    if valid_poison_para?(para) do
+      para =
+        para
+        |> Map.put_new("name", ConditionRegistry.chinese_name(cnd))
+        |> Map.put_new("remain", para["level"] * para["duration"])
+
+      state = get_session(conn, "conditions") || %{}
+      mixed = Poison.mixed_poison(Map.get(state, cnd), para)
+      merged = Conditions.apply_condition(%{conditions: state}, cnd, mixed)
+
+      conn
+      |> put_session_cond("conditions", merged.conditions)
+      |> schedule_next()
+    else
+      conn
+    end
+  end
+
+  def apply_poison_condition(conn, _cnd, _para), do: conn
+
+  defp valid_poison_para?(para) do
+    is_integer(para["level"]) and is_integer(para["duration"]) and is_binary(para["id"])
+  end
 end

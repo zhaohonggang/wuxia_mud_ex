@@ -367,7 +367,7 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   end
 
   @impl true
-  def hit_ob(attacker, _victim, _action), do: %{}
+  def hit_ob(_attacker, _victim, _damage_bonus, _factor, _rng), do: {0, nil}
 
   @impl true
   def perform_list() do

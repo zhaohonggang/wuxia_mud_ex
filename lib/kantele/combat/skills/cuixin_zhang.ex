@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.CuixinZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N使出一招「百花凋零」，运掌如飞，招招直打$n的$l",
@@ -84,8 +87,56 @@ defmodule Kantele.Combat.Skills.CuixinZhang do
   @impl true
   def id(), do: "cuixin-zhang"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「催心掌掌力」（duration = lvl/100 + random(lvl/10)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "cuixin_zhang",
+      msg: "只听$n闷哼了一声，看来是受到了催心掌掌劲的干扰！\n",
+      div1: 100,
+      div2: 10
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike", "unarmed"]
+
+  # LPC valid_learn：空手 / force>=100 / max_neili>=1200 / unarmed>=100 且 >=本技能 /
+  # strike>=100 且 >=本技能。空手检查未建模（character 快照不含持械，见 MEMORY）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功太差，无法练习催心掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 1200 ->
+        {:error, "你的内力修为太浅，无法练习催心掌。\n"}
+
+      Stats.skill(stats, "unarmed") < 100 ->
+        {:error, "你的基本拳脚有限，无法体会催心掌的要诣。\n"}
+
+      Stats.skill(stats, "unarmed") < Stats.skill(stats, id()) ->
+        {:error, "你的基本拳脚水平有限，无法领会更高深的催心掌。\n"}
+
+      Stats.skill(stats, "strike") < 100 ->
+        {:error, "你的基本掌法太差，无法领会催心掌。\n"}
+
+      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法火候不够，无法领会更高深的催心掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 80, neili: 120}

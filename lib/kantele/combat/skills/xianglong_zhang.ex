@@ -198,6 +198,26 @@ defmodule Kantele.Combat.Skills.XianglongZhang do
   @impl true
   def id(), do: "xianglong-zhang"
 
+  # LPC hit_ob：damage_bonus>=150、自身>=150 级、bonus/6 > 对手 con 时追加断肋创伤
+  @impl true
+  def hit_ob(attacker, victim, damage_bonus, _factor, rng) do
+    lvl = Map.get(attacker.skills, "xianglong-zhang", 0)
+
+    if damage_bonus >= 150 and lvl >= 150 and
+         div(damage_bonus, 6) > Map.get(victim, :con, 0) do
+      {div(damage_bonus - 80, 3), xianglong_msg(rng)}
+    else
+      {0, nil}
+    end
+  end
+
+  defp xianglong_msg(rng) do
+    case rng.(2) - 1 do
+      0 -> "只听$n前胸「咔嚓」一声脆响，竟像是肋骨断折的声音。\n"
+      _ -> "$n一声惨叫，胸前「咔嚓咔嚓」几声脆响，口中鲜血狂喷。\n"
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
 

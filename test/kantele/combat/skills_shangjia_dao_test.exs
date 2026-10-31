@@ -29,7 +29,7 @@ defmodule Kantele.Combat.SkillsShangjiaDaoTest do
     end
 
     test "blade < shangjia-dao 被拒（基本刀法火候有限）" do
-      assert ShangjiaDao.valid_learn(stats(200, 200, 150), char_with_max_neili(2000)) ==
+      assert ShangjiaDao.valid_learn(stats(200, 50, 150), char_with_max_neili(2000)) ==
                {:error, "你的基本刀法火候有限，无法领会更高深的商家刀法。\n"}
     end
 

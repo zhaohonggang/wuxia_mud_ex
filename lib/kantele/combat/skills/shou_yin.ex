@@ -98,6 +98,17 @@ defmodule Kantele.Combat.Skills.ShouYin do
   @impl true
   def id(), do: "shou-yin"
 
+  # LPC hit_ob：damage_bonus>=100 且 bonus/5 > 对手 str 时追加掌印创伤
+  @impl true
+  def hit_ob(_attacker, victim, damage_bonus, _factor, _rng) do
+    if damage_bonus >= 100 and div(damage_bonus, 5) > Map.get(victim, :str, 0) do
+      {div(damage_bonus - 100, 2),
+       "只听$n一声闷哼，一双手印重重的印在胸前，“哇”的喷出了一大口鲜血！\n"}
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["hand", "parry", "unarmed"]
 

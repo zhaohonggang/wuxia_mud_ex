@@ -128,6 +128,10 @@ defmodule Kantele.Combat.Round do
 
   `segments` 为带 `$N/$n/$l/$w` 占位符的文案片段，按序拼接后由
   `Kantele.Combat.Messages.interpolate/2` 替换为真实名字
+
+  `conditions` 是本轮命中要在**防守方**身上落的持续状态
+  （`[{cnd, para}]`，对应 LPC `victim->affect_by(cnd, para)`），由
+  `Kantele.Character.Events.CombatEvent` 在结算时落到防守方 session。
   """
 
   defstruct [
@@ -138,7 +142,8 @@ defmodule Kantele.Combat.Round do
     :wounded,
     :jiali_spent,
     segments: [],
-    counter_damage: 0
+    counter_damage: 0,
+    conditions: []
   ]
 end
 
@@ -242,43 +247,40 @@ defmodule Kantele.Combat.Engine do
       # (4) AP/(AP+PP)：招架成功
       %{round | outcome: :parry, segments: round.segments ++ [Messages.parry_msg()]}
     else
-      # 命中回调（hit_ob）：攻击特技可追加临时加成、触发连击等
-      attacker = apply_hit_ob(attacker, victim, round.action, rng)
+      # 命中成立：进入伤害计算（hit_ob 需 damage_bonus，故在 damage_calc 内调用）
       damage_calc(attacker, victim, round, rng)
     end
   end
 
-  # 命中时调用攻击方映射特技的 hit_ob 钩子；无特技或未实现则原样返回
-  defp apply_hit_ob(attacker, victim, action, _rng) do
+  # 命中后调用攻击方映射特技的 hit_ob 钩子（LPC `me`=攻击方，combatd.c:816）。
+  # 返回 `{追加创伤, 文案, 持续状态}`；无特技或未实现则 `{0, nil, []}`。
+  #
+  # 第 3 参按 LPC 原样传 `damage`（护甲折减之后、算出来的伤害）——LPC 源码里
+  # 形参名写作 `damage_bonus` 属历史命名，实际入参是 `damage`（见 combatd.c:816
+  # 与 707 两处调用的差异：707 是 force 技能，第 3 参才是 force bonus）。
+  defp apply_hit_ob(attacker, victim, damage, rng) do
     mapped = Map.get(attacker.mapped, attacker.attack_skill)
 
     case mapped && Skills.get(mapped) do
-      skill_module ->
-        if function_exported?(skill_module, :hit_ob, 3) do
+      skill_module when is_atom(skill_module) ->
+        if function_exported?(skill_module, :hit_ob, 5) do
           case skill_module.hit_ob(
                  Map.from_struct(attacker),
                  Map.from_struct(victim),
-                 action
+                 damage,
+                 0,
+                 rng
                ) do
-            :unchanged ->
-              attacker
-
-            delta when is_map(delta) ->
-              if Map.has_key?(delta, :__struct__) do
-                attacker
-              else
-                struct(Fighter, Map.merge(attacker, delta))
-              end
-
-            _ ->
-              attacker
+            {wound, msg, affects} when is_integer(wound) -> {max(wound, 0), msg, affects}
+            {wound, msg} when is_integer(wound) -> {max(wound, 0), msg, []}
+            _ -> {0, nil, []}
           end
         else
-          attacker
+          {0, nil, []}
         end
 
       _ ->
-        attacker
+        {0, nil, []}
     end
   end
 
@@ -331,6 +333,12 @@ defmodule Kantele.Combat.Engine do
 
     {wounded, damage} = wound_split(damage - rand(rng, armor), damage, rng)
 
+    # 攻击特技 hit_ob 钩子（LPC `me`=攻击方，combatd.c:816 第 3 参是 damage）：
+    # 返回的追加创伤直接计入本次 wounded（对应 receive_wound("qi", …)），
+    # `affects` 是本轮要在防守方身上落的持续状态（对应 affect_by）。
+    {extra_wound, hit_msg, affects} = apply_hit_ob(attacker, victim, damage, rng)
+    wounded = wounded + extra_wound
+
     # 攻击者根骨影响创伤（con 效果）
     wounded = wounded |> Kernel.-(div(wounded * (attacker.con - 10), 100)) |> max(0)
 
@@ -364,6 +372,7 @@ defmodule Kantele.Combat.Engine do
       end
 
     segments = append_hook(segments, atk_msg)
+    segments = append_hook(segments, hit_msg)
     segments = append_hook(segments, def_msg)
     segments = append_hook(segments, counter_msg)
 
@@ -373,6 +382,7 @@ defmodule Kantele.Combat.Engine do
         wounded: wounded,
         jiali_spent: jiali_spent,
         counter_damage: counter_damage,
+        conditions: List.wrap(affects),
         segments: segments
     }
   end
@@ -437,8 +447,9 @@ defmodule Kantele.Combat.Engine do
   defp join_msg(nil, b), do: b
   defp join_msg(a, b), do: a <> "\n" <> b
 
-  defp accumulate_counter({acc_d, acc_m}, nil), do: {acc_d, acc_m}
-  defp accumulate_counter({acc_d, acc_m}, {d, m}), do: {acc_d + d, join_msg(acc_m, m)}
+  # Enum.reduce/3 的回调签名是 (element, acc)：element 为各侧返回的反击或 nil
+  defp accumulate_counter(nil, {acc_d, acc_m}), do: {acc_d, acc_m}
+  defp accumulate_counter({d, m}, {acc_d, acc_m}), do: {acc_d + d, join_msg(acc_m, m)}
 
   # 创伤概率门（LPC random(3)==1 或主动杀意下同样判定 ≈ 1/2）：掷中才结算创伤
   defp wound_split(raw_wound, damage, _rng) when raw_wound < 1, do: {0, cap(damage)}

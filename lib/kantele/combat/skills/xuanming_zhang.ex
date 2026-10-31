@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.XuanmingZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Engine
+
   @actions [
     %{
       "action" => "$N使出一招「雪海茫茫」，双掌陡然攻出，带着丝丝阴风击向$n的$l",
@@ -130,6 +133,48 @@ defmodule Kantele.Combat.Skills.XuanmingZhang do
 
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
+
+  # 命中回调（对应 LPC `xuanming-zhang.c::hit_ob`）
+  #
+  # LPC 门槛：strike 等级 < 300 / 本次伤害为 0 / 内力 < 300 /
+  # 映射的 force 不是 `xuanming-shengong` → 整段不触发。
+  # 通过后**无条件**扣自身内力 100（LPC 裸块 `{ me->add("neili", -100); return MSG; }`，
+  # 与影响判定无关），并当 `flvl*5/2 + random(strike) > victim.force` 时给防守方
+  # 上 `xuanming_poison`（level = flvl*3，duration = strike/60 + random(strike/30)）。
+  #
+  # 注意：LPC 的 `me->add("neili", -100)` 是攻击方自身内力消耗，但攻击结算发生在
+  # 防守方进程（combat_event.ex 的 resolve_incoming），那里只有攻击方快照、无其活
+  # 连接，故**自身内力扣除本引擎暂未建模**（同 jiali_spent 仅作信息项的处理缺口）。
+  # 此处只忠实迁移「上毒」主效果与文案；内力扣除留待攻击方反馈通道补齐。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    strike_lvl = Map.get(attacker.skills, "strike", 0)
+    flvl = attacker.jiali
+
+    blocked? =
+      strike_lvl < 300 or damage == 0 or attacker.neili < 300 or
+        Map.get(attacker.mapped, "force") != "xuanming-shengong"
+
+    if blocked? do
+      {0, nil}
+    else
+      msg = "$n忽然感到一股莫名的恶心，阴寒的冷气攻心，全身瘫软，嘴皮乌紫。\n"
+
+      if div(flvl * 5, 2) + Engine.rand(rng, strike_lvl) > Map.get(victim.skills, "force", 0) do
+        {0, msg,
+         [
+           {"xuanming_poison",
+            %{
+              "level" => flvl * 3,
+              "id" => attacker.id,
+              "duration" => div(strike_lvl, 60) + Engine.rand(rng, div(strike_lvl, 30))
+            }}
+         ]}
+      else
+        {0, nil}
+      end
+    end
+  end
 
   @impl true
   def practice_cost(), do: %{qi: 80, neili: 80}

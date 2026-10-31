@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.XuantianZhi do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N左指挥出，一式「冰冻三尺」，指尖携着阴寒之劲削向$n的掌缘",
@@ -128,8 +131,50 @@ defmodule Kantele.Combat.Skills.XuantianZhi do
   @impl true
   def id(), do: "xuantian-zhi"
 
+  # LPC hit_ob：lvl>=100 且 jiali>=20 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「玄天寒劲」（duration = lvl/50 + random(lvl/20)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "xuantian_zhi",
+      msg: "$n只感觉阴寒之气攻心，全身瘫软，嘴皮乌紫，面庞竟笼罩了一层寒霜。\n",
+      min_lvl: 100,
+      min_jiali: 20
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["finger", "parry"]
+
+  # LPC valid_learn：空手 / force>=100 / max_neili>=1500 / finger>=80 且 >=本技能。
+  # 空手检查未建模（character 快照不含持械，见 MEMORY）。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功火候不够，无法学玄天指。\n"}
+
+      not is_nil(max_neili) and max_neili < 1500 ->
+        {:error, "你的内力太弱，无法练玄天指。\n"}
+
+      Stats.skill(stats, "finger") < 80 ->
+        {:error, "你的基本指法火候不够，无法练玄天指。\n"}
+
+      Stats.skill(stats, "finger") < Stats.skill(stats, id()) ->
+        {:error, "你的基本指法水平有限，无法领会更高深的玄天指。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 60, neili: 70}

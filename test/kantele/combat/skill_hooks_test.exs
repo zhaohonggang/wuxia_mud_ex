@@ -30,7 +30,7 @@ defmodule Kantele.Combat.SkillHooksTest do
     end
 
     @impl true
-    def valid_damage(_attacker, _victim, _damage, _action), do: {0, "你被化于无形。\n"}
+    def valid_damage(_attacker, _victim, _damage, _action, _rng), do: {0, "你被化于无形。\n"}
 
     @impl true
     def query_effect_parry(%{skills: skills}) when map_size(skills) > 0, do: 80

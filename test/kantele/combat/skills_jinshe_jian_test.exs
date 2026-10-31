@@ -64,7 +64,7 @@ defmodule Kantele.Combat.SkillsJinsheJianTest do
     end
 
     test "sword < jinshe-jian 被拒（基本剑法水平有限）" do
-      assert JinsheJian.valid_learn(stats(50, 50, 300, 300, 300, 300, 150), char_with_max_neili(9999)) ==
+      assert JinsheJian.valid_learn(stats(50, 50, 300, 300, 250, 300, 300), char_with_max_neili(9999)) ==
                {:error, "你的基本剑法水平有限，无法领会更高深的金蛇剑法。\n"}
     end
 

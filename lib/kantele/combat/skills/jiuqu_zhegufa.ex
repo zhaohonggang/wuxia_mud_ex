@@ -98,6 +98,19 @@ defmodule Kantele.Combat.Skills.JiuquZhegufa do
   @impl true
   def id(), do: "jiuqu-zhegufa"
 
+  # LPC hit_ob：damage_bonus>=200 且 bonus/5 > 对手 dex 时追加断骨创伤。
+  # LPC 从 victim->query("limbs") 取部位名，本模型无该列表，改用 `$l` 占位
+  # （渲染层按本轮部位替换，等价于 LPC 的 limbs[random]）。
+  @impl true
+  def hit_ob(_attacker, victim, damage_bonus, _factor, _rng) do
+    if damage_bonus >= 200 and div(damage_bonus, 5) > Map.get(victim, :dex, 0) do
+      {div(damage_bonus - 200, 2),
+       "$n稍一迟疑，只见$N手正搭在自己$l上，只听「咔嚓」一声脆响，此处骨骼顿时应声而碎！\n"}
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["hand", "parry"]
 

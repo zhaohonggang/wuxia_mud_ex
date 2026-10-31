@@ -15,15 +15,27 @@ defmodule Kantele.Character.ConditionRegistry do
   （对应 LPC `condition_d->daemon(me, cnd)` 与 condition 宿主把 cnd 名解开成模块）。
   """
 
-  @daemons %{
-    "poison" => Kantele.Poison,
-    "fire_poison" => Kantele.Poison,
-    "flower_poison" => Kantele.FlowerPoison,
-    "nishui" => Kantele.Nishui,
-    "duyan" => Kantele.Duyan,
-    "drunk" => Kantele.Drunk,
-    "wuguan_job" => Kantele.WuguanJob
-  }
+  # LPC `kungfu/condition/*.c` 里那一批只做 `inherit POISON` + 覆盖文案的条件文件
+  # （名字/文案/伤害公式的**数据变体**），统一由 `Kantele.Poison` 承载：
+  # 家族表（中文名、发作文案、jing/qi 伤害除率）在 `Kantele.Poison.family/0`。
+  @poison_family ~w(
+    bingcan_duzhang cuixin_zhang sha_poison ice_poison huagu
+    ningxue_shenzhao qianzhu_wandushou shenzhao tougu_zhen
+    xuanming_poison xuantian_zhi yinfeng_dao
+  )
+
+  @daemons Map.merge(
+             %{
+               "poison" => Kantele.Poison,
+               "fire_poison" => Kantele.Poison,
+               "flower_poison" => Kantele.FlowerPoison,
+               "nishui" => Kantele.Nishui,
+               "duyan" => Kantele.Duyan,
+               "drunk" => Kantele.Drunk,
+               "wuguan_job" => Kantele.WuguanJob
+             },
+             Map.new(@poison_family, &{&1, Kantele.Poison})
+           )
 
   @doc "给条件名返回 `{:ok, mod} | :error`（先查运行时增量，再查静态表）"
   def daemon(cnd) when is_binary(cnd) do
@@ -77,7 +89,10 @@ defmodule Kantele.Character.ConditionRegistry do
   }
 
   @doc "条件 id → 中文名（未收录回落 id 原样）"
-  def chinese_name(cnd) when is_binary(cnd), do: Map.get(@chinese_names, cnd, cnd)
+  def chinese_name(cnd) when is_binary(cnd) do
+    Map.get(@chinese_names, cnd) || Kantele.Poison.family_chinese_name(cnd) || cnd
+  end
+
   def chinese_name(cnd), do: cnd
 
   defp extras(), do: :persistent_term.get({__MODULE__, :extras}, %{})

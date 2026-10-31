@@ -52,7 +52,7 @@ defmodule Kantele.Combat.SkillsSuxinJianTest do
     end
 
     test "sword < suxin-jian 被拒（基本剑法水平有限）" do
-      assert SuxinJian.valid_learn(stats(50, 200, 200, 150), char_female_with_max_neili(2000)) ==
+      assert SuxinJian.valid_learn(stats(50, 200, 120, 150), char_female_with_max_neili(2000)) ==
                {:error, "你的基本剑法水平有限，无法领会更高深的玉女素心剑。\n"}
     end
 

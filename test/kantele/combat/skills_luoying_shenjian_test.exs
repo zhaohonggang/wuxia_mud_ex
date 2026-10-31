@@ -29,7 +29,7 @@ defmodule Kantele.Combat.SkillsLuoyingShenjianTest do
     end
 
     test "sword < luoying-shenjian 被拒（基本剑法水平有限）" do
-      assert LuoyingShenjian.valid_learn(stats(200, 200, 150), char_with_max_neili(2000)) ==
+      assert LuoyingShenjian.valid_learn(stats(200, 50, 150), char_with_max_neili(2000)) ==
                {:error, "你的基本剑法水平有限，无法领会更高深的落英神剑。\n"}
     end
 

@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.BingcanDuzhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.PoisonHit
+
   @actions [
     %{
       "action" => "$N脸上露出诡异的笑容，双掌携满寒霜，横扫$n",
@@ -68,8 +71,50 @@ defmodule Kantele.Combat.Skills.BingcanDuzhang do
   @impl true
   def id(), do: "bingcan-duzhang"
 
+  # LPC hit_ob：lvl>=80 且 jiali>=10 且 damage!=0，`jiali*2 + random(lvl)`
+  # 压过对手 force 时上「冰蚕寒毒」（duration = lvl/100 + random(lvl/10)）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    PoisonHit.strike(attacker, victim, damage, rng,
+      skill: id(),
+      cnd: "bingcan_duzhang",
+      msg: "$n只感一阵极寒从心底升起，看来是中了$N掌上的冰蚕寒毒。\n",
+      div1: 100,
+      div2: 10
+    )
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
+
+  # LPC valid_learn：force>=200 / max_neili>=3000 / strike>=本技能 / yijinjing>=本技能。
+  # 首条 `query_skill("yijinjing",1) < 0` 恒假（LPC 遗留死判断），未迁移。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，无法练冰蚕毒掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 3000 ->
+        {:error, "你的内力太弱，无法练冰蚕毒掌。"}
+
+      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法水平有限，无法领会更高深的冰蚕毒掌。\n"}
+
+      Stats.skill(stats, "yijinjing") < Stats.skill(stats, id()) ->
+        {:error, "你的易筋经神功水平有限，无法领会更高深的冰蚕毒掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 100, neili: 180}

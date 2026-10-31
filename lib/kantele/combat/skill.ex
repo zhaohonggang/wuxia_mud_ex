@@ -112,11 +112,44 @@ defmodule Kantele.Combat.Skill do
               | {non_neg_integer(), String.t() | nil, {integer(), String.t()} | nil}
 
   @doc """
-  命中回调（对应 LPC hit_ob/4，如 taiji-quan 蓄力连击）
+  命中回调（对应 LPC `mixed hit_ob(object me, object victim, int damage_bonus[, int factor])`）
 
-  命中成功时调用；返回修改后的 attacker 快照 map（如追加临时加成）。
+  调用点严格对照 `adm/daemons/combatd.c:816`：
+
+  ```c
+  if (martial_skill = me->query_skill_mapped(attack_skill))
+      foo = SKILL_D(martial_skill)->hit_ob(me, victim, damage);
+  ```
+
+  即**攻击技能**的 `hit_ob` 在「闪避/招架/护甲都已过、`damage` 已算出」之后调用，
+  第 3 参是**算出来的伤害 `damage`**（LPC 源码里形参名叫 `damage_bonus` 是历史
+  遗留命名，实际值取 `damage`）。注意与 `combatd.c:707` 的 **force 技能**
+  `hit_ob(me, victim, damage_bonus, jiali)` 区分：那一路在伤害计算**之前**、
+  第 3 参才是 force bonus，本行为契约只覆盖攻击技能这一路。
+
+  返回值：
+
+  - `{extra_wound, msg}` —— 常用形式；
+  - `{extra_wound, msg, affects}` —— 附带持续状态（`affects :: [{cnd, para}]`）。
+
+  其中：
+
+  - `extra_wound` 追加到本次创伤（对应 LPC `victim->receive_wound("qi", …)`）；
+  - `msg` 追加到战斗文案（可含 `$N/$n/$l` 占位，由渲染层替换）；
+  - `affects` 里的每一项对应一次 `victim->affect_by(cnd, para)`，由
+    `Kantele.Character.ConditionEvent.apply_poison_condition/3` 落到防守方
+    session（`para` 至少含 `"level"/"duration"/"id"`，缺 `"remain"` 时按
+    LPC `mixed_poison` 折算为 `level * duration`）。
+
+  绝大多数技能不实现（回落 `{0, nil}`）。
   """
-  @callback hit_ob(map(), map(), map()) :: map()
+  @callback hit_ob(
+              map(),
+              map(),
+              non_neg_integer(),
+              integer(),
+              (non_neg_integer() -> non_neg_integer())
+            ) :: {non_neg_integer(), String.t() | nil} | {non_neg_integer(), String.t() | nil, list()}
 
   @doc "练习前置校验（对应 practice_skill 的 qi/neili 门槛），返回 :ok 或出错文案"
   @callback practice_check(map()) :: :ok | {:error, String.t()}
@@ -153,7 +186,7 @@ defmodule Kantele.Combat.Skill do
     perform_list: 0,
     exert_list: 0,
     valid_damage: 5,
-    hit_ob: 3,
+    hit_ob: 5,
     practice_check: 1,
     difficult_level: 1,
     query_effect_parry: 1,
@@ -206,7 +239,7 @@ defmodule Kantele.Combat.Skill do
       def valid_damage(_attacker, _victim, damage, _action, _rng), do: {damage, nil}
 
       @doc false
-      def hit_ob(_attacker, _victim, _action), do: :unchanged
+      def hit_ob(_attacker, _victim, _damage_bonus, _factor, _rng), do: {0, nil}
 
       @doc false
       def practice_check(_vitals), do: :ok
@@ -235,7 +268,7 @@ defmodule Kantele.Combat.Skill do
                      perform_list: 0,
                      exert_list: 0,
                      valid_damage: 5,
-                     hit_ob: 3,
+                     hit_ob: 5,
                      practice_check: 1,
                      difficult_level: 1,
                      query_effect_parry: 1,

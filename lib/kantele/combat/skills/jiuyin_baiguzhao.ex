@@ -84,6 +84,16 @@ defmodule Kantele.Combat.Skills.JiuyinBaiguzhao do
   @impl true
   def id(), do: "jiuyin-baiguzhao"
 
+  # LPC hit_ob：damage_bonus>=100 且 bonus/5 > 对手 str 时追加骨骼碎裂创伤
+  @impl true
+  def hit_ob(_attacker, victim, damage_bonus, _factor, _rng) do
+    if damage_bonus >= 100 and div(damage_bonus, 5) > Map.get(victim, :str, 0) do
+      {div(damage_bonus - 100, 2), "你听到「咔嚓」一声脆响，竟像是骨骼碎裂的声音！\n"}
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["claw", "parry"]
 

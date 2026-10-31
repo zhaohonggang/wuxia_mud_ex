@@ -19,6 +19,19 @@ defmodule Kantele.Combat.Skills.BizhenQingzhang do
   @impl true
   def id(), do: "bizhen-qingzhang"
 
+  # LPC hit_ob：damage_bonus>=100 且 random(force) > 对手 force/2 时追加断肋创伤
+  @impl true
+  def hit_ob(attacker, victim, damage_bonus, _factor, rng) do
+    ap = Map.get(attacker.skills, "force", 0)
+    dp = div(Map.get(victim.skills, "force", 0), 2)
+
+    if damage_bonus >= 100 and rng.(max(ap, 1)) - 1 > dp do
+      {div(damage_bonus - 100, 2), "只听$n前胸“喀嚓”一声，竟像是肋骨碎断的声音！\n"}
+    else
+      {0, nil}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["strike", "parry"]
 
