@@ -6,8 +6,9 @@ defmodule Kantele.Combat.Skills.HunyuanYiqi do
   `valid_force` 接受 易筋经/太极神功/武当心法/少林心法 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「已婚/非男性/屡犯僧戒(guilty)」限制未实现
-    （本模型暂无 couple/gender/guilty 字段）。
+  - LPC `valid_learn` 的「已婚（`couple/have_couple`）」与「非男性」限制
+    分别按 `meta.spouse` / `meta.env[:gender]` 实装；
+    「屡犯僧戒（`guilty`）」无对应字段，仍属引擎未建模层。
   - `query_neili_improve` 成长公式未接入。
   """
 
@@ -26,12 +27,18 @@ defmodule Kantele.Combat.Skills.HunyuanYiqi do
     do: force in ["yijinjing", "taiji-shengong", "wudang-xinfa", "shaolin-xinfa"]
 
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
     buddhism = Stats.skill(stats, "buddhism")
     force = Stats.skill(stats, "force")
     level = Stats.skill(stats, id())
 
     cond do
+      married?(character) ->
+        {:error, "你已经破了色戒，无法再学习混元一气功！\n"}
+
+      gender_of(character) != "男性" ->
+        {:error, "你非童男之体，不能练习混元一气功。\n"}
+
       buddhism < 300 and buddhism < level ->
         {:error, "你的禅宗心法修为不够，无法领会更高深的混元一气功。\n"}
 
@@ -45,6 +52,13 @@ defmodule Kantele.Combat.Skills.HunyuanYiqi do
         :ok
     end
   end
+
+  # LPC `me->query("couple/have_couple")` → meta.spouse（已婚则 %{id:, name:}）
+  defp married?(%{meta: %{spouse: %{id: id}}}) when not is_nil(id), do: true
+  defp married?(_), do: false
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

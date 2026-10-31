@@ -7,7 +7,8 @@ defmodule Kantele.Combat.Skills.Xiaowuxiang do
   血刀大法/龙象功 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「无性」性别限制未实现（本模型暂无性别字段）。
+  - LPC `valid_learn` 的「无性」性别限制按 `meta.env[:gender]` 实装（>49 级拒绝）；
+    引擎无 LPC `::valid_learn` 的父类附加检查（`can_learn` 系列），此层未迁移。
   - `query_neili_improve` 成长公式未接入。
   """
 
@@ -35,13 +36,23 @@ defmodule Kantele.Combat.Skills.Xiaowuxiang do
       ]
 
   @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 80 do
-      {:error, "你的基本内功火候不足，不能学小无相功。\n"}
-    else
-      :ok
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "force") < 80 ->
+        {:error, "你的基本内功火候不足，不能学小无相功。\n"}
+
+      gender_of(character) == "无性" and lvl > 49 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的小无相功。\n"}
+
+      true ->
+        :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

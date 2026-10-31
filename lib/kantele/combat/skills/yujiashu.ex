@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.Yujiashu do
   `valid_force` 接受 混元一气/少林心法 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性别（必须男性）限制未实现（本模型暂无性别字段）。
+  - LPC `valid_learn` 的性别（必须男性）限制按 `meta.env[:gender]` 实装。
   - 源文件带 `dodge_msg` 躲闪文案，`valid_enable` 允许 `"dodge"` 用法，此处仅实现 force 用法。
   """
 
@@ -24,13 +24,21 @@ defmodule Kantele.Combat.Skills.Yujiashu do
   def valid_force(force), do: force in ["hunyuan-yiqi", "shaolin-xinfa"]
 
   @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 100 do
-      {:error, "你的基本内功火候不够，无法学习瑜珈术！\n"}
-    else
-      :ok
+  def valid_learn(stats, character) do
+    cond do
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的基本内功火候不够，无法学习瑜珈术！\n"}
+
+      gender_of(character) != "男性" ->
+        {:error, "你不是男性，无法练习瑜珈术神功。\n"}
+
+      true ->
+        :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

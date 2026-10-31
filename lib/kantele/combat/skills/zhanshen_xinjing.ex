@@ -6,7 +6,8 @@ defmodule Kantele.Combat.Skills.ZhanshenXinjing do
   `valid_force` 接受 天池内功/红花心法 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「无性」性别限制未实现（本模型暂无性别字段）。
+  - LPC `valid_learn` 的「无性」性别限制按 `meta.env[:gender]` 实装（>19 级拒绝）；
+    引擎无 LPC `::valid_learn` 的父类附加检查（`can_learn` 系列），此层未迁移。
   - `query_neili_improve` 按门派（红花会）分档的成长公式未接入。
   """
 
@@ -24,18 +25,26 @@ defmodule Kantele.Combat.Skills.ZhanshenXinjing do
   def valid_force(force), do: force in ["tianchi-neigong", "honghua-xinfa"]
 
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
     cond do
       Stats.skill(stats, "force") < 100 ->
         {:error, "你的基本内功火候还不够。\n"}
 
-      stats.con < 25 ->
+      gender_of(character) == "无性" and lvl > 19 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的战神心经。\n"}
+
+      Stats.con(stats) < 25 ->
         {:error, "你先天根骨孱弱，无法学习战神心经。\n"}
 
       true ->
         :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

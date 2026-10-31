@@ -24,7 +24,10 @@ defmodule Kantele.Character.LearnCommand do
       times: times,
       student_stats: conn.character.meta.stats,
       student_vitals: conn.character.meta.vitals,
-      student_family: conn.character.meta.family
+      student_family: conn.character.meta.family,
+      # env/spouse 供师父侧 `valid_learn/2` 读性别门（无性/男性）与已婚门
+      student_env: conn.character.meta.env,
+      student_spouse: conn.character.meta.spouse
     })
     |> assign(:prompt, false)
   end

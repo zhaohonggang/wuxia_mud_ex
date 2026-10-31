@@ -6,7 +6,8 @@ defmodule Kantele.Combat.Skills.BiboShengong do
   `valid_force` 接受 落英心法 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「无性」性别限制未实现（本模型暂无性别字段）。
+  - LPC `valid_learn` 的「无性」性别限制按 `meta.env[:gender]` 实装（>49 级拒绝）；
+    引擎无 LPC `::valid_learn` 的父类附加检查（`can_learn` 系列），此层未迁移。
   - `query_neili_improve` 成长公式未接入。
   """
 
@@ -24,13 +25,23 @@ defmodule Kantele.Combat.Skills.BiboShengong do
   def valid_force(force), do: force == "luoying-xinfa"
 
   @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "chuixiao-jifa") < 100 do
-      {:error, "你没有精通吹箫技法，无法领会碧波神功的奥秘。\n"}
-    else
-      :ok
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      gender_of(character) == "无性" and lvl > 49 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的碧波神功。\n"}
+
+      Stats.skill(stats, "chuixiao-jifa") < 100 ->
+        {:error, "你没有精通吹箫技法，无法领会碧波神功的奥秘。\n"}
+
+      true ->
+        :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)或从运功中长熟练度（LPC practice_skill 返回失败）"
   @impl true

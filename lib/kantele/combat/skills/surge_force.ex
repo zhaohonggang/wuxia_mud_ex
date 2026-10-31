@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.SurgeForce do
   LPC `valid_force` 恒真。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性别（必须男性）限制未实现（本模型暂无性别字段）。
+  - LPC `valid_learn` 的性别（必须男性）限制按 `meta.env[:gender]` 实装。
   - `roar`（黯然吟）房间 AOE 简化为对敌人列表逐发（同 `force/roar`）；
     LPC 的 `want_kill`/`fight_ob` 敌对建立未建模。
   """
@@ -25,18 +25,24 @@ defmodule Kantele.Combat.Skills.SurgeForce do
   def valid_force(_force), do: true
 
   @impl true
-  def valid_learn(stats) do
+  def valid_learn(stats, character) do
     cond do
+      gender_of(character) != "男性" ->
+        {:error, "你不具有男性的阳刚之气，无法修习怒海狂涛。\n"}
+
       Stats.skill(stats, "force") < 150 ->
         {:error, "你的基本内功火候还不够，还不能修炼怒海狂涛。\n"}
 
-      stats.str < 45 ->
+      Stats.str(stats) < 45 ->
         {:error, "你的膂力不足，难以修习怒海狂涛。\n"}
 
       true ->
         :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

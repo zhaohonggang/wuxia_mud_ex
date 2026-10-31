@@ -56,18 +56,25 @@
 | 16 | `cf7d6b45` | 收官 9：daojian-guizhen, miaojia-jian, duanyun-fu, jinguan-yusuo, sun-finger, sanwu-shou, qiulin-shiye, shenxing-baibian, xixing-dafa |
 
 - 累计 **90 个技能**已迁移（`valid_learn/2` + `practice_cost`），每批均含专用测试文件 + docs 块（C-PVE7~20）+ 记忆同步。
-- **F4 `valid_learn`/`practice_skill` 长尾已收口（2026-10-30）**。余下 `TODO(migrate)` 属别的类别：`query_skill`(1121，多为基础技能基础类)、`prepare_skill`(62)、`surge`(5)，以及「引擎未建模层」（alignment 性格门 / `ultrap` 大宗师 / `can_learn` 父类检查 / practice 专属门 / 须持械空手）。
+- **F4 `valid_learn`/`practice_skill` 长尾已收口（2026-10-30）**。余下 `TODO(migrate)` 里 `query_skill`(227) 其实是 `query_skill_name`（招式名，非回调）、`prepare_skill`(81) 是 D4 已实现功能的 `@doc` 注释——**都不是缺口**。真正的长尾只剩「引擎未建模层」（alignment / `ultrap` / `guilty` / `can_learn` 父类检查 / practice 专属门 / 须持械空手）。
+- **性别门 23 技能已保真迁移（2026-10-30，commit `26672db1` 之后）**：
+  - **关键结论（勿再当缺口）**：性别**早已建模**为 `meta.env[:gender]`（`Records.apply_to_character/2` 写入，默认「男性」）；`meta.spouse` 是 `couple/have_couple` 的对应物（`%{id:, name:}` 或 nil/%{}）。此前 23 个技能 moduledoc 写「本模型暂无性别字段」是**过时假缺口**。已有 11 个技能用 `gender_of/1` 范式（beiming/duanshi/kurong/lengyue/miaojia/sanku/shenlong/sun-finger/suxin/taiji-shengong/yijinjing）。
+  - 19 个「无性 + `lvl > N` 拒绝」：bahuang-gong(49)/bibo-shengong(49)/dahai-wuliang(49)/fenxin-jue(99)/huntian-qigong(49)/liangyi-shengong(49)/nei-bagua(49，「阴阳难调」)/shenghuo-shengong(49)/tianhuan-shenjue(99)/tianlei-shengong(49)/wuwang-shengong(49)/xiaowuxiang(49)/xiuluo-yinshagong(49)/xuanmen-neigong(29)/xuantian-wujigong(19)/yunlong-shengong(49)/zhanshen-xinjing(19)/zhenyue-jue(99)/zihui-xinfa(49)。
+  - 4 个特殊：`shenghuo-xinfa` 门控对象是**圣火神功**>100（非自身，LPC 原样）；`surge-force` 性别门**最先**（先于 force/str）；`yujiashu` 性别门在 force 门**之后**；`hunyuan-yiqi` 已婚门→非男性门→buddhism/force 双门（`guilty` 无字段，未迁移）。
+  - 顺手统一 `stats.int/con/str` → `Stats.int/1` 等（带 `_ -> 0` 回落，防非 struct map KeyError）。
+- **授艺快照管线 bug 已修（2026-10-30，重要）**：`world/room.ex` 的 `skills/learn`→`skills/teach` 转发原先**只带** `skill/times/student_stats/reply_to`，丢掉命令层已发的 `student_vitals`/`student_family` → 师父侧 `valid_learn/2` 的 `max_neili` 门与 `SectMaster` 门派门**长期静默失效**（缺字段→防御式读取回落 nil→门槛被跳过）。现已原样转发 + 新增 `student_env`/`student_spouse`（`learn_command.ex` 发、`skills_event.ex` 组装 `%{meta: %{vitals:, env:, spouse:}}`）。**以后加 `valid_learn/2` 新门若需新字段，必须同时改这三处。**
 - **`valid_damage/5`（Option 2，防守方 invocation）已全部落地（2026-10-30，未 commit）**：
   - 引擎：`skill.ex` `@callback valid_damage` 5 元 + `@optional_callbacks valid_damage: 5` + fallback `{damage, nil}`；`Fighter` 新增 `:max_neili`；`Round` 新增 `:counter_damage`；`engine.ex` `damage_calc` 调用 `apply_valid_damage`（攻击方映射技能）+ `apply_defender_valid_damage`（防守方 parry/dodge 映射技能），折叠 2/3 元返回、合并 `counter_damage`、拼接 `segments`；`Engine.rand` 已 0-indexed（`rng.(n)-1`，与 LPC `random` 对齐）。
   - 27 技能 `valid_damage/5` 全按 LPC 保真迁移（`me`=防守方→`victim`，`ob`=攻击方→`attacker.skills`，`query_temp("weapon")`→`weapon_name`，`random(n)`→`rng.(n)-1`，`damage=-damage` 反弹→`{0, msg}`，剥 LPC 色码保留 `$N/$n/$l`）：pilot `kongming-quan`/`tianluo-diwang` + 更新 `dugu-jiujian`/`taiji-quan` 为 5 元+rng，新增 `beiming-shengong`/`dafumo-quan`/`dagou-bang`/`douzhuan-xingyi`/`huagong-dafa`/`jingang-buhuaiti`/`jinguan-yusuo`/`jinzhong-zhao`/`jiuyang-shengong`/`jiuyin-shengong`/`kuihua-mogong`/`lingbo-weibu`/`pixie-jian`/`qiankun-danuoyi`/`qingfu-shenfa`/`shexing-lifan`/`taiji-jian`/`taixuan-gong`/`tanzhi-shentong`/`wai-bagua`/`xixing-dafa`/`xixing-xiaofa`/`zhuangzi-wu`。
   - 验证：`mix compile` 退出码 **0**（零新增告警；仅 `feature_attack.ex`/`drive_command.ex` 既有无关警告）。`test/kantele/combat/skills_valid_damage_test.exs` 已扩展覆盖 **全部 27 技能**（`zero_rng()` 恒 1 让化解胜出、`two_rng()` 恒 2 过 `random(2)==1` 门），**73 tests, 0 failures**（Docker + db）。helper 用 keyword-opts（`victim(skills: ..., weapon: ..., neili: ...)`），attacker/victim 均含 `:mapped`。
   - 遗留：`counter_damage` 跨进程作用到攻击方（`combat_event.ex` `apply_hit` 仅本地）尚未接入；`mp>=100` 失败分支因 `count` 技能未普遍落入 `stats.skills` 而休眠（与 alignment/ultrap 同属引擎未建模层，待基础设施补齐）。
-  - 文档/记忆：`待办实施计划.zh-CN.md` 待新增 C-PVE 块；本条即为 MEMORY 同步。
+  - 文档/记忆：`待办实施计划.zh-CN.md` **C-PVE21** 已写；本条即为 MEMORY 同步。
 
 ## 待办（开放中）
-- **第十六批已 push `cf7d6b45`**（2026-10-30，9 lib + 9 test + C-PVE20 + 记忆）。
-- **假阳性结论（勿再当缺口）**：`force.c` `valid_learn` = `{return 1;}`；`force_lifeheal/power/roar/shot` 是 **Perform 模块**（`kungfu/skill/force/*.c` 为 exert 函数文件），不是技能。`xuehai-mogong` LPC 仅 `return ::valid_learn(me)`。
-- **引擎未建模层（要动需先补基础设施）**：alignment（`query("character")`，本仓无字段/设定入口；`meta.character` 只在 performs 里被读、实际恒 nil）、`ultrap`（大宗师）、`valid_practice` 回调（practice 专属门）、`valid_learn` 里的须持械/空手（`character` 快照不含持械）。
+- **`valid_damage/5` 批次已 push `26672db1`**（2026-10-30，34 files；含 C-PVE21 + docs 核查表 + 记忆）。
+- **性别门 23 技能批次（2026-10-30，本轮；含 C-PVE22 + `skills_gender_gate_test.exs` + 授艺管线修复）**。
+- **假阳性结论（勿再当缺口）**：`force.c` `valid_learn` = `{return 1;}`；`force_lifeheal/power/roar/shot` 是 **Perform 模块**（`kungfu/skill/force/*.c` 为 exert 函数文件），不是技能。`xuehai-mogong` LPC 仅 `return ::valid_learn(me)`。**「本模型暂无性别字段」全部是过时说法**（性别已建模）。
+- **引擎未建模层（要动需先补基础设施）**：alignment（`query("character")`，本仓无字段/设定入口；`meta.character` 只在 performs 里被读、实际恒 nil）、`ultrap`（大宗师）、`guilty`（屡犯僧戒，hunyuan-yiqi 用）、`valid_practice` 回调（practice 专属门）、`valid_learn` 里的须持械/空手（`character` 快照不含持械）。
 - 打工闭环 / 注内力 / 锻造 等 S0-S4 任务见各日期日志。
 
 ## 已交付（历史，均已 push，详见 git log / 各日期日志）

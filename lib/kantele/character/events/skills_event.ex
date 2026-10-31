@@ -29,6 +29,14 @@ defmodule Kantele.Character.SkillsEvent do
     reply_to = Map.fetch!(data, :reply_to)
     times = Map.get(data, :times, 1)
     student_vitals = Map.get(data, :student_vitals)
+    student_env = Map.get(data, :student_env)
+    student_spouse = Map.get(data, :student_spouse)
+    # 师父进程里拿不到学生的完整 character（房间上下文是 Trimmed 版），
+    # 只能由命令层随事件把 valid_learn/2 需要的切片带过来：
+    # vitals(max_neili) / env(gender) / spouse(couple)。
+    student_character = %{
+      meta: %{vitals: student_vitals, env: student_env, spouse: student_spouse}
+    }
     module = Skills.get(skill)
     base_skill? = skill in @base_skills
     # b2 捆绑门槛：潜能池(b1)/经验门(b4)/内功互斥(b5)，快照判定
@@ -48,11 +56,11 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       :ok ->
-        do_teach(conn, module, base_skill?, skill, times, student_stats, student_vitals, gate, reply_to)
+        do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate, reply_to)
     end
   end
 
-  defp do_teach(conn, module, base_skill?, skill, times, student_stats, student_vitals, gate, reply_to) do
+  defp do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate, reply_to) do
     character = conn.character
 
     cond do
@@ -84,7 +92,7 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       true ->
-        case module.valid_learn(student_stats, %{meta: %{vitals: student_vitals}}) do
+        case module.valid_learn(student_stats, student_character) do
           :ok ->
             grant(
               reply_to,

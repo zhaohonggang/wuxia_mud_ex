@@ -6,7 +6,8 @@ defmodule Kantele.Combat.Skills.XiuluoYinshagong do
   `valid_force` 接受 五毒心法/蛤蟆功/瞬息千里 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「无性」性别限制未实现（本模型暂无性别字段）。
+  - LPC `valid_learn` 的「无性」性别限制按 `meta.env[:gender]` 实装（>49 级拒绝）；
+    引擎无 LPC `::valid_learn` 的父类附加检查（`can_learn` 系列），此层未迁移。
   - `suck`（取毒液练药）依赖 LPC 的毒虫生物（`is_worm`/`query("worm_poison")`）
     宿主与 `clone/misc/chongdu` 虫毒药丸物品，两者本引擎均未建模，作为
     文档化降级：门槛实装，毒虫宿主需目标快照携带 `worm_poison` 才触发，
@@ -27,13 +28,23 @@ defmodule Kantele.Combat.Skills.XiuluoYinshagong do
   def valid_force(force), do: force in ["wudu-xinfa", "hamagong", "shunxi-qianli"]
 
   @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 60 do
-      {:error, "你的基本内功火候还不够。\n"}
-    else
-      :ok
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      gender_of(character) == "无性" and lvl > 49 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的修罗阴煞功。\n"}
+
+      Stats.skill(stats, "force") < 60 ->
+        {:error, "你的基本内功火候还不够。\n"}
+
+      true ->
+        :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
