@@ -98,14 +98,24 @@ defmodule Kantele.Combat.Skills.HuashanJian do
   @impl true
   def valid_enable(usage), do: usage == "sword" or usage == "parry"
 
-  # TODO(migrate): LPC valid_learn 还要求 max_neili >= 100 且手持剑（query_temp weapon）
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: %{qi: 50, neili: 31}
+
+  @doc "按等级加权随机选一式（招式表 + NewRandom）"
+  # LPC `valid_learn(object me)`（源 huashan-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
     cond do
-      Stats.skill(stats, "force") < 20 ->
+      not is_nil(max_neili) and max_neili < 100 ->
         {:error, "你的内力不够，没有办法练华山剑法。\n"}
 
-      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+        {:error, "你必须先找一把剑才能学习剑法。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
         {:error, "你的基本剑法火候有限，无法领会更高深的华山剑法。\n"}
 
       true ->
@@ -113,10 +123,6 @@ defmodule Kantele.Combat.Skills.HuashanJian do
     end
   end
 
-  @impl true
-  def practice_cost(), do: %{qi: 50, neili: 31}
-
-  @doc "按等级加权随机选一式（招式表 + NewRandom）"
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -187,4 +193,9 @@ defmodule Kantele.Combat.Skills.HuashanJian do
       action -> action["skill_name"]
     end
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

@@ -22,9 +22,19 @@ defmodule Kantele.Combat.Skills.DongyangDao do
   @impl true
   def valid_enable(usage), do: usage in ["blade", "parry"]
 
-  # LPC valid_learn 要求 max_neili>=100 / force>=30 / blade>=dongyang-dao（LPC 有重复 blade<self 行，合并为一；须持刀检查由 practice 流程把关）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 60 / neili 42（须持刀，由 practice 流程把关）"
+  @impl true
+  def practice_cost(), do: %{qi: 60, neili: 42}
+
+  # LPC `valid_learn(object me)`（源 dongyang-dao.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
@@ -34,22 +44,16 @@ defmodule Kantele.Combat.Skills.DongyangDao do
       Stats.skill(stats, "force") < 30 ->
         {:error, "你的内功火候不够。\n"}
 
-      Stats.skill(stats, "blade") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "blade") < lvl ->
+        {:error, "你的基本刀法水平有限，无法领会更高深的东洋刀法。\n"}
+
+      Stats.skill(stats, "blade") < lvl ->
         {:error, "你的基本刀法水平有限，无法领会更高深的东洋刀法。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
-    do: max_neili
-
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 60 / neili 42（须持刀，由 practice 流程把关）"
-  @impl true
-  def practice_cost(), do: %{qi: 60, neili: 42}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

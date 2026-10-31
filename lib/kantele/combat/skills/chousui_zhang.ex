@@ -86,9 +86,14 @@ defmodule Kantele.Combat.Skills.ChousuiZhang do
   @impl true
   def valid_enable(usage), do: usage == "strike" or usage == "parry"
 
-  # TODO(migrate): LPC valid_learn 还要求 max_neili >= 1000（本引擎取 vitals.max_neili）
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: %{qi: 65, neili: 55}
+
+  # LPC `valid_learn(object me)`（源 chousui-zhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
     cond do
       Stats.skill(stats, "poison") < 50 ->
         {:error, "你的基本毒技不足，无法练抽髓掌。\n"}
@@ -99,16 +104,16 @@ defmodule Kantele.Combat.Skills.ChousuiZhang do
       Stats.skill(stats, "strike") < 80 ->
         {:error, "你的掌法根基不足，无法练抽髓掌。\n"}
 
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+      not is_nil(max_neili) and max_neili < 1000 ->
+        {:error, "你的内力修为太弱，无法练抽髓掌。\n"}
+
+      Stats.skill(stats, "strike") < Stats.skill(stats, "choushui-zhang") ->
         {:error, "你的基本掌法水平有限，无法领会更高深的抽髓掌法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @impl true
-  def practice_cost(), do: %{qi: 65, neili: 55}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
@@ -165,4 +170,9 @@ defmodule Kantele.Combat.Skills.ChousuiZhang do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

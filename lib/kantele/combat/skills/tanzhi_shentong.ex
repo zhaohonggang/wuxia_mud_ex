@@ -16,8 +16,7 @@ defmodule Kantele.Combat.Skills.TanzhiShentong do
   `valid_damage/5`（2017 年新增的「特防」：指劲弹破绽）此前已迁移，本批未改。
 
   `hit_ob/5`（弹指穴道：`damage_bonus >= 150` + `neili >= 800` + 本门/`jingluo-xue` >= 100
-  + 对方未 busy → `start_busy(2)` + 额外创伤 + 穴道文案）已迁移；对方 `neili` 削减因
-  `hit_ob` 契约无通道未建模。
+  + 对方未 busy → `start_busy(2)` + 额外创伤 + 对方内力削减 + 穴道文案）已按源迁移。
   """
 
   use Kantele.Combat.Skill
@@ -144,10 +143,9 @@ defmodule Kantele.Combat.Skills.TanzhiShentong do
 
       damage_bonus >= 150 / neili >= 800 / 本门 >= 100 / jingluo-xue >= 100 / 对方未 busy
 
-  效果：`start_busy(2)` + 额外创伤 `(damage_bonus - 100) / 4`。
-
-  未建模（引擎无通道）：对方 `neili` 削减（`<= damage_bonus/4 + 50` 时清零，否则减
-  `damage_bonus/4`）—— `hit_ob` 契约只能回传创伤/文案/状态。
+  效果：`start_busy(2)` + 额外创伤 `(damage_bonus - 100) / 4` + 对方内力削减
+  （源 `<= damage_bonus/4 + 50` 时清零，否则减 `damage_bonus/4`，折算成
+  `extra[:victim_neili]` 的最终削减量）。
   """
   @impl true
   def hit_ob(attacker, victim, damage_bonus, _factor, rng) do
@@ -167,8 +165,21 @@ defmodule Kantele.Combat.Skills.TanzhiShentong do
 
         msg = "只听“飕”的一声，$n被$N凌空弹射出的指气点中#{name}，全身登时一阵酸麻。\n"
 
-        {wound, msg, [{"busy", %{"rounds" => 2}}]}
+        {wound, msg, [{"busy", %{"rounds" => 2}}],
+         %{victim_neili: neili_drain(victim, damage_bonus)}}
     end
+  end
+
+  # 源：
+  #   if (victim->query("neili") <= (damage_bonus / 4 + 50))
+  #           victim->set("neili", 0);
+  #   else    victim->add("neili", -damage_bonus / 4);
+  # 折算成「本次实际削减量」（清零 = 削减当前全部内力）。
+  defp neili_drain(victim, damage_bonus) do
+    current = Map.get(victim, :neili, 0)
+    amount = div(damage_bonus, 4)
+
+    if current <= amount + 50, do: current, else: amount
   end
 
   # LPC valid_learn：dex>=34 / force>=150 / max_neili>=2000 / finger>=150 / finger>=own

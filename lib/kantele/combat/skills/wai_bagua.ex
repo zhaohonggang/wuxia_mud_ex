@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.WaiBagua do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, query_effect_parry, valid_damage, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill, query_effect_parry, valid_damage
   - perform/exert 路由骨架见 tmp/perf_out/wai_bagua/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions []
 
@@ -58,6 +60,32 @@ defmodule Kantele.Combat.Skills.WaiBagua do
 
   @impl true
   def practice_cost(), do: %{qi: 50, neili: 60}
+
+  # LPC `valid_learn(object me)`（源 wai-bagua.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "bagua-bu") < 100 ->
+        {:error, "你的八卦步火候还不够，不能学习外八卦。\n"}
+
+      Stats.skill(stats, "bagua-quan") < 100 ->
+        {:error, "你的八卦拳火候还不够，不能学习外八卦。\n"}
+
+      Stats.skill(stats, "bagua-zhang") < 100 ->
+        {:error, "你的八卦掌火候还不够，不能学习外八卦。\n"}
+
+      Stats.skill(stats, "parry") < 100 ->
+        {:error, "你的基本招架技巧掌握的还不够熟练，无法学习外八卦。\n"}
+
+      Stats.skill(stats, "parry") < lvl ->
+        {:error, "你的基本招架水平有限，无法领会更高深的外八卦。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

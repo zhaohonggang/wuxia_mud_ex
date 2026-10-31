@@ -142,6 +142,11 @@ defmodule Kantele.Combat.Round do
   `conditions` 是本轮命中要在**防守方**身上落的持续状态
   （`[{cnd, para}]`，对应 LPC `victim->affect_by(cnd, para)`），由
   `Kantele.Character.Events.CombatEvent` 在结算时落到防守方 session。
+
+  `plain_damage` / `victim_neili` / `attacker_neili` 来自 `hit_ob` 的可选第 4 元素
+  `extra`（对应 LPC `receive_damage("qi", n)` / `victim->add("neili", -n)` /
+  `me->add("neili", -n)`）。三者都由 `CombatEvent` 在结算时落地：前两项作用于
+  防守方（本进程），`attacker_neili` 经 `combat/attacker-cost` 回传攻击方进程。
   """
 
   defstruct [
@@ -153,7 +158,12 @@ defmodule Kantele.Combat.Round do
     :jiali_spent,
     segments: [],
     counter_damage: 0,
-    conditions: []
+    conditions: [],
+    # hit_ob 第 4 元素 `extra` 的三项引擎级效果（见 `Skill.hit_ob/5` 文档）：
+    # 无创伤气血伤害 / 防守方内力削减 / 攻击方内力自耗
+    plain_damage: 0,
+    victim_neili: 0,
+    attacker_neili: 0
   ]
 end
 
@@ -274,25 +284,37 @@ defmodule Kantele.Combat.Engine do
     case mapped && Skills.get(mapped) do
       skill_module when is_atom(skill_module) ->
         if function_exported?(skill_module, :hit_ob, 5) do
-          case skill_module.hit_ob(
-                 Map.from_struct(attacker),
-                 Map.from_struct(victim),
-                 damage,
-                 0,
-                 rng
-               ) do
-            {wound, msg, affects} when is_integer(wound) -> {max(wound, 0), msg, affects}
-            {wound, msg} when is_integer(wound) -> {max(wound, 0), msg, []}
-            _ -> {0, nil, []}
-          end
+          skill_module.hit_ob(
+            Map.from_struct(attacker),
+            Map.from_struct(victim),
+            damage,
+            0,
+            rng
+          )
+          |> normalize_hit_ob()
         else
-          {0, nil, []}
+          empty_hit_ob()
         end
 
       _ ->
-        {0, nil, []}
+        empty_hit_ob()
     end
   end
+
+  # 命中回调返回值归一化为 `{wound, msg, affects, extra}`：
+  # 技能可回 2/3/4 元组（见 `Kantele.Combat.Skill.hit_ob/5` 文档）。
+  defp normalize_hit_ob({wound, msg}) when is_integer(wound),
+    do: {max(wound, 0), msg, [], %{}}
+
+  defp normalize_hit_ob({wound, msg, affects}) when is_integer(wound),
+    do: {max(wound, 0), msg, List.wrap(affects), %{}}
+
+  defp normalize_hit_ob({wound, msg, affects, extra}) when is_integer(wound) and is_map(extra),
+    do: {max(wound, 0), msg, List.wrap(affects), extra}
+
+  defp normalize_hit_ob(_other), do: empty_hit_ob()
+
+  defp empty_hit_ob(), do: {0, nil, [], %{}}
 
   # 攻击方内功（force 技能）命中回调（LPC `me`=攻击方，combatd.c:707）。
   # 仅当 `jiali>0 且 neili>jiali`（combatd.c:703）时触发；取攻击方映射的
@@ -306,26 +328,23 @@ defmodule Kantele.Combat.Engine do
       case force_skill && Skills.get(force_skill) do
         skill_module when is_atom(skill_module) ->
           if function_exported?(skill_module, :hit_ob, 5) do
-            case skill_module.hit_ob(
-                   Map.from_struct(attacker),
-                   Map.from_struct(victim),
-                   damage,
-                   0,
-                   rng
-                 ) do
-              {wound, msg, affects} when is_integer(wound) -> {max(wound, 0), msg, affects}
-              {wound, msg} when is_integer(wound) -> {max(wound, 0), msg, []}
-              _ -> {0, nil, []}
-            end
+            skill_module.hit_ob(
+              Map.from_struct(attacker),
+              Map.from_struct(victim),
+              damage,
+              0,
+              rng
+            )
+            |> normalize_hit_ob()
           else
-            {0, nil, []}
+            empty_hit_ob()
           end
 
         _ ->
-          {0, nil, []}
+          empty_hit_ob()
       end
     else
-      {0, nil, []}
+      empty_hit_ob()
     end
   end
 
@@ -381,7 +400,7 @@ defmodule Kantele.Combat.Engine do
     # 攻击特技 hit_ob 钩子（LPC `me`=攻击方，combatd.c:816 第 3 参是 damage）：
     # 返回的追加创伤直接计入本次 wounded（对应 receive_wound("qi", …)），
     # `affects` 是本轮要在防守方身上落的持续状态（对应 affect_by）。
-    {extra_wound, hit_msg, affects} = apply_hit_ob(attacker, victim, damage, rng)
+    {extra_wound, hit_msg, affects, hit_extra} = apply_hit_ob(attacker, victim, damage, rng)
     wounded = wounded + extra_wound
 
     # 攻击方内功（force）命中回调（LPC `me`=攻击方，combatd.c:707 第 3 参是
@@ -392,7 +411,9 @@ defmodule Kantele.Combat.Engine do
     # 触发条件对齐 combatd.c:703：`jiali>0 且 neili>jiali`。
     # 冰封/冰冻类（freezing-force / hanbing-zhenqi）返回 {0, 文案, 状态}；
     # 九阳/九阴/龙象/太玄等返回各自额外创伤。
-    {force_wound, force_msg, force_affects} = apply_force_hit_ob(attacker, victim, damage_bonus, rng)
+    {force_wound, force_msg, force_affects, force_extra} =
+      apply_force_hit_ob(attacker, victim, damage_bonus, rng)
+
     wounded = wounded + force_wound
 
     # 攻击者根骨影响创伤（con 效果）
@@ -440,8 +461,20 @@ defmodule Kantele.Combat.Engine do
         jiali_spent: jiali_spent,
         counter_damage: counter_damage,
         conditions: List.wrap(affects) ++ List.wrap(force_affects),
+        plain_damage: extra_int(hit_extra, :plain_damage) + extra_int(force_extra, :plain_damage),
+        victim_neili: extra_int(hit_extra, :victim_neili) + extra_int(force_extra, :victim_neili),
+        attacker_neili:
+          extra_int(hit_extra, :attacker_neili) + extra_int(force_extra, :attacker_neili),
         segments: segments
     }
+  end
+
+  # `hit_ob` 第 4 元素 `extra` 里的整数值（缺失/非法按 0）
+  defp extra_int(extra, key) when is_map(extra) do
+    case Map.get(extra, key) do
+      n when is_integer(n) and n > 0 -> n
+      _ -> 0
+    end
   end
 
   # 命中后调用攻击方映射特技的 valid_damage 钩子；无特技或未实现该回调则原样返回

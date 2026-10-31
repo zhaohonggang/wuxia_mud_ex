@@ -20,8 +20,17 @@ defmodule Kantele.Combat.Skills.QishiJi do
   @impl true
   def valid_enable(usage), do: usage in ["club", "parry"]
 
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 70 / neili 40（须持戟，由 practice 流程把关）"
+  @impl true
+  def practice_cost(), do: %{qi: 70, neili: 40}
+
+  # LPC `valid_learn(object me)`（源 qishi-ji.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
@@ -31,20 +40,16 @@ defmodule Kantele.Combat.Skills.QishiJi do
       Stats.skill(stats, "force") < 30 ->
         {:error, "你的内功火候不够。\n"}
 
-      Stats.skill(stats, "club") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "club") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的圣骑士戟。\n"}
+
+      Stats.skill(stats, "club") < lvl ->
         {:error, "你的基本剑法水平有限，无法领会更高深的圣骑士戟。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 70 / neili 40（须持戟，由 practice 流程把关）"
-  @impl true
-  def practice_cost(), do: %{qi: 70, neili: 40}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

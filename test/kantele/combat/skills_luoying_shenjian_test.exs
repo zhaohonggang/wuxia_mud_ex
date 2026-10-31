@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsLuoyingShenjianTest do
   defp stats(force, sword, luoying),
     do: %{skills: %{"force" => force, "sword" => sword, "luoying-shenjian" => luoying}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}
 
   describe "valid_learn/2 学习门槛（LPC force>=30 / max_neili>=250 / sword>=luoying-shenjian）" do
     test "force < 30 被拒（内功火候不够）" do

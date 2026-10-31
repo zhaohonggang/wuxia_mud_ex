@@ -13,6 +13,8 @@ defmodule Kantele.Combat.Skills.GuyueChan do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -21,20 +23,35 @@ defmodule Kantele.Combat.Skills.GuyueChan do
   @impl true
   def valid_enable(usage), do: usage in ["staff", "parry"]
 
+  @doc "只能学(learn)不能练"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 guyue-chan.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
     cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "staff") ->
+        {:error, "你使用的武器不对。\n"}
+
+      not is_nil(max_neili) and max_neili < 400 ->
+        {:error, "你的内力修为不足，无法学习孤月铲法。\n"}
+
       Stats.skill(stats, "force") < 60 ->
         {:error, "你的内功火候太浅，无法学习孤月铲法。\n"}
+
+      Stats.skill(stats, "staff") < 20 ->
+        {:error, "你的基本杖法太浅，无法学习孤月铲法。\n"}
+
+      Stats.skill(stats, "staff") < Stats.skill(stats, "poshui-zhang") ->
+        {:error, "你的基本杖法水平有限，无法领会更高深的孤月铲法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -43,4 +60,9 @@ defmodule Kantele.Combat.Skills.GuyueChan do
   def perform_list() do
     %{"jing" => Kantele.Combat.Skills.Performs.GuyueChan.Jing}
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

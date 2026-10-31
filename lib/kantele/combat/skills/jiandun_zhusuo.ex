@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.JiandunZhusuo do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -20,11 +22,23 @@ defmodule Kantele.Combat.Skills.JiandunZhusuo do
   @impl true
   def valid_enable(usage), do: usage in ["whip", "parry"]
 
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 55（须持鞭，由 practice 流程把关）"
+  @impl true
+  def practice_cost(), do: %{qi: 45, neili: 55}
+
+  # LPC `valid_learn(object me)`（源 jiandun-zhusuo.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+        {:error, "你必须先找一条鞭子才能练剑盾珠索。\n"}
+
       not is_nil(max_neili) and max_neili < 500 ->
         {:error, "你的内力不足，没有办法练剑盾珠索。\n"}
 
@@ -34,20 +48,13 @@ defmodule Kantele.Combat.Skills.JiandunZhusuo do
       Stats.skill(stats, "whip") < 20 ->
         {:error, "你的基本鞭法火候太浅，没有办法练剑盾珠索。\n"}
 
-      Stats.skill(stats, "whip") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "whip") < lvl ->
         {:error, "你的基本鞭法水平还不够，无法领会更高深的剑盾珠索。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 55（须持鞭，由 practice 流程把关）"
-  @impl true
-  def practice_cost(), do: %{qi: 45, neili: 55}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

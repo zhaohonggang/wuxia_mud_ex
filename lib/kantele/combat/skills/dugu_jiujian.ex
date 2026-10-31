@@ -278,15 +278,36 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
   end
 
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: %{qi: 0, neili: 0}
+
+  # LPC 的 query_action 是**均匀** random(sizeof(table))，既不按 lvl 过滤也不用 NewRandom；
+  # 两张表按 `me->query("can_learn/dugu-jiujian/nothing")` 切换（无招境界 → action2）。
+  # LPC `valid_learn(object me)`（源 dugu-jiujian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    personality = personality_of(character)
+
     cond do
-      stats.int < 39 ->
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+        {:error, "你必须先找一把剑才能练剑法。\n"}
+
+      Stats.int(stats) < 39 ->
         {:error, "你的天资不足，无法理解独孤九剑的剑意。\n"}
+
+      personality == "心狠手辣" ->
+        {:error, "你一心想杀尽敌人，没能理解独孤九剑的的真正含义。\n"}
+
+      personality == "阴险奸诈" ->
+        {:error, "你一心想怎么学好剑法去害人，结果没能理解独孤九剑。\n"}
+
+      personality == "光明磊落" ->
+        {:error, "你心中暗道：什么独孤九剑，乱七八糟的，没有半点气势。\n"}
 
       Stats.skill(stats, "sword") < 100 ->
         {:error, "你的基本剑法造诣太浅，无法理解独孤九剑。\n"}
 
-      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "sword") < lvl ->
         {:error, "你的基本剑法造诣有限，无法理解更高深的独孤九剑。\n"}
 
       true ->
@@ -294,11 +315,6 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
     end
   end
 
-  @impl true
-  def practice_cost(), do: %{qi: 0, neili: 0}
-
-  # LPC 的 query_action 是**均匀** random(sizeof(table))，既不按 lvl 过滤也不用 NewRandom；
-  # 两张表按 `me->query("can_learn/dugu-jiujian/nothing")` 切换（无招境界 → action2）。
   @impl true
   def query_action(_level, rng \\ &:rand.uniform/1), do: pick_uniform(@actions, rng)
 
@@ -381,4 +397,10 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
 
   defp random(res) when res < 1, do: 0
   defp random(res), do: :rand.uniform(res)
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end

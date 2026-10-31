@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.WuduQishu do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -19,6 +21,23 @@ defmodule Kantele.Combat.Skills.WuduQishu do
 
   @impl true
   def valid_enable(usage), do: usage in ["poison"]
+
+  # LPC `valid_learn(object me)`（源 wudu-qishu.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "poison") < 50 ->
+        {:error, "你的基本毒技造诣太浅，无法领会深奥的五毒奇术。\n"}
+
+      Stats.skill(stats, "poison") < lvl ->
+        {:error, "你的基本毒技水平有限，无法掌握更深奥的五毒奇术。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.YuxiaoJian do
   TODO(migrate): 人工迁移中...：
   - 动态招式 1 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/yuxiao_jian/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -156,6 +158,30 @@ defmodule Kantele.Combat.Skills.YuxiaoJian do
   @impl true
   def practice_cost(), do: %{qi: 45, neili: 66}
 
+  # LPC `valid_learn(object me)`（源 yuxiao-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 1200 ->
+        {:error, "你的内力修为不够，无法学习玉萧剑法。\n"}
+
+      Stats.skill(stats, "force") < 150 ->
+        {:error, "你的内功火候不够，无法学习玉萧剑法。\n"}
+
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法火候不够，无法学习玉萧剑法。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的玉萧剑法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -182,4 +208,8 @@ defmodule Kantele.Combat.Skills.YuxiaoJian do
       "tian" => Kantele.Combat.Skills.Performs.YuxiaoJian.Tian
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

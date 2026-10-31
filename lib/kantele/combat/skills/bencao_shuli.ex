@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.BencaoShuli do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -19,6 +21,26 @@ defmodule Kantele.Combat.Skills.BencaoShuli do
 
   @impl true
   def valid_enable(usage), do: usage in ["medical"]
+
+  # LPC `valid_learn(object me)`（源 bencao-shuli.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "medical") < 100 ->
+        {:error, "你的基本医术造诣太浅，无法领会深奥的本草术理。\n"}
+
+      Stats.skill(stats, "medical") < Stats.skill(stats, "xingxiu-qishu") ->
+        {:error, "你的基本医术水平有限，无法掌握更深奥的本草术理。\n"}
+
+      Stats.skill(stats, "bencao-changshi") < lvl ->
+        {:error, "你的本草常识水平有限，无法掌握更深奥的本草术理。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

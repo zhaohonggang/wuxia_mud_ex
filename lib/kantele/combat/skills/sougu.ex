@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.Sougu do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -20,31 +22,35 @@ defmodule Kantele.Combat.Skills.Sougu do
   @impl true
   def valid_enable(usage), do: usage in ["claw", "parry"]
 
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 100 ->
-        {:error, "你的内功火候不够，无法学搜骨鹰爪功。\n"}
-
-      not is_nil(max_neili) and max_neili < 600 ->
-        {:error, "你的内力太弱，无法学搜骨鹰爪功。\n"}
-
-      Stats.str(stats) < 33 ->
-        {:error, "你现在的膂力太差，还无法学搜骨鹰爪功。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
   defp max_neili_of(_), do: nil
 
   @doc "练招消耗：LPC practice_skill 扣 qi 55 / neili 57（须空手，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 55, neili: 57}
+
+  # LPC `valid_learn(object me)`（源 sougu.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练搜骨鹰爪功必须空手。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功火候不够，无法学搜骨鹰爪功。\n"}
+
+      not is_nil(max_neili) and max_neili < 600 ->
+        {:error, "你的内力太弱，无法学搜骨鹰爪功。\n"}
+
+      Stats.query_str(stats) < 33 ->
+        {:error, "你现在的膂力太差，还无法学搜骨鹰爪功。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.TouguZhen do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_combine, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_combine
   - perform/exert 路由骨架见 tmp/perf_out/tougu_zhen/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
   alias Kantele.Combat.PoisonHit
@@ -94,11 +96,25 @@ defmodule Kantele.Combat.Skills.TouguZhen do
 
   # LPC valid_learn：空手 / force>=200 / max_neili>=1400 / finger>=100 且 >=本技能。
   # 空手检查未建模（character 快照不含持械，见 MEMORY）。
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @impl true
+  def practice_cost(), do: %{qi: 80, neili: 80}
+
+  # LPC `valid_learn(object me)`（源 tougu-zhen.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练透骨针必须空手。\n"}
+
       Stats.skill(stats, "force") < 200 ->
         {:error, "你的内功火候不够，无法练习透骨针。\n"}
 
@@ -108,21 +124,13 @@ defmodule Kantele.Combat.Skills.TouguZhen do
       Stats.skill(stats, "finger") < 100 ->
         {:error, "你的基本指法火候不够，无法练习透骨针。\n"}
 
-      Stats.skill(stats, "finger") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "finger") < lvl ->
         {:error, "你的基本指法水平有限，无法领会更高深的透骨针。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
-    do: max_neili
-
-  defp max_neili_of(_), do: nil
-
-  @impl true
-  def practice_cost(), do: %{qi: 80, neili: 80}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

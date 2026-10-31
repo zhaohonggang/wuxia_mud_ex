@@ -21,20 +21,26 @@ defmodule Kantele.Combat.Skills.HuilongBifa do
   @impl true
   def valid_enable(usage), do: usage == "throwing"
 
+  @doc "只能学(learn)不能练"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 huilong-bifa.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    lvl = Stats.skill(stats, id())
+
     cond do
       Stats.skill(stats, "throwing") < 100 ->
-        {:error, "你的暗器功夫不够娴熟。\n"}
+        {:error, "你的暗器技能不够娴熟。\n"}
+
+      Stats.skill(stats, "throwing") < lvl ->
+        {:error, "你的基本暗器水平有限，难以领会更精妙的回龙壁法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

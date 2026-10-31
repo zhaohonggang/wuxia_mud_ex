@@ -13,6 +13,8 @@ defmodule Kantele.Combat.Skills.LuoyingShenjian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -23,24 +25,6 @@ defmodule Kantele.Combat.Skills.LuoyingShenjian do
 
   # LPC valid_learn 要求 force>=30 / max_neili>=250 / sword>=luoying-shenjian
   # （须持剑检查 weapon skill_type=="sword" 沿用 practice 流程把关，未在此建模）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 30 ->
-        {:error, "你的内功火候不够，不能练落英神剑。\n"}
-
-      not is_nil(max_neili) and max_neili < 250 ->
-        {:error, "你的内力修为不够，不能练落英神剑。\n"}
-
-      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
-        {:error, "你的基本剑法水平有限，无法领会更高深的落英神剑。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -50,6 +34,30 @@ defmodule Kantele.Combat.Skills.LuoyingShenjian do
   @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 41（须持剑，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 45, neili: 41}
+
+  # LPC `valid_learn(object me)`（源 luoying-shenjian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+        {:error, "你必须先找一把剑才能学习剑法。\n"}
+
+      Stats.skill(stats, "force") < 30 ->
+        {:error, "你的内功火候不够，不能练落英神剑。\n"}
+
+      not is_nil(max_neili) and max_neili < 250 ->
+        {:error, "你的内力修为不够，不能练落英神剑。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的落英神剑。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

@@ -66,7 +66,22 @@ defmodule Kantele.Character.LearnGate do
   新学 skill_id 是否与已学内功冲突（learn.c can_learn/229-251）
 
   返回冲突的已学内功 id 或 nil。
+
+  例外：学习**基本内功** `force` 本身时一律放行。LPC `kungfu/skill/force.c`
+  既没有 `valid_enable` 也没有 `valid_force`（只有 `valid_learn`/`exert_function_file`），
+  而 learn.c 的第一道判断是
+
+      if (! SKILL_D(skill)->valid_enable("force") ||
+          SKILL_D(skill)->valid_force("*"))
+              return 1;
+
+  `valid_enable` 未定义 → 取 0 → `!0` 为真 → 直接 `return 1`，**根本进不到互斥扫描**。
+  若不特判，`Skills.get("force")` 的 `valid_enable("force")` 为 true（本引擎把基本内功
+  也建模成内功载体），于是会落到「已学内功拒绝新技能」的分支：任何学过特技内功
+  （如 `wudang-xinfa`，其 `valid_force` 白名单不含 `force`）的角色都学不了基本内功。
   """
+  def force_conflict(%Stats{}, @basic_force), do: nil
+
   def force_conflict(%Stats{} = stats, skill_id) do
     new_module = Skills.get(skill_id)
 

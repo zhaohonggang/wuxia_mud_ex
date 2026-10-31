@@ -37,21 +37,34 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
         "zhenyue-jue"
       ]
 
-  @impl true
-  def valid_learn(stats) do
-    force = Map.get(stats, "force") || Stats.skill(stats, "force")
-    level = Map.get(stats, id()) || Stats.skill(stats, id())
-
-    cond do
-      force < 100 -> {:error, "你的基本内功火候不够，难以锻炼寒冰真气。\n"}
-      force < level -> {:error, "你的基本内功水平不够，难以锻炼更深厚的寒冰真气。\n"}
-      true -> :ok
-    end
-  end
-
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
   def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 hanbing-zhenqi.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    personality = personality_of(character)
+
+    cond do
+      personality == "光明磊落" ->
+        {:error, "你心中暗想：我行事光明磊落，学这阴毒的武功做甚。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的基本内功火候不够，难以锻炼寒冰真气。\n"}
+
+      not is_nil(max_neili) and max_neili < 1000 ->
+        {:error, "你目前的内力修为不够，难以锻炼寒冰真气。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你的基本内功水平不够，难以锻炼更深厚的寒冰真气。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -113,6 +126,16 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
       "freezing" => Kantele.Combat.Skills.HanbingZhenqi.Freezing
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end
 
 defmodule Kantele.Combat.Skills.HanbingZhenqi.Powerup do

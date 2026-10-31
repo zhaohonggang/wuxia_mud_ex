@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.DouzhuanXingyi do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_damage, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill, valid_damage
   - perform/exert 路由骨架见 tmp/perf_out/douzhuan_xingyi/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions []
 
@@ -89,6 +91,21 @@ defmodule Kantele.Combat.Skills.DouzhuanXingyi do
 
   @impl true
   def valid_enable(usage), do: usage in ["parry"]
+
+  # LPC `valid_learn(object me)`（源 douzhuan-xingyi.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    cond do
+      Stats.skill(stats, "murong-xinfa") < 100 ->
+        {:error, "你的慕容心法火候还不够，不能学习斗转星移。\n"}
+
+      Stats.skill(stats, "parry") < 100 ->
+        {:error, "你的基本招架技巧掌握的还不够熟练，无法学习斗转星移。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

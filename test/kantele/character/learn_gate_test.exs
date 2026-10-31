@@ -102,6 +102,17 @@ defmodule Kantele.Character.LearnGateTest do
       stats = Stats.new()
       assert LearnGate.force_conflict(stats, "liuxi-neigong") == nil
     end
+
+    test "学习基本内功 force 本身不参与互斥（LPC force.c 无 valid_enable/valid_force）" do
+      # learn.c: `if (!valid_enable("force") || valid_force("*")) return 1;`
+      # force.c 两者都没定义 → 直接放行，进不到互斥扫描。
+      stats = Map.put(Stats.new(), :skills, %{"wudang-xinfa" => 90, "taoism" => 90})
+      assert LearnGate.force_conflict(stats, "force") == nil
+
+      # 反向对照：学特技内功仍按白名单判（wudang-xinfa 不接受 liumai-shenjian）
+      assert LearnGate.force_conflict(%{stats | skills: %{"liuxi-neigong" => 10}}, "wudang-xinfa") ==
+               "liuxi-neigong"
+    end
   end
 
   describe "b1 潜能池" do

@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsPanlongSuoTest do
   defp stats(force, whip, self_lvl),
     do: %{skills: %{"force" => force, "whip" => whip, "panlong-suo" => self_lvl}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=800 / force>=120 / whip>=80 / whip>=self）" do
     test "max_neili < 800 被拒（内力修为不足）" do

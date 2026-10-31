@@ -13,6 +13,8 @@ defmodule Kantele.Combat.Skills.ChuanyueJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -23,27 +25,6 @@ defmodule Kantele.Combat.Skills.ChuanyueJian do
 
   # LPC valid_learn 要求 max_neili>=600 / force>=120 / sword>=100 / sword>=chuanyue-jian
   # （须持剑检查 weapon skill_type=="sword" 沿用 practice 流程把关，未在此建模）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 600 ->
-        {:error, "你的内力修为不够，无法学习穿月剑法。\n"}
-
-      Stats.skill(stats, "force") < 120 ->
-        {:error, "你的内功火候太浅，无法学习穿月剑法。\n"}
-
-      Stats.skill(stats, "sword") < 100 ->
-        {:error, "你的基本剑法火候不够，无法学习穿月剑法。\n"}
-
-      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
-        {:error, "你的基本剑法火候有限，无法领会更高深的穿月剑法。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -53,6 +34,33 @@ defmodule Kantele.Combat.Skills.ChuanyueJian do
   @doc "练招消耗：LPC practice_skill 扣 qi 40 / neili 50（须持剑，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 40, neili: 50}
+
+  # LPC `valid_learn(object me)`（源 chuanyue-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+        {:error, "你必须先找一把剑才能练剑法。\n"}
+
+      not is_nil(max_neili) and max_neili < 600 ->
+        {:error, "你的内力修为不够，无法学习穿月剑法。\n"}
+
+      Stats.skill(stats, "force") < 120 ->
+        {:error, "你的内功火候太浅，无法学习穿月剑法。\n"}
+
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法火候不够，无法学习穿月剑法。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法火候有限，无法领会更高深的穿月剑法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

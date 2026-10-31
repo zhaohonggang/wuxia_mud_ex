@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.SuxinJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -24,34 +26,6 @@ defmodule Kantele.Combat.Skills.SuxinJian do
 
   # LPC valid_learn 要求 gender=="女性" / int>=28 / force>=100 / sword>=100 / max_neili>=2000 / sword>=suxin-jian
   # （须持剑检查 weapon skill_type=="sword" 沿用 practice 流程把关，未在此建模）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-    gender = gender_of(character)
-
-    cond do
-      gender != "女性" ->
-        {:error, "玉女素心剑只有女性能练。\n"}
-
-      Stats.int(stats) < 28 ->
-        {:error, "你的先天悟性不够，无法学习玉女素心剑。\n"}
-
-      Stats.skill(stats, "force") < 100 ->
-        {:error, "你的内功火候不到，无法学习玉女素心剑。\n"}
-
-      Stats.skill(stats, "sword") < 100 ->
-        {:error, "你的基本剑法水平太低，无法学习玉女素心剑。\n"}
-
-      not is_nil(max_neili) and max_neili < 2000 ->
-        {:error, "你的内力修为不够，不能学习玉女素心剑。\n"}
-
-      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
-        {:error, "你的基本剑法水平有限，无法领会更高深的玉女素心剑。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -64,6 +38,40 @@ defmodule Kantele.Combat.Skills.SuxinJian do
   @doc "练招消耗：LPC practice_skill 扣 qi 60 / neili 60（须持剑，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 60, neili: 60}
+
+  # LPC `valid_learn(object me)`（源 suxin-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+
+    cond do
+      gender != "女性" ->
+        {:error, "玉女素心剑只有女性能练。\n"}
+
+      Stats.int(stats) < 28 ->
+        {:error, "你的先天悟性不够，无法学习玉女素心剑。\n"}
+
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+        {:error, "你使用的武器不对。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功火候不到，无法学习玉女素心剑。\n"}
+
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法水平太低，无法学习玉女素心剑。\n"}
+
+      not is_nil(max_neili) and max_neili < 2000 ->
+        {:error, "你的内力修为不够，不能学习玉女素心剑。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的玉女素心剑。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

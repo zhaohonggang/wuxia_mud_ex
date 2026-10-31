@@ -31,11 +31,17 @@ defmodule Kantele.Character.SkillsEvent do
     student_vitals = Map.get(data, :student_vitals)
     student_env = Map.get(data, :student_env)
     student_spouse = Map.get(data, :student_spouse)
+    student_equipped = Map.get(data, :student_equipped)
     # 师父进程里拿不到学生的完整 character（房间上下文是 Trimmed 版），
     # 只能由命令层随事件把 valid_learn/2 需要的切片带过来：
-    # vitals(max_neili) / env(gender) / spouse(couple)。
+    # vitals(max_neili) / env(gender) / spouse(couple) / combat.equipped(持械门)。
     student_character = %{
-      meta: %{vitals: student_vitals, env: student_env, spouse: student_spouse}
+      meta: %{
+        vitals: student_vitals,
+        env: student_env,
+        spouse: student_spouse,
+        combat: %{equipped: student_equipped || %{}}
+      }
     }
     module = Skills.get(skill)
     base_skill? = skill in @base_skills

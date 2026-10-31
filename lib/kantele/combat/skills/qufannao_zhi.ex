@@ -12,6 +12,10 @@ defmodule Kantele.Combat.Skills.QufannaoZhi do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N神色端庄，长吸一口气，左手食指突然点向$n胸口",
@@ -100,6 +104,31 @@ defmodule Kantele.Combat.Skills.QufannaoZhi do
 
   @impl true
   def practice_cost(), do: %{qi: 0, neili: 20}
+
+  # LPC `valid_learn(object me)`（源 qufannao-zhi.c）
+  # 源内 `aa`/`bb` 是局部派生量：aa = 混元一气等级、bb = 本技能等级。
+  @impl true
+  def valid_learn(stats, character) do
+    aa = Stats.skill(stats, "hunyuan-yiqi")
+    bb = Stats.skill(stats, id())
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练去烦恼指必须空手。\n"}
+
+      bb >= 60 and aa < 140 and 5 * aa <= 4 * bb ->
+        {:error, "你的内功不够，无法修练更高深的去烦恼指。\n"}
+
+      Stats.str(stats) < 24 ->
+        {:error, "你的先天臂力不够，无法学去烦恼指。\n"}
+
+      Stats.skill(stats, "finger") < 120 ->
+        {:error, "你的基本指法火候不够，无法学去烦恼指。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

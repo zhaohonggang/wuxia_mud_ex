@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.NingxueShenzhao do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/ningxue_shenzhao/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
   alias Kantele.Combat.PoisonHit
@@ -149,33 +151,6 @@ defmodule Kantele.Combat.Skills.NingxueShenzhao do
 
   # LPC valid_learn：空手 / max_neili>=800 / str>=40 / dex>=40 / force>=200 /
   # claw>=180 且 >=本技能。空手检查未建模（character 快照不含持械，见 MEMORY）。
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 800 ->
-        {:error, "你的内力太弱，无法练凝血神爪。\n"}
-
-      Stats.str(stats) < 40 ->
-        {:error, "你现在膂力孱弱，还无法练凝血神爪。\n"}
-
-      Stats.dex(stats) < 40 ->
-        {:error, "你现在身法欠佳，还无法练凝血神爪。\n"}
-
-      Stats.skill(stats, "force") < 200 ->
-        {:error, "你的内功太差，无法练凝血神爪。\n"}
-
-      Stats.skill(stats, "claw") < 180 ->
-        {:error, "你的基本爪法太差，无法领会凝血神爪。\n"}
-
-      Stats.skill(stats, "claw") < Stats.skill(stats, id()) ->
-        {:error, "你的基本爪法火候不够，无法领会更高深的凝血神爪。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -184,6 +159,39 @@ defmodule Kantele.Combat.Skills.NingxueShenzhao do
 
   @impl true
   def practice_cost(), do: %{qi: 100, neili: 300}
+
+  # LPC `valid_learn(object me)`（源 ningxue-shenzhao.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练凝血神爪必须空手。\n"}
+
+      not is_nil(max_neili) and max_neili < 800 ->
+        {:error, "你的内力太弱，无法练凝血神爪。\n"}
+
+      Stats.query_str(stats) < 40 ->
+        {:error, "你现在膂力孱弱，还无法练凝血神爪。\n"}
+
+      Stats.query_dex(stats) < 40 ->
+        {:error, "你现在身法欠佳，还无法练凝血神爪。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功太差，无法练凝血神爪。\n"}
+
+      Stats.skill(stats, "claw") < 180 ->
+        {:error, "你的基本爪法太差，无法领会凝血神爪。\n"}
+
+      Stats.skill(stats, "claw") < lvl ->
+        {:error, "你的基本爪法火候不够，无法领会更高深的凝血神爪。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

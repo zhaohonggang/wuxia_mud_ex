@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsChuanyueJianTest do
   defp stats(force, sword, chuanyue),
     do: %{skills: %{"force" => force, "sword" => sword, "chuanyue-jian" => chuanyue}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=600 / force>=120 / sword>=100 / sword>=chuanyue-jian）" do
     test "max_neili < 600 被拒（内力修为不够）" do

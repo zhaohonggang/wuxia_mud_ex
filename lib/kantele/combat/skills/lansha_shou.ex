@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.LanshaShou do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_combine, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_combine
   - perform/exert 路由骨架见 tmp/perf_out/lansha_shou/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
   alias Kantele.Combat.PoisonHit
@@ -127,24 +129,6 @@ defmodule Kantele.Combat.Skills.LanshaShou do
 
   # LPC valid_learn：空手 / force>=100 / max_neili>=800 / hand>=本技能。
   # 空手检查未建模（character 快照不含持械，见 MEMORY）。
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 100 ->
-        {:error, "你的内功火候不够，无法练习蓝砂手。\n"}
-
-      not is_nil(max_neili) and max_neili < 800 ->
-        {:error, "你的内力太弱，无法练习蓝砂手。\n"}
-
-      Stats.skill(stats, "hand") < Stats.skill(stats, id()) ->
-        {:error, "你的基本手法水平有限，无法领会更高深的蓝砂手。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -153,6 +137,30 @@ defmodule Kantele.Combat.Skills.LanshaShou do
 
   @impl true
   def practice_cost(), do: %{qi: 40, neili: 60}
+
+  # LPC `valid_learn(object me)`（源 lansha-shou.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练蓝砂手必须空手。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功火候不够，无法练习蓝砂手。\n"}
+
+      not is_nil(max_neili) and max_neili < 800 ->
+        {:error, "你的内力太弱，无法练习蓝砂手。\n"}
+
+      Stats.skill(stats, "hand") < lvl ->
+        {:error, "你的基本手法水平有限，无法领会更高深的蓝砂手。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

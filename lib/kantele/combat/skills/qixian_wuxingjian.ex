@@ -18,11 +18,8 @@ defmodule Kantele.Combat.Skills.QixianWuxingjian do
       `sword >= 180` / `tanqin-jifa >= 100` / 四门技能等级不得低于本门
       （`tanqin-jifa` 只要求 `>= 本门 / 3`）。
 
-  未建模：
-
-    - LPC `hit_ob` 里攻击方 `me->add("neili", -100)` 自耗、以及对方
-      `receive_damage("qi", …)` 的**无创伤**气血伤害（`hit_ob` 契约只能回传创伤）。
-      其余条件与「额外创伤 + `start_busy(1)` + 穴道文案」已按源迁移（见 `hit_ob/5`）。
+  `hit_ob/5`（七弦音攻）已按源迁移：条件门、额外创伤、`start_busy(1)`、穴道文案、
+  无创伤气血伤害（`extra[:plain_damage]`）与攻击方内力自耗（`extra[:attacker_neili]`）。
 
   招式里的 `"weapon"` 字段（`无形剑气` / `破体无形剑气`）在 LPC 只用于替换出招文案中的
   武器名，引擎不消费，保留在表内仅供展示。
@@ -225,11 +222,9 @@ defmodule Kantele.Combat.Skills.QixianWuxingjian do
       max_neili >= 对方 max_neili / 对方 max_neili >= 10 /
       对方未 busy / damage_bonus >= 150
 
-  效果：`start_busy(1)` + 额外创伤 `skill/8 + damage_bonus/5`。
-
-  未建模（引擎无通道）：攻击方 `me->add("neili", -100)` 自耗、
-  对方 `receive_damage("qi", skill/5 + damage_bonus/3)` 的**无创伤**气血伤害
-  （`hit_ob` 契约只能回传创伤）。
+  效果：`start_busy(1)` + 额外创伤 `skill/8 + damage_bonus/5` +
+  无创伤气血伤害 `skill/5 + damage_bonus/3`（`extra[:plain_damage]`）+
+  攻击方内力自耗 100（`extra[:attacker_neili]`）。
   """
   @impl true
   def hit_ob(attacker, victim, damage_bonus, _factor, rng) do
@@ -253,7 +248,11 @@ defmodule Kantele.Combat.Skills.QixianWuxingjian do
         msg =
           "只听一阵淳厚的弦音从$N处传来，$n『#{name}』顿时受震，两耳轰鸣，全身真气乱窜不止！\n"
 
-        {wound, msg, [{"busy", %{"rounds" => 1}}]}
+        {wound, msg, [{"busy", %{"rounds" => 1}}],
+         %{
+           plain_damage: div(skill, 5) + div(damage_bonus, 3),
+           attacker_neili: 100
+         }}
     end
   end
 

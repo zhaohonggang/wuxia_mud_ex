@@ -22,18 +22,27 @@ defmodule Kantele.Combat.Skills.BiyunXinfa do
   @impl true
   def valid_force(_force), do: true
 
-  @impl true
-  def valid_learn(stats) do
-    if Stats.skill(stats, "force") < 40 do
-      {:error, "你的基本内功太差了。\n"}
-    else
-      :ok
-    end
-  end
-
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
   def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 biyun-xinfa.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    gender = gender_of(character)
+
+    cond do
+      Stats.skill(stats, "force") < 40 ->
+        {:error, "你的基本内功太差了。\n"}
+
+      (gender == "无性") and (lvl > 49) ->
+        {:error, "唐门不要你这种无根无性的人，你无法领会高深的碧云心法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -42,6 +51,11 @@ defmodule Kantele.Combat.Skills.BiyunXinfa do
   def exert_list() do
     %{"powerup" => Kantele.Combat.Skills.BiyunXinfa.Powerup}
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
 end
 
 defmodule Kantele.Combat.Skills.BiyunXinfa.Powerup do

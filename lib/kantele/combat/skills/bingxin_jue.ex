@@ -23,23 +23,29 @@ defmodule Kantele.Combat.Skills.BingxinJue do
   @impl true
   def valid_force(_force), do: true
 
+  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 bingxin-jue.c）
+  @impl true
+  def valid_learn(stats, character) do
+    gender = gender_of(character)
+
     cond do
-      stats.con < 30 ->
-        {:error, "你的先天根骨孱弱，无法修炼冰心诀。\n"}
+      (gender == "无性") and (Stats.skill(stats, "bingxin-jue") > 99) ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的冰心决。\n"}
+
+      Stats.int(stats) < 26 ->
+        {:error, "你觉得冰心决深奥无比，一时难以领会。\n"}
 
       Stats.skill(stats, "force") < 100 ->
-        {:error, "你的基本内功火候不足，不能学冰心诀。\n"}
+        {:error, "你的基本内功火候还不够，还不能学习冰心决。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1) do
@@ -60,6 +66,11 @@ defmodule Kantele.Combat.Skills.BingxinJue do
       "freeze" => Kantele.Combat.Skills.BingxinJue.Freeze
     }
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
 end
 
 defmodule Kantele.Combat.Skills.BingxinJue.Powerup do

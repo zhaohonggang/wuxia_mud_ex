@@ -144,24 +144,6 @@ defmodule Kantele.Combat.Skills.BanruoZhang do
 
   # LPC valid_learn：空手 + force>=30 + max_neili>=100 + strike>=banruo-zhang。
   # 空手检查：装备状态未接入 skill 回调（与既有迁移一致，待统一装备通道）。
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 30 ->
-        {:error, "你的内功火候不够，无法练般若掌。\n"}
-
-      not is_nil(max_neili) and max_neili < 100 ->
-        {:error, "你的内力太弱，无法练般若掌。\n"}
-
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
-        {:error, "你的基本掌法火候水平有限，无法领会更高深的般若功。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -173,6 +155,30 @@ defmodule Kantele.Combat.Skills.BanruoZhang do
   def practice_cost(), do: %{qi: 65, neili: 64}
 
   @doc "按等级加权随机选一招（招式表 + NewRandom）"
+  # LPC `valid_learn(object me)`（源 banruo-zhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练般若掌必须空手。\n"}
+
+      Stats.skill(stats, "force") < 30 ->
+        {:error, "你的内功火候不够，无法练般若掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 100 ->
+        {:error, "你的内力太弱，无法练般若掌。\n"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你的基本掌法火候水平有限，无法领会更高深的般若功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Skill.pick_action(@actions, level, rng)

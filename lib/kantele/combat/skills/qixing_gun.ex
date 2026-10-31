@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.QixingGun do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/qixing_gun/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -124,6 +126,26 @@ defmodule Kantele.Combat.Skills.QixingGun do
   @impl true
   def practice_cost(), do: %{qi: 50, neili: 70}
 
+  # LPC `valid_learn(object me)`（源 qixing-gun.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 1000 ->
+        {:error, "你的内力不够。\n"}
+
+      Stats.dex(stats) < 22 ->
+        {:error, "你的先天身法不够。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不到。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -131,4 +153,8 @@ defmodule Kantele.Combat.Skills.QixingGun do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

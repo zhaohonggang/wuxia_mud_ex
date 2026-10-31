@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.JiechenDao do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/jiechen_dao/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -112,6 +114,29 @@ defmodule Kantele.Combat.Skills.JiechenDao do
   @impl true
   def practice_cost(), do: %{qi: 0, neili: 35}
 
+  # LPC `valid_learn(object me)`（源 jiechen-dao.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 1500 ->
+        {:error, "以你的内力修为，还不足以练习戒尘刀。\n"}
+
+      Stats.con(stats) < 24 ->
+        {:error, "你的根骨太低，不能驾御戒尘刀。\n"}
+
+      Stats.skill(stats, "hunyuan-yiqi") < 80 ->
+        {:error, "你的混元一气内功修为太浅。\n"}
+
+      Stats.skill(stats, "blade") < 100 ->
+        {:error, "你的基本刀法太浅，不能学戒尘刀。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -136,4 +161,8 @@ defmodule Kantele.Combat.Skills.JiechenDao do
       "xiuluo" => Kantele.Combat.Skills.Performs.JiechenDao.Xiuluo
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

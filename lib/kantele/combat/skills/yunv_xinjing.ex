@@ -67,23 +67,33 @@ defmodule Kantele.Combat.Skills.YunvXinjing do
   def valid_force(force),
     do: force in ["suxin-jue", "xuanmen-neigong", "xiantian-gong", "quanzhen-xinfa"]
 
+  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 yunv-xinjing.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+
     cond do
+      gender == "无性" ->
+        {:error, "你无根无性，阴阳难调，不能修习玉女心经。\n"}
+
       Stats.skill(stats, "force") < 150 ->
         {:error, "你的基本内功火候还不够，不能修习玉女心经。\n"}
 
-      stats.int < 32 ->
+      Stats.int(stats) < 32 ->
         {:error, "你的先天悟性不足，无法领悟玉女心经。\n"}
+
+      not is_nil(max_neili) and max_neili < 2000 ->
+        {:error, "你的内力修为不足，难以领会玉女心经。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -92,6 +102,15 @@ defmodule Kantele.Combat.Skills.YunvXinjing do
   def exert_list() do
     %{"powerup" => Kantele.Combat.Skills.YunvXinjing.Powerup}
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end
 
 defmodule Kantele.Combat.Skills.YunvXinjing.Powerup do

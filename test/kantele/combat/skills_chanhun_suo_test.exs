@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsChanhunSuoTest do
   defp stats(force, whip, chanhun),
     do: %{skills: %{"force" => force, "whip" => whip, "chanhun-suo" => chanhun}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=400 / force>=80 / whip>=60 / whip>=self）" do
     test "max_neili < 400 被拒（内力不足）" do

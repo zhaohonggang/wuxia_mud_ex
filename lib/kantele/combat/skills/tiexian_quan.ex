@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.TiexianQuan do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_combine, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill, valid_combine
   - perform/exert 路由骨架见 tmp/perf_out/tiexian_quan/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -63,6 +67,26 @@ defmodule Kantele.Combat.Skills.TiexianQuan do
 
   @impl true
   def practice_cost(), do: %{qi: 35, neili: 22}
+
+  # LPC `valid_learn(object me)`（源 tiexian-quan.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练铁线拳法必须空手。\n"}
+
+      Stats.skill(stats, "cuff") < 20 ->
+        {:error, "你的基本拳法火候不足，难以修炼铁线拳法。\n"}
+
+      Stats.skill(stats, "cuff") < lvl ->
+        {:error, "你的拳法根基火候不足，无法领会更高深的铁线拳法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

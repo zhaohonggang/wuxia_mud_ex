@@ -22,20 +22,33 @@ defmodule Kantele.Combat.Skills.JidianJian do
   @impl true
   def valid_enable(usage), do: usage in ["sword", "parry"]
 
+  @doc "只能学(learn)不能练"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 jidian-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
     cond do
-      Stats.skill(stats, "force") < 50 ->
+      not is_nil(max_neili) and max_neili < 200 ->
         {:error, "你的内力不够，无法修习疾电剑法。\n"}
+
+      Stats.skill(stats, "dodge") < 60 ->
+        {:error, "你的轻功火候太浅，无法修习疾电剑法。\n"}
+
+      Stats.query_dex(stats) < 25 ->
+        {:error, "你的身法还不够灵活，无法修习疾电剑法。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的疾电剑法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -44,4 +57,9 @@ defmodule Kantele.Combat.Skills.JidianJian do
   def perform_list() do
     %{"dian" => Kantele.Combat.Skills.Performs.JidianJian.Dian}
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

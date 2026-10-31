@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.ChaQuan do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/cha_quan/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -63,6 +67,29 @@ defmodule Kantele.Combat.Skills.ChaQuan do
 
   @impl true
   def practice_cost(), do: %{qi: 80, neili: 50}
+
+  # LPC `valid_learn(object me)`（源 cha-quan.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "baihua-cuoquan") > 0 ->
+        {:error, "你已经练成了百花错拳，不必再单独学习了。\n"}
+
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练查拳必须空手。\n"}
+
+      Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你的基本拳脚火候不足，无法领会更高深的查拳。\n"}
+
+      Stats.skill(stats, "cuff") < lvl ->
+        {:error, "你的拳法根基火候不足，无法领会更高深的查拳。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

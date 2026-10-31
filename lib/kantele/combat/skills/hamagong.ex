@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.Hamagong do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：difficult_level, exert_function_file, hit_ob, perform_action_file, practice_skill, valid_force, valid_learn
+  - 源码钩子/条件：difficult_level, exert_function_file, hit_ob, perform_action_file, practice_skill, valid_force
   - perform/exert 路由骨架见 tmp/perf_out/hamagong/
   """
 
@@ -70,45 +70,6 @@ defmodule Kantele.Combat.Skills.Hamagong do
   @impl true
   def practice_cost(), do: nil
 
-  @impl true
-  def valid_learn(stats, character) do
-    lvl = Stats.skill(stats, id())
-    force = Stats.skill(stats, "force")
-    strike = Stats.skill(stats, "strike")
-    poison = Stats.skill(stats, "poison")
-    max_neili = max_neili_of(character)
-
-    cond do
-      # LPC 首门「光明磊落/狡黠多变」性格拒绝未建模（meta.character 恒 nil），跳过
-      Stats.str(stats) < 32 ->
-        {:error, "你先天臂力孱弱，无法修炼蛤蟆功。\n"}
-
-      Stats.con(stats) < 32 ->
-        {:error, "你先天根骨太差，无法修炼蛤蟆功。\n"}
-
-      gender_of(character) == "无性" and lvl > 49 ->
-        {:error, "你无根无性，阴阳不调，难以领会高深的蛤蟆功。\n"}
-
-      force < 50 or force < lvl ->
-        {:error, "你的基本内功火候不足，不能学蛤蟆功。\n"}
-
-      strike < 150 ->
-        {:error, "你的基本掌法火候不足，难以领会蛤蟆功。\n"}
-
-      strike < lvl ->
-        {:error, "你的基本掌法造诣有限，无法理解更高深的蛤蟆功。\n"}
-
-      poison < 150 ->
-        {:error, "你的基本毒技火候不足，难以领会蛤蟆功。\n"}
-
-      not is_nil(max_neili) and max_neili < 2500 ->
-        {:error, "你现在的内力修为不足，难以领会蛤蟆功。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
   # LPC hit_ob（combatd.c:707 force 路径）：damage_bonus>=150、自身>=180、neili>=300、
   # 空手、force 与 strike 都映射到本技能时，若 damage_bonus/6 > 对手 con，则给对手追加
   # (damage_bonus-90)/3 的 qi 创伤。未建模：攻击方 neili 自耗 -30、prepared 门控。
@@ -137,6 +98,50 @@ defmodule Kantele.Combat.Skills.Hamagong do
     do: max_neili
   defp max_neili_of(_), do: nil
 
+  # LPC `valid_learn(object me)`（源 hamagong.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+    personality = personality_of(character)
+
+    cond do
+      (personality == "光明磊落") or (personality == "狡黠多变") ->
+        {:error, "你心中暗道：这蛤蟆功阴毒异常，估计会伤及自身，还是别练为妙。\n"}
+
+      Stats.str(stats) < 32 ->
+        {:error, "你先天臂力孱弱，无法修炼蛤蟆功。\n"}
+
+      Stats.con(stats) < 32 ->
+        {:error, "你先天根骨太差，无法修炼蛤蟆功。\n"}
+
+      (gender == "无性") and (Stats.skill(stats, "hamagong") > 49) ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的蛤蟆功。\n"}
+
+      (Stats.skill(stats, "force") < 50) or (Stats.skill(stats, "force") < lvl) ->
+        {:error, "你的基本内功火候不足，不能学蛤蟆功。\n"}
+
+      Stats.skill(stats, "strike") < 150 ->
+        {:error, "你的基本掌法火候不足，难以领会蛤蟆功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你的基本内功造诣有限，无法理解更高深的蛤蟆功。\n"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你的基本掌法造诣有限，无法理解更高深的蛤蟆功。\n"}
+
+      Stats.skill(stats, "poison") < 150 ->
+        {:error, "你的基本毒技火候不足，难以领会蛤蟆功。\n"}
+
+      not is_nil(max_neili) and max_neili < 2500 ->
+        {:error, "你现在的内力修为不足，难以领会蛤蟆功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -162,4 +167,10 @@ defmodule Kantele.Combat.Skills.Hamagong do
       "tui" => Kantele.Combat.Skills.Performs.Hamagong.Tui
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end

@@ -23,19 +23,32 @@ defmodule Kantele.Combat.Skills.ChangshengJue do
   @impl true
   def valid_force(_force), do: true
 
-  @impl true
-  def valid_learn(stats) do
-    cond do
-      stats.int < 35 -> {:error, "你觉得长生决过于艰深，难以理解。\n"}
-      stats.con < 31 -> {:error, "依照你的根骨无法修炼长生决。\n"}
-      Stats.skill(stats, "martial-cognize") < 300 -> {:error, "你的武学修养没有办法理解其中的精神奥义。\n"}
-      true -> :ok
-    end
-  end
-
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
   def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 changsheng-jue.c）
+  @impl true
+  def valid_learn(stats, character) do
+    personality = personality_of(character)
+
+    cond do
+      personality != "狡黠多变" ->
+        {:error, "你心中暗想：这不过是道家练气的口诀罢了，哪里是什么神功？\n"}
+
+      Stats.int(stats) < 35 ->
+        {:error, "你觉得长生决过于艰深，难以理解。\n"}
+
+      Stats.con(stats) < 31 ->
+        {:error, "依照你的根骨无法修炼长生决。\n"}
+
+      Stats.skill(stats, "martial-cognize") < 300 ->
+        {:error, "你的武学修养没有办法理解其中的精神奥义。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -47,6 +60,12 @@ defmodule Kantele.Combat.Skills.ChangshengJue do
       "shield" => Kantele.Combat.Skills.ChangshengJue.Shield
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end
 
 defmodule Kantele.Combat.Skills.ChangshengJue.Powerup do

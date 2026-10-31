@@ -48,10 +48,25 @@ defmodule Kantele.Combat.Skills.HuagongDafa do
   @impl true
   def valid_force(force), do: force == "guixi-gong"
 
+  @doc "只能学(learn)或练毒的来增加熟练度（LPC practice_skill 返回失败）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 huagong-dafa.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    gender = gender_of(character)
+    personality = personality_of(character)
+
     cond do
-      stats.con < 30 ->
+      personality == "光明磊落" ->
+        {:error, "你心中暗想：我为人光明磊落，岂能学习这种害人武功？\n"}
+
+      personality == "狡黠多变" ->
+        {:error, "你心中暗想：我虽然不是谦谦君子，但这种损人不利己的武功学来何用？\n"}
+
+      Stats.con(stats) < 30 ->
         {:error, "你试着运转了一下内力，登时觉得胸闷难耐！\n"}
 
       Stats.skill(stats, "force") < 120 ->
@@ -60,20 +75,19 @@ defmodule Kantele.Combat.Skills.HuagongDafa do
       Stats.skill(stats, "poison") < 120 ->
         {:error, "你的基本毒技火候不足，不能学化功大法。\n"}
 
-      Stats.skill(stats, "poison") < Stats.skill(stats, id()) ->
+      (gender == "无性") and (lvl > 99) ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的化功大法。\n"}
+
+      Stats.skill(stats, "poison") < lvl ->
         {:error, "你的基本毒技水平有限，不能领会更高深的化功大法。\n"}
 
-      Stats.skill(stats, "force") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "force") < lvl ->
         {:error, "你的基本内功水平有限，不能领会更高深的化功大法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)或练毒的来增加熟练度（LPC practice_skill 返回失败）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1) do
@@ -94,6 +108,16 @@ defmodule Kantele.Combat.Skills.HuagongDafa do
       "hua" => Kantele.Combat.Skills.HuagongDafa.Hua
     }
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end
 
 defmodule Kantele.Combat.Skills.HuagongDafa.Powerup do

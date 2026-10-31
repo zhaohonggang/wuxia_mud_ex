@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.BadaoDaofa do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：practice_skill, valid_learn
+  - 源码钩子/条件：practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/badao_daofa/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -124,6 +126,34 @@ defmodule Kantele.Combat.Skills.BadaoDaofa do
   @impl true
   def practice_cost(), do: %{qi: 60, neili: 60}
 
+  # LPC `valid_learn(object me)`（源 badao-daofa.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    personality = personality_of(character)
+
+    cond do
+      (personality != "心狠手辣") and (personality != "国士无双") ->
+        {:error, "你觉得这霸刀刀法实在过于狠毒，自己委实学不会。\n"}
+
+      not is_nil(max_neili) and max_neili < 2000 ->
+        {:error, "你的内力不足，没有办法练霸刀刀法，多练些内力再来吧。\n"}
+
+      Stats.skill(stats, "blade") < 180 ->
+        {:error, "你的基本刀法火候太浅，没有办法练霸刀刀法。\n"}
+
+      Stats.skill(stats, "force") < 150 ->
+        {:error, "你的内功火候太浅，没有办法练霸刀刀法。\n"}
+
+      Stats.skill(stats, "blade") < lvl ->
+        {:error, "你的基本刀法水平还不够，无法领会更高深的霸刀刀法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -131,4 +161,13 @@ defmodule Kantele.Combat.Skills.BadaoDaofa do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
 end

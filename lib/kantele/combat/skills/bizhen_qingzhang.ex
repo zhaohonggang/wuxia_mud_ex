@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.BizhenQingzhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -35,12 +37,25 @@ defmodule Kantele.Combat.Skills.BizhenQingzhang do
   @impl true
   def valid_enable(usage), do: usage in ["strike", "parry"]
 
-  # LPC valid_learn 要求 max_neili>=1000 / force>=200 / strike>=140 / strike>=bizhen-qingzhang（空手检查由 practice 流程把关）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 80 / neili 80（空手）"
+  @impl true
+  def practice_cost(), do: %{qi: 80, neili: 80}
+
+  # LPC `valid_learn(object me)`（源 bizhen-qingzhang.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练碧针清掌必须空手。\n"}
+
       Stats.skill(stats, "force") < 200 ->
         {:error, "你的内功火候不够，无法练习碧针清掌。\n"}
 
@@ -50,22 +65,13 @@ defmodule Kantele.Combat.Skills.BizhenQingzhang do
       Stats.skill(stats, "strike") < 140 ->
         {:error, "你的基本掌法火候不够，无法练习碧针清掌。\n"}
 
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "strike") < lvl ->
         {:error, "你的基本掌法水平有限，无法领会更高深的碧针清掌。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
-    do: max_neili
-
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 80 / neili 80（空手）"
-  @impl true
-  def practice_cost(), do: %{qi: 80, neili: 80}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

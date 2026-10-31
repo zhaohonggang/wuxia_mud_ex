@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsPoguangDaoTest do
   defp stats(force, blade, poguang),
     do: %{skills: %{"force" => force, "blade" => blade, "poguang-dao" => poguang}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "blade"}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=800 / force>=120 / blade>=100 / blade>=poguang-dao）" do
     test "max_neili < 800 被拒（内力修为不够）" do

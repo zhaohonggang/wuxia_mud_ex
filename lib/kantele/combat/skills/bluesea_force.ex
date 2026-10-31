@@ -22,6 +22,8 @@ defmodule Kantele.Combat.Skills.BlueseaForce do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "$N跨出一步，一指缓缓戳向$n的$l，笼罩了方圆数寸的范围",
@@ -153,6 +155,57 @@ defmodule Kantele.Combat.Skills.BlueseaForce do
   @impl true
   def valid_enable(usage), do: usage in ["finger", "strike", "staff", "dodge", "parry", "force"]
 
+  # LPC `valid_learn(object me)`（源 bluesea-force.c）
+  # 末段 `for (usage_skills)` 循环按数组顺序展开为 6 门。
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    personality = personality_of(character)
+    gender = gender_of(character)
+    cognize = Stats.skill(stats, "martial-cognize")
+
+    cond do
+      stats.combat_exp < 3_000_000 ->
+        {:error, "你觉得南海玄功深奥之极，凭自己的战斗经验一时间难以领会。\n"}
+
+      cognize < 50 ->
+        {:error, "你觉得南海玄功过于深奥之极，以自己的武学修养全然无法明白。\n"}
+
+      personality != "心狠手辣" and personality != "国士无双" ->
+        {:error, "你发觉南海神功招招狠、式式险，舍生忘死，自己实在领会不了。\n"}
+
+      Stats.con(stats) < 22 and Stats.query_con(stats) < 63 ->
+        {:error, "你试图运用真力修炼南海玄功，却突然觉得眼前一黑，看来是根骨不好，不能勉强修行。\n"}
+
+      gender == "无性" and lvl > 219 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的南海玄功。\n"}
+
+      cognize < lvl ->
+        {:error, "你觉得自己的武学修养有限，难以领会更高深的南海玄功。\n"}
+
+      Stats.skill(stats, "finger") < lvl ->
+        {:error, "你对基本指法的理解还不够，无法继续领会更高深的南海玄功。\n"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你对基本掌法的理解还不够，无法继续领会更高深的南海玄功。\n"}
+
+      Stats.skill(stats, "staff") < lvl ->
+        {:error, "你对基本杖法的理解还不够，无法继续领会更高深的南海玄功。\n"}
+
+      Stats.skill(stats, "dodge") < lvl ->
+        {:error, "你对基本轻功的理解还不够，无法继续领会更高深的南海玄功。\n"}
+
+      Stats.skill(stats, "parry") < lvl ->
+        {:error, "你对基本招架的理解还不够，无法继续领会更高深的南海玄功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你对基本内功的理解还不够，无法继续领会更高深的南海玄功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action_for(@actions, @actions_weapon, level, nil, rng)
@@ -189,4 +242,13 @@ defmodule Kantele.Combat.Skills.BlueseaForce do
       "shield" => Kantele.Combat.Skills.Performs.BlueseaForce.Shield
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
 end

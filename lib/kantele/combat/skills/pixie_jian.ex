@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.PixieJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "突然之间，白影急幌，$N向后滑出丈余，立时又回到了原地",
@@ -210,6 +212,58 @@ defmodule Kantele.Combat.Skills.PixieJian do
   @impl true
   def valid_enable(usage), do: usage in ["dodge", "parry", "sword", "unarmed"]
 
+  # LPC `valid_learn(object me)`（源 pixie-jian.c）
+  # `me->query("special_skill/guimai")`（转世特技「六阴鬼脉」）本端口未建模 → 恒假，
+  # 故男/女两门都生效：只有「无性」可学，与未习六阴鬼脉的 LPC 角色一致。
+  # 源内 `me->receive_wound("qi", 50)` 是副作用；`valid_learn/2` 只做判定，不迁移。
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    personality = personality_of(character)
+    gender = gender_of(character)
+
+    cond do
+      personality == "光明磊落" or personality == "狡黠多变" ->
+        {:error, "你心中暗道：这辟邪剑法损人损己，修炼来何用。\n"}
+
+      gender == "女性" ->
+        {:error, "自古以来没听说过女人可以修习葵花宝典。\n"}
+
+      gender == "男性" ->
+        {:error, "你试着修炼辟邪剑法，霎时只觉内息忽然大乱，几欲焚身。\n"}
+
+      Stats.int(stats) < 34 ->
+        {:error, "你的天资不足，无法理解辟邪剑法的深意。\n"}
+
+      Stats.dex(stats) < 32 ->
+        {:error, "你先天身法孱弱，难以修炼辟邪剑法。\n"}
+
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法造诣太浅，无法理解辟邪剑法。\n"}
+
+      Stats.skill(stats, "dodge") < 100 ->
+        {:error, "你的基本轻功造诣太浅，无法理解辟邪剑法。\n"}
+
+      Stats.skill(stats, "parry") < 100 ->
+        {:error, "你的基本架造造诣太浅，无法理解辟邪剑法。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法造诣有限，无法理解更高深的辟邪剑法。\n"}
+
+      Stats.skill(stats, "dodge") < lvl ->
+        {:error, "你的基本轻功造诣有限，无法理解更高深的辟邪剑法。\n"}
+
+      Stats.skill(stats, "parry") < lvl ->
+        {:error, "你的基本招架造诣有限，无法理解更高深的辟邪剑法。\n"}
+
+      Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你的基本拳脚造诣有限，无法理解更高深的辟邪剑法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -237,4 +291,13 @@ defmodule Kantele.Combat.Skills.PixieJian do
       "po" => Kantele.Combat.Skills.Performs.PixieJian.Po
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
 end

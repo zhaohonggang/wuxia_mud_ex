@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.LiumaiShenjian do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：difficult_level, hit_ob, perform_action_file, practice_skill, skill_improved, valid_learn
+  - 源码钩子/条件：difficult_level, hit_ob, perform_action_file, practice_skill, skill_improved
   - perform/exert 路由骨架见 tmp/perf_out/liumai_shenjian/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -255,6 +259,51 @@ defmodule Kantele.Combat.Skills.LiumaiShenjian do
   @impl true
   def practice_cost(), do: %{qi: 88, neili: 0}
 
+  # LPC `valid_learn(object me)`（源 liumai-shenjian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练六脉神剑必须空手。\n"}
+
+      Stats.int(stats) < 36 ->
+        {:error, "你研究了半天，只感六种剑法毫无牵连，无法再作研究。\n"}
+
+      Stats.con(stats) < 36 ->
+        {:error, "你研究了一会儿，只觉得眼前金星乱冒，太阳穴突突的跳。\n"}
+
+      Stats.skill(stats, "literate") < 250 ->
+        {:error, "你觉得六脉神剑极其深奥，不是你这种学问水平所能研究的。\n"}
+
+      Stats.skill(stats, "lamaism") < 250 ->
+        {:error, "你发现这里面有很多奥妙都和密宗心法有关，难以理解。\n"}
+
+      Stats.skill(stats, "buddhism") < 250 ->
+        {:error, "你发现这里面有很多奥妙都和禅宗心法有关，难以理解。\n"}
+
+      Stats.skill(stats, "jingluo-xue") < 250 ->
+        {:error, "你发现这里面有很多奥妙都和人体的经络构造有关，难以理解。\n"}
+
+      not is_nil(max_neili) and max_neili < 5000 ->
+        {:error, "你的内力太弱，无法学六脉神剑。\n"}
+
+      Stats.skill(stats, "finger") < 250 ->
+        {:error, "你的基本指法火候不够。\n"}
+
+      Stats.skill(stats, "force") < lvl + 10 ->
+        {:error, "你现在必须先提高你基本内功的水平。\n"}
+
+      Stats.skill(stats, "finger") < lvl + 10 ->
+        {:error, "你现在必须先提高你基本指法的水平。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -281,4 +330,8 @@ defmodule Kantele.Combat.Skills.LiumaiShenjian do
       "zong" => Kantele.Combat.Skills.Performs.LiumaiShenjian.Zong
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

@@ -22,6 +22,8 @@ defmodule Kantele.Combat.Skills.KuihuaMogong do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "$N倏的近前，身形快极，手指戳向$n的$l",
@@ -216,6 +218,54 @@ defmodule Kantele.Combat.Skills.KuihuaMogong do
   @impl true
   def valid_enable(usage), do: usage in ["unarmed", "sword", "dodge", "parry", "force"]
 
+  # LPC `valid_learn(object me)`（源 kuihua-mogong.c）
+  # 末段 `for (usage_skills)` 循环按数组顺序展开为 5 门（源内首命中即返回，
+  # 展开后条件互斥顺序一致，行为等价）。
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    personality = personality_of(character)
+    cognize = Stats.skill(stats, "martial-cognize")
+
+    cond do
+      stats.combat_exp < 3_000_000 ->
+        {:error, "你觉得葵花魔功深奥之极，凭自己的战斗经验一时间难以领会。\n"}
+
+      cognize < 150 ->
+        {:error, "你觉得葵花魔功过于深奥之极，以自己的武学修养全然无法明白。\n"}
+
+      personality != "阴险奸诈" and personality != "心狠手辣" and personality != "国士无双" ->
+        {:error, "你看了葵花魔功这些阴险毒辣的武功，不由的心惊肉跳，难以领会。\n"}
+
+      Stats.dex(stats) < 38 ->
+        {:error, "你觉得自己的身法不够灵动，不可能掌握这么飘缈玄奇的葵花魔功。\n"}
+
+      Stats.int(stats) < 34 ->
+        {:error, "你觉得自己的先天悟性不够，不可能领悟这么高深玄奇的葵花魔功。\n"}
+
+      cognize < lvl and cognize < 500 ->
+        {:error, "你觉得自己的武学修养有限，难以领会更高深的葵花魔功。\n"}
+
+      Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你对基本拳脚的理解还不够，无法继续领会更高深的葵花魔功。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你对基本剑法的理解还不够，无法继续领会更高深的葵花魔功。\n"}
+
+      Stats.skill(stats, "dodge") < lvl ->
+        {:error, "你对基本轻功的理解还不够，无法继续领会更高深的葵花魔功。\n"}
+
+      Stats.skill(stats, "parry") < lvl ->
+        {:error, "你对基本招架的理解还不够，无法继续领会更高深的葵花魔功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你对基本内功的理解还不够，无法继续领会更高深的葵花魔功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action_for(@actions, @actions_weapon, level, nil, rng)
@@ -251,4 +301,9 @@ defmodule Kantele.Combat.Skills.KuihuaMogong do
       "shield" => Kantele.Combat.Skills.Performs.KuihuaMogong.Shield
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
 end

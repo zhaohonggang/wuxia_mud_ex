@@ -16,6 +16,8 @@ defmodule Kantele.Combat.Skills.RanmuDaofa do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -24,23 +26,39 @@ defmodule Kantele.Combat.Skills.RanmuDaofa do
   @impl true
   def valid_enable(usage), do: usage in ["blade", "parry"]
 
+  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 ranmu-daofa.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
     cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "blade") ->
+        {:error, "你必须先找一把刀才能练燃木刀法。\n"}
+
+      not is_nil(max_neili) and max_neili < 2000 ->
+        {:error, "你的内力不足，没有办法练燃木刀法，多练些内力再来吧。\n"}
+
       Stats.skill(stats, "force") < 250 ->
         {:error, "你的内功火候太浅，没有办法练燃木刀法。\n"}
 
       Stats.skill(stats, "blade") < 100 ->
         {:error, "你的基本刀法火候太浅，没有办法练燃木刀法。\n"}
 
+      Stats.skill(stats, "blade") < lvl ->
+        {:error, "你的基本刀法水平还不够，无法领会更高深的燃木刀法。\n"}
+
+      (Stats.int(stats) < 32) or (Stats.con(stats) < 30) ->
+        {:error, "你先天太差，难以领会燃木刀法的要诣。\n"}
+
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -52,4 +70,9 @@ defmodule Kantele.Combat.Skills.RanmuDaofa do
       "zhenyan" => Kantele.Combat.Skills.Performs.RanmuDaofa.Zhenyan
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

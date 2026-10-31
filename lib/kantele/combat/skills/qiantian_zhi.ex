@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.QiantianZhi do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/qiantian_zhi/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -101,6 +105,33 @@ defmodule Kantele.Combat.Skills.QiantianZhi do
   @impl true
   def practice_cost(), do: %{qi: 35, neili: 11}
 
+  # LPC `valid_learn(object me)`（源 qiantian-zhi.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    neili = neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练乾天指法必须空手。\n"}
+
+      not is_nil(neili) and neili < 250 ->
+        {:error, "你的内力不够，无法学乾天指法。\n"}
+
+      Stats.skill(stats, "force") < 40 ->
+        {:error, "你的内功火候不够，无法学乾天指法。\n"}
+
+      Stats.skill(stats, "finger") < 20 ->
+        {:error, "你的基本指法太浅，无法学乾天指法。\n"}
+
+      Stats.skill(stats, "finger") < lvl ->
+        {:error, "你的基本指法水平有限，无法领会更高深的乾天指法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -125,4 +156,8 @@ defmodule Kantele.Combat.Skills.QiantianZhi do
       "zhi" => Kantele.Combat.Skills.Performs.QiantianZhi.Zhi
     }
   end
+
+  # LPC `me->query("neili")`：当前内力（vitals）
+  defp neili_of(%{meta: %{vitals: %{neili: n}}}) when is_integer(n), do: n
+  defp neili_of(_character), do: nil
 end

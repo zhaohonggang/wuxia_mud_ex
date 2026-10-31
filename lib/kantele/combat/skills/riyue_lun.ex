@@ -23,23 +23,36 @@ defmodule Kantele.Combat.Skills.RiyueLun do
   @impl true
   def valid_enable(usage), do: usage in ["hammer", "parry"]
 
+  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 riyue-lun.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
     cond do
-      stats.str < 32 ->
+      Stats.str(stats) < 32 ->
         {:error, "你先天膂力不足，难以修炼日月轮法。\n"}
+
+      not is_nil(max_neili) and max_neili < 1000 ->
+        {:error, "你的内力不够。\n"}
 
       Stats.skill(stats, "force") < 150 ->
         {:error, "你的内功火候太浅。\n"}
+
+      Stats.skill(stats, "hammer") < 100 ->
+        {:error, "你的基本锤法不够，难以修炼日月轮法。\n"}
+
+      Stats.skill(stats, "hammer") < lvl ->
+        {:error, "你的基本锤法水平有限，无法领会更高深的日月轮法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -52,4 +65,9 @@ defmodule Kantele.Combat.Skills.RiyueLun do
       "yuan" => Kantele.Combat.Skills.Performs.RiyueLun.Yuan
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.BingcanDuzhang do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/bingcan_duzhang/
   """
 
@@ -87,30 +87,6 @@ defmodule Kantele.Combat.Skills.BingcanDuzhang do
   @impl true
   def valid_enable(usage), do: usage in ["parry", "strike"]
 
-  # LPC valid_learn：force>=200 / max_neili>=3000 / strike>=本技能 / yijinjing>=本技能。
-  # 首条 `query_skill("yijinjing",1) < 0` 恒假（LPC 遗留死判断），未迁移。
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 200 ->
-        {:error, "你的内功火候不够，无法练冰蚕毒掌。\n"}
-
-      not is_nil(max_neili) and max_neili < 3000 ->
-        {:error, "你的内力太弱，无法练冰蚕毒掌。"}
-
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
-        {:error, "你的基本掌法水平有限，无法领会更高深的冰蚕毒掌。\n"}
-
-      Stats.skill(stats, "yijinjing") < Stats.skill(stats, id()) ->
-        {:error, "你的易筋经神功水平有限，无法领会更高深的冰蚕毒掌。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
 
@@ -118,6 +94,33 @@ defmodule Kantele.Combat.Skills.BingcanDuzhang do
 
   @impl true
   def practice_cost(), do: %{qi: 100, neili: 180}
+
+  # LPC `valid_learn(object me)`（源 bingcan-duzhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "yijinjing") < 0 ->
+        {:error, "你所修的内功无法练冰蚕毒掌。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，无法练冰蚕毒掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 3000 ->
+        {:error, "你的内力太弱，无法练冰蚕毒掌。"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你的基本掌法水平有限，无法领会更高深的冰蚕毒掌。\n"}
+
+      Stats.skill(stats, "yijinjing") < lvl ->
+        {:error, "你的易筋经神功水平有限，无法领会更高深的冰蚕毒掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

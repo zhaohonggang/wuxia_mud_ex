@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.ChonglingJian do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：practice_skill, valid_learn
+  - 源码钩子/条件：practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/chongling_jian/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -68,6 +72,30 @@ defmodule Kantele.Combat.Skills.ChonglingJian do
   @impl true
   def practice_cost(), do: %{qi: 50, neili: 31}
 
+  # LPC `valid_learn(object me)`（源 chongling-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 100 ->
+        {:error, "你的内力不够，没有办法练冲灵剑法。\n"}
+
+      Stats.skill(stats, "huashan-jian") < 100 ->
+        {:error, "你华山剑法火候不够，无法练冲灵剑法。\n"}
+
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+        {:error, "你必须先找一把剑才能学习冲灵剑法。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法火候有限，无法领会更高深的冲灵剑法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -85,4 +113,8 @@ defmodule Kantele.Combat.Skills.ChonglingJian do
       action -> Map.get(action, "skill_name")
     end
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

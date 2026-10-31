@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.WeituoChu do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/weituo_chu/
   """
 
@@ -112,6 +112,24 @@ defmodule Kantele.Combat.Skills.WeituoChu do
   @impl true
   def practice_cost(), do: %{qi: 0, neili: 20}
 
+  # LPC `valid_learn(object me)`（源 weituo-chu.c）
+  @impl true
+  def valid_learn(_stats, character) do
+    max_neili = max_neili_of(character)
+    family_name = family_name_of(character)
+
+    cond do
+      family_name != "少林派" ->
+        {:error, "韦陀杵只能从少林派学到。\n"}
+
+      not is_nil(max_neili) and max_neili < 1500 ->
+        {:error, "你的内力不够。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -136,4 +154,14 @@ defmodule Kantele.Combat.Skills.WeituoChu do
       "jishi" => Kantele.Combat.Skills.Performs.WeituoChu.Jishi
     }
   end
+
+  # LPC `me->query("family/family_name")`：无门派时 LPC 返回 0，
+  # `0 != "少林派"` 为真 → 拦；nil 行为一致，无需额外守卫。
+  defp family_name_of(%{meta: %{family: family}}) when is_map(family),
+    do: Map.get(family, :name) || Map.get(family, "name")
+  defp family_name_of(_character), do: nil
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

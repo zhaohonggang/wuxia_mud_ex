@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsGuxingJianTest do
   defp stats(force, sword, guxing),
     do: %{skills: %{"force" => force, "sword" => sword, "guxing-jian" => guxing}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=400 / force>=100 / sword>=80 / sword>=guxing-jian）" do
     test "max_neili < 400 被拒（内力修为不够）" do

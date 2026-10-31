@@ -26,23 +26,43 @@ defmodule Kantele.Combat.Skills.LuohanFumogong do
   @impl true
   def valid_force(_force), do: true
 
-  @impl true
-  def valid_learn(stats) do
-    force = Stats.skill(stats, "force")
-    level = Stats.skill(stats, id())
-
-    cond do
-      stats.int < 30 -> {:error, "你先天悟性不足，难以领会罗汉伏魔神功。\n"}
-      stats.con < 30 -> {:error, "你先天根骨孱弱，无法修炼罗汉伏魔神功。\n"}
-      force < 100 -> {:error, "你的基本内功火候不足，不能学罗汉伏魔神功。\n"}
-      force < level -> {:error, "你的基本内功水平不够，难以修炼更深厚的罗汉伏魔神功。\n"}
-      true -> :ok
-    end
-  end
-
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
   def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 luohan-fumogong.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+    personality = personality_of(character)
+
+    cond do
+      personality == "心狠手辣" ->
+        {:error, "你心中暗道：此功一点气势也无，何苦费力学它。。\n"}
+
+      personality == "阴险奸诈" ->
+        {:error, "你心中暗道：此功平淡无奇，何苦为它花费心思。\n"}
+
+      Stats.int(stats) < 30 ->
+        {:error, "你先天悟性不足，难以领会罗汉伏魔神功。\n"}
+
+      Stats.con(stats) < 30 ->
+        {:error, "你先天根骨孱弱，无法修炼罗汉伏魔神功。\n"}
+
+      (gender == "无性") and (Stats.skill(stats, "luohan-fumogong") > 29) ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的罗汉伏魔神功。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的基本内功火候不足，不能学罗汉伏魔神功。\n"}
+
+      not is_nil(max_neili) and max_neili < 1000 ->
+        {:error, "你的内力修为不足，不能学罗汉伏魔神功。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -54,6 +74,20 @@ defmodule Kantele.Combat.Skills.LuohanFumogong do
       "fireice" => Kantele.Combat.Skills.LuohanFumogong.Fireice
     }
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end
 
 defmodule Kantele.Combat.Skills.LuohanFumogong.Powerup do

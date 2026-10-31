@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.ZhuihunJian do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/zhuihun_jian/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -156,6 +158,37 @@ defmodule Kantele.Combat.Skills.ZhuihunJian do
   @impl true
   def practice_cost(), do: %{qi: 0, neili: 82}
 
+  # LPC `valid_learn(object me)`（源 zhuihun-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    personality = personality_of(character)
+
+    cond do
+      (personality != "心狠手辣") and (personality != "国士无双") ->
+        {:error, "你只觉追魂夺命剑毒辣无比，并无精奇之举，不学也罢。\n"}
+
+      Stats.dex(stats) < 24 ->
+        {:error, "你的先天身法太差，无法学习追魂夺命剑。\n"}
+
+      not is_nil(max_neili) and max_neili < 2500 ->
+        {:error, "你的内力修为不够。\n"}
+
+      Stats.skill(stats, "force") < 120 ->
+        {:error, "你的基本内功火候太浅。\n"}
+
+      Stats.skill(stats, "sword") < 120 ->
+        {:error, "你的基本剑法火候不够，无法学习追魂夺命剑。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的追魂夺命剑。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -181,4 +214,13 @@ defmodule Kantele.Combat.Skills.ZhuihunJian do
       "zhui" => Kantele.Combat.Skills.Performs.ZhuihunJian.Zhui
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
 end

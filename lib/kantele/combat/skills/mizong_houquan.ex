@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.MizongHouquan do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -24,27 +26,6 @@ defmodule Kantele.Combat.Skills.MizongHouquan do
 
   # LPC valid_learn 要求 max_neili>=1200 / force>=100 / cuff>=100 / cuff>=mizong-houquan
   # （须空手检查 weapon/secondary_weapon 为空 沿用 practice 流程把关，未在此建模）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 1200 ->
-        {:error, "你的内力修为太弱，无法练迷踪猴拳。\n"}
-
-      Stats.skill(stats, "force") < 100 ->
-        {:error, "你的基本内功火候不够，无法练迷踪猴拳。\n"}
-
-      Stats.skill(stats, "cuff") < 100 ->
-        {:error, "你的基本拳法火候不够，无法练迷踪猴拳。\n"}
-
-      Stats.skill(stats, "cuff") < Stats.skill(stats, id()) ->
-        {:error, "你的基本拳法水平有限，无法领会更高深的迷踪猴拳。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -54,6 +35,33 @@ defmodule Kantele.Combat.Skills.MizongHouquan do
   @doc "练招消耗：LPC practice_skill 扣 qi 55 / neili 78（须空手，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 55, neili: 78}
+
+  # LPC `valid_learn(object me)`（源 mizong-houquan.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练迷踪猴拳必须空手。\n"}
+
+      not is_nil(max_neili) and max_neili < 1200 ->
+        {:error, "你的内力修为太弱，无法练迷踪猴拳。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的基本内功火候不够，无法练迷踪猴拳。\n"}
+
+      Stats.skill(stats, "cuff") < 100 ->
+        {:error, "你的基本拳法火候不够，无法练迷踪猴拳。\n"}
+
+      Stats.skill(stats, "cuff") < lvl ->
+        {:error, "你的基本拳法水平有限，无法领会更高深的迷踪猴拳。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

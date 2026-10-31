@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.ShenlongMixin do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -19,6 +21,23 @@ defmodule Kantele.Combat.Skills.ShenlongMixin do
 
   @impl true
   def valid_enable(usage), do: usage in ["medical"]
+
+  # LPC `valid_learn(object me)`（源 shenlong-mixin.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "medical") < 100 ->
+        {:error, "你的基本医术造诣太浅，无法领会深奥的神龙秘辛。\n"}
+
+      Stats.skill(stats, "medical") < lvl ->
+        {:error, "你的基本医术水平有限，无法掌握更深奥的神龙秘辛。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

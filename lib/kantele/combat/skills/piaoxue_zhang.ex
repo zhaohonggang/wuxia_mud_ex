@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.PiaoxueZhang do
   TODO(migrate): 人工迁移中...：
   - 动态招式 1 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/piaoxue_zhang/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -104,6 +108,38 @@ defmodule Kantele.Combat.Skills.PiaoxueZhang do
   @impl true
   def practice_cost(), do: %{qi: 60, neili: 80}
 
+  # LPC `valid_learn(object me)`（源 piaoxue-zhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练飘雪穿云掌必须空手。\n"}
+
+      Stats.con(stats) < 28 ->
+        {:error, "你的先天根骨欠佳，不能练飘雪穿云掌。\n"}
+
+      Stats.str(stats) < 32 ->
+        {:error, "你的先天臂力孱弱，不能练飘雪穿云掌。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，不能练飘雪穿云掌。\n"}
+
+      Stats.skill(stats, "strike") < 100 ->
+        {:error, "你的掌法根基不够，不能练飘雪穿云掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 2200 ->
+        {:error, "你的内力修为太浅，无法练飘雪穿云掌。\n"}
+
+      Stats.skill(stats, "strike") < Stats.skill(stats, "sixiang-zhang") ->
+        {:error, "你的基本掌法太差，无法领会更高深的飘雪穿云掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -129,4 +165,8 @@ defmodule Kantele.Combat.Skills.PiaoxueZhang do
       "zhao" => Kantele.Combat.Skills.Performs.PiaoxueZhang.Zhao
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

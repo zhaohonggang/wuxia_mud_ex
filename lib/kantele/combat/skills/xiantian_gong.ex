@@ -6,7 +6,7 @@ defmodule Kantele.Combat.Skills.XiantianGong do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：difficult_level, exert_function_file, hit_ob, perform_action_file, practice_skill, valid_force, valid_learn
+  - 源码钩子/条件：difficult_level, exert_function_file, hit_ob, perform_action_file, practice_skill, valid_force
   - perform/exert 路由骨架见 tmp/perf_out/xiantian_gong/
   """
 
@@ -71,51 +71,6 @@ defmodule Kantele.Combat.Skills.XiantianGong do
   @impl true
   def practice_cost(), do: nil
 
-  @impl true
-  def valid_learn(stats, character) do
-    lvl = Stats.skill(stats, id())
-    force = Stats.skill(stats, "force")
-    unarmed = Stats.skill(stats, "unarmed")
-    taoism = Stats.skill(stats, "taoism")
-    max_neili = max_neili_of(character)
-
-    cond do
-      # LPC「国士无双/光明磊落」性格门槛未建模（meta.character 恒 nil），跳过
-      Stats.int(stats) < 34 ->
-        {:error, "你的先天悟性不足，难以领会高深的先天功。\n"}
-
-      Stats.con(stats) < 34 ->
-        {:error, "你的先天根骨孱弱，无法修炼高深的先天功。\n"}
-
-      gender_of(character) != "男性" ->
-        {:error, "先天功乃是纯阳玄功，只有男子方可修习。\n"}
-
-      taoism < 200 ->
-        {:error, "你对道学心法的理解不够，难以领会先天功。\n"}
-
-      force < 200 ->
-        {:error, "你的基本内功火候不足，难以领会先天功。\n"}
-
-      unarmed < 200 ->
-        {:error, "你的基本拳脚火候不足，难以领会先天功。\n"}
-
-      not is_nil(max_neili) and max_neili < 3500 ->
-        {:error, "你的内力修为不足，难以领会先天功。\n"}
-
-      taoism < 320 and taoism < lvl ->
-        {:error, "你对道学心法的理解不够，难以锻炼更深厚的先天功。\n"}
-
-      force < lvl ->
-        {:error, "你的基本内功水平不够，难以锻炼更深厚的先天功。\n"}
-
-      unarmed < lvl ->
-        {:error, "你的基本拳脚水平不够，难以锻炼更深厚的先天功。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
   # LPC hit_ob（combatd.c:707 force 路径）：damage_bonus>=150、自身>=180、neili>=300、
   # 空手、force 与 unarmed 都映射到本技能时，若 damage_bonus/6 > 对手 con，则给对手追加
   # (damage_bonus-100)/3 的 qi 创伤。未建模：攻击方 neili 自耗 -30、prepared 门控。
@@ -144,6 +99,53 @@ defmodule Kantele.Combat.Skills.XiantianGong do
     do: max_neili
   defp max_neili_of(_), do: nil
 
+  # LPC `valid_learn(object me)`（源 xiantian-gong.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+    personality = personality_of(character)
+
+    cond do
+      (personality != "光明磊落") and (personality != "国士无双") ->
+        {:error, "你只觉先天功正大恢弘，依自己的天性似乎难以领悟。\n"}
+
+      Stats.int(stats) < 34 ->
+        {:error, "你的先天悟性不足，难以领会高深的先天功。\n"}
+
+      Stats.con(stats) < 34 ->
+        {:error, "你的先天根骨孱弱，无法修炼高深的先天功。\n"}
+
+      gender != "男性" ->
+        {:error, "先天功乃是纯阳玄功，只有男子方可修习。\n"}
+
+      Stats.skill(stats, "taoism") < 200 ->
+        {:error, "你对道学心法的理解不够，难以领会先天功。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的基本内功火候不足，难以领会先天功。\n"}
+
+      Stats.skill(stats, "unarmed") < 200 ->
+        {:error, "你的基本拳脚火候不足，难以领会先天功。\n"}
+
+      not is_nil(max_neili) and max_neili < 3500 ->
+        {:error, "你的内力修为不足，难以领会先天功。\n"}
+
+      (Stats.skill(stats, "taoism") < 320) and (Stats.skill(stats, "taoism") < lvl) ->
+        {:error, "你对道学心法的理解不够，难以锻炼更深厚的先天功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你的基本内功水平不够，难以锻炼更深厚的先天功。\n"}
+
+      Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你的基本拳脚水平不够，难以锻炼更深厚的先天功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -170,4 +172,10 @@ defmodule Kantele.Combat.Skills.XiantianGong do
       "shield" => Kantele.Combat.Skills.Performs.XiantianGong.Shield
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end

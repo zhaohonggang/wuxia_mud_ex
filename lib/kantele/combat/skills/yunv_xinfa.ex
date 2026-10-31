@@ -31,7 +31,6 @@ defmodule Kantele.Combat.Skills.YunvXinfa do
 
   @impl true
   def valid_learn(stats, character) do
-    lvl = Stats.skill(stats, id())
     force = Stats.skill(stats, "force")
     max_neili = max_neili_of(character)
 

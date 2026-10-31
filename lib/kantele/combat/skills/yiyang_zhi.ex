@@ -23,8 +23,8 @@ defmodule Kantele.Combat.Skills.YiyangZhi do
       学习事件携带的角色切片不含持械信息，沿用本仓既有约定（`bagua_dao.ex` 等）
       由 practice 流程把关，不写入 `valid_learn`。
     - LPC `hit_ob`（一阳指穴道：空手 + `neili > 300` + 本门 > 100 + `jingluo-xue` > 100
-      时 `start_busy(2)` 与额外创伤）已迁移（见 `hit_ob/5`，含空手/持械两支不对称）；
-      仅攻击方 `neili` 自耗与对方 `neili` 削减因契约无通道未建模。
+      时 `start_busy(2)` 与额外创伤）已按源迁移（见 `hit_ob/5`，含空手/持械两支不对称、
+      攻击方内力自耗 50/30、空手支的对方内力削减）。
 
   招式里的 `"weapon"` 字段（`一阳指力`）在 LPC 只用于替换出招文案中的武器名，引擎不消费。
   """
@@ -267,12 +267,10 @@ defmodule Kantele.Combat.Skills.YiyangZhi do
   两支（源内不对称，已保真）：
 
     - **空手**：若对方未 busy 则 `start_busy(2)`（busy 时**仍**造成创伤，只是不加忙乱）；
-      额外创伤 `(damage_bonus - 100) / 3`。
+      额外创伤 `(damage_bonus - 100) / 3`；攻击方自耗 50 内力；对方内力削减
+      （`<= damage_bonus/4 + 50` 清零，否则减 `damage_bonus/4`）。
     - **持械**：源要求 `!victim->is_busy()` 才进入，且**不调用** `start_busy`（源内怪癖）；
-      额外创伤 `(damage_bonus - 100) / 4`。
-
-  未建模（引擎无通道）：攻击方 `me->add("neili", -50/-30)` 自耗、对方 `neili` 削减
-  （`<= damage_bonus/4 + 50` 时清零，否则减 `damage_bonus/4`）。
+      额外创伤 `(damage_bonus - 100) / 4`；攻击方自耗 30 内力；**无**对方内力削减。
   """
   @impl true
   def hit_ob(attacker, victim, damage_bonus, _factor, rng) do
@@ -289,63 +287,46 @@ defmodule Kantele.Combat.Skills.YiyangZhi do
         skill <= 100 -> {0, nil}
         jingluo <= 100 -> {0, nil}
         Skill.weapon?(attacker) -> armed_hit(victim_busy?, damage_bonus, rng)
-        true -> unarmed_hit(victim_busy?, damage_bonus, rng)
+        true -> unarmed_hit(victim_busy?, damage_bonus, victim, rng)
       end
     end
   end
 
-  # 持械支：源要求对方未 busy 才生效，且不 start_busy
+  # 持械支：源要求对方未 busy 才生效，且不 start_busy、不削对方内力
   defp armed_hit(true, _damage_bonus, _rng), do: {0, nil}
 
   defp armed_hit(false, damage_bonus, rng) do
     name = Enum.at(@xue_names, Skill.lpc_random(rng, length(@xue_names)))
 
     {div(damage_bonus - 100, 4),
-     "只听“嗤”的一声，$n被$N杖端发出的气劲刺中#{name}，真气不由得一滞。\n"}
+     "只听“嗤”的一声，$n被$N杖端发出的气劲刺中#{name}，真气不由得一滞。\n", [],
+     %{attacker_neili: 30}}
   end
 
   # 空手支：busy 与否都造成创伤，仅未 busy 时追加 start_busy(2)
-  defp unarmed_hit(victim_busy?, damage_bonus, rng) do
+  defp unarmed_hit(victim_busy?, damage_bonus, victim, rng) do
     name = Enum.at(@xue_names, Skill.lpc_random(rng, length(@xue_names)))
     affects = if victim_busy?, do: [], else: [{"busy", %{"rounds" => 2}}]
 
     {div(damage_bonus - 100, 3),
-     "只听“嗤”的一声，$n被$N凌空一指点中#{name}，真气不由得一滞。\n", affects}
+     "只听“嗤”的一声，$n被$N凌空一指点中#{name}，真气不由得一滞。\n", affects,
+     %{attacker_neili: 50, victim_neili: neili_drain(victim, damage_bonus)}}
+  end
+
+  # 源：
+  #   if (victim->query("neili") <= (damage_bonus / 4 + 50))
+  #           victim->set("neili", 0);
+  #   else    victim->add("neili", -damage_bonus / 4);
+  # 折算成「本次实际削减量」（清零 = 削减当前全部内力）。
+  defp neili_drain(victim, damage_bonus) do
+    current = Map.get(victim, :neili, 0)
+    amount = div(damage_bonus, 4)
+
+    if current <= amount + 50, do: current, else: amount
   end
 
   # LPC valid_learn：性别男性 / con>=34 / int>=32 / force>=240 / max_neili>=2000 /
   # finger>=150 / finger>=own
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      gender_of(character) != "男性" ->
-        {:error, "一阳指乃是纯阳玄功，你如何可以修习？\n"}
-
-      # 源 me->query("con") / me->query("int")：裸属性，非 query_con/query_int 派生值
-      Stats.con(stats) < 34 ->
-        {:error, "你的先天根骨欠佳，无法修炼一阳指。\n"}
-
-      Stats.int(stats) < 32 ->
-        {:error, "你的先天悟性不足，无法领会一阳指。\n"}
-
-      Stats.skill(stats, "force") < 240 ->
-        {:error, "你的内功火候不够，无法学一阳指。\n"}
-
-      not is_nil(max_neili) and max_neili < 2000 ->
-        {:error, "你的内力太弱，无法练一阳指。\n"}
-
-      Stats.skill(stats, "finger") < 150 ->
-        {:error, "你的基本指法火候不够，无法学一阳指。\n"}
-
-      Stats.skill(stats, "finger") < Stats.skill(stats, id()) ->
-        {:error, "你的基本指法水平有限，无法领会更高深的一阳指。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -369,6 +350,43 @@ defmodule Kantele.Combat.Skills.YiyangZhi do
               if(level > action_staff[i-1]["lvl"])
                   return action_staff[NewRandom(i, 20, level/5)];
   """
+  # LPC `valid_learn(object me)`（源 yiyang-zhi.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+
+    cond do
+      gender != "男性" ->
+        {:error, "一阳指乃是纯阳玄功，你如何可以修习？\n"}
+
+      Stats.con(stats) < 34 ->
+        {:error, "你的先天根骨欠佳，无法修炼一阳指。\n"}
+
+      Stats.int(stats) < 32 ->
+        {:error, "你的先天悟性不足，无法领会一阳指。\n"}
+
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练一阳指必须空手。\n"}
+
+      Stats.skill(stats, "force") < 240 ->
+        {:error, "你的内功火候不够，无法学一阳指。\n"}
+
+      not is_nil(max_neili) and max_neili < 2000 ->
+        {:error, "你的内力太弱，无法练一阳指。\n"}
+
+      Stats.skill(stats, "finger") < 150 ->
+        {:error, "你的基本指法火候不够，无法学一阳指。\n"}
+
+      Stats.skill(stats, "finger") < lvl ->
+        {:error, "你的基本指法水平有限，无法领会更高深的一阳指。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng, attacker) do
     if Skill.weapon?(attacker) do

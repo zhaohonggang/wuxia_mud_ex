@@ -15,6 +15,8 @@ defmodule Kantele.Combat.Skills.RiyueBian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @allowed_forces ~w(riyue-xinfa riyue-bian)
@@ -28,11 +30,23 @@ defmodule Kantele.Combat.Skills.RiyueBian do
   @impl true
   def valid_force(force), do: force in @allowed_forces
 
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 75 / neili 85（须持鞭，由 practice 流程把关）"
+  @impl true
+  def practice_cost(), do: %{qi: 75, neili: 85}
+
+  # LPC `valid_learn(object me)`（源 riyue-bian.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+        {:error, "你必须先找一条鞭子才能练鞭法。\n"}
+
       Stats.int(stats) < 30 ->
         {:error, "你觉得日月鞭法过于艰深，难以理解。\n"}
 
@@ -48,20 +62,13 @@ defmodule Kantele.Combat.Skills.RiyueBian do
       Stats.skill(stats, "whip") < 100 ->
         {:error, "你的基本鞭法火候太浅，没有办法练日月鞭法。\n"}
 
-      Stats.skill(stats, "whip") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "whip") < lvl ->
         {:error, "你的基本鞭法水平还不够，无法领会更高深的日月鞭法。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 75 / neili 85（须持鞭，由 practice 流程把关）"
-  @impl true
-  def practice_cost(), do: %{qi: 75, neili: 85}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

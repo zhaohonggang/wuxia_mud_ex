@@ -13,12 +13,27 @@ defmodule Kantele.Combat.SkillsHitObBatch5Test do
   `Kantele.Character.CombatEvent.apply_round_conditions/2` 落到防守方
   `character.meta.combat.busy`（`Combat.start_busy/2` 取 max，与 LPC 同义）。
 
-  未建模（`hit_ob` 契约无通道）：攻击方 `neili` 自耗、对方 `neili` 削减、
-  以及七弦的「无创伤气血伤害」—— 已在各模块 moduledoc 注明。
+  另三项引擎级效果走 `hit_ob` 的可选第 4 元素 `extra`：
+
+  | 键 | LPC 对应 | 落地点 |
+  |---|---|---|
+  | `:plain_damage` | `victim->receive_damage("qi", n)` | 叠加进 `Round.damage` |
+  | `:victim_neili` | `victim->add("neili", -n)` / `set("neili", 0)` | 防守方 `vitals.neili`（本进程） |
+  | `:attacker_neili` | `me->add("neili", -n)` | 经 `combat/attacker-cost` 回传攻击方进程 |
+
+  测试只覆盖到 `Round` 字段与 `attacker_cost/2` 回调（沿用
+  `skills_poison_hit_ob_test.exs` 的既有范式）。
   """
 
   use ExUnit.Case, async: true
 
+  import Kalevala.ConnTest
+
+  alias Kantele.Character.Combat
+  alias Kantele.Character.CombatEvent
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Stats
+  alias Kantele.Character.Vitals
   alias Kantele.Combat.Engine
   alias Kantele.Combat.Fighter
   alias Kantele.Combat.Skills.{QixianWuxingjian, TanzhiShentong, YiyangZhi}
@@ -40,12 +55,16 @@ defmodule Kantele.Combat.SkillsHitObBatch5Test do
     defp qx_att(extra \\ %{}),
       do: att(%{"qixian-wuxingjian" => 200}, Map.merge(%{max_neili: 3000, neili: 1000}, extra))
 
-    test "条件齐备 → 额外创伤 skill/8 + damage/5，并附 busy 1" do
-      {wound, msg, affects} = QixianWuxingjian.hit_ob(qx_att(), vic(200), 200, 0, max_rng())
+    test "条件齐备 → 额外创伤 skill/8 + damage/5，附 busy 1、无创伤气血伤害与自身内力自耗" do
+      {wound, msg, affects, extra} =
+        QixianWuxingjian.hit_ob(qx_att(), vic(200), 200, 0, max_rng())
 
       assert wound == div(200, 8) + div(200, 5)
       assert msg == "只听一阵淳厚的弦音从$N处传来，$n『#{@last_acupoint}』顿时受震，两耳轰鸣，全身真气乱窜不止！\n"
       assert affects == [{"busy", %{"rounds" => 1}}]
+
+      # LPC: victim->receive_damage("qi", skill/5 + damage_bonus/3) / me->add("neili", -100)
+      assert extra == %{plain_damage: div(200, 5) + div(200, 3), attacker_neili: 100}
     end
 
     test "本门 < 180 不触发" do
@@ -90,12 +109,22 @@ defmodule Kantele.Combat.SkillsHitObBatch5Test do
           Map.merge(%{neili: 800}, extra)
         )
 
-    test "条件齐备 → 额外创伤 (damage-100)/4，并附 busy 2" do
-      {wound, msg, affects} = TanzhiShentong.hit_ob(tz_att(), vic(0), 200, 0, max_rng())
+    test "条件齐备 → 额外创伤 (damage-100)/4，附 busy 2 与对方内力削减" do
+      {wound, msg, affects, extra} =
+        TanzhiShentong.hit_ob(tz_att(), vic(0, %{neili: 1000}), 200, 0, max_rng())
 
       assert wound == div(200 - 100, 4)
       assert msg == "只听“飕”的一声，$n被$N凌空弹射出的指气点中#{@last_acupoint}，全身登时一阵酸麻。\n"
       assert affects == [{"busy", %{"rounds" => 2}}]
+      # 1000 > 200/4 + 50 = 100 → 减 50
+      assert extra == %{victim_neili: 50}
+    end
+
+    test "对方内力 <= damage/4 + 50 时削减量取当前全部（源 set neili 0）" do
+      {_wound, _msg, _affects, extra} =
+        TanzhiShentong.hit_ob(tz_att(), vic(0, %{neili: 100}), 200, 0, max_rng())
+
+      assert extra == %{victim_neili: 100}
     end
 
     test "damage_bonus < 150 不触发" do
@@ -129,28 +158,35 @@ defmodule Kantele.Combat.SkillsHitObBatch5Test do
           Map.merge(%{neili: 301}, extra)
         )
 
-    test "空手支：额外创伤 (damage-100)/3，并附 busy 2" do
-      {wound, msg, affects} = YiyangZhi.hit_ob(yy_att(), vic(0), 200, 0, max_rng())
+    test "空手支：额外创伤 (damage-100)/3，附 busy 2、自身内力 -50 与对方内力削减" do
+      {wound, msg, affects, extra} =
+        YiyangZhi.hit_ob(yy_att(), vic(0, %{neili: 1000}), 200, 0, max_rng())
 
       assert wound == div(200 - 100, 3)
       assert msg == "只听“嗤”的一声，$n被$N凌空一指点中#{@last_acupoint}，真气不由得一滞。\n"
       assert affects == [{"busy", %{"rounds" => 2}}]
+      # 1000 > 200/4 + 50 = 100 → 减 50
+      assert extra == %{attacker_neili: 50, victim_neili: 50}
     end
 
     test "空手支 + 对方已 busy：仍造成创伤，但不追加忙乱（源仅 if(!is_busy) 才 start_busy）" do
-      {wound, msg, affects} = YiyangZhi.hit_ob(yy_att(), vic(0, %{busy: 1}), 200, 0, max_rng())
+      {wound, msg, affects, extra} =
+        YiyangZhi.hit_ob(yy_att(), vic(0, %{busy: 1, neili: 1000}), 200, 0, max_rng())
 
       assert wound == div(200 - 100, 3)
       assert is_binary(msg)
       assert affects == []
+      assert extra == %{attacker_neili: 50, victim_neili: 50}
     end
 
-    test "持械支：额外创伤 (damage-100)/4，且**不**追加忙乱（源内怪癖）" do
-      # 源持械支只 return 文案（无 affect），故契约回 2 元组
-      {wound, msg} = YiyangZhi.hit_ob(yy_att(%{weapon_name: "铁杖"}), vic(0), 200, 0, max_rng())
+    test "持械支：额外创伤 (damage-100)/4，不追加忙乱、不削对方内力（源内怪癖）" do
+      {wound, msg, affects, extra} =
+        YiyangZhi.hit_ob(yy_att(%{weapon_name: "铁杖"}), vic(0, %{neili: 1000}), 200, 0, max_rng())
 
       assert wound == div(200 - 100, 4)
       assert msg == "只听“嗤”的一声，$n被$N杖端发出的气劲刺中#{@last_acupoint}，真气不由得一滞。\n"
+      assert affects == []
+      assert extra == %{attacker_neili: 30}
     end
 
     test "持械支 + 对方已 busy：整支不生效（源把 !is_busy 写进前置条件）" do
@@ -231,6 +267,11 @@ defmodule Kantele.Combat.SkillsHitObBatch5Test do
 
       assert round.outcome == :hit
       assert {"busy", %{"rounds" => 1}} in round.conditions
+
+      # hit_ob 第 4 元素 `extra` 落到 Round 的三个字段
+      assert round.attacker_neili == 100
+      assert round.plain_damage == div(200, 5) + div(round.damage, 3)
+      assert round.victim_neili == 0
     end
 
     test "对方已 busy 时七弦不触发，Round.conditions 为空" do
@@ -266,6 +307,59 @@ defmodule Kantele.Combat.SkillsHitObBatch5Test do
                {"busy", _} -> true
                _ -> false
              end)
+
+      assert round.attacker_neili == 0
+      assert round.plain_damage == 0
+    end
+  end
+
+  describe "攻击方内力自耗回传（combat/attacker-cost）" do
+    defp cost_character(neili) do
+      stats = Stats.new() |> struct(skills: %{"sword" => 10})
+
+      %Kalevala.Character{
+        id: "player-cost",
+        name: "李四",
+        pid: self(),
+        room_id: "test:room",
+        meta: %PlayerMeta{
+          vitals: %{Vitals.new() | neili: neili},
+          stats: stats,
+          combat: Combat.new()
+        }
+      }
+    end
+
+    defp conn_character(conn), do: conn.private.update_character || conn.character
+
+    test "扣减攻击方内力（防守方进程发来的自耗）" do
+      conn = build_conn(cost_character(500))
+
+      conn =
+        CombatEvent.attacker_cost(conn, %{
+          topic: "combat/attacker-cost",
+          data: %{neili: 100}
+        })
+
+      assert conn_character(conn).meta.vitals.neili == 400
+    end
+
+    test "内力不足时钳到 0（不出现负数）" do
+      conn = build_conn(cost_character(30))
+
+      conn =
+        CombatEvent.attacker_cost(conn, %{
+          topic: "combat/attacker-cost",
+          data: %{neili: 100}
+        })
+
+      assert conn_character(conn).meta.vitals.neili == 0
+    end
+
+    test "非法 amount 原样返回" do
+      conn = build_conn(cost_character(500))
+      assert CombatEvent.attacker_cost(conn, %{data: %{neili: 0}}) == conn
+      assert CombatEvent.attacker_cost(conn, %{data: %{}}) == conn
     end
   end
 end

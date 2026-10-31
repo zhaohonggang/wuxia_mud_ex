@@ -21,6 +21,12 @@ defmodule Kantele.Combat.Skills.MartialCognize do
   @impl true
   def valid_enable(_usage), do: false
 
+  # LPC `valid_learn(object me)`（源 martial-cognize.c）—— 源内无条件 notify_fail，恒不可学
+  @impl true
+  def valid_learn(_stats, _character) do
+    {:error, "武学修养是你武学方面的领悟，无法通过简单学习获得提升。\n"}
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)

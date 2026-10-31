@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.CuixinZhang do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_combine, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_combine
   - perform/exert 路由骨架见 tmp/perf_out/cuixin_zhang/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
   alias Kantele.Combat.PoisonHit
@@ -105,11 +107,25 @@ defmodule Kantele.Combat.Skills.CuixinZhang do
 
   # LPC valid_learn：空手 / force>=100 / max_neili>=1200 / unarmed>=100 且 >=本技能 /
   # strike>=100 且 >=本技能。空手检查未建模（character 快照不含持械，见 MEMORY）。
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @impl true
+  def practice_cost(), do: %{qi: 80, neili: 120}
+
+  # LPC `valid_learn(object me)`（源 cuixin-zhang.c）
   @impl true
   def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
 
     cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练催心掌必须空手。\n"}
+
       Stats.skill(stats, "force") < 100 ->
         {:error, "你的内功太差，无法练习催心掌。\n"}
 
@@ -119,27 +135,19 @@ defmodule Kantele.Combat.Skills.CuixinZhang do
       Stats.skill(stats, "unarmed") < 100 ->
         {:error, "你的基本拳脚有限，无法体会催心掌的要诣。\n"}
 
-      Stats.skill(stats, "unarmed") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "unarmed") < lvl ->
         {:error, "你的基本拳脚水平有限，无法领会更高深的催心掌。\n"}
 
       Stats.skill(stats, "strike") < 100 ->
         {:error, "你的基本掌法太差，无法领会催心掌。\n"}
 
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+      Stats.skill(stats, "strike") < lvl ->
         {:error, "你的基本掌法火候不够，无法领会更高深的催心掌。\n"}
 
       true ->
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
-    do: max_neili
-
-  defp max_neili_of(_), do: nil
-
-  @impl true
-  def practice_cost(), do: %{qi: 80, neili: 120}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

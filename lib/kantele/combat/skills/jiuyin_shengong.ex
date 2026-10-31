@@ -23,6 +23,8 @@ defmodule Kantele.Combat.Skills.JiuyinShengong do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "$N伸手一探，顿时气流呼啸而至，单手毫无花巧的插向$n$l",
@@ -234,6 +236,49 @@ defmodule Kantele.Combat.Skills.JiuyinShengong do
     end
   end
 
+  # LPC `valid_learn(object me)`（源 jiuyin-shengong.c）
+  # 源内循环遍历 `usage_skills2`（unarmed/dodge/force）但提示串用了
+  # `usage_skills[i]`（源 bug：越界索引另一数组）——此处按**实际判定**的三个
+  # 基本技能给出对应中文名。
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    personality = personality_of(character)
+    gender = gender_of(character)
+
+    cond do
+      personality == "狡黠多变" ->
+        {:error, "九阴神功正大恢弘，气度俨然，你怎么也学不得神似。\n"}
+
+      personality == "阴险奸诈" ->
+        {:error, "九阴神功正大恢弘，气度俨然，你怎么也学不得神似。\n"}
+
+      Stats.str(stats) < 38 ->
+        {:error, "你发现自己的膂力不足，无法将九阴神功运用自如。\n"}
+
+      Stats.con(stats) < 34 ->
+        {:error, "你发现自己先天根骨不足，无法运转九阴神功。\n"}
+
+      gender == "无性" ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的九阴神功。\n"}
+
+      Stats.skill(stats, "martial-cognize") < 260 ->
+        {:error, "你觉得九阴神功过于深奥，以自己的武学修养全然无法明白。\n"}
+
+      Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你对基本拳脚的理解还不够，无法继续领会更高深的九阴神功。\n"}
+
+      Stats.skill(stats, "dodge") < lvl ->
+        {:error, "你对基本轻功的理解还不够，无法继续领会更高深的九阴神功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你对基本内功的理解还不够，无法继续领会更高深的九阴神功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action_for(@actions, @actions_weapon, level, nil, rng)
@@ -271,4 +316,13 @@ defmodule Kantele.Combat.Skills.JiuyinShengong do
       "shield" => Kantele.Combat.Skills.Performs.JiuyinShengong.Shield
     }
   end
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
 end

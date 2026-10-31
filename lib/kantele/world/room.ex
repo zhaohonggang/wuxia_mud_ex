@@ -3394,8 +3394,8 @@ defmodule Kantele.World.Room.CombatEvent do
 
       teacher ->
         # 学生属性由命令层随事件携带（房间上下文中的角色是 Trimmed 版本）。
-        # 注意：vitals/family/env/spouse 必须**原样转发**，否则师父侧
-        # `valid_learn/2` 的 max_neili 门与 SectMaster 门派门会静默失效
+        # 注意：vitals/family/env/spouse/equipped 必须**原样转发**，否则师父侧
+        # `valid_learn/2` 的 max_neili 门、SectMaster 门派门与持械门会静默失效
         # （缺字段 → 各技能的防御式读取回落 nil → 门槛被跳过）。
         event(context, teacher.pid, student.pid, "skills/teach", %{
           skill: event.data.skill,
@@ -3405,6 +3405,7 @@ defmodule Kantele.World.Room.CombatEvent do
           student_family: Map.get(event.data, :student_family),
           student_env: Map.get(event.data, :student_env),
           student_spouse: Map.get(event.data, :student_spouse),
+          student_equipped: Map.get(event.data, :student_equipped),
           reply_to: student.pid
         })
     end

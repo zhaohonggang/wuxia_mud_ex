@@ -16,7 +16,7 @@ defmodule Kantele.Combat.SkillsSuxinJianTest do
     do: %{int: int, skills: %{"force" => force, "sword" => sword, "suxin-jian" => suxin}}
 
   defp char_female_with_max_neili(mn),
-    do: %{meta: %{env: %{gender: "女性"}, vitals: %{max_neili: mn}}}
+    do: %{meta: %{env: %{gender: "女性"}, vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}}
 
   defp char_male(), do: %{meta: %{env: %{gender: "男性"}}}
 

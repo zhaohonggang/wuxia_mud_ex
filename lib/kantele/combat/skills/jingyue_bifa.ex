@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.JingyueBifa do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -20,28 +22,33 @@ defmodule Kantele.Combat.Skills.JingyueBifa do
   @impl true
   def valid_enable(usage), do: usage in ["dagger", "parry"]
 
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 100 ->
-        {:error, "你的内力修为不够。\n"}
-
-      Stats.skill(stats, "dagger") < Stats.skill(stats, id()) ->
-        {:error, "你的基本短兵水平有限，无法领会更高深的惊月笔法。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili), do: max_neili
   defp max_neili_of(_), do: nil
 
   @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 42（须持短兵，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 45, neili: 42}
+
+  # LPC `valid_learn(object me)`（源 jingyue-bifa.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 100 ->
+        {:error, "你的内力修为不够。\n"}
+
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "dagger") ->
+        {:error, "你必须先找一把相应的武器才能学习惊月笔法。\n"}
+
+      Stats.skill(stats, "dagger") < lvl ->
+        {:error, "你的基本短兵水平有限，无法领会更高深的惊月笔法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

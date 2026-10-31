@@ -13,6 +13,8 @@ defmodule Kantele.Combat.Skills.JimieZhua do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -21,20 +23,26 @@ defmodule Kantele.Combat.Skills.JimieZhua do
   @impl true
   def valid_enable(usage), do: usage in ["claw", "parry"]
 
+  @doc "只能学(learn)不能练"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 jimie-zhua.c）
+  @impl true
+  def valid_learn(_stats, character) do
+    max_neili = max_neili_of(character)
+
     cond do
-      Stats.skill(stats, "force") < 60 ->
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练寂灭爪必须空手。\n"}
+
+      not is_nil(max_neili) and max_neili < 600 ->
         {:error, "你的内力太弱，无法学习寂灭爪。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -43,4 +51,9 @@ defmodule Kantele.Combat.Skills.JimieZhua do
   def perform_list() do
     %{"wuwo" => Kantele.Combat.Skills.Performs.JimieZhua.Wuwo}
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.LutouZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -21,29 +23,6 @@ defmodule Kantele.Combat.Skills.LutouZhang do
 
   @impl true
   def valid_enable(usage), do: usage in ["staff", "parry"]
-
-  # LPC valid_learn 要求 max_neili>=200 / force>=60 / staff>=20 / staff>=lutou-zhang（须持杖检查由 practice 流程把关）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 200 ->
-        {:error, "你的内力修为不足，无法学习鹿头杖法。\n"}
-
-      Stats.skill(stats, "force") < 60 ->
-        {:error, "你的内功火候太浅，无法学习鹿头杖法。\n"}
-
-      Stats.skill(stats, "staff") < 20 ->
-        {:error, "你的基本杖法太浅，无法学习鹿头杖法。\n"}
-
-      Stats.skill(stats, "staff") < Stats.skill(stats, id()) ->
-        {:error, "你的基本杖法水平有限，无法领会更高深的鹿头杖法。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -53,6 +32,33 @@ defmodule Kantele.Combat.Skills.LutouZhang do
   @doc "练招消耗：LPC practice_skill 扣 qi 75 / neili 78（须持杖，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 75, neili: 78}
+
+  # LPC `valid_learn(object me)`（源 lutou-zhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "staff") ->
+        {:error, "你使用的武器不对。\n"}
+
+      not is_nil(max_neili) and max_neili < 200 ->
+        {:error, "你的内力修为不足，无法学习鹿头杖法。\n"}
+
+      Stats.skill(stats, "force") < 60 ->
+        {:error, "你的内功火候太浅，无法学习鹿头杖法。\n"}
+
+      Stats.skill(stats, "staff") < 20 ->
+        {:error, "你的基本杖法太浅，无法学习鹿头杖法。\n"}
+
+      Stats.skill(stats, "staff") < lvl ->
+        {:error, "你的基本杖法水平有限，无法领会更高深的鹿头杖法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

@@ -13,6 +13,8 @@ defmodule Kantele.Combat.Skills.FeifengWhip do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -21,20 +23,29 @@ defmodule Kantele.Combat.Skills.FeifengWhip do
   @impl true
   def valid_enable(usage), do: usage in ["whip", "parry"]
 
+  @doc "只能学(learn)不能练"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 feifeng-whip.c）
+  @impl true
+  def valid_learn(stats, character) do
+    gender = gender_of(character)
+
     cond do
       Stats.skill(stats, "force") < 30 ->
         {:error, "你的内功火候太浅。\n"}
+
+      gender != "女性" ->
+        {:error, "大老爷们学这飞凤鞭？天资不足吧。\n"}
+
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+        {:error, "你必须先找一条长鞭才能练鞭法。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -43,4 +54,9 @@ defmodule Kantele.Combat.Skills.FeifengWhip do
   def perform_list() do
     %{"wu" => Kantele.Combat.Skills.Performs.FeifengWhip.Wu}
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
 end

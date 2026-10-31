@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.ZhuangziWu do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -62,6 +64,28 @@ defmodule Kantele.Combat.Skills.ZhuangziWu do
   @impl true
   def practice_cost(), do: %{qi: 50, neili: 60}
 
+  # LPC `valid_learn(object me)`（源 zhuangzi-wu.c）
+  # LPC: lvl = query_skill(); if (lvl > 300) lvl = 300; if (family=="红花会") lvl -= 60;
+  @impl true
+  def valid_learn(stats, character) do
+    family_name = family_name_of(character)
+    max_neili = max_neili_of(character)
+
+    base = min(Stats.skill(stats, id()), 300)
+    lvl = if family_name == "红花会", do: base - 60, else: base
+
+    cond do
+      Stats.dex(stats) < 26 ->
+        {:error, "你先天身法太差，无法学习庄子舞。\n"}
+
+      not is_nil(max_neili) and max_neili < 2400 + lvl * 15 ->
+        {:error, "你按照庄子舞所示的步法随意走了两下，顿时只感头晕目眩，看来是内力不济。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -76,4 +100,14 @@ defmodule Kantele.Combat.Skills.ZhuangziWu do
       "hua" => Kantele.Combat.Skills.Performs.ZhuangziWu.Hua
     }
   end
+
+  # LPC `me->query("family/family_name")`：无门派时 LPC 返回 0，
+  # `0 != "少林派"` 为真 → 拦；nil 行为一致，无需额外守卫。
+  defp family_name_of(%{meta: %{family: family}}) when is_map(family),
+    do: Map.get(family, :name) || Map.get(family, "name")
+  defp family_name_of(_character), do: nil
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

@@ -286,10 +286,27 @@ defmodule Kantele.Character.CombatEvent do
     # affect_by 先于 receive_damage 的顺序一致。
     conn = apply_round_conditions(conn, round.conditions)
 
-    case {round.outcome, round.damage > 0 or round.wounded > 0} do
+    # hit_ob 第 4 元素 `extra` 的两项防守方效果：
+    #   victim_neili  —— LPC `victim->add("neili", -n)`（本进程即防守方，直接落地）
+    #   attacker_neili —— LPC `me->add("neili", -n)`（跨进程，回传攻击方扣减）
+    #
+    # 注意 `put_character/2` 只写 `private.update_character`、不改 `conn.character`，
+    # 故此处必须以局部 `character`（已含本回合 add_enemy 结果）为准，
+    # 绝不能用 `conn.character` 重取——那会回退到入战前的旧快照。
+    character = apply_victim_neili(character, round.victim_neili)
+    conn = put_character(conn, character)
+
+    # 纯副作用（只发事件给攻击方进程），不改本进程 conn
+    notify_attacker_cost(attacker, round.attacker_neili)
+
+    # plain_damage 是「无创伤」气血伤害（LPC `receive_damage("qi", n)`），
+    # 叠加进本次 damage 一并结算（仍走 apply_hit 的死亡/点到即止判定）。
+    damage = round.damage + round.plain_damage
+
+    case {round.outcome, damage > 0 or round.wounded > 0} do
       {:hit, true} ->
         apply_hit(conn, character, attacker, %{
-          damage: round.damage,
+          damage: damage,
           wounded: round.wounded
         })
 
@@ -297,6 +314,46 @@ defmodule Kantele.Character.CombatEvent do
         conn
     end
   end
+
+  # 防守方内力削减（hit_ob `extra[:victim_neili]`，LPC `victim->add("neili", -n)`）
+  defp apply_victim_neili(character, amount) when is_integer(amount) and amount > 0 do
+    vitals = character.meta.vitals
+    put_vitals(character, %{vitals | neili: max(vitals.neili - amount, 0)})
+  end
+
+  defp apply_victim_neili(character, _amount), do: character
+
+  # 攻击方内力自耗（hit_ob `extra[:attacker_neili]`，LPC `me->add("neili", -n)`）：
+  # 结算发生在防守方进程，拿不到攻击方状态，故回传一条事件让攻击方自己扣。
+  # 与 `combat/enemy-died` 同为「防守方 -> 攻击方」方向的单向后通知。
+  defp notify_attacker_cost(_attacker, amount) when not (is_integer(amount) and amount > 0),
+    do: :ok
+
+  defp notify_attacker_cost(attacker, amount) do
+    if Process.alive?(attacker.pid) do
+      send(
+        attacker.pid,
+        %Event{from_pid: self(), topic: "combat/attacker-cost", data: %{neili: amount}}
+      )
+    end
+
+    :ok
+  end
+
+  @doc """
+  攻击方内力自耗结算（`combat/attacker-cost`，由防守方的 `incoming` 发来）
+
+  对应 LPC `hit_ob` 里的 `me->add("neili", -n)`——结算在防守方进程执行，
+  故经事件回传到攻击方自己的进程扣减。
+  """
+  def attacker_cost(conn, %{data: %{neili: amount}}) when is_integer(amount) and amount > 0 do
+    character = conn.character
+    vitals = character.meta.vitals
+    vitals = %{vitals | neili: max(vitals.neili - amount, 0)}
+    put_character(conn, put_vitals(character, vitals))
+  end
+
+  def attacker_cost(conn, _event), do: conn
 
   # 把 `Round.conditions` 逐条落到防守方 session（`[{cnd, para}]`）
   #

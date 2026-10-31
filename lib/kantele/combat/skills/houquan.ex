@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.Houquan do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -24,11 +26,25 @@ defmodule Kantele.Combat.Skills.Houquan do
 
   # LPC valid_learn 要求 force>=30 / max_neili>=200
   # （空手检查 weapon/secondary_weapon 沿用 practice 流程把关，未在此建模）
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 25 / neili 18（须空手，由 practice 流程把关）"
+  @impl true
+  def practice_cost(), do: %{qi: 25, neili: 18}
+
+  # LPC `valid_learn(object me)`（源 houquan.c）
   @impl true
   def valid_learn(stats, character) do
     max_neili = max_neili_of(character)
 
     cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练猴拳必须空手。\n"}
+
       Stats.skill(stats, "force") < 30 ->
         {:error, "你的基本内功火候不够，无法学猴拳。\n"}
 
@@ -39,15 +55,6 @@ defmodule Kantele.Combat.Skills.Houquan do
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
-    do: max_neili
-
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 25 / neili 18（须空手，由 practice 流程把关）"
-  @impl true
-  def practice_cost(), do: %{qi: 25, neili: 18}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

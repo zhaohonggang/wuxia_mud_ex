@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.YuenvJian do
   TODO(migrate): 人工迁移中...：
   - 动态招式 1 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：hit_ob, perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/yuenv_jian/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -124,6 +126,37 @@ defmodule Kantele.Combat.Skills.YuenvJian do
   @impl true
   def practice_cost(), do: %{qi: 64, neili: 65}
 
+  # LPC `valid_learn(object me)`（源 yuenv-jian.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    gender = gender_of(character)
+
+    cond do
+      gender != "女性" ->
+        {:error, "你练来练去觉得这个剑法还是适合女性练习！\n"}
+
+      Stats.dex(stats) < 36 ->
+        {:error, "你先天身法不足，无法修炼越女剑术。\n"}
+
+      Stats.skill(stats, "dodge") < 200 ->
+        {:error, "你的轻功火候不到，无法运用越女剑术。\n"}
+
+      Stats.skill(stats, "sword") < 200 ->
+        {:error, "你的剑术功底不行，难以领会越女剑术。\n"}
+
+      not is_nil(max_neili) and max_neili < 1200 ->
+        {:error, "你的内力太差，无法学习越女剑术。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的越女剑术。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -138,4 +171,12 @@ defmodule Kantele.Combat.Skills.YuenvJian do
       "xin" => Kantele.Combat.Skills.Performs.YuenvJian.Xin
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
 end

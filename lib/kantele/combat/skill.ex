@@ -130,7 +130,8 @@ defmodule Kantele.Combat.Skill do
   返回值：
 
   - `{extra_wound, msg}` —— 常用形式；
-  - `{extra_wound, msg, affects}` —— 附带持续状态（`affects :: [{cnd, para}]`）。
+  - `{extra_wound, msg, affects}` —— 附带持续状态（`affects :: [{cnd, para}]`）；
+  - `{extra_wound, msg, affects, extra}` —— 再附带引擎级效果（`extra :: map()`，见下）。
 
   其中：
 
@@ -139,7 +140,15 @@ defmodule Kantele.Combat.Skill do
   - `affects` 里的每一项对应一次 `victim->affect_by(cnd, para)`，由
     `Kantele.Character.ConditionEvent.apply_poison_condition/3` 落到防守方
     session（`para` 至少含 `"level"/"duration"/"id"`，缺 `"remain"` 时按
-    LPC `mixed_poison` 折算为 `level * duration`）。
+    LPC `mixed_poison` 折算为 `level * duration`）。保留字 `"busy"` 不走条件
+    daemon，直接 `Combat.start_busy/2`（对应 LPC `victim->start_busy(n)`）。
+  - `extra` 的三项引擎级效果（都可省略）：
+
+    | 键 | 含义 | 对应 LPC |
+    |---|---|---|
+    | `:plain_damage` | 追加**无创伤**气血伤害（叠加进 `round.damage`） | `victim->receive_damage("qi", n)` |
+    | `:victim_neili` | 削减防守方内力（本进程即防守方，直接落地） | `victim->add("neili", -n)` / `set("neili", 0)` |
+    | `:attacker_neili` | 攻击方内力自耗（跨进程，经 `combat/attacker-cost` 回传） | `me->add("neili", -n)` |
 
   绝大多数技能不实现（回落 `{0, nil}`）。
   """
@@ -149,7 +158,10 @@ defmodule Kantele.Combat.Skill do
               non_neg_integer(),
               integer(),
               (non_neg_integer() -> non_neg_integer())
-            ) :: {non_neg_integer(), String.t() | nil} | {non_neg_integer(), String.t() | nil, list()}
+            ) ::
+              {non_neg_integer(), String.t() | nil}
+              | {non_neg_integer(), String.t() | nil, list()}
+              | {non_neg_integer(), String.t() | nil, list(), map()}
 
   @doc "练习前置校验（对应 practice_skill 的 qi/neili 门槛），返回 :ok 或出错文案"
   @callback practice_check(map()) :: :ok | {:error, String.t()}
@@ -311,6 +323,48 @@ defmodule Kantele.Combat.Skill do
   @spec weapon_skill_type(term()) :: String.t() | nil
   def weapon_skill_type(%{weapon_skill_type: type}) when is_binary(type), do: type
   def weapon_skill_type(_), do: nil
+
+  @doc """
+  角色当前是否持械（对应 LPC `me->query_temp("weapon")`）
+
+  与 `weapon?/1` 的区别：`weapon?/1` 读**战斗快照**（`Fighter.weapon_name`），
+  本函数读**角色本身**的装备槽（`character.meta.combat.equipped[:weapon]`），
+  用于 `valid_learn/2` 这类拿不到 Fighter 的场景（源里大量
+  `if (me->query_temp("weapon") || me->query_temp("secondary_weapon"))` 的空手门）。
+
+  `character` 既可以是完整 Character，也可以是 teach 事件切片
+  （`skills_event.ex` 只带 `meta.combat.equipped` 一个键）。缺该键 → 视为空手。
+  """
+  @spec wielding?(term()) :: boolean()
+  def wielding?(%{meta: %{combat: %{equipped: equipped}}}) when is_map(equipped),
+    do: Map.has_key?(equipped, :weapon) or Map.has_key?(equipped, "weapon")
+
+  def wielding?(_character), do: false
+
+  @doc "副手是否持械（对应 LPC `me->query_temp(\"secondary_weapon\")`）"
+  @spec secondary_wielding?(term()) :: boolean()
+  def secondary_wielding?(%{meta: %{combat: %{equipped: equipped}}}) when is_map(equipped),
+    do: Map.has_key?(equipped, :secondary_weapon) or Map.has_key?(equipped, "secondary_weapon")
+
+  def secondary_wielding?(_character), do: false
+
+  @doc """
+  角色当前手持武器的原始 `skill_type`（对应 LPC `weapon->query("skill_type")`）
+
+  空手返回 `nil`（LPC 里 weapon 为 0，源内比较即恒不等）。
+  用于 `valid_learn` 里「必须持某类兵器才能学」的门，例如
+  `if (!(ob = me->query_temp("weapon")) || ob->query("skill_type") != "sword")`。
+  """
+  @spec wielded_skill_type(term()) :: String.t() | nil
+  def wielded_skill_type(%{meta: %{combat: %{equipped: equipped}}}) when is_map(equipped) do
+    case Map.get(equipped, :weapon) || Map.get(equipped, "weapon") do
+      %{skill_type: type} when is_binary(type) -> type
+      %{"skill_type" => type} when is_binary(type) -> type
+      _ -> nil
+    end
+  end
+
+  def wielded_skill_type(_character), do: nil
 
   @doc """
   角色是否已转世（对应 LPC `me->query("reborn")`）

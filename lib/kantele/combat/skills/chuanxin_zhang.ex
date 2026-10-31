@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.ChuanxinZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -21,26 +23,6 @@ defmodule Kantele.Combat.Skills.ChuanxinZhang do
 
   @impl true
   def valid_enable(usage), do: usage in ["strike", "parry"]
-
-  # LPC valid_learn 要求 max_neili>=200 / strike>=30 / strike>=chuanxin-zhang（空手检查由 practice 流程把关）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 200 ->
-        {:error, "你的内力修为太浅，无法练习穿心掌。\n"}
-
-      Stats.skill(stats, "strike") < 30 ->
-        {:error, "你的基本掌法太差，无法领会穿心掌。\n"}
-
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
-        {:error, "你的基本掌法火候不够，无法领会更高深的穿心掌。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -50,6 +32,30 @@ defmodule Kantele.Combat.Skills.ChuanxinZhang do
   @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 48（空手）"
   @impl true
   def practice_cost(), do: %{qi: 45, neili: 48}
+
+  # LPC `valid_learn(object me)`（源 chuanxin-zhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练穿心掌必须空手。\n"}
+
+      not is_nil(max_neili) and max_neili < 200 ->
+        {:error, "你的内力修为太浅，无法练习穿心掌。\n"}
+
+      Stats.skill(stats, "strike") < 30 ->
+        {:error, "你的基本掌法太差，无法领会穿心掌。\n"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你的基本掌法火候不够，无法领会更高深的穿心掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

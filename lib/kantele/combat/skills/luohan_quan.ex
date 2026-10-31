@@ -105,26 +105,6 @@ defmodule Kantele.Combat.Skills.LuohanQuan do
   @impl true
   def valid_enable(usage), do: usage in ["cuff", "parry"]
 
-  # LPC valid_learn 要求 空手 / force>=20 / max_neili>=50 / cuff>=luohan-quan
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 20 ->
-        {:error, "你的内功火候不够，无法学罗汉拳。\n"}
-
-      not is_nil(max_neili) and max_neili < 50 ->
-        {:error, "你的内力太弱，无法练罗汉拳。\n"}
-
-      Stats.skill(stats, "cuff") < Stats.skill(stats, id()) ->
-        {:error, "你的基本拳法水平有限，无法领会更高深的罗汉拳。\n"}
-
-      true ->
-        :ok
-    end
-  end
-
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
 
@@ -135,6 +115,30 @@ defmodule Kantele.Combat.Skills.LuohanQuan do
   def practice_cost(), do: %{qi: 25, neili: 6}
 
   @doc "按等级加权随机选一式（招式表 + NewRandom）"
+  # LPC `valid_learn(object me)`（源 luohan-quan.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练罗汉拳必须空手。\n"}
+
+      Stats.skill(stats, "force") < 20 ->
+        {:error, "你的内功火候不够，无法学罗汉拳。\n"}
+
+      not is_nil(max_neili) and max_neili < 50 ->
+        {:error, "你的内力太弱，无法练罗汉拳。\n"}
+
+      Stats.skill(stats, "cuff") < lvl ->
+        {:error, "你的基本拳法水平有限，无法领会更高深的罗汉拳。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Skill.pick_action(@actions, level, rng)

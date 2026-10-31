@@ -22,6 +22,8 @@ defmodule Kantele.Combat.Skills.NeverDefeated do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "$N攻势忽缓而不疏，似剑法又似刀法，捉摸不定向$n慢慢推去",
@@ -196,6 +198,58 @@ defmodule Kantele.Combat.Skills.NeverDefeated do
     usage in ["sword", "blade", "dagger", "staff", "hammer", "club", "whip", "dodge", "parry", "force", "throwing"]
   end
 
+  # LPC `valid_learn(object me)`（源 never-defeated.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    gender = gender_of(character)
+    personality = personality_of(character)
+
+    cond do
+      stats.combat_exp < 3000000 ->
+        {:error, "你觉得不败神功深奥之极，凭自己的战斗经验一时间难以领会。\n"}
+
+      Stats.skill(stats, "martial-cognize") < 50 ->
+        {:error, "你觉得不败神功过于深奥，以自己的武学修养全然无法明白。\n"}
+
+      personality != "狡黠多变" ->
+        {:error, "你学了半天，发现不败神功古怪的紧，不合常理，根本无法领会。"}
+
+      Stats.int(stats) < 22 ->
+        {:error, "你觉得不败神功过于深奥，绝非自己的智力所能理解。\n"}
+
+      (gender == "无性") and (lvl > 239) ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的不败神功。\n"}
+
+      Stats.skill(stats, "martial-cognize") < lvl ->
+        {:error, "你觉得自己的武学修养有限，难以领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你对基本内功的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "parry") < lvl ->
+        {:error, "你对基本招架的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "dodge") < lvl ->
+        {:error, "你对基本轻功的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "sword") < lvl ->
+        {:error, "你对基本剑法的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "blade") < lvl ->
+        {:error, "你对基本刀法的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "whip") < lvl ->
+        {:error, "你对基本鞭法的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      Stats.skill(stats, "throwing") < lvl ->
+        {:error, "你对基本暗器的理解还不够，无法继续领会更高深的不败神功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -238,4 +292,13 @@ defmodule Kantele.Combat.Skills.NeverDefeated do
       "shield" => Kantele.Combat.Skills.Performs.NeverDefeated.Shield
     }
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
 end

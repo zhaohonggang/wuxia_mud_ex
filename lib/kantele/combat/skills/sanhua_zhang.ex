@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.SanhuaZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -24,24 +26,6 @@ defmodule Kantele.Combat.Skills.SanhuaZhang do
 
   # LPC valid_learn 要求 force>=60 / max_neili>=300 / strike>=sanhua-zhang
   # （空手检查 weapon/secondary_weapon 沿用 practice 流程把关，未在此建模）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      Stats.skill(stats, "force") < 60 ->
-        {:error, "你的内功火候不够，无法学散花掌。\n"}
-
-      not is_nil(max_neili) and max_neili < 300 ->
-        {:error, "你的内力太弱，无法练散花掌。\n"}
-
-      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
-        {:error, "你的基本掌法火候水平有限，无法领会更高深的散花掌。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -51,6 +35,30 @@ defmodule Kantele.Combat.Skills.SanhuaZhang do
   @doc "练招消耗：LPC practice_skill 扣 qi 65 / neili 66（须空手，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 65, neili: 66}
+
+  # LPC `valid_learn(object me)`（源 sanhua-zhang.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练散花掌必须空手。\n"}
+
+      Stats.skill(stats, "force") < 60 ->
+        {:error, "你的内功火候不够，无法学散花掌。\n"}
+
+      not is_nil(max_neili) and max_neili < 300 ->
+        {:error, "你的内力太弱，无法练散花掌。\n"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你的基本掌法火候水平有限，无法领会更高深的散花掌。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

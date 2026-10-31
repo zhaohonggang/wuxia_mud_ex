@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.YintuoluoZhua do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/yintuoluo_zhua/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -84,6 +88,36 @@ defmodule Kantele.Combat.Skills.YintuoluoZhua do
   @impl true
   def practice_cost(), do: %{qi: 60, neili: 60}
 
+  # LPC `valid_learn(object me)`（源 yintuoluo-zhua.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练因陀罗爪必须空手。\n"}
+
+      Stats.skill(stats, "buddhism") < 250 ->
+        {:error, "你的佛法修为不够，无法学因陀罗爪。\n"}
+
+      Stats.skill(stats, "force") < 250 ->
+        {:error, "你的内功火候不够，无法学因陀罗爪。\n"}
+
+      (Stats.dex(stats) < 30) or (Stats.str(stats) < 30) or (Stats.int(stats) < 30) ->
+        {:error, "你的先天不够，无法学因陀罗爪。\n"}
+
+      not is_nil(max_neili) and max_neili < 2500 ->
+        {:error, "你的内力太弱，无法练因陀罗爪。\n"}
+
+      Stats.skill(stats, "claw") < lvl ->
+        {:error, "你的基本爪法火候水平有限，无法领会更高深的因陀罗爪。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
@@ -98,4 +132,8 @@ defmodule Kantele.Combat.Skills.YintuoluoZhua do
       "chixue" => Kantele.Combat.Skills.Performs.YintuoluoZhua.Chixue
     }
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
 end

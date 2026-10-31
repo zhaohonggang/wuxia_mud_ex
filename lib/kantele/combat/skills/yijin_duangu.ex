@@ -24,10 +24,31 @@ defmodule Kantele.Combat.Skills.YijinDuangu do
   @impl true
   def valid_force(_force), do: true
 
+  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 yijin-duangu.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    gender = gender_of(character)
+    personality = personality_of(character)
+
     cond do
-      stats.con < 30 ->
+      (gender == "无性") and (lvl > 49) ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的易筋锻骨内功。\n"}
+
+      (personality == "心狠手辣") and (Stats.skill(stats, "yijin-duangu") > 199) ->
+        {:error, "这九阴真经中所记载的易筋锻骨正大恢弘，气度俨然，依照你心狠手辣的天性似乎只能学到这种程度。\n"}
+
+      (personality == "狡黠多变") and (Stats.skill(stats, "yijin-duangu") > 169) ->
+        {:error, "这九阴真经中所记载的易筋锻骨正大恢弘，气度俨然，依照你狡黠多变的天性似乎只能学到这种程度。\n"}
+
+      (personality == "阴险奸诈") and (Stats.skill(stats, "yijin-duangu") > 139) ->
+        {:error, "这九阴真经中所记载的易筋锻骨正大恢弘，气度俨然，依照你阴险奸诈的天性似乎只能学到这种程度。\n"}
+
+      Stats.con(stats) < 30 ->
         {:error, "你觉得自己先天根骨不足，一时难以修炼。\n"}
 
       Stats.skill(stats, "force") < 100 ->
@@ -37,10 +58,6 @@ defmodule Kantele.Combat.Skills.YijinDuangu do
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -52,6 +69,16 @@ defmodule Kantele.Combat.Skills.YijinDuangu do
       "shield" => Kantele.Combat.Skills.Performs.YijinDuangu.Shield
     }
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
+
+  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
+  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(_character), do: nil
+
 end
 
 defmodule Kantele.Combat.Skills.YijinDuangu.Powerup do

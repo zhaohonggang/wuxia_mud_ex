@@ -48,29 +48,36 @@ defmodule Kantele.Combat.Skills.JinzhongZhao do
   @impl true
   def valid_enable(usage), do: usage == "parry"
 
+  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
   @impl true
-  def valid_learn(stats) do
+  def practice_cost(), do: nil
+
+  # LPC `valid_learn(object me)`（源 jinzhong-zhao.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
     cond do
       Stats.skill(stats, "force") < 350 ->
         {:error, "你的内功火候不够，难以修习这等神功。\n"}
 
-      stats.con < 33 ->
+      Stats.con(stats) < 33 ->
         {:error, "你的先天根骨太差了，难以修习这等神功。\n"}
 
-      stats.str < 33 ->
+      Stats.str(stats) < 33 ->
         {:error, "你的先天臂力太差了，难以修习这等神功。\n"}
 
-      Stats.skill(stats, "force") < Stats.skill(stats, id()) ->
+      not is_nil(max_neili) and max_neili < 4000 ->
+        {:error, "你的内力还不足以修习这等神功。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
         {:error, "你的基本内功水平有限，无法领会更高深的金钟罩。\n"}
 
       true ->
         :ok
     end
   end
-
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
-  @impl true
-  def practice_cost(), do: nil
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
@@ -79,4 +86,9 @@ defmodule Kantele.Combat.Skills.JinzhongZhao do
   def perform_list() do
     %{"zhao" => Kantele.Combat.Skills.Performs.JinzhongZhao.Zhao}
   end
+
+  # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
+  defp max_neili_of(_character), do: nil
+
 end

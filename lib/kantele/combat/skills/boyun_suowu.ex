@@ -15,6 +15,8 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -26,12 +28,24 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
   @impl true
   def valid_force(force), do: force == "biyun-xinfa"
 
-  # LPC valid_learn 要求 biyun-xinfa>=10 / max_neili>=100（空手检查由 practice 流程把关）
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  @doc "练招消耗：LPC practice_skill 扣 qi 25 / neili 100（空手）"
+  @impl true
+  def practice_cost(), do: %{qi: 25, neili: 100}
+
+  # LPC `valid_learn(object me)`（源 boyun-suowu.c）
   @impl true
   def valid_learn(stats, character) do
     max_neili = max_neili_of(character)
 
     cond do
+      (Skill.wielding?(character)) or (Skill.secondary_wielding?(character)) ->
+        {:error, "练拨云锁雾必需空手。\n"}
+
       Stats.skill(stats, "biyun-xinfa") < 10 ->
         {:error, "你的碧云心法火候不够，无法学拨云锁雾。\n"}
 
@@ -42,15 +56,6 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
         :ok
     end
   end
-
-  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
-    do: max_neili
-
-  defp max_neili_of(_), do: nil
-
-  @doc "练招消耗：LPC practice_skill 扣 qi 25 / neili 100（空手）"
-  @impl true
-  def practice_cost(), do: %{qi: 25, neili: 100}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

@@ -25,6 +25,8 @@ defmodule Kantele.Combat.Skills.TaixuanGong do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "$N双手一举，一股劲气澎湃汹涌而来，逼得$n踉踉后退",
@@ -284,6 +286,39 @@ defmodule Kantele.Combat.Skills.TaixuanGong do
   defp skill_level(%{meta: %{stats: stats}}, name), do: Kantele.Character.Stats.skill(stats, name)
   defp skill_level(_, _name), do: 0
 
+  # LPC `valid_learn(object me)`（源 taixuan-gong.c）
+  # 源末 `return ::valid_learn(me);` 即基类默认（:ok）。
+  # `me->query("learned_literate")` 本端口未独立建模，识字技能 > 0 即视为识字
+  # （与 `literate?/1`、`ItemDescHandlers.PlayerSkill` 的既有判定一致）。
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    gender = gender_of(character)
+
+    cond do
+      Stats.skill(stats, "literate") > 0 ->
+        {:error, "你觉得太玄神功深奥之极，一时间难以领会。\n"}
+
+      gender == "无性" ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的太玄功。\n"}
+
+      Stats.int(stats) < 38 ->
+        {:error, "你若有所悟，然而总是有点不明白。\n"}
+
+      Stats.dex(stats) < 34 ->
+        {:error, "你研究了半天，发觉身法不够灵便，招式始终无法随意施展。\n"}
+
+      Stats.skill(stats, "force") < lvl ->
+        {:error, "你对基本内功的理解还不够，无法继续领会更高深的太玄功。\n"}
+
+      Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你对基本拳脚的理解还不够，无法继续领会更高深的太玄功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1), do: query_action(level, rng, nil)
 
@@ -331,4 +366,8 @@ defmodule Kantele.Combat.Skills.TaixuanGong do
       "shield" => Kantele.Combat.Skills.Performs.TaixuanGong.Shield
     }
   end
+
+  # LPC `me->query("gender")`
+  defp gender_of(%{meta: %{env: %{gender: gender}}}), do: gender
+  defp gender_of(_character), do: "男性"
 end

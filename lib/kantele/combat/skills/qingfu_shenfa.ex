@@ -6,11 +6,13 @@ defmodule Kantele.Combat.Skills.QingfuShenfa do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：practice_skill, query_effect_dodge, valid_damage, valid_learn
+  - 源码钩子/条件：practice_skill, query_effect_dodge, valid_damage
   - perform/exert 路由骨架见 tmp/perf_out/qingfu_shenfa/
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions []
 
@@ -57,6 +59,21 @@ defmodule Kantele.Combat.Skills.QingfuShenfa do
 
   @impl true
   def practice_cost(), do: %{qi: 50, neili: 55}
+
+  # LPC `valid_learn(object me)`（源 qingfu-shenfa.c）
+  @impl true
+  def valid_learn(stats, _character) do
+    cond do
+      Stats.dex(stats) < 26 ->
+        {:error, "你先天身法太差，无法学习青蝠身法。\n"}
+
+      Stats.skill(stats, "dodge") < 100 ->
+        {:error, "你轻功根基不足，无法学习青蝠身法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

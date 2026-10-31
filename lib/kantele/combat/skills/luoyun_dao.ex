@@ -14,6 +14,8 @@ defmodule Kantele.Combat.Skills.LuoyunDao do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Combat.Skill
+
   alias Kantele.Character.Stats
 
   @impl true
@@ -21,29 +23,6 @@ defmodule Kantele.Combat.Skills.LuoyunDao do
 
   @impl true
   def valid_enable(usage), do: usage in ["blade", "parry"]
-
-  # LPC valid_learn 要求 max_neili>=400 / force>=100 / blade>=80 / blade>=luoyun-dao（须持刀检查由 practice 流程把关；LPC 末门文案 verbatim「孤星剑法」「基本剑法」保真不修）
-  @impl true
-  def valid_learn(stats, character) do
-    max_neili = max_neili_of(character)
-
-    cond do
-      not is_nil(max_neili) and max_neili < 400 ->
-        {:error, "你目前的内力修为不够，没有办法练落云刀法。\n"}
-
-      Stats.skill(stats, "force") < 100 ->
-        {:error, "你的内功修为不够，没有办法练落云刀法。\n"}
-
-      Stats.skill(stats, "blade") < 80 ->
-        {:error, "你的基本剑法火候太浅，没有办法练落云刀法。\n"}
-
-      Stats.skill(stats, "blade") < Stats.skill(stats, id()) ->
-        {:error, "你的基本剑法火候有限，无法领会更高深的孤星剑法。\n"}
-
-      true ->
-        :ok
-    end
-  end
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
     do: max_neili
@@ -53,6 +32,33 @@ defmodule Kantele.Combat.Skills.LuoyunDao do
   @doc "练招消耗：LPC practice_skill 扣 qi 45 / neili 35（须持刀，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 45, neili: 35}
+
+  # LPC `valid_learn(object me)`（源 luoyun-dao.c）
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+
+    cond do
+      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "blade") ->
+        {:error, "你必须先找一把剑才能练落云刀法。\n"}
+
+      not is_nil(max_neili) and max_neili < 400 ->
+        {:error, "你目前的内力修为不够，没有办法练落云刀法。\n"}
+
+      Stats.skill(stats, "force") < 100 ->
+        {:error, "你的内功修为不够，没有办法练落云刀法。\n"}
+
+      Stats.skill(stats, "blade") < 80 ->
+        {:error, "你的基本剑法火候太浅，没有办法练落云刀法。\n"}
+
+      Stats.skill(stats, "blade") < lvl ->
+        {:error, "你的基本剑法火候有限，无法领会更高深的孤星剑法。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
