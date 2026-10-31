@@ -103,6 +103,21 @@ defmodule Kantele.Poison do
       chinese_name: "阴风刮骨之扰",
       others: "{npc}惨嚎一声，只觉全身肌肉就像要撕裂开一般，豆大的汗珠不住的滴下。\n",
       self: "你感到一股切骨奇寒由伤口处升起，看来是中了阴风刀内劲的干扰！\n"
+    },
+    # 冰蚕寒功 `hit_ob` 上毒（freezing-force.c）；LPC 仅覆盖文案，沿用 POISON 默认
+    # jing/qi 除率。
+    "freezingbc" => %{
+      chinese_name: "冰蚕寒毒",
+      others: "{npc}的身子突然一晃，脸色变得苍白，牙齿不住的打颤。\n",
+      self: "忽然浑身一阵寒冷，浑身几乎冻僵！\n"
+    },
+    # 寒冰真气 `hit_ob` 上毒（hanbing-zhenqi.c）；LPC 覆盖 jing/8、qi/6。
+    "freezing" => %{
+      chinese_name: "寒冰真气",
+      others: "{npc}脸色铁青，四肢僵硬，全身上下竟笼罩了一层寒霜。\n",
+      self: "你只觉全身冰冷无比，四肢百骸难受之极，如堕冰狱。\n",
+      jing_div: 8,
+      qi_div: 6
     }
   }
 

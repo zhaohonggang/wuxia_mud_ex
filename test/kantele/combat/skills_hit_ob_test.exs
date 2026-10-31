@@ -37,6 +37,12 @@ defmodule Kantele.Combat.SkillsHitObTest do
   alias Kantele.Combat.Skills.TieZhang
   alias Kantele.Combat.Skills.XianglongZhang
   alias Kantele.Combat.Skills.ZhongchongSword
+  alias Kantele.Combat.Skills.FreezingForce
+  alias Kantele.Combat.Skills.HanbingZhenqi
+  alias Kantele.Combat.Skills.TaixuanGong
+  alias Kantele.Combat.Skills.KuihuaMogong
+  alias Kantele.Combat.Skills.ShenghuoShengong
+  alias Kantele.Combat.Skills.YunvXinjing
 
   # ---- rng helpers（语义 1..n，与 Engine.rand 的 rng.(n)-1 对齐）----
 
@@ -317,6 +323,247 @@ defmodule Kantele.Combat.SkillsHitObTest do
         [v | rest] -> {min(v, n), if(rest == [], do: values, else: rest)}
         [] -> {n, []}
       end)
+    end
+  end
+
+  # ---- 攻击方内功（force）命中回调：combatd.c:707 路径 ----
+
+  describe "freezing-force 冰蚕寒劲被动（freezingbc 寒毒）" do
+    @freezing_atk %{
+      "freezing-force" => 200,
+      "force" => 200
+    }
+
+    test "命中造成创伤 + lvl>=80 + jiali>=10 + 无兵器 + 压过对手 force → 上 freezingbc" do
+      a = atk(@freezing_atk, jiali: 20, weapon_name: nil, id: "atk1")
+      v = vic(%{"force" => 0})
+
+      assert {0, msg, [{"freezingbc", para}]} =
+               FreezingForce.hit_ob(a, v, 100, 0, max_rng())
+
+      assert msg =~ "寒风袭体"
+      assert para["id"] == "atk1"
+      assert para["level"] == 39
+      assert para["duration"] == 14
+    end
+
+    test "damage<=0 不触发" do
+      a = atk(@freezing_atk, jiali: 20, weapon_name: nil, id: "atk1")
+      assert FreezingForce.hit_ob(a, vic(), 0, 0, max_rng()) == {0, nil}
+    end
+
+    test "lvl<80 不触发" do
+      a = atk(%{"freezing-force" => 50, "force" => 200}, jiali: 20, weapon_name: nil, id: "x")
+      assert FreezingForce.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "jiali<10 不触发" do
+      a = atk(@freezing_atk, jiali: 5, weapon_name: nil, id: "x")
+      assert FreezingForce.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "持械不触发" do
+      a = atk(@freezing_atk, jiali: 20, weapon_name: "长剑", id: "x")
+      assert FreezingForce.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "对手 force 过高（jiali*2 + random 压不过）不触发" do
+      a = atk(@freezing_atk, jiali: 20, weapon_name: nil, id: "x")
+      v = vic(%{"force" => 999_999})
+      assert FreezingForce.hit_ob(a, v, 100, 0, min_rng()) == {0, nil}
+    end
+  end
+
+  describe "hanbing-zhenqi 寒冰真气冰封被动（freezing 寒毒）" do
+    @hanbing_atk %{
+      "hanbing-zhenqi" => 300,
+      "force" => 300
+    }
+
+    setup do
+      [
+        atk_base: [
+          jiali: 120,
+          neili: 900,
+          freezing_buff: true,
+          weapon_name: nil,
+          id: "atk2"
+        ]
+      ]
+    end
+
+    test "全门通过 + 已运 freezing + 压过对手 force → 上 freezing（level=flvl*3）", ctx do
+      a = atk(@hanbing_atk, ctx.atk_base)
+      v = vic(%{"force" => 0})
+
+      assert {0, msg, [{"freezing", para}]} =
+               HanbingZhenqi.hit_ob(a, v, 100, 0, max_rng())
+
+      # max_rng 下 random(2)==1 → 第一条文案；level=flvl*3=360
+      assert msg =~ "接下"
+      assert para["id"] == "atk2"
+      assert para["level"] == 360
+      assert para["duration"] == 20
+    end
+
+    test "neili<500 不触发", ctx do
+      a = atk(@hanbing_atk, Keyword.put(ctx.atk_base, :neili, 400))
+      assert HanbingZhenqi.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "lvl<220 不触发", ctx do
+      a = atk(%{"hanbing-zhenqi" => 100, "force" => 300}, ctx.atk_base)
+      assert HanbingZhenqi.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "jiali<100 不触发", ctx do
+      a = atk(@hanbing_atk, Keyword.put(ctx.atk_base, :jiali, 50))
+      assert HanbingZhenqi.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "random(2) 门不过不触发", ctx do
+      a = atk(@hanbing_atk, ctx.atk_base)
+      assert HanbingZhenqi.hit_ob(a, vic(%{"force" => 0}), 100, 0, min_rng()) == {0, nil}
+    end
+
+    test "未运寒冰真气（freezing_buff=false）不触发", ctx do
+      a = atk(@hanbing_atk, Keyword.put(ctx.atk_base, :freezing_buff, false))
+      assert HanbingZhenqi.hit_ob(a, vic(%{"force" => 0}), 100, 0, max_rng()) == {0, nil}
+    end
+
+    test "对手 force 过高（jiali*2 + random(lvl) 压不过）不触发", ctx do
+      a = atk(@hanbing_atk, ctx.atk_base)
+      v = vic(%{"force" => 1000})
+      assert HanbingZhenqi.hit_ob(a, v, 100, 0, max_rng()) == {0, nil}
+    end
+  end
+
+  # ---- 攻击方内功 force 路径：纯额外创伤 / 多段连击（combatd.c:707）----
+  # taixuan / kuihua / shenghuo / yunv-xinjing。多段 do_attack 连击在本引擎单轮无通道，
+  # 仅还原「文案」；自耗/抽干内力、learned/wall/prepared 门控未建模（按满足近似）。
+  describe "force 路径（taixuan / kuihua / shenghuo / yunv-xinjing）" do
+    test "taixuan-gong 空手触发：db>=150/lvl>=140/neili>=300 + db/5>对手con → 追加 (db-76)/2" do
+      a = atk(%{"taixuan-gong" => 200},
+        mapped: %{"force" => "taixuan-gong"}, neili: 500, weapon_name: nil, id: "x")
+      v = vic(%{}, con: 5)
+
+      assert {62, msg, []} = TaixuanGong.hit_ob(a, v, 200, 0, min_rng())
+      assert msg =~ "太玄内劲"
+    end
+
+    test "taixuan-gong 负门：db<150 / lvl<140 / neili<300 / random(2) / con过高 / 非刀剑" do
+      base = fn wn, wst, sw, bl ->
+        atk(%{"taixuan-gong" => 200},
+          mapped:
+            Map.merge(%{"force" => "taixuan-gong"},
+              [{"sword", sw}, {"blade", bl}]
+              |> Enum.reject(fn {_, v} -> is_nil(v) end)
+              |> Map.new()
+            ),
+          neili: 500, weapon_name: wn, weapon_skill_type: wst, id: "x")
+      end
+
+      v_low = vic(%{}, con: 5)
+      v_high = vic(%{}, con: 50)
+
+      assert TaixuanGong.hit_ob(base.(nil, nil, nil, nil), v_low, 100, 0, min_rng()) == {0, nil}
+      assert TaixuanGong.hit_ob(atk(%{"taixuan-gong" => 100}, mapped: %{"force" => "taixuan-gong"}, neili: 500, weapon_name: nil, id: "x"), v_low, 200, 0, min_rng()) == {0, nil}
+      assert TaixuanGong.hit_ob(atk(%{"taixuan-gong" => 200}, mapped: %{"force" => "taixuan-gong"}, neili: 200, weapon_name: nil, id: "x"), v_low, 200, 0, min_rng()) == {0, nil}
+      assert TaixuanGong.hit_ob(base.(nil, nil, nil, nil), v_low, 200, 0, max_rng()) == {0, nil}
+      assert TaixuanGong.hit_ob(base.(nil, nil, nil, nil), v_high, 200, 0, min_rng()) == {0, nil}
+      assert TaixuanGong.hit_ob(base.("长棍", "staff", nil, nil), v_low, 200, 0, min_rng()) == {0, nil}
+    end
+
+    test "taixuan-gong 持刀/剑且 mapped 对应 → 触发" do
+      a_sword =
+        atk(%{"taixuan-gong" => 200},
+          mapped: %{"force" => "taixuan-gong", "sword" => "taixuan-gong"},
+          neili: 500, weapon_name: "长剑", weapon_skill_type: "sword", id: "x")
+
+      a_blade =
+        atk(%{"taixuan-gong" => 200},
+          mapped: %{"force" => "taixuan-gong", "blade" => "taixuan-gong"},
+          neili: 500, weapon_name: "戒刀", weapon_skill_type: "blade", id: "x")
+
+      v = vic(%{}, con: 5)
+      assert {62, msg, []} = TaixuanGong.hit_ob(a_sword, v, 200, 0, min_rng())
+      assert msg =~ "太玄内劲"
+      assert {62, _msg, []} = TaixuanGong.hit_ob(a_blade, v, 200, 0, min_rng())
+    end
+
+    test "kuihua-mogong 触发（多段连击，仅还原文案）：rand(2)!=0 + db>=120 + neili>=300 + lvl>=200" do
+      a = atk(%{"kuihua-mogong" => 250}, neili: 500, weapon_name: nil, id: "x")
+      assert {0, msg, []} = KuihuaMogong.hit_ob(a, vic(), 200, 0, max_rng())
+      assert msg =~ "化分为无数身影"
+    end
+
+    test "kuihua-mogong 负门：rand(2)==0 / db<120 / neili<300 / lvl<200" do
+      a = atk(%{"kuihua-mogong" => 250}, neili: 500, weapon_name: nil, id: "x")
+      assert KuihuaMogong.hit_ob(a, vic(), 200, 0, min_rng()) == {0, nil}
+      assert KuihuaMogong.hit_ob(atk(%{"kuihua-mogong" => 250}, neili: 500, weapon_name: nil, id: "x"), vic(), 100, 0, max_rng()) == {0, nil}
+      assert KuihuaMogong.hit_ob(atk(%{"kuihua-mogong" => 250}, neili: 200, weapon_name: nil, id: "x"), vic(), 200, 0, max_rng()) == {0, nil}
+      assert KuihuaMogong.hit_ob(atk(%{"kuihua-mogong" => 100}, neili: 500, weapon_name: nil, id: "x"), vic(), 200, 0, max_rng()) == {0, nil}
+    end
+
+    test "shenghuo-shengong 触发：全门通过 + lvl/2+random(lvl)>对手force → 还原文案" do
+      a =
+        atk(%{"shenghuo-shengong" => 300, "shenghuo-ling" => 200},
+          mapped: %{"force" => "shenghuo-shengong", "sword" => "shenghuo-ling"},
+          neili: 500, weapon_name: "圣火令", weapon_skill_type: "sword", id: "x")
+
+      v = vic(%{"force" => 0})
+      assert {0, msg, []} = ShenghuoShengong.hit_ob(a, v, 200, 0, max_rng())
+      assert msg =~ "剑招连绵"
+    end
+
+    test "shenghuo-shengong 负门：lvl<140 / 无兵器 / 非剑 / mapped不符 / 对手force过高" do
+      base =
+        atk(%{"shenghuo-shengong" => 300, "shenghuo-ling" => 200},
+          mapped: %{"force" => "shenghuo-shengong", "sword" => "shenghuo-ling"},
+          neili: 500, weapon_name: "圣火令", weapon_skill_type: "sword", id: "x")
+
+      assert ShenghuoShengong.hit_ob(atk(%{"shenghuo-shengong" => 100, "shenghuo-ling" => 200}, mapped: %{"force" => "shenghuo-shengong", "sword" => "shenghuo-ling"}, neili: 500, weapon_name: "圣火令", weapon_skill_type: "sword", id: "x"), vic(%{"force" => 0}), 200, 0, max_rng()) == {0, nil}
+      assert ShenghuoShengong.hit_ob(atk(%{"shenghuo-shengong" => 300, "shenghuo-ling" => 200}, mapped: %{"force" => "shenghuo-shengong", "sword" => "shenghuo-ling"}, neili: 500, weapon_name: nil, weapon_skill_type: nil, id: "x"), vic(%{"force" => 0}), 200, 0, max_rng()) == {0, nil}
+      assert ShenghuoShengong.hit_ob(atk(%{"shenghuo-shengong" => 300, "shenghuo-ling" => 200}, mapped: %{"force" => "shenghuo-shengong", "sword" => "shenghuo-ling"}, neili: 500, weapon_name: "刀", weapon_skill_type: "blade", id: "x"), vic(%{"force" => 0}), 200, 0, max_rng()) == {0, nil}
+      assert ShenghuoShengong.hit_ob(atk(%{"shenghuo-shengong" => 300, "shenghuo-ling" => 200}, mapped: %{"force" => "other", "sword" => "shenghuo-ling"}, neili: 500, weapon_name: "圣火令", weapon_skill_type: "sword", id: "x"), vic(%{"force" => 0}), 200, 0, max_rng()) == {0, nil}
+      # 对手 force 过高：lvl/2+rand(lvl)<=对手force（min_rng 使 rand=0 → 150<=200）
+      assert ShenghuoShengong.hit_ob(base, vic(%{"force" => 200}), 200, 0, min_rng()) == {0, nil}
+    end
+
+    test "yunv-xinjing sword 分支：全门通过 + mapped sword==suxin-jian → 追加 lvl/5*5/3 qi" do
+      a =
+        atk(%{"yunv-xinjing" => 300, "force" => 300},
+          mapped: %{"force" => "yunv-xinjing", "sword" => "suxin-jian"},
+          neili: 500, weapon_name: "玉女剑", weapon_skill_type: "sword", id: "x")
+
+      v = vic(%{}, con: 0)
+      assert {100, msg, []} = YunvXinjing.hit_ob(a, v, 200, 0, min_rng())
+      assert msg =~ "玉女心经"
+    end
+
+    test "yunv-xinjing whip 分支：mapped whip==yinsuo-jinling → 追加 lvl/4*5/3 qi" do
+      a =
+        atk(%{"yunv-xinjing" => 300, "force" => 300},
+          mapped: %{"force" => "yunv-xinjing", "whip" => "yinsuo-jinling"},
+          neili: 500, weapon_name: "银索金铃", weapon_skill_type: "whip", id: "x")
+
+      v = vic(%{}, con: 0)
+      assert {125, msg, []} = YunvXinjing.hit_ob(a, v, 200, 0, min_rng())
+      assert msg =~ "玉女心经"
+    end
+
+    test "yunv-xinjing 负门：lvl<150 / neili<300 / 无兵器 / rand(3)>1 / 非刀剑鞭" do
+      base =
+        atk(%{"yunv-xinjing" => 300, "force" => 300},
+          mapped: %{"force" => "yunv-xinjing", "sword" => "suxin-jian"},
+          neili: 500, weapon_name: "玉女剑", weapon_skill_type: "sword", id: "x")
+
+      v = vic(%{}, con: 0)
+      assert YunvXinjing.hit_ob(atk(%{"yunv-xinjing" => 100, "force" => 300}, mapped: %{"force" => "yunv-xinjing", "sword" => "suxin-jian"}, neili: 500, weapon_name: "玉女剑", weapon_skill_type: "sword", id: "x"), v, 200, 0, min_rng()) == {0, nil}
+      assert YunvXinjing.hit_ob(atk(%{"yunv-xinjing" => 300, "force" => 300}, mapped: %{"force" => "yunv-xinjing", "sword" => "suxin-jian"}, neili: 200, weapon_name: "玉女剑", weapon_skill_type: "sword", id: "x"), v, 200, 0, min_rng()) == {0, nil}
+      assert YunvXinjing.hit_ob(atk(%{"yunv-xinjing" => 300, "force" => 300}, mapped: %{"force" => "yunv-xinjing", "sword" => "suxin-jian"}, neili: 500, weapon_name: nil, weapon_skill_type: nil, id: "x"), v, 200, 0, min_rng()) == {0, nil}
+      assert YunvXinjing.hit_ob(base, v, 200, 0, max_rng()) == {0, nil}
+      assert YunvXinjing.hit_ob(atk(%{"yunv-xinjing" => 300, "force" => 300}, mapped: %{"force" => "yunv-xinjing", "sword" => "suxin-jian"}, neili: 500, weapon_name: "刀", weapon_skill_type: "blade", id: "x"), v, 200, 0, min_rng()) == {0, nil}
     end
   end
 end

@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.XuanyuanArrow do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -19,6 +21,22 @@ defmodule Kantele.Combat.Skills.XuanyuanArrow do
 
   @impl true
   def valid_enable(usage), do: usage in ["throwing"]
+
+  # LPC valid_learn：throwing>=20 / throwing>=xuanyuan-arrow
+  # 源第二条写的是 query_skill("xuanyuan-arror", 1)（拼写错误，永远取到 0），
+  # 故 `throwing < 0` 恒假 —— 该判定在源中即死代码，此处按「不生效」保真。
+  @impl true
+  def valid_learn(stats, _character) do
+    throwing = Stats.skill(stats, "throwing")
+
+    cond do
+      throwing < 20 ->
+        {:error, "你的暗器技能不够娴熟，怎能在激战中上箭开弓射敌？\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def practice_cost(), do: %{qi: 70, neili: 0}

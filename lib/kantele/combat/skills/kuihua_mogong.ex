@@ -151,6 +151,28 @@ defmodule Kantele.Combat.Skills.KuihuaMogong do
   @impl true
   def id(), do: "kuihua-mogong"
 
+  # LPC hit_ob（combatd.c:707 force 路径）：门控 busy、random(2)==0、对手非活物、
+  # damage_bonus<120、neili<300、action_flag==0、skill<200 → 不触发。
+  # 本引擎无 busy/action_flag/living 通道，按「非 busy、action_flag 已置、对手存活」近似。
+  # LPC 实际效果是多段 COMBAT_D->do_attack 递归连击，单轮无此通道，仅还原文案
+  # 「化分为无数身影」（hit_msg 去重标志未建模，按首次展示）。自耗内力未建模。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+
+    if Kantele.Combat.Engine.rand(rng, 2) == 0 or db < 120 or
+         attacker.neili < 300 or lvl < 200 do
+      {0, nil}
+    else
+      name = if is_nil(attacker.weapon_name), do: "手指", else: "手中" <> attacker.weapon_name
+
+      msg =
+        "\n霎时间只见$N身子猛摆，顿时化分为无数身影，#{name}宛若流星般分从不同的方位同时刺向$n！\n"
+
+      {0, msg, []}
+    end
+  end
+
   @impl true
   def valid_damage(attacker, victim, damage, _action, rng) do
     if Map.get(victim.skills, "kuihua-mogong", 0) < 210 or

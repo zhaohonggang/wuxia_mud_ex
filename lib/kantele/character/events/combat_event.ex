@@ -299,8 +299,17 @@ defmodule Kantele.Character.CombatEvent do
   end
 
   # 把 `Round.conditions` 逐条落到防守方 session（`[{cnd, para}]`）
+  #
+  # 保留字 `"busy"` 不走条件 daemon：LPC 里 `victim->start_busy(n)` 是临时忙乱计数
+  # 而非可累积的中毒/状态，故直接提升 `character.meta.combat.busy`
+  # （`Combat.start_busy/2` 取 max，与 LPC `start_busy` 语义一致）。
   defp apply_round_conditions(conn, conditions) when is_list(conditions) do
     Enum.reduce(conditions, conn, fn
+      {"busy", %{"rounds" => rounds}}, conn when is_integer(rounds) and rounds > 0 ->
+        character = conn.character
+        combat = Combat.start_busy(character.meta.combat, rounds)
+        put_character(conn, %{character | meta: %{character.meta | combat: combat}})
+
       {cnd, para}, conn when is_binary(cnd) and is_map(para) ->
         ConditionEvent.apply_poison_condition(conn, cnd, para)
 

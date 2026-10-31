@@ -17,9 +17,13 @@ defmodule Kantele.Combat.Skills.YunlongXinfa do
   @impl true
   def id(), do: "yunlong-xinfa"
 
-  # TODO(migrate) valid_enable 未识别（源可能用变量/组合判断）
+  # 源无 valid_enable —— LPC 调用未定义函数即失败，故任何用法均不可 enable。
   @impl true
   def valid_enable(_usage), do: false
+
+  @doc "只能学(learn)不能练（LPC practice_skill 返回 notify_fail）"
+  @impl true
+  def practice_cost(), do: nil
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

@@ -7,12 +7,14 @@ defmodule Kantele.Combat.Skills.FreezingForce do
 
   差异（TODO(migrate)）：
   - LPC `valid_learn` 学习时删除已学的易筋经（副作用）未接入。
-  - `hit_ob` 冰蚕寒劲被动（无兵器 + jiali + 目标 force 判定）未接入。
+  - `hit_ob` 冰蚕寒劲被动（无兵器 + jiali + 目标 force 判定）→ 已迁移（combatd.c:707
+    攻击方内功钩子，经 `Engine.apply_force_hit_ob` 触发，上 `freezingbc` 寒毒）。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Engine
 
   @impl true
   def id(), do: "freezing-force"
@@ -41,6 +43,42 @@ defmodule Kantele.Combat.Skills.FreezingForce do
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+
+  # LPC `hit_ob`（combatd.c:707，攻击方内功）：`::hit_ob` 返回正整数（force bonus）
+  # 即触发冰蚕寒劲被动。`result > 0` 在本引擎等价于「命中造成创伤」(damage>0)，
+  # 因 force 加成已并入 `damage`。条件：lvl>=80、jiali>=10、无兵器、且
+  # `jiali*2 + random(lvl) > 对手 force` 时给 victim 上 `freezingbc` 寒毒。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    lvl = Stats.skill(attacker, id())
+    flvl = attacker.jiali
+
+    cond do
+      damage <= 0 ->
+        {0, nil}
+
+      lvl < 80 or flvl < 10 ->
+        {0, nil}
+
+      not is_nil(attacker.weapon_name) ->
+        {0, nil}
+
+      flvl * 2 + Engine.rand(rng, lvl) > Map.get(victim.skills, "force", 0) ->
+        {0,
+         "$n只觉得寒风袭体，有种说不出的难受。\n",
+         [
+           {"freezingbc",
+            %{
+              "level" => div(flvl * 3, 2) + Engine.rand(rng, div(flvl, 2)),
+              "id" => attacker.id,
+              "duration" => div(lvl, 40) + Engine.rand(rng, div(lvl, 20))
+            }}
+         ]}
+
+      true ->
+        {0, nil}
+    end
+  end
 
   @impl true
   def exert_list() do

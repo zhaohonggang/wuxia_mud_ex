@@ -143,6 +143,36 @@ defmodule Kantele.Combat.Skills.JiuyangShengong do
   @impl true
   def id(), do: "jiuyang-shengong"
 
+  # LPC hit_ob（combatd.c:707 force 路径）：damage_bonus>=150、自身>=150、
+  # neili>=300、force 与 unarmed 都映射到本技能时，若 damage_bonus/5 > 对手 con，
+  # 则给对手追加 (damage_bonus-80)/2 的 qi 创伤并出文案（随机两句之一）。
+  # 未建模：me->add("neili",-50) 攻击方内力消耗（跨进程无通道）。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+
+    if db < 150 or lvl < 150 or attacker.neili < 300 or
+         Map.get(attacker.mapped, "force") != id() or
+         Map.get(attacker.mapped, "unarmed") != id() do
+      {0, nil}
+    else
+      if div(db, 5) > victim.con do
+        extra = max(div(db - 80, 2), 0)
+
+        msg =
+          if Kantele.Combat.Engine.rand(rng, 2) == 1 do
+            "$N九阳内劲自体内迸发，真气随招式而荡漾，摧毁了$n的真元！\n"
+          else
+            "$N九阳神功的潜力发挥了出来，突然间$n只感喉咙一甜，喷出一口鲜血！\n"
+          end
+
+        {extra, msg, []}
+      else
+        {0, nil}
+      end
+    end
+  end
+
   @impl true
   def valid_damage(attacker, victim, damage, _action, rng) do
     if Map.get(victim.skills, "jiuyang-shengong", 0) < 150 or

@@ -21,6 +21,13 @@ defmodule Kantele.Combat.Skills.XiaoyaoXinfa do
   def valid_enable(usage), do: usage in ["force"]
 
   @impl true
+  def valid_force(force), do: force in ["beiming-shengong", "lingjiu-xinfa", "bahuang-gong", "xiaowuxiang"]
+
+  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
+  @impl true
+  def practice_cost(), do: nil
+
+  @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
   end

@@ -157,6 +157,59 @@ defmodule Kantele.Combat.Skills.TaixuanGong do
   @impl true
   def id(), do: "taixuan-gong"
 
+  # LPC hit_ob（combatd.c:707 force 路径）：不识字(learned_literate) 禁用；
+  # damage_bonus>=150、自身>=140、neili>=300、force 映射本技能；
+  # can_learned/enable_weapon 未建模→按「已学会驾御兵器」：空手按
+  # prepared("unarmed")==self(未建模→满足)，持械须 weapon_skill_type∈{sword,blade}
+  # 且 mapped sword/blade==self；random(2)==1 不触发；damage_bonus/5>对手con 时
+  # 给对手追加 (damage_bonus-76)/2 的 qi 创伤。
+  # 未建模：me->add("neili",-100) 自耗、victim->add("neili",-…) 抽干对手内力。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+
+    if db < 150 or lvl < 140 or attacker.neili < 300 or
+         Map.get(attacker.mapped, "force") != id() do
+      {0, nil}
+    else
+      if not is_nil(attacker.weapon_name) do
+        wst = attacker.weapon_skill_type
+
+        if wst not in ["sword", "blade"] or
+             (wst == "sword" and Map.get(attacker.mapped, "sword") != id()) or
+             (wst == "blade" and Map.get(attacker.mapped, "blade") != id()) do
+          {0, nil}
+        else
+          taixuan_trigger(attacker, victim, db, rng)
+        end
+      else
+        taixuan_trigger(attacker, victim, db, rng)
+      end
+    end
+  end
+
+  defp taixuan_trigger(attacker, victim, db, rng) do
+    if Kantele.Combat.Engine.rand(rng, 2) == 1 do
+      {0, nil}
+    else
+      if div(db, 5) > victim.con do
+        extra = max(div(db - 76, 2), 0)
+
+        msg =
+          if not is_nil(attacker.weapon_name) and
+               Kantele.Combat.Engine.rand(rng, 2) == 1 do
+            "$N一招攻出，竟卷起千层气浪，太玄内劲顿时源源不绝透过#{attacker.weapon_name}涌入$n体内！\n"
+          else
+            "$N一招攻出，竟卷起千层气浪，太玄内劲顿时源源不绝涌入$n体内！\n"
+          end
+
+        {extra, msg, []}
+      else
+        {0, nil}
+      end
+    end
+  end
+
   @impl true
   def valid_damage(attacker, victim, damage, _action, rng) do
     if Map.get(victim.skills, "taixuan-gong", 0) < 150 or

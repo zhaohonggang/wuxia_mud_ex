@@ -21,6 +21,13 @@ defmodule Kantele.Combat.Skills.SongshanXinfa do
   def valid_enable(usage), do: usage in ["force"]
 
   @impl true
+  def valid_force(force), do: force in ["huashan-xinfa", "henshan-xinfa", "zixia-shengong", "hanbing-zhenqi", "zhenyue-jue"]
+
+  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
+  @impl true
+  def practice_cost(), do: nil
+
+  @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)
   end

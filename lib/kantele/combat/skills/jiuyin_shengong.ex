@@ -142,6 +142,36 @@ defmodule Kantele.Combat.Skills.JiuyinShengong do
   @impl true
   def id(), do: "jiuyin-shengong"
 
+  # LPC hit_ob（combatd.c:707 force 路径）：空手、未 busy、random(2)!=0、damage_bonus>=120、
+  # neili>=200、自身>=250 且 damage_bonus/4 > 对手 con 时，给对手追加
+  # (damage_bonus-88)/2 的 qi 创伤并出文案（随机两句之一）。
+  # 未建模：me->add("neili",-100) 自耗、victim->add("neili",-…) 抽干对手内力；
+  # LPC 持械时返回 1（极小加成），本模型按「不触发」处理。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+
+    if not is_nil(attacker.weapon_name) or attacker.busy > 0 or
+         Kantele.Combat.Engine.rand(rng, 2) == 0 or db < 120 or attacker.neili < 200 or lvl < 250 do
+      {0, nil}
+    else
+      if div(db, 4) > victim.con do
+        extra = max(div(db - 88, 2), 0)
+
+        msg =
+          if Kantele.Combat.Engine.rand(rng, 2) == 1 do
+            "$N招式陡然一变，右手成爪，猛然间抓向$n周身大穴。\n"
+          else
+            "$N快步上前，全身真气贯于左手食指，猛地刺$n胸口大穴！\n"
+          end
+
+        {extra, msg, []}
+      else
+        {0, nil}
+      end
+    end
+  end
+
   @impl true
   def valid_damage(attacker, victim, damage, _action, rng) do
     if Map.get(victim.skills, "jiuyin-shengong", 0) < 150 or

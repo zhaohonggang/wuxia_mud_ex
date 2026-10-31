@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.XiaoliFeidao do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -19,6 +21,31 @@ defmodule Kantele.Combat.Skills.XiaoliFeidao do
 
   @impl true
   def valid_enable(usage), do: usage in ["throwing"]
+
+  # LPC valid_learn：max_neili>=1500 / force>=200 / throwing>=xiaoli-feidao
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 1500 ->
+        {:error, "你的内力不够，没有办法练小李飞刀。\n"}
+
+      Stats.skill(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，没有办法练小李飞刀。\n"}
+
+      Stats.skill(stats, "throwing") < Stats.skill(stats, id()) ->
+        {:error, "你的基本暗器水平有限，无法领会更高深的小李飞刀。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 
   @impl true
   def practice_cost(), do: %{qi: 35, neili: 48}

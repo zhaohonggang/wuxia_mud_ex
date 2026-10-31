@@ -19,6 +19,34 @@ defmodule Kantele.Combat.Skills.LongxiangGong do
   @impl true
   def id(), do: "longxiang-gong"
 
+  # LPC hit_ob（combatd.c:707 force 路径）：damage_bonus>=130、layer(=lvl/30,封顶13)>=6、
+  # neili>=500、空手、force 与 unarmed 都映射到本技能、damage_bonus/6 >= 对手 con、
+  # 且 random(10)>=5 时触发。layer>=10 且 random(2)==1 走「十龙十象」档
+  # (damage_bonus-50)/3，否则 (damage_bonus-100)/3。
+  # 未建模：me->add("neili",-80/-50) 自耗；secondary_weapon / prepared 门控。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+    layer = min(div(lvl, 30), 13)
+
+    if db < 130 or layer < 6 or attacker.neili < 500 or not is_nil(attacker.weapon_name) or
+         Map.get(attacker.mapped, "force") != id() or Map.get(attacker.mapped, "unarmed") != id() or
+         div(db, 6) < victim.con or Kantele.Combat.Engine.rand(rng, 10) < 5 do
+      {0, nil}
+    else
+      {extra, msg} =
+        if layer >= 10 and Kantele.Combat.Engine.rand(rng, 2) == 1 do
+          {max(div(db - 50, 3), 0),
+           "$N拳锋之上竟蕴藏着『十龙十象』之力，罡劲破体，摧毁了$n的真元！\n"}
+        else
+          {max(div(db - 100, 3), 0),
+           "$N双拳暗含龙象般若功第#{layer}层功力，$n心脉受震，喷出一口鲜血！\n"}
+        end
+
+      {extra, msg, []}
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage in ["force", "parry", "unarmed"]
 

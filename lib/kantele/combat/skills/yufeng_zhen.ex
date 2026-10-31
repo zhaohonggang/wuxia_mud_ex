@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.YufengZhen do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -19,6 +21,28 @@ defmodule Kantele.Combat.Skills.YufengZhen do
 
   @impl true
   def valid_enable(usage), do: usage in ["throwing"]
+
+  # LPC valid_learn：force>=60 / dodge>=80 / query_dex()>=26 / throwing>=yufeng-zhen
+  @impl true
+  def valid_learn(stats, _character) do
+    cond do
+      Stats.skill(stats, "force") < 60 ->
+        {:error, "你的内功心法火候不够，无法学玉蜂针。\n"}
+
+      Stats.skill(stats, "dodge") < 80 ->
+        {:error, "你的轻功火候不够，无法领悟玉蜂针。\n"}
+
+      # LPC me->query_dex() 是派生身法（base+tattoo+reborn+dodge/10）
+      Stats.query_dex(stats) < 26 ->
+        {:error, "你的身法不够灵巧，无法领悟玉蜂针。\n"}
+
+      Stats.skill(stats, "throwing") < Stats.skill(stats, id()) ->
+        {:error, "你的基本暗器水平有限，难以领会更高深的玉蜂针。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def practice_cost(), do: %{qi: 52, neili: 35}

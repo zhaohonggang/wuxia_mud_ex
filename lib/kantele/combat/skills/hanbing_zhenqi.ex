@@ -6,14 +6,19 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
   `valid_force` 接受 华山心法/衡山心法/嵩山心法/紫霞神功/镇岳诀 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性格/性别/`max_neili` 检查未实现。
+  - LPC `valid_learn` 的性格/性别/`max_neili` 检查未实现（注：性别/性格本模型已建模，
+    见 MEMORY；此处 LPC 源码里性格门被注释掉，性别门亦注释，仅保留 force/max_neili 门，
+    已迁移）。
   - `freezing`（寒冰真气）实现如下，需先 powerup、con>=34、skill>=140、max_neili>=2200、neili>=1000。
-  - `hit_ob` 冰封被动未接入。
+  - `hit_ob` 冰封被动 → 已迁移（combatd.c:707 攻击方内功钩子，经 `Engine.apply_force_hit_ob`
+    触发，门控 neili>=500/lvl>=220/jiali>=100/random(2)/已运 freezing，上 `freezing` 寒毒；
+    LPC `me->add("neili", -80)` 攻击者内力消耗因无跨进程通道未迁移）。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Engine
 
   @impl true
   def id(), do: "hanbing-zhenqi"
@@ -50,6 +55,56 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+
+  # LPC `hit_ob`（combatd.c:707，攻击方内功）：先 `::hit_ob` 得 force bonus（本引擎
+  # 已并入 damage），`result>0` 等价门为 `damage>0`。门控对齐 LPC：neili>=500、
+  # lvl>=220、jiali>=100、`random(2)==1`、且须先运「寒冰真气」(query_temp("freezing"))；
+  # 满足 `jiali*2 + random(lvl) > 对手 force` 时给 victim 上 `freezing` 寒毒。
+  # 注：LPC `me->add("neili", -80)` 是攻击方内力消耗，需跨进程攻击者 neili 通道，
+  # 当前 `hit_ob/5` 契约无此返回位，本次未迁移（已知偏差，待补攻击者资源扣减通道）。
+  @impl true
+  def hit_ob(attacker, victim, damage, _factor, rng) do
+    lvl = Stats.skill(attacker, id())
+    flvl = attacker.jiali
+
+    cond do
+      damage <= 0 ->
+        {0, nil}
+
+      attacker.neili < 500 or lvl < 220 or flvl < 100 ->
+        {0, nil}
+
+      Engine.rand(rng, 2) != 1 ->
+        {0, nil}
+
+      not Map.get(attacker, :freezing_buff, false) ->
+        {0, nil}
+
+      flvl * 2 + Engine.rand(rng, lvl) > Map.get(victim.skills, "force", 0) ->
+        {0,
+         freezing_msg(attacker, rng),
+         [
+           {"freezing",
+            %{
+              "level" => flvl * 3,
+              "id" => attacker.id,
+              "duration" => div(lvl, 50) + Engine.rand(rng, div(lvl, 20))
+            }}
+         ]}
+
+      true ->
+        {0, nil}
+    end
+  end
+
+  # LPC `random(2) ? A : B`：random(2) 返回 0/1，非 0（即 1）走 A。
+  defp freezing_msg(attacker, rng) do
+    if Engine.rand(rng, 2) == 1 do
+      "$n接下$N一招，霎时只感到寒风袭体，说不出的恶心难受。\n"
+    else
+      "只见$n全身一颤，嘴皮乌紫，竟似受了$N寒冰内劲的干扰。\n"
+    end
+  end
 
   @impl true
   def exert_list() do

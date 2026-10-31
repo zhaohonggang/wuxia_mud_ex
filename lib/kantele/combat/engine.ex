@@ -22,11 +22,13 @@ defmodule Kantele.Combat.Fighter do
     :jiali,
     :neili,
     :max_neili,
+    :shen,
     :no_kill,
     :attack_skill,
     :weapon_name,
     :weapon_skill_type,
-    :marks
+    :marks,
+    :freezing_buff
   ]
 
   def new() do
@@ -47,11 +49,13 @@ defmodule Kantele.Combat.Fighter do
       jiali: 0,
       neili: 0,
       max_neili: 0,
+      shen: 0,
       no_kill: false,
       attack_skill: "unarmed",
       weapon_name: nil,
       weapon_skill_type: nil,
-      marks: %{}
+      marks: %{},
+      freezing_buff: false
     }
   end
 
@@ -93,6 +97,9 @@ defmodule Kantele.Combat.Fighter do
       jiali: combat.jiali,
       neili: character.meta.vitals.neili,
       max_neili: character.meta.vitals.max_neili,
+      # LPC `me->query("shen")`：正邪值。少数技能招式表用它算动态伤害
+      # （qingyun-bian 的 `damage = shen / 1500`）。
+      shen: stats.shen || 0,
       no_kill: no_kill?(character),
       attack_skill: attack_skill,
       weapon_name: weapon && Map.get(weapon, :name),
@@ -102,7 +109,10 @@ defmodule Kantele.Combat.Fighter do
       weapon_skill_type: weapon && Map.get(weapon, :skill_type),
       # LPC `me->query("can_learn/xxx/...")` 权限位：少数技能据此换招式表
       # （dugu-jiujian 的 `can_learn/dugu-jiujian/nothing` → 无招表 action2）
-      marks: Map.get(character.meta, :marks) || %{}
+      marks: Map.get(character.meta, :marks) || %{},
+      # LPC `query_temp("freezing")`：寒冰真气运功后挂的 `freezing` buff（combatd
+      # :707 / hanbing-zhenqi.c 的 `hit_ob` 门控）。快照携带，便于跨进程在命中结算里判门。
+      freezing_buff: Enum.any?(combat.buffs, &(&1.key == "freezing"))
     }
   end
 
@@ -284,6 +294,41 @@ defmodule Kantele.Combat.Engine do
     end
   end
 
+  # 攻击方内功（force 技能）命中回调（LPC `me`=攻击方，combatd.c:707）。
+  # 仅当 `jiali>0 且 neili>jiali`（combatd.c:703）时触发；取攻击方映射的
+  # force 技能（`attacker.mapped["force"]`）模块，调用其 `hit_ob/5`，返回
+  # `{追加创伤, 文案, 持续状态}`，折叠方式与 `apply_hit_ob` 一致。
+  # 无 force 技能 / 未实现 hit_ob 则返回 `{0, nil, []}`。
+  defp apply_force_hit_ob(attacker, victim, damage, rng) do
+    if attacker.jiali > 0 and attacker.neili > attacker.jiali do
+      force_skill = Map.get(attacker.mapped, "force")
+
+      case force_skill && Skills.get(force_skill) do
+        skill_module when is_atom(skill_module) ->
+          if function_exported?(skill_module, :hit_ob, 5) do
+            case skill_module.hit_ob(
+                   Map.from_struct(attacker),
+                   Map.from_struct(victim),
+                   damage,
+                   0,
+                   rng
+                 ) do
+              {wound, msg, affects} when is_integer(wound) -> {max(wound, 0), msg, affects}
+              {wound, msg} when is_integer(wound) -> {max(wound, 0), msg, []}
+              _ -> {0, nil, []}
+            end
+          else
+            {0, nil, []}
+          end
+
+        _ ->
+          {0, nil, []}
+      end
+    else
+      {0, nil, []}
+    end
+  end
+
   # 防守当量：busy 时除三（heart_beat 的 dp/3），下限 1
   defp defense_power(victim, skill, delta, _rng) do
     power =
@@ -339,6 +384,17 @@ defmodule Kantele.Combat.Engine do
     {extra_wound, hit_msg, affects} = apply_hit_ob(attacker, victim, damage, rng)
     wounded = wounded + extra_wound
 
+    # 攻击方内功（force）命中回调（LPC `me`=攻击方，combatd.c:707 第 3 参是
+    # force bonus）。第 3 参传入本引擎的 `damage_bonus`（= force_bonus(str+jiali)，
+    # 与 LPC 707 行的 force bonus 同义），供各 force 技能按其 `damage_bonus`
+    # 门槛/公式判定。返回的 `{追加创伤, 文案, 持续状态}`：追加创伤直接计入
+    # `wounded`（对应 LPC `receive_wound("qi", …)`），持续状态进 round.conditions。
+    # 触发条件对齐 combatd.c:703：`jiali>0 且 neili>jiali`。
+    # 冰封/冰冻类（freezing-force / hanbing-zhenqi）返回 {0, 文案, 状态}；
+    # 九阳/九阴/龙象/太玄等返回各自额外创伤。
+    {force_wound, force_msg, force_affects} = apply_force_hit_ob(attacker, victim, damage_bonus, rng)
+    wounded = wounded + force_wound
+
     # 攻击者根骨影响创伤（con 效果）
     wounded = wounded |> Kernel.-(div(wounded * (attacker.con - 10), 100)) |> max(0)
 
@@ -373,6 +429,7 @@ defmodule Kantele.Combat.Engine do
 
     segments = append_hook(segments, atk_msg)
     segments = append_hook(segments, hit_msg)
+    segments = append_hook(segments, force_msg)
     segments = append_hook(segments, def_msg)
     segments = append_hook(segments, counter_msg)
 
@@ -382,7 +439,7 @@ defmodule Kantele.Combat.Engine do
         wounded: wounded,
         jiali_spent: jiali_spent,
         counter_damage: counter_damage,
-        conditions: List.wrap(affects),
+        conditions: List.wrap(affects) ++ List.wrap(force_affects),
         segments: segments
     }
   end

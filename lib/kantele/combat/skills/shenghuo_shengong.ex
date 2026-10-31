@@ -19,6 +19,33 @@ defmodule Kantele.Combat.Skills.ShenghuoShengong do
   @impl true
   def id(), do: "shenghuo-shengong"
 
+  # LPC hit_ob（combatd.c:707 force 路径）：门控 lvl<140、damage_bonus 为 0、
+  # force 未映射本技能、sword 未映射 shenghuo-ling、无武器、武器非 sword、flvl<140、
+  # shenghuo-ling/hit 已置、neili<200 → 不触发；
+  # 触发条件 lvl/2 + random(lvl) > 对手 force 等级（且 max_hit 未置）。
+  # LPC 实际效果 = 多段 do_attack 剑招连绵，单轮无此通道，仅还原文案。
+  # shenghuo-ling/hit、max_hit 去重标志未建模（按未置处理）。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+    flvl = Map.get(attacker.skills, "shenghuo-ling", 0)
+
+    if lvl < 140 or db <= 0 or Map.get(attacker.mapped, "force") != id() or
+         Map.get(attacker.mapped, "sword") != "shenghuo-ling" or
+         is_nil(attacker.weapon_name) or attacker.weapon_skill_type != "sword" or
+         flvl < 140 or attacker.neili < 200 do
+      {0, nil}
+    else
+      if div(lvl, 2) + Kantele.Combat.Engine.rand(rng, max(lvl, 1)) >
+           Map.get(victim.skills, "force", 0) do
+        msg = "\n刹那间$N身法陡然加快，剑招连绵而出，招式诡异无比，令$n难以琢磨。\n"
+        {0, msg, []}
+      else
+        {0, nil}
+      end
+    end
+  end
+
   @impl true
   def valid_enable(usage), do: usage == "force"
 

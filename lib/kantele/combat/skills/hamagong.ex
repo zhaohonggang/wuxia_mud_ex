@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.Hamagong do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions [
     %{
       "action" => "$N忽而倒竖，一手撑住地面，身子横挺，另一掌向$n的胸口拍去",
@@ -60,6 +62,80 @@ defmodule Kantele.Combat.Skills.Hamagong do
 
   @impl true
   def valid_enable(usage), do: usage in ["force", "parry", "strike"]
+
+  @impl true
+  def valid_force(force), do: force in ["baituo-xinfa"]
+
+  @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
+  @impl true
+  def practice_cost(), do: nil
+
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    force = Stats.skill(stats, "force")
+    strike = Stats.skill(stats, "strike")
+    poison = Stats.skill(stats, "poison")
+    max_neili = max_neili_of(character)
+
+    cond do
+      # LPC 首门「光明磊落/狡黠多变」性格拒绝未建模（meta.character 恒 nil），跳过
+      Stats.str(stats) < 32 ->
+        {:error, "你先天臂力孱弱，无法修炼蛤蟆功。\n"}
+
+      Stats.con(stats) < 32 ->
+        {:error, "你先天根骨太差，无法修炼蛤蟆功。\n"}
+
+      gender_of(character) == "无性" and lvl > 49 ->
+        {:error, "你无根无性，阴阳不调，难以领会高深的蛤蟆功。\n"}
+
+      force < 50 or force < lvl ->
+        {:error, "你的基本内功火候不足，不能学蛤蟆功。\n"}
+
+      strike < 150 ->
+        {:error, "你的基本掌法火候不足，难以领会蛤蟆功。\n"}
+
+      strike < lvl ->
+        {:error, "你的基本掌法造诣有限，无法理解更高深的蛤蟆功。\n"}
+
+      poison < 150 ->
+        {:error, "你的基本毒技火候不足，难以领会蛤蟆功。\n"}
+
+      not is_nil(max_neili) and max_neili < 2500 ->
+        {:error, "你现在的内力修为不足，难以领会蛤蟆功。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  # LPC hit_ob（combatd.c:707 force 路径）：damage_bonus>=150、自身>=180、neili>=300、
+  # 空手、force 与 strike 都映射到本技能时，若 damage_bonus/6 > 对手 con，则给对手追加
+  # (damage_bonus-90)/3 的 qi 创伤。未建模：攻击方 neili 自耗 -30、prepared 门控。
+  @impl true
+  def hit_ob(attacker, victim, db, _factor, _rng) do
+    lvl = Map.get(attacker.skills, id(), 0)
+
+    if db < 150 or lvl < 180 or attacker.neili < 300 or not is_nil(attacker.weapon_name) or
+         Map.get(attacker.mapped, "force") != id() or
+         Map.get(attacker.mapped, "strike") != id() do
+      {0, nil}
+    else
+      if div(db, 6) > victim.con do
+        extra = max(div(db - 90, 3), 0)
+        {extra, "$n硬承下$N一掌，霎时全身一颤，经脉受震，喷出一口鲜血！\n", []}
+      else
+        {0, nil}
+      end
+    end
+  end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

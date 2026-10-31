@@ -22,6 +22,7 @@ defmodule Kantele.Character.ConditionRegistry do
     bingcan_duzhang cuixin_zhang sha_poison ice_poison huagu
     ningxue_shenzhao qianzhu_wandushou shenzhao tougu_zhen
     xuanming_poison xuantian_zhi yinfeng_dao
+    freezingbc freezing
   )
 
   @daemons Map.merge(
