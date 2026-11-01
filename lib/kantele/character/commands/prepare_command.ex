@@ -179,26 +179,33 @@ defmodule Kantele.Character.PrepareCommand do
             error(conn, "该技能未实装绝招列表。\n")
 
           module ->
-            case Map.get(module.perform_list(), arg2) do
-              nil ->
-                error(conn, "该技能没有名为 #{arg2} 的绝招。\n")
+            # D4: prepare_skill 门槛校验（对应 LPC prepare_skill notify_fail）
+            case module.prepare_skill(skill, conn.character) do
+              :ok ->
+                case Map.get(module.perform_list(), arg2) do
+                  nil ->
+                    error(conn, "该技能没有名为 #{arg2} 的绝招。\n")
 
-              _perform_module ->
-                usage = infer_usage_from_skill(skill)
+                  _perform_module ->
+                    usage = infer_usage_from_skill(skill)
 
-                case Stats.prepare_perform(conn.character.meta.stats, usage, "#{skill}/#{arg2}") do
-                  {:ok, new_stats} ->
-                    conn
-                    |> put_character(%{
-                      conn.character
-                      | meta: %{conn.character.meta | stats: new_stats}
-                    })
-                    |> render(CommandView, "text", %{text: "预备成功：#{usage} -> #{arg2}\n"})
-                    |> prompt(CommandView, "prompt", %{})
+                    case Stats.prepare_perform(conn.character.meta.stats, usage, "#{skill}/#{arg2}") do
+                      {:ok, new_stats} ->
+                        conn
+                        |> put_character(%{
+                          conn.character
+                          | meta: %{conn.character.meta | stats: new_stats}
+                        })
+                        |> render(CommandView, "text", %{text: "预备成功：#{usage} -> #{arg2}\n"})
+                        |> prompt(CommandView, "prompt", %{})
 
-                  {:error, reason} ->
-                    error(conn, reason)
+                      {:error, reason} ->
+                        error(conn, reason)
+                    end
                 end
+
+              {:error, reason} ->
+                error(conn, reason)
             end
         end
     end

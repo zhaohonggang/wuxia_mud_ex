@@ -163,6 +163,11 @@ defmodule Kantele.Combat.Skill do
               | {non_neg_integer(), String.t() | nil, list()}
               | {non_neg_integer(), String.t() | nil, list(), map()}
 
+  @doc "绝招预备门槛（对应 LPC prepare_skill）：在 `prepare <技能> <绝招>` 时由命令层调用，
+  返回 :ok 表示允许预备，{:error, reason} 表示拒绝并给出文案。
+  默认实现恒返回 :ok，绝大多数技能无需覆盖。"
+  @callback prepare_skill(String.t(), term()) :: :ok | {:error, String.t()}
+
   @doc "练习前置校验（对应 practice_skill 的 qi/neili 门槛），返回 :ok 或出错文案"
   @callback practice_check(map()) :: :ok | {:error, String.t()}
 
@@ -207,7 +212,8 @@ defmodule Kantele.Combat.Skill do
     perform_action_file: 1,
     do_effect: 2,
     query_action: 3,
-    valid_enable: 2
+    valid_enable: 2,
+    prepare_skill: 2
   ]
 
   defmacro __using__(_opts) do
@@ -240,6 +246,11 @@ defmodule Kantele.Combat.Skill do
 
       @doc false
       def practice_cost(), do: %{qi: 50, neili: 30}
+
+      # 绝招预备门槛：默认允许所有技能预备，无需覆盖。
+      # 需要等级/属性/门派等门控的技能（对应 LPC prepare_skill 的 notify_fail）才覆盖。
+      @doc false
+      def prepare_skill(_skill_id, _character), do: :ok
 
       @doc false
       def perform_list(), do: %{}
@@ -286,7 +297,8 @@ defmodule Kantele.Combat.Skill do
                      query_effect_parry: 1,
                      query_effect_dodge: 1,
                      skill_improved: 1,
-                     perform_action_file: 1
+                     perform_action_file: 1,
+                     prepare_skill: 2
     end
   end
 
