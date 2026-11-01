@@ -289,7 +289,7 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
     personality = personality_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能练剑法。\n"}
 
       Stats.int(stats) < 39 ->

@@ -43,7 +43,7 @@ defmodule Kantele.Combat.Skills.HexingBifa do
       not is_nil(max_neili) and max_neili < 300 ->
         {:error, "你的内力修为不够。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "dagger") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "dagger" ->
         {:error, "你必须先找一把相应的武器才能学习鹤形笔法。\n"}
 
       Stats.skill(stats, "dagger") < lvl ->

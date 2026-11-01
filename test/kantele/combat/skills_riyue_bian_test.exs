@@ -19,7 +19,7 @@ defmodule Kantele.Combat.SkillsRiyueBianTest do
       con: con
     }
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC int>=30 / con>=32 / max_neili>=1000 / force>=150 / whip>=100 / whip>=self）" do
     test "int < 30 被拒（过于艰深难以理解）" do

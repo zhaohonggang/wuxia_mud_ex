@@ -41,13 +41,9 @@ defmodule Kantele.Combat.Skills.SanwuShou do
   def valid_learn(stats, character) do
     lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
-    personality = personality_of(character)
 
     cond do
-      (personality != "心狠手辣") and (personality != "国士无双") ->
-        {:error, "练三无三不手必须要心狠手辣，我看你这点做得还不够。\n"}
-
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条鞭子才能练三无三不手。\n"}
 
       not is_nil(max_neili) and max_neili < 800 ->
@@ -78,10 +74,5 @@ defmodule Kantele.Combat.Skills.SanwuShou do
       "zhi" => Kantele.Combat.Skills.Performs.SanwuShou.Zhi
     }
   end
-
-  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
-  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
-  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
-  defp personality_of(_character), do: nil
 
 end

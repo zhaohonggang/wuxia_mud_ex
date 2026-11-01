@@ -39,7 +39,7 @@ defmodule Kantele.Combat.Skills.FeifengWhip do
       gender != "女性" ->
         {:error, "大老爷们学这飞凤鞭？天资不足吧。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条长鞭才能练鞭法。\n"}
 
       true ->

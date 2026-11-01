@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsJiuquJianTest do
   defp stats(force, sword, jiuqu),
     do: %{skills: %{"force" => force, "sword" => sword, "jiuqu-jian" => jiuqu}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=300 / force>=100 / sword>=60 / sword>=jiuqu-jian）" do
     test "max_neili < 300 被拒（内力不够）" do

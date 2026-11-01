@@ -39,8 +39,8 @@ defmodule Kantele.Combat.Skills.PoguangDao do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "blade") ->
-        {:error, "你必须先找一把剑才能练破光刀法。\n"}
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "blade" ->
+        {:error, "你必须先找一把刀才能练破光刀法。\n"}
 
       not is_nil(max_neili) and max_neili < 800 ->
         {:error, "你的内力修为不够，无法学习破光刀法。\n"}

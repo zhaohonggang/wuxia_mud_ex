@@ -42,7 +42,7 @@ defmodule Kantele.Combat.Skills.LuoyingShenjian do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能学习剑法。\n"}
 
       Stats.skill(stats, "force") < 30 ->

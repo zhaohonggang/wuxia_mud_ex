@@ -79,7 +79,7 @@ defmodule Kantele.Combat.Skills.ZhongpingQiang do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "club") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "club" ->
         {:error, "你必须先找一根棍子才能练中平枪法。\n"}
 
       not is_nil(max_neili) and max_neili < 1000 ->

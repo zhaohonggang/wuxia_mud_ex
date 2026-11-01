@@ -90,7 +90,7 @@ defmodule Kantele.Combat.Skills.LiuxingChui do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "练流星锤的武器不对呀。\n"}
 
       Stats.skill(stats, "force") < 50 ->

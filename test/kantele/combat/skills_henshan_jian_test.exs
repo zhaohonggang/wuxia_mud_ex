@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsHenshanJianTest do
   defp stats(sword, henshan),
     do: %{skills: %{"sword" => sword, "henshan-jian" => henshan}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "sword"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=80 / sword>=10 / sword>=henshan-jian）" do
     test "max_neili < 80 被拒（内力修为不够）" do

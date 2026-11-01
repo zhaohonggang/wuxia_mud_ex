@@ -128,7 +128,7 @@ defmodule Kantele.Combat.Skills.HengshanSword do
       Stats.skill(stats, "force") < 40 ->
         {:error, "你的内功火候不够，没有办法练衡山剑法。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能练剑法。\n"}
 
       true ->

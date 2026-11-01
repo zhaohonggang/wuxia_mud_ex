@@ -102,7 +102,7 @@ defmodule Kantele.Combat.Skills.YunvJian do
   @impl true
   def valid_learn(stats, character) do
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你使用的武器不对。\n"}
 
       Stats.skill(stats, "sword") < 15 ->

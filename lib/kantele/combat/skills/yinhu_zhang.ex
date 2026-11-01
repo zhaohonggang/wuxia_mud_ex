@@ -115,7 +115,7 @@ defmodule Kantele.Combat.Skills.YinhuZhang do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "staff") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "staff" ->
         {:error, "你使用的武器不对。\n"}
 
       not is_nil(max_neili) and max_neili < 200 ->

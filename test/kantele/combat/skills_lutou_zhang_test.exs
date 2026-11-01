@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsLutouZhangTest do
   defp stats(force, staff, lutou),
     do: %{skills: %{"force" => force, "staff" => staff, "lutou-zhang" => lutou}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "staff"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "staff"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=200 / force>=60 / staff>=20 / staff>=self）" do
     test "max_neili < 200 被拒（内力修为不足）" do

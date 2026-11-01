@@ -17,7 +17,7 @@ defmodule Kantele.Combat.SkillsSanwuShouTest do
     %{skills: %{"force" => force, "whip" => whip, "sanwu-shou" => self_lvl}}
   end
 
-  defp char(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}
+  defp char(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=800 / force>=120 / whip>=100 / whip>=self）" do
     test "max_neili < 800 被拒（内力不足）" do

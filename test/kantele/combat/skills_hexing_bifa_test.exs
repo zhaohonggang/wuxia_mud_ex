@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsHexingBifaTest do
   defp stats(dagger, hexing),
     do: %{skills: %{"dagger" => dagger, "hexing-bifa" => hexing}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "dagger"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "dagger"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=300 / dagger>=self）" do
     test "max_neili < 300 被拒（内力修为不够）" do

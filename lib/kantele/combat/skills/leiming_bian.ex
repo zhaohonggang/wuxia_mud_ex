@@ -92,7 +92,7 @@ defmodule Kantele.Combat.Skills.LeimingBian do
       Stats.skill(stats, "force") < 40 ->
         {:error, "你的内功火候太浅。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条鞭子才能练鞭法。\n"}
 
       true ->

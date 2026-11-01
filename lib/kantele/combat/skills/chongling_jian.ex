@@ -85,7 +85,7 @@ defmodule Kantele.Combat.Skills.ChonglingJian do
       Stats.skill(stats, "huashan-jian") < 100 ->
         {:error, "你华山剑法火候不够，无法练冲灵剑法。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能学习冲灵剑法。\n"}
 
       Stats.skill(stats, "sword") < lvl ->

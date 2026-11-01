@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsDachengFosuoTest do
   defp stats(shaolin, dacheng),
     do: %{skills: %{"shaolin-xinfa" => shaolin, "dacheng-fosuo" => dacheng}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=1000 / shaolin-xinfa>=80）" do
     test "max_neili < 1000 被拒（内力修为不足）" do

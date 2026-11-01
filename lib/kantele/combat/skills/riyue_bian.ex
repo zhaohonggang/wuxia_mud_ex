@@ -44,7 +44,7 @@ defmodule Kantele.Combat.Skills.RiyueBian do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条鞭子才能练鞭法。\n"}
 
       Stats.int(stats) < 30 ->

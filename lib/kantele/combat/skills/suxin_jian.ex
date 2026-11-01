@@ -53,7 +53,7 @@ defmodule Kantele.Combat.Skills.SuxinJian do
       Stats.int(stats) < 28 ->
         {:error, "你的先天悟性不够，无法学习玉女素心剑。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你使用的武器不对。\n"}
 
       Stats.skill(stats, "force") < 100 ->

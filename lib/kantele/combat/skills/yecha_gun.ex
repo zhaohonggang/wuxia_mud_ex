@@ -95,7 +95,7 @@ defmodule Kantele.Combat.Skills.YechaGun do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "club") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "club" ->
         {:error, "你必须先找一根棍子才能练夜叉棍法。\n"}
 
       not is_nil(max_neili) and max_neili < 500 ->

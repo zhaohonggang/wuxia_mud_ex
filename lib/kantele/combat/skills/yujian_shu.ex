@@ -121,7 +121,7 @@ defmodule Kantele.Combat.Skills.YujianShu do
     lvl = Stats.skill(stats, id())
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能练御剑术。\n"}
 
       Stats.int(stats) < 35 ->

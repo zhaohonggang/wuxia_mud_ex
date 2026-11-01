@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsLuoyunDaoTest do
   defp stats(force, blade, luoyun),
     do: %{skills: %{"force" => force, "blade" => blade, "luoyun-dao" => luoyun}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "blade"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "blade"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=400 / force>=100 / blade>=80 / blade>=self）" do
     test "max_neili < 400 被拒（内力修为不够）" do

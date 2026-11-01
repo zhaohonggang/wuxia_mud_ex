@@ -93,7 +93,7 @@ defmodule Kantele.Combat.Skills.YunuSword do
       gender != "女性" ->
         {:error, "玉女金针十三剑是只有女子才能练的武功。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能练剑法。\n"}
 
       not is_nil(max_neili) and max_neili < 100 ->

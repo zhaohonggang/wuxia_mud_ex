@@ -39,7 +39,7 @@ defmodule Kantele.Combat.Skills.FurongJian do
       Stats.skill(stats, "wushen-jian") > 0 ->
         {:error, "你已演练合成了衡山五神剑，不必再单独学习。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "sword") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "sword" ->
         {:error, "你必须先找一把剑才能练剑法。\n"}
 
       not is_nil(max_neili) and max_neili < 300 ->

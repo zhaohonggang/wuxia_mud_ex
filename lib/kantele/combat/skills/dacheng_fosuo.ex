@@ -45,7 +45,7 @@ defmodule Kantele.Combat.Skills.DachengFosuo do
       Stats.skill(stats, "shaolin-xinfa") < 80 ->
         {:error, "你的少林心法火候太浅。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条鞭子才能练鞭法。\n"}
 
       true ->

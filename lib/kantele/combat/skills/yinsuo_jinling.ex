@@ -119,7 +119,7 @@ defmodule Kantele.Combat.Skills.YinsuoJinling do
       Stats.dex(stats) < 28 ->
         {:error, "你的先天身法不够，无法练银索金铃。\n"}
 
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "whip") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条鞭子才能练银索金铃。\n"}
 
       not is_nil(max_neili) and max_neili < 500 ->

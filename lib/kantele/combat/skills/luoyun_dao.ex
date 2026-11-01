@@ -40,7 +40,7 @@ defmodule Kantele.Combat.Skills.LuoyunDao do
     max_neili = max_neili_of(character)
 
     cond do
-      (not (Skill.wielding?(character))) or (Skill.wielded_skill_type(character) != "blade") ->
+      Skill.wielding?(character) and Skill.wielded_skill_type(character) != "blade" ->
         {:error, "你必须先找一把剑才能练落云刀法。\n"}
 
       not is_nil(max_neili) and max_neili < 400 ->

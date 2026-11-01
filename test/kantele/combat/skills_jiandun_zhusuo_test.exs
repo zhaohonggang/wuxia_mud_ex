@@ -15,7 +15,7 @@ defmodule Kantele.Combat.SkillsJiandunZhusuoTest do
   defp stats(force, whip, self_lvl),
     do: %{skills: %{"force" => force, "whip" => whip, "jiandun-zhusuo" => self_lvl}}
 
-  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}
+  defp char_with_max_neili(mn), do: %{meta: %{vitals: %{max_neili: mn}, combat: %{equipped: %{weapon: %{skill_type: "whip"}}}}}
 
   describe "valid_learn/2 学习门槛（LPC max_neili>=500 / force>=100 / whip>=20 / whip>=self）" do
     test "max_neili < 500 被拒（内力不足）" do
