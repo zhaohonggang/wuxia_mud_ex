@@ -6,11 +6,15 @@ defmodule Kantele.Combat.Skills.HuzhaoShou do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/huzhao_shou/
+  **已迁移：**`valid_learn(stats)` 匹配 LPC `huzhao-shou.c` 两门 query_skill 门槛：
+  `baihua-cuoquan==0`、`claw>=本门`（空手门 `query_temp("weapon")` 留待 arity-2 迁移）。
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -90,6 +94,22 @@ defmodule Kantele.Combat.Skills.HuzhaoShou do
 
   @impl true
   def valid_enable(usage), do: usage in ["claw", "parry"]
+
+  @impl true
+  def valid_learn(stats) do
+    lvl = Stats.skill(stats, id())
+
+    cond do
+      Stats.skill(stats, "baihua-cuoquan") > 0 ->
+        {:error, "你已经练成了百花错拳，不必再单独学习了。\n"}
+
+      Stats.skill(stats, "claw") < lvl ->
+        {:error, "你的基本爪法火候不足，无法领会更高深的虎爪手。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def practice_cost(), do: %{qi: 80, neili: 50}

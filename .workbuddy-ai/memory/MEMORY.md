@@ -16,7 +16,8 @@
 ## @static 白名单当前：733 唯一 id（与 733 `.ex` 模块一致，0 缺失 0 extra）。
 
 ## 进行中（待 commit）
-- **poison（性格门，已实现，待 commit）**：`meta.character` 基础设施已补全（`PlayerMeta` 加 `:character`；`learn_command.ex` 透传 `student_character`；`skills_event.ex` 切片加 `:character`）；`poison.ex` 实现 `valid_learn/2`（光明磊落拒绝）+ `practice_cost/0`，moduledoc 标 `**已迁移：**`；单测 `test/kantele/combat/poison_test.exs` 5/5；Docker `mix compile` exit 0；combat+character 4054/36（36 均为预存在，零回归）。`docs/待办实施计划.zh-CN.md` 新增 C-PVE26；`docs/待办对照代码核查.zh-CN.md` 移除 poison 遗留项。等待用户 commit。
-- **gun（已迁移，非真缺口）**：`valid_learn/2` 调用 `Kantele.Admin.Access.wizardp(character)`，无需改动。
-- base 12 技能 valid_enable/practice_cost 修复：已迁，待 commit（C-PVE25）。
-- lingbo-weibu / huoyan-dao：valid_learn/2 + practice_cost/0 已迁，待 commit。
+- F4 valid_learn 长尾补全——16 个 arity-1/arity-2 技能（已实现，未 commit）：
+  - arity-1 (12): baicao-jue/baji-quan/culture-cognize/huntian-baojian/huzhao-shou/japanese/necromancy/russian/tadpole/technic-cognize/wuxing-jueming/xuwen-qixingding
+  - arity-2 (4): wuyue-blade/wuyun-jianfa/xuanfeng-leg/xuantian-shengong
+  - 测试：skills_valid_learn_partial_batch2_test.exs（12技能），skills_valid_learn_partial_batch3_test.exs（4技能），均绿（54/0）
+  - batch1 已 commit（linji-zhuang/longxiang-gong，7a609e9c，11/0）

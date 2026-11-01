@@ -6,8 +6,10 @@ defmodule Kantele.Combat.Skills.HuntianBaojian do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：difficult_level, exert_function_file, perform_action_file, practice_skill, valid_force, valid_learn
+  - 源码钩子/条件：difficult_level, exert_function_file, perform_action_file, practice_skill, valid_force
   - perform/exert 路由骨架见 tmp/perf_out/huntian_baojian/
+  **已迁移：**`valid_learn(stats)` 匹配 LPC `huntian-baojian.c`：恒拒绝，
+  文案与 LPC 源一致。
   """
 
   use Kantele.Combat.Skill
@@ -130,6 +132,9 @@ defmodule Kantele.Combat.Skills.HuntianBaojian do
 
   @impl true
   def valid_enable(usage), do: usage in ["force", "parry", "unarmed"]
+
+  @impl true
+  def valid_learn(_stats), do: {:error, "%……—（%￥·！·！·*#--\n"}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

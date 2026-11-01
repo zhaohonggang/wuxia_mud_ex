@@ -6,11 +6,16 @@ defmodule Kantele.Combat.Skills.WuyunJianfa do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：perform_action_file, practice_skill
   - perform/exert 路由骨架见 tmp/perf_out/wuyun_jianfa/
+  **已迁移：**`valid_learn/2(stats, character)` 匹配 LPC `wuyun-jianfa.c` 两门门槛：
+  `max_neili>=400`、`force>=80`（max_neili 门需 arity-2，force 门回落 `valid_learn/1`）。
   """
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
 
   @actions [
     %{
@@ -73,6 +78,38 @@ defmodule Kantele.Combat.Skills.WuyunJianfa do
 
   @impl true
   def practice_cost(), do: %{qi: 40, neili: 38}
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
+  # LPC valid_learn：max_neili>=400 / force>=80。
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_nil(max_neili) and max_neili < 400 ->
+        {:error, "你的内力不够。\n"}
+
+      true ->
+        valid_learn(stats)
+    end
+  end
+
+  @impl true
+  def valid_learn(stats) do
+    force = Stats.skill(stats, "force")
+
+    cond do
+      force < 80 ->
+        {:error, "你的内功火候不够。\n"}
+
+      true ->
+        :ok
+    end
+  end
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

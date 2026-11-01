@@ -6,8 +6,9 @@ defmodule Kantele.Combat.Skills.TechnicCognize do
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：valid_learn
   - perform/exert 路由骨架见 tmp/perf_out/technic_cognize/
+  **已迁移：**`valid_learn(stats)` 匹配 LPC `technic-cognize.c`：恒拒绝，
+  文案「技能修养是你工艺技能方面的体会，无法通过简单学习获得提升。」。
   """
 
   use Kantele.Combat.Skill
@@ -20,6 +21,9 @@ defmodule Kantele.Combat.Skills.TechnicCognize do
   # TODO(migrate) valid_enable 未识别（源可能用变量/组合判断）
   @impl true
   def valid_enable(_usage), do: false
+
+  @impl true
+  def valid_learn(_stats), do: {:error, "技能修养是你工艺技能方面的体会，无法通过简单学习获得提升。\n"}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
