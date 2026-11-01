@@ -9,6 +9,7 @@ defmodule Kantele.Character.PlayerMeta do
   - `followers` 跟随者列表 `[%{id, name, pid}]`（运行态，不落盘）
   - `nickname` 昵称（cmds/usr/nick.c；落盘 metadata.nickname）
   - `title` 玩家头衔（cmds/usr/title.c 玩家展示层；落盘）
+  - `character` 人格/天性（LPC `query("character")`，如 "光明磊落"；poison.c valid_learn 门槛；运行态，不落盘）
   - `option` 界面选项位图 `%{"brief_room" => 1, ...}`（cmds/usr/option.c；落盘）
   - `alias_commands` 自定义别名 `%{"sc" => "score", ...}`（cmds/usr/alias.c；落盘）
   - `team` 队伍 `%{id, leader_pid, members: [%{id, name, pid}]}`（cmds/std/team.c；运行态）
@@ -32,6 +33,7 @@ defmodule Kantele.Character.PlayerMeta do
     :leader,
     :nickname,
     :title,
+    :character,
     :option,
     :alias_commands,
     :team,

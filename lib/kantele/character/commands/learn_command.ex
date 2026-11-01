@@ -28,6 +28,8 @@ defmodule Kantele.Character.LearnCommand do
       # env/spouse 供师父侧 `valid_learn/2` 读性别门（无性/男性）与已婚门
       student_env: conn.character.meta.env,
       student_spouse: conn.character.meta.spouse,
+      # character 供师父侧 `valid_learn/2` 读人格门（如 poison.c "光明磊落"）
+      student_character: conn.character.meta.character,
       # equipped 供 `valid_learn/2` 读持械门（LPC `me->query_temp("weapon")`）
       student_equipped: conn.character.meta.combat.equipped
     })
