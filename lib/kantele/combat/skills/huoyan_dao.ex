@@ -6,15 +6,19 @@ defmodule Kantele.Combat.Skills.HuoyanDao do
 
   绝招实现见 `lib/kantele/combat/skills/performs/huoyan_dao/`。
 
+  **已迁移**：`valid_learn/2` 门槛（LPC 要求空手、con>=32、shen<=-lvl*1000、max_neili>=1200、
+  force>=150、strike>=huoyan-dao）—— 已实现 `valid_learn(stats, character)` 逐条门槛；
+  `practice_cost()` = `%{qi: 55, neili: 60}`（LPC receive_damage qi55，base cost lvl/5+60，
+  practice_cost/0 无等级参数故取 lvl=0 基准）。
+
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 还要求空手、con>=32、shen 与 max_neili>=1200、
-    strike>=huoyan-dao，本版以 force>=150 代理；
-  - 招式表与 `practice_skill` 未建模。
+  - 招式表与 `practice_skill` 实际扣减未建模（`practice_cost` 仅作练习门槛）。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
 
 
   @actions [
@@ -114,19 +118,49 @@ defmodule Kantele.Combat.Skills.HuoyanDao do
   def valid_enable(usage), do: usage in ["strike", "parry"]
 
   @impl true
-  def valid_learn(stats) do
+  # LPC valid_learn(object me)：空手 + con>=32 + shen<=-lvl*1000（正邪值足够邪恶）
+  #   + max_neili>=1200 + force>=150 + strike>=huoyan-dao。
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+  defp shen_of(%{meta: %{stats: %{shen: shen}}}) when is_integer(shen), do: shen
+  defp shen_of(_), do: 0
+
+  @impl true
+  def valid_learn(stats, character) do
+    lvl = Stats.skill(stats, id())
+    max_neili = max_neili_of(character)
+    shen = shen_of(character)
+
     cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练火焰刀必须空手。\n"}
+
+      Stats.con(stats) < 32 ->
+        {:error, "你的先天根骨孱弱，难以修炼火焰刀。\n"}
+
+      shen > -lvl * 1000 ->
+        {:error, "你的杀气不够，难以领悟更高深的火焰刀。\n"}
+
+      not is_nil(max_neili) and max_neili < 1200 ->
+        {:error, "你的内力不够。\n"}
+
       Stats.skill(stats, "force") < 150 ->
         {:error, "你的内功火候太浅。\n"}
+
+      Stats.skill(stats, "strike") < lvl ->
+        {:error, "你的基本掌法火候有限，无法领会更高深的火焰刀法。\n"}
 
       true ->
         :ok
     end
   end
 
-  @doc "只能学(learn)不能练"
+  @doc "练习消耗：LPC practice_skill 扣 qi 55 / neili (lvl/5+60)。practice_cost/0 无
+  等级参数，此处取 lvl=0 基准值 %{qi: 55, neili: 60}。"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 55, neili: 60}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

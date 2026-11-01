@@ -6,14 +6,20 @@ defmodule Kantele.Combat.Skills.LingboWeibu do
 
   绝招实现见 `lib/kantele/combat/skills/performs/lingbo_weibu/`。
 
+  **已迁移**：`valid_learn/2` 门槛（LPC 要求 dex>=30、max_neili>=3000+lvl*15，lvl 上限 300）——
+  已实现 `valid_learn(stats, character)`：dex>=30 / max_neili>=3000+lvl*15
+  （取 character.meta.vitals.max_neili）。`practice_cost()` = `%{qi: 65, neili: 65}`
+  （LPC 扣 qi65/neili65）。
+
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的 max_neili>=3000+lvl*15 门槛本版未代理（引擎
-    `valid_learn/1` 只拿 stats，无 vitals），仅以 dex>=30 校验；
   - LPC `valid_damage`/`query_effect_dodge` 被动（身法幻影抵消伤害）与
     `dodge_msg` 未建模。
-  """
+"""
 
   use Kantele.Combat.Skill
+
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
 
   @impl true
   def id(), do: "lingbo-weibu"
@@ -60,18 +66,32 @@ defmodule Kantele.Combat.Skills.LingboWeibu do
   @impl true
   def valid_enable(usage), do: usage == "dodge"
 
+  # LPC valid_learn(object me)：dex>=30 + max_neili>=3000+lvl*15（lvl 上限 300）。
+  # LPC 无空手要求（轻功可持械），故不加持械门。
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
   @impl true
-  def valid_learn(stats) do
-    if stats.dex < 30 do
-      {:error, "你先天身法太差，无法学习凌波微步。\n"}
-    else
-      :ok
+  def valid_learn(stats, character) do
+    lvl = min(Stats.skill(stats, id()), 300)
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.dex(stats) < 30 ->
+        {:error, "你先天身法太差，无法学习凌波微步。\n"}
+
+      not is_nil(max_neili) and max_neili < 3000 + lvl * 15 ->
+        {:error, "你试着走了两步，顿觉胸口烦恶之极，看来是内力不济。\n"}
+
+      true ->
+        :ok
     end
   end
 
-  @doc "只能学(learn)不能练（LPC practice_skill 未建模）"
+  @doc "练习消耗：LPC practice_skill 扣 qi 65 / neili 65"
   @impl true
-  def practice_cost(), do: nil
+  def practice_cost(), do: %{qi: 65, neili: 65}
 
   @impl true
   def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}

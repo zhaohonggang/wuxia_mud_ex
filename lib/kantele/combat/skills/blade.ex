@@ -2,7 +2,7 @@ defmodule Kantele.Combat.Skills.Blade do
   @moduledoc """
   武学实装「blade」（源 blade.c，由 translate_skill.exs 生成）
 
-  已自动化：静态招式 0 式、valid_enable、practice_cost。
+  **已迁移**：`valid_enable(usage)` → `usage == "blade"`；`practice_cost()` = `%{qi: 50, neili: 30}`（与 LPC SKILL 默认一致）。`valid_learn` 继承基类默认 `:ok`，不 override。
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
@@ -17,9 +17,12 @@ defmodule Kantele.Combat.Skills.Blade do
   @impl true
   def id(), do: "blade"
 
-  # TODO(migrate) valid_enable 未识别（源可能用变量/组合判断）
   @impl true
-  def valid_enable(_usage), do: false
+  def valid_enable(usage), do: usage == "blade"
+
+  @doc "练习消耗：默认 qi 50 / neili 30"
+  @impl true
+  def practice_cost(), do: %{qi: 50, neili: 30}
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
