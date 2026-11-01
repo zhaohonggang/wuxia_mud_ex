@@ -26,10 +26,10 @@ defmodule Kantele.Combat.Skills.ZixiaShengong do
 
   @impl true
   def valid_learn(stats) do
-    force = Map.get(stats, "force") || Stats.skill(stats, "force")
+    force = Stats.skill(stats, "force")
 
-    if force < 100 do
-      {:error, "你的基本内功火候不够，无法学习紫霞神功！\n"}
+    if force < 60 do
+      {:error, "你的基本内功火候还不够，还不能学习紫霞神功。\n"}
     else
       :ok
     end
