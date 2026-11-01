@@ -6,8 +6,7 @@ defmodule Kantele.Combat.Skills.LinjiZhuang do
   `valid_force` 接受 武当心法/峨眉心法/太极神功 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的性别（必须女性）限制、`mahayana` 等级与 `np <= nh` 判定、
-    以及分层名称（天地/之心/龙鹏/风云/大小/幽冥庄）未实现。
+  - `mahayana` 等级与 `np <= nh` 判定、以及分层名称（天地/之心/龙鹏/风云/大小/幽冥庄）未实现。
   - powerup 中 `di` 计算依赖性别与 `mahayana`（`me->query("sex")` 判定），
     本模型简化为 `di = skill/2 + skill2/10`（封顶 100）。
   """
@@ -26,6 +25,17 @@ defmodule Kantele.Combat.Skills.LinjiZhuang do
   def valid_force(force), do: force in ["wudang-xinfa", "emei-xinfa", "taiji-shengong"]
 
   @impl true
+  def valid_learn(stats, character) do
+    cond do
+      gender_of(character) != "女性" ->
+        {:error, "你非女子，不能练习临济十二庄。\n"}
+
+      true ->
+        valid_learn(stats)
+    end
+  end
+
+  @impl true
   def valid_learn(stats) do
     force = Stats.skill(stats, "force")
     level = Stats.skill(stats, id())
@@ -42,6 +52,9 @@ defmodule Kantele.Combat.Skills.LinjiZhuang do
         :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: nil
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true

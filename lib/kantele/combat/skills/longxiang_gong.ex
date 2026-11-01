@@ -6,8 +6,6 @@ defmodule Kantele.Combat.Skills.LongxiangGong do
   `valid_force` 接受 密宗内功/小无相/血刀大法 共存。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 的复杂分层门槛（str/con/性别/lamaism/max_neili/unarmed 等）未完全实现，
-    仅保留基本内力/等级检查；性别/层数/lamaism 检查标记 TODO。
   - `hit_ob` 被动（十龙十象/分层伤害）未接入。
   - powerup 中 `add_temp("str", layer*6)` 非 apply 键，本引擎未建模（保留状态与到期回收）。
   """
@@ -54,6 +52,26 @@ defmodule Kantele.Combat.Skills.LongxiangGong do
   def valid_force(force), do: force in ["mizong-neigong", "xiaowuxiang", "xuedao-dafa"]
 
   @impl true
+  def valid_learn(stats, character) do
+    level = Stats.skill(stats, id())
+    layer = div(level, 30)
+
+    cond do
+      Stats.str(stats) < 36 ->
+        {:error, "你的先天膂力孱弱，无法修炼龙象般若功。\n"}
+
+      Stats.con(stats) < 30 ->
+        {:error, "你的先天根骨孱弱，无法修炼龙象般若功。\n"}
+
+      gender_of(character) == "无性" and layer >= 1 ->
+        {:error, "你无根无性，阴阳不调，无法修炼龙象般若功。\n"}
+
+      true ->
+        valid_learn(stats)
+    end
+  end
+
+  @impl true
   def valid_learn(stats) do
     force = Stats.skill(stats, "force")
     level = Stats.skill(stats, id())
@@ -73,6 +91,9 @@ defmodule Kantele.Combat.Skills.LongxiangGong do
         :ok
     end
   end
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: nil
 
   @doc "只能学(learn)不能练（LPC practice_skill 返回失败）"
   @impl true
