@@ -9,7 +9,7 @@ defmodule Kantele.Combat.Skills.LutouZhang do
   学习门槛 `valid_learn/2`（max_neili>=200 / force>=60 / staff>=20 / staff>=lutou-zhang）与
   练招消耗 `practice_cost`（LPC 扣 qi 75 / neili 78，须持杖）已按 LPC 迁移（2026-10-30）。
   LPC 的「须持杖（weapon skill_type=="staff"）」检查未在 `valid_learn` 建模
-  （由 practice 流程把关），招式表沿用基类占位 TODO。
+  （由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -17,6 +17,82 @@ defmodule Kantele.Combat.Skills.LutouZhang do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N右手托住杖端，一招「拦鹊式」，左掌居中一击，令其凭惯性倒向$n的肩头",
+      "force" => 65,
+      "attack" => 12,
+      "dodge" => -10,
+      "parry" => 5,
+      "damage" => 35,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N双眼发红，将手中$w舞成千百根相似，根根砸向$n全身各处要害",
+      "force" => 89,
+      "attack" => 20,
+      "dodge" => -10,
+      "parry" => 8,
+      "damage" => 44,
+      "lvl" => 30
+    },
+    %{
+      "action" => "$N快步跨出，左手平托$w，右掌猛推杖端，顶向$n的胸口",
+      "force" => 128,
+      "attack" => 35,
+      "dodge" => -5,
+      "parry" => 10,
+      "damage" => 52,
+      "lvl" => 60
+    },
+    %{
+      "action" => "$N大喝一声，手中$w如飞龙般自掌中跃出，直向$n的胸口穿入",
+      "force" => 150,
+      "attack" => 34,
+      "dodge" => -5,
+      "parry" => 12,
+      "damage" => 66,
+      "lvl" => 80
+    },
+    %{
+      "action" => "$N横持$w，杖端化出无数个圆圈，凝滞沉重，把$n缠在其中",
+      "force" => 200,
+      "attack" => 46,
+      "dodge" => -15,
+      "parry" => 18,
+      "damage" => 70,
+      "lvl" => 100
+    },
+    %{
+      "action" => "横持$w，一招「苍龙摆尾」，杖端化出无数个圆圈，凝滞沉重，把$n缠在其中",
+      "force" => 240,
+      "attack" => 67,
+      "dodge" => 5,
+      "parry" => 22,
+      "damage" => 78,
+      "lvl" => 120
+    },
+    %{
+      "action" => "$N全身滚倒，$w盘地横飞，突出一招「大蟒翻身」，杖影把$n裹了起来",
+      "force" => 270,
+      "attack" => 89,
+      "dodge" => -5,
+      "parry" => 28,
+      "damage" => 100,
+      "lvl" => 140
+    },
+    %{
+      "action" => "$N单腿独立，$w舞成千百根相似，根根砸向$n全身各处要害",
+      "force" => 310,
+      "attack" => 102,
+      "dodge" => -5,
+      "parry" => 35,
+      "damage" => 120,
+      "lvl" => 160
+    }
+  ]
 
   @impl true
   def id(), do: "lutou-zhang"
@@ -61,10 +137,17 @@ defmodule Kantele.Combat.Skills.LutouZhang do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"tong" => Kantele.Combat.Skills.Performs.LutouZhang.Tong}
   end
+  def actions(), do: @actions
+
 end

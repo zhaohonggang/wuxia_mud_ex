@@ -15,6 +15,60 @@ defmodule Kantele.Combat.Skills.FengleiPanfa do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N一招「秋风起夕」，右手立掌而出，左手单臂抡起$w，夹杂着阵阵风声向$n$l砸去",
+      "force" => 320,
+      "attack" => 27,
+      "dodge" => -10,
+      "parry" => 40,
+      "damage" => 62,
+      "lvl" => 0,
+      "skill_name" => "秋风起夕"
+    },
+    %{
+      "action" => "$N将手中$w抛上半空，跃起一掌砸在$w上，这式「风吹云散」有如流星坠地，直轰$n",
+      "force" => 260,
+      "attack" => 38,
+      "dodge" => -20,
+      "parry" => 45,
+      "damage" => 66,
+      "lvl" => 40,
+      "skill_name" => "风吹云散"
+    },
+    %{
+      "action" => "凭空闪出一道雪白的光幕，光电闪烁中$w挟「雷雨交加」的无上劲力，从$N手中飞出砍向$n的$l",
+      "force" => 300,
+      "attack" => 43,
+      "dodge" => -20,
+      "parry" => 47,
+      "damage" => 70,
+      "lvl" => 80,
+      "skill_name" => "雷雨交加"
+    },
+    %{
+      "action" => "$N双眼磕闭，全身衣物却在内劲冲击下涨如气球，那$w在这「八方云涌」的推动下，向$n缓缓压来",
+      "force" => 340,
+      "attack" => 51,
+      "dodge" => 5,
+      "parry" => 50,
+      "damage" => 75,
+      "lvl" => 120,
+      "skill_name" => "八方云涌"
+    },
+    %{
+      "action" => "$N双手画圈，光幕宛如一轮明月，将$P笼罩，这「九天雷动」的劲力带着$w以排山倒海之势飞旋而出",
+      "force" => 380,
+      "attack" => 55,
+      "dodge" => -10,
+      "parry" => 55,
+      "damage" => 80,
+      "lvl" => 160,
+      "skill_name" => "九天雷动"
+    }
+  ]
+
   @impl true
   def id(), do: "fenglei-panfa"
 
@@ -47,7 +101,12 @@ defmodule Kantele.Combat.Skills.FengleiPanfa do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -57,5 +116,7 @@ defmodule Kantele.Combat.Skills.FengleiPanfa do
   # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: nil
+
+  def actions(), do: @actions
 
 end

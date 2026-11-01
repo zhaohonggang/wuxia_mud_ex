@@ -21,6 +21,130 @@ defmodule Kantele.Combat.Skills.SunFinger do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N右手食指微点，出招「晓天初阳」，一股雄浑的一阳指力射向$n，出手沉稳，招数正大",
+      "force" => 350,
+      "attack" => 80,
+      "dodge" => 75,
+      "parry" => 55,
+      "damage" => 70,
+      "lvl" => 0,
+      "skill_name" => "晓天初阳"
+    },
+    %{
+      "action" => "$N一指「日出霞光」，激出的一股罡气涌向$n，看似是温淳平和，但沛然浑厚，无可与抗",
+      "force" => 370,
+      "attack" => 81,
+      "dodge" => 65,
+      "parry" => 65,
+      "damage" => 72,
+      "lvl" => 20,
+      "skill_name" => "日出霞光"
+    },
+    %{
+      "action" => "忽听嗤嗤轻响，一股柔和的气流自$N手指涌出，正是一招「阳春暖融」，缓缓点向$n$l",
+      "force" => 410,
+      "attack" => 85,
+      "dodge" => 55,
+      "parry" => 55,
+      "damage" => 88,
+      "lvl" => 40,
+      "skill_name" => "阳春暖融"
+    },
+    %{
+      "action" => "$N一步跨到$n身后，又如闪电般跃回，一式「鲁阳返日」，右手食指疾出，指向$n的$l",
+      "force" => 430,
+      "attack" => 79,
+      "dodge" => 65,
+      "parry" => 35,
+      "damage" => 83,
+      "lvl" => 60,
+      "skill_name" => "鲁阳返日"
+    },
+    %{
+      "action" => "$N左手轻扬，右手食指挟着雄浑内力疾点$n的$l，招式光明坦荡，正是一式「阳春白雪」",
+      "force" => 460,
+      "attack" => 75,
+      "dodge" => 91,
+      "parry" => 85,
+      "damage" => 78,
+      "lvl" => 80,
+      "skill_name" => "阳春白雪"
+    },
+    %{
+      "action" => "$N身影飘起，一式「阳钩挥天」，身形自上而下闪出，右手猛然劲点向$n的$l",
+      "force" => 490,
+      "attack" => 105,
+      "dodge" => 35,
+      "parry" => 24,
+      "damage" => 98,
+      "lvl" => 100,
+      "skill_name" => "阳钩挥天"
+    },
+    %{
+      "action" => "$N踏前一步，伸指凌空轻轻一点，$n只觉气息一紧，已被「赤日焦阳」的刚阳气劲触到$l",
+      "force" => 480,
+      "attack" => 95,
+      "dodge" => 75,
+      "parry" => 75,
+      "damage" => 93,
+      "lvl" => 120,
+      "skill_name" => "赤日焦阳"
+    },
+    %{
+      "action" => "$N衣袖轻摆，罡阳柔气从袖底挥出，涌向$n的$l，正是玄功若神的一招「晓阳云暖」",
+      "force" => 512,
+      "attack" => 105,
+      "dodge" => 85,
+      "parry" => 85,
+      "damage" => 97,
+      "lvl" => 140,
+      "skill_name" => "晓阳云暖"
+    },
+    %{
+      "action" => "$N面带微笑，伸出右食指，缓缓点向$n胸口，这招「暮云映日」劲气弥漫，却无丝毫破空之声",
+      "force" => 540,
+      "attack" => 113,
+      "dodge" => 38,
+      "parry" => 38,
+      "damage" => 89,
+      "lvl" => 160,
+      "skill_name" => "暮云映日"
+    },
+    %{
+      "action" => "$N左掌斜削，突然间变掌为指，嗤的一声响，一式「丹凤朝阳」，使出一阳指力，疾点$n的$l",
+      "force" => 528,
+      "attack" => 119,
+      "dodge" => 24,
+      "parry" => 23,
+      "damage" => 98,
+      "lvl" => 180,
+      "skill_name" => "丹凤朝阳"
+    },
+    %{
+      "action" => "只见$N食指微屈，一指「九天乾阳」点出，气象森严，雍容肃穆，于威猛之中不脱王者风度",
+      "force" => 569,
+      "attack" => 97,
+      "dodge" => 42,
+      "parry" => 42,
+      "damage" => 117,
+      "lvl" => 200,
+      "skill_name" => "九天乾阳"
+    },
+    %{
+      "action" => "$N头顶白气氤氲，渐聚渐浓，便似蒸笼一般，食指伸出，一式「三阳开泰」按向$n$l",
+      "force" => 540,
+      "attack" => 135,
+      "dodge" => 75,
+      "parry" => 91,
+      "damage" => 138,
+      "lvl" => 220,
+      "skill_name" => "三阳开泰"
+    }
+  ]
+
   @impl true
   def id(), do: "sun-finger"
 
@@ -77,7 +201,12 @@ defmodule Kantele.Combat.Skills.SunFinger do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -87,4 +216,6 @@ defmodule Kantele.Combat.Skills.SunFinger do
       "qiankun" => Kantele.Combat.Skills.Performs.SunFinger.Qiankun
     }
   end
+  def actions(), do: @actions
+
 end

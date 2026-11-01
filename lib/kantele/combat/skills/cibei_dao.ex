@@ -153,7 +153,7 @@ defmodule Kantele.Combat.Skills.CibeiDao do
 
   # 慈悲刀法无动态招式表，query_action/3 与 /2 行为一致（忽略 attacker）
   @impl true
-  def query_action(_level, rng, _attacker), do: query_action(_level, rng)
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do

@@ -16,6 +16,50 @@ defmodule Kantele.Combat.Skills.JidianJian do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N纵身跃起手中$w轻挥，一招「风平浪静」，斩向$n后颈",
+      "force" => 80,
+      "attack" => 35,
+      "dodge" => 30,
+      "parry" => 10,
+      "damage" => 75,
+      "lvl" => 0,
+      "skill_name" => "风平浪静"
+    },
+    %{
+      "action" => "$N手中$w连话三个弧形，一招「风起云涌」，向$n的右臂齐肩斩落",
+      "force" => 100,
+      "attack" => 45,
+      "dodge" => 45,
+      "parry" => 22,
+      "damage" => 88,
+      "lvl" => 30,
+      "skill_name" => "风起云涌"
+    },
+    %{
+      "action" => "$N轻吁一声，飞身一跃而起，一招「风卷残云」，连续向$n刺出数剑",
+      "force" => 120,
+      "attack" => 51,
+      "dodge" => 53,
+      "parry" => 18,
+      "damage" => 95,
+      "lvl" => 60,
+      "skill_name" => "风卷残云"
+    },
+    %{
+      "action" => "$N仰天一声清啸，斜行向前，一招「风流云散」，$w横削直击，击向$n的$l",
+      "force" => 150,
+      "attack" => 58,
+      "dodge" => 52,
+      "parry" => 20,
+      "damage" => 110,
+      "lvl" => 90,
+      "skill_name" => "风流云散"
+    }
+  ]
+
   @impl true
   def id(), do: "jidian-jian"
 
@@ -51,7 +95,12 @@ defmodule Kantele.Combat.Skills.JidianJian do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -61,5 +110,7 @@ defmodule Kantele.Combat.Skills.JidianJian do
   # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: nil
+
+  def actions(), do: @actions
 
 end

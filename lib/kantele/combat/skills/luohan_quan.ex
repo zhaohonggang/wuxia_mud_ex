@@ -146,7 +146,7 @@ defmodule Kantele.Combat.Skills.LuohanQuan do
 
   # 罗汉拳无动态招式表，query_action/3 与 /2 行为一致（忽略 attacker）
   @impl true
-  def query_action(_level, rng, _attacker), do: query_action(_level, rng)
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do

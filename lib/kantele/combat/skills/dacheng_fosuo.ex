@@ -9,7 +9,7 @@ defmodule Kantele.Combat.Skills.DachengFosuo do
   学习门槛 `valid_learn/2`（max_neili>=1000 / shaolin-xinfa>=80）与
   练招消耗 `practice_cost`（LPC 扣 qi 90 / neili 90，须持鞭）已按 LPC 迁移（2026-10-30）。
   LPC 的「须持鞭（weapon skill_type=="whip"）」检查未在 `valid_learn` 建模
-  （由 practice 流程把关），招式表沿用基类占位 TODO。
+  （由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -17,6 +17,34 @@ defmodule Kantele.Combat.Skills.DachengFosuo do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N将$w抖动成圆，一式「圆转如意」，$w已将$n$l缠住",
+      "force" => 300,
+      "dodge" => 50,
+      "damage" => 100,
+      "lvl" => 30,
+      "skill_name" => "圆转如意"
+    },
+    %{
+      "action" => "$N的$w在$n身旁连连进击，忽然一招「佛自西来」从$n$l处倒卷上来",
+      "force" => 400,
+      "dodge" => 50,
+      "damage" => 150,
+      "lvl" => 60,
+      "skill_name" => "佛自西来"
+    },
+    %{
+      "action" => "$N运起少林真气，$w陡然变成笔直，一式「佛坐莲花」，向$n直刺过去",
+      "force" => 450,
+      "dodge" => 50,
+      "damage" => 180,
+      "lvl" => 90,
+      "skill_name" => "佛坐莲花"
+    }
+  ]
 
   @impl true
   def id(), do: "dacheng-fosuo"
@@ -54,10 +82,17 @@ defmodule Kantele.Combat.Skills.DachengFosuo do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"chanrao" => Kantele.Combat.Skills.Performs.DachengFosuo.Chanrao}
   end
+  def actions(), do: @actions
+
 end

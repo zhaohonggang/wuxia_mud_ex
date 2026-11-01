@@ -8,7 +8,7 @@ defmodule Kantele.Combat.Skills.JiuquJian do
 
   学习门槛 `valid_learn/2`（max_neili>=300 / force>=100 / sword>=60 / sword>=jiuqu-jian）与
   练招消耗 `practice_cost`（LPC 扣 qi 40 / neili 50，须持剑）已按 LPC 迁移（2026-10-30）。
-  LPC 的须持剑（weapon skill_type=="sword"，valid_learn 与 practice_skill 均检查）由 practice 流程把关，未写入 `valid_learn`；招式表沿用基类占位 TODO。
+  LPC 的须持剑（weapon skill_type=="sword"，valid_learn 与 practice_skill 均检查）由 practice 流程把关，未写入 `valid_learn`；招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -16,6 +16,60 @@ defmodule Kantele.Combat.Skills.JiuquJian do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N左晃右蹿，手中$w突然刺向$n$l，正是一招「千沟万壑」",
+      "force" => 45,
+      "attack" => 10,
+      "dodge" => 20,
+      "parry" => 20,
+      "damage" => 20,
+      "lvl" => 0,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N越攻越猛，突然间手中$w剑光暴涨，一招「峰回路转」已然使出\n$n只觉眼前剑光耀眼，不由得心中一惊",
+      "force" => 90,
+      "attack" => 24,
+      "dodge" => 26,
+      "parry" => 40,
+      "damage" => 35,
+      "lvl" => 25,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N以攻为守，以进为退，手中$w刷的一剑「天外飞凤」，向$n$l刺去",
+      "force" => 110,
+      "attack" => 30,
+      "dodge" => 35,
+      "parry" => 40,
+      "damage" => 40,
+      "lvl" => 50,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N轻啸一声，$w径直向$n$w，这一剑虽无任何招式，但是$N却使得不\n卑不亢，毫无滞带，将「千山暮雪」这一招发挥到了及至",
+      "force" => 120,
+      "attack" => 35,
+      "dodge" => 48,
+      "parry" => 45,
+      "damage" => 48,
+      "lvl" => 75,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N将$w一挥，长啸一声，腾空而起，使出一式「神风式」！这一招来得又\n快又准，$w直指$n$l,",
+      "force" => 130,
+      "attack" => 55,
+      "dodge" => 56,
+      "parry" => 66,
+      "damage" => 60,
+      "lvl" => 100,
+      "damage_type" => "刺伤"
+    }
+  ]
 
   @impl true
   def id(), do: "jiuqu-jian"
@@ -63,10 +117,17 @@ defmodule Kantele.Combat.Skills.JiuquJian do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"wan" => Kantele.Combat.Skills.Performs.JiuquJian.Wan}
   end
+  def actions(), do: @actions
+
 end

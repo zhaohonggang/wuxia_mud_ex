@@ -10,7 +10,7 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
   学习门槛 `valid_learn/2`（biyun-xinfa>=10 / max_neili>=100）与
   练招消耗 `practice_cost`（LPC 扣 qi 25 / neili 100，空手）已按 LPC 迁移（2026-10-30）。
   LPC 的「空手（query_temp("weapon")）」检查未在 `valid_learn` 建模
-  （学习/练习本就空手，由 practice 流程把关），招式表沿用基类占位 TODO。
+  （学习/练习本就空手，由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -18,6 +18,43 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N双手飘浮不定,突然从不可以思意的角度，拍向$n的胸口",
+      "dodge" => 50,
+      "damage" => 30,
+      "lvl" => 10,
+      "skill_name" => "云里雾里"
+    },
+    %{
+      "action" => "$N长啸一声，平地飞起三丈，居高临下脚上头下，双手重叠在一起，运劲压向对手，$n大惊失色",
+      "dodge" => 60,
+      "damage" => 50,
+      "skill_name" => "拨开云雾"
+    },
+    %{
+      "action" => "$n眼前一花，失去$N的身影，只听见身后响起一阵掌风，只见$N双手同时拍中$n背门要害",
+      "dodge" => 70,
+      "damage" => 40,
+      "skill_name" => "迷云幽雾"
+    },
+    %{
+      "action" => "$N掌指齐出，拍拿并施，拿向$n的三路要害",
+      "dodge" => 90,
+      "damage" => 50,
+      "lvl" => 10,
+      "skill_name" => "云深雾泽"
+    },
+    %{
+      "action" => "$N运气狂哮，四面八方出现无数掌影，一掌突出，夹着雷霆万钧之式拍向$n",
+      "dodge" => 120,
+      "damage" => 100,
+      "lvl" => 80,
+      "skill_name" => "漫天云雾"
+    }
+  ]
 
   @impl true
   def id(), do: "boyun-suowu"
@@ -58,7 +95,12 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -67,4 +109,6 @@ defmodule Kantele.Combat.Skills.BoyunSuowu do
       "meng" => Kantele.Combat.Skills.Performs.BoyunSuowu.Meng
     }
   end
+  def actions(), do: @actions
+
 end

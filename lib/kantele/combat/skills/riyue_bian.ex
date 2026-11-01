@@ -15,6 +15,90 @@ defmodule Kantele.Combat.Skills.RiyueBian do
 
   use Kantele.Combat.Skill
 
+
+  @actions [
+    %{
+      "action" => "$N端坐不动，一招「裂石式」，手中$w抖得笔直，对准$n的胸腹要害连刺数鞭",
+      "force" => 80,
+      "attack" => 50,
+      "dodge" => -5,
+      "parry" => 15,
+      "damage" => 40,
+      "lvl" => 0,
+      "skill_name" => "裂石式"
+    },
+    %{
+      "action" => "$N身形一转，一招「断川式」，手中$w如矫龙般腾空一卷，猛地向$n劈头打下",
+      "force" => 210,
+      "attack" => 58,
+      "dodge" => -20,
+      "parry" => 50,
+      "damage" => 90,
+      "lvl" => 80,
+      "skill_name" => "断川式"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「破云式」，手中$w舞出满天鞭影，排山倒海般扫向$n全身",
+      "force" => 240,
+      "attack" => 65,
+      "dodge" => -10,
+      "parry" => 55,
+      "damage" => 120,
+      "lvl" => 100,
+      "skill_name" => "破云式"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「分海式」，手中$w舞出满天鞭影，排山倒海般扫向$n全身",
+      "force" => 270,
+      "attack" => 70,
+      "dodge" => 5,
+      "parry" => 60,
+      "damage" => 150,
+      "lvl" => 120,
+      "skill_name" => "分海式"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「裂空式」，手中$w舞出满天鞭影，排山倒海般扫向$n全身",
+      "force" => 310,
+      "attack" => 77,
+      "dodge" => 6,
+      "parry" => 65,
+      "damage" => 180,
+      "lvl" => 140,
+      "skill_name" => "裂空式"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「佛光普照」，手中$w舞出满天鞭影，排山倒海般扫向$n全身",
+      "force" => 350,
+      "attack" => 85,
+      "dodge" => 12,
+      "parry" => 70,
+      "damage" => 200,
+      "lvl" => 160,
+      "skill_name" => "佛光普照"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「金刚伏魔」，手中$w舞出满天鞭影，排山倒海般扫向$n全身",
+      "force" => 380,
+      "attack" => 91,
+      "dodge" => 17,
+      "parry" => 75,
+      "damage" => 220,
+      "lvl" => 180,
+      "skill_name" => "金刚伏魔"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「佛法无边」，手中$w舞出满天鞭影，排山倒海般扫向$n全身",
+      "force" => 420,
+      "attack" => 98,
+      "dodge" => 20,
+      "parry" => 85,
+      "damage" => 250,
+      "lvl" => 200,
+      "skill_name" => "佛法无边"
+    }
+  ]
+
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
@@ -71,7 +155,12 @@ defmodule Kantele.Combat.Skills.RiyueBian do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -81,4 +170,6 @@ defmodule Kantele.Combat.Skills.RiyueBian do
       "shang" => Kantele.Combat.Skills.Performs.RiyueBian.Shang
     }
   end
+  def actions(), do: @actions
+
 end

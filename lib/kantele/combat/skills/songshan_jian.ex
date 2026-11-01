@@ -9,7 +9,7 @@ defmodule Kantele.Combat.Skills.SongshanJian do
   学习门槛 `valid_learn/2`（max_neili>=100 / sword>=15 / sword>=songshan-jian）与
   练招消耗 `practice_cost`（LPC 扣 qi 45 / neili 30，须持剑）已按 LPC 迁移（2026-10-30）。
   LPC 的「须持剑（weapon skill_type=="sword"）」检查未在 `valid_learn` 建模
-  （由 practice 流程把关），招式表沿用基类占位 TODO。
+  （由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -17,6 +17,45 @@ defmodule Kantele.Combat.Skills.SongshanJian do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N手中$w忽地斜刺，嗡嗡作响，直指$n$l",
+      "force" => 45,
+      "dodge" => 28,
+      "damage" => 5,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N手中$w反转，踏步向前，一剑刺向$n$l",
+      "force" => 60,
+      "dodge" => 24,
+      "damage" => 8,
+      "lvl" => 30
+    },
+    %{
+      "action" => "寒光闪过，$N怒喝一声，飞身跃起，$w嗡嗡两声，已到$n$l",
+      "force" => 80,
+      "dodge" => 24,
+      "damage" => 15,
+      "lvl" => 60
+    },
+    %{
+      "action" => "$N手中$w化出一道弧线，紧接着剑势收回，却平平一剑刺向$n$l",
+      "force" => 100,
+      "dodge" => 30,
+      "damage" => 25,
+      "lvl" => 80
+    },
+    %{
+      "action" => "$N不慌不忙，猛地手中$w连续刺出，快如闪电，直指$n$l",
+      "force" => 110,
+      "dodge" => 38,
+      "damage" => 30,
+      "lvl" => 100
+    }
+  ]
 
   @impl true
   def id(), do: "songshan-jian"
@@ -61,10 +100,17 @@ defmodule Kantele.Combat.Skills.SongshanJian do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"meng" => Kantele.Combat.Skills.Performs.SongshanJian.Meng}
   end
+  def actions(), do: @actions
+
 end

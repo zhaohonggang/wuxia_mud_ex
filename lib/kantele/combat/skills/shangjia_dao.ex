@@ -8,12 +8,79 @@ defmodule Kantele.Combat.Skills.ShangjiaDao do
 
   学习门槛 `valid_learn/2`（max_neili>=350 / force>=50 / blade>=shangjia-dao）与
   练招消耗 `practice_cost`（LPC 扣 qi 50 / neili 35，须持刀）已按 LPC 迁移（2026-10-30）。
-  LPC 的须持刀（weapon skill_type=="blade"）检查由 practice 流程把关，未写入 `valid_learn`；招式表沿用基类占位 TODO。
+  LPC 的须持刀（weapon skill_type=="blade"）检查由 practice 流程把关，未写入 `valid_learn`；招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N脚踏八卦方位，手中$w横推，由上至下向$n砍去",
+      "force" => 145,
+      "attack" => 35,
+      "dodge" => 30,
+      "parry" => 12,
+      "damage" => 12,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N刀锋自下而上划了个半弧，$w一提一收，平刃挥向$n的颈部",
+      "force" => 153,
+      "attack" => 42,
+      "dodge" => 40,
+      "parry" => 15,
+      "damage" => 18,
+      "lvl" => 20
+    },
+    %{
+      "action" => "$N脚踏八卦方位，斜步上前，将$w舞得如白雾一般压向$n",
+      "force" => 168,
+      "attack" => 51,
+      "dodge" => 45,
+      "parry" => 17,
+      "damage" => 24,
+      "lvl" => 40
+    },
+    %{
+      "action" => "$N转“嵌”位至“易”位，$w缓缓的斜着向$n推去",
+      "force" => 187,
+      "attack" => 55,
+      "dodge" => 55,
+      "parry" => 21,
+      "damage" => 35,
+      "lvl" => 60
+    },
+    %{
+      "action" => "$N手拖$w，转身跃起，一道白光射向$n的胸口",
+      "force" => 201,
+      "attack" => 55,
+      "dodge" => 27,
+      "parry" => 32,
+      "damage" => 35,
+      "lvl" => 80
+    },
+    %{
+      "action" => "$N挥舞$w，上劈下撩，左挡右开，齐齐罩向$n",
+      "force" => 227,
+      "attack" => 70,
+      "dodge" => 30,
+      "parry" => 35,
+      "damage" => 40,
+      "lvl" => 100
+    },
+    %{
+      "action" => "$N左脚跃步落地，$w顺势往前，挟风声劈向$n的$l",
+      "force" => 260,
+      "attack" => 80,
+      "dodge" => 45,
+      "parry" => 35,
+      "damage" => 46,
+      "lvl" => 120
+    }
+  ]
 
   @impl true
   def id(), do: "shangjia-dao"
@@ -52,10 +119,17 @@ defmodule Kantele.Combat.Skills.ShangjiaDao do
   def practice_cost(), do: %{qi: 50, neili: 35}
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"juan" => Kantele.Combat.Skills.Performs.ShangjiaDao.Juan}
   end
+  def actions(), do: @actions
+
 end

@@ -8,12 +8,52 @@ defmodule Kantele.Combat.Skills.ShunvJian do
 
   学习门槛 `valid_learn/2`（max_neili>=100 / dodge>=40 / dex>=24 / sword>=shunv-jian）与
   练招消耗 `practice_cost`（LPC 扣 qi 40 / neili 34，须持剑）已按 LPC 迁移（2026-10-30）。
-  LPC 的须持剑（weapon skill_type=="sword"）检查由 practice 流程把关，未写入 `valid_learn`；招式表沿用基类占位 TODO。
+  LPC 的须持剑（weapon skill_type=="sword"）检查由 practice 流程把关，未写入 `valid_learn`；招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N娇喝一声，手中$w剑光暴涨，指向$n$l",
+      "force" => 130,
+      "attack" => 35,
+      "dodge" => 40,
+      "parry" => 20,
+      "damage" => 100,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N手中$w反转斜刺，剑法柔中带刚，指向$n$l",
+      "force" => 150,
+      "attack" => 45,
+      "dodge" => 55,
+      "parry" => 52,
+      "damage" => 118,
+      "lvl" => 30
+    },
+    %{
+      "action" => "$N一声娇斥，剑势陡快，手中$w斩向$n",
+      "force" => 190,
+      "attack" => 81,
+      "dodge" => 103,
+      "parry" => 18,
+      "damage" => 155,
+      "lvl" => 60
+    },
+    %{
+      "action" => "$N腰姿一摆，剑光突现，手中$w一退反进，刺向$n$l",
+      "force" => 250,
+      "attack" => 108,
+      "dodge" => 122,
+      "parry" => 20,
+      "damage" => 200,
+      "lvl" => 90
+    }
+  ]
 
   @impl true
   def id(), do: "shunv-jian"
@@ -55,10 +95,17 @@ defmodule Kantele.Combat.Skills.ShunvJian do
   def practice_cost(), do: %{qi: 40, neili: 34}
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"ning" => Kantele.Combat.Skills.Performs.ShunvJian.Ning}
   end
+  def actions(), do: @actions
+
 end

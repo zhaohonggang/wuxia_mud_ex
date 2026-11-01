@@ -9,7 +9,7 @@ defmodule Kantele.Combat.Skills.ChanhunSuo do
   学习门槛 `valid_learn/2`（max_neili>=400 / force>=80 / whip>=60 / whip>=chanhun-suo）与
   练招消耗 `practice_cost`（LPC 扣 qi 50 / neili 50，须持鞭）已按 LPC 迁移（2026-10-30）。
   LPC 的「须持鞭（weapon skill_type=="whip"）」检查未在 `valid_learn` 建模
-  （由 practice 流程把关），招式表沿用基类占位 TODO。
+  （由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -17,6 +17,64 @@ defmodule Kantele.Combat.Skills.ChanhunSuo do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N单手一扬，一招「虐目」，手中$w抖得笔直，直点$n的双眼",
+      "force" => 110,
+      "dodge" => 12,
+      "parry" => 10,
+      "damage" => 35,
+      "lvl" => 0,
+      "skill_name" => "虐目"
+    },
+    %{
+      "action" => "$N力贯鞭梢，一招「伤肝」，手中$w舞出满天鞭影，横扫$n腰间",
+      "force" => 140,
+      "dodge" => 17,
+      "parry" => 15,
+      "damage" => 50,
+      "lvl" => 20,
+      "skill_name" => "伤肝"
+    },
+    %{
+      "action" => "$N运气于腕，一招「损心」，手中$w向一根铜棍般直击$n胸部",
+      "force" => 180,
+      "dodge" => 21,
+      "parry" => 19,
+      "damage" => 43,
+      "lvl" => 40,
+      "skill_name" => "损心"
+    },
+    %{
+      "action" => "$N单臂一挥，一招「催胆」，手中$w直击向$n腰肋",
+      "force" => 215,
+      "dodge" => 32,
+      "parry" => 27,
+      "damage" => 58,
+      "lvl" => 60,
+      "skill_name" => "催胆"
+    },
+    %{
+      "action" => "$N高高跃起，一招「摄魄」，手中$w笔直向$n当头罩下",
+      "force" => 255,
+      "dodge" => 42,
+      "parry" => 37,
+      "damage" => 75,
+      "lvl" => 80,
+      "skill_name" => "摄魄"
+    },
+    %{
+      "action" => "$N身形一转，一招「收魂」，手中$w如矫龙般腾空一卷，猛地向$n劈头打下",
+      "force" => 330,
+      "dodge" => 87,
+      "parry" => 69,
+      "damage" => 81,
+      "lvl" => 100,
+      "skill_name" => "收魂"
+    }
+  ]
 
   @impl true
   def id(), do: "chanhun-suo"
@@ -61,7 +119,12 @@ defmodule Kantele.Combat.Skills.ChanhunSuo do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -70,4 +133,6 @@ defmodule Kantele.Combat.Skills.ChanhunSuo do
       "suo" => Kantele.Combat.Skills.Performs.ChanhunSuo.Suo
     }
   end
+  def actions(), do: @actions
+
 end

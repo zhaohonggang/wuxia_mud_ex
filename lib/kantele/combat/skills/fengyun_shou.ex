@@ -18,6 +18,90 @@ defmodule Kantele.Combat.Skills.FengyunShou do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N一式「风满长空」，以掌化爪，五指如钩，直逼$n的膻中要穴",
+      "force" => 90,
+      "attack" => 25,
+      "dodge" => 5,
+      "parry" => 40,
+      "damage" => 15,
+      "lvl" => 0,
+      "skill_name" => "风满长空"
+    },
+    %{
+      "action" => "$N左手虚晃，一式「烈火腾云」，右手上下直击，反扣$n的肩井大穴",
+      "force" => 120,
+      "attack" => 32,
+      "dodge" => 10,
+      "parry" => 42,
+      "damage" => 20,
+      "lvl" => 30,
+      "skill_name" => "烈火腾云"
+    },
+    %{
+      "action" => "$N使一式「草深雾泽」，掌指齐出，拍拿并施，拿向$n的三路要害",
+      "force" => 150,
+      "attack" => 41,
+      "dodge" => 15,
+      "parry" => 45,
+      "damage" => 30,
+      "lvl" => 60,
+      "skill_name" => "草深雾泽"
+    },
+    %{
+      "action" => "$N左手鹰抓，右手蛇举，一式「天目昭辉」疾扣$n的中节大脉",
+      "force" => 180,
+      "attack" => 45,
+      "dodge" => 20,
+      "parry" => 46,
+      "damage" => 40,
+      "lvl" => 90,
+      "skill_name" => "天目昭辉"
+    },
+    %{
+      "action" => "$N使一式「雷震四方」，四面八方出现无数掌影，一爪突出，抓向$n的胸口",
+      "force" => 220,
+      "attack" => 53,
+      "dodge" => 25,
+      "parry" => 54,
+      "damage" => 50,
+      "lvl" => 120,
+      "skill_name" => "雷震四方"
+    },
+    %{
+      "action" => "$N两手环扣，全身关节啪啪作响，一式「水到渠成」，击向$n的$l",
+      "force" => 270,
+      "attack" => 58,
+      "dodge" => 30,
+      "parry" => 58,
+      "damage" => 60,
+      "lvl" => 140,
+      "skill_name" => "水到渠成"
+    },
+    %{
+      "action" => "$N一式「山高林密」，十指齐伸，遮天蔽日般地笼罩$n的全身要穴",
+      "force" => 330,
+      "attack" => 70,
+      "dodge" => 35,
+      "parry" => 62,
+      "damage" => 70,
+      "lvl" => 160,
+      "skill_name" => "山高林密"
+    },
+    %{
+      "action" => "$N岳立霆峙，一式「地老天荒」，在一阵暴雷声中，双手同时拍向$n的七道死穴",
+      "force" => 360,
+      "attack" => 77,
+      "dodge" => 50,
+      "parry" => 65,
+      "damage" => 80,
+      "lvl" => 180,
+      "skill_name" => "地老天荒"
+    }
+  ]
+
   @impl true
   def id(), do: "fengyun-shou"
 
@@ -53,7 +137,12 @@ defmodule Kantele.Combat.Skills.FengyunShou do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -63,5 +152,7 @@ defmodule Kantele.Combat.Skills.FengyunShou do
   # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: nil
+
+  def actions(), do: @actions
 
 end

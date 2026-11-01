@@ -9,7 +9,7 @@ defmodule Kantele.Combat.Skills.ChuanxinZhang do
   学习门槛 `valid_learn/2`（max_neili>=200 / strike>=30 / strike>=chuanxin-zhang）与
   练招消耗 `practice_cost`（LPC 扣 qi 45 / neili 48，空手）已按 LPC 迁移（2026-10-30）。
   LPC 的「空手（query_temp("weapon")）」检查未在 `valid_learn` 建模
-  （学习/练习本就空手，由 practice 流程把关），招式表沿用基类占位 TODO。
+  （学习/练习本就空手，由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -17,6 +17,60 @@ defmodule Kantele.Combat.Skills.ChuanxinZhang do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N使出一招「破山刀」，运掌如飞，招招直打$n的$l",
+      "force" => 60,
+      "attack" => 25,
+      "dodge" => 10,
+      "parry" => 16,
+      "damage" => 15,
+      "lvl" => 0,
+      "skill_name" => "破山刀"
+    },
+    %{
+      "action" => "$N使出一招「碎石手」，双掌急运内力，带着凛冽的掌风直拍$n的$l",
+      "force" => 80,
+      "attack" => 55,
+      "dodge" => 15,
+      "parry" => 19,
+      "damage" => 25,
+      "lvl" => 20,
+      "skill_name" => "碎石手"
+    },
+    %{
+      "action" => "$N惨然一声长啸，一招「摄魄掌」，双掌猛然击下，直扑$n的要脉",
+      "force" => 100,
+      "attack" => 45,
+      "dodge" => 20,
+      "parry" => 18,
+      "damage" => 50,
+      "lvl" => 40,
+      "skill_name" => "摄魄掌"
+    },
+    %{
+      "action" => "$N骨骼暴响，双臂忽然暴长数尺，一招「追魂掌」直直攻向$n的$l",
+      "force" => 130,
+      "attack" => 40,
+      "dodge" => 20,
+      "parry" => 23,
+      "damage" => 65,
+      "lvl" => 80,
+      "skill_name" => "追魂掌"
+    },
+    %{
+      "action" => "$N施展出一招「撩阴掌」，双掌缤纷拍出，陡然间双掌已至$n跟前",
+      "force" => 150,
+      "attack" => 61,
+      "dodge" => 32,
+      "parry" => 35,
+      "damage" => 80,
+      "lvl" => 120,
+      "skill_name" => "撩阴掌"
+    }
+  ]
 
   @impl true
   def id(), do: "chuanxin-zhang"
@@ -58,10 +112,17 @@ defmodule Kantele.Combat.Skills.ChuanxinZhang do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"zhui" => Kantele.Combat.Skills.Performs.ChuanxinZhang.Zhui}
   end
+  def actions(), do: @actions
+
 end

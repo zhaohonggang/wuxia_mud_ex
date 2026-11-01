@@ -18,6 +18,50 @@ defmodule Kantele.Combat.Skills.LuoyunDao do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N手中$w平平一刀，一式「万里乌云」，挥向$n$l",
+      "force" => 80,
+      "dodge" => 28,
+      "damage" => 20,
+      "lvl" => 0,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N手中$w自空而下，一式「云深雾锁」，劈向$n$l",
+      "force" => 90,
+      "dodge" => 24,
+      "damage" => 25,
+      "lvl" => 30,
+      "damage_type" => "砍伤"
+    },
+    %{
+      "action" => "刀光闪烁间，$N腾空而起，半空直下，一式「五雷轰顶」，手中$w已经到$n$l",
+      "force" => 100,
+      "dodge" => 24,
+      "damage" => 30,
+      "lvl" => 60,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N不慌不忙，一式「风声萧萧」，手中$w反转不定，猛地一刀砍向$n$l",
+      "force" => 120,
+      "dodge" => 30,
+      "damage" => 35,
+      "lvl" => 90,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N双手握刀，一式「力劈群山」，手中$w自上而下，如长龙般而下，砍向$n$l",
+      "force" => 140,
+      "dodge" => 40,
+      "damage" => 40,
+      "lvl" => 120,
+      "damage_type" => "刺伤"
+    }
+  ]
+
   @impl true
   def id(), do: "luoyun-dao"
 
@@ -61,10 +105,17 @@ defmodule Kantele.Combat.Skills.LuoyunDao do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"tian" => Kantele.Combat.Skills.Performs.LuoyunDao.Tian}
   end
+  def actions(), do: @actions
+
 end

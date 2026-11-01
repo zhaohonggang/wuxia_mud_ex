@@ -16,6 +16,80 @@ defmodule Kantele.Combat.Skills.HongyeDaofa do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N手中$w轻挥，一招「冬去春来」，身形一转，一刀向$n的$l撩去",
+      "force" => 100,
+      "attack" => 10,
+      "dodge" => -10,
+      "parry" => -1,
+      "damage" => 30,
+      "lvl" => 0,
+      "skill_name" => "冬去春来"
+    },
+    %{
+      "action" => "$N一招「月上西楼」，左脚虚点，$w一收一推，平刃挥向$n的脸部",
+      "force" => 130,
+      "attack" => 40,
+      "dodge" => -10,
+      "parry" => 5,
+      "damage" => 58,
+      "lvl" => 20,
+      "skill_name" => "月上西楼"
+    },
+    %{
+      "action" => "$N虚步侧身，一招「推窗望月」，刀锋一卷，拦腰斩向$n",
+      "force" => 160,
+      "attack" => 40,
+      "dodge" => -5,
+      "parry" => 25,
+      "damage" => 80,
+      "lvl" => 40,
+      "skill_name" => "推窗望月"
+    },
+    %{
+      "action" => "$N一招「梦断巫山」，$w自上而下划出一个大弧，笔直劈向$n",
+      "force" => 190,
+      "attack" => 55,
+      "dodge" => 5,
+      "parry" => 35,
+      "damage" => 105,
+      "lvl" => 60,
+      "skill_name" => "梦断巫山"
+    },
+    %{
+      "action" => "$N侧步拧身，一招「似是而非」，拦腰反切，$w砍向$n的胸口",
+      "force" => 220,
+      "attack" => 60,
+      "dodge" => 10,
+      "parry" => 40,
+      "damage" => 95,
+      "lvl" => 80,
+      "skill_name" => "似是而非"
+    },
+    %{
+      "action" => "$N挥舞$w，使出一招「红叶纷纷」，幻起片片刀影，齐齐罩向$n",
+      "force" => 240,
+      "attack" => 70,
+      "dodge" => 15,
+      "parry" => 55,
+      "damage" => 140,
+      "lvl" => 100,
+      "skill_name" => "月挂中天"
+    },
+    %{
+      "action" => "$N一招「日月交辉」，只见漫天刀光闪烁，重重刀影向$n的全身涌去",
+      "force" => 320,
+      "attack" => 70,
+      "dodge" => 20,
+      "parry" => 60,
+      "damage" => 160,
+      "lvl" => 120,
+      "skill_name" => "日月交辉"
+    }
+  ]
+
   @impl true
   def id(), do: "hongye-daofa"
 
@@ -50,7 +124,12 @@ defmodule Kantele.Combat.Skills.HongyeDaofa do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -63,5 +142,7 @@ defmodule Kantele.Combat.Skills.HongyeDaofa do
   # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: nil
+
+  def actions(), do: @actions
 
 end

@@ -8,7 +8,7 @@ defmodule Kantele.Combat.Skills.PoguangDao do
 
   学习门槛 `valid_learn/2`（max_neili>=800 / force>=120 / blade>=100 / blade>=poguang-dao）与
   练招消耗 `practice_cost`（LPC 扣 qi 40 / neili 50）已按 LPC 迁移（2026-10-30）。
-  LPC 原文不一致：`valid_learn` 要求持刀（blade），而 `practice_skill` 检查 sword；武器检查照前批由 practice 流程把关，未写入 `valid_learn`；招式表沿用基类占位 TODO。
+  LPC 原文不一致：`valid_learn` 要求持刀（blade），而 `practice_skill` 检查 sword；武器检查照前批由 practice 流程把关，未写入 `valid_learn`；招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -16,6 +16,70 @@ defmodule Kantele.Combat.Skills.PoguangDao do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N手中$w横空而出，一式「破空式」，$w已到$n$l",
+      "force" => 90,
+      "attack" => 10,
+      "dodge" => 21,
+      "parry" => 25,
+      "damage" => 22,
+      "lvl" => 0,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N手中$w平平挥出，一式「横空式」，$w砍向$n$l",
+      "force" => 100,
+      "attack" => 12,
+      "dodge" => 24,
+      "parry" => 28,
+      "damage" => 25,
+      "lvl" => 25,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N纵身跃起，施出一式「冷光式」，$w寒光一闪已到$n$l",
+      "force" => 120,
+      "attack" => 13,
+      "dodge" => 25,
+      "parry" => 31,
+      "damage" => 38,
+      "lvl" => 50,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N腾空而起，一式「穿阳式」，手中$w直砍向$n$l",
+      "force" => 140,
+      "attack" => 15,
+      "dodge" => 25,
+      "parry" => 35,
+      "damage" => 50,
+      "lvl" => 75,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N刀峰忽转，施出一式「回旋式」，$w蜿蜒而进，袭向$n$l",
+      "force" => 160,
+      "attack" => 18,
+      "dodge" => 27,
+      "parry" => 38,
+      "damage" => 63,
+      "lvl" => 100,
+      "damage_type" => "刺伤"
+    },
+    %{
+      "action" => "$N怒喝一声，手中$w狂舞不定，一式「狂风式」，如无数把$w罩向$n",
+      "force" => 180,
+      "attack" => 20,
+      "dodge" => 30,
+      "parry" => 40,
+      "damage" => 80,
+      "lvl" => 120,
+      "damage_type" => "刺伤"
+    }
+  ]
 
   @impl true
   def id(), do: "poguang-dao"
@@ -60,7 +124,12 @@ defmodule Kantele.Combat.Skills.PoguangDao do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -69,4 +138,6 @@ defmodule Kantele.Combat.Skills.PoguangDao do
       "yang" => Kantele.Combat.Skills.Performs.PoguangDao.Yang
     }
   end
+  def actions(), do: @actions
+
 end

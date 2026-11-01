@@ -8,7 +8,7 @@ defmodule Kantele.Combat.Skills.GuxingJian do
 
   学习门槛 `valid_learn/2`（max_neili>=400 / force>=100 / sword>=80 / sword>=guxing-jian）与
   练招消耗 `practice_cost`（LPC 扣 qi 45 / neili 35，须持剑）已按 LPC 迁移（2026-10-30）。
-  LPC 的须持剑（weapon skill_type=="sword"）检查由 practice 流程把关，未写入 `valid_learn`；招式表沿用基类占位 TODO。
+  LPC 的须持剑（weapon skill_type=="sword"）检查由 practice 流程把关，未写入 `valid_learn`；招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -16,6 +16,45 @@ defmodule Kantele.Combat.Skills.GuxingJian do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N手中$w快速猛刺，连连逼迫向$n",
+      "force" => 80,
+      "dodge" => 28,
+      "damage" => 20,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N手中$w横向一扫，一式「神龙摆尾」，剑光闪过，刹那间$w已到$n$l",
+      "force" => 90,
+      "dodge" => 24,
+      "damage" => 25,
+      "lvl" => 30
+    },
+    %{
+      "action" => "剑光不定，$N忽地反转剑身，一式「昙花一现」，猛然间$w刺向$n$l",
+      "force" => 100,
+      "dodge" => 24,
+      "damage" => 30,
+      "lvl" => 60
+    },
+    %{
+      "action" => "$N不进反退，一式「逆水行舟」，$w倒握于手中，却斜身一剑指向$n",
+      "force" => 120,
+      "dodge" => 30,
+      "damage" => 35,
+      "lvl" => 90
+    },
+    %{
+      "action" => "$N飞身跃起，手中$w一横，一式「横扫千军」，力道非凡，袭向$n$l",
+      "force" => 140,
+      "dodge" => 40,
+      "damage" => 40,
+      "lvl" => 120
+    }
+  ]
 
   @impl true
   def id(), do: "guxing-jian"
@@ -63,10 +102,17 @@ defmodule Kantele.Combat.Skills.GuxingJian do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"lian" => Kantele.Combat.Skills.Performs.GuxingJian.Lian}
   end
+  def actions(), do: @actions
+
 end

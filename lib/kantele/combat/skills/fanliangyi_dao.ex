@@ -19,6 +19,57 @@ defmodule Kantele.Combat.Skills.FanliangyiDao do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N手中$w斜指，一招「混沌一破」，反身一顿，一刀向$n的$l撩去",
+      "force" => 120,
+      "dodge" => -10,
+      "lvl" => 0,
+      "skill_name" => "混沌一破"
+    },
+    %{
+      "action" => "$N一招「太乙生萌」，左右腿虚点，$w一提一收，平刃挥向$n的颈部",
+      "force" => 140,
+      "dodge" => -10,
+      "damage" => 5,
+      "lvl" => 20,
+      "skill_name" => "太乙生萌"
+    },
+    %{
+      "action" => "$N展身虚步，提腰跃落，一招「两仪合德」，刀锋化作两股斩向$n",
+      "force" => 160,
+      "dodge" => -5,
+      "damage" => 15,
+      "lvl" => 40,
+      "skill_name" => "两仪合德"
+    },
+    %{
+      "action" => "$N一招「日月晦明」，$w大开大阖，自上而下划出一个大弧，笔直劈向$n",
+      "force" => 180,
+      "dodge" => 5,
+      "damage" => 25,
+      "lvl" => 60,
+      "skill_name" => "日月晦明"
+    },
+    %{
+      "action" => "$N手中$w一沉，一招「无色无相」，双手持刃拦腰反切，砍向$n的胸口",
+      "force" => 200,
+      "dodge" => 10,
+      "damage" => 28,
+      "lvl" => 80,
+      "skill_name" => "无色无相"
+    },
+    %{
+      "action" => "$N挥舞$w，使出一招「万劫不复」，上劈下撩，左挡右开，齐齐罩向$n",
+      "force" => 250,
+      "dodge" => 15,
+      "damage" => 30,
+      "lvl" => 100,
+      "skill_name" => "万劫不复"
+    }
+  ]
+
   @impl true
   def id(), do: "fanliangyi-dao"
 
@@ -47,7 +98,12 @@ defmodule Kantele.Combat.Skills.FanliangyiDao do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -60,5 +116,7 @@ defmodule Kantele.Combat.Skills.FanliangyiDao do
   # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: nil
+
+  def actions(), do: @actions
 
 end

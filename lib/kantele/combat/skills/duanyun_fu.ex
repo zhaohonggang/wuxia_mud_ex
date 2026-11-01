@@ -19,6 +19,74 @@ defmodule Kantele.Combat.Skills.DuanyunFu do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N蓦地腾空跃起，双手紧握$w，对准$n的头顶，自上而下地砍了下去，只在半空中留下一团巨大的黑影",
+      "dodge" => -5,
+      "parry" => -10,
+      "damage" => 30,
+      "lvl" => 0,
+      "damage_type" => "砍伤"
+    },
+    %{
+      "action" => "$N突然发一声喊，冲前两步，手中$w由下而上反撩$n下三路，$n见到一道淡黄色的气影逼向自己，情知不妙，急忙招架",
+      "dodge" => -10,
+      "parry" => -10,
+      "damage" => 40,
+      "lvl" => 10,
+      "damage_type" => "割伤"
+    },
+    %{
+      "action" => "$N忽然虎吼一声，闪身斜向左前方冲出一步，身体微晃，手中$w在空中划出一道淡影，急速横扫$n的右肩，气势迫人",
+      "dodge" => -20,
+      "parry" => -15,
+      "damage" => 50,
+      "lvl" => 20,
+      "damage_type" => "砍伤"
+    },
+    %{
+      "action" => "$N突然抽身向右滚倒，随即跳起，就在跳起的一瞬间，已单臂握着$w砸向$n的左肋，出手既快且狠",
+      "dodge" => -35,
+      "parry" => -10,
+      "damage" => 60,
+      "lvl" => 30,
+      "damage_type" => "砸伤"
+    },
+    %{
+      "action" => "$N双手横举$w，平扫$n前胸，招式未使老就已打住猝然变招，斧尖直撞$n的小腹，",
+      "dodge" => -40,
+      "parry" => -20,
+      "damage" => 70,
+      "lvl" => 42,
+      "damage_type" => "内伤"
+    },
+    %{
+      "action" => "$N不急不缓地转身微蹲，$n见$N露出破绽，急忙抢攻，却突然发现$N的身体已转过来，手中$w正迅猛地扫向自己的下盘",
+      "dodge" => -30,
+      "parry" => -20,
+      "damage" => 90,
+      "lvl" => 55,
+      "damage_type" => "割伤"
+    },
+    %{
+      "action" => "$N身形微动，就在同一时间自上中下左右砍出五斧，$n见五把$w从不同的方位砍向自己，一时间竟不知该如何招架",
+      "dodge" => -25,
+      "parry" => -40,
+      "damage" => 110,
+      "lvl" => 68,
+      "damage_type" => "砍伤"
+    },
+    %{
+      "action" => "$N前脚猛地往地上一顿，大地也微微一震，接着举起斧头在头顶急转数圈，$w就隐含风云之声平直而沉稳地袭向$n，$n无论向何处闪躲，总看见斧尖离自己不到一尺，不由大惊失色",
+      "dodge" => -50,
+      "parry" => -30,
+      "damage" => 150,
+      "lvl" => 80,
+      "damage_type" => "砍伤"
+    }
+  ]
+
   @impl true
   def id(), do: "duanyun-fu"
 
@@ -51,10 +119,17 @@ defmodule Kantele.Combat.Skills.DuanyunFu do
   def practice_cost(), do: %{qi: 80, neili: 0}
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"tiaoyan" => Kantele.Combat.Skills.Performs.DuanyunFu.Tiaoyan}
   end
+  def actions(), do: @actions
+
 end

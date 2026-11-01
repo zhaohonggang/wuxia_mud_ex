@@ -18,6 +18,46 @@ defmodule Kantele.Combat.Skills.FireiceStrike do
 
   alias Kantele.Character.Stats
 
+
+  @actions [
+    %{
+      "action" => "$N双掌一错，一招「风起云涌」，狂风般扫向$n的$l",
+      "force" => 100,
+      "attack" => 18,
+      "dodge" => 30,
+      "parry" => 15,
+      "damage" => 40,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N一招「风雪满天」，身形突然旋转起来扑向$n，双掌拍向$n的$l",
+      "force" => 200,
+      "attack" => 25,
+      "dodge" => 40,
+      "parry" => 30,
+      "damage" => 45,
+      "lvl" => 30
+    },
+    %{
+      "action" => "$N将内力运至左手，一招「万里雪飘」，迅疾无比地抓向$n的$l",
+      "force" => 250,
+      "attack" => 35,
+      "dodge" => 50,
+      "parry" => 55,
+      "damage" => 45,
+      "lvl" => 60
+    },
+    %{
+      "action" => "$N后退一步，突然一招「千里冰封」，掌力拍向$n的$l",
+      "force" => 330,
+      "attack" => 42,
+      "dodge" => 40,
+      "parry" => 65,
+      "damage" => 50,
+      "lvl" => 120
+    }
+  ]
+
   @impl true
   def id(), do: "fireice-strike"
 
@@ -53,7 +93,12 @@ defmodule Kantele.Combat.Skills.FireiceStrike do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -63,5 +108,7 @@ defmodule Kantele.Combat.Skills.FireiceStrike do
   # LPC `me->query("max_neili")`：vitals 里的上限值（不在 Stats 里）
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: nil
+
+  def actions(), do: @actions
 
 end

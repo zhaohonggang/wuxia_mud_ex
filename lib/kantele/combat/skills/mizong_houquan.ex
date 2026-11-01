@@ -9,7 +9,7 @@ defmodule Kantele.Combat.Skills.MizongHouquan do
   学习门槛 `valid_learn/2`（max_neili>=1200 / force>=100 / cuff>=100 / cuff>=mizong-houquan）与
   练招消耗 `practice_cost`（LPC 扣 qi 55 / neili 78，须空手）已按 LPC 迁移（2026-10-30）。
   LPC 的「须空手（weapon/secondary_weapon 为空）」检查未在 `valid_learn` 建模
-  （由 practice 流程把关），招式表沿用基类占位 TODO。
+  （由 practice 流程把关），招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
@@ -17,6 +17,70 @@ defmodule Kantele.Combat.Skills.MizongHouquan do
   alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N单腿微曲，忽的向前扑出，一式「仙猴摘桃」，二爪直出，抓向$n的双眼",
+      "force" => 180,
+      "attack" => 41,
+      "dodge" => 35,
+      "parry" => 35,
+      "damage" => 28,
+      "lvl" => 0,
+      "damage_type" => "抓伤"
+    },
+    %{
+      "action" => "$N左手虚晃，一式「灵猴攀枝」，右手直击，反扣$n的肩井大穴",
+      "force" => 260,
+      "attack" => 53,
+      "dodge" => 45,
+      "parry" => 45,
+      "damage" => 36,
+      "lvl" => 30,
+      "damage_type" => "瘀伤"
+    },
+    %{
+      "action" => "$N一臂前伸，一臂后指，一式「猿臂轻舒」，攻向$n的两肋",
+      "force" => 310,
+      "attack" => 64,
+      "dodge" => 53,
+      "parry" => 53,
+      "damage" => 42,
+      "lvl" => 60,
+      "damage_type" => "瘀伤"
+    },
+    %{
+      "action" => "$N忽然缩成一团，使一式「八方幻影」，双掌无形无定，一爪抓向$n的胸口",
+      "force" => 360,
+      "attack" => 75,
+      "dodge" => 61,
+      "parry" => 61,
+      "damage" => 52,
+      "lvl" => 90,
+      "damage_type" => "内伤"
+    },
+    %{
+      "action" => "$N猛吸一口气，一弯腰，使一式「水中揽月」，双爪疾扣向$n的小腹",
+      "force" => 430,
+      "attack" => 84,
+      "dodge" => 65,
+      "parry" => 65,
+      "damage" => 58,
+      "lvl" => 120,
+      "damage_type" => "瘀伤"
+    },
+    %{
+      "action" => "$N猛的向上高高跃起，一式「落地摘星」，居高临下，一爪罩向$n的头骨",
+      "force" => 460,
+      "attack" => 91,
+      "dodge" => 67,
+      "parry" => 69,
+      "damage" => 65,
+      "lvl" => 150,
+      "damage_type" => "抓伤"
+    }
+  ]
 
   @impl true
   def id(), do: "mizong-houquan"
@@ -64,10 +128,17 @@ defmodule Kantele.Combat.Skills.MizongHouquan do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
     %{"zhou" => Kantele.Combat.Skills.Performs.MizongHouquan.Zhou}
   end
+  def actions(), do: @actions
+
 end

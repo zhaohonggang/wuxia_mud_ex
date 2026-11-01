@@ -7,12 +7,79 @@ defmodule Kantele.Combat.Skills.QishiJi do
   绝招实现见 `lib/kantele/combat/skills/performs/qishi_ji/`。
 
   学习门槛 `valid_learn/2`（max_neili>=100 / force>=30 / club>=self）与练招消耗
-  `practice_cost`（qi 70 / neili 40）已按 LPC 迁移（2026-10-30）。须持戟检查由 practice 流程把关；LPC 重复行已合并，末门文案 verbatim「基本剑法」保真不修；招式表沿用基类占位 TODO。
+  `practice_cost`（qi 70 / neili 40）已按 LPC 迁移（2026-10-30）。须持戟检查由 practice 流程把关；LPC 重复行已合并，末门文案 verbatim「基本剑法」保真不修；招式表已从 LPC 迁移。
   """
 
   use Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
+
+
+  @actions [
+    %{
+      "action" => "$N双目怒睁，手中$w猛然刺出，疾若闪电",
+      "force" => 100,
+      "attack" => 35,
+      "dodge" => 10,
+      "parry" => 5,
+      "damage" => 85,
+      "lvl" => 0
+    },
+    %{
+      "action" => "$N双手所持的$w转动不已，猛的疾刺向$n而去",
+      "force" => 125,
+      "attack" => 42,
+      "dodge" => 10,
+      "parry" => 15,
+      "damage" => 100,
+      "lvl" => 10
+    },
+    %{
+      "action" => "$N手中的$w连续变换几个方向，最后突然直刺$n的$l",
+      "force" => 150,
+      "attack" => 45,
+      "dodge" => 15,
+      "parry" => 25,
+      "damage" => 100,
+      "lvl" => 30
+    },
+    %{
+      "action" => "$N手中的$w猛然缩回，随即刺向$n，去势异常凶猛",
+      "force" => 160,
+      "attack" => 50,
+      "dodge" => 25,
+      "parry" => 29,
+      "damage" => 110,
+      "lvl" => 50
+    },
+    %{
+      "action" => "$N跨前一不，双手将$w一压，斜斜的挑向$n的$l",
+      "force" => 180,
+      "attack" => 48,
+      "dodge" => 20,
+      "parry" => 31,
+      "damage" => 115,
+      "lvl" => 80
+    },
+    %{
+      "action" => "$N大喝一声，$w便如闪电般刺出，携着一股旋风刺向$n",
+      "force" => 240,
+      "attack" => 52,
+      "dodge" => 25,
+      "parry" => 37,
+      "damage" => 120,
+      "lvl" => 100
+    },
+    %{
+      "action" => "$N跨前几步，$w奋力前刺，义无反顾的攻向$n",
+      "force" => 260,
+      "attack" => 55,
+      "dodge" => 15,
+      "parry" => 37,
+      "damage" => 125,
+      "lvl" => 120
+    }
+  ]
 
   @impl true
   def id(), do: "qishi-ji"
@@ -52,7 +119,12 @@ defmodule Kantele.Combat.Skills.QishiJi do
   end
 
   @impl true
-  def query_action(_level, _rng \\ &:rand.uniform/1), do: %{}
+  def query_action(level, rng \\ &:rand.uniform/1) do
+    Skill.pick_action(@actions, level, rng)
+  end
+
+  @impl true
+  def query_action(level, rng, _attacker), do: query_action(level, rng)
 
   @impl true
   def perform_list() do
@@ -61,4 +133,6 @@ defmodule Kantele.Combat.Skills.QishiJi do
       "juan" => Kantele.Combat.Skills.Performs.QishiJi.Juan
     }
   end
+  def actions(), do: @actions
+
 end
