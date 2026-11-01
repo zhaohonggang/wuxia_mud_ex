@@ -12,12 +12,10 @@
 - R5 动态招式表迁移：92 个真缺口全部迁移，`test/kantele/combat` 回归绿，commit b490fbb2。
 - F4 @static 白名单补全 batch6：109 个未注册特技全部注册，@static 唯一 id 733（与 .ex 模块数一致），commit b1702540（分支 kalevala，未 push）。
 - valid_learn 全量迁移：已注册技能里带 non-trivial valid_learn 的全部 LPC 保真迁移，review_messages.py 全部通过，commit 10068b35 + 03a0e120。
+- F4 valid_learn 长尾补全批次1：linji-zhuang/longxiang-gong（arity-2 character/vitals 门），commit 7a609e9c，11/0。
+- F4 valid_learn 长尾补全批次2+3：12 arity-1 + 4 arity-2 共 16 技能补 valid_learn，测试 54/0；commit 4534d108（已 push origin kalevala）。
 
 ## @static 白名单当前：733 唯一 id（与 733 `.ex` 模块一致，0 缺失 0 extra）。
 
-## 进行中（待 commit）
-- F4 valid_learn 长尾补全——16 个 arity-1/arity-2 技能（已实现，未 commit）：
-  - arity-1 (12): baicao-jue/baji-quan/culture-cognize/huntian-baojian/huzhao-shou/japanese/necromancy/russian/tadpole/technic-cognize/wuxing-jueming/xuwen-qixingding
-  - arity-2 (4): wuyue-blade/wuyun-jianfa/xuanfeng-leg/xuantian-shengong
-  - 测试：skills_valid_learn_partial_batch2_test.exs（12技能），skills_valid_learn_partial_batch3_test.exs（4技能），均绿（54/0）
-  - batch1 已 commit（linji-zhuang/longxiang-gong，7a609e9c，11/0）
+## 进行中
+- valid_learn 长尾补全过程：批次1（7a609e9c）+ 批次2+3（4534d108，已 push）已全量提交；剩余 87 个「部分迁移」缺口（16 arity-1 仅 query_skill + 52 arity-2 _character + 17 隐藏 arity-1）见 2026-10-31.md 末尾清单，下一批需逐对照 LPC 源补齐缺失门槛。
