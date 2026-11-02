@@ -23,6 +23,7 @@ defmodule Kantele.Combat.Skills.JiuyangShengong do
   """
 
   use Kantele.Combat.Skill
+  alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
 
@@ -272,6 +273,10 @@ defmodule Kantele.Combat.Skills.JiuyangShengong do
       Stats.skill(stats, "unarmed") < lvl ->
         {:error, "你对基本拳脚的理解还不够，无法继续领会更高深的九阳神功。\n"}
 
+      Skill.mark?(character, "can_learn/jiuyang-shengong/enable_weapon") and
+          Stats.skill(stats, "sword") < lvl and Stats.skill(stats, "blade") < lvl ->
+        {:error, "你对刀剑功夫的理解还不够，无法继续领会更高深的九阳神功。\n"}
+
       true ->
         :ok
     end
@@ -323,6 +328,6 @@ defmodule Kantele.Combat.Skills.JiuyangShengong do
 
   # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
   # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
-  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
   defp personality_of(_character), do: nil
 end

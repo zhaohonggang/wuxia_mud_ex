@@ -2,12 +2,16 @@ defmodule Kantele.Combat.Skills.WudoumiShengong do
   @moduledoc """
   武学实装「wudoumi-shengong」（源 wudoumi-shengong.c，由 translate_skill.exs 生成）
 
-  已自动化：静态招式 4 式、valid_enable、practice_cost。
+  已自动化：静态招式 4 式、valid_enable、practice_cost、valid_learn。
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：difficult_level, exert_function_file, perform_action_file, practice_skill, skill_improved, valid_force
+  - 源码钩子/条件：difficult_level, exert_function_file, perform_action_file, practice_skill, skill_improved, valid_force（valid_learn 已迁移）
   - perform/exert 路由骨架见 tmp/perf_out/wudoumi_shengong/
+
+  **valid_learn**：性格门（须「心狠手辣」或「国士无双」，源里由 `阴险奸诈` 改来以配合
+  九阴九阳解反噬）读 `meta.character`；末门 `can_perform/wudoumi-shengong/gui`
+  习得后追加「基本拳脚 >= 本技能等级」的要求，走 `Skill.mark?/2` 读 `meta.marks`。
   """
 
   use Kantele.Combat.Skill
@@ -89,6 +93,11 @@ defmodule Kantele.Combat.Skills.WudoumiShengong do
       Stats.skill(stats, "force") < lvl ->
         {:error, "你的基本内功水平不够，难以锻炼更深厚的五斗米神功。\n"}
 
+      # 习得绝招 `gui` 之后才追加的「基本拳脚 >= 本技能」门
+      Kantele.Combat.Skill.mark?(character, "can_perform/wudoumi-shengong/gui") and
+          Stats.skill(stats, "unarmed") < lvl ->
+        {:error, "你的基本拳脚水平不够，难以锻炼更深厚的五斗米神功。\n"}
+
       true ->
         :ok
     end
@@ -122,6 +131,6 @@ defmodule Kantele.Combat.Skills.WudoumiShengong do
 
   # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
   # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
-  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
   defp personality_of(_character), do: nil
 end

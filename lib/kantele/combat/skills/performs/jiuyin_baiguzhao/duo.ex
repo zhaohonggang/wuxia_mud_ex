@@ -149,7 +149,7 @@ defmodule Kantele.Combat.Skills.Performs.JiuyinBaiguzhao.Duo do
     msg =
       Map.get(
         leads,
-        Map.get(character.meta, :personality),
+        Map.get(character.meta, :character),
         "$N手指微微弯曲成爪，浑不经意的向$n头顶抓下。\n"
       )
 

@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.HuanyinZhi do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N一直戳出，幻起一团指影，逼向$n的$l",
@@ -95,6 +98,42 @@ defmodule Kantele.Combat.Skills.HuanyinZhi do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `huanyin-zhi.c` valid_learn）
+
+  - 必须空手
+  - `me->query_skill("force") < 200` → 内功（有效等级）
+  - `me->query("max_neili") < 800` → vitals
+  - `me->query_skill("finger", 1) < 本门` → 执法门槛
+  LPC 以 `return 1` 收尾。
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练幻阴指法必须空手。\n"}
+
+      Stats.effective(stats, "force") < 200 ->
+        {:error, "你的内功火候不够，无法学幻阴指法。\n"}
+
+      not is_integer(max_neili) or max_neili < 800 ->
+        {:error, "你的内力太弱，无法练幻阴指法。\n"}
+
+      Stats.skill(stats, "finger") < Stats.skill(stats, id()) ->
+        {:error, "你的基本执法水平有限，无法领会更高深的幻阴指法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
   def actions(), do: @actions
   @doc "当前等级对应的最高招式名（query_skill_name）"
   def query_skill_name(level) do

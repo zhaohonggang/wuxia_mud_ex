@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.DafumoQuan do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N使一招「伏魔式」，双手猛地袭向$n$l",
@@ -115,5 +118,48 @@ defmodule Kantele.Combat.Skills.DafumoQuan do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `dafumo-quan.c` valid_learn）
+
+  - 必须空手（`query_temp("weapon") || query_temp("secondary_weapon")`）→ 拒绝
+  - `me->query("str") < 32` → 臂力（派生根骨，Stats.query_str）
+  - `me->query("max_neili") < 1500` → vitals（需 arity-2）
+  - `me->query_skill("force") < 150` → 内功（有效等级）
+  - `me->query_skill("unarmed", 1) < 120` / `< 本门` → 拳脚门槛
+  LPC 以 `return 1` 收尾。
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练大伏魔拳必须空手。\n"}
+
+      Stats.query_str(stats) < 32 ->
+        {:error, "你先天臂力太弱，无法练大伏魔拳。\n"}
+
+      not is_integer(max_neili) or max_neili < 1500 ->
+        {:error, "你的内力太弱，无法练大伏魔拳。\n"}
+
+      Stats.effective(stats, "force") < 150 ->
+        {:error, "你的内功火候不够，无法练大伏魔拳。\n"}
+
+      Stats.skill(stats, "unarmed") < 120 ->
+        {:error, "你的基本拳脚火候不够，无法练大伏魔拳。\n"}
+
+      Stats.skill(stats, "unarmed") < Stats.skill(stats, id()) ->
+        {:error, "你的基本拳脚水平有限，无法领会更高深的大伏魔拳。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
   def actions(), do: @actions
 end

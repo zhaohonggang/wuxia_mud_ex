@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.LeitingFu do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N立定当地，手中的$w在面前移动，突然一招「春雷炸空」向$n劈去",
@@ -152,7 +155,34 @@ defmodule Kantele.Combat.Skills.LeitingFu do
     end
   end
 
+    @doc """
+  学习门槛（对照 `leiting-fu.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.query_str(stats) < 35 ->
+        {:error, "你的先天膂力孱弱，无法修炼雷霆斧法。\n"}
+      not is_integer(max_neili) or max_neili < 3000 ->
+        {:error, "你的内力修为太浅，无法修炼雷霆斧法。\n"}
+      Stats.effective(stats, "force") < 300 ->
+        {:error, "你的内功火候太浅，无法修炼雷霆斧法。\n"}
+      Stats.skill(stats, "hammer") < 180 ->
+        {:error, "你的基本锤法火候太浅，无法修炼雷霆斧法。\n"}
+      Stats.skill(stats, "hammer") < Stats.skill(stats, id()) ->
+        {:error, "你的基本锤法水平有限，无法领会更高深的雷霆斧法。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "sanda" => Kantele.Combat.Skills.Performs.LeitingFu.Sanda

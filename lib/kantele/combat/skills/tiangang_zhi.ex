@@ -11,6 +11,7 @@ defmodule Kantele.Combat.Skills.TiangangZhi do
   """
 
   use Kantele.Combat.Skill
+  alias Kantele.Combat.Skill
 
   alias Kantele.Character.Stats
 

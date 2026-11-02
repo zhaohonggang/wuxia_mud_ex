@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.LunhuiJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N使一式「人间道」，手中$w嗡嗡微振，幻成一条疾光刺向$n的$l",
@@ -119,7 +122,32 @@ defmodule Kantele.Combat.Skills.LunhuiJian do
     end
   end
 
+    @doc """
+  学习门槛（对照 `lunhui-jian.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_integer(max_neili) or max_neili < 5000 ->
+        {:error, "你的内力修为不够，难以修炼释迦轮回剑。\n"}
+      Stats.effective(stats, "force") < 350 ->
+        {:error, "你的内功火候太浅，难以修炼释迦轮回剑。\n"}
+      Stats.skill(stats, "sword") < 250 ->
+        {:error, "你的剑法根基不足，难以修炼释迦轮回剑。\n"}
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的释迦轮回剑。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "hui" => Kantele.Combat.Skills.Performs.LunhuiJian.Hui

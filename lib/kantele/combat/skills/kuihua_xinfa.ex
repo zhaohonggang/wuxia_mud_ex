@@ -27,4 +27,27 @@ defmodule Kantele.Combat.Skills.KuihuaXinfa do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+
+  @doc """
+  学习门槛（对照 `kuihua-xinfa.c` valid_learn）
+
+  仅性别门：非「无性」→「欲练神功，挥刀自宫！」。其余回落 `skill.c` 默认放行
+  （LPC 以 `return ::valid_learn(me)` 收尾，父类的 valid_learn 仅返回 1，无新增门槛）。
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    cond do
+      gender_of(character) != "无性" ->
+        {:error, "欲练神功，挥刀自宫！\n"}
+
+      true ->
+        valid_learn(stats)
+    end
+  end
+
+  @impl true
+  def valid_learn(_stats), do: :ok
+
+  defp gender_of(%{meta: %{env: %{gender: gender}}}) when is_binary(gender), do: gender
+  defp gender_of(_), do: "男性"
 end

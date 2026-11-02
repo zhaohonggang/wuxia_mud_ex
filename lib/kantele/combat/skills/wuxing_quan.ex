@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.WuxingQuan do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N右脚立定、左脚虚点，一式",
@@ -118,4 +121,44 @@ defmodule Kantele.Combat.Skills.WuxingQuan do
       action -> Map.get(action, "skill_name")
     end
   end
+
+  @doc """
+  学习门槛（对照 `wuxing-quan.c` valid_learn）
+
+  - 必须空手（`query_temp("weapon") || query_temp("secondary_weapon")`）→ 拒绝
+  - `query("force") < 100` → 内功火候不足
+  - `query("max_neili") < 800` → 内力太弱（vitals，需 arity-2）
+  - 基本拳脚 `unarmed` 需 ≥ 100，且 ≥ 本门 `wuxing-quan` 等级
+  LPC 以 `return 1` 收尾，全部门槛显式列出。
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    force = Stats.skill(stats, "force")
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练五行拳必须空手。\n"}
+
+      force < 100 ->
+        {:error, "你的内功火候不够，无法学五行拳。\n"}
+
+      not is_integer(max_neili) or max_neili < 800 ->
+        {:error, "你的内力太弱，无法练五行拳。\n"}
+
+      Stats.skill(stats, "unarmed") < 100 ->
+        {:error, "你的拳脚根基有限，无法体会五行拳要诣。\n"}
+
+      Stats.skill(stats, "unarmed") < Stats.skill(stats, id()) ->
+        {:error, "你的拳脚根基火候不足，无法领会更高深的五行拳。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 end

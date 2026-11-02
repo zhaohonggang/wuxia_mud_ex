@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.Qufeng do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions []
 
   @impl true
@@ -28,4 +31,25 @@ defmodule Kantele.Combat.Skills.Qufeng do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+  @doc """
+  学习门槛（对照 `qufeng.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "yunv-xinfa") < 30 ->
+        {:error, "你的玉女心法火候不够，无法学驱蜂之术。\n"}
+      not is_integer(max_neili) or max_neili < 300 ->
+        {:error, "你的内力太弱，无法学习驱蜂之术。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
 end

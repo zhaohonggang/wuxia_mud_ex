@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.ChixinJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N使一式",
@@ -206,6 +209,41 @@ defmodule Kantele.Combat.Skills.ChixinJian do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `chixin-jian.c` valid_learn）
+
+  - `me->query("max_neili") < 900` → 内力不足（vitals，需 arity-2）
+  - `me->query_skill("force") < 120` → 内功火候（1 参=有效等级，用 Stats.effective）
+  - `me->query_skill("sword", 1) < 100` / `< 本门` → 基本剑法门槛
+  LPC 以 `return 1` 收尾（无 `::valid_learn` 回落）。
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_integer(max_neili) or max_neili < 900 ->
+        {:error, "你的内力不够。\n"}
+
+      Stats.effective(stats, "force") < 120 ->
+        {:error, "你的内功火候太浅。\n"}
+
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法火候不够，无法学习痴心情长剑。\n"}
+
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的痴心情长剑。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
   def actions(), do: @actions
   @doc "当前等级对应的最高招式名（query_skill_name）"
   def query_skill_name(level) do

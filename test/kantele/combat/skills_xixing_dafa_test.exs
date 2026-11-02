@@ -3,9 +3,9 @@ defmodule Kantele.Combat.SkillsXixingDafaTest do
   吸星大法学习门槛迁移（C 相位，xixing-dafa 真缺口补齐）。
 
   对照 `kungfu/skill/xixing-dafa.c`：
-  - valid_learn: con>=30 / force>=100 /「未获 `can_learn/xixing-dafa/ren` 且 max_neili>0
-    且 10<=等级<200」拒（散功诀窍门）；
-  - 「性格为光明磊落则拒」为 alignment 门，本仓未建模，未迁移；
+  - valid_learn: 性格为「光明磊落」则拒（**首门**）/ con>=30 / force>=100 /
+    「未获 `can_learn/xixing-dafa/ren` 且 max_neili>0 且 10<=等级<200」拒（散功诀窍门）；
+  - 性格门读 `meta.character`（LPC `query("character")`）；这是**排除门**，未设（nil）不拦；
   - practice_skill 恒失败 → practice_cost 为 nil。
   """
 
@@ -17,8 +17,26 @@ defmodule Kantele.Combat.SkillsXixingDafaTest do
   defp stats(con, force, lvl),
     do: %{con: con, skills: %{"force" => force, "xixing-dafa" => lvl}}
 
-  defp char(mn, marks \\ %{}),
-    do: %{meta: %{vitals: %{max_neili: mn}, marks: marks}}
+  defp char(mn, marks \\ %{}, personality \\ nil),
+    do: %{meta: %{vitals: %{max_neili: mn}, marks: marks, character: personality}}
+
+  describe "valid_learn/2 性格门（LPC query(\"character\") == \"光明磊落\" 则拒）" do
+    test "性格为「光明磊落」被拒（性格门在 con 门之前）" do
+      assert XixingDafa.valid_learn(stats(30, 200, 0), char(0, %{}, "光明磊落")) ==
+               {:error, "你心中暗道：这种害人的武功，我学它作甚？\n"}
+    end
+
+    test "性格门优先于 con 门：性格不合格 + con 不足，仍报性格" do
+      assert XixingDafa.valid_learn(stats(10, 200, 0), char(0, %{}, "光明磊落")) ==
+               {:error, "你心中暗道：这种害人的武功，我学它作甚？\n"}
+    end
+
+    test "性格为「心狠手辣」「阴险奸诈」放行（排除门只拦光明磊落）" do
+      for p <- ["心狠手辣", "阴险奸诈", "狡黠多变", "国士无双"] do
+        assert :ok = XixingDafa.valid_learn(stats(30, 200, 0), char(0, %{}, p))
+      end
+    end
+  end
 
   describe "valid_learn/2 学习门槛（LPC con>=30 / force>=100）" do
     test "con < 30 被拒（心火如焚）" do

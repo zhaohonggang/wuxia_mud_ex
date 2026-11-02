@@ -2,15 +2,21 @@ defmodule Kantele.Combat.Skills.LonelySword do
   @moduledoc """
   武学实装「lonely-sword」（源 lonely-sword.c，由 translate_skill.exs 生成）
 
-  已自动化：静态招式 24 式、valid_enable、practice_cost。
+  已自动化：静态招式 24 式、valid_enable、practice_cost、valid_learn。
   TODO(migrate): 人工迁移中...：
   - 动态招式 0 式（值含 this_player/query_skill/random，
     需在拿到出招属性后用公式复现，参照 lib/kantele/combat/skills/huashan_jian.ex）。
-  - 源码钩子/条件：difficult_level, perform_action_file, practice_skill, valid_learn
+  - 源码钩子/条件：difficult_level, perform_action_file, practice_skill（valid_learn 已迁移）
   - perform/exert 路由骨架见 tmp/perf_out/lonely_sword/
+
+  **valid_learn 的持剑门**：源首条是 `query_temp("weapon")` 且 `skill_type == "sword"`
+  否则「你必须先找一把剑才能练剑法。」—— 按本仓约定，兵器**存在性**门由 practice
+  流程把关，不写入 `valid_learn`（同 qingyun-bian / bagua-dao / tiangang-zhi），
+  这里只迁移「天资 / 天性 / 基本剑法造诣」三条。
   """
 
   use Kantele.Combat.Skill
+  alias Kantele.Character.Stats
 
   @actions [
     %{
@@ -260,6 +266,35 @@ defmodule Kantele.Combat.Skills.LonelySword do
 
   @impl true
   def valid_enable(usage), do: usage in ["parry", "sword"]
+
+  # LPC `valid_learn(object me)`（源 lonely-sword.c）。持剑门见 moduledoc，未在此建模。
+  # 源里 4 次 `query("character")` 判天性，按顺序短路。
+  @impl true
+  def valid_learn(stats, character) do
+    cond do
+      Stats.query_int(stats) < 34 ->
+        {:error, "你的天资不足，无法理解独孤九剑的剑意。\n"}
+
+      personality_of(character) == "心狠手辣" ->
+        {:error, "你一心想杀尽敌人，没能理解独孤九剑的的真正含义。\n"}
+
+      personality_of(character) == "阴险奸诈" ->
+        {:error, "你一心想怎么学好剑法去害人，结果没能理解独孤九剑。\n"}
+
+      personality_of(character) == "光明磊落" ->
+        {:error, "你心中暗道：什么独孤九剑，乱七八糟的，没有半点气势。\n"}
+
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法造诣有限，无法理解更高深的独孤九剑。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  # LPC `me->query("character")`：天性/人格（PlayerMeta.character；未设 → nil，等价 LPC 0）
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
+  defp personality_of(_character), do: nil
 
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do

@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.YaowangShenxin do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -26,5 +28,31 @@ defmodule Kantele.Combat.Skills.YaowangShenxin do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `yaowang-shenxin.c` valid_learn）
+
+  poison>=150 / dispel-poison>=150 / poison>=本门 / dispel-poison>=本门。
+  LPC 以 `return 1` 收尾（无 `::valid_learn` 回落）。
+  """
+  @impl true
+  def valid_learn(stats) do
+    cond do
+      Stats.skill(stats, "poison") < 150 ->
+        {:error, "你的基本毒技造诣太浅，无法领会深奥的药王神辛。\n"}
+
+      Stats.skill(stats, "dispel-poison") < 150 ->
+        {:error, "你的妙手驱毒造诣太浅，无法领会深奥的药王神辛。\n"}
+
+      Stats.skill(stats, "poison") < Stats.skill(stats, id()) ->
+        {:error, "你的基本毒技水平有限，无法掌握更深奥的药王神辛。\n"}
+
+      Stats.skill(stats, "dispel-poison") < Stats.skill(stats, id()) ->
+        {:error, "你的妙手驱毒水平有限，无法掌握更深奥的药王神辛。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   def actions(), do: @actions
 end

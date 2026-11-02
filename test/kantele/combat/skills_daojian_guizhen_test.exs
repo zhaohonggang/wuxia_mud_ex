@@ -3,8 +3,11 @@ defmodule Kantele.Combat.SkillsDaojianGuizhenTest do
   刀剑归真学习门槛迁移（C 相位，daojian-guizhen 真缺口补齐）。
 
   对照 `kungfu/skill/daojian-guizhen.c`：
-  - valid_learn: int>=35 / dex>=25 / martial-cognize>=250 / max_neili>=4500 /
-    sword>=250 且 blade>=250 / 「刀剑均低于本技能」/「其一低于本技能」；
+  - valid_learn: 性格须「光明磊落」或「国士无双」/ int>=35 / dex>=25 / martial-cognize>=250 /
+    max_neili>=4500 / sword>=250 且 blade>=250 / 「刀剑均低于本技能」/「其一低于本技能」；
+  - 性格门读 `meta.character`（LPC `query("character")`）；LPC 未设时为 0，既不是
+    「光明磊落」也不是「国士无双」→ **拒**（源里唯一的赋値点是 `adm/daemons/updated.c:515`
+    转世设「国士无双」，故本技能实为转世专属）；
   - LPC 末门允许 `ultrap` 且刀剑均>=320 时只需其一达标，本仓无 ultrap 判定 → 按非大宗师处理；
   - practice_skill 扣 qi 85 / neili 85。
   """
@@ -27,10 +30,33 @@ defmodule Kantele.Combat.SkillsDaojianGuizhenTest do
     }
   end
 
-  defp char(mn), do: %{meta: %{vitals: %{max_neili: mn}}}
+  # 默认给通过性格门的「光明磊落」
+  defp char(mn, personality \\ "光明磊落"),
+    do: %{meta: %{vitals: %{max_neili: mn}, character: personality}}
 
   # 默认全达标：int 40 / dex 30 / cognize 300 / sword 300 / blade 300 / self 10
   defp ok_stats, do: stats(40, 30, 300, 300, 300, 10)
+
+  describe "valid_learn/2 性格门（LPC query(\"character\") 须光明磊落或国士无双）" do
+    test "性格为「心狠手辣」被拒（性格门在 int 门之前）" do
+      assert DaojianGuizhen.valid_learn(ok_stats(), char(5000, "心狠手辣")) ==
+               {:error, "你练习了半天，心中暗道：什么刀剑合一，竟如此难练，这东西不练也罢。\n"}
+    end
+
+    test "性格未设（nil）按 LPC「未设即 0」拒" do
+      assert DaojianGuizhen.valid_learn(ok_stats(), char(5000, nil)) ==
+               {:error, "你练习了半天，心中暗道：什么刀剑合一，竟如此难练，这东西不练也罢。\n"}
+    end
+
+    test "性格「国士无双」（转世）通过性格门" do
+      assert DaojianGuizhen.valid_learn(ok_stats(), char(5000, "国士无双")) == :ok
+    end
+
+    test "性格门优先于 int 门：性格不合格 + int 不足，仍报性格" do
+      assert DaojianGuizhen.valid_learn(stats(10, 30, 300, 300, 300, 10), char(5000, "阴险奸诈")) ==
+               {:error, "你练习了半天，心中暗道：什么刀剑合一，竟如此难练，这东西不练也罢。\n"}
+    end
+  end
 
   describe "valid_learn/2 学习门槛" do
     test "int < 35 被拒（天资不足）" do
@@ -77,12 +103,14 @@ defmodule Kantele.Combat.SkillsDaojianGuizhenTest do
       assert DaojianGuizhen.valid_learn(stats(40, 30, 300, 400, 400, 400), char(5000)) == :ok
     end
 
-    test "character 为 nil 时跳过 max_neili 检查（其余门槛仍生效）" do
-      assert DaojianGuizhen.valid_learn(ok_stats(), nil) == :ok
+    test "character 为 nil 时不崩，按「未设天性」被性格门拒" do
+      assert DaojianGuizhen.valid_learn(ok_stats(), nil) ==
+               {:error, "你练习了半天，心中暗道：什么刀剑合一，竟如此难练，这东西不练也罢。\n"}
     end
 
-    test "character 无 meta/vitals 时跳过 max_neili 检查" do
-      assert DaojianGuizhen.valid_learn(ok_stats(), %{}) == :ok
+    test "character 无 meta/vitals 时同样被性格门拒（max_neili 检查跳过）" do
+      assert DaojianGuizhen.valid_learn(ok_stats(), %{}) ==
+               {:error, "你练习了半天，心中暗道：什么刀剑合一，竟如此难练，这东西不练也罢。\n"}
     end
   end
 

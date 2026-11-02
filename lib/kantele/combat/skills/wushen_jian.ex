@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.WushenJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N反转手中$w，剑光夺目，将「",
@@ -82,7 +85,38 @@ defmodule Kantele.Combat.Skills.WushenJian do
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
 
+    @doc """
+  学习门槛（对照 `wushen-jian.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielded_skill_type(character) != "sword" ->
+        {:error, "你必须先找一柄剑才能够练习。\n"}
+      Stats.query_int(stats) < 30 ->
+        {:error, "你的先天悟性不足，没有办法练衡山五神剑。\n"}
+      Stats.query_dex(stats) < 28 ->
+        {:error, "你的先天身法孱弱，没有办法练衡山五神剑。\n"}
+      Stats.skill(stats, "martial-cognize") < 180 ->
+        {:error, "你觉得衡山五神剑极其深奥，依照自己的武学修养难以理解。\n"}
+      not is_integer(max_neili) or max_neili < 4000 ->
+        {:error, "你的内力修为不够，没有办法练衡山五神剑。\n"}
+      Stats.skill(stats, "sword") < 200 ->
+        {:error, "你的基本剑法太差，没有办法练衡山五神剑。\n"}
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法火候有限，无法领会更高深的衡山五神剑。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "hui" => Kantele.Combat.Skills.Performs.WushenJian.Hui,

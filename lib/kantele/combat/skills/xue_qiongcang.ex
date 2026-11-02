@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.XueQiongcang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N施展",
@@ -68,4 +71,35 @@ defmodule Kantele.Combat.Skills.XueQiongcang do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+  @doc """
+  学习门槛（对照 `xue-qiongcang.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "huntian-baojian") > 0 ->
+        {:error, "你已经将浑天宝鉴神功合一，不必再单独学习。\n"}
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "修行血穹苍心法必须空手。\n"}
+      Stats.query_con(stats) < 35 ->
+        {:error, "你身子骨太弱，无法练习浑天宝鉴神功。\n"}
+      Stats.skill(stats, "unarmed") < 240 ->
+        {:error, "你的拳脚火候无法学习血穹苍心法。\n"}
+      Stats.skill(stats, "force") < 240 ->
+        {:error, "你的内功火候无法学习血穹苍心法。\n"}
+      not is_integer(max_neili) or max_neili < 7000 ->
+        {:error, "你的内力修为太差，无法学习血穹苍心法。\n"}
+      Stats.skill(stats, "jin-chenxi") - 10 < Stats.skill(stats, id()) ->
+        {:error, "你必须先提高你的金晨曦心法。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
 end

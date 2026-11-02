@@ -24,8 +24,10 @@ defmodule Kantele.Combat.Skills.XuanmingShengong do
 
   @impl true
   def valid_learn(stats) do
+    # LPC `me->query("con")` 取派生根骨（base+tattoo+reborn+force/10+temporary），
+    # 故用 Stats.query_con/1 而非原始 stats.con；con 在 Stats 结构内，arity-1 即可，无需 arity-2。
     cond do
-      stats.con < 32 -> {:error, "你先天根骨不足，无法修炼玄冥神功。\n"}
+      Stats.query_con(stats) < 32 -> {:error, "你先天根骨不足，无法修炼玄冥神功。\n"}
       Stats.skill(stats, "force") < 100 -> {:error, "你的基本内功火候还不够，还不能学习玄冥神功。\n"}
       true -> :ok
     end

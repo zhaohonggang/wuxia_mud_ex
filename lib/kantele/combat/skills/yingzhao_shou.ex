@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.YingzhaoShou do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "在呼呼风声中，$N使一招「苍鹰袭兔」，双手如钩如戢，插向$n的$l",
@@ -101,4 +104,21 @@ defmodule Kantele.Combat.Skills.YingzhaoShou do
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
+  @doc """
+  学习门槛（对照 `yingzhao-shou.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    cond do
+      Stats.skill(stats, "baihua-cuoquan") > 0 ->
+        {:error, "你已经练成了百花错拳，不必再单独学习了。\n"}
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练鹰爪手必须空手。\n"}
+      Stats.skill(stats, "claw") < Stats.skill(stats, id()) ->
+        {:error, "你的基本爪法火候不足，无法领会更高深的鹰爪手。\n"}
+      true ->
+        :ok
+    end
+  end
+
 end

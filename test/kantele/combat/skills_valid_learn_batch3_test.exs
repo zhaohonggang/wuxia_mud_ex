@@ -54,10 +54,12 @@ defmodule Kantele.Combat.SkillsValidLearnBatch3Test do
       combat: %{equipped: Keyword.get(opts, :equipped, %{})}
     }
 
+    # `personality:` 关键字写入规范字段 `meta.character`（LPC `query("character")`，
+    # 见 PlayerMeta moduledoc / poison.ex）；`guilty` 仍写 `meta.guilty`。
     meta =
-      Enum.reduce([:personality, :guilty], meta, fn key, acc ->
-        case Keyword.fetch(opts, key) do
-          {:ok, value} -> Map.put(acc, key, value)
+      Enum.reduce([personality: :character, guilty: :guilty], meta, fn {opt_key, meta_key}, acc ->
+        case Keyword.fetch(opts, opt_key) do
+          {:ok, value} -> Map.put(acc, meta_key, value)
           :error -> acc
         end
       end)
@@ -340,7 +342,7 @@ defmodule Kantele.Combat.SkillsValidLearnBatch3Test do
       char(max_neili: 0, neili: 0, gender: "无性"),
       char(personality: "心狠手辣", family: "少林派", guilty: 3, gender: "女性"),
       %{meta: %{vitals: %{max_neili: nil, neili: nil}, env: %{gender: nil}}},
-      %{meta: %{family: nil, personality: nil, guilty: nil}}
+      %{meta: %{family: nil, character: nil, guilty: nil}}
     ]
 
     for id <- @batch, shape <- shapes do

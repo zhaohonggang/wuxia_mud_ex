@@ -30,6 +30,9 @@ defmodule Kantele.Character.LearnCommand do
       student_spouse: conn.character.meta.spouse,
       # character 供师父侧 `valid_learn/2` 读人格门（如 poison.c "光明磊落"）
       student_character: conn.character.meta.character,
+      # marks 供师父侧 `valid_learn/2` 读 `can_learn/...`、`can_perform/...` 习得门
+      # （`Kantele.Combat.Skill.mark?/2`，如 xixing-dafa 散功诀窍、wudoumi-shengong 绝招门）
+      student_marks: conn.character.meta.marks,
       # equipped 供 `valid_learn/2` 读持械门（LPC `me->query_temp("weapon")`）
       student_equipped: conn.character.meta.combat.equipped
     })

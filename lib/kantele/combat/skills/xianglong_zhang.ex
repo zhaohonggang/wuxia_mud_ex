@@ -284,6 +284,6 @@ defmodule Kantele.Combat.Skills.XianglongZhang do
 
   # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
   # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
-  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
   defp personality_of(_character), do: nil
 end

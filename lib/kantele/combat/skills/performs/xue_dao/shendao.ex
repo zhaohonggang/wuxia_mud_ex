@@ -34,7 +34,7 @@ defmodule Kantele.Combat.Skills.Performs.XueDao.Shendao do
 
     # LPC: if (me->query("character") == "心狠手辣") damage += damage * 3 / 10;
     damage =
-      if Map.get(character.meta, :personality) == "心狠手辣" do
+      if Map.get(character.meta, :character) == "心狠手辣" do
         damage + div(damage * 3, 10)
       else
         damage

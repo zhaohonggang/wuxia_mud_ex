@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.GuzhengJifa do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -27,5 +29,20 @@ defmodule Kantele.Combat.Skills.GuzhengJifa do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `guzheng-jifa.c` valid_learn）
+
+  `me->query("int") < 24 && me->query_int() < 35` 二者同义（均为派生命理），
+  取 `Stats.query_int(stats) < 24`。LPC 以 `return 1` 收尾。
+  """
+  @impl true
+  def valid_learn(stats) do
+    if Stats.query_int(stats) < 24 do
+      {:error, "就你那点悟性？五音不全，学什么古筝？\n"}
+    else
+      :ok
+    end
+  end
+
   def actions(), do: @actions
 end

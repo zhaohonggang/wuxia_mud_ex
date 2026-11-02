@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.PanlongZhao do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "在呼呼风声中，$N使一招「越爪攀阳势」，双手如钩如戢，插向$n的$l",
@@ -130,7 +133,34 @@ defmodule Kantele.Combat.Skills.PanlongZhao do
     end
   end
 
+    @doc """
+  学习门槛（对照 `panlong-zhao.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练越空盘龙爪必须空手。\n"}
+      Stats.effective(stats, "force") < 50 ->
+        {:error, "你的内功火候不够，无法学越空盘龙爪。\n"}
+      not is_integer(max_neili) or max_neili < 400 ->
+        {:error, "你的内力太弱，无法练越空盘龙爪。\n"}
+      Stats.effective(stats, "claw") < 30 ->
+        {:error, "你的基本爪法等级太低，无法学越空盘龙爪。\n"}
+      Stats.skill(stats, "claw") < Stats.skill(stats, id()) ->
+        {:error, "你的基本爪法火候水平有限，无法领会更高深的越空盘龙爪。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "tan" => Kantele.Combat.Skills.Performs.PanlongZhao.Tan

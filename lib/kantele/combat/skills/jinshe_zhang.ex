@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.JinsheZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N双掌一错，一招「千蛇出洞」幻出漫天掌影拢向$n的$l",
@@ -174,7 +177,30 @@ defmodule Kantele.Combat.Skills.JinsheZhang do
     end
   end
 
+    @doc """
+  学习门槛（对照 `jinshe-zhang.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_integer(max_neili) or max_neili < 500 ->
+        {:error, "你的内力不足，无法练金蛇游身掌。\n"}
+      Stats.effective(stats, "force") < 80 ->
+        {:error, "你的内功火候不够，无法练金蛇游身掌。\n"}
+      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法水平有限，无法领会更高深的金蛇游身掌。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "fugu" => Kantele.Combat.Skills.Performs.JinsheZhang.Fugu

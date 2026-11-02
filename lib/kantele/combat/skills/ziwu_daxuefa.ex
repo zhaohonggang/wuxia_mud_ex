@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.ZiwuDaxuefa do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N一招「子弦相连」，手中$w一颤，疾点向$n的期门穴",
@@ -129,4 +132,29 @@ defmodule Kantele.Combat.Skills.ZiwuDaxuefa do
       action -> Map.get(action, "skill_name")
     end
   end
+  @doc """
+  学习门槛（对照 `ziwu-daxuefa.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_integer(max_neili) or max_neili < 500 ->
+        {:error, "你的内力修为太浅，无法练子午打穴法。\n"}
+      Stats.effective(stats, "force") < 100 ->
+        {:error, "你的内功火候太浅，无法练子午打穴法。\n"}
+      Stats.skill(stats, "dagger") < 80 ->
+        {:error, "你的基本短兵火候太浅，无法练子午打穴法。\n"}
+      Stats.skill(stats, "dagger") < Stats.skill(stats, id()) ->
+        {:error, "你的基本短兵水平有限，无法领会更高深的子午打穴法。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
 end

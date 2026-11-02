@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.HuashanSword do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N使一招「有凤来仪」，手中$w剑光暴长，向$n的$l刺去",
@@ -107,4 +110,36 @@ defmodule Kantele.Combat.Skills.HuashanSword do
       action -> Map.get(action, "skill_name")
     end
   end
+
+  @doc """
+  学习门槛（对照 `huashan-sword.c` valid_learn）
+
+  - `me->query("max_neili") < 100` → 内力不足（vitals，需 arity-2）
+  - 必须持「剑」（`query_temp("weapon")->query("skill_type") == "sword"`）
+  - 基本剑法 `sword` 需 ≥ 本门 `huashan-sword` 等级
+  LPC 以 `return 1` 收尾（无 `::valid_learn` 回落），故全部门槛在此显式列出。
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_integer(max_neili) or max_neili < 100 ->
+        {:error, "你的内力不够，没有办法练华山剑法。\n"}
+
+      Skill.wielded_skill_type(character) != "sword" ->
+        {:error, "你必须先找一把剑才能学习剑法。\n"}
+
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法火候有限，无法领会更高深的华山剑法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
 end

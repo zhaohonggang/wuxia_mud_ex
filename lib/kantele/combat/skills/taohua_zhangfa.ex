@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.TaohuaZhangfa do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N右手五指缓缓一收，一式「春风拂面」，五指忽然遥遥拂向$n，$n只觉得五",
@@ -151,4 +154,27 @@ defmodule Kantele.Combat.Skills.TaohuaZhangfa do
       action -> Map.get(action, "skill_name")
     end
   end
+  @doc """
+  学习门槛（对照 `taohua-zhangfa.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练桃花掌法必须空手。\n"}
+      not is_integer(max_neili) or max_neili < 100 ->
+        {:error, "你的内力太弱，无法练桃花掌法。\n"}
+      Stats.skill(stats, "unarmed") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法水平有限，无法领会更高深的桃花掌法。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
 end

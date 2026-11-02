@@ -295,6 +295,10 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
       Stats.int(stats) < 39 ->
         {:error, "你的天资不足，无法理解独孤九剑的剑意。\n"}
 
+      Skill.mark?(character, "can_learn/dugu-jiujian/nothing") and
+          Stats.con(stats) < 36 and Stats.dex(stats) < 36 ->
+        {:error, "你先天根骨或身法不足，无法体会独孤九剑的剑意。\n"}
+
       personality == "心狠手辣" ->
         {:error, "你一心想杀尽敌人，没能理解独孤九剑的的真正含义。\n"}
 
@@ -400,7 +404,7 @@ defmodule Kantele.Combat.Skills.DuguJiujian do
 
   # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
   # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
-  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :personality)
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
   defp personality_of(_character), do: nil
 
 end

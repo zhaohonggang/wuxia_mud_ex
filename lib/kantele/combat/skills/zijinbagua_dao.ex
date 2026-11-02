@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.ZijinbaguaDao do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N脚踏八卦方位，手中$w横推，由上至下向$n砍去",
@@ -112,7 +115,32 @@ defmodule Kantele.Combat.Skills.ZijinbaguaDao do
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
 
+    @doc """
+  学习门槛（对照 `zijinbagua-dao.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      not is_integer(max_neili) or max_neili < 1200 ->
+        {:error, "你的内力修为尚浅，无法练习紫金八卦刀。\n"}
+      Stats.effective(stats, "force") < 150 ->
+        {:error, "你的内功火候太浅。\n"}
+      Stats.skill(stats, "blade") < 120 ->
+        {:error, "你的基本刀法水平有限，无法练习紫金八卦刀。\n"}
+      Stats.skill(stats, "blade") < Stats.skill(stats, id()) ->
+        {:error, "你的基本刀法水平有限，无法领会更高深的紫金八卦刀。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "bagua" => Kantele.Combat.Skills.Performs.ZijinbaguaDao.Bagua

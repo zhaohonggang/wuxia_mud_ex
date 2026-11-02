@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.JinChenxi do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N施展",
@@ -57,5 +60,52 @@ defmodule Kantele.Combat.Skills.JinChenxi do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `jin-chenxi.c` valid_learn）
+
+  - `huntian-baojian > 0` → 已合一，拒绝
+  - 必须空手
+  - `me->query("con") < 35` → 根骨（Stats.query_con）
+  - `unarmed`/`force` (2 参) < 220 → 拳脚/内功门槛
+  - `me->query("max_neili") < 6000` → vitals
+  - `me->query_skill("dian-canghai", 1) - 10 < 本门` → 需先修靛沧海
+  LPC 以 `return 1` 收尾。（注：LPC 文案含颜色宏 HIY/NOR，此处取纯文本。）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "huntian-baojian") > 0 ->
+        {:error, "你已经将浑天宝鉴神功合一，不必再单独学习。\n"}
+
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "修行金晨曦心法必须空手。\n"}
+
+      Stats.query_con(stats) < 35 ->
+        {:error, "你身子骨太弱，无法练习浑天宝鉴神功。\n"}
+
+      Stats.skill(stats, "unarmed") < 220 ->
+        {:error, "你的拳脚火候无法学习金晨曦心法。\n"}
+
+      Stats.skill(stats, "force") < 220 ->
+        {:error, "你的内功火候无法学习金晨曦心法。\n"}
+
+      not is_integer(max_neili) or max_neili < 6000 ->
+        {:error, "你的内力修为太差，无法学习金晨曦心法。\n"}
+
+      Stats.skill(stats, "dian-canghai") - 10 < Stats.skill(stats, id()) ->
+        {:error, "你必须先提高你的靛沧海心法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+
+  defp max_neili_of(_), do: nil
+
   def actions(), do: @actions
 end

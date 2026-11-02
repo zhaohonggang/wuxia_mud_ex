@@ -113,17 +113,26 @@ defmodule Kantele.Combat.Skills.SanwuShou do
 
   defp max_neili_of(_), do: nil
 
+  # LPC `me->query("character")`：天性/人格（PlayerMeta.character；未设 → nil，等价 LPC 0）
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
+  defp personality_of(_character), do: nil
+
   @doc "练招消耗：LPC practice_skill 扣 qi 55 / neili 60（须持鞭，由 practice 流程把关）"
   @impl true
   def practice_cost(), do: %{qi: 55, neili: 60}
 
-  # LPC `valid_learn(object me)`（源 sanwu-shou.c）
+  # LPC `valid_learn(object me)`（源 sanwu-shou.c）：性格门在最前（先于持鞭门）
   @impl true
   def valid_learn(stats, character) do
     lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
+    personality = personality_of(character)
 
     cond do
+      # 源：`query("character") != "心狠手辣" && != "国士无双"`
+      personality != "心狠手辣" and personality != "国士无双" ->
+        {:error, "练三无三不手必须要心狠手辣，我看你这点做得还不够。\n"}
+
       Skill.wielding?(character) and Skill.wielded_skill_type(character) != "whip" ->
         {:error, "你必须先找一条鞭子才能练三无三不手。\n"}
 

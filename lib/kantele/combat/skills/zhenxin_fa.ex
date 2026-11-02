@@ -12,6 +12,8 @@ defmodule Kantele.Combat.Skills.ZhenxinFa do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+
   @actions []
 
   @impl true
@@ -26,5 +28,24 @@ defmodule Kantele.Combat.Skills.ZhenxinFa do
   end
 
   @doc "招式名 -> 招式数据（供 score/look 展示）"
+  @doc """
+  学习门槛（对照 `zhenxin-fa.c` valid_learn）
+
+  medical>=100 / medical>=本门。LPC 以 `return 1` 收尾。
+  """
+  @impl true
+  def valid_learn(stats) do
+    cond do
+      Stats.skill(stats, "medical") < 100 ->
+        {:error, "你的基本医术造诣太浅，无法领会深奥的镇心易脉法。\n"}
+
+      Stats.skill(stats, "medical") < Stats.skill(stats, id()) ->
+        {:error, "你的基本医术水平有限，无法掌握更深奥的镇心易脉法。\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   def actions(), do: @actions
 end

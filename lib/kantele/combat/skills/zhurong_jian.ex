@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.ZhurongJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N身法迅捷，连出两剑，分袭$n面门和$w，正是一招「横空出世」",
@@ -97,7 +100,34 @@ defmodule Kantele.Combat.Skills.ZhurongJian do
     end
   end
 
+    @doc """
+  学习门槛（对照 `zhurong-jian.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "wushen-jian") > 0 ->
+        {:error, "你已演练合成了衡山五神剑，不必再单独学习。\n"}
+      Skill.wielded_skill_type(character) != "sword" ->
+        {:error, "你必须先找一把剑才能练剑法。\n"}
+      not is_integer(max_neili) or max_neili < 800 ->
+        {:error, "你的内力不够，没有办法练祝融剑法。\n"}
+      Stats.skill(stats, "sword") < 120 ->
+        {:error, "你的基本剑法太差，没有办法练祝融剑法。\n"}
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法火候有限，无法领会更高深的祝融剑法。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "wan" => Kantele.Combat.Skills.Performs.ZhurongJian.Wan

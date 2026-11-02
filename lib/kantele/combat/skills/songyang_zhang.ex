@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.SongyangZhang do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N一式「攀阳手」，左手带风，右手拍向$n的$l",
@@ -141,7 +144,34 @@ defmodule Kantele.Combat.Skills.SongyangZhang do
     end
   end
 
+    @doc """
+  学习门槛（对照 `songyang-zhang.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "练嵩阳掌必须空手。\n"}
+      Stats.effective(stats, "force") < 80 ->
+        {:error, "你的内功火候不够，无法学嵩阳掌。\n"}
+      not is_integer(max_neili) or max_neili < 400 ->
+        {:error, "你的内力太弱，无法嵩阳掌。\n"}
+      Stats.skill(stats, "strike") < 80 ->
+        {:error, "你的基本掌法火候太浅。\n"}
+      Stats.skill(stats, "strike") < Stats.skill(stats, id()) ->
+        {:error, "你的基本掌法水平有限，无法领会更高深的嵩阳掌。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "ying" => Kantele.Combat.Skills.Performs.SongyangZhang.Ying

@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.PoyangJian do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N使一式「力破天下」，手中$w由左至右横扫向向$n的$l",
@@ -152,7 +155,34 @@ defmodule Kantele.Combat.Skills.PoyangJian do
     end
   end
 
+    @doc """
+  学习门槛（对照 `poyang-jian.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
   @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Skill.wielded_skill_type(character) != "sword" ->
+        {:error, "你使用的武器不对。\n"}
+      Stats.effective(stats, "force") < 150 ->
+        {:error, "你的内功火候不够，不能学习破阳冷光剑。\n"}
+      not is_integer(max_neili) or max_neili < 1800 ->
+        {:error, "你的内力修为不够，不能学习破阳冷光剑。\n"}
+      Stats.skill(stats, "sword") < 100 ->
+        {:error, "你的基本剑法火候不够，不能学习破阳冷光剑。\n"}
+      Stats.skill(stats, "sword") < Stats.skill(stats, id()) ->
+        {:error, "你的基本剑法水平有限，无法领会更高深的破阳冷光剑。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
+@impl true
   def perform_list() do
     %{
       "long" => Kantele.Combat.Skills.Performs.PoyangJian.Long,

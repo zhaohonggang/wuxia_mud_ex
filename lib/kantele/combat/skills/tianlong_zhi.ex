@@ -12,6 +12,9 @@ defmodule Kantele.Combat.Skills.TianlongZhi do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Stats
+  alias Kantele.Combat.Skill
+
   @actions [
     %{
       "action" => "$N右手中指斜指而出，一招「天山指」已袭向$n$l",
@@ -85,4 +88,33 @@ defmodule Kantele.Combat.Skills.TianlongZhi do
       action -> Map.get(action, "skill_name")
     end
   end
+  @doc """
+  学习门槛（对照 `tianlong-zhi.c` valid_learn，LPC 以 `return 1` 收尾，全显式门）
+  """
+  @impl true
+  def valid_learn(stats, character) do
+    max_neili = max_neili_of(character)
+
+    cond do
+      Stats.skill(stats, "canhe-zhi") > 0 ->
+        {:error, "你已将这种指法融入参合指，不必再分开练习了。\n"}
+      Skill.wielding?(character) or Skill.secondary_wielding?(character) ->
+        {:error, "大天龙指必须空手。\n"}
+      Stats.effective(stats, "force") < 100 ->
+        {:error, "你的内功火候不够，无法学大天龙指。\n"}
+      Stats.skill(stats, "finger") < 40 ->
+        {:error, "你的基本指法火候不够，无法学大天龙指。\n"}
+      not is_integer(max_neili) or max_neili < 1000 ->
+        {:error, "你的内力太弱，无法练大天龙指。\n"}
+      Stats.skill(stats, "finger") < Stats.skill(stats, id()) ->
+        {:error, "你的基本指法太差，无法领会更高深的大天龙指。\n"}
+      true ->
+        :ok
+    end
+  end
+
+  defp max_neili_of(%{meta: %{vitals: %{max_neili: max_neili}}}) when is_integer(max_neili),
+    do: max_neili
+  defp max_neili_of(_), do: nil
+
 end

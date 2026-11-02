@@ -6,9 +6,11 @@ defmodule Kantele.Combat.Skills.XixingDafa do
   LPC `valid_force` 恒真。
 
   差异（TODO(migrate)）：
-  - LPC `valid_learn` 已迁移：con>=30 / force>=100 /「未获 `can_learn/xixing-dafa/ren` 且
-    max_neili>0 且 10<=等级<200」拒（散功诀窍门，走 `Skill.mark?/2` 读 `meta.marks`）；
-  - LPC 首门「性格为『光明磊落』则拒」为 alignment 门，本仓未建模，**未迁移**；
+  - LPC `valid_learn` 已迁移：性格为「光明磊落」则拒 / con>=30 / force>=100 /
+    「未获 `can_learn/xixing-dafa/ren` 且 max_neili>0 且 10<=等级<200」拒
+    （散功诀窍门，走 `Skill.mark?/2` 读 `meta.marks`）；
+  - LPC 首门「性格为『光明磊落』则拒」现由 `meta.character`（LPC `query("character")`，
+    见 `Kantele.Character.PlayerMeta`）承载，**已迁移**；
   - `valid_damage` 被动（吸化对方内力）未接入；
   - `suck`（吸功）实现如下，含目标 max_neili 扣减与自身 max_neili 增加；
   - `sangong`（散功）实现如下，扣除自身 max_neili。
@@ -60,6 +62,10 @@ defmodule Kantele.Combat.Skills.XixingDafa do
     lvl = Stats.skill(stats, id())
 
     cond do
+      # 源：`query("character") == "光明磊落"`
+      personality_of(character) == "光明磊落" ->
+        {:error, "你心中暗道：这种害人的武功，我学它作甚？\n"}
+
       Stats.con(stats) < 30 ->
         {:error, "你试着按照法门运转了一下内息，忽然觉得心火如焚，丹田却是一阵冰凉！\n"}
 
@@ -80,6 +86,10 @@ defmodule Kantele.Combat.Skills.XixingDafa do
     do: max_neili
 
   defp max_neili_of(_), do: nil
+
+  # LPC `me->query("character")`：天性/人格（PlayerMeta.character；未设 → nil，等价 LPC 0）
+  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
+  defp personality_of(_character), do: nil
 
   @doc "只能学(learn)或从运用(exert)中增加熟练度（LPC practice_skill 返回失败）"
   @impl true
