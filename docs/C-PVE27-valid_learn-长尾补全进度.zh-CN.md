@@ -159,13 +159,17 @@ LPC 全库 `set("character", …)` 只有两处：
 | `hunyuan-yiqi` | LPC `query("guilty")` 未建模 |
 | `qiankun-danuoyi` | LPC `query_condition()` 未建模 |
 
-### 6.2 若要放开 4 个「包含门」技能
+### 6.2 4 个「包含门」技能：已可通过转世解锁 ✅
 
-`xiantian-gong` / `daojian-guizhen` / `sanwu-shou` / `wudoumi-shengong` 当前对全体玩家不可学（`meta.character` = nil → 包含门拒）。这是 LPC 原设计（转世专属），但要真正可玩需两步：
+`xiantian-gong` / `daojian-guizhen` / `sanwu-shou` / `wudoumi-shengong` 对**普通玩家**仍不可学（LPC 原设计如此——转世专属），但**转世系统已落地**（见 `EX-注册与转世迁移计划.zh-CN.md` Phase 2），此前 §6.2 依赖的两步均已具备：
 
-1. 实现**玩家侧人格赋值入口**（LPC 对应 `adm/daemons/updated.c:515` 转世设「国士无双」）
-2. 让 `meta.character` **落盘**（当前 moduledoc 标注「运行态，不落盘」）
+1. ✅ **玩家侧人格赋值入口**：`lib/kantele/character/reborn.ex` 的 `set_reborn_identity` 在转世时设 `meta.character = "国士无双"`，与 LPC `updated.c:515` 一致。
+2. ✅ **`meta.character` 落盘**：Phase 0.2.1 新增 `character_metadata.personality` 列 + `Records.save/apply` 补写，`meta.character` 重登后不丢失。
+
+> 验证：`reborn_includes_gate_test.exs` 6 例确认——转世前 4 门全拒、转世后（`character="国士无双"`）全放行；普通玩家恒被性格门拦。详见迁移计划附录 B「4 包含门技能」一行。
 
 ### 6.3 结论
 
-> **C-PVE27 `valid_learn` 长尾补全结案。** 可建模门槛已全部 LPC 保真迁移；余项均依赖尚未建模的字段或尚未实现的转世系统。
+> **C-PVE27 `valid_learn` 长尾补全结案。** 可建模门槛已全部 LPC 保真迁移；余项（§6.1 的 `hunyuan-yiqi` / `qiankun-danuoyi`）仅依赖尚未建模的 `guilty` / `query_condition` 字段。
+>
+> **转世打通后的连带收益**：4 个「包含门」技能（`xiantian-gong` / `daojian-guizhen` / `sanwu-shou` / `wudoumi-shengong`）已由「不可学」变为「转世后可学」——见 §6.2。转世系统见 `EX-注册与转世迁移计划.zh-CN.md`。

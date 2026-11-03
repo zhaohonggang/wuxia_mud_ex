@@ -5,6 +5,8 @@
 > **出生地（startroom）** 的具体赋值点，为 Elixir 端口径对照提供依据。
 >
 > 源码根：`/c/files/git/mud/`（LPC/MudOS）
+>
+> **迁移状态**：✅ 已迁移至 ExVenture/Kantele（见 `EX-注册与转世迁移计划.zh-CN.md`，Phase 0–3 全部完成；LPC 行为逐项对照见该计划附录 B）。
 
 ---
 

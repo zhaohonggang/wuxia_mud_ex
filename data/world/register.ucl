@@ -226,6 +226,8 @@ item_desc = {
     { id = items.cloth2.id }
   ]
 
+  ask_handler = "Kantele.NPC.Dizangwang"
+
 
   greetings = [
     { line = "{npc}一脚把{name}踢得无影无踪。  {expr}" },

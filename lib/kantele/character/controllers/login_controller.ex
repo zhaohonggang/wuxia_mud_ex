@@ -10,6 +10,7 @@ defmodule Kantele.Character.LoginController do
   alias Kantele.Character.CommandController
   alias Kantele.Character.LoginView
   alias Kantele.Character.MoveEvent
+  alias Kantele.Character.SetupController
   alias Kantele.Character.MoveView
   alias Kantele.Character.QuitView
   alias Kantele.Character.TellEvent
@@ -102,23 +103,35 @@ defmodule Kantele.Character.LoginController do
       name
       |> build_character()
       |> Kantele.Character.Records.apply_to_character(loaded, wiz_level)
+      |> place_on_login()
 
     # 启动自然回复循环（foreman 自投递）
     Kantele.Character.CombatEvent.kick_regen()
 
-    conn
-    |> put_session(:login_state, :authenticated)
-    |> put_character(character)
-    |> render(CharacterView, "vitals", %{})
-    |> move(:to, character.room_id, MoveView, "enter", %{})
-    |> subscribe("rooms:#{character.room_id}", [], &MoveEvent.subscribe_error/2)
-    |> register_and_subscribe_character_channel(character)
-    |> subscribe("general", [], &ChannelEvent.subscribe_error/2)
-    |> subscribe("rumor", [], &ChannelEvent.subscribe_error/2)
-    |> render(LoginView, "enter-world", %{})
-    |> put_controller(CommandController)
-    |> event("room/look", %{})
-    |> event("inventory/list", %{})
+    conn =
+      conn
+      |> put_session(:login_state, :authenticated)
+      |> put_character(character)
+      |> render(CharacterView, "vitals", %{})
+      |> move(:to, character.room_id, MoveView, "enter", %{})
+      |> subscribe("rooms:#{character.room_id}", [], &MoveEvent.subscribe_error/2)
+      |> register_and_subscribe_character_channel(character)
+      |> subscribe("general", [], &ChannelEvent.subscribe_error/2)
+      |> subscribe("rumor", [], &ChannelEvent.subscribe_error/2)
+
+    # 新玩家（尚未完成注册问答）：转入 SetupController 在阎罗殿走
+    # 性别→洗点→投胎→赠特技 的问答，完成后其内部再转交 CommandController。
+    # 老玩家（setup_done=true）直接进游戏。
+    if character.meta.setup_done do
+      conn
+      |> render(LoginView, "enter-world", %{})
+      |> put_controller(CommandController)
+      |> event("room/look", %{})
+      |> event("inventory/list", %{})
+    else
+      conn
+      |> put_controller(SetupController)
+    end
   end
 
   defp process_character_token(conn, token) do
@@ -154,9 +167,31 @@ defmodule Kantele.Character.LoginController do
     |> prompt(LoginView, "name", %{})
   end
 
+  # 登录落点（EX-注册与转世迁移计划 Phase 0.3）：
+  #
+  # - 已完成注册（`meta.setup_done == true`）的玩家 → 回出生地 `env[:startroom]`；
+  #   若该玩家无出生地记录（历史老玩家），沿用 build_character 的全局起始房。
+  # - 新玩家（尚未完成注册问答，`setup_done != true`）→ 进入阎罗殿（BORN_ROOM）
+  #   进行「洗点(washto)」与「投胎(born)」问答，与 LPC 玩家体验一致。
+  #
+  # 注：`setup_done` 为 DB 列、迁移时回填既有玩家为 true，故既不会误伤老玩家，
+  # 也不会让新玩家跳过问答直接进游戏。
+  defp place_on_login(character) do
+    env = character.meta.env || %{}
+    startroom = Map.get(env, :startroom)
+
+    room_id =
+      if character.meta.setup_done do
+        startroom || character.room_id
+      else
+        Kantele.World.born_room_id()
+      end
+
+    %{character | room_id: room_id}
+  end
+
   defp build_character(name) do
     starting_room_id = Kantele.World.start_room_id()
-
     %Character{
       id: Character.generate_id(),
       pid: self(),

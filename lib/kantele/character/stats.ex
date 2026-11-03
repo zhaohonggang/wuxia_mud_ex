@@ -37,7 +37,9 @@ defmodule Kantele.Character.Stats do
              :gongxian,
              :shen,
              :tattoo,
-             :reborn
+             :reborn,
+             :per,
+             :kar
            ]}
 
   defstruct [
@@ -57,7 +59,9 @@ defmodule Kantele.Character.Stats do
     :gongxian,
     :shen,
     :tattoo,
-    :reborn
+    :reborn,
+    :per,
+    :kar
   ]
 
   def new() do
@@ -79,7 +83,11 @@ defmodule Kantele.Character.Stats do
       performs: MapSet.new(),
       prepared: %{},
       tattoo: %{str: 0, int: 0, con: 0, dex: 0, per: 0},
-      reborn: %{str: 0, int: 0, con: 0, dex: 0}
+      reborn: %{str: 0, int: 0, con: 0, dex: 0},
+      # 真实 per/kar 由新玩家「阎罗殿洗点」(washto) 覆写；这里只是传承
+      # LPC logind.c 的临时初值（per=20, kar 未设→0），保证 struct 永不为 nil。
+      per: 20,
+      kar: 0
     }
   end
 
@@ -381,7 +389,7 @@ defmodule Kantele.Character.Stats do
   年龄惩罚：>30 起每 10 年减 1，上限 6。
   """
   def query_per(%__MODULE__{} = stats, temp_applies \\ %{}, age \\ 30) do
-    base = Map.get(stats, :per) || 20
+    base = stats.per || 20
     tattoo = get_in(stats.tattoo || %{}, [:per]) || 0
     temp = Map.get(temp_applies, :per) || 0
 
@@ -398,6 +406,19 @@ defmodule Kantele.Character.Stats do
       end
 
     per - age_penalty
+  end
+
+  @doc """
+  查询派生福缘（query_kar）：base + temp_apply
+
+  福缘无纹身/转世/技能加成（LPC 仅 `me->query("kar")` 取基础值），故只叠加
+  临时加成（来自 combat.temp 的临时 buff）。
+  """
+  def query_kar(%__MODULE__{} = stats, temp_applies \\ %{}) do
+    base = stats.kar || 0
+    temp = Map.get(temp_applies, :kar) || 0
+
+    base + temp
   end
 
   @doc """

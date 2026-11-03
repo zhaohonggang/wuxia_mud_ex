@@ -52,6 +52,18 @@ defmodule ExVenture.Characters.Metadata do
     field(:jifen, :integer, default: 0)
     # marks：剧情/任务持久标记（LPC `set("marks/<key>", 1)`），如 %{"qianlong" => 1}
     field(:marks, :map, default: %{})
+    # 注册/转世迁移承载字段（EX-注册与转世迁移计划.zh-CN.md Phase 0.2.1）：
+    # env: LPC `set()` 属性统一仓库（gender/born/surname/registered/age/reborn
+    #     计数/地府三关标记/startroom 等），落盘后重登不丢
+    field(:env, :map, default: %{})
+    # personality: 人格/天性（如 "国士无双"，仅转世时由 updated.c 设定；普通玩家恒 nil）。
+    # 列名不能用 :character——schema 顶部 belongs_to(:character, Character) 已占用该名。
+    field(:personality, :string)
+    # per/kar: 容貌/福缘，由新玩家「阎罗殿洗点」(washto) 分配，随机 5+random(26)
+    field(:per, :integer, default: 20)
+    field(:kar, :integer, default: 0)
+    # setup_done: 注册问答是否完成（首登判定）；迁移前既有行回填 true
+    field(:setup_done, :boolean, default: false)
 
     timestamps()
   end
@@ -94,7 +106,12 @@ defmodule ExVenture.Characters.Metadata do
       :schedule,
       :tianshu_books,
       :jifen,
-      :marks
+      :marks,
+      :env,
+      :personality,
+      :per,
+      :kar,
+      :setup_done
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
@@ -183,7 +200,19 @@ defmodule Kantele.Character.Records do
           schedule: meta.schedule,
           tianshu_books: meta.tianshu_books || %{},
           jifen: meta.jifen || 0,
-          marks: meta.marks || %{}
+          marks: meta.marks || %{},
+          # 注册/转世迁移承载字段（Phase 0.2.1）：
+          # - per/kar 取 Stats 真实值（由 washto 分配）
+          # - env 整表落盘（gender/born/surname/registered/reborn 计数/三关标记/startroom）
+          # - character 人格（转世设"国士无双"，普通玩家恒 nil）
+          # - gender 回写 env.gender 的当前值，闭合读/写环（既有缺口：save 之前没写 gender）
+          per: meta.stats.per,
+          kar: meta.stats.kar,
+          env: meta.env,
+          personality: meta.character,
+          gender: Map.get(meta.env, :gender),
+          # setup_done: 注册问答完成标志（首登判定）；新玩家问答结束置 true
+          setup_done: meta.setup_done
         })
 
       case Repo.insert_or_update(metadata) do
@@ -297,7 +326,10 @@ defmodule Kantele.Character.Records do
       shen: metadata.shen || 0,
       skills: skills,
       mapped: atomize_keys(metadata.mapped),
-      performs: MapSet.new(metadata.performs)
+      performs: MapSet.new(metadata.performs),
+      # per/kar 由存档恢复；旧档缺列时退化为缺省（per=20, kar=0）
+      per: metadata.per || 20,
+      kar: metadata.kar || 0
     }
 
     vitals =
@@ -317,15 +349,26 @@ defmodule Kantele.Character.Records do
       |> Map.put(:stats, stats)
       |> Map.put(:vitals, vitals)
       |> Map.put(:combat, combat)
-      # gender 走 meta.env —— LPC 的 set() 属性在本框架里对应 meta.env，
-      # `ExitVetoContext.query("gender")` 就是从那儿读的。
+      # env 整表恢复（注册/转世迁移核心）：以存档 env 为准（落盘的 LPC `set()`
+      # 属性：gender/born/surname/registered/reborn 计数/三关标记/startroom…），
+      # 兜底补 gender（缺省 "男性"）。旧档 metadata.env 为 nil → 视如 %{}。
       #
       # key 必须是**原子** :gender：`query_prop/2` 走
       # `TreeMap.query(env, path_parts(key))`，而 `path_parts/1` 做的是
       # `String.to_atom/1`。用字符串 key 的话 query 永远读不到
       # （顺带发现：`set` 命令写的是字符串 key，所以 `set gender 男性`
       #   与 `query("gender")` 本来就接不上，那是另一个既有问题）。
-      |> Map.update(:env, %{}, &Map.put_new(&1, :gender, metadata.gender || "男性"))
+      |> Map.update(:env, %{}, fn existing ->
+        Map.merge(existing || %{}, atomize_env_keys(metadata.env))
+        |> Map.put_new(:gender, metadata.gender || "男性")
+        # 镜像 setup_done 至 env，供任何 query("setup_done") 消费者读取（LPC 兼容）
+        |> Map.put(:setup_done, metadata.setup_done)
+      end)
+      # character 人格：转世设 "国士无双"，普通玩家恒 nil（与 LPC 一致）。
+      # 注意此处从 DB 列 personality 读回（schema 不能用 :character 作列名）。
+      |> Map.put(:character, metadata.personality)
+      # setup_done：注册问答完成标志（首登判定，决定登录落点/控制器）
+      |> Map.put(:setup_done, metadata.setup_done)
       |> Map.put(:coins, max(metadata.coins || 0, 0))
       |> Map.put(:bank_coins, metadata.bank_coins || 0)
       |> Map.put(:family, restore_family(metadata.family))
@@ -344,6 +387,20 @@ defmodule Kantele.Character.Records do
       |> Map.put(:marks, metadata.marks || %{})
 
     character = %{character | meta: meta, inventory: inventory}
+
+    # 回灌「与生俱来」特技（注册 born_player 授予，经 env[:special_skills] 落盘）：
+    # character.attributes 当前不进 DB 列，故用 env 镜像持久化后在登录时恢复，
+    # 避免重登即丢（与 SpecialSkills 宿主形状一致：attributes["special_skills"][id]=true）。
+    specials = Map.get(character.meta.env, :special_skills, []) || []
+    character =
+      if specials == [] do
+        character
+      else
+        existing = Map.get(character.attributes, "special_skills", %{})
+        merged = Enum.reduce(specials, existing, fn id, acc -> Map.put(acc, id, true) end)
+        %{character | attributes: Map.put(character.attributes, "special_skills", merged)}
+      end
+
     %{character | attributes: Map.put(character.attributes, "wiz_level", wiz_level)}
   end
 
@@ -544,6 +601,19 @@ defmodule Kantele.Character.Records do
   defp atomize_keys(map) do
     Enum.into(map, %{}, fn {key, value} ->
       {key, value}
+    end)
+  end
+
+  # env 从 DB(jsonb) 读出时键是字符串，而运行态 meta.env 用原子键
+  # （`meta.env[:gender]`/`[:startroom]`/`[:setup_done]`），故合并前把顶层键
+  # 统一为原子，闭合读/写环。env 键由本框架指令写入（非玩家任意输入），
+  # 用 String.to_atom 风险可控。
+  defp atomize_env_keys(nil), do: %{}
+
+  defp atomize_env_keys(env) when is_map(env) do
+    Enum.into(env, %{}, fn
+      {key, value} when is_binary(key) -> {String.to_atom(key), value}
+      {key, value} -> {key, value}
     end)
   end
 end

@@ -2561,6 +2561,8 @@ chats = [
     { key = "麒麟靴" value = " inquire about xue (unimplemented)" }
   ]
 
+  ask_handler = "Kantele.NPC.Dizangwang"
+
   skills = [
     { skill = "unarmed" level = 800 },
     { skill = "finger" level = 800 },

@@ -8,10 +8,6 @@ defmodule Kantele.Character.ListCommand do
   use Kalevala.Character.Command
 
   def run(conn, params) do
-    require Logger
-
-    Logger.debug("[SHOPDIAG-CMD] list name=#{inspect(params["name"])}")
-
     conn
     |> event("shop/list", %{name: params["name"]})
     |> assign(:prompt, false)
@@ -54,20 +50,129 @@ defmodule Kantele.Character.AskCommand do
   @moduledoc """
   问询：`ask <人> about <关键词>` / 中文 `问 <人> <关键词>`
 
-  关键词包含匹配 NPC 的 inquiries 表，命中即回话。
+  若目标 NPC 配置了 `meta.ask_handler`（如地藏王的转世），优先分发到
+  `Kantele.NPC.AskHandler` 模块执行 `check`/`execute`（对应 LPC `ask/1` 四前置链等
+  复杂交互）；否则落回 `characters/ask` 事件流（NpcAskEvent 的 inquiries/quest/turn_in 表）。
   """
 
   use Kalevala.Character.Command
 
-  def run(conn, params) do
-    keyword =
-      params["keyword"]
-      |> to_string()
-      |> strip_about()
+  alias Kantele.Character.CommandView
+  alias Kantele.World.Room
 
+  def run(conn, %{"name" => name, "keyword" => keyword_raw}) do
+    keyword = keyword_raw |> to_string() |> strip_about()
+
+    case find_ask_npc(conn, name) do
+      {:ok, npc} ->
+        case npc.meta.ask_handler do
+          nil ->
+            # 无 AskHandler：落回事件流（inquiries/quest/turn_in 等）
+            conn
+            |> event("characters/ask", %{name: name, keyword: keyword})
+            |> assign(:prompt, false)
+
+          handler when is_binary(handler) ->
+            dispatch_ask_handler(conn, npc, handler, keyword)
+        end
+
+      :error ->
+        conn
+        |> render(CommandView, "text", %{text: "这里没有这样的人。\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  def run(conn, _params), do: usage(conn)
+
+  defp find_ask_npc(conn, name) do
+    room =
+      Map.get(conn, :room) ||
+        conn.private.room ||
+        Room.snapshot(conn.character.room_id)
+
+    characters = Map.get(room.private || %{}, :characters, [])
+
+    Enum.find_value(characters, fn char ->
+      if char.name == name or name in (char.meta.aliases || []) do
+        {:ok, char}
+      else
+        :error
+      end
+    end) || :error
+  end
+
+  defp dispatch_ask_handler(conn, npc, handler_module_str, keyword) do
+    # 配置中的 ask_handler 形如 "Kantele.NPC.Dizangwang"（不含 Elixir. 前缀），
+    # 而 Elixir 模块原子的标准形式带 "Elixir." 前缀，故补齐后再转 atom，
+    # 否则 String.to_atom 生成的是不带 Elixir. 前缀的「另一个」原子，lookup 必失败。
+    module =
+      if String.starts_with?(handler_module_str, "Elixir.") do
+        String.to_atom(handler_module_str)
+      else
+        String.to_atom("Elixir." <> handler_module_str)
+      end
+
+    # 变量模块名调用不会触发自动加载（仅字面模块名会），故显式 ensure_loaded；
+    # 模块不可用时兜底，避免命令崩溃。
+    case Code.ensure_loaded(module) do
+      {:module, ^module} ->
+        dispatch_ask_specs(conn, npc, module, keyword)
+
+      {:error, _} ->
+        conn
+        |> render(CommandView, "text", %{text: "这个人暂时无法回答你的问题。\n"})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  defp dispatch_ask_specs(conn, npc, module, keyword) do
+    case module.check(conn.character, npc, keyword) do
+      :ok ->
+        case module.execute(conn.character, npc, keyword) do
+          {:ok, new_character} ->
+            conn
+            |> put_character(new_character)
+            |> render(
+              CommandView,
+              "text",
+              %{text: "你向#{npc.name}请教#{keyword}。\n"}
+            )
+            |> prompt(CommandView, "prompt", %{})
+
+          {:error, msg} ->
+            conn
+            |> render(CommandView, "text", %{text: msg})
+            |> prompt(CommandView, "prompt", %{})
+
+          :ok ->
+            # 兼容旧式返回 :ok 的 AskHandler（不更新角色）
+            conn
+            |> render(
+              CommandView,
+              "text",
+              %{text: "你向#{npc.name}请教#{keyword}。\n"}
+            )
+            |> prompt(CommandView, "prompt", %{})
+        end
+
+      {:error, msg} ->
+        conn
+        |> render(CommandView, "text", %{text: msg})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  rescue
+    e in [ArgumentError, UndefinedFunctionError] ->
+      # ask_handler 回调内部异常（如参数不匹配）时的兜底，避免命令崩溃
+      conn
+      |> render(CommandView, "text", %{text: "这个人暂时无法回答你的问题。\n"})
+      |> prompt(CommandView, "prompt", %{})
+  end
+
+  defp usage(conn) do
     conn
-    |> event("characters/ask", %{name: params["name"], keyword: keyword})
-    |> assign(:prompt, false)
+    |> render(CommandView, "text", %{text: "指令格式：ask <人> about <关键词>\n"})
+    |> prompt(CommandView, "prompt", %{})
   end
 
   defp strip_about("about " <> rest), do: String.trim(rest)

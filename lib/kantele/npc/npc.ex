@@ -7,29 +7,6 @@ defmodule Kantele.NPC do
   - on_unconcious：不可击倒钩子
   """
 
-  defmodule Kantele.NPC.AskHandler do
-    @moduledoc """
-    问询行为契约（对应 LPC NPC 的 ask/1 与 ask 收徒/授技/给物链）
-
-    实现模块需定义：
-      @ask_specs %{
-        "keyword" => %{
-          check: fn(asker, npc) -> :ok | {:error, msg} end,
-          execute: fn(asker, npc) -> :ok | {:error, msg} end,
-          effects: [{:give_item, item_id}, {:improve_skill, skill, lvl}, ...]
-        }
-      }
-    """
-
-    @callback ask_specs() :: map()
-
-    @callback check(map(), map(), String.t()) :: :ok | {:error, String.t()}
-
-    @callback execute(map(), map(), String.t()) :: :ok | {:error, String.t()}
-
-    @callback effects(map(), map(), String.t()) :: [term()]
-  end
-
   defmodule Kantele.NPC.CombatAI do
     @moduledoc """
     战斗 AI 决策（对应 LPC chat_chance_combat/chat_msg_combat + Combat.AI.decide_action）

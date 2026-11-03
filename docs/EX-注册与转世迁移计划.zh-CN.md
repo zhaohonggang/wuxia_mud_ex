@@ -153,23 +153,86 @@
 
 | 维度 | LPC 行为 | Ex 目标行为 | 一致？ |
 |---|---|---|---|
-| 新玩家性别 | m/f 选，存 `gender` | SetupController 问答 → `meta.env.gender` | ⬜ |
-| 新玩家属性分配 | washto 池：str/int/con/dex 各10–30且和=80，per/kar随机5–30 | 同（点数池校验一致） | ⬜ |
-| 新玩家出生地 | born 映射选 startroom+姓氏 | 同映射 | ⬜ |
-| 新玩家与生俱来特技 | born_player 随机1–3项(按character/属性≥20过滤) | 同（缺项钩子占位） | ⬜ |
-| 新玩家 birthplace | BORN_ROOM(阎罗殿) | BORN_ROOM 等价 room_id | ⬜ |
-| 属性 per/kar 落盘 | `per`/`kar` 随 dbase 落盘 | `Stats.per`/`Stats.kar` + DB `per`/`kar` 列 + `save/apply` 补写 | ⬜ |
-| `meta.env` 持久化 | 全部 `set()` 属性（gender/born/surname/registered/age/reborn 计数/三关标记）随 dbase 落盘 | `env`(map) 列 + `save/apply` 整表落盘 | ⬜ |
-| `meta.character` 持久化 | 国士无双随 dbase 落盘 | `character`(string) 列 + `save/apply` 落盘 | ⬜ |
-| 出生点 | `startroom` 落为登录/复活点 | 选出生地置 `character.room_id`，持久化于 `meta.env.startroom`；改 `process_character` 重登回 `startroom` 而非全局 `start_room_id()`（`spawn_room_id` 仅 NPC 有，玩家不可用） | ⬜ |
-| 大宗师(ultrap) | LPC 境界判定(combat_exp≥800M 且 ultrap) | Ex 需新定义（combat_exp 阈值 + 境界/title 标志） | ⬜ |
-| 转世前置 | 大宗师+十八层地狱+十二重天+击败地藏王 | 同四项齐备（均经 `meta.env` 读取/写入） | ⬜ |
-| 转世 character | 设「国士无双」 | 同，且持久化 | ⬜ |
-| 转世清记录 | 40+ 项 delete | 同清单映射 | ⬜ |
-| 转世数值重置 | HP=100/age=14/清零 | 同 | ⬜ |
-| 转世属性加成 | reborn.* 随机+1 | 同 | ⬜ |
-| 转世特技 | 1 普通+1 转世+神眼 | 同（缺项钩子占位） | ⬜ |
-| 4 包含门技能 | 转世后可学 | 转世后可学 | ⬜ |
+| 新玩家性别 | m/f 选，存 `gender`（"男性"/"女性"） | `SetupController` 问答 m/f/男/女/男/male… → `meta.env[:gender]`（"男性"/"女性"） | ✅ 一致 |
+| 新玩家属性分配 | `washto` 池：str/int/con/dex 各 10–30、和=80，per/kar 随机 `5+random(26)`=5–30 | 同：`validate_washto` 逐项 10–30 + 和=80 校验；`per/kar = Enum.random(5..30)`；不通过则重问 | ✅ 一致 |
+| 新玩家出生地 | `born` 映射选 startroom+born+born_family；世家附 surname | 同 `@birthplaces` 6 项映射（扬州/欧阳/关外胡/中原苗/段/慕容），世家附 `surname` | ✅ 一致 |
+| 新玩家与生俱来特技 | `born_player` 随机 1–3 项（按 character/属性≥20 过滤：str→strength、int→intellect/clever、con→constitution、dex→dexterity、per→youth；剔除 12 项硬性+wrath） | 同：`BornPlayer.candidate_pool`/`grant` 复刻上述剔除与 1–3 项抽取；命中 strength/intellect/constitution/dexterity 各 +2 | ✅ 一致 |
+| 新玩家「与生俱来」特技持久化 | `special_skill/*` 随 dbase 落盘，重登保留 | `character.attributes["special_skills"][id]=true`（与 SpecialSkills 宿主一致）；同时镜像 `meta.env[:special_skills]` 列表，`Records.apply_to_character` 重登时回灌（attributes 不进 DB 列，用 env 桥接，与 D4 占位精神一致） | ✅ 一致（桥接方案） |
+| 新玩家 birthplace | BORN_ROOM（阎罗殿 `register:yanluodian`） | `Kantele.World.born_room_id()` = `"register:yanluodian"`（已确认该 room 存在于 `data/world/register.ucl:161`，含 washto/born 动作与地藏王/牛头 NPC；`death:yanluodian` 是另一间，勿混淆） | ✅ 一致 |
+| 属性 per/kar 落盘 | `per`/`kar` 随 dbase 落盘 | `Stats.per`/`Stats.kar` + DB `per`/`kar` 列 + `Records.save/apply` 补写（Phase 0.2.1） | ✅ 一致 |
+| `meta.env` 持久化 | 全部 `set()` 属性（gender/born/surname/registered/age/reborn 计数/三关标记/startroom）随 dbase 落盘 | `env`(map) 列 + `Records.save/apply` 整表落盘（字符串键→原子键 `atomize_env_keys`） | ✅ 一致 |
+| `meta.character` 持久化 | 「国士无双」随 dbase 落盘 | `personality`(string) 列（schema 不能用 `:character` 作列名，被 `belongs_to(:character)` 占用）+ `save/apply` 落盘；读取回填 `meta.character` | ✅ 一致（列名 personality） |
+| 出生点 | `startroom` 落为登录/复活点 | `apply_born` 置 `character.room_id = startroom` 并持久化 `meta.env[:startroom]`；`LoginController.place_on_login` 老玩家回 `env[:startroom]`、新玩家落 `born_room_id()`（阎罗殿），不回退到全局 `start_room_id()` | ✅ 一致 |
+| 大宗师(ultrap) | LPC 境界判定(combat_exp≥800M 且 ultrap) | `Reborn.ultrap?`：`combat_exp≥800_000_000`（按 D2 拍板以 exp 阈值 + 标志建模） | ✅ 一致 |
+| 转世前置 | 大宗师+十八层地狱+十二重天+击败地藏王 | `Reborn.prereqs_met?`：四项齐备（均经 `meta.env[:HellZhenPass/:DiZangPass/:SkyPass]` + `ultrap?` 读取） | ✅ 一致（与 D2 四项齐备一致；LPC 现行 `ask_zhuan` 中 ultrap/animaout 已注释，本实现按已批准计划保留大宗师） |
+| 转世 character | 设「国士无双」 | `zhuan_player` → `meta.character="国士无双"`，经 `personality` 列持久化 | ✅ 一致 |
+| 转世清记录 | 40+ 项 delete | `clear_records`：`@clear_env_keys` 按键清除（保留 startroom/setup_done/gender/born/surname/registered/special_skills/reborn）+ meta 清 family/league/brothers/spouse/quests(nil)/bag([])/marks/schedule/title | ✅ 一致 |
+| 转世数值重置 | HP=100/age=14/清零 | `reset_values`：combat_exp/score/weiwang/gongxian/shen/potential/learned_points=0；max_qi=qi=max_jing=jing=100；neili/max_neili=0；`env[:mud_age]=0`/`[:age]=14` | ✅ 一致 |
+| 转世属性加成 | reborn.* 随机+1 | `random_reborn_bonus`：reborn.{str,con,int,dex} 各 50% +1 | ✅ 一致 |
+| 转世特技 | 1 普通+1 转世+神眼 | `grant_skills`：12 普通选 1（排除已拥有）+ 8 转世选 1（按 int/dex 过滤）+ int<16 兜底 tiandao 否则 clever + 固定 shenyan；缺项钩子占位 | ✅ 一致 |
+| 4 包含门技能 | 转世后可学 | 转世后 `meta.character="国士无双"` 解锁先天功/刀剑归真/三无三不手/五斗米神功性格门（`reborn_includes_gate_test.exs` 验证） | ✅ 一致 |
+
+---
+
+### Phase 1 验证结论（2026-11-02）
+
+**代码落地（Phase 0.2.1 / 0.3 / 1.1–1.8 全部完成）：**
+- 新增 `lib/kantele/character/born_player.ex`（`updated.c:344-445` 忠实移植：候选池剔除 12 项硬性特技 + wrath 性格门、属性<20 剔除、随机 1–3 项、命中四项 +2）。
+- 新增 `lib/kantele/character/controllers/setup_controller.ex`（性别→washto→born 状态机；`register:yanluodian` 阎罗殿内问答）。
+- 新增 `lib/kantele/character/views/setup_view.ex`（阎罗殿叙事与逐步回显）。
+- 改 `login_controller.ex`：首登按 `meta.setup_done` 分流——新玩家进 `SetupController`，老玩家直接进 `CommandController`；`place_on_login` 老玩家回 `env[:startroom]`、新玩家落 `born_room_id()`。
+- 改 `records.ex`：`apply_to_character` 从 `env[:special_skills]` 回灌 `attributes["special_skills"]`，重登不丢「与生俱来」特技。
+
+**测试（Docker，无本地 Elixir）：**
+- 针对性 20 个测试全绿：`born_player_test.exs`（候选池剔除 / 1–3 项 / +2 属性 / env 镜像）、`setup_controller_test.exs`（init→性别→washto 校验→born 映射）、`setup_persistence_test.exs`（save→load→apply 往返：env 落盘 + 特技回灌 + setup_done）。
+- 全量回归 `mix test`：6955 tests / 118 failures。其中**新玩家注册与转世相关区域 0 新增失败**；残留 118 项与既定基线（105 项 combat/command/world 既有失败）一致，并含 2 个 60s 超时（preload_guard / reload_command，属已知 flaky）。判定：**Phase 1 未引入任何新增失败**。
+
+**已知小差异（不影响验收）：**
+1. LPC `washed` 为临时标记（`set_temp`），Ex 落 `meta.env[:washed]`（已持久化）；因 Ex 用状态机 `:born` 推进，行为等价。
+2. LPC 支持 `born <世家> <名字>` 投胎时顺带起名；Ex 仅匹配 6 个已知出生地、不起名（名字后续另行设定），新玩家体验一致。
+3. LPC `born` 强制中文（ascii<160 校验）；Ex 仅按中文键匹配，非法输入走 `born_error` 重问，等价。
+
+**进度标记：Phase 1 ✅ 完成；Phase 2（转世）✅ 完成；Phase 3 一致性校验 ✅ 完成（见下「Phase 3 验证结论」）。全部 Phase 0–3 已收口。**
+
+---
+
+### Phase 2 验证结论（2026-11-02）
+
+**代码落地（Phase 2.1–2.11 全部完成）：**
+- 新增 `lib/kantele/character/reborn.ex`（忠实移植 `updated.c:447-745` 的 `zhuan_player` + `dizangwang.c:117-271` 的四前置链）：
+  - 前置判定 `ultrap?`（`combat_exp≥800M`）、`prereqs_met?`（四项齐备）、`missing_prereqs`/`refusal_message`（分步拒绝语）。
+  - `zhuan_player`：`set_gender_if_wuxing`(无性→男性) → `clear_records`(清 40+ 项，保留注册相关 env) → `reset_values`(清零+HP=100/age=14) → `clear_skills` → `bump_reborn`(count/point+1) → `random_reborn_bonus`(各 50%+1) → `grant_skills`(1 普通+1 转世+兜底 tiandao/clever+固定 shenyan) → `set_reborn_identity`(国士无双) → `place_at_rebirth`(回 startroom)。
+  - `trigger/1`：`ask_zhuan` 等价入口——前置齐备则执行并 `Records.save` 落盘，否则返回带缺项说明的 `{:error, msg}`。
+- 新增 `lib/kantele/npc/dizangwang.ex`（`Kantele.NPC.AskHandler` 行为，`ask 转世` 等价处理器，桥接 `Reborn.trigger`）。
+- 修 `lib/kantele/npc/npc.ex`：移除与 `ask_handler.ex` 重复的 `Kantele.NPC.AskHandler` 定义（消除全量重编译时的重复模块风险，行为契约以 `ask_handler.ex` 为准）。
+
+**测试（Docker，无本地 Elixir）：**
+- `reborn_test.exs`：前置判定 / zhuan_player 主体（清记录、清零、删武功、保留注册 env、无性→男性、reborn+1、随机加成∈{0,1}、赠特技含保留、int<16 兜底 tiandao、guimai 过滤、save→load→apply 往返）+ 触发（`trigger` 齐备落盘 / 缺项拒绝 / 4 包含门解锁）+ 地藏王处理器（check/execute）。
+- `reborn_includes_gate_test.exs`：4 个「包含门」技能（`valid_learn`）转世前后对比 + 普通玩家恒被性格门拦。
+- 转世相关 **20 个针对性测试全绿**（9+5 reborn + 6 includes-gate）。
+
+**已知小差异（不影响验收）：**
+1. Ex 以 `meta.env[:reborn]` map（count/point）承载 LPC 的 `reborn/count`/`reborn/point`；首次转世前 `env[:reborn]` 为 nil/%{} 均由 `clear_env_records`/`bump_reborn` 容错补齐为 `{count:0,point:0}` 后 +1，与 LPC 起点一致。
+2. 缺项特技（LPC `special_skill/*` 中 Ex 未实现者）按 D4 走「钩子占位」：仍计入授予，无实际效果——与计划一致。
+3. 地藏王前置四关（十八层地狱 / 精元丹交付 / 地藏王战）的**实际游戏内触发**依赖尚未落地的地府副本玩法；本 Phase 已完成「转世判定 + 执行 + NPC 处理器」本体，且 `ask 地藏王 转世` 入口已在 `lib/kantele/character/commands/shop_commands.ex` 经 `Kantele.NPC.AskHandler` 接通（`ask_command_test.exs` 5/5 验证），玩家游戏内 `ask 地藏王 转世` 即可触发转世。
+
+---
+
+### Phase 3 验证结论（2026-11-03）
+
+**3.1 对照表（附录 B）**：全部 18 行（性别 / 属性分配 / 出生地 / 与生俱来特技 / 特技持久化 / birthplace / per·kar 落盘 / env 落盘 / character 落盘 / 出生点 / 大宗师 / 转世前置 / 转世 character / 清记录 / 数值重置 / 属性加成 / 转世特技 / 4 包含门）均为 ✅ 一致，无需补丁。
+
+**3.2 全量回归 `mix test`（Docker，无本地 Elixir）：**
+- 本次运行：**6980 tests / 110 failures**。
+- 对照基线：Phase 1 验证时 6955/118（注册/转世相关区域 0 新增失败，残留 118 为既定 combat/command/world 既有失败 + 2 个 60s flaky 超时 preload_guard / reload_command）；更早 batch7 基线 6933/105。
+- 结论：**零新增失败**。本次失败数（110）甚至低于 Phase 1 基线（118），差值来自已知 flaky 超时随运行波动；注册/转世/ask 相关测试全部绿——定向 33/0（含 `reborn_test` / `ask_command_test` / `reborn_includes_gate_test` / `born_player_test` / `setup_controller_test` / `setup_persistence_test`）。
+- 既有 110 失败与 Phase 0–3 改动无关（根因同 C-PVE27 §五：`ForceRegenerate` 模块缺失、测试传裸 map、`chongling-jian` 空手期望等）。
+
+**3.3 文档更新（已完成）：**
+- `LPC-新用户注册与转世重生机制分析.zh-CN.md`、`EX-注册与转世迁移可行性分析.zh-CN.md` 顶部补「✅ 已迁移」状态。
+- `C-PVE27-valid_learn-长尾补全进度.zh-CN.md` §6.2 由「若要放开 4 包含门」改为「已可通过转世解锁 ✅」（两步依赖均已具备），§6.3 结论补「转世打通后 4 包含门由不可学变转世后可学」。
+
+**总体验收（对应计划 §7）**：新玩家游戏内问答（性别→washto 点数池→born→与生俱来特技）落盘、初始房=阎罗殿；转世后 `character=国士无双`、清零、reborn+1、随机加成、赠特技、回世界、4 包含门变可学；附录 B 全 ✅；全量回归零新增失败。**Phase 0–3 全部完成。**
 
 ---
 

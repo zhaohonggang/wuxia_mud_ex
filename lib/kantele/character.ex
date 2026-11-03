@@ -63,7 +63,9 @@ defmodule Kantele.Character.PlayerMeta do
     tianshu_books: nil,
     jifen: nil,
     marks: %{},
-    pill_cooldowns: %{}
+    pill_cooldowns: %{},
+    # 注册问答是否完成（首登判定，决定登录落点/控制器）；从 DB setup_done 恢复
+    setup_done: false
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -315,7 +317,10 @@ defmodule Kantele.Character.NonPlayerMeta do
   - `engage` 开战接受规则（accept_fight/hit/kill）`%{fight: %{accept:, msg:,
     retaliate:, spawn:}, hit: ..., kill: ...}`（nil = 无规则；accept=true 接受开战/
     接受被杀，retaliate=true 反杀，spawn 被 kill 时召唤的帮手 id 列表）
-  """
+    - `ask_handler` AskHandler 模块名字符串（如 "Kantele.NPC.Dizangwang"）；有此字段的 NPC
+      收到 `ask <npc> <关键词>` 时会由 `AskCommand` 优先分发到对应 AskHandler 模块，
+      执行 `check`/`execute`/`effects`（对应 LPC `ask/1` 四前置链等复杂交互）
+    """
 
   defstruct [
     :initial_events,
@@ -357,7 +362,8 @@ defmodule Kantele.Character.NonPlayerMeta do
     # 转换器 build_chat/1 只处理 chat_chance/chat_msg（闲聊），不处理
     # *_combat 变体 → 全库 456 处战斗聊天被静默丢弃，本批回填。
     {:chat_msg_combat, []},
-    {:chat_chance_combat, 0}
+    {:chat_chance_combat, 0},
+    {:ask_handler, nil}
   ]
 
   defimpl Kalevala.Meta.Trim do

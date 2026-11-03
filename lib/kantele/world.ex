@@ -127,6 +127,17 @@ defmodule Kantele.World do
     end
   end
 
+  @doc """
+  新玩家出生点（阎罗殿，对应 LPC `BORN_ROOM=/d/register/yanluodian`）
+
+  新玩家首次登录、尚未完成注册问答（`meta.env[:setup_done] != true`）时，被放入
+  此房间进行「洗点(washto)」与「投胎(born)」问答，与 LPC 玩家体验一致。
+
+  完成注册后该房间不再作为登录落点——玩家重登回到 `meta.env[:startroom]`（其
+  选定的出生地），见 `LoginController.process_character` 的落点逻辑。
+  """
+  def born_room_id(), do: "register:yanluodian"
+
   defp start_room_from_flags() do
     ZoneCache.keys()
     |> Enum.sort()
