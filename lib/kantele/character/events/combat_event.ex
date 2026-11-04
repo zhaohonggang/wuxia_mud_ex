@@ -43,6 +43,8 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
+  alias Kantele.Communication
+  alias Kantele.World.Items
   alias Kantele.Feature.Damage
   alias Kantele.Quest
 
@@ -770,6 +772,52 @@ defmodule Kantele.Character.CombatEvent do
   def enemy_died(conn, %{data: %{id: id, exp: exp, potential: potential} = reward}) do
     character = conn.character
     combat = Combat.remove_enemy(character.meta.combat, id)
+
+    # P4-C: 地藏王战败 → 置位 DiZangPass，传送通天门，江湖传闻
+    # 注意：room-spawned NPC id 由 loader 生成（非 "death:dizangwang"），故按 name 识别。
+    {character, conn} =
+      if Map.get(reward, :name) == "地藏王" do
+        env = Map.put(character.meta.env || %{}, :DiZangPass, true)
+        character = %{character | meta: Map.put(character.meta, :env, env)}
+        Kantele.Character.Records.save(character)
+        Communication.announce("rumor", "听说#{character.name}在十八层地狱中战胜了地藏王，闯过了地藏王关！")
+        conn = Teleport.teleport(conn, "death:tianmen")
+        # teleport 已更新 conn.character，重新取最新 character
+        character = conn.character
+        {character, conn}
+      else
+        {character, conn}
+      end
+
+    # P4-D: 孤独（高处不胜寒）战败 → 置位 SkyPass=1，给予精元丹，传送阎罗殿，江湖传闻
+    {character, conn} =
+      if Map.get(reward, :name) == "高处不胜寒" do
+        env = Map.put(character.meta.env || %{}, :SkyPass, true)
+        character = %{character | meta: Map.put(character.meta, :env, env)}
+
+        # 给予精元丹物品实例（对应 LPC lost() 给 ob("jingyuandan")）
+        case Kantele.World.Items.get("death:jingyuandan") do
+          {:ok, _item} ->
+            instance =
+              %Kalevala.World.Item.Instance{
+                id: Kalevala.World.Item.Instance.generate_id(),
+                item_id: "death:jingyuandan",
+                created_at: DateTime.utc_now()
+              }
+            character = %{character | inventory: [instance | character.inventory]}
+          _ ->
+            :ok
+        end
+
+        Kantele.Character.Records.save(character)
+        Communication.announce("rumor", "听说#{character.name}战胜了高处不胜寒，夺得精元丹，SkyPass已置位！")
+        conn = Teleport.teleport(conn, "death:yanluodian")
+        # teleport 已更新 conn.character，重新取最新 character
+        character = conn.character
+        {character, conn}
+      else
+        {character, conn}
+      end
 
     # 决斗胜负：若倒下的正是我 competitor，则这边是胜者，广播胜负
     conn = announce_duel_victory(conn, character, id, Map.get(reward, :name))

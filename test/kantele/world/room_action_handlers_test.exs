@@ -100,6 +100,7 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "city:qiyuan4",
                 "city:sproom",
                 "city:wproom",
+                "death:wujiandao",
                 "emei:hcadadian",
                 "emei:hcawest",
                 "emei:shierpan3",

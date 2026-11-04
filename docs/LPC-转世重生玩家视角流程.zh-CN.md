@@ -189,9 +189,17 @@ ask 地藏王 转世
 
 - **两条独立的人生线**：「新用户注册」是第一次投胎（阎罗殿 washto+born，character 恒 nil）；「转世重生」是死后的第二次人生（地府四关→六道轮回，character=国士无双）。两者都落到出生地，但转世**不清空「与生俱来」特技且额外赠技**，并带 `reborn/count` 计数。
 - **LPC 源码现状 vs Ex 端口径**：LPC 现行 `d/death/npc/dizangwang.c:122-136` 中**大宗师(ultrap) 与 生死玄关(animaout) 两道校验已被注释**，实际仅后三关（HellZhenPass / 地藏王战 / 精元丹）生效。Ex 迁移按**已批准计划 D2「四项齐备」**恢复大宗师（以 `combat_exp≥800_000_000` 建模），故 Ex 的四前置为「大宗师 + 十八层地狱 + 击败地藏王 + 十二重天献丹」。
-- **Ex 端口径（截至 2026-11-03，Phase 2 已落地）**：
+- **Ex 端口径（截至 2026-11-04，Phase 2 + P4 地府链已落地）**：
   - ✅ 已落地：`Kantele.Character.Reborn` 忠实翻译 `zhuan_player`（清记录 / 清零 / 删武功 / reborn+1 / 随机加成 / 赠特技 / 落点回出生地）；`Kantele.NPC.Dizangwang` AskHandler；`ask 地藏王 转世` 指令已接通（`ask_command_test.exs` 5/5、`reborn_test.exs` 14/14、`reborn_includes_gate_test.exs` 6/6 全绿）；4 个「包含门」武功转世后变可学。
-  - ⏳ 待落地（不影响转世判定本身）：四前置的**游戏内触发玩法**——十八层地狱试炼、地藏王生死斗、十二重天取丹并献丹——这些将 `HellZhenPass` / `DiZangPass` / `SkyPass` 写入 `meta.env` 的地府副本玩法**尚未实现**。当前 Ex 中只要这四个 env 标志已为真（如经 GM / 测试置位），`ask 地藏王 转世` 即执行转世；普通玩家尚无法通过正常玩法集齐四前置。
+  - ✅ 已落地：`death:wujiandao` 无间道房间动作 `do_say`/`do_enter`/`do_smash`（诵诗授予无间闪电、铜镜进入转世动画、无间闪电 smash 攻击），对应 LPC `d/death/liudaolunhui/wujiandao.c`（P4-F，`wujiandao_test.exs` 16/16 全绿）。为六道轮回终点道「无间道」的说/进入/砸碎交互落地。玩家侧 `character/entering_world_step` 动画由 `Kantele.Character.EnterWorldEvent` 承接（须与 `events.ex` 的 `scope(Kantele.Character)` 同命名空间），末步调用 `Reborn.trigger/1` 并传送回出生地；已补 `Events.call/2` 路由回归测试。
+  - ✅ 已落地（P4 地府链，按 LPC 流程把死亡→地府→四前置→六道轮回整条串通）：
+    - **身亡坠地府**：`FeatureDamage.move_to_death_room/1` 改用新增的 `World.death_room_id()` 固定落 `death:yanluodian`（此前误用 `start_room_id()`，会随机落到任意带 `startroom` flag 的房间；同时移除 `death.ucl` 中误标的 `startroom`）。
+    - **十八层地狱 → `HellZhenPass`**：`Kantele.NPC.Yanluo`（阎罗 `ask_handler`，`ask 阎罗 转世`）置位并广播传闻。
+    - **地藏王生死斗 → `DiZangPass`**：`Kantele.NPC.Dizangwang` 的 `ask 地藏王 转世` 按 LPC 分三支——未过地狱则拒、已取精元丹则催交、否则 `NpcAttack.kill_ob/2` 发起生死斗；`CombatEvent.enemy_died` 战败钩子置位 `DiZangPass`、传送 `death:tianmen`、广播传闻。（Phase 2 时 `ask` 直接调 `Reborn.trigger/1`，现已改为 LPC 的决斗分支，转世主体改由无间道动画末步触发。）
+    - **十二重天取丹 → `SkyPass`**：`Kantele.NPC.Lonely`（高处不胜寒，`ask 高处不胜寒 精元丹`）发起生死斗；战败钩子置位 `SkyPass`、发放 `death:jingyuandan`、传送 `death:yanluodian`。
+    - **献丹入轮回 → 无间道**：`death.ucl` 的 accept kind 由 `any` 改为 `reborn` → `Kantele.World.RebornAccept` → 玩家侧 `reborn/give-jingyuandan` 事件校验 `SkyPass + DiZangPass`、销毁精元丹、传送 `death:wujiandao`。
+  - ✅ 回归验证（2026-11-04，Docker `MIX_ENV=test mix test --seed 0`）：全量 `7006 tests / 110 failures`，与迁移前基线 `6980 / 110` 相比**新增 26 个测试全部通过、失败数持平、P4 相关失败 0**；残留失败为既有集合（全局 `FakeRoom` 名冲突导致的 Qiyuan/Banquet 波动、`PreloadGuardTest`/`ReloadCommandTest` 的 60s 超时 flaky、valid_learn/LearnGate 等）。
+  - ⏳ 待落地（不影响转世主链贯通）：**关卡玩法本体仍是简化接线**——十八层地狱没有逐层试炼，`ask 阎罗 转世` 无条件置位 `HellZhenPass`；高处不胜寒未校验 LPC `accept_kill` 的 `combat_exp ≥ 20_000_000`；六道轮回为直接传送无间道，未逐个遍历 `liudaolunhui` 房间。此外 P4-A~P4-E 已补 `death_chain_test.exs`（10/10，覆盖死亡落点、三分支问询、决斗事件投递与献丹回执），P4-F 有 `wujiandao_test.exs`（16/16）；`ask_command_test.exs`（5/5）与 `reborn_test.exs`（14/14）已按 P4-B 的决斗分支更新断言（不再期望 `ask` 直接转世），四个定向文件合计 45/45 全绿。战斗钩子链的真实跨进程结算仍需联调验证；大宗师 `combat_exp ≥ 800_000_000` 仍由 `Reborn.trigger/1` 兜底校验。
 
 ---
 

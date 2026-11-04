@@ -36,9 +36,6 @@ zones "death" {
   x = 0
   y = 0
   z = 2
-  flags = [
-    "startroom"
-  ]
     }
   room_exits "block" {
     room_id = rooms.block.id
@@ -2589,7 +2586,7 @@ chats = [
 
 
   accept = [
-    { kind = "any" accept = true msg = ["地藏王摇了摇头，道：你给我这个干什么？", "地藏王道：无功不受禄，这个你还是自己留着吧。", "地藏王道：很好很好！没有想到你连十二重天这一关也过了，这是天意。老夫也只能顺天意而行了，去吧。", "地藏王随手一招，突然刮起一阵阴风，精元丹护住你的元神帮你进入六道轮回。"] fail_msg = ["你没有这件东西。"] }
+    { kind = "reborn" accept = true msg = ["地藏王摇了摇头，道：你给我这个干什么？", "地藏王道：无功不受禄，这个你还是自己留着吧。", "地藏王道：很好很好！没有想到你连十二重天这一关也过了，这是天意。老夫也只能顺天意而行了，去吧。", "地藏王随手一招，突然刮起一阵阴风，精元丹护住你的元神帮你进入六道轮回。"] fail_msg = ["你没有这件东西。"] }
   ]
 
   engage = {
@@ -3189,6 +3186,8 @@ chats = [
     { key = "黑森林" value = "黑森林里全是阴雾，除非有「指南车」，要不根本没法辨认方向。" },
     { key = "龙胆" value = "龙胆就是神兽青龙的胆，凡人吃了可以平增功力，我也正需要一个来炼丹。" }
   ]
+
+  ask_handler = "Kantele.NPC.Yanluo"
 
   chat_chance = 1
 chats = [
@@ -6556,6 +6555,8 @@ chats = [
   inquiries = [
     { key = "精元丹" value = "精元丹我的确有，不过赠给有能力之人，你先露一手给我瞧瞧。" }
   ]
+
+  ask_handler = "Kantele.NPC.Lonely"
 
   skills = [
     { skill = "unarmed" level = 999 },

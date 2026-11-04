@@ -649,8 +649,8 @@ defmodule Kantele.Feature.Damage do
   end
 
   defp move_to_death_room(character) do
-    # 移至死亡房间（配置中 DEATH_ROOM_ID）
-    death_room = Kantele.World.start_room_id()
+    # 移至死亡房间（地府阎罗殿，对应 LPC 玩家死亡坠入地府）
+    death_room = Kantele.World.death_room_id()
     %{character | room_id: death_room}
   end
 

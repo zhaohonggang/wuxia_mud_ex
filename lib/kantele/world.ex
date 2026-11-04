@@ -138,6 +138,15 @@ defmodule Kantele.World do
   """
   def born_room_id(), do: "register:yanluodian"
 
+  @doc """
+  死亡房间 id（地府阎罗殿，对应 LPC 玩家死亡后坠入地府）
+
+  玩家 `qi/jing` 归零触发 `FeatureDamage.process_death` 时，被放入此房间
+  （`death:yanluodian`），与 LPC `/d/death/yanluodian.c` 一致。此前误用
+  `start_room_id()` 会随机落到任意带 `startroom` flag 的房间，故单独固定。
+  """
+  def death_room_id(), do: "death:yanluodian"
+
   defp start_room_from_flags() do
     ZoneCache.keys()
     |> Enum.sort()

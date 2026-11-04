@@ -82,8 +82,15 @@ defmodule Kantele.Character.Events do
       event("forge/refund", :forge_refund)
       # 干将的私有提示（`tell_rules` 的 tell_object）
       event("forge/notice", :forge_notice)
+      # 转世献丹回执（地藏王进程 → 玩家进程，销毁精元丹 + 传送无间道）
+      event("reborn/give-jingyuandan", :reborn_give_jingyuandan)
       # 武修文收还工具回执（武修文进程 → 玩家进程，落 mark/还了）
       event("wuxiuwen/returned", :wuxiuwen_returned)
+    end
+
+    module(EnterWorldEvent) do
+      # 无间道 entering_world 动画步进（玩家侧，Reborn.trigger + Teleport）
+      event("character/entering_world_step", :entering_world_step)
     end
 
     module(MirrorEvent) do

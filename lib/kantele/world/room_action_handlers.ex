@@ -603,6 +603,15 @@ defmodule Kantele.World.RoomActionHandlers do
       "do_cross" => {Kantele.World.RoomActions.Vehicle.Trigger, :run},
       "do_shang" => {Kantele.World.RoomActions.Vehicle.Trigger, :run}
     },
+    # ---- 无间道（P4-F）：say/enter/smash 三动词 ----
+    # LPC `d/death/liudaolunhui/wujiandao.c` 的 init() 注册了 say/enter/smash 三动词。
+    # do_say：诵诗授予无间闪电；do_enter：转世进入动画；do_smash：无间闪电神力攻击。
+    "death:wujiandao" => %{
+      "do_say" => {Kantele.World.RoomActions.Death.WujiandaoSay, :run},
+      "do_enter" => {Kantele.World.RoomActions.Death.WujiandaoEnter, :run},
+      "do_smash" => {Kantele.World.RoomActions.Death.WujiandaoSmash, :run}
+    },
+
     # ---- 郭府打工闭环（P5 补全 yelvqi 打工闭环）：五工作房动词 ----
     # 各房 `actions` 由 UCL 绑定 verb→handler 名（sao/chu/jiao/pi/ju），全部复用
     # 同一配置驱动模块 `Wuguan.Work`，按 room_id 查配置（job/参数词/进度 mark/

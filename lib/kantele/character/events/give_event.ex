@@ -13,7 +13,9 @@ defmodule Kantele.Character.GiveEvent do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Records
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Teleport
   alias Kantele.NPC.Xiaoer
+  alias Kantele.Communication
   alias Kantele.World.Items
   alias Kantele.World.Forging
   alias Kalevala.World.Item
@@ -55,6 +57,9 @@ defmodule Kantele.Character.GiveEvent do
 
       {:wuxiuwen} ->
         Kantele.World.WuxiuwenAccept.handle(conn, npc, item_instance, data, from_name)
+
+      {:reborn} ->
+        Kantele.World.RebornAccept.handle(conn, npc, item_instance, data, from_name)
 
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
@@ -172,6 +177,9 @@ defmodule Kantele.Character.GiveEvent do
 
   # 武修文收还工具：命中即交给 Kantele.World.WuxiuwenAccept 处理（郭府打工闭环）
   defp rule_hit(%{kind: "wuxiuwen"}, _item), do: :wuxiuwen
+
+  # 转世献丹：命中即交给 Kantele.World.RebornAccept 处理（地藏王收精元丹）
+  defp rule_hit(%{kind: "reborn"}, _item), do: :reborn
 
   defp rule_hit(_rule, _item), do: :miss
 
@@ -503,6 +511,47 @@ defmodule Kantele.Character.GiveEvent do
     conn
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  # ---- 转世献丹回执（地藏王进程 → 玩家进程）----
+  # 地藏王收下精元丹后，通过 `reborn/give-jingyuandan` 事件送达玩家：
+  #   校验 SkyPass + DiZangPass → 销毁精元丹 → 传送无间道（六道轮回终点）
+  def reborn_give_jingyuandan(conn, %{data: %{item_id: item_id, instance_id: instance_id, from_id: from_id}}) do
+    character = conn.character
+
+    if from_id == character.id do
+      env = character.meta.env || %{}
+      sky_pass = Map.get(env, :SkyPass) == true
+      dizang_pass = Map.get(env, :DiZangPass) == true
+
+      cond do
+        sky_pass and dizang_pass ->
+          # 销毁精元丹（LPC destruct(ob)）
+          inventory =
+            Enum.reject(character.inventory, fn inst -> inst.id == instance_id end)
+          character = %{character | inventory: inventory}
+          Records.save(character)
+
+          # 江湖传闻
+          Communication.announce("rumor", "#{character.name}将精元丹献给地藏王，六道轮回轰然转动！")
+
+          # 传送至无间道（六道轮回终点，对应 LPC 遍历 7 个 liudaolunhui 房间后的落点）
+          conn = Teleport.teleport(conn, "death:wujiandao")
+          character = conn.character
+
+          conn
+          |> put_character(character)
+          |> render(CommandView, "text", %{text: "精元丹护住你的元神，你进入六道轮回，来到无间道……\n"})
+          |> prompt(CommandView, "prompt", %{})
+
+        true ->
+          conn
+          |> render(CommandView, "text", %{text: "地藏王道：无功不受禄，这个你还是自己留着吧。\n"})
+          |> prompt(CommandView, "prompt", %{})
+      end
+    else
+      conn
+    end
   end
 
   # ---- 武修文收还工具回执（武修文进程 → 玩家进程）----

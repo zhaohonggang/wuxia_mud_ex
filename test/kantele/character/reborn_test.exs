@@ -9,6 +9,7 @@ defmodule Kantele.Character.RebornTest do
   use ExVenture.DataCase, async: false
 
   alias Kalevala.Character
+  alias Kalevala.Event
   alias Kantele.Character.Combat
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
@@ -267,21 +268,36 @@ defmodule Kantele.Character.RebornTest do
     end
   end
 
-  describe "地藏王 NPC 处理器 (Dizangwang，ask 转世 等价)" do
-    test "check：四前置齐备 → :ok；缺项 → {:error, 拒绝语}；未知关键词兜底" do
+  describe "地藏王 NPC 处理器 (P4-B 起按 LPC ask_zhuan 分支)" do
+    test "check：ask 层只拦 HellZhenPass；未知关键词兜底" do
       ready = character(combat_exp: 800_000_000, env: %{HellZhenPass: true, DiZangPass: true, SkyPass: true})
       assert :ok = Dizangwang.check(ready, %{}, "转世")
 
-      miss = character(env: %{HellZhenPass: true, DiZangPass: true, SkyPass: true})
-      assert {:error, msg} = Dizangwang.check(miss, %{}, "转世")
-      assert msg =~ "大宗师"
+      # P4-B 改按 LPC `ask_zhuan` 分步：大宗师/生死斗/献丹不再在 ask 层拦，
+      # 由 `Reborn.trigger/1` 于六道轮回末步统一校验四前置。
+      no_hell = character(combat_exp: 800_000_000, env: %{DiZangPass: true, SkyPass: true})
+      assert {:error, msg} = Dizangwang.check(no_hell, %{}, "转世")
+      assert msg =~ "十八层地狱"
 
       assert {:error, _} = Dizangwang.check(ready, %{}, "不存在的关键词")
     end
 
-    test "execute：触发转世 → {:ok, char} 且角色身份变国士无双（含落盘）" do
+    test "execute：已取丹催交 / 未取丹发起生死斗；转世主体仍走 Reborn.trigger（含落盘）" do
       ready = character(combat_exp: 800_000_000, env: %{HellZhenPass: true, DiZangPass: true, SkyPass: true})
-      assert {:ok, _reborn} = Dizangwang.execute(ready, %{}, "转世")
+
+      # 分支②：SkyPass 已置 → 催交精元丹，不直接转世
+      assert {:error, msg} = Dizangwang.execute(ready, %{}, "转世")
+      assert msg =~ "精元丹"
+
+      # 分支③：未取丹 → 发起生死斗，双方各收 combat/start (type kill)
+      no_dan = character(combat_exp: 800_000_000, env: %{HellZhenPass: true})
+      npc = %{id: "dizangwang", name: "地藏王", pid: self(), room_id: "death:yanluodian"}
+      assert :ok = Dizangwang.execute(no_dan, npc, "转世")
+      assert_receive %Event{topic: "combat/start", data: %{type: "kill"}}
+      assert_receive %Event{topic: "combat/start", data: %{type: "kill"}}
+
+      # 转世主体（清记录 / 国士无双 / 落盘）现在由无间道动画末步调用
+      assert {:ok, _reborn} = Reborn.trigger(ready)
 
       {:ok, metadata, _wiz} = Records.load(@name)
       restored = Records.apply_to_character(ready, {:ok, metadata}, 0)
