@@ -21,6 +21,7 @@ defmodule Kantele.World.DeathChainTest do
   alias Kantele.NPC.Lonely
   alias Kantele.NPC.Yanluo
   alias Kantele.World
+  alias Kantele.World.HellZhen
   alias Kantele.World.RebornAccept
 
   @death_room "death:yanluodian"
@@ -68,6 +69,14 @@ defmodule Kantele.World.DeathChainTest do
   defp npc(name) do
     # RebornAccept.handle 会走 prompt(CommandView, "prompt")，需要 meta.vitals
     %{character() | id: "npc-#{name}", name: name}
+  end
+
+  # 满足阎罗 ask_zhuan 全部已移植前置：大宗师（Ex 以 combat_exp>=800M 建模）
+  # + 元婴出世 + 无家室/帮派/兄弟/同盟 + 未通关地狱。
+  defp qualified_character(env \\ %{}) do
+    c = character(Map.merge(%{animaout: true}, env))
+    stats = Map.put(c.meta.stats, :combat_exp, 900_000_000)
+    %{c | meta: %{c.meta | stats: stats}}
   end
 
   # Kalevala 的 render/4 产出 %Conn.Text{}；prompt/4 产出 %Conn.EventText{}，
@@ -119,16 +128,67 @@ defmodule Kantele.World.DeathChainTest do
     end
   end
 
-  describe "P4-D 阎罗 / 高处不胜寒问询" do
-    test "阎罗 ask 转世 置位 HellZhenPass" do
-      assert :ok == Yanluo.check(character(), npc("十殿阎罗"), "转世")
-      assert {:ok, updated} = Yanluo.execute(character(), npc("十殿阎罗"), "转世")
-      assert updated.meta.env[:HellZhenPass] == true
+  describe "P4-D / 真 LPC 阎罗十八层地狱起链" do
+    test "经验不足 → 阎罗拒绝，不再无条件置位 HellZhenPass" do
+      assert {:error, msg} = Yanluo.check(character(), npc("十殿阎罗"), "转世")
+      assert msg =~ "经验不够"
+
+      assert {:error, ^msg} = Yanluo.execute(character(), npc("十殿阎罗"), "转世")
     end
 
-    test "高处不胜寒 ask 精元丹 放行并发起生死斗" do
-      assert :ok == Lonely.check(character(), npc("高处不胜寒"), "精元丹")
-      assert :ok == Lonely.execute(character(), npc("高处不胜寒"), "精元丹")
+    test "前置齐备 → 起链：置令牌 + 送进 emptyroom + 排两条 call_out" do
+      asker = qualified_character()
+      assert :ok == Yanluo.check(asker, npc("十殿阎罗"), "转世")
+
+      assert {:ok, updated} = Yanluo.execute(asker, npc("十殿阎罗"), "转世")
+      assert is_binary(updated.meta.temp[HellZhen.temp_token()])
+      # HellZhenPass 只能由 winning 置位，起链时绝不能有
+      refute updated.meta.env[:HellZhenPass]
+
+      assert_receive %Event{
+        topic: "character/teleport",
+        data: %{room_id: "death:emptyroom"}
+      }
+
+      assert_receive {:room_message, msg}
+      assert msg =~ "陷了下去"
+
+      # t=2s message_ob / t=3s round_1
+      assert_receive %Event{
+        topic: "character/hell_zhen_step",
+        data: %{phase: "opening", token: token}
+      }, 4_000
+
+      assert_receive %Event{
+        topic: "character/hell_zhen_step",
+        data: %{phase: "round", round: 1, token: ^token}
+      }, 4_000
+
+      assert token == updated.meta.temp[HellZhen.temp_token()]
+    end
+
+    test "已通关十八层地狱 → 直接免试" do
+      asker = qualified_character(%{HellZhenPass: true})
+      assert {:error, msg} = Yanluo.check(asker, npc("十殿阎罗"), "转世")
+      assert msg =~ "免了吧"
+    end
+  end
+
+  describe "真 LPC 高处不胜寒 accept_kill 经验门" do
+    test "combat_exp < 20_000_000 → 拒绝并把玩家击晕" do
+      assert {:error, msg, knocked} =
+               Lonely.check(character(), npc("高处不胜寒"), "精元丹")
+
+      assert msg =~ "无名小辈"
+      assert Lonely.combat_exp_min() == 20_000_000
+      # LPC me->unconcious()：qi 归零
+      assert knocked.meta.vitals.qi == 0
+    end
+
+    test "combat_exp 达标 → 放行并发起生死斗" do
+      asker = qualified_character()
+      assert :ok == Lonely.check(asker, npc("高处不胜寒"), "精元丹")
+      assert :ok == Lonely.execute(asker, npc("高处不胜寒"), "精元丹")
 
       assert_receive %Event{topic: "combat/start", data: %{type: "kill"}}
       assert_receive %Event{topic: "combat/start", data: %{type: "kill"}}

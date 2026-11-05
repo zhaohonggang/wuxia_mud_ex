@@ -93,6 +93,11 @@ defmodule Kantele.Character.Events do
       event("character/entering_world_step", :entering_world_step)
     end
 
+    module(HellZhenEvent) do
+      # 十八层地狱 call_out 链（玩家侧；阎罗 ask 转世 起链后逐层推进）
+      event("character/hell_zhen_step", :step)
+    end
+
     module(MirrorEvent) do
       event("mirror/give", :give_result)
     end

@@ -140,6 +140,14 @@ defmodule Kantele.Character.AskCommand do
             )
             |> prompt(CommandView, "prompt", %{})
 
+          {:error, msg, new_character} ->
+            # ask_handler 拒绝的同时改了角色（如高处不胜寒 accept_kill 把
+            # 玩家击晕）；先落地角色状态再显示拒绝语。
+            conn
+            |> put_character(new_character)
+            |> render(CommandView, "text", %{text: msg})
+            |> prompt(CommandView, "prompt", %{})
+
           {:error, msg} ->
             conn
             |> render(CommandView, "text", %{text: msg})
@@ -155,6 +163,12 @@ defmodule Kantele.Character.AskCommand do
             )
             |> prompt(CommandView, "prompt", %{})
         end
+
+      {:error, msg, new_character} ->
+        conn
+        |> put_character(new_character)
+        |> render(CommandView, "text", %{text: msg})
+        |> prompt(CommandView, "prompt", %{})
 
       {:error, msg} ->
         conn

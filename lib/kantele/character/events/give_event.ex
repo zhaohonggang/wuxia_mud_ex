@@ -18,6 +18,7 @@ defmodule Kantele.Character.GiveEvent do
   alias Kantele.Communication
   alias Kantele.World.Items
   alias Kantele.World.Forging
+  alias Kantele.World.RoomActions.Helpers
   alias Kalevala.World.Item
   alias Kantele.Item, as: KItem
   alias Kantele.Item.Backpack
@@ -515,7 +516,33 @@ defmodule Kantele.Character.GiveEvent do
 
   # ---- 转世献丹回执（地藏王进程 → 玩家进程）----
   # 地藏王收下精元丹后，通过 `reborn/give-jingyuandan` 事件送达玩家：
-  #   校验 SkyPass + DiZangPass → 销毁精元丹 → 传送无间道（六道轮回终点）
+  #   校验 SkyPass + DiZangPass → 销毁精元丹 → 逐个遍历六道轮回 → 无间道
+
+  # LPC `dizangwang.c:243-262` accept_object() 里连着 7 次 `me->move(...)`：
+  # 天道 → 地狱道 → 人间道 → 饿鬼道 → 畜生道 → 修罗道 → 无间道。
+  # 之前 Ex 直接一跳到无间道，跳过了这 6 个房间。
+  @six_paths [
+    {"death:tiandao", "天极道"},
+    {"death:diyudao", "地狱道"},
+    {"death:rendao", "人间道"},
+    {"death:eguidao", "饿鬼道"},
+    {"death:chushengdao", "畜生道"},
+    {"death:xiuluodao", "修罗道"},
+    {"death:wujiandao", "无间道"}
+  ]
+
+  @doc "六道轮回逐房遍历表（含终点无间道），对应 LPC `accept_object` 的 7 次 move()"
+  def six_paths, do: @six_paths
+
+  @doc "按 LPC 顺序连续 7 次 `Teleport.teleport/2`，每房留一句掠过文案"
+  def traverse_six_paths(conn) do
+    Enum.reduce(@six_paths, conn, fn {room_id, name}, acc ->
+      acc
+      |> Teleport.teleport(room_id)
+      |> Helpers.render_to_player("你眼前一花，六道轮回转过#{name}……\n")
+    end)
+  end
+
   def reborn_give_jingyuandan(conn, %{data: %{item_id: item_id, instance_id: instance_id, from_id: from_id}}) do
     character = conn.character
 
@@ -535,12 +562,11 @@ defmodule Kantele.Character.GiveEvent do
           # 江湖传闻
           Communication.announce("rumor", "#{character.name}将精元丹献给地藏王，六道轮回轰然转动！")
 
-          # 传送至无间道（六道轮回终点，对应 LPC 遍历 7 个 liudaolunhui 房间后的落点）
-          conn = Teleport.teleport(conn, "death:wujiandao")
-          character = conn.character
-
-          conn
-          |> put_character(character)
+          # 逐个遍历六道轮回 7 个房间，最终落在无间道（LPC 的 7 次 move()）。
+          # 注意：不要在这里再 put_character(conn.character) —— Teleport 已把最新
+          # 角色写进 private.update_character，用旧的 conn.character 覆盖会把
+          # room_id 退回献丹前，令位移在 flush 时失效。
+          traverse_six_paths(conn)
           |> render(CommandView, "text", %{text: "精元丹护住你的元神，你进入六道轮回，来到无间道……\n"})
           |> prompt(CommandView, "prompt", %{})
 
