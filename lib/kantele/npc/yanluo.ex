@@ -14,11 +14,16 @@ defmodule Kantele.NPC.Yanluo do
   3. 后续 18 层由 `Kantele.Character.HellZhenEvent` 逐层推进；只有
      `winning` 才置位 `HellZhenPass`，失败则 `failed` + 落回武庙。
 
-  ## 尚未移植的 LPC 前置
+  `over_quest/hell_quest/锁阳丹`（四味药引任务）已按 LPC `yanluo.c` 全量移植：
 
-  `over_quest/hell_quest/锁阳丹`（四味药引任务）在 Ex 尚无任务链，故
-  `gate_error/1` 不把它当硬门，否则这道关卡会成为永远进不去的死内容。
-  详见 `Kantele.World.HellZhen` 的 moduledoc。
+  - `ask 阎罗 锁阳丹`：`check/3` 校验任务状态（`:done` 已办妥、`:duplicate` 在办中，
+    否则 `:ok` 放行领取），`execute/3` 置 `hell_quest/锁阳丹` 在办并下发
+    `suoyangdan/give-ingredient` 收药引事件；
+  - 四味药引（`longdan`/`hugu`/`yumao`/`jiake`）交付由 `Kantele.World.SuoyangdanAccept`
+    处理，全部到齐后置位 `over_quest/hell_quest/锁阳丹` 并发放 `tianjing`（寰宇天晶）
+    等奖励；
+  - `gate_error/1` 第九门 `锁阳丹` 现为硬门，需任务已解方可通过（见
+    `Kantele.World.HellZhen`）。
   """
 
   @behaviour Kantele.NPC.AskHandler
@@ -49,8 +54,20 @@ defmodule Kantele.NPC.Yanluo do
         effects: []
       },
       "锁阳丹" => %{
-        check: fn _asker, _npc ->
-          :ok
+        check: fn asker, _npc ->
+          quests = PlayerMeta.quests(asker.meta) || Quest.new()
+          spec = %{file: "hell_quest/锁阳丹"}
+
+          cond do
+            Quest.is_solved(quests, spec) ->
+              {:error, :done}
+
+            Map.has_key?(Quest.get_todo_list(quests), "hell_quest/锁阳丹") ->
+              {:error, :duplicate}
+
+            true ->
+              :ok
+          end
         end,
         execute: fn asker, _npc ->
           quests = PlayerMeta.quests(asker.meta)

@@ -30,11 +30,15 @@ defmodule Kantele.NPC.Dizangwang do
     %{
       "转世" => %{
         check: fn asker, _npc ->
-          env = asker.meta.env || %{}
-          if Map.get(env, :HellZhenPass) != true do
-            {:error, "地藏王喝道：你想转世先过了十八层地狱这一关再说！\n"}
-          else
-            :ok
+          cond do
+            not Reborn.ultrap?(asker) ->
+              {:error, "地藏王喝道：你尚未修炼成大宗师，不足以转世。\n"}
+
+            Map.get(asker.meta.env || %{}, :HellZhenPass) != true ->
+              {:error, "地藏王喝道：你想转世先过了十八层地狱这一关再说！\n"}
+
+            true ->
+              :ok
           end
         end,
         execute: fn asker, npc ->

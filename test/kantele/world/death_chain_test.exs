@@ -18,6 +18,7 @@ defmodule Kantele.World.DeathChainTest do
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
   alias Kantele.NPC.Dizangwang
+  alias Kantele.Quest
   alias Kantele.NPC.Lonely
   alias Kantele.NPC.Yanluo
   alias Kantele.World
@@ -72,11 +73,15 @@ defmodule Kantele.World.DeathChainTest do
   end
 
   # 满足阎罗 ask_zhuan 全部已移植前置：大宗师（Ex 以 combat_exp>=800M 建模）
-  # + 元婴出世 + 无家室/帮派/兄弟/同盟 + 未通关地狱。
+  # + 元婴出世 + 无家室/帮派/兄弟/同盟 + 未通关地狱 + 锁阳丹任务已解（第九门）。
   defp qualified_character(env \\ %{}) do
     c = character(Map.merge(%{animaout: true}, env))
     stats = Map.put(c.meta.stats, :combat_exp, 900_000_000)
-    %{c | meta: %{c.meta | stats: stats}}
+    solved_quests =
+      Quest.new()
+      |> Quest.set_solved(%{file: "hell_quest/锁阳丹"})
+      |> elem(1)
+    %{c | meta: %{c.meta | stats: stats, quests: solved_quests}}
   end
 
   # Kalevala 的 render/4 产出 %Conn.Text{}；prompt/4 产出 %Conn.EventText{}，
@@ -101,13 +106,19 @@ defmodule Kantele.World.DeathChainTest do
   end
 
   describe "P4-B 地藏王 ask 转世三分支" do
-    test "未过十八层地狱 → 拒绝" do
+    test "未达大宗师阈值 → check 先拦（combat_exp<800M）" do
       assert {:error, msg} = Dizangwang.check(character(), npc("地藏王"), "转世")
+      assert msg =~ "大宗师"
+    end
+
+    test "大宗师但未过十八层地狱 → 拒绝" do
+      asker = qualified_character()  # combat_exp 900M，无 HellZhenPass
+      assert {:error, msg} = Dizangwang.check(asker, npc("地藏王"), "转世")
       assert msg =~ "十八层地狱"
     end
 
-    test "已过地狱 → check 放行" do
-      asker = character(%{HellZhenPass: true})
+    test "大宗师且已过地狱 → check 放行" do
+      asker = qualified_character(%{HellZhenPass: true})
       assert :ok == Dizangwang.check(asker, npc("地藏王"), "转世")
     end
 

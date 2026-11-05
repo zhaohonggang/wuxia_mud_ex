@@ -244,8 +244,28 @@ defmodule Kantele.World.HellZhenTest do
   # ---------------------------------------------------------------------------
 
   describe "Yanluo.ask_specs/0 「锁阳丹」" do
-    test "check 始终返回 :ok，任何人皆可领取" do
+    test "check：无任务记录 → :ok 放行领取" do
       assert Yanluo.ask_specs()["锁阳丹"].check.(character(), %Character{}) == :ok
+    end
+
+    test "check：任务已解 → {:error, :done}" do
+      solved_quests =
+        Quest.new()
+        |> Quest.set_solved(%{file: "hell_quest/锁阳丹"})
+        |> elem(1)
+
+      c = character()
+      c = %{c | meta: %{c.meta | quests: solved_quests}}
+      assert {:error, :done} = Yanluo.ask_specs()["锁阳丹"].check.(c, %Character{})
+    end
+
+    test "check：任务在办中 → {:error, :duplicate}" do
+      spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+      {:ok, quests} = Quest.set_todo(Quest.new(), spec)
+
+      c = character()
+      c = %{c | meta: %{c.meta | quests: quests}}
+      assert {:error, :duplicate} = Yanluo.ask_specs()["锁阳丹"].check.(c, %Character{})
     end
 
     test "execute 构造正确的 quest spec 并置入 PlayerMeta.quests" do

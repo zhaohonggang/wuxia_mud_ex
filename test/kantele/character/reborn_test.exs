@@ -269,12 +269,16 @@ defmodule Kantele.Character.RebornTest do
   end
 
   describe "地藏王 NPC 处理器 (P4-B 起按 LPC ask_zhuan 分支)" do
-    test "check：ask 层只拦 HellZhenPass；未知关键词兜底" do
+    test "check：大宗师阈值先拦，再拦 HellZhenPass，未知关键词兜底" do
       ready = character(combat_exp: 800_000_000, env: %{HellZhenPass: true, DiZangPass: true, SkyPass: true})
       assert :ok = Dizangwang.check(ready, %{}, "转世")
 
-      # P4-B 改按 LPC `ask_zhuan` 分步：大宗师/生死斗/献丹不再在 ask 层拦，
-      # 由 `Reborn.trigger/1` 于六道轮回末步统一校验四前置。
+      # 低于 800M 经验：ask 层首项即被大宗师门拦截
+      low_exp = character(combat_exp: 100, env: %{HellZhenPass: true, DiZangPass: true, SkyPass: true})
+      assert {:error, msg} = Dizangwang.check(low_exp, %{}, "转世")
+      assert msg =~ "大宗师"
+
+      # 达大宗师但未过地狱：第二项门生效
       no_hell = character(combat_exp: 800_000_000, env: %{DiZangPass: true, SkyPass: true})
       assert {:error, msg} = Dizangwang.check(no_hell, %{}, "转世")
       assert msg =~ "十八层地狱"
