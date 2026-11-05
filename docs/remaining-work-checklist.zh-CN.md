@@ -47,8 +47,8 @@
 | 命令 | 文件 | 备注 |
 |------|------|------|
 | answer | `answer_command.ex:15` | |
-| ansuan | `ansuan_command.ex:15,21` | |
-| beg | `beg_command.ex:15` | |
+| ansuan | `ansuan_command.ex` | 已真化：LPC `ansuan.c` 跨方向暗算门控 + 突袭/暴露/收尾（`ansuan_command_test` 绿） |
+| beg | `beg_command.ex` | |
 | come | `come_command.ex:15` | |
 | hand | `hand_command.ex:15` | |
 | liuxi | `liuxi_command.ex:15` | |
@@ -61,9 +61,9 @@
 | special | `special_command.ex:15,21` | |
 | stop | `stop_command.ex:15` | |
 | stay | `stay_command.ex:15` | |
-| talk | `talk_command.ex:15` | |
+| talk | `talk_command.ex` | 已真化：LPC `talk.c` 解析 + 房间 NPC 查找 + `meta.inquiries` 应答（`talk_command_test` 绿） |
 | train | `train_command.ex:15` | |
-| top | `top_command.ex:17-22` | 排行 |
+| top | `top_command.ex` + `top_ranking.ex` | 已真化：经验/等级/气血/精力/年龄榜（`top_command_test` 绿）；kill/die 因无计数器返回「未记录」 |
 | top2 | `top2_command.ex:15` | |
 | topp | `topp_command.ex:15` | |
 | to | `to_command.ex:15` | |

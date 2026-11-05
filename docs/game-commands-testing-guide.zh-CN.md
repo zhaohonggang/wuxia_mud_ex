@@ -488,7 +488,8 @@ time           预期：显示游戏年月日/时辰/季节
 
 ## 六、已知限制与备注
 
-- **占位命令清单**（输出"暂未开放"）：`beg` `ansuan` `answer` `come` `stay` `stop` `train` `release` `hand` `liuxi/柳溪` `pkd` `push` `secularize/huansu/还俗` `special` `stab` `talk` `to` `top` `top2` `topp` `touch` `vote` `closed`（半开）`scheme`（裸命令）`clone`（生物部分）。
+- **占位命令清单**（输出"暂未开放"）：`beg` `answer` `come` `stay` `stop` `train` `release` `hand` `liuxi/柳溪` `pkd` `push` `secularize/huansu/还俗` `special` `stab` `to` `top2` `topp` `touch` `vote` `closed`（半开）`scheme`（裸命令）`clone`（生物部分）。
+  - 注：`ansuan`/`talk`/`top` 已按 LPC 真实实现，不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
 - **W3 arch 14 命令为静默 no-op**（无输出）：`build` `call` `smash` `possess` `throw` `var` `setsk` `purge` `restore` `register` `reboot` `shutdown` `grant` `changeuser`。
 - 两个注册顺序注意点：`remove` 实际绑到功能完整的 WieldCommand（RemoveCommand stub 是死代码）；`yanjiu` 实际路由到 research（研究）而非 study（研习）。
 - `jing`（精力）随根骨自然回复；learn/practice 消耗精力（精 < 70% 中断）。

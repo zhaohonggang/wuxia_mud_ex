@@ -37,5 +37,19 @@
 - **Task #303** `SuoyangdanAccept` + `give_event` 药引交付：新建 `lib/kantele/world/suoyangdan_accept.ex`；`give_event.ex` 新增 `:suoyangdan` 分发、`rule_hit/2`、`suoyangdan_give_ingredient/2`；`events.ex` 注册 `suoyangdan/give-ingredient`；`death.ucl` 四味药引规则改 `kind = "suoyangdan"`。
 - **Task #304** 测试：`test/kantele/world/hell_zhen_test.exs` 新增 gate_error 锁阳丹硬门 3 例、Yanluo ask_specs 2 例、SuoyangdanAccept 1 例、Quest 级药引追踪 3 例；修正既有 `grant_animaout` 断言（第九门生效）。
 - **Task #305** 验证：Docker `mix compile` exit 0；`hell_zhen_test.exs` 27/0；quest_test+hell_zhen+reborn 82/0；give/accept 相关 38/0。
+- **Task #313**：Yanluo `锁阳丹` `check` 门控（`:done`/`:duplicate`），moduledoc 移除“尚未移植”；测试同步；Docker 编译 + 回归绿。
+- **Task #314**：Dizangwang `check` 加 `Reborn.ultrap?/1`（`combat_exp ≥ 800_000_000`）大宗师门槛；测试同步（`death_chain_test.exs` `qualified_character` 补 `锁阳丹` 已解，重构三分支用例）；Docker 编译 + 回归绿。
+- 以上两项已 commit `540b4d0e` 并 push 到 `origin/kalevala`。
+- **Task #317**：ZhangSanfeng `「鹤嘴劲」` check 加 LPC 真实门控（武当派 / 太极神功≥100 / 功绩≥800 / 神≥150000 / 内力上限≥1500），`lib/kantele/npc/zhang_sanfeng.ex` 修改，新建 `test/kantele/npc/zhang_sanfeng_test.exs`（11 测试）；commit `938d6340` 已 push 到 `origin/kalevala`；Docker 编译 exit 0，169 测试回归绿。
+- **简化接线全面排查完成**：`lib/kantele/npc/` 下所有 4 个 AskHandler（yanluo/dizangwang/zhang_sanfeng/lonely）均已实现真 LPC 门控，不存在 `check: fn ... -> :ok` 恒放行的 stub；其余 NPC 模块（dealer/master/quester/vendor/xiaoer/banker/guarder/horseboss/engage_rule/coagent/attitude）非 AskHandler 接口，无简化接线。
+
+- **B1 stub 命令真化（talk/ansuan/top）**（Task #321-323，未 commit）：
+  - `lib/kantele/character/commands/talk_command.ex`：LPC `talk.c` 解析 + 房间 NPC 查找 + `meta.inquiries` 应答；测试 14 例。
+  - `lib/kantele/character/commands/ansuan_command.ex`：LPC `ansuan.c` 跨方向暗算（门控/突袭/暴露/收尾 `start_busy(3)`+`jing -50`）；测试 20 例；测试 seam 已预留（`conn.private[:room_flags]`/`[:exit_vetoes]`/`[:room]`/`[:rooms]`）。
+  - `lib/kantele/character/top_ranking.ex`（新建）：`CACHE_D` 等价物（落盘字段查 DB，运行态气血/精力查 `Presence.characters()`，kill/die 返回 `:unsupported`）。
+  - `lib/kantele/character/commands/top_command.ex`：经验/等级/气血/精力/年龄榜 + 框线布局 + 15 秒节流 + wizard 绕过；测试 24 例。
+  - 合计 48 tests / 0 failures（Docker，seed 384788）。
+  - 已知差异：`top kill/die` 因 `Metadata` 无计数器返回「未记录」；`talk` 无 `AI_CLIENT_D` 限于 `inquiries`；`top2`/`topp` 仍为 stub。
+  - 文档同步：`docs/remaining-work-checklist.zh-CN.md` B1 表已标三项「已真化」；`docs/game-commands-testing-guide.zh-CN.md` 占位清单已移除 ansuan/talk/top。
 
 ## @static 白名单当前：733 唯一 id（与 733 `.ex` 模块一致，0 缺失 0 extra）。
