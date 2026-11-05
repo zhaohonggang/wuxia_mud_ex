@@ -6,6 +6,7 @@ defmodule Kantele.World.KickoffTest do
   alias Kantele.Character.WorldStatusView
   alias Kantele.World.Kickoff
   alias Kantele.World.KickoffTest.StubLoader
+  alias Kantele.World.ZoneCache
 
   @moduledoc """
   世界加载兜底行为测试
@@ -183,6 +184,72 @@ defmodule Kantele.World.KickoffTest do
       assert is_binary(rendered.data.character.id)
     end
   end
+
+  describe "A3 f1 Diff-stop：热更清理不再存在的进程" do
+    test "zone 被移除后 ZoneSupervisor 及其房间进程均被终止" do
+      # 首次加载 dz:alpha（含房间 dz:alpha:r1）
+      set_mode(:diff_stop_v1)
+      {pid, name} = start_kickoff()
+
+      assert :ok = Kickoff.reload(name)
+      assert %{status: :ok} = Kickoff.status(name)
+
+      # dz:alpha 的 ZoneSupervisor 应该在运行
+      assert is_pid(:global.whereis_name({Kalevala.World.ZoneSupervisor, "dz:alpha"}))
+      # 房间 dz:alpha:r1 应该在运行
+      assert is_pid(:global.whereis_name({Kalevala.World.Room, "dz:alpha:r1"}))
+
+      # 切换到 dz:beta（dz:alpha 不再存在）
+      set_mode(:diff_stop_v2)
+      assert :ok = Kickoff.reload(name)
+
+      # dz:alpha 的 ZoneSupervisor 已被终止（及其整棵监督树）
+      refute is_pid(:global.whereis_name({Kalevala.World.ZoneSupervisor, "dz:alpha"}))
+      # dz:alpha 的房间进程已随 zone 一并终止
+      refute is_pid(:global.whereis_name({Kalevala.World.Room, "dz:alpha:r1"}))
+      # dz:beta 的 ZoneSupervisor 和房间应正常运行
+      assert is_pid(:global.whereis_name({Kalevala.World.ZoneSupervisor, "dz:beta"}))
+      assert is_pid(:global.whereis_name({Kalevala.World.Room, "dz:beta:r2"}))
+    end
+
+    test "zone 保留但房间被移除后，仅房间进程被终止，zone 和角色保留" do
+      # 首次加载 dz:alpha（含房间 dz:alpha:r1）
+      set_mode(:diff_stop_v1)
+      {_pid, name} = start_kickoff()
+
+      assert :ok = Kickoff.reload(name)
+      assert is_pid(:global.whereis_name({Kalevala.World.Room, "dz:alpha:r1"}))
+      refute is_pid(:global.whereis_name({Kalevala.World.Room, "dz:alpha:r2"}))
+
+      # 切换到 dz:alpha 的 v3 版本（同 zone，房间换成 r2，r1 被移除）
+      set_mode(:diff_stop_v3)
+      assert :ok = Kickoff.reload(name)
+
+      # zone 仍在（zone id 相同，ZoneSupervisor 未被终止）
+      assert is_pid(:global.whereis_name({Kalevala.World.ZoneSupervisor, "dz:alpha"}))
+      # 旧房间 r1 已被终止
+      refute is_pid(:global.whereis_name({Kalevala.World.Room, "dz:alpha:r1"}))
+      # 新房间 r2 已启动
+      assert is_pid(:global.whereis_name({Kalevala.World.Room, "dz:alpha:r2"}))
+    end
+
+    test "多次 reload 后 ZoneCache 中不再存在的 zone 条目被清理" do
+      set_mode(:diff_stop_v1)
+      {_pid, name} = start_kickoff()
+      assert :ok = Kickoff.reload(name)
+
+      # ZoneCache 应包含 dz:alpha
+      assert {:ok, _zone} = ZoneCache.get("dz:alpha")
+
+      set_mode(:diff_stop_v2)
+      assert :ok = Kickoff.reload(name)
+
+      # dz:alpha 的 ZoneCache 条目应已删除
+      assert {:error, :not_found} = ZoneCache.get("dz:alpha")
+      # dz:beta 的 ZoneCache 条目应存在
+      assert {:ok, _zone} = ZoneCache.get("dz:beta")
+    end
+  end
 end
 
 defmodule Kantele.World.KickoffTest.StubLoader do
@@ -230,7 +297,41 @@ defmodule Kantele.World.KickoffTest.StubLoader do
           characters: [],
           items: []
         }
+
+      # A3 f1 Diff-stop 测试专用 world：固定 zone id，方便跨 reload 对比
+      :diff_stop_v1 ->
+        stub_zone_and_room("dz:alpha", "dz:alpha:r1")
+
+      :diff_stop_v3 ->
+        # 同 zone "dz:alpha"，但房间换成 r2（模拟房间被移除的场景）
+        stub_zone_and_room("dz:alpha", "dz:alpha:r2")
+
+      :diff_stop_v2 ->
+        stub_zone_and_room("dz:beta", "dz:beta:r2")
     end
+  end
+
+  # 构造固定 zone id 的最小 world（单 room，无角色），供 Diff-stop 跨 reload 对比
+  defp stub_zone_and_room(zone_id, room_id) do
+    room = %{
+      id: room_id,
+      zone_id: zone_id,
+      item_instances: []
+    }
+
+    stub_zone = %{
+      id: zone_id,
+      rooms: [room],
+      room_exits: [],
+      characters: %{}
+    }
+
+    %Kantele.World{
+      zones: [stub_zone],
+      rooms: [room],
+      characters: [],
+      items: []
+    }
   end
 
   def load_help(), do: []

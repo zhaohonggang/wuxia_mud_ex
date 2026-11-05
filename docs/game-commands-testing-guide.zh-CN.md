@@ -173,7 +173,7 @@
 | `berserk`/`baofa` · `pique`/`jianu` · `burning`/`fenu` | — | 狂暴 / 激怒 / 狂怒（战斗心态） |
 | `crattack` · `spattack` | — | 反击 / 特殊攻击 |
 | `guard` | — | 招架护卫 |
-| `special` `stab` `push` `hand` `train` `stop` `stay` `come` `release` | — | ⚠️ 占位（特技/插/推人/手持/驯兽/放生未开放） |
+| `special` `stab` `train` `stop` `stay` `come` `release` | — | ⚠️ 占位（特技/插/驯兽/放生未开放） |
 
 ### 商店与经济
 | 命令 | 说明 |
@@ -488,14 +488,14 @@ time           预期：显示游戏年月日/时辰/季节
 
 ## 六、已知限制与备注
 
-- **占位命令清单**（输出"暂未开放"）：`beg` `answer` `come` `stay` `stop` `train` `release` `hand` `liuxi/柳溪` `pkd` `push` `secularize/huansu/还俗` `special` `stab` `to` `top2` `topp` `touch` `vote` `closed`（半开）`scheme`（裸命令）`clone`（生物部分）。
-  - 注：`ansuan`/`talk`/`top` 已按 LPC 真实实现，不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
+- **占位命令清单**（输出"暂未开放"）：`answer` `come` `stay` `stop` `train` `release` `pkd` `secularize/huansu/还俗` `special` `stab` `to` `top2` `topp` `touch` `vote` `closed`（半开）`scheme`（裸命令）`clone`（生物部分）。
+  - 注：`ansuan`/`talk`/`top`/`beg`/`liuxi`/`push`/`hand` 已按 LPC 真实实现，不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
 - **W3 arch 14 命令为静默 no-op**（无输出）：`build` `call` `smash` `possess` `throw` `var` `setsk` `purge` `restore` `register` `reboot` `shutdown` `grant` `changeuser`。
 - 两个注册顺序注意点：`remove` 实际绑到功能完整的 WieldCommand（RemoveCommand stub 是死代码）；`yanjiu` 实际路由到 research（研究）而非 study（研习）。
 - `jing`（精力）随根骨自然回复；learn/practice 消耗精力（精 < 70% 中断）。
 - `jingli`（精力修为）由吐纳炼精提升，不自然回复，上限 = con×10，到瓶颈需升 force 等级。
 - 死亡无惩罚：满血回出生点、装备背包保留。
-- `reload` 会终止并重建全部 NPC——正在进行的战斗会被打断，属预期行为（注意：被删除的 UCL 房间/NPC 当前不保证被终止，见 `docs/remaining-work-checklist.zh-CN.md` A3）。
+- `reload` 会终止并重建全部 NPC——正在进行的战斗会被打断，属预期行为；不再存在的 zone/房间/角色会按角色→房间→zone 顺序终止（A3 f1 Diff-stop，见 `docs/remaining-work-checklist.zh-CN.md` A3）
 - 世界数据改动（`data/world/*.ucl`）后用 `reload` 生效；改 lib 代码需重启容器。
 - 自动化回归：`scripts/combat_e2e.exs`、`scripts/phase_a_e2e.exs`、`scripts/phase_b_e2e.exs`，
   运行方式见各脚本头部注释。

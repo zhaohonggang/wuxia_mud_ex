@@ -31,6 +31,7 @@
 - 遗留（非 valid_learn 缺口）：① 全量套件 105 个既有失败（ForceRegenerate 模块缺失 / 测试传裸 map 而 impl 要 Stats 结构体 / chongling-jian 空手期望），与批次7 无关；② `meta.character` 运行态不落盘，且无玩家侧赋値入口（转世未实现），故 4 个包含门技能当前不可学——与 LPC 一致。
 - 详见 2026-11-01.md / 2026-11-02.md / 2026-11-05.md。铁律：未经用户明确要求不 commit/push。
 - **C-PVE27 完整进度文档**：`docs/C-PVE27-valid_learn-长尾补全进度.zh-CN.md`（7 批次总表 + personality 建模决策 + 测试回归 + 剩余缺口），两份待办文档已加链。
+- **A3 f1 Diff-stop 已完成**（2026-11-05，已按用户授权提交并推送）：`lib/kantele/world/kickoff.ex` 新增 `cleanup_stale_processes/1`（角色→房间→zone 终止顺序，zixu 豁免，`:global` 注册名清理）、`ensure_world_infrastructure/0`、`safe_zone_keys/get/delete`、`purge_zone_tree/1`、`stop_room/1`。**铁律：ZoneSupervisor / Room 是 `:permanent` 子进程，必须 `DynamicSupervisor.terminate_child/2` 正常摘除；直接 `:kill` 会被监督树重启 / 触发重启强度上限令整个 DynamicSupervisor `:shutdown`。** 且基础设施兜底必须早于 cleanup（`Kalevala.Cache.keys/get` 直读 ETS，表不存在抛 `ArgumentError`），cleanup 必须在 `safely/1` 内。测试 `test/kantele/world/kickoff_test.exs` 14/0（多 seed），合并套件 56/0；`test/kantele/world` 1957/3 为既有失败（`:max_neili` KeyError、`:rand.uniform(0)`，单独跑同样复现）。文档已同步。
 
 ## 本次会话完成（2026-11-05）
 - **Task #302** `Yanluo.ask_specs/0 「锁阳丹」`：`lib/kantele/npc/yanluo.ex` 新增 spec，`execute` 透过 `Quest.set_todo/3` 登记任务。
@@ -43,13 +44,16 @@
 - **Task #317**：ZhangSanfeng `「鹤嘴劲」` check 加 LPC 真实门控（武当派 / 太极神功≥100 / 功绩≥800 / 神≥150000 / 内力上限≥1500），`lib/kantele/npc/zhang_sanfeng.ex` 修改，新建 `test/kantele/npc/zhang_sanfeng_test.exs`（11 测试）；commit `938d6340` 已 push 到 `origin/kalevala`；Docker 编译 exit 0，169 测试回归绿。
 - **简化接线全面排查完成**：`lib/kantele/npc/` 下所有 4 个 AskHandler（yanluo/dizangwang/zhang_sanfeng/lonely）均已实现真 LPC 门控，不存在 `check: fn ... -> :ok` 恒放行的 stub；其余 NPC 模块（dealer/master/quester/vendor/xiaoer/banker/guarder/horseboss/engage_rule/coagent/attitude）非 AskHandler 接口，无简化接线。
 
-- **B1 stub 命令真化（talk/ansuan/top）**（Task #321-323，未 commit）：
+- **B1 stub 命令真化（talk/ansuan/top/push/hand）**（Task #321-323,#326,#327，未 commit）：
   - `lib/kantele/character/commands/talk_command.ex`：LPC `talk.c` 解析 + 房间 NPC 查找 + `meta.inquiries` 应答；测试 14 例。
   - `lib/kantele/character/commands/ansuan_command.ex`：LPC `ansuan.c` 跨方向暗算（门控/突袭/暴露/收尾 `start_busy(3)`+`jing -50`）；测试 20 例；测试 seam 已预留（`conn.private[:room_flags]`/`[:exit_vetoes]`/`[:room]`/`[:rooms]`）。
   - `lib/kantele/character/top_ranking.ex`（新建）：`CACHE_D` 等价物（落盘字段查 DB，运行态气血/精力查 `Presence.characters()`，kill/die 返回 `:unsupported`）。
   - `lib/kantele/character/commands/top_command.ex`：经验/等级/气血/精力/年龄榜 + 框线布局 + 15 秒节流 + wizard 绕过；测试 24 例。
-  - 合计 48 tests / 0 failures（Docker，seed 384788）。
+  - `lib/kantele/character/commands/push_command.ex`：LPC `push.c` 跨方向推人（方向归一/出口/no_fight/present/is_character/fighting/living/playerp/valid_leave/qi≥150/neili≥100/force≥100/目标force≥150推不动/character/teleport瞬移/qi-100/neili-50/busy）；测试 20 例。
+  - `lib/kantele/character/commands/hand_command.ex`：LPC `hand.c` 手持门控（背包 present / 重量 20000 / 双手皆占 / 已装备）+ `:handing` 槽位（与 wield/remove 共用），`hand nothing` 收回；测试 14 例。
+  - 合计 48 + 20 + 14 = 82 tests / 0 failures（Docker）。
   - 已知差异：`top kill/die` 因 `Metadata` 无计数器返回「未记录」；`talk` 无 `AI_CLIENT_D` 限于 `inquiries`；`top2`/`topp` 仍为 stub。
-  - 文档同步：`docs/remaining-work-checklist.zh-CN.md` B1 表已标三项「已真化」；`docs/game-commands-testing-guide.zh-CN.md` 占位清单已移除 ansuan/talk/top。
+  - 文档同步：`docs/remaining-work-checklist.zh-CN.md` B1 表已标 talk/ansuan/top/push/hand「已真化」；`docs/game-commands-testing-guide.zh-CN.md` 占位清单已移除 ansuan/talk/top/beg/liuxi/push，注记 `ansuan/talk/top/beg/liuxi/push/hand`。
+  - 以上 B1 batch（talk/ansuan/top/push/hand/secularize）连同 A3 一起，已按 2026-11-05 用户明确授权提交并推送到 `origin/kalevala`（铁律：未经用户明确要求不 `git commit`/`push`）。
 
 ## @static 白名单当前：733 唯一 id（与 733 `.ex` 模块一致，0 缺失 0 extra）。
