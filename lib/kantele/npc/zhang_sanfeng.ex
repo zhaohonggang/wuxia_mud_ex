@@ -3,7 +3,12 @@ defmodule Kantele.NPC.ZhangSanfeng do
   张三丰 NPC 问询处理器（对应 class_wudang_zhang 的问鹤嘴劲→收徒→授真武剑链）
 
   关键词：
-    - "鹤嘴劲"：入门测试
+    - "鹤嘴劲"：入门测试。check 按 LPC `ask_skill1` 真实门控：
+      ① 武当派弟子（family.name == "武当派」）；
+      ② 太极神功 ≥ 100；
+      ③ 门派贡献 ≥ 800；
+      ④ 正邪值 ≥ 150000；
+      ⑤ 内力上限 ≥ 1500。
     - "收徒"：拜师
     - "真武剑"：师门唯一物品发放
     - "九阳神功"：内功传授
@@ -23,7 +28,27 @@ defmodule Kantele.NPC.ZhangSanfeng do
   def ask_specs do
     %{
       "鹤嘴劲" => %{
-        check: fn _asker, _npc -> :ok end,
+        check: fn asker, _npc ->
+          cond do
+            Map.get(asker.meta.family || %{}, :name) != "武当派" ->
+              {:error, "你不是我们武当派的人，何出此言？\n"}
+
+            Stats.skill(asker.meta.stats, "taiji-shengong") < 100 ->
+              {:error, "你连太极神功都没学，还谈什么绝招可言？\n"}
+
+            asker.meta.stats.gongxian < 800 ->
+              {:error, "你为我武当派效力还不够，这招我先不忙传你。\n"}
+
+            asker.meta.stats.shen < 150_000 ->
+              {:error, "你行侠仗义的事情做的还很不够，我不能传你绝招！\n"}
+
+            asker.meta.vitals.max_neili < 1500 ->
+              {:error, "你的内力修为太浅，修炼高了再来吧。\n"}
+
+            true ->
+              :ok
+          end
+        end,
         execute: fn asker, _npc ->
           send(asker.pid, {:room_message, "张三丰点头道：「鹤嘴劲乃本派入门心法，你可愿拜入吾门？」\n"})
           :ok
