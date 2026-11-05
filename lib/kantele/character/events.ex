@@ -84,6 +84,8 @@ defmodule Kantele.Character.Events do
       event("forge/notice", :forge_notice)
       # 转世献丹回执（地藏王进程 → 玩家进程，销毁精元丹 + 传送无间道）
       event("reborn/give-jingyuandan", :reborn_give_jingyuandan)
+      # 锁阳丹药引回执（阎罗进程 → 玩家进程，收四味药引 + 置位已解）
+      event("suoyangdan/give-ingredient", :suoyangdan_give_ingredient)
       # 武修文收还工具回执（武修文进程 → 玩家进程，落 mark/还了）
       event("wuxiuwen/returned", :wuxiuwen_returned)
     end

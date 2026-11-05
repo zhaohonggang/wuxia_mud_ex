@@ -45,16 +45,17 @@ defmodule Kantele.World.HellZhen do
 
   ## 尚未移植的 LPC 前置
 
-  `over_quest/hell_quest/锁阳丹`（四味药引任务，LPC `ask_quest` +
-  `accept_object`）在 Ex 尚无任务链，故 `gate_error/1` **不把它当硬门**：
-  否则十八层地狱会变成永远进不去的死内容。UCL 里已有四味药引的物品定义
-  与 `hell_quest/锁阳丹` 的 `valid_leave` 条件，待任务子系统移植后再补这道门。
+  无。`over_quest/hell_quest/锁阳丹`（四味药引任务）已移植为 `gate_error/1`
+  的第九道硬门（见下文），UCL 里的四味药引物品定义与 `valid_leave`
+  条件已就绪。
   """
 
   alias Kalevala.Event
+  alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Reborn
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
+  alias Kantele.Quest
   alias Kantele.World.Room
 
   @step_topic "character/hell_zhen_step"
@@ -212,9 +213,9 @@ defmodule Kantele.World.HellZhen do
   @doc """
   LPC `ask_zhuan` 的前置门；返回 `nil`（放行）或阎罗的拒绝语（含换行）。
 
-  顺序与 `yanluo.c:532-605` 一致（除未移植的锁阳丹任务门，见 moduledoc）：
+  顺序与 `yanluo.c:532-605` 一致：
   exp/ultrap → animaout → couple → bunch → brothers → league →
-  HellZhenPass → SomeonePassing。
+  HellZhenPass → SomeonePassing → **锁阳丹硬门**。
   """
   def gate_error(character) do
     meta = Map.get(character, :meta) || %{}
@@ -248,6 +249,9 @@ defmodule Kantele.World.HellZhen do
 
       someone_passing?() ->
         "十殿阎罗对你一拱手，道：真时机缘不巧，改日再来吧。\n"
+
+      not Quest.is_solved(PlayerMeta.quests(meta), %{file: "hell_quest/锁阳丹"}) ->
+        "十殿阎罗对你一拱手，道：你先帮我找到锁阳丹的药引，才能得到转世的机会。\n"
 
       true ->
         nil

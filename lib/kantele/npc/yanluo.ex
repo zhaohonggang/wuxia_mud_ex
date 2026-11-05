@@ -25,6 +25,9 @@ defmodule Kantele.NPC.Yanluo do
 
   alias Kalevala.Event
   alias Kantele.Communication
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Records
+  alias Kantele.Quest
   alias Kantele.World.HellZhen
 
   @impl true
@@ -44,9 +47,47 @@ defmodule Kantele.NPC.Yanluo do
           end
         end,
         effects: []
+      },
+      "锁阳丹" => %{
+        check: fn _asker, _npc ->
+          :ok
+        end,
+        execute: fn asker, _npc ->
+          quests = PlayerMeta.quests(asker.meta)
+          spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+
+          case Quest.set_todo(quests, spec) do
+            {:ok, new_quests} ->
+              meta = Map.put(asker.meta, :quests, new_quests)
+              character = %{asker | meta: meta}
+              Records.save(character)
+
+              if is_pid(asker.pid) do
+                send(
+                  asker.pid,
+                  {:room_message,
+                   "十殿阎罗道：「好，这锁阳丹之事便托付给你了，务必小心。」\n"}
+                )
+              end
+
+              {:ok, character}
+
+            {:error, reason} ->
+              {:error, reason_text(reason)}
+          end
+        end,
+        effects: []
       }
     }
   end
+
+  defp reason_text(:duplicate), do: "这差事你已在办，何必再问？\n"
+  defp reason_text(:done), do: "这桩差事你早已办妥，无需重复。\n"
+  defp reason_text(:full), do: "你手头要办的事已经够多了，先了结几桩再来说话。\n"
+  defp reason_text(:chain_blocked), do: "欲成此事，须先把前头的差事办妥，一步一个脚印，方是正理。\n"
+  defp reason_text(:mutex_blocked), do: "你正有相涉的要事在身，眼下接不得这桩差事。\n"
+  defp reason_text(:invalid), do: "这差事不似真的，恕老夫不相托付。\n"
+  defp reason_text(other), do: "#{inspect(other)}\n"
 
   @impl true
   def check(asker, npc, keyword), do: dispatch(:check, asker, npc, keyword)

@@ -62,6 +62,9 @@ defmodule Kantele.Character.GiveEvent do
       {:reborn} ->
         Kantele.World.RebornAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:suoyangdan} ->
+        Kantele.World.SuoyangdanAccept.handle(conn, npc, item_instance, data, from_name)
+
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
 
@@ -142,6 +145,7 @@ defmodule Kantele.Character.GiveEvent do
               :hit -> {:ok, take_message(rule, item)}
               :decline -> {:error, failure_message(rule, item)}
               :forge -> {:forge}
+              :suoyangdan -> {:suoyangdan}
               :miss -> acc
             end
         end
@@ -181,6 +185,11 @@ defmodule Kantele.Character.GiveEvent do
 
   # 转世献丹：命中即交给 Kantele.World.RebornAccept 处理（地藏王收精元丹）
   defp rule_hit(%{kind: "reborn"}, _item), do: :reborn
+
+  # 锁阳丹药引：命中即交给 Kantele.World.SuoyangdanAccept 处理（阎罗收四味药引）
+  defp rule_hit(%{kind: "suoyangdan"} = rule, item) do
+    if rule.id == item.id, do: :suoyangdan, else: :miss
+  end
 
   defp rule_hit(_rule, _item), do: :miss
 
@@ -578,6 +587,141 @@ defmodule Kantele.Character.GiveEvent do
     else
       conn
     end
+  end
+
+  # ---- 锁阳丹药引回执（阎罗进程 → 玩家进程）----
+  # 阎罗收下药引后，通过 `suoyangdan/give-ingredient` 事件送达玩家：
+  #   玩家侧移除该物品实例，按 Quest.add_item/4 追踪收集进度；
+  #   四味齐备时置位 Quest.set_solved/2，发放奖励（exp/potential/寰宇天晶）。
+  #
+  # LPC `yanluo.c` accept_object() 里连着检查 4 味药引，全部齐备后置位
+  # over_quest/hell_quest/锁阳丹=1，给予寰宇天晶并奖励经验/潜能。
+  @suoyangdan_items ~w(longdan hugu yumao jiake)a
+
+  @doc "锁阳丹四味药引 item_id 表（与 UCL 物品定义键一致）"
+  def suoyangdan_items, do: @suoyangdan_items
+
+  def suoyangdan_give_ingredient(conn, %{data: %{item_id: item_id, instance_id: instance_id, from_id: from_id, from_name: from_name}}) do
+    character = conn.character
+
+    if from_id == character.id and item_id in @suoyangdan_items do
+      # 移除该药引实例（LPC destruct(ob)）
+      inventory =
+        Enum.reject(character.inventory, fn inst -> inst.id == instance_id end)
+
+      quests0 = PlayerMeta.quests(character.meta)
+      spec = %{file: "hell_quest/锁阳丹", item: @suoyangdan_items}
+
+      # 追踪收集进度（Quest.add_item/4 要求 item 在 spec.item 声明过）
+      case Quest.add_item(quests0, spec, item_id, 1) do
+        {:ok, quests1} ->
+          all_collected? =
+            Enum.all?(@suoyangdan_items, fn iid ->
+              Quest.get_item(quests1, spec, iid) >= 1
+            end)
+
+          if all_collected? do
+            # 四味齐备：置位已解、发放奖励、赠予寰宇天晶
+            {quests2, rewards} = complete_suoyangdan(quests1, character.meta.stats)
+
+            stats = character.meta.stats
+            stats =
+              %{
+                stats
+                | combat_exp: stats.combat_exp + (Map.get(rewards, :exp) || 0),
+                  potential: stats.potential + (Map.get(rewards, :potential) || 0),
+                  score: stats.score + (Map.get(rewards, :score) || 0),
+                  weiwang: stats.weiwang + (Map.get(rewards, :weiwang) || 0),
+                  gongxian: stats.gongxian + (Map.get(rewards, :gongxian) || 0)
+              }
+
+            coins = (character.meta.coins || 0) + (Map.get(rewards, :coins) || 0)
+
+            # 赠予寰宇天晶
+            tianjing_instance =
+              %Kalevala.World.Item.Instance{
+                id: Kalevala.World.Item.Instance.generate_id(),
+                item_id: "tianjing",
+                created_at: DateTime.utc_now()
+              }
+            inventory = [tianjing_instance | inventory]
+
+            character =
+              character
+              |> Map.put(:inventory, inventory)
+              |> Map.put(:meta, %{
+                character.meta
+                | stats: stats,
+                  coins: coins,
+                  quests: quests2
+              })
+
+            Records.save(character)
+
+            Communication.announce(
+              "rumor",
+              "#{character.name}为阎罗备齐锁阳丹四味药引，阎罗赐予寰宇天晶一块！\n"
+            )
+
+            conn
+            |> put_character(character)
+            |> render(
+              CommandView,
+              "text",
+              %{text:
+                "十殿阎罗大喜道：「这下四种原料都已备齐，终于可以开始炼制老大要的锁阳丹了！多亏有你的帮助啊，这个是以前我从蓬莱仙山得来的宝物，留着也没用，就当是酬劳好了。」\n" <>
+                  "你把东西交给了#{from_name || "十殿阎罗"}。\n" <>
+                  "任务完成！（实战经验+#{Map.get(rewards, :exp) || 0} 潜能+#{Map.get(rewards, :potential) || 0} 阅历+#{Map.get(rewards, :score) || 0} 威望+#{Map.get(rewards, :weiwang) || 0} 门派贡献+#{Map.get(rewards, :gongxian) || 0}）\n" <>
+                  "你获得了寰宇天晶。\n"
+              }
+            )
+            |> prompt(CommandView, "prompt", %{})
+          else
+            # 尚未齐备：只记录进度，药引已收下
+            character =
+              character
+              |> Map.put(:inventory, inventory)
+              |> Map.put(:meta, %{character.meta | quests: quests1})
+
+            Records.save(character)
+
+            conn
+            |> put_character(character)
+            |> render(
+              CommandView,
+              "text",
+              %{text:
+                "十殿阎罗 nods：「这味药引可用，还差其他原料，你继续寻找。」\n"
+              }
+            )
+            |> prompt(CommandView, "prompt", %{})
+          end
+
+        {:error, _reason} ->
+          # Quest.add_item 失败（如任务不在办中）：不消耗物品，提示
+          conn
+          |> render(CommandView, "text", %{text: "十殿阎罗道：这差事你似乎还未领取，先去问我「锁阳丹」。\n"})
+          |> prompt(CommandView, "prompt", %{})
+      end
+    else
+      conn
+    end
+  end
+
+  defp complete_suoyangdan(quests, stats) do
+    # 置位已解 + 连续计数 +1
+    quests =
+      case Quest.set_solved(quests, %{file: "hell_quest/锁阳丹"}) do
+        {:ok, qs} -> qs
+        _ -> quests
+      end
+
+    quests = Quest.del_todo(quests, "hell_quest/锁阳丹") |> Quest.bump_quest_count()
+
+    # 奖励：参照 LPC 给予经验/潜能/阅历，这里用 fixed 档位
+    rewards = %{exp: 5000, potential: 2000, score: 1000, weiwang: 50, gongxian: 100, coins: 0}
+
+    {quests, rewards}
   end
 
   # ---- 武修文收还工具回执（武修文进程 → 玩家进程）----

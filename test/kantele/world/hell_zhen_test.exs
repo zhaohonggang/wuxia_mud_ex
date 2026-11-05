@@ -23,7 +23,12 @@ defmodule Kantele.World.HellZhenTest do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
+  alias Kantele.NPC.Yanluo
+  alias Kantele.Quest
   alias Kantele.World.HellZhen
+  alias Kantele.World.SuoyangdanAccept
+  alias Kalevala.Character
+  alias Kalevala.World.Item.Instance
 
   @emptyroom "death:emptyroom"
 
@@ -188,7 +193,156 @@ defmodule Kantele.World.HellZhenTest do
                character(env: %{animaout: true, HellZhenPass: true})
              ) =~ "免了吧"
 
-      assert HellZhen.gate_error(character()) == nil
+      # 锁阳丹硬门：默认角色未完成锁阳丹任务，因此被拒
+      assert HellZhen.gate_error(character()) =~ "锁阳丹"
+
+      # 锁阳丹已完成：通过所有九道门，放行
+      solved_quests =
+        Quest.new()
+        |> Quest.set_solved(%{file: "hell_quest/锁阳丹"})
+        |> elem(1)
+
+      c = character(env: %{animaout: true})
+      c = %{c | meta: %{c.meta | quests: solved_quests}}
+
+      assert HellZhen.gate_error(c) == nil
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # gate_error/1 第九道门：锁阳丹硬门
+  # ---------------------------------------------------------------------------
+
+  describe "gate_error/1 锁阳丹硬门" do
+    test "前八门均通过但锁阳丹未完成：拒绝" do
+      c = character(env: %{animaout: true})
+      assert HellZhen.gate_error(c) =~ "锁阳丹"
+    end
+
+    test "前八门均通过且锁阳丹已完成：放行" do
+      solved_quests =
+        Quest.new()
+        |> Quest.set_solved(%{file: "hell_quest/锁阳丹"})
+        |> elem(1)
+
+      c = character(env: %{animaout: true})
+      c = %{c | meta: %{c.meta | quests: solved_quests}}
+      assert HellZhen.gate_error(c) == nil
+    end
+
+    test "前八门均通过但任务在办中未完成：拒绝（solved 为空，todo 有条目）" do
+      spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+      {:ok, quests} = Quest.set_todo(Quest.new(), spec)
+
+      c = character(meta: %PlayerMeta{quests: quests, env: %{animaout: true}})
+      assert HellZhen.gate_error(c) =~ "锁阳丹"
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # Yanluo.ask_specs/0 「锁阳丹」
+  # ---------------------------------------------------------------------------
+
+  describe "Yanluo.ask_specs/0 「锁阳丹」" do
+    test "check 始终返回 :ok，任何人皆可领取" do
+      assert Yanluo.ask_specs()["锁阳丹"].check.(character(), %Character{}) == :ok
+    end
+
+    test "execute 构造正确的 quest spec 并置入 PlayerMeta.quests" do
+      spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+      {:ok, quests} = Quest.set_todo(Quest.new(), spec)
+
+      todo = Quest.get_todo(quests, "hell_quest/锁阳丹")
+      assert todo.item == %{}
+      assert Map.keys(todo.item) == []
+      assert Quest.get_size(quests) == 1
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # SuoyangdanAccept.handle/5：阎罗收药引，向玩家发 suoyangdan/give-ingredient 事件
+  # ---------------------------------------------------------------------------
+
+  describe "SuoyangdanAccept.handle/5" do
+    test "发送 suoyangdan/give-ingredient 事件，数据包含 item_id/instance_id/from/to" do
+      reply_to = self()
+      vitals = %Vitals{qi: 5000, max_qi: 5000, jing: 2000, max_jing: 2000, jingli: 2000, max_jingli: 3000, neili: 9000, max_neili: 10000}
+      stats = %Stats{str: 20, dex: 20, con: 20, int: 20, skills: %{}, mapped: %{}, performs: MapSet.new(), combat_exp: 0, score: 0, potential: 0, learned_points: 0, weiwang: 0}
+      npc = %Character{
+        id: "npc-yanluo",
+        name: "十殿阎罗",
+        room_id: "death:yanluodian",
+        inventory: [],
+        meta: %PlayerMeta{vitals: vitals, stats: stats, combat: Combat.new()}
+      }
+      item_instance = %Instance{id: "inst-longdan-1", item_id: "longdan"}
+      data = %{reply_to: reply_to, from_id: "player-1"}
+
+      SuoyangdanAccept.handle(build_conn(npc), npc, item_instance, data, "张三")
+
+      assert_receive %Kalevala.Event{
+               topic: "suoyangdan/give-ingredient",
+               data: %{
+                 item_id: "longdan",
+                 instance_id: "inst-longdan-1",
+                 from_id: "player-1",
+                 to_id: "npc-yanluo",
+                 from_name: "张三"
+               }
+             }, 1000
+    end
+  end
+
+  # ---------------------------------------------------------------------------
+  # suoyangdan_give_ingredient/2 Quest 级逻辑：四味药引追踪与完成
+  # ---------------------------------------------------------------------------
+
+  describe "suoyangdan_give_ingredient/2 Quest 级逻辑" do
+    test "Quest.add_item 追踪每味药引计数，四味齐备后 is_solved 为真" do
+      spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+      {:ok, q1} = Quest.set_todo(Quest.new(), spec)
+
+      # 逐味收集，每味计数为 1
+      {:ok, q2} = Quest.add_item(q1, spec, "longdan", 1)
+      {:ok, q3} = Quest.add_item(q2, spec, "hugu", 1)
+      {:ok, q4} = Quest.add_item(q3, spec, "yumao", 1)
+      {:ok, q5} = Quest.add_item(q4, spec, "jiake", 1)
+
+      assert Quest.get_item(q5, spec, "longdan") == 1
+      assert Quest.get_item(q5, spec, "hugu") == 1
+      assert Quest.get_item(q5, spec, "yumao") == 1
+      assert Quest.get_item(q5, spec, "jiake") == 1
+
+      # 四味齐备：所有 item 计数 >= 1
+      all_collected =
+        Enum.all?(["longdan", "hugu", "yumao", "jiake"], fn iid ->
+          Quest.get_item(q5, spec, iid) >= 1
+        end)
+      assert all_collected == true
+
+      # 置位已解
+      {:ok, qs} = Quest.set_solved(q5, spec)
+      assert Quest.is_solved(qs, spec) == true
+      assert "hell_quest/锁阳丹" in Quest.get_solved(qs)
+    end
+
+    test "未齐备时 is_solved 仍为假" do
+      spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+      {:ok, q1} = Quest.set_todo(Quest.new(), spec)
+      {:ok, q2} = Quest.add_item(q1, spec, "longdan", 1)
+
+      assert Quest.get_item(q2, spec, "longdan") == 1
+      assert Quest.get_item(q2, spec, "hugu") == 0
+      assert Quest.is_solved(q2, spec) == false
+    end
+
+    test "重复收集同一味药引：计数累加" do
+      spec = %{file: "hell_quest/锁阳丹", item: ["longdan", "hugu", "yumao", "jiake"]}
+      {:ok, q1} = Quest.set_todo(Quest.new(), spec)
+      {:ok, q2} = Quest.add_item(q1, spec, "longdan", 1)
+      {:ok, q3} = Quest.add_item(q2, spec, "longdan", 1)
+
+      assert Quest.get_item(q3, spec, "longdan") == 2
     end
   end
 
@@ -340,7 +494,15 @@ defmodule Kantele.World.HellZhenTest do
 
       assert granted.meta.env[:animaout] == true
       assert granted.meta.vitals.max_jingli == c.meta.vitals.max_jingli + 1500
-      assert HellZhen.gate_error(granted) == nil
+
+      # gate_error 现在有第九道锁阳丹硬门：需置 solved 才能放行
+      solved_quests =
+        Quest.new()
+        |> Quest.set_solved(%{file: "hell_quest/锁阳丹"})
+        |> elem(1)
+      granted_with_quest =
+        %{granted | meta: %{granted.meta | quests: solved_quests}}
+      assert HellZhen.gate_error(granted_with_quest) == nil
     end
   end
 end

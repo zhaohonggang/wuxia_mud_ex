@@ -29,5 +29,13 @@
 ## 进行中
 - valid_learn 长尾补全过程：批次1（7a609e9c）+ 批次2+3（4534d108，已 push）+ 批次4（12 技能，22/0）+ 批次5（16 技能，90/0）+ 批次6（2 技能：dugu-jiujian/jiuyang-shengong，5/0）+ **批次7（personality 建模后回填 19 个性格门，batch7 测试 76/0）** 已做，均未 commit。真实缺口从 21 → **2**：仅 hunyuan-yiqi（`guilty` 未建模）、qiankun-danuoyi（`query_condition` 未建模）。
 - 遗留（非 valid_learn 缺口）：① 全量套件 105 个既有失败（ForceRegenerate 模块缺失 / 测试传裸 map 而 impl 要 Stats 结构体 / chongling-jian 空手期望），与批次7 无关；② `meta.character` 运行态不落盘，且无玩家侧赋値入口（转世未实现），故 4 个包含门技能当前不可学——与 LPC 一致。
-- 详见 2026-11-01.md / 2026-11-02.md。铁律：未经用户明确要求不 commit/push。
+- 详见 2026-11-01.md / 2026-11-02.md / 2026-11-05.md。铁律：未经用户明确要求不 commit/push。
 - **C-PVE27 完整进度文档**：`docs/C-PVE27-valid_learn-长尾补全进度.zh-CN.md`（7 批次总表 + personality 建模决策 + 测试回归 + 剩余缺口），两份待办文档已加链。
+
+## 本次会话完成（2026-11-05）
+- **Task #302** `Yanluo.ask_specs/0 「锁阳丹」`：`lib/kantele/npc/yanluo.ex` 新增 spec，`execute` 透过 `Quest.set_todo/3` 登记任务。
+- **Task #303** `SuoyangdanAccept` + `give_event` 药引交付：新建 `lib/kantele/world/suoyangdan_accept.ex`；`give_event.ex` 新增 `:suoyangdan` 分发、`rule_hit/2`、`suoyangdan_give_ingredient/2`；`events.ex` 注册 `suoyangdan/give-ingredient`；`death.ucl` 四味药引规则改 `kind = "suoyangdan"`。
+- **Task #304** 测试：`test/kantele/world/hell_zhen_test.exs` 新增 gate_error 锁阳丹硬门 3 例、Yanluo ask_specs 2 例、SuoyangdanAccept 1 例、Quest 级药引追踪 3 例；修正既有 `grant_animaout` 断言（第九门生效）。
+- **Task #305** 验证：Docker `mix compile` exit 0；`hell_zhen_test.exs` 27/0；quest_test+hell_zhen+reborn 82/0；give/accept 相关 38/0。
+
+## @static 白名单当前：733 唯一 id（与 733 `.ex` 模块一致，0 缺失 0 extra）。
