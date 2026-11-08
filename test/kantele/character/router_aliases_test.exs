@@ -65,9 +65,9 @@ defmodule Kantele.Character.RouterAliasesTest do
     assert parse("拿起包子") == {:error, :unknown}
   end
 
-  test "穿/脱 → wear/remove" do
+  test "穿 → wear、脱 → RemoveCommand.run" do
     assert_command("穿 布袍", Kantele.Character.WieldCommand, :wear, %{"item_name" => "布袍"})
-    assert_command("脱 布袍", Kantele.Character.WieldCommand, :remove, %{"item_name" => "布袍"})
+    assert_command("脱 布袍", Kantele.Character.RemoveCommand, :run, %{"item_name" => "布袍"})
   end
 
   test "吃 → eat、喝 → drink、喝药（均需物品名参数）" do

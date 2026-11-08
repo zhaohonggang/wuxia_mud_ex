@@ -173,7 +173,9 @@
 | `berserk`/`baofa` · `pique`/`jianu` · `burning`/`fenu` | — | 狂暴 / 激怒 / 狂怒（战斗心态） |
 | `crattack` · `spattack` | — | 反击 / 特殊攻击 |
 | `guard` | — | 招架护卫 |
-| `special` `stab` `train` `stop` `stay` `come` `release` | — | ⚠️ 占位（特技/插/驯兽/放生未开放） |
+| `train` `come` `stay` `stop` `release` | — | 驯兽：驯服 / 跟随 / 停留 / 停止咬人 / 放生（LPC 真实门控，见 `docs/remaining-work-checklist.zh-CN.md` B1 驯兽批次） |
+| `special` | — | 特技：列所会特技 / `special <特技> [参数]` 调用 daemon；巫师 `special <玩家>` 列他人（LPC 真实门控） |
+| `stab` `touch` | — | 物品交互：`stab` 插背包物品 / `touch` 摸背包或房间物品，`do_stab`/`do_touch` 走 `ItemActionHandlers`，无 handler 回落兜底文案 |
 
 ### 商店与经济
 | 命令 | 说明 |
@@ -246,7 +248,7 @@
 | `goto` / `where` / `localcmds` / `home` / `mem` / `nodie` / `copyskill` / `promote` | 已实现 |
 | `clone`（物品可、生物⚠️「暂未实现，请用 update」）、`dest`、`update` | 部分实现 |
 | `build call smash possess throw var setsk purge restore register reboot shutdown grant changeuser` | ⚠️ 14 个静默 no-op 占位（需对象系统） |
-| `top` / `top2` / `topp` | ⚠️ 排行榜占位 |
+| `top` / `top2` / `topp` | 排行榜已真化：`top` 为经验/等级/气血/精力/年龄榜；`top2` / `topp [family\|league]` 为门派 / 结义同盟声望榜（含相比昨日 delta，同盟最多列 30 条） |
 
 ---
 
@@ -482,16 +484,32 @@ time           预期：显示游戏年月日/时辰/季节
 | 你是个文盲，先学点文化(literate)吧。 | 无 literate 技能使用 study |
 | 生物克隆暂未实现，请使用 update。 | clone 目标为 NPC |
 | 计划自动执行功能暂未开放… | scheme 裸命令 |
-| 排行榜暂未开放。 | top/top2/topp |
+| 你要看什么排行榜？ | `top2` / `topp` 参数不是 `family` / `league` |
+| 目前江湖上没有什么有名的结义同盟。 | `top2 league` / `topp league` 且全服无同盟 |
+| 你什么都没有脱下来。 | `remove all` 身上没有护具 |
+| 你的驭兽术还不纯熟，无法训练野兽！ | `train <野兽>` 且 `training` < 10 |
+| 这不是野兽，你晕头了吧？ | `train` 目标 race 不是野兽 |
+| 已经有野兽跟着你了！ | `come` 时玩家 temp 已有 `comedby` |
+| 已经没有野兽跟着你了！ | `stay` 时无 `comedby` |
+| 你不是它的主人，它根本不理你！ | `stop` 目标不是自己驯服的 |
+| 想放生，可是没啥可放的。 | `release` 房间内没有自己名下的野兽 |
 
 ---
 
 ## 六、已知限制与备注
 
-- **占位命令清单**（输出"暂未开放"）：`answer` `come` `stay` `stop` `train` `release` `pkd` `secularize/huansu/还俗` `special` `stab` `to` `top2` `topp` `touch` `vote` `closed`（半开）`scheme`（裸命令）`clone`（生物部分）。
-  - 注：`ansuan`/`talk`/`top`/`beg`/`liuxi`/`push`/`hand` 已按 LPC 真实实现，不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
+- **占位命令清单**（实测 `Kantele.CommandProbe.stubs/0`，与 `test/kantele/command_probe_test.exs` 白名单严格一致，共 6 个）：`answer`(聊天配对子系统) `pkd`(PK场子系统) `to`(聊天/邮件子系统) `vote`(投票子系统) `scheme`(计划执行器子系统，仅 `start` 自动执行) `clone`(巫师命令，仅生物部分)；另有 `closed` 为「半开」提示。
+  - **B1 自包含占位桩已真化完毕**：这 6 个命令全部依赖未来里程碑的后端子系统（M3 聊天/邮件、M4 投票、W2 巫师、后续批次），**不属于 B1 自包含工作**，按里程碑排期推进；本期不再对其做代码改动（见 `docs/remaining-work-checklist.zh-CN.md` B1 收尾小节）。
+  - 已按 LPC 真实实现的命令：`ansuan`/`talk`/`top`/`beg`/`liuxi`/`push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支），均不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
 - **W3 arch 14 命令为静默 no-op**（无输出）：`build` `call` `smash` `possess` `throw` `var` `setsk` `purge` `restore` `register` `reboot` `shutdown` `grant` `changeuser`。
-- 两个注册顺序注意点：`remove` 实际绑到功能完整的 WieldCommand（RemoveCommand stub 是死代码）；`yanjiu` 实际路由到 research（研究）而非 study（研习）。
+- 注册顺序注意点：`remove` / `脱` 现统一绑到 `RemoveCommand`（`remove all`、present/worn 门控都在这一侧，单件脱卸复用 `WieldCommand.remove/2`）；`yanjiu` 实际路由到 research（研究）而非 study（研习）。
+- 带参命令 `push` / `hand` / `talk` / `ansuan` / `train` / `come` / `stop` / `top2` / `topp` / `remove` / `special` / `stab` / `touch` 统一用
+  `optional(spaces + text(...))` 路由，裸命令与带参共用一条规则；此前 `parse/2` 裸路由只产出
+  `%{"command" => ...}`，导致这些命令的带参分支全是死代码。`special`/`stab`/`touch` 经
+  `SpecialSkills.daemon/1` 与 `ItemActionHandlers` 分发到具体实现。驯兽五命令的 NPC 运行态落在
+  `Kantele.Character.BeastState`（ETS），不在角色 meta 里；`race` 在 UCL 中无结构化字段，
+  由 `BeastTaming` 的 52 项静态注册表兜底。
+- `top2` / `topp` 的声望「相比昨日变化」需要上层推进跨天快照（`FamilyFame.snapshot/0` / `League.snapshot_last_fame/0`）；当前没有 LPC 的定时心跳，因此 delta 默认为 0。
 - `jing`（精力）随根骨自然回复；learn/practice 消耗精力（精 < 70% 中断）。
 - `jingli`（精力修为）由吐纳炼精提升，不自然回复，上限 = con×10，到瓶颈需升 force 等级。
 - 死亡无惩罚：满血回出生点、装备背包保留。

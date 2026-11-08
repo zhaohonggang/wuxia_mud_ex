@@ -29,7 +29,9 @@ defmodule Kantele.Character.SecularizeCommand do
 
   @monastic_families ["少林派", "峨嵋派", "大轮寺", "血刀门"]
 
-  def run(conn, %{}) do
+  # LPC secularize 忽略参数；用单一 clause 接住裸命令和带参两种情况
+  # （原先把 `def run(conn, %{})` 放在 `%{"rest" => ...}` 之前，后者恒不可达）。
+  def run(conn, _params) do
     character = conn.character
     family = Map.get(character.meta || %{}, :family)
 
@@ -50,11 +52,6 @@ defmodule Kantele.Character.SecularizeCommand do
       true ->
         set_pending(conn, character)
     end
-  end
-
-  def run(conn, %{"rest" => _rest}) do
-    # LPC secularize 忽略参数，与裸命令同处理
-    run(conn, %{})
   end
 
   # ---- 内部 ----

@@ -8,7 +8,7 @@ defmodule Kantele.Character.LiuxiCommand do
 
   以及 LPC `cmds/std/liuxi.c` 占用的这个词。
 
-  这里原本是个只打印「柳溪系统暂未开放。」的桩。因为它没有发出移动请求，
+  这里原本是个只打印占位提示的桩。因为它没有发出移动请求，
   扬州广场上那个 `liuxi` 方向玩家看得到、却走不过去 —— 出口在
   `data/world/city.ucl` 里是 `liuxi = liuxi.rooms.guangchang.id`，指向已安装的
   柳溪镇 `data/world/liuxi.ucl` 的广场。

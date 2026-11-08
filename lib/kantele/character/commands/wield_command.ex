@@ -1,6 +1,7 @@
 defmodule Kantele.Character.WieldCommand do
   @moduledoc """
-  装备命令：`wield <武器>` / `wear <护甲>` / `unwield <武器>` / `remove <护甲>`
+  装备命令：`wield <武器>` / `wear <护甲>` / `unwield <武器>`，
+  外加供 `RemoveCommand` 复用的单件脱卸函数 `remove/2`。
 
   使用 Kantele.Item.Equip 纯层决策：
   - two_handed?/secondary? 判定武器类型（flag 位掩码）
@@ -13,6 +14,10 @@ defmodule Kantele.Character.WieldCommand do
   `unequip_msg` 的转换产物，占位符 `{npc}`/`{name}`）时，按 LPC
   `message_vision` 语义走房间广播（`VisionEvent`，自己收到时 `{npc}`→"你"）；
   无自定义文案的路径保持原硬编码默认文案（只给自己看）不变。
+
+  命令路由上，`remove` / `脱` 归 `Kantele.Character.RemoveCommand`（LPC
+  `cmds/std/remove.c`，含 `remove all` 与 present()/worn 门控）；本模块的
+  `remove/2` 只是它调用的单件脱卸实现，仍保留公开以供装备相关测试与复用。
   """
 
   use Kalevala.Character.Command
@@ -77,34 +82,78 @@ defmodule Kantele.Character.WieldCommand do
   def remove(conn, %{"item_name" => item_name} = _params) do
     character = conn.character
 
-    slot =
-      Enum.find_value(character.meta.combat.equipped, fn
-        {:weapon, _snap} -> nil
-        {:secondary_weapon, _snap} -> nil
-        {:handing, _snap} -> nil
-        {slot, snap} -> if snapshot_matches?(snap, item_name), do: slot
-      end)
-
-    case slot do
+    case find_armor_slot(character.meta.combat.equipped, item_name) do
       nil ->
         render_error(conn, "你没有装备这样东西。\n")
 
-      slot ->
-        snap = get_in(character.meta.combat.equipped, [slot])
+      {slot, snap} ->
+        {conn, _updated} = do_remove(conn, character, slot, snap)
+        conn
+    end
+  end
 
-        combat =
-          character.meta.combat
-          |> Combat.unequip(slot)
-          |> subtract_armor_prop(snap)
+  @doc """
+  LPC `remove all`：卸下身上所有护具槽位。
+
+  `put_character/2` 只写 `conn.private.update_character`，不会改
+  `conn.character`；若按槽位反复调用 `remove/2`，每次都从原始快照重算，
+  最后只留得住最后一件。这里改为把「已更新的角色」在 reduce 中显式传递。
+  """
+  def remove_all(conn) do
+    character = conn.character
+    slots = armor_slots(character.meta.combat.equipped)
+
+    case slots do
+      [] ->
+        render_error(conn, "你什么都没有脱下来。\n")
+
+      slots ->
+        {conn, _updated} =
+          Enum.reduce(slots, {conn, character}, fn {slot, snap}, {acc, ch} ->
+            do_remove(acc, ch, slot, snap)
+          end)
 
         conn
-        |> put_character(%{character | meta: %{character.meta | combat: combat}})
-        |> equip_feedback(
-          equipped_item(character, Map.get(snap, :name)),
-          [:remove, :unequip],
-          "你卸下了#{Map.get(snap, :name)}。\n"
-        )
+        |> render(CommandView, "text", %{text: "你脱完了。\n"})
+        |> prompt(CommandView, "prompt", %{})
     end
+  end
+
+  # 卸下单个槽位：扣 prop/armor → 写回角色 → 装备文案反馈。
+  # 返回 {conn, updated_character} 供 `remove_all/1` 逐件累进。
+  defp do_remove(conn, character, slot, snap) do
+    combat =
+      character.meta.combat
+      |> Combat.unequip(slot)
+      |> subtract_armor_prop(snap)
+
+    updated = %{character | meta: %{character.meta | combat: combat}}
+
+    conn =
+      conn
+      |> put_character(updated)
+      |> equip_feedback(
+        equipped_item(character, Map.get(snap, :name)),
+        [:remove, :unequip],
+        "你卸下了#{Map.get(snap, :name)}。\n"
+      )
+
+    {conn, updated}
+  end
+
+  @non_armor_slots [:weapon, :secondary_weapon, :handing]
+
+  # LPC remove.c 只处理 `equipped == "worn"` 的防具，武器/手持槽位不在此列。
+  defp armor_slots(equipped) do
+    Enum.filter(equipped || %{}, fn {slot, snap} ->
+      slot not in @non_armor_slots and is_map(snap)
+    end)
+  end
+
+  defp find_armor_slot(equipped, item_name) do
+    Enum.find(armor_slots(equipped), fn {_slot, snap} ->
+      snapshot_matches?(snap, item_name)
+    end)
   end
 
   # ---- 武器：使用 Equip.wield_decision 决定槽位 ----

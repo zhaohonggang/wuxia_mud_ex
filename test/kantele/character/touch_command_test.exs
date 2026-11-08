@@ -1,71 +1,82 @@
 defmodule Kantele.Character.TouchCommandTest do
-  use ExUnit.Case, async: true
+  @moduledoc """
+  `touch` 命令 LPC 行为测试（cmds/std/touch.c）。
 
-  import Kalevala.ConnTest
+  纯函数 harness，物品/房间/NPC 通过 `InteractionFixtures` 注入。
+  """
 
+  use ExUnit.Case, async: false
+
+  alias Kantele.Character.Commands
   alias Kantele.Character.TouchCommand
-  alias Kantele.Character.PlayerMeta
-  alias Kantele.Character.Stats
-  alias Kantele.Character.Vitals
+  alias Kantele.Character.InteractionFixtures, as: F
 
-  defp player(opts \\ []) do
-    vitals = %Vitals{
-      jing: Keyword.get(opts, :jing, 2000),
-      jingli: Keyword.get(opts, :jingli, 2000),
-      neili: Keyword.get(opts, :neili, 9000),
-      max_neili: Keyword.get(opts, :max_neili, 10000),
-      max_jingli: Keyword.get(opts, :max_jingli, 2000),
-      qi: Keyword.get(opts, :qi, 5000),
-      max_qi: Keyword.get(opts, :max_qi, 5000)
-    }
-
-    stats = %Stats{
-      str: Keyword.get(opts, :str, 20),
-      dex: Keyword.get(opts, :dex, 20),
-      con: Keyword.get(opts, :con, 20),
-      int: Keyword.get(opts, :int, 20),
-      skills: Keyword.get(opts, :skills, %{}),
-      combat_exp: Keyword.get(opts, :combat_exp, 0),
-      score: Keyword.get(opts, :score, 0),
-      weiwang: Keyword.get(opts, :weiwang, 0)
-    }
-
-    combat = Kantele.Character.Combat.new()
-
-    %Kalevala.Character{
-      id: Keyword.get(opts, :id, "player-1"),
-      name: Keyword.get(opts, :name, "张三"),
-      pid: self(),
-      room_id: "test:room",
-      inventory: [],
-      meta: %PlayerMeta{
-        vitals: vitals,
-        stats: stats,
-        combat: combat
-      }
-    }
+  defmodule TestTouch do
+    def run(conn, _params), do: %{conn | private: Map.put(conn.private, :touched, true)}
   end
 
-  defp output_text(conn) do
-    conn.output
-    |> Enum.flat_map(fn
-      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
-      _ -> []
-    end)
-    |> Enum.join("")
+  defp sword_instance, do: F.instance(id: "inst-1", item: F.item(id: "item:changjian", name: "长剑"))
+
+  defp bell_instance, do: F.instance(id: "inst-2", item: F.item(id: "item:zhong", name: "铜钟"))
+
+  defp run(arg, player_opts \\ [], conn_opts \\ []) do
+    p = F.player(player_opts)
+    conn = F.build(p, conn_opts)
+    TouchCommand.run(conn, %{"rest" => arg})
   end
 
-  describe "touch 命令" do
-    test "无参数时提示" do
-      p = player()
-      conn = TouchCommand.run(build_conn(p), %{})
-      assert output_text(conn) =~ "触摸什么"
+  describe "参数与双范围取物门控" do
+    test "无参数提示" do
+      conn = run("")
+      assert F.output_text(conn) == "你要触摸什么物品？\n"
     end
 
-    test "有参数时显示暂未开放" do
-      p = player()
-      conn = TouchCommand.run(build_conn(p), %{"item" => "石碑"})
-      assert output_text(conn) =~ "暂未开放"
+    test "背包与房间都找不到则提示" do
+      conn = run("长剑")
+      assert F.output_text(conn) == "你身上没有这样东西，附近也没有。\n"
+    end
+
+    test "命中的是人物则提示别乱动" do
+      conn = run("石碑", [], characters: [F.npc(name: "石碑")])
+      assert F.output_text(conn) == "你别乱动石碑了。\n"
+    end
+  end
+
+  describe "物品自定义 do_touch 分发" do
+    test "背包里的物品走 LPC 兜底文案" do
+      conn = run("长剑", inventory: [sword_instance()], items: %{"item:changjian" => F.item(id: "item:changjian", name: "长剑")})
+      assert F.output_text(conn) == "你摸了一下长剑。\n"
+    end
+
+    test "房间地上的物品走 LPC 兜底文案" do
+      conn = run("铜钟", [], room_items: [bell_instance()], items: %{"item:zhong" => F.item(id: "item:zhong", name: "铜钟")})
+      assert F.output_text(conn) == "你摸了一下铜钟。\n"
+    end
+
+    test "注册了 do_touch handler 则调用" do
+      conn =
+        run("铜钟",
+          [],
+          room_items: [bell_instance()],
+          items: %{"item:zhong" => F.item(id: "item:zhong", name: "铜钟")},
+          handlers: %{"do_touch" => {TestTouch, :run}}
+        )
+
+      assert Map.get(conn.private, :touched) == true
+    end
+  end
+
+  describe "命令路由" do
+    test "bare touch 命中且 rest 为空" do
+      {:ok, parsed} = Commands.parse("touch")
+      assert parsed.module == TouchCommand
+      assert Map.get(parsed.params, "rest", "") == ""
+    end
+
+    test "touch <物品> 透传整段文字为 rest" do
+      {:ok, parsed} = Commands.parse("touch 石碑")
+      assert parsed.module == TouchCommand
+      assert Map.get(parsed.params, "rest") == "石碑"
     end
   end
 end

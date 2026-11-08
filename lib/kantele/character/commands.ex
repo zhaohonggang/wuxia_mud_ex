@@ -918,16 +918,12 @@ defmodule Kantele.Character.Commands do
       command |> spaces() |> word(:item_name)
     end)
 
-    parse("remove", :remove, fn command ->
-      command |> spaces() |> word(:item_name)
-    end)
-
-    # 中文别名（A8/N1）：穿 → wear、脱 → remove
+    # 中文别名（A8/N1）：穿 → wear
+    #
+    # `remove` / `脱` 不在这里注册：LPC cmds/std/remove.c 是独立命令（带
+    # `remove all` 与 present()/worn 双重门控），统一交给 RemoveCommand。
+    # WieldCommand.remove/2 仍保留为共享的单件脱卸实现。
     parse("穿", :wear, fn command ->
-      command |> spaces() |> word(:item_name)
-    end)
-
-    parse("脱", :remove, fn command ->
       command |> spaces() |> word(:item_name)
     end)
   end
@@ -1502,12 +1498,20 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  # LPC top2.c / topp.c 的 arg 是「命令之后的整段文字」（family | league）。
+  # 用 optional + text 让裸命令与带参共用一条规则；text 而非 word，是为了让
+  # `top2 league 多余` 整体落入无效参数分支（Router 会忽略 leftover，用 word
+  # 会被误判成合法的 league 榜）。
   module(Top2Command) do
-    parse("top2", :run)
+    parse("top2", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:category))
+    end)
   end
 
   module(ToppCommand) do
-    parse("topp", :run)
+    parse("topp", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:category))
+    end)
   end
 
   module(LeagueCommand) do
@@ -1582,10 +1586,6 @@ defmodule Kantele.Character.Commands do
     parse("vote", :run)
   end
 
-  module(HandCommand) do
-    parse("hand", :run)
-  end
-
   module(DrugCommand) do
     parse("drug", :run, fn command ->
       command
@@ -1598,8 +1598,32 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  # 这些命令的 run/2 需要 %{"rest" | "target"}。裸 parse/2 只产出
+  # %{"command" => ...}，参数永远到不了实现（此前 push/hand/talk/ansuan 的
+  # 带参分支全是死代码）。统一改成 optional(spaces + text(...))：
+  # 裸命令仍能命中、带参则把命令之后的整段文字交下去。
   module(PushCommand) do
-    parse("push", :run)
+    parse("push", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
+  end
+
+  module(HandCommand) do
+    parse("hand", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
+  end
+
+  module(TalkCommand) do
+    parse("talk", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
+  end
+
+  module(AnsuanCommand) do
+    parse("ansuan", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(StayCommand) do
@@ -1611,15 +1635,21 @@ defmodule Kantele.Character.Commands do
   end
 
   module(ComeCommand) do
-    parse("come", :run)
+    parse("come", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:target))
+    end)
   end
 
   module(TrainCommand) do
-    parse("train", :run)
+    parse("train", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:target))
+    end)
   end
 
   module(StopCommand) do
-    parse("stop", :run)
+    parse("stop", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:target))
+    end)
   end
 
   module(WashCommand) do
@@ -1628,16 +1658,22 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
-  module(TalkCommand) do
-    parse("talk", :run)
-  end
-
   module(SearchCommand) do
     parse("search", :run)
   end
 
   module(RemoveCommand) do
-    parse("remove", :run)
+    # LPC remove.c 的 arg 是「命令之后的整段文字」；用 optional + text 让
+    # 裸 `remove` 与 `remove <物品>` 共用一条规则（同名 parse 函数不可重复注册）。
+    # 裸命令落到 run/2 的「你要脱掉什么？」，带参走 remove all / 单件脱卸。
+    parse("remove", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:item_name))
+    end)
+
+    # 中文别名（A8/N1）：脱 → remove
+    parse("脱", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:item_name))
+    end)
   end
 
   module(StealCommand) do
@@ -1658,12 +1694,11 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  # LPC special.c 的参数是整段文字（特技名 + 可选参数，或巫师查看的玩家 ID）。
   module(SpecialCommand) do
-    parse("special", :run)
-  end
-
-  module(AnsuanCommand) do
-    parse("ansuan", :run)
+    parse("special", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(PourCommand) do
@@ -1685,12 +1720,18 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  # LPC stab.c / touch.c 的 arg 是命令之后的整段物品名（含空格的中文名也要接到）。
+  # 裸 parse/2 只产出 %{"command" => ...}，带参分支会成死代码，故统一 optional + text。
   module(TouchCommand) do
-    parse("touch", :run)
+    parse("touch", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(StabCommand) do
-    parse("stab", :run)
+    parse("stab", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(LiuxiCommand) do

@@ -11,7 +11,13 @@ defmodule Kantele.League do
   - `leader_id`   ：领袖 id
   - `leader_name` ：领袖名
   - `fame`        ：同盟声望（LEAGUE_D league_fame）
+  - `last_fame`   ：昨日声望快照（LEAGUE_D last_league_fame，供 `top2 league` 算 delta）
   - `hatred`      ：`%{id => [name, 仇恨度]}` 仇人表
+
+  声望快照语义照抄 `adm/daemons/leagued.c`：建盟时 `last_fame = base`（L346-350），
+  `add_league_fame/2` **不**改快照，只有跨天心跳才把当前声望复制成昨日值。
+  Ex 侧暂未有等价心跳定时器，故暴露 `snapshot_last_fame/0` 由上层按需调用；
+  未调用时 delta 恒为 0，与 LPC「无昨日数据」一致。
 
   ## 成员个人状态
   每个玩家的 `meta.league` 存 `%{league_name, leader_id, leader_name, grant, set}`：
@@ -71,6 +77,29 @@ defmodule Kantele.League do
     |> :ets.tab2list()
     |> Enum.map(fn {_k, v} -> v end)
     |> Enum.sort_by(&(-(&1.fame || 0)))
+  end
+
+  @doc """
+  LPC `query_all_last_league_fame()`：`%{同盟名 => 昨日声望}`。
+
+  LPC 在没有 `last_league_fame` 时直接返回今天的声望；这里对每个同盟用
+  `last_fame || fame` 兜底，等价于「新盟/无快照 → delta 0」。
+  """
+  def query_all_last_league_fame do
+    if :ets.whereis(@table) == :undefined do
+      %{}
+    else
+      @table
+      |> :ets.tab2list()
+      |> Map.new(fn {_k, record} ->
+        {record.fname, Map.get(record, :last_fame) || record.fame || 0}
+      end)
+    end
+  end
+
+  @doc "跨天快照：把所有同盟的 `last_fame` 更新为当前 `fame`（`leagued.c:56-62`）"
+  def snapshot_last_fame do
+    GenServer.call(__MODULE__, :snapshot_last_fame)
   end
 
   @doc "检查同盟名是否可创建（返回 nil=可创建，否则错误消息）"
@@ -177,6 +206,7 @@ defmodule Kantele.League do
         leader_id: leader_id,
         leader_name: leader_name,
         fame: clamp_fame(base),
+        last_fame: clamp_fame(base),
         hatred: %{}
       }
 
@@ -240,6 +270,16 @@ defmodule Kantele.League do
         :ets.insert(@table, {fname, %{record | fame: new_fame}})
         {:reply, :ok, state}
     end
+  end
+
+  def handle_call(:snapshot_last_fame, _from, state) do
+    @table
+    |> :ets.tab2list()
+    |> Enum.each(fn {fname, record} ->
+      :ets.insert(@table, {fname, Map.put(record, :last_fame, record.fame || 0)})
+    end)
+
+    {:reply, :ok, state}
   end
 
   def handle_call({:league_kill, killer, victim}, _from, state) do

@@ -1,69 +1,95 @@
 defmodule Kantele.Character.ReleaseCommandTest do
-  use ExUnit.Case, async: true
+  @moduledoc """
+  `release` 对 LPC `cmds/std/release.c`（源文件名 `fang.c`）的回归。
 
-  import Kalevala.ConnTest
+  LPC 遍历 `all_inventory(environment(me))`，只 `delete_temp` owner 三键；
+  `attitude` / `ridable` 是 `set()`，放生后保留；也不动玩家侧 `comedby`。
+  一头都没放到时播报「想放生，可是啥可放的」。
+  """
 
+  use ExUnit.Case, async: false
+
+  alias Kantele.Character.BeastFixtures, as: F
+  alias Kantele.Character.BeastState
+  alias Kantele.Character.Commands
   alias Kantele.Character.ReleaseCommand
-  alias Kantele.Character.PlayerMeta
-  alias Kantele.Character.Stats
-  alias Kantele.Character.Vitals
 
-  defp player(opts \\ []) do
-    vitals = %Vitals{
-      jing: Keyword.get(opts, :jing, 2000),
-      jingli: Keyword.get(opts, :jingli, 2000),
-      neili: Keyword.get(opts, :neili, 9000),
-      max_neili: Keyword.get(opts, :max_neili, 10000),
-      max_jingli: Keyword.get(opts, :max_jingli, 2000),
-      qi: Keyword.get(opts, :qi, 5000),
-      max_qi: Keyword.get(opts, :max_qi, 5000)
-    }
-
-    stats = %Stats{
-      str: Keyword.get(opts, :str, 20),
-      dex: Keyword.get(opts, :dex, 20),
-      con: Keyword.get(opts, :con, 20),
-      int: Keyword.get(opts, :int, 20),
-      skills: Keyword.get(opts, :skills, %{}),
-      combat_exp: Keyword.get(opts, :combat_exp, 0),
-      score: Keyword.get(opts, :score, 0),
-      weiwang: Keyword.get(opts, :weiwang, 0)
-    }
-
-    combat = Kantele.Character.Combat.new()
-
-    %Kalevala.Character{
-      id: Keyword.get(opts, :id, "player-1"),
-      name: Keyword.get(opts, :name, "张三"),
-      pid: self(),
-      room_id: "test:room",
-      inventory: [],
-      meta: %PlayerMeta{
-        vitals: vitals,
-        stats: stats,
-        combat: combat
-      }
-    }
+  setup do
+    F.setup_beast_state()
+    on_exit(fn -> BeastState.reset() end)
+    :ok
   end
 
-  defp output_text(conn) do
-    conn.output
-    |> Enum.flat_map(fn
-      %Kalevala.Character.Conn.Text{data: data} -> [IO.iodata_to_binary(data)]
-      _ -> []
-    end)
-    |> Enum.join("")
-  end
+  defp run(p, opts \\ []), do: ReleaseCommand.run(F.build(p, opts), %{})
+  defp text(conn), do: F.output_text(conn)
 
-  describe "release 命令" do
-    test "显示暂未开放" do
-      p = player()
-      conn = ReleaseCommand.run(build_conn(p), %{})
-      assert output_text(conn) =~ "暂未开放"
+  describe "空放生" do
+    test "房间里没有任何野兽" do
+      conn = run(F.player())
+      assert text(conn) =~ "想放生，可是没啥可放的"
+      refute text(conn) =~ "暂未开放"
     end
 
-    test "路由解析" do
-      {:ok, parsed} = Kantele.Character.Commands.parse("release")
+    test "只有别人驯服的野兽" do
+      b = F.beast()
+      F.set_state(b.id, %{owner_id: "player-2"})
+      conn = run(F.player(), characters: [b])
+      assert text(conn) =~ "没啥可放的"
+      assert BeastState.get(b.id).owner_id == "player-2"
+    end
+
+    test "已驯服但不在本房间的野兽不播报" do
+      b = F.beast()
+      F.set_state(b.id, %{owner_id: "player-1"})
+      assert text(run(F.player())) =~ "没啥可放的"
+    end
+  end
+
+  describe "放生成功" do
+    test "逐条播报，只清 owner 三键，attitude/ridable 保留" do
+      horse = F.beast()
+      snake = F.beast(id: "test:dushe", name: "毒蛇")
+
+      F.set_state(horse.id, %{
+        owner_id: "player-1",
+        owner_name: "张三",
+        leader_id: "player-1",
+        attitude: "peace",
+        ridable: true
+      })
+
+      F.set_state(snake.id, %{owner_id: "player-1", owner_name: "张三"})
+
+      conn = run(F.player(), characters: [horse, snake])
+
+      assert text(conn) =~ "很慈悲地把黄骠马放离"
+      assert text(conn) =~ "很慈悲地把毒蛇放离"
+      refute text(conn) =~ "没啥可放的"
+
+      for id <- [horse.id, snake.id] do
+        state = BeastState.get(id)
+        assert state.owner_id == nil
+        assert state.owner_name == nil
+        assert state.leader_id == nil
+      end
+
+      assert BeastState.get(horse.id).attitude == "peace"
+      assert BeastState.get(horse.id).ridable == true
+    end
+
+    test "不动玩家侧 comedby（LPC release.c 没有 delete_temp(\"comedby\")）" do
+      horse = F.beast()
+      F.set_state(horse.id, %{owner_id: "player-1"})
+      p = F.player(temp: %{"comedby" => horse.id})
+
+      conn = run(p, characters: [horse])
+      assert F.comedby(conn) == horse.id
+    end
+  end
+
+  describe "路由" do
+    test "裸 release 命中 ReleaseCommand" do
+      assert {:ok, parsed} = Commands.parse("release")
       assert parsed.module == ReleaseCommand
     end
   end
