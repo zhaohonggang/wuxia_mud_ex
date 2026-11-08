@@ -147,6 +147,58 @@ defmodule Kantele.World do
   """
   def death_room_id(), do: "death:yanluodian"
 
+  @doc """
+  查找 NPC 定义（供 `clone` 命令生物克隆用）。
+
+  按 id（如 `"clone_lib:clone_tong_ren"`）精确匹配，否则按 name 在所有已缓存
+  zone 里搜索。返回 `%Kalevala.Character{}` 定义或 `nil`。
+
+  对应 LPC `clone.c` 的 `new(file)` —— 从世界数据里按路径/名实例化 NPC 原型。
+  """
+  def find_npc_definition(target) when is_binary(target) do
+    # 先尝试精确 id 匹配（"zone:name" 格式）
+    case String.split(target, ":") do
+      [zone_id, _char_name] ->
+        case ZoneCache.get(zone_id) do
+          {:ok, zone} ->
+            chars = zone_characters(zone)
+            Enum.find(chars, &(&1.id == target))
+
+          _ ->
+            nil
+        end
+
+      _ ->
+        nil
+    end ||
+
+      # 回退：按 name 在所有 zone 里搜索
+      find_npc_definition_by_name(target)
+  end
+
+  defp find_npc_definition_by_name(target) do
+    ZoneCache.keys()
+    |> Enum.find_value(fn zone_id ->
+      case ZoneCache.get(zone_id) do
+        {:ok, zone} ->
+          chars = zone_characters(zone)
+          Enum.find(chars, &(String.downcase(&1.name) == String.downcase(target)))
+
+        _ ->
+          nil
+      end
+    end)
+  end
+
+  defp zone_characters(zone) do
+    chars = Map.get(zone, :characters, %{})
+    case chars do
+      %{} = m -> Map.values(m)
+      list when is_list(list) -> list
+      _ -> []
+    end
+  end
+
   defp start_room_from_flags() do
     ZoneCache.keys()
     |> Enum.sort()

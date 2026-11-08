@@ -31,6 +31,7 @@ defmodule Kantele.Character.EatCommand do
   alias Kantele.Character.Records
   alias Kantele.Item.Effect
   alias Kantele.Item.Effect.Pill
+  alias Kantele.Character.Precepts
   alias Kantele.World.Items
   alias Kantele.World.RoomActions.Helpers
 
@@ -170,6 +171,9 @@ defmodule Kantele.Character.EatCommand do
           | inventory: drop_instance(character.inventory, instance),
             meta: new_meta
         }
+
+        # 戒律：食肉破荤戒（item.meta.is_meat）→ 增 guilty（落盘由下方 save 统一处理）
+        character = if Precepts.meat_item?(item), do: Precepts.violate(character, :eat_meat), else: character
 
         text = narrator(item, effect)
 

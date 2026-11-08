@@ -58,6 +58,8 @@ defmodule Kantele.Character.AskCommand do
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.PlayerMeta
+  alias Kantele.World.Items
   alias Kantele.World.Room
 
   def run(conn, %{"name" => name, "keyword" => keyword_raw}) do
@@ -67,10 +69,15 @@ defmodule Kantele.Character.AskCommand do
       {:ok, npc} ->
         case npc.meta.ask_handler do
           nil ->
-            # 无 AskHandler：落回事件流（inquiries/quest/turn_in 等）
-            conn
-            |> event("characters/ask", %{name: name, keyword: keyword})
-            |> assign(:prompt, false)
+            # 无 AskHandler：先检查是否有 quest_gift 物品提供（answer Y|N 流），
+            # 否则落回事件流（inquiries/quest/turn_in 等）
+            case handle_quest_gift_offer(conn, npc, keyword) do
+              {:ok, conn} -> conn
+              :passthrough ->
+                conn
+                |> event("characters/ask", %{name: name, keyword: keyword})
+                |> assign(:prompt, false)
+            end
 
           handler when is_binary(handler) ->
             dispatch_ask_handler(conn, npc, handler, keyword)
@@ -84,6 +91,37 @@ defmodule Kantele.Character.AskCommand do
   end
 
   def run(conn, _params), do: usage(conn)
+
+  # ---- quest_gift：ask <npc> quest 设置 temp[:quest_gift] ----
+
+  defp handle_quest_gift_offer(conn, npc, keyword) do
+    cond do
+      keyword != "quest" ->
+        :passthrough
+
+      is_nil(Map.get(npc.meta, :quest_gift)) ->
+        :passthrough
+
+      true ->
+        %{"obj" => obj, "gongxian" => gongxian} = Map.get(npc.meta, :quest_gift)
+        item = Items.get!(obj)
+        character = conn.character
+
+        meta =
+          character.meta
+          |> PlayerMeta.put_temp(:quest_gift, %{npc: npc.name, obj: obj, gongxian: gongxian})
+
+        {:ok,
+         conn
+         |> put_character(%{character | meta: meta})
+         |> render(
+           CommandView,
+           "text",
+           %{text: "#{npc.name} 摇了摇头，说：我这里有一件#{item.name}，需要#{gongxian}门贡才能换。你愿意接受吗？（answer Y/N）\n"}
+         )
+         |> prompt(CommandView, "prompt", %{})}
+    end
+  end
 
   defp find_ask_npc(conn, name) do
     room =

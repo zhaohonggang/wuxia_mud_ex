@@ -59,6 +59,8 @@ defmodule ExVenture.Characters.Metadata do
     # personality: 人格/天性（如 "国士无双"，仅转世时由 updated.c 设定；普通玩家恒 nil）。
     # 列名不能用 :character——schema 顶部 belongs_to(:character, Character) 已占用该名。
     field(:personality, :string)
+    # guilty: 戒律违犯计数（LPC query("guilty")；杀僧/食肉等破戒 +1，0=清净）；落盘后重登恢复
+    field(:guilty, :integer, default: 0)
     # per/kar: 容貌/福缘，由新玩家「阎罗殿洗点」(washto) 分配，随机 5+random(26)
     field(:per, :integer, default: 20)
     field(:kar, :integer, default: 0)
@@ -210,6 +212,7 @@ defmodule Kantele.Character.Records do
           kar: meta.stats.kar,
           env: meta.env,
           personality: meta.character,
+          guilty: meta.guilty || 0,
           gender: Map.get(meta.env, :gender),
           # setup_done: 注册问答完成标志（首登判定）；新玩家问答结束置 true
           setup_done: meta.setup_done
@@ -367,6 +370,8 @@ defmodule Kantele.Character.Records do
       # character 人格：转世设 "国士无双"，普通玩家恒 nil（与 LPC 一致）。
       # 注意此处从 DB 列 personality 读回（schema 不能用 :character 作列名）。
       |> Map.put(:character, metadata.personality)
+      # guilty: 戒律违犯计数（杀僧/食肉等破戒，0=清净）；重登经 apply_to_character 恢复
+      |> Map.put(:guilty, metadata.guilty || 0)
       # setup_done：注册问答完成标志（首登判定，决定登录落点/控制器）
       |> Map.put(:setup_done, metadata.setup_done)
       |> Map.put(:coins, max(metadata.coins || 0, 0))

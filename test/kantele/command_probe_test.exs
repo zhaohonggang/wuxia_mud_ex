@@ -18,18 +18,7 @@ defmodule Kantele.CommandProbeTest do
   # stay/stop/release/talk/ansuan/top/special/stab/touch 等）陆续真化后，原
   # 白名单里 ~90 条早已不是占位桩，只留下这份与 `CommandProbe.stubs/0` 实测
   # 结果一一对应的清单。
-  @whitelist %{
-    # M3
-    "to_command" => "M3",
-    # M4
-    "vote_command" => "M4",
-    # W2
-    "clone_command" => "W2",
-    # 后续批次
-    "answer_command" => "后续批次",
-    "pkd_command" => "后续批次",
-    "scheme_command" => "后续批次"
-  }
+  @whitelist %{}
 
   test "无未列入白名单的占位桩" do
     stub_modules = CommandProbe.stubs()

@@ -37,6 +37,7 @@ defmodule Kantele.World.NpcActions.Sign do
 
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
+  alias Kantele.Character.Pkd
   alias Kantele.World.NpcActions.Helpers
 
   @room_id "pk:entry"
@@ -63,8 +64,15 @@ defmodule Kantele.World.NpcActions.Sign do
       Helpers.broadcast(conn, @room_id, "#{@npc_name}抬头看了看$N，不屑道：就你这点本事？只好参加被屠大赛！\n")
     else
       # LPC: PK_D->reject_join(me) 返回字符串 → say。
-      # PK_D 未建模 → 落地其「无赛事」态文案（state != GET_READY 分支）。
-      Helpers.say(conn, @room_id, @npc_name, "现在没要举行比赛啊？你跑来干什么？")
+      # 接入真实 PK_D 门控：state != :ready 时返回拒绝文案，state == :ready 时返回 nil（放行）。
+      case Pkd.reject_join(conn.character) do
+        nil ->
+          # 报名期开放：后续赛事流程（骑马/携人检查/传送准备室）@todo
+          Helpers.say(conn, @room_id, @npc_name, "报名已开放，等比赛开始吧。")
+
+        msg ->
+          Helpers.say(conn, @room_id, @npc_name, msg)
+      end
     end
   end
 

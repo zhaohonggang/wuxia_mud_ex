@@ -9,7 +9,8 @@ defmodule Kantele.Character.PlayerMeta do
   - `followers` 跟随者列表 `[%{id, name, pid}]`（运行态，不落盘）
   - `nickname` 昵称（cmds/usr/nick.c；落盘 metadata.nickname）
   - `title` 玩家头衔（cmds/usr/title.c 玩家展示层；落盘）
-  - `character` 人格/天性（LPC `query("character")`，如 "光明磊落"；poison.c valid_learn 门槛；运行态，不落盘）
+  - `character` 人格/天性（LPC `query("character")`，如 "光明磊落"/"国士无双"；poison.c valid_learn 门槛；落盘 character_metadata.personality，仅转世时由 `Reborn` 置「国士无双」）
+  - `guilty` 戒律违犯计数（LPC `query("guilty")`；杀僧/食肉等破戒 +1，0=清净；落盘 character_metadata.guilty，由 `Precepts` 写入）
   - `option` 界面选项位图 `%{"brief_room" => 1, ...}`（cmds/usr/option.c；落盘）
   - `alias_commands` 自定义别名 `%{"sc" => "score", ...}`（cmds/usr/alias.c；落盘）
   - `team` 队伍 `%{id, leader_pid, members: [%{id, name, pid}]}`（cmds/std/team.c；运行态）
@@ -62,6 +63,7 @@ defmodule Kantele.Character.PlayerMeta do
     schedule: nil,
     tianshu_books: nil,
     jifen: nil,
+    guilty: 0,
     marks: %{},
     pill_cooldowns: %{},
     # 注册问答是否完成（首登判定，决定登录落点/控制器）；从 DB setup_done 恢复
@@ -363,7 +365,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     # *_combat 变体 → 全库 456 处战斗聊天被静默丢弃，本批回填。
     {:chat_msg_combat, []},
     {:chat_chance_combat, 0},
-    {:ask_handler, nil}
+    {:ask_handler, nil},
+    # quest_gift：NPC 向玩家提供的物品交换（%{obj: item_id, gongxian: cost}）。
+    # 由 ask <npc> quest 触发，设置玩家 temp[:quest_gift] 以便后续 answer Y|N。
+    {:quest_gift, nil}
   ]
 
   defimpl Kalevala.Meta.Trim do

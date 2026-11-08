@@ -1583,7 +1583,9 @@ defmodule Kantele.Character.Commands do
   end
 
   module(VoteCommand) do
-    parse("vote", :run)
+    parse("vote", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(DrugCommand) do
@@ -1714,9 +1716,8 @@ defmodule Kantele.Character.Commands do
   end
 
   module(ToCommand) do
-    parse("to", :run, [], fn command ->
-      command
-      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+    parse("to", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 
@@ -2034,7 +2035,7 @@ defmodule Kantele.Character.Commands do
 
   module(CloneCommand) do
     parse("clone", :run, fn command ->
-      command |> spaces() |> word(:target)
+      command |> optional(empty() |> spaces() |> word(:target))
     end)
   end
 

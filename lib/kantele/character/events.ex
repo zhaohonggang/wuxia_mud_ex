@@ -13,6 +13,7 @@ defmodule Kantele.Character.Events do
   alias Kantele.Character.EmoteEvent
   alias Kantele.Character.SayEvent
   alias Kantele.Character.TellEvent
+  alias Kantele.Character.SchemeStepEvent
   alias Kantele.Character.TrapEvent
   alias Kantele.Character.VisionEvent
   alias Kantele.Character.WhisperEvent
@@ -397,6 +398,10 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(CallOutEvent) do
       event("npc/call-out", :run)
+    end
+
+    module(SchemeStepEvent) do
+      event("character/scheme_step", :step)
     end
 
     module(BiEvent) do

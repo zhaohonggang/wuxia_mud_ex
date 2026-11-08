@@ -5,10 +5,11 @@ defmodule Kantele.Combat.Skills.HunyuanYiqi do
   内功载体：`valid_enable("force")`；仅可学不可练。
   `valid_force` 接受 易筋经/太极神功/武当心法/少林心法 共存。
 
-  差异（TODO(migrate)）：
-  - LPC `valid_learn` 的「已婚（`couple/have_couple`）」与「非男性」限制
-    分别按 `meta.spouse` / `meta.env[:gender]` 实装；
-    「屡犯僧戒（`guilty`）」无对应字段，仍属引擎未建模层。
+  差异（已迁移）：
+  - LPC `valid_learn` 的「已婚（`couple/have_couple`）」「非男性」「guilty（屡犯僧戒）」
+    分别按 `meta.spouse` / `meta.env[:gender]` / `meta.guilty` 实装。
+    `guilty` 现由 `Kantele.Character.Precepts` 写入（食肉 `:eat_meat`、击杀僧侣 `:kill_monk`），
+    读取端 `guilty_of/1` 于 `meta.guilty > 0` 时真正拦截。
   - `query_neili_improve` 成长公式未接入。
   """
 
@@ -31,6 +32,7 @@ defmodule Kantele.Combat.Skills.HunyuanYiqi do
     buddhism = Stats.skill(stats, "buddhism")
     force = Stats.skill(stats, "force")
     level = Stats.skill(stats, id())
+    guilty = guilty_of(character)
 
     cond do
       married?(character) ->
@@ -48,10 +50,24 @@ defmodule Kantele.Combat.Skills.HunyuanYiqi do
       force < level ->
         {:error, "你的基本内功火候还不够，无法领会更高深的混元一气功。\n"}
 
+      guilty > 0 ->
+        {:error, "你屡犯僧家数戒，无法领会更高深的混元一气功。\n"}
+
       true ->
         :ok
     end
   end
+
+  # LPC `me->query("guilty")`：僧家戒律违犯计数。写入端由 Kantele.Character.Precepts
+  # 补齐（食肉/击杀僧侣），guilty > 0 时本门真正拦截。
+  defp guilty_of(%{meta: meta}) when is_map(meta) do
+    case Map.get(meta, :guilty) do
+      n when is_integer(n) -> n
+      _ -> 0
+    end
+  end
+
+  defp guilty_of(_character), do: 0
 
   # LPC `me->query("couple/have_couple")` → meta.spouse（已婚则 %{id:, name:}）
   defp married?(%{meta: %{spouse: %{id: id}}}) when not is_nil(id), do: true

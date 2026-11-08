@@ -43,7 +43,8 @@ defmodule Kantele.Combat.Skills.Buddhism do
   @doc "招式名 -> 招式数据（供 score/look 展示）"
   def actions(), do: @actions
 
-  # LPC `me->query("guilty")`：僧家戒律违犯计数。本端口未建模 → 恒 0。
+  # LPC `me->query("guilty")`：僧家戒律违犯计数。写入端由 Kantele.Character.Precepts
+  # 补齐（食肉/击杀僧侣），guilty > 0 时本门真正拦截。
   defp guilty_of(%{meta: meta}) when is_map(meta) do
     case Map.get(meta, :guilty) do
       n when is_integer(n) -> n

@@ -38,6 +38,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.Combat
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.CharacterView
+  alias Kantele.Character.Precepts
   alias Kantele.Character.CommandView
   alias Kantele.Character.ConditionEvent
   alias Kantele.Character.PlayerMeta
@@ -824,6 +825,14 @@ defmodule Kantele.Character.CombatEvent do
 
     # 敌人已死：杀戮意图完结，从 killer/want_kills 移除
     character = clear_kill_intent(character, id)
+
+    # 戒律：击杀少林僧侣破戒（reward.name 子串启发）→ 增 guilty（落盘由下方 Records.save 统一处理）
+    character =
+      if Precepts.monk_name?(Map.get(reward, :name)) do
+        Precepts.violate(character, :kill_monk)
+      else
+        character
+      end
 
     # 门派贡献：拜师后击杀累积（A11/N5）；玩家才有关注点，NPC meta 防御兼容
     gongxian_gain =

@@ -86,12 +86,18 @@ defmodule Kantele.Character.PracticeCommand do
     end
   end
 
+  # E1: 把 session 态 conditions 并入 character 快照，供 valid_learn 读取
+  # （如 qiankun-danuoyi 的 query_condition("qiankun-except")）。零波及其余技能。
+  defp with_conditions(character, conn) do
+    Map.put(character, :conditions, get_session(conn, "conditions") || %{})
+  end
+
   defp practice(conn, character, skill_id, module) do
     stats = character.meta.stats
     cost = module.practice_cost()
     vitals = character.meta.vitals
 
-    with :ok <- module.valid_learn(stats, character),
+    with :ok <- module.valid_learn(stats, with_conditions(character, conn)),
          :ok <- conflict_gate(stats, skill_id),
          :ok <- exp_gate(stats, skill_id),
          :ok <- check_jing(vitals),

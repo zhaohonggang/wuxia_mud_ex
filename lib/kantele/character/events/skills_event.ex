@@ -71,6 +71,12 @@ defmodule Kantele.Character.SkillsEvent do
     end
   end
 
+  # E1: 把 session 态 conditions 并入 student_character 快照，供 valid_learn 读取
+  # （如 qiankun-danuoyi 的 query_condition("qiankun-except")）。零波及其余技能。
+  defp with_conditions(character, conn) do
+    Map.put(character, :conditions, get_session(conn, "conditions") || %{})
+  end
+
   defp do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate, reply_to) do
     character = conn.character
 
@@ -103,7 +109,7 @@ defmodule Kantele.Character.SkillsEvent do
         conn
 
       true ->
-        case module.valid_learn(student_stats, student_character) do
+        case module.valid_learn(student_stats, with_conditions(student_character, conn)) do
           :ok ->
             grant(
               reply_to,

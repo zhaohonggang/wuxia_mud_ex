@@ -12,6 +12,7 @@ defmodule Kantele.Combat.Skills.QiankunDanuoyi do
 
   use Kantele.Combat.Skill
 
+  alias Kantele.Character.Conditions
   alias Kantele.Character.Stats
 
   @actions []
@@ -85,15 +86,17 @@ defmodule Kantele.Combat.Skills.QiankunDanuoyi do
   def valid_enable(usage), do: usage in ["parry"]
 
   # LPC `valid_learn(object me)`（源 qiankun-danuoyi.c）
-  # 未建模：`query_condition("qiankun-except")` 是 condition daemon 的运行态，
-  # `valid_learn/2` 只拿到角色快照、没有 conditions 列表 → 该门跳过
-  # （与 hunyuan_yiqi 的 `guilty` 同类，属引擎未建模层）。
+  # `query_condition("qiankun-except")` 已接入：E1 在 learn_command / skills_event 调用
+  # valid_learn 前，把 session 态 conditions（`get_session(conn,"conditions")`）以
+  # `:conditions` 键并入 character 快照，此处 guarded 读取即可。其余门槛
+  # （性别/悟性/内力/内功/招架）已按 LPC 逐条保真迁移。
   @impl true
   def valid_learn(stats, character) do
     lvl = Stats.skill(stats, id())
     gender = gender_of(character)
     family_name = family_name_of(character)
     max_neili = max_neili_of(character)
+    conditions = Map.get(character, :conditions, %{})
 
     # LPC: layer = query_skill/50; if (layer > 7) layer = 7; if (family=="明教") layer = 1;
     layer = if family_name == "明教", do: 1, else: min(div(lvl, 50), 7)
@@ -101,6 +104,9 @@ defmodule Kantele.Combat.Skills.QiankunDanuoyi do
     cond do
       gender == "无性" and lvl >= 50 ->
         {:error, "你试图按照心法修炼大挪移，却觉得心中一阵迷茫，难以继续。\n"}
+
+      not is_nil(Conditions.query_condition(%{conditions: conditions}, "qiankun-except")) ->
+        {:error, "你现在体内若冰、四肢皆寒、面赤如火，无法继续修炼神功。\n"}
 
       Stats.int(stats) < 29 + layer ->
         {:error, "你觉得乾坤大挪移实在是深奥无比，全然无法理解。\n"}
