@@ -237,7 +237,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 | 项 | 文件 | 说明 |
 |----|------|------|
-| brothers 解除只改本地 | `brothers_command.ex:98` | `# TODO: 通知对方并同步移除对方名单（需跨角色更新，后续批处理）` |
+| brothers 跨角色同步 | `brothers_command.ex` / `ex_venture/characters.ex` / `world/room.ex` / `events/brothers_event.ex` | 断义时：持久化移除对方名单（`ExVenture.Characters.remove_brother/2`，离线亦可，LPC UPDATE_D 等价）+ rumor 广播 + 同房间在场兄弟内存同步（`brothers/break`→`brothers/broken`） |
 | 饥饿系统不完整 | `feature_damage.ex:430-500` | heartbeat 扣减有，`eat` 仅展示（`eat_command.ex:8`） |
 
 ---
@@ -259,7 +259,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 1. ✅ **A3 (f1 Diff-stop)** — 已完成：热更终止不再存在的 zone/房间/角色，防止僵尸进程堆积。测试 `test/kantele/world/kickoff_test.exs` 14/0。
 2. ✅ **B1 `suicide`** — 已完成（2026-11-09）：`suicide -f <密码>` 校验 `meta.password` 后链删角色 + rumor 广播（combat_exp>=1000）；15 秒 halt 倒计时为有意简化。
-3. **C brothers 跨角色同步** — 小改动，社会系统完整性
+3. ✅ **C brothers 跨角色同步** — 已完成（2026-11-09）：断义 `brothers out <name>` 现同步对方持久化名单（`ExVenture.Characters.remove_brother/2`，离线亦可，对应 LPC `UPDATE_D->clear_user_data`）+ rumor 广播 + 同房间在场兄弟内存同步（房间 `brothers/break` 转发 `brothers/broken`）。`brothers_command_test.exs` + `brothers_event_test.exs` 9/0。
 4. **B1 自包含 stub — 已全部真化（见上方 B1 收尾）** — `push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`talk`/`ansuan`/`top`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支）均已按 LPC 真实实现；**原「剩余 6 个」占位命令（`answer`/`pkd`/`to`/`vote`/`scheme`/`clone`）亦已于 2026-11-09 随 E1–E5 全部真化**，其依赖的后端子系统（PK 场、投票、ask/answer、行编辑器、计划执行器、生物克隆）均已落地。真正未建模的仅剩 B2 的 12 个 W3 命令。
 5. **A1/A2/A4** — 大工程，需立项排期（T1 转换器投入最大）
 

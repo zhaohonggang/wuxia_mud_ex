@@ -133,6 +133,10 @@ defmodule Kantele.Character.Events do
       event("swear/cancelled", :cancelled)
     end
 
+    module(BrothersEvent) do
+      event("brothers/broken", :broken)
+    end
+
     module(EngageEvent) do
       event("engage/propose", :propose)
       event("engage/pending", :pending)

@@ -8,6 +8,7 @@ defmodule Kantele.Character.BrothersCommand do
 
   use Kalevala.Character.Command
 
+  alias ExVenture.Characters
   alias Kantele.Character.CommandView
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
@@ -85,7 +86,10 @@ defmodule Kantele.Character.BrothersCommand do
   defp confirmed_break(conn, target) do
     character = conn.character
     name = target.name
+    self_id = character.id
+    self_name = character.name
 
+    # 1) 从己方名单移除
     remaining = Enum.reject(PlayerMeta.brothers(character.meta), &(&1.id == target.id))
 
     meta =
@@ -93,11 +97,25 @@ defmodule Kantele.Character.BrothersCommand do
       |> PlayerMeta.put_brothers(remaining)
       |> PlayerMeta.delete_temp("pending/brother_out")
 
-    new_conn = put_character(conn, %{character | meta: meta})
-    save(new_conn)
+    conn = put_character(conn, %{character | meta: meta})
+    save(conn)
 
-    # TODO: 通知对方并同步移除对方名单（需跨角色更新，后续批处理）
-    # LPC 用 UPDATE_D 清除双方 brothers:<id> 关联；此处先只改己方名单。
+    # 2) 同步对方名单（离线亦可，LPC UPDATE_D->clear_user_data(arg, "brothers:"+id) 等价）
+    #    对方可能不在线，直接改其持久化 Metadata.brothers，不依赖其进程在内存。
+    _ = Characters.remove_brother(name, self_id)
+
+    # 3) rumor 广播（对应 LPC CHANNEL_D->do_channel "rumor"）
+    Kantele.Communication.announce("rumor",
+      "听说#{self_name}(#{self_id})和#{name}(#{name})割袍断义，断绝了来往。"
+    )
+
+    # 4) 同房间在场的兄弟：房间转发断义事件，更新其内存名单并提示
+    new_conn =
+      event(conn, "brothers/break", %{
+        partner_name: name,
+        breaker_id: self_id,
+        breaker_name: self_name
+      })
 
     new_conn
     |> render(CommandView, "text", %{text: "你和#{name}断绝了关系。\n"})

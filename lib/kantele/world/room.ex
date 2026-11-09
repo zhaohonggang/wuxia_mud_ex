@@ -1176,6 +1176,10 @@ defmodule Kantele.World.Room.Events do
       event("swear/cancel", :call)
     end
 
+    module(BrothersBreakEvent) do
+      event("brothers/break", :call)
+    end
+
     module(EngageRequestEvent) do
       event("engage/request", :call)
     end
@@ -2607,6 +2611,46 @@ defmodule Kantele.World.Room.SwearRequestEvent do
         |> render(requester.pid, CommandView, "text", %{
           text: "你向#{target.name}提出结拜请求，等待对方回应...\n"
         })
+    end
+  end
+end
+
+defmodule Kantele.World.Room.BrothersBreakEvent do
+  @moduledoc """
+  断义事件：在同房间寻找被断义方，转发 brothers/broken 让其更新内存名单。
+
+  对应 LPC brothers.c 中「兄弟在场则 message_vision」的逻辑；若对方不在同房间，
+  则由 BrothersCommand 直接改其持久化 Metadata.brothers（离线亦可）。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+
+  def call(context, %{data: %{partner_name: partner_name, breaker_id: breaker_id, breaker_name: breaker_name}} = _event) do
+    breaker = Enum.find(context.characters, &(&1.pid == _event.from_pid))
+
+    case breaker do
+      nil ->
+        context
+
+      _ ->
+        partner =
+          Enum.find(context.characters, fn c ->
+            c.pid != breaker.pid and
+              Kantele.World.Room.NameMatch.matches?(c, partner_name)
+          end)
+
+        case partner do
+          nil ->
+            context
+
+          _ ->
+            event(context, partner.pid, self(), "brothers/broken", %{
+              breaker_id: breaker_id,
+              breaker_name: breaker_name
+            })
+        end
     end
   end
 end

@@ -39,6 +39,7 @@ defmodule ExVenture.Characters do
   import Ecto.Query
 
   alias ExVenture.Characters.Character
+  alias ExVenture.Characters.Metadata
   alias ExVenture.Characters.PlayableCharacter
   alias ExVenture.Repo
   require Logger
@@ -166,6 +167,41 @@ defmodule ExVenture.Characters do
   rescue
     e ->
       Logger.warn("delete_by_name failed for #{inspect(name)}: #{Exception.message(e)}")
+      {:error, :db_unavailable}
+  end
+
+  @doc """
+  Remove `brother_id` from the sworn-brothers list of the character named
+  `name` (LPC `UPDATE_D->clear_user_data(arg, "brothers:" + id)` equivalent).
+
+  Used when a player breaks the oath (`brothers out <name>`): both sides' lists
+  must be cleared, but the partner may be offline. This edits the persisted
+  `Metadata.brothers` directly so it works regardless of online/offline state.
+  Returns `{:error, :not_found}` when the target row is missing, and rescues
+  DB errors (unavailable sandbox connection, etc.) returning `{:error, :db_unavailable}`
+  so the calling command never crashes.
+  """
+  def remove_brother(name, brother_id) when is_binary(name) and is_binary(brother_id) do
+    with %Character{} = character <- Repo.one(from c in Character, where: c.name == ^name, limit: 1),
+         %Metadata{} = metadata <- Repo.get_by(Metadata, character_id: character.id) do
+      new_brothers =
+        Enum.reject(metadata.brothers || [], fn brother ->
+          Map.get(brother, "id") == brother_id or Map.get(brother, :id) == brother_id
+        end)
+
+      metadata
+      |> Metadata.changeset(%{brothers: new_brothers})
+      |> Repo.update()
+    else
+      _ -> {:error, :not_found}
+    end
+  rescue
+    e ->
+      Logger.warn("remove_brother failed for #{inspect(name)}/#{inspect(brother_id)}: #{Exception.message(e)}")
+      {:error, :db_unavailable}
+  catch
+    :exit, reason ->
+      Logger.warn("remove_brother exited for #{inspect(name)}/#{inspect(brother_id)}: #{inspect(reason)}")
       {:error, :db_unavailable}
   end
 end

@@ -85,6 +85,11 @@ defmodule Kantele.Character.BrothersCommandTest do
       p = put_in(p.meta.temp, %{"pending/brother_out" => "李四"})
       conn = BrothersCommand.run(build_conn(p), %{"rest" => "out 李四"})
       assert output_text(conn) =~ "断绝了关系"
+      # 自己名单不再含李四（put_character 写入 conn.private.update_character）
+      updated = conn.private.update_character
+      refute Enum.any?(updated.meta.brothers, &(&1.name == "李四"))
+      # 发出跨角色同步事件（同房间在场兄弟由房间转发 brothers/broken）
+      assert Enum.any?(conn.events, &(&1.topic == "brothers/break"))
     end
   end
 end
