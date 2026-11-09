@@ -41,6 +41,7 @@ defmodule ExVenture.Characters do
   alias ExVenture.Characters.Character
   alias ExVenture.Characters.PlayableCharacter
   alias ExVenture.Repo
+  require Logger
 
   @doc """
   Get all characters for a user
@@ -147,5 +148,24 @@ defmodule ExVenture.Characters do
     |> Ecto.Multi.delete_all(:playable_characters, query)
     |> Ecto.Multi.delete(:character, character)
     |> Repo.transaction()
+  end
+
+  @doc """
+  Delete a character by name (LPC `UPDATE_D->remove_user` equivalent)
+
+  Used by the in-game `suicide` command, which only knows the character's
+  name (the live `Kalevala.Character` is keyed to the DB row by name, not id).
+  Returns `{:error, :not_found}` when no row matches, so callers need no
+  defensive id-casting and the call is safe to make unconditionally.
+  """
+  def delete_by_name(name) when is_binary(name) do
+    case Repo.get_by(Character, name: name) do
+      nil -> {:error, :not_found}
+      character -> delete(character)
+    end
+  rescue
+    e ->
+      Logger.warn("delete_by_name failed for #{inspect(name)}: #{Exception.message(e)}")
+      {:error, :db_unavailable}
   end
 end

@@ -221,10 +221,10 @@ defmodule Kantele.Character.ForgingAnswerTest do
       refute Map.has_key?(parsed.params, "rest")
     end
 
-    test "无 forge 会话 → 原 stub「回答系统暂未开放。」" do
+    test "无 forge 会话 → 走 stub「回答系统目前不支持该选项。」" do
       Forging.delete(@from_id)
       conn = AnswerCommand.run(build_conn(player()), %{"rest" => "剑"})
-      assert output_text(conn) =~ "回答系统暂未开放。"
+      assert output_text(conn) =~ "回答系统目前不支持该选项。"
     end
 
     test "裸 answer 无 forge 会话 → 「你要回答什么？」" do

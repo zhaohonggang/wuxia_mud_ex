@@ -35,6 +35,7 @@ defmodule Kantele.Character.PlayerMeta do
     :nickname,
     :title,
     :character,
+    :password,
     :option,
     :alias_commands,
     :team,

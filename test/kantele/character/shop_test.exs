@@ -172,10 +172,22 @@ defmodule Kantele.Character.ShopTest do
 
   test "ask 命令剥离 about/关于 前缀" do
     character = buyer()
-    conn = AskCommand.run(build_conn(character), %{"name" => "店小二", "keyword" => "about 柳溪"})
+    vendor_character = vendor()
+
+    # AskCommand.find_ask_npc 经由 conn.private.room 检索在场 NPC，
+    # 单元测试不启动 Room 进程，故直接在 conn 上注入含目标 NPC 的房间快照。
+    conn =
+      build_conn(character)
+      |> Map.update!(:private, &%{&1 | room: %{private: %{characters: [vendor_character]}}})
+
+    conn = AskCommand.run(conn, %{"name" => "店小二", "keyword" => "about 柳溪"})
     assert [%Event{topic: "characters/ask", data: %{keyword: "柳溪"}}] = conn.events
 
-    conn = AskCommand.run(build_conn(character), %{"name" => "店小二", "keyword" => "关于 黑虎"})
+    conn =
+      build_conn(character)
+      |> Map.update!(:private, &%{&1 | room: %{private: %{characters: [vendor_character]}}})
+
+    conn = AskCommand.run(conn, %{"name" => "店小二", "keyword" => "关于 黑虎"})
     assert [%Event{data: %{keyword: "黑虎"}}] = conn.events
   end
 

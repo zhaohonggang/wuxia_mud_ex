@@ -187,18 +187,23 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 ### B2. 14 个 W3 arch 静默 no-op
 
 > 已注册（`commands.ex:1550-1605`，注释 "14个stubs - 需对象系统"），`run` 直接返回 conn。
+> **E5（2026-11-09）已完成**：路由改造 + 全部显式化（非巫师拒绝、巫师明确回执），
+> 再真化可落地的 `var`（私有变量）/ `setsk`（自身技能等级），其余 12 个属进程/对象系统
+> 管理面、本端口无对应引擎能力 → 显式「未建模」回执并标注 Deferred。详见
+> `docs/B5-剩余子系统与引擎改造计划.zh-CN.md` 第 6 节。
 
-| build | call | changeuser | grant | possess |
-|-------|------|------------|-------|---------|
-| purge | reboot | register | restore | setsk |
-| shutdown | smash | throw | var | |
+| 命令 | 计划处置 |
+|------|---------|
+| var | E5-2 真化：列/设 `meta.temp` 私有变量 |
+| setsk | E5-2 真化：设自身/all 有效技能等级（需 `Stats.put_skill`） |
+| build / call / changeuser / grant / possess / purge / reboot / register / restore / shutdown / smash / throw | E5-1 显式「本端口未建模」回执 + Deferred（进程/对象系统管理面，无对应引擎能力） |
 
 ### B3. 小占位 / partial
 
 | 命令/系统 | 文件 | 缺口 |
 |-----------|------|------|
 | clone 生物克隆 | `clone_command.ex:22` | **(巫师命令)** item 可 clone，NPC 不可（Kalevala 无按路径克隆生物的能力） |
-| suicide | `suicide_command.ex:5,23` | 不删除角色记录（对话框注意） |
+| suicide | `suicide_command.ex` | **(2026-11-09 已真化)** `suicide -f <密码>` 校验 `meta.password` 后 `ExVenture.Characters.delete_by_name` 链删角色 + rumor 广播（combat_exp>=1000）；15 秒 halt 倒计时为有意简化 |
 | prepare valid_combine | `prepare_command.ex:108-109` | 组合逻辑未实装 |
 | closed | `closed_command.ex:9,50` | CLOSE_D 离线修炼缺失 |
 | scheme 自动执行 | `scheme_command.ex:38` | **(计划执行器子系统)** show/edit/clear 已真，start 未开（需 vitals/busy 自动化） |
@@ -207,10 +212,10 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 ### B4. 剩余 6 个占位命令依赖的后端子系统（待建，尚未作为独立工作项登记）
 
-> 这些子系统是 6 个剩余占位命令（见 B1 表 / B1 收尾）的**真实缺口**。它们目前只作为
-> 「命令占位」被记录，其所需后端**未在任何文档中作为独立工作项拆解**——除 `PK_D` 在另
-> 两处被顺带提及外，其余四个**完全无工作项登记**。本小节首次把它们显式列出，供后续
-> 里程碑排期。
+> 2026-11-09 更新：原列 6 个占位命令（`pkd`/`vote`/`answer`/`to`/`scheme`/`clone`）依赖的后端子系统
+> 已全部随 E1–E5 真化（PK 场 daemon、投票 daemon、ask/answer 配对、行编辑器、计划执行器、生物克隆均已落地），
+> 故本节仅作历史归档。当前真正未建模的命令是 B2 的 12 个 W3 命令（进程/对象系统管理面，需 W3 对象引擎）。
+> 原表保留以备回溯：
 
 | 子系统 | 依赖它的命令 | LPC 源 | 当前 Elixir 状态 | 是否已在他处登记 |
 |--------|------------|--------|----------------|------------------|
@@ -253,9 +258,9 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 ## 建议优先级
 
 1. ✅ **A3 (f1 Diff-stop)** — 已完成：热更终止不再存在的 zone/房间/角色，防止僵尸进程堆积。测试 `test/kantele/world/kickoff_test.exs` 14/0。
-2. **B1 `suicide`** — 删除角色对玩家体验重要
+2. ✅ **B1 `suicide`** — 已完成（2026-11-09）：`suicide -f <密码>` 校验 `meta.password` 后链删角色 + rumor 广播（combat_exp>=1000）；15 秒 halt 倒计时为有意简化。
 3. **C brothers 跨角色同步** — 小改动，社会系统完整性
-4. **B1 自包含 stub — 已全部真化（见上方 B1 收尾）** — `push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`talk`/`ansuan`/`top`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支）均已按 LPC 真实实现。剩余 6 个占位命令（`answer`/`pkd`/`to`/`vote`/`scheme`/`clone`）均依赖未来里程碑的后端子系统（M3 聊天/邮件、M4 投票、W2 巫师、后续批次），**不在 B1 自包含范围内**，按里程碑排期推进。
+4. **B1 自包含 stub — 已全部真化（见上方 B1 收尾）** — `push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`talk`/`ansuan`/`top`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支）均已按 LPC 真实实现；**原「剩余 6 个」占位命令（`answer`/`pkd`/`to`/`vote`/`scheme`/`clone`）亦已于 2026-11-09 随 E1–E5 全部真化**，其依赖的后端子系统（PK 场、投票、ask/answer、行编辑器、计划执行器、生物克隆）均已落地。真正未建模的仅剩 B2 的 12 个 W3 命令。
 5. **A1/A2/A4** — 大工程，需立项排期（T1 转换器投入最大）
 
 > 按仓库约定：本清单仅记录与查阅，开工任意项前先更新"当前状态"，每批验收以 `MIX_ENV=test mix test --seed 731933/788424` 全绿为准。

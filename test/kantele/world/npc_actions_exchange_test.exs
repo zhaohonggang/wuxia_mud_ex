@@ -25,16 +25,31 @@ defmodule Kantele.World.NpcActions.ExchangeTest do
 
   defp params(trailing), do: %{verb: "exchange", trailing: trailing, room_id: @room_id, npc: %Kalevala.Character{name: "店小二"}}
 
-  # 测试环境不加载世界数据（Items 缓存为空，见 yao 测试的同类处理）。
-  # 成功路径需要真实物品定义，故在 setup 里向 cache 注入 clone_lib:puti1
-  # （与 UCL clone_lib.ucl 的同名定义一致；Cache 无 delete 接口，注入是永久
-  # 的，但该 id 仅本文件使用，不影响其他测试对空缓存的依赖）。
+  @present "clone_lib:puti1"
+  # !ob 分支依赖世界数据里「没有定义」的物品。全量套件里其它测试会加载
+  # clone_lib.ucl，把这些 id 灌进全局 Items 缓存，令该分支失效（曾出现
+  # 「子午龙甲丹」兑换成功并触发 rumor → item_unit 崩 Meta.fetch/2）。
+  # 这里在 setup 里显式移走并记录原值，on_exit 原样还原，与执行顺序无关。
+  @absent ~w(clone_lib:str1 clone_lib:longjia)
+
   setup do
-    Kantele.World.Items.put("clone_lib:puti1", %Kalevala.World.Item{
-      id: "clone_lib:puti1",
+    Kantele.World.Items.put(@present, %Kalevala.World.Item{
+      id: @present,
       name: "血菩提",
       meta: %{}
     })
+
+    saved =
+      Map.new(@absent, fn id -> {id, Kantele.World.Items.get(id)} end)
+
+    Enum.each(@absent, &Kantele.World.Items.delete/1)
+
+    on_exit(fn ->
+      Enum.each(saved, fn
+        {id, {:ok, item}} -> Kantele.World.Items.put(id, item)
+        {id, _} -> Kantele.World.Items.delete(id)
+      end)
+    end)
 
     :ok
   end

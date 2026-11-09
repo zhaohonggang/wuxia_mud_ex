@@ -1,4 +1,12 @@
-defmodule Kantele.Character.AskCommandTest do
+defmodule Kantele.Character.LegacyAskCommandTest do
+  @moduledoc """
+  S1 之前的 ask 占位桩回归（保留路由解析 / about 前缀剥离覆盖）。
+
+  B5 主测试在 `commands/ask_command_test.exs`；本模块改用独立模块名避免同名冲突。
+  S1 真化后 `AskCommand` 会先在房间里查 NPC，故这里注入一个无 ask_handler 的
+  店家，让普通问询落回 `characters/ask` 事件流。
+  """
+
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest
@@ -53,10 +61,22 @@ defmodule Kantele.Character.AskCommandTest do
     Enum.filter(conn.events, fn event -> event.topic == "characters/ask" end)
   end
 
+  # S1 真化后 find_ask_npc/2 会读 conn.private.room.private.characters；
+  # 注入一个不带 ask_handler / quest_gift 的店家，问讯才会落回事件流。
+  defp conn_with_shopkeeper(p) do
+    npc = %{
+      name: "王老板",
+      meta: %{aliases: ["王老板"], ask_handler: nil}
+    }
+
+    conn = build_conn(p)
+    %{conn | private: %{conn.private | room: %{private: %{characters: [npc]}}}}
+  end
+
   describe "ask 命令" do
     test "问询发出 characters/ask 事件" do
       p = player()
-      conn = AskCommand.run(build_conn(p), %{"name" => "王老板", "keyword" => "客栈"})
+      conn = AskCommand.run(conn_with_shopkeeper(p), %{"name" => "王老板", "keyword" => "客栈"})
       event = hd(ask_events(conn))
 
       assert event.data.name == "王老板"
@@ -65,7 +85,7 @@ defmodule Kantele.Character.AskCommandTest do
 
     test "剥离 about 前缀" do
       p = player()
-      conn = AskCommand.run(build_conn(p), %{"name" => "王老板", "keyword" => "about 客栈"})
+      conn = AskCommand.run(conn_with_shopkeeper(p), %{"name" => "王老板", "keyword" => "about 客栈"})
       event = hd(ask_events(conn))
 
       assert event.data.keyword == "客栈"

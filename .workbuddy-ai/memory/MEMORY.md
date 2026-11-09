@@ -67,8 +67,10 @@
 - parse/2 裸路由只产 %{"command"=>...}，带参命令(run/2 需 rest/target/category)不可达。统一 optional(spaces+text(:rest|:target|:category))；SecularizeCommand.run/2 的 %{} 前置子句改通配 _params。新增带参命令务必检查。
 
 ## 已知遗留（跨会话）
-- valid_learn 真实缺口已收至 0（2026-11-08）：hunyuan-yiqi 的 guilty 按 no-op 补齐（读 meta.guilty，现已有 Precepts 写入路径，guilty>0 时真正拦截，见 S8/E3）；qiankun-danuoyi 的 query_condition 经 E1 接入（learn_command/skills_event 在调 valid_learn 前把 session conditions 以 :conditions 并入 character）。
-- **剩余后端子系统（B5 计划，见 docs/B5-剩余子系统与引擎改造计划.zh-CN.md）**：1 命令后端（生物克隆/clone）；S1 聊天配对 ✅ 已完成 + S2 PK场 ✅ 已完成 + S3 行编辑器/to ✅ 已完成 + S4 投票/vote ✅ 已完成 + S5 计划执行器/scheme ✅ 已完成 + 引擎修改 E1✅(conditions→character)/E2(meta.character 落盘+转世 ✅)/E3(guilty 写入 ✅)/E4(105 套件失败)/E5(W3 对象系统）。S1~S5/E1-E3 已完成，余待排期。
-- 全量套件 105 个既有失败（ForceRegenerate 缺失 / 测试传裸 map 而 impl 要 Stats 结构 / chongling-jian 空手期望），与 B1 无关。
+- valid_learn 真实缺口已收至 0：hunyuan-yiqi 的 guilty 经 S8/E3 已有真实写入路径，guilty>0 时真正拦截；qiankun-danuoyi 的 query_condition 经 E1 接入（learn_command/skills_event 在调 valid_learn 前把 session conditions 以 :conditions 并入 character）。
+- **E4 既有套件失败清理已完成（2026-11-09）**：全量 seed 831693 下 **105 → 27**。E4 收口时 `7370 tests`；E5 落地 `wiz_arch_test.exs`（14 例）后升至 **7382 tests, 27 failures**。剩余 27 例**全部为环境性**——`bcrypt_elixir 2.3.0` NIF 在 Windows 本地未编译（`deps/bcrypt_elixir/priv/` 空、无 gcc/cc/make/cl），级联打挂所有建用户/改密码的 `Web.*`/`ExVenture.*` 用例；容器/CI 中 NIF 可编译、自然通过。引擎/命令/技能/世界测试 **0 失败**。E4 工作**未 commit/push**（iron rule）。
+- **E5（W3 arch 14 命令）已完成（2026-11-09，未 commit/push）**：14 命令全部显式化——非巫师 `Access.wizardp/1` 拒绝、巫师明确回执；新增共享 `wiz_arch.ex`（`guard/3` + `not_modeled/2`，注释避开 CommandProbe 5 个占位标记）。真化 2 条：`var`（`PlayerMeta.put_temp` 读写 `meta.temp`）、`setsk`（`Stats.set_skill/3` 写 `meta.stats` + `Records.save/1`）。其余 12 条（`build/call/changeuser/grant/possess/purge/reboot/register/restore/shutdown/smash/throw`）属对象系统管理面、本端口无引擎能力 → 显式「W3 对象系统未建模」回执 + Deferred（有意保留，非隐藏桩）。验证：定向 `wiz_arch_test` 14/0、`set_command_test` 3/0、`command_probe_test` 2/0（白名单 `@whitelist %{}`）；全量 **7382 tests, 27 failures**，27 例与 E4 基线完全一致（bcrypt 环境性），grep E5 命令命中 NONE → 0 新增回归。B5 文档第 6 节已记执行记录。
+
+- **B1 `suicide` 已真化（2026-11-09，未 commit/push）**：LPC `cmds/usr/suicide.c` 落地 `suicide -f <密码>` → 校验 `meta.password`（明文，由 `passwd` 写入；本端口未引入 bcrypt，沿用既有约定）→ `ExVenture.Characters.delete_by_name(name)` 链删 Character + PlayableCharacter（新增 `delete_by_name/1`：按 name 查、缺失返回 `{:error,:not_found}`、DB 异常 `rescue` 降级）→ 房间「化作轻烟」广播（排除自身）+ combat_exp>=1000 时 `Communication.announce("rumor", ...)`。删除后告别语 + `halt()` 断开。`PlayerMeta` 新增 `:password` 字段（`passwd_command` 此前因缺字段调 `%{meta|password:}` 会崩，顺手修复）。15 秒 `halt` 倒计时窗口为有意简化（与端口单步命令模型一致）。`suicide_command_test.exs` 7/0。全量复跑预期 7382/27、无新增回归（进行中）。
 - meta.character 已落盘（character_metadata.personality，转世置"国士无双"），4 包含门技能转世后即可学（与 LPC 一致）。
-- 详细日志见 .workbuddy-ai/memory/2026-11-{01,02,05,08}.md。
+- 详细日志见 .workbuddy-ai/memory/2026-11-{01,02,05,08,09}.md。

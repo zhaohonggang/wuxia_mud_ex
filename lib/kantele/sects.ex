@@ -235,7 +235,7 @@ defmodule Kantele.Sects do
         "force",
         "huagong-dafa",
         "dodge",
-        "zhaixinggong",
+        "zhaixing-gong",
         "strike",
         "chousui-zhang",
         "claw",
@@ -254,7 +254,7 @@ defmodule Kantele.Sects do
       ],
       maps: %{
         "force" => "huagong-dafa",
-        "dodge" => "zhaixinggong",
+        "dodge" => "zhaixing-gong",
         "strike" => "chousui-zhang",
         "claw" => "sanyin-wugongzhao",
         "whip" => "chanhun-suo",

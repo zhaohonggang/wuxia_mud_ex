@@ -172,11 +172,11 @@ defmodule Kantele.Character.WizardGuardTest do
     assert output_text(conn) =~ "没有巫师的权限"
   end
 
-  test "clone 巫师指定生物时提示未实现" do
+  test "clone 巫师克隆在场生物" do
     tracked_player("李四", "target-1")
     wizard = player(%{attributes: %{"wiz_level" => 1}})
     conn = CloneCommand.run(build_conn(wizard), %{"target" => "李四"})
-    assert output_text(conn) =~ "生物克隆暂未实现"
+    assert output_text(conn) =~ "克隆 李四 成功"
   end
 
   test "clone 巫师指定未知目标" do

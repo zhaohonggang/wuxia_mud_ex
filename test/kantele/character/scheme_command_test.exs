@@ -1,4 +1,11 @@
-defmodule Kantele.Character.SchemeCommandTest do
+defmodule Kantele.Character.LegacySchemeCommandTest do
+  @moduledoc """
+  S5 之前的 scheme 占位桩回归（保留计划 CRUD / 路由覆盖）。
+
+  B5 主测试在 `commands/scheme_command_test.exs`（start/stop 门控）；
+  本模块改用独立模块名，避免与该文件同名 defmodule 冲突导致编译期随机丢测试。
+  """
+
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest

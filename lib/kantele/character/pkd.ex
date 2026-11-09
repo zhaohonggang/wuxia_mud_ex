@@ -47,6 +47,21 @@ defmodule Kantele.Character.Pkd do
       nil -> start_link()
       _ -> :ok
     end
+
+    # GenServer 由某条用例 start_link 时，表归该进程所有；用例结束进程退出后
+    # 表可能已被回收，而注册名尚未注销（或反之）。此时 ensure!/0 会误以为
+    # daemon 已就绪而不再建表，后续写入直接 ArgumentError。这里补一次建表。
+    if :ets.whereis(@table) == :undefined do
+      # 并发用例可能同时补建同名表；先建者胜，后建者忽略 badarg。
+      try do
+        :ets.new(@table, [:public, :named_table, read_concurrency: true])
+        :ets.insert(@table, {@table, @default})
+      rescue
+        ArgumentError -> :ok
+      end
+    end
+
+    :ok
   end
 
   @impl true
@@ -80,9 +95,18 @@ defmodule Kantele.Character.Pkd do
 
   @doc "读取当前赛事状态（服务未启动时返回缺省）。"
   def read_state() do
-    case :ets.lookup(@table, @table) do
-      [{table_key, state}] when table_key == @table -> state
-      [] -> @default
+    # daemon 未启动时 ETS 表也不存在：直接 :ets.lookup 会抛 ArgumentError
+    # （"the table identifier does not refer to an existing ETS table"），
+    # 曾导致 NPC 报名流程 Sign.do_sign 在纯单测里整条崩掉。
+    case :ets.whereis(@table) do
+      :undefined ->
+        @default
+
+      _table ->
+        case :ets.lookup(@table, @table) do
+          [{table_key, state}] when table_key == @table -> state
+          [] -> @default
+        end
     end
   end
 
@@ -156,6 +180,9 @@ defmodule Kantele.Character.Pkd do
   # ---- ETS 内部 ----
 
   defp write_state(state) do
+    # 写路径不做「表不存在就静默」兜底：那会让 set_state/join 在 daemon 尚未
+    # 就绪时悄悄丢状态（曾导致 pkd 命令用例偶发读到 :none）。调用方约定表已由
+    # init/1 或测试 reset_pkd/0 建好；仅有读路径需要缺省降级。
     :ets.insert(@table, {@table, state})
     :ok
   end

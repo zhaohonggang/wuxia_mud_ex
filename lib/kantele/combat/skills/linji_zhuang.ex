@@ -27,6 +27,8 @@ defmodule Kantele.Combat.Skills.LinjiZhuang do
   @impl true
   def valid_learn(stats, character) do
     cond do
+      # LPC `if (me->query("gender") != "女性")` —— 缺字段/nil 也按「非女性」拒，
+      # 不是只有「男性」才拒（E4 曾误收紧为 == "男性"，导致 partial_batch1 回归）。
       gender_of(character) != "女性" ->
         {:error, "你非女子，不能练习临济十二庄。\n"}
 

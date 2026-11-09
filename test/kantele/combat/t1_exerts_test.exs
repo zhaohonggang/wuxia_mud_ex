@@ -245,9 +245,12 @@ defmodule Kantele.Combat.T1ExertsTest do
     assert xiaowuxiang.valid_learn(skills.(%{"force" => 80}), %{}) == :ok
     assert {:error, _} = xiaowuxiang.valid_learn(skills.(%{"force" => 79}), %{})
 
+    # 玄冥神功按**派生**根骨 `query_con()` 判门（F4 试点批口径，见
+    # skills_valid_learn_pilot_test.exs）：query_con = con + force/10。
+    # 故 force=100 时 con 的临界值是 22（22+10=32），不是原始 con 的 32。
     xuanming = Skills.get("xuanming-shengong")
     assert xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 32}), %{}) == :ok
-    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 31}), %{})
+    assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 100}, con: 21}), %{})
     assert {:error, _} = xuanming.valid_learn(build.(%{skills: %{"force" => 50}, con: 40}), %{})
 
     zhanshen = Skills.get("zhanshen-xinjing")
@@ -477,31 +480,39 @@ defmodule Kantele.Combat.T1ExertsTest do
     build = fn attrs -> struct(Kantele.Character.Stats.new(), attrs) end
     skills = fn map -> build.(%{skills: map, con: 20, int: 20}) end
 
+    # 龙象般若功 LPC 门控另有 `query("str") < 36` / `query("con") < 30`
+    # （longxiang-gong.c:76-84），默认的 str=20/con=20 根本进不到 force/lamaism
+    # 门。这里单独造一份先天属性达标的角色，才能测到本用例想测的后续门槛。
+    strong = fn map -> build.(%{skills: map, str: 40, con: 40, int: 20}) end
+
     longxiang = Skills.get("longxiang-gong")
 
     assert longxiang.valid_learn(
-             skills.(%{"force" => 100, "lamaism" => 100, "longxiang-gong" => 100}),
+             strong.(%{"force" => 100, "lamaism" => 100, "longxiang-gong" => 100}),
              %{}) == :ok
 
     assert {:error, _} =
              longxiang.valid_learn(
-               skills.(%{"force" => 99, "lamaism" => 100, "longxiang-gong" => 100}),
+               strong.(%{"force" => 99, "lamaism" => 100, "longxiang-gong" => 100}),
                %{})
 
     assert {:error, _} =
              longxiang.valid_learn(
-               skills.(%{"force" => 100, "lamaism" => 99, "longxiang-gong" => 100}),
+               strong.(%{"force" => 100, "lamaism" => 99, "longxiang-gong" => 100}),
                %{})
 
+    # 临济十二庄 LPC 要求 `query("gender") == "女性"`（linji-zhuang.c:33）。
+    # 传 %{} 会先被「你非女子」拦掉，测不到 force / mahayana 门。
+    female = %{meta: %{env: %{gender: "女性"}}}
     linji = Skills.get("linji-zhuang")
 
-    assert linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 50, "mahayana" => 100}), %{}) ==
+    assert linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 50, "mahayana" => 100}), female) ==
              :ok
 
-    assert {:error, _} = linji.valid_learn(skills.(%{"force" => 39, "mahayana" => 100}), %{})
+    assert {:error, _} = linji.valid_learn(skills.(%{"force" => 39, "mahayana" => 100}), female)
 
     assert {:error, _} =
-             linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 60, "mahayana" => 50}), %{})
+             linji.valid_learn(skills.(%{"force" => 40, "linji-zhuang" => 60, "mahayana" => 50}), female)
 
     assert Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 20}), %{}) == :ok
     assert {:error, _} = Skills.get("zihui-xinfa").valid_learn(skills.(%{"force" => 19}), %{})

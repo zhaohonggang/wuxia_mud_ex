@@ -83,7 +83,9 @@ defmodule Kantele.Character.PrepareCommandTest do
     end
 
     test "无效类型报错" do
-      conn = PrepareCommand.run(build_conn(player()), %{"action" => "sword"})
+      # 注意：sword 已是合法技能（D4 prepare <skill> 会显示该技能的预备状态），
+      # 因此不能用它作"无效拳术类型"示例。改用既非拳术类型、也非已知技能的词。
+      conn = PrepareCommand.run(build_conn(player()), %{"action" => "foo"})
       text = output_text(conn)
       assert text =~ "不是有效的拳术种类"
     end

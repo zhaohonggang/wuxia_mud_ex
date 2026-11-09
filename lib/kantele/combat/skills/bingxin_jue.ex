@@ -36,8 +36,11 @@ defmodule Kantele.Combat.Skills.BingxinJue do
       (gender == "无性") and (Stats.skill(stats, "bingxin-jue") > 99) ->
         {:error, "你无根无性，阴阳不调，难以领会高深的冰心决。\n"}
 
-      Stats.int(stats) < 26 ->
+      Stats.int(stats) < 20 ->
         {:error, "你觉得冰心决深奥无比，一时难以领会。\n"}
+
+      Stats.con(stats) < 30 ->
+        {:error, "你先天根骨不足，难以修炼冰心决。\n"}
 
       Stats.skill(stats, "force") < 100 ->
         {:error, "你的基本内功火候还不够，还不能学习冰心决。\n"}

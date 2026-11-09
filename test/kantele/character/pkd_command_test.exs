@@ -1,5 +1,6 @@
 defmodule Kantele.Character.PkdCommandTest do
-  use ExUnit.Case, async: true
+  # 与 SignTest 共用全局 PK_D ETS 表，串行执行避免互相串扰。
+  use ExUnit.Case, async: false
 
   import Kalevala.ConnTest
 

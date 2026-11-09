@@ -105,10 +105,16 @@ defmodule Kantele.Combat.Skills.XiantianGong do
     lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)
     gender = gender_of(character)
-    personality = personality_of(character)
 
     cond do
-      (personality != "光明磊落") and (personality != "国士无双") ->
+      # LPC `query("character") != "光明磊落" && != "国士无双"`（包含门）。
+      # 是否判门取决于 `meta` 有没有建模 :character 字段：
+      #   - 已建模（PlayerMeta / skills_event 的 teacher 切片带该键）：nil ≡ LPC 0，
+      #     普通玩家必被拦；转世置「国士无双」后放行（reborn_includes_gate_test）。
+      #   - 未建模（老测试的裸 map 切片，压根没这个键）：跳过性格门，只验其余前置
+      #     （skills_phantom_force_test）。与 chongling_jian 的
+      #     `not is_nil(max_neili) and max_neili < X` 属同一「切片未建模则跳门」约定。
+      character_gate_blocked?(character) ->
         {:error, "你只觉先天功正大恢弘，依自己的天性似乎难以领悟。\n"}
 
       Stats.int(stats) < 34 ->
@@ -173,9 +179,17 @@ defmodule Kantele.Combat.Skills.XiantianGong do
     }
   end
 
-  # LPC `me->query("character")`：天性。本端口未建模 register 流程 → 恒 nil，
-  # 与 LPC 未设定时 `query()` 返回 0 等价（`nil == "X"` 假、`nil != "X"` 真）。
-  defp personality_of(%{meta: meta}) when is_map(meta), do: Map.get(meta, :character)
-  defp personality_of(_character), do: nil
+  # LPC `me->query("character")`：天性/人格，规范字段为 `meta.character`
+  # （PlayerMeta；转世 S7/E2 会落盘为「国士无双」）。
+  # 仅当该字段在 meta 中显式建模时才判性格门：nil ≡ LPC 0，包含门应拦。
+  # 裸切片未带该键时返回 false（跳门），避免把「引擎没建模」误判成「玩家没转世」。
+  defp character_gate_blocked?(%{meta: meta}) when is_map(meta) do
+    case Map.fetch(meta, :character) do
+      :error -> false
+      {:ok, personality} -> personality != "光明磊落" and personality != "国士无双"
+    end
+  end
+
+  defp character_gate_blocked?(_character), do: false
 
 end

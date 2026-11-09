@@ -43,6 +43,9 @@ defmodule Kantele.Combat.Skills.HanbingZhenqi do
 
   # LPC `valid_learn(object me)`（源 hanbing-zhenqi.c）
   @impl true
+  def valid_learn(stats), do: valid_learn(stats, nil)
+
+  @impl true
   def valid_learn(stats, character) do
     lvl = Stats.skill(stats, id())
     max_neili = max_neili_of(character)

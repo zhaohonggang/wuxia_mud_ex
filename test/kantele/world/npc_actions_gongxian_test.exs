@@ -8,6 +8,9 @@ defmodule Kantele.World.NpcActions.GongxianTest do
   @room_id "changan:qunyulou2"
   @stone "signature:qiankun_stone"
   @gift "clone_lib:str3"
+  # 编号 2 = int3，「没货」分支依赖它在 Items 缓存里不存在。
+  # 全量套件里其它测试会加载世界数据把它灌进全局缓存，故 setup 显式移走并还原。
+  @absent "clone_lib:int3"
 
   defp conn(gongxian, inventory \\ []) do
     %Conn{
@@ -46,6 +49,16 @@ defmodule Kantele.World.NpcActions.GongxianTest do
       name: "蚩尤诛元仙丹",
       meta: %Kantele.World.Item.Meta{value: 100_000, weight: 50, unit: "颗"}
     })
+
+    saved = Kantele.World.Items.get(@absent)
+    Kantele.World.Items.delete(@absent)
+
+    on_exit(fn ->
+      case saved do
+        {:ok, item} -> Kantele.World.Items.put(@absent, item)
+        _ -> Kantele.World.Items.delete(@absent)
+      end
+    end)
 
     :ok
   end

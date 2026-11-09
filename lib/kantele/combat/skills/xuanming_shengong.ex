@@ -24,8 +24,9 @@ defmodule Kantele.Combat.Skills.XuanmingShengong do
 
   @impl true
   def valid_learn(stats) do
-    # LPC `me->query("con")` 取派生根骨（base+tattoo+reborn+force/10+temporary），
-    # 故用 Stats.query_con/1 而非原始 stats.con；con 在 Stats 结构内，arity-1 即可，无需 arity-2。
+    # LPC `me->query("con")` 取**派生**根骨（base + tattoo + reborn + force/10 + temp），
+    # 故用 Stats.query_con/1 而非原始 stats.con；con 在 Stats 结构内，arity-1 即可。
+    # 试点批口径见 test/kantele/combat/skills_valid_learn_pilot_test.exs 的 moduledoc。
     cond do
       Stats.query_con(stats) < 32 -> {:error, "你先天根骨不足，无法修炼玄冥神功。\n"}
       Stats.skill(stats, "force") < 100 -> {:error, "你的基本内功火候还不够，还不能学习玄冥神功。\n"}

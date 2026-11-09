@@ -9,6 +9,10 @@ defmodule Kantele.Combat.Skills.Force.Regenerate do
 
   use Kantele.Combat.Performs.Simple, spec: :local
 
+  def valid_enable(usage), do: usage == "force"
+  def valid_force(_force), do: true
+  def valid_learn(_stats), do: :ok
+
   alias Kantele.Character.SpecialSkills
   alias Kantele.Character.Stats
   alias Kantele.Combat.Performs.Spec

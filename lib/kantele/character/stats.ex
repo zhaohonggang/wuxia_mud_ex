@@ -97,6 +97,10 @@ defmodule Kantele.Character.Stats do
   def skill(%__MODULE__{} = stats, name), do: Map.get(stats.skills, name, 0)
 
   def skill(%{skills: skills} = _stats, name) when is_map(skills), do: Map.get(skills, name, 0)
+
+  # 裸 map 且技能名直接为 key（如 %{"force" => 100}），供测试与简化切片使用
+  def skill(stats, name) when is_map(stats), do: Map.get(stats, name, 0)
+
   def skill(_stats, _name), do: 0
 
   @doc """
@@ -312,6 +316,17 @@ defmodule Kantele.Character.Stats do
     {%{stats | skills: new_skills}, true}
   end
 
+  @doc """
+  设置技能绝对等级（对应 LPC `set_skill` / `setsk` 巫师命令）。
+
+  等级须为非负整数；写入 `stats.skills[skill_name]`。等级上限由调用方
+  （如 level_gate）另行校验，此处只负责赋值。
+  """
+  def set_skill(%__MODULE__{} = stats, skill_name, level)
+      when is_integer(level) and level >= 0 do
+    %{stats | skills: Map.put(stats.skills, skill_name, level)}
+  end
+
   # ============================================================================
   # 派生属性查询（对应 LPC attribute.c）
   #
@@ -328,13 +343,32 @@ defmodule Kantele.Character.Stats do
 
   拳脚类技能取 unarmed/cuff/finger/strike/hand/claw 中的最大值。
   """
-  def query_str(%__MODULE__{} = stats, temp_applies \\ %{}) do
+  def query_str(%__MODULE__{} = stats, temp_applies) do
     base = stats.str || 0
     tattoo = get_in(stats.tattoo || %{}, [:str]) || 0
     reborn = get_in(stats.reborn || %{}, [:str]) || 0
     temp = Map.get(temp_applies, :str) || 0
 
     melee = melee_skills(stats)
+    max_skill = Enum.max_by(melee, fn {_k, v} -> v end, fn -> {nil, 0} end) |> elem(1)
+    skill_bonus = div(max_skill, 10)
+
+    base + tattoo + reborn + skill_bonus + temp
+  end
+
+  def query_str(%__MODULE__{} = stats), do: query_str(stats, %{})
+
+  # 裸 map 切片（如 %{"force" => 200, "str" => 40}），供测试使用
+  def query_str(%{str: str, skills: skills} = stats) when is_map(skills), do: query_str(stats, %{})
+
+  def query_str(%{str: str, skills: skills} = stats, temp_applies) when is_map(skills) do
+    base = str || 0
+    tattoo = get_in(Map.get(stats, :tattoo, %{}), [:str]) || 0
+    reborn = get_in(Map.get(stats, :reborn, %{}), [:str]) || 0
+    temp = Map.get(temp_applies, :str) || 0
+
+    melee = ~w(unarmed cuff finger strike hand claw)a
+    |> Enum.map(fn skill_name -> {skill_name, Map.get(skills, skill_name, 0)} end)
     max_skill = Enum.max_by(melee, fn {_k, v} -> v end, fn -> {nil, 0} end) |> elem(1)
     skill_bonus = div(max_skill, 10)
 
@@ -358,7 +392,7 @@ defmodule Kantele.Character.Stats do
   @doc """
   查询派生根骨（query_con）：base + tattoo + reborn + force/10 + temp_apply
   """
-  def query_con(%__MODULE__{} = stats, temp_applies \\ %{}) do
+  def query_con(%__MODULE__{} = stats, temp_applies) do
     base = stats.con || 0
     tattoo = get_in(stats.tattoo || %{}, [:con]) || 0
     reborn = get_in(stats.reborn || %{}, [:con]) || 0
@@ -368,6 +402,31 @@ defmodule Kantele.Character.Stats do
 
     base + tattoo + reborn + skill_bonus + temp
   end
+
+  def query_con(%__MODULE__{} = stats), do: query_con(stats, %{})
+
+  # 裸 map 切片（如 %{"force" => 200, "con" => 30}），供测试与简化切片使用。
+  # 与 query_str/1,2 保持同形，避免批量 valid_learn 扫描时抛 FunctionClauseError。
+  def query_con(%{con: con} = stats, temp_applies) when is_map(stats) do
+    base = con || 0
+    tattoo = get_in(Map.get(stats, :tattoo, %{}), [:con]) || 0
+    reborn = get_in(Map.get(stats, :reborn, %{}), [:con]) || 0
+    temp = Map.get(temp_applies, :con) || 0
+    skills = Map.get(stats, :skills, %{})
+
+    skill_bonus = div(Map.get(skills, "force", Map.get(stats, "force", 0)), 10)
+
+    base + tattoo + reborn + skill_bonus + temp
+  end
+
+  def query_con(%{con: con} = stats) when is_map(stats), do: query_con(stats, %{})
+
+  # 无 :con 键的裸 map（只有字符串键技能表）→ 按 con=0 处理，仍叠加 force/10
+  def query_con(stats, temp_applies) when is_map(stats) do
+    query_con(Map.put(stats, :con, 0), temp_applies)
+  end
+
+  def query_con(stats) when is_map(stats), do: query_con(stats, %{})
 
   @doc """
   查询派生身法（query_dex）：base + tattoo + reborn + dodge/10 + temp_apply

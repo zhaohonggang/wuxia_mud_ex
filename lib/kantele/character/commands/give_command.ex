@@ -191,7 +191,10 @@ defmodule Kantele.Character.GiveCommand do
         _ -> pot
       end
 
-    kar = Map.get(character.meta.stats, :kar, 20)
+    # Stats.new() 里 kar 初值为 0（LPC logind.c 未设福缘）；
+    # :rand.uniform(0) 会抛 FunctionClauseError，令整个任务奖励结算崩掉。
+    # 福缘 <= 0 时按 LPC `random(kar)` 的边界语义回落到 1（score 最低 11）。
+    kar = max(Map.get(character.meta.stats, :kar, 20) || 20, 1)
     score = 10 + :rand.uniform(kar)
 
     # 3. 发放奖励（每步都基于 conn 当前角色，避免相互覆盖）

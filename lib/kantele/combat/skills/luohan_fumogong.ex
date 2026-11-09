@@ -56,6 +56,9 @@ defmodule Kantele.Combat.Skills.LuohanFumogong do
       Stats.skill(stats, "force") < 100 ->
         {:error, "你的基本内功火候不足，不能学罗汉伏魔神功。\n"}
 
+      Stats.skill(stats, "force") < Stats.skill(stats, "luohan-fumogong") ->
+        {:error, "你的基本内功水平不够，难以修炼更深厚的罗汉伏魔神功。\n"}
+
       not is_nil(max_neili) and max_neili < 1000 ->
         {:error, "你的内力修为不足，不能学罗汉伏魔神功。\n"}
 

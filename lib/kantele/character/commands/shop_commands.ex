@@ -135,7 +135,7 @@ defmodule Kantele.Character.AskCommand do
       if char.name == name or name in (char.meta.aliases || []) do
         {:ok, char}
       else
-        :error
+        nil
       end
     end) || :error
   end
@@ -214,7 +214,7 @@ defmodule Kantele.Character.AskCommand do
         |> prompt(CommandView, "prompt", %{})
     end
   rescue
-    e in [ArgumentError, UndefinedFunctionError] ->
+    _e in [ArgumentError, UndefinedFunctionError] ->
       # ask_handler 回调内部异常（如参数不匹配）时的兜底，避免命令崩溃
       conn
       |> render(CommandView, "text", %{text: "这个人暂时无法回答你的问题。\n"})

@@ -1,7 +1,10 @@
 defmodule Kantele.World.NpcActions.SignTest do
-  use ExUnit.Case, async: true
+  # Pkd 用全局命名 ETS 表存赛事状态，PkdCommandTest 也会写它；
+  # 两个模块都设 async: false，避免并发时读到对方留下的 :ready 状态。
+  use ExUnit.Case, async: false
 
   alias Kalevala.Character.Conn
+  alias Kantele.Character.Pkd
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.World.NpcActions.Sign
@@ -24,6 +27,15 @@ defmodule Kantele.World.NpcActions.SignTest do
   end
 
   defp params, do: %{verb: "sign", trailing: "", room_id: @room_id, npc: %Kalevala.Character{name: "乌老大"}}
+
+  # 经验守卫之后的分支直接读 PK_D 赛事状态。每条用例开头把状态钉成 :none，
+  # 不依赖其它用例留下的全局 ETS 值。表由 ensure!/0 在本进程补建，
+  # 随用例进程退出自动回收，故无需 on_exit 还原（还原反而会在表消失后崩）。
+  setup do
+    Pkd.ensure!()
+    Pkd.set_state(:none)
+    :ok
+  end
 
   defp out_text(conn), do: conn.output |> Enum.map(& &1.data) |> Enum.join()
 

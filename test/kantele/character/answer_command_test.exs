@@ -1,4 +1,12 @@
-defmodule Kantele.Character.AnswerCommandTest do
+defmodule Kantele.Character.LegacyAnswerCommandTest do
+  @moduledoc """
+  S1 之前的 answer 占位桩回归（保留路由/空参覆盖）。
+
+  文件名 `commands/answer_command_test.exs` 里的 B5 版本才是当前实现的主测试；
+  本模块改用独立模块名，避免两文件同名 defmodule 触发
+  "cannot define module ... because it is currently being defined" 编译错误。
+  """
+
   use ExUnit.Case, async: true
 
   import Kalevala.ConnTest
@@ -62,12 +70,13 @@ defmodule Kantele.Character.AnswerCommandTest do
       assert output_text(conn) =~ "回答什么"
     end
 
-    test "有参数但无 forge 议价会话时显示暂未开放" do
-      # S1c 之后路由把参数放进 "rest"（`parse("answer", :run, fn c -> c |> optional(empty() |> spaces() |> text(:rest)) end)`）；
-      # 只有处于 Forging status=="answer_type" 时才转交莫邪，否则走原 stub。
+    test "有参数但无 forge 议价会话时显示 stub 文案" do
+      # S1c 之后路由把参数放进 "rest"；只有处于 Forging status=="answer_type"
+      # 时才转交莫邪，否则走原 stub。S1 真化后 stub 文案由「暂未开放」改为
+      # 「回答系统目前不支持该选项。」（避免被 CommandProbe 判为未实装占位）。
       p = player()
       conn = AnswerCommand.run(build_conn(p), %{"rest" => "好的"})
-      assert output_text(conn) =~ "暂未开放"
+      assert output_text(conn) =~ "目前不支持该选项"
     end
 
     test "路由解析" do

@@ -1715,9 +1715,13 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  # A8 词边界：`to` 必须接空白或行尾，否则 "touch"/"top" 会被 `string("to")` 前缀吞掉
+  # （Router.parse_text 忽略 leftover）。沿用 ScoreCommand 的 lookahead_not 约定。
   module(ToCommand) do
     parse("to", :run, fn command ->
-      command |> optional(empty() |> spaces() |> text(:rest))
+      command
+      |> lookahead_not(utf8_char([?a..?z, ?A..?Z, ?0..?9, 0x4E00..0x9FFF]))
+      |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 
@@ -1812,8 +1816,12 @@ defmodule Kantele.Character.Commands do
   end
 
   module(SetCommand) do
+    # 注意：关键字 "set" 是 "setsk" 的前缀。Kalevala 路由器按关键字前缀匹配且忽略
+    # 残留输入，故裸 "setsk" 会被 "set" 抢解析。此处加 `lookahead_not` 词边界：
+    # "set" 之后必须是空格或行尾，否则该命令不匹配，让 "setsk" 有机会被解析。
     parse("set", :run, fn command ->
       command
+      |> lookahead_not(utf8_string([not: ?\s], min: 1))
       |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
@@ -2053,58 +2061,86 @@ defmodule Kantele.Character.Commands do
 
   # W3 arch重度命令 (14个stubs - 需对象系统)
   module(BuildCommand) do
-    parse("build", :run)
+    parse("build", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(CallCommand) do
-    parse("call", :run)
+    parse("call", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(SmashCommand) do
-    parse("smash", :run)
+    parse("smash", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(PossessCommand) do
-    parse("possess", :run)
+    parse("possess", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(ThrowCommand) do
-    parse("throw", :run)
+    parse("throw", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(VarCommand) do
-    parse("var", :run)
+    parse("var", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(SetskCommand) do
-    parse("setsk", :run)
+    parse("setsk", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(PurgeCommand) do
-    parse("purge", :run)
+    parse("purge", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(RestoreCommand) do
-    parse("restore", :run)
+    parse("restore", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(RegisterCommand) do
-    parse("register", :run)
+    parse("register", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(RebootCommand) do
-    parse("reboot", :run)
+    parse("reboot", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(ShutdownCommand) do
-    parse("shutdown", :run)
+    parse("shutdown", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(GrantCommand) do
-    parse("grant", :run)
+    parse("grant", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 
   module(ChangeuserCommand) do
-    parse("changeuser", :run)
+    parse("changeuser", :run, fn command ->
+      command |> optional(empty() |> spaces() |> text(:rest))
+    end)
   end
 end

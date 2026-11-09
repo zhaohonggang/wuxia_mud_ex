@@ -28,6 +28,10 @@ defmodule Kantele.Combat.Skills.Force.Dispel do
 
   use Kantele.Combat.Performs.Simple, spec: :local
 
+  def valid_enable(usage), do: usage == "force"
+  def valid_force(_force), do: true
+  def valid_learn(_stats), do: :ok
+
   import Kalevala.Character.Conn, only: [get_session: 2, put_session: 3]
 
   alias Kantele.Character.ConditionRegistry

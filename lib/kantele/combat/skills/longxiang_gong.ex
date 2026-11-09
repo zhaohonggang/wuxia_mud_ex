@@ -57,6 +57,9 @@ defmodule Kantele.Combat.Skills.LongxiangGong do
     layer = div(level, 30)
 
     cond do
+      # LPC `int valid_learn`（longxiang-gong.c:76-84）：str/con 两门在前，
+      # 与 `gender == 无性 && layer >= 1` 一起构成 arity-2 才有的门槛。
+      # 之前 E4 误把这三者削成 `con < 20`，导致 partial_batch1 回归。
       Stats.str(stats) < 36 ->
         {:error, "你的先天膂力孱弱，无法修炼龙象般若功。\n"}
 

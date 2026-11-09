@@ -184,7 +184,11 @@ defmodule Kantele.World.NpcActions.Exchange do
   defp item_name(_item), do: "物品"
 
   defp item_unit(%{unit: unit}) when is_binary(unit) and unit != "", do: unit
-  defp item_unit(%{meta: meta}) when is_map(meta), do: meta[:unit]
+
+  # `%Kalevala.World.Item.Meta{}` 是裸 struct，未实现 Access behaviour；
+  # 用 `meta[:unit]` 会抛 UndefinedFunctionError(Meta.fetch/2)。改走 Map.get，
+  # 同时兼容 struct 与普通 map 两种世界数据形状。
+  defp item_unit(%{meta: meta}) when is_map(meta), do: Map.get(meta, :unit)
   defp item_unit(_item), do: nil
 
   defp put_jifen(conn, _meta, value) do
