@@ -204,7 +204,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 |-----------|------|------|
 | clone 生物克隆 | `clone_command.ex:22` | **(巫师命令)** item 可 clone，NPC 不可（Kalevala 无按路径克隆生物的能力） |
 | suicide | `suicide_command.ex` | **(2026-11-09 已真化)** `suicide -f <密码>` 校验 `meta.password` 后 `ExVenture.Characters.delete_by_name` 链删角色 + rumor 广播（combat_exp>=1000）；15 秒 halt 倒计时为有意简化 |
-| prepare valid_combine | `prepare_command.ex:108-109` | 组合逻辑未实装 |
+| prepare valid_combine | `prepare_command.ex:108-109` | 组合逻辑已实装（`SkillCombos.valid_combine?/2`，当前仅 taiji-quan 声明可组合技能） |
 | closed | `closed_command.ex:9,50` | CLOSE_D 离线修炼缺失 |
 | scheme 自动执行 | `scheme_command.ex:38` | **(计划执行器子系统)** show/edit/clear 已真，start 未开（需 vitals/busy 自动化） |
 | zixu 心魔幻境 | `world/mirror_daemon/zixu.ex:6,152-156` | 「尚在祭炼之中」占位 |

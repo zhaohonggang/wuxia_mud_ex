@@ -102,10 +102,34 @@ defmodule Kantele.Character.PrepareCommandTest do
       assert text =~ "需要指定第二种"
     end
 
-    test "两有效类型报未实装" do
+    test "两有效类型未激发报错" do
       conn = PrepareCommand.run(build_conn(player()), %{"action" => "finger strike"})
       text = output_text(conn)
-      assert text =~ "暂未实装组合逻辑"
+      assert text =~ "尚未激发任何技能"
+    end
+
+    test "两有效类型已激发但不可组合报错" do
+      {stats, _} = Stats.improve_skill(Stats.new(), "finger")
+      {stats, _} = Stats.improve_skill(stats, "strike")
+      stats = %{stats | mapped: %{"finger" => "taiji-quan", "strike" => "huashan-jian"}}
+      conn = PrepareCommand.run(build_conn(%{player() | meta: %{player().meta | stats: stats}}), %{"action" => "finger strike"})
+      text = output_text(conn)
+      assert text =~ "不能组合"
+    end
+
+    test "两有效类型已激发且可组合成功（taiji-quan + wudang-zhang）" do
+      stats = %{Stats.new() | mapped: %{"unarmed" => "taiji-quan", "strike" => "wudang-zhang"}}
+      conn =
+        PrepareCommand.run(
+          build_conn(%{player() | meta: %{player().meta | stats: stats}}),
+          %{"action" => "unarmed strike"}
+        )
+      text = output_text(conn)
+      assert text =~ "完成技能准备"
+      assert text =~ "unarmed -> taiji-quan"
+      assert text =~ "strike -> wudang-zhang"
+      assert conn.private.update_character.meta.stats.prepared["unarmed"] == "taiji-quan"
+      assert conn.private.update_character.meta.stats.prepared["strike"] == "wudang-zhang"
     end
 
     test "D4: 预备已学的绝招成功" do

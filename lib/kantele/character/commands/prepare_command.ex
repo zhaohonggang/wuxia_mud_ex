@@ -4,22 +4,23 @@ defmodule Kantele.Character.PrepareCommand do
 
   两种模式：
   1. 组合拳术（对照 LPC cmds/skill/prepare.c）：`prepare <拳术1> <拳术2>`、`prepare none`
+     - `<拳术1>`/`<拳术2>` 为拳术种类（finger/hand/cuff/claw/strike/unarmed），
+       需先通过 `enable` 将对应技能映射到该种类。
+     - 组合合法性由 `Kantele.Combat.SkillCombos.valid_combine?/2` 判定（LPC
+       `SKILL_D(skill)->valid_combine(other)` 等价），当前仅 `taiji-quan` 声明
+       可与 `wudang-zhang`、`paiyun-shou` 组合。
   2. 预备绝招（D4 prepare_skill，对照 LPC `prepare <skill>`）：
      - `prepare <技能>` 查看当前预备
      - `prepare <技能> <绝招>` 预备指定绝招
      - `prepare <技能> none` 取消该技能预备
      - `prepare none` 取消全部预备
-
-  注意：Kantele 当前仅有 liuxin-jian（剑法）和 liuxi-neigong（内功），
-  均不属于拳术类（finger/hand/cuff/claw/strike/unarmed），
-  此命令拳术组合部分暂为占位实现。
-  待拳术类技能添加后需补充 valid_combine 逻辑。
   """
 
   use Kalevala.Character.Command
 
   alias Kantele.Character.CommandView
   alias Kantele.Character.Stats
+  alias Kantele.Combat.SkillCombos
   alias Kantele.Combat.Skills
 
   @valid_types %{
@@ -52,8 +53,22 @@ defmodule Kantele.Character.PrepareCommand do
   defp show_current(conn) do
     stats = conn.character.meta.stats
 
-    # 显示拳术组合（占位）
-    unarmed_text = "你目前没有组合任何特殊拳术技能。\n使用 `prepare ?` 查看可组合种类。\n"
+    # 显示已组合的拳术技能
+    combos = Enum.filter(Stats.prepared(stats), fn {usage, _perform_id} ->
+      usage in Map.keys(@valid_types)
+    end)
+
+    unarmed_text =
+      if combos == [] do
+        "你目前没有组合任何特殊拳术技能。\n使用 `prepare ?` 查看可组合种类。\n"
+      else
+        Enum.map(combos, fn {usage, skill_id} ->
+          "  #{@valid_types[usage]} (#{usage}): #{skill_id}"
+        end)
+        |> Enum.join("\n")
+        |> Kernel.<>("当前组合的拳术技能：\n")
+        |> Kernel.<>("\n")
+      end
 
     # 显示绝招预备状态
     prepare_text =
@@ -140,18 +155,34 @@ defmodule Kantele.Character.PrepareCommand do
   end
 
   defp try_prepare(conn, type1, type2) do
+    stats = conn.character.meta.stats
+
+    skill1 = Stats.mapped(stats, type1)
+    skill2 = Stats.mapped(stats, type2)
+
     cond do
-      type1 not in Map.keys(@valid_types) ->
-        error(conn, "「#{type1}」不是有效的拳术种类。使用 `prepare ?` 查看可组合种类。\n")
-
-      type2 not in Map.keys(@valid_types) ->
-        error(conn, "「#{type2}」不是有效的拳术种类。使用 `prepare ?` 查看可组合种类。\n")
-
       type1 == type2 ->
         error(conn, "不能组合同一种类的拳术。\n")
 
+      is_nil(skill1) ->
+        error(conn, "「#{type1}」尚未激发任何技能，无法组合。\n")
+
+      is_nil(skill2) ->
+        error(conn, "「#{type2}」尚未激发任何技能，无法组合。\n")
+
+      not SkillCombos.valid_combine?(skill1, skill2) ->
+        error(conn, "「#{skill1}」与「#{skill2}」不能组合。\n")
+
       true ->
-        error(conn, "这两种拳术技能暂未实装组合逻辑（Kantele 待添加拳术类技能后完善）。\n")
+        new_prepared =
+          Map.put(Map.put(Stats.prepared(stats), type1, skill1), type2, skill2)
+
+        new_stats = %{stats | prepared: new_prepared}
+
+        conn
+        |> put_character(%{conn.character | meta: %{conn.character.meta | stats: new_stats}})
+        |> render(CommandView, "text", %{text: "完成技能准备：#{type1} -> #{skill1}，#{type2} -> #{skill2}\n"})
+        |> prompt(CommandView, "prompt", %{})
     end
   end
 

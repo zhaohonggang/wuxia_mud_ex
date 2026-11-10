@@ -85,7 +85,7 @@ defmodule Kantele.Character.CommandsCommand do
     "alias" => "自定义别名：alias 新动词 替换串",
     "ride" => "上马：ride 坐骑",
     "unride" => "下马",
-    "suicide" => "自杀（当前为占位，不删除档案）",
+    "suicide" => "自杀：suicide -f <密码>（校验后删除角色档案 + rumor 广播）",
     "team" => "组队：team with 人/accept/refuse/dismiss/kick/talk/list",
     "tt" => "队伍会话（同 team talk）"
   }
