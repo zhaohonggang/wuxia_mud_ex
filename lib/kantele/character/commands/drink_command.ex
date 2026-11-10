@@ -13,7 +13,9 @@ defmodule Kantele.Character.DrinkCommand do
   ## 与 LPC 的已知差异
 
   - LPC 的 `water` 摄入（`me->add("water", 30)`）与 `max_water_capacity()`
-    属饥饿/口渴子系统（未建），不实现。
+    属饥饿/口渴子系统：该子系统已建（见 `Kantele.Character.Vitals.food/water` 与
+    `Kantele.Feature.Damage.heal_up/1` 每心跳扣减）。每喝一口容器液体回 30 点饮水度，
+    封顶 `max_water_capacity()`（见 `add_water/2`）。
   - LPC 支持 `drink <液体> in <容器>` / `in all <包裹>` 的语法，
     本引擎的解析器只给单个 `item_name`，故只支持直接指定容器。
 
@@ -108,6 +110,10 @@ defmodule Kantele.Character.DrinkCommand do
     instance = Liquid.put_state(instance, %{liquid | remaining: remaining})
     character = %{character | inventory: replace_instance(character.inventory, instance)}
 
+    # LPC `me->add("water", 30)` —— 饥饿/口渴子系统（已建）：
+    # 每喝一口回 30 点饮水度（water），封顶 max_water_capacity。
+    character = add_water(character, 30)
+
     # LPC `message_vision("$N拿起" + ob->name() + "咕噜噜地喝了几口" + liquid/name + "。")`
     # `{npc}` 由 VisionView 按接收者渲染（自己→「你」，他人→行动者名）。
     vision = "{npc}拿起#{item.name}咕噜噜地喝了几口#{liquid.name || ""}。\n"
@@ -166,6 +172,15 @@ defmodule Kantele.Character.DrinkCommand do
     Enum.map(inventory, fn inst ->
       if Map.get(inst, :id) == instance.id, do: instance, else: inst
     end)
+  end
+
+  # LPC `me->add("water", 30)`：饮水度 +amount，封顶 max_water_capacity（饥饿/口渴子系统已建）。
+  # 旧存档 vitals 无 water 字段时按 0 兜底，不崩溃。
+  defp add_water(character, amount) do
+    vitals = character.meta.vitals
+    max_water = Kantele.Feature.Damage.max_water_capacity(character)
+    new_water = min((Map.get(vitals, :water, 0) || 0) + amount, max_water)
+    %{character | meta: %{character.meta | vitals: %{vitals | water: new_water}}}
   end
 
   # ---- 药水（原有路径，未改动语义） ----

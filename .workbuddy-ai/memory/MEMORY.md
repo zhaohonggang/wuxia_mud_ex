@@ -63,6 +63,19 @@
   - `test/kantele/command_probe_test.exs`：白名单 `@whitelist %{} `（移除 `clone_command`）。
   - `mix compile` exit 0；clone_command_test 10/0 + command_probe_test 2/0。未 commit/push，待授权。
 
+- **饥饿口渴系统（食物/水栏 + heal_up 扣减 + 吃太饱拦截）已完成并推送（a53445e2）**：
+  - `lib/kantele/character/vitals.ex`：defstruct 新增 :food/:water，new() 初始化为 200
+  - `lib/kantele/item/effect.ex`：restore_from_food/2 同时设置 vitals.food 并追加 "饱食度+N" parts
+  - `lib/kantele/feature_damage.ex`：heal_up/1 每 tick 扣 food/water，<1 时玩家停止自然回复；eff_jing/eff_qi 用 Map.get 兜底，旧存档不崩溃
+  - `lib/kantele/character/commands/eat_command.ex`：food >= max_food_capacity 时拦截，保留 instance
+  - 测试：vitals_test +6，eat_command_test，feature_damage_test +63；food_test/feature_item_test parts 期望已更新
+  - 全量 suite 7392 tests / 27 failures（全部 bcrypt NIF 环境性，与基线 27 一致，0 饥饿相关回归）。已 commit a53445e2 + push origin/kalevala。
+
+- **饥饿口渴系统（饮水侧 / drink water）已完成（2026-11-10，未 commit）**：
+  - `lib/kantele/character/commands/drink_command.ex`：`consume_liquid/5` 每喝一口容器液体回 30 点饮水度（封顶 `Kantele.Feature.Damage.max_water_capacity/1`），新增 `add_water/2`（vitals.water 用 Map.get 兜底，旧存档不崩）；moduledoc 删「water 属未建子系统」旧注记。
+  - 测试：`test/kantele/character/drink_command_test.exs` 新增 3 例（water +30、封顶不溢出、最后一口仍加水）；drink_command_test 19/0；hunger+thirst 联测 86/0。
+  - 与食物侧合并后，饥饿/口渴子系统彻底完整。待 commit/push。
+
 ## 路由死代码修复（重要）
 - parse/2 裸路由只产 %{"command"=>...}，带参命令(run/2 需 rest/target/category)不可达。统一 optional(spaces+text(:rest|:target|:category))；SecularizeCommand.run/2 的 %{} 前置子句改通配 _params。新增带参命令务必检查。
 

@@ -367,4 +367,39 @@ defmodule Kantele.Character.DrinkCommandTest do
       assert conn.session["conditions"] == nil
     end
   end
+
+  # ---- 饮水度（water，饥饿/口渴子系统；LPC `me->add("water", 30)`） ----
+
+  describe "drink 饮水度（饥饿/口渴子系统）" do
+    test "喝一口：饮水度（water）增加 30，封顶 max_water_capacity" do
+      p = player_with_instance(@wine_id, "bag-w1")
+      p = %{p | meta: %{p.meta | vitals: %{p.meta.vitals | water: 200}}}
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      updated = conn.private.update_character || conn.character
+      # str=20 → max_water_capacity = 20*10+100 = 300；初始 200 → 230
+      assert updated.meta.vitals.water == 230
+    end
+
+    test "饮水度封顶 max_water_capacity（不溢出）" do
+      p = player_with_instance(@wine_id, "bag-w2")
+      p = %{p | meta: %{p.meta | vitals: %{p.meta.vitals | water: 290}}}
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      updated = conn.private.update_character || conn.character
+      # 290 + 30 = 320 > 300 容量 → 封顶 300
+      assert updated.meta.vitals.water == 300
+    end
+
+    test "最后一口也增加饮水度（LPC `me->add(\"water\")` 在提前返回之前）" do
+      # @wine_id remaining 2，实例只剩 1 → 喝完 remaining=0，LPC 提前返回跳过 switch（不挂醉度），
+      # 但 `me->add("water", 30)` 在返回之前已执行 → 饮水度仍 +30。
+      p = player_with_instance(@wine_id, "bag-w3", %{"liquid_remaining" => 1})
+      p = %{p | meta: %{p.meta | vitals: %{p.meta.vitals | water: 200}}}
+      conn = DrinkCommand.run(build_conn(p), %{"item_name" => "酒袋"})
+
+      updated = conn.private.update_character || conn.character
+      assert updated.meta.vitals.water == 230
+    end
+  end
 end
