@@ -56,13 +56,43 @@ defmodule Kantele.Character.QuestEvent do
 
     with true <- is_binary(quest_id) and quest_id != "",
          %{} <- Quest.get_todo(state, quest_id),
-         true <- kill_requirement_met?(state, quest_id) do
+         true <- kill_requirement_met?(state, quest_id),
+         true <- entry_position_ok?(state, quest_id, character) do
       complete(conn, character, character.inventory, data)
     else
       _ ->
         conn
         |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
         |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  # Q1-T3 search/explore 入位校验：Q2-T0 房间人员查询已就绪，现可落地。
+  # 只有在 target_room 才能结算 search/explore 任务；其它类型不受影响。
+  defp entry_position_ok?(state, quest_id, character) do
+    case Quest.get_todo(state, quest_id) do
+      %{meta: meta} when is_map(meta) ->
+        type = Map.get(meta, :type)
+        cond do
+          type in ["search", "explore"] ->
+            case Map.get(meta, :target_room) do
+              nil -> true
+              target_room when is_binary(target_room) and target_room != "" ->
+                character_in_room?(character, target_room)
+              _ -> true
+            end
+          true -> true
+        end
+      _ -> true
+    end
+  end
+
+  defp character_in_room?(character, target_room) do
+    case Kantele.World.Room.snapshot(target_room) do
+      %{private: %{characters: characters}} when is_list(characters) ->
+        Enum.any?(characters, fn c -> Map.get(c, :id) == character.id end)
+      _ ->
+        false
     end
   end
 

@@ -34,5 +34,9 @@
 - 引擎绑定 6（保持显式「W3 对象系统未建模」回执）：`call`/`reboot`/`shutdown`/`possess`/`restore`/`build`。推进需立项设计 W3 对象引擎，与 B2 已完成量级相当（A1/A2/A4 已清零）。
 
 ## 剩余 backlog
-- D 节 v2 技术债：疾病/光线/季节封路、真·clone 动态目标、search/explore 入位校验、count>1 逐件交付（明确推迟）。
+- D 节 v2 技术债：
+  - Q2 v2 疾病/雪原封路：Deferred（季节/事件系统未建模）；光线：Q2-T2 `Weather.light/0` 已就绪，可接。
+  - Q1-T3 真·clone 动态目标：Deferred（Chei/Pawning，高成本）。
+  - Q1-T3 search/explore 入位校验：Q2-T0 已落地，已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化，`Room.snapshot/1` 查玩家在场）。
+  - Q1-T3 count>1 逐件交付：Deferred to T4。
 - A1/A2/A4：已清零（A1 转换器已落地并归档；A2 永远不做；A4 终测/分区搬运已验收完毕），不再作为 backlog 项。
