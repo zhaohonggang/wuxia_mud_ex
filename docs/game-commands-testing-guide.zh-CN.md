@@ -502,7 +502,7 @@ time           预期：显示游戏年月日/时辰/季节
   - **B1 自包含占位桩已真化完毕**：这 6 个命令全部依赖未来里程碑的后端子系统（M3 聊天/邮件、M4 投票、W2 巫师、后续批次），**不属于 B1 自包含工作**，按里程碑排期推进；本期不再对其做代码改动（见 `docs/remaining-work-checklist.zh-CN.md` B1 收尾小节）。
   - 已按 LPC 真实实现的命令：`ansuan`/`talk`/`top`/`beg`/`liuxi`/`push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支），均不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
 - **W3 arch 14 命令为静默 no-op**（无输出）：`build` `call` `smash` `possess` `throw` `var` `setsk` `purge` `restore` `register` `reboot` `shutdown` `grant` `changeuser`。
-  - ⚠️ 本条为 E5 之前的历史快照，现已过时：E5（2026-11-09）已把 14 命令全部显式化（非巫师拒绝 / 巫师明确回执，不再静默），其中 `var`/`setsk` 真化；B2（2026-11-10）又真化了 `grant`/`throw`/`purge`/`changeuser`/`register` 共 5 个。当前仅余 7 个显式「未建模」回执（`smash` + `call`/`reboot`/`shutdown`/`possess`/`restore`/`build`）。权威当前状态以 `docs/remaining-work-checklist.zh-CN.md` 为准。同理上方「占位命令清单（共 6 个）」亦已在 E1–E5 全部真化，`CommandProbe.stubs/0` 现为 0。
+  - ⚠️ 本条为 E5 之前的历史快照，现已过时：E5（2026-11-09）已把 14 命令全部显式化（非巫师拒绝 / 巫师明确回执，不再静默），其中 `var`/`setsk` 真化；B2（2026-11-10）又真化了全部 6 个可建模命令（`grant`/`throw`/`purge`/`changeuser`/`register`/`smash`）。当前仅余 6 个显式「未建模」回执（`call`/`reboot`/`shutdown`/`possess`/`restore`/`build`，属 LPC driver 对象树操作、本端口无等价物）。权威当前状态以 `docs/remaining-work-checklist.zh-CN.md` 为准。同理上方「占位命令清单（共 6 个）」亦已在 E1–E5 全部真化，`CommandProbe.stubs/0` 现为 0。
 - 注册顺序注意点：`remove` / `脱` 现统一绑到 `RemoveCommand`（`remove all`、present/worn 门控都在这一侧，单件脱卸复用 `WieldCommand.remove/2`）；`yanjiu` 实际路由到 research（研究）而非 study（研习）。
 - 带参命令 `push` / `hand` / `talk` / `ansuan` / `train` / `come` / `stop` / `top2` / `topp` / `remove` / `special` / `stab` / `touch` 统一用
   `optional(spaces + text(...))` 路由，裸命令与带参共用一条规则；此前 `parse/2` 裸路由只产出

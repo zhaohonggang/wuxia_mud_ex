@@ -36,15 +36,14 @@
 - 期间完成的 Phase 2-8：`scheme` 计划执行器、S7/E2 转世落盘、S8/E3 戒律 `guilty`、S1 ask/answer 配对、S2 `pkd`、S4 `vote`、S6 生物 `clone` —— 均在上述 commit 中一并推送。
 - 全量演进：7382 → 7392 → 7409 → **7437 tests / 27 failures**（每批均 0 新增回归）。
 
-## B2 — 12 个 W3 arch 命令（进行中，5/12；前 3 个已 commit `3a0c7188`）
-- 已真化：`grant`（`Kantele.Admin.Security` 授权注册表，ETS `:kantele_security`）、`throw`（`Kantele.Admin.Prison` 禁闭 daemon，ETS `:kantele_prison`，LPC `throw.c` 理由白名单 + h/d/m/y 时长；`heal_up` 的 `in_prison?` 桩已接入）、`purge`（`Characters.delete_by_name/1` + rumor）、`changeuser`（LPC `changename.c` 中文名校验 + `Characters.rename_by_name/2`）、`register`（`Users.register_by_username/2` + `register_changeset/2` 以 `email_verified_at` 表登记态，免 DB 迁移）。
+## B2 — 12 个 W3 arch 命令（**6/12 全部可建模命令已完成**；commits `3a0c7188` / `ef35bf9a` / 第三批）
+- 已真化 6：`grant`（`Kantele.Admin.Security` 授权注册表 ETS）、`throw`（`Kantele.Admin.Prison` 禁闭 daemon，`heal_up` 的 `in_prison?` 桩已接入）、`purge`（`Characters.delete_by_name/1` + rumor）、`changeuser`（LPC `changename.c` 中文名校验 + `Characters.rename_by_name/2`）、`register`（`Users.register_by_username/2` + `register_changeset/2` 以 `email_verified_at` 表登记态，免 DB 迁移）、`smash`（LPC `smash.c` 2-hop 雷劈事件链）。
 - 门控统一 `WizArch.guard` + `Access.archwizp`（arch-only，对应 LPC `valid_grant(me,"(arch)")`）；DB 调用全 rescue/catch 降级。
-- `wiz_arch_test.exs` 的 `@deferred` 现余 7 条；`command_probe` 未误报。
-- **坑**：`ExVenture.Characters` 里裸 `update(...)` 被 `import Ecto.Query` 的 `Ecto.Query.update/2` 宏抢占（宏优先于同名本地函数）→ 直接写 changeset + `Repo.update()`。
-- 待办可建模 1：`smash`（雷劈击杀在场生物，需新增 `character/smashed` 事件链把 `Damage.die/2` 作用到他人进程，参照 `brothers/break` 转发模式）。
-- 引擎绑定 6（**保持显式「W3 对象系统未建模」回执，真实实现非桩**）：`call`/`reboot`/`shutdown`/`possess`/`restore`/`build` —— 本端口无 LPC 进程/对象树等价物，不臆造驱动能力。
+- `wiz_arch_test.exs` 的 `@deferred` 现余 **6 条（全引擎绑定）**；`command_probe` 未误报。
+- **三个关键坑**：① `ExVenture.Characters` 里裸 `update(...)` 被 `import Ecto.Query` 的 `update/2` 宏抢占（宏优先于同名本地函数）→ 直接写 changeset + `Repo.update()`。② daemon 用 `start_link` 链接测试进程，ETS 表随用例退出被回收 → 直接 ETS 写入 + `ensure!/0` 补建表 + `read_state/0` 表缺失返缺省。③ `Damage.die/1` 前必须 `ensure_death_state`（`meta.combat` 默认 nil → FunctionClauseError；`meta.damage` nil → BadMapError，R24 掉线教训）；`is_player?/1` 认 `"player:"` 前缀；`receive_damage` 别传 killer（`character.name(who)` 会崩）。
+- 引擎绑定 6（**保持显式「W3 对象系统未建模」回执，真实实现非桩，不臆造 LPC driver 能力**）：`call`/`reboot`/`shutdown`/`possess`/`restore`/`build`。要推进需立项设计 W3 对象引擎，属 A1/A2/A4 同量级大工程。
 - 状态文档：`docs/remaining-work-checklist.zh-CN.md` 建议优先级第 7 条 + 已完成表格行；`game-commands-testing-guide` 的 W3 条已加过时注记。
-- 全量：**7453 tests / 27 failures**（全为 bcrypt NIF 环境性，0 回归）。
+- 全量演进：7382 → 7392 → 7409 → 7437 → 7453 → **7465 tests**；基线恒为 **27 bcrypt NIF 环境性失败**（另偶发 1 例 `F4ExtractorTest` 全量负载 `System.cmd` 60s 超时，单独跑 10/0，非回归）。
 
 ## 剩余 backlog
 - A1/A2/A4 大工程（T1 转换器投入最大，需立项排期）。

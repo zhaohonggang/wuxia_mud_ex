@@ -1180,6 +1180,10 @@ defmodule Kantele.World.Room.Events do
       event("brothers/break", :call)
     end
 
+    module(SmashStrikeEvent) do
+      event("smash/strike", :call)
+    end
+
     module(EngageRequestEvent) do
       event("engage/request", :call)
     end
@@ -2653,6 +2657,64 @@ defmodule Kantele.World.Room.BrothersBreakEvent do
         end
     end
   end
+end
+
+defmodule Kantele.World.Room.SmashStrikeEvent do
+  @moduledoc """
+  雷劈事件：在同房间按名字找目标，转发 `character/smitten` 让目标自己结算死亡。
+
+  对应 LPC `cmds/arch/smash.c` 的 `present(arg, environment(me))` 分支。
+  LPC 在 `wiz_level(me) < wiz_level(ob)` 时给出「身上冒着缕缕青烟，却没有
+  半点事情」的无伤回执；本端口在转发前做同一比较，等级不足则不转发。
+  与 `brothers/break` 同构的 2-hop 转发（房间找人 → 角色进程自己结算）。
+
+  与 LPC 的已知差异：本端口只查同房间（LPC 还会 `find_player`/`find_living`/
+  `find_object` 跨房间找），且无 `query_site_privilege("smash")` 的 npc/all 分档。
+  """
+
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Admin.Access
+
+  def call(context, %{data: data} = event) do
+    smiter = Enum.find(context.characters, &(&1.pid == event.from_pid))
+
+    case smiter do
+      nil -> maybe_strike(context, nil, data)
+      _ -> maybe_strike(context, smiter, data)
+    end
+  end
+
+  def call(context, _event), do: context
+
+  defp maybe_strike(context, _smiter, %{target_name: target_name} = data)
+       when is_binary(target_name) do
+    # LPC `present(arg, environment(me))` 包含施法者自己，故不自排除（可自劈）
+    target =
+      Enum.find(context.characters, fn c ->
+        Kantele.World.Room.NameMatch.matches?(c, target_name)
+      end)
+
+    case target do
+      nil ->
+        context
+
+      _ ->
+        smiter_level = Map.get(data, :smiter_level, 0)
+        target_level = Access.wiz_level(target)
+
+        if smiter_level < target_level do
+          context
+        else
+          event(context, target.pid, self(), "character/smitten", %{
+            smiter_name: data[:smiter_name] || "某人",
+            die_reason: data[:die_reason] || "被雷劈死了"
+          })
+        end
+    end
+  end
+
+  defp maybe_strike(context, _smiter, _data), do: context
 end
 
 defmodule Kantele.World.Room.SwearAnswerEvent do
