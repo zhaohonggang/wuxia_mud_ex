@@ -36,7 +36,7 @@ defmodule Kantele.Item.FoodTest do
       assert result.vitals.max_qi == 150
       assert result.vitals.jing == 80
       assert result.vitals.neili == 60
-      assert result.parts == ["气血+30"]
+      assert result.parts == ["气血+30", "饱食度+30"]
     end
 
     test "食物饱食度超过上限时钳制" do
@@ -55,7 +55,7 @@ defmodule Kantele.Item.FoodTest do
       {:ok, result} = Effect.consume(vitals, stats, meta)
 
       assert result.vitals.qi == 150
-      assert result.parts == ["气血+10"]
+      assert result.parts == ["气血+10", "饱食度+100"]
     end
 
     test "无食物属性时不提供食物效果" do

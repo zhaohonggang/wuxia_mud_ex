@@ -48,8 +48,8 @@ defmodule Kantele.Item.FeatureItemTest do
 
       assert effect.food? == true
       assert effect.medicine? == false
-      assert effect.parts == []
-      assert effect.vitals == vitals
+      assert effect.parts == ["饱食度+20"]
+      assert effect.vitals == %{Vitals.new() | food: 220}
       assert effect.stats == stats
     end
 

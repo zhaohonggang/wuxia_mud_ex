@@ -67,4 +67,10 @@ defmodule Kantele.Character.VitalsTest do
     # 天花板封在 base，不会越界
     assert Vitals.curing(wounded, :qi, 999_999).max_qi == vitals.base_qi
   end
+
+  test "new() 食物/水初始为满值（200）" do
+    vitals = Vitals.new()
+    assert vitals.food == 200
+    assert vitals.water == 200
+  end
 end

@@ -151,10 +151,22 @@ defmodule Kantele.Character.EatCommand do
   # --- 食物 / 药效路径（既有） ----------------------------------------------
 
   defp eat_food(conn, character, instance, item, meta) do
-    vitals = character.meta.vitals || %{}
-    stats = character.meta.stats || %{}
+    food_value = Map.get(meta, :food, 0)
+    vitals0 = character.meta.vitals || %{}
+    current_food = Map.get(vitals0, :food, 0) || 0
 
-    case Effect.consume(vitals, stats, meta) do
+    cond do
+      # LPC eat.c：food 已达上限则拒服，不能再塞
+      is_integer(food_value) and food_value > 0 and
+        current_food >= Kantele.Feature.Damage.max_food_capacity(character) ->
+        conn
+        |> render(CommandView, "text", %{text: "你已经吃太饱了，再也塞不下任何东西了。\n"})
+        |> prompt(CommandView, "prompt", %{})
+
+      true ->
+        vitals = vitals0
+        stats = character.meta.stats || %{}
+        case Effect.consume(vitals, stats, meta) do
       {:reject, reason} ->
         conn
         |> render(CommandView, "text", %{text: "#{reason}\n"})
@@ -183,6 +195,7 @@ defmodule Kantele.Character.EatCommand do
         |> prompt(CommandView, "prompt", %{})
         |> save()
     end
+  end
   end
 
   # 食物/药效文案：药效（medicine）→ "服下...热气"；纯食物 → "吃下...肚子舒服"

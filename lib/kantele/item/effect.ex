@@ -212,13 +212,17 @@ defmodule Kantele.Item.Effect do
   defp restore_from_food(vitals, food_value) when is_integer(food_value) and food_value > 0 do
     current_qi = Map.get(vitals, :qi, 0)
     max_qi = Map.get(vitals, :max_qi)
-    actual = min(current_qi + food_value, max_qi) - current_qi
+    qi_actual = min(current_qi + food_value, max_qi) - current_qi
 
-    if actual > 0 do
-      {["气血+#{actual}"], %{vitals | :qi => current_qi + actual}}
-    else
-      {[], vitals}
-    end
+    # 饱食度恢复（上限由调用方/命令层按 max_food_capacity 封顶，此处只累加）
+    current_food = Map.get(vitals, :food, 0) || 0
+    new_food = current_food + food_value
+
+    parts = []
+    parts = if qi_actual > 0, do: ["气血+#{qi_actual}" | parts], else: parts
+    parts = if new_food > current_food, do: ["饱食度+#{new_food - current_food}" | parts], else: parts
+
+    {Enum.reverse(parts), %{vitals | qi: current_qi + qi_actual, food: new_food}}
   end
 
   defp restore_from_food(vitals, _), do: {[], vitals}

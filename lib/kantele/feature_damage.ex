@@ -454,11 +454,15 @@ defmodule Kantele.Feature.Damage do
     vitals = character.meta.vitals
     stats = character.meta.stats
 
-    # 食物/水消耗
-    vitals = if vitals.water > 0, do: %{vitals | water: vitals.water - 1}, else: vitals
-    vitals = if vitals.food > 0, do: %{vitals | food: vitals.food - 1}, else: vitals
+    # 食物/水消耗（旧存档可能不带 food/water 字段，Map.get 兜底为 0）
+    water = Map.get(vitals, :water, 0) || 0
+    food = Map.get(vitals, :food, 0) || 0
+    new_water = if water > 0, do: water - 1, else: 0
+    new_food = if food > 0, do: food - 1, else: 0
+    vitals = %{vitals | water: new_water, food: new_food}
 
-    if vitals.water < 1 and is_player?(character) do
+    # 饥饿/口渴时玩家停止自然回复（对应 LPC heal_up 食物/水 < 1 的早返回）
+    if new_water < 1 and is_player?(character) do
       return({:ok, character})
     end
 
@@ -478,23 +482,25 @@ defmodule Kantele.Feature.Damage do
 
     # 精力回复：(con + max_jingli/10) / scale
     jing_gain = div(stats.con + div(vitals.max_jingli, 10), scale)
-    vitals = %{vitals | jing: min(vitals.jing + jing_gain, vitals.eff_jing)}
+    eff_jing = Map.get(vitals, :eff_jing) || vitals.max_jing
+    vitals = %{vitals | jing: min(vitals.jing + jing_gain, eff_jing)}
 
-    if vitals.jing >= vitals.eff_jing && vitals.eff_jing < vitals.max_jing do
-      vitals = %{vitals | eff_jing: vitals.eff_jing + 1}
+    if is_integer(Map.get(vitals, :eff_jing)) and vitals.jing >= eff_jing && eff_jing < vitals.max_jing do
+      vitals = %{vitals | eff_jing: eff_jing + 1}
     end
 
     # 气血回复：(con*2 + max_neili/20) / scale，忙乱时不回
     unless busy?(character) do
       qi_gain = div(stats.con * 2 + div(vitals.max_neili, 20), scale)
-      vitals = %{vitals | qi: min(vitals.qi + qi_gain, vitals.eff_qi)}
+      eff_qi = Map.get(vitals, :eff_qi) || vitals.max_qi
+      vitals = %{vitals | qi: min(vitals.qi + qi_gain, eff_qi)}
 
-      if vitals.qi >= vitals.eff_qi && vitals.eff_qi < vitals.max_qi do
-        vitals = %{vitals | eff_qi: vitals.eff_qi + 1}
+      if is_integer(Map.get(vitals, :eff_qi)) and vitals.qi >= eff_qi && eff_qi < vitals.max_qi do
+        vitals = %{vitals | eff_qi: eff_qi + 1}
       end
     end
 
-    if vitals.food < 1 && is_player?(character) do
+    if new_food < 1 && is_player?(character) do
       return({:ok, character})
     end
 
@@ -682,7 +688,7 @@ defmodule Kantele.Feature.Damage do
   defp is_player?(%{id: id}), do: is_binary(id) && String.starts_with?(id, "player:")
   defp is_character(%{id: id}), do: is_binary(id)
 
-  defp environment(character), do: character.meta.zone_id
+  defp environment(character), do: Map.get(character.meta, :zone_id)
 
   defp chat_room?(_env), do: false
 

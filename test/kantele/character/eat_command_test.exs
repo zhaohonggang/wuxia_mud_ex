@@ -407,6 +407,79 @@ defmodule Kantele.Character.EatCommandTest do
 
       assert text =~ "可不能这么往嘴里塞"
     end
+
+    test "吃食物恢复饱食度" do
+      p = player_with_food(4900)
+      # 初始无饱食度字段（旧存档兼容）
+      assert is_nil(p.meta.vitals.food)
+
+      conn = EatCommand.run(build_conn(p), %{"item_name" => "包子"})
+      text = output_text(conn)
+
+      assert text =~ "吃下"
+      assert text =~ "肉包子"
+      assert text =~ "饱食度"
+      updated = conn.private.update_character || conn.character
+      assert updated.inventory == []
+      assert updated.meta.vitals.food == 50
+    end
+
+    test "吃太饱时拒绝进食，实例保留" do
+      vitals = %Vitals{
+        jing: 2000,
+        jingli: 2000,
+        neili: 9000,
+        max_neili: 10000,
+        max_jingli: 2000,
+        qi: 5000,
+        max_qi: 5000,
+        food: 300
+      }
+
+      stats = %Stats{
+        str: 20,
+        dex: 20,
+        con: 20,
+        int: 20,
+        skills: %{},
+        mapped: %{},
+        performs: MapSet.new(),
+        combat_exp: 1000,
+        score: 0,
+        potential: 100,
+        weiwang: 0
+      }
+
+      combat = Kantele.Character.Combat.new()
+
+      food_instance = %Kalevala.World.Item.Instance{
+        id: "包子",
+        item_id: @food_id,
+        created_at: DateTime.utc_now()
+      }
+
+      p = %Kalevala.Character{
+        id: "player-1",
+        name: "张三",
+        pid: self(),
+        room_id: "test:room",
+        inventory: [food_instance],
+        meta: %PlayerMeta{
+          vitals: vitals,
+          stats: stats,
+          combat: combat
+        }
+      }
+
+      conn = EatCommand.run(build_conn(p), %{"item_name" => "包子"})
+      text = output_text(conn)
+
+      assert text =~ "已经吃太饱了"
+      updated = conn.private.update_character || conn.character
+      # 未消耗，实例仍在背包
+      assert length(updated.inventory) == 1
+      assert updated.meta.vitals.food == 300
+    end
   end
 
   describe "eat 丹药 (pill / do_effect 数据驱动路径)" do

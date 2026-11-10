@@ -94,4 +94,67 @@ defmodule Kantele.Feature.DamageTest do
     assert is_map(c2.meta)
     assert is_map(c2.meta.damage)
   end
+
+  test "heal_up 心跳扣食物和水各 1" do
+    base = character()
+    c = %{
+      base
+      | meta: %{
+        base.meta
+        | vitals: %Kantele.Character.Vitals{
+          base.meta.vitals
+          | food: 10,
+          water: 10,
+          max_jingli: 0
+        }
+      }
+    }
+
+    {:ok, result} = Damage.heal_up(c)
+    assert result.meta.vitals.food == 9
+    assert result.meta.vitals.water == 9
+  end
+
+  test "heal_up 食物归零时玩家停止自然回复" do
+    base = character()
+    c = %{
+      base
+      | meta: %{
+        base.meta
+        | vitals: %Kantele.Character.Vitals{
+          base.meta.vitals
+          | food: 1,
+          water: 100,
+          max_jingli: 0
+        }
+      }
+    }
+
+    {:ok, result} = Damage.heal_up(c)
+    assert result.meta.vitals.food == 0
+    # 食物归零后不再继续回复精气（口渴/饥饿早返回）
+    assert result.meta.vitals.water == 99
+  end
+
+  test "heal_up 旧存档无 food/water 字段也不崩溃" do
+    base = character()
+    c = %{
+      base
+      | meta: %{
+        base.meta
+        | vitals: %Kantele.Character.Vitals{
+          base.meta.vitals
+          | food: nil,
+          water: nil,
+          max_jingli: 0
+        }
+      }
+    }
+
+    {:ok, result} = Damage.heal_up(c)
+    # nil 兜底为 0，不崩溃；饥饿直接停止回复
+    assert is_map(result.meta.vitals)
+    assert result.meta.vitals.food == 0
+    assert result.meta.vitals.water == 0
+  end
 end

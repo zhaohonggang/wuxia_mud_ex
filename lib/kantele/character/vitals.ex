@@ -8,6 +8,14 @@ defmodule Kantele.Character.Vitals do
   - jing - Energy, affects actions (LPC jing; learn/study consumes)
   - jingli - Energy cultivation, improved by meditation (LPC jingli; non-recovery line)
   - neili - Internal force, used for special moves/internal skills
+
+  Hunger/thirst (饥饿/口渴):
+
+  - food - 饱食度，心跳每 tick 扣 1，为 0 时玩家停止自然回复
+  - water - 饮水度，心跳每 tick 扣 1，为 0 时玩家停止自然回复
+
+  两者上限由 `Kantele.Feature.Damage.max_food_capacity/1` /
+  `max_water_capacity/1` 计算（`str*10+100` 起），由进食/饮水命令在摄入时封顶。
   """
 
   @derive Jason.Encoder
@@ -22,13 +30,17 @@ defmodule Kantele.Character.Vitals do
     :max_jingli,
     :neili,
     :max_neili,
-    :base_neili
+    :base_neili,
+    :food,
+    :water
   ]
 
   @doc """
   Player default constitution: enough to survive a few rounds against Black Tiger
 
   base_* are the minimum below which wounds don't drop, natural recovery slowly raises max_* back to base
+
+  新角色出生时饱食度/饮水度均为满值（200），后续由心跳扣减、进食/饮水恢复。
   """
   def new() do
     %__MODULE__{
@@ -42,7 +54,9 @@ defmodule Kantele.Character.Vitals do
       max_jingli: 0,
       neili: 200,
       max_neili: 200,
-      base_neili: 200
+      base_neili: 200,
+      food: 200,
+      water: 200
     }
   end
 
