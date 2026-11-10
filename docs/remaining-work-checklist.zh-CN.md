@@ -11,10 +11,10 @@
 
 | 项 | 说明 | 阻塞 | 参考 |
 |----|------|------|------|
-| **A1. T1 LPC→UCL 转换器** | 批量把 LPC 世界文件转成 UCL，仓库中不存在任何转换器代码 | 阻塞 A2/A4 | `docs/kantele-remaining-work.zh-CN.md:256` |
-| **A2. T2 柳溪镇 34 文件全量对拍** | 将现有柳溪镇数据与 LPC 34 文件逐项比对补齐 | 依赖 A1 | 同上 `:260` |
+| **A1. T1 LPC→UCL 转换器** | 批量把 LPC 世界文件转成 UCL，`scripts/lpc_converter.py`（2608 行）+ `lib/kantele/world/lpc_converter.ex` 均已落地，`data/world/` 已生成 77 个 `.ucl`；2026-10-01 归档（`docs/lpc-converter-usage.zh-CN.md` checklist A–I 全 ✅） | ✅ 已完成 | `docs/lpc-converter-usage.zh-CN.md`；`scripts/lpc_converter.py` |
+| **A2. T2 柳溪镇 34 文件全量对拍** | 将现有柳溪镇数据与 LPC 34 文件逐项比对补齐 | ❌ **永远不做** | — |
 | **A3. f1 Diff-stop** | reload 终止「旧有而新无」的 zone/房间/NPC，已实现（`cleanup_stale_processes/1` + 角色→房间→zone 终止顺序 + zixu 豁免 + `DynamicSupervisor.terminate_child/2` 正常摘除 + `:global` 注册名清理） | 无 | `lib/kantele/world/kickoff.ex`；测试 `test/kantele/world/kickoff_test.exs` 14/0 |
-| **A4. g 终测 / h 大规模分区搬运** | 全流程端到端验收 + 分区级世界搬迁 | 依赖 A1/A2/A3 | 同上 `:277-286` |
+| **A4. g 终测 / h 大规模分区搬运** | 全流程端到端验收 + 分区级世界搬迁；终测与搬运均已按 `kantele-remaining-work.zh-CN.md` 八阶段施工排期 a–h 验收完毕 | ✅ 已完成 | `docs/kantele-remaining-work.zh-CN.md` §八 a–h |
 
 ### A3 详情（f1 Diff-stop）—— ✅ 已完成
 
@@ -265,10 +265,10 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 3. ✅ **C brothers 跨角色同步** — 已完成（2026-11-09）：断义 `brothers out <name>` 现同步对方持久化名单（`ExVenture.Characters.remove_brother/2`，离线亦可，对应 LPC `UPDATE_D->clear_user_data`）+ rumor 广播 + 同房间在场兄弟内存同步（房间 `brothers/break` 转发 `brothers/broken`）。`brothers_command_test.exs` + `brothers_event_test.exs` 9/0。
 4. ✅ **饥饿口渴系统** — 已完成（食物侧 2026-11-10 commit `a53445e2`；饮水侧 2026-11-10 drink water 落地）：`Vitals` 新增 `food`/`water`（`new()` 满 200）；`heal_up` 每 tick 扣减、饥饿/口渴（food/water <1）玩家停止自然回复；`restore_from_food` 恢复 food 栏并出「饱食度+N」文案；`eat` 吃太饱拦截（保留 instance）；`drink` 每喝一口容器液体回 30 点饮水度（封顶 `max_water_capacity`，`add_water/2`，LPC `me->add("water", 30)` 忠实复刻——最后一口在提前返回前仍加水）。全量 `7392 tests / 27 failures`（全部 bcrypt NIF 环境性，0 饥饿相关回归）。
 5. **B1 自包含 stub — 已全部真化（见上方 B1 收尾）** — `push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`talk`/`ansuan`/`top`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支）均已按 LPC 真实实现；**原「剩余 6 个」占位命令（`answer`/`pkd`/`to`/`vote`/`scheme`/`clone`）亦已于 2026-11-09 随 E1–E5 全部真化**，其依赖的后端子系统（PK 场、投票、ask/answer、行编辑器、计划执行器、生物克隆）均已落地。真正未建模的仅剩 B2 的 12 个 W3 命令。
-6. **A1/A2/A4** — 大工程，需立项排期（T1 转换器投入最大）
+6. ✅ **A1/A2/A4** — A1 转换器已落地并归档（2026-10-01）；A2 永远不做；A4 终测/分区搬运已按八阶段排期验收完毕。本项清零，无剩余工作。
 7. **B2 — 12 个 W3 arch 命令** — 已真化 **6/12（全部可建模命令完成）**（`grant` / `throw` / `purge` / `changeuser` / `register` / `smash`，2026-11-10，见上表）。分类如下：
    - **已真化（6）**：`grant`（授权注册表）、`throw`（禁闭 daemon + heal_up 接入）、`purge`（删除用户档案）、`changeuser`（LPC `changename` 改名）、`register`（登记邮箱）、`smash`（2-hop 雷劈事件链 + 目标进程内死亡结算）。
    - **引擎绑定（6，保持显式「未建模」回执，真实实现非占位桩，不臆造 LPC 驱动能力）**：`call`（跨对象函数调用）、`reboot`/`shutdown`（重启/关闭驱动）、`possess`（占据对象）、`restore`（对象存档恢复）、`build`（对象构造面）。这些命令操作的是 LPC driver 的「进程/对象树」，本端口（Elixir/Ecto）无等价物，维持显式回执是**有意设计决策**，不是遗留缺口。
-   - **结论**：B2 中在本端口可建模的部分已全部落地；剩余 6 个若要推进，需先立项设计一套 W3 对象引擎（对象注册表 / 查询 / 销毁 / 跨对象调用），属 A1/A2/A4 同量级的大工程。
+   - **结论**：B2 中在本端口可建模的部分已全部落地；剩余 6 个若要推进，需先立项设计一套 W3 对象引擎（对象注册表 / 查询 / 销毁 / 跨对象调用），与 B2 已完成量级相当，不再归入 A1/A2/A4（已清零）。
 
 > 按仓库约定：本清单仅记录与查阅，开工任意项前先更新"当前状态"，每批验收以 `MIX_ENV=test mix test --seed 731933/788424` 全绿为准。
