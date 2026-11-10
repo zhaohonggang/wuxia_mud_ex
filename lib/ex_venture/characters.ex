@@ -204,4 +204,37 @@ defmodule ExVenture.Characters do
       Logger.warn("remove_brother exited for #{inspect(name)}/#{inspect(brother_id)}: #{inspect(reason)}")
       {:error, :db_unavailable}
   end
+
+  @doc """
+  Rename a character by its current name (LPC `NAME_D->change_name` equivalent).
+
+  Used by the W3 `changeuser` command. Returns `{:ok, character}` on success,
+  `{:error, :not_found}` when no row matches, `{:error, :invalid}` when the
+  changeset rejects the new name, and `{:error, :db_unavailable}` on DB errors
+  (unavailable sandbox connection, etc.) so the calling command never crashes.
+  """
+  def rename_by_name(old_name, new_name)
+      when is_binary(old_name) and is_binary(new_name) do
+    case Repo.get_by(Character, name: old_name) do
+      nil ->
+        {:error, :not_found}
+
+      character ->
+        # 不能写裸 `update(character, ...)`：`import Ecto.Query` 带来的
+        # `Ecto.Query.update/2` 宏会优先于本模块同名函数展开。直接用 changeset。
+        case character |> Character.update_changeset(%{name: new_name}) |> Repo.update() do
+          {:ok, _} = ok -> ok
+          {:error, %Ecto.Changeset{}} -> {:error, :invalid}
+          {:error, _} -> {:error, :invalid}
+        end
+    end
+  rescue
+    e ->
+      Logger.warn("rename_by_name failed for #{inspect(old_name)}: #{Exception.message(e)}")
+      {:error, :db_unavailable}
+  catch
+    :exit, reason ->
+      Logger.warn("rename_by_name exited for #{inspect(old_name)}: #{inspect(reason)}")
+      {:error, :db_unavailable}
+  end
 end

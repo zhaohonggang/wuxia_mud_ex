@@ -214,7 +214,8 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 > 2026-11-09 更新：原列 6 个占位命令（`pkd`/`vote`/`answer`/`to`/`scheme`/`clone`）依赖的后端子系统
 > 已全部随 E1–E5 真化（PK 场 daemon、投票 daemon、ask/answer 配对、行编辑器、计划执行器、生物克隆均已落地），
-> 故本节仅作历史归档。当前真正未建模的命令是 B2 的 12 个 W3 命令（进程/对象系统管理面，需 W3 对象引擎）。
+> 故本节仅作历史归档。B2 的 12 个 W3 命令中已于 2026-11-10 真化 5 个（`grant`/`throw`/`purge`/`changeuser`/`register`）；
+> 当前真正未建模的仅余 7 个（`smash` + 6 个引擎绑定命令），详见下方「建议优先级」第 7 条与已完成表格行。
 > 原表保留以备回溯：
 
 | 子系统 | 依赖它的命令 | LPC 源 | 当前 Elixir 状态 | 是否已在他处登记 |
@@ -239,7 +240,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 |----|------|------|
 | brothers 跨角色同步 | `brothers_command.ex` / `ex_venture/characters.ex` / `world/room.ex` / `events/brothers_event.ex` | 断义时：持久化移除对方名单（`ExVenture.Characters.remove_brother/2`，离线亦可，LPC UPDATE_D 等价）+ rumor 广播 + 同房间在场兄弟内存同步（`brothers/break`→`brothers/broken`） |
 | 饥饿/口渴系统（food/water 栏 + heal_up 扣减 + 吃太饱拦截 + drink 饮水恢复） | `vitals.ex` / `effect.ex` / `feature_damage.ex` / `eat_command.ex` / `drink_command.ex` | ✅ 已完成（食物侧 2026-11-10 commit `a53445e2`；饮水侧 2026-11-10 drink `add_water/2`）：`Vitals` 新增 `food`/`water`（`new()` 满 200）；`heal_up` 每 tick 扣减、food/water <1 玩家停止自然回复；`restore_from_food` 恢复 food 栏出「饱食度+N」；`eat` 吃太饱拦截；`drink` 每口容器液体回 30 点饮水度（封顶 `max_water_capacity`）。全量 `7392 tests / 27 failures`（全部 bcrypt NIF 环境性，0 饥饿相关回归） |
-| B2 `grant` / `throw` / `purge` 三个 W3 命令真化 | `admin/security.ex` / `admin/prison.ex` / `commands/{grant,throw,purge}_command.ex` / `feature_damage.ex` | ✅ 已完成（2026-11-10）：① `grant` — `Kantele.Admin.Security` 授权注册表（public ETS，与 Pkd/Vote 同构，直接 ETS 写入不经 GenServer.call），`grant [-d] <玩家> <命令>...` 解析 + arch-only 门控 + 授权/撤销。② `throw` — `Kantele.Admin.Prison` 禁闭 daemon（LPC `throw.c`：`because <理由>` 白名单 flood/copy/rude/rumor/bug/main、时长 h/d/m/y 换算、缺省 20 分钟、自禁闭拦截），并把 `heal_up/1` 的 `in_prison?` 占位桩接到 daemon（禁闭玩家停止自然回复）。③ `purge` — `purge <姓名> because <原因>` 真正调用 `ExVenture.Characters.delete_by_name/1`（LPC `UPDATE_D->remove_user`）+ rumor 广播 + 自删/无此人/DB 不可用回执。新增 5 个测试文件（security/prison/grant/throw/purge），`wiz_arch_test` 的 `@deferred` 移除这 3 条；`command_probe` 未误报。剩余 9 个 W3 命令见下方"建议优先级"第 7 条 |
+| B2 W3 arch 命令真化 — 5/12 | `admin/security.ex` / `admin/prison.ex` / `commands/{grant,throw,purge,changeuser,register}_command.ex` / `feature_damage.ex` / `ex_venture/{characters,users}.ex` | ✅ 已完成（2026-11-10，两批）：① `grant` — `Kantele.Admin.Security` 授权注册表（public ETS，与 Pkd/Vote 同构，直接 ETS 写入不经 GenServer.call），`grant [-d] <玩家> <命令>...` + arch-only 门控。② `throw` — `Kantele.Admin.Prison` 禁闭 daemon（LPC `throw.c`：`because <理由>` 白名单 flood/copy/rude/rumor/bug/main、时长 h/d/m/y 换算、缺省 20 分钟、自禁闭拦截），`heal_up/1` 的 `in_prison?` 占位桩接到 daemon。③ `purge` — `purge <姓名> because <原因>` 真正调用 `ExVenture.Characters.delete_by_name/1` + rumor 广播。④ `changeuser`（LPC `changename.c`）— `[-f] <玩家> <新名字>`，纯中文 1~8 字校验（`check_legal_name` 等价）、在线目标检查、新增 `Characters.rename_by_name/2`（按 name 更新 DB 档案）。⑤ `register`（LPC `register.c`）— `<id> <email>`，新增 `Users.User.register_changeset/2`（以 `email_verified_at` 表示登记态，避免 DB 迁移）+ `Users.register_by_username/2`。全部 arch-only 门控 + rescue-safe DB 降级（无 Postgres 环境不崩）。新增 7 个测试文件，`wiz_arch_test` 的 `@deferred` 余 7 条；`command_probe` 未误报。剩余 7 个 W3 命令见下方"建议优先级"第 7 条 |
 
 ---
 
@@ -264,10 +265,10 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 4. ✅ **饥饿口渴系统** — 已完成（食物侧 2026-11-10 commit `a53445e2`；饮水侧 2026-11-10 drink water 落地）：`Vitals` 新增 `food`/`water`（`new()` 满 200）；`heal_up` 每 tick 扣减、饥饿/口渴（food/water <1）玩家停止自然回复；`restore_from_food` 恢复 food 栏并出「饱食度+N」文案；`eat` 吃太饱拦截（保留 instance）；`drink` 每喝一口容器液体回 30 点饮水度（封顶 `max_water_capacity`，`add_water/2`，LPC `me->add("water", 30)` 忠实复刻——最后一口在提前返回前仍加水）。全量 `7392 tests / 27 failures`（全部 bcrypt NIF 环境性，0 饥饿相关回归）。
 5. **B1 自包含 stub — 已全部真化（见上方 B1 收尾）** — `push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`talk`/`ansuan`/`top`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支）均已按 LPC 真实实现；**原「剩余 6 个」占位命令（`answer`/`pkd`/`to`/`vote`/`scheme`/`clone`）亦已于 2026-11-09 随 E1–E5 全部真化**，其依赖的后端子系统（PK 场、投票、ask/answer、行编辑器、计划执行器、生物克隆）均已落地。真正未建模的仅剩 B2 的 12 个 W3 命令。
 6. **A1/A2/A4** — 大工程，需立项排期（T1 转换器投入最大）
-7. **B2 — 12 个 W3 arch 命令** — 进行中：已真化 **3/12**（`grant` / `throw` / `purge`，2026-11-10，见上表）。分类如下：
-   - **已真化（3）**：`grant`（授权注册表）、`throw`（禁闭 daemon + heal_up 接入）、`purge`（删除用户档案）。
-   - **可建模待办（3）**：`changeuser`（LPC `changename`：改中文名，需用户库查找+写入）、`register`（登记邮箱，需用户库）、`smash`（LPC 雷劈击杀在场生物，需「按名查在场实体 + die()」链路）。
-   - **引擎绑定（6，保持显式「未建模」回执，不臆造 LPC 驱动能力）**：`call`（跨对象函数调用）、`reboot`/`shutdown`（重启/关闭驱动）、`possess`（占据对象）、`restore`（对象存档恢复）、`build`（对象构造面）。
-   - 实现顺序：用户库类（`changeuser`/`register`、需 DB 迁移或复用 `email_verified_at`）→ `smash`（在场实体）→ 其余 5 个保持显式未建模。
+7. **B2 — 12 个 W3 arch 命令** — 进行中：已真化 **5/12**（`grant` / `throw` / `purge` / `changeuser` / `register`，2026-11-10，见上表）。分类如下：
+   - **已真化（5）**：`grant`（授权注册表）、`throw`（禁闭 daemon + heal_up 接入）、`purge`（删除用户档案）、`changeuser`（LPC `changename` 改名）、`register`（登记邮箱）。
+   - **可建模待办（1）**：`smash`（LPC 雷劈击杀在场生物）—— 需「按名查在场实体 + 对他人进程施加 `die()` 的事件链路」；本端口 `Damage.die/2` 只作用于本地 character struct，跨角色需新增房间/角色事件（可参照 `brothers/break` 转发模式）。
+   - **引擎绑定（6，保持显式「未建模」回执，真实实现非占位桩，不臆造 LPC 驱动能力）**：`call`（跨对象函数调用）、`reboot`/`shutdown`（重启/关闭驱动）、`possess`（占据对象）、`restore`（对象存档恢复）、`build`（对象构造面）。
+   - 下一步：`smash` 若需落地，先补一条 `character/smashed` 事件链；其余 6 个维持现状。
 
 > 按仓库约定：本清单仅记录与查阅，开工任意项前先更新"当前状态"，每批验收以 `MIX_ENV=test mix test --seed 731933/788424` 全绿为准。

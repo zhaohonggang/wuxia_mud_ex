@@ -60,6 +60,24 @@ defmodule ExVenture.Users.User do
     |> maybe_restart_email_verification()
   end
 
+  @doc """
+  Registration changeset for the W3 `register` command.
+
+  LPC `cmds/arch/register.c` sets `registered=1` + `email` on the player body.
+  This port has no `registered` column, so registration is represented by a
+  verified `email` (`email_verified_at` set). Unlike `update_changeset/2` this
+  does NOT restart email verification (no mailer side effects), because an arch
+  wizard is registering the account directly.
+  """
+  def register_changeset(struct, params) do
+    struct
+    |> cast(params, [:email])
+    |> validate_required([:email])
+    |> validate_format(:email, ~r/^[^@\s]+@[^@\s]+\.[^@\s]+$/)
+    |> unique_constraint(:email, name: :users_lower_email_index)
+    |> put_change(:email_verified_at, DateTime.truncate(DateTime.utc_now(), :second))
+  end
+
   def password_changeset(struct, params) do
     struct
     |> cast(params, [:password, :password_confirmation])
@@ -100,6 +118,7 @@ defmodule ExVenture.Users do
   alias ExVenture.Users.Avatar
   alias ExVenture.Users.User
   alias Stein.Accounts
+  require Logger
 
   @doc """
   Changeset for a session or registration
@@ -148,6 +167,37 @@ defmodule ExVenture.Users do
       user ->
         {:ok, user}
     end
+  end
+
+  @doc """
+  Register a user by username (LPC `cmds/arch/register.c` equivalent).
+
+  Sets the registration email and marks it verified. Returns `{:ok, user}` on
+  success, `{:error, :not_found}` when no user has that username,
+  `{:error, :invalid}` when the email is rejected, and
+  `{:error, :db_unavailable}` on DB errors so the calling command never crashes.
+  """
+  def register_by_username(username, email)
+      when is_binary(username) and is_binary(email) do
+    case Repo.get_by(User, username: username) do
+      nil ->
+        {:error, :not_found}
+
+      user ->
+        case user |> User.register_changeset(%{email: email}) |> Repo.update() do
+          {:ok, _} = ok -> ok
+          {:error, %Ecto.Changeset{}} -> {:error, :invalid}
+          {:error, _} -> {:error, :invalid}
+        end
+    end
+  rescue
+    e ->
+      Logger.warn("register_by_username failed for #{inspect(username)}: #{Exception.message(e)}")
+      {:error, :db_unavailable}
+  catch
+    :exit, reason ->
+      Logger.warn("register_by_username exited for #{inspect(username)}: #{inspect(reason)}")
+      {:error, :db_unavailable}
   end
 
   @doc """

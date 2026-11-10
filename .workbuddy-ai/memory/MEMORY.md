@@ -36,13 +36,15 @@
 - 期间完成的 Phase 2-8：`scheme` 计划执行器、S7/E2 转世落盘、S8/E3 戒律 `guilty`、S1 ask/answer 配对、S2 `pkd`、S4 `vote`、S6 生物 `clone` —— 均在上述 commit 中一并推送。
 - 全量演进：7382 → 7392 → 7409 → **7437 tests / 27 failures**（每批均 0 新增回归）。
 
-## B2 — 12 个 W3 arch 命令（进行中，3/12，本批未 commit）
-- 已真化：`grant`（`Kantele.Admin.Security` 授权注册表，ETS `:kantele_security`）、`throw`（`Kantele.Admin.Prison` 禁闭 daemon，ETS `:kantele_prison`，LPC `throw.c` 理由白名单 + h/d/m/y 时长；`heal_up` 的 `in_prison?` 桩已接入）、`purge`（真正调 `Characters.delete_by_name/1` + rumor）。
-- 门控统一 `WizArch.guard` + `Access.archwizp`（arch-only，对应 LPC `valid_grant(me,"(arch)")`）。
-- `wiz_arch_test.exs` 的 `@deferred` 现余 9 条；`command_probe` 未误报。
-- 待办可建模 3：`changeuser`(LPC `changename`，需用户库按名查+改名)、`register`(登记邮箱)、`smash`(雷劈击杀在场生物，需按名查实体 + die 链路)。
+## B2 — 12 个 W3 arch 命令（进行中，5/12；前 3 个已 commit `3a0c7188`）
+- 已真化：`grant`（`Kantele.Admin.Security` 授权注册表，ETS `:kantele_security`）、`throw`（`Kantele.Admin.Prison` 禁闭 daemon，ETS `:kantele_prison`，LPC `throw.c` 理由白名单 + h/d/m/y 时长；`heal_up` 的 `in_prison?` 桩已接入）、`purge`（`Characters.delete_by_name/1` + rumor）、`changeuser`（LPC `changename.c` 中文名校验 + `Characters.rename_by_name/2`）、`register`（`Users.register_by_username/2` + `register_changeset/2` 以 `email_verified_at` 表登记态，免 DB 迁移）。
+- 门控统一 `WizArch.guard` + `Access.archwizp`（arch-only，对应 LPC `valid_grant(me,"(arch)")`）；DB 调用全 rescue/catch 降级。
+- `wiz_arch_test.exs` 的 `@deferred` 现余 7 条；`command_probe` 未误报。
+- **坑**：`ExVenture.Characters` 里裸 `update(...)` 被 `import Ecto.Query` 的 `Ecto.Query.update/2` 宏抢占（宏优先于同名本地函数）→ 直接写 changeset + `Repo.update()`。
+- 待办可建模 1：`smash`（雷劈击杀在场生物，需新增 `character/smashed` 事件链把 `Damage.die/2` 作用到他人进程，参照 `brothers/break` 转发模式）。
 - 引擎绑定 6（**保持显式「W3 对象系统未建模」回执，真实实现非桩**）：`call`/`reboot`/`shutdown`/`possess`/`restore`/`build` —— 本端口无 LPC 进程/对象树等价物，不臆造驱动能力。
-- 状态文档：`docs/remaining-work-checklist.zh-CN.md` 建议优先级第 7 条 + 已完成表格行。
+- 状态文档：`docs/remaining-work-checklist.zh-CN.md` 建议优先级第 7 条 + 已完成表格行；`game-commands-testing-guide` 的 W3 条已加过时注记。
+- 全量：**7453 tests / 27 failures**（全为 bcrypt NIF 环境性，0 回归）。
 
 ## 剩余 backlog
 - A1/A2/A4 大工程（T1 转换器投入最大，需立项排期）。
