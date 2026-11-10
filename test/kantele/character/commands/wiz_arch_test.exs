@@ -33,9 +33,10 @@ defmodule Kantele.Character.Commands.WizArchTest do
     {"setsk", Kantele.Character.SetskCommand}
   ]
 
-  # 12 个「本端口未建模」命令（排除已真化的 var/setsk）
-  @deferred ["build", "call", "changeuser", "grant", "possess", "purge",
-             "reboot", "register", "restore", "shutdown", "smash", "throw"]
+  # 9 个「本端口未建模」命令（排除已真化的 var/setsk，以及已落地的
+  # grant / throw / purge）
+  @deferred ["build", "call", "changeuser", "possess",
+             "reboot", "register", "restore", "shutdown", "smash"]
 
   defp player(opts \\ []) do
     vitals = %Vitals{

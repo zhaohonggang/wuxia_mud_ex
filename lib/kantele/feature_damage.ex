@@ -694,8 +694,14 @@ defmodule Kantele.Feature.Damage do
 
   defp interactive?(_character), do: true
 
+  # 禁闭态由 `Kantele.Admin.Prison` daemon 持有（LPC `is_in_prison()`）。
+  # daemon 未启动时 Prison.in_prison?/1 返回 false，保持旧版占位行为不回归。
+  defp in_prison?(%{name: name}) when is_binary(name),
+    do: Kantele.Admin.Prison.in_prison?(name)
+
   defp in_prison?(_character), do: false
 
+  # 刑期倒计时由 daemon 的 until 时间戳惰性结算，此处无需逐 tick 写盘。
   defp update_in_prison(_character), do: :ok
 
   defp has_item?(_character, _item_id), do: false
