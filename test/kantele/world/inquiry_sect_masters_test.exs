@@ -188,6 +188,65 @@ defmodule Kantele.World.InquirySectMastersTest do
 
       # 4 条纯字符串问询（batch-2 回填）仍保留
       assert inquiry(npc, "胡一刀") == "当年我中了奸人毒计杀害了他，令我遗憾终生！"
+
+      # 5 条 item_grant 问询（腾龙剑 / 剑谱上下册）：kind=give_item 门控字段
+      tenglong = inquiry(npc, "腾龙剑")
+      assert tenglong["kind"] == "give_item"
+      assert tenglong["item"] == "clone_lib:tenglongjian"
+      assert tenglong["unique"] == "true"
+      assert tenglong["family"] == "中原苗家"
+      assert tenglong["master_id"] == "true"
+      assert tenglong["min_skill_levels"] == %{"sword" => 150}
+      assert tenglong["vision_name"] == "苗人凤"
+      assert tenglong["success"] == "这腾龙剑你拿去吧，切莫用它为非作歹。"
+      assert tenglong["already"] == "腾龙剑现在不就是你拿着在用吗？"
+      assert tenglong["family_deny"] == "给我走开！"
+      assert tenglong["master_deny"] == "你又不是我的弟子，跟我罗嗦些什么？"
+      assert tenglong["min_skill_deny"] == "你剑法都没练好，就算利剑在手又有何用？"
+
+      jianpu_shang = inquiry(npc, "剑谱上册")
+      assert jianpu_shang["kind"] == "give_item"
+      assert jianpu_shang["item"] == "clone_lib:miaojia1"
+      assert jianpu_shang["unique"] == "true"
+      assert jianpu_shang["family"] == "中原苗家"
+      assert jianpu_shang["master_id"] == "true"
+      assert jianpu_shang["min_combat_exp"] == 10000
+      assert jianpu_shang["max_skill_levels"] == %{"suqin-beijian" => 119}
+      assert jianpu_shang["vision_name"] == "苗人凤"
+      assert jianpu_shang["success"] == "这本剑谱你就拿去看吧，可要仔细阅读。"
+      assert jianpu_shang["already"] == "我苗家的家传剑谱不就是你拿着在看吗？"
+      assert jianpu_shang["family_deny"] == "给我走开！"
+      assert jianpu_shang["master_deny"] == "你又不是我的弟子，跟我罗嗦些什么？"
+      assert jianpu_shang["min_exp_deny"] == "你现在经验太浅，这本剑谱对你来说过于深奥了。"
+      assert jianpu_shang["max_skill_deny"] == "你的剑法根基已经很扎实了，这剑谱还是留给后辈们吧。"
+
+      # 「上册」是「剑谱上册」的别名，配置应当一致
+      shang_alias = inquiry(npc, "上册")
+      assert shang_alias["kind"] == "give_item"
+      assert shang_alias["item"] == "clone_lib:miaojia1"
+      assert shang_alias["min_combat_exp"] == 10000
+
+      jianpu_xia = inquiry(npc, "剑谱下册")
+      assert jianpu_xia["kind"] == "give_item"
+      assert jianpu_xia["item"] == "clone_lib:miaojia2"
+      assert jianpu_xia["unique"] == "true"
+      assert jianpu_xia["family"] == "中原苗家"
+      assert jianpu_xia["master_id"] == "true"
+      assert jianpu_xia["min_combat_exp"] == 300000
+      assert jianpu_xia["max_skill_levels"] == %{"sword" => 199}
+      assert jianpu_xia["vision_name"] == "苗人凤"
+      assert jianpu_xia["success"] == "今日我将这剑谱交给你，可别落入奸人之手。"
+      assert jianpu_xia["already"] == "我苗家的家传剑谱不就是你拿着在看吗？"
+      assert jianpu_xia["family_deny"] == "给我走开！"
+      assert jianpu_xia["master_deny"] == "你又不是我的弟子，跟我罗嗦些什么？"
+      assert jianpu_xia["min_exp_deny"] == "你现在经验太浅，这本剑谱对你来说过于深奥了。"
+      assert jianpu_xia["max_skill_deny"] == "你的剑法造诣已算得上是登峰造极了，这剑谱还是留给后辈们吧。"
+
+      # 「下册」是「剑谱下册」的别名，配置应当一致
+      xia_alias = inquiry(npc, "下册")
+      assert xia_alias["kind"] == "give_item"
+      assert xia_alias["item"] == "clone_lib:miaojia2"
+      assert xia_alias["min_combat_exp"] == 300000
     end
 
     test "桑三娘 3 门绝招：日月神教 + max_shen 阴面门派", %{world: world} do
