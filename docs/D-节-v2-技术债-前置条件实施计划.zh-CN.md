@@ -177,15 +177,15 @@
 
 | 模块 | 职责 | 状态 |
 |------|------|------|
-| `Kantele.World.W3ObjectEngine` | GenServer + 公共 ETS `w3_objects`，对象注册/查询/销毁/列表 | 本计划 |
-| `Kantele.Character.CallCommand` | `call <对象> <函数> [参数...]`，对象函数调用 | 本计划 |
-| `Kantele.Character.RebootCommand` | `reboot [延迟秒]`，应用层受控重启 | 本计划 |
-| `Kantele.Character.ShutdownCommand` | `shutdown [延迟秒]`，应用层受控停机 | 本计划 |
+| `Kantele.World.W3ObjectEngine` | GenServer + 公共 ETS `w3_objects`，对象注册/查询/销毁/列表 + 受控系统操作 `schedule_system/3` | ✅ 已完成 |
+| `Kantele.Character.CallCommand` | `call <对象> <函数> [参数...]`，对象函数调用 | ✅ 已完成 |
+| `Kantele.Character.RebootCommand` | `reboot [延迟秒]`，应用层受控重启（dry-run 默认） | ✅ 已完成 |
+| `Kantele.Character.ShutdownCommand` | `shutdown [延迟秒]`，应用层受控停机（dry-run 默认） | ✅ 已完成 |
 | `Kantele.Character.PossessCommand` | 附身（依赖角色进程迁移） | 后续，保留 not_modeled |
 | `Kantele.Character.RestoreCommand` | 存档恢复（依赖持久化层） | 后续，保留 not_modeled |
 | `Kantele.Character.BuildCommand` | 建造房间/对象（依赖房间编辑器） | 后续，保留 not_modeled |
 
-路由：全部在 `lib/kantele/character/commands.ex` 新增 module 块，使用 `optional(empty() |> spaces() |> text(:rest))`。
+路由：全部在 `lib/kantele/character/commands.ex` 新增 module 块，使用 `optional(empty() |> spaces() |> text(:rest))`（已在 E5 完成）。
 
 ### 5.3 验收标准
 
@@ -193,6 +193,15 @@
 - `reboot`/`shutdown`：巫师触发返回确认文案；非巫师被拒绝；不崩溃。
 - `possess`/`restore`/`build`：巫师触发返回 `not_modeled` 回执（含「W3 对象系统」原因）。
 - `command_probe_test.exs` 白名单 `%{}`，0 误报。
+- 全量 `mix test --seed 831693`：0 新增失败（27 bcrypt 基线）。
+
+**已完成（2026-11-11）：**
+- `lib/kantele/world/w3_object_engine.ex` — GenServer + 公共命名 ETS `w3_objects`，`register/4`/`lookup/1`/`unregister/1`/`list/0`/`read_state/0`，以及受控系统操作 `schedule_system/3`（默认 dry-run，仅当 `config :ex_venture, Kantele.World.W3ObjectEngine, allow_system_actions: true` 时经 `Process.send_after` 投递到 GenServer 执行 `Application.stop/start`）与 `cancel_system/0`；遵循 daemon 惯例（`ensure!/0` 补建表、直接 `:ets.insert`）。
+- `lib/kantele/character/commands/wiz_arch.ex` — 新增 `system_action/4` 共享 helper（解析延迟秒、调度、确认文案）。
+- `lib/kantele/character/commands/call_command.ex` — `call <对象> <函数> [参数...]`：先查 W3ObjectEngine，未命中按引用名/路径解析为 Elixir 模块或经 `ObjectClone.clone_by_path/3` 验证存在；`Module.apply` 调用，结果/错误/属主权限分级回执。
+- `lib/kantele/character/commands/reboot_command.ex` / `shutdown_command.ex` — 经 `WizArch.system_action/4` 调度，dry-run 确认文案。
+- `possess`/`restore`/`build` `@moduledoc` 补充后续阶段依赖与预留接口模块（`Possession`/`ObjectRestore`/`Builder`）。
+- 测试：`w3_object_engine_test.exs`（13 例：ensure 幂等 / 注册查询 / 销毁 / 列表 / read_state / schedule_system dry-run）+ `wiz_arch_test.exs`（将 call/reboot/shutdown 移出 `@deferred`，新增真实行为测试，37 例全绿）+ `command_probe_test.exs`（白名单 `%{}` 0 误报）。
 - 全量 `mix test --seed 831693`：0 新增失败（27 bcrypt 基线）。
 
 ---
@@ -217,6 +226,13 @@ Phase 3 / T4 (count>1 逐件交付) ✅ 已完成
   ├─ 3.2 turnin_request 逐件扣减 + 入位门控 (meta.count 累计，count=0→complete，count>0→提示「还需要 X 件」)
   └─ 3.3 按件比例奖励 (scale_rewards_by_count，v>0 缩为0 补 1)
       → 验收后：count>1 逐件交付 ✅ 可真化（7601 tests / 27 failures，与 bcrypt 基线一致，0 回归）
+
+Phase 4 (W3 对象引擎) ✅ MVP 已完成（2026-11-11）
+  ├─ W3ObjectEngine 核心 (GenServer + 公共 ETS w3_objects，注册/查询/销毁/列表 + 受控 schedule_system)
+  ├─ call 命令 (对象函数调用，经 ObjectClone 落点)
+  ├─ reboot / shutdown 命令 (应用层受控，dry-run 默认)
+  └─ possess / restore / build 后续阶段（保留 not_modeled，预留接口模块）
+      → 验收后：6 个引擎绑定命令中 call/reboot/shutdown 已真化（全量 0 新增失败，27 bcrypt 基线）
 ```
 
 建议优先开工 **Phase 1**：前置条件（GameTime/Weather/Room.snapshot/Conditions）全部已就绪，代码量中等，且可直接复用现有 `Scheduler.schedule_once` 链式与 `Kantele.Character.Conditions` 机制，风险最低。Phase 2 涉及运行时模块加载与巫师权限，需谨慎设计沙箱；Phase 3 标记为 T4，可在 Phase 1-2 验收后再立项。

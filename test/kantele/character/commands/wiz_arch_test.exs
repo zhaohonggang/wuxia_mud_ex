@@ -1,19 +1,31 @@
+defmodule Kantele.Character.Commands.WizArchTest.CallTarget do
+  @moduledoc false
+  # 供 call 命令测试调用的目标模块（经由 W3ObjectEngine 注册）。
+  def ping(args), do: "pong:#{inspect(args)}"
+  def arity0, do: :ok
+end
+
 defmodule Kantele.Character.Commands.WizArchTest do
   @moduledoc """
-  E5 — W3 arch 14 命令：路由 + 巫师门控 + 显式回执 + var/setsk 真化行为。
+  E5 — W3 arch 14 命令：路由 + 巫师门控 + 显式回执 + var/setsk 真化行为 +
+  B2 W3 对象引擎：call/reboot/shutdown 真化行为。
 
   14 命令原先是静默 no-op，本测试确保它们：
   - 参数可达（`optional(spaces() |> text(:rest))`）；
   - 非巫师显式拒绝；
-  - 巫师得到明确回执（12 个未建模命令）或真实行为（var/setsk）。
+  - 巫师得到明确回执（build/possess/restore 未建模；call/reboot/shutdown 真化）。
   """
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   import Kalevala.ConnTest
 
+  alias Kantele.Character.CallCommand
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.RebootCommand
+  alias Kantele.Character.ShutdownCommand
   alias Kantele.Character.Vitals
   alias Kalevala.Character.Conn.Text
+  alias Kantele.World.W3ObjectEngine
 
   # 14 个 W3 arch 命令：命令字符串 -> 模块
   @commands [
@@ -33,12 +45,11 @@ defmodule Kantele.Character.Commands.WizArchTest do
     {"setsk", Kantele.Character.SetskCommand}
   ]
 
-  # 6 个「本端口未建模」命令（排除已真化的 var/setsk，以及已落地的
-  # grant / throw / purge / changeuser / register / smash —— 全部 6 个可建模命令）
-  @deferred ["build", "call", "possess",
-             "reboot", "restore", "shutdown"]
+  # 仍「本端口未建模」的 3 个命令（call/reboot/shutdown 已在本计划真化，
+  # possess/restore/build 依赖更重的世界/持久化系统，保留 not_modeled 回执）。
+  @deferred ["build", "possess", "restore"]
 
-  defp player(opts \\ []) do
+  defp player(opts) do
     vitals = %Vitals{
       jing: Keyword.get(opts, :jing, 2000),
       jingli: Keyword.get(opts, :jingli, 2000),
@@ -107,7 +118,7 @@ defmodule Kantele.Character.Commands.WizArchTest do
     end
   end
 
-  describe "12 个未建模命令：巫师收到明确回执（不再静默）" do
+  describe "未建模命令：巫师收到明确回执（不再静默）" do
     test "巫师触发任一未建模命令得到「未建模」回执" do
       for {name, mod} <- @commands do
         if name in @deferred do
@@ -118,6 +129,119 @@ defmodule Kantele.Character.Commands.WizArchTest do
           refute text =~ "没有巫师的权限", "#{name} 巫师不应被拒"
         end
       end
+    end
+  end
+
+  describe "call：对象函数调用（已真化）" do
+    test "巫师调用已注册对象函数并收到结果" do
+      W3ObjectEngine.ensure!()
+      W3ObjectEngine.register("wizarch_obj_ping", __MODULE__.CallTarget, %{}, nil)
+
+      conn = CallCommand.run(build_conn(wizard_player()), %{"rest" => "wizarch_obj_ping ping hello"})
+      text = output_text(conn)
+
+      assert text =~ "调用 ping 结果", "应返回函数调用结果"
+      assert text =~ "pong:", "应返回目标模块的实际返回值"
+      refute text =~ "没有巫师的权限"
+    end
+
+    test "匿名对象（无参数函数）也可调用" do
+      W3ObjectEngine.ensure!()
+      W3ObjectEngine.register("wizarch_obj_a0", __MODULE__.CallTarget, %{}, nil)
+
+      conn = CallCommand.run(build_conn(wizard_player()), %{"rest" => "wizarch_obj_a0 arity0"})
+      assert output_text(conn) =~ "调用 arity0 结果: :ok"
+    end
+
+    test "对象不存在时返回明确错误" do
+      W3ObjectEngine.ensure!()
+
+      conn = CallCommand.run(build_conn(wizard_player()), %{"rest" => "wizarch_ghost xyz"})
+      assert output_text(conn) =~ "找不到对象"
+    end
+
+    test "函数不存在时返回明确错误" do
+      W3ObjectEngine.ensure!()
+      W3ObjectEngine.register("wizarch_obj_nf", __MODULE__.CallTarget, %{}, nil)
+
+      conn = CallCommand.run(build_conn(wizard_player()), %{"rest" => "wizarch_obj_nf nope"})
+      assert output_text(conn) =~ "函数不存在"
+    end
+
+    test "非属主且非 admin 时被拒绝" do
+      W3ObjectEngine.ensure!()
+      W3ObjectEngine.register("wizarch_obj_owner", __MODULE__.CallTarget, %{}, "other_wizard")
+
+      conn = CallCommand.run(build_conn(wizard_player()), %{"rest" => "wizarch_obj_owner ping x"})
+      assert output_text(conn) =~ "你没有权限调用该对象"
+    end
+
+    test "无参数时提示用法" do
+      W3ObjectEngine.ensure!()
+
+      conn = CallCommand.run(build_conn(wizard_player()), %{"rest" => ""})
+      assert output_text(conn) =~ "用法"
+    end
+
+    test "非巫师被拒绝" do
+      W3ObjectEngine.ensure!()
+
+      conn = CallCommand.run(build_conn(mortal_player()), %{"rest" => "anything ping x"})
+      assert output_text(conn) =~ "没有巫师的权限"
+    end
+  end
+
+  describe "reboot：系统重启（已真化，应用层受限）" do
+    test "巫师触发返回确认文案" do
+      W3ObjectEngine.ensure!()
+
+      conn = RebootCommand.run(build_conn(wizard_player()), %{"rest" => ""})
+      text = output_text(conn)
+
+      assert text =~ "正在调度系统重启", "应返回重启确认"
+      assert text =~ "演练", "测试环境应处于 dry-run"
+      refute text =~ "没有巫师的权限"
+    end
+
+    test "延迟参数被解析" do
+      W3ObjectEngine.ensure!()
+
+      conn = RebootCommand.run(build_conn(wizard_player()), %{"rest" => "5"})
+      assert output_text(conn) =~ "延迟 5 秒后执行"
+    end
+
+    test "非巫师被拒绝" do
+      W3ObjectEngine.ensure!()
+
+      conn = RebootCommand.run(build_conn(mortal_player()), %{"rest" => ""})
+      assert output_text(conn) =~ "没有巫师的权限"
+    end
+  end
+
+  describe "shutdown：系统停机（已真化，应用层受限）" do
+    test "巫师触发返回确认文案" do
+      W3ObjectEngine.ensure!()
+
+      conn = ShutdownCommand.run(build_conn(wizard_player()), %{"rest" => ""})
+      text = output_text(conn)
+
+      assert text =~ "正在调度系统停机", "应返回停机确认"
+      assert text =~ "演练", "测试环境应处于 dry-run"
+      refute text =~ "没有巫师的权限"
+    end
+
+    test "延迟参数被解析" do
+      W3ObjectEngine.ensure!()
+
+      conn = ShutdownCommand.run(build_conn(wizard_player()), %{"rest" => "10"})
+      assert output_text(conn) =~ "延迟 10 秒后执行"
+    end
+
+    test "非巫师被拒绝" do
+      W3ObjectEngine.ensure!()
+
+      conn = ShutdownCommand.run(build_conn(mortal_player()), %{"rest" => ""})
+      assert output_text(conn) =~ "没有巫师的权限"
     end
   end
 

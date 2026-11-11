@@ -40,15 +40,12 @@
 - `1bd36b54`：test: add 苗人凤 item_grant inquiry key tests (#113) — 59 行，覆盖腾龙剑/剑谱上册/上册/剑谱下册/下册 5 个 give_item 门控字段 + 别名一致性；18 例全绿，0 回归。
 - `3d4d4fc0`：test: add UCL validation for dynamic spawn lingshezhang/shezhang (#119) — 4 例，覆盖 lingshezhang/shezhang 物品 convert handler + lingshe/snake 角色 bian 动作；19 例动态生成测试全绿，0 回归。
 
-## B2 — 12 个 W3 arch 命令（6/12 可建模命令已完成；对象引擎规划中）
-- 已真化：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`、`var`、`setsk`（共 8 个）。
-- 引擎绑定 6（MVP 本计划交付 `call`/`reboot`/`shutdown`；`possess`/`restore`/`build` 保留 not_modeled，后续阶段）：
-  - 计划文档：`docs/B2-W3-对象引擎实施计划.zh-CN.md`
-  - D 节计划：`docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md` §Phase 4
-  - 核心模块：`lib/kantele/world/w3_object_engine.ex`（GenServer + 公共 ETS `w3_objects`）
-  - 复用：`WizArch.guard/3`、`Access.wizardp/1`、`ObjectClone.clone_by_path/3`、`Command.Router` DSL
-  - `wiz_arch_test.exs` `@deferred`：`call`/`reboot`/`shutdown` 移出，`possess`/`restore`/`build` 保留
-  - `command_probe` 白名单 `%{}`，新命令不含占位标记
+## B2 — 12 个 W3 arch 命令（全部已落地：8 已建模 + call/reboot/shutdown 真化 + 3 后续 deferred）
+- 已真化（可建模 8）：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`、`var`、`setsk`。
+- W3 对象引擎 MVP（2026-11-11 已完成，尚未 commit）：`call`/`reboot`/`shutdown` 经 `Kantele.World.W3ObjectEngine`（GenServer + 公共 ETS `w3_objects`）+ `WizArch.system_action/4` 实现；reboot/shutdown 默认 dry-run（`config :ex_venture, W3ObjectEngine, allow_system_actions: true` 才真实停机/重启）。
+- 后续阶段（保留 `not_modeled`）：`possess`（预留 `Kantele.World.Possession`）、`restore`（预留 `Kantele.World.ObjectRestore`）、`build`（预留 `Kantele.World.Builder`）。
+- 文档：`docs/B2-W3-对象引擎实施计划.zh-CN.md`（计划）、`docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md` §Phase 4（已标记 ✅）。
+- `wiz_arch_test.exs` `@deferred`：`call`/`reboot`/`shutdown` 已移出，`possess`/`restore`/`build` 保留；`command_probe` 白名单 `%{}`，新命令不含占位标记。
 
 ## P5-5 丹药效果系统（已完成并 push）
 

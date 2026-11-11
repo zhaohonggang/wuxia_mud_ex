@@ -67,3 +67,6 @@ npm-debug.log
 # world_reachability.py).  Regenerated on every run, must never be committed.
 __pycache__/
 *.py[cod]
+
+# Runtime log written by Kantele.World.ObjectClone.write_log/3 during tests.
+/static/clone/

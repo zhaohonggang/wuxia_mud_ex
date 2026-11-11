@@ -13,6 +13,7 @@ defmodule Kantele.Character.Commands.WizArch do
 
   alias Kantele.Admin.Access
   alias Kantele.Character.CommandView
+  alias Kantele.World.W3ObjectEngine
 
   @doc """
   巫师门控：非巫师显式拒绝；巫师调用 `fun.(conn, params)`。
@@ -44,5 +45,46 @@ defmodule Kantele.Character.Commands.WizArch do
     conn
     |> render(CommandView, "text", %{text: "#{name}：本端口未实现该命令（W3 对象系统未建模）。\n"})
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  @doc """
+  受限系统操作（reboot / shutdown）。
+
+  解析可选的延迟秒数，经 `W3ObjectEngine.schedule_system/3` 调度，返回确认文案。
+  真实停机 / 重启仅在该引擎的 `allow_system_actions` 配置为真时执行（dry-run 默认）。
+
+  `action` 取 `:reboot` 或 `:shutdown`，`verb` 为中文化名词（如 "重启" / "停机"）。
+  """
+  def system_action(conn, action, verb, rest)
+      when action in [:reboot, :shutdown] and is_binary(verb) do
+    {delay_sec, delay_note} = parse_delay(rest)
+    delay_ms = delay_sec * 1000
+
+    case W3ObjectEngine.schedule_system(action, delay_ms, conn.character.name) do
+      {:ok, info} ->
+        dry_run = if info.dry_run, do: "（演练：未实际执行）", else: ""
+
+        reply =
+          "正在调度系统#{verb}，延迟 #{delay_sec} 秒后执行#{dry_run}。\n" <>
+            "操作者：#{info.actor}\n" <> delay_note
+
+        conn
+        |> render(CommandView, "text", %{text: reply})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  defp parse_delay(rest) do
+    rest = String.trim(rest || "")
+
+    if rest == "" do
+      {0, "（立即执行）\n"}
+    else
+      case Integer.parse(rest) do
+        {n, ""} when n >= 0 -> {n, ""}
+        {n, _} when n >= 0 -> {n, ""}
+        _ -> {0, ""}
+      end
+    end
   end
 end
