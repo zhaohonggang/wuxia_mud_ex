@@ -42,12 +42,16 @@
 - `c1e52c53`：Phase 1 疾病/雪原事件 + Q1-T3 clone/count 逐件交付 + B2 W3 计划文档（21 文件，+1838/−187）。
 - `60150343`：feat: B2 W3 对象引擎 MVP —— `W3ObjectEngine` 核心 + `call`/`reboot`/`shutdown` 真化（15 文件，+741/−36）；全量 7626 tests / 27 failures（bcrypt 基线，0 回归）。
 
-## B2 — 12 个 W3 arch 命令（全部已落地：8 已建模 + call/reboot/shutdown 真化 + 3 后续 deferred）
+## B2 — 12 个 W3 arch 命令（全部已落地：8 已建模 + call/reboot/shutdown 真化 + possess/restore 真化 + build not_modeled）
 - 已真化（可建模 8）：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`、`var`、`setsk`。
 - W3 对象引擎 MVP（2026-11-11 已完成并 push `60150343`）：`call`/`reboot`/`shutdown` 经 `Kantele.World.W3ObjectEngine`（GenServer + 公共 ETS `w3_objects`）+ `WizArch.system_action/4` 实现；reboot/shutdown 默认 dry-run（`config :ex_venture, W3ObjectEngine, allow_system_actions: true` 才真实停机/重启）。
-- 后续阶段（保留 `not_modeled`）：`possess`（预留 `Kantele.World.Possession`）、`restore`（预留 `Kantele.World.ObjectRestore`）、`build`（预留 `Kantele.World.Builder`）。
+- `possess`/`restore` 真化（2026-11-11，本阶段；用户要求 port-appropriate 不必照搬 LPC）：
+  - `possess`：标记式附身。`BeastTaming.find/2` 解析同房间活物 → `Possession.possess/3` 写 ETS → `Messages.interpolate("$N化成一道光芒，钻进了$n的体内。")` → `Room.tell_room` 广播（actor 除外）；`-r` 经 `Possession.release_by_possessor/1` 解除；无参显示当前附身状态。
+  - `restore`：跨进程存档恢复。`ObjectRestore.info/1` 校验存档存在 → 向目标 pid 投递 `%Kalevala.Event{topic: "character/restore"}` → 目标 `RestoreEvent` 经 `Records.load`+`Records.apply_to_character` 重载；无参恢复自己、带参恢复同房间目标。
+  - 测试 seam：`conn.private[:possess_broadcast]` / `[:restore_save_for]` / `[:beast_characters]`（沿用 BeastTaming fixture 模式，无需 Room 进程/DB）。
+- `build`：保留 `not_modeled`（用户确认不做，预留 `Kantele.World.Builder`）。
 - 文档：`docs/B2-W3-对象引擎实施计划.zh-CN.md`（计划）、`docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md` §Phase 4（已标记 ✅）。
-- `wiz_arch_test.exs` `@deferred`：`call`/`reboot`/`shutdown` 已移出，`possess`/`restore`/`build` 保留；`command_probe` 白名单 `%{}`，新命令不含占位标记。
+- `wiz_arch_test.exs` `@deferred`：现仅 `["build"]`（`call`/`reboot`/`shutdown`/`possess`/`restore` 均已移出并新增真实行为测试）；`command_probe` 白名单 `%{}`，新命令不含占位标记。
 
 ## P5-5 丹药效果系统（已完成并 push）
 

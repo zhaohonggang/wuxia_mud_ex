@@ -21,10 +21,14 @@ defmodule Kantele.Character.Commands.WizArchTest do
 
   alias Kantele.Character.CallCommand
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.PossessCommand
   alias Kantele.Character.RebootCommand
+  alias Kantele.Character.RestoreCommand
   alias Kantele.Character.ShutdownCommand
   alias Kantele.Character.Vitals
+  alias Kalevala.Character
   alias Kalevala.Character.Conn.Text
+  alias Kantele.World.Possession
   alias Kantele.World.W3ObjectEngine
 
   # 14 个 W3 arch 命令：命令字符串 -> 模块
@@ -45,9 +49,9 @@ defmodule Kantele.Character.Commands.WizArchTest do
     {"setsk", Kantele.Character.SetskCommand}
   ]
 
-  # 仍「本端口未建模」的 3 个命令（call/reboot/shutdown 已在本计划真化，
-  # possess/restore/build 依赖更重的世界/持久化系统，保留 not_modeled 回执）。
-  @deferred ["build", "possess", "restore"]
+  # 仍「本端口未建模」的命令（call/reboot/shutdown/possess/restore 已真化；
+  # build 依赖房间编辑器 / 出口系统 / 区域文件写入，保留 not_modeled 回执）。
+  @deferred ["build"]
 
   defp player(opts) do
     vitals = %Vitals{
@@ -94,6 +98,43 @@ defmodule Kantele.Character.Commands.WizArchTest do
       _ -> []
     end)
     |> Enum.join("")
+  end
+
+  # 注入 conn.private 余出点（与 BeastTaming 同款 seam）：房间角色列表、广播捕获、
+  # 存档核验注入等，便于纯函数测试不依赖 Room 进程 / Ecto。
+  defp wiz_conn(character, private_overrides) do
+    conn = build_conn(character)
+    private = Enum.reduce(private_overrides, conn.private || %{}, fn {k, v}, acc -> Map.put(acc, k, v) end)
+    %{conn | private: private}
+  end
+
+  # 房间内的 NPC/玩家结构（meta 用普通 map，避免被认成 PlayerMeta）。
+  defp room_npc(id, name, opts \\ []) do
+    %Character{
+      id: id,
+      name: name,
+      pid: Keyword.get(opts, :pid, self()),
+      room_id: "test:room",
+      attributes: Keyword.get(opts, :attributes, %{}),
+      inventory: [],
+      meta: %{
+        vitals: %Vitals{qi: Keyword.get(opts, :qi, 100), max_qi: 100, jing: 100, max_jing: 100},
+        stats: %Kantele.Character.Stats{combat_exp: 1000, skills: %{}},
+        combat: Kantele.Character.Combat.new()
+      }
+    }
+  end
+
+  defp capture_broadcast do
+    fn _room_id, text -> send(self(), {:possess_broadcast, text}) end
+  end
+
+  defp flush_mailbox do
+    receive do
+      _ -> flush_mailbox()
+    after
+      0 -> :ok
+    end
   end
 
   describe "路由：参数可达" do
@@ -299,6 +340,134 @@ defmodule Kantele.Character.Commands.WizArchTest do
     test "参数不完整时提示用法" do
       conn = Kantele.Character.SetskCommand.run(build_conn(wizard_player()), %{"rest" => "sword"})
       assert output_text(conn) =~ "用法"
+    end
+  end
+
+  describe "possess：附身（已真化，标记式）" do
+    setup do
+      Possession.ensure!()
+      :ets.delete_all_objects(Possession.table())
+      :ok
+    end
+
+    test "巫师附身房间内活物：记录关系 + 广播愿景 + 回执" do
+      target = room_npc("test:huangbiaoma", "黄骠马")
+      conn = wiz_conn(wizard_player(), %{beast_characters: [target], possess_broadcast: capture_broadcast()})
+
+      conn = PossessCommand.run(conn, %{"rest" => "黄骠马"})
+      text = output_text(conn)
+
+      assert text =~ "你附身到了黄骠马"
+      assert Possession.possessed?("test:huangbiaoma")
+      assert Possession.target_of("wizard-1") == %{target_id: "test:huangbiaoma", target_name: "黄骠马"}
+      assert_received {:possess_broadcast, broadcast_text}
+      assert broadcast_text =~ "钻进了"
+      assert broadcast_text =~ "黄骠马"
+    end
+
+    test "附身目标不存在时拒绝" do
+      conn = wiz_conn(wizard_player(), %{beast_characters: []})
+      conn = PossessCommand.run(conn, %{"rest" => "不存在的怪"})
+      assert output_text(conn) =~ "没有名字叫"
+      refute Possession.possessed?("anything")
+    end
+
+    test "不能附身自己" do
+      me = wizard_player()
+      conn = wiz_conn(me, %{beast_characters: [room_npc(me.id, me.name)]})
+      conn = PossessCommand.run(conn, %{"rest" => me.name})
+      assert output_text(conn) =~ "不能附身自己"
+      refute Possession.possessed?(me.id)
+    end
+
+    test "附身已死亡目标被拒" do
+      target = room_npc("test:corpse", "尸体", qi: 0)
+      conn = wiz_conn(wizard_player(), %{beast_characters: [target]})
+      conn = PossessCommand.run(conn, %{"rest" => "尸体"})
+      assert output_text(conn) =~ "已经死了"
+      refute Possession.possessed?("test:corpse")
+    end
+
+    test "附身已被附身的目标被拒" do
+      target = room_npc("test:busy", "已被附身的怪")
+      :ok = Possession.possess("other-wizard", "test:busy", "已被附身的怪")
+      conn = wiz_conn(wizard_player(), %{beast_characters: [target]})
+      conn = PossessCommand.run(conn, %{"rest" => "已被附身的怪"})
+      assert output_text(conn) =~ "已经被附身了"
+    end
+
+    test "-r 解除附身" do
+      :ok = Possession.possess("wizard-1", "test:x", "小白")
+      conn = wiz_conn(wizard_player(), %{})
+      conn = PossessCommand.run(conn, %{"rest" => "-r"})
+      assert output_text(conn) =~ "已解除附身"
+      refute Possession.possessed?("test:x")
+    end
+
+    test "无参查询当前附身状态" do
+      conn = wiz_conn(wizard_player(), %{})
+      conn = PossessCommand.run(conn, %{"rest" => ""})
+      assert output_text(conn) =~ "没有附身任何对象"
+
+      :ok = Possession.possess("wizard-1", "test:y", "小黑")
+      conn = wiz_conn(wizard_player(), %{})
+      conn = PossessCommand.run(conn, %{"rest" => ""})
+      assert output_text(conn) =~ "附身于：小黑"
+    end
+
+    test "非巫师被拒绝" do
+      target = room_npc("test:z", "小白")
+      conn = wiz_conn(mortal_player(), %{beast_characters: [target]})
+      conn = PossessCommand.run(conn, %{"rest" => "小白"})
+      assert output_text(conn) =~ "没有巫师的权限"
+    end
+  end
+
+  describe "restore：从存档恢复（已真化，跨进程事件）" do
+    setup do
+      flush_mailbox()
+      :ok
+    end
+
+    test "巫师恢复自己：向自身进程发送 character/restore 事件" do
+      conn = wiz_conn(wizard_player(), %{restore_save_for: fn _name -> {:ok, %{name: "巫师", saved_at: nil}} end})
+      conn = RestoreCommand.run(conn, %{"rest" => ""})
+      assert output_text(conn) =~ "已向巫师发送恢复指令"
+      assert_received %Kalevala.Event{topic: "character/restore"}
+    end
+
+    test "巫师恢复房间内指定玩家：向目标进程发送事件" do
+      target = room_npc("test:xiaobai", "小白", pid: self())
+      conn = wiz_conn(wizard_player(), %{
+        beast_characters: [target],
+        restore_save_for: fn _name -> {:ok, %{name: "小白", saved_at: nil}} end
+      })
+      conn = RestoreCommand.run(conn, %{"rest" => "小白"})
+      assert output_text(conn) =~ "已向小白发送恢复指令"
+      assert_received %Kalevala.Event{topic: "character/restore"}
+    end
+
+    test "目标无存档时拒绝" do
+      conn = wiz_conn(wizard_player(), %{restore_save_for: fn _name -> {:error, :not_found} end})
+      conn = RestoreCommand.run(conn, %{"rest" => ""})
+      assert output_text(conn) =~ "找不到"
+      refute_received %Kalevala.Event{topic: "character/restore"}
+    end
+
+    test "目标不在房间时拒绝" do
+      conn = wiz_conn(wizard_player(), %{
+        beast_characters: [],
+        restore_save_for: fn _name -> {:ok, %{name: "小白", saved_at: nil}} end
+      })
+      conn = RestoreCommand.run(conn, %{"rest" => "小白"})
+      assert output_text(conn) =~ "这里没有名字叫 小白"
+      refute_received %Kalevala.Event{topic: "character/restore"}
+    end
+
+    test "非巫师被拒绝" do
+      conn = wiz_conn(mortal_player(), %{restore_save_for: fn _name -> {:ok, %{name: "x"}} end})
+      conn = RestoreCommand.run(conn, %{"rest" => ""})
+      assert output_text(conn) =~ "没有巫师的权限"
     end
   end
 end

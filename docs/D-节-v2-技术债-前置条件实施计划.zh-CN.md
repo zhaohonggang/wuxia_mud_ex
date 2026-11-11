@@ -191,7 +191,7 @@
 
 - `call`：巫师调用已注册对象函数返回结果；对象/函数不存在返回明确错误；非巫师被拒绝。
 - `reboot`/`shutdown`：巫师触发返回确认文案；非巫师被拒绝；不崩溃。
-- `possess`/`restore`/`build`：巫师触发返回 `not_modeled` 回执（含「W3 对象系统」原因）。
+- `possess`/`restore`：巫师触发返回真实行为回执（附身记录 / 跨进程存档恢复事件）；`build`：巫师触发返回 `not_modeled` 回执（用户确认不做）。
 - `command_probe_test.exs` 白名单 `%{}`，0 误报。
 - 全量 `mix test --seed 831693`：0 新增失败（27 bcrypt 基线）。
 
@@ -200,7 +200,7 @@
 - `lib/kantele/character/commands/wiz_arch.ex` — 新增 `system_action/4` 共享 helper（解析延迟秒、调度、确认文案）。
 - `lib/kantele/character/commands/call_command.ex` — `call <对象> <函数> [参数...]`：先查 W3ObjectEngine，未命中按引用名/路径解析为 Elixir 模块或经 `ObjectClone.clone_by_path/3` 验证存在；`Module.apply` 调用，结果/错误/属主权限分级回执。
 - `lib/kantele/character/commands/reboot_command.ex` / `shutdown_command.ex` — 经 `WizArch.system_action/4` 调度，dry-run 确认文案。
-- `possess`/`restore`/`build` `@moduledoc` 补充后续阶段依赖与预留接口模块（`Possession`/`ObjectRestore`/`Builder`）。
+- `possess`/`restore`：本阶段真化（port-appropriate，不照搬 LPC）：`Possession`（公共 ETS，附身关系记录 + 标记式广播）、`ObjectRestore`（`Records.load` 存档信息）+ 跨进程 `character/restore` 事件经 `RestoreEvent` 重载；`build` 保留 `not_modeled`（用户确认不做，`@moduledoc` 注明预留 `Builder`）。
 - 测试：`w3_object_engine_test.exs`（13 例：ensure 幂等 / 注册查询 / 销毁 / 列表 / read_state / schedule_system dry-run）+ `wiz_arch_test.exs`（将 call/reboot/shutdown 移出 `@deferred`，新增真实行为测试，37 例全绿）+ `command_probe_test.exs`（白名单 `%{}` 0 误报）。
 - 全量 `mix test --seed 831693`：0 新增失败（27 bcrypt 基线）。
 
@@ -227,12 +227,14 @@ Phase 3 / T4 (count>1 逐件交付) ✅ 已完成
   └─ 3.3 按件比例奖励 (scale_rewards_by_count，v>0 缩为0 补 1)
       → 验收后：count>1 逐件交付 ✅ 可真化（7601 tests / 27 failures，与 bcrypt 基线一致，0 回归）
 
-Phase 4 (W3 对象引擎) ✅ MVP 已完成（2026-11-11）
+Phase 4 (W3 对象引擎) ✅ 已完成（2026-11-11 MVP + possess/restore 真化）
   ├─ W3ObjectEngine 核心 (GenServer + 公共 ETS w3_objects，注册/查询/销毁/列表 + 受控 schedule_system)
   ├─ call 命令 (对象函数调用，经 ObjectClone 落点)
   ├─ reboot / shutdown 命令 (应用层受控，dry-run 默认)
-  └─ possess / restore / build 后续阶段（保留 not_modeled，预留接口模块）
-      → 验收后：6 个引擎绑定命令中 call/reboot/shutdown 已真化（全量 0 新增失败，27 bcrypt 基线）
+  ├─ possess 命令 ✅ 真化（标记式附身：BeastTaming 解析同房间活物 + Possession ETS 记录 + 房间广播）
+  ├─ restore 命令 ✅ 真化（ObjectRestore.info 校验存档 + 向目标 pid 投递 character/restore 事件经 RestoreEvent 重载）
+  └─ build 命令 ⏳ not_modeled（用户确认不做，预留 Kantele.World.Builder）
+      → 验收后：6 个引擎绑定命令中 call/reboot/shutdown/possess/restore 已真化（全量 0 新增失败，27 bcrypt 基线）；仅 build 保留 not_modeled
 ```
 
 建议优先开工 **Phase 1**：前置条件（GameTime/Weather/Room.snapshot/Conditions）全部已就绪，代码量中等，且可直接复用现有 `Scheduler.schedule_once` 链式与 `Kantele.Character.Conditions` 机制，风险最低。Phase 2 涉及运行时模块加载与巫师权限，需谨慎设计沙箱；Phase 3 标记为 T4，可在 Phase 1-2 验收后再立项。

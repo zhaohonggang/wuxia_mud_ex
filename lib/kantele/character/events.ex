@@ -55,6 +55,11 @@ defmodule Kantele.Character.Events do
       event("character/teleport", :run)
     end
 
+    module(RestoreEvent) do
+      # 外部进程发起的「从数据库存档重载自身运行态」（LPC restore 核心语义）
+      event("character/restore", :run)
+    end
+
     module(ShopEvent) do
       event("shop/list-result", :list_result)
       event("shop/buy-result", :buy_result)
