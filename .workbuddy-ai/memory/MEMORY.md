@@ -50,6 +50,10 @@ UCL 约束：嵌套 map 空格分隔（无逗号）；字符串列表逗号+空�
 
 已回填物品：养精丹（jing+冷却+满 jing 拒服+广播）、少林金创药（qi，无冷却/满状态约束）、黑玉断续膏（self_text 自述）。
 
+- Task #138 Item.Meta `liquid` 字段 + loader 解析（`loader.ex` `parse_item_meta/1`，`max_liquid`/`liquid` 归一化）已落地，`scripts/backfill_item_liquid.py` 回填脚本已就绪。
+- Task #139 `drink_command` 容器液体消费端已实装（余量-1、房间广播、喝空提示、饮水度+30 封顶、醉酒累加、最后一口不挂醉度），19 例全绿。
+- Task #142 乞讨系统（`beg_command.ex` 丐帮门禁+`no_beg`/`no_fight` 闸门+`beg/attempt` 事件；`beg_credit_event.ex`/`beg_debit_event.ex` 跨进程结算），12 例全绿。
+
 ## 剩余 backlog
 - D 节 v2 技术债：
   - Q2 v2 疾病/雪原封路：Deferred（季节/事件系统未建模）；光线：Q2-T2 `Weather.light/0` 已就绪，可接。
