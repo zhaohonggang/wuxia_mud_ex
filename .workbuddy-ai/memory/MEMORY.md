@@ -22,6 +22,15 @@
 - `suicide`：`meta.password` 明文校验 + `Characters.delete_by_name/1`（rescue 降级）。
 - 已踩坑：`ExVenture.Characters` 裸 `update(...)` 被 `import Ecto.Query` 宏抢占 → 用 changeset + `Repo.update()`；`Damage.die/1` 前需 `ensure_death_state`（`meta.combat` nil → FunctionClauseError）；`is_player?/1` 认 `"player:"` 前缀；`receive_damage` 别传 killer。
 
+## Elixir 1.13.4 / Windows Git Bash 特殊坑（2026-11-11 新增）
+- `String.to_integer/1` 返回**裸整数**而非 `{:ok, int}`（本环境差异），匹配时用 `is_integer()` 保护句，不要用 `{:ok, amount}`。
+- `List.to_atom/1` 不接受字符串；模块名构造须用 `String.to_atom(Enum.join(...))`，否则 `/clone/*` 路径会 `list_to_atom` 崩溃。
+- `zone.items` 在 zone map 缺少 `:items` key 时抛 `KeyError`；改用 `Map.get(zone, :items, %{})`。
+- `~s[#{...}]` 中 `]` 会提前闭合 sigil，后续插值丢失；改用常规 `"[#{...}] ..."` 字符串。
+- `IO.write` 经 `:io.put_chars` 在 Windows 下对中文抛出 `:no_translation`；改用 `File.write!(path, entry, [:append])` 写 UTF-8 字节。
+- `Path.join/3` 不存在，用 `Path.join([...])`；`File.rm/2` 不存在，用 `File.rm!/1`。
+- `match?/2` 不绑定变量；测试中用 `{:ok, %Struct{}} = expr` 直接模式匹配。
+
 ## 已完成并 push 到 origin/kalevala（截至 2026-11-10）
 - `e20116fe`：`prepare` 拳术组合真化（`SkillCombos.valid_combine?/2` + `Stats.mapped/2` + `stats.prepared[type]`），`skill_combos_test.exs` 10 例，`prepare_command_test.exs` 组合路径，文档同步，`extract_valid_combine.py` 改 INFO。
 - 全量：7477 tests / 27 failures（全部 bcrypt 环境性，0 回归）。
@@ -31,10 +40,15 @@
 - `1bd36b54`：test: add 苗人凤 item_grant inquiry key tests (#113) — 59 行，覆盖腾龙剑/剑谱上册/上册/剑谱下册/下册 5 个 give_item 门控字段 + 别名一致性；18 例全绿，0 回归。
 - `3d4d4fc0`：test: add UCL validation for dynamic spawn lingshezhang/shezhang (#119) — 4 例，覆盖 lingshezhang/shezhang 物品 convert handler + lingshe/snake 角色 bian 动作；19 例动态生成测试全绿，0 回归。
 
-## B2 — 12 个 W3 arch 命令（6/12 可建模命令已完成）
-- 已真化：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`。门控 `WizArch.guard` + `Access.archwizp`；DB 调用 rescue/catch 降级。
-- `wiz_arch_test.exs` `@deferred` 余 6 条（全引擎绑定）；`command_probe` 未误报。
-- 引擎绑定 6（保持显式「W3 对象系统未建模」回执）：`call`/`reboot`/`shutdown`/`possess`/`restore`/`build`。推进需立项设计 W3 对象引擎，与 B2 已完成量级相当（A1/A2/A4 已清零）。
+## B2 — 12 个 W3 arch 命令（6/12 可建模命令已完成；对象引擎规划中）
+- 已真化：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`、`var`、`setsk`（共 8 个）。
+- 引擎绑定 6（MVP 本计划交付 `call`/`reboot`/`shutdown`；`possess`/`restore`/`build` 保留 not_modeled，后续阶段）：
+  - 计划文档：`docs/B2-W3-对象引擎实施计划.zh-CN.md`
+  - D 节计划：`docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md` §Phase 4
+  - 核心模块：`lib/kantele/world/w3_object_engine.ex`（GenServer + 公共 ETS `w3_objects`）
+  - 复用：`WizArch.guard/3`、`Access.wizardp/1`、`ObjectClone.clone_by_path/3`、`Command.Router` DSL
+  - `wiz_arch_test.exs` `@deferred`：`call`/`reboot`/`shutdown` 移出，`possess`/`restore`/`build` 保留
+  - `command_probe` 白名单 `%{}`，新命令不含占位标记
 
 ## P5-5 丹药效果系统（已完成并 push）
 
@@ -56,9 +70,9 @@ UCL 约束：嵌套 map 空格分隔（无逗号）；字符串列表逗号+空�
 
 ## 剩余 backlog
 - D 节 v2 技术债：
-  - Q2 v2 疾病/雪原封路：Deferred（季节/事件系统未建模）；光线：Q2-T2 `Weather.light/0` 已就绪，可接。
-  - Q1-T3 真·clone 动态目标：Deferred（Chei/Pawning，高成本）。
+  - Q2 v2 疾病/雪原封路：✅ 已完成（2026-11-11，Phase 1 全部三项），`illness.ex` 五族 daemon + `season_event.ex` 正午发病 + `snow_region.ex`/`snow_region_event.ex` 雪原寒冷，测试 91 例全绿，全量 suite 0 回归。
+  - Q1-T3 真·clone 动态目标：✅ 已完成（2026-11-11，Phase 2），`object_clone.ex` + `clone_command.ex`，`commands.ex` 路由更新，测试 27/0 全绿，全量 suite 0 回归。
   - Q1-T3 search/explore 入位校验：Q2-T0 已落地，已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化，`Room.snapshot/1` 查玩家在场）。
-  - Q1-T3 count>1 逐件交付：Deferred to T4。
-  - 详细前置条件计划见 `docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md`（Phase 1 季节/事件系统 → Phase 2 克隆/授权基础设施 → Phase 3/T4 count>1 逐件交付）。
+  - Q1-T3 count>1 逐件交付：✅ 已完成（2026-11-11，Phase 3/T4）。`Supply.generate/1` count=3..8，`Deliver.generate/1` count=5..10，`start_room` 入位门控，`turnin_request/2` 逐件扣减与部分交付提示，`scale_rewards_by_count` 按件比例奖励，`task_meta` 新增 `:count`/`:start_room`。测试：`quest_turnin_multi_test.exs` 6 例 + `quest_daemon_test.exs` generator 断言，全绿；全量 suite 7601 tests / 27 failures（bcrypt 基线，0 回归）。
+  - 详细前置条件计划见 `docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md`（Phase 1 季节/事件系统 ✅ 已完成 → Phase 2 克隆/授权基础设施 ✅ 已完成 → Phase 3/T4 count>1 逐件交付）。
 - A1/A2/A4：已清零（A1 转换器已落地并归档；A2 永远不做；A4 终测/分区搬运已验收完毕），不再作为 backlog 项。

@@ -24,27 +24,72 @@ defmodule Kantele.Character.QuestEvent do
 
   def turnin_request(conn, %{data: data}) do
     character = conn.character
+    quest_id = Map.get(data, :quest)
+    item_id = Map.get(data, :item_id)
+    state0 = PlayerMeta.quests(character.meta)
 
-    if kill_requirement_met?(PlayerMeta.quests(character.meta), Map.get(data, :quest)) do
-      item_id = Map.get(data, :item_id)
+    cond do
+      # 入位门控：supply/deliver 需在 start_room 才能交付
+      not entry_position_ok?(state0, quest_id, character) ->
+        conn
+        |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+        |> prompt(CommandView, "prompt", %{})
 
-      {instance, rest} =
-        character.inventory
-        |> Enum.split_with(&(&1.item_id == item_id))
+      # 击杀要求未满足
+      not kill_requirement_met?(state0, quest_id) ->
+        conn
+        |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+        |> prompt(CommandView, "prompt", %{})
 
-      cond do
-        instance == [] ->
-          conn
-          |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
-          |> prompt(CommandView, "prompt", %{})
+      true ->
+        {instance, rest} =
+          character.inventory
+          |> Enum.split_with(&(&1.item_id == item_id))
 
-        true ->
-          complete(conn, character, rest, data)
-      end
-    else
-      conn
-      |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
-      |> prompt(CommandView, "prompt", %{})
+        cond do
+          instance == [] ->
+            conn
+            |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+            |> prompt(CommandView, "prompt", %{})
+
+          true ->
+            # 逐件交付：读 meta.count，按剩余需求量交付
+            task = Quest.get_todo(state0, quest_id) || %{}
+            total_count = get_in(task, [:meta, :count]) || 1
+            current_delivered = get_in(task, [:item, item_id]) || 0
+            remaining = total_count - current_delivered
+            deliver_amount = min(length(instance), remaining)
+
+            if deliver_amount == 0 do
+              conn
+              |> render(CommandView, "text", %{text: "#{Map.get(data, :prompt)}\n"})
+              |> prompt(CommandView, "prompt", %{})
+            else
+              {_to_deliver, leftovers} = Enum.split(instance, deliver_amount)
+              new_rest = leftovers ++ rest
+              new_delivered = current_delivered + deliver_amount
+
+              if new_delivered >= total_count do
+                complete(conn, character, new_rest, data, deliver_amount, total_count)
+              else
+                # 部分交付：更新 todo 物品计数，保留在办，提示还需要多少
+                new_item_map = Map.put(Map.get(task, :item, %{}), item_id, new_delivered)
+                new_task = Map.put(task, :item, new_item_map)
+                new_state = %{state0 | todo: Map.put(state0.todo, quest_id, new_task)}
+
+                meta = Map.put(character.meta, :quests, new_state)
+                character1 = %{character | meta: meta, inventory: new_rest}
+                Records.save(character1)
+
+                conn
+                |> put_character(character1)
+                |> render(CommandView, "text", %{
+                  text: "你交出了#{deliver_amount}件，还需要#{total_count - new_delivered}件。\n"
+                })
+                |> prompt(CommandView, "prompt", %{})
+              end
+            end
+        end
     end
   end
 
@@ -67,18 +112,18 @@ defmodule Kantele.Character.QuestEvent do
     end
   end
 
-  # Q1-T3 search/explore 入位校验：Q2-T0 房间人员查询已就绪，现可落地。
-  # 只有在 target_room 才能结算 search/explore 任务；其它类型不受影响。
+  # Q1-T3 search/explore/supply/deliver 入位门控：Q2-T0 房间人员查询已就绪，现可落地。
+  # 只有在 start_room（或 target_room）才能结算这些任务；其它类型不受影响。
   defp entry_position_ok?(state, quest_id, character) do
     case Quest.get_todo(state, quest_id) do
       %{meta: meta} when is_map(meta) ->
         type = Map.get(meta, :type)
         cond do
-          type in ["search", "explore"] ->
-            case Map.get(meta, :target_room) do
+          type in ["search", "explore", "supply", "deliver"] ->
+            case Map.get(meta, :start_room) || Map.get(meta, :target_room) do
               nil -> true
-              target_room when is_binary(target_room) and target_room != "" ->
-                character_in_room?(character, target_room)
+              room when is_binary(room) and room != "" ->
+                character_in_room?(character, room)
               _ -> true
             end
           true -> true
@@ -178,10 +223,13 @@ defmodule Kantele.Character.QuestEvent do
 
   defp kill_requirement_met?(nil, _quest_file), do: true
 
-  defp complete(conn, character, inventory_rest, data) do
+  defp complete(conn, character, inventory_rest, data, delivered_count \\ 1, total_count \\ 1) do
     quest_id = Map.get(data, :quest)
     state0 = PlayerMeta.quests(character.meta)
-    rewards = Reward.final(state0, quest_id, Map.get(data, :rewards))
+
+    # 奖励按件比例缩放：部分交付按 delivered/total 比例发放
+    turn_rewards = scale_rewards_by_count(Map.get(data, :rewards) || %{}, delivered_count, total_count)
+    rewards = Reward.final(state0, quest_id, turn_rewards)
     milestone = Quest.milestone(Quest.quest_count(state0) + 1)
     stats = character.meta.stats
 
@@ -279,4 +327,18 @@ defmodule Kantele.Character.QuestEvent do
   end
 
   defp publish_rumor(_), do: :ok
+
+  # 按件比例缩放奖励：delivered < total 时按比例折算，v>0 且缩为0 则补 1
+  defp scale_rewards_by_count(rewards, delivered, total) do
+    cond do
+      delivered >= total or total <= 0 ->
+        rewards
+      true ->
+        factor = delivered / total
+        Map.new(rewards, fn {k, v} ->
+          scaled = round(v * factor)
+          {k, (if v > 0 and scaled == 0, do: 1, else: scaled)}
+        end)
+    end
+  end
 end

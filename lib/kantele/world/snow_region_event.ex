@@ -48,7 +48,7 @@ defmodule Kantele.World.SnowRegionEvent do
   def cold(conn, _event), do: conn
 
   defp current_qi(conn) do
-    get_in(conn.character, [:meta, :vitals, :qi]) || 0
+    conn.character.meta.vitals.qi || 0
   end
 
   defp existing_dongshang(conn) do

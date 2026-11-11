@@ -406,7 +406,7 @@ defmodule Kantele.Quest do
   end
 
   defp task_meta(spec) do
-    Map.take(spec, [:type, :level, :master_name, :master_id, :place, :target_room])
+    Map.take(spec, [:type, :level, :master_name, :master_id, :place, :target_room, :start_room, :count])
   end
 
   defp normalize_task(task) when is_map(task) do

@@ -2043,7 +2043,7 @@ defmodule Kantele.Character.Commands do
 
   module(CloneCommand) do
     parse("clone", :run, fn command ->
-      command |> optional(empty() |> spaces() |> word(:target))
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 

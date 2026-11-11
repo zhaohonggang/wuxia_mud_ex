@@ -67,6 +67,26 @@ defmodule Kantele.World.QuestDaemonTest do
       assert quest.limit == 1800
       assert is_binary(quest.officer_npc)
       assert is_binary(quest.target_room)
+      assert is_binary(quest.start_room)
+      assert quest.count in 5..10
+      assert quest.item_id == "test:baozi"
+      assert is_map(quest.rewards) and quest.rewards.exp > 0
+      assert is_binary(quest.prompt)
+    end
+
+    test "supply 生成合法任务定义（count=3..8，带 start_room）" do
+      {_officer, _zone} = seed_world()
+
+      assert {:ok, quest} = Generator.generate("supply", zone_id: "test", item_id: "test:baozi")
+
+      assert quest.id == quest.file
+      assert quest.type == "supply"
+      assert is_integer(quest.level) and quest.level in 1..3
+      assert quest.limit == 1800
+      assert is_binary(quest.officer_npc)
+      assert is_binary(quest.target_room)
+      assert is_binary(quest.start_room)
+      assert quest.count in 3..8
       assert quest.item_id == "test:baozi"
       assert is_map(quest.rewards) and quest.rewards.exp > 0
       assert is_binary(quest.prompt)

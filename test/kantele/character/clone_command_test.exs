@@ -52,6 +52,10 @@ defmodule Kantele.Character.CloneCommandTest do
     player(id: "wizard-1", name: "巫师", attributes: %{"wiz_level" => 1})
   end
 
+  defp arch_player() do
+    player(id: "arch-1", name: "大巫师", attributes: %{"wiz_level" => 2})
+  end
+
   defp mortal_player() do
     player(id: "mortal-1", name: "平民", attributes: %{"wiz_level" => 0})
   end
@@ -104,56 +108,58 @@ defmodule Kantele.Character.CloneCommandTest do
     :ok
   end
 
-  describe "clone 命令（巫师）" do
+  describe "clone 命令（arch 巫师）" do
 
-    test "无参数时显示用法" do
-      p = wizard_player()
-      conn = CloneCommand.run(build_conn(p), %{})
+    test "无参数时提示需要对象" do
+      p = arch_player()
+      conn = CloneCommand.run(build_conn(p), %{"rest" => ""})
 
-      assert output_text(conn) =~ "用法"
+      assert output_text(conn) =~ "你要复制什麽对象"
     end
 
     test "非巫师无法克隆" do
       p = mortal_player()
-      conn = CloneCommand.run(build_conn(p), %{"target" => "clone_tong_ren"})
+      conn = CloneCommand.run(build_conn(p), %{"rest" => "clone_tong_ren"})
 
-      assert output_text(conn) =~ "没有巫师的权限"
+      assert output_text(conn) =~ "你不能复制物品"
+    end
+
+    test "巫师（非 arch）无法克隆" do
+      p = wizard_player()
+      conn = CloneCommand.run(build_conn(p), %{"rest" => "clone_tong_ren"})
+
+      assert output_text(conn) =~ "你不能复制物品"
     end
 
     test "找不到目标时报错" do
-      p = wizard_player()
-      conn = CloneCommand.run(build_conn(p), %{"target" => "nonexistent_npc"})
+      p = arch_player()
+      conn = CloneCommand.run(build_conn(p), %{"rest" => "nonexistent_npc"})
 
       assert output_text(conn) =~ "找不到"
     end
 
     test "克隆 NPC 成功（按精确 id）" do
-      p = wizard_player()
-      conn = CloneCommand.run(build_conn(p), %{"target" => "testzone:clone_tong_ren"})
+      p = arch_player()
+      conn = CloneCommand.run(build_conn(p), %{"rest" => "testzone:clone_tong_ren"})
 
-      assert output_text(conn) =~ "克隆"
+      assert output_text(conn) =~ "只见"
       assert output_text(conn) =~ "铜人"
-      assert output_text(conn) =~ "成功"
     end
 
     test "克隆 NPC 成功（按名称）" do
-      p = wizard_player()
-      conn = CloneCommand.run(build_conn(p), %{"target" => "铜人"})
+      p = arch_player()
+      conn = CloneCommand.run(build_conn(p), %{"rest" => "铜人"})
 
-      assert output_text(conn) =~ "克隆"
+      assert output_text(conn) =~ "只见"
       assert output_text(conn) =~ "铜人"
-      assert output_text(conn) =~ "成功"
     end
 
-    test "克隆后生成新的 ID（不与原定义相同）" do
-      p = wizard_player()
-      CloneCommand.run(build_conn(p), %{"target" => "testzone:clone_tong_ren"})
+    test "克隆指定数量" do
+      p = arch_player()
+      conn = CloneCommand.run(build_conn(p), %{"rest" => "testzone:clone_tong_ren 3"})
 
-      # 原定义 id 仍保留在 ZoneCache 中
-      {:ok, zone} = ZoneCache.get("testzone")
-      chars = Map.get(zone, :characters, %{})
-      original = chars["clone_tong_ren"]
-      refute original.id == nil
+      assert output_text(conn) =~ "只见"
+      assert output_text(conn) =~ "铜人"
     end
   end
 
@@ -163,10 +169,16 @@ defmodule Kantele.Character.CloneCommandTest do
       assert parsed.module == CloneCommand
     end
 
-    test "带参命令可达" do
+    test "带参命令可达，参数在 rest 里" do
       {:ok, parsed} = Kantele.Character.Commands.parse("clone clone_tong_ren")
       assert parsed.module == CloneCommand
-      assert parsed.params["target"] == "clone_tong_ren"
+      assert parsed.params["rest"] == "clone_tong_ren"
+    end
+
+    test "带数量参数可达" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("clone clone_tong_ren 3")
+      assert parsed.module == CloneCommand
+      assert parsed.params["rest"] == "clone_tong_ren 3"
     end
   end
 end

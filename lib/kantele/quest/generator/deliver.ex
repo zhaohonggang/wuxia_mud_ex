@@ -4,6 +4,7 @@ defmodule Kantele.Quest.Generator.Deliver do
 
   v1：单委员 NPC 委托；玩家取得货物（商店购/打怪掉落等）后回到委员处
   交付——NPC 问话走 `quest/turnin-request`，玩家侧校验背包物品并结算
+  count=5..10（`5 + random(6)`），逐件计数交付。`start_room` 用于入位门控。
   （复用 A11/N6 turn_in 通路，无需 todo 登记）。
   """
 
@@ -34,9 +35,10 @@ defmodule Kantele.Quest.Generator.Deliver do
       limit: Generator.default_limit(),
       officer_npc: officer.id,
       target_room: room_id(zone_id, target),
+      start_room: room_id(zone_id, target),
       item_id: item_id,
       item_name: item_name,
-      count: 1,
+      count: 5 + Generator.rand_between(0, 5),
       rewards: %{exp: 150, potential: 60, score: 20, coins: 100},
       prompt: "有客商托我把#{item_name}送到别处，你若愿跑一趟，取了货便回来交差。"
     }

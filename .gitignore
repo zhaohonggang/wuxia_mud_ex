@@ -4,6 +4,12 @@
 # Windows-aligned auxiliary build (see win_toolchain.cmd).
 /_build_win13/
 
+# Nested build output inside the vendored kalevala dependency.
+/vendor/kalevala/_build_win13/
+
+# Extracted yamerl transitive dependency artifact (not a path dep).
+/yamerl/
+
 # If you run "mix test --cover", coverage assets end up here.
 /cover/
 

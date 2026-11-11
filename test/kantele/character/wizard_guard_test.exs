@@ -168,21 +168,21 @@ defmodule Kantele.Character.WizardGuardTest do
   end
 
   test "clone 普通玩家被拦截" do
-    conn = CloneCommand.run(build_conn(player()), %{"target" => "sword"})
-    assert output_text(conn) =~ "没有巫师的权限"
+    conn = CloneCommand.run(build_conn(player()), %{"rest" => "sword"})
+    assert output_text(conn) =~ "你不能复制物品"
   end
 
-  test "clone 巫师克隆在场生物" do
+  test "clone 巫师非arch被拦截" do
     tracked_player("李四", "target-1")
     wizard = player(%{attributes: %{"wiz_level" => 1}})
-    conn = CloneCommand.run(build_conn(wizard), %{"target" => "李四"})
-    assert output_text(conn) =~ "克隆 李四 成功"
+    conn = CloneCommand.run(build_conn(wizard), %{"rest" => "李四"})
+    assert output_text(conn) =~ "你不能复制物品"
   end
 
-  test "clone 巫师指定未知目标" do
+  test "clone 巫师非arch指定未知目标" do
     wizard = player(%{attributes: %{"wiz_level" => 1}})
-    conn = CloneCommand.run(build_conn(wizard), %{"target" => "不存在的物品"})
-    assert output_text(conn) =~ "找不到"
+    conn = CloneCommand.run(build_conn(wizard), %{"rest" => "不存在的物品"})
+    assert output_text(conn) =~ "你不能复制物品"
   end
 
   test "dest 普通玩家被拦截" do

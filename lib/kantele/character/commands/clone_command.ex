@@ -1,107 +1,143 @@
 defmodule Kantele.Character.CloneCommand do
   @moduledoc """
-  克隆命令：`clone <物品或生物ID>`
+  克隆命令：`clone <文件> [数量]`
 
-  对应 LPC `cmds/wiz/clone.c`。
-  巫师命令：从世界数据里复制物品或生物的实例。
+  对应 LPC `cmds/wiz/clone.c` main/1。
 
   用法：
-  - `clone <物品ID>`：克隆物品（模板 → 实例）
-  - `clone <NPC ID>`：克隆生物（定义 → 新角色，如 `clone clone_lib:clone_tong_ren`）
+  - `clone <文件>`：克隆 1 个对象（缺省数量）
+  - `clone <文件> <数量>`：克隆指定数量的对象
 
-  仅巫师可用。
+  仅 arch 巫师（wiz_level >= 2）可用。
+
+  克隆后，对象放入克隆者的背包；若无法放入背包，则置于其所在房间。
+  向房间广播：「只见$N伸手凌空一指，变出了$n。」
   """
 
   use Kalevala.Character.Command
 
-  alias Kalevala.Character
-  alias Kantele.Character.CommandView
   alias Kantele.Admin.Access
-  alias Kantele.Character.Presence
-  alias Kantele.World
+  alias Kantele.Character.CommandView
+  alias Kantele.Combat.Messages
+  alias Kantele.World.ObjectClone
 
-  def run(conn, %{"target" => target} = _params) do
+  def run(conn, %{"rest" => rest}) do
     character = conn.character
 
-    case Access.wizardp(character) do
-      false ->
-        return_error(conn, "你没有巫师的权限。\n")
+    if Access.archwizp(character) do
+      {file, amount_str} = parse_rest(rest)
+
+      cond do
+        is_nil(file) ->
+          reply(conn, "你要复制什麽对象？\n")
+
+        is_nil(amount_str) ->
+          # 数量缺省为 1
+          do_clone(conn, character, file, 1)
 
       true ->
-        case find_target(target) do
-          nil ->
-            return_error(conn, "找不到 #{target}。\n")
+        amount =
+          try do
+            String.to_integer(amount_str)
+          rescue
+            _ -> nil
+          end
 
-          %{type: "character", data: _target_char} = result ->
-            handle_character_clone(conn, result, character)
-
-          %{type: "item", data: item_template} ->
-            instance = %Kalevala.World.Item.Instance{
-              id: Kalevala.World.Item.Instance.generate_id(),
-              item_id: item_template.id,
-              created_at: DateTime.utc_now(),
-              item: item_template
-            }
-
-            conn
-            |> render(CommandView, "text", %{
-              text: "克隆 #{item_template.name} 成功，ID: #{instance.id}\n"
-            })
-            |> prompt(CommandView, "prompt", %{})
+        if is_integer(amount) and amount > 0 do
+          do_clone(conn, character, file, amount)
+        else
+          reply(conn, "数量必须是正整数。\n")
         end
+      end
+    else
+      reply(conn, "你不能复制物品。\n")
     end
   end
 
   def run(conn, _params) do
     character = conn.character
 
-    case Access.wizardp(character) do
-      false ->
-        return_error(conn, "你没有巫师的权限。\n")
-
-      true ->
-        conn
-        |> render(CommandView, "text", %{text: "用法: clone <物品或生物ID>\n"})
-        |> prompt(CommandView, "prompt", %{})
+    if Access.archwizp(character) do
+      reply(conn, "你要复制什麽对象？\n")
+    else
+      reply(conn, "你不能复制物品。\n")
     end
   end
 
-  defp find_target(target) do
-    characters = Presence.characters()
+  # --- 私有 ---
 
-    if char = Enum.find(characters, &(String.downcase(&1.name) == String.downcase(target))) do
-      %{type: "character", data: char}
+  defp parse_rest(rest) do
+    rest = String.trim(rest)
+
+    if rest == "" do
+      {nil, nil}
     else
-      case World.find_npc_definition(target) do
-        nil ->
-          case Kantele.World.Items.get(target) do
-            {:ok, item} -> %{type: "item", data: item}
-            _ -> nil
-          end
-
-        npc_def ->
-          %{type: "character", data: npc_def}
+      parts = String.split(rest, " ", parts: 2)
+      case parts do
+        [file] -> {file, nil}
+        [file, amount_str] -> {file, amount_str}
       end
     end
   end
 
-  defp handle_character_clone(conn, %{data: npc_def}, character) do
-    clone = %{
-      npc_def
-      | id: Character.generate_id(),
-        room_id: character.room_id
-    }
+  defp do_clone(conn, character, file, amount) do
+    case ObjectClone.clone_by_path(file, amount, character) do
+      {:ok, result} ->
+        place_object(conn, character, result.object)
+        text =
+          Messages.interpolate("只见$N伸手凌空一指，变出了$n。", %{
+            n1: character.name,
+            n2: object_name(result.object)
+          })
 
-    conn
-    |> render(CommandView, "text", %{
-      text: "克隆 #{npc_def.name} 成功，ID: #{clone.id}\n"
-    })
-    |> prompt(CommandView, "prompt", %{})
+        reply(conn, text <> "\n")
+
+      {:error, :not_authorized} ->
+        reply(conn, "你没有权限使用 clone 命令。\n")
+
+      {:error, :read_denied} ->
+        reply(conn, "无法读取该对象文件。\n")
+
+      {:error, :site_denied} ->
+        reply(conn, "你的站点特权不允许克隆该路径的对象。\n")
+
+      {:error, :not_found} ->
+        reply(conn, "找不到对象：#{file}\n")
+
+      {:error, :load_error} ->
+        reply(conn, "载入对象失败：#{file}\n")
+
+      {:error, :invalid_args} ->
+        reply(conn, "参数错误。\n")
+    end
   end
 
-  defp return_error(conn, message) do
+  defp place_object(conn, character, object) do
+    case object do
+      %Kalevala.World.Item.Instance{} = instance ->
+        # 放入克隆者背包
+        updated_character =
+          %{character | inventory: [instance | character.inventory]}
+
+        put_character(conn, updated_character)
+
+      %Kalevala.Character{} = _npc ->
+        # NPC 暂不放入房间（W3 对象系统未建模），仅返回提示
+        :ok
+    end
+  end
+
+  defp object_name(object) do
+    case object do
+      %Kalevala.World.Item.Instance{} = inst -> inst.item.name
+      %Kalevala.Character{} = char -> char.name
+      _ -> "未知对象"
+    end
+  end
+
+  defp reply(conn, text) do
     conn
-    |> render(CommandView, "text", %{text: message})
+    |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
   end
 end

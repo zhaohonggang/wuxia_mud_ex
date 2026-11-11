@@ -272,4 +272,152 @@ defmodule Kantele.ConditionDaemonsTest do
       refute function_exported?(Kantele.Poison, :dispel_condition, 2)
     end
   end
+
+  describe "Illness（LPC kungfu/condition/ill_*.c 五族）" do
+    test "daemon/1：五族均返回 {:ok, Kantele.Illness}，未知 cnd 返回 :error" do
+      for cnd <- ~w(ill_kesou ill_zhongshu ill_shanghan ill_dongshang ill_fashao) do
+        assert {:ok, Kantele.Illness} = Kantele.Illness.daemon(cnd)
+        assert {:ok, Kantele.Illness} = ConditionRegistry.daemon(cnd)
+        assert cnd in ConditionRegistry.all()
+      end
+
+      assert :error = Kantele.Illness.daemon("no_such_illness")
+      assert :error = ConditionRegistry.daemon("no_such_illness")
+    end
+
+    test "family/0：五族 qi / min_qi 属性与 moduledoc 一致" do
+      family = Kantele.Illness.family()
+      assert map_size(family) == 5
+
+      assert family["ill_kesou"][:qi] == 2
+      assert family["ill_zhongshu"][:qi] == 4
+      assert family["ill_shanghan"][:qi] == 6
+      assert family["ill_dongshang"][:qi] == 2
+      assert family["ill_fashao"][:qi] == 2
+
+      assert family["ill_kesou"][:min_qi] == 10
+      assert family["ill_zhongshu"][:min_qi] == 15
+      assert family["ill_shanghan"][:min_qi] == 20
+      assert family["ill_dongshang"][:min_qi] == 10
+      assert family["ill_fashao"][:min_qi] == 10
+    end
+
+    test "min_qi_needed/1 返回家族最严阈值 20（伤寒），宿主按此门控" do
+      assert Kantele.Illness.min_qi_needed(%{}) == 20
+      assert Kantele.Illness.min_qi_needed(nil) == 20
+    end
+
+    test "ill_kesou update_condition：每跳减一，< 1 到期" do
+      assert {:continue, %{"duration" => 2}} = Kantele.Illness.update_condition(%{"duration" => 3})
+      assert {:continue, %{"duration" => 1}} = Kantele.Illness.update_condition(%{"duration" => 2})
+      assert {:expire} = Kantele.Illness.update_condition(%{"duration" => 1})
+      assert {:expire} = Kantele.Illness.update_condition(%{"duration" => 0})
+      assert {:expire} = Kantele.Illness.update_condition(%{})
+    end
+
+    test "ill_shanghan update_condition：每跳减一，< 1 到期" do
+      assert {:continue, %{"duration" => 4}} = Kantele.Illness.update_condition(%{"duration" => 5})
+      assert {:expire} = Kantele.Illness.update_condition(%{"duration" => 1})
+    end
+
+    test "ill_kesou do_effect：扣 qi（2*2=4）并推送本人/房间文案" do
+      state = %{attributes: %{qi: 1000}}
+      {:ok, state} = Kantele.Illness.do_effect(state, "ill_kesou", nil)
+
+      assert state.attributes.qi == 996
+      assert {:tell, "你嘶哑着嗓子咳了两声，然后又连续咳了好一阵，看来是病的不轻！\n"} in state.condition_messages
+      assert {:vision, "{npc}嘶哑着嗓子咳了两声，然后\n又连续咳了好一阵，看来是病的不轻！\n"} in state.condition_messages
+    end
+
+    test "ill_zhongshu do_effect：扣 qi（4*2=8），clamp 到 0" do
+      state = %{attributes: %{qi: 1000}}
+      {:ok, state} = Kantele.Illness.do_effect(state, "ill_zhongshu", nil)
+      assert state.attributes.qi == 992
+
+      # qi 不足以承受伤害时 clamp 到 0（不击穿负数）
+      {:ok, state} = Kantele.Illness.do_effect(%{attributes: %{qi: 3}}, "ill_zhongshu", nil)
+      assert state.attributes.qi == 0
+    end
+
+    test "ill_shanghan do_effect：扣 qi（6*2=12）" do
+      {:ok, state} = Kantele.Illness.do_effect(%{attributes: %{qi: 1000}}, "ill_shanghan", nil)
+      assert state.attributes.qi == 988
+    end
+
+    test "ill_dongshang do_effect：扣 qi（2*2=4）并推送文案" do
+      {:ok, state} = Kantele.Illness.do_effect(%{attributes: %{qi: 1000}}, "ill_dongshang", nil)
+      assert state.attributes.qi == 996
+      assert {:tell, "你觉得肢体末端一阵僵直，看来是被冻伤了！\n"} in state.condition_messages
+    end
+
+    test "ill_fashao do_effect：扣 qi（2*2=4）并推送文案" do
+      {:ok, state} = Kantele.Illness.do_effect(%{attributes: %{qi: 1000}}, "ill_fashao", nil)
+      assert state.attributes.qi == 996
+      assert {:vision, "{npc}的脸蛋烧得通红，看来是发高烧了。\n"} in state.condition_messages
+    end
+
+    test "dispel_condition/2：自身驱散，火候 + 内力均达标即成功" do
+      # duration=10：need_lvl = 70, need_neili = 100
+      assert {:ok, msg} =
+               Kantele.Illness.dispel_condition(%{"duration" => 10}, %{force: 70, neili: 100, self?: true})
+
+      assert msg =~ "此症被消除了"
+    end
+
+    test "dispel_condition/2：自身驱散，火候不足则失败" do
+      # need_lvl = 70，force = 69
+      assert {:fail, msg} =
+               Kantele.Illness.dispel_condition(%{"duration" => 10}, %{force: 69, neili: 1000, self?: true})
+
+      assert msg =~ "内功火候尚有欠缺"
+    end
+
+    test "dispel_condition/2：自身驱散，内力不足则失败" do
+      # need_neili = 100，neili = 99
+      assert {:fail, msg} =
+               Kantele.Illness.dispel_condition(%{"duration" => 10}, %{force: 70, neili: 99, self?: true})
+
+      assert msg =~ "内力现在不足"
+    end
+
+    test "dispel_condition/2：他人驱散门槛 ×3/2，火候达标但内力不足则失败" do
+      # duration=10 他人：need_lvl = div(70*3,2) = 105, need_neili = div(100*3,2) = 150
+      assert {:fail, msg} =
+               Kantele.Illness.dispel_condition(
+                 %{"duration" => 10},
+                 %{force: 105, neili: 149, self?: false, target_name: "李四", cname: "李四"}
+               )
+
+      assert msg =~ "李四"
+      assert msg =~ "内力现在不足"
+    end
+
+    test "dispel_condition/2：他人驱散，达标则成功并提及目标名" do
+      # duration=10 他人：need_lvl = 105, need_neili = 150
+      assert {:ok, msg} =
+               Kantele.Illness.dispel_condition(
+                 %{"duration" => 10},
+                 %{force: 105, neili: 150, self?: false, target_name: "李四"}
+               )
+
+      assert msg =~ "李四精神一振"
+    end
+
+    test "dispel_condition/2：ctx 缺 force/neili 按 0 处理，一律失败" do
+      assert {:fail, _} = Kantele.Illness.dispel_condition(%{"duration" => 1}, %{})
+    end
+
+    test "Conditions 引擎集成：ill_kesou 走注册表 daemon，递减后移除" do
+      s = %{conditions: %{"ill_kesou" => %{"duration" => 2}}, cond_applyer: nil, attributes: %{qi: 1000}}
+      daemon = &ConditionRegistry.daemon/1
+
+      {s, live?} = Conditions.update_condition(s, daemon)
+      assert live?
+      assert s.conditions == %{"ill_kesou" => %{"duration" => 1}}
+
+      {s, live?} = Conditions.update_condition(s, daemon)
+      refute live?
+      assert s.conditions == nil
+    end
+  end
 end

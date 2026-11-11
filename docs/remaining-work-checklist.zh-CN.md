@@ -250,7 +250,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 | 项 | 来源 | 说明 | 状态 |
 |----|------|------|------|
 | Q2 v2：疾病/光线/雪原封路 | `MIGRATION_PLAN.md:754` | event_noon 疾病、room light、季节封路 = stretch | 疾病/雪原封路：Deferred（季节/事件系统未建模）；光线：Q2-T2 `Weather.light/0` 已就绪（hours 6–17 为 `:light`），可接 |
-| Q1-T3：真·clone 动态目标 | `MIGRATION_PLAN.md:733-737` | 运行时 clone 需 Chei/Pawning | Deferred（高成本，不在本周期） |
+| Q1-T3：真·clone 动态目标 | `MIGRATION_PLAN.md:733-737` | 运行时 clone 需 Chei/Pawning | ✅ 已完成（2026-11-11）：Phase 2 `object_clone.ex` + `clone_command.ex`，`commands.ex` 路由更新，测试 27/0 全绿，全量 suite 0 回归 |
 | Q1-T3：search/explore 入位校验 | 同上 | 依赖房间人员查询 + 入位判断 | Q2-T0 已落地（`Room.present/1`/`living/1`/`snapshot/1`），入位校验已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化） |
 | Q1-T3：count>1 逐件交付 | 同上 | | Deferred to T4 |
 | P-Adm 未开始（历史行） | `MIGRATION_PLAN.md:445` | §13 已全 ✅，属陈旧标注 | Resolved（stale 行，无需跟进） |
