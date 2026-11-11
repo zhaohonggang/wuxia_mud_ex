@@ -41,6 +41,7 @@
 - `3d4d4fc0`：test: add UCL validation for dynamic spawn lingshezhang/shezhang (#119) — 4 例，覆盖 lingshezhang/shezhang 物品 convert handler + lingshe/snake 角色 bian 动作；19 例动态生成测试全绿，0 回归。
 - `c1e52c53`：Phase 1 疾病/雪原事件 + Q1-T3 clone/count 逐件交付 + B2 W3 计划文档（21 文件，+1838/−187）。
 - `60150343`：feat: B2 W3 对象引擎 MVP —— `W3ObjectEngine` 核心 + `call`/`reboot`/`shutdown` 真化（15 文件，+741/−36）；全量 7626 tests / 27 failures（bcrypt 基线，0 回归）。
+- `b197193d`：feat: B2 W3 `possess`/`restore` 命令真化（标记式附身 + 跨进程存档恢复）；`build` 保留 `not_modeled`（用户确认不做）；`wiz_arch_test.exs` `@deferred` 现仅 `["build"]`；全量 7639 tests / 27 failures（bcrypt 基线，0 回归）。
 
 ## B2 — 12 个 W3 arch 命令（全部已落地：8 已建模 + call/reboot/shutdown 真化 + possess/restore 真化 + build not_modeled）
 - 已真化（可建模 8）：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`、`var`、`setsk`。

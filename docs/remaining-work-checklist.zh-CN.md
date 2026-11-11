@@ -184,25 +184,30 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 - 完整测试基线：B1 + A3 相关 22 个测试文件合跑 **263 tests / 0 failures**（seed
   `0 / 1 / 42 / 137275 / 999999`），`mix compile` exit 0。
 
-### B2. 14 个 W3 arch 静默 no-op
+### B2. 12 个 W3 arch 命令（原 14 含 var/setsk，二者已 E5-2 真化）
 
 > 已注册（`commands.ex:1550-1605`，注释 "14个stubs - 需对象系统"），`run` 直接返回 conn。
 > **E5（2026-11-09）已完成**：路由改造 + 全部显式化（非巫师拒绝、巫师明确回执），
-> 再真化可落地的 `var`（私有变量）/ `setsk`（自身技能等级），其余 12 个属进程/对象系统
-> 管理面、本端口无对应引擎能力 → 显式「未建模」回执并标注 Deferred。详见
-> `docs/B5-剩余子系统与引擎改造计划.zh-CN.md` 第 6 节。
+> 并真化可落地的 `var`（私有变量）/ `setsk`（自身技能等级）。其余 12 个 W3 arch 命令中：
+> 6 个可建模命令已于 2026-11-10 真化；`call`/`reboot`/`shutdown` 于 2026-11-11 经
+> W3ObjectEngine MVP 真化（`60150343`）；`possess`/`restore` 于 2026-11-11 经
+> port-appropriate 实现真化（`b197193d`）。仅 `build` 保留显式「未建模」回执（用户确认不做）。
+> 详见 `docs/B5-剩余子系统与引擎改造计划.zh-CN.md` 第 6 节、`docs/B2-W3-对象引擎实施计划.zh-CN.md`。
 
-| 命令 | 计划处置 |
-|------|---------|
-| var | E5-2 真化：列/设 `meta.temp` 私有变量 |
-| setsk | E5-2 真化：设自身/all 有效技能等级（需 `Stats.put_skill`） |
-| build / call / changeuser / grant / possess / purge / reboot / register / restore / shutdown / smash / throw | E5-1 显式「本端口未建模」回执 + Deferred（进程/对象系统管理面，无对应引擎能力） |
+| 命令 | 计划处置 | 状态 |
+|------|---------|------|
+| var | E5-2 真化：列/设 `meta.temp` 私有变量 | ✅ 已完成（2026-11-09） |
+| setsk | E5-2 真化：设自身/all 有效技能等级（需 `Stats.put_skill`） | ✅ 已完成（2026-11-09） |
+| changeuser / grant / purge / register / smash / throw | 可建模命令真化 | ✅ 已完成（2026-11-10） |
+| call / reboot / shutdown | W3 对象引擎 MVP（W3ObjectEngine + WizArch.system_action） | ✅ 已完成（2026-11-11, `60150343`） |
+| possess / restore | port-appropriate 真化（标记式附身 + 跨进程存档恢复） | ✅ 已完成（2026-11-11, `b197193d`） |
+| build | 对象构造面，本端口无对应引擎能力 | ⏳ 未建模（用户确认不做，2026-11-11） |
 
 ### B3. 小占位 / partial
 
 | 命令/系统 | 文件 | 缺口 |
 |-----------|------|------|
-| clone 生物克隆 | `clone_command.ex:22` | **(巫师命令)** item 可 clone，NPC 不可（Kalevala 无按路径克隆生物的能力） |
+| clone 生物克隆 | `clone_command.ex` / `world/object_clone.ex` | ✅ 已支持：D-节 Phase 2（2026-11-11）`object_clone.ex` 经 `clone_by_path/3` 解析 `zone.characters` / `World.find_npc_definition` 并按路径克隆 NPC（`instantiate({:npc, _})`），物品克隆原本已支持；原「NPC 不可」记录作废 |
 | suicide | `suicide_command.ex` | **(2026-11-09 已真化)** `suicide -f <密码>` 校验 `meta.password` 后 `ExVenture.Characters.delete_by_name` 链删角色 + rumor 广播（combat_exp>=1000）；15 秒 halt 倒计时为有意简化 |
 | prepare valid_combine | `prepare_command.ex:108-109` | 组合逻辑已实装（`SkillCombos.valid_combine?/2`，当前仅 taiji-quan 声明可组合技能） |
 | closed | `closed_command.ex:9,50` | CLOSE_D 离线修炼缺失 |
@@ -214,9 +219,10 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 > 2026-11-09 更新：原列 6 个占位命令（`pkd`/`vote`/`answer`/`to`/`scheme`/`clone`）依赖的后端子系统
 > 已全部随 E1–E5 真化（PK 场 daemon、投票 daemon、ask/answer 配对、行编辑器、计划执行器、生物克隆均已落地），
-> 故本节仅作历史归档。B2 的 12 个 W3 命令中已于 2026-11-10 真化全部 6 个可建模命令
-> （`grant`/`throw`/`purge`/`changeuser`/`register`/`smash`）；
-> 当前真正未建模的仅余 6 个引擎绑定命令（需 W3 对象引擎），详见下方「建议优先级」第 7 条与已完成表格行。
+> 故本节仅作历史归档。B2 的 12 个 W3 命令中：6 个可建模命令已于 2026-11-10 真化
+> （`grant`/`throw`/`purge`/`changeuser`/`register`/`smash`）；`call`/`reboot`/`shutdown` 于 2026-11-11
+> 经 W3ObjectEngine MVP 真化（`60150343`）；`possess`/`restore` 于 2026-11-11 经 port-appropriate
+> 实现真化（`b197193d`）。当前真正未建模的仅余 `build` 1 个（用户确认不做），详见下方「建议优先级」第 7 条与已完成表格行。
 > 原表保留以备回溯：
 
 | 子系统 | 依赖它的命令 | LPC 源 | 当前 Elixir 状态 | 是否已在他处登记 |
@@ -241,7 +247,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 |----|------|------|
 | brothers 跨角色同步 | `brothers_command.ex` / `ex_venture/characters.ex` / `world/room.ex` / `events/brothers_event.ex` | 断义时：持久化移除对方名单（`ExVenture.Characters.remove_brother/2`，离线亦可，LPC UPDATE_D 等价）+ rumor 广播 + 同房间在场兄弟内存同步（`brothers/break`→`brothers/broken`） |
 | 饥饿/口渴系统（food/water 栏 + heal_up 扣减 + 吃太饱拦截 + drink 饮水恢复） | `vitals.ex` / `effect.ex` / `feature_damage.ex` / `eat_command.ex` / `drink_command.ex` | ✅ 已完成（食物侧 2026-11-10 commit `a53445e2`；饮水侧 2026-11-10 drink `add_water/2`）：`Vitals` 新增 `food`/`water`（`new()` 满 200）；`heal_up` 每 tick 扣减、food/water <1 玩家停止自然回复；`restore_from_food` 恢复 food 栏出「饱食度+N」；`eat` 吃太饱拦截；`drink` 每口容器液体回 30 点饮水度（封顶 `max_water_capacity`）。全量 `7392 tests / 27 failures`（全部 bcrypt NIF 环境性，0 饥饿相关回归） |
-| B2 W3 arch 命令真化 — **6/12（全部可建模命令已完成）** | `admin/security.ex` / `admin/prison.ex` / `commands/{grant,throw,purge,changeuser,register,smash}_command.ex` / `feature_damage.ex` / `events/smash_event.ex` / `world/room.ex` / `ex_venture/{characters,users}.ex` | ✅ 已完成（2026-11-10，三批）：① `grant` — `Kantele.Admin.Security` 授权注册表（public ETS，与 Pkd/Vote 同构，直接 ETS 写入不经 GenServer.call），`grant [-d] <玩家> <命令>...` + arch-only 门控。② `throw` — `Kantele.Admin.Prison` 禁闭 daemon（LPC `throw.c`：`because <理由>` 白名单、h/d/m/y 时长换算、缺省 20 分钟、自禁闭拦截），`heal_up/1` 的 `in_prison?` 占位桩接到 daemon。③ `purge` — 真正调用 `ExVenture.Characters.delete_by_name/1` + rumor 广播。④ `changeuser`（LPC `changename.c`）— 纯中文 1~8 字校验、在线目标检查、`Characters.rename_by_name/2`。⑤ `register` — `Users.register_changeset/2`（以 `email_verified_at` 表登记态，免 DB 迁移）+ `register_by_username/2`。⑥ `smash`（LPC `smash.c`）— 2-hop 事件链：`smash/strike` 房间事件按名找目标 + `wiz_level` 比较 → `character/smitten` 让目标进程自己 `Damage.die/1`（含 R24 `ensure_death_state` 兜底），支持自劈专用死因、双语名前缀匹配。全部 arch-only 门控 + rescue-safe 降级。新增 9 个测试文件，`wiz_arch_test` 的 `@deferred` 余 6 条（全为引擎绑定）；`command_probe` 未误报。剩余 6 个见下方"建议优先级"第 7 条 |
+| B2 W3 arch 命令真化 — **11/12（仅 build 保留未建模）** | `admin/security.ex` / `admin/prison.ex` / `commands/{grant,throw,purge,changeuser,register,smash}_command.ex` / `feature_damage.ex` / `events/smash_event.ex` / `world/room.ex` / `ex_venture/{characters,users}.ex` / `world/w3_object_engine.ex` / `commands/{call,reboot,shutdown}_command.ex` / `commands/{possess,restore}_command.ex` / `world/{possession,object_restore}.ex` / `character/events/restore_event.ex` | ✅ 已完成（2026-11-10 三批可建模 6 个 + 2026-11-11 `60150343` 引擎 MVP 3 个 + 2026-11-11 `b197193d` possess/restore 2 个）：① `grant` — `Kantele.Admin.Security` 授权注册表（public ETS，与 Pkd/Vote 同构，直接 ETS 写入不经 GenServer.call），`grant [-d] <玩家> <命令>...` + arch-only 门控。② `throw` — `Kantele.Admin.Prison` 禁闭 daemon（LPC `throw.c`：`because <理由>` 白名单、h/d/m/y 时长换算、缺省 20 分钟、自禁闭拦截），`heal_up/1` 的 `in_prison?` 占位桩接到 daemon。③ `purge` — 真正调用 `ExVenture.Characters.delete_by_name/1` + rumor 广播。④ `changeuser`（LPC `changename.c`）— 纯中文 1~8 字校验、在线目标检查、`Characters.rename_by_name/2`。⑤ `register` — `Users.register_changeset/2`（以 `email_verified_at` 表登记态，免 DB 迁移）+ `register_by_username/2`。⑥ `smash`（LPC `smash.c`）— 2-hop 事件链：`smash/strike` 房间事件按名找目标 + `wiz_level` 比较 → `character/smitten` 让目标进程自己 `Damage.die/1`（含 R24 `ensure_death_state` 兜底），支持自劈专用死因、双语名前缀匹配。⑦ `call`/`reboot`/`shutdown` — W3ObjectEngine（GenServer + 公共 ETS `w3_objects`）+ `WizArch.system_action/4`；reboot/shutdown 默认 dry-run。⑧ `possess`/`restore` — port-appropriate 真化（标记式附身 + 跨进程存档恢复事件），用户确认不必照搬 LPC。全部 arch-only 门控 + rescue-safe 降级。新增测试文件，`wiz_arch_test` 的 `@deferred` 现仅 `["build"]`；`command_probe` 未误报。仅 `build` 保留显式未建模回执（用户确认不做）。 |
 
 ---
 
@@ -249,10 +255,10 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 | 项 | 来源 | 说明 | 状态 |
 |----|------|------|------|
-| Q2 v2：疾病/光线/雪原封路 | `MIGRATION_PLAN.md:754` | event_noon 疾病、room light、季节封路 = stretch | 疾病/雪原封路：Deferred（季节/事件系统未建模）；光线：Q2-T2 `Weather.light/0` 已就绪（hours 6–17 为 `:light`），可接 |
+| Q2 v2：疾病/光线/雪原封路 | `MIGRATION_PLAN.md:754` | event_noon 疾病、room light、季节封路 = stretch | 疾病/雪原封路：✅ 已完成（2026-11-11，Phase 1 全部三项）：`illness.ex` 五族 daemon + `season_event.ex` 正午发病 + `snow_region.ex`/`snow_region_event.ex` 雪原寒冷，测试 91 例全绿，全量 suite 0 回归；光线：`Weather.light/0` 已就绪（hours 6–17 为 `:light`），房间光照应用待接 |
 | Q1-T3：真·clone 动态目标 | `MIGRATION_PLAN.md:733-737` | 运行时 clone 需 Chei/Pawning | ✅ 已完成（2026-11-11）：Phase 2 `object_clone.ex` + `clone_command.ex`，`commands.ex` 路由更新，测试 27/0 全绿，全量 suite 0 回归 |
 | Q1-T3：search/explore 入位校验 | 同上 | 依赖房间人员查询 + 入位判断 | Q2-T0 已落地（`Room.present/1`/`living/1`/`snapshot/1`），入位校验已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化） |
-| Q1-T3：count>1 逐件交付 | 同上 | | Deferred to T4 |
+| Q1-T3：count>1 逐件交付 | 同上 | `Supply.generate/1` count=3..8、`Deliver.generate/1` count=5..10、`start_room` 入位门控、`turnin_request/2` 逐件扣减与部分交付提示、`scale_rewards_by_count` 按件比例奖励、`task_meta` 新增 `:count`/`:start_room` | ✅ 已完成（2026-11-11，Phase 3/T4）：`quest_turnin_multi_test.exs` 6 例 + `quest_daemon_test.exs` generator 断言，全绿；全量 suite 7601 tests / 27 failures（bcrypt 基线，0 回归） |
 | P-Adm 未开始（历史行） | `MIGRATION_PLAN.md:445` | §13 已全 ✅，属陈旧标注 | Resolved（stale 行，无需跟进） |
 | §3.2 P0 四个 `[ ]` | `MIGRATION_PLAN.md:172-179` | 与 §10 `P0 [x]` 冲突，stale | Resolved（stale 行，无需跟进） |
 
@@ -266,9 +272,9 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 4. ✅ **饥饿口渴系统** — 已完成（食物侧 2026-11-10 commit `a53445e2`；饮水侧 2026-11-10 drink water 落地）：`Vitals` 新增 `food`/`water`（`new()` 满 200）；`heal_up` 每 tick 扣减、饥饿/口渴（food/water <1）玩家停止自然回复；`restore_from_food` 恢复 food 栏并出「饱食度+N」文案；`eat` 吃太饱拦截（保留 instance）；`drink` 每喝一口容器液体回 30 点饮水度（封顶 `max_water_capacity`，`add_water/2`，LPC `me->add("water", 30)` 忠实复刻——最后一口在提前返回前仍加水）。全量 `7392 tests / 27 failures`（全部 bcrypt NIF 环境性，0 饥饿相关回归）。
 5. **B1 自包含 stub — 已全部真化（见上方 B1 收尾）** — `push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`talk`/`ansuan`/`top`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支）均已按 LPC 真实实现；**原「剩余 6 个」占位命令（`answer`/`pkd`/`to`/`vote`/`scheme`/`clone`）亦已于 2026-11-09 随 E1–E5 全部真化**，其依赖的后端子系统（PK 场、投票、ask/answer、行编辑器、计划执行器、生物克隆）均已落地。真正未建模的仅剩 B2 的 12 个 W3 命令。
 6. ✅ **A1/A2/A4** — A1 转换器已落地并归档（2026-10-01）；A2 永远不做；A4 终测/分区搬运已按八阶段排期验收完毕。本项清零，无剩余工作。
-7. **B2 — 12 个 W3 arch 命令** — 已真化 **6/12（全部可建模命令完成）**（`grant` / `throw` / `purge` / `changeuser` / `register` / `smash`，2026-11-10，见上表）。分类如下：
-   - **已真化（6）**：`grant`（授权注册表）、`throw`（禁闭 daemon + heal_up 接入）、`purge`（删除用户档案）、`changeuser`（LPC `changename` 改名）、`register`（登记邮箱）、`smash`（2-hop 雷劈事件链 + 目标进程内死亡结算）。
-   - **引擎绑定（6，保持显式「未建模」回执，真实实现非占位桩，不臆造 LPC 驱动能力）**：`call`（跨对象函数调用）、`reboot`/`shutdown`（重启/关闭驱动）、`possess`（占据对象）、`restore`（对象存档恢复）、`build`（对象构造面）。这些命令操作的是 LPC driver 的「进程/对象树」，本端口（Elixir/Ecto）无等价物，维持显式回执是**有意设计决策**，不是遗留缺口。
-   - **结论**：B2 中在本端口可建模的部分已全部落地；剩余 6 个若要推进，需先立项设计一套 W3 对象引擎（对象注册表 / 查询 / 销毁 / 跨对象调用），与 B2 已完成量级相当，不再归入 A1/A2/A4（已清零）。
+7. **B2 — 12 个 W3 arch 命令** — 已真化 **11/12（仅 `build` 保留未建模）**：`grant` / `throw` / `purge` / `changeuser` / `register` / `smash`（2026-11-10，可建模 6 个）+ `call` / `reboot` / `shutdown`（2026-11-11 W3ObjectEngine MVP，`60150343`）+ `possess` / `restore`（2026-11-11 port-appropriate 真化，`b197193d`）。分类如下：
+   - **已真化（11）**：`grant`（授权注册表）、`throw`（禁闭 daemon + heal_up 接入）、`purge`（删除用户档案）、`changeuser`（LPC `changename` 改名）、`register`（登记邮箱）、`smash`（2-hop 雷劈事件链 + 目标进程内死亡结算）、`call`/`reboot`/`shutdown`（W3ObjectEngine + `WizArch.system_action/4`，reboot/shutdown 默认 dry-run）、`possess`（标记式附身，BeastTaming + Possession ETS + 房间广播）、`restore`（ObjectRestore 校验存档 + 跨进程 `character/restore` 事件经 RestoreEvent 重载）。
+   - **未建模（1，用户确认不做）**：`build`（对象构造面，LPC `VERSION_D` MUDlib 编译器，本端口无等价物，维持显式「未建模」回执是有意设计决策）。
+   - **结论**：B2 中在本端口可建模 + 可用 port-appropriate 方式实现的部分已全部落地；仅 `build` 因无对应引擎能力且用户明确不做而保留未建模。B2 不再归入 A1/A2/A4（已清零）。
 
 > 按仓库约定：本清单仅记录与查阅，开工任意项前先更新"当前状态"，每批验收以 `MIX_ENV=test mix test --seed 731933/788424` 全绿为准。
