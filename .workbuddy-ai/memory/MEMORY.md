@@ -26,12 +26,29 @@
 - `e20116fe`：`prepare` 拳术组合真化（`SkillCombos.valid_combine?/2` + `Stats.mapped/2` + `stats.prepared[type]`），`skill_combos_test.exs` 10 例，`prepare_command_test.exs` 组合路径，文档同步，`extract_valid_combine.py` 改 INFO。
 - 全量：7477 tests / 27 failures（全部 bcrypt 环境性，0 回归）。
 - 此前已合并推送：R5 动态招式表；A3 f1 Diff-stop；Task #302-317 + B1 stub 批次1-2；F4 @static 白名单；valid_learn 全量 + 长尾；E4 套件清理（105→27）；E5 W3 14 命令显式化；B1 `suicide`；C `brothers` 跨角色同步；饥饿/口渴（食物+饮水）；Phase 2-8（`scheme`、S7/E2 转世落盘、S8/E3 戒律 `guilty`、S1 ask/answer、S2 `pkd`、S4 `vote`、S6 生物 `clone`）。
-- 测试演进：7382 → ... → 7477 tests，基线恒 27。
+- 测试演进：7382 → ... → 7477 → 7548 tests，基线恒 27（全 bcrypt 环境性，0 回归）。
+- `192d883e`：test: add tests for pingsi teleport service handler (#114) — 15 例全绿，覆盖注册/asker_id 守门/family 门禁/startroom 门禁/缺失降级/全流程广播+Teleport 意图+成功回话，vision_name/vision 回落。
+- `1bd36b54`：test: add 苗人凤 item_grant inquiry key tests (#113) — 59 行，覆盖腾龙剑/剑谱上册/上册/剑谱下册/下册 5 个 give_item 门控字段 + 别名一致性；18 例全绿，0 回归。
+- `3d4d4fc0`：test: add UCL validation for dynamic spawn lingshezhang/shezhang (#119) — 4 例，覆盖 lingshezhang/shezhang 物品 convert handler + lingshe/snake 角色 bian 动作；19 例动态生成测试全绿，0 回归。
 
 ## B2 — 12 个 W3 arch 命令（6/12 可建模命令已完成）
 - 已真化：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`。门控 `WizArch.guard` + `Access.archwizp`；DB 调用 rescue/catch 降级。
 - `wiz_arch_test.exs` `@deferred` 余 6 条（全引擎绑定）；`command_probe` 未误报。
 - 引擎绑定 6（保持显式「W3 对象系统未建模」回执）：`call`/`reboot`/`shutdown`/`possess`/`restore`/`build`。推进需立项设计 W3 对象引擎，与 B2 已完成量级相当（A1/A2/A4 已清零）。
+
+## P5-5 丹药效果系统（已完成并 push）
+
+核心：LPC `do_effect(object me)` → UCL `meta.effect`（kind="pill"）+ `meta.medicine`，数据驱动。
+
+- `lib/kantele/item/effect/pill.ex`（纯 planner）：`plan/2` → `{:ok, %Pill{}}` / `{:reject, :cooldown|:full|:not_pill, text}`；校验 `pill_cooldowns` 冷却 + `full_vital` 满状态拒服；`apply_cooldown/2` 戳时间戳入 `meta.pill_cooldowns[key]`；`apply_busy/2` 经 `Combat.start_busy/2` 累加轮次
+- `lib/kantele/item/effect.ex`（consume 引擎）：`consume/3` 读 `meta.medicine`（qi/jing/neili 治疗钳 max；stats 四维增量软上限 30；food/poison），返回 `{:ok, %{vitals, stats, parts, food?, medicine?, poison?}}`
+- `lib/kantele/character/commands/eat_command.ex`（消费端）：`pill?/1` + `eat_pill/5` 委托 `Pill.plan` + `Effect.consume` + `apply_cooldown` + `apply_busy`；房间广播 `vision_text`（$N→你，exclude_actor）+ 自述 `self_text`
+- `scripts/backfill_pill_effects.py`：LPC do_effect → UCL 回填（medicine + effect + "eat" verb），幂等 + backup + validate_ucl.py 校验，失败回滚
+- 测试：`pill_test.exs`（7 例）+ `pill_backfill_test.exs`（3 例），全绿，0 回归
+
+UCL 约束：嵌套 map 空格分隔（无逗号）；字符串列表逗号+空格（无尾逗号）；`\n` 为换行；booleans 为 "true"/"false" 字符串。
+
+已回填物品：养精丹（jing+冷却+满 jing 拒服+广播）、少林金创药（qi，无冷却/满状态约束）、黑玉断续膏（self_text 自述）。
 
 ## 剩余 backlog
 - D 节 v2 技术债：
