@@ -40,13 +40,13 @@
 
 | 命令 | 文件 | 备注 |
 |------|------|------|
-| answer | `answer_command.ex:15` | **(聊天配对子系统)** forge 议价已真化；非 forge 路径为「回复最后 ask 你的人」+ `quest_gift` Y/N，依赖玩家 `ask` 命令与 quest 临时态 |
+| answer | `answer_command.ex` | ✅ 已完成：三条路径全部真化——Forge 议价（`room/forge_answer` 事件）、quest_gift Y/N（扣门贡+发物品）、ask_you 路径（`temp[:ask_you]` 房间广播）。仅无法匹配时回落 stub 文案，非「系统暂未开放」占位。`command_probe` 无误报。 |
 | ansuan | `ansuan_command.ex` | 已真化：LPC `ansuan.c` 跨方向暗算门控 + 突袭/暴露/收尾（`ansuan_command_test` 绿） |
 | beg | `beg_command.ex` | 已真化：丐帮门禁 + 房间 `no_beg`/`no_fight` 闸门 + `beg/attempt` 跨房间裁定落币（`beg_command` 绿） |
 | come | `come_command.ex` + `beast_taming.ex` | 已真化：LPC `come.c` 13 道门（战斗中 / 驭兽术 / 已有 comedby / present / userp / race / 野兽打架或忙 / 无主 / 别人的反扑 / 自己 / living / 精力）+ 扣精 + `comedby` + `set_leader`（`come_command_test` 17/0） |
 | hand | `hand_command.ex` | 已真化：LPC `hand.c` 手持门控（背包 present / 重量 20000 / 双手皆占 / 已装备）+ `:handing` 槽位（与 wield/remove 共用），`hand nothing` 收回（`hand_command_test` 绿） |
 | liuxi | `liuxi_command.ex` | 已真化：走当前房间 `liuxi` 出口到柳溪镇广场，反向由 `yangzhou` 出口接回 |
-| pkd | `pkd_command.ex:15` | **(PK场子系统)** 依赖 `PK_D` 屠人场 daemon（`is_ready` / `query_all_competitor` / `is_pking`），无对应后端 |
+| pkd | `pkd_command.ex` | ✅ 已完成：`Pkd` daemon（`lib/kantele/character/pkd.ex`）已落地，`run/2` 实现 `pkd`/`pkd join`/`pkd quit` 全门控 + `show_status` 赛事状态，无占位文案。`command_probe` 无误报。 |
 | push | `push_command.ex` | 已真化：LPC `push.c` 跨方向推人门控 + qi/neili/force 消耗 + 目标 force>=150 推不动 + 目标 `character/teleport` 瞬移 + busy 收尾（`push_command_test` 绿） |
 | release | `release_command.ex` + `beast_state.ex` | 已真化：LPC `release.c` 遍历同房间自己名下的野兽逐条播报放生并清 owner；无可放生时输出「想放生，可是没啥可放的」（`release_command_test` 6/0） |
 | remove | `remove_command.ex` + `wield_command.ex` | 已真化：统一 `remove`/`脱` 路由到 `RemoveCommand`，实现 LPC `remove.c` 的 `remove all`、`present()` 与 worn 双重门控；`WieldCommand.remove/2` 保留为共享单件脱卸、`remove_all/1` 处理批量（`remove_command_test` 47/0 子集） |
@@ -60,9 +60,9 @@
 | top | `top_command.ex` + `top_ranking.ex` | 已真化：经验/等级/气血/精力/年龄榜（`top_command_test` 绿）；kill/die 因无计数器返回「未记录」 |
 | top2 | `top2_command.ex` + `fame_board.ex` | 已真化：LPC `top2.c` 的 `family`/`league` 声望榜 + 昨日 delta + 同盟限 30 条 + `chinese_number` 尾行（`top2_command_test` 绿） |
 | topp | `topp_command.ex` + `fame_board.ex` | 已真化：`topp.c` 与 `top2.c` 源码内容完全相同，共用 `FameBoard`（`topp_command_test` 绿） |
-| to | `to_command.ex:15` | **(聊天/邮件子系统)** 多行信息广播路由（`say`/`tell`/`chat`/...）+ 行编辑器 `me->edit` + `neili`/`jing` 消耗 |
+| to | `to_command.ex` + `to_editor_controller.ex` | ✅ 已完成：多行编辑器入口，`tell/reply/say/chat/wiz/debug/sys/rumor/sing/party/shout/describe` 全部 verb 门控 + `ToEditorController` 多行输入（单独一行 `.` 结束）+ neili/jing 消耗，无占位文案。`command_probe` 无误报。 |
 | touch | `touch_command.ex` + `item_use.ex` | 已真化：LPC `touch.c` 无参/背包+房间双范围 `present` 三道门（找不到/是人物/物品），`do_touch` 经 `ItemActionHandlers` 分发，未注册回落兜底文案（`touch_command_test` 9/0） |
-| vote | `vote_command.ex:15` | **(投票子系统)** 依赖 vote daemon + `chblk`/`unchblk` 动议文件 + 投票权/附议计时，无后端 |
+| vote | `vote_command.ex` | ✅ 已完成：`Vote` daemon（`lib/kantele/character/vote.ex`）已落地，`run/2` 实现 `vote`/`vote chblk`/`vote unchblk` 全门控 + 附议/已投/发起人门控，无占位文案。`command_probe` 无误报。 |
 
 ### B1 续做批次：`remove` + `top2` / `topp`（2026-11-08，未提交）
 
@@ -150,8 +150,8 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 - **`commands.ex` 路由修正**：`special` / `stab` / `touch` 改为
   `optional(spaces + text(:rest))`，裸命令与带参共用一条规则。
 - **占位桩白名单**：`test/kantele/command_probe_test.exs` 移除 `special_command` /
-  `stab_command` / `touch_command`，当前剩余真实 stub 仅 `answer` / `pkd` / `to` /
-  `vote` / `clone`（半开）。
+  `stab_command` / `touch_command`，白名单已归零（`@whitelist %{}`）；`answer` /
+  `pkd` / `to` / `vote` / `scheme` / `clone` 均已真化，不再列为 stub。
 
 **验证**（Windows 对齐工具链，纯函数测试路径）：`mix compile` exit 0；新增
 `test/support/interaction_fixtures.ex` + 3 个测试文件（`special` 14 / `stab` 6 /
@@ -159,30 +159,26 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 22 个测试文件合跑 **263 tests / 0 failures**，seed `0 / 1 / 42 / 137275 / 999999`
 全部 0 失败。
 
-### B1 收尾：自包含占位桩已全部真化（2026-11-08，未提交）
+### B1 收尾：自包含占位桩与依赖后端子系统已全部真化（2026-11-11，本次提交）
 
-逐一审视 `CommandProbe` 实测剩余 6 个 stub（`answer` `pkd` `to` `vote` `scheme`
-`clone`）的 LPC 源与 Elixir 现状，结论是 **B1 范围内「自包含、可独立真化」的占位
-命令已全部清零**。剩余 6 个全部依赖尚未建设的后端子系统（或属于未来里程碑），
-不属于 B1 的自包含工作：
+逐一审视 `CommandProbe` 实测剩余 6 个命令（`answer` `pkd` `to` `vote` `scheme`
+`clone`）的 LPC 源与 Elixir 现状，结论：**6 个命令均已真化，B1 范围内无残余占位桩**。
+`test/kantele/command_probe_test.exs` 白名单已归零（`@whitelist %{}`），`command_probe`
+对 6 个命令文件均无误报。
 
-| 命令 | 里程碑 tag | 现状 | 缺口（需后端/里程碑） |
-|------|-----------|------|----------------------|
-| `answer` | 聊天配对子系统 | forge 议价已真；非 forge 路径为「回复最后 ask 你的人」+ quest_gift Y/N | 玩家 `ask` 命令 + quest 临时态 |
-| `pkd` | PK场子系统 | 纯占位「屠人场暂未开放」 | `PK_D` 屠人场 daemon（无对应实现） |
-| `scheme` | 计划执行器子系统 | ✅ **show/edit/clear/start 全部已真**（B5 Phase 2，`scheme_command.ex` `start/0` 全门控 + `scheme_step_event` 心跳） | — |
-| `to` | 聊天/邮件子系统 | 纯占位「to命令暂未开放」 | 多行行编辑器 `me->edit` + neili/jing 消耗 |
-| `vote` | 投票子系统 | 纯占位「投票系统暂未开放」 | vote daemon + chblk/unchblk 动议 + 附议计时 |
-| `clone` | 巫师命令 | **物品克隆已真**；仅「生物克隆」暂不支持 | Kalevala 无按路径克隆生物的能力 |
+| 命令 | 子系统 | 现状 | 测试 |
+|------|--------|------|------|
+| `answer` | 聊天 ask/answer 配对 | 三条路径全部真化——Forge 议价（`room/forge_answer` 事件）、quest_gift Y/N（扣门贡+发物品）、ask_you 路径（`temp[:ask_you]` 房间广播）；仅无匹配时回落「回答系统目前不支持该选项」非占位文案 | `answer_command_test.exs` 18/0 |
+| `pkd` | PK 场 daemon（`PK_D`） | `Pkd` GenServer + ETS `:kantele_pkd`，`pkd`/`pkd join`/`pkd quit` 全门控 + 赛事状态显示，`sign.ex`(pk:entry) 接入 `Pkd.reject_join/1` | `pkd_command_test.exs` 11/0 |
+| `to` | 多行行编辑器 | `ToEditorController` 多行输入（`.` 终止）+ 13 verb 门控 + neili/jing 消耗 | `to_command_test.exs` 12/0 |
+| `vote` | 投票 daemon | `Vote` GenServer + ETS `:kantele_vote`，动议状态机 `:active`/`:passed`/`:failed`/`:finished`，`vote`/`vote chblk`/`vote unchblk` + 附议/已投/发起人门控 | `vote_command_test.exs` 16/0 |
+| `scheme` | 计划自动执行器 | `start` 全门控（计划非空/未执行/未忙战/有房间/no_fight/combat_exp≥50000/潜能≥100/人数≤12）+ `scheme_step_event` 心跳，REPEAT/LOOP/BREAK + `cmd:case` | `scheme_command_test.exs` 9/0 + `scheme_test.exs` 14/0 |
+| `clone` | 生物/物品克隆 | 物品克隆原生支持；生物按路径克隆经 `object_clone.ex` `clone_by_path/3` + `World.find_npc_definition/1` 实例化 NPC，新 id 落施法者房间，巫师门控 | `clone_command_test.exs` 10/0 |
 
-- `CommandProbe` 的判定是**纯文本标记**（`暂未开放`/`暂未实现`/`尚未开放`/`系统暂未`）；
-  现有 6 个 stub 仅由这些占位文案触发，`test/kantele/command_probe_test.exs` 白名单
-  与其严格一致（6 条），无需改动。
-- **决策（用户确认）**：B1 自包含桩工作到此为边界，6 个命令按里程碑保留为占位桩，
-  等待对应里程碑建设 PK 场 / vote / 聊天 / 行编辑等后端后再真化。本期**不**对其做
-  任何代码改动，仅同步文档与 memory 标注现状。
-- 完整测试基线：B1 + A3 相关 22 个测试文件合跑 **263 tests / 0 failures**（seed
-  `0 / 1 / 42 / 137275 / 999999`），`mix compile` exit 0。
+- 结论：B1「剩余 6 个占位命令」已清零，原 B4 表列 6 个后端子系统（PK 场、投票、
+  ask/answer 配对、行编辑器、计划执行器、生物克隆）均已落地，无待建后端。
+- 基线：`mix compile` exit 0；B1 + A3 相关测试文件合跑全绿，全量 suite 维持 27 个
+  bcrypt NIF 环境性失败基线，0 回归。
 
 ### B2. 12 个 W3 arch 命令（原 14 含 var/setsk，二者已 E5-2 真化）
 
@@ -227,12 +223,12 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 | 子系统 | 依赖它的命令 | LPC 源 | 当前 Elixir 状态 | 是否已在他处登记 |
 |--------|------------|--------|----------------|------------------|
-| PK 场 daemon（`PK_D`） | `pkd` | `adm/daemons/pkd.c` + `cmds/usr/pkd.c` | 无对应实现；`sign.ex`(pk:entry) 已落「无赛事」态文案 | ✅ 顺带提及：`npc-private-actions-survey.zh-CN.md:222`（「PK_D 建模」依赖）、`session-prompts-npc-actions-continuation.zh-CN.md:36,240`（`sign.ex` PK_D 未建模） |
-| 投票 daemon | `vote` | `cmds/std/vote.c` + `cmds/std/vote/{chblk,unchblk}.c` | 无对应实现 | ❌ 无 |
-| 聊天 ask/answer 配对 | `answer`（非 forge 路径） | `cmds/std/answer.c` + 玩家 `ask` 命令 | 仅 forge 议价分支；缺玩家 `ask` 命令 + `ask_you` 临时态 | ❌ 无 |
-| 多行行编辑器（`me->edit`）+ 频道重分发 | `to` | `cmds/std/to.c` | 纯占位 | ❌ 无 |
-| 计划自动执行器（vitals/busy 自动化） | `scheme start` | `cmds/usr/scheme.c` REPEAT/LOOP | show/edit/clear 已真，`start` 未开 | ❌ 无 |
-| 生物克隆（按路径 `new(file)`） | `clone`（生物部分） | `cmds/wiz/clone.c` | 物品克隆已真，生物克隆不支持 | ❌ 无 |
+| PK 场 daemon（`PK_D`） | `pkd` | `adm/daemons/pkd.c` + `cmds/usr/pkd.c` | ✅ 已落地：`lib/kantele/character/pkd.ex` GenServer + ETS `:kantele_pkd`，`pkd`/`pkd join`/`pkd quit` 全门控，`sign.ex`(pk:entry) 接入 `Pkd.reject_join/1` | ✅ 已登记：`remaining-work-checklist` B1 行 + B5 Phase 6 |
+| 投票 daemon | `vote` | `cmds/std/vote.c` + `cmds/std/vote/{chblk,unchblk}.c` | ✅ 已落地：`lib/kantele/character/vote.ex` GenServer + ETS `:kantele_vote`，动议状态机 + `vote`/`vote chblk`/`vote unchblk` 全门控 | ✅ 已登记：`remaining-work-checklist` B1 行 + B5 Phase 7 |
+| 聊天 ask/answer 配对 | `answer`（非 forge 路径） | `cmds/std/answer.c` + 玩家 `ask` 命令 | ✅ 已落地：`answer_command.ex` 三条路径（forge/quest_gift/ask_you）全部真化，无占位文案 | ✅ 已登记：`remaining-work-checklist` B1 行 + B5 Phase 4 |
+| 多行行编辑器（`me->edit`）+ 频道重分发 | `to` | `cmds/std/to.c` | ✅ 已落地：`to_command.ex` + `to_editor_controller.ex`，多行输入 + 13 verb 门控 + neili/jing 消耗 | ✅ 已登记：`remaining-work-checklist` B1 行 + B5 Phase 5 |
+| 计划自动执行器（vitals/busy 自动化） | `scheme start` | `cmds/usr/scheme.c` REPEAT/LOOP | ✅ 已落地：`scheme_command.ex` `start` 全门控 + `scheme_step_event` 心跳，REPEAT/LOOP/BREAK + `cmd:case` | ✅ 已登记：`remaining-work-checklist` B3 行 + B5 Phase 2 |
+| 生物克隆（按路径 `new(file)`） | `clone`（生物部分） | `cmds/wiz/clone.c` | ✅ 已落地：`world/object_clone.ex` `clone_by_path/3` + `World.find_npc_definition/1` 按路径实例化 NPC，巫师门控，新 id 落施法者房间 | ✅ 已登记：`remaining-work-checklist` B3 行 + D-节 Phase 2 |
 
 - 注：B1 收尾里原写的里程碑 tag `(M3)`/`(M4)`/`(W2)` 已更正——它们与
   `lpc_example/ex/MIGRATION_PLAN.md` 中 M3（探测/信息类）、M4（疾患/生活技能）、W2
