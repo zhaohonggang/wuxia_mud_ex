@@ -1089,8 +1089,21 @@ defmodule Kantele.Character.Commands do
   end
 
   module(ClosedCommand) do
-    parse("closed", :run)
-    parse("闭关", :run)
+    parse("closed", :run, fn command ->
+      command
+      |> spaces()
+      |> text(:rest)
+    end)
+
+    parse("closed", :run_bare)
+
+    parse("闭关", :run, fn command ->
+      command
+      |> spaces()
+      |> text(:rest)
+    end)
+
+    parse("闭关", :run_bare)
   end
 
   module(StudyCommand) do
