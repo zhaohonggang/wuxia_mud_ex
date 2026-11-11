@@ -41,12 +41,15 @@ CHECK_ORDER = ["Encoding", "Syntax", "Structure", "Integrity", "Chars"]
 # stay meaningful even when the file is not valid UTF-8.  For byte patterns
 # `\s` / `\w` are ASCII-only, matching Elixir's PCRE without /u.
 # ---------------------------------------------------------------------------
-_STRUCT_ZONE_RE = re.compile(rb'^\s*zones\s+"\w+"', re.MULTILINE)
-_STRUCT_ROOMS_RE = re.compile(rb'^\s*rooms\s+"\w+"', re.MULTILINE)
-_STRUCT_EXITS_RE = re.compile(rb'^\s*room_exits\s+"\w+"', re.MULTILINE)
+# Zone/room ids in the real world may contain hyphens (e.g. `kissa-jarvi`,
+# `lepakko-luola`, `cave-outside`), so the structural regexes accept `[\w-]+`
+# rather than `\w+`.  Fixtures use plain `\w+` names and still match.
+_STRUCT_ZONE_RE = re.compile(rb'^\s*zones\s+"[\w-]+"', re.MULTILINE)
+_STRUCT_ROOMS_RE = re.compile(rb'^\s*rooms\s+"[\w-]+"', re.MULTILINE)
+_STRUCT_EXITS_RE = re.compile(rb'^\s*room_exits\s+"[\w-]+"', re.MULTILINE)
 
-_INTEGRITY_ROOMS_RE = re.compile(rb'^\s*rooms\s+"(\w+)"', re.MULTILINE)
-_INTEGRITY_EXITS_RE = re.compile(rb'^\s*room_exits\s+"(\w+)"', re.MULTILINE)
+_INTEGRITY_ROOMS_RE = re.compile(rb'^\s*rooms\s+"([\w-]+)"', re.MULTILINE)
+_INTEGRITY_EXITS_RE = re.compile(rb'^\s*room_exits\s+"([\w-]+)"', re.MULTILINE)
 
 _STRUCT_ITEMS_RE = re.compile(rb'^\s*items\s+"', re.MULTILINE)
 _STRUCT_CHARACTERS_RE = re.compile(rb'^\s*characters\s+"', re.MULTILINE)
@@ -112,7 +115,11 @@ _ELIAS_BAD_KEY_RE = re.compile(rb"^\s*[A-Za-z_][A-Za-z_0-9]*[0-9][A-Za-z_0-9]*\s
 # a continuation backslash; the converter was emitting `kou\ zhong` because it
 # collapsed the newline to a space before removing the continuation.
 # Measured: "a\ b" and "a\" both fail; "a\bcd" and a plain space are fine.
-_ELIAS_STRAY_BACKSLASH_RE = re.compile(rb'"[^"\n]*\\[ \t][^"\n]*"|"[^"\n]*\\"')
+# Note: a valid escaped quote `\"` mid-string (e.g. `说"你好"`) is legal UCL and
+# loads fine in-game; only a backslash *before whitespace* (the LPC line-continuation
+# bug, fixture 46) is a genuine defect.  Do NOT match trailing `\"` (escaped quote)
+# or we get false positives on real-world files like liuxi.ucl / clone_lib.ucl.
+_ELIAS_STRAY_BACKSLASH_RE = re.compile(rb'"[^"\n]*\\[ \t][^"\n]*"')
 
 
 # ---------------------------------------------------------------------------
@@ -680,7 +687,6 @@ def _run_checks(data):
     checks = [
         ("Encoding", check_encoding, data),
         ("Syntax", check_syntax, data),
-        ("EliasStrings", check_elias_strings, body),
         ("Structure", check_structure, body),
         ("Integrity", check_integrity, body),
         ("Chars", check_chars, body),
@@ -693,6 +699,24 @@ def _run_checks(data):
             ok, detail = False, "internal error: %s" % exc
         if not ok:
             failures.append((name, detail))
+    # Elias-string incompatibilities (backslash-EOL, double backslash, raw CR/NF/
+    # bracket inside a quoted string, ...) are folded into the Chars check.  They
+    # are character-level string-content issues; the contracted 5-check contract
+    # names only Encoding/Syntax/Structure/Integrity/Chars, so they must not be
+    # reported under a sixth, undocumented name.  Coverage is preserved.
+    try:
+        elias_ok, elias_detail = check_elias_strings(body)
+    except Exception as exc:
+        elias_ok, elias_detail = False, "internal error: %s" % exc
+    if not elias_ok:
+        merged = False
+        for idx, (name, detail) in enumerate(failures):
+            if name == "Chars":
+                failures[idx] = (name, detail + "; " + elias_detail)
+                merged = True
+                break
+        if not merged:
+            failures.append(("Chars", elias_detail))
     return failures
 
 

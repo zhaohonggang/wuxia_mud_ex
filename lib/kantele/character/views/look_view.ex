@@ -77,7 +77,7 @@ defmodule Kantele.Character.LookView do
         View.join(description, [~s({color foreground="white"}), feature.keyword, "{/color}"])
       end)
 
-    description = [room.description] ++ features ++ weather_descriptions(room)
+    description = [room.description] ++ features ++ weather_descriptions(room) ++ indoor_light_description(room)
 
     description
     |> Enum.reject(fn line -> line == "" end)
@@ -99,6 +99,31 @@ defmodule Kantele.Character.LookView do
   end
 
   defp weather_descriptions(_room), do: []
+
+  # P-E 室内光线：室内房按 room.light 决定可见性文案（LPC `room light` 等价）。
+  # 户外房由 weather_descriptions 处理；此处仅处理室内。light <= 0 或显式 :dark
+  # 视为漆黑，注入灰阶可见性提示。
+  defp indoor_light_description(%{flags: flags, light: light}) when is_list(flags) do
+    if "outdoors" in flags do
+      []
+    else
+      case dark_room?(light) do
+        true ->
+          [
+            "{color foreground=\"gray\"}这里漆黑一片，你几乎什么也看不见。{/color}"
+          ]
+
+        false ->
+          []
+      end
+    end
+  end
+
+  defp indoor_light_description(_room), do: []
+
+  defp dark_room?(light) when is_integer(light), do: light <= 0
+  defp dark_room?(light) when light in [:dark, "dark"], do: true
+  defp dark_room?(_), do: false
 
   defp weather_description() do
     Kantele.World.Weather.outdoor_description()

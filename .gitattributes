@@ -2,6 +2,9 @@
 # requires LF line endings. Force LF on checkout regardless of core.autocrlf.
 data/** text eol=lf
 *.ucl text eol=lf
+# The CRLF rejection test fixture must keep its CRLF bytes; the blanket
+# `*.ucl eol=lf` rule would normalize them away and silently break the test.
+test/fixtures/validate_ucl/50_bad_encoding_crlf.ucl -text
 *.help text eol=lf
 
 # Source must be LF too. Windows checkouts with core.autocrlf=true (the Git for

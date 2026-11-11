@@ -2128,7 +2128,8 @@ item_desc = {
       family = "华山派"
       msgs = {}
     }
-  }}
+  }
+  }
 
 # Generated from C:/files/git/mud/d/huashan/npc/doctor.c by LPCConverter
 # Zone: huashan
@@ -2224,7 +2225,8 @@ item_desc = {
     }
   chat_chance_combat = 80
   chat_msg_combat = ["powerup", "recover"]
-  }}
+  }
+  }
 
 # Generated from C:/files/git/mud/d/huashan/npc/girldizi.c by LPCConverter
 # Zone: huashan

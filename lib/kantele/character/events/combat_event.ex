@@ -820,6 +820,26 @@ defmodule Kantele.Character.CombatEvent do
         {character, conn}
       end
 
+    # P-D: 心魔战败 → 给予神魂引踪香、传送回子虚观、清理幻境运行态
+    {character, conn} =
+      if Map.get(reward, :name) == "心魔" do
+        character = grant_xinmo_reward(character)
+
+        # 让 teleport 基于「已带奖励」的角色，避免奖励被后续 conn.character 覆盖
+        conn = put_character(conn, character)
+
+        conn =
+          conn
+          |> Map.put(:private, Map.put(conn.private, :maze_room, nil))
+          |> Teleport.teleport("liuxi:zixu_guan")
+
+        # teleport 已把房间写入 update_character；作为后续 stats/save 的基准
+        character = conn.private.update_character || conn.character
+        {character, conn}
+      else
+        {character, conn}
+      end
+
     # 决斗胜负：若倒下的正是我 competitor，则这边是胜者，广播胜负
     conn = announce_duel_victory(conn, character, id, Map.get(reward, :name))
 
@@ -872,6 +892,23 @@ defmodule Kantele.Character.CombatEvent do
     |> finish_help(character, combat)
     |> render(CommandView, "kill-reward", %{exp: exp, potential: potential})
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  # P-D: 把神魂引踪香实例加入背包（物品必须已在世界缓存中，否则不发放）
+  defp grant_xinmo_reward(character) do
+    case Kantele.World.Items.get("clone_lib:yinzongxiang") do
+      {:ok, _item} ->
+        instance = %Kalevala.World.Item.Instance{
+          id: Kalevala.World.Item.Instance.generate_id(),
+          item_id: "clone_lib:yinzongxiang",
+          created_at: DateTime.utc_now()
+        }
+
+        %{character | inventory: [instance | character.inventory]}
+
+      _ ->
+        character
+    end
   end
 
   # 队伍击杀分享（Batch 6 team）：击杀者本队其余存活成员各获部分经验/潜能

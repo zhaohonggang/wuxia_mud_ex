@@ -5,7 +5,9 @@ defmodule Kantele.World.MirrorZixuTest do
 
   alias Kalevala.Event
   alias Kalevala.World.Item
+  alias Kantele.Character.CombatEvent
   alias Kantele.Character.GiveCommand
+  alias Kantele.Character.MazeEvent
   alias Kantele.Character.MirrorEvent
   alias Kantele.Character.NpcAskEvent
   alias Kantele.Character.PlayerMeta
@@ -66,10 +68,13 @@ defmodule Kantele.World.MirrorZixuTest do
       assert_receive %Event{topic: "mirror/give", data: %{item_id: "liuxi:item/mirror"}}
     end
 
-    test "ask 心魔幻境 → 占位回话，不发镜" do
-      conn = NpcAskEvent.call(build_conn(Zixu.build_zixu()), ask_event("心魔幻境"))
+    test "ask 心魔幻境 → 发 maze/enter 事件给玩家（真实入口），不发镜" do
+      NpcAskEvent.call(build_conn(Zixu.build_zixu()), ask_event("心魔幻境"))
 
-      assert conn != nil
+      assert_receive %Event{
+        topic: "maze/enter",
+        data: %{npc_name: "子虚道人", asker_id: "player-1"}
+      }
       refute_receive %Event{topic: "mirror/give"}, 100
     end
 
@@ -228,6 +233,106 @@ defmodule Kantele.World.MirrorZixuTest do
       updated = conn.private.update_character || conn.character
       assert updated.meta.stats.mirror_count == 100
       assert output_text(conn) =~ "第100个宝镜任务"
+    end
+  end
+
+  describe "心魔幻境入口（MazeEvent.enter，P-D）" do
+    setup do
+      Items.put("liuxi:item/mirror", %Item{
+        id: "liuxi:item/mirror",
+        name: "乾坤宝镜 Qiankun Baojing",
+        verbs: ["get", "drop"],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{unit: "面", value: 0, no_sell: 1, no_put: 1}
+      })
+
+      :ok
+    end
+
+    defp maze_event(asker_id),
+      do: %Event{topic: "maze/enter", data: %{npc_name: "子虚道人", asker_id: asker_id}}
+
+    defp mirror_instance do
+      %Item.Instance{
+        id: "inst-m",
+        item_id: "liuxi:item/mirror",
+        created_at: DateTime.utc_now()
+      }
+    end
+
+    test "未持宝镜 → 拒绝进入，不传送，不置位 seam" do
+      conn = MazeEvent.enter(build_conn(player()), maze_event("player-1"))
+
+      refute Map.get(conn.private, :maze_room)
+      updated = conn.private.update_character
+      assert is_nil(updated) or updated.room_id != "liuxi:maze_room"
+      assert output_text(conn) =~ "心魔幻境"
+    end
+
+    test "mirror_count 已达标（完成过任务）同样可进入" do
+      p = player()
+      char = %{p | meta: %{p.meta | stats: Map.put(p.meta.stats, :mirror_count, 1)}}
+      conn = MazeEvent.enter(build_conn(char), maze_event("player-1"))
+
+      assert Map.get(conn.private, :maze_room) == "liuxi:maze_room"
+      assert conn.private.update_character.room_id == "liuxi:maze_room"
+    end
+
+    test "已持宝镜 → 传送进镜像房间 + 置位 seam" do
+      conn = MazeEvent.enter(build_conn(player([mirror_instance()])), maze_event("player-1"))
+
+      assert Map.get(conn.private, :maze_room) == "liuxi:maze_room"
+      assert conn.private.update_character.room_id == "liuxi:maze_room"
+      assert output_text(conn) =~ "心魔幻境"
+    end
+
+    test "别人触发的 maze/enter 不处理（asker_id 不符）" do
+      conn = MazeEvent.enter(build_conn(player([mirror_instance()])), maze_event("other-player"))
+
+      refute Map.get(conn.private, :maze_room)
+    end
+  end
+
+  describe "心魔战败结算（CombatEvent.enemy_died name=心魔，P-D）" do
+    setup do
+      Items.put("clone_lib:yinzongxiang", %Item{
+        id: "clone_lib:yinzongxiang",
+        name: "神魂引踪香",
+        verbs: [],
+        callback_module: Kantele.World.Item,
+        meta: %Meta{unit: "根"}
+      })
+
+      :ok
+    end
+
+    test "击败心魔 → 获神魂引踪香 + 传送回子虚观 + 清理 seam" do
+      conn = build_conn(player())
+      # 模拟玩家已身处幻境
+      conn = Map.put(conn, :private, Map.put(conn.private, :maze_room, "liuxi:maze_room"))
+
+      conn =
+        CombatEvent.enemy_died(conn, %{
+          topic: "combat/enemy-died",
+          data: %{id: "maze_xinmo_player-1", exp: 0, potential: 0, name: "心魔"}
+        })
+
+      updated = conn.private.update_character || conn.character
+      assert Enum.any?(updated.inventory, &(&1.item_id == "clone_lib:yinzongxiang"))
+      assert updated.room_id == "liuxi:zixu_guan"
+      refute Map.get(conn.private, :maze_room)
+    end
+
+    test "普通击杀不触发心魔逻辑（无奖励、无传送）" do
+      conn =
+        CombatEvent.enemy_died(build_conn(player()), %{
+          topic: "combat/enemy-died",
+          data: %{id: "x", exp: 0, potential: 0, name: "野猪"}
+        })
+
+      updated = conn.private.update_character || conn.character
+      refute Enum.any?(updated.inventory, &(&1.item_id == "clone_lib:yinzongxiang"))
+      refute Map.get(conn.private, :maze_room)
     end
   end
 

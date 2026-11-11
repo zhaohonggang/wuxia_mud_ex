@@ -71,12 +71,16 @@ defmodule Kantele.World.Weather do
   @doc "当前时辰语（time_msg）"
   def time_msg(server \\ __MODULE__), do: GenServer.call(server, :time_msg)
 
+  @doc """
+  纯函数：给定时辰（0-23）返回光照。
+  hour 6..17 为白昼 `:light`，其余（含边界 5/18）为 `:dark`。
+  """
+  def light_for_hour(hour) when hour in 6..17, do: :light
+  def light_for_hour(_hour), do: :dark
+
   @doc "当前光照（:light / :dark，用于 v2 光线功能与文案）"
   def light(server \\ __MODULE__) do
-    case GenServer.call(server, :phase_hour) do
-      hour when hour in 6..17 -> :light
-      _ -> :dark
-    end
+    GenServer.call(server, :phase_hour) |> light_for_hour()
   end
 
   @doc "立即推进一档（test/运维用）；返回 :ok"

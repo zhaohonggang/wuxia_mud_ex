@@ -111,6 +111,10 @@ defmodule Kantele.Character.Events do
       event("mirror/give", :give_result)
     end
 
+    module(MazeEvent) do
+      event("maze/enter", :enter)
+    end
+
     module(NpcScriptEvent) do
       event("npc/give", :give_result)
       event("npc/learn", :learn_result)

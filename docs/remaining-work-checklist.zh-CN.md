@@ -212,7 +212,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 | prepare valid_combine | `prepare_command.ex:108-109` | 组合逻辑已实装（`SkillCombos.valid_combine?/2`，当前仅 taiji-quan 声明可组合技能） |
 | closed | `closed_command.ex` / `closed.ex` / `closed_step_event.ex` | ✅ 已真化（2026-11-11）：`Closed` 纯逻辑 + `closed_command.ex` 起链/中途出关返还一半已耗潜能 + `closed_step_event.ex` 心跳（潜能耗尽/濒死/被打断收尾），`events.ex` 注册 `character/closed_step`、`commands.ex` 路由 `run_bare + text(:rest)`；`closed_command_test.exs` 19 例全绿，0 回归 |
 | scheme 自动执行 | `scheme_command.ex` | ✅ **已完成（B5 Phase 2，2026-11-09）**：`start` 全门控 + `scheme_step_event` 心跳已真化 |
-| zixu 心魔幻境 | `world/mirror_daemon/zixu.ex:6,152-156` | 「尚在祭炼之中」占位 |
+| zixu 心魔幻境 | `world/mirror_daemon/zixu.ex` / `character/events/maze_event.ex` / `character/events/combat_event.ex` | ✅ 已真化（P-D，2026-11-11）：`Zixu.respond_to_ask/3` 的 `:ask_maze` 由占位改为发 `maze/enter` 给玩家侧 `MazeEvent.enter/2`（门控：背包有 `liuxi:item/mirror` 或 `mirror_count>=1`，否则拒绝进入）；进入后置位 `conn.private[:maze_room]` seam、传送 `liuxi:maze_room`、best-effort 生成心魔 NPC（`Zixu.build_xinmo/2` + `start_xinmo/2`，仅世界已加载时）；击败心魔由 `CombatEvent.enemy_died/2` 按 `name=="心魔"` 发放神魂引踪香（`clone_lib:yinzongxiang`）+ 传送回 `liuxi:zixu_guan` + 清理 seam；`events.ex` 注册 `maze/enter`；`liuxi.ucl` 新增 `rooms "maze_room"`（可战斗）。`mirror_zixu_test.exs` 扩展 11 例（门控/进入/击败/奖励/返回）+ 原 13 例，共 24/0；`mirror_zixu_spawn_test.exs` 11/0；combat `flow_test.exs` 14/0，0 回归 |
 | uptime | `uptime_command.ex` | ✅ 已真化（2026-11-11）：`uptime_text/0` 改用 `:erlang.statistics(:wall_clock)` 取 beam 启动至今秒数；`format_uptime/1` 经 `ChineseNumber.to_chinese/1` 还原 LPC `chinese_number` 中文时长（天/时/分 >0 才输出、秒始终输出）；`uptime_command_test.exs` 15 例全绿，0 回归 |
 
 ### B4. 剩余 6 个占位命令依赖的后端子系统（待建，尚未作为独立工作项登记）
@@ -255,7 +255,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 
 | 项 | 来源 | 说明 | 状态 |
 |----|------|------|------|
-| Q2 v2：疾病/光线/雪原封路 | `MIGRATION_PLAN.md:754` | event_noon 疾病、room light、季节封路 = stretch | 疾病/雪原封路：✅ 已完成（2026-11-11，Phase 1 全部三项）：`illness.ex` 五族 daemon + `season_event.ex` 正午发病 + `snow_region.ex`/`snow_region_event.ex` 雪原寒冷，测试 91 例全绿，全量 suite 0 回归；光线：`Weather.light/0` 已就绪（hours 6–17 为 `:light`），房间光照应用待接 |
+| Q2 v2：疾病/光线/雪原封路 | `MIGRATION_PLAN.md:754` | event_noon 疾病、room light、季节封路 = stretch | 疾病/雪原封路：✅ 已完成（2026-11-11，Phase 1 全部三项）：`illness.ex` 五族 daemon + `season_event.ex` 正午发病 + `snow_region.ex`/`snow_region_event.ex` 雪原寒冷，测试 91 例全绿，全量 suite 0 回归；光线：✅ 已完成（P-E，2026-11-11）：户外房 `look` 注入 `Weather.outdoor_description/0`（Q2-T3 既有）+ 室内房 `Room.light` 字段（默认 1，<=0/`:dark` 漆黑）经 `look_view.ex` `indoor_light_description/1` 注入可见性文案；`Weather.light_for_hour/1` 纯函数边界 6/17 白昼、5/18 黑夜；`look_weather_test.exs` 6/0、`weather_test.exs` 8/0 |
 | Q1-T3：真·clone 动态目标 | `MIGRATION_PLAN.md:733-737` | 运行时 clone 需 Chei/Pawning | ✅ 已完成（2026-11-11）：Phase 2 `object_clone.ex` + `clone_command.ex`，`commands.ex` 路由更新，测试 27/0 全绿，全量 suite 0 回归 |
 | Q1-T3：search/explore 入位校验 | 同上 | 依赖房间人员查询 + 入位判断 | Q2-T0 已落地（`Room.present/1`/`living/1`/`snapshot/1`），入位校验已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化） |
 | Q1-T3：count>1 逐件交付 | 同上 | `Supply.generate/1` count=3..8、`Deliver.generate/1` count=5..10、`start_room` 入位门控、`turnin_request/2` 逐件扣减与部分交付提示、`scale_rewards_by_count` 按件比例奖励、`task_meta` 新增 `:count`/`:start_room` | ✅ 已完成（2026-11-11，Phase 3/T4）：`quest_turnin_multi_test.exs` 6 例 + `quest_daemon_test.exs` generator 断言，全绿；全量 suite 7601 tests / 27 failures（bcrypt 基线，0 回归） |

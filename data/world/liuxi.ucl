@@ -2105,3 +2105,28 @@ characters "mafu" {
     }
   }
 }
+
+# 心魔幻境（P-D）：子虚道人问询「心魔幻境」触发的单人试炼场，允许战斗
+rooms "maze_room" {
+  name = "心魔幻境 Heart Demon Realm"
+  description = "镜中世界扭曲而寂静，四周没有出口，只有你与那尊由执念凝成的黑影对峙。A silent, distorted mirror-world with no exits — only you and the shadow born of your own obsessions."
+
+  # 不设 no_fight：心魔需在此被击败
+  x = -1
+  y = 3
+  z = 0
+}
+
+# 心魔幻境无常规出口，胜负皆由 CombatEvent/Teleport 经 room_id 直接传送。
+room_exits "maze_room" {
+  room_id = rooms.maze_room.id
+}
+
+# 子虚观 / 阴间为事件/传送到达的封闭场景，无步行出口（与既有 rooms 块一致，仅补完整性）。
+room_exits "zixu_guan" {
+  room_id = rooms.zixu_guan.id
+}
+
+room_exits "nether" {
+  room_id = rooms.nether.id
+}

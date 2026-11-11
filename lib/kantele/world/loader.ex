@@ -336,6 +336,7 @@ defmodule Kantele.World.Loader do
       y: room_data.y,
       z: room_data.z,
       flags: parse_flags(Map.get(room_data, :flags)),
+      light: Map.get(room_data, :light, 1),
       features: parse_features(room_data, zone_data),
       item_desc:
         Map.merge(

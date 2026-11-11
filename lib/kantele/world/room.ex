@@ -58,7 +58,12 @@ defmodule Kantele.World.Room do
     # 注意：冻结的转换器（lpc_converter.ex L1286-1289）只存了 handler、丢了 verb，
     # 故 verb→handler 映射需由 backfill 脚本从 .c 回源重抽（见 D24）。
     # 本字段只读取、不产生任何行为变化（P7）；消费端（对象级 verb 分发路由）见 P5-1b。
-    actions: %{}
+    actions: %{},
+
+    # P-E 光线：房间自身光照（LPC `room light` 等价）。
+    # 默认 1（明亮）；设为 <= 0 或 :dark 表示该房漆黑（室内房 look 注入可见性文案）。
+    # 户外房的光照由 Weather 决定，不读此字段。
+    light: 1
   ]
 
   @doc """
