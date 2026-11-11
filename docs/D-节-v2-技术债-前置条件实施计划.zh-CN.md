@@ -200,7 +200,7 @@
 - `lib/kantele/character/commands/wiz_arch.ex` — 新增 `system_action/4` 共享 helper（解析延迟秒、调度、确认文案）。
 - `lib/kantele/character/commands/call_command.ex` — `call <对象> <函数> [参数...]`：先查 W3ObjectEngine，未命中按引用名/路径解析为 Elixir 模块或经 `ObjectClone.clone_by_path/3` 验证存在；`Module.apply` 调用，结果/错误/属主权限分级回执。
 - `lib/kantele/character/commands/reboot_command.ex` / `shutdown_command.ex` — 经 `WizArch.system_action/4` 调度，dry-run 确认文案。
-- `possess`/`restore`：本阶段真化（port-appropriate，不照搬 LPC）：`Possession`（公共 ETS，附身关系记录 + 标记式广播）、`ObjectRestore`（`Records.load` 存档信息）+ 跨进程 `character/restore` 事件经 `RestoreEvent` 重载；`build` 保留 `not_modeled`（用户确认不做，`@moduledoc` 注明预留 `Builder`）。
+- `possess`/`restore`：本阶段真化（port-appropriate，不照搬 LPC）：`Possession`（公共 ETS，附身关系记录 + 标记式广播）、`ObjectRestore`（`Records.load` 存档信息）+ 跨进程 `character/restore` 事件经 `RestoreEvent` 重载；`build` 已定案不做（用户确认，代码保留 `not_modeled` 清晰回执，永不再实现，`@moduledoc` 注明预留 `Builder`）。
 - 测试：`w3_object_engine_test.exs`（13 例：ensure 幂等 / 注册查询 / 销毁 / 列表 / read_state / schedule_system dry-run）+ `wiz_arch_test.exs`（将 call/reboot/shutdown 移出 `@deferred`，新增真实行为测试，37 例全绿）+ `command_probe_test.exs`（白名单 `%{}` 0 误报）。
 - 全量 `mix test --seed 831693`：0 新增失败（27 bcrypt 基线）。
 
