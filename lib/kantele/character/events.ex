@@ -339,6 +339,10 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("condition/down", :run)
     end
 
+    module(SnowRegionEvent) do
+      event("snow/cold", :cold)
+    end
+
     module(FleeEvent) do
       event("room/flee", :run)
     end

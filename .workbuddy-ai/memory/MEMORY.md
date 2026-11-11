@@ -39,4 +39,5 @@
   - Q1-T3 真·clone 动态目标：Deferred（Chei/Pawning，高成本）。
   - Q1-T3 search/explore 入位校验：Q2-T0 已落地，已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化，`Room.snapshot/1` 查玩家在场）。
   - Q1-T3 count>1 逐件交付：Deferred to T4。
+  - 详细前置条件计划见 `docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md`（Phase 1 季节/事件系统 → Phase 2 克隆/授权基础设施 → Phase 3/T4 count>1 逐件交付）。
 - A1/A2/A4：已清零（A1 转换器已落地并归档；A2 永远不做；A4 终测/分区搬运已验收完毕），不再作为 backlog 项。

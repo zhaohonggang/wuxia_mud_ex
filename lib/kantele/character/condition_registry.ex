@@ -25,6 +25,9 @@ defmodule Kantele.Character.ConditionRegistry do
     freezingbc freezing
   )
 
+  # 疾病五族（Q2 v2 疾病系统，对应 LPC kungfu/condition/ill_*.c）
+  @illness_family ~w(ill_kesou ill_zhongshu ill_shanghan ill_dongshang ill_fashao)
+
   @daemons Map.merge(
              %{
                "poison" => Kantele.Poison,
@@ -35,7 +38,10 @@ defmodule Kantele.Character.ConditionRegistry do
                "drunk" => Kantele.Drunk,
                "wuguan_job" => Kantele.WuguanJob
              },
-             Map.new(@poison_family, &{&1, Kantele.Poison})
+             Map.merge(
+               Map.new(@poison_family, &{&1, Kantele.Poison}),
+               Map.new(@illness_family, &{&1, Kantele.Illness})
+             )
            )
 
   @doc "给条件名返回 `{:ok, mod} | :error`（先查运行时增量，再查静态表）"

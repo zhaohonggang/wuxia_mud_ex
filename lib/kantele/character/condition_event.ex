@@ -76,7 +76,16 @@ defmodule Kantele.Character.ConditionEvent do
     info = Map.get(event.data, :info) || %{}
 
     if is_binary(name) and name != "" do
-      grant(conn, name, info)
+      # 「染病」初告（如季节发病事件的 announce）只渲染一次，不进条件 info
+      # （避免每跳发作文案重复）。无 announce 时交由 grant 正常落条件。
+      {announce, info} = Map.pop(info, "announce")
+      conn = grant(conn, name, info)
+
+      if is_binary(announce) and announce != "" do
+        render(conn, CommandView, "text", %{text: announce})
+      else
+        conn
+      end
     else
       conn
     end

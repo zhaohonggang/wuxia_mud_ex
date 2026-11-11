@@ -338,7 +338,10 @@ defmodule Kantele.World.Room do
             # LPC `set("resource/water", 1)`：可取水/灌水的地点（`fill` 命令的
             # 前置条件，对应 `cmds/std/fill.c` 的 `environment(me)->query("resource/water")`）。
             # 与 sleep_room/hotel 同路：房间 flags 成员判定 → attrs 布尔。
-            "water" => "water" in flags
+            "water" => "water" in flags,
+            # LPC 户外房间标记：正午发病事件（season_event）只在户外房间触发，
+            # 与 look_view.ex 的 `"outdoors" in flags` 判定同源。
+            "outdoors" => "outdoors" in flags
           }
         }
 

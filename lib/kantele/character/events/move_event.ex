@@ -5,6 +5,7 @@ defmodule Kantele.Character.MoveEvent do
 
   alias Kantele.Character.CommandView
   alias Kantele.Character.MoveView
+  alias Kantele.World.SnowRegion
 
   def commit(conn, %{data: event}) do
     character = conn.character
@@ -27,6 +28,14 @@ defmodule Kantele.Character.MoveEvent do
       |> unsubscribe("rooms:#{old_room}", [], &unsubscribe_error/2)
       |> subscribe("rooms:#{event.to}", [], &subscribe_error/2)
       |> event("room/look")
+
+    # 出关寒冷（LPC gwxuedi.h valid_leave）：冬月离开关外房间以 3 倍系数结算寒冷伤害。
+    # 经 snow/cold 事件落到玩家自身进程，由 SnowRegionEvent.cold 统一处理扣气/文案/冻伤。
+    conn =
+      case SnowRegion.cold_event_for(conn.character, old_room, 3) do
+        %Kalevala.Event{} = cold_event -> send(self(), cold_event)
+        _ -> conn
+      end
 
     conn
   end
