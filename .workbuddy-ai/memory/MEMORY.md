@@ -39,10 +39,12 @@
 - `192d883e`：test: add tests for pingsi teleport service handler (#114) — 15 例全绿，覆盖注册/asker_id 守门/family 门禁/startroom 门禁/缺失降级/全流程广播+Teleport 意图+成功回话，vision_name/vision 回落。
 - `1bd36b54`：test: add 苗人凤 item_grant inquiry key tests (#113) — 59 行，覆盖腾龙剑/剑谱上册/上册/剑谱下册/下册 5 个 give_item 门控字段 + 别名一致性；18 例全绿，0 回归。
 - `3d4d4fc0`：test: add UCL validation for dynamic spawn lingshezhang/shezhang (#119) — 4 例，覆盖 lingshezhang/shezhang 物品 convert handler + lingshe/snake 角色 bian 动作；19 例动态生成测试全绿，0 回归。
+- `c1e52c53`：Phase 1 疾病/雪原事件 + Q1-T3 clone/count 逐件交付 + B2 W3 计划文档（21 文件，+1838/−187）。
+- `60150343`：feat: B2 W3 对象引擎 MVP —— `W3ObjectEngine` 核心 + `call`/`reboot`/`shutdown` 真化（15 文件，+741/−36）；全量 7626 tests / 27 failures（bcrypt 基线，0 回归）。
 
 ## B2 — 12 个 W3 arch 命令（全部已落地：8 已建模 + call/reboot/shutdown 真化 + 3 后续 deferred）
 - 已真化（可建模 8）：`grant`、`throw`、`purge`、`changeuser`、`register`、`smash`、`var`、`setsk`。
-- W3 对象引擎 MVP（2026-11-11 已完成，尚未 commit）：`call`/`reboot`/`shutdown` 经 `Kantele.World.W3ObjectEngine`（GenServer + 公共 ETS `w3_objects`）+ `WizArch.system_action/4` 实现；reboot/shutdown 默认 dry-run（`config :ex_venture, W3ObjectEngine, allow_system_actions: true` 才真实停机/重启）。
+- W3 对象引擎 MVP（2026-11-11 已完成并 push `60150343`）：`call`/`reboot`/`shutdown` 经 `Kantele.World.W3ObjectEngine`（GenServer + 公共 ETS `w3_objects`）+ `WizArch.system_action/4` 实现；reboot/shutdown 默认 dry-run（`config :ex_venture, W3ObjectEngine, allow_system_actions: true` 才真实停机/重启）。
 - 后续阶段（保留 `not_modeled`）：`possess`（预留 `Kantele.World.Possession`）、`restore`（预留 `Kantele.World.ObjectRestore`）、`build`（预留 `Kantele.World.Builder`）。
 - 文档：`docs/B2-W3-对象引擎实施计划.zh-CN.md`（计划）、`docs/D-节-v2-技术债-前置条件实施计划.zh-CN.md` §Phase 4（已标记 ✅）。
 - `wiz_arch_test.exs` `@deferred`：`call`/`reboot`/`shutdown` 已移出，`possess`/`restore`/`build` 保留；`command_probe` 白名单 `%{}`，新命令不含占位标记。
