@@ -591,7 +591,10 @@ defmodule Kantele.World.Loader do
         engage: parse_engage(Map.get(character_data, :engage)),
         carry: parse_carry(Map.get(character_data, :carry)),
         chat_msg_combat: parse_chat_msg_combat(Map.get(character_data, :chat_msg_combat)),
-        chat_chance_combat: Map.get(character_data, :chat_chance_combat) || 0
+        chat_chance_combat: Map.get(character_data, :chat_chance_combat) || 0,
+        power: Map.get(character_data, :power) || 0,
+        drop_a: parse_item_ref(Map.get(character_data, :drop_a)),
+        drop_b: parse_item_ref(Map.get(character_data, :drop_b))
       }
     }
 
@@ -627,6 +630,11 @@ defmodule Kantele.World.Loader do
   end
 
   def parse_carry(_), do: []
+
+  # LPC QUARRY `set("drop_a", __DIR__"item/x")`：单个物品引用 { id = "xxx" }。
+  defp parse_item_ref(nil), do: nil
+  defp parse_item_ref(%{id: id}) when is_binary(id), do: id
+  defp parse_item_ref(_), do: nil
 
   # LPC `set("chat_msg_combat", (...))` → 字符串列表（转换器已过滤 closure，
   # 此处只做容错：非 list 返回 []）。

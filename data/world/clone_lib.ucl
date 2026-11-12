@@ -25,6 +25,160 @@ zones "clone_lib" {
       }
     }
 
+# Source: C:/files/git/mud/clone/quarry/item/turou.c
+# Zone: clone_lib
+
+    items "turou" {
+      name = "兔肉"
+      description = "这是一块散发着腥臊臭的兔肉。"
+    verbs = [
+      "get",
+      "drop",
+      "eat"
+    ]
+
+      meta = {
+        value = 30
+        weight = 50
+        unit = "块"
+        food = 10
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/lurou.c
+# Zone: clone_lib
+
+    items "lurou" {
+      name = "鹿肉"
+      description = "这是一块鲜嫩的鹿肉，气味清香。"
+    verbs = [
+      "get",
+      "drop",
+      "eat"
+    ]
+
+      meta = {
+        value = 50
+        weight = 80
+        unit = "块"
+        food = 18
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/hupi.c
+# Zone: clone_lib
+
+    items "hupi" {
+      name = "虎皮"
+      description = "成年猛虎的皮，革质坚韧，皮毛柔软光滑之极。"
+    verbs = [
+      "get",
+      "drop"
+    ]
+
+      meta = {
+        value = 8000
+        weight = 500
+        unit = "张"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/hurou.c
+# Zone: clone_lib
+
+    items "hurou" {
+      name = "虎肉"
+      description = "这是一块猛虎的肉，传说食之可壮筋骨。"
+    verbs = [
+      "get",
+      "drop",
+      "eat"
+    ]
+
+      meta = {
+        value = 500
+        weight = 300
+        unit = "块"
+        food = 25
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/gourou.c
+# Zone: clone_lib
+
+    items "gourou" {
+      name = "狗肉"
+      description = "这是一块新鲜的狗肉，散发着一股膻味。"
+    verbs = [
+      "get",
+      "drop",
+      "eat"
+    ]
+
+      meta = {
+        value = 15
+        weight = 80
+        unit = "块"
+        food = 12
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/yangrou.c
+# Zone: clone_lib
+
+    items "yangrou" {
+      name = "羊肉"
+      description = "这是一块鲜嫩的羊肉。"
+    verbs = [
+      "get",
+      "drop",
+      "eat"
+    ]
+
+      meta = {
+        value = 20
+        weight = 100
+        unit = "块"
+        food = 15
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/baopi.c
+# Zone: clone_lib
+
+    items "baopi" {
+      name = "豹皮"
+      description = "一张豹皮，毛色鲜艳，质地坚韧。"
+    verbs = [
+      "get",
+      "drop"
+    ]
+
+      meta = {
+        value = 1500
+        weight = 300
+        unit = "张"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/quarry/item/xiongpi.c
+# Zone: clone_lib
+
+    items "xiongpi" {
+      name = "熊皮"
+      description = "一张熊皮，厚实耐寒，可御严寒。"
+    verbs = [
+      "get",
+      "drop"
+    ]
+
+      meta = {
+        value = 2000
+        weight = 800
+        unit = "张"
+      }
+    }
+
 # Source: C:/files/git/mud/clone/food/baozi.c
 # Zone: clone_lib
 
@@ -21531,6 +21685,9 @@ chats = [
     max_qi = 500
     str = 18
   }
+
+  power = 10
+  drop_a = { id = "gourou" }
     }
 
 # LPC: C:/files/git/mud/clone/quarry/gou2.c
@@ -21677,6 +21834,10 @@ chats = [
     max_qi = 3000
     str = 35
   }
+
+  power = 40
+  drop_a = { id = "hupi" }
+  drop_b = { id = "hurou" }
     }
 
 # LPC: C:/files/git/mud/clone/quarry/laohu2.c
@@ -21710,6 +21871,9 @@ chats = [
     max_qi = 800
     str = 20
   }
+
+  power = 8
+  drop_a = { id = "lurou" }
     }
 
 # LPC: C:/files/git/mud/clone/quarry/niao.c
@@ -21774,6 +21938,9 @@ chats = [
     max_qi = 200
     str = 5
   }
+
+  power = 5
+  drop_a = { id = "turou" }
     }
 
 # LPC: C:/files/git/mud/clone/quarry/xiong.c
@@ -21792,6 +21959,9 @@ chats = [
     max_qi = 5000
     str = 50
   }
+
+  power = 30
+  drop_a = { id = "xiongpi" }
     }
 
 # LPC: C:/files/git/mud/clone/quarry/yang.c
@@ -21808,6 +21978,9 @@ chats = [
     max_qi = 400
     str = 8
   }
+
+  power = 3
+  drop_a = { id = "yangrou" }
     }
 
 # LPC: C:/files/git/mud/clone/quarry/yang2.c

@@ -149,6 +149,18 @@ defmodule Kantele.Character.Commands do
     parse("逃跑", :run)
   end
 
+  module(HuntCommand) do
+    parse("hunt", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+    parse("猎", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+    parse("打猎", :run, fn command ->
+      command |> spaces() |> word(:target)
+    end)
+  end
+
   module(WimpyCommand) do
     parse("wimpy", :run, fn command ->
       command |> spaces() |> text(:arg)

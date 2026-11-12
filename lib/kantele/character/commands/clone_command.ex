@@ -21,6 +21,8 @@ defmodule Kantele.Character.CloneCommand do
   alias Kantele.Combat.Messages
   alias Kantele.World.ObjectClone
 
+  require Logger
+
   def run(conn, %{"rest" => rest}) do
     character = conn.character
 
@@ -121,9 +123,45 @@ defmodule Kantele.Character.CloneCommand do
 
         put_character(conn, updated_character)
 
-      %Kalevala.Character{} = _npc ->
-        # NPC 暂不放入房间（W3 对象系统未建模），仅返回提示
-        :ok
+      %Kalevala.Character{} = npc ->
+        # 将 NPC 放入克隆者所在房间（对应 LPC `move(environment(actor))`）。
+        # 若全局世界基础设施未启动（如测试环境），降级为不放入，仅返回提示。
+        room_id = conn.character.room_id
+        zone_id = String.split(room_id, ":") |> hd()
+        sup_name = Kalevala.World.CharacterSupervisor.global_name(zone_id)
+
+        if :global.whereis_name(sup_name) do
+          npc = %{
+            npc
+            | room_id: room_id,
+              meta: Map.put(npc.meta || %{}, :zone_id, zone_id)
+          }
+
+          config = [
+            supervisor_name: sup_name,
+            communication_module: Kantele.Communication,
+            initial_controller: Kantele.Character.SpawnController,
+            quit_view: {Kantele.Character.QuitView, "disconnected"}
+          ]
+
+          result =
+            try do
+              Kalevala.World.start_character(npc, config)
+            catch
+              :exit, _reason ->
+                {:error, :supervisor_not_running}
+            end
+
+          case result do
+            {:ok, _pid} -> :ok
+            {:error, reason} ->
+              Logger.warn("clone NPC 放入房间失败: #{inspect(reason)}")
+              :ok
+          end
+        else
+          Logger.warn("clone NPC：区 #{zone_id} CharacterSupervisor 未运行，NPC 不进入房间")
+          :ok
+        end
     end
   end
 

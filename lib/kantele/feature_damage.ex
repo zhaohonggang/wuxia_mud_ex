@@ -645,12 +645,18 @@ defmodule Kantele.Feature.Damage do
   end
 
   defp make_corpse(character) do
-    # 生成尸体实例（留钩子给 World）
+    # 生成尸体实例，携带 NPC 的 drop_a/drop_b 掉落物品 id（供后续 loot 系统消费）
+    meta = character.meta || %{}
+    drop_items =
+      [Map.get(meta, :drop_a, nil), Map.get(meta, :drop_b, nil)]
+      |> Enum.reject(&is_nil/1)
+
     %{
       id: "corpse_#{character.id}_#{:rand.uniform(10000)}",
       name: "#{character.name}的尸体",
       owner_id: character.id,
-      room_id: character.room_id
+      room_id: character.room_id,
+      drop_items: drop_items
     }
   end
 

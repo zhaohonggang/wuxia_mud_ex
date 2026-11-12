@@ -369,7 +369,12 @@ defmodule Kantele.Character.NonPlayerMeta do
     {:ask_handler, nil},
     # quest_gift：NPC 向玩家提供的物品交换（%{obj: item_id, gongxian: cost}）。
     # 由 ask <npc> quest 触发，设置玩家 temp[:quest_gift] 以便后续 answer Y|N。
-    {:quest_gift, nil}
+    {:quest_gift, nil},
+    # LPC QUARRY 继承：`set("power", N)` 狩猎难度；`set("drop_a"/"drop_b", ...)` 击杀掉落。
+    # 由 loader.parse_character/4 解析，HuntCommand/make_corpse 消费。
+    {:power, 0},
+    {:drop_a, nil},
+    {:drop_b, nil}
   ]
 
   defimpl Kalevala.Meta.Trim do
