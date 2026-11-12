@@ -72,4 +72,44 @@ defmodule Kantele.Character.FamilyTest do
 
     assert fam.title == "传人"
   end
+
+  test "attempt_apprentice: 师父有门派且弟子无师父 -> willing" do
+    assert Family.attempt_apprentice(wudang(), %{}) ==
+             {:ok, %{willing?: true, master: "武当派", family: "武当派"}}
+  end
+
+  test "attempt_apprentice: 已是嫡传 -> :already" do
+    assert Family.attempt_apprentice(wudang(), wudang_disciple()) == {:error, :already}
+  end
+
+  test "attempt_apprentice: 弟子已属他派 -> :other_family" do
+    assert Family.attempt_apprentice(wudang(), emei()) == {:error, :other_family}
+  end
+
+  test "attempt_apprentice: 师父无门派 -> :no_family" do
+    assert Family.attempt_apprentice(%{}, emei()) == {:error, :no_family}
+  end
+
+  test "recognize_apprentice: 正常认可入门" do
+    {:ok, fam, info} =
+      Family.recognize_apprentice(wudang(), emei(), %{
+        master_id: "zhang sanfeng",
+        master_name: "张三丰",
+        born_family: "没有"
+      })
+
+    assert info.inherit_title == false
+    assert fam.name == "武当派"
+    assert fam.generation == 1
+    assert fam.master_id == "zhang sanfeng"
+    assert fam.title == "弟子"
+  end
+
+  test "recognize_apprentice: 已是嫡传 -> :already" do
+    assert Family.recognize_apprentice(wudang(), wudang_disciple()) == {:error, :already}
+  end
+
+  test "recognize_apprentice: 师父无门派 -> :no_family" do
+    assert Family.recognize_apprentice(%{}, emei()) == {:error, :no_family}
+  end
 end

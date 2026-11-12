@@ -74,6 +74,16 @@ UCL 约束：嵌套 map 空格分隔（无逗号）；字符串列表逗号+空�
 - Task #139 `drink_command` 容器液体消费端已实装（余量-1、房间广播、喝空提示、饮水度+30 封顶、醉酒累加、最后一口不挂醉度），19 例全绿。
 - Task #142 乞讨系统（`beg_command.ex` 丐帮门禁+`no_beg`/`no_fight` 闸门+`beg/attempt` 事件；`beg_credit_event.ex`/`beg_debit_event.ex` 跨进程结算），12 例全绿。
 
+## P5-7 学徒 / 门派（已完成并 push，2026-11-12）
+
+- `lib/kantele/character/family.ex`：新增 `attempt_apprentice/3` + `recognize_apprentice/3`。
+  - `attempt_apprentice(my_family, apprentice_family, opts \\ %{})`：拜师前置门控（师父有门派 / 弟子未嫡传 / 弟子未属他派），返回 `{:ok, %{willing?: true, master, family}}` 或 `{:error, :no_family|:already|:other_family}`。
+  - `recognize_apprentice(my_family, apprentice_family, opts \\ %{})`：师父正式认可入门，生成弟子家族 map（master_id/master_name/name/generation+1/enter_time/title），返回 `{:ok, new_family, %{class_propagate?: bool, inherit_title: bool}}` 或 `{:error, :no_family|:already}`。
+  - 底层复用现有 `has_family?/1`、`is_apprentice_of?/2`、`same_family?/2`、`do_recruit/3` 与 `assign_apprentice/3`，纯函数，不落盘副作用由宿主负责。
+- `test/kantele/character/family_test.exs`：新增 7 例（attempt willing/already/other_family/no_family；recognize normal/already/no_family），共 14 例 0 失败。
+- `mix compile` 无新增警告；`mix test --seed 831693` 家族测 14/0，0 回归。
+- 文档：`docs/data-world-comments-continuation-plan.zh-CN.md` P5-7 行由 `⬜ 未做` 改为 `✅ 已完成（Kantele.Character.Family）`。
+
 ## P5-6 门/容器统一框架（已完成并 push，2026-11-11）
 
 - `lib/kantele/world/door.ex`：`Kantele.World.Door` 统一门/容器框架。

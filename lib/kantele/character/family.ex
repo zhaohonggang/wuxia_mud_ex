@@ -69,6 +69,54 @@ defmodule Kantele.Character.Family do
     end
   end
 
+  @doc """
+  attempt_apprentice：弟子向师父发出拜师请求 (LPC: attempt_apprentice)
+
+  仅做前置门控，不改写家族 map：师父是否有门派、弟子是否已是其嫡传、
+  弟子是否已属他派。供宿主在写入 meta.family 前做「师父愿意收徒」判定。
+
+  返回 {:ok, %{willing?: true, master: name, family: name}} 或
+  {:error, :no_family|:already|:other_family}。
+  """
+  def attempt_apprentice(my_family, apprentice_family, opts \\ %{}) do
+    cond do
+      not has_family?(my_family) ->
+        {:error, :no_family}
+
+      is_apprentice_of?(my_family, apprentice_family) ->
+        {:error, :already}
+
+      has_family?(apprentice_family) and not same_family?(my_family, apprentice_family) ->
+        {:error, :other_family}
+
+      true ->
+        {:ok, %{willing?: true, master: name(my_family), family: name(my_family)}}
+    end
+  end
+
+  @doc """
+  recognize_apprentice：师父正式认可弟子入门 (LPC: recognize_apprentice)
+
+  生成弟子家族 map（master_id/master_name/name/generation+1/enter_time/title），
+  供宿主写入 meta.family。与 recruit_apprentice 同源但作为独立入口：
+  recruit_apprentice 侧「主动收录」，recognize_apprentice 侧「正式确认」。
+
+  返回 {:ok, new_family, %{class_propagate?: bool, inherit_title: bool}} 或
+  {:error, :no_family|:already}。
+  """
+  def recognize_apprentice(my_family, apprentice_family, opts \\ %{}) do
+    cond do
+      not has_family?(my_family) ->
+        {:error, :no_family}
+
+      is_apprentice_of?(my_family, apprentice_family) ->
+        {:error, :already}
+
+      true ->
+        do_recruit(my_family, apprentice_family, opts)
+    end
+  end
+
   @doc "门派名称比较（nil 安全）"
   def same_family?(a, b), do: name(a) == name(b)
 
