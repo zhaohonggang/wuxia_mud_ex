@@ -212,6 +212,14 @@ This ensures future passes can complete the conversion without re-reading LPC.
 5. **Pre-commit check**: Before committing modified tracked files, compare with `git show HEAD:<file>` — if the new version loses significant info or is noticeably smaller, **do not commit**; investigate or report to user
 6. Commit by sect/family (not per-skill): `git commit -m "Shaolin: implement damo-jian performs"`
 
+## Core Development Rules (必读，贯穿全程)
+
+| # | 规则 | 说明 |
+|---|------|------|
+| 1 | **修改 ex 前必编译** | 任何对 `lib/**/*.ex` 的修改，在提交前必须运行 `mix compile` 确保该 ex 文件能通过编译。不必运行完整回归测试，但编译必须通过。 |
+| 2 | **改动前先核实现有状态** | 开始任何改动前，都先核实一下现有状态（grep 代码、读文档、查 git log）。如果该功能已经做了，不要重新做，只更新相关文档和记忆，把它标记完成。 |
+| 3 | **改动后必更新文档与记忆** | 做完每一个改动，都要更新相关文档（如 `docs/*.md`、`AGENTS.md`）和记忆（`.workbuddy-ai/memory/` 日志与 MEMORY.md），并在文档中把该项标记完成，以免之后重新做。 |
+
 ## Docker Notes
 
 - **Dev image**: `Dockerfile.dev` (`hexpm/elixir:1.13.4-erlang-25.3.2.6-debian-trixie` + git/make/gcc/node/inotify-tools)
