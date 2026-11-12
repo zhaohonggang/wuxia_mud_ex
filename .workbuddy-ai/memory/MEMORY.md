@@ -31,7 +31,9 @@
 - `Path.join/3` 不存在，用 `Path.join([...])`；`File.rm/2` 不存在，用 `File.rm!/1`。
 - `match?/2` 不绑定变量；测试中用 `{:ok, %Struct{}} = expr` 直接模式匹配。
 
-## 已完成并 push 到 origin/kalevala（截至 2026-11-10）
+## 已完成并 push 到 origin/kalevala（截至 2026-11-12）
+
+- `af75dfdd`：P5-2 战斗回调 `engage` 回填（94 个 characters 块 / 25 个 zone 文件，`validate_ucl.py` 全绿，CRLF→LF 已修复）
 - `e20116fe`：`prepare` 拳术组合真化（`SkillCombos.valid_combine?/2` + `Stats.mapped/2` + `stats.prepared[type]`），`skill_combos_test.exs` 10 例，`prepare_command_test.exs` 组合路径，文档同步，`extract_valid_combine.py` 改 INFO。
 - 全量：7477 tests / 27 failures（全部 bcrypt 环境性，0 回归）。
 - 此前已合并推送：R5 动态招式表；A3 f1 Diff-stop；Task #302-317 + B1 stub 批次1-2；F4 @static 白名单；valid_learn 全量 + 长尾；E4 套件清理（105→27）；E5 W3 14 命令显式化；B1 `suicide`；C `brothers` 跨角色同步；饥饿/口渴（食物+饮水）；Phase 2-8（`scheme`、S7/E2 转世落盘、S8/E3 戒律 `guilty`、S1 ask/answer、S2 `pkd`、S4 `vote`、S6 生物 `clone`）。
