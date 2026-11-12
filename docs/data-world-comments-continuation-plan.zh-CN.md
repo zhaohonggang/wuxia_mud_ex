@@ -376,9 +376,9 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | `no_steal` | 偷窃命令前置判定 | 中（**新拦截**） | ✅ `524efcff`（P3-b，实际范围扩为 steal 三 flag + search no_search 共 4 处 KeyError 修复） |
 | `no_beg` | 乞讨命令前置判定 | 中（**新拦截**） | ⬜（`beg_command.ex` 是「暂未开放」桩，无真实消费端 → 等 P5 乞讨系统） |
 | `sleep_room` / `no_sleep_room` | `sleep_command.ex`（`room.attrs["sleep_room"]`） | 低 | ✅（consumer 已存在，`room.ex` L266-267 把 flags→attrs；B1 数据即生效，无需接线） |
-| `liquid` / `max_liquid` | 倒/喝命令 | 中 | ⬜（`max_liquid` 数据已回填 B8，但倒/喝命令未接线 → 等 P5 容器/酒水系统） |
+| `liquid` / `max_liquid` | 倒/喝命令 | 中 | ✅ 已完成（`drink_command.ex` `drink_container`/`consume_liquid` 读 `Liquid.state`+`max_liquid`/`remaining`；`fill_command.ex` 第84行 `liquid.max || liquid.remaining`→`max_liquid`；数据已回填 B8） |
 | `can_make` / `not_make` / `power_point` / `item_origin` | 打造命令 | 中 | ⬜（数据已回填 B9，但打造系统未建 → 等 P5 打造子系统） |
-| `chat_msg_combat` / `chat_chance_combat` | NPC 战斗心跳 | 低 | ⬜（数据已回填 B6，但 NPC 战斗闲聊未接线 → 等 P5 NPC AI 聊天子系统） |
+| `chat_msg_combat` / `chat_chance_combat` | NPC 战斗心跳 | 低 | ✅ 已完成（`combat_event.ex` `maybe_combat_chat/3` 读 `chat_chance_combat`/`chat_msg_combat`，心跳进入战斗且未忙乱时按概率随机挑一句发房间；数据已回填 B6） |
 
 **装备文案 5 件套已完成（P3-a，`c5c3c325`）**：新起 `VisionEvent`/`VisionView`
 落地 LPC `message_vision` 语义（`rooms:` 频道 + 事件类型 `"vision"`；`{npc}`
