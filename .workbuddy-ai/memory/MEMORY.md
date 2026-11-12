@@ -98,6 +98,18 @@ UCL 约束：嵌套 map 空格分隔（无逗号）；字符串列表逗号+空�
 - `mix compile` exit 0，无警告；`mix test --seed 831693` 门测 20/0，0 回归。
 - 文档：`docs/data-world-comments-continuation-plan.zh-CN.md` P5-6 行由 `⬜ 未做` 改为 `✅ 已完成（Kantele.World.Door 统一框架）`。
 
+## P5-9 一次性场景（接线验证完成，2026-11-12）
+
+- `city:bet` + `changan:duchang` 复用 `Kantele.World.RoomActions.City.Bet`（骰局状态 `state["casino"]` 按 room_id 隔离）；`city:furong/meigui/mudan` 复用 `Kantele.World.RoomActions.Banquet`（`state["banquet"]`）；`city:qiyuan2/3/4` 复用 `Kantele.World.RoomActions.City.Qiyuan`（`state["qiyuan"]` + `Kantele.World.Weiqi` 规则）。
+- 全部已注册 `lib/kantele/world/room_action_handlers.ex`，经 `Kantele.World.RoomActionDispatcher` 分发（`command_controller.ex`：`RoomActionDispatcher` → `NpcActionDispatcher` → `ItemActionDispatcher` → `RelayEmoteDispatcher` → `Commands.call`），对全局命令零影响。
+- 测试：`room_actions_city_bet_test.exs` + `room_actions_banquet_test.exs` + `room_actions_city_qiyuan_test.exs` + `weiqi_test.exs` = 113 例 0 失败，0 回归。
+
+## P5-8 通信中继 / 载具（接线验证完成，2026-11-12）
+
+- `relay_emote_dispatcher.ex` + `npc_actions/relay_emote.ex`：社交动词（kick/hug/kiss/mo/18mo/nocloth/beg）指向登记 NPC 时拦截并回应；`config/1` 登记桃根仙（:tao1）/桃干仙等（:tao）/劳德诺（:lao_denuo）。已接入 `command_controller.ex`。
+- `vehicle.ex` / `vehicle_trigger.ex`：`on_board` 四步定时载具（check_trigger→on_board→arrive→close_passage），覆盖 heimuya up2/up3 吊篮 + guiyun taihu/matou 渡船；`Vehicle.Trigger` 已注册 `room_action_handlers.ex`。
+- 测试：`npc_actions/relay_emote_test.exs` + `room_actions_vehicle_test.exs` = 32 例 0 失败，0 回归。
+
 ## 剩余 backlog
 - D 节 v2 技术债：
   - Q2 v2 疾病/雪原封路：✅ 已完成（2026-11-11，Phase 1 全部三项），`illness.ex` 五族 daemon + `season_event.ex` 正午发病 + `snow_region.ex`/`snow_region_event.ex` 雪原寒冷，测试 91 例全绿，全量 suite 0 回归。
