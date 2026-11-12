@@ -74,6 +74,20 @@ UCL 约束：嵌套 map 空格分隔（无逗号）；字符串列表逗号+空�
 - Task #139 `drink_command` 容器液体消费端已实装（余量-1、房间广播、喝空提示、饮水度+30 封顶、醉酒累加、最后一口不挂醉度），19 例全绿。
 - Task #142 乞讨系统（`beg_command.ex` 丐帮门禁+`no_beg`/`no_fight` 闸门+`beg/attempt` 事件；`beg_credit_event.ex`/`beg_debit_event.ex` 跨进程结算），12 例全绿。
 
+## P5-6 门/容器统一框架（已完成并 push，2026-11-11）
+
+- `lib/kantele/world/door.ex`：`Kantele.World.Door` 统一门/容器框架。
+  - 门状态结构体 `%Door{open?, locked?, auto_close_ms, timer_key}`，持久化在 `room.state["door:<dir>"]`。
+  - `open/6`：设本房出口 + 同步邻房反向出口 + 更新门状态 + 本房广播 + 邻房纯文本广播 + 可选登记自动关门。
+  - `close/5`：删本房出口 + 同步删邻房反向出口 + 更新门状态 + 本房广播 + 邻房纯文本广播 + 取消自动关门定时器。
+  - `lock/3` / `unlock/3`：锁定/解锁门状态；锁定后 `open/6` 返回 `{:error, :locked}`。
+  - `schedule_auto_close/5` / `cancel_auto_close/3`：定时自关门与取消（同一 owner+key 只保留一个定时器）。
+  - `valid_leave/5`（+3 便利版）：权限门控，返回 `{:allow, msg}` / `{:deny, msg}` / `{:passthrough}`；deny_list 优先级高于 allow_list。
+  - 底层复用 `DynamicExit` 的 `Room.set_exit/delete_exit/has_exit_by_id?` 原语，对全局命令零影响。
+- `test/kantele/world/door_test.exs`：20 例全绿，覆盖缺省状态/自定义状态/open?/locked?/单向门/双向门/已开已关重复操作/锁定拒绝/open_error/close_error/自动关门登记与取消/valid_leave 允许拒绝/优先级。
+- `mix compile` exit 0，无警告；`mix test --seed 831693` 门测 20/0，0 回归。
+- 文档：`docs/data-world-comments-continuation-plan.zh-CN.md` P5-6 行由 `⬜ 未做` 改为 `✅ 已完成（Kantele.World.Door 统一框架）`。
+
 ## 剩余 backlog
 - D 节 v2 技术债：
   - Q2 v2 疾病/雪原封路：✅ 已完成（2026-11-11，Phase 1 全部三项），`illness.ex` 五族 daemon + `season_event.ex` 正午发病 + `snow_region.ex`/`snow_region_event.ex` 雪原寒冷，测试 91 例全绿，全量 suite 0 回归。
