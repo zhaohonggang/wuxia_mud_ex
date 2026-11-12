@@ -12,8 +12,7 @@
 ## 验收标准（唯一硬标准）
 
 ```
-python scripts/assign_room_coords.py data/world_backup/test_before.ucl damen --output <输出文件>
-```
+python scripts/assign_room_coords.py data/world_backup/test_before.ucl damen --output <输出文件```
 
 产出必须与 `data/world_backup/test_after.ucl` **逐字节相同**（`git diff --no-index` 无输出）。
 

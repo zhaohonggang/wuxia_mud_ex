@@ -292,7 +292,7 @@ def status(state) :: %{
 
 | 原子 | 含义 | 来源 |
 |------|------|------|
-| `:chain_blocked` | 前置任务未完成 | Quest.set_todo |
+| `:chain_blocked` | 前置任务未解（错误码说明） | Quest.set_todo |
 | `:mutex_blocked` | 互斥任务进行中 | Quest.set_todo |
 | `:full` | 任务列表已满 (默认 20) | Quest.set_todo |
 | `:duplicate` | 已在进行中 | Quest.set_todo |

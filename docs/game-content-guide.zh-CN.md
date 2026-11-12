@@ -42,7 +42,7 @@ rooms "town_square" {
 ```
 
 - `#` 开头是注释
-- 字符串用双引号；列表用 `[ ]`；对象用 `{ }`
+- 字符串用双引号；列表用方括号 `[]`；对象用 `{ }`
 - **必须保存为 LF 换行**（仓库已有 `.gitattributes` 兜底，VS Code 右下角可确认）
 - 引用其他对象用点路径：`rooms.town_square.id`（同文件）、`sammatti.rooms.gates.id`（跨文件/跨区域）
 

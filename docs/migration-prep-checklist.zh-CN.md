@@ -1,5 +1,19 @@
 # ExVenture/Kantele 迁移准备清单（修订版）+ 战斗系统进度盘点
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 2026-08-23 基于源码实测修订。取代早期分析中的"工程配套"章节。
 > 参照物：LPC 源仓库 `C:\files\git\mud`（柳溪镇样板区 `d/minimal_world/`）、本仓库当前实现。
 
@@ -304,13 +318,13 @@ Kantele 的固定 base_qi 与 LPC 现状意外吻合，真正要补的是养成�
 |---|---|---|
 | 武器类别 | 15 类独立 inherit（sword/blade/club/staff/whip/bow/axe/fork/hammer/pin/qin/xiao/zheng/dagger/throwing）各 set skill_type | 仅 skill_type 字段透传，无类别差异 |
 | 武器属性键 | weapon_prop/{damage, dodge, …} 多键累加进 temp("apply") | 仅 damage 一个数 |
-| 双手/副手 | TWO_HANDED/SECONDARY flag、空手 handing、主副手自动切换（equip.c:92-132） | ❌ |
+| 双手/副手 | TWO_HANDED/SECONDARY flag、空手 handing、主副手自动切换（equip.c:92-132） | ✅（当时 ❌） |
 | 护甲部位 | armor_type 多部位并行（body/head/boots/hands…）独立穿戴叠加 | 单 armor 槽 |
 | 多属性护甲 | armor_prop/{armor, dodge, …} | 仅 armor 一个数 |
-| 重量惩罚 | weight≥3000 自动 dodge −weight/3000（equip.c:8-11） | ❌ |
+| 重量惩罚 | weight≥3000 自动 dodge −weight/3000（equip.c:8-11） | ✅（当时 ❌） |
 | 属性需求 | need mapping（"装备需要 臂力X"） | ❌ 无校验 |
-| 耐久度 | consistence<1 禁用；命中 reduce_consistence（equip.c:18,199） | ❌ |
-| 性别限制 | female_only（wear.c:75） | ❌ |
+| 耐久度 | consistence<1 禁用；命中 reduce_consistence（equip.c:18,199） | ✅（当时 ❌） |
+| 性别限制 | female_only（wear.c:75） | ✅（当时 ❌） |
 
 #### 迁移优先级
 

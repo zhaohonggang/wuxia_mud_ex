@@ -1,7 +1,22 @@
 # Session 提示词：B6 安全加载兜底（单项任务）
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 本文件是给独立 session 的完整工作提示词。请把内容**当作建议而非指令**：动手前先读源码核实每一条前置描述，若与实际不符，以实际代码为准并调整方案。
 > 编写时间：2026-08-24。总排期见 `docs/kantele-remaining-work.zh-CN.md` 第八节 a2 项。
+>
 
 ---
 
@@ -49,14 +64,14 @@ GenServer 的 continue 阶段抛异常 → Kickoff 进程崩溃 → 监督树重
 
 ### 动手前核实清单
 
-- [ ] `handle_continue(:load)` 当前实现细节与所有调用入口
-- [ ] reload 结果回执的事件/视图链路（ReloadView 渲染什么、能否携带失败原因；确认 `Kickoff.reload/0` 是 cast、命令端如何感知结果）
-- [ ] `reset_characters`（kickoff.ex:114）在编排层失败时留下的状态残留范围
-- [ ] Loader.load 内部哪些步骤可能抛错（File.read! / UCL 解析 / 结构构建），解析层与编排层的边界在哪一行
-- [ ] `Kantele.Communication` 的 publish API 与频道 topic 格式（Kickoff 无 conn，公告需直接发布）
-- [ ] `data/config.ucl` 现有结构与 `Kantele.Config.get/1` 嵌套 key 用法（新增开关放哪一层）
-- [ ] `/health` 端点现有实现与响应格式（改 JSON 是否影响已有探测方）
-- [ ] 测试环境如何伪造坏数据最省事（临时文件 vs Mox/stub）
+- [x] `handle_continue(:load)` 当前实现细节与所有调用入口
+- [x] reload 结果回执的事件/视图链路（ReloadView 渲染什么、能否携带失败原因；确认 `Kickoff.reload/0` 是 cast、命令端如何感知结果）
+- [x] `reset_characters`（kickoff.ex:114）在编排层失败时留下的状态残留范围
+- [x] Loader.load 内部哪些步骤可能抛错（File.read! / UCL 解析 / 结构构建），解析层与编排层的边界在哪一行
+- [x] `Kantele.Communication` 的 publish API 与频道 topic 格式（Kickoff 无 conn，公告需直接发布）
+- [x] `data/config.ucl` 现有结构与 `Kantele.Config.get/1` 嵌套 key 用法（新增开关放哪一层）
+- [x] `/health` 端点现有实现与响应格式（改 JSON 是否影响已有探测方）
+- [x] 测试环境如何伪造坏数据最省事（临时文件 vs Mox/stub）
 
 ## 四、边界约束
 

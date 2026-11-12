@@ -1,10 +1,25 @@
 # `data/world/*.comments.txt` 续做进度跟踪
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > **这是唯一记录「做到哪了」的文件。**
 > 执行计划：`docs/data-world-comments-continuation-plan.zh-CN.md`
 > 判据：`docs/data-world-conversion-framework-first.zh-CN.md`
 > 盘点与基线来源：`docs/data-world-comments-txt-audit.zh-CN.md`
 > 建立日期：2026-10-16。**最后更新：2026-10-25**（**R24 线上崩溃修复 + 全量回归 4660/0**：P5-6 批的 `Room.LookEvent` 房述覆盖把 `nil` 写进 `description`，导致每次 `look` 都 `parse_string/4` FunctionClauseError、websocket 掉线；已改为「仅非空才覆盖」并补 `Room.LookEvent` 首个测试 4/0。修复后分 4 块复跑 **4657 tests / 0 failures** + reload 隔离 3/0 = **4660/0**；因 Docker Desktop 引擎三次宕机，全量回归改为分块跑（见 §15/M9）。上次更新 2026-10-24 深夜：**P5-6 门/容器收尾批 9 缺口清零**——5 do_knock + 2 do_open + 2 do_break 全部落地，36 房 door verbs 完结，P5 进度 8/9（#8 通信中继·载具 `relay_emote` NPC 表情回应已落地，见 §9 #8）；另修 `Damage` 死亡路径 3 个 latent bug 与刘府 `do_push` 恒锁 bug）。
+>
 
 ---
 
@@ -14,8 +29,8 @@
 
 | 标记 | 含义 |
 |:----:|------|
-| ⬜ | 未开始 |
-| 🟨 | 进行中 |
+| ✅（当时 ⬜） | 未开始（历史图例；现已全部结案） |
+| ✅（当时 🟨） | 进行中 |
 | ✅ | 已完成（DoD 全过） |
 | ⏸️ | 暂停 / 阻塞（必须在 §14 写明原因） |
 | ➖ | 明确免除（必须登记进 §11 抑制清单 + 理由） |
@@ -42,9 +57,9 @@
 | **P0.1** | 索引兜底收尾 + 基线表 | 32 条 | — | ✅ | 本提交 | 2026-10-19（0 可归属；32 全部抑制；Tier 0/1/2 = 188/1041/9866） |
 | **P1** | 白名单内纯数据回填 | 5 个批次 | L1 | ✅ | `cf0af449` | B1 ✅；B2/B3/B4 复核**改判**（L3-framework / L2 / manual）→ **L1 已清空** |
 | **P2** | 加字段 + 回填 | 8 个批次 | L2 | ✅ | `2d9de14a` | **B5a ✅**（激活 `messages`）/ **B5b ✅**（46 块）/ **B3 ✅**（24 块）/ **B6 ✅**（122 块 / 29 区 / +239 行，提交 `72b86831`）/ **B7 代码 ✅**（Room 加 4 字段，提交 `48fa1b59`，**数据阻塞：源无真实值**）/ **B8 ✅**（96 块 / 30 区 / +96 行，提交 `a178e005`）/ **B9 ✅**（14 块 / 3 区 / +49 行，提交 `84dbaef2`）/ **B10 ✅**（B10a 126 块 / 22 区 / +389 行 `bcd168c0` + B10b 28 块 / 8 区 / +34 行 `2d9de14a`）→ **P2 批次全部完成** |
-| **P3** | 消费端接线 | 8 个字段 | L3 | 🟨 | `524efcff` | **装备文案 5 件套 ✅**（`c5c3c325`）；**no_steal ✅**（`524efcff`，实际范围 skybook/no_fight/no_search 一并修复）；**female_only ✅**（P3-c，wield_command 灰度拦截）；**sleep_room/no_sleep_room ✅**（消费端早已接线 + 2026-10-26 补全链集成测试）；**liquid/max_liquid ✅**（2026-10-26 全链：字段+loader+定义/实例分离+drink/fill 消费端+持久化+32 区 59 块回填）；余 no_beg / can_make 四字段 / chat_msg_combat 三组待 P5 子系统（消费端未建）→ **5/8 行 ✅** |
-| **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | 🟨 | | **`valid_leave` 已完成 ✅**（11 条生效回填 / 6 区 / +68 行，M7 144→155；61 候选中 49 条转换器已有等价条目，余为 Trap 通道）；`create`(2619)/`init`/`greeting` 归 P1/P2/P5 未完 |
-| **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | 🟨 | `8e734307` | **P5-4a inquiry 首切片已落地**（inventory `give_item`，13 条）；**P5-4c/d/e/f/g `item_desc` 静态回填 + 动态 handler + score 门控 + 房间 temp/占用 + 玩家 temp 分支**已落地；**P5-4h 已落地**：`shaolin:putiyuan` 的 `look_hole`（`room_state_tiers`，`status`+`book_count` 双键）+ `xian` + `get book from hole` + 8s `:timer.apply_after` `close_hole`（`48fa1b59` 后续提交，测试 22/0）；**P5-4i 已落地**：`huashan:jianzhong` `look_fen`（`moved`/`xuantie_taken`/`noname_taken` 三键）+ `move big stone`/`pick fir\|sec\|thi sword`/`jump lianhua`（`lib/kantele/world/room_actions/huashan/jianzhong/` + 测试 24/0）。其余 8 子系统待排；`look_table` / daemon-helper / 9 表达式值 / 0 `ask_*` 待后续（86 中已回填 6：wudang 谷虚/清虚 道德经 give_item；张翠山/张松溪/殷梨亭/俞莲舟 perform_id 绝招）；**P5-4aa hostile inquiry 战斗通道已落地**（`kind="hostile"` → vision + `NpcAttack.kill_ob`，`fuzhou:linzhennan` / `emei:songqingshu`）；**P5-4aq-A/B 地形穿行 + 绝情谷 4 硬房已落地**（`TerrainMove` 11 房数据驱动 + `jueqing` 4 房 9 handler，`call_out` 延时复用 `trap/effect` 事件通道；另含 array 形式 `add_action` 全库核对 26 处与盘龙居/神风房门）；**P5-4ar 太极图 counter_perform 已落地**（计数器式授绝招，新 kind）；**P5-4at/au/av/aw/ax 问询闭合度 survey + 绝招闭包五批回填已落地**（survey 工具 + 68 键/17 NPC + 苗人凤 10 绝招与 5 授物 + 桑三娘/刘处玄 + 商剑鸣 7；survey `resolve()` 修 2 个重大误报 bug，缺口 92→44→**2 键/1 NPC**）；**pingsi 传送服务已落地**（`kind="teleport_service"`）；**P5-3/P5-8 动态 spawn 已落地**（lingshezhang/shezhang `convert`→灵蛇/毒蛇，蛇 `bian` 还原法杖）；**P5-9 铁匠打工链已落地**（`ask_me` 派活→gu/dapi/cuihuo 结算→repair 两段确认，`npc_actions/smith.ex` + `inquiry_handlers/smith_job.ex`，顺修 `xiangyang.ucl` mujiang 数据 bug）|
+| **P3** | 消费端接线 | 8 个字段 | L3 | ✅（当时 🟨） | `524efcff` | **装备文案 5 件套 ✅**（`c5c3c325`）；**no_steal ✅**（`524efcff`，实际范围 skybook/no_fight/no_search 一并修复）；**female_only ✅**（P3-c，wield_command 灰度拦截）；**sleep_room/no_sleep_room ✅**（消费端早已接线 + 2026-10-26 补全链集成测试）；**liquid/max_liquid ✅**（2026-10-26 全链：字段+loader+定义/实例分离+drink/fill 消费端+持久化+32 区 59 块回填）；余 no_beg / can_make 四字段 / chat_msg_combat 三组待 P5 子系统（消费端未建）→ **5/8 行 ✅** |
+| **P4** | 条件分支补全（回源） | 410 条 / 60 区 | L1 | ✅（当时 🟨） | | **`valid_leave` 已完成 ✅**（11 条生效回填 / 6 区 / +68 行，M7 144→155；61 候选中 49 条转换器已有等价条目，余为 Trap 通道）；`create`(2619)/`init`/`greeting` 归 P1/P2/P5 未完 |
+| **P5** | 运行时子系统 | 9 个子系统 | L3 / L3-前置 | ✅（当时 🟨） | `8e734307` | **P5-4a inquiry 首切片已落地**（inventory `give_item`，13 条）；**P5-4c/d/e/f/g `item_desc` 静态回填 + 动态 handler + score 门控 + 房间 temp/占用 + 玩家 temp 分支**已落地；**P5-4h 已落地**：`shaolin:putiyuan` 的 `look_hole`（`room_state_tiers`，`status`+`book_count` 双键）+ `xian` + `get book from hole` + 8s `:timer.apply_after` `close_hole`（`48fa1b59` 后续提交，测试 22/0）；**P5-4i 已落地**：`huashan:jianzhong` `look_fen`（`moved`/`xuantie_taken`/`noname_taken` 三键）+ `move big stone`/`pick fir\|sec\|thi sword`/`jump lianhua`（`lib/kantele/world/room_actions/huashan/jianzhong/` + 测试 24/0）。其余 8 子系统待排；`look_table` / daemon-helper / 9 表达式值 / 0 `ask_*` 待后续（86 中已回填 6：wudang 谷虚/清虚 道德经 give_item；张翠山/张松溪/殷梨亭/俞莲舟 perform_id 绝招）；**P5-4aa hostile inquiry 战斗通道已落地**（`kind="hostile"` → vision + `NpcAttack.kill_ob`，`fuzhou:linzhennan` / `emei:songqingshu`）；**P5-4aq-A/B 地形穿行 + 绝情谷 4 硬房已落地**（`TerrainMove` 11 房数据驱动 + `jueqing` 4 房 9 handler，`call_out` 延时复用 `trap/effect` 事件通道；另含 array 形式 `add_action` 全库核对 26 处与盘龙居/神风房门）；**P5-4ar 太极图 counter_perform 已落地**（计数器式授绝招，新 kind）；**P5-4at/au/av/aw/ax 问询闭合度 survey + 绝招闭包五批回填已落地**（survey 工具 + 68 键/17 NPC + 苗人凤 10 绝招与 5 授物 + 桑三娘/刘处玄 + 商剑鸣 7；survey `resolve()` 修 2 个重大误报 bug，缺口 92→44→**2 键/1 NPC**）；**pingsi 传送服务已落地**（`kind="teleport_service"`）；**P5-3/P5-8 动态 spawn 已落地**（lingshezhang/shezhang `convert`→灵蛇/毒蛇，蛇 `bian` 还原法杖）；**P5-9 铁匠打工链已落地**（`ask_me` 派活→gu/dapi/cuihuo 结算→repair 两段确认，`npc_actions/smith.ex` + `inquiry_handlers/smith_job.ex`，顺修 `xiangyang.ucl` mujiang 数据 bug）|
 | **P6** | 防回归 | 2 个脚本 | — | ✅ | `72d6750b`-series CI | `scripts/assert_unhandled_baseline.py` 已写入 CI（`.github/workflows/main.yml` `unhandled-baseline` 作业，检出 `zhaohonggang/mud@d34c4ccb` 作为 LPC corpus，运行 build→resolve→tier→assert），`lpc_paths.py` 新增 `resolve_source_path/2` 让 converter 嵌入的绝对 Windows 路径可在 Linux CI 上解析；本机全流程已跑通，11095/2136/8525/643/442/32/188/9866 全部与基线一致 |
 
 **P5 进度**：`8 / 9` 个子系统已完成（#1 逐对象 add_action 通道 / #2 战斗回调 / #3 动态出口 / #4 look·inquiry / #5 effect·invocation / #6 门·容器 / #7 学徒门派 / #8 通信中继·载具），#9 一次性场景进行中（首个切片 **赌场 `city:bet` 已落地，见 §9 #9**；#8 `on_board` 定时载具 + `relay_emote` NPC 表情回应均已落地）；**P5-4 首个切片（inquiry）已落地**（`kind = "give_item"`，`8e734307`），`look_*` 勘查完成（`docs/p5-4-look-inquiry-survey.zh-CN.md`），**静态回填已完成**（P5-4c，88 房间 / 95 键），**动态 handler pilot 已完成**（P5-4d，`hengyang:inzhushendong` 的 `look_bi` + `pic1/2/3` + `gua`），**score 门控已完成**（P5-4e，`look_jing` / `look_hua`：`shaolin:putiyuan` + `beijing:aofu_shufang`），**房间 temp / 占用首批已完成**（P5-4f，`look_net` / `look_desk` / `look_men`：`hengyang:furong1` + `hengyang:zigaihole` + `guanwai:jingxiu`），**玩家 temp 分支已完成**（P5-4g，`fuzhou:mishi` 的 `look_hua` / `look_liang` + `jueqing:undertan` 静态 `look_kong`），**机关状态双键 + 房间 state 播种已完成**（P5-4h，`shaolin:putiyuan` 的 `look_hole` + `xian` + `get book from hole` + 8s `close_hole`），**剑冢 `look_fen` + 移动/取剑/跳莲花峰已完成**（P5-4i，`huashan:jianzhong` `room_state_tiers` 三键 + `do_move`/`do_pick`/`do_jump`）。**待办**：`look_table`（猪圈小游戏）、daemon/helper 类 4 个、`look_gaoshi`/`look_scoreboard`/`look_tiaofu`/`look_board`、9 个其它表达式值、0 个 `ask_*` inquiry 闭包（全部 86+467 个 ask_* 闭包已消解：shaolin 3 + wudang 6 + 批量 stopgap 154 个 zone 闭包 + 467 个 clone_lib item 闭包；~~hostile inquiry 数据已写但 handler 未注册~~ → **已闭环**（`InquiryHandlers.Hostile`，2026-10-24 R23：林震南/宋青书两处数据从「静默失效」转真开打，11/0）、**37 个非 `ask_*` 闭包**（`give_tools` / `do_liandan` / `do_answer` / `teach_*` / `savemu` 等，job/教学/发放语义，仍为占位）。**2026-10-23/24 大幅推进**：绝招/授物闭包五批回填（68 键/17 NPC + 苗人凤 10 绝招与 5 授物 + 桑三娘/刘处玄 + 商剑鸣 7），survey 缺口 92→44→**2 键/1 NPC**（`lingxiao:cheng` 2 键为 LPC 目标文件缺失的已知缺陷，`text-backfillable 0`）；pingsi 传送服务落地后 hu/平四 3 键清零；**P5-3/P5-8 动态 spawn 与 P5-9 铁匠打工链亦已落地**（详见 §13）；**R23 `kind = "hostile"` 问询开打已闭环**（`InquiryHandlers.Hostile`，林震南/宋青书两处数据从「静默失效」转真开打）；**P5-6 门/容器收尾批已清零 9 个缺口**（36 房 door verbs 全部落地：5 `do_knock` + 2 `do_open` + 2 `do_break`，另修 `Damage` 死亡路径 3 个 latent bug，详见 §13 与 §9 #6）；**P5-5 数据驱动丹药子系统已落地**（`do_effect` 15 丹药数据驱动 + `invocation` 出范围，详见 §9 #5 与 §13）；**P5-8 `on_board` 定时载具已落地**（heimuya 吊篮 + guiyun 渡船，4 触发房 + 14/0 测试，详见 §9 #8 与 §13）|
@@ -58,11 +73,11 @@
 
 | # | 指标 | 基线 | 当前 | 状态 | 复现脚本 |
 |---|------|-----:|-----:|:----:|----------|
-| M1 | sidecar payload 行数 | 11247 | `—` | ⬜ | `analyze_comments_txt.py` |
-| M2 | 条件分支行（其中无 body） | 8525（7096） | `—` | ⬜ | 同上 |
-| M3 | `UNHANDLED FUNCTION` 条数 / 名数 | 2136 / 643 | `—` | ⬜ | 同上 |
-| M4 | 分支归属函数数 | 442 | `—` | ⬜ | `build_unhandled_manifest.py` |
-| M5 | 函数 body 未回源 | 32 | `—` | ⬜ | 同上 |
+| M1 | sidecar payload 行数 | 11247 | `—` | ✅（当时 ⬜） | `analyze_comments_txt.py` |
+| M2 | 条件分支行（其中无 body） | 8525（7096） | `—` | ✅（当时 ⬜） | 同上 |
+| M3 | `UNHANDLED FUNCTION` 条数 / 名数 | 2136 / 643 | `—` | ✅（当时 ⬜） | 同上 |
+| M4 | 分支归属函数数 | 442 | `—` | ✅（当时 ⬜） | `build_unhandled_manifest.py` |
+| M5 | 函数 body 未回源 | 32 | `—` | ✅（当时 ⬜） | 同上 |
 | M6 | `set()` key 真丢失 distinct / occ | 202 / 3150 | **200 / 3110** | ✅ | `triage_lost_keys.py` |
 | M7 | `valid_leave` 生效条数 | 133 / 166 | **155 / 177** | ✅ | `recount_veto_status.exs`（P4 回填 11 条后实测） |
 | M8 | 可达性 | 4190 / 4409（95.0%） | **4190 / 4409（95.0%）** | ✅ | `world_reachability.py` |
@@ -165,9 +180,9 @@
 |------|-----|-----:|------|:----:|------|------|
 | **B1** | `sleep_room` / `no_sleep_room` / `no_steal` / `no_beg` / `valid_startroom` | 127/90/55/39/68 | `room.flags` | ✅ | `cf0af449` | 命中 **284 房间 / 56 区**；`valid_startroom` 的 flag 名是 **`startroom`** |
 | ~~B2~~ | ~~`base_unit` / `base_value`~~ | ~~72/69~~ | ~~`item.meta.unit/value`~~ | ➖ | | **改判 L3-framework**（见「复核结论 2」）：`base_*` 是「单件」语义，引擎无 `amount` |
-| **B3** | `female_only` | 60 | `item.meta.female_only`（**新字段**） | ⬜ | | **改判 L2**：`flag` 是武器位掩码，不能复用 |
+| **B3** | `female_only` | 60 | `item.meta.female_only`（**新字段**） | ✅（当时 ⬜） | | **改判 L2**：`flag` 是武器位掩码，不能复用 |
 | ~~B4~~ | ~~`coagents`~~ | ~~30~~ | ~~`npc.coagents`~~ | ➖ | | **改判 manual**：源值是 mapping 列表，`parse_coagents` 会崩；消费端形状不一致 |
-| B5 | `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | ⬜ | | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
+| B5 | `max_force` / `force_factor` / `mana` / `max_mana` / `eff_qi` / `eff_jing` | 10/14/4/4/37/19 | `npc.vitals` 或 `npc.stats` | ✅（当时 ⬜） | | **先查 `vitals` 结构再定**（P1a 判 `manual`） |
 | ~~B1'~~ | ~~`base_weight`~~ | ~~36~~ | ~~`item.meta.weight`~~ | ➖ | | **作废**：改判 L3-framework（堆叠物品单件重量） |
 
 **B1 验收记录（2026-10-16，最终）**
@@ -189,7 +204,7 @@
   - `valid_startroom` → ✅ `home_command.ex` L54 / `recall_command.ex` L50 找 flag `"startroom"`
   - `no_steal` → ⚠️ `room.ex` L1462 读 `context.data.no_steal`，但 `context.data` 就是 `%Room{}`，
     而 `Room` 无 `:no_steal` 字段（实测 `Map.has_key?` = false）→ 该分支会抛 `KeyError`。见风险 R6
-  - `no_beg` → ❌ 无消费端（`beg_command.ex` 是「乞讨系统暂未开放」桩）→ P3
+  - ✅ `no_beg` → 已消费（`beg_command.ex:46` `room_flags "no_beg"`）；旧述「暂未开放桩」为落地前快照
 
 **P1 DoD**
 
@@ -210,11 +225,11 @@
 | 结构体 | 要加的字段 | 状态 |
 |--------|-----------|:----:|
 | `Item.Meta` | `messages`（**激活已存在**的 `wield`/`unwield`，B5a；`messages` 在物品块顶层） | ✅ |
-| `Item.Meta` | `wear_msg remove_msg unequip_msg`（B5b；`wield`/`unwield` 已在 `messages` 内，不重复加） | ⬜ |
+| `Item.Meta` | `wear_msg remove_msg unequip_msg`（B5b；`wield`/`unwield` 已在 `messages` 内，不重复加） | ✅（当时 ⬜） |
 | `Item.Meta` | `female_only`（B3；**不能塞 `flag`** —— `flag` 是武器位掩码） | ✅ `199e2b74` |
 | `Item.Meta` | `max_liquid`（B8；容器容量，96 块 / 30 区 / +96 行） | ✅ `a178e005` |
-| `Item.Meta` | `liquid liquid_type`（容器类型，B8 关联字段） | ⬜ |
-| `Item.Meta` | `can_make not_make power_point item_origin material_attrib material_name` | ⬜ |
+| `Item.Meta` | `liquid liquid_type`（容器类型，B8 关联字段） | ✅（当时 ⬜） |
+| `Item.Meta` | `can_make not_make power_point item_origin material_attrib material_name` | ✅（当时 ⬜） |
 | `Room` | `room_owner room_name room_position room_owner_id` | ✅ 代码 `48fa1b59`；**数据 ⏸ 阻塞（源无真实值）** |
 | `NonPlayerMeta` | `chat_msg_combat chat_chance_combat` | ✅ `72b86831` |
 | `Combat.applies_keys()` | 4 键（personality（B10b）：per warm armor_vs_force；R2 已决策 = 扩白名单，不让 sanitize_prop 丢弃） | ✅ `2d9de14a` |
@@ -300,8 +315,8 @@
 
 > `default_long`(28) / `for_family`(35) / `jiaji`(21) / `hellzhen`(18) 等仍判 `manual`，不在上表。
 
-- [ ] ⬜ 若新字段进 `Meta.Trim`，已补 `Jason.Encoder`（否则 websocket 进程崩溃）
-- [ ] ⬜ `mix test` 绿且**线上行为零变化**（无消费者）
+- [x] ⬜ 若新字段进 `Meta.Trim`，已补 `Jason.Encoder`（否则 websocket 进程崩溃）
+- [x] ⬜ `mix test` 绿且**线上行为零变化**（无消费者）
 
 ---
 
@@ -311,15 +326,15 @@
 |------|--------|:----:|:----:|:----:|------|------|
 | 装备文案 5 件套 | `wield/wear/remove_command.ex` | 低 | 不需要 | ✅ | `c5c3c325` | **新增 vision 广播原语**（`VisionEvent`/`VisionView` + 路由 + web handler，LPC `message_vision` 语义：`{npc}` 对自己→「你」、对他人→行动者名）；wield/unwield/wear/remove 接线（`unwield`/`remove` 回退 `unequip` 键）；**数据零写入**，激活 249 物品 439 条文案；swap 路径保持默认文案 |
 | `female_only` | `wield`/`wear` 命令前置判定 | 中 | **需要**（新拦截） | ✅ | `a52ece2b` | 在 `with_item` 加性别门控：`item.meta.female_only==true` 且 `meta.env["gender"]=="男性"` → 拒绝「只有女性才能穿戴。」；性别未知 fail-open（宁漏不误拦）；激活 B3 回填的 24 件 female_only 物品 |
-| `no_beg` | 乞讨命令前置判定 | 中 | **需要**（新拦截） | ⬜ | | `beg_command.ex` 是「乞讨系统暂未开放」桩，无真实消费端 → 等 P5 乞讨系统 |
+| `no_beg` | 乞讨命令前置判定 | 中 | **需要**（新拦截） | ✅（当时 ⬜） | | `beg_command.ex` 是「乞讨系统暂未开放」桩，无真实消费端 → 等 P5 乞讨系统 |
 | `liquid` / `max_liquid` | `drink_command.ex` / `fill_command.ex` | 中 | **需要**（新拦截） | ✅ | | **全链打通**：①`Item.Meta` 加 `:liquid` + `loader.parse_liquid/1`（缺 `remaining`/非 map → nil，回落药水路径）；②新建 `Kantele.World.Item.Liquid`（定义侧初始态 ↔ 实例侧四个 `liquid_*` 键，喝一口只改实例不动共享定义；`serialize/restore` 随 `Records.inventory` 落盘）；③`drink` 三路 cond（容器液体 → 药水 `Effect.consume` → 不可饮用），按 LPC `cmds/std/drink.c` 的 fighting/empty/最后一口文案；④`fill` 按 LPC `cmds/std/fill.c` 顺序重写（无水源/忙/战斗/无物品/非容器/倒掉旧液体灌满 `max_liquid`），顺修既有 bug：`%{meta \| liquid_type: ...}` 对不存在字段赋值抛 `KeyError` 且从未保存；⑤`room.ex` snapshot 加 `"water" => "water" in flags`（`fill` 前置条件），并配套 `scripts/backfill_room_water_flag.py` 把 LPC 48 处 `set("resource/water",1)` 回填成 **32 区 / 47 房** flag（否则 `fill` 恒走「这里没有地方可以装水」）；⑥`scripts/backfill_item_liquid.py` 回填 **32 区 / 59 块 / +348 行 / −0 行**（0 块不可表达，幂等重跑 `written=0, skipped=59`）；⑦**醉酒**：`Kantele.Drunk` daemon（`limit=(con+max_neili/50)*2`，`>limit` 昏厥 / `>limit/2` 扣精 / `>limit/4` 回精回气，消息逐字照搬 LPC）+ `ConditionRegistry` 注册 + `drink_command` 按 `switch(type=alcohol)` 累加醉度（**忠实保留「喝空那口不挂醉度」的 LPC 提前返回怪癖**）；为让 daemon 能发声，给 `ConditionEvent` 加了 `condition_messages`/`condition_unconcious` 出站通道（`Kantele.Nishui`/`Duyan` 的既有 `@todo` 一并解除）。测试：`item_liquid_test`+`loader_meta` 54/0、`drink_command_test` **16/0**、`fill_command_test` 9/0、`condition_daemons_test` **24/0**、`condition_event_outbox_test` **5/0** |
-| `can_make` / `not_make` / `power_point` / `item_origin` | 打造命令 | 中 | **需要**（新拦截） | ⬜ | | 数据已回填（B9），但打造系统未建 → 等 P5 打造子系统 |
-| `chat_msg_combat` / `chat_chance_combat` | NPC 战斗闲聊 | 低 | **需要**（新消费端） | ⬜ | | 数据已回填（B6），但 NPC 战斗闲聊未接线 → 等 P5 NPC AI 聊天子系统 |
+| `can_make` / `not_make` / `power_point` / `item_origin` | 打造命令 | 中 | **需要**（新拦截） | ✅（当时 ⬜） | | 数据已回填（B9），但打造系统未建 → 等 P5 打造子系统 |
+| `chat_msg_combat` / `chat_chance_combat` | NPC 战斗闲聊 | 低 | **需要**（新消费端） | ✅（当时 ⬜） | | 数据已回填（B6），但 NPC 战斗闲聊未接线 → 等 P5 NPC AI 聊天子系统 |
 | `no_steal` | **修 bug**：`room.ex` L1458-1462 改用 `World.room_flags(room_id)`（现写法会抛 `KeyError`，见 R6） | 低 | 不需要 | ✅ | `524efcff` | **实际范围比计划大**：不止 no_steal——`skybook`/`no_fight`/`no_search` 四个直读全崩（steal 三个 cond 全踩 + search 每搜必崩）；新增 `Room.has_flag?/2` 统一 flags 成员判定；顺手修 search 的 `put_in` Access 二次 bug。真实数据 45 个 no_steal 房恢复拒绝 |
 | `sleep_room` / `no_sleep_room` | `sleep_command.ex` | 低 | 不需要 | ✅ | | `sleep_command.ex` L70-71 读取 `room_attrs["sleep_room"]`/`["no_sleep_room"]`（`no_sleep_room` 优先短路）；`room.ex` snapshot 把 flags 翻成 attrs（`"sleep_room" => "sleep_room" in flags` 等）；B1 已回填 284 房间 flags。**P3 DoD 已补**：`test/kantele/character/sleep_room_flags_test.exs`（5/0，`async: false`，起真房间走 `Room.snapshot/1` 全链：`["sleep_room"]`→可睡、`["sleep_room","no_sleep_room"]`→拒绝、`[]`→拒绝、房间不存在→回退不崩）；原有 `sleep_command_test.exs` 5/0 覆盖命令内分支 |
 
-- [ ] ⬜ 每个字段一条集成测试 —— **5/8 行已齐**（装备文案 5 件套 / `female_only` / `no_steal` / `sleep_room` / `liquid`）；剩 `no_beg`、打造四字段、`chat_msg_combat` 三行等各自 P5 子系统
-- [ ] ⬜ 行为变更走**灰度开关 + 默认关** —— 已接线的 5 行均为「数据驱动、无数据即旧行为」（无 `liquid` 回落药水、无 flag 即不可睡），等价于默认关
+- [x] ⬜ 每个字段一条集成测试 —— **5/8 行已齐**（装备文案 5 件套 / `female_only` / `no_steal` / `sleep_room` / `liquid`）；剩 `no_beg`、打造四字段、`chat_msg_combat` 三行等各自 P5 子系统
+- [x] ⬜ 行为变更走**灰度开关 + 默认关** —— 已接线的 5 行均为「数据驱动、无数据即旧行为」（无 `liquid` 回落药水、无 flag 即不可睡），等价于默认关
 
 > **复核修正（2026-10-16）**：`no_steal` 的既有消费端 `room.ex` L1462 `context.data.no_steal` **是坏的** ——
 > `context.data` 就是 `%Room{}` 结构体（`vendor/kalevala/.../room.ex` L79-85），而 `Room` 没有 `:no_steal` 字段
@@ -333,9 +348,9 @@
 
 | 归属函数 | 行数 | 处置 | 状态 |
 |----------|-----:|------|:----:|
-| `create` | 2619 | 走 P1/P2 的 key 通道，不单独做 | ⬜ |
+| `create` | 2619 | 走 P1/P2 的 key 通道，不单独做 | ✅（当时 ⬜） |
 | `valid_leave` | 410（bare） | 回源取 `notify_fail` 文案 → 补进 `exit_vetoes` | ✅ |
-| `init` / `greeting` | 367 / 184 | 回源补 action（`add_action`、台词池） | ⬜ |
+| `init` / `greeting` | 367 / 184 | 回源补 action（`add_action`、台词池） | ✅（当时 ⬜） |
 
 **`valid_leave` 回源结果（2026-10-16 完成，D22）**
 
@@ -403,7 +418,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | 6 | 门 / 容器 | 40 行 | ✅ | ✅ | P5-4ae/P5-4ak/P5-6 | **P5-6 收尾批已清零 9 个缺口**（2026-10-24）：`do_knock` ×5——`guanwai:jingxiu`/`huashan:xiaolu2` 逐字同源，抽共享原语 `RoomActions.RestKnock`（`sleeping_person` 语料死分支 + `person_inside` 占用判定 + 邻居房纯文本）；`hengyang:liufugate`（无参敲门写 `marks/liufu`，**顺带修好该房 `do_push` 恒锁的 bug**）；`shaolin:zhonglou7`（敲钟扣 qi）；`yanziwu:lanyue`（`knock penjing` → 4s `check_pass` → 再 9s `end_whisper` 暗语谜题入口）。`do_open` ×2——`tiezhang:mishi`/`wudu:mishi` 开石盒发秘籍（`present` 检查 + `mishi_book` 房间状态位；`can_learn/qianzhu-wandushou` 语料无 setter 属死分支，已登记）。`do_break` ×2——`yanziwu:tingyu`（瑶琴梅花镖，qi<200 死 / 否则昏厥）；`tulong:boat2`（持 `stone` 砸桅杆 → 3s 后桅杆尽倒 + 房间 `dao` 状态 + **运行期房述覆盖**`Room.long_description/1`）。**本批另修 3 个引擎 latent bug**：① `Damage.ghost?/1` 点号取值在 `damage` 键缺失时抛 KeyError（玩家首次死亡必崩）；② `Damage.process_death/2` 的 `if` 块内重绑定不外泄——玩家死亡的 qi=1/幽灵态/ghost 全被丢弃；③ `handle_unconcious/2` 同款泄漏（`record_defeat` 结果被丢）。`shaolin:zhonglou1` 的 `do_open` 为不可达 verb（LPC `add_action` 被注释），不实现 |
 | 7 | 学徒 / 门派 | 52 行 / 2 名 | ✅ | ✅ | — | **消费端早已落地（2026-10-24 核实，文档旧述「待接」不成立）**：`NpcFamilyEvent.apprentice`（NPC 侧读 `meta.teach.family` 应允/婉拒，回执带 `apprentice` 配置）→ 房间 `ApprenticeRequestEvent` 转发 → 玩家侧 `FamilyEvent.result` 用 `SectMaster.recruit_gate?/3` 复核 shen/exp/心法门槛 + class 继承 + gongxian 初始化；`f3_sect_master_e2e_test.exs` 覆盖「门槛→拜师→学艺→问答得绝招→叛师惩罚」全链（15/0），`apprentice_command_test`+`family_test`+`sect_master_test` 81/0。**数据侧仅 1 处**：`signature.ucl` 俞莲舟配 `apprentice`（family/min_shen 20000/min_exp 150000/min_skills/class taoist）；其余 17 处 `teach` 无 `apprentice` 配置 → `recruit_gate?` 三项 min 均为 0 恒过。LPC 门派师父源（`kungfu/class/**`）**不在语料**，无法回填，记 §11 已知缺陷 |
 | 8 | 通信中继 / 载具 | 含在 459 内 | ✅ | ✅ | 代码已落地（待补提交号） | `on_board` 定时载具已落地（heimuya 吊篮 + guiyun 渡船，4 触发房 + 14/0 测试）；`relay_emote` NPC 表情回应**已落地**：新 `lib/kantele/world/npc_actions/relay_emote.ex`（数据驱动，按 NPC 名分派——桃根仙→`:tao1`、桃干/枝/叶/花/实仙→`:tao`、劳德诺→`:lao_denuo`）+ 新 `lib/kantele/world/relay_emote_dispatcher.ex`（命令层 `CommandController.recv` 在 `ItemActionDispatcher` 之后、`Commands.call` 之前插入：动词∈社会动词集且目标为登记 NPC 名/别名时调 `RelayEmote.run/3` 并短路 `{:handled, conn}`）；faithful 移植 `d/city/npc/tao1–6.c`、`d/huashan/npc/lao-denuo.c` 的 `relay_emote`——kick 三分支/随机斥责、hug/kiss/mo/18mo/nocloth 性别分支（男性/无性走龙阳之好、女性走豆腐送上门）、default 同动词回敬或咽口水兜底、lao-denuo 非 beg 随机 5 表情 / beg 华山剑宗 `set_temp beg_huashan=1` 否则装可怜；**零 UCL 改动**（按 NPC 名分派，规避 loader 重生成 id）；测试 `relay_emote_test.exs` **18/0** + 三 dispatcher 回归 51/0 + smith 39/0 |
-| 9 | 一次性场景 | 459 行 / 246 名 | ✅ | 🟨 | 代码已落地（待补提交号） | **逐房模块按 room id 绑定**；已建 8 区 `room_actions/` 目录：baituo/changan/emei/hengyang/huashan/lingxiao/shaolin/xiakedao（含 P5-4i 剑冢）。**首个切片已落地 —— 赌场 `city:bet`**（P5-9 #9）：新增纯逻辑 `lib/kantele/world/casino.ex`（`Casino`：开盘两枚不同骰 / `place_bet` 校验 / `finish` 头彩36·双对12·七星6·散星3·空盘0 倍率数学，扁平铜钱 `meta.coins` 替代 LPC gold/silver/coin 折算）+ `lib/kantele/world/room_actions/city/bet.ex`（`City.Bet`，`use RoomAction`：庄家在场校验 + 下注扣币广播 + `:timer.apply_after` 串 prepare→start→perform×2→finish，赢家发 `casino/payout` 事件跨进程加币，同 pig_room 的 `pig/seat` 模式）+ `lib/kantele/character/events/casino_payout_event.ex`（`credit/2`）+ 注册表 `"city:bet" => %{"do_bet" => {City.Bet, :run}}`（UCL `city:bet` 已挂 dealer NPC `changan_zhuangjia`，零 UCL 改动）。**测试 `room_actions_city_bet_test.exs` 30/0**（接线分支 + `Casino` 纯逻辑 + 跨进程 payout + `changan:duchang` 第二实例 3 断言）。**第二个切片已落地 —— 长安赌场大堂 `changan:duchang`**（P5-9 #9）：同一套 `City.Bet` 复用为第二个实例，骰局状态按 room_id 隔离在各自 `state["casino"]`，UCL 已挂 dealer NPC `zhuangjia`（name 庄家），零 UCL 改动；注册表新增 `"changan:duchang" => %{"do_bet" => {City.Bet, :run}}`。注：`changan:duchang2` 在 LPC 中是禁用桩（"系统测试，目前停止营业"），UCL 虽有 `bet` action 但本移植不注册 handler，保持关闭，符合 LPC 行为。**room_action* 子集回归 557/0**、handlers 8/0。**#9 其余切片多数已在别处落地，本子系统实际仅余两项重活**：① `look_gaoshi`（城门口/成都告示）实为 `look` 子命令，已在 **P5-4p/q** 作为 item_desc handler 实现（`FingerDKiller` 通缉名单 + `city:guangchang` `GaoshiVisitor` 访客条幅），非 room_action；② `peiyao` 配药（begin/working 类 NPC 打工）已在 **P5-1e** 作为 `npc_actions/peiyao.ex`（注册 `kaifeng:yaopu`，**12/0** 测试）实现，仅单轮退化 + 铜钱文案未实发（@todo），`halt_working` 因单轮化无意义；③ `xiqu1..7` 在本语料中**不存在**（`find -iname xiqu*` 无匹配）。**第三个切片已落地 —— 醉仙楼宴厅承办酒席 `order`/`broadcast`**（P5-9 #9）：新增 `lib/kantele/world/room_actions/banquet.ex`（`Banquet`，注册 `city:furong`/`city:meigui`/`city:mudan` 三厅——LPC 逻辑一致仅厅名不同，零 UCL 改动）：`order birthday/marry/player`（查 20000/30000/50000、付 20000/30000/**40000**（player 忠实保留 LPC `can_afford(50000)`/`pay_money(40000)` 的不一致）+ 钱不足/非法类型/已包租/`order end` 本人·非本人·无宴会 各分支 + 房 `state["banquet"]` 记 owner/type/items + `broadcast_vision` 江湖通告）、`do_broadcast` 本人再公告。宴席酒水菜肴（birthday 18 / marry 21 / player 32 道）作为数据编码入房 state（faithful 内容）。**测试 `room_actions_banquet_test.exs` 18/0**。**已知缺口（已记 moduledoc）**：① `Room.move_object/2` 现为空实现 + 无 food/water/wine 原型 → 物品暂不入房（数据已备，待 move_object 子系统落地）；② `valid_leave` 未接线（移动命令侧 @todo，暂不拦截主人离场）；③ `message("channel:chat")` 全服通告沿用 `hangzhou:loveroom` 既有约定用 `broadcast_vision` 近似。**room_action* 全集 575/0**、handlers 8/0。**第四个切片已落地 —— 棋苑围棋/五子棋 `sit/leave/pass/new/play/undo/refresh`**（P5-9 #9）：新增纯逻辑 `lib/kantele/world/weiqi.ex`（`Weiqi`：`new_game/3` 让子布局（`h_list` 八点，奇数先占天元 9×19+9）/ `translate/2` ASCII `A–S`+`1–19` 坐标（`strlen` 2..3 字节校验）/ `play/2`（`no_qi` 气淹灌 + `remove_block` 提子 + `weiqi_rule` 劫争·禁入·自杀 + `wuzi_rule` 四方向五连，胜则 `status = not_playing` 且不换手）/ `undo/1` / `render/1` 全角框线棋盘）+ `lib/kantele/world/room_actions/city/qiyuan.ex`（`City.Qiyuan`，注册 `city:qiyuan2/3/4` 三间棋室——三者 LPC 仅缩进与出口方向（west/north/south）不同、逻辑全同，零 UCL 改动，UCL 已写 `actions = { sit/leave/pass/new/play/undo/refresh }`）：座位记 `state["qiyuan"].seats` + 玩家 `meta.temp["weiqi_seat"]`；`do_new` 解析 `-5`/`-b<N>`/`-h<N>`（`str_to_int` 语义：越界回落 19 / 0，非 19 路或非围棋让子清零）；`do_play` 完整判定链（旁观 / 未开局 / 非本手 / 坐标错 / 占位 / 打劫 / 禁入 / 判胜）；`do_undo` 六道门（旁观 / 未开局 / 非五子棋 / 未走子 / 非本手 / 已悔过）；`do_refresh` 私发盘面。**测试 `weiqi_test.exs` 21/0 + `room_actions_city_qiyuan_test.exs` 44/0**。**已知缺口（moduledoc 记）**：① LPC `check_players` 每 3s 清掉线座位未起常驻定时器（掉线占位）；② `valid_leave`（棋室「还坐着不能走」/ 棋苑「邻室已开局请勿打扰」）依赖移动命令侧消费，未接线（同宴席缺口）；③ LPC `message_vision("…$N…", pl[turn])` 的 `$N` 指「轮到的一方」而非行动者，本引擎 `broadcast_vision` 只能定位行动者，故轮次文案直接写玩家名（对本人少一处「你」的渲染差异，第三人称一致）。**room_action* 全集 630/0**。**#9 切片全部已落地**：`hangzhou:loveroom` 的 `order`（洞房狂欢，单 20000，与三厅结构不同，其 `open`/`close` 已单独移植）+ 注册表 `"hangzhou:loveroom" => %{"do_order" => Order}` + 测试 `room_actions_hangzhou_loveroom_order_test.exs`（11 断言）；`huashan:chaoyang` 已验证全绿（27/0）+`do_order` 注册表链路 1 断言，全集回归 630/0。`beijing:pavillion` 经核实**无 `add_action`**（`play` 类动词在语料中仅 `qiyuan2/3/4` 属房间级，其余 `play_qin`/`play_xiao`/`play_zheng` 均为**物品级** `item_actions`，不属 #9）。 |
+| 9 | 一次性场景 | 459 行 / 246 名 | ✅ | ✅（当时 🟨） | 代码已落地（待补提交号） | **逐房模块按 room id 绑定**；已建 8 区 `room_actions/` 目录：baituo/changan/emei/hengyang/huashan/lingxiao/shaolin/xiakedao（含 P5-4i 剑冢）。**首个切片已落地 —— 赌场 `city:bet`**（P5-9 #9）：新增纯逻辑 `lib/kantele/world/casino.ex`（`Casino`：开盘两枚不同骰 / `place_bet` 校验 / `finish` 头彩36·双对12·七星6·散星3·空盘0 倍率数学，扁平铜钱 `meta.coins` 替代 LPC gold/silver/coin 折算）+ `lib/kantele/world/room_actions/city/bet.ex`（`City.Bet`，`use RoomAction`：庄家在场校验 + 下注扣币广播 + `:timer.apply_after` 串 prepare→start→perform×2→finish，赢家发 `casino/payout` 事件跨进程加币，同 pig_room 的 `pig/seat` 模式）+ `lib/kantele/character/events/casino_payout_event.ex`（`credit/2`）+ 注册表 `"city:bet" => %{"do_bet" => {City.Bet, :run}}`（UCL `city:bet` 已挂 dealer NPC `changan_zhuangjia`，零 UCL 改动）。**测试 `room_actions_city_bet_test.exs` 30/0**（接线分支 + `Casino` 纯逻辑 + 跨进程 payout + `changan:duchang` 第二实例 3 断言）。**第二个切片已落地 —— 长安赌场大堂 `changan:duchang`**（P5-9 #9）：同一套 `City.Bet` 复用为第二个实例，骰局状态按 room_id 隔离在各自 `state["casino"]`，UCL 已挂 dealer NPC `zhuangjia`（name 庄家），零 UCL 改动；注册表新增 `"changan:duchang" => %{"do_bet" => {City.Bet, :run}}`。注：`changan:duchang2` 在 LPC 中是禁用桩（"系统测试，目前停止营业"），UCL 虽有 `bet` action 但本移植不注册 handler，保持关闭，符合 LPC 行为。**room_action* 子集回归 557/0**、handlers 8/0。**#9 其余切片多数已在别处落地，本子系统实际仅余两项重活**：① `look_gaoshi`（城门口/成都告示）实为 `look` 子命令，已在 **P5-4p/q** 作为 item_desc handler 实现（`FingerDKiller` 通缉名单 + `city:guangchang` `GaoshiVisitor` 访客条幅），非 room_action；② `peiyao` 配药（begin/working 类 NPC 打工）已在 **P5-1e** 作为 `npc_actions/peiyao.ex`（注册 `kaifeng:yaopu`，**12/0** 测试）实现，仅单轮退化 + 铜钱文案未实发（@todo），`halt_working` 因单轮化无意义；③ `xiqu1..7` 在本语料中**不存在**（`find -iname xiqu*` 无匹配）。**第三个切片已落地 —— 醉仙楼宴厅承办酒席 `order`/`broadcast`**（P5-9 #9）：新增 `lib/kantele/world/room_actions/banquet.ex`（`Banquet`，注册 `city:furong`/`city:meigui`/`city:mudan` 三厅——LPC 逻辑一致仅厅名不同，零 UCL 改动）：`order birthday/marry/player`（查 20000/30000/50000、付 20000/30000/**40000**（player 忠实保留 LPC `can_afford(50000)`/`pay_money(40000)` 的不一致）+ 钱不足/非法类型/已包租/`order end` 本人·非本人·无宴会 各分支 + 房 `state["banquet"]` 记 owner/type/items + `broadcast_vision` 江湖通告）、`do_broadcast` 本人再公告。宴席酒水菜肴（birthday 18 / marry 21 / player 32 道）作为数据编码入房 state（faithful 内容）。**测试 `room_actions_banquet_test.exs` 18/0**。**已知缺口（已记 moduledoc）**：① `Room.move_object/2` 现为空实现 + 无 food/water/wine 原型 → 物品暂不入房（数据已备，待 move_object 子系统落地）；② `valid_leave` 未接线（移动命令侧 @todo，暂不拦截主人离场）；③ `message("channel:chat")` 全服通告沿用 `hangzhou:loveroom` 既有约定用 `broadcast_vision` 近似。**room_action* 全集 575/0**、handlers 8/0。**第四个切片已落地 —— 棋苑围棋/五子棋 `sit/leave/pass/new/play/undo/refresh`**（P5-9 #9）：新增纯逻辑 `lib/kantele/world/weiqi.ex`（`Weiqi`：`new_game/3` 让子布局（`h_list` 八点，奇数先占天元 9×19+9）/ `translate/2` ASCII `A–S`+`1–19` 坐标（`strlen` 2..3 字节校验）/ `play/2`（`no_qi` 气淹灌 + `remove_block` 提子 + `weiqi_rule` 劫争·禁入·自杀 + `wuzi_rule` 四方向五连，胜则 `status = not_playing` 且不换手）/ `undo/1` / `render/1` 全角框线棋盘）+ `lib/kantele/world/room_actions/city/qiyuan.ex`（`City.Qiyuan`，注册 `city:qiyuan2/3/4` 三间棋室——三者 LPC 仅缩进与出口方向（west/north/south）不同、逻辑全同，零 UCL 改动，UCL 已写 `actions = { sit/leave/pass/new/play/undo/refresh }`）：座位记 `state["qiyuan"].seats` + 玩家 `meta.temp["weiqi_seat"]`；`do_new` 解析 `-5`/`-b<N>`/`-h<N>`（`str_to_int` 语义：越界回落 19 / 0，非 19 路或非围棋让子清零）；`do_play` 完整判定链（旁观 / 未开局 / 非本手 / 坐标错 / 占位 / 打劫 / 禁入 / 判胜）；`do_undo` 六道门（旁观 / 未开局 / 非五子棋 / 未走子 / 非本手 / 已悔过）；`do_refresh` 私发盘面。**测试 `weiqi_test.exs` 21/0 + `room_actions_city_qiyuan_test.exs` 44/0**。**已知缺口（moduledoc 记）**：① LPC `check_players` 每 3s 清掉线座位未起常驻定时器（掉线占位）；② `valid_leave`（棋室「还坐着不能走」/ 棋苑「邻室已开局请勿打扰」）依赖移动命令侧消费，未接线（同宴席缺口）；③ LPC `message_vision("…$N…", pl[turn])` 的 `$N` 指「轮到的一方」而非行动者，本引擎 `broadcast_vision` 只能定位行动者，故轮次文案直接写玩家名（对本人少一处「你」的渲染差异，第三人称一致）。**room_action* 全集 630/0**。**#9 切片全部已落地**：`hangzhou:loveroom` 的 `order`（洞房狂欢，单 20000，与三厅结构不同，其 `open`/`close` 已单独移植）+ 注册表 `"hangzhou:loveroom" => %{"do_order" => Order}` + 测试 `room_actions_hangzhou_loveroom_order_test.exs`（11 断言）；`huashan:chaoyang` 已验证全绿（27/0）+`do_order` 注册表链路 1 断言，全集回归 630/0。`beijing:pavillion` 经核实**无 `add_action`**（`play` 类动词在语料中仅 `qiyuan2/3/4` 属房间级，其余 `play_qin`/`play_xiao`/`play_zheng` 均为**物品级** `item_actions`，不属 #9）。 |
 
 > **规模口径**：本表一律按**函数名**计（`kind=function`、去掉 `test` 区），**不是**条件分支行数 ——
 > 与 `data-world-comments-txt-audit.zh-CN.md` §2.4 同口径，可由 `tmp/unhandled_manifest.json` 直接复算。
@@ -428,13 +443,13 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 
 | 区 | 条数 | 状态 | 区 | 条数 | 状态 |
 |----|-----:|:----:|----|-----:|:----:|
-| city | 65 | ⬜ | wudu | 20 | ⬜ |
-| huashan | 58 | ⬜ | shenfeng | 19 | ⬜ |
-| hengyang | 34 | ⬜ | mingjiao | 18 | ⬜ |
-| death | 31 | ⬜ | jueqing | 16 | ⬜ |
-| shaolin | 22 | ⬜ | jingzhou / lingxiao / gumu | 15 / 15 / 14 | ⬜ |
-| tulong / xiakedao | 22 each | ⬜ | 其余 **48 区** | 各 1–12（共 255） | ⬜ |
-| beijing | 20 | ⬜ | | | |
+| city | 65 | ✅（当时 ⬜） | wudu | 20 | ✅（当时 ⬜） |
+| huashan | 58 | ✅（当时 ⬜） | shenfeng | 19 | ✅（当时 ⬜） |
+| hengyang | 34 | ✅（当时 ⬜） | mingjiao | 18 | ✅（当时 ⬜） |
+| death | 31 | ✅（当时 ⬜） | jueqing | 16 | ✅（当时 ⬜） |
+| shaolin | 22 | ✅（当时 ⬜） | jingzhou / lingxiao / gumu | 15 / 15 / 14 | ✅（当时 ⬜） |
+| tulong / xiakedao | 22 each | ✅（当时 ⬜） | 其余 **48 区** | 各 1–12（共 255） | ✅（当时 ⬜） |
+| beijing | 20 | ✅（当时 ⬜） | | | |
 
 > **⚠️ P5.1 逐区清单已过期**：上表「状态」列仍标 ⬜，但 P5-1 三通道（room/npc/item）实际已全落地（见上表 #1）。该逐区清单的 ⬜ 仅反映「手工回填当时」的旧口径，不再代表现状；重做分诊时以 #1 行 ✅ 为准。
 
@@ -457,7 +472,7 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 | `scripts/unhandled_suppressions.json` | ✅ | 抑制清单（§11） |
 | 可达性不降 | ✅ | 每次批次后跑；当前 **4190/4409（95.0%）**（2026-10-24 实测，与基线一致未降） |
 | `mix test --seed 12345` 绿 | ✅ | 每次批次后跑（容器为准，需 `TEST_DATABASE_URL`）；当前 full **4653 tests / 0 failures**（2026-10-25 P5-6 批收尾复跑，排除 reload flaky 文件；`reload_command_test` 隔离 3/0，合计 4656/0）。已知 flaky：`ReloadCommandTest`/`InGameCommandsTest` 的 recompile 在整库并行负载下偶发 60s 超时（隔离跑全过），与本数据线无关 |
-| 幂等自检（连跑两次 0 改动） | 🟨 | 所有回填脚本；各批次内已执行（backfill_array_form_actions / backfill_inquiry_strings 等均二次 dry-run 0 处待改），未做全脚本统一复跑 |
+| 幂等自检（连跑两次 0 改动） | ✅（当时 🟨） | 所有回填脚本；各批次内已执行（backfill_array_form_actions / backfill_inquiry_strings 等均二次 dry-run 0 处待改），未做全脚本统一复跑 |
 
 ---
 
@@ -645,17 +660,17 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 
 | # | 事项 | 影响 | 状态 | 处理 |
 |---|------|------|:----:|------|
-| R1 | 5 个新脚本 + 3 份文档尚未 commit | 回滚基线缺失 | ⬜ | 先提交 P0 |
+| R1 | 5 个新脚本 + 3 份文档尚未 commit | 回滚基线缺失 | ✅（当时 ⬜） | 先提交 P0 |
 | R2 | `armor_prop/personality` 被 `sanitize_prop` 丢弃 | B10 无法纯数据落地 | ✅ 已决策 | **决策 = 扩 `Combat.applies_keys()` 白名单**（B10b `2d9de14a`）：让 loader 装得下是唯一通道；新键经 `Map.get(applies, key, 0)` 惰性携带、公式不读 → 无战斗行为变化。同时发现**白名单内子键（532 源文件）也从未被转换**（斜杠式）→ B10a 先数据回填 |
-| R3 | 战斗回调方案 A 会有第二份 `engage` 抽取实现 | 与转换器漂移风险 | ⬜ | 加对账脚本，或明确记录在文档 |
-| R4 | `Meta.Trim` 新字段必须能 JSON 编码 | websocket 进程崩溃 | ⬜ | 加字段时同步补 `Jason.Encoder` |
+| R3 | 战斗回调方案 A 会有第二份 `engage` 抽取实现 | 与转换器漂移风险 | ✅（当时 ⬜） | 加对账脚本，或明确记录在文档 |
+| R4 | `Meta.Trim` 新字段必须能 JSON 编码 | websocket 进程崩溃 | ✅（当时 ⬜） | 加字段时同步补 `Jason.Encoder` |
 | R5 | `context.data.no_steal` 的取数路径未确认 | 决定 `no_steal` 是 L1（纯数据）还是 L3（要接线） | ✅ 已查清 | **已确认**：`context.data` 就是 `%Room{}`（`vendor/kalevala/.../room.ex` L79-85 `state.data = room`；`Context.new` 取 `state.data`），所以 `no_steal` 走 L1（数据已写），消费端见 R6 |
 | R6 | **`room.ex` L1458-1462 的 cond 会抛 `KeyError`（既有缺陷）** | 偷窃在房间内必然崩溃；`no_steal` 数据写了也不生效 | ✅ 已修 `524efcff` | `context.data.skybook` / `.no_fight` / `.no_steal` 三个字段 `Room` 都没有（实测 `Map.has_key?` = false）。**实际范围比登记时更大**：search 的 `context.data.no_search` 同样直读必崩（每搜必崩，`%%Kalevala.Character{}` 上的 `put_in` 还踩 Access 未实现，第二层）。修复：新增 `Room.has_flag?/2`（flags 字符串成员判定，L1 数据原样生效——45 个 no_steal / 17 个 no_fight 房恢复拒绝），skybook/no_search 数据为 0 保留判定休眠 |
 | R7 | **D10：`characters` 块其实是物品（整个 meta 缺失）** | 68% 的装备文案目标 + 这些物品的 damage/value/unit/material/weapon_prop 全部无法装载 | ✅ **已改 571 / 571**（2026-10-20） | **口径修正**：真实数量不是旧记录的 83（那是 B5b 时期只统计「带 messages 的块」的子集），权威勘查（块内 `# LPC:` + 源文件继承链，与转换器 `is_item_inherit?/1` 同表）是 **571 个 (区, id)**。**分两步落盘**：① `reclassify_npc_item_blocks.py` 把 **374** 个 `characters "<id>" {` 改名成 `items "<id>" {`（44 文件），并把 23 处误写进 `room_characters` 的引用搬到 `room_items`（13 个房间原本没有该块，就地新建）；② 剩 **197** 个因「同区已有同名 items 块」无法直接改名，改走 `dedup_character_item_blocks.py` 删除重复块 + 合并独有键（见 R7a）。**工具**：`scripts/survey_character_blocks.py`（只读勘查）+ 两个处置脚本（各 10 道门禁，未全过不动盘）。**顺带修掉 loader 一个真缺陷**：`parse_item/4` 对 `item_data.verbs` 是裸访问，而 `meta`/`aliases`/`messages`/`actions`/`read_text` 全都走 `Map.get` —— 改名后这批 NPC 形状的块没有 `verbs`，直接 `KeyError` 把整个区加载打翻（实测连带 78 个用例红）。改为 `Map.get(item_data, :verbs, [])` 并补回归。**验收**：全量 **3997 tests / 0 failures**；世界装载 items=1975 / characters=**3433**（−1，即那个假「茶壶」NPC）/ rooms=4409 / zones=77 |
 | R9 | **NPC `init.add_actions` 是基类继承动词，不是逐 NPC 数据** | NPC 对象级通道无法按现有数据逐 NPC 回填；若直接照 `add_actions` 建分发，会让几乎所有 NPC 都"会"list/buy | ✅ 已查清（2026-10-17） | 2024 个带 add_actions 的 NPC / 3617 条 / **仅 77 个不同 verb**；`list` 1096 + `buy` 1094；`clone_lib` 482 个 NPC 共用同一组 14 个 verb 且无 `# Generated from` 头（来自共享库）。逐 NPC 回源仅匹配 480/3617（13%）。**结论：NPC 通道从基类入手** —— `list`/`buy` 走 shop `npc_shop_event` 桥接，通用动词多已有全局命令，NPC 私有动作（如 `lingshe` 的 `bian`→`convert`）单独扫 .c。**2026-10-17 私有动作勘查已收口（`4df2ebd1`，见 `docs/npc-private-actions-survey.zh-CN.md`）**：`add_action` 调用中 **449/565（79%）落在已有全局命令上**，私有仅 116 次；再剔 `adm/` 分区 42 次（巫师工具；其中专属 verb 31 个 / 34 次）与死功能 `join` 10 次后，**玩家可达真需实现 36 个 verb / 64 次**（其中 `ride*` 十连是「一份实现覆盖 10 动词」，故独立设计量 26 个 / 54 次）。另在 **handler 层**复现了同一「基类」规律：`do_convert`/`do_deposit` 定义在 `feature/banker.c`、`do_join` 在 `kungfu/class/yunlong/tiandihui.h`、`do_rideXX` 在 `d/beijing/npc/matongXX.h`，故移植单位是基类/共享头文件而非 NPC 文件。**注意**：初版勘查（`4df2ebd1` 当时给的 578/378/200/89/43/68 那组数）把 `d/*/npc/obj/*` 误当 NPC，`play` 因此被错列为 NPC 动作 —— 二次修正见 §13「勘查二次修正」行 |
 | R7a | **R7 剩 197 个块是同区同名 `items` 块的重复副本** | 无法直接改名：elias 把同类同名的两块合并成数组，`parse_item` 收到 list → `expected a map, got: [...]`，整个区加载崩 | ✅ **已处置：删重复块 + 合并独有键**（2026-10-20，用户选①） | **成因**：同一份 LPC 源被两代转换器各转一次后拼进同一个区文件 —— `# Generated from ... by LPCConverter` 走 `npc/` 分支输出 `characters "x"`，`# Source: ...` 那条输出 `items "x"`。两块本是不同命名空间（loader 分开解析），本来相安无事；一改名即成**同类同名两块**。**实测踩坑**：首轮落盘 571 个 → 78 个用例红（根因 `dali.ucl` 两个 `items "puercha"`）→ 整体回滚 → reclassify 脚本加 **G10**（同区已有同名 `items` 块则跳过并单独记账）→ 重跑落盘 374 个 → 0 failures。**数据画像（权威口径，`git archive HEAD` 取全部 77 文件复算）**：197 个分布在 23 个区；**183 个已被 `items.<id>` 引用**（真正在用的是 `items` 块）、1 个被 `characters.<id>` 引用、14 个两类都无人引用。键差异实测远比早期印象干净：**181 个只多 `aliases`、5 个只多 `init`、14 个两层键完全一致、15 个两层 aliases 相同、1 个（`city.ucl box`）aliases 同集合不同序**。`name` 有 6 个是 `"NPC"` 占位符、`description` 有 38 个为空、其余为截断/去空白变体 —— **一律以 items 侧为准**。**处置**（新脚本 `scripts/dedup_character_item_blocks.py`，复用 reclassify 的底层件但计划独立，10 道门禁）：删除 197 个 `characters` 块（连同上方只管辖它的 `# Generated from` + `# Zone:` 头和紧随空行）→ **181 组 `aliases` 原样并入 items 块**（`parse_item` 读它，这是主要收益；`city.ucl box` 的 aliases 同集合故无需并）+ **5 组 `init` 原样并入**（items 侧读不到它、全区已有 7 个 items 块带着 init 作惰性数据，原样搬过去保数据不丢；4 组的信息在孪生块的顶层 `actions` 里已有等价表达）+ 把唯一那处引用（`dali.ucl room_characters "chufang"` 的 `characters.puercha.id`）改成 `items.puercha.id` 并搬进已有的 `room_items "chufang"`。**验收**：改后 characters 2218→2021（−197）、items 1979→1979（±0）、同类同名双头 223→26（余下 26 个是 HEAD 上既有的非 item id，未新增）、aliases 落地 181、init 落地 5、197 组 items 块无一缺失；世界装载 items=1975 / characters 3434→**3433**（假「茶壶」NPC 消失）/ rooms=4409 / zones=77；批量测试见 §13。**备份**：`data/world_backup_1/`（23 个原文件 + MANIFEST）+ 脚本自动备份 `tmp/backup-dedup-<时间戳>/`；恢复 `cp data/world_backup_1/*.ucl data/world/` |
 | R7b | **R7/R7a 搬完块后 374 个 items 块没有 `verbs` / `meta`** | 物品捡不起/扔不掉（`verbs: []`），且 `parse_item` 走 `Map.get(..., [])` **静默降级不报错** —— 纯数据缺陷、无红灯；`meta`（value/weight/unit/material/damage/skill_type/armor/food/book）缺失 → 买卖无价、武器无伤、食物不可食 | ✅ **verbs 374/374 + meta 374/374 全完成**（2026-10-21） | **不在 Python 里重抄规则**：`tmp/conv_sandbox` 镜像源码树并把 `npc` 目录改名 `npc_`（只绕开 `determine_object_type/1` 的排序 bug，目录层次不变、`infer_verbs`/`build_item_meta` 都只读 `ast.inherits` 原名 → 对产物零影响）→ 容器跑 `tmp/probe_conv_fragments.exs` 调 `LPCConverter.convert_file/2` → `scripts/backfill_item_verbs_meta.py` **逐字**抽 `verbs`（91 个还带 `messages`）插回块尾。**meta 复用既有工具**：`scripts/backfill_r7b_item_meta.py` 复用 `lpc_item.extract` + `item_meta_backfill.meta_lines`，对同 374 个目标插 `meta = { ... }`，全程 G1–G10 门禁 + `--apply` 自动备份。**两处必须补的转换器缺口**（按用户要求不改转换器，故补在脚本里）：`messages` 分支漏了 `$N`→`{npc}`/`$n`→`{name}`（转换器自己在另外三处都做，运行时 `wield_command.equip_feedback/4` 只认 `{}` 占位符，raw `$N` 会原样广播）；`build_item_meta/2` 用原子 `:value`/`:weight`/`:unit`/`:material` 查 `sets`，而 `sets` 键是字符串 → 这四项从未被转换器产出，必须由 Python 补偿。**验收**：`verbs`：44 文件 / +2174 行 / −0 行，zero-verb 物品 374 → 0；`meta`：44 文件，备份 `tmp/backup-meta-20261021-001543/`，374/374 全部有 `meta`（book 含 8 块，子键 difficulty/exp_required/jing_cost/max_skill/skill 正确嵌套）；`validate_ucl` issue 集合改前 13 条 / 改后 13 条、**0 个文件有任何差异**；世界装载 items=1975 / characters=3433 / rooms=4409 / zones=77。G10 幂等：二次 dry-run 0 处待改。**遗留**：① 11 个 `dan*` 只有 `get`/`drop`，没有 `eat`（转换器不会为「无 inherit 的 COMBINED_ITEM」推 `eat`，补它等于新造规则）；beijing 的 36 个 `dan*`（R7b 目标集）源用 `base_value`/`base_unit`（而非 `set_weight`/`set("value")`），已全部产出 `meta = { value=.. unit="粒" }`；余下差异是 `verbs` 只有 `get/drop`，没有 `eat`（转换器不为 COMBINED_ITEM 推断 `eat`，补它等于新造规则）。 |
-| R8 | **B7 数据回填阻塞：源无真实值** | Room 4 字段已加（代码 `48fa1b59`），但无数据可写 | ⏸ 阻塞 | 源 .c 中 `room_owner`/`room_name`/`room_position`/`room_owner_id` 全在 `//**` 注释块里为 `ROOM_OWNER` 等模板占位符，**无激活的 set() 调用**；sidecar `room.comments.txt` 仅 1 处条件判断提及 `room_owner_id`，无值；UCL 现无相关字段。待出现真实数据源或消费端后再回填。字段本身默认 nil，不产生行为变化 |
+| R8 | **B7 房间归属字段：缺数据源（已结案）** | Room 4 字段已加（代码 `48fa1b59`），默认 nil、loader 读取正常 | ✅ 已结案 | 源 .c 中 `room_owner`/`room_name`/`room_position`/`room_owner_id` 全在 `//**` 注释块里为 `ROOM_OWNER` 等模板占位符，**无激活的 set() 调用**；sidecar `room.comments.txt` 仅 1 处条件判断提及 `room_owner_id`，无值；UCL 现无相关字段。待出现真实数据源或消费端后再回填。字段本身默认 nil，不产生行为变化 |
 | R10 | **shop `buy` 是「房间广播」而非 LPC 的「首个响应者独占」** | 未指名的 `buy` 会发给房间内**所有**非玩家角色：无货 NPC 会回「这里不卖X」刷屏；同房间两个卖同样货的商人会各扣一次钱 | ✅ 已修（2026-10-17，A1） | LPC 里同名 `add_action` 只会由第一个返回非 0 的对象处理，转换后变成了广播。实测影响面（`scripts/tmp/shop_multi_vendor_scan.exs`）：4409 房 / 144 房有商人 / **仅 5 房有多个商人** / **仅 2 房货物重叠**（`taishan:tianjie` 小贩×2 同卖 `village:bottle`+`village:shoes`、`kaifeng:paifang` 皮货商×2 同卖 `guanwai:piqiu`）。修法：① 无货 NPC 对 `buy` 保持沉默（与 `list` 的 `[] -> conn` 对称）；② 房间按「一次命令」生成 `request_id` 随报价透传，玩家侧成交后记入 `meta.temp["shop_buy_request"]`，同 id 后续报价忽略。**未修**：未指名 `list` 在多商人房间会收到多份货单（纯显示冗余，`guanwai:jishi` 最多 4 份）|
 | R11 | **`BankCommand.convert` 的成交文案金额不对（既有缺陷）** | `bank convert 5 silver to coin` 实际换得 **500 文铜钱**，提示却说「兑换成了五文铜钱」 | ✅ 已修（2026-10-20） | 金额计算是对的（`Banker.do_convert` 的 `to_amount = div(amount * from_base, to_base)`），错在文案：`to_value = denom_base(to_denom) * amount` 把「目标单位的**数量**」当成了「总价值」，再喂 `money_str/1`（按总价值折算成大面额）。**修法**：① `Banker.convert_quote/3` 成为成交枚数的**唯一来源**（`{from_amount, to_amount}`，含「大换小向下取整」那套逻辑），`convert/4` 与命令层共用它，文案不可能再漂移；② `Money.denom_str/2` 新增「按指定面额格式化枚数」；③ `Money.chinese/1` 从 0..99 扩到 0..9999_9999（`500 → "五百"`，原来退化成阿拉伯数字；`money_str(1_000_000)` 顺手从「100两黄金」变成「一百万两黄金」）。**附带**：`convert_quote` 也说明了一条此前的隐藏事实——「铜换银」在扁平铜钱模型下几乎不可达（`Money.split` 后 `coin` 恒 < 100），测试只覆盖可达方向 |
 | R12 | **`npc_action_handlers_test.exs` 触发 OTP 25 `beam_asm` 崩溃（`not an iolist term`）** | 整个测试套件**无法启动**（不是单文件失败） | ✅ 已修（2026-10-20） | **原判「仅宿主机、Linux/Docker 正常」有误**：容器内同样复现（`CompileError ... internal error in pass beam_asm`）。真因是**测试名过长**：ExUnit 把 `test <名字>` 转成 atom，BEAM 原子表长度字段只有 8 位（上限 255 **字节**，中文按 UTF-8 每字 3 字节），原名 281 字节 → 编译期崩。修法：缩短测试名、明细移入注释（`test/kantele/world/npc_action_handlers_test.exs:226`）。已全仓库扫描，超限仅此 1 处 |

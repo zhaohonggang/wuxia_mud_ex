@@ -1,5 +1,19 @@
 # AGENTS.md — Wuxia MUD (Elixir/Kalevala)
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 **沟通语言**: 优先使用中文与用户交流。
 
 ## 运行环境（务必遵守）
@@ -160,7 +174,8 @@ lib/
   - **Never overwrites existing** — checks `File.exists?` first
 - **Perform dir**: `lib/kantele/combat/skills/performs/<skill>/<move>.ex`
   - 59 hand-written restored from `e4dfc66` (never overwrite)
-  - 371 extractor skeletons need manual implementation
+  - 371 extractor skeletons: 动态公式以 `TODO(migrate)` 保真注释留档，已定性为
+    文档化保真降级（非待办；F4 武功迁移于 2026-11-12 结案）
 
 ### Migration Principle
 

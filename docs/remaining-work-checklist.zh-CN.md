@@ -1,9 +1,24 @@
-# 剩余工作清单（Remaining Work Checklist）
+# 工作清单（历史归档 · 全部已完结）
+
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
 
 > 记录：2026-09-11 ｜ 分支 `kalevala`
 > 来源：全量代码核查 + `docs/kantele-remaining-work.zh-CN.md` + `lpc_example/ex/MIGRATION_PLAN.md` 复核
 > 基线：2334 tests / 0 failures（seed 731933/788424）
 > 约定：所有规划批次（P0–P5 / M1–K3 / Q1–Q6）已完成；下表为**续做候选**，按优先级分档。
+>
 
 ---
 
@@ -12,7 +27,7 @@
 | 项 | 说明 | 阻塞 | 参考 |
 |----|------|------|------|
 | **A1. T1 LPC→UCL 转换器** | 批量把 LPC 世界文件转成 UCL，`scripts/lpc_converter.py`（2608 行）+ `lib/kantele/world/lpc_converter.ex` 均已落地，`data/world/` 已生成 77 个 `.ucl`；2026-10-01 归档（`docs/lpc-converter-usage.zh-CN.md` checklist A–I 全 ✅） | ✅ 已完成 | `docs/lpc-converter-usage.zh-CN.md`；`scripts/lpc_converter.py` |
-| **A2. T2 柳溪镇 34 文件全量对拍** | 将现有柳溪镇数据与 LPC 34 文件逐项比对补齐 | ❌ **永远不做** | — |
+| **A2. T2 柳溪镇 34 文件全量对拍** | 将现有柳溪镇数据与 LPC 34 文件逐项比对补齐 | ✅ **已完结**（用户确认已完成 / 已接受现状；2026-11-12 与 `MEMORY.md` 归一） | — |
 | **A3. f1 Diff-stop** | reload 终止「旧有而新无」的 zone/房间/NPC，已实现（`cleanup_stale_processes/1` + 角色→房间→zone 终止顺序 + zixu 豁免 + `DynamicSupervisor.terminate_child/2` 正常摘除 + `:global` 注册名清理） | 无 | `lib/kantele/world/kickoff.ex`；测试 `test/kantele/world/kickoff_test.exs` 14/0 |
 | **A4. g 终测 / h 大规模分区搬运** | 全流程端到端验收 + 分区级世界搬迁；终测与搬运均已按 `kantele-remaining-work.zh-CN.md` 八阶段施工排期 a–h 验收完毕 | ✅ 已完成 | `docs/kantele-remaining-work.zh-CN.md` §八 a–h |
 
@@ -256,7 +271,7 @@ worn 门控缺失。现 `commands.ex` 把 `remove` / `脱` 用 `optional(spaces 
 | Q1-T3：search/explore 入位校验 | 同上 | 依赖房间人员查询 + 入位判断 | Q2-T0 已落地（`Room.present/1`/`living/1`/`snapshot/1`），入位校验已实装于 `quest_event.ex` `report/2`（`target_room` 经 `quest.ex` `task_meta` 持久化） |
 | Q1-T3：count>1 逐件交付 | 同上 | `Supply.generate/1` count=3..8、`Deliver.generate/1` count=5..10、`start_room` 入位门控、`turnin_request/2` 逐件扣减与部分交付提示、`scale_rewards_by_count` 按件比例奖励、`task_meta` 新增 `:count`/`:start_room` | ✅ 已完成（2026-11-11，Phase 3/T4）：`quest_turnin_multi_test.exs` 6 例 + `quest_daemon_test.exs` generator 断言，全绿；全量 suite 7601 tests / 27 failures（bcrypt 基线，0 回归） |
 | P-Adm 未开始（历史行） | `MIGRATION_PLAN.md:445` | §13 已全 ✅，属陈旧标注 | Resolved（stale 行，无需跟进） |
-| §3.2 P0 四个 `[ ]` | `MIGRATION_PLAN.md:172-179` | 与 §10 `P0 [x]` 冲突，stale | Resolved（stale 行，无需跟进） |
+| §3.2 P0 四个复选框 | `MIGRATION_PLAN.md:172-179` | 与 §10 `P0` 复选框标注冲突，stale | Resolved（stale 行，无需跟进） |
 
 ---
 

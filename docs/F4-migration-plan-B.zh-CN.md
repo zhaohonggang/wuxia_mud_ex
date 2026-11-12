@@ -1,7 +1,22 @@
 # F4 招式迁移 · B 组（按目录字母顺序，283 个文件）
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 本文件由 `scripts/perf_acceptance.py` 的基线报告生成，供一个独立 session 执行。
 > 另一半见另一份 .md；两半按完整路径字母顺序对半切分，互不重叠。
+>
 
 ## 目标
 
@@ -267,7 +282,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `taiji_quan/` （5 个，基线缺失 40 条）
 
 - [x] ❌ `taiji_quan/ji.ex` ← `taiji-quan/ji.c`  (miss=5)
-- [ ] ❌ `taiji_quan/tu.ex` ← `taiji-quan/tu.c`  (miss=19)
+- [x] ❌ `taiji_quan/tu.ex` ← `taiji-quan/tu.c`  (miss=19)
 - [x] ❌ `taiji_quan/yin.ex` ← `taiji-quan/yin.c`  (miss=5)
 - [x] ❌ `taiji_quan/zhan.ex` ← `taiji-quan/zhan.c`  (miss=5)
 - [x] ✅ `taiji_quan/zhen.ex` ← `taiji-quan/zhen.c`  (miss=6→0，PASS)
@@ -294,8 +309,8 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `tangmen_throwing/` （3 个，基线缺失 51 条）
 
 - [x] ✅ `tangmen_throwing/hua.ex` ← `tangmen-throwing/hua.c`  (miss=15→0，PASS)
-- [ ] ❌ `tangmen_throwing/qian.ex` ← `tangmen-throwing/qian.c`  (miss=19)
-- [ ] ❌ `tangmen_throwing/san.ex` ← `tangmen-throwing/san.c`  (miss=17)
+- [x] ❌ `tangmen_throwing/qian.ex` ← `tangmen-throwing/qian.c`  (miss=19)
+- [x] ❌ `tangmen_throwing/san.ex` ← `tangmen-throwing/san.c`  (miss=17)
 
 ### `tanzhi_shentong/` （4 个，基线缺失 39 条）
 
@@ -314,7 +329,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tiangang_chenfa/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `tiangang_chenfa/bai.ex` ← `tiangang-chenfa/bai.c`  (miss=9)
+- [x] ❌ `tiangang_chenfa/bai.ex` ← `tiangang-chenfa/bai.c`  (miss=9)
 
 ### `tianhuan_shenjue/` （1 个，基线缺失 4 条）
 
@@ -322,12 +337,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tianjue_dao/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `tianjue_dao/suo.ex` ← `tianjue-dao/suo.c`  (miss=9)
+- [x] ❌ `tianjue_dao/suo.ex` ← `tianjue-dao/suo.c`  (miss=9)
 
 ### `tianlei_dao/` （2 个，基线缺失 16 条）
 
-- [ ] ❌ `tianlei_dao/shan.ex` ← `tianlei-dao/shan.c`  (miss=9)
-- [ ] ❌ `tianlei_dao/zha.ex` ← `tianlei-dao/zha.c`  (miss=7)
+- [x] ❌ `tianlei_dao/shan.ex` ← `tianlei-dao/shan.c`  (miss=9)
+- [x] ❌ `tianlei_dao/zha.ex` ← `tianlei-dao/zha.c`  (miss=7)
 
 ### `tianlei_shengong/` （1 个，基线缺失 4 条）
 
@@ -335,16 +350,16 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tianlong_jian/` （1 个，基线缺失 14 条）
 
-- [ ] ❌ `tianlong_jian/zhui.ex` ← `tianlong-jian/zhui.c`  (miss=14)
+- [x] ❌ `tianlong_jian/zhui.ex` ← `tianlong-jian/zhui.c`  (miss=14)
 
 ### `tianluo_diwang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `tianluo_diwang/wang.ex` ← `tianluo-diwang/wang.c`  (miss=6)
+- [x] ❌ `tianluo_diwang/wang.ex` ← `tianluo-diwang/wang.c`  (miss=6)
 
 ### `tianshan_zhang/` （2 个，基线缺失 7 条）
 
-- [ ] ❌ `tianshan_zhang/fugu.ex` ← `tianshan-zhang/fugu.c`  (miss=5)
-- [ ] ❌ `tianshan_zhang/xue.ex` ← `tianshan-zhang/xue.c`  (miss=2)
+- [x] ❌ `tianshan_zhang/fugu.ex` ← `tianshan-zhang/fugu.c`  (miss=5)
+- [x] ❌ `tianshan_zhang/xue.ex` ← `tianshan-zhang/xue.c`  (miss=2)
 
 ### `tianyu_qijian/` （3 个，基线缺失 18 条）
 
@@ -354,7 +369,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tianzhu_jian/` （1 个，基线缺失 13 条）
 
-- [ ] ❌ `tianzhu_jian/suo.ex` ← `tianzhu-jian/suo.c`  (miss=13)
+- [x] ❌ `tianzhu_jian/suo.ex` ← `tianzhu-jian/suo.c`  (miss=13)
 
 ### `tie_zhang/` （5 个，基线缺失 44 条）
 
@@ -382,7 +397,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `tonggui_jian/` （1 个，基线缺失 26 条）
 
-- [ ] ❌ `tonggui_jian/fen.ex` ← `tonggui-jian/fen.c`  (miss=26)
+- [x] ❌ `tonggui_jian/fen.ex` ← `tonggui-jian/fen.c`  (miss=26)
 
 ### `tougu_zhen/` （1 个，基线缺失 6 条）
 
@@ -394,11 +409,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `weituo_chu/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `weituo_chu/jishi.ex` ← `weituo-chu/jishi.c`  (miss=11)
+- [x] ❌ `weituo_chu/jishi.ex` ← `weituo-chu/jishi.c`  (miss=11)
 
 ### `weituo_gun/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `weituo_gun/fumo.ex` ← `weituo-gun/fumo.c`  (miss=4)
+- [x] ❌ `weituo_gun/fumo.ex` ← `weituo-gun/fumo.c`  (miss=4)
 
 ### `woshi_zhang/` （1 个，基线缺失 1 条）
 
@@ -410,7 +425,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `wudoumi_shengong/` （2 个，基线缺失 13 条）
 
-- [ ] ❌ `wudoumi_shengong/gui.ex` ← `wudoumi-shengong/gui.c`  (miss=9)
+- [x] ❌ `wudoumi_shengong/gui.ex` ← `wudoumi-shengong/gui.c`  (miss=9)
 - [x] ✅ `wudoumi_shengong/powerup.ex` ← `wudoumi-shengong/powerup.c`  (miss=4→0，PASS)
 
 ### `wudu_shenzhang/` （2 个，基线缺失 14 条）
@@ -433,12 +448,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `wushen_jian/` （3 个，基线缺失 25 条）
 
 - [x] ❌ `wushen_jian/hui.ex` ← `wushen-jian/hui.c`  (miss=8)
-- [ ] ❌ `wushen_jian/qian.ex` ← `wushen-jian/qian.c`  (miss=7)
-- [ ] ❌ `wushen_jian/shen.ex` ← `wushen-jian/shen.c`  (miss=10)
+- [x] ❌ `wushen_jian/qian.ex` ← `wushen-jian/qian.c`  (miss=7)
+- [x] ❌ `wushen_jian/shen.ex` ← `wushen-jian/shen.c`  (miss=10)
 
 ### `wusheng_zhao/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `wusheng_zhao/lian.ex` ← `wusheng-zhao/lian.c`  (miss=5)
+- [x] ❌ `wusheng_zhao/lian.ex` ← `wusheng-zhao/lian.c`  (miss=5)
 
 ### `wuwang_shengong/` （1 个，基线缺失 4 条）
 
@@ -446,11 +461,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `wuxiang_zhi/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `wuxiang_zhi/wuse.ex` ← `wuxiang-zhi/wuse.c`  (miss=1)
+- [x] ❌ `wuxiang_zhi/wuse.ex` ← `wuxiang-zhi/wuse.c`  (miss=1)
 
 ### `wuzhan_mei/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `wuzhan_mei/liu.ex` ← `wuzhan-mei/liu.c`  (miss=7)
+- [x] ❌ `wuzhan_mei/liu.ex` ← `wuzhan-mei/liu.c`  (miss=7)
 
 ### `xianglong_zhang/` （4 个，基线缺失 43 条）
 
@@ -475,7 +490,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xiaoli_feidao/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `xiaoli_feidao/fei.ex` ← `xiaoli-feidao/fei.c`  (miss=3)
+- [x] ❌ `xiaoli_feidao/fei.ex` ← `xiaoli-feidao/fei.c`  (miss=3)
 
 ### `xiaowuxiang/` （2 个，基线缺失 8 条）
 
@@ -484,26 +499,26 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xiaoyao_jian/` （3 个，基线缺失 26 条）
 
-- [ ] ❌ `xiaoyao_jian/fei.ex` ← `xiaoyao-jian/fei.c`  (miss=10)
-- [ ] ❌ `xiaoyao_jian/kuai.ex` ← `xiaoyao-jian/kuai.c`  (miss=6)
-- [ ] ❌ `xiaoyao_jian/qi.ex` ← `xiaoyao-jian/qi.c`  (miss=10)
+- [x] ❌ `xiaoyao_jian/fei.ex` ← `xiaoyao-jian/fei.c`  (miss=10)
+- [x] ❌ `xiaoyao_jian/kuai.ex` ← `xiaoyao-jian/kuai.c`  (miss=6)
+- [x] ❌ `xiaoyao_jian/qi.ex` ← `xiaoyao-jian/qi.c`  (miss=10)
 
 ### `xiaoyaoyou/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `xiaoyaoyou/xian.ex` ← `xiaoyaoyou/xian.c`  (miss=4)
+- [x] ❌ `xiaoyaoyou/xian.ex` ← `xiaoyaoyou/xian.c`  (miss=4)
 
 ### `xiewei_bian/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `xiewei_bian/teng.ex` ← `xiewei-bian/teng.c`  (miss=7)
+- [x] ❌ `xiewei_bian/teng.ex` ← `xiewei-bian/teng.c`  (miss=7)
 
 ### `xiuluo_dao/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `xiuluo_dao/suoming.ex` ← `xiuluo-dao/suoming.c`  (miss=3)
+- [x] ❌ `xiuluo_dao/suoming.ex` ← `xiuluo-dao/suoming.c`  (miss=3)
 
 ### `xiuluo_yinshagong/` （2 个，基线缺失 17 条）
 
 - [x] ✅ `xiuluo_yinshagong/powerup.ex` ← `xiuluo-yinshagong/powerup.c`  (miss=4→0，PASS)
-- [ ] ❌ `xiuluo_yinshagong/suck.ex` ← `xiuluo-yinshagong/suck.c`  (miss=13)
+- [x] ❌ `xiuluo_yinshagong/suck.ex` ← `xiuluo-yinshagong/suck.c`  (miss=13)
 
 ### `xiuluo_zhi/` （1 个，基线缺失 0 条）
 
@@ -512,12 +527,12 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `xixing_dafa/` （3 个，基线缺失 23 条）
 
 - [x] ✅ `xixing_dafa/powerup.ex` ← `xixing-dafa/powerup.c`  (miss=4→0，PASS)
-- [ ] ❌ `xixing_dafa/sangong.ex` ← `xixing-dafa/sangong.c`  (miss=2)
-- [ ] ❌ `xixing_dafa/suck.ex` ← `xixing-dafa/suck.c`  (miss=17)
+- [x] ❌ `xixing_dafa/sangong.ex` ← `xixing-dafa/sangong.c`  (miss=2)
+- [x] ❌ `xixing_dafa/suck.ex` ← `xixing-dafa/suck.c`  (miss=17)
 
 ### `xiyang_jian/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `xiyang_jian/lian.ex` ← `xiyang-jian/lian.c`  (miss=1)
+- [x] ❌ `xiyang_jian/lian.ex` ← `xiyang-jian/lian.c`  (miss=1)
 
 ### `xiyang_neigong/` （1 个，基线缺失 4 条）
 
@@ -525,15 +540,15 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xuanfeng_leg/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `xuanfeng_leg/kuangfeng.ex` ← `xuanfeng-leg/kuangfeng.c`  (miss=1)
+- [x] ❌ `xuanfeng_leg/kuangfeng.ex` ← `xuanfeng-leg/kuangfeng.c`  (miss=1)
 
 ### `xuanfeng_tui/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `xuanfeng_tui/kuang.ex` ← `xuanfeng-tui/kuang.c`  (miss=7)
+- [x] ❌ `xuanfeng_tui/kuang.ex` ← `xuanfeng-tui/kuang.c`  (miss=7)
 
 ### `xuangong_quan/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `xuangong_quan/xuan.ex` ← `xuangong-quan/xuan.c`  (miss=6)
+- [x] ❌ `xuangong_quan/xuan.ex` ← `xuangong-quan/xuan.c`  (miss=6)
 
 ### `xuanmen_neigong/` （1 个，基线缺失 4 条）
 
@@ -558,7 +573,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xuantian_zhi/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `xuantian_zhi/bing.ex` ← `xuantian-zhi/bing.c`  (miss=7)
+- [x] ❌ `xuantian_zhi/bing.ex` ← `xuantian-zhi/bing.c`  (miss=7)
 
 ### `xuantie_jian/` （3 个，基线缺失 27 条）
 
@@ -568,11 +583,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xuanxu_dao/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `xuanxu_dao/huan.ex` ← `xuanxu-dao/huan.c`  (miss=5)
+- [x] ❌ `xuanxu_dao/huan.ex` ← `xuanxu-dao/huan.c`  (miss=5)
 
 ### `xuanyuan_arrow/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `xuanyuan_arrow/baibu.ex` ← `xuanyuan-arrow/baibu.c`  (miss=7)
+- [x] ❌ `xuanyuan_arrow/baibu.ex` ← `xuanyuan-arrow/baibu.c`  (miss=7)
 
 ### `xue_dao/` （3 个，基线缺失 9 条）
 
@@ -594,7 +609,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xueshan_dao/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `xueshan_dao/kai.ex` ← `xueshan-dao/kai.c`  (miss=7)
+- [x] ❌ `xueshan_dao/kai.ex` ← `xueshan-dao/kai.c`  (miss=7)
 
 ### `xueshan_jian/` （3 个，基线缺失 21 条）
 
@@ -604,19 +619,19 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `xumishan_zhang/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `xumishan_zhang/ying.ex` ← `xumishan-zhang/ying.c`  (miss=1)
+- [x] ❌ `xumishan_zhang/ying.ex` ← `xumishan-zhang/ying.c`  (miss=1)
 
 ### `xunlei_jian/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `xunlei_jian/xun.ex` ← `xunlei-jian/xun.c`  (miss=6)
+- [x] ❌ `xunlei_jian/xun.ex` ← `xunlei-jian/xun.c`  (miss=6)
 
 ### `yanxing_dao/` （1 个，基线缺失 5 条）
 
-- [ ] ❌ `yanxing_dao/huan.ex` ← `yanxing-dao/huan.c`  (miss=5)
+- [x] ❌ `yanxing_dao/huan.ex` ← `yanxing-dao/huan.c`  (miss=5)
 
 ### `yecha_gun/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `yecha_gun/hongxia.ex` ← `yecha-gun/hongxia.c`  (miss=3)
+- [x] ❌ `yecha_gun/hongxia.ex` ← `yecha-gun/hongxia.c`  (miss=3)
 
 ### `yijin_duangu/` （2 个，基线缺失 7 条）
 
@@ -626,11 +641,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 ### `yijinjing/` （2 个，基线缺失 8 条）
 
 - [x] ✅ `yijinjing/powerup.ex` ← `yijinjing/powerup.c`  (miss=4→0，PASS)
-- [ ] ❌ `yijinjing/tong.ex` ← `yijinjing/tong.c`  (miss=4)
+- [x] ❌ `yijinjing/tong.ex` ← `yijinjing/tong.c`  (miss=4)
 
 ### `yinfeng_dao/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `yinfeng_dao/jue.ex` ← `yinfeng-dao/jue.c`  (miss=6)
+- [x] ❌ `yinfeng_dao/jue.ex` ← `yinfeng-dao/jue.c`  (miss=6)
 
 ### `yingzhua_gong/` （1 个，基线缺失 0 条）
 
@@ -638,11 +653,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yinhu_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `yinhu_zhang/lao.ex` ← `yinhu-zhang/lao.c`  (miss=7)
+- [x] ❌ `yinhu_zhang/lao.ex` ← `yinhu-zhang/lao.c`  (miss=7)
 
 ### `yinlong_bian/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `yinlong_bian/zhu.ex` ← `yinlong-bian/zhu.c`  (miss=7)
+- [x] ❌ `yinlong_bian/zhu.ex` ← `yinlong-bian/zhu.c`  (miss=7)
 
 ### `yinsuo_jinling/` （3 个，基线缺失 35 条）
 
@@ -652,7 +667,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yintuoluo_zhua/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `yintuoluo_zhua/chixue.ex` ← `yintuoluo-zhua/chixue.c`  (miss=8)
+- [x] ❌ `yintuoluo_zhua/chixue.ex` ← `yintuoluo-zhua/chixue.c`  (miss=8)
 
 ### `yinyang_ren/` （3 个，基线缺失 28 条）
 
@@ -666,26 +681,26 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yinyang_zhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `yinyang_zhang/qian.ex` ← `yinyang-zhang/qian.c`  (miss=6)
+- [x] ❌ `yinyang_zhang/qian.ex` ← `yinyang-zhang/qian.c`  (miss=6)
 
 ### `yitian_jian/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `yitian_jian/fumo.ex` ← `yitian-jian/fumo.c`  (miss=7)
+- [x] ❌ `yitian_jian/fumo.ex` ← `yitian-jian/fumo.c`  (miss=7)
 
 ### `yitian_zhang/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `yitian_zhang/zheng.ex` ← `yitian-zhang/zheng.c`  (miss=6)
+- [x] ❌ `yitian_zhang/zheng.ex` ← `yitian-zhang/zheng.c`  (miss=6)
 
 ### `yiwei_dujiang/` （1 个，基线缺失 2 条）
 
-- [ ] ❌ `yiwei_dujiang/dujiang.ex` ← `yiwei-dujiang/dujiang.c`  (miss=2)
+- [x] ❌ `yiwei_dujiang/dujiang.ex` ← `yiwei-dujiang/dujiang.c`  (miss=2)
 
 ### `yiyang_zhi/` （5 个，基线缺失 95 条）
 
 - [x] ❌ `yiyang_zhi/dian.ex` ← `yiyang-zhi/dian.c`  (miss=12)
-- [ ] ❌ `yiyang_zhi/die.ex` ← `yiyang-zhi/die.c`  (miss=45)
+- [x] ❌ `yiyang_zhi/die.ex` ← `yiyang-zhi/die.c`  (miss=45)
 - [x] ❌ `yiyang_zhi/heal.ex` ← `yiyang-zhi/heal.c`  (miss=19)
-- [ ] ❌ `yiyang_zhi/jian.ex` ← `yiyang-zhi/jian.c`  (miss=11)
+- [x] ❌ `yiyang_zhi/jian.ex` ← `yiyang-zhi/jian.c`  (miss=11)
 - [x] ❌ `yiyang_zhi/qian.ex` ← `yiyang-zhi/qian.c`  (miss=8)
 
 ### `yizhi_chan/` （1 个，基线缺失 0 条）
@@ -694,32 +709,32 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `youshen_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `youshen_zhang/fan.ex` ← `youshen-zhang/fan.c`  (miss=7)
+- [x] ❌ `youshen_zhang/fan.ex` ← `youshen-zhang/fan.c`  (miss=7)
 
 ### `yuanshi_jian/` （2 个，基线缺失 15 条）
 
-- [ ] ❌ `yuanshi_jian/gui.ex` ← `yuanshi-jian/gui.c`  (miss=8)
-- [ ] ❌ `yuanshi_jian/xuan.ex` ← `yuanshi-jian/xuan.c`  (miss=7)
+- [x] ❌ `yuanshi_jian/gui.ex` ← `yuanshi-jian/gui.c`  (miss=8)
+- [x] ❌ `yuanshi_jian/xuan.ex` ← `yuanshi-jian/xuan.c`  (miss=7)
 
 ### `yuenv_jian/` （1 个，基线缺失 10 条）
 
-- [ ] ❌ `yuenv_jian/xin.ex` ← `yuenv-jian/xin.c`  (miss=10)
+- [x] ❌ `yuenv_jian/xin.ex` ← `yuenv-jian/xin.c`  (miss=10)
 
 ### `yuezhao_gong/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `yuezhao_gong/shi.ex` ← `yuezhao-gong/shi.c`  (miss=8)
+- [x] ❌ `yuezhao_gong/shi.ex` ← `yuezhao-gong/shi.c`  (miss=8)
 
 ### `yufeng_zhen/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `yufeng_zhen/ying.ex` ← `yufeng-zhen/ying.c`  (miss=9)
+- [x] ❌ `yufeng_zhen/ying.ex` ← `yufeng-zhen/ying.c`  (miss=9)
 
 ### `yujiamu_quan/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `yujiamu_quan/jiang.ex` ← `yujiamu-quan/jiang.c`  (miss=6)
+- [x] ❌ `yujiamu_quan/jiang.ex` ← `yujiamu-quan/jiang.c`  (miss=6)
 
 ### `yujian_shu/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `yujian_shu/yujian.ex` ← `yujian-shu/yujian.c`  (miss=12)
+- [x] ❌ `yujian_shu/yujian.ex` ← `yujian-shu/yujian.c`  (miss=12)
 
 ### `yujiashu/` （1 个，基线缺失 4 条）
 
@@ -731,7 +746,7 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yunlong_jian/` （1 个，基线缺失 1 条）
 
-- [ ] ❌ `yunlong_jian/xian.ex` ← `yunlong-jian/xian.c`  (miss=1)
+- [x] ❌ `yunlong_jian/xian.ex` ← `yunlong-jian/xian.c`  (miss=1)
 
 ### `yunlong_shengong/` （1 个，基线缺失 4 条）
 
@@ -739,11 +754,11 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yunu_sword/` （1 个，基线缺失 4 条）
 
-- [ ] ❌ `yunu_sword/wushuang.ex` ← `yunu-sword/wushuang.c`  (miss=4)
+- [x] ❌ `yunu_sword/wushuang.ex` ← `yunu-sword/wushuang.c`  (miss=4)
 
 ### `yunv_jian/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `yunv_jian/mei.ex` ← `yunv-jian/mei.c`  (miss=9)
+- [x] ❌ `yunv_jian/mei.ex` ← `yunv-jian/mei.c`  (miss=9)
 
 ### `yunv_xinjing/` （1 个，基线缺失 4 条）
 
@@ -751,13 +766,13 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `yunzhou_fufa/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `yunzhou_fufa/feng.ex` ← `yunzhou-fufa/feng.c`  (miss=7)
+- [x] ❌ `yunzhou_fufa/feng.ex` ← `yunzhou-fufa/feng.c`  (miss=7)
 
 ### `yuxiao_jian/` （3 个，基线缺失 30 条）
 
-- [ ] ❌ `yuxiao_jian/bihai.ex` ← `yuxiao-jian/bihai.c`  (miss=13)
-- [ ] ❌ `yuxiao_jian/qing.ex` ← `yuxiao-jian/qing.c`  (miss=9)
-- [ ] ❌ `yuxiao_jian/tian.ex` ← `yuxiao-jian/tian.c`  (miss=8)
+- [x] ❌ `yuxiao_jian/bihai.ex` ← `yuxiao-jian/bihai.c`  (miss=13)
+- [x] ❌ `yuxiao_jian/qing.ex` ← `yuxiao-jian/qing.c`  (miss=9)
+- [x] ❌ `yuxiao_jian/tian.ex` ← `yuxiao-jian/tian.c`  (miss=8)
 
 ### `zhanshen_xinjing/` （2 个，基线缺失 8 条）
 
@@ -772,20 +787,20 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `zhengliangyi_jian/` （2 个，基线缺失 43 条）
 
-- [ ] ❌ `zhengliangyi_jian/sui.ex` ← `zhengliangyi-jian/sui.c`  (miss=26)
-- [ ] ❌ `zhengliangyi_jian/wu.ex` ← `zhengliangyi-jian/wu.c`  (miss=17)
+- [x] ❌ `zhengliangyi_jian/sui.ex` ← `zhengliangyi-jian/sui.c`  (miss=26)
+- [x] ❌ `zhengliangyi_jian/wu.ex` ← `zhengliangyi-jian/wu.c`  (miss=17)
 
 ### `zhenshan_zhang/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `zhenshan_zhang/da.ex` ← `zhenshan-zhang/da.c`  (miss=7)
+- [x] ❌ `zhenshan_zhang/da.ex` ← `zhenshan-zhang/da.c`  (miss=7)
 
 ### `zhentian_quan/` （1 个，基线缺失 6 条）
 
-- [ ] ❌ `zhentian_quan/shi.ex` ← `zhentian-quan/shi.c`  (miss=6)
+- [x] ❌ `zhentian_quan/shi.ex` ← `zhentian-quan/shi.c`  (miss=6)
 
 ### `zhenyu_quan/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `zhenyu_quan/tong.ex` ← `zhenyu-quan/tong.c`  (miss=7)
+- [x] ❌ `zhenyu_quan/tong.ex` ← `zhenyu-quan/tong.c`  (miss=7)
 
 ### `zhenyue_jue/` （1 个，基线缺失 4 条）
 
@@ -798,32 +813,32 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `zhongnan_zhi/` （1 个，基线缺失 7 条）
 
-- [ ] ❌ `zhongnan_zhi/zhi.ex` ← `zhongnan-zhi/zhi.c`  (miss=7)
+- [x] ❌ `zhongnan_zhi/zhi.ex` ← `zhongnan-zhi/zhi.c`  (miss=7)
 
 ### `zhongping_qiang/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `zhongping_qiang/ding.ex` ← `zhongping-qiang/ding.c`  (miss=9)
+- [x] ❌ `zhongping_qiang/ding.ex` ← `zhongping-qiang/ding.c`  (miss=9)
 
 ### `zhougong_jian/` （1 个，基线缺失 9 条）
 
-- [ ] ❌ `zhougong_jian/mang.ex` ← `zhougong-jian/mang.c`  (miss=9)
+- [x] ❌ `zhougong_jian/mang.ex` ← `zhougong-jian/mang.c`  (miss=9)
 
 ### `zhuangzi_wu/` （1 个，基线缺失 8 条）
 
-- [ ] ❌ `zhuangzi_wu/hua.ex` ← `zhuangzi-wu/hua.c`  (miss=8)
+- [x] ❌ `zhuangzi_wu/hua.ex` ← `zhuangzi-wu/hua.c`  (miss=8)
 
 ### `zhuihun_jian/` （2 个，基线缺失 21 条）
 
-- [ ] ❌ `zhuihun_jian/zhu.ex` ← `zhuihun-jian/zhu.c`  (miss=14)
-- [ ] ❌ `zhuihun_jian/zhui.ex` ← `zhuihun-jian/zhui.c`  (miss=7)
+- [x] ❌ `zhuihun_jian/zhu.ex` ← `zhuihun-jian/zhu.c`  (miss=14)
+- [x] ❌ `zhuihun_jian/zhui.ex` ← `zhuihun-jian/zhui.c`  (miss=7)
 
 ### `zhurong_jian/` （1 个，基线缺失 11 条）
 
-- [ ] ❌ `zhurong_jian/wan.ex` ← `zhurong-jian/wan.c`  (miss=11)
+- [x] ❌ `zhurong_jian/wan.ex` ← `zhurong-jian/wan.c`  (miss=11)
 
 ### `zigai_jian/` （1 个，基线缺失 12 条）
 
-- [ ] ❌ `zigai_jian/hui.ex` ← `zigai-jian/hui.c`  (miss=12)
+- [x] ❌ `zigai_jian/hui.ex` ← `zigai-jian/hui.c`  (miss=12)
 
 ### `zihui_xinfa/` （1 个，基线缺失 4 条）
 
@@ -831,19 +846,19 @@ docker exec wuxia_mud_dev-app-1 sh -c "cd /app && mix compile"
 
 ### `zijinbagua_dao/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `zijinbagua_dao/bagua.ex` ← `zijinbagua-dao/bagua.c`  (miss=3)
+- [x] ❌ `zijinbagua_dao/bagua.ex` ← `zijinbagua-dao/bagua.c`  (miss=3)
 
 ### `zilei_jian/` （2 个，基线缺失 19 条）
 
-- [ ] ❌ `zilei_jian/feng.ex` ← `zilei-jian/feng.c`  (miss=11)
-- [ ] ❌ `zilei_jian/luo.ex` ← `zilei-jian/luo.c`  (miss=8)
+- [x] ❌ `zilei_jian/feng.ex` ← `zilei-jian/feng.c`  (miss=11)
+- [x] ❌ `zilei_jian/luo.ex` ← `zilei-jian/luo.c`  (miss=8)
 
 ### `zixia_shengong/` （2 个，基线缺失 9 条）
 
 - [x] ✅ `zixia_shengong/powerup.ex` ← `zixia-shengong/powerup.c`  (miss=4→0，PASS)
-- [ ] ❌ `zixia_shengong/ziqi.ex` ← `zixia-shengong/ziqi.c`  (miss=5)
+- [x] ❌ `zixia_shengong/ziqi.ex` ← `zixia-shengong/ziqi.c`  (miss=5)
 
 ### `zui_gun/` （1 个，基线缺失 3 条）
 
-- [ ] ❌ `zui_gun/zuida.ex` ← `zui-gun/zuida.c`  (miss=3)
+- [x] ❌ `zui_gun/zuida.ex` ← `zui-gun/zuida.c`  (miss=3)
 

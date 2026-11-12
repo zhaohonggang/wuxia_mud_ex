@@ -87,7 +87,8 @@ scripts/combat_e2e.exs      # 端到端验收脚本（Erlang 分布直连游戏 
 **有意简化**（对照原版）：
 
 - 昏迷（unconcious）阶段省略，气血归零直接进入死亡流程。
-- 轻功/招架特技的 `valid_damage/hit_ob` 钩子未实现（柳溪世界无此需求）。
+- ✅ 轻功/招架特技的 `valid_damage/hit_ob` 钩子**已实现**（`engine.ex:230-365`
+  `apply_hit_ob`/`apply_valid_damage` + `force.ex:32` `hit_ob/5`）；本行旧述系过时快照。
 - 毒、狂怒值(jianu)、团队/仇杀系统未移植。
 
 ## Skill behaviour

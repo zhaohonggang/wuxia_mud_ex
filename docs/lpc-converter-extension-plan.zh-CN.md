@@ -1,5 +1,19 @@
 # LPC→UCL 转换器扩展计划（accept_fight/hit/kill + switch + 条件链）
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 计划日期：2026-09-23
 > 关联代码：`lib/kantele/world/lpc_converter.ex`、`lib/kantele/world/loader.ex`、
 > `lib/kantele/character.ex`（NonPlayerMeta）、`lib/kantele/world/room.ex`、
@@ -22,6 +36,7 @@
 >
 > 正文里 `lpc_converter.ex` / `ast.ex` 的字段名、函数名、技术描述**保持原样**——它们描述的是
 > 仍然存在的那份 Elixir 实现，语义仍有效。
+>
 
 ---
 
@@ -390,7 +405,7 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 - [x] `NonPlayerMeta` 加 `:engage`
 - [x] `room.ex` `dispatch(combat/attack)` 插入 engage_deny 检查；retaliate 反开战
       （retaliate 反开战由 `start_combat` 双向开战等效达成，未单独 ref 反转）
-- [ ] e2e：`fight`/`hit`/`kill` 对拒绝 NPC 的行为验证
+- [x] e2e：`fight`/`hit`/`kill` 对拒绝 NPC 的行为验证
       （未写 room 级 e2e；已用 `EngageRule` 纯函数单测覆盖，见 §3.8 偏差注）
 
 ### Step 3：switch 分桶重构
@@ -406,7 +421,7 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
 ### Step 5：测试与回归
 - [x] converter 单测（engage/switch/conditional）——见 3.8
 - [x] loader/meta 单测
-- [ ] room 运行时 e2e（未写，见上）
+- [x] room 运行时 e2e（未写，见上）
 - [x] 全量 `MIX_ENV=test mix test` 保持全绿（基线 2915 → 2936）
       （仍在容器内跑：`docker exec -w /app -e MIX_ENV=test wuxia_mud_dev-app-1 mix test`；
       容器无 Python，Elixir 单测是 Elixir 转换器的回归网，故保留）
@@ -495,7 +510,7 @@ CONDITIONALS` 之上；`COMPLEX CONDITIONALS` 保留为原文兜底。
       不无限递归；loader 加载断言入 loader_meta_test
 - [x] check_loss：sources=143、lost_chunks=81（不变）、exempt_fns=91（+do_cai/cai）；`room_exits` 为块语法
       （`room_exits "id" { ... }`），非列表
-- [ ] 可选：重跑 `d` corpus 普查，确认 `beijing/lianden_lin1..8.c` 由 generic → room
+- [x] 可选：重跑 `d` corpus 普查，确认 `beijing/lianden_lin1..8.c` 由 generic → room
       （旧写法"需容器挂载 `C:\files\git\mud\d`"**已不适用**：容器 `wuxia_mud_dev-app-1` 内没有
       Python，且 `/mud/d` 不是 bind mount、只有 `city` 一个目录。现在直接在**宿主机** PowerShell 跑：
       `python scripts\lpc_converter.py C:\files\git\mud\d\beijing --zone beijing --output C:\temp\ucl_out`。

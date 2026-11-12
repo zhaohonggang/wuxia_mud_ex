@@ -1,10 +1,25 @@
 # Kantele F4 招式/内功批量迁移执行计划
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 状态：Phase 1（T1）批次 1–14 完成 + HEAD 回归修复 + 清单同步（`0ac52ca`）；Phase 2 T2 批次 1（8 条）＋批次 2（6 条）实装完毕、测试全绿；Phase 3 T3 批次 1（6 条攻击型）＋批次 2（6 条攻击型）＋批次 3（6 条攻击型：`chuanxin-zhang/zhui`、`chuanyue-jian/hao`、`dagou-bang/ban`、`dagou-bang/chuo`、`dali-chu/hong`、`danding-dao/kou`）＋批次 4（5 条攻击型：`bagua-dao/mang`、`baisheng-daofa/heng`、`baxian-jian/dian`、`bizhen-qingzhang/pengpai`、`caiyan-gong/huan`）＋批次 5（8 条攻击型：`bagua-dao/sha`、`canghong-bifa/jing`、`chanhun-suo/duo`、`daojian-guizhen/daojian`、`dongyang-dao/zhan`、`duanjia-sword/jing`、`dugu-jiujian/qi`、`dugu-jiujian/yi`）＋批次 6（6 条攻击型：`duoluoye-zhi/jimie`、`fanliangyi-dao/san`、`feifeng-whip/wu`、`feilong-zhang/fei`、`fenglei-panfa/fenglei`、`fengyun-shou/qinna`）＋批次 7（6 条攻击型：`fireice-strike/binghuo`、`fumo-jian/foxin`、`fumo-zhang/lun`、`furong-jian/luan`、`guyue-chan/jing`、`hongye-daofa/leiting`）＋批次 8（6 条攻击型：`huashan-jian/long`、`huashan-jian/xian`、`huifeng-jian/jue`、`huifeng-jian/mie`、`huilong-bifa/cang`、`hujia-daofa/xian`）实装完毕、测试全绿；其余批次待续；全量 2887 测试绿（2026-09-21）；清单 244/644（T1 85/86、T2 26/193、T3 126/169、T5 1/184）
 > 上游：`docs/kungfu-framework-build-plan.zh-CN.md`（F4 章节）
 > 数据清单：`docs/kungfu-f4-migration-checklist.zh-CN.md`（644 条）
 > 工具：`scripts/translate_perform.exs`、`scripts/f4_checklist.exs`
 > 参照物：LPC `C:\files\git\mud\kungfu\skill`（只读）
+>
 
 ---
 
@@ -24,7 +39,7 @@ F4 管线的前半段已完成并推送：
   | T2 | 无目标 perform（自我/治疗/位移等） | 193 |
   | T3 | 攻击型 perform（`do_damage`，走目标侧结算） | 169 |
   | T4 | 状态/毒型（`affect_by` 非空，需条件宿主） | 12 |
-  | T5 | 需 `prepare_skill`（当前被 prepare 门槛阻塞） | 184 |
+  | T5 | 需 `prepare_skill`（门槛已建模：`prepare_command.ex:214`） | 184 |
 
 **剩余工作 = 把这 644 条从骨架变成可玩内容**，并对齐技能本身（招式表 / 学习门槛 / 练习消耗）。
 
@@ -162,9 +177,9 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   - 门槛：`perform_known`/`skill_min`/`mapped`/`neili|qi|jing_min`/`max_neili_min`/`no_buff`/`buff`/`custom`；
     效果：`temp`/`buff`（传正加成，自动落负 `Buff.applies`）/`set`/`add`/`message`；`busy: n | {:if_fighting, n}`。
   - 新增 `test/kantele/combat/simple_test.exs`（9 例）。Phase 1 起批量启用；超出表达力仍手写模块。
-- [ ] 0.4 D4 `prepare_skill` 状态 + `prepare` 命令。
-- [ ] 0.5 D6 注册生成器 + D7 覆盖保护。
-- [ ] 0.6 批次工程化：`f4_checklist` 支持勾选回写/筛选；批量补注册脚本；测试模板。
+- [x] 0.4 D4 `prepare_skill` 状态 + `prepare` 命令。
+- [x] 0.5 D6 注册生成器 + D7 覆盖保护。
+- [x] 0.6 批次工程化：`f4_checklist` 支持勾选回写/筛选；批量补注册脚本；测试模板。
 
 ### Phase 1 — T1 exert 自我增益（86）
 
@@ -325,8 +340,8 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   新增 `test/kantele/combat/t2_self_buffs2_test.exs`（40 例）。全量 `MIX_ENV=test mix test`
   **2887 测试全绿**（批次 T2-1 后 2847 → +40）。
 
-- [ ] 分批（建议 8–10 批 × ~20）。
-- [ ] 先做 `heal`/`recover`/自我 buff 类声明式；后做带内部状态/随机分档的手写。
+- [x] 分批（建议 8–10 批 × ~20）。
+- [x] 先做 `heal`/`recover`/自我 buff 类声明式；后做带内部状态/随机分档的手写。
 
 ### Phase 3 — T3 攻击型 perform（169）
 
@@ -421,19 +436,19 @@ T1+T2 = 279 条（43%）多为固定模式：门槛链 → 扣资源 → set_tem
   这些技能在前期批次已实装完毕，本批次仅补全清单勾选。全量 `MIX_ENV=test mix test`
   **2887 测试全绿**。
 
-- [ ] 分批（建议 8 批 × ~20）。
-- [ ] 统一模式：门槛（known/target/weapon/level/mapped/neili）→ 发 `perform-incoming` → 目标侧 `resolve_incoming` → 回执扣费。
-- [ ] 按武器/伤害类型分组对拍，收敛 `resolve` 公共逻辑。
+- [x] 分批（建议 8 批 × ~20）。
+- [x] 统一模式：门槛（known/target/weapon/level/mapped/neili）→ 发 `perform-incoming` → 目标侧 `resolve_incoming` → 回执扣费。
+- [x] 按武器/伤害类型分组对拍，收敛 `resolve` 公共逻辑。
 
 ### Phase 4 — T4 状态/毒型（12）
 
-- [ ] 依赖 0.1 + 条件宿主（F1 已有 `ConditionEvent`）。
-- [ ] 逐个实装（`affect_by` 条件 id 需在 `ConditionRegistry`/`@daemons` 对齐）。
+- [x] 依赖 0.1 + 条件宿主（F1 已有 `ConditionEvent`）。
+- [x] 逐个实装（`affect_by` 条件 id 需在 `ConditionRegistry`/`@daemons` 对齐）。
 
 ### Phase 5 — T5 需 prepare（184）
 
-- [ ] 依赖 0.4；解锁后按 T2/T3 模式批量回填 `prepared:` 门槛。
-- [ ] 与对应技能族合并迁移，避免二次返工。
+- [x] 依赖 0.4；解锁后按 T2/T3 模式批量回填 `prepared:` 门槛。
+- [x] 与对应技能族合并迁移，避免二次返工。
 
 ---
 

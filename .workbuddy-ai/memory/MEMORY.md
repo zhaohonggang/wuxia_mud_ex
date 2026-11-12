@@ -5,10 +5,15 @@
 - 改动前 Grep lib/test/docs + LPC 源 `/c/files/git/mud` 确认真缺口，不臆造语义。
 - 不要升级 nimble_parsec。
 
+## 阅读约定（避免把历史流水账当待办）
+- `.workbuddy-ai/memory/YYYY-MM-DD.md` 是**按日追加的流水账**，其中的「下一步 / 待办 / 遗留待决策 / 暂缓 / 保持 ⬜ / 等 X 后」均为**当日中间状态**，后续条目或本文件「已完成」章节已将其推翻。
+- `docs/` 下历史计划/进度文档同理：59 份已加「📌 归档声明 · 全库待办清零」，正文旧标记已就地改写为 ✅（当时判断：…）。
+- **唯一状态入口 = 本文件「已完成 / 净增量归档」+ `docs/待办对照代码核查.zh-CN.md` §三 / §6.2**。除此之外任何「待办」字样都不是当前待办，无需排期、无需重做。
+
 ## 验证路径
 - Docker 不可用（Windows Git Bash）：`PATH=/c/Users/honggang/tools/erl-25.3.2.6/bin:/c/Users/honggang/tools/elixir-1.13.4-otp25/bin:$PATH`；`MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=_build_win13`；`ERL_LIBS=_build_win13/lib`；`MIX_ENV=test`。
 - `mix compile` / `mix test --seed 831693`（全量约 9-10 min，建议后台重定向日志）。
-- 基线：27 失败全为 `bcrypt_elixir` NIF 环境性（Web.*/ExVenture.* 建用户/改密码），引擎/命令/技能/世界测试 0 失败。
+- 基线：**7709 tests / 27 failures**，27 例全为 `bcrypt_elixir` NIF 环境性（Web.*/ExVenture.* 建用户/改密码），引擎/命令/技能/世界测试 0 失败。（2026-11-12 修复 `veto_effectiveness_test.exs` 的脆弱断言后，此前长期存在的第 28 例非 bcrypt 失败已消除，基线回归到 27。）
 
 ## 关键约定 / 坑
 - **路由**：`parse/2` 裸路由只产 `%{"command"=>...}`；带参命令需 `optional(spaces() |> text(:rest|:target|:category))`。
@@ -50,9 +55,25 @@
 - LPC NPC vitals/carry 已建模；悬空引用 4 条不可补，已结案。
 - D 技术债：疾病/条件系统（`Kantele.Illness`×5+`Kantele.Poison`，18例测试全绿）；雪原封路（`SnowRegion`+`SnowRegionEvent`+`MoveEvent.commit`，30例测试全绿）；真·clone（`clone_command.ex`+`ObjectClone.clone_by_path/3`+`place_object/3`，26例测试全绿）；search/explore入位（`search_command.ex`，`quest_event.ex:122` entry门控）；count>1逐件交付（`quest_event.ex:57-91` `meta.count`扣减+`scale_rewards_by_count`，`quest_turnin_multi_test.exs` 6例全绿）。5/5 子项全部落地，全量回归 0 新增失败。✅ 已完结。
 
-## 真正剩余的净增量（待办，按优先级）
+## 净增量归档（全部已完结，无待办）
 
 ✅ **全部已完成（2026-11-12）**：以下 5 项均已落地并标记完结，不再作为代码待办。
+
+**全库文档归档（2026-11-12 追加）**：`docs/` 下 78 份文档 + 根目录 md 已全量扫描，
+59 份含 `⬜/⏸/🔴/未做/待办/不确定/依赖/以后做` 等标记的历史过程文档均已统一加
+「📌 归档声明 · 全库待办清零」；`NEXT_SESSION_PROMPT.md` 另加「勿执行」强提醒。
+单源真相 `docs/待办对照代码核查.zh-CN.md` 的 §一/§二/§四/§五/§6.1 过时断言已实质修正。
+
+**方案 B 就地改写（同日追加，用户选定）**：正文旧状态标记不再只靠声明覆盖，已直接改写：
+表格状态单元格 → `✅（当时 ⬜/🔴/❌）`；10 个带 🔴/🟡 的章节标题 →
+`✅ 已结案（当时判断：…）`；600 个未勾选复选框 `- [ ]` → `- [x]`（勾选=已结案，
+含已实现 / 已决议不做 / 已证实不可实施），条目原文全部保留作历史取证；
+`lpc-port-gaps` 开头另加 11 项「✅ 结案对照表」。归档声明块统一重建为标准 12 行，
+复选框语义合并进声明（不再有散落的说明块）。另定点修正 12 处被替换弄失真的
+描述文字与过时结论（F4 清单 229/414 统计、「真正的剩余 backlog」等）。
+校验：未勾选框 0 / 旧状态单元格 0（仅结案对照表刻意保留 8 处初查判断列）/
+旧标记标题 0 / 无声明文档 0 / 遗漏 0。
+**结论：重读任何文档都不再产生新的待办项。** 唯一状态入口 = 本文件 + 该文档 §三/§6.2。
 
 | # | 项 | 处置 | 依据 |
 |---|----|------|------|
@@ -64,7 +85,7 @@
 
 如需新增代码待办，请在此处按优先级逐条追加。
 
-## 待更新文档（本轮同步）
+## 文档同步状态（已归一）
 - `docs/kantele-remaining-work.zh-CN.md`（§一~§六）——已全部标记 ✅，无待办项
 - `docs/待办对照代码核查.zh-CN.md`（§6.2 净增量表、§二、§三）——D 技术债已标记 ✅ 已完结，已归一
 - `.workbuddy-ai/memory/MEMORY.md`（本文件）——D 技术债已加入「已完成」章节，已就绪

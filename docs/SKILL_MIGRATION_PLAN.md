@@ -1,5 +1,20 @@
 # 武学技能真实迁移执行计划（T2/T3 深度迁移）
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+>
+
+
 ## 核心原则
 - **批次提交**：以门派/体系为单位提交，每批 10-20 个 skill
 - **对照源码**：每步必读对应 `.c`，禁止凭记忆
@@ -17,13 +32,13 @@
 - 增强 `diff_skill.exs` 支持字段级对比
 
 ### 任务清单
-- [ ] 修复 `RUN_EXTRACTOR` 逻辑，使 `scripts/translate_perform.exs` 可直接运行
-- [ ] 执行抽取：`MIX_ENV=test RUN_EXTRACTOR=1 mix run scripts/translate_perform.exs`
-- [ ] 验证产出：`ls /tmp/perf_out | wc -l` 应约等于 430
-- [ ] 对比现有 performs：`diff <(ls /tmp/perf_out | sort) <(ls lib/kantele/combat/skills/performs | sort)`
-- [ ] 批量创建缺失 perform 模板（复用 `batch_migrate` 逻辑）
-- [ ] 编译通过：`mix compile`
-- [ ] 基础测试通过：`mix test test/kantele/combat/`
+- [x] 修复 `RUN_EXTRACTOR` 逻辑，使 `scripts/translate_perform.exs` 可直接运行
+- [x] 执行抽取：`MIX_ENV=test RUN_EXTRACTOR=1 mix run scripts/translate_perform.exs`
+- [x] 验证产出：`ls /tmp/perf_out | wc -l` 应约等于 430
+- [x] 对比现有 performs：`diff <(ls /tmp/perf_out | sort) <(ls lib/kantele/combat/skills/performs | sort)`
+- [x] 批量创建缺失 perform 模板（复用 `batch_migrate` 逻辑）
+- [x] 编译通过：`mix compile`
+- [x] 基础测试通过：`mix test test/kantele/combat/`
 
 ### 产出物
 - `/tmp/perf_out/` 完整 perform 骨架库

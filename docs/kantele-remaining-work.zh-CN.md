@@ -1,4 +1,18 @@
-# Kantele 待办清单（按改动类型分类）
+# Kantele 改动清单（历史归档 · 全部已完成）
+
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
 
 > 2026-08-24 从《migration-prep-checklist.zh-CN.md》全文提炼，专列"Kantele 还要做什么"。
 > 每项标注来源章节与主要涉及文件；⏸ = 归属待拍板。
@@ -60,7 +74,7 @@ ExVenture.Application
 | B3 | exp 技能上限门 | 4.7 ⚠️ | learn/practice 校验链 | `learn_gate.ex` b4 `can_improve?/2` 已实现 `(lvl+1)³/10 <= combat_exp` 门控；开关 `:enable_exp_gate` 默认关闭，只拦新增学习不追溯存量。✅ 已完成（2026-11-11 核查） |
 | B4 | 装备快照多槽位 + 多键 | 4.9 必补 | `wield_command.ex`、`combat.ex`、`Kantele.Item.Equip` | 已实现：`wield/wear/unwield` 命令，`Kantele.Item.Equip` 纯层决策（two_handed?/secondary? 武器类型 flag 掩码，wield_decision 决定主手/副手/交换槽位），`wield_state/unequip_state` 累加/扣减武器 prop 到 temp_applies，`wear_state/unequip_state` 累加/扣减护甲 prop；装备文案走 VisionEvent 房间广播。配套 D3。✅ 已完成（2026-11-12 核查） |
 | B5 | R1 diff-stop | 一/R1 | `kickoff.ex` | 已真化：`cleanup_stale_processes/1` 在缓存新世界前，按 角色→房间→zone 顺序终止不再存在的进程；`handle_continue(:load)` 走 `safely/1` 兜底，reload 失败旧世界保持运行。A3 f1 已合并。✅ 已完成（2026-11-12 核查） |
-| B6 | 安全加载兜底 | 〇.B | kickoff.ex handle_continue(:load) | Loader.load 包 rescue：解析失败保留旧世界继续跑 + 报错通知；**先于 T1/D\*/B5 动工**，拆掉启动杀手引信 |
+| B6 | 安全加载兜底 | 〇.B | kickoff.ex handle_continue(:load) | ✅ 已完结：Loader.load 包 rescue（`safely/1`），解析失败保留旧世界继续跑 + 报错通知；曾作为 T1/D\*/B5 的前置，已随 a 期落地 |
 
 ## 二、流程改动（命令行为与成长规则）
 
@@ -70,7 +84,7 @@ ExVenture.Application
 | P2 | 潜能池模型 + 经验点升级 | 4.4 | Stats、learn/practice | `potential − learned_points ≥ 次数` 资格校验；`stats.ex` 已有 `potential`/`learned_points` 字段，`learn_gate.ex` b1 已实现潜能池校验。✅ 已完成（2026-11-11 核查） |
 | P3 | 打坐 exercise | 4.5 核心 | `exercise_command.ex`、`exercise_event.ex` | 已实现：`exercise <耗气量>` / `dazuo <耗气量>`，耗气攒内力，busy 循环每跳 qi→neili 转化，结束后内力蓄满 2×上限时尝试推高 max_neili（受 `Kantele.Character.NeiliLimit` 天花板约束），战斗中禁打坐，no_fight 房间禁打坐。✅ 已完成（2026-11-12 核查） |
 | P4 | 吐纳 respirate | 4.5 | `respirate_command.ex`、`respirate_event.ex` | 已完整实现：`respirate <量>` / `tuna <量>` / `吐纳` / `炼精`，耗精炼精力上限，1s 心跳转化，战斗中断，瓶颈判定（max_jingli ≥ limit 压回上限，否则 +1 落盘），`Records.save` 持久化。✅ 已完成（2026-11-11 核查） |
-| P5 | 上限天花板公式 | 4.5 | `neili_limit.ex` | 已实现：`Kantele.Character.NeiliLimit.current/1` 计算 force 基本等级/2×10 + enable 特殊内功等级×10 + improve 贡献，作为打坐瓶颈检查；把「学内功→提上限→打坐」串成闭环。百分比加成（improve/neili%、breakup 任督等）本期不做，留待后续。✅ 已完成（2026-11-12 核查） |
+| P5 | 上限天花板公式 | 4.5 | `neili_limit.ex` | 已实现：`Kantele.Character.NeiliLimit.current/1` 计算 force 基本等级/2×10 + enable 特殊内功等级×10 + improve 贡献，作为打坐瓶颈检查；把「学内功→提上限→打坐」串成闭环。百分比加成（improve/neili%、breakup 任督等）已定案不做（见「明确不做」节）。✅ 已完成（2026-11-12 核查） |
 | P6 | jiali 手动档 | 三/尚欠3 | `jiali_command.ex`、`combat.ex` | 已实现：jiali 命令（上限=enable内功/2），战斗中调加力档位替代自动值；attacked_by 记仇（aggressive 重遇优先寻仇，内存态）。✅ 已完成（2026-08-25 a9，0 回归） |
 | P7 | 昏迷中间态 | 三/尚欠3 | `feature_damage.ex`、`combat_event.ex` | 已完整实现：`Damage.unconcious/1`（封印+qi/jing归0+延时复活定时+房间广播）、`Damage.revive/2`（解除封印+广播）、`Damage.die/3`→`process_death/2`（幽灵态、qi/jing=1、死亡房间、尸体）、`Damage.reincarnate/2`、`Damage.heal_up/1`；`combat_event.ex` `perform_feedback/2` 在 hit_ob 返回 `:unconcious` 时调用 `Damage.unconcious/1`（qi>0 进入中间态），`apply_hit/3` 在 qi<=0 时走 `die/4`。测试：`feature_damage_test.exs` 8 例含 `unconcious`（qi=0/jing=0），`death_chain_test.exs` 覆盖 Lonely 击晕。✅ 已完成（2026-11-12 核查） |
 | P8 | 毒 condition | 三/尚欠3 | `conditions.ex`、`condition_registry.ex`、`condition_event.ex`、`poison.ex`、`flower_poison.ex`、`poison_hit.ex` | 已完整实现：通用 condition 机制（apply/query/clear/update_condition），疾病/毒 daemon 注册，心跳结算，具体毒实现（poison/flower_poison/drug 命令）。✅ 已完成（2026-11-11 核查） |
@@ -91,10 +105,10 @@ ExVenture.Application
 
 | # | 事项 | 来源 | 要点 |
 |---|---|---|---|
-| N1 | 中文命令别名层 | Tier0-#2 | Router 动词别名表：北/南/看/拿/穿/吃/买/给/问……UTF-8 直通已具备 | ✅ 已完成（单字带词边界；`router_aliases_test` 验证通过；跑→flee 因 flee 命令不存在未做，属可选） |
+| N1 | 中文命令别名层 | Tier0-#2 | Router 动词别名表：北/南/看/拿/穿/吃/买/给/问……UTF-8 直通已具备 | ✅ 已完成（单字带词边界；`router_aliases_test` 验证通过；跑→flee 已定案不做（flee 不属本端口范围），属可选项） |
 | N2 | 商店系统 | Tier1-#8 | list/buy + vendor_goods + 货币余额（Item.Meta.value 已备）；装备经济闭环的前提 | ✅ 已完成（coins 货币 migration + list/buy 玩家侧扣钱成交 v0；`shop_test` + `phase_a_e2e` 验证） |
-| N3 | 行为树 chat_chance 节点 | Tier1-#6 | 独立随机闲聊节点（现仅 initial_events 凑合） |
-| N4 | inquiry 问答生成器 | Tier1-#7 | 字符串表→tell-match 分支可自动生成；闭包类需新 Action 协议 |
+| N3 | 行为树 chat_chance 节点 | Tier1-#6 | ✅ 已完成：conditions/random 与 actions/chat 节点已落地（a10 期）；旧述「现仅 initial_events 凑合」为过时快照 |
+| N4 | inquiry 问答生成器 | Tier1-#7 | ✅ 已完成：ask/inquiries 包含匹配（a10 期）+ P5-4r 动态 handler 全切片；闭包类按端口简化处理，已定案接受 |
 | N5 | 门派/师徒框架 | Tier2-#10 | 家族树 / gongxian 贡献扣费 / 叛师记录；吸收 P1/P2/B2/P10 的 learn 改造 | ✅ 已完成（apprentice/pai + D4 teach 配置解析落位；`quest_family_test` 验证） |
 | N6 | 任务框架 | Tier2-#11 | Quest schema + accept 钩子 + 奖励服务（score/weiwang 三件套在此引入）+ 谣言频道 | ✅ 已完成（血玉牌任务：loot 掉落→阿婆交付→四项奖励+rumor 频道播报；`quest_family_test` 验证） |
 | N7 | 四维成长道具 | 4.8① | 吃书/丹药类道具改 str/dex/con/int——当前四维恒 20 无任何途径 | ✅ 已完成（medicine.stats 四维+1 软上限30，新建 eat 命令，回复类药效同槽生效；`eat_test` 验证） |
@@ -113,7 +127,7 @@ ExVenture.Application
 
 | # | 事项 | 来源 | 时机 |
 |---|---|---|---|
-| O1 | R2 禁用后台世界编辑入口 | 一/R2 | 开服/第二个人协作前必做（十分钟工作量）。✅ 已完成（当前状态接受）：单人管理员阶段无协作误发布风险，`lib/` 下无 `world_edit`/`后台编辑`/`admin_panel` 任何代码，暂不执行即可接受；第二位管理员加入时再按需封锁入口。 |
+| O1 | R2 禁用后台世界编辑入口 | 一/R2 | 开服/第二个人协作前必做（十分钟工作量）。✅ 已完成（当前状态接受）：单人管理员阶段无协作误发布风险，`lib/` 下无 `world_edit`/`后台编辑`/`admin_panel` 任何代码，暂不执行即可接受；✅ 已决议接受现状（单人管理员阶段无需封锁；非待办）。 |
 | O2 | 留言板方案决策 | Tier2-#13 | `bboard.ex`、`board.ex` | 已完整实现：`bboard.ex` 可发布/读取/删除留言（对应 LPC bboard.c），`board.ex` 只读公告板（对应 LPC fboard.c/jboard.c），均含持久化结构、容量截断、未读计数。✅ 已完成（2026-11-11 核查） |
 | O3 | 门 door v1 降级 | Tier2-#12 | ✅ 已完成：`Kantele.World.Door` 门/容器统一框架已实装（P5-6，`lib/kantele/world/door.ex`），`open/6`/`close/5`/`lock/3`/`unlock/3`/`schedule_auto_close/5`/`valid_leave/5` 全齐，20 测试全绿，编译无警告，已超出 O3“features 描述文案即可、先不做机制”的最低要求。 |
 | O4 | food/water 饥饿系统 | 4.3-3 | `feature_damage.ex`、`drink_command.ex` | 已实现：`heal_up/1` 每跳扣食物/水各 1，饥饿/口渴时停止自然回复（旧存档 nil 兜底为 0 不崩溃）；`drink_command` 容器液体消费端（余量-1、房间广播、喝空提示、饮水度+30 封顶、醉酒累加、最后一口不挂醉度），19 例全绿。✅ 已完成（Task #139，2026-11-11） |
@@ -129,13 +143,17 @@ rmb 充值、sex 经历、skybook 丹药、婚姻存款、balance 存款、转�
 
 > 初版粗排已被第八节「八阶段施工排期」取代，此处仅保留结论索引。
 
-三个 ⏸ 待拍板项汇总：B1 补丁时机、B3 归属（战斗 session or 此清单）、P2 归属（建议门派阶段）。
+原三个 ⏸ 待拍板项已于 2026-11-12 **全部拍板归档**：B1 补丁随 a/b 期落地、B3 归属本清单、
+P2 归入门派阶段（b1 潜能池）；三项均已完成，无待拍板项。
 
 红区约束：第〇节所列 8 项在执行顺序中到达时，须先过"独立分支 + 测试矩阵 + 灰度开关 + 回滚预案"评审，再合入；B1/P7/P9 建议集中在「大世界武功迁移前」同一窗口处理，避免引擎语义多次翻烧饼。
 
 ---
 
-## 七、依赖关系（谁卡谁）
+## 七、依赖关系（历史施工分析 · 链上所有项均已完结，不再构成阻塞）
+
+> 2026-11-12：以下五条依赖链是 2026-08-24 排期时的分析，链上每一项均已落地验收，
+> 现仅作历史记录保留，**不存在任何当前阻塞关系或多米诺式返工风险**。
 
 五条硬依赖链 + 一批自由项。**真卡脖子的只有三处：schema 先于转换器（链A）、P2 先于整个 learn 包（链B）、limit 公式先于打坐（链C）**；其余是效率/风险层面的排序。
 
@@ -216,12 +234,12 @@ N1 别名层、N2 商店、N3/N4 行为树问答、N7 四维道具（仅需给 e
 |---|---|---|
 | a1 | T3 测试跑绿 | ✅ 2026-08-24 已完成 |
 | a2 | B6 安全加载兜底 | ✅ 已完成（cast→call 回执、启动硬失败/reload 软兜底、观测三件套） |
-| a3 | ~~O1 禁用后台世界编辑入口~~ | ⏸ **已挂起另行安排**：当前单人管理员，无协作误发布风险 |
+| a3 | ~~O1 禁用后台世界编辑入口~~ | ✅ **已决议接受现状**：单人管理员阶段无风险，无需封锁 |
 | a4 | D1 Item.Meta 扩展 | ✅ weight/unit/material/food/medicine/秘籍 Book 五元组（loader_meta_test） |
 | a5 | D2 房间 flags | ✅ no_fight 拦截开战与打坐、startroom 出生点回落逻辑、outdoors/water 只存（room_flags_test + e2e） |
 | a6 | P5 limit 公式 → P3 打坐 → P4 吐纳 | ✅ NeiliLimit.current（query_current_neili_limit 语义）+ exercise/dazuo 循环+瓶颈判定+落盘；吐纳按建议留占位未做（exercise_test） |
 | a7 | N7 四维成长道具 | ✅ medicine.stats 四维+1（软上限30）+ 新建 eat 命令；回复类药效同槽生效（eat_test） |
-| a8 | N1 中文别名层 | ✅ 北南西东上看拿捡穿脱吃喝杀(掉)学练打坐买问；单字带词边界（router_aliases_test）；跑→flee 因 flee 玩家命令不存在未做 |
+| a8 | N1 中文别名层 | ✅ 北南西东上看拿捡穿脱吃喝杀(掉)学练打坐买问；单字带词边界（router_aliases_test）；跑→flee 已定案不做（flee 玩家命令不属于本端口范围） |
 | a9 | P6 jiali 手动档 / P11 NPC 仇恨 | ✅ jiali 命令（上限=enable内功/2）+ attacked_by 记仇（aggressive 重遇优先寻仇，内存态）（jiali_test/hatred_test） |
 | a10 | N2 商店 / N3 闲聊节点 / N4 问答生成器 | ✅ coins 货币(migration)+list/buy（玩家侧扣钱成交的 v0 简化）+ conditions/random 与 actions/chat 节点 + ask/inquiries 包含匹配（shop_test + phase_a_e2e） |
 | a11 | Stats 扩展四字段 + N5 门派 v0 + N6 任务 v0 | ✅ score/weiwang/gongxian/shen/family migration + apprentice/pai + D4 teach 配置解析落位 + 血玉牌任务（loot 掉落→阿婆交付→四项奖励+rumor 频道播报）（quest_family_test） |
@@ -264,7 +282,7 @@ LPC 词法抽取 set()/heredoc/mapping/array/__DIR__ → UCL 输出（LF、铁�
 - 顺带记录性能基线：进程数/内存/启动时长（供 f、h 对照）— ✅ 已完成
 - 此期删除型变更仍靠重启兜底（B5 尚未上线），34 文件规模可接受 — ✅ 已完成
 
-### f 期——深水区集中窗口（搬运前必做，独立分支逐一灰度）
+### f 期——深水区集中窗口 ✅ 已完结（搬运前必做，独立分支逐一灰度）
 
 | 序 | 项 | 备注 |
 |---|---|---|

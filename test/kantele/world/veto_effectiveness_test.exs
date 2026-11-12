@@ -258,16 +258,25 @@ defmodule Kantele.World.VetoEffectivenessTest do
     Kantele.World.Loader.reset_unresolved_warnings()
     Kantele.World.Loader.load()
 
-    seen = :erlang.get(:world_unresolved) || %{}
-    assert map_size(seen) > 0, "应记录到若干悬空引用"
+    # `:erlang.get/1` 缺键返回 **`:undefined`**（Elixir 里是 truthy），
+    # `x || %{}` 兜不住 —— 与 `loader.ex` `warn_unresolved/4` 用同一套防御。
+    #
+    # 2026-11-12：真实世界的悬空引用已全部清洗干净，`load/0` 不再产生任何
+    # warn，process dictionary 里根本没有这个键。本测试不再假设「真实数据
+    # 必有悬空」（那会让数据越修越红），改为验证「加载不崩 + warn 机制本身
+    # 有效」，机制有效性由下方显式 probe 保证。
+    seen =
+      case :erlang.get(:world_unresolved) do
+        m when is_map(m) -> m
+        _ -> %{}
+      end
 
     kinds = seen |> Map.keys() |> Enum.map(fn {_z, k, _r} -> k end) |> Enum.uniq() |> Enum.sort()
-    # 真实数据里 room_characters 仍有悬空（lingxiao 4 条），但 room_items 的悬空
-    # 是否存在取决于数据清洗进度——R21 修复（wuji4 括号泄漏）把被吞进 wuji4 的
-    # global_longsword / global_potion 等物品归位后，世界里的 room_items 悬空引用
-    # 可能清零，导致「真实数据必含 :item 悬空」的假设不再成立。:item 维度改由
-    # 下方 probe 显式守卫，避免「数据修好反而让测试挂」的脆弱依赖。
-    assert :character in kinds, "room_characters 的悬空也应被记录"
+    # 若真实数据里仍有 room_characters 悬空，必须被记录；若已清零则跳过
+    # （:character 维度的覆盖改由下方 probe 显式守卫）。
+    if map_size(seen) > 0 do
+      assert :character in kinds, "room_characters 的悬空也应被记录"
+    end
 
     # 值的形状是 {次数, 最后一个房间}，别直接 Enum.sum
     total_refs = seen |> Map.values() |> Enum.map(fn {c, _room} -> c end) |> Enum.sum()
@@ -280,13 +289,18 @@ defmodule Kantele.World.VetoEffectivenessTest do
     Kantele.World.Loader.reset_unresolved_warnings()
     Kantele.World.Loader.warn_unresolved(:item, "z", "room-a", "items.probe.id")
     Kantele.World.Loader.warn_unresolved(:item, "z", "room-b", "items.probe.id")
+    # :character 维度也显式打桩，避免真实数据悬空清零后失去该维度的覆盖。
+    Kantele.World.Loader.warn_unresolved(:character, "z", "room-c", "characters.probe.id")
 
     probe = :erlang.get(:world_unresolved)
+    assert is_map(probe), "warn_unresolved 应把记录写入 process dictionary"
 
     # 只守「次数累加」：重复命中时 loader 记的是最后一个房间（见 loader.ex
     # 的 `{count + 1, room_id}`），这里不断言房间是哪个。
     assert {2, _room} = probe[{"z", :item, "items.probe.id"}],
            "同一 ref 被两个房间引用时，次数应累加"
+    assert {1, "room-c"} = probe[{"z", :character, "characters.probe.id"}],
+           "room_characters 维度的悬空也应被记录"
 
     Kantele.World.Loader.reset_unresolved_warnings()
 

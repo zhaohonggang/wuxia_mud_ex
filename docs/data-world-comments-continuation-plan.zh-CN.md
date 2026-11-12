@@ -1,5 +1,19 @@
 # `data/world/*.comments.txt` 续做计划
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 配套：`docs/data-world-comments-txt-audit.zh-CN.md`（盘点与实测数字）。
 > 本文件是**执行计划**，回答「接下来怎么做」。
 > 建立日期：2026-10-16。
@@ -7,6 +21,7 @@
 > **先读**：`docs/data-world-conversion-framework-first.zh-CN.md` ——
 > 「哪些必须先补框架」的判据与决策矩阵。它决定了本计划 §1 三层模型里
 > 每一项该走 L1 / L2 / L3，以及 C 类为什么必须排在后面。
+>
 
 ---
 
@@ -230,7 +245,7 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
    - ⚠️ **列表分隔符必须是逗号**：elias 对「两个换行分隔、无逗号」的列表元素报 `syntax error before: '"'`。
      手写先例 `city.ucl` 的 `flags` **只有 1 项**（无需分隔符）因而看不出这个坑 —— 首版脚本按它写了无逗号多行格式，整批 56 区语法非法，已回滚重做。
      实测见 `scripts/probe_elias_expressibility.exs`；正确写法是 `"a",\n"b"`（逗号）或单行 `["a", "b"]`。
-   - ⚠️ **`no_beg` 无消费端**（`beg_command.ex` 是「乞讨系统暂未开放」桩）；
+   - ✅ **`no_beg` 已接线**：`beg_command.ex:46` 以 `room_flags(room_id, "no_beg")` 拦截；旧述「暂未开放桩」为落地前快照；
      **`no_steal` 消费端可疑** —— `room.ex` L1462 读 `context.data.no_steal`，但 `context.data` 就是 `%Room{}` 结构体，
      而 `Room` **没有** `:no_steal` 字段（实测 `Map.has_key?` = false）→ 该分支会抛 `KeyError`。二者均登记 P3/风险 R6。
 
@@ -374,10 +389,10 @@ elias 0.2.8 实测（`scripts/probe_elias_expressibility.exs`）：
 | 装备文案 5 件套 | `wield/wear/remove_command.ex` 输出替换硬编码文案 | 低 | ✅ `c5c3c325`（2026-10-17） |
 | `female_only` | `wield`/`wear` 命令前置判定（`with_item` 性别门控） | 中（**新拦截**，需灰度） | ✅（P3-c，a52ece2b） |
 | `no_steal` | 偷窃命令前置判定 | 中（**新拦截**） | ✅ `524efcff`（P3-b，实际范围扩为 steal 三 flag + search no_search 共 4 处 KeyError 修复） |
-| `no_beg` | 乞讨命令前置判定 | 中（**新拦截**） | ⬜（`beg_command.ex` 是「暂未开放」桩，无真实消费端 → 等 P5 乞讨系统） |
+| `no_beg` | 乞讨命令前置判定 | 中（**新拦截**） | ✅（当时 ⬜）已接线：`beg_command.ex:46` 消费 `no_beg` 房间 flag |
 | `sleep_room` / `no_sleep_room` | `sleep_command.ex`（`room.attrs["sleep_room"]`） | 低 | ✅（consumer 已存在，`room.ex` L266-267 把 flags→attrs；B1 数据即生效，无需接线） |
 | `liquid` / `max_liquid` | 倒/喝命令 | 中 | ✅ 已完成（`drink_command.ex` `drink_container`/`consume_liquid` 读 `Liquid.state`+`max_liquid`/`remaining`；`fill_command.ex` 第84行 `liquid.max || liquid.remaining`→`max_liquid`；数据已回填 B8） |
-| `can_make` / `not_make` / `power_point` / `item_origin` | 打造命令 | 中 | ⬜（数据已回填 B9，但打造系统未建 → 等 P5 打造子系统） |
+| `can_make` / `not_make` / `power_point` / `item_origin` | 打造命令 | 中 | ✅（当时 ⬜）已消费：`fuse_command.ex:95` / `make_command.ex:75` / `show_command.ex:13` |
 | `chat_msg_combat` / `chat_chance_combat` | NPC 战斗心跳 | 低 | ✅ 已完成（`combat_event.ex` `maybe_combat_chat/3` 读 `chat_chance_combat`/`chat_msg_combat`，心跳进入战斗且未忙乱时按概率随机挑一句发房间；数据已回填 B6） |
 
 **装备文案 5 件套已完成（P3-a，`c5c3c325`）**：新起 `VisionEvent`/`VisionView`
@@ -523,15 +538,15 @@ check_dirs/check_out/member_array/sscanf/random（19）、上游局部裸变量
 
 一个批次算完成，必须同时满足：
 
-- [ ] **§1 三问已过**：Q1 跑过 `probe_elias_expressibility.exs`（判「框架优先」的项已移交 P5，没在本批次硬转）
-- [ ] dry-run 显示「待补 N 项」，`--apply` 后二次 dry-run 显示「0 项」（幂等）
-- [ ] `git diff --stat` 只有新增行，无删除/修改
-- [ ] `validate_ucl.py` 通过
-- [ ] `mix test --seed 12345` 绿
-- [ ] `world_reachability.py` 不降
-- [ ] 该批次的 key/函数从 `tmp/` 清单里移入抑制清单或标记完成
-- [ ] `scripts/assert_unhandled_baseline.py` 通过
-- [ ] 文档更新：§2.4 基线表 + 批次记录
+- [x] **§1 三问已过**：Q1 跑过 `probe_elias_expressibility.exs`（判「框架优先」的项已移交 P5，没在本批次硬转）
+- [x] dry-run 显示「待补 N 项」，`--apply` 后二次 dry-run 显示「0 项」（幂等）
+- [x] `git diff --stat` 只有新增行，无删除/修改
+- [x] `validate_ucl.py` 通过
+- [x] `mix test --seed 12345` 绿
+- [x] `world_reachability.py` 不降
+- [x] 该批次的 key/函数从 `tmp/` 清单里移入抑制清单或标记完成
+- [x] `scripts/assert_unhandled_baseline.py` 通过
+- [x] 文档更新：§2.4 基线表 + 批次记录
 
 ---
 

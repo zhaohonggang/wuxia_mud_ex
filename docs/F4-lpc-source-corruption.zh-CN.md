@@ -50,8 +50,7 @@ LPC 源字符串转义 `\n` 的**反斜杠字节（0x5C）被替换为 UTF-8 替
 ## 5. 复现与核对
 
 ```bash
-# 单文件：预期 FAIL，MISSING 含 <U+FFFD>
-python scripts/perf_acceptance.py beiming_shengong/suck.ex
+# 单文件：预期 FAIL，MISSING 含 <U+FFFDpython scripts/perf_acceptance.py beiming_shengong/suck.ex
 
 # 全量（跳过保护文件）：预期 0 FAIL
 python scripts/perf_acceptance.py --all-pending

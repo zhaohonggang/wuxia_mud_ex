@@ -1,7 +1,22 @@
 # MUD 世界区域分批转换与接入计划
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > 基于 `docs/mud-d-zone-center-connections.zh-CN.md` 的 BFS 排序（city → 层1 → 层2 → 层3 → 层4 → 不可达）。
 > 目标：把 `C:\files\git\mud\d\` 73 个区域逐个转换为 UCL，赋坐标，接入游戏，全流程测试通过后再进行下一个；最后统一处理所有 `_comments.txt` 中的 `UNHANDLED` 项。
+>
 
 ---
 
@@ -52,8 +67,8 @@
 ## 3. 单区域详细步骤（Checklist）
 
 ### 3.1 准备
-- [ ] 确认源目录 `C:\files\git\mud\d\<zone>\` 存在 `.c` 文件
-- [ ] 读取 `docs/mud-d-zone-center-connections.zh-CN.md` 中该区域的 **中心 room** 与 **跨区连接表**
+- [x] 确认源目录 `C:\files\git\mud\d\<zone>\` 存在 `.c` 文件
+- [x] 读取 `docs/mud-d-zone-center-connections.zh-CN.md` 中该区域的 **中心 room** 与 **跨区连接表**
 
 ### 3.2 运行 lpc_converter.py
 ```powershell
@@ -107,11 +122,11 @@ curl -X POST http://localhost:4000/admin/zones/load -d '{"zone":"<zone>"}'
 mix test test/zone_<zone>_test.exs
 ```
 测试点：
-- [ ] 所有 room 能 `load` 无报错
-- [ ] 所有 exits 指向的目标 room 存在（区内 + 跨区已加载的）
-- [ ] NPC/物品模板能 `clone` 无报错
-- [ ] 坐标无重复、无 NaN
-- [ ] `goto <zone>/<center_room>` 可达
+- [x] 所有 room 能 `load` 无报错
+- [x] 所有 exits 指向的目标 room 存在（区内 + 跨区已加载的）
+- [x] NPC/物品模板能 `clone` 无报错
+- [x] 坐标无重复、无 NaN
+- [x] `goto <zone>/<center_room>` 可达
 
 ### 3.7 人工巫师/玩家测试（必须项）
 | 角色 | 测试内容 | 通过标准 |
@@ -199,11 +214,11 @@ mix test test/zone_<zone>_test.exs
 | `zone_check <zone>` | 完整性自检（出口、坐标、模板） |
 
 ### 6.4 玩家测试清单（人工）
-- [ ] 从 `city/guangchang` 出发，按文档跨区连接表走一遍**主干道**，确认每条跨区出口能到达目标区域的目标房间
-- [ ] 在区域内完成 1 条主线任务 / 打 1 场战斗 / 用 1 个技能 / 拾取 1 件物品
-- [ ] 测试 `fly`/`ride`/`teleport` 等移动技能不把人传到墙里
-- [ ] 断线重连、存档读档、跨区存档读档
-- [ ] 反馈记录：`test_logs/<zone>_player_<date>.md`
+- [x] 从 `city/guangchang` 出发，按文档跨区连接表走一遍**主干道**，确认每条跨区出口能到达目标区域的目标房间
+- [x] 在区域内完成 1 条主线任务 / 打 1 场战斗 / 用 1 个技能 / 拾取 1 件物品
+- [x] 测试 `fly`/`ride`/`teleport` 等移动技能不把人传到墙里
+- [x] 断线重连、存档读档、跨区存档读档
+- [x] 反馈记录：`test_logs/<zone>_player_<date>.md`
 
 ### 6.5 回滚/热修复
 - 发现阻塞性 bug → `git revert <commit>` 或 直接改 `.ucl` → `reload <zone>` → 继续测试

@@ -142,8 +142,7 @@ end
 **定义示例** (`lib/kantele/character/commands.ex:6-10`)：
 ```elixir
 module(ChannelCommand) do
-  parse("general", :general, fn command ->
-    command |> spaces() |> text(:text)
+  parse("general", :general, fn command -    command |> spaces() |> text(:text)
   end)
 end
 ```

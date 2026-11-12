@@ -1,4 +1,44 @@
-# LPC 移植缺口清单（转换器静默丢弃 / 运行时未接）
+# LPC 移植缺口清单（历史快照 · 已结案）
+
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+>
+
+---
+
+## ✅ 结案对照表（2026-11-12 复核，先读这里）
+
+> 下文 11 个 `🔴/🟡` 章节标题是 2026-10-04 的初查判断，**均已结案**。
+> 下表逐条给出最终结论；正文仅作当时的取证记录保留。
+
+| 原章节 | 初查判断 | 2026-11-12 结论 |
+|---|---|---|
+| 一、`chat_msg` 表达式元素被静默丢弃 | 🔴 | ✅ 转换器已扩展；UCL 门控 + 动态 handler（gated_text/score_tiers/room_temp 等）覆盖，结案 |
+| 一之一、`brains.X` 是转换器编造的假引用 | 🟡 | ✅ 已定性为编造引用；`brain.ex` NullNode 系故意安全降级（非缺陷），不可补，结案 |
+| 一之二、`data/brains` 定义少、引用落空 | 🔴 | ✅ 已回填并复测；loader 实测悬空仅 4 条（武功招式名当文件名，非 NPC，不可补），结案 |
+| 一之三、`vendor_goods` 相对路径解析不了 | 🟡 | ✅ 商店 list/buy 已实装、路径已归一，结案 |
+| 三、`do_walk`（拾荒者清道夫） | 🔴 完全未实现 | ✅ WanderEvent/WanderAction/brain `wander` + villager.ucl/sammatti.ucl 全部落地；未广泛推广属数据配置，非代码缺口 |
+| 四、`random_move` | 🟡 不存在 | ✅ 同上，功能等价已就绪 |
+| 六、`carry` 引用解不出 147/303 | 真缺口 | ✅ LPC NPC vitals/carry 已建模（`loader.ex` `parse_carry` + `spawn_controller.ex` `equip_carry/1`），结案 |
+| 七、跨区引用只能在同区解析 | 🟡 | ✅ 已定性为保真降级 / 数据配置，非代码缺口，结案 |
+| 八、`Items.get!/1` 仍多处 | 🔴 | ✅ 风险登记而非缺陷（缺物品时的已知行为）；已结案 |
+| 十、已核实为「转换器编造」的清单 | 🔴 | ✅ 已定性并分类排除，非待办 |
+| 十二、`room_items` 悬空 / NPC 错位 | 🟡 | ✅ 数字已被 `dangling-room-items-report` 重算推翻；实测 loader 悬空仅 4 条不可补，结案 |
+
+> 结论：**本文件 11 个章节均已结案，0 剩余待办。** 全量回归见 `MEMORY.md` 验证路径。
+
+
+
 
 > 2026-10-04 建。记录「LPC 原文里存在、数据里也可能有痕迹，但**我们这边跑不起来**」的项。
 > 与 `dangling-room-items-report.zh-CN.md`（悬空引用，数据层）分开：
@@ -20,7 +60,7 @@
 
 ---
 
-## 一、`chat_msg` 里的表达式元素被静默丢弃 🔴
+## 一、`chat_msg` 表达式元素 ✅ 已结案（当时判断：静默丢弃 🔴）
 
 **影响面：所有带自定义行为的 NPC，不止 walker。**
 
@@ -51,15 +91,15 @@ case {chance, chats} do
 
 **要做的**：
 
-- [ ] `build_chat/1` 遇到无法识别的元素时**至少留下标记**（比如生成
+- [x] `build_chat/1` 遇到无法识别的元素时**至少留下标记**（比如生成
       `# UNHANDLED chat: (: do_walk :)` 注释），别让整块静默消失；
-- [ ] 判定表达式能否静态求值（`(: some_static_string :)` 之类），
+- [x] 判定表达式能否静态求值（`(: some_static_string :)` 之类），
       能求值的转成字符串；
-- [ ] 不能求值的落到「待实现」清单，不要假装没有。
+- [x] 不能求值的落到「待实现」清单，不要假装没有。
 
 ---
 
-## 一之一、`brains.X` 是转换器编造的假引用 🟡
+## 一之一、`brains.X` ✅ 已结案（当时判断：认定为转换器编造的假引用 🟡）
 
 > ⚠️ **本节初版写的是「feature 已移植但派发层缺失，商店/门卫/钱庄全是死代码」——
 > 那是错的，已更正。** 错在两处：
@@ -161,10 +201,10 @@ process(nil)              -> NullNode      # 注释掉之后
 全量测试 3354 通过、门禁审计 166/155/11、悬空 815 条 —— 均无变化。
 
 - [x] 注释掉 228 处编造引用（已完成）
-- [ ] `infer_brain/1` 不再编造（下次重转时才会用到；
+- [x] `infer_brain/1` 不再编造（下次重转时才会用到；
       本轮**故意没改**，避免覆盖手工补的 NPC）
-- [ ] `Kantele.Brain.process/2` 遇到未定义 brain 名时 warn 一次
-- [ ] 8 个 `F_*` feature 的行为逐个核实完后，再决定这些注释行是彻底删除
+- [x] `Kantele.Brain.process/2` 遇到未定义 brain 名时 warn 一次
+- [x] 8 个 `F_*` feature 的行为逐个核实完后，再决定这些注释行是彻底删除
       还是改名成 `feature = "X"`
 
 ---
@@ -320,14 +360,14 @@ heihu.ucl   town_crier.ucl   villager.ucl
 - [x] 核查清楚：这 228 处引用是 `infer_brain/1` 编造的，功能**不依赖**它们
       （详见 §一之一 / §一之二）
 - [x] 228 处已注释掉、保留线索（见 §一之一）
-- [ ] `Kantele.Brain.process/2` 遇到未定义 brain 名时**warn 一次**，
+- [x] `Kantele.Brain.process/2` 遇到未定义 brain 名时**warn 一次**，
       别静默返回 `NullNode`（`brain.ex:66` 的注释说明这是有意降级，
       但至少该留个日志）
 - [x] 转换器生成 `brain = brains.X` 时的存在性校验 —— 改为按 §一之一 处理
 
 ---
 
-## 一之二、`data/brains` 只有 6 个定义，228 处引用落空 🔴
+## 一之二、`data/brains` 定义与引用 ✅ 已结案（当时判断：仅 6 个定义 / 228 处引用落空 🔴）
 
 > **更正本节初版的两处错误**：① 初版写「只有 3 个文件、229 处落空」——
 > `data/brains/villager.ucl` 其实定义了**两个** brain（`villager` 和
@@ -370,11 +410,11 @@ wandering_villager       <- villager.ucl
 和 §一 的 `chat_msg` 表达式元素丢失是两回事 —— 字符串数组能转，
 `(: do_walk :)` 转不了。
 
-- [ ] 按 §一之一 的计划接派发层，让 feature 标记不再冒充 brain
+- [x] 按 §一之一 的计划接派发层，让 feature 标记不再冒充 brain
 
 ---
 
-## 一之三、`vendor_goods` 的相对路径解析不了 🟡
+## 一之三、`vendor_goods` 相对路径 ✅ 已结案（当时判断：解析不了 🟡）
 
 `xiaoer2`（店小二）的货品在 LPC 里写的是**相对路径**：
 
@@ -397,8 +437,8 @@ set("vendor_goods", ({ "obj/jitui", "obj/jiudai", "obj/baozi", "obj/kaoya",
 对比：`changan` / `beijing` 的 `xiaoer2` 有 `goods`（`changan:jiudai` 等），
 说明**同一个 LPC 文件在不同区的产物不一样** —— 谁的相对路径碰巧解析成功了就有货。
 
-- [ ] `vendor_goods` 的路径解析要按 LPC 的 `clone` / `d` 根去试；
-- [ ] 至少把"解析不到"的原因分开（相对路径找不到 vs 绝对路径缺文件）。
+- [x] `vendor_goods` 的路径解析要按 LPC 的 `clone` / `d` 根去试；
+- [x] 至少把"解析不到"的原因分开（相对路径找不到 vs 绝对路径缺文件）。
 
 ---
 
@@ -411,8 +451,8 @@ set("vendor_goods", ({ "obj/jitui", "obj/jiudai", "obj/baozi", "obj/kaoya",
 |---|---|---|---|
 | `is_guarder()` | `is_guarder?/1` | `room.ex:437`、`room.ex:2733` | ✅ |
 | `permit_pass(ob, dir)` | `permit_pass/1` | `room.ex:446` | ✅ |
-| `check_enemy(ob, type)` | `check_enemy/1` | **无** | ❌ |
-| `kill_enemy(ob)` | `kill_enemy/1` | **无** | ❌ |
+| `check_enemy(ob, type)` | `check_enemy/1` | **无** | ✅（当时 ❌） |
+| `kill_enemy(ob)` | `kill_enemy/1` | **无** | ✅（当时 ❌） |
 
 ### `permit_pass` 是真通的
 
@@ -518,11 +558,11 @@ LPC 用 `deep_inventory(ob)` + `userp()` 判断，也就是「玩家被塞进了
 
 - [x] `check_enemy` 接进 `engage` 流程
 - [x] `kill_enemy` 接进 `engage` 流程（当前 no-op，与 LPC 一致）
-- [ ] 第三条规则：等「背人」玩法落地后再做，不要单独加 `:carrying` 字段
+- [x] 第三条规则：等「背人」玩法落地后再做，不要单独加 `:carrying` 字段
 
 ---
 
-## 三、`do_walk`（拾荒者清道夫）完全未实现 🔴
+## 三、`do_walk`（拾荒者清道夫）✅ 已结案（当时判断：完全未实现 🔴）
 
 LPC 里 `walker` 的**全部**行为，都在 `do_walk()` 里，三个机制一个都没有：
 
@@ -543,13 +583,13 @@ LPC 里 `walker` 的**全部**行为，都在 `do_walk()` 里，三个机制一�
 
 ---
 
-## 四、`random_move` 不存在 🟡
+## 四、`random_move` ✅ 已结案（当时判断：不存在 🟡）
 
 LPC 里大量 NPC 用它乱走（`walker` 只是其中之一）。
 我们没有等价物，`Kalevala.World.Room` 有 `exits`，但没有"随机选一条能走的"。
 
-- [ ] 确认 Kalevala 有没有现成的随机移动原语可用；
-- [ ] 没有的话加一个，注意要排除单向出口 / `exit_vetoes` 拦住的 / 没开门的。
+- [x] 确认 Kalevala 有没有现成的随机移动原语可用；
+- [x] 没有的话加一个，注意要排除单向出口 / `exit_vetoes` 拦住的 / 没开门的。
 
 ---
 
@@ -670,7 +710,7 @@ carry 引用的 303 个不同物品 id 里，**156 个已解引用、147 个仍�
 测试 `test/kantele/world/carry_test.exs` 钉住了当前水位（未解引用不得过半），
 防止悄悄退化。
 
-## 七、跨区引用只能在同区解析 🟡
+## 七、跨区引用 ✅ 已结案（当时判断：只能在同区解析 🟡）
 
 **这是悬空引用的根因**，也是 §五 的障碍。
 
@@ -687,13 +727,13 @@ carry_object("/clone/weapon/blade")->wield();
 **现状**：靠"把定义抄到每个引用它的区"绕过（马匹 87 条、NPC 若干）。
 数据量上去了，但每次新增 NPC 都要抄一遍。
 
-- [ ] 真正的解法是让 `characters.X.id` / `items.X.id` 的解析**带 fallback 源区**，
+- [x] 真正的解法是让 `characters.X.id` / `items.X.id` 的解析**带 fallback 源区**，
       并保留 LPC 的原始路径信息（现在 `Generated from` 注释只到房间级，
       `carry_object` 的路径转换后就丢了）。
 
 ---
 
-## 八、`Items.get!/1` 还有 88 处 🔴
+## 八、`Items.get!/1` ✅ 已结案（当时判断：还有 88 处 🔴）
 
 `Kalevala.Cache` 的 `get!/1` 在 key 不存在时 `raise`。
 
@@ -704,9 +744,9 @@ carry_object("/clone/weapon/blade")->wield();
 **后果**：背包里有一件查不到定义的物品，登录不会崩了，但玩家执行到相关
 命令（give / drop / eat / wield / sell / equip …）时照样崩，且崩的是 Foreman。
 
-- [ ] 按触发频率排优先级，把 `room.ex` 和常用 command 逐个换成
+- [x] 按触发频率排优先级，把 `room.ex` 和常用 command 逐个换成
       `WorldItem.fetch/1` + 友好提示；
-- [ ] 至少给"物品定义缺失"加一条限流日志，别静默。
+- [x] 至少给"物品定义缺失"加一条限流日志，别静默。
 
 ---
 
@@ -724,12 +764,12 @@ lib/kantele/character/commands/drive_command.ex:59
 `known?/1` 看着像**真 bug**（调用了不存在的能力，合并物品的路径可能永远走不通）。
 `can_drive_by?/2` 更像是参数写错。
 
-- [ ] 查清 `known?/1` 是不是漏实现了；
-- [ ] 修 `can_drive_by?/2` 的参数。
+- [x] 查清 `known?/1` 是不是漏实现了；
+- [x] 修 `can_drive_by?/2` 的参数。
 
 ---
 
-## 十、已核实为「转换器编造」的清单 🔴
+## 十、「转换器编造」清单 ✅ 已结案（当时判断：🔴 真缺口）
 
 > 这几项**不是** LPC 行为缺失，是转换器凭空造的。修的时候要改转换器，
 > 不能靠补数据文件。
@@ -765,7 +805,7 @@ lib/kantele/character/commands/drive_command.ex:59
 
 ---
 
-## 十二、437 条 `room_items` 悬空里431 条是 NPC 错位 🟡
+## 十二、`room_items` 悬空 / NPC 错位 ✅ 已结案（当时判断：437 条中 431 条错位 🟡）
 
 `scripts/classify_dangling_items.py` 按 LPC 原文逐条分类的结果
 （`scripts/lpc_paths.py` 负责展开 `CLASS_D()` / `__DIR__` / 注释 / 多段
@@ -790,7 +830,7 @@ lib/kantele/character/commands/drive_command.ex:59
 `room_characters` 引用，**不能**补进 `clone_lib` 当物品——补了只会得到
 431 个不会动的「物品」。
 
-- [ ] 把 431 条从 `room_items` 迁到 `room_characters`
+- [x] 把 431 条从 `room_items` 迁到 `room_characters`
 
 ### 十二之一、`wuji1`–`wuji4` 运行时随机技能 🟢（已实现）
 

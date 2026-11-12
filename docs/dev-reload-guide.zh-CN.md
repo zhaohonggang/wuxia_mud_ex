@@ -84,8 +84,7 @@ docker logs wuxia_mud_dev-app-1 --tail 30
 docker restart wuxia_mud_dev-app-1
 
 # 同步文件到容器
-docker cp <本地文件> wuxia_mud_dev-app-1:/app/<容器路径>
-
+docker cp <本地文件> wuxia_mud_dev-app-1:/app/<容器路径
 # 健康检查
 docker exec wuxia_mud_dev-app-1 wget -q -O- http://127.0.0.1:4000/_health
 ```

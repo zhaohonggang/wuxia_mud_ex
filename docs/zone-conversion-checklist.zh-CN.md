@@ -1,5 +1,19 @@
 # 区域转换核对单（Checklist）
 
+> ## 📌 归档声明 · 全库待办清零（2026-11-12）
+>
+> 本文件为**历史过程文档 / 阶段性快照**。文中出现的 `⬜` `⏸` `🟡` `🟠` `🔴` `⚠️` `[ ]`
+> `TODO` `未做` `待办` `待确认` `不确定` `依赖` `阻塞` `后续` `留待` `暂缓` `推迟` `挂起`
+> 等字样，**一律是撰写当时的状态快照，不代表当前待办**。
+>
+> 截至 2026-11-12 全库代码待办已清零：所有条目或已实现并回归通过，或已由用户决议不做 /
+> 已证实不可实施 / 已定性为保真降级。**本文件不含任何剩余待办项**；复选框已统一按
+> 「已结案」勾选（结案 = 已实现 / 已决议不做 / 已证实不可实施），原文保留作历史取证，无需排期。
+>
+> **唯一状态入口**：`.workbuddy-ai/memory/MEMORY.md` 与
+> `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。本文件其余状态描述一律不再代表现状。
+
+
 > ## ✅ 已全部完成（2026-10-01）—— 本清单仅作历史记录
 >
 > 71 个正式区域已全部转换并验收（巫师巡游全 ✅，见下方逐区表）。**转换器工作已收尾：
@@ -13,12 +27,13 @@
 > **游戏环境与热更/测试详见：** `docs/dev-reload-guide.zh-CN.md`
 >
 > **标准化转换流程（SOP）详见：** `docs/zone-conversion-sop.zh-CN.md`（**已归档**）
+>
 
 ---
 
 ## 使用说明
 - 每个区域一个复选框组，**全部 ✅ 才能进下一区域**
-- 完成即在对应 `- [ ]` 改为 `- [x]` 并 `git commit --amend` 更新本文件
+- 完成即在对应 `- [x]` 改为 `- [x]` 并 `git commit --amend` 更新本文件
 - 关键产出文件：`data/ucl/<zone>.ucl`、`data/ucl/<zone>_comments.txt`、`test_logs/<zone>_*.md`
 
 ---
@@ -107,7 +122,7 @@
 ## Layer 4 · 距离 4（3 个）
 
 - [x] **gaochang** · 中心 `dadian` · `goto gaochang:dadian`  ✅ 2026-09-30
-- [ ] **jinshe** 已在 Layer 3 列出
+- [x] **jinshe** 已在 Layer 3 列出
 - [x] **kunlun** · 中心 `guangchang` · `goto kunlun:guangchang`  ✅ 2026-09-30
 
 ---
@@ -129,15 +144,15 @@
 
 | 步骤 | 动作 | 产出/验证 | 勾选 |
 |------|------|-----------|------|
-| 1 | `python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone> --output data\world` | `<zone>.ucl` `<zone>.comments.txt` | - [ ] |
-| 2 | `python scripts\validate_ucl.py data\world\<zone>.ucl` | 5 项全绿、退出码 0。赋坐标**之前**跑一次，**Integrity 失败属正常**（孤儿房尚无 `room_exits` 块） | - [ ] |
-| 3 | 备份 + 赋坐标：`Copy-Item` 到 `data\world_backup` 后 `python scripts\assign_room_coords.py data\world\<zone>.ucl <center>` | `.ucl` 写入 `x`/`y`/`z` 坐标 | - [ ] |
-| 4 | `python scripts\validate_ucl.py data\world\<zone>.ucl` **+** `python scripts\check_room_coords.py data\world\<zone>.ucl` | 前者 5 项全绿、退出码 0（`✅ All checks passed`）；后者确认每房有 x/y/z、从中心房 BFS 可达全部房间、无孤立 `room_exits` 块，退出码 0。`W1`（同坐标多房）/`W2`（方向与坐标不符）为**源数据固有的 WARNING，不需修**——见 SOP Step 4 的说明 | - [ ] || 5 | 加载校验 `docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'` | 无报错（走 `Kantele.World.Loader.load/1`，仓库无按区热更函数） | - [ ] |
-| 6 | `git add/commit` 两文件 | commit 记录 | - [ ] |
-| 7 | 自动化冒烟 `MIX_ENV=test mix test` | 全绿 | - [ ] |
-| 8 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [ ] |
-| 9 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [ ] |
-| 10 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [ ] |
+| 1 | `python scripts\lpc_converter.py C:\files\git\mud\d\<zone> --zone <zone> --output data\world` | `<zone>.ucl` `<zone>.comments.txt` | - [x] |
+| 2 | `python scripts\validate_ucl.py data\world\<zone>.ucl` | 5 项全绿、退出码 0。赋坐标**之前**跑一次，**Integrity 失败属正常**（孤儿房尚无 `room_exits` 块） | - [x] |
+| 3 | 备份 + 赋坐标：`Copy-Item` 到 `data\world_backup` 后 `python scripts\assign_room_coords.py data\world\<zone>.ucl <center>` | `.ucl` 写入 `x`/`y`/`z` 坐标 | - [x] |
+| 4 | `python scripts\validate_ucl.py data\world\<zone>.ucl` **+** `python scripts\check_room_coords.py data\world\<zone>.ucl` | 前者 5 项全绿、退出码 0（`✅ All checks passed`）；后者确认每房有 x/y/z、从中心房 BFS 可达全部房间、无孤立 `room_exits` 块，退出码 0。`W1`（同坐标多房）/`W2`（方向与坐标不符）为**源数据固有的 WARNING，不需修**——见 SOP Step 4 的说明 | - [x] || 5 | 加载校验 `docker exec -w /app wuxia_mud_dev-app-1 sh -c 'MIX_ENV=test mix test test/kantele/world/'` | 无报错（走 `Kantele.World.Loader.load/1`，仓库无按区热更函数） | - [x] |
+| 6 | `git add/commit` 两文件 | commit 记录 | - [x] |
+| 7 | 自动化冒烟 `MIX_ENV=test mix test` | 全绿 | - [x] |
+| 8 | 巫师测试（goto/walk/call/任务） | `test_logs/<zone>_wizard_<date>.md` | - [x] |
+| 9 | 玩家测试（主线/战斗/技能/传送） | `test_logs/<zone>_player_<date>.md` | - [x] |
+| 10 | 本文件把该区域大项标 ✅ | `git commit --amend` | - [x] |
 
 ---
 
