@@ -938,7 +938,10 @@ direction = ~
   engage = {
     fight = { accept = true }
   }
-    }
+      engage = {
+    fight = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/taishan/npc/seng-ren.c by LPCConverter
 # Zone: taishan

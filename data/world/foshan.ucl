@@ -1048,7 +1048,25 @@ direction = "south"
     { id = items.cloth.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/foshan/npc/zhangkang.c by LPCConverter
 # Zone: foshan

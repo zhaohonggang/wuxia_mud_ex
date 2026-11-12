@@ -3151,7 +3151,25 @@ item_desc = {
   }
   chat_chance_combat = 10
   chat_msg_combat = ["官兵喝道：大胆刁民，竟敢造反不成？", "官兵喝道：跑得了和尚跑不了庙，你还是快快束手就擒！"]
-    }
+      engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/city/npc/chen.c by LPCConverter
 # Zone: city
@@ -3249,7 +3267,11 @@ item_desc = {
     { kind = "money" min = 500 accept = true msg = "陈有德望着{npc}说：你的武功应该历练江湖才能再长进，不能埋没在这里了。" },
     { kind = "any" accept = false msg = ["陈有德望着{npc}说：你的武功应该历练江湖才能再长进，不能埋没在这里了。", "陈有德对{npc}说：好！这位想学什么呢？", "陈有德皱眉对{npc}说：钱我不在乎。可你也给的也太少了点儿吧？"] }
   ]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/city/npc/cheng.c by LPCConverter
 # Zone: city

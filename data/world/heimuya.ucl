@@ -2350,7 +2350,12 @@ item_desc = {
 
   chat_chance_combat = 120
   chat_msg_combat = ["blade.kou", "cuff.tong", "claw.duan", "recover", "powerup"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/heimuya/npc/kid.c by LPCConverter
 # Zone: heimuya

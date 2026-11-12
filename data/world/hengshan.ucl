@@ -541,7 +541,17 @@ zones "hengshan" {
     { id = items.cheng_cloth.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hengshan/npc/jing.c by LPCConverter
 # Zone: hengshan

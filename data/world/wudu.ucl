@@ -2905,7 +2905,10 @@ chats = [
     greet_delay = 0
     add_actions = ["yao"]
   }
-    }
+      engage = {
+    fight = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/wudu/npc/tongzi.c by LPCConverter
 # Zone: wudu

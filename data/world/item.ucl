@@ -173,7 +173,25 @@ zones "item" {
   }
   chat_chance_combat = 3
   chat_msg_combat = ["张天师摇摇铃铛，道：天灵灵，地零零，太上老君还不显灵？", "张天师呼呼的吹了几口气。"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/item/obj/butian.c by LPCConverter
 # Zone: item

@@ -3122,7 +3122,10 @@ chats = [
     fight = { accept = true }
   }
   chat_msg_combat = ["blade.kuang"]
-    }
+      engage = {
+    fight = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hengyang/npc/turou.c by LPCConverter
 # Zone: hengyang

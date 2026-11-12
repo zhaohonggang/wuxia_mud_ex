@@ -4257,7 +4257,10 @@ chats = [
     greet_delay = 0
     add_actions = ["buy", "list"]
   }
-    }
+      engage = {
+    fight = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/luoyang/npc/zhu.c by LPCConverter
 # Zone: luoyang

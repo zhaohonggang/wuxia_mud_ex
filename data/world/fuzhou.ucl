@@ -1482,7 +1482,11 @@ direction = ~
     { line = "陈阿婆笑眯眯地招呼道：人客来坐。" },
     { line = "陈阿婆笑眯眯地说道：可嘴的，你要买什？" }
   ]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/fuzhou/npc/chenqi.c by LPCConverter
 # Zone: fuzhou

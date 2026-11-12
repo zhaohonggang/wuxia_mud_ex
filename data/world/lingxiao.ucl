@@ -2122,7 +2122,11 @@ chats = [
   }
   chat_chance_combat = 120
   chat_msg_combat = ["sword.hui", "sword.chu", "cuff.jue", "strike.piao", "recover", "powerup"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/lingxiao/npc/laoban.c by LPCConverter
 # Zone: lingxiao

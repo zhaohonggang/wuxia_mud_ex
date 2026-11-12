@@ -1688,7 +1688,11 @@ direction = "west"
     { id = items.cloth.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/suzhou/npc/gongzi.c by LPCConverter
 # Zone: suzhou

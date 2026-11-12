@@ -1213,7 +1213,11 @@ item_desc = {
     { id = items.gangdao.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/yanziwu/npc/gongye.c by LPCConverter
 # Zone: yanziwu

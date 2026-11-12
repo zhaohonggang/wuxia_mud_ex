@@ -528,7 +528,17 @@ item_desc = {
   }
   chat_chance_combat = 90
   chat_msg_combat = ["常金鹏喝道：恶贼还不放手？", "常金鹏喝道：恶贼不得无礼！", "hammer.poli"]
-    }
+      engage = {
+    fight = { accept = true }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/guo.c by LPCConverter
 # Zone: tulong
@@ -560,7 +570,17 @@ item_desc = {
     hit = { accept = false msg = "我不和你蛮打，只和你比(bi)一些拳脚上的功夫。" }
     kill = { accept = true msg = "怎么，想得屠龙刀就非得要行凶不成？" }
   }
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/huiyue.c by LPCConverter
 # Zone: tulong
@@ -747,7 +767,17 @@ item_desc = {
     hit = { accept = false msg = "我不和你蛮打，只和你比(bi)一些水上功夫。" }
     kill = { accept = true msg = "怎么，想得屠龙刀就非得要行凶不成？" }
   }
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/miaofeng.c by LPCConverter
 # Zone: tulong
@@ -885,7 +915,17 @@ item_desc = {
     hit = { accept = false msg = "我不和你比，我是陪张公子来参观的！" }
     kill = { accept = true msg = "怎么，要行凶么？在这里恐怕由不得你！" }
   }
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/yuan.c by LPCConverter
 # Zone: tulong
@@ -917,7 +957,17 @@ item_desc = {
     hit = { accept = false msg = "我不和你蛮打，只和你比(bi)一些我海沙帮的绝技。" }
     kill = { accept = true msg = "怎么，想得屠龙刀就非得要行凶不成？" }
   }
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/zhang.c by LPCConverter
 # Zone: tulong
@@ -953,7 +1003,25 @@ item_desc = {
     hit = { accept = false msg = "我是不会和你打架的！" }
     kill = { accept = true msg = "怎么，要行凶么？在这里恐怕由不得你！" }
   }
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/obj/bosi.c by LPCConverter
 # Zone: tulong
@@ -2346,7 +2414,17 @@ direction = "down"
   }
   chat_chance_combat = 120
   chat_msg_combat = ["sword.fanyin", "recover"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/hebiweng.c by LPCConverter
 # Zone: tulong
@@ -2751,7 +2829,17 @@ direction = "down"
   }
   chat_chance_combat = 60
   chat_msg_combat = ["sword.ren"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/tulong/yitian/npc/zhao1.c by LPCConverter
 # Zone: tulong

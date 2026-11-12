@@ -857,7 +857,11 @@ item_desc = {
     { line = "陈阿婆笑眯眯地说道：人客来坐。" },
     { line = "陈阿婆说道：可嘴的，你要买什？" }
   ]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/quanzhou/npc/chuanfu.c by LPCConverter
 # Zone: quanzhou

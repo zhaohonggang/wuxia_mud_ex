@@ -24,11 +24,14 @@ LPC 源：int accept_fight(object who) { return 0; } → engage.fight.accept = f
 
 unconcious / die / owner_is_killed 先只登记到报告，不写 UCL（schema 待定，P5-5 框架优先）。
 
-映射策略：
+映射策略（P5-2 修正版）：
   1. 扫描 /c/files/git/mud 所有 .c，匹配 int accept_(fight|hit|kill)(object who) { … }
   2. 从 set_name("中文名", ({ "id1", "id2", ... })) 提取 ID 候选
   3. 在 data/world/*.ucl 的 characters "<id>" { } 块中按 ID 匹配（支持 -/_ 互换）
-  4. 已有 engage = 的块跳过（幂等）；只增不改
+  4. **区域门禁**：解析 UCL 块上方的 # Generated from <path> 注释，仅当
+     LPC 文件的 basename 与 UCL 块的 LPC 路径 basename 一致时才匹配，避免
+     跨区同名 ID 误写（如 bing 出现于 15 个区）。
+  5. 已有 engage = 的块跳过（幂等）；只增不改
 
 安全协议：
   1. dry-run 默认；--apply 才写盘
@@ -63,10 +66,15 @@ ID_IN_NAME_RE = re.compile(r'"([^"]+)"')
 
 CHAR_BLOCK_RE = re.compile(r'\bcharacters\s+"([^"]+)"\s*\{')
 ENGAGE_EXIST_RE = re.compile(r'\bergage\s*=')
+GEN_LPC_RE = re.compile(r'#\s*Generated from\s+(.+?\.c)\s+by LPCConverter')
 
 
 def normalize_id(name):
     return {name, name.replace("-", "_"), name.replace("_", "-")}
+
+
+def basename_no_ext(path):
+    return os.path.basename(path)[:-2] if path.endswith('.c') else os.path.basename(path)
 
 
 def extract_ids_from_lpc(src):
@@ -98,14 +106,25 @@ def find_ucl_files():
 
 
 def build_char_index(ucl_files):
+    """返回 normalized_id -> [(ucl_path, block_name, lpc_basename_or_None)]"""
     index = {}
     for ucl_path in ucl_files:
         with open(ucl_path, encoding='utf-8', errors='replace') as fh:
-            text = fh.read()
+            lines = fh.readlines()
+        text = "".join(lines)
+        # 为每个 character 块查找其上方最近的 # Generated from 注释
         for m in CHAR_BLOCK_RE.finditer(text):
             name = m.group(1)
+            block_start = m.start()
+            # 向上扫描最近的 Generated from 注释
+            lpc_path = None
+            for line in lines[: text[:block_start].count("\n")]:
+                gm = GEN_LPC_RE.match(line.strip())
+                if gm:
+                    lpc_path = gm.group(1)
+            lpc_base = basename_no_ext(lpc_path) if lpc_path else None
             for norm in normalize_id(name):
-                index.setdefault(norm, []).append((ucl_path, name))
+                index.setdefault(norm, []).append((ucl_path, name, lpc_base))
     return index
 
 
@@ -149,8 +168,9 @@ def scan_lpc_for_accept(lpc_files):
         if not accept_types:
             continue
 
+        lpc_base = basename_no_ext(c_path)
         for npc_id in ids:
-            findings.setdefault((c_path, npc_id), {}).update(accept_types)
+            findings.setdefault((c_path, npc_id, lpc_base), {}).update(accept_types)
 
     return findings
 
@@ -184,16 +204,25 @@ def main():
     matched = 0
     unmatched = 0
     already_has_engage = 0
+    skipped_zone = 0
     to_write = []
 
-    for (c_path, npc_id), accept_types in sorted(findings.items()):
+    for (c_path, npc_id, lpc_base), accept_types in sorted(findings.items()):
         matches = char_index.get(npc_id, [])
         if not matches:
             unmatched += 1
             print(f"  [UNMATCHED] {c_path} -> id={npc_id}  accept={accept_types}")
             continue
 
-        for ucl_path, block_name in matches:
+        # 区域门禁：仅当 LPC basename 与 UCL 块的 LPC 路径一致时匹配
+        zone_matches = [(u, n) for u, n, lb in matches if lb == lpc_base]
+        if not zone_matches:
+            skipped_zone += 1
+            print(f"  [ZONE-SKIP] {c_path} -> id={npc_id}  LPC={lpc_base}  accept={accept_types}")
+            print(f"             候选区域: {[(u, n, lb) for u, n, lb in matches]}")
+            continue
+
+        for ucl_path, block_name in zone_matches:
             with open(ucl_path, encoding='utf-8', errors='replace') as fh:
                 text = fh.read()
             block_start = text.find(f'characters "{block_name}" {{')
@@ -215,7 +244,8 @@ def main():
             print(f"          accept={accept_types}")
 
     print(f"\n=== 统计 ===")
-    print(f"匹配: {matched}, 未匹配: {unmatched}, 已有 engage: {already_has_engage}")
+    print(f"匹配(区域门禁通过): {matched}, 未匹配: {unmatched}, 跨区跳过: {skipped_zone}")
+    print(f"已有 engage: {already_has_engage}")
     print(f"待写入: {len(to_write)}")
 
     if not apply_mode:

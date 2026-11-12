@@ -2810,7 +2810,11 @@ item_desc = {
 
   chat_chance_combat = 80
   chat_msg_combat = ["unarmed.cuo", "powerup", "recover"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/huo.c by LPCConverter
 # Zone: hangzhou
@@ -2924,7 +2928,10 @@ item_desc = {
     { id = items.tiejiang.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/lu.c by LPCConverter
 # Zone: hangzhou
@@ -3565,7 +3572,25 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+    kill = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/zhao.c by LPCConverter
 # Zone: hangzhou
@@ -3621,7 +3646,17 @@ item_desc = {
 
   chat_chance_combat = 70
   chat_msg_combat = ["wield changjian", "haha", "unwield changjian", "wield jili", "unwield jili"]
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+  engage = {
+    fight = { accept = false }
+    hit = { accept = false }
+    kill = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/zhou.c by LPCConverter
 # Zone: hangzhou
@@ -3672,7 +3707,10 @@ item_desc = {
     { id = items.tiedan.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/zhouyi.c by LPCConverter
 # Zone: hangzhou

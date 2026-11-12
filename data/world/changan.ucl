@@ -3176,7 +3176,10 @@ item_desc = {
   engage = {
     fight = { accept = false msg = "群玉楼保镖对{npc}喝道：是不是想死啊！" }
   }
-    }
+      engage = {
+    fight = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/changan/npc/biaoshi.c by LPCConverter
 # Zone: changan
@@ -3389,7 +3392,10 @@ item_desc = {
     greet_delay = 0
     add_actions = ["list", "buy"]
   }
-    }
+      engage = {
+    fight = { accept = false }
+  }
+}
 
 # Generated from C:/files/git/mud/d/changan/npc/fenyi.c by LPCConverter
 # Zone: changan

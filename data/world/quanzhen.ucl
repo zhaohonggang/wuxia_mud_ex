@@ -2579,7 +2579,25 @@ item_desc = {
   }
   chat_chance_combat = 10
   chat_msg_combat = ["官兵喝道：大胆刁民，竟敢造反不成？", "官兵喝道：跑得了和尚跑不了庙，你还是快快束手就擒！"]
-    }
+      engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+  engage = {
+    fight = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/quanzhen/npc/boy.c by LPCConverter
 # Zone: quanzhen

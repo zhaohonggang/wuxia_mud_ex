@@ -5714,7 +5714,11 @@ chats = [
     { id = items.guanfu5.id }
   ]
 
-    }
+      engage = {
+    fight = { accept = false }
+    hit = { accept = true }
+  }
+}
 
 # Generated from C:/files/git/mud/d/beijing/npc/fengjizhong.c by LPCConverter
 # Zone: beijing
