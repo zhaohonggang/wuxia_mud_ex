@@ -206,26 +206,23 @@ UCL drop_a/drop_b/drop_c
 
 ---
 
-## 7. 已知差异（有意为之，非待办）
+## 7. 与 LPC 原版的差异状态（2026-11-13）
 
-以下均为**设计取舍**，代码与数据已按此定稿；如需改成严格 LPC 语义，属于新的需求，
-不是本系统的遗留缺陷：
+下表列出原文档 §7 记录的 7 条差异，标注当前实际实现状态。已实现的条目已不再
+作为「待办/差异」，代码与数据已与 LPC 对齐；保留的 2 条为设计取舍或未实装，
+属于新需求范畴，不作为本系统遗留缺陷。
 
-1. **掉落物给谁**：LPC `item->move(me, 1)` 直接进击杀者背包；端口采用「方案 A」，
-   作为独立 `Item.Instance` 放在死亡房间，任何人可 `get`。理由：复用现成的
-   `ItemCommand.get/2` 拾取流程，且 `CombatEvent` 奖励通道的 `loot`/`drops`
-   已能覆盖「直接进包」语义，两者不必重复实现。
-2. **概率门控**：LPC 按 `query_skill("hunting")` 做 `random(skill) > 10/30/60`，
-   且 item2 / item3 互斥；端口固定掉落全部配置项。若要严格对齐，需在
-   `Corpse.spawn/1` 拿到 killer 的 hunting 等级并改判定。
-3. **死者背包**：LPC 把死者身上物品移入尸体容器；端口不转移背包，玩家被黑虎
-   杀死后随身物品仍保留。这是刻意保护玩家资产，避免未完成存档/容器语义时丢物品。
-4. **玩家尸体**：LPC 玩家也有尸体；端口 `Corpse.spawn/1` 对 `player:` 前缀返回
-   `:skip`（玩家直接幽灵态进地府），与之前答复用户的行为一致。
-5. **尸体容器**：未实现 `get <物品> from <尸体>`（方案 B），掉落物直接散在地上。
-6. **腐烂阶段**：LPC 三段变白骨；端口一段式 180 秒销毁。
-7. **生肉可食**：LPC `meat.h` 的 `do_effect()` 提示「还是生的，烤熟了再吃」，
-   端口沿用既有约定给肉挂 `eat` verb + `meta.food`。
+| # | 差异项 | 当前状态 | 说明 |
+|---|--------|----------|------|
+| 1 | 掉落物给谁（直接进包 vs 放地上） | ⬜ 保留差异 | 端口采用「方案 A」，掉落物作为独立 `Item.Instance` 放在死亡房间，任何人可 `get`。理由：复用 `ItemCommand.get/2` 拾取流程；`CombatEvent` 奖励通道的 `loot`/`drops` 已能覆盖「直接进包」语义，两者不必重复实现。 |
+| 2 | 概率门控（hunting 技能 random） | ⬜ 未实装 | 端口固定掉落全部 `drop_a/b/c`，未按 `hunting` 等级做 `random(skill) > 10/30/60` 及 item2/item3 互斥判定。若要严格对齐，需在 `Corpse.spawn/1` 拿到 killer 的 hunting 等级并改判定。 |
+| 3 | 死者背包移入尸体容器 | ✅ 已实现 | `do_spawn` 传 `inventory_of(character)` 作为 `contents`，死者背包物品转移进尸体 `item.meta.contents`，与 LPC `all_inventory(victim)->move(this_object())` 对齐。 |
+| 4 | 玩家尸体生成 | ✅ 已基本对齐 | `Corpse.spawn/1` 已移除 `player:` 前缀跳过；非巫师、非幽灵态玩家死亡生成尸体，背包移入 contents。幽灵态（`ghost?`）与巫师仍跳过（物品散落地面），与 LPC `is_ghost()` 分支一致。 |
+| 5 | `get <物品> from <尸体>` 容器语义 | ✅ 已实装 | `ItemCommand.get/1` 解析 ` from ` 关键字 → `get_from_container` → `get_from_corpse` → `Room.take_corpse_item/3`；尸体 `contents`/`put_contents` 供读写；`test/kantele/world/corpse_test.exs` + `item_command_test.exs` 已加锁测试（Task #562）。 |
+| 6 | 尸体腐烂阶段（三段 vs 一段） | ✅ 已实现 | `Corpse.schedule_decay/3` + `decay/3` 实现三段腐烂：60s 腐烂 → 60s 骸骨 → 30s 骨灰，共 150s；末期把容器内剩余物品移到房间地上再移除尸体，与 LPC `corpse.c::decay` 三段 `call_out` 对齐。 |
+| 7 | 生肉可食提示 | ✅ 已对齐 | `eat_command.ex` `eat/4` 对 `raw_meat == true` 返回「这块…还是生的，烤熟了再吃吧。」；肉类挂 `eat` verb + `meta.food`，与 LPC `meat.h` `do_effect()` 语义一致。 |
+
+保留的 2 条（#1、#2）为设计取舍或未实装，不代表代码缺陷；如需改成严格 LPC 语义，属于新需求。
 
 ---
 
