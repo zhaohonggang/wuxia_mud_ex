@@ -33,6 +33,7 @@ defmodule Kantele.NPC.Mengpo do
   def ask_specs do
     %{
       "mengpo_tang" => mengpo_spec(),
+      "孟婆汤" => mengpo_spec(),
       "汤" => mengpo_spec(),
       "喝汤" => mengpo_spec(),
       "tang" => mengpo_spec()
