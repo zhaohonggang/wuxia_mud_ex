@@ -2325,6 +2325,10 @@ direction = ~
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/wubushe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
 
@@ -2348,6 +2352,7 @@ direction = ~
           armor = 1
           personality = 3
         }
+      fire_to = "clone_lib:needfire"
       }
     }
 

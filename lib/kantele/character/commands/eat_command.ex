@@ -71,10 +71,18 @@ defmodule Kantele.Character.EatCommand do
   defp eat(conn, character, instance, item) do
     meta = item.meta || %{}
 
-    if pill?(meta) do
-      eat_pill(conn, character, instance, item, meta)
-    else
-      eat_food(conn, character, instance, item, meta)
+    cond do
+      # LPC meat.h only_do_effect：生肉不能直接吃，需烤熟（broil/kao）。
+      Map.get(meta, :raw_meat) || Map.get(meta, "raw_meat") ->
+        conn
+        |> render(CommandView, "text", %{text: "这块…还是生的，烤熟了再吃吧。\n"})
+        |> prompt(CommandView, "prompt", %{})
+
+      pill?(meta) ->
+        eat_pill(conn, character, instance, item, meta)
+
+      true ->
+        eat_food(conn, character, instance, item, meta)
     end
   end
 

@@ -382,11 +382,15 @@ defmodule Kantele.Character.NonPlayerMeta do
     # quest_gift：NPC 向玩家提供的物品交换（%{obj: item_id, gongxian: cost}）。
     # 由 ask <npc> quest 触发，设置玩家 temp[:quest_gift] 以便后续 answer Y|N。
     {:quest_gift, nil},
-    # LPC QUARRY 继承：`set("power", N)` 狩猎难度；`set("drop_a"/"drop_b", ...)` 击杀掉落。
-    # 由 loader.parse_character/4 解析，HuntCommand/make_corpse 消费。
+    # LPC QUARRY 继承：`set("power", N)` 狩猎难度；
+    # `set("item1"/"item2"/"item3", ...)` 击杀掉落（转换器输出为 drop_a/drop_b/drop_c）。
+    # 由 loader.parse_character/4 解析，Feature.Damage.make_corpse_item/1 消费。
+    # drop_c 对应 LPC item3（quarry.c die/1 里 `random(skill) > 60` 的稀有掉落，
+    # 如灰熊的熊胆）；端口简化为固定掉落，与 drop_a/drop_b 一致。
     {:power, 0},
     {:drop_a, nil},
-    {:drop_b, nil}
+    {:drop_b, nil},
+    {:drop_c, nil}
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -420,7 +424,8 @@ defmodule Kantele.Character.NonPlayerMeta do
     # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
       Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init, :ask_handler,
-                      :temp, :combat, :combat_config, :coins])
+                      :temp, :combat, :combat_config, :coins,
+                      :drop_a, :drop_b, :drop_c, :power])
     end
   end
 

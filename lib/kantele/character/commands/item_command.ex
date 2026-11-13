@@ -10,11 +10,17 @@ defmodule Kantele.Character.ItemCommand do
   alias Kalevala.Verb
   alias Kantele.Character.CommandView
   alias Kantele.Character.ItemView
+  alias Kantele.Character.Records
+  alias Kantele.World.Corpse
   alias Kantele.World.Item, as: WorldItem
   alias Kantele.World.Items
+  alias Kantele.World.Room
 
   @max_item_carried 80
   @max_item_in_room 999
+
+  # LPC corpse.c::set_name(..., ({ "corpse", "尸体" })) / 骸骨阶段的 skeleton
+  @corpse_keywords ["corpse", "尸体", "尸首", "骸骨", "skeleton"]
 
   def drop(conn, %{"item_name" => item_name}) do
     character = conn.character
@@ -148,8 +154,11 @@ defmodule Kantele.Character.ItemCommand do
 
     container_instance =
       Enum.find(Map.get(room, :items, []) ++ character.inventory, fn item_instance ->
-        item = Items.get!(item_instance.item_id)
-        item_instance.id == container_name || item.callback_module.matches?(item, container_name)
+        item = WorldItem.instance_item(item_instance)
+
+        item_instance.id == container_name or
+          (Corpse.corpse?(%{item: item}) and container_name in @corpse_keywords) or
+          item_matches?(item, container_name)
       end)
 
     case container_instance do
@@ -157,7 +166,7 @@ defmodule Kantele.Character.ItemCommand do
         render_error(conn, "你找不到 #{container_name} 这样东西。\n")
 
       _ ->
-        container = Items.get!(container_instance.item_id)
+        container = WorldItem.instance_item(container_instance)
 
         if Map.get(container.meta || %{}, :no_get_from) do
           render_error(conn, "你不能从这里拿东西。\n")
@@ -167,11 +176,49 @@ defmodule Kantele.Character.ItemCommand do
               render_error(conn, "这里没有这样东西。\n")
 
             {item_instance, _item} ->
-              get_item(conn, character, item_instance, item_name)
+              # LPC corpse.c is_container()：内容在**每具尸体自己的** item.meta.contents
+              # 里，不在房间地面，所以不能走 request_item_pickup（那条只会从
+              # room.private.item_instances 里按 id 找）。直接转移 + 落盘。
+              if Corpse.corpse?(container_instance) do
+                get_from_corpse(conn, character, container_instance, item_instance)
+              else
+                get_item(conn, character, item_instance, item_name)
+              end
           end
         end
     end
   end
+
+  # 从尸体容器里取物（对应 LPC `get <item> from <corpse>`）
+  defp get_from_corpse(conn, character, container_instance, item_instance) do
+    if length(character.inventory) >= @max_item_carried do
+      render_error(conn, "你身上的东西实在是太多了，没法再拿东西了。\n")
+    else
+      case Room.take_corpse_item(
+             character.room_id,
+             container_instance.id,
+             item_instance.id
+           ) do
+        {:ok, taken} ->
+          item = WorldItem.instance_item(taken)
+          character = %{character | inventory: [taken | character.inventory]}
+          Records.save(character)
+
+          conn
+          |> put_character(character)
+          |> render(CommandView, "text", %{
+            text: "你从#{corpse_label(container_instance)}里拿出了#{item.name}。\n"
+          })
+          |> prompt(CommandView, "prompt", %{})
+
+        _ ->
+          render_error(conn, "这里没有这样东西。\n")
+      end
+    end
+  end
+
+  defp corpse_label(%{item: %{name: name}}) when is_binary(name), do: name
+  defp corpse_label(_), do: "尸体"
 
   defp get_all(conn, character) do
     room = get_room(conn)
@@ -289,13 +336,18 @@ defmodule Kantele.Character.ItemCommand do
   end
 
   defp find_item_in_container(container_instance, item_name) do
-    container = Items.get!(container_instance.item_id)
-    items = Map.get(container.meta || %{}, :items, [])
+    items =
+      if Corpse.corpse?(container_instance) do
+        Corpse.contents(container_instance)
+      else
+        container = Items.get!(container_instance.item_id)
+        Map.get(container.meta || %{}, :items, []) || []
+      end
 
     Enum.find_value(items, fn item_instance ->
       item = WorldItem.instance_item(item_instance)
 
-      if item_instance.id == item_name || item.callback_module.matches?(item, item_name) do
+      if item_instance.id == item_name || item_matches?(item, item_name) do
         {item_instance, item}
       else
         nil
@@ -303,6 +355,20 @@ defmodule Kantele.Character.ItemCommand do
     end)
   rescue
     _ -> nil
+  end
+
+  # 物品定义可能来自缓存（带 callback_module）或尸体嵌入的副本（也带），
+  # 统一兜底到 Kantele.World.Item.matches?/2，避免 nil.callback_module 崩溃。
+  defp item_matches?(item, name) do
+    case Map.get(item, :callback_module) do
+      module when is_atom(module) and not is_nil(module) ->
+        apply(module, :matches?, [item, name])
+
+      _ ->
+        WorldItem.matches?(item, name)
+    end
+  rescue
+    _ -> false
   end
 
   defp find_container(conn, character, target_name) do

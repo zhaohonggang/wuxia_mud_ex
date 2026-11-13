@@ -2926,6 +2926,10 @@ chats = [
       #                     该基类 setup() 里 attitude="aggressive"、race="野兽"、
       #                     verbs={"bite"}，故 combat.attitude 取 aggressive。
       #   set("power", ...) 未移植；无 set_skill。
+
+  # LPC clone/beast/mangshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shepi" }
     }
 
   items "corpse" {

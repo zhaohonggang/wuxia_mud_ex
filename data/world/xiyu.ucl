@@ -2259,6 +2259,8 @@ chats = [
         value = 100
         weight = 80
         unit = "支"
+      fire_source = true
+      fire_count = 10
       }
     }
 
@@ -2850,6 +2852,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/jinshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "qingshe" {
@@ -2873,6 +2879,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/qingshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
   items "dujing_1" {

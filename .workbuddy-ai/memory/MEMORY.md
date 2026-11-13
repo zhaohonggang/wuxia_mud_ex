@@ -13,7 +13,7 @@
 ## 验证路径
 - Docker 不可用（Windows Git Bash）：`PATH=/c/Users/honggang/tools/erl-25.3.2.6/bin:/c/Users/honggang/tools/elixir-1.13.4-otp25/bin:$PATH`；`MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=_build_win13`；`ERL_LIBS=_build_win13/lib`；`MIX_ENV=test`。
 - `mix compile` / `mix test --seed 831693`（全量约 9-10 min，建议后台重定向日志）。
-- 基线：**7709 tests / 27 failures**，27 例全为 `bcrypt_elixir` NIF 环境性（Web.*/ExVenture.* 建用户/改密码），引擎/命令/技能/世界测试 0 失败。（2026-11-12 修复 `veto_effectiveness_test.exs` 的脆弱断言后，此前长期存在的第 28 例非 bcrypt 失败已消除，基线回归到 27。）
+- 基线：**27 failures**（测试总数随新增测试增长，2026-11-13 实跑 7757 tests / 27 failures / 575.6s）。27 例全为 `bcrypt_elixir` NIF 环境性（`Bcrypt.Base.gensalt_nif/3 is undefined`，Web.*/ExVenture.* 建用户/改密码），引擎/命令/技能/世界测试 0 失败。（2026-11-12 修复 `veto_effectiveness_test.exs` 的脆弱断言后，此前长期存在的第 28 例非 bcrypt 失败已消除，基线回归到 27。）
 
 ## 关键约定 / 坑
 - **路由**：`parse/2` 裸路由只产 `%{"command"=>...}`；带参命令需 `optional(spaces() |> text(:rest|:target|:category))`。
@@ -24,6 +24,9 @@
 - `valid_learn` 真实缺口 0（hunyuan-yiqi/`guilty`、qiankun-danuoyi/`query_condition` 未建模字段，非可独立编码项）。
 - `suicide`：`meta.password` 明文校验 + `Characters.delete_by_name/1`（rescue 降级）。
 - 已踩坑：`ExVenture.Characters` 裸 `update(...)` 被 `import Ecto.Query` 宏抢占 → 用 changeset + `Repo.update()`；`Damage.die/1` 前需 `ensure_death_state`（`meta.combat` nil → FunctionClauseError）；`is_player?/1` 认 `"player:"` 前缀；`receive_damage` 别传 killer。
+- **两条死亡管线**（改死亡/掉落逻辑必须两路都接）：正常战斗击杀走 `CombatEvent.die/3`（NPC 分支原地装死 + 60s 复活），`smash`/房间 `break` 走 `Feature.Damage.die/2` → `process_death/2`；公共尸体逻辑在 `Kantele.World.Corpse.spawn/1`。只改其中一路 = 功能在实战里根本不生效。
+- **物品缓存 key 是 `<zone>:<key>`**（`loader.parse_item/4`），UCL `drop_a = { id = "x" }` 经 `parse_item_ref/1` 只是短 id；`ItemCommand` 用 `Items.get!(item_instance.item_id)`，短 id 会抛 `Could not find key`。任何动态生成的 `Item.Instance` 都要用完整 key（见 `Corpse.resolve_drop_item/1`）。
+- **UCL 不能有单独一行的 `#`**（空注释）：`Elias.parse/1` 抛 `syntax error before: "\n"`；注释行必须带内容。内联 `verbs = [...]` / 顶层 `aliases` 合法。
 
 ## Elixir 1.13.4 / Windows Git Bash 特殊坑
 - `String.to_integer/1` 返回**裸整数**而非 `{:ok, int}`，用 `is_integer()` 保护句。
@@ -56,6 +59,13 @@
 - D 技术债：疾病/条件系统（`Kantele.Illness`×5+`Kantele.Poison`，18例测试全绿）；雪原封路（`SnowRegion`+`SnowRegionEvent`+`MoveEvent.commit`，30例测试全绿）；真·clone（`clone_command.ex`+`ObjectClone.clone_by_path/3`+`place_object/3`，26例测试全绿）；search/explore入位（`search_command.ex`，`quest_event.ex:122` entry门控）；count>1逐件交付（`quest_event.ex:57-91` `meta.count`扣减+`scale_rewards_by_count`，`quest_turnin_multi_test.exs` 6例全绿）。5/5 子项全部落地，全量回归 0 新增失败。✅ 已完结。
 - 死亡→地府→还阳 完整对齐 LPC（用户选 C）：`combat_event.ex die/3` 玩家分支改 ghost+传送`death:gate`+`Scheduler.schedule_revive(30s)`；`revive/2`（收`character/revive`）解 ghost、满状态（自身上限）、传送`city:wumiao`、记`env.startroom`并落盘；`login_controller.place_on_login` 幽灵态重登回`death:gate`；`npc/wuchang.ex` AskHandler 供 `ask 还阳` 手动还阳。落点 `world.ex` `death_room_id/revive_room_id/born_room_id`。`test/kantele/character/death_revive_test.exs` 4 例全绿。
 - 牛头（niutou）NPC ask 处理器：新建 `lib/kantele/npc/niutou.ex`（幽灵态门控、还阳/奈河桥/牛头/niutou 四关键字）；`data/world/death.ucl` niutou 与 `data/world/clone_lib.ucl` death_niutou 均加 `ask_handler = "Kantele.NPC.Niutou"`；`qiao2` `valid_leave.condition` 为 `(objectp(present('niu tou',environment(me)))) && dir == 'north'`；新增 `test/kantele/npc/niutou_test.exs` 10 例全绿，死亡/还阳回归测试 4 例全绿。
+- **尸体 / NPC 掉落系统（2026-11-13 已完结）**：`lib/kantele/world/corpse.ex` 为唯一实现（`spawn/1` 两路死亡管线共用、玩家 `:skip`、180s 销毁、`try/rescue` 降级）；`Room.add_item/2`/`remove_item/2`；`drop_a/b/c`（LPC item1/2/3）+ `power` 全链路（loader → NonPlayerMeta → Trim 白名单）。数据：新建 23 件 LPC 掉落物 item，19/19 已移植 quarry NPC、26 个蛇类 `characters` 块全部配置，87 条 `drop_*` 引用 0 悬空，77 个 UCL 文件解析 0 失败。`test/kantele/world/corpse_test.exs` 14 例全绿。文档：`docs/corpse-drop-system.zh-CN.md` / `docs/npc-drop-completion-plan.zh-CN.md` 均重写为已结案。**初版计划列的 12 个 `quarry_*`（bao/hu/hu2/ji/jizi/lang3/lu2/pao/xiang/xiong2/zhang/niao2）在 Elixir UCL 中不存在，属未移植 NPC，非代码缺口，勿再排期。** 与 LPC 的 7 条有意差异（掉落物放地上而非直接给击杀者、固定掉落而非概率、不转移死者背包、玩家无尸体、无 `from 尸体`、一段式腐烂、生肉可食）见该文档 §7，均为设计取舍而非待办。
+- **猎人 NPC 教 hunting（2026-11-13 完结，对应用户指令「照搬 LPC 补上没有 hunting，补上衡阳猎人 NPC 来教它」）**：
+  1. `lib/kantele/world/corpse.ex` `spawn/2` 补 `player?/1` 短路：`id` 以 `"player:"` 前缀返回 `:skip`，不再落入 `do_spawn/3` → `Room.add_item` 失败（修复 `corpse_test.exs` 玩家 `:skip` 断言）。
+  2. `data/world/hengyang.ucl` 猎人物块加 `ask_handler = "Kantele.NPC.Hunter"`，路由 `ask` 到 `lib/kantele/npc/hunter.ex` AskHandler（关键词 `hunting/捕猎/狩猎/打猎`，门控 `marks/hunter` + busy/fighting + jing>=20 + potential>=1）。
+  3. `lib/kantele/combat/skills/hunting.ex` 补 `valid_learn/2`：校验 `character.meta.marks["hunter"`，未持有返回 `{:error, "你我素无往来，何出此言？\n"}`。
+  4. `lib/kantele/character/commands/eat_command.ex` `eat/4` 补 `raw_meat` 门控：`meta.raw_meat == true` 返回 "这块…还是生的，烤熟了再吃吧。"，不进入 pill/food 路径。
+  验证：`mix test test/kantele/world/corpse_test.exs test/kantele/character/death_revive_test.exs test/kantele/character/eat_command_test.exs test/kantele/combat/skills_valid_learn_pilot_test.exs` → 50 tests, 0 failures；`mix compile` 仅预有警告，无新增。
 
 ## 净增量归档（全部已完结，无待办）
 

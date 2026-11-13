@@ -524,6 +524,159 @@ defmodule Kantele.World.Room do
 
   def item_instances_by_id(_), do: []
 
+  # ---- 房间物品增删（对应 LPC move_object/2 / destruct_object） ----
+
+  @doc """
+  将物品实例放入房间（对应 LPC move_object/2）。
+
+  房间物品实例存放在房间进程 `state.private.item_instances` 中，由 `:sys.replace_state/2`
+  原位更新，无需 GenServer.call。房间进程不存在时返回 `:error`。
+  """
+  def add_item(room_id, item_instance) when is_binary(room_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        :sys.replace_state(pid, fn state ->
+          private = Map.get(state, :private, %{}) || %{}
+          item_instances = Map.get(private, :item_instances, []) || []
+          new_private = Map.put(private, :item_instances, [item_instance | item_instances])
+          %{state | private: new_private}
+        end)
+        :ok
+
+      _ ->
+        :error
+    end
+  end
+
+  def add_item(_room_id, _item_instance), do: :error
+
+  @doc """
+  从房间移除指定 id 的物品实例（对应 LPC destruct_object）。
+
+  房间进程不存在时返回 `:error`；物品不存在时返回 `:ok`（幂等）。
+  """
+  def remove_item(room_id, item_instance_id) when is_binary(room_id) and is_binary(item_instance_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        :sys.replace_state(pid, fn state ->
+          private = Map.get(state, :private, %{}) || %{}
+          item_instances = Map.get(private, :item_instances, []) || []
+          new_items = Enum.reject(item_instances, fn ii -> ii.id == item_instance_id end)
+          new_private = Map.put(private, :item_instances, new_items)
+          %{state | private: new_private}
+        end)
+        :ok
+
+      _ ->
+        :error
+    end
+  end
+
+  def remove_item(_room_id, _item_instance_id), do: :error
+
+  @doc """
+  按实例 id 读取房间内的**未裁剪**物品实例（对应 LPC `present(id, environment())`）。
+
+  与 `snapshot/1` 的区别：`snapshot/1` 返回列表，`Context.new/1` 会把
+  `item_instance.meta` 经 `Meta.trim/1` 裁成空 map（Map 的 Trim 实现返回 `%{}`），
+  但**不会**动 `item_instance.item`。因此「尸体容器内装了什么」这类**每实例**状态
+  只能存在嵌入的 `item.meta.contents`，并通过本函数读原值。
+  """
+  def get_item(room_id, item_instance_id)
+      when is_binary(room_id) and is_binary(item_instance_id) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        state = :sys.get_state(pid)
+        instances = Map.get(state.private || %{}, :item_instances, []) || []
+
+        case Enum.find(instances, &(&1.id == item_instance_id)) do
+          nil -> :error
+          instance -> {:ok, instance}
+        end
+
+      _ ->
+        :error
+    end
+  end
+
+  def get_item(_room_id, _item_instance_id), do: :error
+
+  @doc """
+  原位替换房间内某物品实例（对应 LPC 改 `corpse->set_name()` / 腐烂阶段）。
+
+  `fun` 接收旧实例、返回新实例；实例不存在时原样不动并返回 `:error`。
+  """
+  def update_item(room_id, item_instance_id, fun)
+      when is_binary(room_id) and is_binary(item_instance_id) and is_function(fun, 1) do
+    case :global.whereis_name({Kalevala.World.Room, room_id}) do
+      pid when is_pid(pid) ->
+        found = :sys.get_state(pid)
+                |> Map.get(:private, %{})
+                |> Map.get(:item_instances, [])
+                |> List.wrap()
+                |> Enum.any?(&(&1.id == item_instance_id))
+
+        if found do
+          :sys.replace_state(pid, fn state ->
+            private = state.private || %{}
+            instances = Map.get(private, :item_instances, []) || []
+
+            new_instances =
+              Enum.map(instances, fn instance ->
+                if instance.id == item_instance_id, do: fun.(instance), else: instance
+              end)
+
+            %{state | private: Map.put(private, :item_instances, new_instances)}
+          end)
+
+          :ok
+        else
+          :error
+        end
+
+      _ ->
+        :error
+    end
+  end
+
+  def update_item(_room_id, _item_instance_id, _fun), do: :error
+
+  @doc """
+  从尸体容器里取出一件物品（对应 LPC `get <item> from <corpse>`）。
+
+  房间进程内部完成「读内容 → 移除该条 → 写回」，返回 `{:ok, item_instance}`；
+  尸体不存在 / 物品不在其中返回 `{:error, reason}`。调用方负责把返回的实例
+  放进玩家背包（房间 pickup 事件只会从地面取物，处理不了容器内容）。
+  """
+  def take_corpse_item(room_id, corpse_instance_id, item_instance_id)
+      when is_binary(room_id) and is_binary(corpse_instance_id) and is_binary(item_instance_id) do
+    case get_item(room_id, corpse_instance_id) do
+      {:ok, corpse} ->
+        contents = Kantele.World.Corpse.contents(corpse)
+
+        case Enum.find(contents, &(&1.id == item_instance_id)) do
+          nil ->
+            {:error, :not_found}
+
+          instance ->
+            remaining = Enum.reject(contents, &(&1.id == item_instance_id))
+
+            case update_item(room_id, corpse_instance_id, fn c ->
+                   Kantele.World.Corpse.put_contents(c, remaining)
+                 end) do
+              :ok -> {:ok, instance}
+              :error -> {:error, :room_gone}
+            end
+        end
+
+      :error ->
+        {:error, :no_corpse}
+    end
+  end
+
+  def take_corpse_item(_room_id, _corpse_instance_id, _item_instance_id),
+    do: {:error, :bad_args}
+
   # ---- 运行时动态出口增删（对应 LPC `set/delete("exits/<dir>", ...)`） ----
   #
   # `room.exits` 是 `%Kalevala.World.Exit{}` 列表（loader 加载期构建，

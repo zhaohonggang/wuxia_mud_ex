@@ -4,8 +4,8 @@ defmodule Kantele.Character.HuntCommand do
 
   对应 LPC `cmds/std/hunt.c`：在同房间内寻找可猎猎的野兽（QUARRY 继承，`power > 0`），
   基于玩家战斗等级与野兽 power 值做命中判定，命中则发起战斗；野兽死亡后按
-  `meta.item1` / `meta.item2` 掉落尸体物品（走 `Feature.Damage.die/2` → `make_corpse/1`
-  管线）。
+  `meta.drop_a` / `meta.drop_b` / `meta.drop_c`（LPC `item1`/`item2`/`item3`）
+  生成尸体与掉落物，由 `Kantele.World.Corpse.spawn/1` 在 `CombatEvent.die/3` 主路径落地。
 
   野兽均为 `attitude = "peaceful"`，普通 `fight` 命令对其守卫可能受限，
   `hunt` 为专门的狩猎通道，不受同门/非敌对限制。
@@ -16,7 +16,10 @@ defmodule Kantele.Character.HuntCommand do
     本端口用 `combat_exp` 换算等级（`level = :math.pow(combat_exp / 100, 1/3)` 近似）
     与 `power` 对比，等级 >= power 即命中。
   - LPC 有 `query_temp("hunting")` 并发锁，本端口因同步裁定省略。
-  - 掉落物品由死亡管线 `make_corpse/1` 自动放入尸体，玩家可 `get` 拾取。
+  - LPC `quarry.c die()` 把战利品直接 `item->move(me, 1)` 给击杀者，并按
+    `random(skill) > 10/30/60` 概率门控；本端口改为固定掉落、作为独立
+    `Item.Instance` 放在死亡房间，任何人可 `get` 拾取（方案 A）。
+  - 掉落物品由死亡管线 `Kantele.World.Corpse.spawn/1` 放入死亡房间，玩家可 `get` 拾取。
   """
 
   use Kalevala.Character.Command

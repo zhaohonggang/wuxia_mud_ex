@@ -385,7 +385,14 @@ defmodule Kantele.Feature.Damage do
 
     # 统计/尸体/死亡房间
     character = increment_death_times(character)
-    corpse = make_corpse(character)
+
+    # 生成尸体容器（对应 LPC chard.c make_corpse()）+ 通知击杀者结算狩猎掉落
+    # （quarry.c/snake.c die()）。必须在 move_to_death_room/1 之前调用：玩家随后
+    # 会被传送到鬼门关，room_id 就不再是死亡地点了。
+    # `Corpse.spawn/2` 对巫师/幽灵态返回 :skip（与 LPC chard.c 一致）；其余含玩家
+    # 均生成尸体并把背包移入容器。正常战斗死亡走 CombatEvent.die/3，同样调用了本函数。
+    Kantele.World.Corpse.spawn(character, killer)
+
     character = move_to_death_room(character)
 
     # 清理
@@ -644,21 +651,7 @@ defmodule Kantele.Feature.Damage do
     character
   end
 
-  defp make_corpse(character) do
-    # 生成尸体实例，携带 NPC 的 drop_a/drop_b 掉落物品 id（供后续 loot 系统消费）
-    meta = character.meta || %{}
-    drop_items =
-      [Map.get(meta, :drop_a, nil), Map.get(meta, :drop_b, nil)]
-      |> Enum.reject(&is_nil/1)
-
-    %{
-      id: "corpse_#{character.id}_#{:rand.uniform(10000)}",
-      name: "#{character.name}的尸体",
-      owner_id: character.id,
-      room_id: character.room_id,
-      drop_items: drop_items
-    }
-  end
+  # 尸体/掉落物逻辑已抽到 Kantele.World.Corpse（两条死亡管线共用），本模块不再重复实现。
 
   defp move_to_death_room(character) do
     # 移至死亡房间（地府阎罗殿，对应 LPC 玩家死亡坠入地府）

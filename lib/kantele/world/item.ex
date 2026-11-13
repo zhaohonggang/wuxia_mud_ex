@@ -378,7 +378,31 @@ defmodule Kantele.World.Item.Meta do
     {:actions, []},
 
     # 书册 `do_read` 的长文案（`read` 动词的直接输出；nil = 非可读书册）。
-    {:read_text, nil}
+    {:read_text, nil},
+
+    # ---- 尸体 / 篝火 / 生肉闭环（严格对齐 LPC clone/misc/corpse.c、
+    # clone/misc/needfire.c、clone/quarry/item/meat.h、d/xiyu/obj/fire.c） ----
+    #
+    # - raw_meat   LPC `set("only_do_effect", 1)`：生肉只能 `do_effect()` 提示，
+    #              不能直接吃；`eat` 消费端据此拦截。
+    # - broil_to   LPC meat.h::broil() 里 `new("/clone/food/meat")` 的目标缓存 key。
+    # - fire_to    LPC wood.c/ganchai.c/shuzhi.c::fire() 里
+    #              `new("/clone/misc/needfire")` 的目标缓存 key（燃料→篝火）。
+    # - fire_source 火折（可点燃别的物品）；fire_count 是 LPC fire.c 的
+    #              `set_temp("count", 10)` 初始次数（每实例独立扣减）。
+    # - no_get / no_fire / no_light：LPC 拒绝文案（非空即拦截）。
+    # - is_corpse / contents：尸体容器标记与每实例内容（contents 由运行期写入
+    #              嵌入的 item.meta，不从 UCL 解析）。
+    {:raw_meat, false},
+    {:broil_to, nil},
+    {:fire_to, nil},
+    {:fire_source, false},
+    {:fire_count, nil},
+    {:no_get, nil},
+    {:no_fire, nil},
+    {:no_light, nil},
+    {:is_corpse, false},
+    {:contents, []}
   ]
 
   @doc """

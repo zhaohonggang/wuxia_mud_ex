@@ -21,6 +21,22 @@ defmodule Kantele.Combat.Skills.Hunting do
   @impl true
   def valid_enable(_usage), do: false
 
+  # LPC `valid_learn(object me)`（源 hunter.c teach_hunting()）：
+  #   if (!me->query_temp("marks/hunter")) return "你我素无往来，何出此言？";
+  # 端口约定：marks/hunter（持久化）即「已给猎人捕兽夹」。
+  @impl true
+  def valid_learn(_stats, character) do
+    marks = Map.get(character.meta, :marks, %{}) || %{}
+
+    cond do
+      Map.get(marks, "hunter") in [nil, 0, false] ->
+        {:error, "你我素无往来，何出此言？\n"}
+
+      true ->
+        :ok
+    end
+  end
+
   @impl true
   def query_action(level, rng \\ &:rand.uniform/1) do
     Kantele.Combat.Skill.pick_action(@actions, level, rng)

@@ -2526,6 +2526,7 @@ chats = [
         weight = 1000
         unit = "根"
         material = "wood"
+      fire_to = "clone_lib:needfire"
       }
     }
 

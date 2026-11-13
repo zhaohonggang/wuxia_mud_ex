@@ -599,7 +599,8 @@ defmodule Kantele.World.Loader do
         ask_handler: Map.get(character_data, :ask_handler),
         power: Map.get(character_data, :power) || 0,
         drop_a: parse_item_ref(Map.get(character_data, :drop_a)),
-        drop_b: parse_item_ref(Map.get(character_data, :drop_b))
+        drop_b: parse_item_ref(Map.get(character_data, :drop_b)),
+        drop_c: parse_item_ref(Map.get(character_data, :drop_c))
       }
     }
 
@@ -1447,7 +1448,18 @@ defmodule Kantele.World.Loader do
       material_attrib: Map.get(meta, :material_attrib),
       material_name: Map.get(meta, :material_name),
       item_make: to_bool(Map.get(meta, :item_make)),
-      aliases: parse_aliases(Map.get(meta, :aliases))
+      aliases: parse_aliases(Map.get(meta, :aliases)),
+      # 生肉 / 篝火 / 火折 / 尸体容器闭环（LPC meat.h / needfire.c / fire.c / corpse.c）
+      raw_meat: to_bool(Map.get(meta, :raw_meat)),
+      broil_to: Map.get(meta, :broil_to),
+      fire_to: Map.get(meta, :fire_to),
+      fire_source: to_bool(Map.get(meta, :fire_source)),
+      fire_count: Map.get(meta, :fire_count),
+      no_get: Map.get(meta, :no_get),
+      no_fire: Map.get(meta, :no_fire),
+      no_light: Map.get(meta, :no_light),
+      is_corpse: to_bool(Map.get(meta, :is_corpse)),
+      contents: []
     }
 
     meta

@@ -22,7 +22,8 @@ defmodule Kantele.Meta.TrimContractTest do
   alias Kantele.Character.PlayerMeta
 
   @player_keep [:vitals, :stats, :family, :temp, :env, :combat, :coins]
-  @npc_keep [:vitals, :stats, :guarder, :aliases, :init, :ask_handler, :temp, :combat, :combat_config, :coins]
+  @npc_keep [:vitals, :stats, :guarder, :aliases, :init, :ask_handler, :temp, :combat, :combat_config, :coins,
+             :drop_a, :drop_b, :drop_c, :power]
 
   test "PlayerMeta 裁剪后仍带房间侧要读的字段" do
     meta = %PlayerMeta{

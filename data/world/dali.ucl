@@ -8059,6 +8059,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/qingshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
   items "chahua1" {

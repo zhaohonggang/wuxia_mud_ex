@@ -2291,6 +2291,7 @@ chats = [
         value = 2000
         weight = 50000
         unit = "批"
+      fire_to = "clone_lib:needfire"
       }
     }
 

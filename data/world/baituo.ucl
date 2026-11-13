@@ -2733,6 +2733,10 @@ chats = [
       #                     该基类 setup() 里 attitude="aggressive"、race="野兽"、
       #                     verbs={"bite"}，故 combat.attitude 取 aggressive。
       #   set("power", ...) 未移植；无 set_skill。
+
+  # LPC clone/beast/mangshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shepi" }
     }
 
     characters "caihuashe" {
@@ -2757,6 +2761,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/caihuashe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "dushe" {
@@ -2780,6 +2788,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/dushe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "fushe" {
@@ -2803,6 +2815,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/fushe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "jinshe" {
@@ -2828,6 +2844,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/jinshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "qingshe" {
@@ -2851,6 +2871,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/qingshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "wangshe" {
@@ -2874,6 +2898,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/wangshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "wubushe" {
@@ -2897,6 +2925,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/wubushe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
     characters "yanjingshe" {
@@ -2920,6 +2952,10 @@ chats = [
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/yanjingshe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
 
@@ -2938,6 +2974,7 @@ chats = [
         weight = 10000
         unit = "捆"
         material = "wood"
+      fire_to = "clone_lib:needfire"
       }
     }
 

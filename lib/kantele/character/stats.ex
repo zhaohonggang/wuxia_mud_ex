@@ -77,8 +77,17 @@ defmodule Kantele.Character.Stats do
       weiwang: 0,
       gongxian: 0,
       shen: 0,
-      # 新手起步：基本技能够用（空手命中野猪级别的怪），特技靠拜师
-      skills: %{"unarmed" => 60, "sword" => 60, "dodge" => 60, "parry" => 60, "force" => 20},
+      # 新手起步：基本技能够用（空手命中野猪级别的怪），特技靠拜师。
+      # hunting 是 LPC `kungfu/skill/hunting.c` 的知识类技能，起点 0 —— 与 LPC
+      # 一致：没找衡阳猎人学过就 `random(0) == 0`，打猎不掉任何东西。
+      skills: %{
+        "unarmed" => 60,
+        "sword" => 60,
+        "dodge" => 60,
+        "parry" => 60,
+        "force" => 20,
+        "hunting" => 0
+      },
       mapped: %{},
       performs: MapSet.new(),
       prepared: %{},

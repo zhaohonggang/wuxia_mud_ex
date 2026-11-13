@@ -2907,6 +2907,11 @@ chats = [
       #   set("item1", "/clone/quarry/item/sherou");                <- 掉落未移植
       #   set("item2", "/clone/herb/shedan");
       #   set("item3", "/clone/fam/pill/blood");
+
+  # LPC clone/beast/xuanmang.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
+  drop_c = { id = "blood" }
     }
 
     characters "walker" {

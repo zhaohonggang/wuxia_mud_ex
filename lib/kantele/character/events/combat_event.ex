@@ -42,10 +42,12 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.CommandView
   alias Kantele.Character.ConditionEvent
   alias Kantele.Character.PlayerMeta
+  alias Kantele.Character.Stats
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
   alias Kantele.Scheduler
   alias Kantele.Communication
+  alias Kantele.World.Hunting
   alias Kantele.World.Items
   alias Kantele.World.RoomActions.Helpers
   alias Kantele.Feature.Damage
@@ -690,6 +692,21 @@ defmodule Kantele.Character.CombatEvent do
         |> Map.put(:meta, Map.put(character.meta, :defeated_by, killer && killer.id))
         |> put_combat(%Combat{dead: true})
 
+      # LPC chard.c make_corpse()：尸体容器在死亡房间生成，死者背包全部移入其中；
+      # quarry.c/snake.c die() 的狩猎战利品则由 Corpse.spawn/2 通知击杀者进程结算。
+      # 必须在清空背包**之前**调用，否则尸体里没有内容。
+      Kantele.World.Corpse.spawn(character, killer)
+
+      # 端口的 NPC 是「原地装死 + 60s 复活」而不是 LPC 的 destruct + 房间 reset
+      # 重建，所以把原背包暂存到 meta，复活时还原，避免复活后凭空多一套装备。
+      character =
+        character
+        |> Map.put(:inventory, [])
+        |> Map.put(
+          :meta,
+          Map.put(character.meta, :corpse_inventory, character.inventory || [])
+        )
+
       StatusTracker.mark_dead(character.id)
 
       conn = put_character(conn, character)
@@ -698,6 +715,10 @@ defmodule Kantele.Character.CombatEvent do
 
       conn
     else
+      # 玩家死亡：LPC chard.c 同样先生成尸体容器（背包全部移入，需回去
+      # `get <物品> from <尸体>` 取回），然后灵魂才进地府。
+      Kantele.World.Corpse.spawn(character, killer)
+
       # 玩家死亡：进入幽灵态、坠入地府鬼门关，启动白无常 death_stage
       # （对应 LPC bai.c init() → call_out death_stage/2，每 5s 一段台词，共 6 段）。
       # 不再「满血传回出生点」——那是 P0 移植期的死亡简化，
@@ -709,6 +730,8 @@ defmodule Kantele.Character.CombatEvent do
         # 幽灵态：气血/精元归 1（LPC set("qi"/"jing", 1)），保留各自上限不变
         |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
         |> put_combat(Combat.new())
+        # 背包已进尸体容器；不落盘会导致重登时把物品凭空恢复一份
+        |> Map.put(:inventory, [])
 
       conn = put_character(conn, character)
       conn = render(conn, CommandView, "text", %{text: "你眼前一黑，魂魄已离体，被带入幽冥地府……\n"})
@@ -722,6 +745,9 @@ defmodule Kantele.Character.CombatEvent do
       # 启动白无常 death_stage：每 5s 一段台词，共 6 段，第 6 段后还阳。
       # 玩家可向白无常「ask 还阳」立即中断并还阳；离开鬼门关则自动中断。
       conn = start_death_stage(conn, character)
+
+      # 落盘已清空的背包：物品此刻在尸体容器里，重登不能凭空恢复。
+      Kantele.Character.Records.save(current_character(conn))
 
       conn
     end
@@ -766,15 +792,20 @@ defmodule Kantele.Character.CombatEvent do
             max_neili: v.base_neili
         }
 
+        # 还原死亡时移入尸体容器的原装备（端口 NPC 原地复活，不是 LPC 重建克隆）
+        restored_inventory = Map.get(character.meta, :corpse_inventory, []) || []
+
         meta =
           character.meta
           |> Map.put(:been_cut, nil)
           |> Map.put(:defeated_by, nil)
+          |> Map.delete(:corpse_inventory)
 
         character =
           character
           |> Map.put(:status, "#{character.name} is here.")
           |> Map.put(:meta, meta)
+          |> Map.put(:inventory, restored_inventory)
           |> put_vitals(vitals)
           |> put_combat(Combat.new())
 
@@ -1116,6 +1147,44 @@ defmodule Kantele.Character.CombatEvent do
     |> render(CommandView, "kill-reward", %{exp: exp, potential: potential})
     |> prompt(CommandView, "prompt", %{})
   end
+
+  @doc """
+  狩猎战利品结算（`hunting/drops`，由死者进程发出、在**击杀者进程**执行）。
+
+  对应 LPC `quarry.c` / `snake.c` 的 `die()`：`skill = me->query_skill("hunting", 1)`
+  必须是击杀者自己的技能等级，所以判定不能放在死者进程里。严格按
+  `Kantele.World.Hunting.roll/2` 掷骰，命中的物品 `move(me, 1)` 直接入背包。
+  """
+  def hunting_drops(conn, %{data: %{drops: drops, victim_name: victim_name}}) do
+    character = conn.character
+    skill = Stats.skill(Map.get(character.meta, :stats), "hunting")
+    resolved = drops |> Hunting.roll(skill) |> Hunting.resolve()
+
+    case resolved do
+      [] ->
+        conn
+
+      _ ->
+        instances =
+          Enum.map(resolved, fn {item_id, _item} ->
+            %Kalevala.World.Item.Instance{
+              id: Kalevala.World.Item.Instance.generate_id(),
+              item_id: item_id,
+              created_at: DateTime.utc_now()
+            }
+          end)
+
+        character = %{character | inventory: (character.inventory || []) ++ instances}
+        Kantele.Character.Records.save(character)
+
+        conn
+        |> put_character(character)
+        |> render(CommandView, "text", %{text: Hunting.message(victim_name, resolved)})
+        |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  def hunting_drops(conn, _event), do: conn
 
   # P-D: 把神魂引踪香实例加入背包（物品必须已在世界缓存中，否则不发放）
   defp grant_xinmo_reward(character) do

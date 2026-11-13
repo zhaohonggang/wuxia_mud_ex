@@ -6010,6 +6010,7 @@ chats = [
         weight = 1000
         unit = "根"
         material = "wood"
+      fire_to = "clone_lib:needfire"
       }
     }
 
@@ -7909,6 +7910,10 @@ direction = ~
       #                     set("verbs",({"bite"}))
       #   无 set_skill
       #   set("snake_poison", ...)、set("power", ...) 的蛇毒机制未移植
+
+  # LPC clone/beast/dushe.c：inherit SNAKE die() 的 item1/item2/item3
+  drop_a = { id = "sherou" }
+  drop_b = { id = "shedan" }
     }
 
 
@@ -7984,6 +7989,7 @@ direction = ~
         weight = 10000
         unit = "捆"
         material = "wood"
+      fire_to = "clone_lib:needfire"
       }
     }
 
