@@ -3,6 +3,7 @@ defmodule Kantele.Character.Combat.Buff do
   生效中的临时增益（对应 LPC 的 temp buff + start_call_out 定时移除）
   """
 
+  @derive Jason.Encoder
   defstruct [:key, :applies, :duration]
 end
 
@@ -31,6 +32,31 @@ defmodule Kantele.Character.Combat do
             temp: %{},
             attacked_by: MapSet.new(),
             helping: false
+
+  defimpl Jason.Encoder do
+    # Encodes Kantele.Character.Combat for websocket transmission.
+    # `attacked_by` is a MapSet (Jason cannot encode it) → converted to a sorted list.
+    # `enemies` may contain `:pid` (a PID) → converted to string.
+    # `buffs` contains Buff structs (already derive Jason.Encoder).
+    # `equipped`/`temp` are plain maps with JSON-safe values.
+    def encode(combat, opts) do
+      encoded = %{
+        "enemies" => Enum.map(combat.enemies, fn enemy ->
+          Map.put(enemy, "pid", :erlang.pid_to_list(enemy.pid))
+        end),
+        "busy" => combat.busy,
+        "jiali" => combat.jiali,
+        "dead" => combat.dead,
+        "buffs" => combat.buffs,
+        "equipped" => combat.equipped,
+        "temp" => combat.temp,
+        "attacked_by" => MapSet.to_list(combat.attacked_by) |> Enum.sort(),
+        "helping" => combat.helping
+      }
+
+      Jason.Encode.map(encoded, opts)
+    end
+  end
 
   # applies 白名单（Item.Meta.sanitize_prop 只放行这些键，Equip.wield_state/
   # wear_state 也只合并这些键进 applies；战斗公式经 Map.get(applies, key, 0)
@@ -178,19 +204,6 @@ defmodule Kantele.Character.Combat do
 
   def busy?(%__MODULE__{busy: busy}), do: busy > 0
 
-  @doc """
-  标记忙乱状态（对应 LPC start_busy/2）：设定忙乱轮数，取已有值与新值较大者
-
-  `busy` 在战斗 tick 中逐轮递减；忙乱期间动作命令会被拒绝。
-  """
-  def start_busy(%__MODULE__{} = combat, rounds) when rounds > 0,
-    do: %{combat | busy: max(combat.busy, trunc(rounds))}
-
-  def start_busy(%__MODULE__{} = combat, _rounds), do: combat
-
-  @doc "打断当前动作（对应 LPC interrupt_me/1）：忙乱清零"
-  def interrupt(%__MODULE__{} = combat), do: %{combat | busy: 0}
-
   @doc "对目标造成气血伤害（受击方 vitals 扣 qi，不低于 0）"
   def apply_damage(%__MODULE__{} = combat, damage) when damage >= 0 do
     character = Process.get(:character)
@@ -204,6 +217,16 @@ defmodule Kantele.Character.Combat do
 
     combat
   end
+
+  @doc """
+  标记忙乱状态（对应 LPC start_busy/2）：设定忙乱轮数，取已有值与新值较大者
+
+  `busy` 在战斗 tick 中逐轮递减；忙乱期间动作命令会被拒绝。
+  """
+  def start_busy(%__MODULE__{} = combat, rounds) when rounds > 0,
+    do: %{combat | busy: max(combat.busy, trunc(rounds))}
+
+  def start_busy(%__MODULE__{} = combat, _rounds), do: combat
 
   @doc "打断当前动作（对应 LPC interrupt_me/1）：忙乱清零"
   def interrupt(%__MODULE__{} = combat), do: %{combat | busy: 0}

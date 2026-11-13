@@ -181,10 +181,17 @@ defmodule Kantele.Character.LoginController do
     startroom = Map.get(env, :startroom)
 
     room_id =
-      if character.meta.setup_done do
-        startroom || character.room_id
-      else
-        Kantele.World.born_room_id()
+      cond do
+        # 幽灵态重登：直接回地府鬼门关（对齐 LPC logind.c is_ghost() → DEATH_ROOM），
+        # 不走出生地，等白无常接引还阳
+        Map.get(env, :ghost) == true ->
+          Kantele.World.death_room_id()
+
+        character.meta.setup_done ->
+          startroom || character.room_id
+
+        true ->
+          Kantele.World.born_room_id()
       end
 
     %{character | room_id: room_id}

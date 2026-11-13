@@ -592,6 +592,11 @@ defmodule Kantele.World.Loader do
         carry: parse_carry(Map.get(character_data, :carry)),
         chat_msg_combat: parse_chat_msg_combat(Map.get(character_data, :chat_msg_combat)),
         chat_chance_combat: Map.get(character_data, :chat_chance_combat) || 0,
+        # LPC `set("ask_handler", "...")`（转换器降级为顶层 `ask_handler = "..."`）：
+        # NPC 收到 `ask <npc> <关键词>` 时由 AskCommand 优先分发到该 AskHandler 模块。
+        # 不解析则 meta.ask_handler 恒为 nil，ask 命令会穿透到 characters/ask 事件流而失效
+        # （白无常 ask 还阳、地藏王 ask 转世 等都会静默失败）。
+        ask_handler: Map.get(character_data, :ask_handler),
         power: Map.get(character_data, :power) || 0,
         drop_a: parse_item_ref(Map.get(character_data, :drop_a)),
         drop_b: parse_item_ref(Map.get(character_data, :drop_b))

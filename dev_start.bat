@@ -49,6 +49,10 @@ echo [dev_start] [2/3] Bootstrapping project (mix deps.get + yarn install + ecto
 %COMPOSE% run --rm setup
 if errorlevel 1 goto :fail
 
+echo [dev_start] [2.5/3] Compiling project (mix compile)...
+%COMPOSE% run --rm app mix compile
+if errorlevel 1 goto :fail
+
 echo [dev_start] [3/3] Launching Phoenix server (foreground, Ctrl+C to stop)...
 echo             Web client : http://localhost:4000
 echo             Telnet MUD : telnet localhost 4646

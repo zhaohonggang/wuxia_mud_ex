@@ -33,11 +33,22 @@ defmodule Kantele.Scheduler do
     :timer.cancel(ref)
   end
 
-  @doc "复活调度（对应 LPC revive/3 + DEATH_ROOM + start_death）"
+  @doc "复活调度（对应 LPC revive/3 + DEATH_ROOM + 白无常自动接引）"
   def schedule_revive(player_id, ms \\ 30_000) do
     schedule_once(ms, fn ->
-      # 实际应调用 Character 复活逻辑
-      Logger.info("Revive scheduled for #{player_id}")
+      # 向角色进程投递 character/revive 事件（由 CombatEvent.revive 处理：解除幽灵态、
+      # 满状态、传送武庙、落点记 startroom）。角色已离线则无处投递，静默跳过。
+      case Kantele.Communication.subscribers("characters:#{player_id}") do
+        [{_channel, pid, _opts} | _] ->
+          send(pid, %Kalevala.Event{
+            from_pid: self(),
+            topic: "character/revive",
+            data: %{}
+          })
+
+        _ ->
+          :ok
+      end
     end)
   end
 

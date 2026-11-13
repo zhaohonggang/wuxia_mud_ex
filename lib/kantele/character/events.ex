@@ -207,6 +207,8 @@ defmodule Kantele.Character.Events do
       event("combat/buff-expire", :buff_expire)
       event("combat/respawn", :respawn)
       event("vitals/regen", :regen)
+      event("character/revive", :revive)
+      event("character/death_stage", :death_stage)
 
       event(Message, :echo, interested?: &CombatEvent.interested?/1)
     end
@@ -333,6 +335,8 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("combat/buff-expire", :buff_expire)
       event("combat/respawn", :respawn)
       event("vitals/regen", :regen)
+      event("character/revive", :revive)
+      event("character/death_stage", :death_stage)
     end
 
     module(FanliangyiEvent) do

@@ -9121,6 +9121,8 @@ chats = [
     { id = items.blade1.id }
   ]
 
+  ask_handler = "Kantele.NPC.Niutou"
+
 
   engage = {
     fight = { accept = true }

@@ -44,14 +44,29 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Teleport
   alias Kantele.Character.Vitals
+  alias Kantele.Scheduler
   alias Kantele.Communication
   alias Kantele.World.Items
+  alias Kantele.World.RoomActions.Helpers
   alias Kantele.Feature.Damage
   alias Kantele.Quest
 
   @tick_interval 1000
   @regen_interval 15_000
   @default_respawn_delay 30_000
+
+  # 白无常 death_stage 台词（对应 LPC d/death/npc/bai.c death_msg），
+  # 每段间隔 5s，共 6 段（合计 30s），第 6 段后执行还阳。
+  @death_stage_msgs [
+    "白无常说道：喂！新来的，你叫什么名字？\n\n",
+    "白无常用奇异的眼光盯著你，好像要看穿你的一切似的。\n\n",
+    "白无常「哼」的一声，从袖中掏出一本像帐册的东西翻看著。\n\n",
+    "白无常合上册子，说道：咦？阳寿未尽？怎么可能？\n\n",
+    "白无常搔了搔头，叹道：罢了罢了，你走吧。\n\n",
+    "一股阴冷的浓雾突然出现，很快地包围了你。\n\n"
+  ]
+
+  @death_stage_interval_ms 5_000
 
   # ---- 自我定时：直接 Process.send_after，绕开房间路由 ----
 
@@ -683,31 +698,32 @@ defmodule Kantele.Character.CombatEvent do
 
       conn
     else
-      # 玩家：满血传回出生点。死亡即了结：清空对所有人的杀戮意图（killer/want_kills）
-      character =
-        case character.meta do
-          %Kantele.Character.PlayerMeta{} = meta ->
-            new_meta =
-              PlayerMeta.update_attack(meta, fn attack ->
-                %{attack | killer: [], want_kills: []}
-              end)
-
-            %{character | meta: new_meta}
-
-          _ ->
-            character
-        end
-
+      # 玩家死亡：进入幽灵态、坠入地府鬼门关，启动白无常 death_stage
+      # （对应 LPC bai.c init() → call_out death_stage/2，每 5s 一段台词，共 6 段）。
+      # 不再「满血传回出生点」——那是 P0 移植期的死亡简化，
+      # 用户实测「被黑虎杀死却直接出现在 baituo:dating」，正是这一简化所致。
       character =
         character
-        |> put_vitals(Vitals.new())
+        |> set_ghost(true)
+        |> clear_kill_intent()
+        # 幽灵态：气血/精元归 1（LPC set("qi"/"jing", 1)），保留各自上限不变
+        |> put_vitals(%{character.meta.vitals | qi: 1, jing: 1})
         |> put_combat(Combat.new())
 
       conn = put_character(conn, character)
+      conn = render(conn, CommandView, "text", %{text: "你眼前一黑，魂魄已离体，被带入幽冥地府……\n"})
+      conn = Teleport.teleport(conn, Kantele.World.death_room_id())
+
+      # 关键修复：Teleport.teleport 已把 room_id 改为 "death:gate"，必须
+      # 从 conn 重新读取 character，否则 start_death_stage 里的 put_character
+      # 会把 stale 的 room_id（死亡地点）覆盖回来，导致玩家留在原地不进地府。
+      character = current_character(conn)
+
+      # 启动白无常 death_stage：每 5s 一段台词，共 6 段，第 6 段后还阳。
+      # 玩家可向白无常「ask 还阳」立即中断并还阳；离开鬼门关则自动中断。
+      conn = start_death_stage(conn, character)
 
       conn
-      |> render(CommandView, "revive")
-      |> Teleport.teleport(starting_room_id())
     end
   end
 
@@ -766,6 +782,213 @@ defmodule Kantele.Character.CombatEvent do
         |> put_character(character)
         |> Broadcast.publish(Messages.revive_msg(), n1: character.name)
     end
+  end
+
+  @doc """
+  地府还阳（对应 LPC reincarnate/2 + bai.c 白无常自动接引）
+
+  - 解除幽灵态（ghost=false，同步清 session 级 damage.ghost 与持久化 env.ghost）
+  - 气血/精元/内力/精力回满（恢复到**自身**上限，不用 Vitals.new 以免重置上限）
+  - 传送至武庙（REVIVE_ROOM，对应 LPC move("/d/city/wumiao")）
+  - 落点记为 startroom（对应 LPC set("startroom", REVIVE_ROOM)），并落盘
+  """
+  @doc """
+  地府还阳（对应 LPC reincarnate/2 + bai.c 白无常自动接引）。
+
+  由两种途径触发：
+  1. 白无常 death_stage 走完 6 段台词后自动还阳；
+  2. 玩家向白无常「ask 还阳」立即还阳（中断 pending 的 death_stage）。
+
+  - 解除幽灵态（ghost=false，同步清 session 级 damage.ghost 与持久化 env.ghost）
+  - 气血/精元/内力/精力回满（恢复到**自身**上限，不用 Vitals.new 以免重置上限）
+  - 传送至武庙（REVIVE_ROOM，对应 LPC move("/d/city/wumiao")）
+  - 落点记为 startroom（对应 LPC set("startroom", REVIVE_ROOM)），并落盘
+  """
+  def revive(conn, _event) do
+    character = current_character(conn)
+
+    # 手动 ask 还阳时中断 pending 的白无常 death_stage（避免自动与手动重复还阳）
+    conn = cancel_death_stage_timer(conn, character)
+    character = current_character(conn)
+
+    character =
+      character
+      |> set_ghost(false)
+      |> put_vitals(full_vitals(character))
+      |> put_combat(Combat.new())
+      |> set_env(:startroom, Kantele.World.revive_room_id())
+
+    conn = put_character(conn, character)
+    conn = render(conn, CommandView, "revive")
+    conn = Teleport.teleport(conn, Kantele.World.revive_room_id())
+
+    # 落盘：startroom 变更需持久化，重登回武庙
+    Kantele.Character.Records.save(conn.character)
+
+    conn
+  end
+
+  # ---- 死亡/还阳辅助 ----
+
+  @doc """
+  死亡阶段台词（对应 LPC bai.c death_stage/2）。
+
+  白无常在鬼门关向幽灵玩家逐段念出台词（每 5s 一段，共 6 段），
+  第 6 段后执行还阳。玩家离开鬼门关或手动 ask 还阳均会中断。
+  """
+  def death_stage(conn, %{data: %{stage: stage}}) do
+    character = current_character(conn)
+
+    cond do
+      # 检查玩家是否还是幽灵态且仍在鬼门关（白无常所在房间）。
+      # 若离开鬼门关或已不再幽灵，中断流程（对应 LPC present(ob) 检查）。
+      not (ghost?(character) and character.room_id == Kantele.World.death_room_id()) ->
+        conn
+
+      true ->
+        # 发送当前段台词（LPC tell_object(me, death_msg[stage])）
+        conn = Helpers.render_to_player(conn, Enum.at(@death_stage_msgs, stage))
+
+        cond do
+          stage == length(@death_stage_msgs) - 1 ->
+            # 最后一段：执行还阳（LPC reincarnate() + 移 REVIVE_ROOM）
+            do_reincarnate(conn, character)
+
+          true ->
+            # 继续下一段（5s 后，对应 LPC call_out("death_stage", 5, ob, stage+1)）
+            conn = schedule_next_death_stage(conn, character, stage + 1)
+            conn
+        end
+    end
+  end
+
+  defp start_death_stage(conn, character) do
+    ref =
+      Process.send_after(
+        character.pid,
+        %Event{
+          from_pid: self(),
+          topic: "character/death_stage",
+          data: %{stage: 0}
+        },
+        @death_stage_interval_ms
+      )
+
+    character = put_death_stage_ref(character, ref)
+    put_character(conn, %{character | meta: character.meta})
+  end
+
+  defp schedule_next_death_stage(conn, character, next_stage) do
+    ref =
+      Process.send_after(
+        character.pid,
+        %Event{
+          from_pid: self(),
+          topic: "character/death_stage",
+          data: %{stage: next_stage}
+        },
+        @death_stage_interval_ms
+      )
+
+    character = put_death_stage_ref(character, ref)
+    put_character(conn, %{character | meta: character.meta})
+  end
+
+  defp cancel_death_stage_timer(conn, character) do
+    ref = get_death_stage_ref(character)
+    if ref, do: Process.cancel_timer(ref)
+
+    character = delete_death_stage_ref(character)
+    put_character(conn, character)
+  end
+
+  # 核心还阳逻辑：由 death_stage 完成段或手动 ask 还阳调用。
+  defp do_reincarnate(conn, character) do
+    character =
+      character
+      |> set_ghost(false)
+      |> put_vitals(full_vitals(character))
+      |> put_combat(Combat.new())
+      |> set_env(:startroom, Kantele.World.revive_room_id())
+
+    conn = put_character(conn, character)
+    conn = render(conn, CommandView, "revive")
+    conn = Teleport.teleport(conn, Kantele.World.revive_room_id())
+
+    # 落盘：startroom 变更需持久化，重登回武庙
+    Kantele.Character.Records.save(conn.character)
+
+    conn
+  end
+
+  # ---- 死亡/还阳辅助 ----
+
+  defp set_ghost(character, value) do
+    damage = Map.put(character.meta.damage || %{}, :ghost, value)
+    env = Map.put(character.meta.env || %{}, :ghost, value)
+    %{character | meta: %{character.meta | damage: damage, env: env}}
+  end
+
+  defp clear_kill_intent(character) do
+    case character.meta do
+      %Kantele.Character.PlayerMeta{} = meta ->
+        %{
+          character
+          | meta:
+              PlayerMeta.update_attack(meta, fn attack ->
+                %{attack | killer: [], want_kills: []}
+              end)
+        }
+
+      _ ->
+        character
+    end
+  end
+
+  defp full_vitals(character) do
+    v = character.meta.vitals
+
+    # eff_qi/eff_jing 非 Vitals 结构体字段（heal_up 以 Map.get 动态读写），
+    # 用 Map.put 写入，不可用 `%{v | eff_qi: ...}` 结构体更新（会 KeyError）。
+    v
+    |> Map.put(:qi, v.max_qi)
+    |> Map.put(:jing, v.max_jing)
+    |> Map.put(:neili, v.max_neili)
+    |> Map.put(:jingli, v.max_jingli)
+    |> Map.put(:eff_qi, v.max_qi)
+    |> Map.put(:eff_jing, v.max_jing)
+  end
+
+  defp set_env(character, key, value) do
+    %{
+      character
+      | meta:
+          Map.update(character.meta, :env, %{key => value}, &Map.put(&1, key, value))
+    }
+  end
+
+  # ---- 死亡/还阳辅助 ----
+
+  defp current_character(%{private: %{update_character: character}}) when not is_nil(character),
+    do: character
+
+  defp current_character(%{character: character}), do: character
+
+  defp ghost?(character) do
+    Map.get(character.meta.damage || %{}, :ghost) == true or
+      Map.get(character.meta.env || %{}, :ghost) == true
+  end
+
+  defp put_death_stage_ref(character, ref) do
+    %{character | meta: PlayerMeta.put_temp(character.meta, :death_stage_ref, ref)}
+  end
+
+  defp delete_death_stage_ref(character) do
+    %{character | meta: PlayerMeta.delete_temp(character.meta, :death_stage_ref)}
+  end
+
+  defp get_death_stage_ref(character) do
+    Map.get(character.meta.temp || %{}, :death_stage_ref)
   end
 
   # ---- 敌人变化 ----

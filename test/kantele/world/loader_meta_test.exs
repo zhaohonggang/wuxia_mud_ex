@@ -621,4 +621,26 @@ defmodule Kantele.World.LoaderMetaTest do
 
     assert item.meta.liquid == nil
   end
+
+  # ---- ask_handler（loader 解析进 NonPlayerMeta，AskCommand 据此分发）----
+
+  test "ask_handler 从 UCL 解析进 NonPlayerMeta（白无常/黑无常/地藏王）" do
+    # 全量加载（death 区在夹具世界之外），逐区摊平取角色
+    world = Kantele.World.Loader.load()
+    all_chars = world.zones |> Enum.flat_map(fn z -> Map.values(z.characters) end)
+
+    bai = Enum.find(all_chars, &(&1.id == "death:bai"))
+    hei = Enum.find(all_chars, &(&1.id == "death:hei"))
+    dizang = Enum.find(all_chars, &(&1.id == "death:dizangwang"))
+
+    assert bai != nil, "death:bai 应已加载"
+    assert hei != nil, "death:hei 应已加载"
+    assert dizang != nil, "death:dizangwang 应已加载"
+
+    # 修复前 loader 不解析该字段，meta.ask_handler 恒为 nil，
+    # 导致 `ask 还阳 白无常` / `ask 转世 地藏王` 穿透到事件流而静默失败。
+    assert bai.meta.ask_handler == "Kantele.NPC.Wuchang"
+    assert hei.meta.ask_handler == "Kantele.NPC.Wuchang"
+    assert dizang.meta.ask_handler == "Kantele.NPC.Dizangwang"
+  end
 end

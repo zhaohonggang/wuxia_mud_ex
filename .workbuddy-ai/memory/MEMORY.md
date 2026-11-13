@@ -54,6 +54,8 @@
 - brain.ex NullNode：线 55-69 静默返回 NullNode 系故意安全降级，带注释说明，非缺陷。
 - LPC NPC vitals/carry 已建模；悬空引用 4 条不可补，已结案。
 - D 技术债：疾病/条件系统（`Kantele.Illness`×5+`Kantele.Poison`，18例测试全绿）；雪原封路（`SnowRegion`+`SnowRegionEvent`+`MoveEvent.commit`，30例测试全绿）；真·clone（`clone_command.ex`+`ObjectClone.clone_by_path/3`+`place_object/3`，26例测试全绿）；search/explore入位（`search_command.ex`，`quest_event.ex:122` entry门控）；count>1逐件交付（`quest_event.ex:57-91` `meta.count`扣减+`scale_rewards_by_count`，`quest_turnin_multi_test.exs` 6例全绿）。5/5 子项全部落地，全量回归 0 新增失败。✅ 已完结。
+- 死亡→地府→还阳 完整对齐 LPC（用户选 C）：`combat_event.ex die/3` 玩家分支改 ghost+传送`death:gate`+`Scheduler.schedule_revive(30s)`；`revive/2`（收`character/revive`）解 ghost、满状态（自身上限）、传送`city:wumiao`、记`env.startroom`并落盘；`login_controller.place_on_login` 幽灵态重登回`death:gate`；`npc/wuchang.ex` AskHandler 供 `ask 还阳` 手动还阳。落点 `world.ex` `death_room_id/revive_room_id/born_room_id`。`test/kantele/character/death_revive_test.exs` 4 例全绿。
+- 牛头（niutou）NPC ask 处理器：新建 `lib/kantele/npc/niutou.ex`（幽灵态门控、还阳/奈河桥/牛头/niutou 四关键字）；`data/world/death.ucl` niutou 与 `data/world/clone_lib.ucl` death_niutou 均加 `ask_handler = "Kantele.NPC.Niutou"`；`qiao2` `valid_leave.condition` 为 `(objectp(present('niu tou',environment(me)))) && dir == 'north'`；新增 `test/kantele/npc/niutou_test.exs` 10 例全绿，死亡/还阳回归测试 4 例全绿。
 
 ## 净增量归档（全部已完结，无待办）
 

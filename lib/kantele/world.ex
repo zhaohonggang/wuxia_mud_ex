@@ -139,13 +139,21 @@ defmodule Kantele.World do
   def born_room_id(), do: "register:yanluodian"
 
   @doc """
-  死亡房间 id（地府阎罗殿，对应 LPC 玩家死亡后坠入地府）
+  死亡落点（地府鬼门关，对应 LPC `login.h:27 DEATH_ROOM "/d/death/gate"`）。
 
-  玩家 `qi/jing` 归零触发 `FeatureDamage.process_death` 时，被放入此房间
-  （`death:yanluodian`），与 LPC `/d/death/yanluodian.c` 一致。此前误用
-  `start_room_id()` 会随机落到任意带 `startroom` flag 的房间，故单独固定。
+  LPC `feature/damage.c:447-449` 在 `die()` 里 `ghost = 1; me->move(DEATH_ROOM)`，
+  落点是**鬼门关**（白无常在此接引），不是阎罗殿深处。此前误设
+  `death:yanluodian`（阎罗殿），玩家会直接跳过地府前段，故修正。
   """
-  def death_room_id(), do: "death:yanluodian"
+  def death_room_id(), do: "death:gate"
+
+  @doc """
+  还阳落点（城外武庙，对应 LPC `login.h:28 REVIVE_ROOM "/d/city/wumiao"`）。
+
+  LPC `d/death/npc/bai.c:96-106`（白无常 30 秒自动还阳）与 `hei.c:92-102`
+  `ob->reincarnate(); ob->move(REVIVE_ROOM); ob->set("startroom", REVIVE_ROOM);`。
+  """
+  def revive_room_id(), do: "city:wumiao"
 
   @doc """
   查找 NPC 定义（供 `clone` 命令生物克隆用）。

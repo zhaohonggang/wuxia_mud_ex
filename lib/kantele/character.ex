@@ -77,16 +77,20 @@ defmodule Kantele.Character.PlayerMeta do
     #   vitals  战斗/显示必需
     #   stats   valid_leave 条件 `me->query_skill("force") < 500` 等要读技能等级
     #   family  门派相关条件（born_family / family/family_name）
-    #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）——仅 PlayerMeta 有
-    #   env     LPC set() 属性仓库：`query("...")`——仅 PlayerMeta 有
-    #   aliases LPC present/get/ask 的 id 表匹配依据
+    #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）
+    #   env     LPC set() 属性仓库：`query("...")`
+    #   aliases LPC present/get/ask 的 id 表匹配依据（NonPlayerMeta 专用）
+    #   combat  战斗状态（Kantele.Character.Combat）：room.ex `victim.meta.combat`
+    #           需读取判断是否正在战斗；裁掉会 KeyError。
+    #   coins   铜钱：room.ex `victim.meta.coins` 需读取判断乞讨目标是否有钱；
+    #           裁掉会 KeyError。
     #
     # 这些字段都会被**房间侧**读到：移动事件的 character、房间 state 的 characters
     # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
     # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
     # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
-      Map.take(meta, [:vitals, :stats, :family, :temp, :env])
+      Map.take(meta, [:vitals, :stats, :family, :temp, :env, :combat, :coins])
     end
   end
 
@@ -332,6 +336,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     :stats,
     :combat_config,
     :combat,
+    # `temp` 会话态（如 guarded 列表）：room.ex `guard/cancel` 遍历
+    # context.characters 时读 `meta.temp["guarded"]`，NPC 也可能是守护目标，
+    # 故 NonPlayerMeta 也需此字段（默认 %{}，避免 KeyError）。
+    {:temp, %{}},
     :goods,
     :inquiries,
     {:inquiry_state, %{}},
@@ -348,6 +356,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     :defeated_by,
     :greetings,
     :init,
+
+    # `coins` 铜钱：room.ex `victim_meta.coins` 在乞讨时读取受访者身上钱数。
+    # 受访者可能是 NPC（NonPlayerMeta），NPC 没有铜钱，默认 nil 即可（|| 0 降级）。
+    {:coins, nil},
 
     # LPC `set_name(<名>, ({ "id1", ... }))` 的 id 表：present/ask/get 的匹配依据。
     # 转换早期整组丢失，由 scripts/migrate_aliases.py 从源 .c 回填。
@@ -383,21 +395,32 @@ defmodule Kantele.Character.NonPlayerMeta do
     #   vitals  战斗/显示必需
     #   stats   valid_leave 条件 `me->query_skill("force") < 500` 等要读技能等级
     #   family  门派相关条件（born_family / family/family_name）
-    #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）——仅 PlayerMeta 有
-    #   env     LPC set() 属性仓库：`query("...")`——仅 PlayerMeta 有
+    #   temp    会话态：`query_temp`（客栈 rent_paid、战斗 marks 等）：room.ex
+    #           `guard/cancel` 遍历 context.characters 时读 `meta.temp["guarded"]`；
+    #           NPC 也可能是守护目标，故需保留。默认 `%{}`。
+    #   env     LPC set() 属性仓库：`query("...")`
     #   aliases LPC present/get/ask 的 id 表匹配依据
     #   init    NPC 入场配置 `%{greet_delay, add_actions, heartbeat}`：房间侧的
     #           NPC 私有动词分发（`NpcActionDispatcher`）要读 `init.add_actions`
     #           才能判断某 verb 是否属于本房间的 NPC；裁掉它 NPC add_action 通道
     #           恒为空，等同于整套 `do_*` 私有动词静默失效。字段很小（3 个子键），
     #           代价可忽略。
+    #   ask_handler NPC AskHandler 模块名（如 "Kantele.NPC.Wuchang"）：房间侧的
+    #           ask 命令要读 meta.ask_handler 才能分发到 NPC 专属问询处理器。
+    #           裁掉它会导致 ask <NPC> <关键词> 落回 inquiries 静态文案，不执行
+    #           AskHandler 的实际逻辑（如白无常 ask 还阳 不会真的传送武庙）。
+    #   combat  战斗状态（Kantele.Character.Combat）：room.ex `victim.meta.combat`
+    #           需读取判断是否正在战斗；裁掉会 KeyError。
+    #   combat_config NPC 战斗配置 `%{spawn_room_id, ...}`：room.ex
+    #           `guarder.meta.combat_config` 需读取守卫复活点；裁掉会 KeyError。
     #
     # 这些字段都会被**房间侧**读到：移动事件的 character、房间 state 的 characters
     # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
     # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
     # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
-      Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init])
+      Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init, :ask_handler,
+                      :temp, :combat, :combat_config, :coins])
     end
   end
 
@@ -413,6 +436,7 @@ defmodule Kantele.Character.NPCConfig do
   NPC 战斗相关的静态配置，由世界数据 `.ucl` 的 `combat` 块解析而来
   """
 
+  @derive Jason.Encoder
   defstruct [
     :attitude,
     :spawn_room_id,

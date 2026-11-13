@@ -67,7 +67,7 @@ defmodule Kantele.Character.SmashEventTest do
       assert updated.meta.vitals.qi == 1
       assert updated.meta.vitals.jing == 1
       assert updated.meta.damage[:ghost] == true
-      assert updated.room_id == "death:yanluodian"
+      assert updated.room_id == "death:gate"
       assert output_text(new_conn) =~ "大巫"
     end
 

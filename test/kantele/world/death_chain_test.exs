@@ -2,7 +2,7 @@ defmodule Kantele.World.DeathChainTest do
   @moduledoc """
   P4 地府转世链（P4-A~P4-E）定向测试。
 
-  覆盖：死亡落点固定为阎罗殿、阎罗置位 HellZhenPass、地藏王 `ask 转世`
+  覆盖：死亡落点固定为地府鬼门关（death:gate）、阎罗置位 HellZhenPass、地藏王 `ask 转世`
   三分支（含发起生死斗）、高处不胜寒问询、献丹事件投递、UCL 接线。
   决斗/落盘只断言「消息与事件已发出」，不依赖真实房间进程或成功落库。
   """
@@ -25,7 +25,7 @@ defmodule Kantele.World.DeathChainTest do
   alias Kantele.World.HellZhen
   alias Kantele.World.RebornAccept
 
-  @death_room "death:yanluodian"
+  @death_room "death:gate"
 
   defp character(env \\ %{}) do
     vitals = %Vitals{
@@ -100,7 +100,7 @@ defmodule Kantele.World.DeathChainTest do
   end
 
   describe "P4-A 死亡落点" do
-    test "death_room_id/0 固定指向地府阎罗殿" do
+    test "death_room_id/0 固定指向地府鬼门关（death:gate）" do
       assert World.death_room_id() == @death_room
     end
   end

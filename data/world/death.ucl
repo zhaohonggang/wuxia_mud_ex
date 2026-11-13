@@ -2464,6 +2464,12 @@ chats = [
     { id = items.suolian.id }
   ]
 
+  ask_handler = "Kantele.NPC.Wuchang"
+
+  inquiries = [
+    { key = "还阳" value = " 向无常请求还阳，立即脱离地府回到武庙。" }
+  ]
+
     }
 
 # Generated from C:/files/git/mud/d/death/npc/baihu.c by LPCConverter
@@ -2667,6 +2673,12 @@ chats = [
     { id = items.suolian.id }
   ]
 
+  ask_handler = "Kantele.NPC.Wuchang"
+
+  inquiries = [
+    { key = "还阳" value = " 向无常请求还阳，立即脱离地府回到武庙。" }
+  ]
+
     }
 
 # Generated from C:/files/git/mud/d/death/npc/mamian.c by LPCConverter
@@ -2760,6 +2772,8 @@ chats = [
     { key = "汤" value = " inquire about me (unimplemented)" }
   ]
 
+  ask_handler = "Kantele.NPC.Mengpo"
+
   chat_chance = 1
 chats = [
     "孟婆说道：孩子，喝碗汤吧。",
@@ -2832,6 +2846,8 @@ chats = [
     { id = items.armor2.id },
     { id = items.blade1.id }
   ]
+
+  ask_handler = "Kantele.NPC.Niutou"
 
 
   engage = {

@@ -221,11 +221,12 @@ This ensures future passes can complete the conversion without re-reading LPC.
 ## Dev Workflow
 
 1. Edit code in `lib/kantele/`
-2. `mix format && mix credo` (pre-commit)
-3. Targeted test in container: `docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_venture_test app mix test test/kantele/...`
-4. Full suite: same command, add `--seed 731933`
-5. **Pre-commit check**: Before committing modified tracked files, compare with `git show HEAD:<file>` — if the new version loses significant info or is noticeably smaller, **do not commit**; investigate or report to user
-6. Commit by sect/family (not per-skill): `git commit -m "Shaolin: implement damo-jian performs"`
+2. `mix compile` —— **日常改动只需编译通过即可，不必每次都跑全量测试。**
+3. `mix format && mix credo` (pre-commit)
+4. Targeted test in container (可选，仅在涉及核心逻辑变更或修复 Bug 时运行)：`docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:ex_venture_test app mix test test/kantele/...`
+5. Full suite (仅在提交前或重大功能完成后运行)：同第 4 条命令，加 `--seed 731933`
+6. **Pre-commit check**: Before committing modified tracked files, compare with `git show HEAD:<file>` — if the new version loses significant info or is noticeably smaller, **do not commit**; investigate or report to user
+7. Commit by sect/family (not per-skill): `git commit -m "Shaolin: implement damo-jian performs"`
 
 ## Core Development Rules (必读，贯穿全程)
 

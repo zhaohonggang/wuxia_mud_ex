@@ -67,7 +67,7 @@ defmodule Kantele.Character.AskCommand do
 
     case find_ask_npc(conn, name) do
       {:ok, npc} ->
-        case npc.meta.ask_handler do
+        case Map.get(npc.meta, :ask_handler) do
           nil ->
             # 无 AskHandler：先检查是否有 quest_gift 物品提供（answer Y|N 流），
             # 否则落回事件流（inquiries/quest/turn_in 等）
@@ -132,7 +132,8 @@ defmodule Kantele.Character.AskCommand do
     characters = Map.get(room.private || %{}, :characters, [])
 
     Enum.find_value(characters, fn char ->
-      if char.name == name or name in (char.meta.aliases || []) do
+      aliases = Map.get(char.meta, :aliases, []) || []
+      if char.name == name or name in aliases do
         {:ok, char}
       else
         nil
@@ -175,6 +176,17 @@ defmodule Kantele.Character.AskCommand do
               CommandView,
               "text",
               %{text: "你向#{npc.name}请教#{keyword}。\n"}
+            )
+            |> prompt(CommandView, "prompt", %{})
+
+          {:ok, msg, new_character} ->
+            # AskHandler 返回自定义成功消息 + 更新后的角色（如孟婆汤）
+            conn
+            |> put_character(new_character)
+            |> render(
+              CommandView,
+              "text",
+              %{text: msg <> "你向#{npc.name}请教#{keyword}。\n"}
             )
             |> prompt(CommandView, "prompt", %{})
 

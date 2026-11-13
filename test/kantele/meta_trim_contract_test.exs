@@ -21,8 +21,8 @@ defmodule Kantele.Meta.TrimContractTest do
   alias Kantele.Character.NonPlayerMeta
   alias Kantele.Character.PlayerMeta
 
-  @player_keep [:vitals, :stats, :family, :temp, :env]
-  @npc_keep [:vitals, :stats, :guarder, :aliases, :init]
+  @player_keep [:vitals, :stats, :family, :temp, :env, :combat, :coins]
+  @npc_keep [:vitals, :stats, :guarder, :aliases, :init, :ask_handler, :temp, :combat, :combat_config, :coins]
 
   test "PlayerMeta 裁剪后仍带房间侧要读的字段" do
     meta = %PlayerMeta{
@@ -40,8 +40,9 @@ defmodule Kantele.Meta.TrimContractTest do
       assert Map.has_key?(trimmed, key), "PlayerMeta 裁剪后丢了 #{key}"
     end)
 
-    # 不在清单里的字段仍然会被裁掉（trim 的本意就是省内存）
-    refute Map.has_key?(trimmed, :coins)
+    # `:coins` 现在在保留清单里（room.ex `victim.meta.coins` 需读取）
+    assert Map.has_key?(trimmed, :coins)
+    assert trimmed.coins == 999
   end
 
   test "NonPlayerMeta 裁剪后仍带 guarder" do

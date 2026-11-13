@@ -59,6 +59,45 @@ defmodule Kalevala.Event do
 
   defstruct [:acting_character, :data, :from_pid, :topic, metadata: %__MODULE__.Metadata{}]
 
+  defimpl Jason.Encoder do
+    # Encodes a Kalevala.Event for websocket transmission.
+    # `from_pid` (a PID) is converted to a string since Jason cannot encode PIDs.
+    # `data` may contain arbitrary values including Elixir `Reference`s (e.g. from
+    # `make_ref()`); if the data is not JSON-encodable, it is replaced with `nil`
+    # rather than crashing the websocket process.
+    def encode(event, opts) do
+      encoded = %{
+        "topic" => event.topic,
+        "from_pid" => :erlang.pid_to_list(event.from_pid),
+        "data" => safe_data(event.data),
+        "metadata" => %{
+          "start_time" => event.metadata.start_time,
+          "end_time" => event.metadata.end_time
+        }
+      }
+
+      encoded = Map.put(encoded, "acting_character", safe_data(event.acting_character))
+
+      Jason.Encode.map(encoded, opts)
+    end
+
+    defp safe_data(data) do
+      case encodable?(data) do
+        true -> data
+        false -> nil
+      end
+    end
+
+    defp encodable?(data) do
+      try do
+        Jason.encode!(data)
+        true
+      rescue
+        _ -> false
+      end
+    end
+  end
+
   @doc """
       Set the start time on an event
   """

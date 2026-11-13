@@ -68,10 +68,20 @@ defmodule Kalevala.Websocket.Handler do
       end)
 
     event =
-      Jason.encode!(%{
-        "topic" => "system/multiple",
-        "data" => context.events
-      })
+      try do
+        Jason.encode!(%{
+          "topic" => "system/multiple",
+          "data" => context.events
+        })
+      rescue
+        _e ->
+          # Jason 编码失败（如遇到未实现 Jason.Encoder 的 struct 或 #Reference 等不可编码值）
+          # 不崩溃连接，发送一个空事件兜底
+          Jason.encode!(%{
+            "topic" => "system/multiple",
+            "data" => []
+          })
+      end
 
     {:reply, {:text, event}, update_newline(state, context.newline)}
   end
