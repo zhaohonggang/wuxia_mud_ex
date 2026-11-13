@@ -339,7 +339,8 @@ defmodule Kantele.Character.HorseCommand do
   end
 
   defp find_npc(conn, name) do
-    Enum.find(conn.character.room_characters || [], fn c ->
+    room_chars = conn.private.room.private.characters || []
+    Enum.find(room_chars, fn c ->
       c.id != conn.character.id &&
         (c.id == name || String.downcase(c.name) == String.downcase(name))
     end)

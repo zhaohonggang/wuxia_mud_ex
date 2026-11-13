@@ -2168,4 +2168,23 @@ defmodule Kantele.Character.Commands do
       command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
+
+  module(DuelCommand) do
+    parse("duel", :run, fn command -> command |> spaces() |> word(:name) end)
+    parse("决斗", :run, fn command -> command |> spaces() |> word(:name) end)
+  end
+
+  module(HorseCommand) do
+    parse("horse", :run, fn command ->
+      command |> spaces() |> word(:name) |> optional(empty() |> spaces() |> text(:rest))
+    end)
+
+    parse("买马", :run, fn command ->
+      command |> spaces() |> word(:name) |> optional(empty() |> spaces() |> text(:rest))
+    end)
+
+    parse("buy_mount", :run, fn command ->
+      command |> spaces() |> word(:name) |> optional(empty() |> spaces() |> text(:rest))
+    end)
+  end
 end
