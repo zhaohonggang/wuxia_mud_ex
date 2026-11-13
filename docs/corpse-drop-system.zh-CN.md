@@ -43,7 +43,7 @@ while (i--)
 }
 ```
 
-腐烂：`call_out("decay", 60, 1)` 三段（尸体 → 白骨 → `destruct`），共约 180 秒；
+腐烂：`call_out("decay", 60, 1)` 三段（尸体 → 骸骨 → `destruct`），`call_out("decay", 60, 1)` → `call_out("decay", 60, 2)` → `call_out("decay", 30, 3)`，共约 150 秒；
 销毁前把尸体容器里的物品移到 `environment`，所以掉落物留在地上而不是随之消失。
 
 ### 1.2 狩猎掉落物（`inherit/char/quarry.c::die()` / `inherit/char/snake.c::die()`）
@@ -208,21 +208,20 @@ UCL drop_a/drop_b/drop_c
 
 ## 7. 与 LPC 原版的差异状态（2026-11-13）
 
-下表列出原文档 §7 记录的 7 条差异，标注当前实际实现状态。已实现的条目已不再
-作为「待办/差异」，代码与数据已与 LPC 对齐；保留的 2 条为设计取舍或未实装，
-属于新需求范畴，不作为本系统遗留缺陷。
+下表列出原文档 §7 记录的 7 条差异，标注当前实际实现状态。全部 7 条均已
+与 LPC 对齐，代码与数据已落地并通过测试；不再作为待办项。
 
 | # | 差异项 | 当前状态 | 说明 |
 |---|--------|----------|------|
-| 1 | 掉落物给谁（直接进包 vs 放地上） | ⬜ 保留差异 | 端口采用「方案 A」，掉落物作为独立 `Item.Instance` 放在死亡房间，任何人可 `get`。理由：复用 `ItemCommand.get/2` 拾取流程；`CombatEvent` 奖励通道的 `loot`/`drops` 已能覆盖「直接进包」语义，两者不必重复实现。 |
-| 2 | 概率门控（hunting 技能 random） | ⬜ 未实装 | 端口固定掉落全部 `drop_a/b/c`，未按 `hunting` 等级做 `random(skill) > 10/30/60` 及 item2/item3 互斥判定。若要严格对齐，需在 `Corpse.spawn/1` 拿到 killer 的 hunting 等级并改判定。 |
+| 1 | 掉落物给谁（直接进包 vs 放地上） | ✅ 已对齐 | `combat_event.ex` 的 `hunting_drops/2` 接收 `hunting/drops` 事件，按 `Hunting.roll(skill)` 掷骰，命中物品直接 `move(me, 1)` 进击杀者背包（`character.inventory ++ instances`），与 LPC `quarry.c`/`snake.c` `die()` 的 `item->move(me, 1)` 对齐。尸体 `contents` 只放 NPC 实际背包物品（`inventory_of`），不含掉落物配置；掉落物配置只作为 `drop_items` 元数据记录，不进入尸体容器。 |
+| 2 | 概率门控（hunting 技能 random） | ✅ 已对齐 | `Hunting.roll/2` 严格照搬 LPC 原式：`drop_a` 需 `random(skill) > 10`；`drop_c` 需 `random(skill) > 60` 且 `random(5) > 3`；`drop_b` 需 `random(skill) > 30` 且 `random(4) > 2`，且 `drop_b`/`drop_c` 互斥二选一；`random(0)` 恒为 0，故 hunting=0 时不掉落。`hunting_drops/2` 使用击杀者自己的 `Stats.skill(..., "hunting")` 进行判定，与 LPC `me->query_skill("hunting", 1)` 一致。 |
 | 3 | 死者背包移入尸体容器 | ✅ 已实现 | `do_spawn` 传 `inventory_of(character)` 作为 `contents`，死者背包物品转移进尸体 `item.meta.contents`，与 LPC `all_inventory(victim)->move(this_object())` 对齐。 |
 | 4 | 玩家尸体生成 | ✅ 已基本对齐 | `Corpse.spawn/1` 已移除 `player:` 前缀跳过；非巫师、非幽灵态玩家死亡生成尸体，背包移入 contents。幽灵态（`ghost?`）与巫师仍跳过（物品散落地面），与 LPC `is_ghost()` 分支一致。 |
 | 5 | `get <物品> from <尸体>` 容器语义 | ✅ 已实装 | `ItemCommand.get/1` 解析 ` from ` 关键字 → `get_from_container` → `get_from_corpse` → `Room.take_corpse_item/3`；尸体 `contents`/`put_contents` 供读写；`test/kantele/world/corpse_test.exs` + `item_command_test.exs` 已加锁测试（Task #562）。 |
 | 6 | 尸体腐烂阶段（三段 vs 一段） | ✅ 已实现 | `Corpse.schedule_decay/3` + `decay/3` 实现三段腐烂：60s 腐烂 → 60s 骸骨 → 30s 骨灰，共 150s；末期把容器内剩余物品移到房间地上再移除尸体，与 LPC `corpse.c::decay` 三段 `call_out` 对齐。 |
 | 7 | 生肉可食提示 | ✅ 已对齐 | `eat_command.ex` `eat/4` 对 `raw_meat == true` 返回「这块…还是生的，烤熟了再吃吧。」；肉类挂 `eat` verb + `meta.food`，与 LPC `meat.h` `do_effect()` 语义一致。 |
 
-保留的 2 条（#1、#2）为设计取舍或未实装，不代表代码缺陷；如需改成严格 LPC 语义，属于新需求。
+全部 7 条 LPC 已知差异均已代码落地并加锁测试，本节不再保留任何差异项。
 
 ---
 
