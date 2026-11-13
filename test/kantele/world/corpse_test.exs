@@ -5,17 +5,53 @@ defmodule Kantele.World.CorpseTest do
   覆盖两件事：
   1. `Kantele.World.Corpse` 的纯函数与降级行为（世界服务未启动时不能崩）；
   2. UCL 数据的完整性 —— 每个 `drop_a` / `drop_b` / `drop_c` 引用都能找到物品定义，
-     且按 LPC `clone/quarry/*.c` / `clone/beast/*.c` 补全的关键 NPC 配置齐全。
+     且按 LPC `clone/quarry/*.c` / `clone/beast/*.c` 补全的关键 NPC 配置齐全；
+  3. `Room.take_corpse_item/3` 从尸体容器取物（对应 LPC `get <item> from <corpse>`）。
 
   用 `Elias.parse/1` 直接读 UCL，而不是 `Loader.load/1`：本测试只关心数据契约，
   不需要把整个世界实例化，跑得也快。
   """
 
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
 
   alias Kantele.World.Corpse
+  alias Kantele.World.Room
+  alias Kalevala.World.Item
+  alias Kantele.World.CorpseTest.FakeRoom
 
   @world_files "data/world/*.ucl"
+  @room_id "test:corpse_room"
+
+  setup_all do
+    {:ok, _pid} = FakeRoom.start_link({@room_id, []})
+    on_exit(fn ->
+      case :global.whereis_name({Kalevala.World.Room, @room_id}) do
+        pid when is_pid(pid) -> GenServer.stop(pid)
+        _ -> :ok
+      end
+    end)
+
+    :ok
+  end
+
+  defmodule FakeRoom do
+    use GenServer
+
+    def start_link({room_id, _opts}) do
+      GenServer.start_link(__MODULE__, {room_id, _opts},
+        name: {:global, {Kalevala.World.Room, room_id}}
+      )
+    end
+
+    @impl true
+    def init({room_id, _opts}) do
+      {:ok,
+       %{
+         data: %Kantele.World.Room{id: room_id},
+         private: %{characters: [], item_instances: []}
+       }}
+    end
+  end
 
   defp npc(overrides \\ %{}) do
     Map.merge(
@@ -36,6 +72,51 @@ defmodule Kantele.World.CorpseTest do
       %{id: id} when is_binary(id) -> id
       _ -> nil
     end
+  end
+
+  defp meat_item_def(id, name) do
+    %Item{
+      id: id,
+      name: name,
+      description: "#{name}的一块。",
+      verbs: [],
+      callback_module: Kantele.World.Item,
+      meta: %{}
+    }
+  end
+
+  defp meat_instance(id, item_id) do
+    %Kalevala.World.Item.Instance{
+      id: id,
+      item_id: item_id,
+      created_at: DateTime.utc_now(),
+      item: meat_item_def(item_id, "测试肉")
+    }
+  end
+
+  defp corpse_instance(contents \\ []) do
+    %Kalevala.World.Item.Instance{
+      id: "corpse-instance-1",
+      item_id: "test:corpse",
+      created_at: DateTime.utc_now(),
+      item: %Item{
+        id: "test:corpse",
+        name: "测试尸体",
+        description: "一具测试用的尸体。",
+        verbs: [],
+        callback_module: Kalevala.World.Item,
+        meta: %{
+          is_corpse: true,
+          contents: contents,
+          owner_id: "test:victim",
+          character_name: "测试受害者"
+        }
+      },
+      meta: %{
+        is_corpse: true,
+        contents: contents
+      }
+    }
   end
 
   # ---- 纯函数 ----
@@ -237,6 +318,53 @@ defmodule Kantele.World.CorpseTest do
       assert drop_ref(xuanmang.drop_a) == "sherou"
       assert drop_ref(xuanmang.drop_b) == "shedan"
       assert drop_ref(xuanmang.drop_c) == "blood"
+    end
+  end
+
+  # ---- Room.take_corpse_item/3 从尸体容器取物 ----
+
+  describe "take_corpse_item/3" do
+    setup do
+      Room.add_item(@room_id, corpse_instance([
+        meat_instance("meat-1", "test:zhurou"),
+        meat_instance("meat-2", "test:langrou")
+      ]))
+      :ok
+    end
+
+    test "成功从尸体容器取出物品，且尸体内容已更新" do
+      result = Room.take_corpse_item(@room_id, "corpse-instance-1", "meat-1")
+      assert match?({:ok, %Kalevala.World.Item.Instance{id: "meat-1"}}, result)
+
+      # 再次读取尸体，meat-1 应已不在 contents 里（按 id 断言，避免 created_at 不等）
+      corpse = case Room.get_item(@room_id, "corpse-instance-1") do
+                 {:ok, c} -> c
+                 :error -> nil
+               end
+      refute corpse == nil
+      assert Enum.all?(Corpse.contents(corpse), &(&1.id == "meat-2"))
+      assert length(Corpse.contents(corpse)) == 1
+    end
+
+    test "取不存在的物品返回 :not_found" do
+      assert Room.take_corpse_item(@room_id, "corpse-instance-1", "no_such_item") ==
+               {:error, :not_found}
+    end
+
+    test "尸体不存在返回 {:error, :no_corpse}" do
+      assert Room.take_corpse_item(@room_id, "no_such_corpse", "meat-1") ==
+               {:error, :no_corpse}
+    end
+
+    test "房间进程不存在返回 {:error, :no_corpse}" do
+      # 用一个未注册的 room_id：get_item 返回 :error → {:error, :no_corpse}
+      assert Room.take_corpse_item("test:no_such_room", "corpse-instance-1", "meat-1") ==
+               {:error, :no_corpse}
+    end
+
+    test "bad_args 子句对非二进制参数返回 {:error, :bad_args}" do
+      assert Room.take_corpse_item(nil, "corpse-instance-1", "meat-1") ==
+               {:error, :bad_args}
     end
   end
 end
