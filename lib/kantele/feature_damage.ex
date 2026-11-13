@@ -393,6 +393,11 @@ defmodule Kantele.Feature.Damage do
     # 均生成尸体并把背包移入容器。正常战斗死亡走 CombatEvent.die/3，同样调用了本函数。
     Kantele.World.Corpse.spawn(character, killer)
 
+    # 玩家背包已移入尸体容器，清空随身，避免重登/还阳时凭空恢复一份
+    #（与 LPC all_inventory(victim)->move(this_object()) 后死亡者背包为空一致；
+    # 与 CombatEvent.die/3 玩家分支顺序一致：先生成尸体，再清背包）。
+    character = if is_player?(character), do: Map.put(character, :inventory, []), else: character
+
     character = move_to_death_room(character)
 
     # 清理

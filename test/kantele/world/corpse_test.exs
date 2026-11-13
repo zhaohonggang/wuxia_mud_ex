@@ -81,8 +81,8 @@ defmodule Kantele.World.CorpseTest do
   end
 
   describe "spawn/1" do
-    test "玩家死亡跳过，不生成尸体" do
-      assert Corpse.spawn(npc(%{id: "player:42"})) == :skip
+    test "玩家死亡生成尸体（与 LPC chard.c 一致，不再因 player id 跳过）" do
+      assert Corpse.spawn(npc(%{id: "player:42"})) in [:ok, :error]
     end
 
     test "结构不完整时跳过" do

@@ -76,9 +76,6 @@ defmodule Kantele.World.Corpse do
               notify_hunting_drops(character, killer)
               :skip
 
-            player?(id) ->
-              :skip
-
             true ->
               do_spawn(character, room_id, killer)
           end
@@ -360,11 +357,6 @@ defmodule Kantele.World.Corpse do
     |> inventory_of()
     |> Enum.each(&Room.add_item(room_id, &1))
   end
-
-  # 玩家 id（"player:" 前缀）不生成尸体：LPC chard.c make_corpse 中玩家
-  # 同 NPC 走 make_corpse，但端口约定玩家死亡走 ghost/还阳管线，此处跳过。
-  defp player?(id) when is_binary(id), do: String.starts_with?(id, "player:")
-  defp player?(_), do: false
 
   # ---- LPC 门控 ----
 
