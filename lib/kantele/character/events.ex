@@ -93,6 +93,8 @@ defmodule Kantele.Character.Events do
       event("reborn/give-jingyuandan", :reborn_give_jingyuandan)
       # 锁阳丹药引回执（阎罗进程 → 玩家进程，收四味药引 + 置位已解）
       event("suoyangdan/give-ingredient", :suoyangdan_give_ingredient)
+      # 猎人收捕兽夹回执（猎人进程 → 玩家进程，置位 marks/hunter 放行捕猎教学）
+      event("hunter/give-trap", :hunter_give_trap)
       # 武修文收还工具回执（武修文进程 → 玩家进程，落 mark/还了）
       event("wuxiuwen/returned", :wuxiuwen_returned)
     end
@@ -400,6 +402,15 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("quest/ask", :call)
       event("quest/cancel", :call)
       event("npc/inquiry_consume", :inquiry_consume)
+    end
+
+    # 收受端：玩家把物品交给 NPC（对应 LPC accept_object / 通用收受）。
+    # 之前 NPC 事件路由里没有 `characters/give`，房间转发的赠送事件被静默丢弃，
+    # 赠与者因 `assign(:prompt, false)` 收不到任何回执 → 体感「give 没反应 / 无日志」。
+    # 这里只挂收受端 `:receive`；回执类（give/result、hunter/give-trap 等）由玩家
+    # 侧 Kantele.Character.Events 处理，NPC 侧不需要。
+    module(GiveEvent) do
+      event("characters/give", :receive)
     end
 
     module(NpcCutEvent) do

@@ -65,6 +65,9 @@ defmodule Kantele.Character.GiveEvent do
       {:suoyangdan} ->
         Kantele.World.SuoyangdanAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:hunter} ->
+        Kantele.World.HunterAccept.handle(conn, npc, item_instance, data, from_name)
+
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
 
@@ -129,27 +132,31 @@ defmodule Kantele.Character.GiveEvent do
     if is_nil(item) do
       {:error, from_drop_message()}
     else
-      Enum.reduce(rules, {:error, refuse_message(item)}, fn rule, acc ->
-        case acc do
-          {:ok, _} ->
-            acc
+    Enum.reduce(rules, {:error, refuse_message(item)}, fn rule, acc ->
+      case acc do
+        {:ok, _} ->
+          acc
 
-          {:forge} ->
-            acc
+        {:forge} ->
+          acc
 
-          {:wuxiuwen} ->
-            acc
+        {:wuxiuwen} ->
+          acc
 
-          _ ->
-            case rule_hit(rule, item) do
-              :hit -> {:ok, take_message(rule, item)}
-              :decline -> {:error, failure_message(rule, item)}
-              :forge -> {:forge}
-              :suoyangdan -> {:suoyangdan}
-              :miss -> acc
-            end
-        end
-      end)
+        {:hunter} ->
+          acc
+
+        _ ->
+          case rule_hit(rule, item) do
+            :hit -> {:ok, take_message(rule, item)}
+            :decline -> {:error, failure_message(rule, item)}
+            :forge -> {:forge}
+            :suoyangdan -> {:suoyangdan}
+            :hunter -> {:hunter}
+            :miss -> acc
+          end
+      end
+    end)
     end
   end
 
@@ -189,6 +196,17 @@ defmodule Kantele.Character.GiveEvent do
   # 锁阳丹药引：命中即交给 Kantele.World.SuoyangdanAccept 处理（阎罗收四味药引）
   defp rule_hit(%{kind: "suoyangdan"} = rule, item) do
     if rule.id == item.id, do: :suoyangdan, else: :miss
+  end
+
+  # 猎人收捕兽夹：命中即交给 Kantele.World.HunterAccept 处理（衡阳猎人）
+  # 兼容按 id 或按 name 匹配：物品真实 id 带区前缀（如 clone_lib:items.bushoujia），
+  # UCL 直接用 name = "捕兽夹" 更稳妥，避免 id 格式错位导致永远不命中。
+  defp rule_hit(%{kind: "hunter"} = rule, item) do
+    cond do
+      Map.get(rule, :id) && rule.id == item.id -> :hunter
+      Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> :hunter
+      true -> :miss
+    end
   end
 
   defp rule_hit(_rule, _item), do: :miss
@@ -722,6 +740,50 @@ defmodule Kantele.Character.GiveEvent do
     rewards = %{exp: 5000, potential: 2000, score: 1000, weiwang: 50, gongxian: 100, coins: 0}
 
     {quests, rewards}
+  end
+
+  # ---- 猎人收捕兽夹回执（猎人进程 → 玩家进程）----
+  # 猎人收下捕兽夹后，通过 `hunter/give-trap` 事件送达玩家：
+  #   玩家侧移除该捕兽夹实例（LPC accept_object 返回 1 → 物品移入猎人背包），
+  #   并置位 marks/hunter（LPC 的 set_temp("marks/hunter", 1)），
+  #   使 ask hunter about hunting / learn hunting 猎人 的门控放行。
+  #
+  # LPC `d/hengyang/npc/hunter.c` accept_object()：
+  #   if (ob->query("id") == "bushou jia") {
+  #     command("nod");
+  #     say "这个我正用得着……可以教你一些捕猎技巧和驭兽之术";
+  #     me->set_temp("marks/hunter", 1);
+  #     return 1;   // 物品随之移入猎人背包（玩家不再持有）
+  #   }
+  def hunter_give_trap(conn, %{data: %{item_id: _item_id, instance_id: instance_id, from_id: from_id}}) do
+    character = conn.character
+
+    if from_id == character.id do
+      # 移除捕兽夹实例（LPC accept_object 返回 1 → 物品移入猎人背包，玩家侧销毁）
+      inventory = Enum.reject(character.inventory, fn inst -> inst.id == instance_id end)
+
+      # 置位 marks/hunter（持久化 + 会话级，兼容重登与旧存档）
+      new_meta =
+        character.meta
+        |> PlayerMeta.put_mark("hunter", 1)
+        |> PlayerMeta.put_temp("marks/hunter", 1)
+
+      character =
+        character
+        |> Map.put(:inventory, inventory)
+        |> Map.put(:meta, new_meta)
+
+      Records.save(character)
+
+      conn
+      |> put_character(character)
+      |> render(CommandView, "text", %{
+        text: "你把捕兽夹交给了猎人。\n猎人点点头道：这个我正用得着，我教你捕猎技巧和驭兽之术。\n"
+      })
+      |> prompt(CommandView, "prompt", %{})
+    else
+      conn
+    end
   end
 
   # ---- 武修文收还工具回执（武修文进程 → 玩家进程）----

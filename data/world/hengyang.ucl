@@ -2816,7 +2816,7 @@ behavior_config = {
 
 
   accept = [
-    { kind = "item_id" id = "bushou jia" accept = true msg = ["这是什么东西，我不需要！", "nod", "shake"] }
+    { kind = "hunter" name = "捕兽夹" msg = ["猎人点点头收下了捕兽夹：这个我正用得着，我教你捕猎技巧和驭兽之术。"] }
   ]
     }
 

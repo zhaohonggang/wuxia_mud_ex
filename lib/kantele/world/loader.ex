@@ -914,7 +914,17 @@ defmodule Kantele.World.Loader do
     Enum.map(rules, fn rule when is_map(rule) ->
       kind = Map.get(rule, :kind)
 
-      if kind in ["money", "item_id", "item_name", "any"] do
+      if kind in [
+           "money",
+           "item_id",
+           "item_name",
+           "any",
+           "forge",
+           "wuxiuwen",
+           "reborn",
+           "suoyangdan",
+           "hunter"
+         ] do
         %{
           kind: kind,
           min: numeric_or_nil(Map.get(rule, :min)),
