@@ -130,6 +130,8 @@
 | `channels` | 列出可用频道 |
 | `time` / `bjtime` | 游戏时间（含中文农历/季节岁月） |
 | `world_status` | 最近一次世界加载结果（排障用） |
+| `气` | `hp` 的单字别名，查看气血状态 |
+| `wizlist` | 巫师列表（wiz） |
 
 ### 移动与探索
 | 命令 | 说明 |
@@ -142,6 +144,10 @@
 | `watch` | 观察房间详情变体 |
 | `emotes` / `semote` | 预置表情列表 |
 | `smile` / `wave` / `frown` / `beep` / `femote` | 直接以表情名做出动作 / 表情搜索 |
+| `detail <物品>` | 查看背包或房间内物品的详细说明（同 `show`） |
+| `leitai` / `river` / `dule` / `caihong` / `panlong` / `yangzhou` | 自定义方向名（擂台/渡船/建房等特殊出口） |
+| 八卦阵方向 | `乾`/`兑`/`坎`/`坤`/`巽`/`离`/`艮`/`震` 或拼音 `qian`/`dui`/`kan`/`kun`/`xun`/`li`/`gen`/`zhen`（少林八卦阵走法） |
+| `hole_a`~`hole_f` | 华山石门六洞方向（原 LPC hole1~6） |
 
 ### 物品与背包
 | 命令 | 中文 | 说明 |
@@ -160,6 +166,8 @@
 | `hunt < quarry>` / `猎` / `打猎` | — | 狩猎 quarry（野猪等），有 chance 获得生肉；需先向衡阳猎人学习 `hunting` |
 | `fire <木柴>` / `点火` / `生火` | `生火` | 在房间地面生成篝火（消耗带 fire_to 的木柴，如大树枝/木柴）；衡阳猎人房 shulin1 有静态篝火，可直接烤肉 |
 | `kao <生肉>` / `烤 <生肉>` | `烤` | 房间有篝火时，把生肉烤成熟食入背包（如野猪肉→烤肉）；生肉不可直接食用 |
+| `hide <物品>` | — | 隐藏背包或房间内物品 |
+| `discard <物品>` | — | 丢弃/废弃物品（比 `drop` 更彻底） |
 
 ### 社交与关系
 | 命令 | 说明 |
@@ -179,6 +187,8 @@
 | `team` / `组队` · `league` / `帮派` · `brothers` / `兄弟` | 组队 / 帮派 / 结义 |
 | `recruit` / `persuade` / `assist` / `guard` | 招募 / 说服 / 协战 / 护卫 |
 | `ride` / `unride` | 上马 / 下马 |
+| `hand <物品> to <人>` / `手` | 将物品交给他人（give 的变体） |
+| `to` | 介词命令（配合 give / steal 等使用，如 `give sword to 张三`） |
 
 ### 战斗
 | 命令 | 中文 | 说明 |
@@ -210,6 +220,8 @@
 | `bank` / `银行` | 钱庄存取 / 查余额 |
 | `auction` | 拍卖行（上架/出价/流拍） |
 | `baitan` | 摆摊（is_vendor 校验） |
+| `bank` 子命令 | `cun`/`deposit`（存款）、`qu`/`withdraw`（取款）、`convert`/`duihuan`（兑换）、`transfer`/`zhuan`（转账）、`chazhang`（查账） |
+| `horse` / `买马` / `buy_mount` | 从马贩处购买坐骑 |
 
 ### 任务
 | 命令 | 说明 |
@@ -259,6 +271,9 @@
 | `drive` / `赶车` · `sleep` / `睡觉` | 赶车 / 睡觉 |
 | `make` · `cook` · `wash` · `drug` · `daub` · `pour` | 制作 / 烹饪 / 清洗 / 下毒 / 涂毒 / 倒毒 |
 | `miss` · `check` / `dating` | 追寻任务物品 / 打探信息 |
+| `abandon` / `fangqi` / `放弃` | 放弃已学技能 |
+| `注内力` | 向他人注入内力 |
+| `forge` 子命令 | `name`/`desc`/`wieldmsg`/`unwieldmsg`（设置装备名称/描述/拔出/收回提示）、`finish`/`完成`（完成定制） |
 
 ### 频道与剧情（Q3/Q4/Q5 新增）
 | 命令 | 说明 |
