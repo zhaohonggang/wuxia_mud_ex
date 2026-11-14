@@ -17,9 +17,9 @@
 > 面向第一次进游戏做验收的管理员。按本文场景从上到下走一遍，
 > 即可覆盖当前版本全部玩家可见命令与主要系统链路。
 > 编写时间：2026-08-25 ｜ **更新：2026-09-11**（补 Q1–Q6 / M/S/K/W 批次命令与系统链路）。
-> 命令实现以 `lib/kantele/character/commands.ex`（200 个命令模块、注册动词 190+，含中英文别名）
+> 命令实现以 `lib/kantele/character/commands.ex`（212 个命令模块、注册动词 190+，含中英文别名）
 > 与 `commands/` 目录为准；本文与代码不符时以代码为准。
-> 测试基线：**2334 tests / 0 failures**（seed 731933 / 788424）。
+> 测试基线：**7757 tests / 27 failures**（seed 731933；27 均为 bcrypt_elixir NIF 环境性，引擎/命令/技能/世界测试 0 失败）。
 
 ---
 
@@ -123,8 +123,10 @@
 | `whoami` `whoride` | 本尊信息 / 在线骑乘统计（wiz） |
 | `version` / `uptime` / `mudinfo` | 版本号 / 运行时间 / 系统资讯 |
 | `system` | 系统信息 |
+| `hp` / `状态` | 详细状态面板（含食物/饮水当前/上限，见 info）|
 | `help` / `帮助` | 帮助索引；`help <主题>` 查看单篇 |
 | `commands` / `命令` | 列出全部玩家可见命令及一句说明 |
+| `show <物品>` / `查看` | 查看背包或房间内物品的详细说明 |
 | `channels` | 列出可用频道 |
 | `time` / `bjtime` | 游戏时间（含中文农历/季节岁月） |
 | `world_status` | 最近一次世界加载结果（排障用） |
@@ -155,16 +157,21 @@
 | `drink`（`heal`/`喝药`/`喝`） | — | 喝药水（回气血/内力） |
 | `fill` / `灌水` | — | 容器灌水 |
 | `feed` / `喂养` | — | 喂养 NPC |
+| `hunt < quarry>` / `猎` / `打猎` | — | 狩猎 quarry（野猪等），有 chance 获得生肉；需先向衡阳猎人学习 `hunting` |
+| `fire <木柴>` / `点火` / `生火` | `生火` | 在房间地面生成篝火（消耗带 fire_to 的木柴，如大树枝/木柴）；衡阳猎人房 shulin1 有静态篝火，可直接烤肉 |
+| `kao <生肉>` / `烤 <生肉>` | `烤` | 房间有篝火时，把生肉烤成熟食入背包（如野猪肉→烤肉）；生肉不可直接食用 |
 
 ### 社交与关系
 | 命令 | 说明 |
 |---|---|
 | `say <话>` | 房间说话（支持 `@某人` 点名、`>副词` 修饰） |
+| `talk <NPC> <关键词>` / `闲聊` | 与 NPC 闲聊，触发 NPC 闲聊台词（N3 概率触发）|
 | `general <话>` | general 频道喊话，全服在线可见 |
 | `tell <人> <话>` / `reply` / `whisper` | 私聊 / 回复 / 房间耳语 |
 | `emote <文本>` | 第三人称动作 |
 | `tune` | 频道订阅/退订控制 |
 | `follow` / `跟随` | 跟随目标 |
+| `push <物体/方向>` / `推` | 推动房间内可推动的物体（如开启隐藏出口）|
 | `ask <人> <关键词>` / `问` | 向 NPC 问询（问答表/脚本化问询/任务交付） |
 | `apprentice` / `拜师` · `detach` / `叛师` | 拜师 / 叛师 |
 | `swear` / `right` / `refuse` | 结拜请求 / 应允 / 拒绝 |
@@ -183,6 +190,7 @@
 | `jiali <0-N>` / `enforce` | — | 加力档位（耗内力换伤害；上限=内功等级÷2） |
 | `touxi` / `偷袭` | — | 先手偷袭 |
 | `steal` | — | 偷窃 |
+| `summon` / `召唤` | — | 召唤同伴/宠物（需驯兽或特技门槛）|
 | `accept` | — | 接受剧情挑战者摆擂应战 |
 | `berserk`/`baofa` · `pique`/`jianu` · `burning`/`fenu` | — | 狂暴 / 激怒 / 狂怒（战斗心态） |
 | `crattack` · `spattack` | — | 反击 / 特殊攻击 |
@@ -241,6 +249,8 @@
 | `option` / `选项` · `title` / `头衔` · `set` / `unset` | 选项 / 头衔 / 设置环境变量 |
 | `note` / `便笺` / `笔记` · `passwd` · `id` | 笔记 / 改密码 / 身份 |
 | `save` / `存档` · `quit` | 存档 / 退出 |
+| `suicide` / `自杀` | 删除角色（需明文密码校验，不可撤销） |
+| `secularize` / `还俗` | 离开当前门派，还俗为平民 |
 | `cls` / `clear` | 清屏 |
 | `describe` / `描述` · `whistle` / `xiao` · `cut` | 描述 / 口哨 / 切割 |
 | `open`/`开` · `close`/`关` | 开门 / 关门 |
@@ -261,7 +271,7 @@
 |---|---|
 | `goto` / `where` / `localcmds` / `home` / `mem` / `nodie` / `copyskill` / `promote` | 已实现 |
 | `clone`（物品与 NPC 均已实装，`clone_command.ex` 支持 NPC 放入房间）、`dest`、`update` | ✅ 已实现 |
-| `build call smash possess throw var setsk purge restore register reboot shutdown grant changeuser` | ⚠️ 14 个静默 no-op 占位（需对象系统） |
+| `build`（不建模，用户确认不做）`call`/`reboot`/`shutdown`/`possess`/`restore`（6 个显式「未建模」回执） | `grant`/`throw`/`purge`/`changeuser`/`register`/`smash`/`var`/`setsk` 已 B2 真化；`call`/`reboot`/`shutdown`/`possess`/`restore` 给明确回执（非静默）；`build` 保留 not_modeled（LPC driver 对象树操作，本端口无等价物） |
 | `top` / `top2` / `topp` | 排行榜已真化：`top` 为经验/等级/气血/精力/年龄榜；`top2` / `topp [family\|league]` 为门派 / 结义同盟声望榜（含相比昨日 delta，同盟最多列 30 条） |
 
 ---
@@ -452,6 +462,49 @@ time           预期：显示游戏年月日/时辰/季节
 
 ---
 
+### 场景 P：狩猎 → 生火 → 烤肉 → 进食 闭环（衡阳树林 + 柳溪镇）
+> 衡阳树林 shulin1 有猎人 NPC 与静态篝火，但**无可狩猎野兽**；野猪（yezhu，power=3）位于柳溪镇广场。
+> 路线需跨两个区完成。
+
+路线：先去衡阳 shulin1 向猎人学习 hunting，再去柳溪镇广场狩猎野猪，最后回衡阳树林烤肉进食。
+
+```text
+# 第一步：向衡阳猎人学习 hunting（必须先有 hunting 才能狩猎）
+# 路线：前往衡阳 hengyang 树林 shulin1（猎人房，有静态篝火）
+ask 猎人 about hunting       预期：若未给猎人捕兽夹会提示"你我素无往来，何出此言？"，被拒
+                             先给 猎人 捕兽夹（give 捕兽夹 to 猎人），再 ask 猎人 about hunting
+                             预期：学会 hunting 技能，marks/hunter 置位；可后续 `learn hunting 猎人`
+
+# 第二步：去柳溪镇狩猎野猪获得生肉
+# 路线：从衡阳出发 → 柳溪镇广场（liuxi:guangchang，有野猪 yeczhu，power=3，掉落 zhurou/野猪肉）
+hunt 野猪                    预期：狩猎成功，发起战斗；击杀后背包/地面获得 野猪肉（zhurou，raw_meat，生肉）
+                             也可 `get 野猪肉` 拾取地面掉落
+
+# 第三步：回衡阳树林生火（shulin1 自带静态篝火，可跳过此步）
+# 或在当前无篝火房间：fire 木柴 / fire 大树枝
+fire 木柴                    预期：你用木柴点燃了一堆篝火，红红的火光映亮了四周。
+                             木柴消失，房间地面出现篝火
+（在 shulin1 可直接跳过，因已有静态篝火）
+
+# 第四步：烤肉
+kao 野猪肉                   预期：你用篝火把野猪肉烤成了一块香喷喷的烤肉。
+                             野猪肉（生肉）消失，背包出现 烤肉（broil_to → 烤肉）
+
+# 第五步：进食
+eat 烤肉                     预期：你吃下烤肉……，饱食度+300，气血+300（封顶上限）
+info                         预期：状态表「食物」栏显示当前饱食度（如 300/300）
+
+# 对照：生肉不可直接吃（eat_command 门控）
+eat 野猪肉                   预期：这块…还是生的，烤熟了再吃吧。（被拦截，不进入食用路径）
+
+# 对照：无篝火时不能烤
+(无篝火房间) kao 野猪肉     预期：提示没有篝火，无法烤东西
+```
+
+> `info` 命令的状态表中「食物：当前/上限」与「饮水：当前/上限」即为饱食度/饮水度查看入口（`lib/kantele/character/views/info_view.ex`）。
+> 饱食度每心跳扣 1，归 0 时停止自然回复（气血/精力/内力均不回），必须进食恢复。
+
+
 ## 五、常见失败文案对照
 
 | 提示 | 原因 |
@@ -512,11 +565,10 @@ time           预期：显示游戏年月日/时辰/季节
 
 ## 六、已知限制与备注
 
-- **占位命令清单**（实测 `Kantele.CommandProbe.stubs/0`，与 `test/kantele/command_probe_test.exs` 白名单严格一致，共 6 个）：`answer`(聊天配对子系统) `pkd`(PK场子系统) `to`(聊天/邮件子系统) `vote`(投票子系统) `scheme`(计划执行器子系统，仅 `start` 自动执行) `clone`(巫师命令，仅生物部分)；另有 `closed` 为「半开」提示。
-  - **B1 自包含占位桩已真化完毕**：这 6 个命令全部依赖未来里程碑的后端子系统（M3 聊天/邮件、M4 投票、W2 巫师、后续批次），**不属于 B1 自包含工作**，按里程碑排期推进；本期不再对其做代码改动（见 `docs/remaining-work-checklist.zh-CN.md` B1 收尾小节）。
+- **占位命令**：`CommandProbe.stubs/0` 现为 0，E1–E5 期已全部真化，不再有占位命令；`closed` 为「半开」提示（大宗师闭关未开放，正常输出瓶颈文案）。
+  - **B1 自包含占位桩已真化完毕**：此前 `answer`/`pkd`/`to`/`vote`/`scheme`/`clone` 6 个占位命令已全部真化，按里程碑推进；本期不再对其做代码改动（见 `docs/remaining-work-checklist.zh-CN.md` B1 收尾小节）。
   - 已按 LPC 真实实现的命令：`ansuan`/`talk`/`top`/`beg`/`liuxi`/`push`/`hand`/`secularize`/`remove`/`top2`/`topp`/`train`/`come`/`stay`/`stop`/`release`/`special`/`stab`/`touch`（含 `answer` 的 forge 议价分支），均不再输出"暂未开放"，见 `docs/remaining-work-checklist.zh-CN.md` B1 表。
-- **W3 arch 14 命令为静默 no-op**（无输出）：`build` `call` `smash` `possess` `throw` `var` `setsk` `purge` `restore` `register` `reboot` `shutdown` `grant` `changeuser`。
-  - ⚠️ 本条为 E5 之前的历史快照，现已过时：E5（2026-11-09）已把 14 命令全部显式化（非巫师拒绝 / 巫师明确回执，不再静默），其中 `var`/`setsk` 真化；B2（2026-11-10）又真化了全部 6 个可建模命令（`grant`/`throw`/`purge`/`changeuser`/`register`/`smash`）。当前仅余 6 个显式「未建模」回执（`call`/`reboot`/`shutdown`/`possess`/`restore`/`build`，属 LPC driver 对象树操作、本端口无等价物）。权威当前状态以 `docs/remaining-work-checklist.zh-CN.md` 为准。同理上方「占位命令清单（共 6 个）」亦已在 E1–E5 全部真化，`CommandProbe.stubs/0` 现为 0。
+- **W3 arch 命令**（2026-11-10 B2 后当前状态）：`grant`/`throw`/`purge`/`changeuser`/`register`/`smash`/`var`/`setsk` 已 8 个真化；`call`/`reboot`/`shutdown`/`possess`/`restore` 为 6 个显式「未建模」回执（给明确提示，不再静默 no-op）；`build` 保留 `not_modeled`（用户确认不做，属 LPC driver 对象树操作）。无静默 no-op。权威当前状态以 `docs/remaining-work-checklist.zh-CN.md` 为准。
 - 注册顺序注意点：`remove` / `脱` 现统一绑到 `RemoveCommand`（`remove all`、present/worn 门控都在这一侧，单件脱卸复用 `WieldCommand.remove/2`）；`yanjiu` 实际路由到 research（研究）而非 study（研习）。
 - 带参命令 `push` / `hand` / `talk` / `ansuan` / `train` / `come` / `stop` / `top2` / `topp` / `remove` / `special` / `stab` / `touch` 统一用
   `optional(spaces + text(...))` 路由，裸命令与带参共用一条规则；此前 `parse/2` 裸路由只产出

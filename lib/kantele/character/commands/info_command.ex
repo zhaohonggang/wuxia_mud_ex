@@ -3,16 +3,20 @@ defmodule Kantele.Character.InfoCommand do
 
   alias Kantele.Character.InfoView
   alias Kantele.Character.Stats
+  alias Kantele.Feature.Damage
 
   def run(conn, _params) do
     character = conn.character
     stats = character.meta.stats
+    vitals = character.meta.vitals
 
     # EventText.data 会经 Jason 编码推送至 Web 端：只放标量与字符串，
     # 结构体（stats/combat）一律拆散（vitals 已派生编码器可保留）
     conn
     |> render(InfoView, "display", %{
-      vitals: character.meta.vitals,
+      vitals: vitals,
+      max_food: Damage.max_food_capacity(character),
+      max_water: Damage.max_water_capacity(character),
       str: stats.str,
       dex: stats.dex,
       con: stats.con,

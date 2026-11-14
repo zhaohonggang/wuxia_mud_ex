@@ -28,6 +28,12 @@ defmodule Kantele.Character.InfoView do
         {cell}内力{/cell}
         {cell}{ep}#{v.neili}/#{v.max_neili}{/ep}{/cell}
       {/row}
+      {row}
+        {cell}食物{/cell}
+        {cell}#{Map.get(v, :food, 0)}/#{a.max_food}{/cell}
+        {cell}饮水{/cell}
+        {cell}#{Map.get(v, :water, 0)}/#{a.max_water}{/cell}
+      {/row}
     {/table}
     {table}
       {row}
