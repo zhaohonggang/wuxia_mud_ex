@@ -1321,6 +1321,11 @@ characters "yezhu" {
   name = "yecu"
   description = "一头獠牙外露的野猪，正哼哧哼哧地拱着土。新手练手的好对象。"
 
+  # LPC 对应 clone/quarry/zhu2.c：set("power", 32) + item1=zhurou
+  # yecu 是新手弱野猪，power 设为 3，掉落 zhurou
+  power = 3
+  drop_a = { id = "zhurou" }
+
   # 闲聊（A10/N3）：8% 概率在事件触发时哼哼一声
   chat_chance = 8
   chats = [
