@@ -215,6 +215,33 @@ LPC `clone/quarry/` 下确有对应 `.c`，但端口只移植了 26 个 quarry N
   （跨区重名定义），已全部配置。
 - 初版 §6 「代码端已就绪，无需代码改动」被证伪，见 §4.4。
 
+**8.3 12 个 NPC 在 LPC 中的房间归属核查**
+
+核查整个 LPC 源码树 `/c/files/git/mud`，所有 `clone/quarry/bao|hu|hu2|ji|jizi|lang3|lu2|pao|xiang|xiong2|zhang|niao2` 的房间引用：
+
+| NPC ID | LPC 源文件 | 被哪个房间引用 | 备注 |
+|--------|-----------|--------------|------|
+| `quarry_bao` | `bao.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_hu` | `hu.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_hu2` | `hu2.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_ji` | `ji.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_jizi` | `jizi.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_lang3` | `lang3.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_lu2` | `lu2.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_pao` | `pao.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_xiang` | `xiang.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_xiong2` | `xiong2.c` | `d/guanwai/famu.c` | 唯一引用，但 `call_beast()` 函数被 `/* ... */` 注释掉（第29-419行），实际未加载 |
+| `quarry_zhang` | `zhang.c` | ❌ 无 | 未被任何房间加载 |
+| `quarry_niao2` | `niao2.c` | ❌ 无 | 未被任何房间加载 |
+
+结论：12 个 NPC 在 LPC 中均**没有固定房间**，只是作为 NPC 模板文件存在。`xiong2` 在 `d/guanwai/famu.c` 中虽有引用，但整段 `call_beast()` 函数已被注释掉，实际未加载。
+
+对 Elixir 端口移植的意义：
+1. 移植时不需要对应特定的 LPC 原生房间；
+2. 可以自由选择放置区域（如 `guanwai` 区域或其他野外区域）；
+3. 均可作为 `hunt` 命令的可猎目标（都有 `power` 字段，满足 `meta.power > 0` 判定）；
+4. item 定义已就绪（18 个 item 全部已在 Elixir UCL 中预置）。
+
 ---
 
 **参考文档**：`docs/corpse-drop-system.zh-CN.md`（尸体掉落系统实现详情与 LPC 对照）
