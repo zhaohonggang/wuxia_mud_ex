@@ -8,12 +8,11 @@ defmodule Kantele.Character.CommandsView do
   alias Kalevala.Character.Conn.EventText
 
   def render("index", %{commands: commands}) do
+    lines = ["可用命令："] ++ Enum.map(commands, fn command -> render("_command", %{command: command}) end)
     %EventText{
       topic: "Commands.Index",
       data: %{commands: commands},
-      text:
-        ["可用命令：\n"] ++
-          Enum.map(commands, fn command -> render("_command", %{command: command}) end)
+      text: Enum.join(lines, "\n") <> "\n"
     }
   end
 
@@ -21,8 +20,8 @@ defmodule Kantele.Character.CommandsView do
     padding = String.pad_trailing(name, 12)
 
     case description do
-      "" -> ~i(  {color foreground="white"}#{padding}{/color}\n)
-      desc -> ~i(  {color foreground="white"}#{padding}{/color} #{desc}\n)
+      "" -> ~i(  {color foreground="white"}#{padding}{/color})
+      desc -> ~i(  {color foreground="white"}#{padding}{/color} #{desc})
     end
   end
 end

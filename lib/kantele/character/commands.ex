@@ -2211,4 +2211,12 @@ defmodule Kantele.Character.Commands do
       command |> spaces() |> word(:name) |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
+
+  # 供 CommandsCommand 动态列出全部已注册命令（与路由器保持同步，不手动维护）
+  def all_commands do
+    @aliases
+    |> Enum.map(fn {_mod, cmd, _alias, _fun, _pf} -> cmd end)
+    |> Enum.uniq()
+    |> Enum.sort()
+  end
 end
