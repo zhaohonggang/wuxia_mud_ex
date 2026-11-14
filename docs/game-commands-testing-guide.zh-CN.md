@@ -114,10 +114,12 @@
 ### 信息与帮助
 | 命令 | 说明 |
 |---|---|
-| `look` `watch` `l` / `看` | 查看当前房间（人物/物品/出口/小地图） |
+| `look` `watch` `l` / `看` | 查看当前房间（人物/物品/出口/小地图；小地图可用 `option map_hidden 1` 关闭） |
 | `score` / `score2` | 自我状态总览（气血/四维/经验/潜能/铜钱/阅历威望贡献） |
 | `info` | 武学与属性明细（含技能等级与映射特技） |
-| `map` | 当前区域小地图 |
+| `map` | 当前区域小地图（主动查看，不受 `map_hidden` 影响） |
+| `option` / `选项` | 个人界面选项，按角色独立落盘；`option` 列出、`option <键> <值>` 设定、`option <键>` 删除；`help option` 看说明 |
+| `option map_hidden 1` / `option map_hidden 0` | 关闭 / 打开 `look` 自动带出的区域小地图（对应 LPC `option/map_hidden`） |
 | `who` `finger` / `查找` | 在线玩家列表 / 按名查询玩家 |
 | `who1` `who2` `who3` | 玩家列表变体（wiz） |
 | `whoami` `whoride` | 本尊信息 / 在线骑乘统计（wiz） |

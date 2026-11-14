@@ -3198,8 +3198,6 @@ defmodule Kantele.World.Room.LookEvent do
     y = context.data.y
     z = context.data.z
 
-    {:ok, mini_map} = ZoneCache.mini_map(context.data.zone_id, {x, y, z})
-
     characters =
       Enum.reject(context.characters, fn character ->
         character.id == event.acting_character.id or dead?(character)
@@ -3210,15 +3208,51 @@ defmodule Kantele.World.Room.LookEvent do
         %{item_instance | item: Kantele.World.Item.instance_item(item_instance)}
       end)
 
-    context
-    |> assign(:room, with_long_description(context.data))
-    |> assign(:characters, characters)
-    |> assign(:item_instances, item_instances)
-    |> assign(:mini_map, mini_map)
-    |> render(event.from_pid, LookView, "look")
-    |> render(event.from_pid, LookView, "mini_map")
-    |> render(event.from_pid, LookView, "look.extra")
+    context =
+      context
+      |> assign(:room, with_long_description(context.data))
+      |> assign(:characters, characters)
+      |> assign(:item_instances, item_instances)
+      |> render(event.from_pid, LookView, "look")
+
+    # LPC `option/map_hidden`（cmds/usr/option.c + mudcore/inherit/area/map.c:760）
+    # 只影响 look 自动带出的地图；显式 `map` 命令走 MapEvent，不受此开关影响。
+    # 隐藏时连 ZoneCache.mini_map 都不算，省掉 MiniMap.display 的整图构建。
+    context =
+      if map_hidden?(event) do
+        context
+      else
+        {:ok, mini_map} = ZoneCache.mini_map(context.data.zone_id, {x, y, z})
+
+        context
+        |> assign(:mini_map, mini_map)
+        |> render(event.from_pid, LookView, "mini_map")
+      end
+
+    render(context, event.from_pid, LookView, "look.extra")
   end
+
+  # 选项按角色保存在 meta.option（字符串键，值由 OptionCommand 解析：
+  # "0" 会被删键，其余为整数或字符串）。LPC 语义是「非零即隐藏」。
+  defp map_hidden?(%{acting_character: %{meta: meta}}) when is_map(meta) do
+    case Map.get(meta, :option) do
+      options when is_map(options) ->
+        # 落盘 jsonb / OptionCommand 写入是字符串键；也兼容代码里直接构造的原子键。
+        # 不能用 `||` 兜底：Elixir 里 0 是真值，会把「0=不隐藏」错误短路。
+        case Map.fetch(options, "map_hidden") do
+          {:ok, value} -> truthy?(value)
+          :error -> truthy?(Map.get(options, :map_hidden))
+        end
+
+      _ ->
+        false
+    end
+  end
+
+  defp map_hidden?(_event), do: false
+
+  defp truthy?(value) when value in [nil, false, 0, "0", ""], do: false
+  defp truthy?(_value), do: true
 
   # 运行期房述覆盖（对应 LPC `set("long", ...)`）。**仅当存在覆盖时才替换**：
   # `long_description/1` 无覆盖返回 nil，而无条件写 `description: nil` 会让

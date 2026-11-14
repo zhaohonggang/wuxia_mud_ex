@@ -84,13 +84,16 @@ defmodule Kantele.Character.PlayerMeta do
     #           需读取判断是否正在战斗；裁掉会 KeyError。
     #   coins   铜钱：room.ex `victim.meta.coins` 需读取判断乞讨目标是否有钱；
     #           裁掉会 KeyError。
+    #   option  个人界面选项（cmds/usr/option.c）：Room.LookEvent 要读
+    #           `option["map_hidden"]` 决定是否显示区域小地图。该字段很小且已落盘，
+    #           不保留会让开关在房间侧恒为「未设定」。
     #
     # 这些字段都会被**房间侧**读到：移动事件的 character、房间 state 的 characters
     # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
     # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
     # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
-      Map.take(meta, [:vitals, :stats, :family, :temp, :env, :combat, :coins])
+      Map.take(meta, [:vitals, :stats, :family, :temp, :env, :combat, :coins, :option])
     end
   end
 

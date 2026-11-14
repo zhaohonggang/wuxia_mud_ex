@@ -79,7 +79,7 @@ defmodule Kantele.Character.CommandsCommand do
     "save" => "手动存档（角色已实时自存）",
     "nick" => "设置绰号：nick 绰号 / nick none",
     "color" => "色彩对照表",
-    "option" => "个人选项：option [键] [值]",
+    "option" => "个人选项（按角色落盘）：option / option map_hidden 1 关小地图 / 0 开",
     "title" => "头衔：title [头衔] / title none",
     "alias" => "自定义别名：alias 新动词 替换串",
     "ride" => "上马：ride 坐骑",

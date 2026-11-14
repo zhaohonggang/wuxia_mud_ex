@@ -38,12 +38,20 @@ defmodule Kantele.World.RoomLookEventTest do
     %{room: room, static_description: room.description}
   end
 
-  defp look_event(room, state) do
+  defp look_event(room, state, opts \\ %{}) do
     room = %{room | state: state}
+
+    # 真实链路里 acting_character.meta 已过 Meta.trim；这里直接给裁剪后的形态
+    acting_character = %{
+      id: "player:test",
+      name: "测试",
+      pid: self(),
+      meta: Map.get(opts, :meta, %{})
+    }
 
     event = %Event{
       from_pid: self(),
-      acting_character: %{id: "player:test", name: "测试", pid: self()},
+      acting_character: acting_character,
       topic: "room/look",
       data: %{}
     }
@@ -72,6 +80,13 @@ defmodule Kantele.World.RoomLookEventTest do
       string when is_binary(string) -> [string]
       list when is_list(list) -> flat_strings(list)
       _other -> []
+    end)
+  end
+
+  defp mini_map_output?(context) do
+    Enum.any?(context.output, fn
+      {_pid, %{topic: "Zone.MiniMap"}} -> true
+      _ -> false
     end)
   end
 
@@ -115,6 +130,51 @@ defmodule Kantele.World.RoomLookEventTest do
 
       refute Enum.any?(strings, &is_nil/1)
       assert Enum.any?(strings, &String.contains?(&1, desc))
+    end
+  end
+
+  describe "option map_hidden 控制 look 自动带出的小地图" do
+    test "未设定时正常带出 Zone.MiniMap", %{room: room} do
+      assert mini_map_output?(look_event(room, %{}))
+    end
+
+    test "map_hidden 1 时不渲染小地图，但房述/出口照常", %{
+      room: room,
+      static_description: desc
+    } do
+      context = look_event(room, %{}, %{meta: %{option: %{"map_hidden" => 1}}})
+
+      refute mini_map_output?(context)
+
+      strings = context |> texts() |> flat_strings()
+      refute Enum.any?(strings, &is_nil/1)
+      assert Enum.any?(strings, &String.contains?(&1, desc))
+      assert Enum.any?(strings, &String.contains?(&1, "Exits:"))
+    end
+
+    test "非零/非空值一律隐藏（LPC 语义）", %{room: room} do
+      Enum.each(["yes", "1", 2, true], fn value ->
+        context = look_event(room, %{}, %{meta: %{option: %{"map_hidden" => value}}})
+        refute mini_map_output?(context), "map_hidden=#{inspect(value)} 应隐藏"
+      end)
+
+      # 代码里直接构造 PlayerMeta 时可能写成原子键，同样生效
+      context = look_event(room, %{}, %{meta: %{option: %{map_hidden: 1}}})
+      refute mini_map_output?(context)
+    end
+
+    test "0 / \"0\" / 空串 / 其他键都不隐藏", %{room: room} do
+      Enum.each([0, "0", "", nil, false], fn value ->
+        context = look_event(room, %{}, %{meta: %{option: %{"map_hidden" => value}}})
+        assert mini_map_output?(context), "map_hidden=#{inspect(value)} 应显示"
+      end)
+
+      context = look_event(room, %{}, %{meta: %{option: %{"brief_room" => 1}}})
+      assert mini_map_output?(context)
+    end
+
+    test "meta 无 option 字段 / acting_character 无 meta 时不隐藏", %{room: room} do
+      assert mini_map_output?(look_event(room, %{}, %{meta: %{}}))
     end
   end
 end

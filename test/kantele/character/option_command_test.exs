@@ -80,6 +80,18 @@ defmodule Kantele.Character.OptionCommandTest do
     end
   end
 
+  describe "map_hidden 开关（LPC option/map_hidden）" do
+    test "设 1 隐藏，设 0 恢复（删键）" do
+      conn = OptionCommand.run(build_conn(player()), %{"rest" => "map_hidden 1"})
+      hidden = conn.private.update_character
+      assert hidden.meta.option["map_hidden"] == 1
+
+      conn2 = OptionCommand.run(build_conn(hidden), %{"rest" => "map_hidden 0"})
+      shown = conn2.private.update_character
+      refute Map.has_key?(shown.meta.option, "map_hidden")
+    end
+  end
+
   test "option 路由解析" do
     {:ok, parsed} = Kantele.Character.Commands.parse("option verbose on")
     assert parsed.module == Kantele.Character.OptionCommand

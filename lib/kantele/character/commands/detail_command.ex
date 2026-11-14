@@ -18,6 +18,7 @@ defmodule Kantele.Character.DetailCommand do
   alias Kantele.Character.Records
   alias Kantele.Character.ScoreView
   alias Kantele.Character.Stats
+  alias Kantele.Feature.Damage
   alias Kantele.World.Items
 
   def run_bare(conn, _params), do: run(conn, %{"rest" => ""})
@@ -160,6 +161,10 @@ defmodule Kantele.Character.DetailCommand do
 
     %{
       vitals: character_vitals(character),
+      # InfoView._display 读 a.max_food / a.max_water（食物/饮水两行）。
+      # 与 InfoCommand 的 assigns 保持一致，否则裸 detail 会 KeyError 崩连接。
+      max_food: Damage.max_food_capacity(character),
+      max_water: Damage.max_water_capacity(character),
       str: stats.str,
       dex: stats.dex,
       con: stats.con,

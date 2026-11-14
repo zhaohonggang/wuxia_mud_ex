@@ -1,0 +1,21 @@
+key = "option"
+title = "个人界面选项"
+keywords = ["选项"]
+tagline = "按角色保存的界面开关"
+---
+指令格式：{color foreground="white"}option{/color}                      列出你目前的设定
+          {color foreground="white"}option <选项> <设定值>{/color}       设定该项（设定值 0 表示恢复系统默认）
+          {color foreground="white"}option <选项>{/color}                 删除该项设定
+
+设定按角色独立保存，下线重登后仍然有效，不会影响其他玩家。
+
+目前可用的选项：
+  {color foreground="white"}map_hidden{/color}    设为 1 时，看房间（look）不再自动显示区域小地图；
+                  设为 0 或删除该键即恢复显示。
+                  无论是否隐藏，{color foreground="white"}map{/color} 命令都可主动查看小地图。
+
+  例如：{color foreground="white"}option map_hidden 1{/color}    关闭自动小地图
+        {color foreground="white"}option map_hidden 0{/color}    重新打开
+
+其余选项（brief_room、brief_short 等）目前仅记录设定，尚未影响界面。
+查看本帮助：{color foreground="white"}help option{/color}
