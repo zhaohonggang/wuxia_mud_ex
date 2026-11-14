@@ -5,7 +5,6 @@ defmodule Kantele.Character.CommandsCommand do
 
   use Kalevala.Character.Command
 
-  alias Kantele.Character.Commands
   alias Kantele.Character.CommandsView
 
   # 已知命令的中文描述（与 commands.ex 路由保持同步）；未在本表中的命令显示默认文案
@@ -385,8 +384,8 @@ defmodule Kantele.Character.CommandsCommand do
   }
 
   def run(conn, _params) do
-    # 从路由器的 @aliases 动态获取全部已注册命令，与 commands.ex 保持同步
-    all = Commands.all_commands()
+    # 从 commands.ex 源文件解析全部已注册的命令动词（与路由器保持同步）
+    all = all_registered_commands()
 
     commands =
       all
@@ -396,5 +395,24 @@ defmodule Kantele.Character.CommandsCommand do
       |> Enum.sort_by(& &1.name)
 
     render(conn, CommandsView, "index", %{commands: commands})
+  end
+
+  # 从 commands.ex 源文件解析全部已注册的命令动词（与路由器保持同步）
+  defp all_registered_commands do
+    path = Path.expand("../commands.ex", __DIR__)
+    content = File.read!(path)
+
+    content
+    |> String.split("\n")
+    |> Enum.filter(&String.contains?(&1, "parse("))
+    |> Enum.map(fn line ->
+      case Regex.run(~r/parse\(["']([^"']+)["']/, line) do
+        [_, verb] -> verb
+        _ -> nil
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> Enum.uniq()
+    |> Enum.sort()
   end
 end
