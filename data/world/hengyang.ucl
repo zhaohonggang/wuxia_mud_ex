@@ -1879,6 +1879,14 @@ item_desc = {
       { id = characters.hunter.id }    ]
   }
 
+  # 树林（猎人所在）放一堆篝火：狩猎得生肉后可就地烤成熟肉（对齐 LPC needfire.c）。
+  # 引用走 items.needfire.id → 本区无 needfire，回退 clone_lib:needfire（loader 的
+  # dereference_in_clone 链路）。
+  room_items "shulin1_campfire" {
+    room_id = rooms.shulin1.id
+    items = [ { id = items.needfire.id } ]
+  }
+
 # Generated from C:/files/git/mud/d/hengyang/shuzhuangtai.c by LPCConverter
 # Zone: hengyang
 

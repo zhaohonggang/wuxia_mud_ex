@@ -256,6 +256,14 @@ zones "guanwai" {
     southup = rooms.luming.id
     }
 
+  # 伐木场：对齐 LPC guanwai/famu.c —— 完成伐木(famu)后在此生成大木材(largewood)。
+  # EX 未移植动态伐木任务，改为静态放置，使大木材可被 get。
+  room_items "famu" {
+    room_id = rooms.famu.id
+    items = [
+      { id = items.largewood.id }    ]
+  }
+
 # Generated from C:/files/git/mud/d/guanwai/heifengkou.c by LPCConverter
 # Zone: guanwai
 

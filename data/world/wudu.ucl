@@ -3334,7 +3334,7 @@ chats = [
 # Zone: wudu
 
     items "ganchai" {
-      name = "Item"
+      name = "木柴"
       aliases = ["gan chai", "gan", "chai"]
       description = "这是一捆木柴。"
   verbs = [

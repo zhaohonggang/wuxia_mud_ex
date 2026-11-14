@@ -69,6 +69,30 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(KaoCommand) do
+    parse("kao", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("烤", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+  end
+
+  module(FireCommand) do
+    parse("fire", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("点火", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+
+    parse("生火", :run, fn command ->
+      command |> spaces() |> text(:item_name)
+    end)
+  end
+
   module(FillCommand) do
     parse("fill", :run, fn command ->
       command |> spaces() |> text(:item_name)

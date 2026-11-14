@@ -101,11 +101,17 @@ defmodule Kantele.NPC.Hunter do
     bonus = if half > 0, do: :rand.uniform(half) - 1, else: 0
     add = int + bonus
 
+    # 对齐 LPC：me->improve_skill("hunting", add) 的 add 是「点数」而非等级，
+    # 显示等级 = floor(sqrt(累计点数))，累计点数以 等级² 估算。故单层教学收益约为
+    # floor(sqrt(原等级² + add)) - 原等级（递减收益，与 LPC 一致）。
     learned_skill = Stats.skill(stats, "hunting")
+    new_level = learned_skill * learned_skill + add |> :math.sqrt() |> floor()
+    gain = new_level - learned_skill
+
     stats =
       stats
       |> Stats.spend_potential(1)
-      |> Stats.set_skill("hunting", learned_skill + add)
+      |> Stats.set_skill("hunting", new_level)
 
     vitals = vitals_of(asker)
     jing_cost = 5 + :rand.uniform(6) - 1
@@ -120,7 +126,7 @@ defmodule Kantele.NPC.Hunter do
 
     msg =
       "猎人给你讲解了有关捕猎的一些技巧。\n" <>
-        "你听了猎人的指导，似乎有所心得。（狩猎技巧 +#{add}）\n"
+        "你听了猎人的指导，似乎有所心得。（狩猎技巧提升至 #{new_level} 级，+#{gain}）\n"
 
     {:ok, msg, character}
   end
