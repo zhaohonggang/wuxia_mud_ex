@@ -145,6 +145,10 @@ const eventTextHandlers = {
     const { text } = event;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));
   },
+  "Room.Hints": (dispatch, getState, event, { history }) => {
+    const { text } = event;
+    dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));
+  },
   "Room.Say": (dispatch, getState, event, { history }) => {
     const { text } = event;
     dispatch(KalevalaCreators.socketReceivedEvent({ topic: "system/display", data: text }, { history }));
