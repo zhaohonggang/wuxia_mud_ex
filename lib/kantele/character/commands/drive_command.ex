@@ -78,9 +78,17 @@ defmodule Kantele.Character.DriveCommand do
     else
       # 查找载具
       case find_vehicle(character, vehicle_name) do
-        {:ok, vehicle_item, vehicle_instance} ->
-          # 检查是否可驾驶
-          if Transport.can_drive_by?(vehicle_item, character) do
+        {:ok, vehicle_item, _vehicle_instance} ->
+          # 检查是否可驾驶（Transport.can_drive_by?/1 接 opts map，对齐 mount.ex 的调用）
+          owner = Transport.query_owner(vehicle_item)
+          drive_opts = %{
+            owner: owner,
+            me: character.id,
+            owner_room: character.room_id,
+            my_room: character.room_id
+          }
+
+          if Transport.can_drive_by?(drive_opts) do
             # 检查战斗/忙碌
             if character.meta.combat.enemies != [] do
               conn
@@ -139,15 +147,16 @@ defmodule Kantele.Character.DriveCommand do
 
   defp find_vehicle(character, name) do
     Enum.find(character.inventory, fn inst ->
-      item = Items.get!(inst.item_id)
-      item.callback_module.matches?(item, name)
+      # 用安全查找 + 本地匹配：定义缺失的占位物品也能匹配，不会因 Items.get!/1 崩掉 Foreman。
+      item = Kantele.World.Item.instance_item(inst)
+      Kantele.World.Item.matches?(item, name)
     end)
     |> case do
       nil ->
         {:error, "这里没有这样东西让你赶啊！"}
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.instance_item(instance)
         {:ok, item, instance}
     end
   end
@@ -256,7 +265,7 @@ defmodule Kantele.Character.DriveCommand do
   end
 
   defp save(conn) do
-    Records.save(conn.private.update_character || conn.character)
+    Kantele.Character.Records.save(conn.private.update_character || conn.character)
     conn
   end
 end

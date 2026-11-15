@@ -15,11 +15,12 @@ defmodule Kantele.Character.SetupController do
 
   require Logger
 
-  alias Kantele.Character.BornPlayer
-  alias Kantele.Character.CommandController
-  alias Kantele.Character.MoveView
-  alias Kantele.Character.Records
-  alias Kantele.Character.SetupView
+alias Kantele.Character.BornPlayer
+alias Kantele.Character.CommandController
+alias Kantele.Character.LoginView
+alias Kantele.Character.MoveView
+alias Kantele.Character.Records
+alias Kantele.Character.SetupView
 
   # LPC `yanluodian.c:12-39` 的 born 映射（zone:room 等价见 world.ex 注释）
   @birthplaces %{
@@ -193,6 +194,8 @@ defmodule Kantele.Character.SetupController do
       conn
       |> put_character(character)
       |> render(SetupView, "born_done", %{skills: granted_ids})
+      # 投胎完成后通知客户端进入游戏页面（/play），否则客户端停留在角色选择页
+      |> render(LoginView, "enter-world", %{character: character})
       |> move(:to, character.room_id, MoveView, "enter", %{})
       |> put_controller(CommandController)
       |> event("room/look", %{})

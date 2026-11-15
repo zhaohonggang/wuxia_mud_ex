@@ -10,12 +10,14 @@ defmodule Kantele.Character.LoginController do
   alias Kantele.Character.CommandController
   alias Kantele.Character.LoginView
   alias Kantele.Character.MoveEvent
-  alias Kantele.Character.SetupController
   alias Kantele.Character.MoveView
   alias Kantele.Character.QuitView
+  alias Kantele.Character.SetupController
   alias Kantele.Character.TellEvent
   alias Kantele.CharacterChannel
   alias Kantele.Communication
+  alias Kantele.World.Item
+  alias Kantele.World.Room
 
   @impl true
   def init(conn) do
@@ -104,6 +106,10 @@ defmodule Kantele.Character.LoginController do
       |> build_character()
       |> Kantele.Character.Records.apply_to_character(loaded, wiz_level)
       |> place_on_login()
+      # 登入时清理背包里“定义缺失”的未知物品（如 global:potion）：
+      # 它们不在 Items 缓存里，会导致 Context.Lookup / drop 等路径抛异常崩掉 Foreman。
+      # 改为扔在地上（房间 item_instances），不再随身携带，并落盘存档。
+      |> drop_unknown_inventory_items()
 
     # 启动自然回复循环（foreman 自投递）
     Kantele.Character.CombatEvent.kick_regen()
@@ -131,6 +137,9 @@ defmodule Kantele.Character.LoginController do
     else
       conn
       |> put_controller(SetupController)
+      # 主动触发 SetupController.init，向客户端推送阎罗殿欢迎词与性别提示；
+      # 不调用则客户端收不到任何 Setup.* 事件，表现为点击 Play 后卡住。
+      |> SetupController.init()
     end
   end
 
@@ -197,6 +206,48 @@ defmodule Kantele.Character.LoginController do
     %{character | room_id: room_id}
   end
 
+  # 登入时扫描背包，把“定义缺失”的未知物品（ItemNotLoaded / Items 缓存没加载）
+  # 从库存移除并扔到所在房间地面，避免 Context.Lookup、drop 等路径因 Items.get!/1
+  # 抛异常而崩掉整个 Foreman GenServer。已扔掉的物品会同步落盘存档，重登不再带回。
+  defp drop_unknown_inventory_items(character) do
+    {unknown, known} =
+      Enum.split_with(character.inventory, fn item_instance ->
+        case Kantele.World.Items.get(item_instance.item_id) do
+          {:ok, _item} -> false
+          {:error, :not_found} -> true
+        end
+      end)
+
+    if unknown == [] do
+      character
+    else
+      Logger.info(
+        "Dropping #{length(unknown)} unknown inventory item(s) for #{character.name} " <>
+          "at #{character.room_id}: #{Enum.map(unknown, & &1.item_id)}"
+      )
+
+      # 移出库存
+      character = %{character | inventory: known}
+
+      # 扔到房间地面
+      Enum.each(unknown, fn item_instance ->
+        case Room.add_item(character.room_id, item_instance) do
+          :ok -> :ok
+          :error ->
+            Logger.warn(
+              "Failed to drop unknown item #{item_instance.item_id} for #{character.name} " <>
+                "at #{character.room_id}: room process unavailable"
+            )
+        end
+      end)
+
+      # 落盘存档（库存已不含未知物品）
+      Kantele.Character.Records.save(character)
+
+      character
+    end
+  end
+
   defp build_character(name) do
     starting_room_id = Kantele.World.start_room_id()
     %Character{
@@ -209,7 +260,7 @@ defmodule Kantele.Character.LoginController do
       inventory: [
         %Kalevala.World.Item.Instance{
           id: Kalevala.World.Item.Instance.generate_id(),
-          item_id: "global:potion",
+          item_id: "liuxi:changjian",
           created_at: DateTime.utc_now(),
           meta: %Kantele.World.Item.Meta{}
         }
@@ -230,4 +281,5 @@ defmodule Kantele.Character.LoginController do
     options = [character: character]
     subscribe(conn, "characters:#{character.id}", options, &TellEvent.subscribe_error/2)
   end
-end
+
+  end

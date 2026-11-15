@@ -4,6 +4,9 @@ defmodule Kantele.Character.SaveCommand do
 
   Batch 6：直接调用 `Records.save/1` 落盘并反馈结果。为降低负载，
   LPC 限制 30 秒内的重复存档，Kantele 侧实时自存已覆盖，故不再限流。
+
+  整库 `character_metadata` 备份已移至登录时自动触发（见
+  `Kantele.Character.LoginController`），此命令不再备份。
   """
 
   use Kalevala.Character.Command

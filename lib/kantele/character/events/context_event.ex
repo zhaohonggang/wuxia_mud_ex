@@ -4,7 +4,6 @@ defmodule Kantele.Character.ContextEvent do
   alias Kalevala.Verb
   alias Kalevala.World.Item
   alias Kantele.Character.ContextView
-  alias Kantele.World.Items
 
   def lookup(conn, %{data: %{"context" => "room", "type" => "item", "id" => id}}) do
     event(conn, "context/lookup", %{type: :item, id: id})
@@ -18,7 +17,9 @@ defmodule Kantele.Character.ContextEvent do
 
     case item_instance != nil do
       true ->
-        item = Items.get!(item_instance.item_id)
+        # 定义缺失时返回占位物品而非抛异常（避免 Foreman GenServer 崩溃，
+        # 如背包里残留 global:potion 这类不在 Items 缓存里的物品）
+        item = Kantele.World.Item.instance_item(item_instance)
 
         verbs = Item.context_verbs(item, %{location: "inventory/self"})
         verbs = Verb.replace_variables(verbs, %{id: item_instance.id})

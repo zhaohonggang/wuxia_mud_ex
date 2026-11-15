@@ -115,6 +115,18 @@ const eventTextHandlers = {
     dispatch(Creators.loginActive());
     dispatch(Creators.loginPrompt());
   },
+  // 新玩家注册问答（阎罗殿）：性别→洗点→投胎。没有这些 handler，客户端收到
+  // Setup.* 事件后无法显示任何文本，表现为点击 Play 后卡在角色选择页。
+  "Setup.Welcome": dispatchEventText,
+  "Setup.Gender": dispatchEventText,
+  "Setup.WashtoIntro": dispatchEventText,
+  "Setup.Washto": dispatchEventText,
+  "Setup.WashtoError": dispatchEventText,
+  "Setup.Washed": dispatchEventText,
+  "Setup.BornIntro": dispatchEventText,
+  "Setup.Born": dispatchEventText,
+  "Setup.BornError": dispatchEventText,
+  "Setup.BornDone": dispatchEventText,
   "Login.PromptCharacter": (dispatch, getState, event, { history }) => {
     history.push("/login/character");
   },

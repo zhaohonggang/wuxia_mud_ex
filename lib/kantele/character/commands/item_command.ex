@@ -13,7 +13,6 @@ defmodule Kantele.Character.ItemCommand do
   alias Kantele.Character.Records
   alias Kantele.World.Corpse
   alias Kantele.World.Item, as: WorldItem
-  alias Kantele.World.Items
   alias Kantele.World.Room
 
   @max_item_carried 80
@@ -35,7 +34,8 @@ defmodule Kantele.Character.ItemCommand do
             render_error(conn, "你身上没有这样东西。\n")
 
           item_instance ->
-            item = Items.get!(item_instance.item_id)
+            # 定义缺失时用占位物品，避免 Items.get!/1 抛异常崩掉 Foreman
+            item = WorldItem.instance_item(item_instance)
             drop_single(conn, character, item_instance, item)
         end
     end
@@ -65,14 +65,14 @@ defmodule Kantele.Character.ItemCommand do
         render_error(conn, "你身上没有这样东西。\n")
 
       item_instance ->
-        item = Items.get!(item_instance.item_id)
+        item = WorldItem.instance_item(item_instance)
 
         case find_container(conn, character, target_name) do
           nil ->
             render_error(conn, "这里没有这样东西。\n")
 
           dest_instance ->
-            dest = Items.get!(dest_instance.item_id)
+            dest = WorldItem.instance_item(dest_instance)
             put_single(conn, character, item_instance, item, dest_instance, dest)
         end
     end
@@ -105,7 +105,7 @@ defmodule Kantele.Character.ItemCommand do
   defp drop_all(conn, character) do
     count =
       Enum.count(character.inventory, fn item_instance ->
-        item = Items.get!(item_instance.item_id)
+        item = WorldItem.instance_item(item_instance)
         combat = character.meta.combat
 
         !is_equipped?(combat, item_instance) &&
@@ -116,7 +116,7 @@ defmodule Kantele.Character.ItemCommand do
     if count > 0 do
       character.inventory
       |> Enum.filter(fn item_instance ->
-        item = Items.get!(item_instance.item_id)
+        item = WorldItem.instance_item(item_instance)
         combat = character.meta.combat
 
         !is_equipped?(combat, item_instance) &&
@@ -229,7 +229,7 @@ defmodule Kantele.Character.ItemCommand do
     else
       count =
         Enum.count(items, fn item_instance ->
-          item = Items.get!(item_instance.item_id)
+          item = WorldItem.instance_item(item_instance)
 
           !Map.get(item.meta || %{}, :no_get) &&
             length(character.inventory) < @max_item_carried
@@ -238,7 +238,7 @@ defmodule Kantele.Character.ItemCommand do
       if count > 0 do
         items
         |> Enum.filter(fn item_instance ->
-          item = Items.get!(item_instance.item_id)
+          item = WorldItem.instance_item(item_instance)
 
           !Map.get(item.meta || %{}, :no_get) &&
             length(character.inventory) < @max_item_carried
@@ -257,7 +257,7 @@ defmodule Kantele.Character.ItemCommand do
   end
 
   defp get_item(conn, character, item_instance, item_name) do
-    item = Items.get!(item_instance.item_id)
+    item = WorldItem.instance_item(item_instance)
 
     cond do
       length(character.inventory) >= @max_item_carried ->
@@ -340,7 +340,7 @@ defmodule Kantele.Character.ItemCommand do
       if Corpse.corpse?(container_instance) do
         Corpse.contents(container_instance)
       else
-        container = Items.get!(container_instance.item_id)
+        container = WorldItem.instance_item(container_instance)
         Map.get(container.meta || %{}, :items, []) || []
       end
 

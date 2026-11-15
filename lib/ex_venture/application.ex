@@ -82,6 +82,7 @@ defmodule ExVenture.Application.KalevalaSupervisor do
       {Kantele.World.NpcActions.Counters, []},
       {Kantele.World.AnalectaService, []},
       {Kantele.World.NewsService, []},
+      {Kantele.World.MetadataBackup, []},
       {Kantele.League, []},
       {Kantele.FamilyFame, []},
       {Kantele.Character.BeastState, []},

@@ -165,7 +165,7 @@ defmodule Kantele.Character.PourCommand do
   end
 
   defp save(conn) do
-    Records.save(conn.private.update_character || conn.character)
+    Kantele.Character.Records.save(conn.private.update_character || conn.character)
     conn
   end
 end

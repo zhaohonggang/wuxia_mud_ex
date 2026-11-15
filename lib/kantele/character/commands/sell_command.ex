@@ -120,7 +120,7 @@ defmodule Kantele.Character.SellCommand do
         {:error, "你身上没有这种东西。"}
 
       [instance | _] ->
-        {:ok, instance, Items.get!(instance.item_id), 1}
+        {:ok, instance, Kantele.World.Item.instance_item(instance), 1}
     end
   end
 
@@ -141,13 +141,13 @@ defmodule Kantele.Character.SellCommand do
 
       true ->
         instances = Enum.take(candidates, quantity)
-        {:ok, instances, Items.get!(hd(instances).item_id), quantity}
+        {:ok, instances, Kantele.World.Item.instance_item(hd(instances)), quantity}
     end
   end
 
   defp matching(character, name) do
     Enum.filter(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.instance_item(instance)
       instance.id == name || Item.matches?(item, name)
     end)
   end
