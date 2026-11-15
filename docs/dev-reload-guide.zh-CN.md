@@ -42,7 +42,7 @@ reload
 - 新增 NPC/房间（需重新解析整个世界）
 - 修改 brain 行为树结构
 
-### 2. Elixir 源码
+### 2. Elixir 源码（编译机制）
 
 `code_reloader` 已在 dev 环境关闭（原因见 `docs/dev-code-reloader-signin-hang.zh-CN.md`），改完 Elixir 源码**不会**自动重编译。`mix phx.server` 启动时会先 `mix compile`，因此重启容器即可把改动编进去：
 
@@ -51,6 +51,34 @@ docker restart wuxia_mud_dev-app-1
 ```
 
 重启后自动编译所有改动，约 1~2 分钟恢复服务（过期检测要扫描 bind mount 上的源码）。
+
+#### 为什么 `dev_start.bat` 能重新编译修改过的 `.ex`
+
+这是由三层机制共同决定的：
+
+| 层 | 位置 | 作用 |
+|---|---|---|
+| 1. 源码同步 | `docker-compose.dev.yml` 第 34 行 `- .:/app` | Windows 主机源码目录 bind mount 到容器 `/app`，Windows 上修改 `.ex` 会立即同步到容器内 |
+| 2. 编译产物保留 | `docker-compose.dev.yml` 第 38 行 `app_build:/app/_build` | Named volume，容器重启时保留已编译 BEAM，不自动丢失 |
+| 3. 关闭热重载 | `config/dev.exs` 第 21 行 `code_reloader: false` | 运行中的 BEAM 不会自动重新加载，必须容器重启 |
+| 4. 触发编译 | `dev_start.bat` 第 51 行 `%COMPOSE% up app` → 容器入口点 `mix phx.server` | 容器启动时 Mix 比较源文件 mtime 与 BEAM mtime，源文件更新则重新编译 |
+
+**完整链条**：你在 Windows 上修改 `.ex` → bind mount 同步到容器 → Ctrl+C 停止容器 → 再运行 `dev_start.bat` → 容器重新启动 → `mix phx.server` 启动 → Mix 检测源文件比已编译 BEAM 新 → **重新编译该文件** → 修改生效。
+
+#### 新增的 `.ex` 文件还能编译吗？
+
+**能。** 容器启动时，Mix 会扫描 `lib/`（以及其他源码路径）下所有 `.ex` 文件，包括新增的：
+
+- **新增模块文件**：Mix 发现新的 `.ex` 文件，会把它编译成对应的 `.beam` 放入 `_build/dev/lib/ex_venture/ebin/`。容器启动后该模块即可被 `require`/`use`/调用。
+- **前提**：新增文件必须放在 Mix 编译路径下（默认 `lib/`），且语法正确。如果新增文件有编译错误，容器启动会失败，需先修复再重启。
+- **注意**：新增文件被编译进 `.beam` 后，代码中若未 `require`/`use` 或调用该模块，它只是静态存在于磁盘，不会自动运行；需要在现有代码中引用才会生效。
+
+**验证新增文件是否编译成功**：
+```bash
+docker exec -w /app wuxia_mud_dev-app-1 ls _build/dev/lib/ex_venture/ebin/ | grep -i <新模块名>
+```
+
+见 `Elixir 源码` 表格中的“重启容器”刷新方式。
 
 ### 3. 前端 JS/React
 
