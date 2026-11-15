@@ -50,15 +50,16 @@ echo [dev_start] [2/3] Bootstrapping project (mix deps.get + yarn install + ecto
 %COMPOSE% run --rm setup
 if errorlevel 1 goto :fail
 
-echo [dev_start] [3/3] (Re)starting Phoenix server with forced recompile...
-echo             (code_reloader off + Docker bind-mount mtime quirks can make
-echo             incremental compile skip recompile, so we force recompile on
-echo             every container start to ensure new code loads.)
+echo [dev_start] [3/3] (Re)starting Phoenix server...
 echo             Web client : http://localhost:4000
 echo             Telnet MUD : telnet localhost 4646
 REM 先停掉已在运行的 app 容器，否则 `up app` 会判定「已在运行」而变成空操作，
 REM 导致新编译的 BEAM 不会被加载（dev 关闭了 code_reloader）。
 %COMPOSE% stop app 2>nul
+REM 强制重编一次（Windows Docker bind-mount 的 mtime 问题会让 mix 增量编译
+REM 跳过重编，导致新代码不生效）。dev 环境每次手动重启时只跑一次，开销可接受。
+%COMPOSE% run --rm app mix compile --force
+if errorlevel 1 goto :fail
 %COMPOSE% up app
 goto :eof
 
