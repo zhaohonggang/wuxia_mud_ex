@@ -1,24 +1,45 @@
 {:ok, _api_token} =
-  ExVenture.APIKeys.create(%{
-    token: "6e8d83d9-a028-4eb7-bc7b-9b32bac697b6",
-    is_active: true
-  })
+  case ExVenture.Repo.get_by(ExVenture.APIKeys.APIKey, token: "6e8d83d9-a028-4eb7-bc7b-9b32bac697b6") do
+    nil ->
+      ExVenture.APIKeys.create(%{
+        token: "6e8d83d9-a028-4eb7-bc7b-9b32bac697b6",
+        is_active: true
+      })
+
+    existing ->
+      IO.puts("[seeds] skip existing api key")
+      {:ok, existing}
+  end
 
 {:ok, _user} =
-  ExVenture.Users.create(%{
-    username: "user",
-    email: "user@example.com",
-    password: "password",
-    password_confirmation: "password"
-  })
+  case ExVenture.Repo.get_by(ExVenture.Users.User, username: "user") do
+    nil ->
+      ExVenture.Users.create(%{
+        username: "user",
+        email: "user@example.com",
+        password: "password",
+        password_confirmation: "password"
+      })
+
+    existing ->
+      IO.puts("[seeds] skip existing user: user")
+      {:ok, existing}
+  end
 
 {:ok, admin} =
-  ExVenture.Users.create(%{
-    username: "admin",
-    email: "admin@example.com",
-    password: "password",
-    password_confirmation: "password"
-  })
+  case ExVenture.Repo.get_by(ExVenture.Users.User, username: "admin") do
+    nil ->
+      ExVenture.Users.create(%{
+        username: "admin",
+        email: "admin@example.com",
+        password: "password",
+        password_confirmation: "password"
+      })
+
+    existing ->
+      IO.puts("[seeds] skip existing user: admin")
+      {:ok, existing}
+  end
 
 {:ok, _admin} =
   admin
@@ -36,18 +57,27 @@ defmodule Seeds do
   def create_zone(%{seed?: false}), do: :ok
 
   def create_zone(zone_data) do
-    {:ok, zone} =
-      Zones.create(%{
-        key: zone_data.id,
-        name: zone_data.name,
-        description: zone_data.name
-      })
+    case ExVenture.Repo.get_by(ExVenture.Zones.Zone, key: zone_data.id) do
+      nil ->
+        {:ok, zone} =
+          Zones.create(%{
+            key: zone_data.id,
+            name: zone_data.name,
+            description: zone_data.name
+          })
 
-    {:ok, zone} = Zones.publish(zone)
+        {:ok, zone} = Zones.publish(zone)
 
-    Enum.each(zone_data.rooms, fn room ->
-      create_room(zone, room)
-    end)
+        Enum.each(zone_data.rooms, fn room ->
+          create_room(zone, room)
+        end)
+
+      existing_zone ->
+        IO.puts("[seeds] skip existing zone #{zone_data.id}")
+        Enum.each(zone_data.rooms, fn room ->
+          create_room(existing_zone, room)
+        end)
+    end
   end
 
   def create_room(zone, params) do

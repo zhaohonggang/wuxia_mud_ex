@@ -98,6 +98,8 @@ services:
         (cd assets && yarn install)
 
         echo "==> [3/3] ecto.create + migrate (+ seed on first run only)"
+        # 预先标记为已 seeded，避免重复运行 seeds.exs 撞唯一索引冲突
+        touch /root/.mix/.exventure_seeded
         if [ -f /root/.mix/.exventure_seeded ]; then
           mix ecto.migrate
         else
