@@ -555,6 +555,8 @@ defmodule Kantele.World.Loader do
       }
   """
   def parse_character(zone, key, character_data, brains) do
+    inquiries = parse_inquiries(Map.get(character_data, :inquiries))
+
     character = %Character{
       id: "#{zone.id}:#{key}",
       name: character_data.name,
@@ -570,7 +572,9 @@ defmodule Kantele.World.Loader do
         combat_config: npc_combat_config(Map.get(character_data, :combat)),
         combat: Kantele.Character.Combat.new(),
         goods: parse_goods(Map.get(character_data, :goods)),
-        inquiries: parse_inquiries(Map.get(character_data, :inquiries)),
+        inquiries: inquiries,
+        # 交互提示用的关键词快照：只存键名，房间侧经 Meta.trim 也能拿到
+        ask_topics: Map.keys(inquiries || %{}) |> Enum.sort(),
         inquiry_state: parse_inquiry_state(Map.get(character_data, :inquiry_state)),
         aliases: parse_aliases(Map.get(character_data, :aliases)),
         teach: parse_teach(Map.get(character_data, :teach)),

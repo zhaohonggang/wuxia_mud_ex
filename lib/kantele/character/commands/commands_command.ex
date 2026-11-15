@@ -34,6 +34,9 @@ defmodule Kantele.Character.CommandsCommand do
     "pai" => "门派信息",
     "look" => "查看房间",
     "map" => "区域地图",
+    "hints" => "当前房间可交互命令（房间 / NPC / 物品）",
+    "交互" => "当前房间可交互命令（同 hints）",
+    "提示" => "当前房间可交互命令（同 hints）",
     "perform" => "绝招：perform 武功.招式",
     "practice" => "练习：practice 技能",
     "quit" => "退出游戏",
@@ -384,35 +387,14 @@ defmodule Kantele.Character.CommandsCommand do
   }
 
   def run(conn, _params) do
-    # 从 commands.ex 源文件解析全部已注册的命令动词（与路由器保持同步）
-    all = all_registered_commands()
-
+    # 动词表由 CommandVerbs 在编译期从 commands.ex 固化，运行时不再读源文件
     commands =
-      all
+      Kantele.Character.CommandVerbs.all()
       |> Enum.map(fn name ->
         %{name: name, description: Map.get(@descriptions, name, "")}
       end)
       |> Enum.sort_by(& &1.name)
 
     render(conn, CommandsView, "index", %{commands: commands})
-  end
-
-  # 从 commands.ex 源文件解析全部已注册的命令动词（与路由器保持同步）
-  defp all_registered_commands do
-    path = Path.expand("../commands.ex", __DIR__)
-    content = File.read!(path)
-
-    content
-    |> String.split("\n")
-    |> Enum.filter(&String.contains?(&1, "parse("))
-    |> Enum.map(fn line ->
-      case Regex.run(~r/parse\(["']([^"']+)["']/, line) do
-        [_, verb] -> verb
-        _ -> nil
-      end
-    end)
-    |> Enum.reject(&is_nil/1)
-    |> Enum.uniq()
-    |> Enum.sort()
   end
 end

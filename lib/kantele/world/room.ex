@@ -1236,6 +1236,10 @@ defmodule Kantele.World.Room.Events do
       event("room/item_desc", :call)
     end
 
+    module(HintsEvent) do
+      event("room/hints", :call)
+    end
+
     module(MapEvent) do
       event("zone-map/look", :call)
     end
@@ -3156,6 +3160,7 @@ defmodule Kantele.World.Room.LookEvent do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Combat.StatusTracker
   alias Kantele.Character.LookView
+  alias Kantele.World.InteractionHints
   alias Kantele.World.Items
   alias Kantele.World.ZoneCache
 
@@ -3229,7 +3234,24 @@ defmodule Kantele.World.Room.LookEvent do
         |> render(event.from_pid, LookView, "mini_map")
       end
 
-    render(context, event.from_pid, LookView, "look.extra")
+    context = render(context, event.from_pid, LookView, "look.extra")
+
+    # 进入房间自动带出的交互提示（EX 增强，LPC 无此机制）。
+    # 所有看房间的入口（移动 / 登录 / spawn / 传送 / 裸 look）都汇到本事件，
+    # 因此一处接线即可覆盖全部路径。`option hints_hidden 1` 可关闭。
+    if hints_hidden?(event) do
+      context
+    else
+      lines =
+        context.data
+        |> InteractionHints.build(characters, item_instances)
+        |> InteractionHints.lines()
+
+      case lines do
+        [] -> context
+        _ -> render(context, event.from_pid, LookView, "hints", %{lines: lines})
+      end
+    end
   end
 
   # 选项按角色保存在 meta.option（字符串键，值由 OptionCommand 解析：
@@ -3251,6 +3273,24 @@ defmodule Kantele.World.Room.LookEvent do
 
   defp map_hidden?(_event), do: false
 
+  # `option hints_hidden 1` 隐藏进入房间时的交互提示。
+  # 用「反向键」而非 `hints 0`：OptionCommand 把 "0" 解析为 nil 并**删键**，
+  # 若默认开启则「设为 0」反而等于开启，语义会反。与 map_hidden 保持一致。
+  defp hints_hidden?(%{acting_character: %{meta: meta}}) when is_map(meta) do
+    case Map.get(meta, :option) do
+      options when is_map(options) ->
+        case Map.fetch(options, "hints_hidden") do
+          {:ok, value} -> truthy?(value)
+          :error -> truthy?(Map.get(options, :hints_hidden))
+        end
+
+      _ ->
+        false
+    end
+  end
+
+  defp hints_hidden?(_event), do: false
+
   defp truthy?(value) when value in [nil, false, 0, "0", ""], do: false
   defp truthy?(_value), do: true
 
@@ -3270,6 +3310,54 @@ defmodule Kantele.World.Room.LookEvent do
   end
 
   defp dead?(%{id: id}), do: StatusTracker.dead?(id)
+  defp dead?(_), do: false
+end
+
+defmodule Kantele.World.Room.HintsEvent do
+  @moduledoc """
+  `hints` 主动查看当前房间的全部可交互命令（完整版，不做行数截断）。
+
+  与 `LookEvent` 自动带出的简短提示共用 `InteractionHints` 聚合器；
+  显式命令不受 `option hints_hidden` 影响（对齐 `map` / `map_hidden` 的关系）。
+  """
+  import Kalevala.World.Room.Context
+
+  alias Kantele.Character.CommandView
+  alias Kantele.Character.LookView
+  alias Kantele.World.InteractionHints
+
+  def call(context, event) do
+    characters =
+      Enum.reject(context.characters, fn character ->
+        character.id == event.acting_character.id or dead?(character)
+      end)
+
+    item_instances =
+      Enum.map(context.item_instances, fn item_instance ->
+        %{item_instance | item: Kantele.World.Item.instance_item(item_instance)}
+      end)
+
+    lines =
+      context.data
+      |> InteractionHints.build(characters, item_instances, limit: :none)
+      |> InteractionHints.lines(full: true)
+
+    case lines do
+      [] ->
+        render(context, event.from_pid, CommandView, "text", %{
+          text: "这里没有可列出的特殊交互。\n"
+        })
+
+      _ ->
+        render(context, event.from_pid, LookView, "hints", %{lines: lines})
+    end
+  end
+
+  defp dead?(%{status: status, id: id}) when is_binary(status) do
+    String.contains?(status, "尸体") or Kantele.Character.Combat.StatusTracker.dead?(id)
+  end
+
+  defp dead?(%{id: id}), do: Kantele.Character.Combat.StatusTracker.dead?(id)
   defp dead?(_), do: false
 end
 

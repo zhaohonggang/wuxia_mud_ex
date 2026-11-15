@@ -345,6 +345,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     {:temp, %{}},
     :goods,
     :inquiries,
+    # 问询关键词的精简快照（仅键名，不含回答正文）。房间侧的交互提示
+    # (`Kantele.World.InteractionHints`) 要据此给出 `ask <NPC> <关键词>`；
+    # 不把整份 inquiries 带进每个房间事件，避免事件负载膨胀。
+    {:ask_topics, []},
     {:inquiry_state, %{}},
     :teach,
     :apprentice,
@@ -416,6 +420,8 @@ defmodule Kantele.Character.NonPlayerMeta do
     #           ask 命令要读 meta.ask_handler 才能分发到 NPC 专属问询处理器。
     #           裁掉它会导致 ask <NPC> <关键词> 落回 inquiries 静态文案，不执行
     #           AskHandler 的实际逻辑（如白无常 ask 还阳 不会真的传送武庙）。
+    #   ask_topics 问询关键词快照：交互提示据此列出 `ask <NPC> <关键词>`；
+    #           只含键名，不含回答正文，比把整份 inquiries 带过来轻得多。
     #   combat  战斗状态（Kantele.Character.Combat）：room.ex `victim.meta.combat`
     #           需读取判断是否正在战斗；裁掉会 KeyError。
     #   combat_config NPC 战斗配置 `%{spawn_room_id, ...}`：room.ex
@@ -427,7 +433,7 @@ defmodule Kantele.Character.NonPlayerMeta do
     # 玩家就永远上不了客栈二楼）。
     def trim(meta) do
       Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init, :ask_handler,
-                      :temp, :combat, :combat_config, :coins,
+                      :ask_topics, :temp, :combat, :combat_config, :coins,
                       :drop_a, :drop_b, :drop_c, :power])
     end
   end

@@ -114,12 +114,14 @@
 ### 信息与帮助
 | 命令 | 说明 |
 |---|---|
-| `look` `watch` `l` / `看` | 查看当前房间（人物/物品/出口/小地图；小地图可用 `option map_hidden 1` 关闭） |
+| `look` `watch` `l` / `看` | 查看当前房间（人物/物品/出口/小地图 + 自动「可交互」提示；小地图可用 `option map_hidden 1` 关闭，交互提示用 `option hints_hidden 1` 关闭） |
 | `score` / `score2` | 自我状态总览（气血/四维/经验/潜能/铜钱/阅历威望贡献） |
 | `info` | 武学与属性明细（含技能等级与映射特技） |
 | `map` | 当前区域小地图（主动查看，不受 `map_hidden` 影响） |
 | `option` / `选项` | 个人界面选项，按角色独立落盘；`option` 列出、`option <键> <值>` 设定、`option <键>` 删除；`help option` 看说明 |
 | `option map_hidden 1` / `option map_hidden 0` | 关闭 / 打开 `look` 自动带出的区域小地图（对应 LPC `option/map_hidden`） |
+| `option hints_hidden 1` / `option hints_hidden 0` | 关闭 / 打开进入房间时自动带出的「可交互」提示（EX 增强，LPC 无此机制） |
+| `hints` / `交互` / `提示` | 主动列出当前房间全部可交互命令：房间器物（`look <关键词>`）、房间/NPC/物品私有动词、NPC 问询（`ask <名字> <关键词>`）、地上物品（`get <物品>`）；不受 `hints_hidden` 影响，且不截断 |
 | `who` `finger` / `查找` | 在线玩家列表 / 按名查询玩家 |
 | `who1` `who2` `who3` | 玩家列表变体（wiz） |
 | `whoami` `whoride` | 本尊信息 / 在线骑乘统计（wiz） |
@@ -142,6 +144,7 @@
 | `rideto` | 骑乘传送（64 预设地点，需骑马+非战斗+非负重） |
 | `recall` / `回城` | 回出生点 |
 | `map` | 区域小地图 |
+| `hints` / `交互` / `提示` | 当前房间可交互命令（自动提示的完整版） |
 | `search` | 搜索房间隐藏物件 |
 | `watch` | 观察房间详情变体 |
 | `emotes` / `semote` | 预置表情列表 |

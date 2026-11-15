@@ -90,6 +90,17 @@ defmodule Kantele.World.RoomLookEventTest do
     end)
   end
 
+  defp hints_output?(context) do
+    Enum.any?(context.output, fn
+      {_pid, %{topic: "Room.Hints"}} -> true
+      _ -> false
+    end)
+  end
+
+  defp room_with(room, overrides) do
+    struct(room, Map.merge(%{item_desc: %{}, actions: %{}}, overrides))
+  end
+
   describe "look with no runtime \"long\" override (the normal case)" do
     test "keeps the static description and never emits nil", %{room: room, static_description: desc} do
       context = look_event(room, %{})
@@ -175,6 +186,65 @@ defmodule Kantele.World.RoomLookEventTest do
 
     test "meta 无 option 字段 / acting_character 无 meta 时不隐藏", %{room: room} do
       assert mini_map_output?(look_event(room, %{}, %{meta: %{}}))
+    end
+  end
+
+  describe "进入房间自动带出的交互提示" do
+    test "有可交互对象时输出 Room.Hints，且含可执行命令", %{room: room} do
+      room = room_with(room, %{item_desc: %{"paizi" => "牌子"}})
+
+      context = look_event(room, %{})
+
+      assert hints_output?(context)
+
+      strings = context |> texts() |> flat_strings()
+      assert Enum.any?(strings, &String.contains?(&1, "look paizi"))
+      assert Enum.any?(strings, &String.contains?(&1, "可交互"))
+    end
+
+    test "没有任何可交互对象时不输出空标题", %{room: room} do
+      refute hints_output?(look_event(room_with(room, %{}), %{}))
+    end
+
+    test "option hints_hidden 1 关闭自动提示，但房述/小地图照常", %{
+      room: room,
+      static_description: desc
+    } do
+      room = room_with(room, %{item_desc: %{"paizi" => "牌子"}})
+      context = look_event(room, %{}, %{meta: %{option: %{"hints_hidden" => 1}}})
+
+      refute hints_output?(context)
+      assert mini_map_output?(context)
+
+      strings = context |> texts() |> flat_strings()
+      assert Enum.any?(strings, &String.contains?(&1, desc))
+    end
+
+    test "非零/非空值一律隐藏，0 与无关键不隐藏", %{room: room} do
+      room = room_with(room, %{item_desc: %{"paizi" => "牌子"}})
+
+      Enum.each(["yes", "1", 2, true], fn value ->
+        context = look_event(room, %{}, %{meta: %{option: %{"hints_hidden" => value}}})
+        refute hints_output?(context), "hints_hidden=#{inspect(value)} 应隐藏"
+      end)
+
+      Enum.each([0, "0", "", nil, false], fn value ->
+        context = look_event(room, %{}, %{meta: %{option: %{"hints_hidden" => value}}})
+        assert hints_output?(context), "hints_hidden=#{inspect(value)} 应显示"
+      end)
+
+      context = look_event(room, %{}, %{meta: %{option: %{"map_hidden" => 1}}})
+      assert hints_output?(context), "map_hidden 不应影响交互提示"
+
+      # 原子键形态（代码里直接构造 PlayerMeta）同样生效
+      context = look_event(room, %{}, %{meta: %{option: %{hints_hidden: 1}}})
+      refute hints_output?(context)
+    end
+
+    test "meta 无 option 字段时默认开启", %{room: room} do
+      room = room_with(room, %{item_desc: %{"paizi" => "牌子"}})
+
+      assert hints_output?(look_event(room, %{}, %{meta: %{}}))
     end
   end
 end

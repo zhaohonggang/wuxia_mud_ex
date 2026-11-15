@@ -539,6 +539,13 @@ defmodule Kantele.Character.Commands do
     parse("map", :run)
   end
 
+  # 列出当前房间里能用的交互命令（房间 / NPC / 物品），无参数命令
+  module(HintsCommand) do
+    parse("hints", :run)
+    parse("交互", :run)
+    parse("提示", :run)
+  end
+
   module(MoveCommand) do
     # 英文方向（A8/N1）：全词与单字母别名都加词边界，防止 "say"/"eat" 之类被吞成移动
     parse("north", :north, [], fn command ->

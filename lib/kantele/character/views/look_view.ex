@@ -32,6 +32,19 @@ defmodule Kantele.Character.LookView do
     }
   end
 
+  @doc """
+  进入房间时自动带出 / `hints` 主动查看的可交互命令提示。
+
+  输出单一二进制字符串（不是 iodata 列表），避免前端把整段当成一行渲染。
+  """
+  def render("hints", %{lines: lines}) do
+    %EventText{
+      topic: "Room.Hints",
+      data: %{lines: lines},
+      text: Enum.join(lines, "\n") <> "\n"
+    }
+  end
+
   def render("look.extra", %{room: room, characters: characters, item_instances: item_instances}) do
     %EventText{
       topic: "Room.Info.Extra",
