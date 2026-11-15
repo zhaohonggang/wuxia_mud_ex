@@ -50,16 +50,14 @@ echo [dev_start] [2/3] Bootstrapping project (mix deps.get + yarn install + ecto
 %COMPOSE% run --rm setup
 if errorlevel 1 goto :fail
 
-echo [dev_start] [2.5/3] Clean + force-compile to avoid stale BEAMs (code_reloader off + Docker
-echo             bind-mount mtime quirks can make incremental compile skip recompile).
-%COMPOSE% run --rm app sh -c "mix clean || true; mix compile --force"
-if errorlevel 1 goto :fail
-
-echo [dev_start] [3/3] (Re)starting Phoenix server (foreground, Ctrl+C to stop)...
+echo [dev_start] [3/3] (Re)starting Phoenix server with forced recompile...
+echo             (code_reloader off + Docker bind-mount mtime quirks can make
+echo             incremental compile skip recompile, so we force recompile on
+echo             every container start to ensure new code loads.)
 echo             Web client : http://localhost:4000
 echo             Telnet MUD : telnet localhost 4646
-REM 先停掉已在运行的 app 容器，否则下面 `up app` 会判定「已在运行」而变成空操作，
-REM 导致步骤 2.5 刚编译进 app_build 卷的新 BEAM 不会被加载（dev 关闭了 code_reloader）。
+REM 先停掉已在运行的 app 容器，否则 `up app` 会判定「已在运行」而变成空操作，
+REM 导致新编译的 BEAM 不会被加载（dev 关闭了 code_reloader）。
 %COMPOSE% stop app 2>nul
 %COMPOSE% up app
 goto :eof
