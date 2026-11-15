@@ -245,7 +245,24 @@ defmodule Kalevala.Character.Foreman do
         state
 
       false ->
-        state.callback_module.track_presence(state, conn)
+        # track_presence 不应阻塞角色状态持久化：
+        # 即使 Presence GenServer 未就绪、调用超时或 pid 非法导致异常，
+        # 也应继续把更新后的 character 写回 state.character，否则 regen 等
+        # 心跳计算结果永远无法落盘，导致 jing/qi/neili 长期不恢复。
+        try do
+          state.callback_module.track_presence(state, conn)
+        rescue
+          e ->
+            Logger.warn(
+              "track_presence 失败，跳过但继续更新角色状态: #{inspect(e)}"
+            )
+        catch
+          :exit, reason ->
+            Logger.warn(
+              "track_presence 退出，跳过但继续更新角色状态: #{inspect(reason)}"
+            )
+        end
+
         %{state | character: conn.private.update_character}
     end
   end
