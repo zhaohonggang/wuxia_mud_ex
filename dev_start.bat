@@ -50,9 +50,8 @@ echo [dev_start] [2/3] Bootstrapping project (mix deps.get + yarn install + ecto
 %COMPOSE% run --rm setup
 if errorlevel 1 goto :fail
 
-echo [dev_start] [2.5/3] Clean + force-compile (dev 关了 code_reloader，且 Docker 绑定挂载的
-echo             mtime 怪异会让 mix 的增量编译「以为源码没变」而跳过重编，
-echo             因此必须 clean + --force 双保险，否则老 BEAM 会一直留着)...
+echo [dev_start] [2.5/3] Clean + force-compile to avoid stale BEAMs (code_reloader off + Docker
+echo             bind-mount mtime quirks can make incremental compile skip recompile).
 %COMPOSE% run --rm app sh -c "mix clean || true; mix compile --force"
 if errorlevel 1 goto :fail
 
