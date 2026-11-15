@@ -4,8 +4,7 @@ setlocal enabledelayedexpansion
 REM ============================================================
 REM  ExVenture / Kalevala MUD - one-click dev bootstrap (Windows)
 REM  Usage:
-REM    dev_start.bat          full flow: db -> deps -> ecto -> (force recompile) -> phx.server
-REM                              会自动停掉已在运行的 app 容器再启动，因此也能用于「重启」
+REM    dev_start.bat          full flow: db -> deps -> ecto -> phx.server
 REM    dev_start.bat reset    drop + recreate + reseed database, then serve
 REM    dev_start.bat stop     stop all containers (data volumes kept)
 REM    dev_start.bat clean    stop and DELETE all data volumes (fresh start)
@@ -50,16 +49,13 @@ echo [dev_start] [2/3] Bootstrapping project (mix deps.get + yarn install + ecto
 %COMPOSE% run --rm setup
 if errorlevel 1 goto :fail
 
-echo [dev_start] [3/3] (Re)starting Phoenix server...
+echo [dev_start] [2.5/3] Compiling project (mix compile)...
+%COMPOSE% run --rm app mix compile
+if errorlevel 1 goto :fail
+
+echo [dev_start] [3/3] Launching Phoenix server (foreground, Ctrl+C to stop)...
 echo             Web client : http://localhost:4000
 echo             Telnet MUD : telnet localhost 4646
-REM 先停掉已在运行的 app 容器，否则 `up app` 会判定「已在运行」而变成空操作，
-REM 导致新编译的 BEAM 不会被加载（dev 关闭了 code_reloader）。
-%COMPOSE% stop app 2>nul
-REM 强制重编一次（Windows Docker bind-mount 的 mtime 问题会让 mix 增量编译
-REM 跳过重编，导致新代码不生效）。dev 环境每次手动重启时只跑一次，开销可接受。
-%COMPOSE% run --rm app mix compile --force
-if errorlevel 1 goto :fail
 %COMPOSE% up app
 goto :eof
 
