@@ -51,19 +51,27 @@ defmodule Seeds do
   end
 
   def create_room(zone, params) do
-    {:ok, room} =
-      Rooms.create(zone, %{
-        key: params.key,
-        name: params.name,
-        description: params.description,
-        listen: params.description,
-        map_icon: params.map_icon,
-        x: params.x,
-        y: params.y,
-        z: params.z
-      })
+    case ExVenture.Repo.get_by(ExVenture.Rooms.Room, key: params.key) do
+      nil ->
+        {:ok, room} =
+          Rooms.create(zone, %{
+            key: params.key,
+            name: params.name,
+            description: params.description,
+            listen: params.description,
+            map_icon: params.map_icon,
+            x: params.x,
+            y: params.y,
+            z: params.z
+          })
 
-    {:ok, _room} = ExVenture.Rooms.publish(room)
+        {:ok, _room} = ExVenture.Rooms.publish(room)
+
+      existing_room ->
+        # 同 key 房间已存在，跳过重复插入，避免 rooms_key_index 唯一约束冲突
+        IO.puts("[seeds] skip existing room #{params.key}")
+        :ok
+    end
   end
 end
 
