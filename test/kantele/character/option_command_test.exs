@@ -92,6 +92,34 @@ defmodule Kantele.Character.OptionCommandTest do
     end
   end
 
+  describe "裸命令路由（列出当前设定）" do
+    test "option 无参数能命中，且真的列出设定而非 What?" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("option")
+      assert parsed.module == Kantele.Character.OptionCommand
+      refute Map.has_key?(parsed.params, "rest")
+
+      p = player(%{option: %{"map_hidden" => 1}})
+      conn = apply(parsed.module, parsed.function, [build_conn(p), parsed.params])
+
+      assert output_text(conn) =~ "選"
+      assert output_text(conn) =~ "map_hidden"
+    end
+
+    test "中文别名 选项 无参数同样能命中" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("选项")
+      assert parsed.module == Kantele.Character.OptionCommand
+      refute Map.has_key?(parsed.params, "rest")
+
+      conn = apply(parsed.module, parsed.function, [build_conn(player()), parsed.params])
+      assert output_text(conn) =~ "選"
+    end
+
+    test "带参仍正确把 rest 交下去" do
+      {:ok, parsed} = Kantele.Character.Commands.parse("option map_hidden 1")
+      assert parsed.params["rest"] == "map_hidden 1"
+    end
+  end
+
   test "option 路由解析" do
     {:ok, parsed} = Kantele.Character.Commands.parse("option verbose on")
     assert parsed.module == Kantele.Character.OptionCommand

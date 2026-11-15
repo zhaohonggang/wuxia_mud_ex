@@ -186,12 +186,13 @@ defmodule Kantele.Character.Commands do
   end
 
   module(WimpyCommand) do
+    # 裸 wimpy 显示当前阈值（wimpy_command.ex show_setting/1）
     parse("wimpy", :run, fn command ->
-      command |> spaces() |> text(:arg)
+      command |> optional(empty() |> spaces() |> text(:arg))
     end)
 
     parse("自动逃跑", :run, fn command ->
-      command |> spaces() |> text(:arg)
+      command |> optional(empty() |> spaces() |> text(:arg))
     end)
   end
 
@@ -1167,13 +1168,14 @@ defmodule Kantele.Character.Commands do
     parse("存档", :run)
   end
 
+  # 裸命令要能命中（有 run/2 的 _params 兜底），参数一律用 optional。
   module(NickCommand) do
     parse("nick", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
 
     parse("昵称", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 
@@ -1182,33 +1184,35 @@ defmodule Kantele.Character.Commands do
     parse("颜色", :run)
   end
 
+  # 裸 `option` / `选项` 用于列出当前设定，参数必须可选；
+  # 若写成必需的 spaces()+text(:rest)，裸命令会 parse 失败 → "What?"。
   module(OptionCommand) do
     parse("option", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
 
     parse("选项", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 
   module(TitleCommand) do
     parse("title", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
 
     parse("头衔", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 
   module(AliasCommand) do
     parse("alias", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
 
     parse("别名", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
   end
 
@@ -1400,13 +1404,14 @@ defmodule Kantele.Character.Commands do
 
   module(TeamCommand) do
     parse("team", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
 
     parse("组队", :run, fn command ->
-      command |> spaces() |> text(:rest)
+      command |> optional(empty() |> spaces() |> text(:rest))
     end)
 
+    # tt 是队伍会话，必须带发言内容，保持必需参数
     parse("tt", :run, fn command ->
       command |> spaces() |> text(:rest)
     end)
