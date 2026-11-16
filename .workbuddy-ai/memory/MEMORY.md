@@ -67,6 +67,13 @@
   4. `lib/kantele/character/commands/eat_command.ex` `eat/4` 补 `raw_meat` 门控：`meta.raw_meat == true` 返回 "这块…还是生的，烤熟了再吃吧。"，不进入 pill/food 路径。
   验证：`mix test test/kantele/world/corpse_test.exs test/kantele/character/death_revive_test.exs test/kantele/character/eat_command_test.exs test/kantele/combat/skills_valid_learn_pilot_test.exs` → 50 tests, 0 failures；`mix compile` 仅预有警告，无新增。
 
+- **ask 黎生 五丁开山 / 绝命一踢（sect_master_grant，2026-11-14 完结，对应 Path A）**：
+  1. 新建 `lib/kantele/world/inquiry_handlers/sect_master_grant.ex`（`run/3` 调用 `SectMaster.inquiry_grant/3`，成功后 `Stats.learn_perform/2`、扣贡献、`Records.save/1`、渲染 `learned` 文案或默认 `"你学会了「#{perform_name}」。\n"`）。
+  2. `lib/kantele/world/inquiry_handlers.ex` @handlers 注册 `"sect_master_grant" => Kantele.World.InquiryHandlers.SectMasterGrant`。
+  3. `lib/kantele/character/events/npc_shop_event.ex` `handle_inquiry_script/4` 从 `data` 取 `keyword` 做 `perform_name`，并已含 `npc_family: teach_family(conn.character)`（修复 `undefined function keyword/0` 编译错误）。
+  4. `data/world/clone_lib.ucl` 黎生 `inquiries` 占位字符串替换为配置 map：五丁开山（`tongchui-zhang/kai`，min_levels `{tongchui_zhang: 80, force: 90}`，min_gongxian 100，min_shen 1000，cost_gongxian 100）和 绝命一踢（`jueming-tui/jue`，min_levels `{jueming_tui: 80, force: 100}`，min_gongxian 150，min_shen 3000，cost_gongxian 150）。UCL 注意：map  bare key 用下划线（`tongchui_zhang`），loader `normalize_inquiry_field/2` 归一为连字符；嵌套 map 用多行 `{ }` 而非行内 `{ k = v, k2 = v2 }`（Elias 不支持行内嵌套）。
+  验证：`mix compile` 0 错误；inquiry/sect_master 测试 99 例 0 失败；death_revive/corpse/eat/skills 回归 55 例 0 失败。
+
 ## 净增量归档（全部已完结，无待办）
 
 ✅ **全部已完成（2026-11-12）**：以下 5 项均已落地并标记完结，不再作为代码待办。

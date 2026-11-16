@@ -565,6 +565,7 @@ defmodule Kantele.Character.NpcAskEvent do
          script,
          kind
        ) do
+    keyword = Map.get(data, :keyword, "")
     count_key = Map.get(script, "count")
     state = inquiry_state(conn.character)
     remaining = if is_binary(count_key), do: Map.get(state, count_key, 0), else: :infinity
@@ -579,8 +580,10 @@ defmodule Kantele.Character.NpcAskEvent do
         npc_id: conn.character.id,
         npc_pid: self(),
         npc_room_id: conn.character.room_id,
+        npc_family: teach_family(conn.character),
         asker_id: asker_id,
         asker_name: Map.get(data, :asker_name),
+        perform_name: keyword,
         remaining: remaining
       }
     })

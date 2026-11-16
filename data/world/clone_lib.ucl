@@ -14736,8 +14736,52 @@ chats = [
   }
 
   inquiries = [
-    { key = "五丁开山" value = " inquire about skill1 (unimplemented)" },
-    { key = "绝命一踢" value = " inquire about skill2 (unimplemented)" }
+    { key = "五丁开山" value = {
+      kind = "sect_master_grant"
+      perform_id = "tongchui-zhang/kai"
+      skill = "tongchui-zhang"
+      min_levels = {
+        tongchui_zhang = 80
+        force = 90
+      }
+      min_gongxian = 100
+      min_shen = 1000
+      cost_gongxian = 100
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连铜锤掌法都没学，何谈绝招可言？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = {
+        tongchui_zhang = "你的铜锤掌法火候还不够，还是下去练高点再来吧。"
+        force = "你现在的内功修为不足，还是练高点再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「五丁开山」。"
+    } },
+    { key = "绝命一踢" value = {
+      kind = "sect_master_grant"
+      perform_id = "jueming-tui/jue"
+      skill = "jueming-tui"
+      min_levels = {
+        jueming_tui = 80
+        force = 100
+      }
+      min_gongxian = 150
+      min_shen = 3000
+      cost_gongxian = 150
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连绝命腿法都没学，何谈绝招可言？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = {
+        jueming_tui = "你的绝命腿法火候还不够，还是下去练高点再来吧。"
+        force = "你现在的内功修为不足，还是练高点再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「绝命一踢」。"
+    } }
   ]
 
   skills = [
