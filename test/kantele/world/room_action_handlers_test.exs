@@ -92,6 +92,7 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
                 "city:bet",
                 "city:eproom",
                 "city:furong",
+                "city:guangchang",
                 "city:meigui",
                 "city:mudan",
                 "city:nproom",
@@ -359,6 +360,9 @@ assert Enum.sort(RoomActionHandlers.registered_rooms()) ==
       # outzigai/xuanyadi/ontree3/undertan）移植，其余房间不应串
       refute RoomActionHandlers.registered?("lingxiao:juegu", "do_climb")
       refute RoomActionHandlers.registered?("gumu:taiyi1", "do_climb")
+      # city:guangchang 的 climb/enter 房间动作已移植
+      assert RoomActionHandlers.registered?("city:guangchang", "do_climb")
+      assert RoomActionHandlers.registered?("city:guangchang", "do_enter")
     end
   end
 end

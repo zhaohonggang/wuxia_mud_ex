@@ -97,6 +97,11 @@ defmodule Kantele.World.RoomActionHandlers do
     "baituo:neishi" => %{
       "do_move" => {Kantele.World.RoomActions.Baituo.Neishi.Move, :run}
     },
+    # 中央广场：climb tree / enter dong（LPC add_action do_climb/do_enter）
+    "city:guangchang" => %{
+      "do_climb" => {Kantele.World.RoomActions.VisionMove, :run},
+      "do_enter" => {Kantele.World.RoomActions.VisionMove, :run}
+    },
     # 房间动作覆盖全局命令的样板（完整移植，非残缺）：禁止吃喝/给/扔/自杀
     "chengdu:guangchang" => %{
       "do_drink" => {Kantele.World.RoomActions.MessageOnly, :run},

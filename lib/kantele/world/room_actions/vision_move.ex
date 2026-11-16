@@ -98,6 +98,21 @@ defmodule Kantele.World.RoomActions.VisionMove do
       exclude_actor: true,
       otherwise: :not_handled
     },
+    # d/city/guangchang.c: 爬大榕树 / 钻树洞（LPC add_action do_climb/do_enter）
+    {"city:guangchang", "climb"} => %{
+      arg: "tree",
+      before: "$N攀着榕树的枝杈，三下两下爬了上去。\n",
+      target: "city:tree",
+      after: "$N从下面的广场攀爬了上来。\n",
+      otherwise: :not_handled
+    },
+    {"city:guangchang", "enter"} => %{
+      arg: "dong",
+      before: "$N一弯腰往洞里走了进去。\n",
+      target: "gaibang:inhole",
+      after: "$N从洞里走了进来。\n",
+      otherwise: :not_handled
+    },
     # d/mingjiao/tohsq3.c: 不带参数才跳潭（`if (!arg)` → `arg: :none`）
     {"mingjiao:tohsq3", "jump"} => %{
       arg: :none,

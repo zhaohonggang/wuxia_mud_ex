@@ -1,6 +1,9 @@
 defmodule Kantele.Character.MoveCommand do
   use Kalevala.Character.Command
 
+  alias Kantele.World.Room
+  alias Kantele.World.RoomActionHandlers
+
   def north(conn, _params) do
     conn
     |> request_movement("north")
@@ -111,10 +114,15 @@ defmodule Kantele.Character.MoveCommand do
   end
 
   # 特殊方向
-  def enter(conn, _params) do
-    conn
-    |> request_movement("enter")
-    |> assign(:prompt, false)
+  def enter(conn, params) do
+    room_id = conn.character.room_id
+    case try_room_action(conn, params, room_id, "enter") do
+      {:ok, conn} -> assign(conn, :prompt, false)
+      :not_handled ->
+        conn
+        |> request_movement("enter")
+        |> assign(:prompt, false)
+    end
   end
 
   def out(conn, _params) do
@@ -129,10 +137,38 @@ defmodule Kantele.Character.MoveCommand do
     |> assign(:prompt, false)
   end
 
-  def climb(conn, _params) do
-    conn
-    |> request_movement("climb")
-    |> assign(:prompt, false)
+  def climb(conn, params) do
+    room_id = conn.character.room_id
+    case try_room_action(conn, params, room_id, "climb") do
+      {:ok, conn} -> assign(conn, :prompt, false)
+      :not_handled ->
+        conn
+        |> request_movement("climb")
+        |> assign(:prompt, false)
+    end
+  end
+
+  # 尝试执行房间级 add_action 动词（LPC `add_action("verb", "handler")`）。
+  # 若房间有对应 action 且 handler 已移植（RoomActionHandlers 注册），则执行；
+  # 否则返回 :not_handled，由上层回退为普通移动方向。
+  defp try_room_action(conn, params, room_id, verb) do
+    actions = Room.actions_by_id(room_id)
+    case Map.get(actions, verb) do
+      nil ->
+        :not_handled
+
+      handler when is_binary(handler) ->
+        case RoomActionHandlers.lookup(room_id, handler) do
+          {:ok, {module, function}} ->
+            apply(module, function, [conn, params])
+
+          {:unimplemented, _} ->
+            :not_handled
+        end
+
+      _ ->
+        :not_handled
+    end
   end
 
   # ---- 自定义方向名 ----

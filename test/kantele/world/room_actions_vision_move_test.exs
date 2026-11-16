@@ -58,20 +58,22 @@ defmodule Kantele.World.RoomActions.VisionMoveTest do
   defp new_room(conn), do: conn.private.update_character.room_id
 
   describe "entries/0 覆盖度" do
-    test "10 个房间 10 个 verb" do
+    test "12 个房间 12 个 verb" do
       assert Map.keys(VisionMove.entries()) |> Enum.sort() ==
-               [
-                 {"emei:hcawest", "jump"},
-                 {"emei:ssyb", "climb"},
-                 {"emei:xiaoshulin1", "jump"},
-                 {"gumu:taiyi1", "jump"},
-                 {"gumu:taiyi2", "climb"},
-                 {"mingjiao:gudi3", "enter"},
-                 {"mingjiao:tohsq3", "jump"},
-                 {"wudu:dijiao", "pull"},
-                 {"wudu:minju10", "pull"},
-                 {"wudu:minju7", "enter"}
-               ]
+             [
+               {"city:guangchang", "climb"},
+               {"city:guangchang", "enter"},
+               {"emei:hcawest", "jump"},
+               {"emei:ssyb", "climb"},
+               {"emei:xiaoshulin1", "jump"},
+               {"gumu:taiyi1", "jump"},
+               {"gumu:taiyi2", "climb"},
+               {"mingjiao:gudi3", "enter"},
+               {"mingjiao:tohsq3", "jump"},
+               {"wudu:dijiao", "pull"},
+               {"wudu:minju10", "pull"},
+               {"wudu:minju7", "enter"}
+             ]
     end
   end
 
