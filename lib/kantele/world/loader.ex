@@ -10,6 +10,7 @@ defmodule Kantele.World.Loader do
   alias Kantele.World.LoaderError
   alias Kantele.World.Room
   alias Kantele.World.Zone
+  alias Kantele.NameGenerator
 
   @paths %{
     brains_path: "data/brains",
@@ -560,7 +561,22 @@ defmodule Kantele.World.Loader do
 
     character = %Character{
       id: "#{zone.id}:#{key}",
-      name: character_data.name,
+      name: case Map.get(character_data, :random_name_type, :none) do
+        :ghost ->
+          # LPC ghost.h 风格随机名字：颜色 + 动物 + "鬼"（如「赤兔鬼」）
+          NameGenerator.random_ghost_name()
+        :cn ->
+          # LPC NPC_D->generate_cn_name()：随机中文全名（如丐帮弟子）
+          NameGenerator.random_name(Map.get(character_data, :gender, "男性"))
+        :biaoshi ->
+          # LPC biaoshi.c：随机姓氏 + "镖师"（如「赵镖师」）
+          NameGenerator.random_biaoshi_name()
+        :biaotou ->
+          # LPC biaotou.c：随机姓氏 + "镖头"（如「赵镖头」）
+          NameGenerator.random_biaotou_name()
+        _ ->
+          character_data.name
+      end,
       description: character_data.description,
       brain:
         character_data

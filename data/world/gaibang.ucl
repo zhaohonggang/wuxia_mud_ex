@@ -147,6 +147,7 @@ item_desc = {
 
     characters "1dai" {
       name = "丐帮一袋弟子"
+      random_name_type = "cn"
       description = "这是位丐帮一袋弟子，身着破破烂烂，满身油腻。"
   title = "丐帮一袋弟子"
   gender = "男性"
@@ -198,6 +199,7 @@ item_desc = {
 
     characters "2dai" {
       name = "丐帮二袋弟子"
+      random_name_type = "cn"
       description = "这是位丐帮二袋弟子，身着破破烂烂，满身油腻。"
   title = "丐帮二袋弟子"
   gender = "男性"
@@ -249,6 +251,7 @@ item_desc = {
 
     characters "3dai" {
       name = "丐帮三袋弟子"
+      random_name_type = "cn"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮三袋弟子"
   gender = "男性"
@@ -300,6 +303,7 @@ item_desc = {
 
     characters "4dai" {
       name = "丐帮四袋弟子"
+      random_name_type = "cn"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮四袋弟子"
   gender = "男性"
@@ -355,6 +359,7 @@ item_desc = {
 
     characters "5dai" {
       name = "丐帮五袋弟子"
+      random_name_type = "cn"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮五袋弟子"
   gender = "男性"
@@ -410,6 +415,7 @@ item_desc = {
 
     characters "6dai" {
       name = "丐帮六袋弟子"
+      random_name_type = "cn"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮六袋弟子"
   gender = "男性"
@@ -466,6 +472,7 @@ item_desc = {
 
     characters "7dai" {
       name = "丐帮七袋弟子"
+      random_name_type = "cn"
       description = "这是位丐帮七袋弟子，只见他身材魁梧，双目精光四射。"
   title = "丐帮七袋弟子"
   gender = "男性"

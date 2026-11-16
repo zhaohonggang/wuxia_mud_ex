@@ -72,6 +72,12 @@
   2. **世界位置文档**：`docs/世界位置速查.zh-CN.md` 已完整落地，涵盖大理石屏风房（kunming:shufan）、猎人房（hengyang:shulin1）、陷阱/捕兽夹（各城市杂货铺）、小龙女（gumu:zhengting/houting）、树枝/火/肉（多城市树林+fire/kao命令）、白虹剑（xiakedao:shidong10）、洗髓经（shaolin:dmyuan2）。
   3. **位置加到 goto 命令**：`lib/kantele/character/commands/goto_command.ex` 已实现 `goto <房间ID>` 传送（巫师专用，通过 `Access.wizardp/1` 门控，`ZoneCache` 校验房间是否已加载）。文档中已列出各位置的 goto 命令（如 `goto gumu:zhengting`、`goto shaolin:dmyuan2` 等）。
 
+- **LPC 式随机鬼魂名字（2026-11-16 完结，对应 user 指令「照 LPC ghost.h 改 ex 随机名字」）**：
+  1. `lib/kantele/name_generator.ex` 新增 `random_ghost_name/1`：按 LPC `/d/death/HellZhen/ghost.h` `first_name(颜色) × name_words(动物) × last_words("鬼")` 组合，如「赤兔鬼」「红龙鬼」，默认 rng `&:rand.uniform/1`。
+  2. `lib/kantele/world/loader.ex` `parse_character/4`：`character_data.name` 改为 `if Map.get(character_data, :random_name, false) do NameGenerator.random_ghost_name() else character_data.name end`，新增 `alias Kantele.NameGenerator`。
+  3. `data/world/death.ucl` 18 个 HellZhen NPC（keys "1"-"18"）均加 `random_name = true`，替换原先全硬编码 `name = "幽魂"`。
+  验证：`mix compile` 0 新增警告；`random_ghost_name/1` 生成 100 个名字全部以「鬼」结尾、85 个去重；Elias 解析 death.ucl 18/18 NPC `random_name = true`；全量回归 `7830 tests / 27 failures`（全为预有 bcrypt NIF 环境性，0 新增失败）。
+
 - **ask 黎生 五丁开山 / 绝命一踢（sect_master_grant，2026-11-14 完结，对应 Path A）**：
   1. 新建 `lib/kantele/world/inquiry_handlers/sect_master_grant.ex`（`run/3` 调用 `SectMaster.inquiry_grant/3`，成功后 `Stats.learn_perform/2`、扣贡献、`Records.save/1`、渲染 `learned` 文案或默认 `"你学会了「#{perform_name}」。\n"`）。
   2. `lib/kantele/world/inquiry_handlers.ex` @handlers 注册 `"sect_master_grant" => Kantele.World.InquiryHandlers.SectMasterGrant`。

@@ -335,6 +335,46 @@ defmodule Kantele.NameGenerator do
     {sname <> pname_char <> pname_char2, [id1, id2]}
   end
 
+  # LPC /d/death/HellZhen/ghost.h 风格的随机鬼魂名字：
+  # first_name(颜色) × name_words(动物) × last_words("鬼")
+  # 示例：赤兔鬼、红龙鬼、绿蛇鬼、黑狼鬼、紫猴鬼...
+  @ghost_first_names ["赤", "红", "黄", "绿", "青", "蓝", "紫", "乌", "黑", "银", "白", "金", "灰", "金", "木", "水", "火", "土"]
+  @ghost_name_words ["兔", "狐", "龙", "蛟", "虎", "豹", "马", "鹿", "羊", "蛇", "獐", "鸡", "狗", "狼", "猿", "猴", "鼠", "牛", "獬", "燕", "猪", "蝠"]
+  @ghost_last_words ["鬼"]
+
+  @doc """
+  LPC ghost.h 随机鬼魂名字生成（对应 /d/death/HellZhen/ghost.h create()）。
+
+  随机组合：颜色字 + 动物字 + "鬼"，例如「赤兔鬼」「红龙鬼」。
+  """
+  def random_ghost_name(rng \\ &:rand.uniform/1) do
+    first = Enum.at(@ghost_first_names, rng.(length(@ghost_first_names)) - 1)
+    middle = Enum.at(@ghost_name_words, rng.(length(@ghost_name_words)) - 1)
+    last = Enum.at(@ghost_last_words, rng.(length(@ghost_last_words)) - 1)
+    first <> middle <> last
+  end
+
+  # LPC /d/changan/npc/biaoshi.c：随机姓氏 + "镖师"
+  @biaoshi_surnames ["赵", "钱", "孙", "李", "周", "吴", "郑", "王"]
+
+  @doc """
+  LPC biaoshi.c 随机镖师名字：随机姓氏 + "镖师"，例如「赵镖师」「钱镖师」。
+  """
+  def random_biaoshi_name(rng \\ &:rand.uniform/1) do
+    surname = Enum.at(@biaoshi_surnames, rng.(length(@biaoshi_surnames)) - 1)
+    surname <> "镖师"
+  end
+
+  # LPC /d/changan/npc/biaotou.c：随机姓氏 + "镖头"
+
+  @doc """
+  LPC biaotou.c 随机镖头名字：随机姓氏 + "镖头"，例如「赵镖头」「钱镖头」。
+  """
+  def random_biaotou_name(rng \\ &:rand.uniform/1) do
+    surname = Enum.at(@biaoshi_surnames, rng.(length(@biaoshi_surnames)) - 1)
+    surname <> "镖头"
+  end
+
   defp pick_distinct(pool, excluded, rng) do
     p = Enum.at(pool, rng.(length(pool)) - 1)
     if p in List.wrap(excluded), do: pick_distinct(pool, excluded, rng), else: p

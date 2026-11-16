@@ -3186,6 +3186,7 @@ item_desc = {
 
     characters "biaoshi" {
       name = "镖师"
+      random_name_type = "biaoshi"
       aliases = ["biaoshi", "biao"]
       description = "一位训练有素的镖师。"
   gender = "男性"
@@ -3215,6 +3216,7 @@ item_desc = {
 
     characters "biaotou" {
       name = "镖头"
+      random_name_type = "biaotou"
       aliases = ["biaoshi", "biao"]
       description = "一位训练有素的镖头。"
   gender = "男性"
