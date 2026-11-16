@@ -67,6 +67,11 @@
   4. `lib/kantele/character/commands/eat_command.ex` `eat/4` 补 `raw_meat` 门控：`meta.raw_meat == true` 返回 "这块…还是生的，烤熟了再吃吧。"，不进入 pill/food 路径。
   验证：`mix test test/kantele/world/corpse_test.exs test/kantele/character/death_revive_test.exs test/kantele/character/eat_command_test.exs test/kantele/combat/skills_valid_learn_pilot_test.exs` → 50 tests, 0 failures；`mix compile` 仅预有警告，无新增。
 
+- **三项遗留待办已全部结案（2026-11-15，当前会话）**：
+  1. **Set Grant as wizard**：`docs/世界位置速查.zh-CN.md` §8 声明 `grant`（id=1）已设为 `wiz_level = 3`（admin），拥有全部巫师权限，可直接使用 `goto` 命令。
+  2. **世界位置文档**：`docs/世界位置速查.zh-CN.md` 已完整落地，涵盖大理石屏风房（kunming:shufan）、猎人房（hengyang:shulin1）、陷阱/捕兽夹（各城市杂货铺）、小龙女（gumu:zhengting/houting）、树枝/火/肉（多城市树林+fire/kao命令）、白虹剑（xiakedao:shidong10）、洗髓经（shaolin:dmyuan2）。
+  3. **位置加到 goto 命令**：`lib/kantele/character/commands/goto_command.ex` 已实现 `goto <房间ID>` 传送（巫师专用，通过 `Access.wizardp/1` 门控，`ZoneCache` 校验房间是否已加载）。文档中已列出各位置的 goto 命令（如 `goto gumu:zhengting`、`goto shaolin:dmyuan2` 等）。
+
 - **ask 黎生 五丁开山 / 绝命一踢（sect_master_grant，2026-11-14 完结，对应 Path A）**：
   1. 新建 `lib/kantele/world/inquiry_handlers/sect_master_grant.ex`（`run/3` 调用 `SectMaster.inquiry_grant/3`，成功后 `Stats.learn_perform/2`、扣贡献、`Records.save/1`、渲染 `learned` 文案或默认 `"你学会了「#{perform_name}」。\n"`）。
   2. `lib/kantele/world/inquiry_handlers.ex` @handlers 注册 `"sect_master_grant" => Kantele.World.InquiryHandlers.SectMasterGrant`。
