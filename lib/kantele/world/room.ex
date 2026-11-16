@@ -63,7 +63,16 @@ defmodule Kantele.World.Room do
     # P-E 光线：房间自身光照（LPC `room light` 等价）。
     # 默认 1（明亮）；设为 <= 0 或 :dark 表示该房漆黑（室内房 look 注入可见性文案）。
     # 户外房的光照由 Weather 决定，不读此字段。
-    light: 1
+    light: 1,
+
+    # LPC `valid_startroom`：玩家在该房间执行 `save` 时，会把
+    # meta.env.startroom 更新为当前房间（对应 user.c save() 中的
+    # env->query("valid_startroom") 判定）。
+    #
+    # 语义变更：默认所有房间都是 valid_startroom，除非显式标记
+    # invalid_startroom 为 true。这样玩家在任意房间 save 后，下次
+    # 登录都会回到存档时所在的房间。
+    valid_startroom: true
   ]
 
   @doc """
@@ -346,7 +355,11 @@ defmodule Kantele.World.Room do
             "water" => "water" in flags,
             # LPC 户外房间标记：正午发病事件（season_event）只在户外房间触发，
             # 与 look_view.ex 的 `"outdoors" in flags` 判定同源。
-            "outdoors" => "outdoors" in flags
+            "outdoors" => "outdoors" in flags,
+            # LPC `valid_startroom`：在该房间 save() 后，meta.env.startroom 会
+            # 更新为当前房间，下次登录直接落点于此。默认所有房间都
+            # 可作为存档落点，除非被标记 invalid_startroom。
+            "valid_startroom" => Map.get(data, :valid_startroom, true)
           }
         }
 

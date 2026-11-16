@@ -351,7 +351,8 @@ defmodule Kantele.World.Loader do
       room_position: Map.get(room_data, :room_position),
       room_owner_id: Map.get(room_data, :room_owner_id),
       actions: parse_room_actions(Map.get(room_data, :actions)),
-      state: parse_room_state(Map.get(room_data, :state))
+      state: parse_room_state(Map.get(room_data, :state)),
+      valid_startroom: (if Map.get(room_data, :invalid_startroom, false), do: false, else: Map.get(room_data, :valid_startroom, true))
     }
 
     {key, room}
