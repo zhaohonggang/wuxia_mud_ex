@@ -431,10 +431,16 @@ defmodule Kantele.Character.NonPlayerMeta do
     # 都经过 `Kalevala.Character.Conn.private/1`（= Meta.trim）。裁掉它们会导致
     # valid_leave 条件恒真/恒假（例如少了 temp，`!me->query_temp('rent_paid')` 永真，
     # 玩家就永远上不了客栈二楼）。
+    #
+    #   goods    商品列表：Xiaoer.is_xiaoer?/1 读它识别商人小二（line 47）；
+    #            裁掉会导致所有有 goods 的 NPC 无法被识别为店小二。
+    #   accept   收受规则表：Xiaoer.is_xiaoer?/1 读它识别只收钱不卖物的小二
+    #            （如榕城 rongcheng 的店小二，只有 accept 包含 kind="money"）；
+    #            裁掉会导致这类小二无法被 pay/give 命令识别。
     def trim(meta) do
       Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init, :ask_handler,
                       :ask_topics, :temp, :combat, :combat_config, :coins,
-                      :drop_a, :drop_b, :drop_c, :power])
+                      :drop_a, :drop_b, :drop_c, :power, :goods, :accept])
     end
   end
 

@@ -36,6 +36,7 @@ defmodule Kantele.World.InteractionHints do
   alias Kalevala.Verb
   alias Kalevala.Verb.Context, as: VerbContext
   alias Kantele.Character.CommandVerbs
+  alias Kantele.NPC.Xiaoer
   alias Kantele.World.ItemActionHandlers
   alias Kantele.World.NpcActionHandlers
   alias Kantele.World.RoomActionHandlers
@@ -141,14 +142,19 @@ defmodule Kantele.World.InteractionHints do
     # accept_talk 门控），其它 NPC 会回「X似乎不想和你聊天。」，不列以免误导。
     conversational? = ask_commands != []
 
+    generic_commands =
+      ["talk", "give"] ++ (if Xiaoer.is_xiaoer?(npc), do: ["pay"], else: [])
+
     generic =
-      ["talk", "give"]
+      generic_commands
       |> Enum.filter(fn
         "talk" -> conversational? and CommandVerbs.global?("talk")
+        "pay" -> CommandVerbs.global?("pay")
         other -> CommandVerbs.global?(other)
       end)
       |> Enum.map(fn
         "give" -> "give <物品> to #{name}"
+        "pay" -> "pay <金额> to #{name}"
         verb -> "#{verb} #{name}"
       end)
 

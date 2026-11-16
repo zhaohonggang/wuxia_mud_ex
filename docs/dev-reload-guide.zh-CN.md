@@ -117,6 +117,45 @@ docker cp <本地文件> wuxia_mud_dev-app-1:/app/<容器路径
 docker exec wuxia_mud_dev-app-1 wget -q -O- http://127.0.0.1:4000/_health
 ```
 
+## Docker 编译缓存清理（clear_docker_cache.bat）
+
+开发环境的 `app_build` 命名卷会缓存已编译的 BEAM 文件，容器重启不会自动清除。如果你修改了 Elixir 源码或 UCL 数据（例如给 xiaoer 加了 `accept` 规则），但重启后 `hints` 仍不显示 `pay`、`pay` 仍报“对方不是店小二”，说明旧 BEAM 缓存还在起作用。此时需要清理编译缓存。
+
+项目根目录提供了 `clear_docker_cache.bat` 脚本，用法如下：
+
+```powershell
+# 进入项目目录
+cd C:\files\git\wuxia_mud_ex
+
+# 运行清理脚本（只删编译缓存卷 app_build，不删数据库卷 postgres_data，角色数据不丢失）
+.\clear_docker_cache.bat
+```
+
+脚本会做三件事：
+
+1. `docker compose -f docker-compose.dev.yml down` —— 停止容器（保留 `postgres_data` 卷，数据不丢失）
+2. `docker volume rm wuxia_mud_dev_app_build` —— 删除旧编译缓存卷（根因修复）
+3. `docker builder prune -f` —— 清理 Docker 构建缓存，释放磁盘空间
+
+脚本运行完成后，按提示重新启动游戏：
+
+```powershell
+docker compose -f docker-compose.dev.yml up --build
+```
+
+然后进入游戏验证：
+
+```
+goto chengdu:kedian
+hints          # 应显示：店小二：pay <金额> to 店小二
+pay xiaoer 5000 coin
+up             # 应能上楼
+```
+
+> 注意：不要直接用 `docker compose down -v`，那样会连 `postgres_data` 一起删掉，导致角色数据丢失。只用 `clear_docker_cache.bat` 即可，它只删 `app_build` 编译缓存。
+
+---
+
 ## Docker 文件位置
 
 Docker Desktop 在 Windows 上用 WSL2 后端运行，所有容器/镜像/数据卷都保存在 `docker-desktop` 这个 WSL 发行版的虚拟磁盘里，不是普通 Windows 目录。

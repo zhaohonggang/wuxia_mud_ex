@@ -1864,6 +1864,16 @@ defmodule Kantele.Character.Commands do
     end)
   end
 
+  module(PayCommand) do
+    parse("pay", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+
+    parse("付", :run, fn command ->
+      command |> spaces() |> text(:rest)
+    end)
+  end
+
   module(DaubCommand) do
     parse("daub", :run, fn command ->
       command

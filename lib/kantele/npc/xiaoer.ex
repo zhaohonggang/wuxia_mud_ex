@@ -39,9 +39,17 @@ defmodule Kantele.NPC.Xiaoer do
   @doc "随机问候语"
   def greet, do: Enum.random(@greetings)
 
-  @doc "判断是否为店小二 NPC（有 goods 且是商人）"
+  @doc "判断是否为店小二 NPC"
+  #
+  # 识别两类店小二：
+  #  1. 有 goods（非空商品列表）的商人小二（如客栈/酒楼里售卖物品的小二）；
+  #  2. 有 accept 规则且含 kind = "money" 的小二（如只收房租、不卖物品的榕城小二）。
   def is_xiaoer?(%{meta: %{goods: goods}} = character) when is_list(goods) and goods != [],
     do: true
+
+  def is_xiaoer?(%{meta: %{accept: accept_rules}} = character) when is_list(accept_rules) do
+    Enum.any?(accept_rules, fn %{kind: "money"} -> true; _ -> false end)
+  end
 
   def is_xiaoer?(_), do: false
 
@@ -90,29 +98,6 @@ defmodule Kantele.NPC.Xiaoer do
         {:error, "小二不收这个东西。"}
     end
   end
-
-  @doc "获取租金标准（函数版）"
-  def rent_per_night, do: @rent_per_night
-
-  @doc "获取兑换列表"
-  def exchange_items, do: @exchange_items
-
-  @doc "获取物品显示名"
-  def item_name(item_instance) do
-    case Items.get(item_instance.item_id) do
-      {:ok, item} -> item.name
-      _ -> "物品"
-    end
-  end
-
-  @doc "随机问候语"
-  def greet, do: Enum.random(@greetings)
-
-  @doc "判断是否为店小二 NPC（有 goods 且是商人）"
-  def is_xiaoer?(%{meta: %{goods: goods}} = character) when is_list(goods) and goods != [],
-    do: true
-
-  def is_xiaoer?(_), do: false
 
   # --- 心跳清理 ---
 

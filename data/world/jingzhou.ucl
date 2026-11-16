@@ -944,7 +944,12 @@ direction = "up"
     room_id = rooms.kedian.id
     characters = [
       { id = characters.xiaoer2.id }    ]
-  }
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
+  ]
+    }
 
 # Generated from C:/files/git/mud/d/jingzhou/kedian2.c by LPCConverter
 # Zone: jingzhou
@@ -4309,5 +4314,10 @@ chats = [
   greetings = [
     { line = "店小二笑咪咪地说道：这位{respect}，进来喝杯茶，歇歇腿吧。" },
     { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
+  ]
+
+  accept = [
+    { kind = "money" min = 5000 accept = true msg = "小二一哈腰，说道：多谢您老，客官请上楼歇息。" },
+    { kind = "any" accept = false }
   ]
     }
