@@ -2902,7 +2902,7 @@ chats = [
 # Zone: jingzhou
 
     characters "pink_cloth" {
-      name = "NPC"
+      name = "粉衣"
       description = ""
     }
 

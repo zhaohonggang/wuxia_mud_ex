@@ -3465,7 +3465,7 @@ chats = [
 # Zone: hengyang
 
     items "tanmuqin" {
-      name = "NPC"
+      name = "檀木琴"
       aliases = ["tanmu qin", "tanmu", "qin"]
       description = "一把檀木所制的木琴，古典雅致。"
 

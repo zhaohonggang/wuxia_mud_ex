@@ -1233,7 +1233,7 @@ direction = ~
 # Zone: death
 
     characters "1" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1295,7 +1295,7 @@ direction = ~
 # Zone: death
 
     characters "10" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1357,7 +1357,7 @@ direction = ~
 # Zone: death
 
     characters "11" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1419,7 +1419,7 @@ direction = ~
 # Zone: death
 
     characters "12" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1481,7 +1481,7 @@ direction = ~
 # Zone: death
 
     characters "13" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1543,7 +1543,7 @@ direction = ~
 # Zone: death
 
     characters "14" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1605,7 +1605,7 @@ direction = ~
 # Zone: death
 
     characters "15" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1667,7 +1667,7 @@ direction = ~
 # Zone: death
 
     characters "16" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1729,7 +1729,7 @@ direction = ~
 # Zone: death
 
     characters "17" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1791,7 +1791,7 @@ direction = ~
 # Zone: death
 
     characters "18" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1853,7 +1853,7 @@ direction = ~
 # Zone: death
 
     characters "2" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "女性"
@@ -1907,7 +1907,7 @@ direction = ~
 # Zone: death
 
     characters "3" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -1961,7 +1961,7 @@ direction = ~
 # Zone: death
 
     characters "4" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -2026,7 +2026,7 @@ direction = ~
 # Zone: death
 
     characters "5" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -2081,7 +2081,7 @@ direction = ~
 # Zone: death
 
     characters "6" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "女性"
@@ -2134,7 +2134,7 @@ direction = ~
 # Zone: death
 
     characters "7" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -2185,7 +2185,7 @@ direction = ~
 # Zone: death
 
     characters "8" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "男性"
@@ -2234,7 +2234,7 @@ direction = ~
 # Zone: death
 
     characters "9" {
-      name = "NPC"
+      name = "幽魂"
       aliases = ["ghost"]
       description = ""
   gender = "女性"

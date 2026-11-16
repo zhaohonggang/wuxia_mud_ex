@@ -3185,7 +3185,7 @@ item_desc = {
 # Zone: changan
 
     characters "biaoshi" {
-      name = "NPC"
+      name = "镖师"
       aliases = ["biaoshi", "biao"]
       description = "一位训练有素的镖师。"
   gender = "男性"
@@ -3214,7 +3214,7 @@ item_desc = {
 # Zone: changan
 
     characters "biaotou" {
-      name = "NPC"
+      name = "镖头"
       aliases = ["biaoshi", "biao"]
       description = "一位训练有素的镖头。"
   gender = "男性"
@@ -3424,7 +3424,7 @@ item_desc = {
 # Zone: changan
 
     characters "fujiang" {
-      name = "NPC"
+      name = "副将"
       aliases = ["fu jiang", "fu", "jiang", "general", "fujiang"]
       description = "一名战功累累的副将。如今太平了，便练练兵，以防边疆有变。"
   title = "副将"
@@ -4356,7 +4356,7 @@ chats = [
 # Zone: changan
 
     characters "shiwei" {
-      name = "NPC"
+      name = "二品带刀侍卫"
       aliases = ["shi wei", "shi", "wei"]
       description = "这是位守护皇宫的带刀侍卫，身穿劲装，手持钢刀。他双目精光炯炯，警惕地巡视着四周的情形。"
   title = "二品带刀侍卫"
@@ -5065,7 +5065,7 @@ chats = [
 # Zone: changan
 
     characters "yayi" {
-      name = "NPC"
+      name = "衙役"
       aliases = ["yayi"]
       description = ""
   title = "衙役"
@@ -5364,7 +5364,7 @@ chats = [
 # Zone: changan
 
     items "book" {
-      name = "NPC"
+      name = "百变神通"
       aliases = ["book", "shu"]
       description = "一本可以学习易容术的书。"
   verbs = [

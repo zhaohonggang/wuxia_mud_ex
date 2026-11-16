@@ -9767,7 +9767,7 @@ chats = [
 # Zone: beijing
 
     items "danC_5" {
-      name = "NPC"
+      name = "修罗丹"
       aliases = ["xiuluo dan", "dan"]
       description = ""
   verbs = [
@@ -9875,7 +9875,7 @@ chats = [
 # Zone: beijing
 
     items "danD_6" {
-      name = "NPC"
+      name = "罗刹丹"
       aliases = ["luosha dan", "dan"]
       description = ""
   verbs = [
@@ -9965,7 +9965,7 @@ chats = [
 # Zone: beijing
 
     items "danM_5" {
-      name = "NPC"
+      name = "阴阳丹"
       aliases = ["yinyang dan", "dan"]
       description = ""
   verbs = [
@@ -10055,7 +10055,7 @@ chats = [
 # Zone: beijing
 
     items "danS_1" {
-      name = "NPC"
+      name = "玄元丹"
       aliases = ["xuanyuan dan", "dan"]
       description = ""
   verbs = [
@@ -10073,7 +10073,7 @@ chats = [
 # Zone: beijing
 
     items "danS_2" {
-      name = "NPC"
+      name = "朱雀丹"
       aliases = ["zhuque dan", "dan"]
       description = ""
   verbs = [
@@ -10091,7 +10091,7 @@ chats = [
 # Zone: beijing
 
     items "danS_3" {
-      name = "NPC"
+      name = "玄武神农丹"
       aliases = ["xuanwu dan", "dan"]
       description = ""
   verbs = [
@@ -10109,7 +10109,7 @@ chats = [
 # Zone: beijing
 
     items "danS_4" {
-      name = "NPC"
+      name = "白虎丹"
       aliases = ["baihu dan", "dan"]
       description = ""
   verbs = [
@@ -10127,7 +10127,7 @@ chats = [
 # Zone: beijing
 
     items "danS_5" {
-      name = "NPC"
+      name = "青龙丹"
       aliases = ["qinglong dan", "dan"]
       description = ""
   verbs = [

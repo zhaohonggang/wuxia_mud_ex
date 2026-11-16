@@ -146,7 +146,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "1dai" {
-      name = "NPC"
+      name = "丐帮一袋弟子"
       description = "这是位丐帮一袋弟子，身着破破烂烂，满身油腻。"
   title = "丐帮一袋弟子"
   gender = "男性"
@@ -197,7 +197,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "2dai" {
-      name = "NPC"
+      name = "丐帮二袋弟子"
       description = "这是位丐帮二袋弟子，身着破破烂烂，满身油腻。"
   title = "丐帮二袋弟子"
   gender = "男性"
@@ -248,7 +248,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "3dai" {
-      name = "NPC"
+      name = "丐帮三袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮三袋弟子"
   gender = "男性"
@@ -299,7 +299,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "4dai" {
-      name = "NPC"
+      name = "丐帮四袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮四袋弟子"
   gender = "男性"
@@ -354,7 +354,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "5dai" {
-      name = "NPC"
+      name = "丐帮五袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮五袋弟子"
   gender = "男性"
@@ -409,7 +409,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "6dai" {
-      name = "NPC"
+      name = "丐帮六袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮六袋弟子"
   gender = "男性"
@@ -465,7 +465,7 @@ item_desc = {
 # Zone: gaibang
 
     characters "7dai" {
-      name = "NPC"
+      name = "丐帮七袋弟子"
       description = "这是位丐帮七袋弟子，只见他身材魁梧，双目精光四射。"
   title = "丐帮七袋弟子"
   gender = "男性"
@@ -521,7 +521,7 @@ item_desc = {
 # Zone: gaibang
 
     items "cloth" {
-      name = "NPC"
+      name = "破布衣"
       aliases = ["cloth"]
       description = "这是一件满是油腻的破布衣。"
   verbs = [
@@ -562,7 +562,7 @@ item_desc = {
 # Zone: gaibang
 
     items "po_bu" {
-      name = "NPC"
+      name = "破布"
       aliases = ["po bu", "po", "bu", "piece"]
       description = "这是一块破布，不知道有什么用。"
   verbs = [
@@ -581,7 +581,7 @@ item_desc = {
 # Zone: gaibang
 
     items "qingzhu_ling" {
-      name = "NPC"
+      name = "青竹令"
       aliases = ["qingzhu ling", "qingzhu", "ling"]
       description = "这是一面用青竹做成的令牌，凭此可向帮内师兄挑战。"
   verbs = [
@@ -600,7 +600,7 @@ item_desc = {
 # Zone: gaibang
 
     items "staff" {
-      name = "NPC"
+      name = "竹棒"
       aliases = ["zhu bang", "zhu", "bang"]
       description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"
   verbs = [

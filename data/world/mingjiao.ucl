@@ -2720,7 +2720,7 @@ direction = ~
 # Zone: mingjiao
 
     characters "bigmonkey" {
-      name = "NPC"
+      name = "白猿"
       aliases = ["bai yuan", "bai", "yuan"]
       description = ""
   age = 65

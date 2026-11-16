@@ -2484,7 +2484,7 @@ chats = [
 # Zone: wudu
 
     characters "cunfu" {
-      name = "NPC"
+      name = "农家妇女"
       aliases = ["cun fu"]
       description = "这是个普普通通的农家妇女，脸上擦着厚厚的白粉。"
   gender = "女性"
@@ -2511,7 +2511,7 @@ chats = [
 # Zone: wudu
 
     characters "cunmin" {
-      name = "NPC"
+      name = "乡下人"
       aliases = ["cun min"]
       description = "这是个普普通通的乡下人，紫红的脸膛，手上长满了厚厚的老茧。"
   gender = "男性"
@@ -3176,7 +3176,7 @@ chats = [
 # Zone: wudu
 
     items "xingjunsan" {
-      name = "NPC"
+      name = "诸葛行军散"
       aliases = ["xingjun san", "xingjun", "san"]
       description = "这是一包预防瘴气的药散，带在身上可以预防瘴气。"
   verbs = [

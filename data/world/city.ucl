@@ -6163,7 +6163,7 @@ chats = [
 # Zone: city
 
     characters "christmasman" {
-      name = "NPC"
+      name = "圣诞老人"
       aliases = ["christmas man", "man", "lao ren"]
       description = "圣诞老人背着一个大口袋，笑嘻嘻地看着你！"
   gender = "男性"

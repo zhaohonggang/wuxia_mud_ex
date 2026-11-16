@@ -4599,7 +4599,7 @@ chats = [
 # Zone: kaifeng
 
     items "jing1" {
-      name = "NPC"
+      name = "佛经"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
@@ -4626,7 +4626,7 @@ chats = [
 # Zone: kaifeng
 
     items "jing2" {
-      name = "NPC"
+      name = "佛经"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
@@ -4653,7 +4653,7 @@ chats = [
 # Zone: kaifeng
 
     items "jing3" {
-      name = "NPC"
+      name = "佛经"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [
@@ -4680,7 +4680,7 @@ chats = [
 # Zone: kaifeng
 
     items "jing4" {
-      name = "NPC"
+      name = "佛经"
       aliases = ["shu", "book"]
       description = "这是一册佛经。"
   verbs = [

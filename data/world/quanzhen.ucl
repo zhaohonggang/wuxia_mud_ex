@@ -3764,7 +3764,7 @@ chats = [
 # Zone: quanzhen
 
     items "gao" {
-      name = "NPC"
+      name = "龟苓膏"
       aliases = ["guiling gao", "guiling", "gao"]
       description = "这是一块用乌龟甲和茯苓配置成的龟苓膏，功能延年益寿。"
   verbs = [
@@ -3923,7 +3923,7 @@ chats = [
 # Zone: quanzhen
 
     items "shouwu" {
-      name = "NPC"
+      name = "何首乌"
       aliases = ["he shouwu", "he", "shouwu"]
       description = "这是一支已成人形的何首乌，看来可以入药。"
   verbs = [

@@ -1027,7 +1027,7 @@ item_desc = {
 # Zone: tulong
 
     items "bosi" {
-      name = "NPC"
+      name = "波斯教服"
       aliases = ["bosi cloth", "bosi", "cloth"]
       description = "这是一件波斯明教总舵的教服。"
   verbs = [
@@ -1077,7 +1077,7 @@ item_desc = {
 # Zone: tulong
 
     items "hammer" {
-      name = "NPC"
+      name = "西瓜锤"
       aliases = ["green xigua", "xigua", "hammer"]
       description = "这西瓜由精钢铸成，瓜上漆成绿黑间条之色，共有一对，系以钢链。"
   verbs = [
@@ -1127,7 +1127,7 @@ item_desc = {
 # Zone: tulong
 
     items "ling" {
-      name = "NPC"
+      name = "寒铁令"
       aliases = ["bintie ling", "bintie", "ling"]
       description = ""
   verbs = [
@@ -3064,7 +3064,7 @@ direction = "down"
 # Zone: tulong
 
     items "jian" {
-      name = "NPC"
+      name = "倚天剑"
       aliases = ["yitian jian", "yitian", "jian", "sword"]
       description = "这便与天下至尊的屠龙宝刀并称的倚天剑。"
   verbs = [

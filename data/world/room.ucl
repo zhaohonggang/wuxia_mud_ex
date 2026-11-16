@@ -743,7 +743,7 @@ zones "room" {
 # Zone: room
 
     characters "shouwei" {
-      name = "NPC"
+      name = "守卫"
       aliases = ["id", "shou wei", "guarder"]
       description = "这是看护庄园的守卫，看上去似乎身怀绝技。"
   gender = "男性"

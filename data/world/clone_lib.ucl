@@ -9573,7 +9573,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_1dai" {
-      name = "NPC"
+      name = "丐帮一袋弟子"
       description = "这是位丐帮一袋弟子，身着破破烂烂，满身油腻。"
   title = "丐帮一袋弟子"
   gender = "男性"
@@ -9622,7 +9622,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_2dai" {
-      name = "NPC"
+      name = "丐帮二袋弟子"
       description = "这是位丐帮二袋弟子，身着破破烂烂，满身油腻。"
   title = "丐帮二袋弟子"
   gender = "男性"
@@ -9671,7 +9671,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_3dai" {
-      name = "NPC"
+      name = "丐帮三袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮三袋弟子"
   gender = "男性"
@@ -9720,7 +9720,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_4dai" {
-      name = "NPC"
+      name = "丐帮四袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮四袋弟子"
   gender = "男性"
@@ -9771,7 +9771,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_5dai" {
-      name = "NPC"
+      name = "丐帮五袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮五袋弟子"
   gender = "男性"
@@ -9822,7 +9822,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_6dai" {
-      name = "NPC"
+      name = "丐帮六袋弟子"
       description = "这是位衣着破烂的丐帮弟子，眉目间透出股英气。"
   title = "丐帮六袋弟子"
   gender = "男性"
@@ -9874,7 +9874,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_7dai" {
-      name = "NPC"
+      name = "丐帮七袋弟子"
       description = "这是位丐帮七袋弟子，只见他身材魁梧，双目精光四射。"
   title = "丐帮七袋弟子"
   gender = "男性"
@@ -9926,7 +9926,7 @@ chats = [
 
 # LPC 跨区借用：id 前缀是来源区，避免同名 NPC 互相覆盖
     characters "gaibang_staff" {
-      name = "NPC"
+      name = "竹棒"
       aliases = ["zhu bang", "zhu", "bang"]
       description = "这是一根颇为破旧的竹棒，可以作为手杖使用。"
     }
