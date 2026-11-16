@@ -562,16 +562,17 @@ defmodule Kantele.World.Loader do
     character = %Character{
       id: "#{zone.id}:#{key}",
       name: case Map.get(character_data, :random_name_type, :none) do
-        :ghost ->
+        "ghost" ->
           # LPC ghost.h 风格随机名字：颜色 + 动物 + "鬼"（如「赤兔鬼」）
           NameGenerator.random_ghost_name()
-        :cn ->
+        "cn" ->
           # LPC NPC_D->generate_cn_name()：随机中文全名（如丐帮弟子）
-          NameGenerator.random_name(Map.get(character_data, :gender, "男性"))
-        :biaoshi ->
+          # random_name/2 返回 {姓名, [拼音id]}，取第 0 元素作为 name
+          elem(NameGenerator.random_name(Map.get(character_data, :gender, "男性")), 0)
+        "biaoshi" ->
           # LPC biaoshi.c：随机姓氏 + "镖师"（如「赵镖师」）
           NameGenerator.random_biaoshi_name()
-        :biaotou ->
+        "biaotou" ->
           # LPC biaotou.c：随机姓氏 + "镖头"（如「赵镖头」）
           NameGenerator.random_biaotou_name()
         _ ->
