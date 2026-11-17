@@ -50,11 +50,13 @@ defmodule Kantele.Character.FamilyEvent do
     family =
       %{name: data.family, master_id: data.master_id, master_name: data.master_name}
       |> put_class(apprentice)
+      |> put_generation(apprentice)
 
     meta =
       character.meta
       |> Map.put(:family, family)
       |> Map.put(:stats, init_gongxian(character.meta.stats))
+      |> delete_promotion_flags(apprentice)
 
     character =
       character
@@ -127,6 +129,26 @@ defmodule Kantele.Character.FamilyEvent do
     do: Map.put(family, :class, class)
 
   defp put_class(family, _apprentice), do: family
+
+  # LPC recruit_apprentice(): family["generation"] = my_family["generation"] + 1。
+  # 只有 UCL 显式配置 master_generation 的师父才写，避免改变其它门派既有存档形状。
+  defp put_generation(family, %{master_generation: master_gen}) when is_integer(master_gen),
+    do: Map.put(family, :generation, master_gen + 1)
+
+  defp put_generation(family, _apprentice), do: family
+
+  # cheng/hui/dao/xuan/du.h 在越级收徒成功后 delete_temp("have_letter") /
+  # delete_temp("apprentice_ok")。只在配置了 delete_flags_on_rename 时执行，
+  # 与 rename_prefix 同批配置，避免误清其它门派的临时标记。
+  defp delete_promotion_flags(meta, apprentice) do
+    if Map.get(apprentice, :delete_flags_on_rename) == true do
+      meta
+      |> Kantele.Character.PlayerMeta.delete_temp("have_letter")
+      |> Kantele.Character.PlayerMeta.delete_temp("apprentice_ok")
+    else
+      meta
+    end
+  end
 
   defp init_gongxian(%{gongxian: nil} = stats), do: %{stats | gongxian: 0}
   defp init_gongxian(stats), do: stats

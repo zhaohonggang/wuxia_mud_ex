@@ -62,12 +62,13 @@
 - 柳溪派 `wangshifu`：无 LPC source 可供 `apprentice` 块数据，保留缺失，非代码缺口，无待办。
 - sects.ex 门派原型按 LPC 对齐（commit 1416f7b1）：补全 18 个缺失门派，总数从 21 扩至 39，与 LPC `class_generate_chinese.c` init_family 完全对齐。
 - 门派原型详细配置章节（commit 67da804d）：`docs/新手拜师门派指南.zh-CN.md` 新增第6节，列出全部 39 个门派的详细配置（class/scale/skills/maps/preps/carry）。
+- 少林派阶段 A–E（剃度/山门/达摩门槛/辈分晋升链）：`shaolin_promotion` 收礼+斗武事件链、55 名师父 UCL 配置、四级推荐信、字辈改名均已落地，定向 162/0；#652 文案差异另立任务。
 
 ## 净增量归档（全部已完结，无待办）
 - `docs/` 下 78 份文档 + 根目录 md 已全量扫描，59 份含待办标记的历史文档已加「📌 归档声明 · 全库待办清零」。
 - `docs/待对照代码核查.zh-CN.md` §6.2 净增量表、§二、§三已标记 ✅ 已完结。
 
 ## 待办（当前）
-- 少林派剃度机制移植（计划见 `docs/少林派剃度机制移植计划.zh-CN.md`，Task #621–#638）：阶段 A 审计完成，阶段 B 起待推进。
+- 少林派剃度机制移植：`docs/少林派剃度机制移植计划.zh-CN.md` 阶段 A–E 代码已落地（#633/#634/#635/#636 已完成），剩余 #640/#641/#642/#643/#644 引擎缺口与 #652 各字辈成功文案对齐。
 - 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`（文档实际已完成，此项待确认结案）。
 - 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。

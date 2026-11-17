@@ -91,6 +91,8 @@ defmodule Kantele.SectMaster do
         nil
       end
 
+    promotion_reason = promotion_error(student, config)
+
     result =
       cond do
       # permit_recruit（shaolin.h）三条，顺序与 LPC 一致
@@ -114,6 +116,11 @@ defmodule Kantele.SectMaster do
       # 达摩 #4：generation != 36
       not is_nil(exact_generation) and student_generation(student) != exact_generation ->
         {:error, deny_text(config, :generation_deny, "大侠，贫僧哪里敢当！")}
+
+      # 少林辈分晋升（qing/cheng/hui/dao/xuan/du.h）：generation 分支 +
+      # apprentice_ok / luohan_winner / 金刚伏魔圈硬门。未配置 master_generation
+      # 的门派完全不受影响。
+      not is_nil(promotion_reason) -> {:error, promotion_reason}
 
       # 性别门控（清无/清为/清法；文案对齐 LPC）
       gender not in [nil, ""] and student_gender(student) != gender ->
@@ -156,6 +163,133 @@ defmodule Kantele.SectMaster do
   end
 
   defp ensure_lf(text), do: String.ends_with?(text, "\n") && text || text <> "\n"
+
+  # ---- 少林辈分晋升（qing.h / dao.h / hui.h / cheng.h / xuan.h / du.h） ----
+  #
+  # LPC 的 recruit_apprentice 把学生 generation 设为师父 generation + 1，
+  # 所以「越两级」意味着学生带着下一级师尊给的推荐信来拜师。这里逐条复刻：
+  #   generation <= 师父        → 贫僧哪里敢当
+  #   generation == 师父 + 1    → 直收（cheng/hui/dao 还要求当前法名首字匹配）
+  #   generation == 师父 + 2    → apprentice_ok / luohan_winner / 金刚伏魔圈
+  # 未配置 master_generation 的普通门派直接 :ok。
+  # cond 需要「非错误时返回 nil」而不是 :ok，否则 `{:error, reason} = ...` 会抛 MatchError。
+  defp promotion_error(student, config) do
+    case promotion_gate(student, config) do
+      {:error, reason} when is_binary(reason) -> reason
+      _ -> nil
+    end
+  end
+
+  defp promotion_gate(student, config) do
+    case Map.get(config, :master_generation) do
+      master_gen when is_integer(master_gen) ->
+        generation = student_generation(student) || 0
+
+        cond do
+          generation == 0 and Map.get(config, :allow_zero_generation) == true ->
+            :ok
+
+          generation <= master_gen ->
+            {:error,
+             ensure_lf(
+               Map.get(config, :promotion_deny) || "大侠，贫僧哪里敢当！\n"
+             )}
+
+          generation == master_gen + 1 and direct_promotion?(student, config) ->
+            :ok
+
+          generation == master_gen + 2 ->
+            promotion_by_letter?(student, config)
+
+          true ->
+            {:error,
+             ensure_lf(
+               Map.get(config, :no_letter_deny) ||
+                 "大侠，你没有推荐信，不能越级拜师。\n"
+             )}
+        end
+
+      _ ->
+        :ok
+    end
+  end
+
+  # qing.h 不查法名首字；dao/hui/cheng.h 分别要求 name[0..0] == 清/道/慧。
+  defp direct_promotion?(student, config) do
+    case Map.get(config, :direct_name_prefix) do
+      prefix when is_binary(prefix) and byte_size(prefix) > 0 ->
+        String.starts_with?(student_name(student) || "", prefix)
+
+      _ ->
+        true
+    end
+  end
+
+  defp promotion_by_letter?(student, config) do
+    cond do
+      Map.get(config, :require_apprentice_ok) == true and
+          temp_value(student, "apprentice_ok") not in [nil, false, 0, ""] ->
+        :ok
+
+      Map.get(config, :allow_luohan_winner) == true and
+          env_value(student, "luohan_winner") not in [nil, false, 0, ""] ->
+        :ok
+
+      Map.get(config, :require_fumoquan) == true ->
+        fumoquan_gate(student, config)
+
+      true ->
+        {:error,
+         ensure_lf(
+           Map.get(config, :no_letter_deny) ||
+             "大侠，你没有推荐信，不能越级拜师。\n"
+         )}
+    end
+  end
+
+  # du.h：valid_in_fumoquan == 1 且 dodge/force/parry/buddhism >= 120。
+  defp fumoquan_gate(student, config) do
+    cond do
+      temp_value(student, "valid_in_fumoquan") != 1 ->
+        {:error,
+         ensure_lf(
+           Map.get(config, :no_fumoquan_deny) ||
+             "大侠，没能过金刚伏魔圈，我不想收你。\n"
+         )}
+
+      not meets_fumoquan_skills?(student, Map.get(config, :fumoquan_min_skills) || 0) ->
+        {:error,
+         ensure_lf(
+           Map.get(config, :fumoquan_skill_deny) ||
+             "贫僧要收的是有用之才，你还是回去向你师父学习吧！\n"
+         )}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp meets_fumoquan_skills?(student, min_level) when is_integer(min_level) do
+    Enum.all?(["dodge", "force", "parry", "buddhism"], fn skill ->
+      skill_level(student, skill) >= min_level
+    end)
+  end
+
+  defp student_name(character) when is_map(character), do: Map.get(character, :name)
+
+  defp temp_value(character, key) when is_map(character) do
+    temp = Map.get(meta_of(character), :temp) || %{}
+    Map.get(temp, key) || Map.get(temp, String.to_atom(key))
+  rescue
+    _ -> nil
+  end
+
+  defp env_value(character, key) when is_map(character) do
+    env = student_env(character)
+    Map.get(env, key) || Map.get(env, String.to_atom(key))
+  rescue
+    _ -> nil
+  end
 
   @doc "LPC shaolin.h permit_recruit：是否叛出/背叛本门（detach/betrayer 门）"
   def betrayed_sect?(student, family_name) when is_binary(family_name) do

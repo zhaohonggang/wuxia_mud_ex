@@ -3838,7 +3838,28 @@ defmodule Kantele.World.Room.CombatEvent do
     |> start_combat(target, initiator, type)
     |> start_combat(initiator, target, type)
     |> maybe_summon_coagents(initiator, target, type)
+    |> maybe_shaolin_promotion(initiator, target, type)
   end
+
+  # LPC qing/cheng/hui/dao.h 的 `accept_fight(ob)`：开战后 NPC 起 1 拍
+  # `call_out("checking", 1, me, ob)` 轮询胜负。ex 的 checking 跑在 NPC 进程，
+  # 所以房间在 engage 完成后把规则投递给 NPC，由它自己决定何时发推荐信。
+  defp maybe_shaolin_promotion(context, initiator, target, type)
+       when type in ["fight", "duel"] do
+    rule = Kantele.Npc.EngageRule.engage_rule(target.meta || %{}, "fight")
+
+    if is_map(rule) and Map.get(rule, :kind) == "shaolin_promotion" do
+      event(context, target.pid, self(), "shaolin_promotion/accept-fight", %{
+        player_id: initiator.id,
+        player_name: initiator.name,
+        rule: rule
+      })
+    else
+      context
+    end
+  end
+
+  defp maybe_shaolin_promotion(context, _initiator, _target, _type), do: context
 
   # LPC feature/attack.c:104-108 —— 唯一的 kill_enemy 调用点：
   #

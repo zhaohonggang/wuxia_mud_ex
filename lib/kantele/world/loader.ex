@@ -954,7 +954,8 @@ defmodule Kantele.World.Loader do
            "wuxiuwen",
            "reborn",
            "suoyangdan",
-           "hunter"
+           "hunter",
+           "shaolin_promotion"
          ] do
         %{
           kind: kind,
@@ -963,7 +964,14 @@ defmodule Kantele.World.Loader do
           name: string_or_nil(Map.get(rule, :name)),
           accept: to_bool(Map.get(rule, :accept, true)),
           msg: accept_msg(Map.get(rule, :msg)),
-          fail_msg: accept_msg(Map.get(rule, :fail_msg))
+          fail_msg: accept_msg(Map.get(rule, :fail_msg)),
+          # 少林辈分晋升（#634/#635）：accept_object 的专用参数。
+          action: string_or_nil(Map.get(rule, :action)),
+          master_generation: numeric_or_nil(Map.get(rule, :master_generation)),
+          award_item: string_or_nil(Map.get(rule, :award_item)),
+          require_flag: string_or_nil(Map.get(rule, :require_flag)),
+          set_flag: string_or_nil(Map.get(rule, :set_flag)),
+          already_msg: accept_msg(Map.get(rule, :already_msg))
         }
       else
         nil
@@ -1022,7 +1030,12 @@ defmodule Kantele.World.Loader do
             else
               Map.put(acc, key, %{
                 accept: accept,
+                kind: string_or_nil(Map.get(rule, :kind)),
+                master_generation: numeric_or_nil(Map.get(rule, :master_generation)),
+                award_item: string_or_nil(Map.get(rule, :award_item)),
                 msg: string_or_nil(Map.get(rule, :msg)),
+                win_msg: string_or_nil(Map.get(rule, :win_msg)),
+                lose_msg: string_or_nil(Map.get(rule, :lose_msg)),
                 retaliate: to_bool(Map.get(rule, :retaliate, false)),
                 spawn:
                   case Map.get(rule, :spawn) do
@@ -1209,7 +1222,25 @@ defmodule Kantele.World.Loader do
       rename_prefix: Map.get(apprentice, :rename_prefix)
     }
 
-    Map.merge(base, da_mo_fields)
+    # 少林辈分晋升（#633）：master_generation 是师父自己的 generation，
+    # recruit_apprentice 会把学生 generation 设为它 +1。其余字段逐条对应
+    # qing.h/cheng.h/hui.h/dao.h/xuan.h/du.h 的 attempt_apprentice 分支。
+    promotion_fields = %{
+      master_generation: int_value(Map.get(apprentice, :master_generation)),
+      allow_zero_generation: to_bool(Map.get(apprentice, :allow_zero_generation)),
+      direct_name_prefix: class_value(Map.get(apprentice, :direct_name_prefix)),
+      require_apprentice_ok: to_bool(Map.get(apprentice, :require_apprentice_ok)),
+      allow_luohan_winner: to_bool(Map.get(apprentice, :allow_luohan_winner)),
+      require_fumoquan: to_bool(Map.get(apprentice, :require_fumoquan)),
+      fumoquan_min_skills: int_value(Map.get(apprentice, :fumoquan_min_skills)) || 0,
+      promotion_deny: Map.get(apprentice, :promotion_deny),
+      no_letter_deny: Map.get(apprentice, :no_letter_deny),
+      no_fumoquan_deny: Map.get(apprentice, :no_fumoquan_deny),
+      fumoquan_skill_deny: Map.get(apprentice, :fumoquan_skill_deny),
+      delete_flags_on_rename: to_bool(Map.get(apprentice, :delete_flags_on_rename))
+    }
+
+    Map.merge(base, Map.merge(da_mo_fields, promotion_fields))
   end
 
   defp class_value(value) when is_binary(value) and value != "", do: value

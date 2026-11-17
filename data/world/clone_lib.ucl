@@ -24427,6 +24427,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -24472,6 +24501,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -24522,6 +24580,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -24576,6 +24663,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -24622,6 +24738,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -24672,6 +24817,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -24718,6 +24892,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -24769,6 +24972,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -24815,6 +25047,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -24865,6 +25126,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -24910,6 +25200,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -24962,6 +25281,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -25007,6 +25355,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25059,6 +25436,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -25107,6 +25513,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25158,6 +25593,35 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 85 },
     { skill = "hunyuan-yiqi" level = 85 },
@@ -25204,6 +25668,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25256,6 +25749,35 @@ chats = [
     max_neili = 1000
     max_qi = 1000
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 37
+  direct_name_prefix = "慧"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "慧"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 37 award_item = "shaolin:tuijianxin_4" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_3" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 37
+      award_item = "shaolin:tuijianxin_4"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25462,6 +25984,35 @@ chats = [
     { key = "齐眉棍" value = " inquire about me (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 50 },
     { skill = "hunyuan-yiqi" level = 50 },
@@ -25507,6 +26058,35 @@ chats = [
     max_neili = 450
     max_qi = 400
     str = 21
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25564,6 +26144,35 @@ chats = [
     { key = "木人" value = " inquire about me (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 50 },
     { skill = "hunyuan-yiqi" level = 50 },
@@ -25614,6 +26223,35 @@ chats = [
     str = 22
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 50 },
     { skill = "hunyuan-yiqi" level = 50 },
@@ -25661,6 +26299,35 @@ chats = [
     max_neili = 450
     max_qi = 400
     str = 25
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25819,6 +26486,35 @@ chats = [
     }
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 50 },
     { skill = "hunyuan-yiqi" level = 50 },
@@ -25873,6 +26569,35 @@ chats = [
     { key = "金创药" value = " inquire about me 1 (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 50 },
     { skill = "hunyuan-yiqi" level = 50 },
@@ -25917,6 +26642,35 @@ chats = [
     max_neili = 450
     max_qi = 400
     str = 20
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -25964,6 +26718,35 @@ chats = [
     max_neili = 450
     max_qi = 400
     str = 20
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 39
+  direct_name_prefix = "清"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "清"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 39 award_item = "shaolin:tuijianxin_2" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_1" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 39
+      award_item = "shaolin:tuijianxin_2"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -26018,6 +26801,18 @@ chats = [
   inquiries = [
     { key = "九环锡杖" value = " inquire about me (unimplemented)" }
   ]
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 35
+  require_fumoquan = true
+  fumoquan_min_skills = 120
+  rename_prefix = "玄"
+  rename_index = 1
+  }
 
   skills = [
     { skill = "force" level = 340 },
@@ -26104,6 +26899,18 @@ chats = [
     { key = "锦襕袈裟" value = " inquire about me (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 35
+  require_fumoquan = true
+  fumoquan_min_skills = 120
+  rename_prefix = "玄"
+  rename_index = 1
+  }
+
   skills = [
     { skill = "force" level = 340 },
     { skill = "shaolin-jiuyang" level = 340 },
@@ -26182,6 +26989,18 @@ chats = [
   inquiries = [
     { key = "神草结" value = " inquire about me (unimplemented)" }
   ]
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 35
+  require_fumoquan = true
+  fumoquan_min_skills = 120
+  rename_prefix = "玄"
+  rename_index = 1
+  }
 
   skills = [
     { skill = "force" level = 340 },
@@ -26267,6 +27086,18 @@ chats = [
     { key = "辟邪剑法" value = " inquire about me (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 35
+  require_fumoquan = true
+  fumoquan_min_skills = 120
+  rename_prefix = "玄"
+  rename_index = 1
+  }
+
   skills = [
     { skill = "force" level = 280 },
     { skill = "sword" level = 280 },
@@ -26334,6 +27165,35 @@ chats = [
     { key = "买铁" value = " inquire about me (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 70 },
     { skill = "hunyuan-yiqi" level = 70 },
@@ -26382,6 +27242,35 @@ chats = [
     max_neili = 600
     max_qi = 450
     str = 20
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -26434,6 +27323,35 @@ chats = [
     str = 20
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 70 },
     { skill = "hunyuan-yiqi" level = 70 },
@@ -26479,6 +27397,35 @@ chats = [
     max_neili = 600
     max_qi = 450
     str = 30
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -26530,6 +27477,35 @@ chats = [
     str = 20
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 70 },
     { skill = "hunyuan-yiqi" level = 70 },
@@ -26575,6 +27551,35 @@ chats = [
     max_neili = 600
     max_qi = 450
     str = 30
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -26624,6 +27629,35 @@ chats = [
     max_neili = 600
     max_qi = 450
     str = 20
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -26676,6 +27710,35 @@ chats = [
     str = 20
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 70 },
     { skill = "hunyuan-yiqi" level = 70 },
@@ -26724,6 +27787,35 @@ chats = [
     max_neili = 1000
     max_qi = 600
     str = 30
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 38
+  direct_name_prefix = "道"
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  rename_prefix = "道"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 38 award_item = "shaolin:tuijianxin_3" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" },
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_2" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 38
+      award_item = "shaolin:tuijianxin_3"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -26949,6 +28041,25 @@ chats = [
     family = "少林派"
     gender = "男性"
     permit_recruit = true
+      exact_family = true
+    require_class = "bonze"
+    master_generation = 40
+    allow_zero_generation = true
+}
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -27004,6 +28115,30 @@ chats = [
     str = 25
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 40
+  allow_zero_generation = true
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 30 },
     { skill = "shaolin-xinfa" level = 30 },
@@ -27055,6 +28190,30 @@ chats = [
     { key = "达摩令" value = " inquire about me 2 (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 40
+  allow_zero_generation = true
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 30 },
     { skill = "shaolin-xinfa" level = 30 },
@@ -27098,6 +28257,30 @@ chats = [
     max_neili = 350
     max_qi = 350
     str = 21
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 40
+  allow_zero_generation = true
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -27194,6 +28377,25 @@ chats = [
     family = "少林派"
     gender = "男性"
     permit_recruit = true
+      exact_family = true
+    require_class = "bonze"
+    master_generation = 40
+    allow_zero_generation = true
+}
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -27239,6 +28441,30 @@ chats = [
     max_neili = 350
     max_qi = 350
     str = 19
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 40
+  allow_zero_generation = true
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -27336,6 +28562,25 @@ chats = [
     family = "少林派"
     gender = "男性"
     permit_recruit = true
+      exact_family = true
+    require_class = "bonze"
+    master_generation = 40
+    allow_zero_generation = true
+}
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -27384,6 +28629,30 @@ chats = [
     str = 23
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 40
+  allow_zero_generation = true
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
+  }
+
   skills = [
     { skill = "force" level = 30 },
     { skill = "shaolin-xinfa" level = 30 },
@@ -27427,6 +28696,30 @@ chats = [
     max_neili = 350
     max_qi = 350
     str = 21
+  }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 40
+  allow_zero_generation = true
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:damo_ling" action = "duel" master_generation = 40 award_item = "shaolin:tuijianxin_1" msg = "好，既然已得到方丈许可，我们就来验证一下武功。" already_msg = "怎么样，你拿我的推荐信去拜师了吗 ?" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+  engage = {
+    fight = {
+      accept = true
+      kind = "shaolin_promotion"
+      master_generation = 40
+      award_item = "shaolin:tuijianxin_1"
+      win_msg = "青出于蓝胜于蓝，不愧是少林寺的佳弟子！恭喜你了！"
+      lose_msg = "看来大侠还得多加练习，方能在少林诸多弟子中出人头地 !"
+    }
   }
 
   skills = [
@@ -27682,6 +28975,24 @@ chats = [
     str = 30
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 36
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  allow_luohan_winner = true
+  rename_prefix = "澄"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_4" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+
   skills = [
     { skill = "force" level = 180 },
     { skill = "hunyuan-yiqi" level = 180 },
@@ -27745,6 +29056,24 @@ chats = [
     { key = "pfm" value = " inquire about me (unimplemented)" },
     { key = "绝招" value = " inquire about me (unimplemented)" }
   ]
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 36
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  allow_luohan_winner = true
+  rename_prefix = "澄"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_4" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
 
   skills = [
     { skill = "force" level = 180 },
@@ -27821,6 +29150,24 @@ chats = [
     str = 30
   }
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 36
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  allow_luohan_winner = true
+  rename_prefix = "澄"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_4" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+
   skills = [
     { skill = "force" level = 160 },
     { skill = "hunyuan-yiqi" level = 160 },
@@ -27878,6 +29225,24 @@ chats = [
     { key = "十八罗汉阵" value = " inquire about me (unimplemented)" },
     { key = "罗汉大阵" value = " inquire about me (unimplemented)" }
   ]
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 36
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  allow_luohan_winner = true
+  rename_prefix = "澄"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_4" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
 
   skills = [
     { skill = "force" level = 180 },
@@ -27957,6 +29322,24 @@ chats = [
     { key = "罗汉大阵" value = " inquire about me (unimplemented)" }
   ]
 
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 36
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  allow_luohan_winner = true
+  rename_prefix = "澄"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_4" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
+
   skills = [
     { skill = "force" level = 125 },
     { skill = "hunyuan-yiqi" level = 125 },
@@ -28014,6 +29397,24 @@ chats = [
     max_qi = 2500
     str = 30
   }
+
+  apprentice = {
+  family = "少林派"
+  permit_recruit = true
+  exact_family = true
+  require_class = "bonze"
+  master_generation = 36
+  require_apprentice_ok = true
+  delete_flags_on_rename = true
+  allow_luohan_winner = true
+  rename_prefix = "澄"
+  rename_index = 1
+  }
+
+  accept = [
+    { kind = "shaolin_promotion" id = "shaolin:tuijianxin_4" action = "letter" require_flag = "have_letter" set_flag = "apprentice_ok" msg = "好，%name%，你愿意拜我为师吗？" fail_msg = "这东西给我可没有什么用。" }
+  ]
+
 
   skills = [
     { skill = "force" level = 140 },

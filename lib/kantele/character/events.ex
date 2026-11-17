@@ -81,6 +81,13 @@ defmodule Kantele.Character.Events do
       event("family/detach-result", :detach_result)
     end
 
+    # 少林辈分晋升（#633–#635）玩家侧回执。
+    module(ShaolinPromotionEvent) do
+      event("shaolin_promotion/give", :give)
+      event("shaolin_promotion/duel-result", :duel_result)
+      event("shaolin_promotion/fight-started", :fight_started)
+    end
+
     module(GiveEvent) do
       event("characters/give", :receive)
       event("give/result", :result)
@@ -453,6 +460,12 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(YitianEvent) do
       event("yitian/begin", :begin_event)
+    end
+
+    # 少林辈分晋升（#633–#635）NPC 侧：give 回执 + accept_fight 起 checking 轮询。
+    module(ShaolinPromotionEvent) do
+      event("shaolin_promotion/give-result", :npc_give_result)
+      event("shaolin_promotion/accept-fight", :accept_fight)
     end
   end
 end

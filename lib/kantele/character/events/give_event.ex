@@ -68,6 +68,16 @@ defmodule Kantele.Character.GiveEvent do
       {:hunter} ->
         Kantele.World.HunterAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:shaolin_promotion, rule} ->
+        Kantele.World.ShaolinPromotionAccept.handle(
+          conn,
+          npc,
+          item_instance,
+          data,
+          from_name,
+          rule
+        )
+
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
 
@@ -146,13 +156,18 @@ defmodule Kantele.Character.GiveEvent do
         {:hunter} ->
           acc
 
+        {:shaolin_promotion, _rule} ->
+          acc
+
         _ ->
           case rule_hit(rule, item) do
             :hit -> {:ok, take_message(rule, item)}
             :decline -> {:error, failure_message(rule, item)}
             :forge -> {:forge}
+            :wuxiuwen -> {:wuxiuwen}
             :suoyangdan -> {:suoyangdan}
             :hunter -> {:hunter}
+            {:shaolin_promotion, _rule} = match -> match
             :miss -> acc
           end
       end
@@ -205,6 +220,14 @@ defmodule Kantele.Character.GiveEvent do
     cond do
       Map.get(rule, :id) && rule.id == item.id -> :hunter
       Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> :hunter
+      true -> :miss
+    end
+  end
+
+  defp rule_hit(%{kind: "shaolin_promotion"} = rule, item) do
+    cond do
+      Map.get(rule, :id) && rule.id == item.id -> {:shaolin_promotion, rule}
+      Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> {:shaolin_promotion, rule}
       true -> :miss
     end
   end
