@@ -1,18 +1,18 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
 ## Iron rules
-- 无 git commit/push 除非用户明确要求（2026-11-10 已授权）。
+- 无 git commit/push 除非用户明确要求（2026-11-10 已授权「提交推送，然后继续推进」）。
 - 改动前 Grep lib/test/docs + LPC 源 `/c/files/git/mud` 确认真缺口，不臆造语义。
 - 不要升级 nimble_parsec。
 
 ## 阅读约定
-- 每日日志为流水账，中间状态可被本文件「已完成」章节推翻。
+- `.workbuddy-ai/memory/YYYY-MM-DD.md` 是按日追加的流水账，中间状态可被本文件「已完成」章节推翻。
 - 唯一状态入口 = 本文件「已完成 / 净增量归档」+ `docs/待办对照代码核查.zh-CN.md` §三 / §6.2。
 
 ## 验证路径
 - Docker 不可用（Windows Git Bash）：`PATH=/c/Users/honggang/tools/erl-25.3.2.6/bin:/c/Users/honggang/tools/elixir-1.13.4-otp25/bin:$PATH`；`MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=_build_win13`；`ERL_LIBS=_build_win13/lib`；`MIX_ENV=test`。
 - `mix compile` / `mix test --seed 831693`（全量约 9-10 min，建议后台重定向日志）。
-- 基线：7757 tests / 27 failures / 575.6s（全为 `bcrypt_elixir` NIF 环境性，引擎/命令/技能/世界测试 0 失败）。
+- 基线：7830 tests / 27 failures / 575.6s（全为 `bcrypt_elixir` NIF 环境性，引擎/命令/技能/世界测试 0 失败）。
 
 ## 关键约定 / 坑
 - 路由：`parse/2` 裸路由只产 `%{"command"=>...}`；带参命令需 `optional(spaces() |> text(:rest|:target|:category))`。
@@ -48,14 +48,16 @@
 - LPC 式随机鬼魂名字（2026-11-16）：`random_ghost_name/1` + death.ucl 18 NPC `random_name_type = "ghost"`，全量回归 7830 tests / 27 failures，0 新增失败。
 - ask 黎生 五丁开山 / 绝命一踢（sect_master_grant）：inquiry_handler 注册 + UCL 配置，99 例测试 0 失败。
 - 随机 NPC 名字生成（2026-11-16 已提交推送，commit 1c017236 + fa11948a）：`NameGenerator` 新增 `random_ghost_name/1`、`random_biaoshi_name/1`、`random_biaotou_name/1`；`loader.ex` `parse_character/4` case 匹配 `"ghost"`/`"cn"`/`"biaoshi"`/`"biaotou"`；`death.ucl` 18 HellZhen NPC `ghost`；`gaibang.ucl` 7 丐帮弟子 `cn`；`changan.ucl` 镖师 `biaoshi`、镖头 `biaotou`，总镖头 `万青山` 保留不变。
-
-## 当前待办（2026-11-17 已全部结案）
-- **Run tests + commit/push `AskCommand.find_ask_npc/2` 修复**：测试 9/9 全绿，`mix test --seed 831693` 全量 7830 tests / 27 failures（基线一致，0 回归）。已 commit `3afb4171` 并推送至 origin/kalevala。
-- **LPC→UCL 教学数据补全（Tasks #613–#618）**：全部完成，已 commit 并推送。10 个 NPC 的 `teach_skills`/`apprentice` 已回填；`inquiries` 已转为绝招授予绝招；`docs/新手拜师门派指南.zh-CN.md` 已重写（12 个师父条目）。
+- AskCommand.find_ask_npc/2 前缀匹配修复（commit 3afb4171）：测试 9/9 全绿，全量 7830 tests / 27 failures（基线一致，0 回归）。
+- LPC→UCL 教学数据补全（Tasks #613–#618）：10 个 NPC 的 `teach_skills`/`apprentice` 已回填；`inquiries` 已转为绝招授予；`docs/新手拜师门派指南.zh-CN.md` 已重写（12 个师父条目）。
 - 柳溪派 `wangshifu`：无 LPC source 可供 `apprentice` 块数据，保留缺失，非代码缺口，无待办。
-- **sects.ex 门派原型按 LPC 对齐（已 commit `1416f7b1` 并推送）**：`lib/kantele/sects.ex` 补全 18 个缺失门派（shaolin4, taohua1, xueshan1, xiaoyao1, emei, xuanming, mingjiao, lingjiu, honghua, quanzhen, quanzhen1, riyue, song, murong, murong1, hengshan, pixie），总数从 21 扩至 39，与 LPC `class_generate_chinese.c` init_family 完全对齐；`docs/新手拜师门派指南.zh-CN.md` 第3节扩展至全部 39 个门派，中文名称按 LPC `create_family` 对齐（ouyang=欧阳世家, lingxiao=凌霄城, zhenyuan=八卦门等）。sects.ex 加载正常，39 个门派 ID 完整，无新增编译警告。
-- **门派原型详细配置章节（已 commit `67da804d` 并推送）**：`docs/新手拜师门派指南.zh-CN.md` 新增第6节「门派原型详细配置 (sects.ex)」，列出全部 39 个门派的详细配置：class、scale、skills、maps（技能映射）、preps（准备映射）、carry（初始装备）。正派门派 29 个（含 ouyang 欧阳世家）、变体门派 10 个，分两个表格展示。说明 sects.ex 是随机 NPC 配置，不含 apprentice/teach_skills/inquiries 等师父 NPC 字段。
+- sects.ex 门派原型按 LPC 对齐（commit 1416f7b1）：补全 18 个缺失门派，总数从 21 扩至 39，与 LPC `class_generate_chinese.c` init_family 完全对齐。
+- 门派原型详细配置章节（commit 67da804d）：`docs/新手拜师门派指南.zh-CN.md` 新增第6节，列出全部 39 个门派的详细配置（class/scale/skills/maps/preps/carry）。
 
 ## 净增量归档（全部已完结，无待办）
 - `docs/` 下 78 份文档 + 根目录 md 已全量扫描，59 份含待办标记的历史文档已加「📌 归档声明 · 全库待办清零」。
 - `docs/待对照代码核查.zh-CN.md` §6.2 净增量表、§二、§三已标记 ✅ 已完结。
+
+## 待办（当前）
+- 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`，并 commit/push。
+- 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
