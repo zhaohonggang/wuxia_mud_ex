@@ -25400,6 +25400,36 @@ chats = [
     { id = items.xuan_cloth.id }
   ]
 
+  # 达摩祖师收徒（LPC kungfu/class/shaolin/da-mo.c attempt_apprentice，少林移植 #626）
+  # 11 项门槛逐条配置，保留「int<35 只提示不 return」原版行为（min_int + int_deny）。
+  teach = {
+    family = "少林派"
+  }
+
+  apprentice = {
+    family = "少林派"
+    permit_recruit = true
+    exact_family = true
+    require_class = "bonze"
+    exact_generation = 36
+    min_int = 35
+    max_wpk = 3
+    min_skills = {
+      buddhism = 180
+      dodge = 180
+      force = 180
+      parry = 180
+    }
+    min_exp = 1000000
+    family_deny = "大侠与本派素无来往，不知此话从何谈起？"
+    class_deny = "大侠是俗家弟子，不能在寺内学艺。"
+    generation_deny = "大侠，贫僧哪里敢当！"
+    int_deny = "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的佛法。"
+    wpk_deny = "大侠杀戮心太重，不适合继续学习武功。"
+    rename_prefix = "渡"
+    rename_index = 1
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/shaolin/dao-chen.c
@@ -26857,9 +26887,69 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = " inquire about for join (unimplemented)" },
-    { key = "剃度" value = " inquire about for join (unimplemented)" }
+    { key = "出家" value = { kind = "tonsure" } },
+    { key = "剃度" value = { kind = "tonsure" } }
   ]
+
+  # 门派身份 + 收徒（少林移植 #625，LPC qing-fa.c set_skill + attempt_apprentice）
+  # 清法自身 class=bonze，收俗家弟子时 apprentice.class 留空（不传播）。
+  teach = {
+    family = "少林派"
+    teach_skills = {
+      force = {
+        max = 30
+        gongxian = 2
+      }
+      shaolin_xinfa = {
+        max = 30
+        gongxian = 3
+      }
+      dodge = {
+        max = 50
+        gongxian = 2
+      }
+      shaolin_shenfa = {
+        max = 50
+        gongxian = 3
+      }
+      cuff = {
+        max = 50
+        gongxian = 2
+      }
+      jingang_quan = {
+        max = 50
+        gongxian = 3
+      }
+      parry = {
+        max = 30
+        gongxian = 2
+      }
+      buddhism = {
+        max = 30
+        gongxian = 2
+      }
+      literate = {
+        max = 30
+        gongxian = 2
+      }
+      sword = {
+        max = 30
+        gongxian = 2
+      }
+      qingliang_jian = {
+        max = 30
+        gongxian = 3
+      }
+    }
+    no_teach = []
+  }
+
+  # LPC qing-fa.c attempt_apprentice：permit_recruit + 只收男性；不检查 shen/exp/skill
+  apprentice = {
+    family = "少林派"
+    gender = "男性"
+    permit_recruit = true
+  }
 
   skills = [
     { skill = "force" level = 30 },
@@ -27055,6 +27145,57 @@ chats = [
     str = 23
   }
 
+  # 门派身份 + 收徒（少林移植 #625，LPC qing-wei.c set_skill + attempt_apprentice）
+  teach = {
+    family = "少林派"
+    teach_skills = {
+      force = {
+        max = 30
+        gongxian = 2
+      }
+      shaolin_xinfa = {
+        max = 30
+        gongxian = 3
+      }
+      dodge = {
+        max = 30
+        gongxian = 2
+      }
+      shaolin_shenfa = {
+        max = 30
+        gongxian = 3
+      }
+      strike = {
+        max = 30
+        gongxian = 2
+      }
+      banruo_zhang = {
+        max = 30
+        gongxian = 3
+      }
+      parry = {
+        max = 30
+        gongxian = 2
+      }
+      buddhism = {
+        max = 30
+        gongxian = 2
+      }
+      literate = {
+        max = 30
+        gongxian = 2
+      }
+    }
+    no_teach = []
+  }
+
+  # LPC qing-wei.c attempt_apprentice：permit_recruit + 只收男性（顺序：permit 先于性别）
+  apprentice = {
+    family = "少林派"
+    gender = "男性"
+    permit_recruit = true
+  }
+
   skills = [
     { skill = "force" level = 30 },
     { skill = "shaolin-xinfa" level = 30 },
@@ -27143,6 +27284,58 @@ chats = [
     max_neili = 350
     max_qi = 350
     str = 23
+  }
+
+  # 门派身份 + 收徒（少林移植 #625，LPC qing-wu.c set_skill + attempt_apprentice）
+  teach = {
+    family = "少林派"
+    teach_skills = {
+      force = {
+        max = 30
+        gongxian = 2
+      }
+      shaolin_xinfa = {
+        max = 30
+        gongxian = 3
+      }
+      dodge = {
+        max = 30
+        gongxian = 2
+      }
+      shaolin_shenfa = {
+        max = 30
+        gongxian = 3
+      }
+      blade = {
+        max = 30
+        gongxian = 2
+      }
+      cibei_dao = {
+        max = 30
+        gongxian = 3
+      }
+      parry = {
+        max = 30
+        gongxian = 2
+      }
+      buddhism = {
+        max = 30
+        gongxian = 2
+      }
+      literate = {
+        max = 30
+        gongxian = 2
+      }
+    }
+    no_teach = []
+  }
+
+  # LPC qing-wu.c attempt_apprentice：只收男性（顺序：性别先于 permit_recruit）
+  # 注意：全局 recruit_gate? 统一按 permit→性别（差异已登记计划文档 §8 缺口 C）
+  apprentice = {
+    family = "少林派"
+    gender = "男性"
+    permit_recruit = true
   }
 
   skills = [

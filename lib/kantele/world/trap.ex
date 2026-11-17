@@ -42,6 +42,7 @@ defmodule Kantele.World.Trap do
   """
 
   alias Kantele.World.Trap.Wuxing
+  alias Kantele.World.Trap.ShaolinGate
 
   @doc """
   房间 + 移动者 + 方向 -> `{:allow, effects}` | `{:block, msg, effects}`
@@ -85,6 +86,7 @@ defmodule Kantele.World.Trap do
           String.contains?(c, "check_out(") -> :wuxing
           String.contains?(c, "check_dirs(") -> :bagua
           String.contains?(c, "->refuse(") -> :arena
+          String.contains?(c, "shaolin_gate(") -> :shaolin_gate
           true -> nil
         end
 
@@ -106,6 +108,10 @@ defmodule Kantele.World.Trap do
   defp run(:arena, room, mover, dir) do
     Kantele.World.Arena.refuse(dest_room_id(room, dir), wizard?(mover))
   end
+
+  # 少林山门 guangchang1.c valid_leave：完整 6 分支（含戒律院副作用），
+  # 由 UCL condition = "shaolin_gate(me, dir)" 触发（数据侧标记，不靠房间 id 硬编码）。
+  defp run(:shaolin_gate, room, mover, dir), do: ShaolinGate.evaluate(mover, dir, room)
 
   defp temp_of(mover), do: Map.get(Map.get(mover, :meta) || %{}, :temp) || %{}
 

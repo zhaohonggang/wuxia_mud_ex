@@ -190,6 +190,26 @@ defmodule Kantele.World.LoaderMetaTest do
     assert String.contains?(menwei.meta.guarder.msgs.refuse_other, "白驼山庄重地")
   end
 
+  test "shaolin_da_mo：达摩 11 项门槛字段从 UCL 完整解析（不简化）" do
+    world = load_world()
+    da_mo = Enum.find(world.characters, &(&1.name == "达摩老祖"))
+    assert da_mo != nil
+    gate = da_mo.meta.apprentice
+
+    assert gate.family == "少林派"
+    assert gate.permit_recruit == true
+    assert gate.exact_family == true
+    assert gate.require_class == "bonze"
+    assert gate.exact_generation == 36
+    assert gate.min_int == 35
+    assert gate.max_wpk == 3
+    assert gate.min_skills == %{"buddhism" => 180, "dodge" => 180, "force" => 180, "parry" => 180}
+    assert gate.min_exp == 1_000_000
+    assert gate.rename_prefix == "渡"
+    assert gate.rename_index == 1
+    assert String.contains?(gate.int_deny, "悟性仍有不足")
+  end
+
   test "非守卫 NPC（xiaoer/furen/duke）guarder 为 nil" do
     world = load_world()
     test_zone = Enum.find(world.zones, &(&1.id == "test"))

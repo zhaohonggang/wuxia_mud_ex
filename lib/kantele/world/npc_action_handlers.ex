@@ -114,6 +114,12 @@ defmodule Kantele.World.NpcActionHandlers do
     门贡扣减 + 发物。乾坤石（编号 7，1500 门贡）由此获得 LPC 里唯一的可重复
     来源；其余 13 种物品本仓世界数据未落库，走「没货」分支且不扣门贡。
 
+  - `kneel` 二连：乾隆（hangzhou:liuhe9，`Kantele.World.NpcActions.Kneel`，
+    救驾封赏/踢下六和塔）与清法比丘（shaolin:guangchang1，
+    `Kantele.World.NpcActions.ShaolinKneel`，LPC `qing-fa.c do_kneel()` 剃度受戒：
+    须先由 `ask 清法 剃度` 置 pending，再跪拜改名/置 class=bonze/清 shen）。
+    两处是不同 LPC 函数，handler 内按 room_id + NPC 身份双重校验，互不干扰。
+
   - `gu` / `dapi` / `cuihuo` / `repair` / `xiuli` 五连（襄阳铁匠，
     `xiangyang:tiejiangpu`）：`Kantele.World.NpcActions.Smith`，
     LPC `/inherit/char/smith.c` 打工链完整落地——`is_busy` 守卫、
@@ -221,6 +227,9 @@ defmodule Kantele.World.NpcActionHandlers do
     },
     "hangzhou:liuhe9" => %{
       "kneel" => {Kantele.World.NpcActions.Kneel, :run}
+    },
+    "shaolin:guangchang1" => %{
+      "kneel" => {Kantele.World.NpcActions.ShaolinKneel, :run}
     },
     "kaifeng:yaopu" => %{
       "peiyao" => {Kantele.World.NpcActions.Peiyao, :run}

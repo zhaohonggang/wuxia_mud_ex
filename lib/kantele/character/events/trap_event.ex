@@ -14,6 +14,8 @@ defmodule Kantele.Character.TrapEvent do
     * `{:damage, type, amount}`  -> LPC `me->receive_damage("jing", 50)`
     * `{:wound, type, amount}`   -> LPC `me->receive_wound("qi", 50)`
     * `{:faint}`                 -> LPC `me->unconcious()`
+    * `{:set_guilty, n}`         -> LPC `me->set("guilty", n)`（少林戒律院分支）
+    * `{:set_env, key, value}`   -> LPC `me->set("combat/K_record", ...)` 等 set() 属性
 
   为什么必须由角色进程执行：meta 只有它能安全地改并落盘
   （`Kantele.Character.Records.save/1`）。房间进程只发事件。
@@ -99,6 +101,22 @@ defmodule Kantele.Character.TrapEvent do
     # 注意暂存的是**角色**（current(conn)），不是 meta ——
     # put_character/2 的第二个参数是角色本身。
     {stage(conn, %{current(conn) | meta: %{meta | temp: kept}}), texts}
+  end
+
+  # 少林山门戒律院分支（d/shaolin/guangchang1.c valid_leave）：
+  # LPC `me->set("guilty", 1/2)` → PlayerMeta.guilty（已落盘字段，见 records.ex:63）
+  defp apply_effect(conn, {:set_guilty, value}, texts) do
+    meta = current(conn).meta
+    {stage(conn, %{current(conn) | meta: %{meta | guilty: value}}), texts}
+  end
+
+  # LPC `me->set("combat/K_record", ...)` / `set("combat/shen_record", ...)`。
+  # ex 把 LPC set() 属性统一放 meta.env（见 records.ex 的 env 注释），
+  # 与剃度 ShaolinKneel 写入的 :K_record / :shen_record 同源。
+  defp apply_effect(conn, {:set_env, key, value}, texts) do
+    meta = current(conn).meta
+    env = Map.put(Map.get(meta, :env) || %{}, key, value)
+    {stage(conn, %{current(conn) | meta: %{meta | env: env}}), texts}
   end
 
   defp apply_effect(conn, {:add, field, delta}, texts) do

@@ -51,18 +51,78 @@ defmodule Kantele.SectMaster do
     end
   end
 
-  @doc "收徒门槛（UCL apprentice 段：min_shen/min_exp/min_skills，loader.ex:481-510）"
+  @doc """
+  收徒门槛（UCL apprentice 段：min_shen/min_exp/min_skills + 性别/permit 门控）
+
+  门控顺序忠实对应 LPC `attempt_apprentice`：
+  1. `permit_recruit`（shaolin.h）：detach/betrayer/他派三条；
+  2. `gender`（清无/清为/清法）：性别不符分别拒绝（女性/无性文案不同）；
+  3. min_shen / min_exp / min_skills（既有）。
+
+  `gate` 为 nil 时退化到既有门派行为（无性别/permit 检查），保持向后兼容。
+  """
   def recruit_gate?(teacher, student, gate \\ nil) do
     config = gate || apprentice_config(teacher)
 
     min_shen = Map.get(config, :min_shen, 0) || 0
     min_exp = Map.get(config, :min_exp, 0) || 0
     min_skills = Map.get(config, :min_skills, %{}) || %{}
+    gender = Map.get(config, :gender)
+    permit_recruit = Map.get(config, :permit_recruit) == true
+    family_name = Map.get(config, :family)
 
     shen = Map.get(student_stats(student), :shen, 0) || 0
     exp = Map.get(student_stats(student), :combat_exp, 0) || 0
 
-    cond do
+    # 达摩专用门槛（未配置时全部为 nil → 下面各 cond 分支恒不命中，零回归影响）
+    exact_family = Map.get(config, :exact_family) == true
+    require_class = Map.get(config, :require_class)
+    exact_generation = Map.get(config, :exact_generation)
+    min_int = Map.get(config, :min_int)
+    max_wpk = Map.get(config, :max_wpk)
+
+    # 达摩 #5：int < 35 —— LPC 在此只 `command("say ...")`、**不 return**。
+    # 先记下提示，后续硬门槛照常判定；最终以 {:ok, warning} / {:error, warning <> reason}
+    # 交回 FamilyEvent 渲染，保证「先提示悟性不足、再因其它硬门槛被拒」的原版顺序不丢。
+    int_warning =
+      if not is_nil(min_int) and (student_int(student) || 0) < min_int do
+        deny_text(config, :int_deny, "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的佛法。")
+      else
+        nil
+      end
+
+    result =
+      cond do
+      # permit_recruit（shaolin.h）三条，顺序与 LPC 一致
+      permit_recruit and betrayed_sect?(student, family_name) ->
+        {:error, "你反反复复，唉！怎么一心向佛？\n"}
+
+      permit_recruit and betrayed_before?(student) ->
+        {:error, "你大逆不道，私自判师，不能容于少林！\n"}
+
+      permit_recruit and other_family?(student, family_name) ->
+        {:error, "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"}
+
+      # 达摩 attempt_apprentice #2：family_name != 少林派
+      exact_family and student_family_name(student) != family_name ->
+        {:error, deny_text(config, :family_deny, "大侠与本派素无来往，不知此话从何谈起？")}
+
+      # 达摩 #3：class != bonze
+      require_class not in [nil, ""] and student_class(student) != require_class ->
+        {:error, deny_text(config, :class_deny, "大侠是俗家弟子，不能在寺内学艺。")}
+
+      # 达摩 #4：generation != 36
+      not is_nil(exact_generation) and student_generation(student) != exact_generation ->
+        {:error, deny_text(config, :generation_deny, "大侠，贫僧哪里敢当！")}
+
+      # 性别门控（清无/清为/清法；文案对齐 LPC）
+      gender not in [nil, ""] and student_gender(student) != gender ->
+        gender_deny(student, gender)
+
+      # 达摩 #6：WPK > 3
+      not is_nil(max_wpk) and (student_wpk(student) || 0) > max_wpk ->
+        {:error, deny_text(config, :wpk_deny, "大侠杀戮心太重，不适合继续学习武功。")}
+
       shen < min_shen ->
         {:error, "你的杀气不足，师父未同意收你为徒。\n"}
 
@@ -75,7 +135,87 @@ defmodule Kantele.SectMaster do
       true ->
         :ok
     end
+
+    case {int_warning, result} do
+      {nil, :ok} -> :ok
+      {warning, :ok} when is_binary(warning) -> {:ok, warning}
+
+      {warning, {:error, reason}} when is_binary(warning) and is_binary(reason) ->
+        {:error, warning <> reason}
+
+      {_warning, error} -> error
+    end
   end
+
+  # UCL 可用 *_deny 覆写 LPC 原文；未配置时用 plan §5.4 登记的缺省文案（含结尾换行）。
+  defp deny_text(config, key, default) do
+    case Map.get(config, key) do
+      text when is_binary(text) and byte_size(text) > 0 -> ensure_lf(text)
+      _ -> ensure_lf(default)
+    end
+  end
+
+  defp ensure_lf(text), do: String.ends_with?(text, "\n") && text || text <> "\n"
+
+  @doc "LPC shaolin.h permit_recruit：是否叛出/背叛本门（detach/betrayer 门）"
+  def betrayed_sect?(student, family_name) when is_binary(family_name) do
+    env = student_env(student)
+
+    # LPC query("detach/少林派") / query("betrayer/少林派")：detach/betrayer 是 map，
+    # 门名为其中的键（原子或字符串），值为真即叛出过该门。
+    flag_set?(Map.get(env, :detach) || Map.get(env, "detach"), family_name) or
+      flag_set?(Map.get(env, :betrayer) || Map.get(env, "betrayer"), family_name)
+  end
+
+  def betrayed_sect?(_student, _family_name), do: false
+
+  @doc "LPC shaolin.h permit_recruit：betrayer/times 叛师次数非零"
+  def betrayed_before?(student) do
+    env = student_env(student)
+    betrayer = Map.get(env, :betrayer) || Map.get(env, "betrayer")
+
+    times =
+      case betrayer do
+        %{times: t} -> t
+        %{"times" => t} -> t
+        t when is_integer(t) -> t
+        _ -> 0
+      end
+
+    is_integer(times) and times > 0
+  end
+
+  # detach/betrayer map 中门名键为真（兼容 atom/string 键，值可为 1/true）。
+  # 不创建 atom：遍历现有键比较文本，避免任意门派名污染 atom 表。
+  defp flag_set?(map, family_name) when is_map(map) do
+    Enum.any?(map, fn {key, value} ->
+      key_matches? =
+        (is_atom(key) and not is_nil(key) and Atom.to_string(key) == family_name) or
+          (is_binary(key) and key == family_name)
+
+      key_matches? and value in [true, 1]
+    end)
+  end
+
+  defp flag_set?(_, _), do: false
+
+  @doc "LPC shaolin.h permit_recruit：已入他派（family_name 存在且≠本派）"
+  def other_family?(student, family_name) when is_binary(family_name) do
+    # Family.name/1 只接受 map，nil 会抛 BadMapError（family.ex:33）；
+    # 玩家未入门派（family=nil）时 LPC query("family/family_name") 为空 → 不拦。
+    case student_family(student) do
+      family when is_map(family) and map_size(family) > 0 ->
+        case Family.name(family) do
+          name when is_binary(name) and name != "" -> name != family_name
+          _ -> false
+        end
+
+      _ ->
+        false
+    end
+  end
+
+  def other_family?(_student, _family_name), do: false
 
   @doc "叛门惩罚判定（同门派叛师=罚，对照 master.ex:23 attempt_detach 同门近似）"
   def detach_penalty?(teacher_family, student_family) do
@@ -208,6 +348,70 @@ defmodule Kantele.SectMaster do
   end
 
   defp apprentice_config(character), do: Map.get(meta_of(character), :apprentice) || %{}
+
+  # 性别取自 meta.env（LPC query("gender") 落库位置，见 records.ex:33-35）；
+  # atom/string 双读，缺省 "男性" 与 LPC 一致。
+  defp student_gender(character) do
+    env = student_env(character)
+    Map.get(env, :gender) || Map.get(env, "gender") || "男性"
+  end
+
+  # 性别拒绝文案对齐 LPC：
+  # - 清无/清为：女性「女施主呀，贫僧可不敢开这等玩笑啊」/ 无性「这位公公…」
+  # - 清法 ask_for_join：女性「可去后山庵里受戒」/ 无性「回去伺候皇上」
+  # 此处是拜师(attempt_apprentice)门控，用清无/清为文案。
+  defp gender_deny(character, _required) do
+    case student_gender(character) do
+      "女性" -> {:error, "阿弥陀佛！女施主呀，贫僧可不敢开这等玩笑啊。\n"}
+      "无性" -> {:error, "阿弥陀佛！这位公公，你还是回去伺候皇上吧。\n"}
+      _ -> {:error, "阿弥陀佛！施主恕难从命。\n"}
+    end
+  end
+
+  defp student_env(character), do: Map.get(meta_of(character), :env) || %{}
+  defp student_family(character), do: Map.get(meta_of(character), :family)
+
+  # 达摩门控读取（LPC ob_fam["family_name"] / query("class") / ob_fam["generation"] /
+  # query_int() / query("WPK")）。WPK 在 ex 无独立列，与 PKS/MKS 同属 meta.combat
+  # 统计映射，并兼容 env（LPC set() 仓库）；二者都没有时按 0 处理。
+  defp student_family_name(character) do
+    case student_family(character) do
+      family when is_map(family) and map_size(family) > 0 ->
+        case Family.name(family) do
+          name when is_binary(name) -> name
+          _ -> nil
+        end
+
+      _ ->
+        nil
+    end
+  end
+
+  defp student_class(character) do
+    case student_family(character) do
+      family when is_map(family) -> Map.get(family, :class)
+      _ -> nil
+    end
+  end
+
+  defp student_generation(character) do
+    case student_family(character) do
+      family when is_map(family) -> Map.get(family, :generation)
+      _ -> nil
+    end
+  end
+
+  defp student_int(character) do
+    Map.get(Map.get(meta_of(character), :stats) || %{}, :int, 0) || 0
+  end
+
+  defp student_wpk(character) do
+    meta = meta_of(character)
+
+    Map.get(Map.get(meta, :combat) || %{}, :WPK) ||
+      Map.get(student_env(character), :WPK) ||
+      Map.get(student_env(character), "WPK")
+  end
 
   defp teaches?(character, skill), do: skill_level(character, skill) > 0
 

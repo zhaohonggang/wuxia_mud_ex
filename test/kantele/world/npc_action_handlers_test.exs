@@ -240,7 +240,7 @@ defmodule Kantele.World.NpcActionHandlersTest do
     # 原名 281 字节，编译期直接让 OTP 25 的 beam_asm 崩在
     # `*** argument 1: not an iolist term`，整个测试套件无法启动。
     # 该崩溃与平台无关（Linux 容器同样复现），不是 Windows 独有。
-    test "返回已注册房间 id 列表（27 个）" do
+    test "返回已注册房间 id 列表（28 个）" do
       rooms = NpcActionHandlers.registered_rooms()
 
       assert "tulong:huichang_back" in rooms
@@ -270,7 +270,7 @@ defmodule Kantele.World.NpcActionHandlersTest do
       assert "kaifeng:yaopu" in rooms
       assert "xiangyang:tiejiangpu" in rooms
       assert "changan:qunyulou2" in rooms
-      assert length(rooms) == 27
+      assert length(rooms) == 28
     end
   end
 end

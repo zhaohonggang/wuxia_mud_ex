@@ -93,6 +93,7 @@ kind_of = fn c ->
     String.contains?(c, "check_out(") -> {:trap, :wuxing}
     String.contains?(c, "check_dirs(") -> {:trap, :bagua}
     String.contains?(c, "->refuse(") -> {:trap, :arena}
+    String.contains?(c, "shaolin_gate(") -> {:trap, :shaolin_gate}
     true -> {:pure, :cond}
   end
 end

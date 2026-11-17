@@ -438,7 +438,12 @@ defmodule Kantele.Character.Records do
   defp serialize_family(%{} = family) do
     case {Map.get(family, :name), Map.get(family, :master_id)} do
       {nil, nil} ->
-        %{}
+        # 剃度玩家可能只有 class=bonze 而无门派/师父（LPC class 与 family 独立）；
+        # 这里必须保留 class，否则重登后 query("class") 恒 nil、又会被清法收为俗家弟子。
+        case Map.get(family, :class) do
+          nil -> %{}
+          class -> %{class: class}
+        end
 
       _ ->
         %{

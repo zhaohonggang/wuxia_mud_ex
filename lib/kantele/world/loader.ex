@@ -353,7 +353,11 @@ defmodule Kantele.World.Loader do
       room_owner_id: Map.get(room_data, :room_owner_id),
       actions: parse_room_actions(Map.get(room_data, :actions)),
       state: parse_room_state(Map.get(room_data, :state)),
-      valid_startroom: (if Map.get(room_data, :invalid_startroom, false), do: false, else: Map.get(room_data, :valid_startroom, true))
+      valid_startroom:
+        if(Map.get(room_data, :invalid_startroom, false),
+          do: false,
+          else: Map.get(room_data, :valid_startroom, true)
+        )
     }
 
     {key, room}
@@ -561,23 +565,28 @@ defmodule Kantele.World.Loader do
 
     character = %Character{
       id: "#{zone.id}:#{key}",
-      name: case Map.get(character_data, :random_name_type, :none) do
-        "ghost" ->
-          # LPC ghost.h 风格随机名字：颜色 + 动物 + "鬼"（如「赤兔鬼」）
-          NameGenerator.random_ghost_name()
-        "cn" ->
-          # LPC NPC_D->generate_cn_name()：随机中文全名（如丐帮弟子）
-          # random_name/2 返回 {姓名, [拼音id]}，取第 0 元素作为 name
-          elem(NameGenerator.random_name(Map.get(character_data, :gender, "男性")), 0)
-        "biaoshi" ->
-          # LPC biaoshi.c：随机姓氏 + "镖师"（如「赵镖师」）
-          NameGenerator.random_biaoshi_name()
-        "biaotou" ->
-          # LPC biaotou.c：随机姓氏 + "镖头"（如「赵镖头」）
-          NameGenerator.random_biaotou_name()
-        _ ->
-          character_data.name
-      end,
+      name:
+        case Map.get(character_data, :random_name_type, :none) do
+          "ghost" ->
+            # LPC ghost.h 风格随机名字：颜色 + 动物 + "鬼"（如「赤兔鬼」）
+            NameGenerator.random_ghost_name()
+
+          "cn" ->
+            # LPC NPC_D->generate_cn_name()：随机中文全名（如丐帮弟子）
+            # random_name/2 返回 {姓名, [拼音id]}，取第 0 元素作为 name
+            elem(NameGenerator.random_name(Map.get(character_data, :gender, "男性")), 0)
+
+          "biaoshi" ->
+            # LPC biaoshi.c：随机姓氏 + "镖师"（如「赵镖师」）
+            NameGenerator.random_biaoshi_name()
+
+          "biaotou" ->
+            # LPC biaotou.c：随机姓氏 + "镖头"（如「赵镖头」）
+            NameGenerator.random_biaotou_name()
+
+          _ ->
+            character_data.name
+        end,
       description: character_data.description,
       brain:
         character_data
@@ -1151,15 +1160,65 @@ defmodule Kantele.World.Loader do
         _ -> nil
       end
 
-    %{
+    # 性别门控（少林移植 #639）：LPC attempt_apprentice 的 gender 检查
+    # （清无/清为/清法要求男性、达摩不检查）。值如 "男性"；nil/空 = 不限制。
+    gender =
+      case Map.get(apprentice, :gender) do
+        value when is_binary(value) and value != "" -> value
+        value when is_atom(value) and not is_nil(value) -> to_string(value)
+        _ -> nil
+      end
+
+    # permit_recruit 门控（少林移植 #639，对应 shaolin.h permit_recruit 三条）：
+    # 启用后检查 detach/betrayer/他派。默认 false 保持既有门派行为不变。
+    # Elias 把 UCL 里的 `true` 解析成字符串 "true"（见 parse_exit_vetoes 注释），
+    # 必须走 to_bool/1，否则清无/清为/清法/达摩的 permit_recruit 恒 false（#639 隐藏 bug）。
+    permit_recruit = to_bool(Map.get(apprentice, :permit_recruit))
+
+    base = %{
       family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
       min_shen: Map.get(apprentice, :min_shen) || 0,
       min_exp: Map.get(apprentice, :min_exp) || 0,
       min_skills: min_skills,
       no_recruit: no_recruit,
-      class: class
+      class: class,
+      gender: gender,
+      permit_recruit: permit_recruit
     }
+
+    # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/
+    # min_skills 表达，按「不简化」原则新增专用字段原样透传，禁止丢弃。
+    # - exact_family: 必须有门派且门派名 == family（LPC `ob_fam["family_name"] != "少林派"`）
+    # - require_class: 必须为指定 class（LPC `query("class") != "bonze"`）
+    # - exact_generation: 辈分必须精确相等（LPC `ob_fam["generation"] != 36`）
+    # - min_int: 悟性下限，且**只提示不拒**（原版缺 return，见 plan §5.4 #5）
+    # - max_wpk: WPK 上限（LPC `query("WPK") > 3`）
+    # - *_deny: 逐条 LPC 原文拒绝/提示文案（RANK_D 敬称在文案里以「大侠」落地）
+    da_mo_fields = %{
+      exact_family: to_bool(Map.get(apprentice, :exact_family)),
+      require_class: class_value(Map.get(apprentice, :require_class)),
+      exact_generation: int_value(Map.get(apprentice, :exact_generation)),
+      min_int: int_value(Map.get(apprentice, :min_int)),
+      max_wpk: int_value(Map.get(apprentice, :max_wpk)),
+      rename_index: int_value(Map.get(apprentice, :rename_index)) || 1,
+      family_deny: Map.get(apprentice, :family_deny),
+      class_deny: Map.get(apprentice, :class_deny),
+      generation_deny: Map.get(apprentice, :generation_deny),
+      int_deny: Map.get(apprentice, :int_deny),
+      wpk_deny: Map.get(apprentice, :wpk_deny),
+      rename_prefix: Map.get(apprentice, :rename_prefix)
+    }
+
+    Map.merge(base, da_mo_fields)
   end
+
+  defp class_value(value) when is_binary(value) and value != "", do: value
+  defp class_value(value) when is_atom(value) and not is_nil(value), do: to_string(value)
+  defp class_value(_), do: nil
+
+  defp int_value(value) when is_integer(value), do: value
+  defp int_value(value) when is_binary(value), do: String.to_integer(value)
+  defp int_value(_), do: nil
 
   defp parse_apprentice(_), do: nil
 

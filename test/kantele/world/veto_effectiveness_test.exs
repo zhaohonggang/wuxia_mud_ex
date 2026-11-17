@@ -95,6 +95,10 @@ defmodule Kantele.World.VetoEffectivenessTest do
       String.contains?(c, "->refuse(") ->
         {:live, {:trap, :arena}}
 
+      # 少林山门 guangchang1.c valid_leave 全 6 分支，走 Trap.ShaolinGate
+      String.contains?(c, "shaolin_gate(") ->
+        {:live, {:trap, :shaolin_gate}}
+
       # ---- 纯条件 ----
       # `all_dirs = true` 是数据里**显式声明**「这条就拦所有方向」，
       # 和「转换器丢了 LPC 外层守卫」是两回事：前者 LPC 原文本来就没有
@@ -191,7 +195,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
   end
 
   @tag :world_data
-  test "总账：177 条里 166 条会拦人、11 条不会", ctx do
+  test "总账：178 条里 167 条会拦人、11 条不会", ctx do
     tally =
       for room <- ctx.world.rooms,
           veto <- room.exit_vetoes,
@@ -203,17 +207,17 @@ defmodule Kantele.World.VetoEffectivenessTest do
 
     total = tally[:live] + tally[:dead]
 
-    assert total == 177,
+    assert total == 178,
            "条件总数变了：#{total}（tally=#{inspect(tally)}）"
 
-    # 166 = 纯条件 148 + Trap 通道 18（五行迷宫 5 + 八卦阵 8 + 擂台 5）
+    # 167 = 纯条件 148 + Trap 通道 19（五行迷宫 5 + 八卦阵 8 + 擂台 5 + 少林山门 1）
     # 148 里含 14 条 all_dirs 全方向门禁：pigging_seat 4 + weiqi_seat 3
     #      + soup/rice 2 + prostitute 1 + xuanbing chimang 1 + xisui jing 1
     #      + jinboxunhua 1（P4 回填）+ bagua count 1（P4 回填）。
     # 注意「会拦人」= 机制已接好且依赖可满足；其中 13 条的触发状态
     # （拱猪桌/棋苑/丽春院/采花子/jinboxunhua/八卦位数）压根没移植，
     # 实际永不触发。
-    assert tally[:live] == 166, "会拦人的条数变了：#{tally[:live]}"
+    assert tally[:live] == 167, "会拦人的条数变了：#{tally[:live]}"
     assert tally[:dead] == 11, "不会拦的条数变了：#{tally[:dead]}"
   end
 

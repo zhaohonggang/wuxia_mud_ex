@@ -1175,4 +1175,230 @@ defmodule Kantele.SectMasterTest do
                Kantele.SectMaster.inquiry_grant(stats, %{family: "武当派"}, cfg)
     end
   end
+
+  # ---- 少林移植 #639：性别门控 + permit_recruit 三条 ----
+
+  defp shaolin_gate(overrides \\ %{}) do
+    Map.merge(
+      %{
+        family: "少林派",
+        min_shen: 0,
+        min_exp: 0,
+        min_skills: %{},
+        no_recruit: [],
+        gender: "男性",
+        permit_recruit: true
+      },
+      overrides
+    )
+  end
+
+  defp shaolin_student(overrides \\ %{}) do
+    %{
+      meta:
+        Map.merge(
+          %{
+            family: nil,
+            env: %{gender: "男性"},
+            stats: %{combat_exp: 2_000_000, shen: 100, skills: %{}}
+          },
+          overrides
+        )
+    }
+  end
+
+  test "recruit_gate? 性别门控：女性拒绝（LPC 清无/清为文案）" do
+    assert {:error, "阿弥陀佛！女施主呀，贫僧可不敢开这等玩笑啊。\n"} =
+             Kantele.SectMaster.recruit_gate?(
+               nil,
+               shaolin_student(%{env: %{gender: "女性"}}),
+               shaolin_gate()
+             )
+  end
+
+  test "recruit_gate? 性别门控：无性拒绝（LPC 公公文案）" do
+    assert {:error, "阿弥陀佛！这位公公，你还是回去伺候皇上吧。\n"} =
+             Kantele.SectMaster.recruit_gate?(
+               nil,
+               shaolin_student(%{env: %{gender: "无性"}}),
+               shaolin_gate()
+             )
+  end
+
+  test "recruit_gate? 性别门控：男性且无门派/无背叛记录 → :ok" do
+    assert :ok = Kantele.SectMaster.recruit_gate?(nil, shaolin_student(), shaolin_gate())
+  end
+
+  test "recruit_gate? permit_recruit：detach/少林派 拒绝" do
+    student = shaolin_student(%{env: %{gender: "男性", detach: %{少林派: 1}}})
+
+    assert {:error, "你反反复复，唉！怎么一心向佛？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, shaolin_gate())
+  end
+
+  test "recruit_gate? permit_recruit：betrayer/少林派 拒绝" do
+    student = shaolin_student(%{env: %{gender: "男性", betrayer: %{少林派: true}}})
+
+    assert {:error, "你反反复复，唉！怎么一心向佛？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, shaolin_gate())
+  end
+
+  test "recruit_gate? permit_recruit：betrayer.times>0 拒绝" do
+    student = shaolin_student(%{env: %{gender: "男性", betrayer: %{times: 1}}})
+
+    assert {:error, "你大逆不道，私自判师，不能容于少林！\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, shaolin_gate())
+  end
+
+  test "recruit_gate? permit_recruit：已入他派拒绝" do
+    student = shaolin_student(%{family: %{name: "武当派"}})
+
+    assert {:error, "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, shaolin_gate())
+  end
+
+  test "recruit_gate? 向后兼容：无 gender/permit 字段的旧门派门控不受影响" do
+    old_gate = %{family: "武当派", min_shen: 0, min_exp: 0, min_skills: %{}, no_recruit: []}
+    assert :ok = Kantele.SectMaster.recruit_gate?(nil, shaolin_student(), old_gate)
+  end
+end
+
+defmodule Kantele.SectMasterDamoGateTest do
+  use ExUnit.Case, async: true
+
+  # 达摩祖师 attempt_apprentice 11 项门槛（少林移植 #626/#636）。
+  # 每项单独破坏一个条件，验证拒绝文案与「int<35 只提示不 return」原版行为。
+  defp damo_gate(overrides \\ %{}) do
+    Map.merge(
+      %{
+        family: "少林派",
+        permit_recruit: true,
+        exact_family: true,
+        require_class: "bonze",
+        exact_generation: 36,
+        min_int: 35,
+        max_wpk: 3,
+        min_skills: %{buddhism: 180, dodge: 180, force: 180, parry: 180},
+        min_exp: 1_000_000
+      },
+      overrides
+    )
+  end
+
+  defp damo_student(overrides \\ %{}) do
+    %{
+      meta:
+        Map.merge(
+          %{
+            family: %{name: "少林派", generation: 36, class: "bonze"},
+            env: %{gender: "男性"},
+            combat: %{WPK: 0},
+            stats: %{
+              int: 50,
+              combat_exp: 2_000_000,
+              shen: 0,
+              skills: %{buddhism: 200, dodge: 200, force: 200, parry: 200}
+            }
+          },
+          overrides
+        )
+    }
+  end
+
+  test "11 项全过 → :ok" do
+    assert :ok = Kantele.SectMaster.recruit_gate?(nil, damo_student(), damo_gate())
+  end
+
+  test "#2 permit_recruit 先判：已入他派走少林通用拒绝文案" do
+    student = damo_student(%{family: %{name: "武当派", generation: 36, class: "bonze"}})
+
+    assert {:error, "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, damo_gate())
+  end
+
+  test "#2 无门派（permit_recruit 不拦）→ 素无来往" do
+    student = damo_student(%{family: nil})
+
+    assert {:error, "大侠与本派素无来往，不知此话从何谈起？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, damo_gate())
+  end
+
+  test "#3 俗家弟子 → 不能在寺内学艺" do
+    student = damo_student(%{family: %{name: "少林派", generation: 36}})
+
+    assert {:error, "大侠是俗家弟子，不能在寺内学艺。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, damo_gate())
+  end
+
+  test "#4 辈分 35 → 贫僧哪里敢当" do
+    student = damo_student(%{family: %{name: "少林派", generation: 35, class: "bonze"}})
+
+    assert {:error, "大侠，贫僧哪里敢当！\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, damo_gate())
+  end
+
+  test "#5 int<35 只提示不 return（原版缺 return）" do
+    stats = %{
+      int: 30,
+      combat_exp: 2_000_000,
+      shen: 0,
+      skills: %{buddhism: 200, dodge: 200, force: 200, parry: 200}
+    }
+
+    assert {:ok, "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的佛法。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, damo_student(%{stats: stats}), damo_gate())
+  end
+
+  test "#5 提示后仍被 #6 WPK 拒绝 → 两条文案按 LPC 顺序合并" do
+    stats = %{
+      int: 30,
+      combat_exp: 2_000_000,
+      shen: 0,
+      skills: %{buddhism: 200, dodge: 200, force: 200, parry: 200}
+    }
+
+    student = damo_student(%{stats: stats, combat: %{WPK: 4}})
+
+    assert {:error,
+            "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的佛法。\n" <>
+              "大侠杀戮心太重，不适合继续学习武功。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, damo_gate())
+  end
+
+  test "#6 WPK=4 → 杀戮心太重" do
+    assert {:error, "大侠杀戮心太重，不适合继续学习武功。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, damo_student(%{combat: %{WPK: 4}}), damo_gate())
+  end
+
+  test "#7 buddhism<180 → 禅宗心法不够" do
+    stats = %{
+      int: 50,
+      combat_exp: 2_000_000,
+      shen: 0,
+      skills: %{buddhism: 179, dodge: 200, force: 200, parry: 200}
+    }
+
+    assert {:error, _} =
+             Kantele.SectMaster.recruit_gate?(nil, damo_student(%{stats: stats}), damo_gate())
+  end
+
+  test "#11 combat_exp<1000000 → 实战经验欠缺" do
+    stats = %{
+      int: 50,
+      combat_exp: 999_999,
+      shen: 0,
+      skills: %{buddhism: 200, dodge: 200, force: 200, parry: 200}
+    }
+
+    assert {:error, "你经验尚浅，武功未成，师父未同意收你为徒。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, damo_student(%{stats: stats}), damo_gate())
+  end
+
+  test "UCL *_deny 覆写文案" do
+    student = damo_student(%{combat: %{WPK: 4}})
+    gate = damo_gate(%{wpk_deny: "施主杀气未消，且慢。"})
+
+    assert {:error, "施主杀气未消，且慢。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, gate)
+  end
 end

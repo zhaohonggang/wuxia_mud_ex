@@ -1469,6 +1469,12 @@ valid_leave = [
   direction = ~
   message = "壮年僧人立时从身畔挚出一把雪亮的戒刀来，把明晃晃的刀尖对准你的 胸口，横眉怒目地说道：“你等邪魔外道，还不给我滚开！以后再敢走 近少林一步，我立时就斩断你们的狗腿！”"
 }
+,
+{
+  condition = "shaolin_gate(me, dir)"
+direction = "north"
+  message = "壮年僧人说道：对不起，俗家弟子不得入寺修行。"
+}
 
 ]
   actions = {
