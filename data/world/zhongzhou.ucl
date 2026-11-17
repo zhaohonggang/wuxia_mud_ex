@@ -2942,6 +2942,113 @@ chats = [
       #   create_family("中原苗家", 6, "传人") —— 门派身份供同门校验/授技读取
       teach = {
         family = "中原苗家"
+        teach_skills = {
+          force = {
+            max = 260
+            gongxian = 5
+          }
+          miaojia_neigong = {
+            max = 260
+            gongxian = 5
+          }
+          dodge = {
+            max = 240
+            gongxian = 4
+          }
+          chaoyang_fengwu = {
+            max = 240
+            gongxian = 4
+          }
+          sword = {
+            max = 260
+            gongxian = 5
+          }
+          suqin_beijian = {
+            max = 260
+            gongxian = 5
+          }
+          baxian_jian = {
+            max = 260
+            gongxian = 5
+          }
+          tianlong_jian = {
+            max = 260
+            gongxian = 5
+          }
+          miaojia_jian = {
+            max = 260
+            gongxian = 5
+          }
+          blade = {
+            max = 240
+            gongxian = 4
+          }
+          hujia_daofa = {
+            max = 240
+            gongxian = 4
+          }
+          strike = {
+            max = 260
+            gongxian = 5
+          }
+          miaojia_zhang = {
+            max = 260
+            gongxian = 5
+          }
+          chongtian_zhang = {
+            max = 260
+            gongxian = 5
+          }
+          claw = {
+            max = 260
+            gongxian = 5
+          }
+          panlong_zhao = {
+            max = 260
+            gongxian = 5
+          }
+          da_qinna = {
+            max = 240
+            gongxian = 4
+          }
+          xiao_qinna = {
+            max = 240
+            gongxian = 4
+          }
+          unarmed = {
+            max = 240
+            gongxian = 4
+          }
+          pobei_tui = {
+            max = 240
+            gongxian = 4
+          }
+          parry = {
+            max = 260
+            gongxian = 5
+          }
+          literate = {
+            max = 240
+            gongxian = 4
+          }
+          martial_cognize = {
+            max = 260
+            gongxian = 5
+          }
+        }
+        no_teach = [
+          "miaojia-jian",
+          "tianlong-jian",
+          "chongtian-zhang",
+          "hujia-daofa"
+        ]
+      }
+
+      apprentice = {
+        family = "中原苗家"
+        min_skills = {
+          miaojia_neigong = 50
+        }
       }
 
       # LPC kungfu/class/miao/miao.c：苗人凤（中原苗家师父）的问询

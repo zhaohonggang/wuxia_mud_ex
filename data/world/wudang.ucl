@@ -3100,6 +3100,155 @@ characters "wudang_zhang" {
   # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", 1, "开山祖师")）
   teach = {
     family = "武当派"
+    teach_skills = {
+      force = {
+        max = 420
+        gongxian = 8
+      }
+      taiji_shengong = {
+        max = 420
+        gongxian = 8
+      }
+      wudang_xinfa = {
+        max = 400
+        gongxian = 8
+      }
+      dodge = {
+        max = 420
+        gongxian = 8
+      }
+      tiyunzong = {
+        max = 420
+        gongxian = 8
+      }
+      sword = {
+        max = 420
+        gongxian = 8
+      }
+      taiji_jian = {
+        max = 420
+        gongxian = 8
+      }
+      unarmed = {
+        max = 420
+        gongxian = 8
+      }
+      taiji_quan = {
+        max = 420
+        gongxian = 8
+      }
+      xuangong_quan = {
+        max = 400
+        gongxian = 8
+      }
+      strike = {
+        max = 400
+        gongxian = 8
+      }
+      wudang_zhang = {
+        max = 400
+        gongxian = 8
+      }
+      yitian_zhang = {
+        max = 400
+        gongxian = 8
+      }
+      zhenshan_zhang = {
+        max = 400
+        gongxian = 8
+      }
+      hand = {
+        max = 400
+        gongxian = 8
+      }
+      paiyun_shou = {
+        max = 400
+        gongxian = 8
+      }
+      claw = {
+        max = 400
+        gongxian = 8
+      }
+      huzhua_shou = {
+        max = 400
+        gongxian = 8
+      }
+      parry = {
+        max = 420
+        gongxian = 8
+      }
+      wudang_jian = {
+        max = 400
+        gongxian = 8
+      }
+      shenmen_jian = {
+        max = 400
+        gongxian = 8
+      }
+      rouyun_jian = {
+        max = 400
+        gongxian = 8
+      }
+      raozhi_roujian = {
+        max = 400
+        gongxian = 8
+      }
+      liangyi_jian = {
+        max = 400
+        gongxian = 8
+      }
+      taiji_dao = {
+        max = 400
+        gongxian = 8
+      }
+      xuanxu_dao = {
+        max = 400
+        gongxian = 8
+      }
+      blade = {
+        max = 400
+        gongxian = 8
+      }
+      throwing = {
+        max = 400
+        gongxian = 8
+      }
+      furong_jinzhen = {
+        max = 400
+        gongxian = 8
+      }
+      taoism = {
+        max = 400
+        gongxian = 8
+      }
+      literate = {
+        max = 280
+        gongxian = 5
+      }
+      medical = {
+        max = 240
+        gongxian = 4
+      }
+      wudang_yaoli = {
+        max = 240
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 400
+        gongxian = 8
+      }
+    }
+  }
+
+  apprentice = {
+    family = "武当派"
+    min_shen = 80000
+    min_exp = 500000
+    min_skills = {
+      wudang_xinfa = 120
+      taoism = 120
+    }
+    class = "taoist"
   }
 
   # LPC no_teach = ([ "wudang-jiuyang" : (: try_to_learn_jy :) ])

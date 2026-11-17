@@ -3998,6 +3998,106 @@ chats = [
         }
       }
 
+      teach = {
+        family = "五毒教"
+        teach_skills = {
+          force = {
+            max = 180
+            gongxian = 4
+          }
+          wudu_xinfa = {
+            max = 180
+            gongxian = 4
+          }
+          xiuluo_yinshagong = {
+            max = 160
+            gongxian = 3
+          }
+          dodge = {
+            max = 180
+            gongxian = 4
+          }
+          jinshe_youshenbu = {
+            max = 180
+            gongxian = 4
+          }
+          strike = {
+            max = 180
+            gongxian = 4
+          }
+          tianchan_zhang = {
+            max = 180
+            gongxian = 4
+          }
+          claw = {
+            max = 180
+            gongxian = 4
+          }
+          wusheng_zhao = {
+            max = 180
+            gongxian = 4
+          }
+          parry = {
+            max = 180
+            gongxian = 4
+          }
+          sword = {
+            max = 180
+            gongxian = 4
+          }
+          jinwu_goufa = {
+            max = 180
+            gongxian = 4
+          }
+          whip = {
+            max = 140
+            gongxian = 3
+          }
+          xiewei_bian = {
+            max = 140
+            gongxian = 3
+          }
+          throwing = {
+            max = 100
+            gongxian = 2
+          }
+          hansha_sheying = {
+            max = 100
+            gongxian = 2
+          }
+          literate = {
+            max = 100
+            gongxian = 2
+          }
+          poison = {
+            max = 120
+            gongxian = 3
+          }
+          wudu_qishu = {
+            max = 120
+            gongxian = 3
+          }
+          martial_cognize = {
+            max = 160
+            gongxian = 3
+          }
+        }
+        no_teach = [
+          "xiuluo-yinshagong",
+          "hansha-sheying"
+        ]
+      }
+
+      apprentice = {
+        family = "五毒教"
+        max_shen = -8000
+        min_exp = 60000
+        min_skills = {
+          wudu_xinfa = 80
+          wudu_qishu = 50
+        }
+      }
+
       # LPC: kungfu/class/wudu/hehongyao.c
       #   create_family("五毒教", 11, "长老")
       #   carry_object("/d/wudu/npc/obj/jiandao")

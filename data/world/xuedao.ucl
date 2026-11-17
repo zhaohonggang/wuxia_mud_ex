@@ -764,6 +764,82 @@ behavior_config = {
       # teach_skills 空：LPC 的 set_skill 只是 NPC 自身武功，不等于可传授清单。
       teach = {
         family = "血刀门"
+        teach_skills = {
+          force = {
+            max = 160
+            gongxian = 3
+          }
+          mizong_neigong = {
+            max = 160
+            gongxian = 3
+          }
+          xuedao_dafa = {
+            max = 80
+            gongxian = 2
+          }
+          parry = {
+            max = 160
+            gongxian = 3
+          }
+          blade = {
+            max = 160
+            gongxian = 3
+          }
+          xueshan_dao = {
+            max = 160
+            gongxian = 3
+          }
+          honglian_dao = {
+            max = 160
+            gongxian = 3
+          }
+          dodge = {
+            max = 160
+            gongxian = 3
+          }
+          shenkong_xing = {
+            max = 160
+            gongxian = 3
+          }
+          hand = {
+            max = 160
+            gongxian = 3
+          }
+          dashou_yin = {
+            max = 160
+            gongxian = 3
+          }
+          cuff = {
+            max = 160
+            gongxian = 3
+          }
+          yujiamu_quan = {
+            max = 160
+            gongxian = 3
+          }
+          lamaism = {
+            max = 160
+            gongxian = 3
+          }
+          literate = {
+            max = 140
+            gongxian = 3
+          }
+          martial_cognize = {
+            max = 160
+            gongxian = 3
+          }
+        }
+      }
+
+      apprentice = {
+        family = "血刀门"
+        max_shen = 0
+        min_skills = {
+          lamaism = 40
+          force = 75
+        }
+        class = "bonze"
       }
 
       # LPC: kungfu/class/xuedao/baoxiang.c ask_skill1 —— 红莲刀法「流星火雨」。
@@ -845,6 +921,82 @@ behavior_config = {
       # LPC: create_family("血刀门", 5, "弟子") —— 门派身份供同门校验读取
       teach = {
         family = "血刀门"
+        teach_skills = {
+          force = {
+            max = 160
+            gongxian = 3
+          }
+          mizong_neigong = {
+            max = 160
+            gongxian = 3
+          }
+          parry = {
+            max = 160
+            gongxian = 3
+          }
+          blade = {
+            max = 140
+            gongxian = 3
+          }
+          xueshan_dao = {
+            max = 140
+            gongxian = 3
+          }
+          sword = {
+            max = 160
+            gongxian = 3
+          }
+          mingwang_jian = {
+            max = 160
+            gongxian = 3
+          }
+          dodge = {
+            max = 160
+            gongxian = 3
+          }
+          shenkong_xing = {
+            max = 160
+            gongxian = 3
+          }
+          hand = {
+            max = 140
+            gongxian = 3
+          }
+          dashou_yin = {
+            max = 140
+            gongxian = 3
+          }
+          cuff = {
+            max = 140
+            gongxian = 3
+          }
+          yujiamu_quan = {
+            max = 140
+            gongxian = 3
+          }
+          lamaism = {
+            max = 160
+            gongxian = 3
+          }
+          literate = {
+            max = 140
+            gongxian = 3
+          }
+          martial_cognize = {
+            max = 160
+            gongxian = 3
+          }
+        }
+      }
+
+      apprentice = {
+        family = "血刀门"
+        max_shen = 0
+        min_skills = {
+          lamaism = 50
+          force = 70
+        }
+        class = "bonze"
       }
 
       # LPC: kungfu/class/xuedao/shengdi.c ask_skill1 —— 雪山刀法「冰河开封」。

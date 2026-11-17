@@ -16003,15 +16003,231 @@ chats = [
     str = 40
   }
 
-  inquiries = [
-    { key = "剑盾珠索" value = " inquire about jiansuo (unimplemented)" },
-    { key = "化蝶" value = " inquire about skill3 (unimplemented)" },
-    { key = "千头万绪" value = " inquire about skill2 (unimplemented)" },
-    { key = "战神轰天诀" value = " inquire about skill6 (unimplemented)" },
-    { key = "百花错乱" value = " inquire about skill4 (unimplemented)" },
-    { key = "百花错易" value = " inquire about skill5 (unimplemented)" },
-    { key = "缚字诀" value = " inquire about skill1 (unimplemented)" }
-  ]
+  inquiries = {
+    剑盾珠索 = {
+      perform_id = "jiandun-zhusuo/suo"
+      skill = "jiandun-zhusuo"
+      min_levels = {
+        force = 200
+        jiandun_zhusuo = 160
+      }
+      min_gongxian = 500
+      min_shen = 65000
+      cost_gongxian = 500
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连剑盾珠索都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    化蝶 = {
+      perform_id = "baihua-cuoquan/hua"
+      skill = "baihua-cuoquan"
+      min_levels = {
+        force = 180
+        baihua_cuoquan = 140
+      }
+      min_gongxian = 500
+      min_shen = 65000
+      cost_gongxian = 500
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    千头万绪 = {
+      perform_id = "baihua-cuoquan/qian"
+      skill = "baihua-cuoquan"
+      min_levels = {
+        force = 160
+        baihua_cuoquan = 120
+      }
+      min_gongxian = 400
+      min_shen = 65000
+      cost_gongxian = 400
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    战神轰天诀 = {
+      perform_id = "zhanshen-xinjing/hong"
+      skill = "zhanshen-xinjing"
+      min_levels = {
+        force = 260
+        zhanshen_xinjing = 200
+      }
+      min_gongxian = 800
+      min_shen = 65000
+      cost_gongxian = 800
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连战神心经都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    百花错乱 = {
+      perform_id = "baihua-cuoquan/luan"
+      skill = "baihua-cuoquan"
+      min_levels = {
+        force = 200
+        baihua_cuoquan = 160
+      }
+      min_gongxian = 600
+      min_shen = 65000
+      cost_gongxian = 600
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    百花错易 = {
+      perform_id = "baihua-cuoquan/yi"
+      skill = "baihua-cuoquan"
+      min_levels = {
+        force = 220
+        baihua_cuoquan = 180
+      }
+      min_gongxian = 700
+      min_shen = 65000
+      cost_gongxian = 700
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    缚字诀 = {
+      perform_id = "baihua-cuoquan/fu"
+      skill = "baihua-cuoquan"
+      min_levels = {
+        force = 160
+        baihua_cuoquan = 120
+      }
+      min_gongxian = 300
+      min_shen = 65000
+      cost_gongxian = 300
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+  }
+
+  teach = {
+    family = "红花会"
+    teach_skills = {
+      force = {
+        max = 260
+        gongxian = 5
+      }
+      zhanshen_xinjing = {
+        max = 260
+        gongxian = 5
+      }
+      tianchi_neigong = {
+        max = 240
+        gongxian = 5
+      }
+      honghua_xinfa = {
+        max = 240
+        gongxian = 5
+      }
+      dodge = {
+        max = 260
+        gongxian = 5
+      }
+      zhuangzi_wu = {
+        max = 260
+        gongxian = 5
+      }
+      yanzi_chuanyun = {
+        max = 240
+        gongxian = 5
+      }
+      parry = {
+        max = 240
+        gongxian = 4
+      }
+      unarmed = {
+        max = 260
+        gongxian = 5
+      }
+      baihua_cuoquan = {
+        max = 260
+        gongxian = 5
+      }
+      claw = {
+        max = 260
+        gongxian = 5
+      }
+      strike = {
+        max = 260
+        gongxian = 5
+      }
+      cuff = {
+        max = 260
+        gongxian = 5
+      }
+      blade = {
+        max = 220
+        gongxian = 4
+      }
+      hanwang_qingdao = {
+        max = 220
+        gongxian = 4
+      }
+      sword = {
+        max = 220
+        gongxian = 4
+      }
+      sanfen_jianshu = {
+        max = 220
+        gongxian = 4
+      }
+      whip = {
+        max = 240
+        gongxian = 4
+      }
+      jiandun_zhusuo = {
+        max = 240
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 250
+        gongxian = 5
+      }
+      literate = {
+        max = 250
+        gongxian = 5
+      }
+    }
+    no_teach = [
+      "sanfen-jianshu",
+      "hanwang-qingdao",
+      "baihua-cuoquan"
+    ]
+  }
+
+  apprentice = {
+    family = "红花会"
+    min_shen = 65000
+    min_exp = 400000
+    min_skills = {
+      honghua_xinfa = 100
+    }
+  }
 
   skills = [
     { skill = "force" level = 260 },
@@ -21180,6 +21396,98 @@ chats = [
   # 实际加载以本处为准（见 project memory 的 clone_lib 去重）。
   teach = {
     family = "全真教"
+    teach_skills = {
+      force = {
+        max = 240
+        gongxian = 5
+      }
+      quanzhen_xinfa = {
+        max = 240
+        gongxian = 5
+      }
+      xuanmen_neigong = {
+        max = 240
+        gongxian = 5
+      }
+      sword = {
+        max = 240
+        gongxian = 5
+      }
+      qixing_jian = {
+        max = 240
+        gongxian = 5
+      }
+      quanzhen_jian = {
+        max = 240
+        gongxian = 5
+      }
+      dodge = {
+        max = 220
+        gongxian = 4
+      }
+      tianshan_feidu = {
+        max = 220
+        gongxian = 4
+      }
+      jinyan_gong = {
+        max = 220
+        gongxian = 4
+      }
+      parry = {
+        max = 220
+        gongxian = 4
+      }
+      strike = {
+        max = 240
+        gongxian = 5
+      }
+      chongyang_shenzhang = {
+        max = 240
+        gongxian = 5
+      }
+      haotian_zhang = {
+        max = 240
+        gongxian = 5
+      }
+      hand = {
+        max = 240
+        gongxian = 5
+      }
+      qixing_shou = {
+        max = 240
+        gongxian = 5
+      }
+      finger = {
+        max = 240
+        gongxian = 5
+      }
+      zhongnan_zhi = {
+        max = 240
+        gongxian = 5
+      }
+      literate = {
+        max = 220
+        gongxian = 4
+      }
+      taoism = {
+        max = 220
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 240
+        gongxian = 5
+      }
+    }
+  }
+
+  apprentice = {
+    family = "全真教"
+    min_shen = 25000
+    min_skills = {
+      xuanmen_neigong = 100
+      quanzhen_xinfa = 100
+      taoism = 100
+    }
   }
 
   inquiries = {
@@ -22946,6 +23254,102 @@ chats = [
   # ask_me（黑血神针）为 item_grant，留待 GiveItem 扩展后回填，此处不列。
   teach = {
     family = "日月神教"
+    teach_skills = {
+      force = {
+        max = 180
+        gongxian = 4
+      }
+      riyue_xinfa = {
+        max = 180
+        gongxian = 4
+      }
+      tianhuan_shenjue = {
+        max = 180
+        gongxian = 4
+      }
+      dodge = {
+        max = 200
+        gongxian = 4
+      }
+      feiyan_zoubi = {
+        max = 200
+        gongxian = 4
+      }
+      juechen_shenfa = {
+        max = 200
+        gongxian = 4
+      }
+      dagger = {
+        max = 180
+        gongxian = 4
+      }
+      jifeng_cixuefa = {
+        max = 180
+        gongxian = 4
+      }
+      hand = {
+        max = 200
+        gongxian = 4
+      }
+      lansha_shou = {
+        max = 200
+        gongxian = 4
+      }
+      strike = {
+        max = 160
+        gongxian = 3
+      }
+      qingmang_zhang = {
+        max = 160
+        gongxian = 3
+      }
+      cuff = {
+        max = 140
+        gongxian = 3
+      }
+      zhenyu_quan = {
+        max = 140
+        gongxian = 3
+      }
+      claw = {
+        max = 140
+        gongxian = 3
+      }
+      poyue_zhao = {
+        max = 140
+        gongxian = 3
+      }
+      parry = {
+        max = 180
+        gongxian = 4
+      }
+      throwing = {
+        max = 200
+        gongxian = 4
+      }
+      heixue_shenzhen = {
+        max = 200
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 180
+        gongxian = 4
+      }
+      literate = {
+        max = 220
+        gongxian = 4
+      }
+    }
+  }
+
+  apprentice = {
+    family = "日月神教"
+    max_shen = -15000
+    min_exp = 100000
+    min_skills = {
+      tianhuan_shenjue = 50
+      riyue_xinfa = 50
+    }
   }
 
   inquiries = {
@@ -23533,6 +23937,113 @@ chats = [
   # 扩展（min_skill / min_gongxian / max_neili / master_id / perform_id / cost_gongxian）回填。
   teach = {
     family = "商家堡"
+    teach_skills = {
+      force = {
+        max = 240
+        gongxian = 5
+      }
+      nei_bagua = {
+        max = 240
+        gongxian = 5
+      }
+      shangjia_neigong = {
+        max = 220
+        gongxian = 5
+      }
+      parry = {
+        max = 220
+        gongxian = 4
+      }
+      wai_bagua = {
+        max = 220
+        gongxian = 4
+      }
+      dodge = {
+        max = 200
+        gongxian = 4
+      }
+      bagua_bu = {
+        max = 200
+        gongxian = 4
+      }
+      unarmed = {
+        max = 200
+        gongxian = 4
+      }
+      tan_tui = {
+        max = 200
+        gongxian = 3
+      }
+      strike = {
+        max = 240
+        gongxian = 5
+      }
+      bagua_zhang = {
+        max = 240
+        gongxian = 5
+      }
+      bazhen_zhang = {
+        max = 220
+        gongxian = 4
+      }
+      cuff = {
+        max = 200
+        gongxian = 4
+      }
+      bagua_quan = {
+        max = 200
+        gongxian = 4
+      }
+      baisheng_quan = {
+        max = 200
+        gongxian = 4
+      }
+      sword = {
+        max = 200
+        gongxian = 4
+      }
+      quemen_jian = {
+        max = 200
+        gongxian = 4
+      }
+      blade = {
+        max = 240
+        gongxian = 5
+      }
+      bagua_dao = {
+        max = 240
+        gongxian = 5
+      }
+      shangjia_dao = {
+        max = 220
+        gongxian = 4
+      }
+      throwing = {
+        max = 200
+        gongxian = 4
+      }
+      jinbiao_jue = {
+        max = 200
+        gongxian = 4
+      }
+      literate = {
+        max = 240
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 220
+        gongxian = 4
+      }
+    }
+  }
+
+  apprentice = {
+    family = "商家堡"
+    max_shen = -30000
+    min_exp = 300000
+    min_skills = {
+      shangjia_neigong = 100
+    }
   }
 
   inquiries = {
@@ -29539,13 +30050,126 @@ chats = [
     str = 31
   }
 
-  inquiries = [
-    { key = "太极十三式" value = " inquire about book2 (unimplemented)" },
-    { key = "武当药理" value = " inquire about book1 (unimplemented)" },
-    { key = "神门刺" value = " inquire about skill (unimplemented)" }
-  ]
+    inquiries = {
+      太极十三式 = "武当剑法共有十三式，每式皆含太极阴阳之理，需你自行领悟。"
+      武当药理 = "武当派以道家养生之术配合药理，可治内伤、补气血，乃武当弟子必修之学。"
+      神门刺 = {
+        perform_id = "shenmen-jian/ci"
+        skill = "shenmen-jian"
+        min_gongxian = 200
+        min_shen = 30000
+        min_levels = {
+          force = 160
+          shenmen_jian = 120
+        }
+        cost_gongxian = 200
+        maxed = "这招我不是已经教会你了吗？"
+        family_deny = "阁下与我武当派素无瓜葛，何出此言？"
+        skill_deny = "你连神门刺法都没学，何谈绝招可言？"
+        gongxian_deny = "你在我武当派内甚无作为，这招我暂时还不能传你。"
+        shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+        level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+      }
+    }
 
-  skills = [
+    teach = {
+      family = "武当派"
+      teach_skills = {
+        force = {
+          max = 260
+          gongxian = 5
+        }
+        wudang_xinfa = {
+          max = 260
+          gongxian = 5
+        }
+        taiji_shengong = {
+          max = 240
+          gongxian = 5
+        }
+        dodge = {
+          max = 240
+          gongxian = 4
+        }
+        tiyunzong = {
+          max = 240
+          gongxian = 4
+        }
+        unarmed = {
+          max = 240
+          gongxian = 4
+        }
+        taiji_quan = {
+          max = 220
+          gongxian = 4
+        }
+        strike = {
+          max = 240
+          gongxian = 4
+        }
+        wudang_zhang = {
+          max = 240
+          gongxian = 4
+        }
+        parry = {
+          max = 240
+          gongxian = 4
+        }
+        sword = {
+          max = 260
+          gongxian = 5
+        }
+        wudang_jian = {
+          max = 260
+          gongxian = 5
+        }
+        shenmen_jian = {
+          max = 260
+          gongxian = 5
+        }
+        taiji_jian = {
+          max = 240
+          gongxian = 4
+        }
+        taoism = {
+          max = 240
+          gongxian = 4
+        }
+        literate = {
+          max = 220
+          gongxian = 4
+        }
+        martial_cognize = {
+          max = 240
+          gongxian = 4
+        }
+        medical = {
+          max = 200
+          gongxian = 4
+        }
+        wudang_yaoli = {
+          max = 200
+          gongxian = 4
+        }
+      }
+      no_teach = [
+        "taiji-shengong",
+        "taiji-jian",
+        "taiji-quan"
+      ]
+    }
+
+    apprentice = {
+      family = "武当派"
+      min_shen = 25000
+      min_exp = 300000
+      min_skills = {
+        wudang_xinfa = 100
+        taoism = 100
+      }
+    }
+
+    skills = [
     { skill = "force" level = 260 },
     { skill = "wudang-xinfa" level = 260 },
     { skill = "taiji-shengong" level = 240 },
@@ -29982,24 +30606,371 @@ chats = [
     str = 31
   }
 
-  inquiries = [
-    { key = "九阳真经" value = " inquire about jiuyang (unimplemented)" },
-    { key = "九阳神功" value = " inquire about jiuyang (unimplemented)" },
-    { key = "剑轮岚转" value = " inquire about skill10 (unimplemented)" },
-    { key = "太极图" value = " inquire about skill6 (unimplemented)" },
-    { key = "引字诀" value = " inquire about skill3 (unimplemented)" },
-    { key = "挤字诀" value = " inquire about skill4 (unimplemented)" },
-    { key = "武当九阳功" value = " inquire about jiuyang (unimplemented)" },
-    { key = "真武剑" value = " inquire about jian (unimplemented)" },
-    { key = "真武除邪" value = " inquire about skill11 (unimplemented)" },
-    { key = "粘字诀" value = " inquire about skill5 (unimplemented)" },
-    { key = "缠字诀" value = " inquire about skill7 (unimplemented)" },
-    { key = "觉远" value = " inquire about jiuyang (unimplemented)" },
-    { key = "随字诀" value = " inquire about skill8 (unimplemented)" },
-    { key = "震字诀" value = " inquire about skill2 (unimplemented)" },
-    { key = "驾字诀" value = " inquire about skill9 (unimplemented)" },
-    { key = "鹤嘴劲" value = " inquire about skill1 (unimplemented)" }
-  ]
+  inquiries = {
+    九阳真经 = "《九阳真经》乃武当派镇派之宝，非亲传不授。"
+    九阳神功 = "九阳神功是武当派最高内功，需你先打好基础。"
+    武当九阳功 = "武当九阳功与九阳神功同源，乃张真人亲创。"
+    觉远 = "觉远大师是少林高僧，与张真人有旧。"
+    真武剑 = "真武剑法是武当派镇派剑法，需你先学好基础剑法。"
+    鹤嘴劲 = {
+      perform_id = "taiji-shengong/dian"
+      skill = "taiji-shengong"
+      min_levels = {
+        taiji_shengong = 100
+      }
+      min_gongxian = 800
+      min_shen = 150000
+      cost_gongxian = 800
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极神功都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    震字诀 = {
+      perform_id = "taiji-quan/zhen"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 300
+      min_shen = 100000
+      cost_gongxian = 300
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    引字诀 = {
+      perform_id = "taiji-quan/yin"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 200
+      min_shen = 100000
+      cost_gongxian = 200
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    挤字诀 = {
+      perform_id = "taiji-quan/ji"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 400
+      min_shen = 120000
+      cost_gongxian = 400
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    粘字诀 = {
+      perform_id = "taiji-quan/zhan"
+      skill = "taiji-quan"
+      min_levels = {
+        taiji_quan = 150
+      }
+      min_gongxian = 500
+      min_shen = 140000
+      cost_gongxian = 500
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    太极图 = {
+      kind = "counter_perform"
+      perform_id = "taiji-quan/tu"
+      skill = "taiji-quan"
+      counter_key = "can_perform/taiji-quan/tu"
+      max_count = 10
+      family = "武当派"
+      min_levels = {
+        taiji_quan = 250
+        taiji_shengong = 300
+        taoism = 300
+      }
+      level_deny = {
+        taiji_quan = "你的太极拳法还不到家，要多练练！"
+        taiji_shengong = "你的太极神功还不到家，好好修行吧！"
+        taoism = "你的道学心法研究的还不够明白，要下功夫苦学才是！"
+      }
+      min_gongxian = 3000
+      min_shen = 250000
+      max_jingli = 1000
+      potential_cost = 100
+      cost_gongxian = 3000
+      improve_skills = {
+        taiji_shengong = 3
+        force = 3
+        unarmed = 3
+        taiji_quan = 3
+        taoism = 3
+        martial_cognize = 1
+      }
+      maxed = "该学的你都已经学了，以后要善加利用！"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极拳都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      jingli_deny = "你的精力不济，就算传给你太极图你也难以运用。"
+      potential_deny = "你看了半天，没有研究出什么新的东西，看来是潜能还不够！"
+      insight = "你对太极图有了一点领悟。"
+      learned = "你学会了道家密技「太极图」。"
+      npc_say = "你看懂了多少？"
+      vision = "点点头，双手轻轻划了一个圈子，地上土雾无端吸起，又渐渐落下。"
+    }
+    缠字诀 = {
+      perform_id = "taiji-jian/chan"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 80
+      }
+      min_gongxian = 300
+      min_shen = 80000
+      cost_gongxian = 300
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    随字诀 = {
+      perform_id = "taiji-jian/sui"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 60
+      }
+      min_gongxian = 200
+      min_shen = 80000
+      cost_gongxian = 200
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    驾字诀 = {
+      perform_id = "taiji-jian/jia"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 150
+      }
+      min_gongxian = 600
+      min_shen = 100000
+      cost_gongxian = 600
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    剑轮岚转 = {
+      perform_id = "taiji-jian/zhuan"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 160
+      }
+      min_gongxian = 800
+      min_shen = 120000
+      cost_gongxian = 800
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+    真武除邪 = {
+      perform_id = "taiji-jian/zhenwu"
+      skill = "taiji-jian"
+      min_levels = {
+        taiji_jian = 180
+      }
+      min_gongxian = 2000
+      min_shen = 120000
+      cost_gongxian = 2000
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连太极剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我不忙传你。"
+      shen_deny = "你行侠仗义的事情做得还不够多，我不能放心传你绝招！"
+      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+    }
+  }
+
+  teach = {
+    family = "武当派"
+    teach_skills = {
+      force = {
+        max = 420
+        gongxian = 8
+      }
+      taiji_shengong = {
+        max = 420
+        gongxian = 8
+      }
+      wudang_xinfa = {
+        max = 400
+        gongxian = 8
+      }
+      dodge = {
+        max = 420
+        gongxian = 8
+      }
+      tiyunzong = {
+        max = 420
+        gongxian = 8
+      }
+      sword = {
+        max = 420
+        gongxian = 8
+      }
+      taiji_jian = {
+        max = 420
+        gongxian = 8
+      }
+      unarmed = {
+        max = 420
+        gongxian = 8
+      }
+      taiji_quan = {
+        max = 420
+        gongxian = 8
+      }
+      xuangong_quan = {
+        max = 400
+        gongxian = 8
+      }
+      strike = {
+        max = 400
+        gongxian = 8
+      }
+      wudang_zhang = {
+        max = 400
+        gongxian = 8
+      }
+      yitian_zhang = {
+        max = 400
+        gongxian = 8
+      }
+      zhenshan_zhang = {
+        max = 400
+        gongxian = 8
+      }
+      hand = {
+        max = 400
+        gongxian = 8
+      }
+      paiyun_shou = {
+        max = 400
+        gongxian = 8
+      }
+      claw = {
+        max = 400
+        gongxian = 8
+      }
+      huzhua_shou = {
+        max = 400
+        gongxian = 8
+      }
+      parry = {
+        max = 420
+        gongxian = 8
+      }
+      wudang_jian = {
+        max = 400
+        gongxian = 8
+      }
+      shenmen_jian = {
+        max = 400
+        gongxian = 8
+      }
+      rouyun_jian = {
+        max = 400
+        gongxian = 8
+      }
+      raozhi_roujian = {
+        max = 400
+        gongxian = 8
+      }
+      liangyi_jian = {
+        max = 400
+        gongxian = 8
+      }
+      taiji_dao = {
+        max = 400
+        gongxian = 8
+      }
+      xuanxu_dao = {
+        max = 400
+        gongxian = 8
+      }
+      blade = {
+        max = 400
+        gongxian = 8
+      }
+      throwing = {
+        max = 400
+        gongxian = 8
+      }
+      furong_jinzhen = {
+        max = 400
+        gongxian = 8
+      }
+      taoism = {
+        max = 400
+        gongxian = 8
+      }
+      literate = {
+        max = 280
+        gongxian = 5
+      }
+      medical = {
+        max = 240
+        gongxian = 4
+      }
+      wudang_yaoli = {
+        max = 240
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 400
+        gongxian = 8
+      }
+    }
+    no_teach = [
+      "wudang-jiuyang"
+    ]
+  }
+
+  apprentice = {
+    family = "武当派"
+    min_shen = 80000
+    min_exp = 500000
+    min_skills = {
+      wudang_xinfa = 120
+      taoism = 120
+    }
+    class = "taoist"
+  }
 
   skills = [
     { skill = "force" level = 420 },
