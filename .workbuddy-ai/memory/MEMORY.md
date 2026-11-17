@@ -49,10 +49,10 @@
 - ask 黎生 五丁开山 / 绝命一踢（sect_master_grant）：inquiry_handler 注册 + UCL 配置，99 例测试 0 失败。
 - 随机 NPC 名字生成（2026-11-16 已提交推送，commit 1c017236 + fa11948a）：`NameGenerator` 新增 `random_ghost_name/1`、`random_biaoshi_name/1`、`random_biaotou_name/1`；`loader.ex` `parse_character/4` case 匹配 `"ghost"`/`"cn"`/`"biaoshi"`/`"biaotou"`；`death.ucl` 18 HellZhen NPC `ghost`；`gaibang.ucl` 7 丐帮弟子 `cn`；`changan.ucl` 镖师 `biaoshi`、镖头 `biaotou`，总镖头 `万青山` 保留不变。
 
-## 当前待办
-- **Run tests + commit/push `AskCommand.find_ask_npc/2` 修复**：`shop_commands.ex` 已补 `Room.NameMatch.matches?/2` 兜底，修复 `ask 张青崖 Zhang Qingya 拜师` 返回「这里没有这样的人」。`mix compile` 已通过，测试未运行，未提交未推送。测试文件：`test/kantele/character/commands/ask_command_test.exs`、`test/kantele/character/ask_command_test.exs`。
-- **LPC→UCL 教学数据补全（Tasks #613–#618）**：全部完成。10 个 NPC 的 `teach_skills`/`apprentice` 已回填；`inquiries` 已转为绝招授予绝招；`docs/新手拜师门派指南.zh-CN.md` 已重写（12 个师父条目）。柳溪派 `wangshifu` 无 LPC source，`apprentice` 块保留缺失，无待办。
-- 全量测试已通过：7830 tests / 27 failures（基线一致，0 回归），`docs/新手拜师门派指南.zh-CN.md` 已完结。
+## 当前待办（2026-11-17 已全部结案）
+- **Run tests + commit/push `AskCommand.find_ask_npc/2` 修复**：测试 9/9 全绿，`mix test --seed 831693` 全量 7830 tests / 27 failures（基线一致，0 回归）。已 commit `3afb4171` 并推送至 origin/kalevala。
+- **LPC→UCL 教学数据补全（Tasks #613–#618）**：全部完成，已 commit 并推送。10 个 NPC 的 `teach_skills`/`apprentice` 已回填；`inquiries` 已转为绝招授予绝招；`docs/新手拜师门派指南.zh-CN.md` 已重写（12 个师父条目）。
+- 柳溪派 `wangshifu`：无 LPC source 可供 `apprentice` 块数据，保留缺失，非代码缺口，无待办。
 
 ## 净增量归档（全部已完结，无待办）
 - `docs/` 下 78 份文档 + 根目录 md 已全量扫描，59 份含待办标记的历史文档已加「📌 归档声明 · 全库待办清零」。
