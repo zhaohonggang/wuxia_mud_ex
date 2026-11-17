@@ -62,6 +62,7 @@
 - 柳溪派 `wangshifu`：无 LPC source 可供 `apprentice` 块数据，保留缺失，非代码缺口，无待办。
 - sects.ex 门派原型按 LPC 对齐（commit 1416f7b1）：补全 18 个缺失门派，总数从 21 扩至 39，与 LPC `class_generate_chinese.c` init_family 完全对齐。
 - 门派原型详细配置章节（commit 67da804d）：`docs/新手拜师门派指南.zh-CN.md` 新增第6节，列出全部 39 个门派的详细配置（class/scale/skills/maps/preps/carry）。
+- #641 NAME_D 姓名注册表（commit 794f7972）：`lib/kantele/world/name_d.ex`（GenServer+ETS，remove_name/map_name/invalid_new_name/change_name/who_is，JSON 持久化），接线 `shaolin_kneel.ex` 剃度改名与 `family_event.ex` 辈分晋升改名，测试 15/0，全量回归 7904/27（0 新增回归）。
 - 少林派阶段 A–E（剃度/山门/达摩门槛/辈分晋升链）：`shaolin_promotion` 收礼+斗武事件链、55 名师父 UCL 配置、四级推荐信、字辈改名均已落地，定向 162/0；#652 各字辈晋升专属文案已回填（`shaolin_apprentice_dialogue.ex` + `FamilyEvent` 接线），#653 dao.h generation==0 直收已加 `allow_zero_generation` 到全部 9 个道字辈 NPC，定向 162/0，全量回归 7889/27（0 新增失败）。
 
 ## 净增量归档（全部已完结，无待办）
@@ -69,7 +70,6 @@
 - `docs/待对照代码核查.zh-CN.md` §6.2 净增量表、§二、§三已标记 ✅ 已完结。
 
 ## 待办（当前）
-- 少林派剃度机制移植：阶段 A–E 代码已落地（#633–#638、#652、#653 全部完成），剩余引擎缺口 #640/#642/#643/#644（#641 NAME_D 已实现，待全量回归确认）。
-- #641 NAME_D 姓名注册表：已建立 `lib/kantele/world/name_d.ex`（GenServer+ETS，remove_name/map_name/invalid_new_name/change_name/who_is，JSON 持久化），已接线 `shaolin_kneel.ex` 持久化与 `family_event.ex` maybe_rename/3，新增 `test/kantele/world/name_d_test.exs` 15 用例全绿。全量回归进行中。
+- 少林派剃度机制移植：阶段 A–E 代码已落地（#633–#638、#652、#653 全部完成），剩余引擎缺口 #640/#642/#643/#644（#641 NAME_D 已实现并回归通过）。
 - 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`（文档实际已完成，此项待确认结案）。
 - 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
