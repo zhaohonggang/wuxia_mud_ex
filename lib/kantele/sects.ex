@@ -709,6 +709,477 @@ defmodule Kantele.Sects do
       },
       preps: %{"finger" => "nianhua-zhi", "strike" => "sanhua-zhang"},
       carry: ["/clone/weapon/gangdao", "/clone/cloth/cloth"]
+    },
+    "shaolin4" => %{
+      scale: 150,
+      class: "bonze",
+      chat_chance_combat: 100,
+      skills: [
+        "force",
+        "hunyuan-yiqi",
+        "parry",
+        "dodge",
+        "shaolin-shenfa",
+        "finger",
+        "qufannao-zhi",
+        "strike",
+        "shenzhang-bada",
+        "literate",
+        "martial-cognize",
+        "buddhism",
+        "cuff",
+        "jingang-quan"
+      ],
+      maps: %{
+        "cuff" => "jingang-quan",
+        "parry" => "shenzhang-bada",
+        "force" => "hunyuan-yiqi",
+        "dodge" => "shaolin-shenfa",
+        "finger" => "qufannao-zhi",
+        "strike" => "shenzhang-bada"
+      },
+      preps: %{"cuff" => "jingang-quan", "strike" => "shenzhang-bada"},
+      carry: ["/clone/cloth/cloth"]
+    },
+    "taohua1" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "bibo-shengong",
+        "dodge",
+        "anying-fuxiang",
+        "finger",
+        "throwing",
+        "tanzhi-shentong",
+        "parry",
+        "sword",
+        "yuxiao-jian",
+        "qimen-wuxing",
+        "count",
+        "jingluo-xue",
+        "mathematics",
+        "literate",
+        "martial-cognize",
+        "chuixiao-jifa",
+        "bihai-chaosheng"
+      ],
+      maps: %{
+        "force" => "bibo-shengong",
+        "finger" => "tanzhi-shentong",
+        "dodge" => "anying-fuxiang",
+        "parry" => "tanzhi-shentong",
+        "sword" => "yuxiao-jian",
+        "throwing" => "tanzhi-shentong"
+      },
+      preps: %{},
+      carry: ["/clone/misc/cloth"]
+    },
+    "xueshan1" => %{
+      scale: 135,
+      class: "bonze",
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "longxiang-gong",
+        "dodge",
+        "shenkong-xing",
+        "hammer",
+        "riyue-lun",
+        "parry",
+        "unarmed",
+        "lamaism",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "longxiang-gong",
+        "dodge" => "shenkong-xing",
+        "unarmed" => "longxiang-gong",
+        "parry" => "longxiang-gong",
+        "hammer" => "riyue-lun"
+      },
+      preps: %{"unarmed" => "longxiang-gong"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "xiaoyao1" => %{
+      scale: 135,
+      class: "taoist",
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "beiming-shengong",
+        "dodge",
+        "feiyan-zoubi",
+        "liuyang-zhang",
+        "parry",
+        "sword",
+        "liuyue-jian",
+        "zhemei-shou",
+        "hand",
+        "strike",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "beiming-shengong",
+        "dodge" => "feiyan-zoubi",
+        "hand" => "zhemei-shou",
+        "strike" => "liuyang-zhang",
+        "parry" => "zhemei-shou",
+        "sword" => "liuyue-jian"
+      },
+      preps: %{"hand" => "zhemei-shou", "strike" => "liuyang-zhang"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "emei" => %{
+      scale: 135,
+      class: "bonze",
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "linji-zhuang",
+        "dodge",
+        "zhutian-bu",
+        "strike",
+        "piaoxue-zhang",
+        "parry",
+        "sword",
+        "huifeng-jian",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "linji-zhuang",
+        "dodge" => "zhutian-bu",
+        "strike" => "piaoxue-zhang",
+        "parry" => "huifeng-jian",
+        "sword" => "huifeng-jian"
+      },
+      preps: %{"strike" => "piaoxue-zhang"},
+      carry: ["/clone/weapon/changjian", "/clone/misc/cloth"]
+    },
+    "xuanming" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "xuanming-shengong",
+        "dodge",
+        "liuying-bu",
+        "strike",
+        "xuanming-zhang",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "xuanming-shengong",
+        "dodge" => "liuying-bu",
+        "strike" => "xuanming-zhang",
+        "parry" => "xuanming-zhang"
+      },
+      preps: %{"strike" => "xuanming-zhang"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "mingjiao" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "shenghuo-shengong",
+        "dodge",
+        "qingfu-shenfa",
+        "cuff",
+        "qishang-quan",
+        "sword",
+        "shenghuo-ling",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "shenghuo-shengong",
+        "dodge" => "qingfu-shenfa",
+        "cuff" => "qishang-quan",
+        "parry" => "shenghuo-ling",
+        "sword" => "shenghuo-ling"
+      },
+      preps: %{"cuff" => "qishang-quan"},
+      carry: ["/clone/weapon/changjian", "/clone/misc/cloth"]
+    },
+    "lingjiu" => %{
+      scale: 135,
+      class: "taoist",
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "bahuang-gong",
+        "dodge",
+        "yueying-wubu",
+        "liuyang-zhang",
+        "parry",
+        "sword",
+        "tianyu-qijian",
+        "zhemei-shou",
+        "hand",
+        "strike",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "bahuang-gong",
+        "dodge" => "yueying-wubu",
+        "hand" => "zhemei-shou",
+        "strike" => "liuyang-zhang",
+        "parry" => "tianyu-qijian",
+        "sword" => "tianyu-qijian"
+      },
+      preps: %{"hand" => "zhemei-shou", "strike" => "liuyang-zhang"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "honghua" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "zhanshen-xinjing",
+        "dodge",
+        "zhuangzi-wu",
+        "unarmed",
+        "baihua-cuoquan",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "zhanshen-xinjing",
+        "dodge" => "zhuangzi-wu",
+        "unarmed" => "baihua-cuoquan",
+        "parry" => "baihua-cuoquan"
+      },
+      preps: %{"unarmed" => "baihua-cuoquan"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "quanzhen" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "xuanmen-neigong",
+        "dodge",
+        "jinyan-gong",
+        "unarmed",
+        "kongming-quan",
+        "sword",
+        "quanzhen-jian",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "xuanmen-neigong",
+        "dodge" => "jinyan-gong",
+        "unarmed" => "kongming-quan",
+        "parry" => "kongming-quan"
+      },
+      preps: %{"unarmed" => "kongming-quan"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "quanzhen1" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "xuanmen-neigong",
+        "dodge",
+        "jinyan-gong",
+        "unarmed",
+        "kongming-quan",
+        "sword",
+        "quanzhen-jian",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "xuanmen-neigong",
+        "dodge" => "jinyan-gong",
+        "sword" => "quanzhen-jian",
+        "unarmed" => "kongming-quan",
+        "parry" => "quanzhen-jian"
+      },
+      preps: %{"unarmed" => "kongming-quan"},
+      carry: ["/clone/weapon/changjian", "/clone/misc/cloth"]
+    },
+    "riyue" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "tianhuan-shenjue",
+        "dodge",
+        "juechen-shenfa",
+        "strike",
+        "guzhuo-zhang",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "tianhuan-shenjue",
+        "dodge" => "juechen-shenfa",
+        "strike" => "guzhuo-zhang",
+        "parry" => "guzhuo-zhang"
+      },
+      preps: %{"strike" => "guzhuo-zhang"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "song" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "hanbing-zhenqi",
+        "dodge",
+        "lingxu-bu",
+        "strike",
+        "hanbing-zhang",
+        "sword",
+        "poyang-jian",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "hanbing-zhenqi",
+        "dodge" => "lingxu-bu",
+        "sword" => "poyang-jian",
+        "strike" => "hanbing-zhang",
+        "parry" => "poyang-jian"
+      },
+      preps: %{"strike" => "hanbing-zhang"},
+      carry: ["/clone/weapon/changjian", "/clone/misc/cloth"]
+    },
+    "murong" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "zihui-xinfa",
+        "dodge",
+        "beidou-xianzong",
+        "finger",
+        "canhe-zhi",
+        "douzhuan-xingyi",
+        "blade",
+        "longcheng-shendao",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "zihui-xinfa",
+        "dodge" => "beidou-xianzong",
+        "blade" => "longcheng-shendao",
+        "finger" => "canhe-zhi",
+        "parry" => "douzhuan-xingyi"
+      },
+      preps: %{"finger" => "canhe-zhi"},
+      carry: ["/clone/weapon/gangdao", "/clone/misc/cloth"]
+    },
+    "murong1" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "zihui-xinfa",
+        "dodge",
+        "beidou-xianzong",
+        "finger",
+        "canhe-zhi",
+        "douzhuan-xingyi",
+        "blade",
+        "longcheng-shendao",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "zihui-xinfa",
+        "dodge" => "beidou-xianzong",
+        "blade" => "longcheng-shendao",
+        "finger" => "canhe-zhi",
+        "parry" => "douzhuan-xingyi"
+      },
+      preps: %{"finger" => "canhe-zhi"},
+      carry: ["/clone/misc/cloth"]
+    },
+    "hengshan" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "zhenyue-jue",
+        "dodge",
+        "henshan-shenfa",
+        "strike",
+        "biluo-zhang",
+        "cuff",
+        "henshan-quan",
+        "sword",
+        "wushen-jian",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "zhenyue-jue",
+        "dodge" => "henshan-shenfa",
+        "sword" => "wushen-jian",
+        "strike" => "biluo-zhang",
+        "cuff" => "henshan-quan",
+        "parry" => "wushen-jian"
+      },
+      preps: %{"strike" => "biluo-zhang", "cuff" => "henshan-quan"},
+      carry: ["/clone/weapon/changjian", "/clone/misc/cloth"]
+    },
+    "pixie" => %{
+      scale: 135,
+      class: nil,
+      chat_chance_combat: 80,
+      skills: [
+        "force",
+        "zixia-shengong",
+        "pixie-jian",
+        "feiyan-zoubi",
+        "dodge",
+        "unarmed",
+        "sword",
+        "parry",
+        "literate",
+        "martial-cognize"
+      ],
+      maps: %{
+        "force" => "zixia-shengong",
+        "dodge" => "feiyan-zoubi",
+        "sword" => "pixie-jian",
+        "unarmed" => "pixie-jian",
+        "parry" => "pixie-jian"
+      },
+      preps: %{"unarmed" => "pixie-jian"},
+      carry: ["/clone/weapon/changjian", "/clone/misc/cloth"]
     }
   }
 
