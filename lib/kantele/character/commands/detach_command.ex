@@ -74,10 +74,32 @@ defmodule Kantele.Character.DetachEvent do
       {:detach, %{penalty?: penalty?}} ->
         stats = apply_penalty(character.meta.stats, penalty?)
 
+        family_name = Map.get(data, :family)
+
+        # 叛师记录落盘（LPC detach.c / shaolin.h permit_recruit 依赖）：
+        #   env[:detach][门派名] = 1      → query("detach/<门派>")
+        #   env[:betrayer][:times] += 1   → query("betrayer/times")
+        #   env[:betrayer][门派名] = 1    → query("betrayer/<门派>")
+        env = Map.get(character.meta, :env) || %{}
+        detach_map = Map.get(env, :detach) || Map.get(env, "detach") || %{}
+        betrayer_map = Map.get(env, :betrayer) || Map.get(env, "betrayer") || %{}
+        current_times =
+          case Map.get(betrayer_map, :times) || Map.get(betrayer_map, "times") do
+            t when is_integer(t) -> t
+            _ -> 0
+          end
+
+        env =
+          env
+          |> Map.put(:detach, Map.put(detach_map, family_name, 1))
+          |> Map.put(:betrayer,
+            Map.put(Map.put(betrayer_map, family_name, 1), :times, current_times + 1))
+
         meta =
           character.meta
           |> Map.put(:family, nil)
           |> Map.put(:stats, stats)
+          |> Map.put(:env, env)
 
         character = %{character | meta: meta}
         Records.save(character)

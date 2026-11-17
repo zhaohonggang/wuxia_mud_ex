@@ -68,7 +68,8 @@ defmodule Kantele.Character.DetachCommandTest do
         vitals: vitals,
         stats: stats,
         combat: combat,
-        family: Keyword.get(opts, :family, nil)
+        family: Keyword.get(opts, :family, nil),
+        env: Keyword.get(opts, :env, %{})
       }
     }
   end
@@ -137,6 +138,77 @@ defmodule Kantele.Character.DetachCommandTest do
       assert updated.meta.stats.skills == %{"sword" => 9, "force" => 49}
       assert updated.meta.stats.gongxian == 0
       assert output_text(conn) =~ "叛离"
+    end
+
+    test "叛师后写入 env[:detach] 门派标记（LPC query detach/<门派>）" do
+      p =
+        player(
+          family: %{name: "少林派", master_id: "shaolin:da-mo", master_name: "达摩"},
+          env: %{}
+        )
+
+      conn =
+        DetachEvent.detach_result(build_conn(p), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "少林派", master_id: "shaolin:da-mo", master_name: "达摩"}
+        })
+
+      updated = conn.private.update_character || conn.character
+
+      assert Map.get(updated.meta.env, :detach) == %{"少林派" => 1}
+    end
+
+    test "叛师后 env[:betrayer] 记录 times 与门派（LPC query betrayer/times + betrayer/<门派>）" do
+      p =
+        player(
+          family: %{name: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"},
+          env: %{betrayer: %{"times" => 1, "丐帮" => 1}}
+        )
+
+      conn =
+        DetachEvent.detach_result(build_conn(p), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"}
+        })
+
+      updated = conn.private.update_character || conn.character
+
+      betrayer = Map.get(updated.meta.env, :betrayer)
+      assert betrayer[:times] == 2
+      assert betrayer["武当派"] == 1
+      assert betrayer["丐帮"] == 1
+    end
+
+    test "叛师后 env[:betrayer] 从空初始化时 times 为 1" do
+      p =
+        player(
+          family: %{name: "峨眉派", master_id: "emei:mie-jue", master_name: "灭绝"},
+          env: %{}
+        )
+
+      conn =
+        DetachEvent.detach_result(build_conn(p), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "峨眉派", master_id: "emei:mie-jue", master_name: "灭绝"}
+        })
+
+      updated = conn.private.update_character || conn.character
+
+      betrayer = Map.get(updated.meta.env, :betrayer)
+      assert betrayer[:times] == 1
+      assert betrayer["峨眉派"] == 1
+    end
+
+    test "无门派玩家叛师：noop，不写入 env" do
+      p = player(env: %{})
+
+      conn =
+        DetachEvent.detach_result(build_conn(p), %Event{
+          topic: "family/detach-result",
+          data: %{ok: true, family: "武当派", master_id: "wudang:yu", master_name: "俞莲舟"}
+        })
+
+      assert conn.private.update_character == nil
     end
 
     test "非门下弟子请求叛师：noop，不落盘" do
