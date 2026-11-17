@@ -133,10 +133,15 @@ defmodule Kantele.Character.AskCommand do
 
     Enum.find_value(characters, fn char ->
       aliases = Map.get(char.meta, :aliases, []) || []
-      if char.name == name or name in aliases do
-        {:ok, char}
-      else
-        nil
+      cond do
+        char.name == name or name in aliases ->
+          {:ok, char}
+
+        Room.NameMatch.matches?(char, name) ->
+          {:ok, char}
+
+        true ->
+          nil
       end
     end) || :error
   end
