@@ -125,12 +125,13 @@ defmodule Kantele.World.Trap.ShaolinGate do
       combat_value(meta, :K_record) == combat_value(meta, :WPK)
   end
 
-  # LPC query("combat/K_record") 等：env 优先（剃度写入处），combat 兜底。
+  # LPC query("combat/K_record") 等：env 优先（剃度写入处），combat.temp 兜底。
   defp combat_value(meta, key) do
     env = Map.get(meta, :env) || %{}
     combat = Map.get(meta, :combat) || %{}
-
+    temp = Map.get(combat, :temp) || %{}
     Map.get(env, key) || Map.get(env, to_string(key)) ||
+      Map.get(temp, key) || Map.get(temp, to_string(key)) ||
       Map.get(combat, key) || Map.get(combat, to_string(key)) || 0
   end
 

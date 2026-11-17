@@ -142,8 +142,9 @@ defmodule Kantele.World.NpcActions.ShaolinKneel do
       end
 
     combat = Map.get(meta, :combat) || %{}
-    pks = Map.get(combat, :PKS, 0) || 0
-    mks = Map.get(combat, :MKS, 0) || 0
+    temp = Map.get(combat, :temp) || %{}
+    pks = Map.get(temp, :PKS, Map.get(combat, :PKS, 0)) || 0
+    mks = Map.get(temp, :MKS, Map.get(combat, :MKS, 0)) || 0
     old_shen = stats_shen(Map.get(meta, :stats)) || 0
 
     env =

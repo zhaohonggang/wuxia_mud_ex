@@ -66,6 +66,18 @@ defmodule ExVenture.Characters.Metadata do
     field(:kar, :integer, default: 0)
     # setup_done: 注册问答是否完成（首登判定）；迁移前既有行回填 true
     field(:setup_done, :boolean, default: false)
+    # 击杀计数（对应 LPC combatd.c combat/PKS/MKS/WPK）：
+    # - pks：杀害的玩家数目
+    # - mks：杀死的 NPC 数目
+    # - wpk：主动杀死玩家的次数
+    # - wpk_good/bad/notgood/notbad：按受害者正邪阵营细分的 WPK
+    field(:pks, :integer, default: 0)
+    field(:mks, :integer, default: 0)
+    field(:wpk, :integer, default: 0)
+    field(:wpk_good, :integer, default: 0)
+    field(:wpk_bad, :integer, default: 0)
+    field(:wpk_notgood, :integer, default: 0)
+    field(:wpk_notbad, :integer, default: 0)
 
     timestamps()
   end
@@ -113,11 +125,18 @@ defmodule ExVenture.Characters.Metadata do
       :personality,
       :per,
       :kar,
-      :setup_done
+      :setup_done,
+      :pks,
+      :mks,
+      :wpk,
+      :wpk_good,
+      :wpk_bad,
+      :wpk_notgood,
+      :wpk_notbad
     ])
     |> validate_required([:character_id])
     |> unique_constraint(:character_id)
-  end
+end
 end
 
 defmodule Kantele.Character.Records do
@@ -165,6 +184,17 @@ defmodule Kantele.Character.Records do
   """
   def save(%{meta: %Kantele.Character.PlayerMeta{}, name: name} = character) do
     meta = character.meta
+
+    # 击杀计数：从 meta.combat.temp 映射读取（enemy_died/2 维护，Craft.killer_reward/3 为物品级）
+    combat = Map.get(meta, :combat) || %{}
+    temp = Map.get(combat, :temp) || %{}
+    pks = Map.get(temp, :PKS, 0)
+    mks = Map.get(temp, :MKS, 0)
+    wpk = Map.get(temp, :WPK, 0)
+    wpk_good = Map.get(temp, :WPK_GOOD, 0)
+    wpk_bad = Map.get(temp, :WPK_BAD, 0)
+    wpk_notgood = Map.get(temp, :WPK_NOTGOOD, 0)
+    wpk_notbad = Map.get(temp, :WPK_NOTBAD, 0)
 
     with {:ok, record} <- ensure_record(name) do
       metadata =
@@ -215,7 +245,15 @@ defmodule Kantele.Character.Records do
           guilty: meta.guilty || 0,
           gender: Map.get(meta.env, :gender),
           # setup_done: 注册问答完成标志（首登判定）；新玩家问答结束置 true
-          setup_done: meta.setup_done
+          setup_done: meta.setup_done,
+          # 击杀计数（对应 LPC combatd.c combat/PKS/MKS/WPK）
+          pks: pks,
+          mks: mks,
+          wpk: wpk,
+          wpk_good: wpk_good,
+          wpk_bad: wpk_bad,
+          wpk_notgood: wpk_notgood,
+          wpk_notbad: wpk_notbad
         })
 
       case Repo.insert_or_update(metadata) do
@@ -346,6 +384,19 @@ defmodule Kantele.Character.Records do
 
     inventory = restore_inventory(character.inventory, metadata.inventory)
     combat = restore_equipment(Kantele.Character.Combat.new(), metadata.equipment)
+    # 击杀计数（PKS/MKS/WPK 及正邪细分）落盘后重登恢复到 combat.temp，
+    # 供 shaolin_kneel.ex（K_record = PKS + MKS）与 shaolin_gate.ex（WPK 门控）读取。
+    temp =
+      combat.temp
+      |> Map.put(:PKS, metadata.pks || 0)
+      |> Map.put(:MKS, metadata.mks || 0)
+      |> Map.put(:WPK, metadata.wpk || 0)
+      |> Map.put(:WPK_GOOD, metadata.wpk_good || 0)
+      |> Map.put(:WPK_BAD, metadata.wpk_bad || 0)
+      |> Map.put(:WPK_NOTGOOD, metadata.wpk_notgood || 0)
+      |> Map.put(:WPK_NOTBAD, metadata.wpk_notbad || 0)
+
+    combat = Map.put(combat, :temp, temp)
 
     meta =
       character.meta

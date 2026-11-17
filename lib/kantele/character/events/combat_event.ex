@@ -644,12 +644,18 @@ defmodule Kantele.Character.CombatEvent do
 
     # 击杀奖励：经验/潜能之外顺带掉落少量铜钱（A10/N2）与门派贡献（A11/N5）
     # 注意玩家死亡时 meta 为 PlayerMeta（无 loot 字段），需 Map.get 兼容
+    victim_id = Map.get(character, :id)
+    victim_shen = Map.get(Map.get(character.meta, :stats) || %{}, :shen, 0) || 0
+
     reward =
       character.meta.stats
       |> reward_for()
       |> Map.put(:coins, coin_reward())
       |> Map.put(:gongxian, 1)
       |> Map.put(:drops, Map.get(character.meta, :loot) || [])
+      # 击杀计数字段：供 enemy_died/2 累加 PKS/MKS/WPK 到杀手 meta.combat.temp
+      |> Map.put(:can_speak, is_binary(victim_id) && String.starts_with?(victim_id, "player:"))
+      |> Map.put(:shen, victim_shen)
 
     # Q3-stretch：神秘挑战者被击杀 → 通知 Story 登记处收摊（其余死亡为 no-op）
     notify_challenger_killed(character, killer)
@@ -1138,6 +1144,23 @@ defmodule Kantele.Character.CombatEvent do
       end)
 
     character = %{character | inventory: character.inventory ++ drops}
+
+    # 击杀计数持久化：PKS/MKS/WPK 及正邪细分（对应 LPC combatd.c）。
+    # 写入 combat.temp，由 Records.save/1 落盘，登录时 apply_to_character/2 恢复。
+    can_speak = Map.get(reward, :can_speak, false)
+    victim_shen = Map.get(reward, :shen, 0) || 0
+
+    combat =
+      combat
+      |> Map.put(:temp, Map.put(combat.temp, :PKS, Map.get(combat.temp, :PKS, 0) + (if can_speak, do: 1, else: 0)))
+      |> Map.put(:temp, Map.put(combat.temp, :MKS, Map.get(combat.temp, :MKS, 0) + (if can_speak, do: 0, else: 1)))
+      |> Map.put(:temp, Map.put(combat.temp, :WPK, Map.get(combat.temp, :WPK, 0) + (if can_speak, do: 1, else: 0)))
+      |> Map.put(:temp, Map.put(combat.temp, :WPK_GOOD, Map.get(combat.temp, :WPK_GOOD, 0) + (if victim_shen > 500, do: 1, else: 0)))
+      |> Map.put(:temp, Map.put(combat.temp, :WPK_BAD, Map.get(combat.temp, :WPK_BAD, 0) + (if victim_shen < -500, do: 1, else: 0)))
+      |> Map.put(:temp, Map.put(combat.temp, :WPK_NOTGOOD, Map.get(combat.temp, :WPK_NOTGOOD, 0) + (if victim_shen < 500, do: 1, else: 0)))
+      |> Map.put(:temp, Map.put(combat.temp, :WPK_NOTBAD, Map.get(combat.temp, :WPK_NOTBAD, 0) + (if victim_shen > -500, do: 1, else: 0)))
+
+    character = put_combat(character, combat)
 
     Kantele.Character.Records.save(character)
     share_team_reward(character, exp, potential)
