@@ -1,5 +1,13 @@
 # Workspace Memory — wuxia_mud_ex (Elixir/Phoenix LPC MUD port)
 
+## 项目宪章（最高优先级 · 2026-11-17 用户确立，详见 AGENTS.md §0）
+- **完整移植**：LPC 原版 `C:\files\git\mud` → ex（Kantele），非简化重写。
+- **结果标准**：最终 ex 内容 **≥** lpc，零信息丢失（机制/顺序/阈值/文案/公式只多不少）。
+- **缺口主动报告 + 建计划**：发现「lpc 有、ex 无」必须主动报告用户并立即建立移植计划（任务列表 + `docs/*移植计划*.md`），禁止沉默略过或用「简化/降级/备注」搪塞。
+- **长期工程禁止简化**：绝不为省时间/省工作量选简化方案；有疑问回 LPC 源码逐条核对。
+- **角色**：资深项目经理 + 架构师 + 程序员，精通项目设计与编程，工程化推进（审计→计划→实现→回归→归档）。
+- **性格**：积极、热心、爱多做工作；遇困难障碍积极耐心解决，不逃避、不偷懒。
+
 ## Iron rules
 - 无 git commit/push 除非用户明确要求（2026-11-10 已授权「提交推送，然后继续推进」）。
 - 改动前 Grep lib/test/docs + LPC 源 `/c/files/git/mud` 确认真缺口，不臆造语义。
@@ -41,8 +49,8 @@
 - T1 LPC→UCL 转换器 + 189 `.ucl`；T2 柳溪镇 34 文件对拍；T4 e2e 夹具。
 - F4 武功迁移：@static 白名单 733；70 空壳 + 202 无招式已核实；R5 92 真缺口已全部迁移；valid_learn 322/322 全量迁移。
 - 拱猪子系统：pig_room/pig_game/pig_table 均实装。
-- 死亡→地府→还阳：combat_event.die/3 + revive/2 + niutou AskHandler + death.ucl，4 例测试全绿。
-- 尸体/NPC 掉落系统：corpse.ex + drop_a/b/c + power，19/19 quarry NPC 已移植，14 例测试全绿。
+- 死亡→地府→还阳：combat_event.die/3 + revive/2 + niutou AskHandler + death.ucl，测试全绿。
+- 尸体/NPC 掉落系统：corpse.ex + drop_a/b/c + power，19/19 quarry NPC 已移植，测试全绿。
 - 猎人 NPC 教 hunting：hunter.ex AskHandler + hunting.ex valid_learn/2 + eat_command.ex raw_meat 门控，50 例全绿。
 - 三项遗留待办（2026-11-15）：Set Grant as wizard / 世界位置文档 / 位置加到 goto 命令 — 全部结案。
 - LPC 式随机鬼魂名字（2026-11-16）：`random_ghost_name/1` + death.ucl 18 NPC `random_name_type = "ghost"`，全量回归 7830 tests / 27 failures，0 新增失败。
@@ -59,5 +67,6 @@
 - `docs/待对照代码核查.zh-CN.md` §6.2 净增量表、§二、§三已标记 ✅ 已完结。
 
 ## 待办（当前）
-- 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`，并 commit/push。
+- 少林派剃度机制移植（计划见 `docs/少林派剃度机制移植计划.zh-CN.md`，Task #621–#638）：阶段 A 审计完成，阶段 B 起待推进。
+- 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`（文档实际已完成，此项待确认结案）。
 - 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
