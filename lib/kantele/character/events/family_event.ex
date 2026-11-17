@@ -24,6 +24,7 @@ defmodule Kantele.Character.FamilyEvent do
   alias Kantele.Character.Records
   alias Kantele.SectMaster
   alias Kantele.World.RoomActions.Helpers, as: RoomHelpers
+  alias Kantele.World.ShaolinApprenticeDialogue
 
   def result(conn, %{data: %{ok: true} = data}) do
     character = conn.character
@@ -47,6 +48,9 @@ defmodule Kantele.Character.FamilyEvent do
   end
 
   defp accept(conn, character, data, apprentice, warning) do
+    old_name = character.name
+    student_generation = get_in(character.meta.family || %{}, [:generation])
+
     family =
       %{name: data.family, master_id: data.master_id, master_name: data.master_name}
       |> put_class(apprentice)
@@ -68,7 +72,7 @@ defmodule Kantele.Character.FamilyEvent do
     conn =
       conn
       |> put_character(character)
-      |> announce_tonsure(character, apprentice, data)
+      |> announce_tonsure(character, apprentice, data, student_generation, old_name)
 
     text =
       warning <>
@@ -100,27 +104,37 @@ defmodule Kantele.Character.FamilyEvent do
     end
   end
 
-  # LPC `command("char ...")` / `command("say 从今以后你的法名叫做...")`。
-  # ex 无 NPC `char` 频道，按房间 vision 广播落地（文案逐字保留）。
-  defp announce_tonsure(conn, character, apprentice, data) do
+  # LPC `command("char ...")` / `command("say ...")`：各字辈 attempt_apprentice 文案不同，
+  # 由 ShaolinApprenticeDialogue 按分支选行；ex 无 NPC 社交频道，统一按房间 vision 广播。
+  defp announce_tonsure(conn, character, apprentice, data, student_generation, old_name) do
     room_id = character.room_id
-    rename_prefix = Map.get(apprentice, :rename_prefix)
 
-    if is_binary(rename_prefix) and byte_size(rename_prefix) > 0 and is_binary(room_id) do
+    if is_binary(room_id) do
       master = data.master_name
 
-      conn
-      |> RoomHelpers.broadcast_vision(
-        room_id,
-        "#{master}大笑道：老衲又得一可塑之才，真是大畅老怀 !\n"
+      ShaolinApprenticeDialogue.lines(
+        apprentice,
+        master,
+        old_name,
+        character.name,
+        student_generation
       )
-      |> RoomHelpers.broadcast_vision(
-        room_id,
-        "#{master}说道：从今以后你的法名叫做#{character.name}。\n"
-      )
+      |> Enum.reduce(conn, fn {channel, text}, acc ->
+        verb = if channel == :char, do: "大笑道", else: "说道"
+
+        RoomHelpers.broadcast_vision(
+          acc,
+          room_id,
+          "#{master}#{verb}：#{ensure_lf(text)}"
+        )
+      end)
     else
       conn
     end
+  end
+
+  defp ensure_lf(text) when is_binary(text) do
+    if String.ends_with?(text, "\n"), do: text, else: text <> "\n"
   end
 
   # class 继承（LPC: if ob->query("class") != "taoist" ob->set("class", "taoist")）；

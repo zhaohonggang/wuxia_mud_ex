@@ -1240,7 +1240,17 @@ defmodule Kantele.World.Loader do
       delete_flags_on_rename: to_bool(Map.get(apprentice, :delete_flags_on_rename))
     }
 
-    Map.merge(base, Map.merge(da_mo_fields, promotion_fields))
+    # #652：LPC 各字辈 attempt_apprentice 成功文案可用 UCL 覆写；未配置时由
+    # ShaolinApprenticeDialogue 按字辈/分支回退到 LPC 逐字原文。
+    dialogue_fields = %{
+      zero_generation_msg: Map.get(apprentice, :zero_generation_msg),
+      direct_msg: Map.get(apprentice, :direct_msg),
+      promotion_msg_1: Map.get(apprentice, :promotion_msg_1),
+      promotion_msg_2: Map.get(apprentice, :promotion_msg_2),
+      promotion_msg_3: Map.get(apprentice, :promotion_msg_3)
+    }
+
+    Map.merge(base, Map.merge(da_mo_fields, Map.merge(promotion_fields, dialogue_fields)))
   end
 
   defp class_value(value) when is_binary(value) and value != "", do: value
