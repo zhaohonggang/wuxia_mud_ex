@@ -48,6 +48,7 @@ defmodule Kantele.World.NpcActions.ShaolinKneel do
   alias ExVenture.Characters
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Records
+  alias Kantele.World.NameD
   alias Kantele.World.NpcActions.Helpers
 
   @room_id "shaolin:guangchang1"
@@ -169,14 +170,33 @@ defmodule Kantele.World.NpcActions.ShaolinKneel do
   defp npc_name(%{name: name}) when is_binary(name) and byte_size(name) > 0, do: name
   defp npc_name(_npc), do: @npc_name
 
-  # NAME_D 在 ex 不存在；DB 改名 + Records.save 是等价落盘路径。
-  # 与 Kneel.persist/1 一致：测试 fixture（id=nil）跳过，避免沙盒噪音。
+  # NAME-D 流程（LPC `NAME_D->remove_name/map_name` 等价）：
+  #   1. NameD.remove_name(old_name, id)   释放俗家旧名
+  #   2. NameD.change_name(old_name, id, new_name, false) 检查新法名是否冲突
+  #   3. NameD.map_name(new_name, id)      登记新法名
+  #   4. Characters.rename_by_name/2       同步落盘 DB 档案名
+  # 若新名冲突（repeated），保留旧名、不改 DB，并在日志告警；
+  # 测试 fixture（id=nil）跳过，避免沙盒噪音。
   defp persist(conn, old_name, new_name) do
     character = conn.private.update_character || conn.character
 
     if is_binary(character.id) and String.starts_with?(character.id, "player:") do
-      if is_binary(old_name) and is_binary(new_name) do
-        Characters.rename_by_name(old_name, new_name)
+      NameD.ensure!()
+
+      NameD.remove_name(old_name, character.id)
+
+      case NameD.change_name(old_name, character.id, new_name, false) do
+        {:ok, _new_name} ->
+          NameD.map_name(new_name, character.id)
+          case Characters.rename_by_name(old_name, new_name) do
+            {:ok, _} -> :ok
+            {:error, :not_found} -> Logger.warn("name_d: 旧名 #{old_name} 未在 DB 中找到")
+            {:error, :invalid} -> Logger.warn("name_d: 新名 #{new_name} 不合法或已被占用")
+            {:error, :db_unavailable} -> Logger.warn("name_d: DB 不可用，#{old_name} 未落盘")
+          end
+
+        {:error, reason} ->
+          Logger.warn("name_d: #{old_name} -> #{new_name} 被拒绝：#{reason}")
       end
 
       Records.save(character)

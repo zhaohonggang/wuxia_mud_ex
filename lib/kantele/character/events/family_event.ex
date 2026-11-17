@@ -23,6 +23,7 @@ defmodule Kantele.Character.FamilyEvent do
   alias Kantele.Character.CommandView
   alias Kantele.Character.Records
   alias Kantele.SectMaster
+  alias Kantele.World.NameD
   alias Kantele.World.RoomActions.Helpers, as: RoomHelpers
   alias Kantele.World.ShaolinApprenticeDialogue
 
@@ -84,7 +85,11 @@ defmodule Kantele.Character.FamilyEvent do
   end
 
   # LPC `new_name = "渡" + name[1..1]`（rename_index=1 → 第二字，0-based grapheme）。
-  # 与剃度一样：ex 无 NAME_D，改 DB 档案名走 rename_by_name/2。
+  # NAME-D 流程（LPC `NAME_D->remove_name/map_name` 等价）：
+  #   1. NameD.remove_name(old_name, id)   释放旧名
+  #   2. NameD.change_name(...) 检查新名是否冲突
+  #   3. NameD.map_name(new_name, id)      登记新名
+  #   4. Characters.rename_by_name/2       同步落盘 DB 档案名
   defp maybe_rename(character, apprentice, _data) do
     prefix = Map.get(apprentice, :rename_prefix)
 
@@ -94,8 +99,37 @@ defmodule Kantele.Character.FamilyEvent do
       new_name = prefix <> rest
 
       if byte_size(new_name) > 0 do
-        Characters.rename_by_name(character.name, new_name)
-        %{character | name: new_name}
+        NameD.ensure!()
+
+        old_name = character.name
+
+        # 1. 释放旧名
+        NameD.remove_name(old_name, character.id)
+
+        # 2. 检查新名；冲突时保留旧名、不改 DB，在日志告警
+        case NameD.change_name(old_name, character.id, new_name, false) do
+          {:ok, _new_name} ->
+            # 3. 登记新名
+            NameD.map_name(new_name, character.id)
+
+            # 4. 落盘 DB
+            case Characters.rename_by_name(old_name, new_name) do
+              {:ok, _} -> %{character | name: new_name}
+              {:error, :not_found} ->
+                Logger.warn("name_d: 旧名 #{old_name} 未在 DB 中找到，保留旧名")
+                character
+              {:error, :invalid} ->
+                Logger.warn("name_d: 新名 #{new_name} 不合法或已被占用，保留旧名")
+                character
+              {:error, :db_unavailable} ->
+                Logger.warn("name_d: DB 不可用，#{old_name} 未落盘")
+                character
+            end
+
+          {:error, reason} ->
+            Logger.warn("name_d: #{old_name} -> #{new_name} 被拒绝：#{reason}，保留旧名")
+            character
+        end
       else
         character
       end
