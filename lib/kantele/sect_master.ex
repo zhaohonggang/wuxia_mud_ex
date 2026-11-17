@@ -69,6 +69,7 @@ defmodule Kantele.SectMaster do
     min_skills = Map.get(config, :min_skills, %{}) || %{}
     gender = Map.get(config, :gender)
     permit_recruit = Map.get(config, :permit_recruit) == true
+    gate_order = Map.get(config, :gate_order, "permit_first")
     family_name = Map.get(config, :family)
 
     shen = Map.get(student_stats(student), :shen, 0) || 0
@@ -93,8 +94,17 @@ defmodule Kantele.SectMaster do
 
     promotion_reason = promotion_error(student, config)
 
+    # Task #644：gate_order 控制 permit_recruit 与 gender 检查先后。
+    #   "gender_first"（清无 LPC qing-wu.c）：gender 先于 permit_recruit
+    #   "permit_first"（缺省，清为/清法 LPC）：permit_recruit 先于 gender
     result =
       cond do
+      # 性别门控（清无 gate_order="gender_first" 时置于 permit_recruit 之前，对齐 LPC）
+      gate_order == "gender_first" and
+          gender not in [nil, ""] and
+          student_gender(student) != gender ->
+        gender_deny(student, gender)
+
       # permit_recruit（shaolin.h）三条，顺序与 LPC 一致
       permit_recruit and betrayed_sect?(student, family_name) ->
         {:error, "你反反复复，唉！怎么一心向佛？\n"}
@@ -122,8 +132,10 @@ defmodule Kantele.SectMaster do
       # 的门派完全不受影响。
       not is_nil(promotion_reason) -> {:error, promotion_reason}
 
-      # 性别门控（清无/清为/清法；文案对齐 LPC）
-      gender not in [nil, ""] and student_gender(student) != gender ->
+      # 性别门控（清无/清为/清法；文案对齐 LPC；permit_first 时置于 permit_recruit 之后）
+      gate_order == "permit_first" and
+          gender not in [nil, ""] and
+          student_gender(student) != gender ->
         gender_deny(student, gender)
 
       # 达摩 #6：WPK > 3

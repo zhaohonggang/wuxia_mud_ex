@@ -1261,6 +1261,42 @@ defmodule Kantele.SectMasterTest do
     old_gate = %{family: "武当派", min_shen: 0, min_exp: 0, min_skills: %{}, no_recruit: []}
     assert :ok = Kantele.SectMaster.recruit_gate?(nil, shaolin_student(), old_gate)
   end
+
+  # ---- Task #644：gate_order 控制 permit_recruit 与 gender 先后顺序 ----
+
+  test "recruit_gate? gate_order=gender_first：性别先于 permit_recruit（清无 LPC qing-wu.c）" do
+    # 女性 + detach/少林派：gender_first 时先被性别拒，不会走到 permit_recruit
+    gate = Map.put(shaolin_gate(), :gate_order, "gender_first")
+    student = shaolin_student(%{env: %{gender: "女性", detach: %{"少林派" => 1}}})
+
+    assert {:error, "阿弥陀佛！女施主呀，贫僧可不敢开这等玩笑啊。\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, gate)
+  end
+
+  test "recruit_gate? gate_order=gender_first：男性 + detach/少林派 走 permit_recruit 拒绝" do
+    gate = Map.put(shaolin_gate(), :gate_order, "gender_first")
+    student = shaolin_student(%{env: %{gender: "男性", detach: %{"少林派" => 1}}})
+
+    assert {:error, "你反反复复，唉！怎么一心向佛？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, gate)
+  end
+
+  test "recruit_gate? gate_order=permit_first（缺省）：permit_recruit 先于性别（清为/清法 LPC）" do
+    # 女性 + detach/少林派：permit_first 时先被 permit_recruit 拒
+    student = shaolin_student(%{env: %{gender: "女性", detach: %{"少林派" => 1}}})
+
+    assert {:error, "你反反复复，唉！怎么一心向佛？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, shaolin_gate())
+  end
+
+  test "recruit_gate? gate_order 缺省为 permit_first" do
+    gate = shaolin_gate()  # 不设 gate_order
+    assert Map.get(gate, :gate_order) == nil  # UCL 不设时为 nil，recruit_gate? 内部默认 "permit_first"
+    student = shaolin_student(%{env: %{gender: "男性", detach: %{"少林派" => 1}}})
+
+    assert {:error, "你反反复复，唉！怎么一心向佛？\n"} =
+             Kantele.SectMaster.recruit_gate?(nil, student, gate)
+  end
 end
 
 defmodule Kantele.SectMasterDamoGateTest do

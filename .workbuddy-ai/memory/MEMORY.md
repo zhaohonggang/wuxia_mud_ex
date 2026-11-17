@@ -64,12 +64,14 @@
 - 门派原型详细配置章节（commit 67da804d）：`docs/新手拜师门派指南.zh-CN.md` 新增第6节，列出全部 39 个门派的详细配置（class/scale/skills/maps/preps/carry）。
 - #641 NAME_D 姓名注册表（commit 794f7972）：`lib/kantele/world/name_d.ex`（GenServer+ETS，remove_name/map_name/invalid_new_name/change_name/who_is，JSON 持久化），接线 `shaolin_kneel.ex` 剃度改名与 `family_event.ex` 辈分晋升改名，测试 15/0，全量回归 7904/27（0 新增回归）。
 - 少林派阶段 A–E（剃度/山门/达摩门槛/辈分晋升链）：`shaolin_promotion` 收礼+斗武事件链、55 名师父 UCL 配置、四级推荐信、字辈改名均已落地，定向 162/0；#652 各字辈晋升专属文案已回填（`shaolin_apprentice_dialogue.ex` + `FamilyEvent` 接线），#653 dao.h generation==0 直收已加 `allow_zero_generation` 到全部 9 个道字辈 NPC，定向 162/0，全量回归 7889/27（0 新增失败）。
+- #642 PKS/MKS/WPK 击杀计数持久化（commit da85c8ba，已推送）：`Records.save/1` 从 `meta.combat.temp` 落盘到 `pks/mks/wpk*` DB 列；`Records.apply_to_character/2` 登录时从 DB 恢复到 `combat.temp`；`combat_event.ex enemy_died/2` 杀敌递增 PKS/MKS/WPK + 正邪细分；`shaolin_kneel.ex` 剃度 K_record 从 `combat.temp` 读 PKS+MKS；`shaolin_gate.ex` WPK 门控从 `combat.temp` 读；迁移文件 `20261117000000_add_pks_mks_wpk_to_character_metadata.exs`；单元测试 4 例全绿。Dev 库已手动补列（`ALTER TABLE ... ADD COLUMN` 7 列），测试库已通过 Ecto 迁移。
+- #643 detach/betrayer 叛门记录落盘（已推送）：`DetachEvent.detach_result/2` 叛师成功后写入 `meta.env[:detach][门派名] = 1`、`meta.env[:betrayer][门派名] = 1`、`meta.env[:betrayer][:times] += 1`，供 `SectMaster.betrayed_sect?/2` 和 `betrayed_before?/1` 的 `permit_recruit` 门控读取（对齐 LPC shaolin.h `query("detach/<门派>")` / `query("betrayer/<门派>")` / `query("betrayer/times")`）。`Records.save/1` 已落盘 `env` 列，`apply_to_character/2` 已恢复。单元测试 4 例全绿（detach_command_test.exs 共 12 例，0 失败）。
 
 ## 净增量归档（全部已完结，无待办）
 - `docs/` 下 78 份文档 + 根目录 md 已全量扫描，59 份含待办标记的历史文档已加「📌 归档声明 · 全库待办清零」。
 - `docs/待对照代码核查.zh-CN.md` §6.2 净增量表、§二、§三已标记 ✅ 已完结。
 
 ## 待办（当前）
-- 少林派剃度机制移植：阶段 A–E 代码已落地（#633–#638、#652、#653 全部完成），剩余引擎缺口 #640/#642/#643/#644（#641 NAME_D 已实现并回归通过）。
+- 少林派剃度机制移植：阶段 A–E 代码已落地（#633–#638、#652、#653 全部完成），剩余引擎缺口 #640（#641 NAME_D 已实现并回归通过；#642 PKS/MKS/WPK 持久化已完成，commit da85c8ba 已推送；#643 detach/betrayer 叛门记录落盘已完成；#644 清无 gate_order 已完成，已推送）。
 - 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`（文档实际已完成，此项待确认结案）。
 - 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。

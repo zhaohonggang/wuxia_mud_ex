@@ -28566,10 +28566,11 @@ chats = [
   }
 
   # LPC qing-wu.c attempt_apprentice：只收男性（顺序：性别先于 permit_recruit）
-  # 注意：全局 recruit_gate? 统一按 permit→性别（差异已登记计划文档 §8 缺口 C）
+  # Task #644：gate_order = "gender_first" 对齐 LPC qing-wu.c（gender 先于 permit_recruit）
   apprentice = {
     family = "少林派"
     gender = "男性"
+    gate_order = "gender_first"
     permit_recruit = true
       exact_family = true
     require_class = "bonze"

@@ -1188,6 +1188,15 @@ defmodule Kantele.World.Loader do
     # 必须走 to_bool/1，否则清无/清为/清法/达摩的 permit_recruit 恒 false（#639 隐藏 bug）。
     permit_recruit = to_bool(Map.get(apprentice, :permit_recruit))
 
+    # gate_order：控制 permit_recruit 与 gender 检查的先后顺序（Task #644）
+    # - "permit_first"（缺省）：先 permit_recruit，再 gender —— 对齐 清为/清法 LPC
+    # - "gender_first"：先 gender，再 permit_recruit —— 对齐 清无 LPC qing-wu.c
+    gate_order =
+      case Map.get(apprentice, :gate_order) do
+        "gender_first" -> "gender_first"
+        _ -> "permit_first"
+      end
+
     base = %{
       family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
       min_shen: Map.get(apprentice, :min_shen) || 0,
@@ -1196,7 +1205,8 @@ defmodule Kantele.World.Loader do
       no_recruit: no_recruit,
       class: class,
       gender: gender,
-      permit_recruit: permit_recruit
+      permit_recruit: permit_recruit,
+      gate_order: gate_order
     }
 
     # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/
