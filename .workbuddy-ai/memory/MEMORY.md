@@ -53,6 +53,7 @@
 - **Run tests + commit/push `AskCommand.find_ask_npc/2` 修复**：测试 9/9 全绿，`mix test --seed 831693` 全量 7830 tests / 27 failures（基线一致，0 回归）。已 commit `3afb4171` 并推送至 origin/kalevala。
 - **LPC→UCL 教学数据补全（Tasks #613–#618）**：全部完成，已 commit 并推送。10 个 NPC 的 `teach_skills`/`apprentice` 已回填；`inquiries` 已转为绝招授予绝招；`docs/新手拜师门派指南.zh-CN.md` 已重写（12 个师父条目）。
 - 柳溪派 `wangshifu`：无 LPC source 可供 `apprentice` 块数据，保留缺失，非代码缺口，无待办。
+- **sects.ex 门派原型按 LPC 对齐（已 commit `1416f7b1` 并推送）**：`lib/kantele/sects.ex` 补全 18 个缺失门派（shaolin4, taohua1, xueshan1, xiaoyao1, emei, xuanming, mingjiao, lingjiu, honghua, quanzhen, quanzhen1, riyue, song, murong, murong1, hengshan, pixie），总数从 21 扩至 39，与 LPC `class_generate_chinese.c` init_family 完全对齐；`docs/新手拜师门派指南.zh-CN.md` 第3节扩展至全部 39 个门派，中文名称按 LPC `create_family` 对齐（ouyang=欧阳世家, lingxiao=凌霄城, zhenyuan=八卦门等）。sects.ex 加载正常，39 个门派 ID 完整，无新增编译警告。
 
 ## 净增量归档（全部已完结，无待办）
 - `docs/` 下 78 份文档 + 根目录 md 已全量扫描，59 份含待办标记的历史文档已加「📌 归档声明 · 全库待办清零」。
