@@ -3244,11 +3244,13 @@ characters "wudang_zhang" {
     family = "武当派"
     min_shen = 80000
     min_exp = 500000
+    min_int = 32
     min_skills = {
       wudang_xinfa = 120
       taoism = 120
     }
     class = "taoist"
+    int_deny = "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的武当武学。\n"
   }
 
   # LPC no_teach = ([ "wudang-jiuyang" : (: try_to_learn_jy :) ])
@@ -3888,6 +3890,16 @@ characters "wudang_yu" {
       hand = "paiyun-shou"
       claw = "huzhua-shou"
       medical = "wudang-yaoli"
+    }
+  }
+
+  apprentice = {
+    family = "武当派"
+    min_shen = 20000
+    min_exp = 150000
+    min_skills = {
+      wudang_xinfa = 80
+      taoism = 80
     }
   }
 

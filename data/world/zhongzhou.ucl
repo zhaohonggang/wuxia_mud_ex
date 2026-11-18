@@ -3046,9 +3046,6 @@ chats = [
 
       apprentice = {
         family = "中原苗家"
-        min_skills = {
-          miaojia_neigong = 50
-        }
       }
 
       # LPC kungfu/class/miao/miao.c：苗人凤（中原苗家师父）的问询

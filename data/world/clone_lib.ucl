@@ -16287,9 +16287,11 @@ chats = [
     family = "红花会"
     min_shen = 65000
     min_exp = 400000
+    min_max_neili = 2000
     min_skills = {
       honghua_xinfa = 100
     }
+    max_neili_deny = "大侠内力修为不足，暂不宜学红花会绝技。\n"
   }
 
   skills = [
@@ -32272,6 +32274,16 @@ chats = [
     max_neili = 7000
     max_qi = 6000
     str = 31
+  }
+
+  apprentice = {
+    family = "武当派"
+    min_shen = 25000
+    min_exp = 300000
+    min_skills = {
+      wudang_xinfa = 100
+      taoism = 100
+    }
   }
 
     inquiries = {

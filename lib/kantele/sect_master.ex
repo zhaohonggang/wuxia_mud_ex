@@ -82,6 +82,7 @@ defmodule Kantele.SectMaster do
     exact_generation = Map.get(config, :exact_generation)
     min_int = Map.get(config, :min_int)
     max_wpk = Map.get(config, :max_wpk)
+    min_max_neili = Map.get(config, :min_max_neili)
 
     # 达摩 #5：int < 35 —— LPC 在此只 `command("say ...")`、**不 return**。
     # 先记下提示，后续硬门槛照常判定；最终以 {:ok, warning} / {:error, warning <> reason}
@@ -148,6 +149,9 @@ defmodule Kantele.SectMaster do
 
       not is_nil(max_shen) and shen > max_shen ->
         {:error, deny_text(config, :max_shen_deny, "你心慈手软，杀气不够重，本派不收。\n")}
+
+      not is_nil(min_max_neili) and (student_max_neili(student) || 0) < min_max_neili ->
+        {:error, deny_text(config, :max_neili_deny, "你的内力修为不足，师父未同意收你为徒。\n")}
 
       exp < min_exp ->
         {:error, "你经验尚浅，武功未成，师父未同意收你为徒。\n"}
@@ -495,6 +499,13 @@ defmodule Kantele.SectMaster do
   defp student_stats(character) do
     stats = Map.get(meta_of(character), :stats) || %{}
     %{shen: Map.get(stats, :shen, 0) || 0, combat_exp: Map.get(stats, :combat_exp, 0) || 0}
+  end
+
+  # 角色当前内力上限，取自 meta.vitals.max_neili（LPC query("max_neili") 落库位置，见 records.ex）。
+  # 缺 key 时按 0 计，配置缺省时不拦截。
+  defp student_max_neili(character) do
+    vitals = Map.get(meta_of(character), :vitals) || %{}
+    Map.get(vitals, :max_neili) || 0
   end
 
   defp apprentice_config(character), do: Map.get(meta_of(character), :apprentice) || %{}
