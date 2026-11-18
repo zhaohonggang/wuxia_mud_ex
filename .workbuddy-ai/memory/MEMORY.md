@@ -118,7 +118,25 @@
   - 无引擎代码改动，纯 UCL 数据迁移；门控复用 `SectMaster.inquiry_grant/3`（同门 + 技能等级 + 杀气下限 + 贡献下限 + 内力上限）。
   - 验证：mix compile EXIT=0；sect_master_grant_test + sect_master_test + loader_meta_test 共 137 tests，0 failures。
 
+## 已完成（本轮追加，2026-11-18）
+- Task #543 严格 LPC 狩猎掉落（commit `148390c8`，已推送 `origin/kalevala`）：`hunting.ex` 概率门控（`drop_a` >10, `drop_b` >30+random(4)>2, `drop_c` >60+random(5)>3，互斥，skill≤11 永不掉）；`Corpse.spawn/1` → `notify_hunting_drops/2` → `hunting/drops` 事件 → `CombatEvent.hunting_drops/2` → 直接放入击杀者背包（不落地、不入尸体）；`test/kantele/world/hunting_test.exs` 23 例全绿；`docs/corpse-drop-system.zh-CN.md` §2.4 已改为 direct-to-killer。
+- Task #724 `#724`：新建 `test/kantele/world/hunting_test.exs`，23 例覆盖 `Hunting.roll/3`，全绿 0 失败。
+- Task #725 `#725`：修正 `docs/corpse-drop-system.zh-CN.md` §2.4，替换陈旧“方案 A”地面掉落描述，改为 direct-to-killer 管道。
+- Task #726/#729 `#729`：全量回归 7941 tests / 27 failures（全为预存在 `bcrypt_elixir` NIF 环境性，0 新增回归），提交并推送 commit `148390c8` 到 `origin/kalevala`，工作树干净。
+
 ## 待办（当前）
 
+### 进行中
+- Task #1 提交 P0 产物（R1 阻塞项）：5 个只读脚本 + 4 份文档入 git，确保工作树干净。当前工作树已 clean（commit `148390c8`），仅 `.workbuddy-ai/memory/2026-11-18.md` 为未跟踪待提交工作日志。
+
+### 待开始
+- Task #544–561 衡阳猎人教学链：hunting 技能可学、玩家尸体、三段腐烂、生肉不可吃、烤熟闭环、测试、文档。
+- Task #641 LPC NAME_D 姓名注册表（remove_name/map_name + 重名校验）。
+- Task #644 清无 gate_order 门控顺序对齐。
+- Task #697 文档 Section 7：补充三个新 NPC 的 LPC/UCL 对比。
+- Task #703–721 遗留保真度差异修复（部分已完结，见 TaskList）。
+- Task #611–619 新手可拜师门派文档 + UCL teaching data backfill（部分已完结）。
+- Task #620–624 少林派剃度机制移植计划 + audits（部分已完结）。
+
+### 已保留缺失（非代码缺口，无需实现）
 - 柳溪派 王重九 无 LPC source，`apprentice` 块无法回填（非代码缺口，保留缺失）。
-- 俞莲舟 LPC 已核查，`apprentice` 块已回填（Task #720 已完结）。
