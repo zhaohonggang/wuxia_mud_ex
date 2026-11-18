@@ -57,7 +57,7 @@
 
 - **Task #1**：提交 P0 产物（R1 阻塞项）：5 个只读脚本 + 4 份文档入 git，确保工作树干净。工作树已 clean（commit 148390c8），仅 `.workbuddy-ai/memory/2026-11-18.md` 为未跟踪待提交工作日志。
 - **Task #544-561**：衡阳猎人教学链（hunting 技能可学、玩家尸体、三段腐烂、生肉不可吃、烤熟闭环、测试、文档）。代码已全部落地，定向测试 62/0 全绿，全量回归 0 新增回归。需同步文档/记忆并闭环标记。
-- **Task #611-619**：新手可拜师门派文档 + UCL teaching data backfill（部分已完结）。
+- **Task #611-619**：新手可拜师门派文档 + UCL teaching data backfill（gaibang_hong 洪七公  apprentice+teach_skills+11 sect_master_grant inquiries 已落地，UCL 编译通过，定向测试 137/0 全绿，全量回归 7941/27，0 新增回归，已提交推送）。
 - **Task #620-624**：少林派剃度机制移植计划 + audits（部分已完结）。
 - **Task #703-721**：遗留保真度差异修复（部分已完结，见 TaskList #722-723）。
 

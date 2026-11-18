@@ -14638,19 +14638,269 @@ chats = [
     str = 40
   }
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 400000
+    min_skills = { force = 180 }
+    min_max_neili = 2000
+  }
+
   inquiries = [
-    { key = "亢龙有悔" value = " inquire about skill11 (unimplemented)" },
-    { key = "仙游诀" value = " inquire about skill1 (unimplemented)" },
-    { key = "双龙取水" value = " inquire about skill8 (unimplemented)" },
-    { key = "天下无狗" value = " inquire about skill7 (unimplemented)" },
-    { key = "封字诀" value = " inquire about skill5 (unimplemented)" },
-    { key = "戳字诀" value = " inquire about skill4 (unimplemented)" },
-    { key = "玉竹杖" value = " inquire about me (unimplemented)" },
-    { key = "绊字诀" value = " inquire about skill6 (unimplemented)" },
-    { key = "缠字诀" value = " inquire about skill3 (unimplemented)" },
-    { key = "金针渡劫" value = " inquire about skill2 (unimplemented)" },
-    { key = "震惊百里" value = " inquire about skill9 (unimplemented)" },
-    { key = "飞龙在天" value = " inquire about skill10 (unimplemented)" }
+    { key = "仙游诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "xiaoyaoyou/xian"
+      skill = "xiaoyaoyou"
+      min_levels = {
+        xiaoyaoyou = 100
+        force = 120
+      }
+      min_gongxian = 300
+      min_shen = 10000
+      cost_gongxian = 300
+      family = "丐帮"
+      family_deny = "你打听这个干嘛？我认识你么？"
+      skill_deny = "你连逍遥游拳法都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        xiaoyaoyou = "你的逍遥游拳法火候未到，再下去练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "我不是已经教过你了么？"
+      learned = "你学会了「仙游诀」。"
+    } },
+    { key = "金针渡劫" value = {
+      kind = "sect_master_grant"
+      perform_id = "pomie-jinzhen/du"
+      skill = "pomie-jinzhen"
+      min_levels = {
+        pomie_jinzhen = 150
+        force = 200
+      }
+      min_gongxian = 300
+      min_shen = 10000
+      cost_gongxian = 300
+      family = "丐帮"
+      family_deny = "干啥？我什么时候说过要教你？"
+      skill_deny = "你连破灭金针都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        pomie_jinzhen = "你的破灭金针火候未到，再下去练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "我不是已经教过你了么？还罗嗦什么？"
+      learned = "你学会了「金针渡劫」。"
+    } },
+    { key = "缠字诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "dagou-bang/chan"
+      skill = "dagou-bang"
+      min_levels = {
+        dagou_bang = 60
+        force = 100
+      }
+      min_gongxian = 300
+      min_shen = 80000
+      cost_gongxian = 300
+      family = "丐帮"
+      family_deny = "干啥？我什么时候说过要教你？"
+      skill_deny = "你连打狗棒法都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        dagou_bang = "你的打狗棒法火候未到，再回去练练。"
+        force = "你的内功火候不足，回去练高点再来。"
+      }
+      maxed = "我不是已经教过你了么？还罗嗦什么？"
+      learned = "你学会了「缠字诀」。"
+    } },
+    { key = "戳字诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "dagou-bang/chuo"
+      skill = "dagou-bang"
+      min_levels = {
+        dagou_bang = 100
+        force = 160
+      }
+      min_gongxian = 600
+      min_shen = 80000
+      cost_gongxian = 600
+      family = "丐帮"
+      family_deny = "干啥？我什么时候说过要教你？"
+      skill_deny = "你连打狗棒法都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        dagou_bang = "你的打狗棒法火候未到，再回去练练。"
+        force = "你的内功火候不足，回去练高点再来。"
+      }
+      maxed = "我不是已经教过你了么？还罗嗦什么？"
+      learned = "你学会了「戳字诀」。"
+    } },
+    { key = "封字诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "dagou-bang/feng"
+      skill = "dagou-bang"
+      min_levels = {
+        dagou_bang = 120
+        force = 180
+      }
+      min_gongxian = 1500
+      min_shen = 80000
+      cost_gongxian = 1500
+      family = "丐帮"
+      family_deny = "干啥？我什么时候说过要教你？"
+      skill_deny = "你连打狗棒法都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        dagou_bang = "你的打狗棒法火候未到，再回去练练。"
+        force = "你的内功火候不足，回去练高点再来。"
+      }
+      maxed = "我不是已经教过你了么？还罗嗦什么？"
+      learned = "你学会了「封字诀」。"
+    } },
+    { key = "绊字诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "dagou-bang/ban"
+      skill = "dagou-bang"
+      min_levels = {
+        dagou_bang = 180
+        force = 240
+      }
+      min_gongxian = 1800
+      min_shen = 100000
+      cost_gongxian = 1800
+      family = "丐帮"
+      family_deny = "干啥？我什么时候说过要教你？"
+      skill_deny = "你连打狗棒法都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        dagou_bang = "你的打狗棒法火候未到，再回去练练。"
+        force = "你的内功火候不足，回去练高点再来。"
+      }
+      maxed = "我不是已经教过你了么？还罗嗦什么？"
+      learned = "你学会了「绊字诀」。"
+    } },
+    { key = "天下无狗" value = {
+      kind = "sect_master_grant"
+      perform_id = "dagou-bang/tian"
+      skill = "dagou-bang"
+      min_levels = {
+        dagou_bang = 220
+        force = 300
+      }
+      min_gongxian = 2000
+      min_shen = 100000
+      cost_gongxian = 2000
+      family = "丐帮"
+      family_deny = "干啥？我什么时候说过要教你？"
+      skill_deny = "你连打狗棒法都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，还想让我传功给你？。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        dagou_bang = "你的打狗棒法火候未到，再回去练练。"
+        force = "你的内功火候不足，回去练高点再来。"
+      }
+      maxed = "自己去练吧，老缠着我干什么？"
+      learned = "你学会了「天下无狗」。"
+    } },
+    { key = "双龙取水" value = {
+      kind = "sect_master_grant"
+      perform_id = "xianglong-zhang/qu"
+      skill = "xianglong-zhang"
+      min_levels = {
+        xianglong_zhang = 150
+        force = 300
+      }
+      min_gongxian = 800
+      min_shen = 100000
+      cost_gongxian = 800
+      family = "丐帮"
+      family_deny = "你打听这个干嘛？我认识你么？"
+      skill_deny = "你连降龙十八掌都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，这招暂时还不能传你。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        xianglong_zhang = "你的降龙十八掌火候未到，再下去练练。"
+        force = "你内功火候不足，暂时还无法运用这招。"
+      }
+      maxed = "我不是已经教过你了么？"
+      learned = "你学会了「双龙取水」。"
+    } },
+    { key = "震惊百里" value = {
+      kind = "sect_master_grant"
+      perform_id = "xianglong-zhang/zhen"
+      skill = "xianglong-zhang"
+      min_levels = {
+        xianglong_zhang = 150
+        force = 300
+      }
+      min_gongxian = 2000
+      min_shen = 100000
+      cost_gongxian = 2000
+      family = "丐帮"
+      family_deny = "你打听这个干嘛？我认识你么？"
+      skill_deny = "你连降龙十八掌都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，这招暂时还不能传你。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        xianglong_zhang = "你的降龙十八掌火候未到，再下去练练。"
+        force = "你内功火候不足，暂时还无法运用这招。"
+      }
+      maxed = "我不是已经教过你了么？"
+      learned = "你学会了「震惊百里」。"
+    } },
+    { key = "飞龙在天" value = {
+      kind = "sect_master_grant"
+      perform_id = "xianglong-zhang/fei"
+      skill = "xianglong-zhang"
+      min_levels = {
+        xianglong_zhang = 150
+        force = 300
+      }
+      min_gongxian = 3000
+      min_shen = 100000
+      cost_gongxian = 3000
+      family = "丐帮"
+      family_deny = "你打听这个干嘛？我认识你么？"
+      skill_deny = "你连降龙十八掌都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，这招暂时还不能传你。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        xianglong_zhang = "你的降龙十八掌火候未到，再下去练练。"
+        force = "你内功火候不足，暂时还无法运用这招。"
+      }
+      maxed = "我不是已经教过你了么？"
+      learned = "你学会了「飞龙在天」。"
+    } },
+    { key = "亢龙有悔" value = {
+      kind = "sect_master_grant"
+      perform_id = "xianglong-zhang/hui"
+      skill = "xianglong-zhang"
+      min_levels = {
+        xianglong_zhang = 220
+        force = 260
+      }
+      min_gongxian = 3000
+      min_shen = 120000
+      cost_gongxian = 3000
+      family = "丐帮"
+      family_deny = "你打听这个干嘛？我认识你么？"
+      skill_deny = "你连降龙十八掌都没学过，哪里来绝招？"
+      gongxian_deny = "你在帮中无所作为，这招暂时还不能传你。"
+      shen_deny = "你侠义之事做得不够，我可不放心传功予你。"
+      level_deny = {
+        xianglong_zhang = "你的降龙十八掌火候未到，再下去练练。"
+        force = "你基本内功火候不足，暂时还无法运用这招。"
+      }
+      maxed = "我不是已经教过你了么？"
+      learned = "你学会了「亢龙有悔」。"
+    } },
+    { key = "玉竹杖" value = " inquire about me (unimplemented)" }
   ]
 
   skills = [
@@ -14695,6 +14945,24 @@ chats = [
     { type = "strike" skill = "xianglong-zhang" }
   ]
 
+  teach_skills = {
+    strike = {
+      max = 179
+      gongxian = 0
+    }
+    unarmed = {
+      max = 179
+      gongxian = 0
+    }
+    xianglong_zhang = {
+      max = 340
+      gongxian = 0
+    }
+    xiaoyaoyou = {
+      max = 320
+      gongxian = 0
+    }
+  }
 
   carry = [
     { id = items.cloth.id }
