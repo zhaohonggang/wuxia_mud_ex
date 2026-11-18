@@ -72,6 +72,10 @@ defmodule Kantele.SectMaster do
     permit_recruit = Map.get(config, :permit_recruit) == true
     gate_order = Map.get(config, :gate_order, "permit_first")
     family_name = Map.get(config, :family)
+    reject_master_name = Map.get(config, :reject_master_name)
+    # 绝情谷只要求负神上界，LPC 无「侠义下限」；缺省 0 会误拒全部负神玩家，
+    # 故用 UCL 显式 no_min_shen 关闭下界，老配置不变。
+    no_min_shen = Map.get(config, :no_min_shen) == true
 
     shen = Map.get(student_stats(student), :shen, 0) || 0
     exp = Map.get(student_stats(student), :combat_exp, 0) || 0
@@ -117,6 +121,16 @@ defmodule Kantele.SectMaster do
       permit_recruit and other_family?(student, family_name) ->
         {:error, "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"}
 
+      # #745 绝情谷 chi.c/zhi.c：若拜师者的师父正是仇家，则拒收。
+      # 位置紧随 permit_recruit，之后才是 shen/exp/技能，与 LPC 顺序一致。
+      is_binary(reject_master_name) and student_master_name(student) == reject_master_name ->
+        {:error,
+         deny_text(
+           config,
+           :reject_master_name_deny,
+           "我可不收仇家的徒弟。"
+         )}
+
       # 达摩 attempt_apprentice #2：family_name != 少林派
       exact_family and student_family_name(student) != family_name ->
         {:error, deny_text(config, :family_deny, "大侠与本派素无来往，不知此话从何谈起？")}
@@ -144,7 +158,7 @@ defmodule Kantele.SectMaster do
       not is_nil(max_wpk) and (student_wpk(student) || 0) > max_wpk ->
         {:error, deny_text(config, :wpk_deny, "大侠杀戮心太重，不适合继续学习武功。")}
 
-      shen < min_shen ->
+      not no_min_shen and shen < min_shen ->
         {:error, deny_text(config, :min_shen_deny, "你的杀气不足，师父未同意收你为徒。\n")}
 
       not is_nil(max_shen) and shen > max_shen ->
@@ -154,7 +168,7 @@ defmodule Kantele.SectMaster do
         {:error, deny_text(config, :max_neili_deny, "你的内力修为不足，师父未同意收你为徒。\n")}
 
       exp < min_exp ->
-        {:error, "你经验尚浅，武功未成，师父未同意收你为徒。\n"}
+        {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
 
       not is_nil(failing_skill = first_failing_recruit_skill(student, min_skills)) ->
         {:error, min_skills_deny(config, failing_skill)}
@@ -414,7 +428,17 @@ defmodule Kantele.SectMaster do
   返回 `{:ok, perform_id, cost}` | `{:error, msg}`；调用方据 `cost` 扣 `gongxian`
   并 `Stats.learn_perform/2`。
   """
+  # #745：`gate_order = "lpc_masterd"` 走 LPC masterd.c 原始门控顺序
+  # （同门 → 已会 → 神 → 贡献 → 技能存在/等级）；缺省顺序保持既有配置零回归。
   def inquiry_grant(player_stats, npc_stats, config) do
+    if Map.get(config, "gate_order") == "lpc_masterd" do
+      inquiry_grant_lpc(player_stats, npc_stats, config)
+    else
+      inquiry_grant_default(player_stats, npc_stats, config)
+    end
+  end
+
+  defp inquiry_grant_default(player_stats, npc_stats, config) do
     player = normalize_stats(player_stats)
     npc = normalize_stats(npc_stats)
 
@@ -457,7 +481,60 @@ defmodule Kantele.SectMaster do
         {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
 
       not meets_levels?(player, min_levels) ->
-        {:error, deny(config, "level_deny", "你的修为还不够，练高了再来吧。\n")}
+        {:error, level_deny_text(config, player, min_levels)}
+
+      below_max_neili?(player, config) ->
+        {:error, deny(config, "max_neili_deny", "你的内力修为不够，学不成这招。\n")}
+
+      below_min_dex?(player, config) ->
+        {:error, deny(config, "dex_deny", "你的身法太差，还需多加练习。\n")}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # LPC masterd.c:76-211 的原始顺序。绝情谷的「神」门槛全为负数（上界），
+  # 与贡献/技能门槛同时失败时必须先报杀气文案，不能沿用缺省顺序。
+  defp inquiry_grant_lpc(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    min_shen = Map.get(config, "min_shen")
+    max_shen = Map.get(config, "max_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      not same_family?(player, npc) ->
+        {:error, deny(config, "family_deny", "你我并非同门，何来讨教绝招之说？\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny(config, "maxed", "这招你不是已经会了么，还缠着我做甚？\n")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error, deny(config, "max_shen_deny", "哼！像你这样的心慈手软之辈，又能干成什么大事？\n")}
+
+      is_integer(min_shen) and stat(player, :shen) < min_shen ->
+        {:error, deny(config, "shen_deny", "你目前所做的侠义正事不够，这招暂时还不能传你。\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny(config, "gongxian_deny", "你为本派作出的贡献不够，这招暂时还不能传你。\n")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？\n")}
+
+      not meets_levels?(player, min_levels) ->
+        {:error, level_deny_text(config, player, min_levels)}
+
+      above_neili_cap?(player, config) ->
+        {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
 
       below_max_neili?(player, config) ->
         {:error, deny(config, "max_neili_deny", "你的内力修为不够，学不成这招。\n")}
@@ -647,6 +724,36 @@ defmodule Kantele.SectMaster do
   # 配置覆盖的拒绝文案；缺省走通用文案
   defp deny(config, key, default), do: Map.get(config, key) || default
 
+  # `level_deny` 可为整句，也可为逐技能 map（Loader 已把 UCL 下划线键归一为连字符）。
+  # 多技能门槛同时不足时取第一个未达标技能，复刻 masterd.c 的逐条 return 顺序。
+  defp level_deny_text(config, player, min_levels) do
+    fallback = deny(config, "level_deny", "你的修为还不够，练高了再来吧。\n")
+
+    case Map.get(config, "level_deny") do
+      denies when is_map(denies) ->
+        primary = Map.get(config, "skill")
+        priority = [primary, "force", "dodge"] |> Enum.reject(&is_nil/1)
+        keys = priority ++ (Map.keys(min_levels) -- priority)
+
+        failing =
+          Enum.find(keys, fn skill ->
+            skill_level_of(player, skill) < Map.get(min_levels, skill)
+          end)
+
+        case failing do
+          skill when is_binary(skill) ->
+            Map.get(denies, skill) || Map.get(denies, String.replace(skill, "_", "-")) ||
+              "你的修为还不够，练高了再来吧。\n"
+
+          nil ->
+            "你的修为还不够，练高了再来吧。\n"
+        end
+
+      _ ->
+        fallback
+    end
+  end
+
   # LPC `query("max_neili") < N`：缺 key 不拦；玩家侧未并入 max_neili 时按 0 计
   defp below_max_neili?(player, config) do
     case Map.get(config, "min_max_neili") do
@@ -733,6 +840,18 @@ defmodule Kantele.SectMaster do
 
   defp student_env(character), do: Map.get(meta_of(character), :env) || %{}
   defp student_family(character), do: Map.get(meta_of(character), :family)
+
+  # #745 绝情谷 `me->query("family/master_name")`：family 是 map，atom/string 双读；
+  # 角色缺 meta（纯 stats 测试宿主）时返回 nil，不触发门控。
+  defp student_master_name(character) do
+    case student_family(character) do
+      family when is_map(family) and map_size(family) > 0 ->
+        Map.get(family, :master_name) || Map.get(family, "master_name")
+
+      _ ->
+        nil
+    end
+  end
 
   # 达摩门控读取（LPC ob_fam["family_name"] / query("class") / ob_fam["generation"] /
   # query_int() / query("WPK")）。WPK 在 ex 无独立列，与 PKS/MKS 同属 meta.combat

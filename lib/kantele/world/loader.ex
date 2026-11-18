@@ -1295,7 +1295,17 @@ defmodule Kantele.World.Loader do
       # 华山：LPC 逐字拒绝文案（性别/侠义不足），未配置时 sect_master 回退缺省。
       min_shen_deny: Map.get(apprentice, :min_shen_deny),
       gender_deny: Map.get(apprentice, :gender_deny),
-      min_skills_deny: min_skills_deny
+      min_skills_deny: min_skills_deny,
+      min_exp_deny: Map.get(apprentice, :min_exp_deny),
+      # #745 绝情谷：LPC chi.c/zhi.c 的「不收仇家弟子」门控 + 逐字文案；
+      # fan/zhi/chi 的收徒成功文案与「公孙→裘」按姓改名（chi.c:132-145）。
+      reject_master_name: Map.get(apprentice, :reject_master_name),
+      reject_master_name_deny: Map.get(apprentice, :reject_master_name_deny),
+      no_min_shen: to_bool(Map.get(apprentice, :no_min_shen)),
+      accept_msg: Map.get(apprentice, :accept_msg),
+      rename_surname_from: Map.get(apprentice, :rename_surname_from),
+      rename_surname_to: Map.get(apprentice, :rename_surname_to),
+      rename_surname_index: int_value(Map.get(apprentice, :rename_surname_index))
     }
 
     Map.merge(base, Map.merge(da_mo_fields, Map.merge(promotion_fields, dialogue_fields)))

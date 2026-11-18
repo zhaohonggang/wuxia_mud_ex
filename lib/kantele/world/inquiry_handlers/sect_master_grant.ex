@@ -26,12 +26,17 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
         level_deny = { tongchui-zhang = "..." }  # 各技能单独文案
         maxed = "这招我不是已经教会你了吗？"  # 已习得文案（inquiry_grant 返回错误时使用）
         learned = "你学会了「五丁开山」。"     # 学会文案（缺省用 perform_name）
+        msg_one = "$N微微点了点头……"   # LPC msg1 演示文案，向房间广播（UCL 标识符不能含数字）
+        gate_order = "lpc_masterd"       # 绝情谷：按 masterd.c 原顺序判门控
       }
 
   门控顺序（严格按 `SectMaster.inquiry_grant/3`）：
 
   perform_id 缺失 → 已学会（maxed） → 非同门 → 必修技能 < 1 → 杀气上限 →
-  贡献下限 → 杀气下限 → 技能等级 → 内力上限 → 通过
+  贡献下限 → 杀气下限 → 技能等级 → 内力上限 → 通过。
+
+  `gate_order = "lpc_masterd"`（绝情谷）改为 masterd.c 原顺序：
+  同门 → 已学会 → 神 → 贡献 → 技能存在/等级 → 内力。
 
   与 `npc_script_event.ex` 的 `perform_result/2` 同源：`stats_with_family/1` 把
   `meta.family` 门派名和 `meta.vitals.max_neili` 并入 stats map 后传给
@@ -45,6 +50,7 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
   alias Kantele.SectMaster
+  alias Kantele.World.NpcActions.Helpers
 
   def run(conn, config, data) when is_map(config) and is_map(data) do
     character = current(conn)
@@ -71,6 +77,8 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
         reply(conn, msg)
 
       {:ok, perform_id, cost} ->
+        conn = broadcast_msg1(conn, config, data)
+
         stats =
           character.meta.stats
           |> Stats.learn_perform(perform_id)
@@ -121,6 +129,19 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
     case Map.get(character.meta.vitals || %{}, :max_neili) do
       neili when is_integer(neili) -> Map.put(stats, :max_neili, neili)
       _ -> stats
+    end
+  end
+
+  # LPC masterd.c:214-261 `message_sort(HIY "\n" + msg1 + "\n\n" NOR, ob, who)`：
+  # 私定演示文案时向房间广播；未配置或不在房间时静默跳过（老配置零影响）。
+  defp broadcast_msg1(conn, config, data) do
+    case {Map.get(config, "msg_one") || Map.get(config, "msg1"),
+          Map.get(data, :npc_room_id)} do
+      {msg, room_id} when is_binary(msg) and byte_size(msg) > 0 and is_binary(room_id) ->
+        Helpers.broadcast(conn, room_id, msg)
+
+      _ ->
+        conn
     end
   end
 

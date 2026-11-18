@@ -724,4 +724,84 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert wife.meta.apprentice.gender == "女性"
     end
   end
+
+  describe "绝情谷 UCL 数据回填（Task #745）" do
+    test "裘千尺：22 skills / 5 grants / 改姓与仇家门控 / 掌心雷 -950000", %{world: world} do
+      chi = npc(world, "裘千尺", "jueqing:undertan")
+
+      assert chi.meta.teach.family == "绝情谷"
+      assert map_size(chi.meta.teach.teach_skills) == 22
+      assert chi.meta.apprentice.permit_recruit == true
+      assert chi.meta.apprentice.reject_master_name == "公孙止"
+      assert chi.meta.apprentice.no_min_shen == true
+      assert chi.meta.apprentice.max_shen == -60_000
+      assert chi.meta.apprentice.min_exp == 400_000
+      assert chi.meta.apprentice.rename_surname_from == "公孙"
+      assert chi.meta.apprentice.rename_surname_to == "裘"
+
+      assert map_size(chi.meta.inquiries) == 8
+
+      levin = inquiry(chi, "掌心雷")
+      assert levin["kind"] == "sect_master_grant"
+      assert levin["perform_id"] == "tie-zhang/lei"
+      assert levin["max_shen"] == -950_000
+      assert levin["cost_gongxian"] == 600
+
+      invisible = inquiry(chi, "无影掌")
+      assert String.starts_with?(invisible["msg_one"], "$N点了点头")
+      assert invisible["min_levels"] == %{"tie-zhang" => 100, "force" => 160}
+
+      assert is_binary(inquiry(chi, "历练"))
+      assert String.contains?(inquiry(chi, "历练"), "GAP #747")
+    end
+
+    test "樊一翁：20 skills / 8 grants / shen 上界 0 / LPC 顺序", %{world: world} do
+      fan = npc(world, "樊一翁", "jueqing:shanzhuang")
+
+      assert fan.meta.teach.family == "绝情谷"
+      assert map_size(fan.meta.teach.teach_skills) == 20
+      assert fan.meta.apprentice.max_shen == 0
+      assert map_size(fan.meta.inquiries) == 8
+
+      tai = inquiry(fan, "泰山压顶")
+      assert tai["perform_id"] == "poshui-zhang/tai"
+      assert tai["min_levels"] == %{"poshui-zhang" => 120, "force" => 160}
+      assert tai["max_shen"] == -18_000
+      assert tai["gate_order"] == "lpc_masterd"
+
+      wan = inquiry(fan, "万念惧灰")
+      assert wan["min_levels"]["dodge"] == 80
+      assert String.starts_with?(wan["msg_one"], "樊一翁点了点头")
+    end
+
+    test "公孙止：23 skills / 8 grants / 2 give_item / 仇家与嫡传门控", %{world: world} do
+      zhi = npc(world, "公孙止", "jueqing:zizhuxuan")
+
+      assert zhi.meta.teach.family == "绝情谷"
+      assert map_size(zhi.meta.teach.teach_skills) == 23
+      assert zhi.meta.apprentice.reject_master_name == "裘千尺"
+      assert zhi.meta.apprentice.max_shen == -30_000
+      assert zhi.meta.apprentice.min_exp == 300_000
+      assert map_size(zhi.meta.inquiries) == 13
+
+      heng = inquiry(zhi, "横空出世")
+      assert heng["perform_id"] == "yinyang-ren/heng"
+      assert heng["min_levels"] == %{"yinyang-ren" => 180, "dodge" => 180, "force" => 180}
+      assert heng["max_shen"] == -100_000
+
+      sword = inquiry(zhi, "黑剑")
+      assert sword["kind"] == "give_item"
+      assert sword["item"] == "clone_lib:heijian"
+      assert sword["master_id"] == "true"
+      assert sword["max_shen"] == -46_000
+      assert sword["min_skill_levels"] == %{"yinyang_ren" => 150}
+
+      dao = inquiry(zhi, "黄金锯齿刀")
+      assert dao["item"] == "clone_lib:juchidao"
+      assert dao["max_shen"] == -50_000
+      assert dao["min_skill_levels"] == %{"yinyang_ren" => 180}
+
+      assert String.contains?(inquiry(zhi, "锻炼"), "GAP #747")
+    end
+  end
 end

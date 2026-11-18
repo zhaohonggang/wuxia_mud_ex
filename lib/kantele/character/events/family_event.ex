@@ -76,8 +76,15 @@ defmodule Kantele.Character.FamilyEvent do
       |> announce_tonsure(character, apprentice, data, student_generation, old_name)
 
     text =
-      warning <>
-        "#{data.master_name}捋须点头：「好，从今日起你便是#{data.family}门下弟子，好生修炼，莫堕了师门名声。」\n"
+      case Map.get(apprentice, :accept_msg) do
+        msg when is_binary(msg) and byte_size(msg) > 0 ->
+          custom = String.replace(msg, "%new_name%", character.name) |> ensure_lf()
+          warning <> custom
+
+        _ ->
+          warning <>
+            "#{data.master_name}捋须点头：「好，从今日起你便是#{data.family}门下弟子，好生修炼，莫堕了师门名声。」\n"
+      end
 
     conn
     |> render(CommandView, "text", %{text: text})
@@ -91,50 +98,85 @@ defmodule Kantele.Character.FamilyEvent do
   #   3. NameD.map_name(new_name, id)      登记新名
   #   4. Characters.rename_by_name/2       同步落盘 DB 档案名
   defp maybe_rename(character, apprentice, _data) do
+    case {Map.get(apprentice, :rename_surname_from), Map.get(apprentice, :rename_surname_to)} do
+      {from, to}
+      when is_binary(from) and byte_size(from) > 0 and is_binary(to) and byte_size(to) > 0 ->
+        maybe_rename_surname(character, from, to)
+
+      _ ->
+        maybe_rename_prefix(character, apprentice)
+    end
+  end
+
+  # 原少林「法名 = 前缀 + 第 index 字」分支，保持既有行为不变。
+  defp maybe_rename_prefix(character, apprentice) do
     prefix = Map.get(apprentice, :rename_prefix)
 
     if is_binary(prefix) and byte_size(prefix) > 0 and is_binary(character.name) do
       index = Map.get(apprentice, :rename_index, 1)
       rest = character.name |> String.graphemes() |> Enum.at(index) || ""
       new_name = prefix <> rest
+      if byte_size(new_name) > 0, do: rename_character(character, new_name), else: character
+    else
+      character
+    end
+  end
 
-      if byte_size(new_name) > 0 do
-        NameD.ensure!()
+  # #745 绝情谷 chi.c:132-145：仅当弟子姓「公孙」时改姓为「裘」并同步改名。
+  # ex 无独立 purename 字段，以 env.surname + character.name 的前 N 个 grapheme
+  # 等价还原 `purename`；NAME_D / DB 改名走与少林法名同一条管线。
+  defp maybe_rename_surname(character, from, to) do
+    name = character.name
 
-        old_name = character.name
+    if is_binary(name) and String.starts_with?(name, from) do
+      graphemes = String.graphemes(name)
+      count = String.graphemes(from) |> length()
 
-        # 1. 释放旧名
-        NameD.remove_name(old_name, character.id)
-
-        # 2. 检查新名；冲突时保留旧名、不改 DB，在日志告警
-        case NameD.change_name(old_name, character.id, new_name, false) do
-          {:ok, _new_name} ->
-            # 3. 登记新名
-            NameD.map_name(new_name, character.id)
-
-            # 4. 落盘 DB
-            case Characters.rename_by_name(old_name, new_name) do
-              {:ok, _} -> %{character | name: new_name}
-              {:error, :not_found} ->
-                Logger.warn("name_d: 旧名 #{old_name} 未在 DB 中找到，保留旧名")
-                character
-              {:error, :invalid} ->
-                Logger.warn("name_d: 新名 #{new_name} 不合法或已被占用，保留旧名")
-                character
-              {:error, :db_unavailable} ->
-                Logger.warn("name_d: DB 不可用，#{old_name} 未落盘")
-                character
-            end
-
-          {:error, reason} ->
-            Logger.warn("name_d: #{old_name} -> #{new_name} 被拒绝：#{reason}，保留旧名")
-            character
-        end
+      if length(graphemes) > count and env_surname(character) == from do
+        new_name = to <> (Enum.drop(graphemes, count) |> Enum.join())
+        character = rename_character(character, new_name)
+        meta = character.meta || %{}
+        env = Map.get(meta, :env) || %{}
+        %{character | meta: Map.put(meta, :env, Map.put(env, :surname, to))}
       else
         character
       end
     else
       character
+    end
+  end
+
+  defp env_surname(character) do
+    env = Map.get(character.meta || %{}, :env) || %{}
+    Map.get(env, :surname) || Map.get(env, "surname")
+  end
+
+  # 1. 释放旧名 → 2. 查重 → 3. 登记新名 → 4. DB 落盘；失败一律保留旧名。
+  defp rename_character(character, new_name) do
+    NameD.ensure!()
+    old_name = character.name
+    NameD.remove_name(old_name, character.id)
+
+    case NameD.change_name(old_name, character.id, new_name, false) do
+      {:ok, _new_name} ->
+        NameD.map_name(new_name, character.id)
+
+        case Characters.rename_by_name(old_name, new_name) do
+          {:ok, _} -> %{character | name: new_name}
+          {:error, :not_found} ->
+            Logger.warn("name_d: 旧名 #{old_name} 未在 DB 中找到，保留旧名")
+            character
+          {:error, :invalid} ->
+            Logger.warn("name_d: 新名 #{new_name} 不合法或已被占用，保留旧名")
+            character
+          {:error, :db_unavailable} ->
+            Logger.warn("name_d: DB 不可用，#{old_name} 未落盘")
+            character
+        end
+
+      {:error, reason} ->
+        Logger.warn("name_d: #{old_name} -> #{new_name} 被拒绝：#{reason}，保留旧名")
+        character
     end
   end
 

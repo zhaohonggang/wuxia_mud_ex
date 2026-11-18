@@ -1664,4 +1664,111 @@ defmodule Kantele.SectMasterDamoGateTest do
                SectMaster.unlock_perform(known, config)
     end
   end
+
+  describe "绝情谷门控（Task #745）" do
+    defp jueqing_player(overrides \\ %{}) do
+      %Stats{
+        skills: %{"tiexian-quan" => 80, "force" => 100, "qin" => 0},
+        gongxian: 0,
+        shen: -70_000,
+        performs: MapSet.new()
+      }
+      |> Map.put(:family, "绝情谷")
+      |> Map.merge(overrides)
+    end
+
+    defp chi_gate do
+      %{
+        family: "绝情谷",
+        permit_recruit: true,
+        reject_master_name: "公孙止",
+        reject_master_name_deny: "我裘千尺可不收公孙止那恶贼的徒弟。",
+        max_shen: -60_000,
+        max_shen_deny: "我裘千尺可不收心慈手软的人做徒弟。",
+        no_min_shen: true,
+        min_exp: 400_000,
+        min_exp_deny: "你这点能力怎能继承我的衣钵？"
+      }
+    end
+
+    test "recruit_gate?：仇家师父先于侠义/经验判定，逐技能拒绝文案由 UCL 覆写" do
+      student = %{
+        meta: %{
+          family: %{name: "绝情谷", master_name: "公孙止"},
+          stats: %{shen: -70_000, combat_exp: 500_000, skills: %{}}
+        }
+      }
+
+      assert {:error, "我裘千尺可不收公孙止那恶贼的徒弟。\n"} =
+               SectMaster.recruit_gate?(nil, student, chi_gate())
+
+      family = Map.put(student.meta.family, :master_name, "旁人")
+      clean = %{student | meta: %{student.meta | family: family}}
+
+      assert :ok = SectMaster.recruit_gate?(nil, clean, chi_gate())
+
+      low_exp = put_in(clean.meta.stats.combat_exp, 100)
+
+      assert {:error, "你这点能力怎能继承我的衣钵？\n"} =
+               SectMaster.recruit_gate?(nil, low_exp, chi_gate())
+    end
+
+    test "inquiry_grant：lpc_masterd 顺序先神、再贡献、再技能等级" do
+      config = %{
+        "perform_id" => "tiexian-quan/jia",
+        "skill" => "tiexian-quan",
+        "gate_order" => "lpc_masterd",
+        "min_levels" => %{"tiexian-quan" => 60, "force" => 80},
+        "min_gongxian" => 100,
+        "cost_gongxian" => 100,
+        "max_shen" => -60_000,
+        "max_shen_deny" => "哼！像你这样的心慈手软之辈，又能干成什么大事？\n",
+        "gongxian_deny" => "你为绝情谷作出的贡献不够，这招暂时还不能传你。\n",
+        "level_deny" => %{
+          "tiexian-quan" => "你对铁线拳的了解还不够，尚且无法领悟此招。\n",
+          "force" => "你目前的内功火候不足，下去练练再来吧。\n"
+        }
+      }
+
+      npc = %{family: "绝情谷"}
+
+      # 神/贡献/技能三项同时不满足 → 先报负神文案（缺省顺序会先报技能）
+      bad = jueqing_player(%{shen: 0, skills: %{}, gongxian: 0})
+
+      assert {:error, "哼！像你这样的心慈手软之辈，又能干成什么大事？\n"} =
+               SectMaster.inquiry_grant(bad, npc, config)
+
+      no_gx = jueqing_player(%{gongxian: 0})
+
+      assert {:error, "你为绝情谷作出的贡献不够，这招暂时还不能传你。\n"} =
+               SectMaster.inquiry_grant(no_gx, npc, config)
+
+      low_skill = jueqing_player(%{gongxian: 100, skills: %{"tiexian-quan" => 50, "force" => 100}})
+
+      assert {:error, "你对铁线拳的了解还不够，尚且无法领悟此招。\n"} =
+               SectMaster.inquiry_grant(low_skill, npc, config)
+
+      ok = jueqing_player(%{gongxian: 100})
+      assert {:ok, "tiexian-quan/jia", 100} = SectMaster.inquiry_grant(ok, npc, config)
+    end
+
+    test "inquiry_grant：lpc_masterd 顺序同门先于已学会" do
+      config = %{
+        "perform_id" => "tiexian-quan/jia",
+        "skill" => "tiexian-quan",
+        "gate_order" => "lpc_masterd",
+        "family_deny" => "大侠与我绝情谷素无渊源，不知此话从何说起。\n",
+        "maxed" => "这招你不是已经会了么，还缠着我做甚？\n"
+      }
+
+      outsider =
+        jueqing_player(%{
+          family: "丐帮",
+          performs: MapSet.new(["tiexian-quan/jia"])
+        })
+
+      assert {:error, "大侠与我绝情谷素无渊源，不知此话从何说起。\n"} =
+               SectMaster.inquiry_grant(outsider, %{family: "绝情谷"}, config)
+    end
+  end
 end

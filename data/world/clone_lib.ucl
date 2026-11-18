@@ -21172,6 +21172,249 @@ chats = [
   ]
 
 
+  teach = {
+    family = "绝情谷"
+    teach_skills = {
+      force = {
+        max = 260
+        gongxian = 0
+      }
+      tiezhang_xinfa = {
+        max = 260
+        gongxian = 0
+      }
+      jueqing_xinfa = {
+        max = 260
+        gongxian = 0
+      }
+      tianlei_shengong = {
+        max = 260
+        gongxian = 0
+      }
+      dodge = {
+        max = 260
+        gongxian = 0
+      }
+      jueqing_shenfa = {
+        max = 260
+        gongxian = 0
+      }
+      dengping_dushui = {
+        max = 260
+        gongxian = 0
+      }
+      strike = {
+        max = 260
+        gongxian = 0
+      }
+      jueqing_zhang = {
+        max = 260
+        gongxian = 0
+      }
+      guhong_zhang = {
+        max = 260
+        gongxian = 0
+      }
+      parry = {
+        max = 260
+        gongxian = 0
+      }
+      tie_zhang = {
+        max = 260
+        gongxian = 0
+      }
+      chuanxin_zhang = {
+        max = 260
+        gongxian = 0
+      }
+      cuff = {
+        max = 260
+        gongxian = 0
+      }
+      tiexian_quan = {
+        max = 260
+        gongxian = 0
+      }
+      sword = {
+        max = 240
+        gongxian = 0
+      }
+      jueqing_jian = {
+        max = 240
+        gongxian = 0
+      }
+      unarmed = {
+        max = 240
+        gongxian = 0
+      }
+      feilong_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      staff = {
+        max = 240
+        gongxian = 0
+      }
+      literate = {
+        max = 160
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 220
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "绝情谷"
+    permit_recruit = true
+    reject_master_name = "公孙止"
+    reject_master_name_deny = "我裘千尺可不收公孙止那恶贼的徒弟。"
+    no_min_shen = true
+    max_shen = -60000
+    max_shen_deny = "我裘千尺可不收心慈手软的人做徒弟。"
+    min_exp = 400000
+    min_exp_deny = "你这点能力怎能继承我的衣钵？"
+    min_skills = {
+      force = 140
+      strike = 80
+    }
+    min_skills_deny = {
+      force = "要学我的铁掌绝技，内功非精纯不可，你还是先多练练吧。"
+      strike = "要学我的铁掌绝技，需要精湛的掌法作基础，我看你在那上面下的工夫还不够啊。"
+    }
+    rename_surname_from = "公孙"
+    rename_surname_to = "裘"
+    accept_msg = "不错，不错！\n我就收下你了，希望你苦练铁掌神功，将之发扬光大。\n公孙止那老家伙不是个东西，你以后还是跟你娘亲姓为好。\n从今以后你就叫作%new_name%吧。"
+  }
+
+  inquiries = [
+    { key = "破甲推山" value = {
+      kind = "sect_master_grant"
+      perform_id = "tiexian-quan/jia"
+      skill = "tiexian-quan"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        tiexian_quan = 60
+        force = 80
+      }
+      min_gongxian = 100
+      cost_gongxian = 100
+      max_shen = -60000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁线拳都未曾学过，何谈绝招可言？"
+      level_deny = {
+        tiexian_quan = "你对铁线拳的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「破甲推山」。\n"
+    } },
+    { key = "龙飞势" value = {
+      kind = "sect_master_grant"
+      perform_id = "feilong-zhang/fei"
+      skill = "feilong-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        feilong_zhang = 150
+        force = 120
+      }
+      min_gongxian = 300
+      cost_gongxian = 300
+      max_shen = -60000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连飞龙掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        feilong_zhang = "你对飞龙掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「龙飞势」。\n"
+    } },
+    { key = "穿心锥" value = {
+      kind = "sect_master_grant"
+      perform_id = "chuanxin-zhang/zhui"
+      skill = "chuanxin-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        chuanxin_zhang = 80
+        force = 140
+      }
+      min_gongxian = 220
+      cost_gongxian = 220
+      max_shen = -70000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连穿心掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        chuanxin_zhang = "你对穿心掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「穿心锥」。\n"
+    } },
+    { key = "无影掌" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/ying"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        tie_zhang = 100
+        force = 160
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -85000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "$N点了点头，在$n耳边轻声嘀咕了几句，忽然又拉开架势，双掌急速运转，掌影虚虚实实，一掌毫无章理的拍出。招式精奇，直看得$n目瞪口呆。"
+      learned = "你学会了「无影掌」。\n"
+    } },
+    { key = "掌心雷" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/lei"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        tie_zhang = 120
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -950000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "$N投以$n赞许的一笑，说道：“看好了！”随即只见$N猛催内力，双掌登时变得火红，趁$n惊诧之际双掌幻为一对掌刀凌空劈斩而出，只听「喀嚓」一声，一块大石应声而碎！"
+      learned = "你学会了「掌心雷」。\n"
+    } },
+    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #747)" },
+    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #747)" },
+    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #747)" }
+  ]
+
   carry = [
     { id = items.cloth.id }
   ]
@@ -21229,6 +21472,296 @@ chats = [
     { type = "parry" skill = "poshui-zhang" }
   ]
 
+
+  teach = {
+    family = "绝情谷"
+    teach_skills = {
+      force = {
+        max = 180
+        gongxian = 0
+      }
+      jueqing_xinfa = {
+        max = 180
+        gongxian = 0
+      }
+      dodge = {
+        max = 180
+        gongxian = 0
+      }
+      jueqing_shenfa = {
+        max = 180
+        gongxian = 0
+      }
+      staff = {
+        max = 180
+        gongxian = 0
+      }
+      poshui_zhang = {
+        max = 180
+        gongxian = 0
+      }
+      strike = {
+        max = 180
+        gongxian = 0
+      }
+      cuff = {
+        max = 160
+        gongxian = 0
+      }
+      guhong_zhang = {
+        max = 180
+        gongxian = 0
+      }
+      pokong_quan = {
+        max = 160
+        gongxian = 0
+      }
+      jueqing_zhang = {
+        max = 160
+        gongxian = 0
+      }
+      sword = {
+        max = 160
+        gongxian = 0
+      }
+      jueqing_jian = {
+        max = 160
+        gongxian = 0
+      }
+      guxing_jian = {
+        max = 160
+        gongxian = 0
+      }
+      blade = {
+        max = 160
+        gongxian = 0
+      }
+      tianjue_dao = {
+        max = 160
+        gongxian = 0
+      }
+      luoyun_dao = {
+        max = 160
+        gongxian = 0
+      }
+      parry = {
+        max = 180
+        gongxian = 0
+      }
+      literate = {
+        max = 160
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 160
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "绝情谷"
+    permit_recruit = true
+    max_shen = 0
+    no_min_shen = true
+    max_shen_deny = "我绝情谷向来不和你们这些正道人士交往。\n你还是请回吧！"
+    accept_msg = "今日我就暂且收下你，日后定须刻苦练武。"
+  }
+
+  inquiries = [
+    { key = "流水无情" value = {
+      kind = "sect_master_grant"
+      perform_id = "jueqing-jian/liu"
+      skill = "jueqing-jian"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        jueqing_jian = 60
+        force = 60
+      }
+      min_gongxian = 80
+      cost_gongxian = 80
+      max_shen = -4000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连绝情剑法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        jueqing_jian = "你对绝情剑法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「流水无情」。\n"
+    } },
+    { key = "天绝锁" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianjue-dao/suo"
+      skill = "tianjue-dao"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        tianjue_dao = 40
+      }
+      min_gongxian = 100
+      cost_gongxian = 100
+      max_shen = -4000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连天绝刀法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        tianjue_dao = "你对天绝刀法的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「天绝锁」。\n"
+    } },
+    { key = "破碎虚空" value = {
+      kind = "sect_master_grant"
+      perform_id = "pokong-quan/kong"
+      skill = "pokong-quan"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        pokong_quan = 50
+        force = 70
+      }
+      min_gongxian = 100
+      cost_gongxian = 100
+      max_shen = -4000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连破空拳都未曾学过，何谈绝招可言？"
+      level_deny = {
+        pokong_quan = "你对破空拳的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「破碎虚空」。\n"
+    } },
+    { key = "万念惧灰" value = {
+      kind = "sect_master_grant"
+      perform_id = "jueqing-zhang/wan"
+      skill = "jueqing-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        jueqing_zhang = 100
+        dodge = 80
+      }
+      min_gongxian = 120
+      cost_gongxian = 120
+      max_shen = -8000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连绝情掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        jueqing_zhang = "你对绝情掌的了解还不够，尚且无法领悟此招。"
+        dodge = "你目前的轻功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "樊一翁点了点头，忽然一声长啸，声音震耳欲聋，悲痛欲绝，顿感万念俱灰，猛然间双掌疯狂般的拍向长空，看似杂乱无章，但内中却隐藏无限杀机。你看得心中不由地赞叹。"
+      learned = "你学会了「万念惧灰」。\n"
+    } },
+    { key = "九星连珠" value = {
+      kind = "sect_master_grant"
+      perform_id = "guxing-jian/lian"
+      skill = "guxing-jian"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        guxing_jian = 80
+        force = 60
+      }
+      min_gongxian = 180
+      cost_gongxian = 180
+      max_shen = -12000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连孤星剑法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        guxing_jian = "你对孤星剑法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「九星连珠」。\n"
+    } },
+    { key = "天刀落云式" value = {
+      kind = "sect_master_grant"
+      perform_id = "luoyun-dao/tian"
+      skill = "luoyun-dao"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        luoyun_dao = 80
+        force = 60
+      }
+      min_gongxian = 180
+      cost_gongxian = 180
+      max_shen = -12000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连luoyun-dao都未曾学过，何谈绝招可言？"
+      level_deny = {
+        luoyun_dao = "你对luoyun-dao的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「天刀落云式」。\n"
+    } },
+    { key = "千山孤鸿影" value = {
+      kind = "sect_master_grant"
+      perform_id = "guhong-zhang/qian"
+      skill = "guhong-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        guhong_zhang = 80
+        force = 100
+      }
+      min_gongxian = 220
+      cost_gongxian = 220
+      max_shen = -12000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连孤鸿掌法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        guhong_zhang = "你对孤鸿掌法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "樊一翁略微点了点头，说道：“你可看清楚了。”说罢双掌陡然连续拍出，刚中带柔，双掌带风，已你笼罩在掌风之中，你呆立当场却也不敢妄动。"
+      learned = "你学会了「千山孤鸿影」。\n"
+    } },
+    { key = "泰山压顶" value = {
+      kind = "sect_master_grant"
+      perform_id = "poshui-zhang/tai"
+      skill = "poshui-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        poshui_zhang = 120
+        force = 160
+      }
+      min_gongxian = 300
+      cost_gongxian = 300
+      max_shen = -18000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连破水杖法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        poshui_zhang = "你对破水杖法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「泰山压顶」。\n"
+    } }
+  ]
 
   carry = [
     { id = items.cloth.id },
@@ -21295,6 +21828,356 @@ chats = [
     { type = "parry" skill = "jueqing-yaoli" }
   ]
 
+
+  teach = {
+    family = "绝情谷"
+    teach_skills = {
+      force = {
+        max = 240
+        gongxian = 0
+      }
+      jueqing_xinfa = {
+        max = 240
+        gongxian = 0
+      }
+      fenxin_jue = {
+        max = 240
+        gongxian = 0
+      }
+      dodge = {
+        max = 240
+        gongxian = 0
+      }
+      jueqing_shenfa = {
+        max = 240
+        gongxian = 0
+      }
+      strike = {
+        max = 240
+        gongxian = 0
+      }
+      jueqing_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      guhong_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      cuff = {
+        max = 240
+        gongxian = 0
+      }
+      pokong_quan = {
+        max = 240
+        gongxian = 0
+      }
+      medical = {
+        max = 240
+        gongxian = 0
+      }
+      jueqing_yaoli = {
+        max = 240
+        gongxian = 0
+      }
+      sword = {
+        max = 260
+        gongxian = 0
+      }
+      yinyang_ren = {
+        max = 260
+        gongxian = 0
+      }
+      zilei_jian = {
+        max = 260
+        gongxian = 0
+      }
+      guxing_jian = {
+        max = 260
+        gongxian = 0
+      }
+      blade = {
+        max = 260
+        gongxian = 0
+      }
+      tianjue_dao = {
+        max = 260
+        gongxian = 0
+      }
+      luoyun_dao = {
+        max = 260
+        gongxian = 0
+      }
+      poguang_dao = {
+        max = 260
+        gongxian = 0
+      }
+      parry = {
+        max = 240
+        gongxian = 0
+      }
+      literate = {
+        max = 240
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 220
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "绝情谷"
+    permit_recruit = true
+    reject_master_name = "裘千尺"
+    reject_master_name_deny = "我公孙止可不收裘千尺那恶妇的徒弟。"
+    no_min_shen = true
+    max_shen = -30000
+    max_shen_deny = "我公孙止最看不惯你们这些正道人士。\n你还是请回吧！"
+    min_exp = 300000
+    min_exp_deny = "你现在经验尚浅，还是多在江湖上走走吧。"
+    min_skills = {
+      jueqing_xinfa = 120
+      dodge = 180
+    }
+    min_skills_deny = {
+      jueqing_xinfa = "我绝情谷武功讲究心神合一，最重视基本心法。\n你的绝情心法还不够熟练，下去练练再来吧。"
+      dodge = "我绝情谷武功需配合灵动的身法。\n你是否还应该在轻功修为上多下点功夫？"
+    }
+    accept_msg = "念你还是个可造之才，今日我就收下你吧。"
+  }
+
+  inquiries = [
+    { key = "落雷式" value = {
+      kind = "sect_master_grant"
+      perform_id = "zilei-jian/luo"
+      skill = "zilei-jian"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        zilei_jian = 100
+        force = 120
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -60000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连紫雷剑法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        zilei_jian = "你对紫雷剑法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「落雷式」。\n"
+    } },
+    { key = "狂风式" value = {
+      kind = "sect_master_grant"
+      perform_id = "zilei-jian/feng"
+      skill = "zilei-jian"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        zilei_jian = 100
+        dodge = 140
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -45000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连紫雷剑法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        zilei_jian = "你对紫雷剑法的了解还不够，尚且无法领悟此招。"
+        dodge = "你目前的轻功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「狂风式」。\n"
+    } },
+    { key = "破阳刀" value = {
+      kind = "sect_master_grant"
+      perform_id = "poguang-dao/yang"
+      skill = "poguang-dao"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        poguang_dao = 100
+        force = 120
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -60000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连破光刀法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        poguang_dao = "你对破光刀法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「破阳刀」。\n"
+    } },
+    { key = "寒冰环" value = {
+      kind = "sect_master_grant"
+      perform_id = "poguang-dao/bing"
+      skill = "poguang-dao"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        poguang_dao = 100
+        force = 140
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -45000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连破光刀法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        poguang_dao = "你对破光刀法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「寒冰环」。\n"
+    } },
+    { key = "魂飞魄散" value = {
+      kind = "sect_master_grant"
+      perform_id = "jueqing-zhang/hun"
+      skill = "jueqing-zhang"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        jueqing_zhang = 120
+        force = 160
+      }
+      min_gongxian = 500
+      cost_gongxian = 500
+      max_shen = -92000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连绝情掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        jueqing_zhang = "你对绝情掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "公孙止点了点头，说道：“好，我给你演示一遍，你看清楚了。”说完公孙止运转真气，将内力注于掌风之中，双掌猛然拍向虚空，掌风凌厉无比，气势凌人，直可惊天地，泣鬼神。"
+      learned = "你学会了「魂飞魄散」。\n"
+    } },
+    { key = "日月无华" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinyang-ren/hua"
+      skill = "yinyang-ren"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        yinyang_ren = 160
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -35000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连阴阳刃都未曾学过，何谈绝招可言？"
+      level_deny = {
+        yinyang_ren = "你对阴阳刃的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「日月无华」。\n"
+    } },
+    { key = "横空出世" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinyang-ren/heng"
+      skill = "yinyang-ren"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        yinyang_ren = 180
+        dodge = 180
+        force = 180
+      }
+      min_gongxian = 700
+      cost_gongxian = 700
+      max_shen = -100000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连阴阳刃都未曾学过，何谈绝招可言？"
+      level_deny = {
+        yinyang_ren = "你对阴阳刃的了解还不够，尚且无法领悟此招。"
+        dodge = "你目前的轻功火候不足，下去练练再来吧。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「横空出世」。\n"
+    } },
+    { key = "阴阳环" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinyang-ren/huan"
+      skill = "yinyang-ren"
+      gate_order = "lpc_masterd"
+      min_levels = {
+        yinyang_ren = 180
+        dodge = 200
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -120000
+      family = "绝情谷"
+      family_deny = "大侠与我绝情谷素无渊源，不知此话从何说起。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为绝情谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连阴阳刃都未曾学过，何谈绝招可言？"
+      level_deny = {
+        yinyang_ren = "你对阴阳刃的了解还不够，尚且无法领悟此招。"
+        dodge = "你目前的轻功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「阴阳环」。\n"
+    } },
+    { key = "黑剑" value = {
+      kind = "give_item"
+      item = "clone_lib:heijian"
+      match = "heijian"
+      unique = false
+      family = "绝情谷"
+      master_id = true
+      min_skill_levels = {
+        yinyang_ren = 150
+      }
+      max_shen = -46000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，就算拿着黑剑也是无用。"
+      min_skill_deny = "你的阴阳刃火候未到，拿了也是无用。"
+      master_deny = "只有我的弟子才配使用这个，你还是走吧。"
+      success = "既然这样，那这柄黑剑你就暂时拿去吧。"
+    } },
+    { key = "黄金锯齿刀" value = {
+      kind = "give_item"
+      item = "clone_lib:juchidao"
+      match = "juchidao"
+      unique = false
+      family = "绝情谷"
+      master_id = true
+      min_skill_levels = {
+        yinyang_ren = 180
+      }
+      max_shen = -50000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，就算拿着黄金锯齿刀也是无用。"
+      min_skill_deny = "你的阴阳刃火候未到，拿了也是无用。"
+      master_deny = "只有我的弟子才配使用这个，你还是走吧。"
+      success = "既然这样，那这把黄金锯齿刀你就暂时拿去吧。"
+    } },
+    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #747)" },
+    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #747)" },
+    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #747)" }
+  ]
 
   carry = [
     { id = items.cloth.id }

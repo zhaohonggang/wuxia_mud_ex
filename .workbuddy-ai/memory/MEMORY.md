@@ -17,7 +17,7 @@
 - `MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=_build_win13`；`ERL_LIBS=_build_win13/lib`；`MIX_ENV=test`
 - `mix compile` / `mix test --seed 831693`（全量约 9-10 min，建议后台重定向日志）
 - 基线：~7830 tests / 27 failures（全为 `bcrypt_elixir` NIF 环境性，引擎/命令/技能/世界测试 0 失败）
-- 最新全量回归：7941 tests / 27 failures，0 新增回归（2026-11-18）
+- 最新全量回归：7960 tests / 27 failures，0 新增回归（2026-11-18，绝情谷批次）
 
 ## 关键约定 / 坑
 - 路由：`parse/2` 裸路由只产 `%{"command"=>...}`；带参命令需 `optional(spaces() |> text(:rest|:target|:category))`。
@@ -31,6 +31,7 @@
 - UCL 不能有单独一行的 `#`（空注释）。
 - UCL 块内赋值必须**换行分隔、不能写逗号**：`teach_skills = { force = { max = 30 gongxian = 2 } }` 会报 `syntax error before: ","`；正确写法是 max/gongxian 各占一行且赋值间无逗号（仅数组元素 `[ {...}, {...} ]` 用逗号）。
 - **UCL 数组最后一项不能带尾逗号**（`{ ... }, ]` → `syntax error before: ']'`）；插入新元素到原末项之后时必须先给原末项补逗号，同时删掉新末项的尾逗号。跨字段（如 inquiries/skills）边界的 `]` 由 `first line whose strip()==']'` 定位，插入点务必落在**原末项行之后、']' 之前**。
+- **UCL 标识符不能含数字**：`msg1 = "..."` 报 `syntax error before: '"1"'`；改用 `msg_one`（handler 双读 `msg_one`/`msg1`）。
 - **loader `parse_teach/1` 只读 character 的 `:teach` map**（loader.ex:607/1098）：character 层直接写 `teach_skills = {...}`（裸键）会被**静默丢弃**，必须包成 `teach = { family = "..." teach_skills = {...} no_teach = [...] }`。新增教学数据一律用 wrapper 格式。
 - 编辑被 `git checkout` 丢失时，可从 session transcript jsonl（`C:\Users\honggang\.workbuddy-ai\projects\c-files-git-wuxia_mud_ex\*.jsonl`）的 `function_call` 记录 `arguments` JSON 字段精确还原 old/new_string（bottom-up slice replacement + 单块 anchor count==1 断言，避免全局脚本误伤）。
 - `is_player?/1` 认 `"player:"` 前缀；`receive_damage` 别传 killer。
@@ -59,6 +60,10 @@
 - Task #736：`SectMaster.inquiry_grant/3` 新增 `min_dex` 门控 + `dex_deny` 文案（对应 hufei.c ask_skill5 飞天神行 dex>=33），4 例新测；sect_master_test 100/0。
 - Task #737 关外胡家（hu）3 NPC UCL 回填：程灵素 4 skills（recognize_apprentice 限制）、胡斐 20 skills + apprentice(permit_recruit) + 12 grants（ask_skill1..11，风卷霹雳双键，飞天神行含 min_dex=33/min_max_neili=1000）、胡逸之 14 skills + 横扫千军 grant（accept_ask→teach_pfm，cost=600）。4 个物品问询保留 unimplemented。定向 159/0。
 - **已报告缺口**：#738 `recognize_apprentice` 按技能授课门控（cheng.c）；#739 `no_teach` 闭包解锁 `can_learn/hufei/*`（hufei.c 三技能 combat_exp 100000/400000/50000）。迁移计划见 `docs/关外胡家教学门控移植计划.zh-CN.md`。严禁简化。
+- Task #740 华山派 8 NPC UCL 回填（成不忧/丛不弃/风清扬/封不平/劳德诺/令狐冲/岳不群/岳夫人）：新增剑宗上限门控 `max_skill_levels`/`max_neili_cap`（顺序先于 min_levels）、收徒三类自定义拒绝文案、`no_teach` map → `no_teach_deny`、`sect_master_teach_skill` 直授 handler、`sect_master_unlock_perform` 破式 handler（潜能 10/random(2)/learned_points）、`GiveItem.min_shen` + 技能键双解析。定向 168/0，全量 7954/27（0 新增）。计划见 `docs/华山派教学门控移植计划.zh-CN.md`。
+- **已报告缺口（华山）**：#741 `recognize_apprentice` 按技能门控（feng.c/linghu.c）；#742 `no_teach_deny` 消费端（skills_event.teach/2）；#743 独孤九剑按武器类型破式数组（当前单 perform_id 代理）；#744 `QUEST_D` 历练问询 + `apprentice_available` 收徒上限。严禁简化。
+- Task #745 绝情谷 3 NPC UCL 回填（裘千尺/樊一翁/公孙止）：22/20/23 teach skills、5/8/8 grants、公孙止 2 give_item；新增 `reject_master_name` 仇家师父门控、`no_min_shen`（负神上界门派不可套用缺省 min_shen=0）、`min_exp_deny`、`gate_order="lpc_masterd"`（masterd 原顺序）、`level_deny` 逐技能 map、`msg_one` 房间演示文案（UCL 标识符不能含数字，`msg1` 会语法错）、按姓改名（公孙→裘）+ NAME_D。定向 174/0，全量 7960/27（0 新增）。计划见 `docs/绝情谷教学门控移植计划.zh-CN.md`。
+- **已报告缺口（绝情谷）**：#747 QUEST_D 历练问询（与 #744 同类）；#748 masterd `maxed` random(4) + `msg2` random(5) 文案；#749 樊一翁 coagents 助战数据。严禁简化。
 
 ## 待办（当前）
 任务列表为唯一权威状态入口（TaskList，732 项，634 completed / 98 pending）。主要待开始类项：
