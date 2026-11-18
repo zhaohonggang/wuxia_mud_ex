@@ -369,6 +369,44 @@ defmodule Kantele.SectMasterTest do
              Kantele.SectMaster.inquiry_grant(player, %{}, neili_config())
   end
 
+  # ---- min_dex 身法门槛（hu/hufei.c ask_skill5「飞天神行」query_dex() < 33） ----
+
+  defp dex_config(overrides \\ %{}) do
+    Map.merge(Map.put(neili_config(), "min_dex", 33), overrides)
+  end
+
+  defp dex_player(overrides \\ %{}) do
+    neili_player(Map.merge(%{dex: 33, max_neili: 3600}, overrides))
+  end
+
+  test "inquiry_grant/3：min_dex 达标（LPC dex >= 33）" do
+    assert {:ok, "guzhuo-zhang/zhuo", 600} =
+             Kantele.SectMaster.inquiry_grant(dex_player(), %{}, dex_config())
+  end
+
+  test "inquiry_grant/3：min_dex 不足即拒（hufei.c ask_skill5 身法分支）" do
+    assert {:error, "你的身法太差，还需多加练习。\n"} =
+             Kantele.SectMaster.inquiry_grant(dex_player(%{dex: 32}), %{}, dex_config())
+  end
+
+  test "inquiry_grant/3：缺 min_dex 键不拦（老配置不受影响）" do
+    assert {:ok, "guzhuo-zhang/zhuo", 600} =
+             Kantele.SectMaster.inquiry_grant(
+               dex_player(%{dex: 0}),
+               %{},
+               Map.delete(dex_config(), "min_dex")
+             )
+  end
+
+  test "inquiry_grant/3：dex_deny 覆盖身法不足缺省文案" do
+    assert {:error, "身法不行，练好轻功再来。"} =
+             Kantele.SectMaster.inquiry_grant(
+               dex_player(%{dex: 20}),
+               %{},
+               dex_config(%{"dex_deny" => "身法不行，练好轻功再来。"})
+             )
+  end
+
   test "inquiry_grant/3：*_deny 键逐条覆盖通用文案（门派问询每招文案不同）" do
     config =
       neili_config(%{

@@ -392,10 +392,12 @@ defmodule Kantele.SectMaster do
     - `"cost_gongxian"` 授予后扣除的贡献（400）
     - `"min_max_neili"` 内力上限门槛（LPC `query("max_neili") < N` 即拒）；
       玩家侧 `max_neili` 由调用方从 `meta.vitals` 并入 stats map 后传入
+    - `"min_dex"` 身法门槛（LPC `query_dex() < N` 即拒，如 hu/hufei.c ask_skill5
+      「飞天神行」要求 dex >= 33）；玩家侧 `dex` 取自 `meta.stats.dex`
 
   各门槛的拒绝文案可用同名 `*_deny` 键覆盖（`maxed` / `family_deny` /
   `skill_deny` / `max_shen_deny` / `gongxian_deny` / `shen_deny` /
-  `level_deny` / `max_neili_deny` / `perform_deny`），缺省用通用文案。
+  `level_deny` / `max_neili_deny` / `dex_deny` / `perform_deny`），缺省用通用文案。
   门派问询的 LPC 文案每招每NPC 都不同（如血刀门「再罗嗦我宰了你」），
   故按配置回填而不是写死在引擎里。
 
@@ -446,8 +448,20 @@ defmodule Kantele.SectMaster do
       below_max_neili?(player, config) ->
         {:error, deny(config, "max_neili_deny", "你的内力修为不够，学不成这招。\n")}
 
+      below_min_dex?(player, config) ->
+        {:error, deny(config, "dex_deny", "你的身法太差，还需多加练习。\n")}
+
       true ->
         {:ok, perform_id, cost}
+    end
+  end
+
+  # LPC `query_dex() < N`：缺 key 不拦（老配置零影响）。
+  # LPC hu/hufei.c ask_skill5 原文：「你的身法太差，还需多加练习。」
+  defp below_min_dex?(player, config) do
+    case Map.get(config, "min_dex") do
+      min when is_integer(min) -> stat(player, :dex) < min
+      _ -> false
     end
   end
 

@@ -30,6 +30,9 @@
 - 物品缓存 key 是 `<zone>:<key>`；动态生成的 `Item.Instance` 要用完整 key。
 - UCL 不能有单独一行的 `#`（空注释）。
 - UCL 块内赋值必须**换行分隔、不能写逗号**：`teach_skills = { force = { max = 30 gongxian = 2 } }` 会报 `syntax error before: ","`；正确写法是 max/gongxian 各占一行且赋值间无逗号（仅数组元素 `[ {...}, {...} ]` 用逗号）。
+- **UCL 数组最后一项不能带尾逗号**（`{ ... }, ]` → `syntax error before: ']'`）；插入新元素到原末项之后时必须先给原末项补逗号，同时删掉新末项的尾逗号。跨字段（如 inquiries/skills）边界的 `]` 由 `first line whose strip()==']'` 定位，插入点务必落在**原末项行之后、']' 之前**。
+- **loader `parse_teach/1` 只读 character 的 `:teach` map**（loader.ex:607/1098）：character 层直接写 `teach_skills = {...}`（裸键）会被**静默丢弃**，必须包成 `teach = { family = "..." teach_skills = {...} no_teach = [...] }`。新增教学数据一律用 wrapper 格式。
+- 编辑被 `git checkout` 丢失时，可从 session transcript jsonl（`C:\Users\honggang\.workbuddy-ai\projects\c-files-git-wuxia_mud_ex\*.jsonl`）的 `function_call` 记录 `arguments` JSON 字段精确还原 old/new_string（bottom-up slice replacement + 单块 anchor count==1 断言，避免全局脚本误伤）。
 - `is_player?/1` 认 `"player:"` 前缀；`receive_damage` 别传 killer。
 - `zone.items` 缺 `:items` key 时抛 KeyError；改用 `Map.get(zone, :items, %{})`。
 - `IO.write` 在 Windows 下对中文抛 `:no_translation`；改用 `File.write!/2` 追加。
@@ -52,13 +55,17 @@
 - 少林达摩剑四绝 + PFM 六绝/三绝授予（纯 UCL 数据迁移，无引擎改动）。
 - #543 严格 LPC 狩猎掉落（commit 148390c8）：hunting.ex 概率门控 + Corpse 直接给击杀者背包；hunting_test 23 例全绿；corpse-drop doc §2.4 已改为 direct-to-killer。
 - #724-729 定向测试 + 全量回归 + commit/push：7941 tests / 27 failures，0 新增回归。
+- Task #619 丐帮/古墓派/红花会 UCL 教学数据回填：丐帮 c073fc77、古墓派 1a14da4c、红花会 b7bfc2df（chang1/chang2/江/陆菲青/骆冰/石双英/文泰来/杨成协/余鱼同/赵半山 10 NPC）。另 01ce2c60 修复 gaibang/gumu 11 个裸 teach_skills 未包 wrapper（loader 丢弃）的问题。验证 155/0 定向 + 7941/27 全量（0 新增），均已推送。
+- Task #736：`SectMaster.inquiry_grant/3` 新增 `min_dex` 门控 + `dex_deny` 文案（对应 hufei.c ask_skill5 飞天神行 dex>=33），4 例新测；sect_master_test 100/0。
+- Task #737 关外胡家（hu）3 NPC UCL 回填：程灵素 4 skills（recognize_apprentice 限制）、胡斐 20 skills + apprentice(permit_recruit) + 12 grants（ask_skill1..11，风卷霹雳双键，飞天神行含 min_dex=33/min_max_neili=1000）、胡逸之 14 skills + 横扫千军 grant（accept_ask→teach_pfm，cost=600）。4 个物品问询保留 unimplemented。定向 159/0。
+- **已报告缺口**：#738 `recognize_apprentice` 按技能授课门控（cheng.c）；#739 `no_teach` 闭包解锁 `can_learn/hufei/*`（hufei.c 三技能 combat_exp 100000/400000/50000）。迁移计划见 `docs/关外胡家教学门控移植计划.zh-CN.md`。严禁简化。
 
 ## 待办（当前）
 任务列表为唯一权威状态入口（TaskList，732 项，634 completed / 98 pending）。主要待开始类项：
 
 - **Task #1**：提交 P0 产物（R1 阻塞项）：5 个只读脚本 + 4 份文档入 git，确保工作树干净。工作树已 clean（commit 148390c8），仅 `.workbuddy-ai/memory/2026-11-18.md` 为未跟踪待提交工作日志。
 - **Task #544-561**：衡阳猎人教学链（hunting 技能可学、玩家尸体、三段腐烂、生肉不可吃、烤熟闭环、测试、文档）。代码已全部落地，定向测试 62/0 全绿，全量回归 0 新增回归。需同步文档/记忆并闭环标记。
-- **Task #611-619**：新手可拜师门派文档 + UCL teaching data backfill（gaibang_hong 洪七公 + gaibang_ada/白世镜/黎生/鲁有脚/马大元/彭有敬/全冠清/吴长风/奚长老 共 9 个丐帮 NPC 完成；gaibang_jian 仅 青竹令 升袋交互非技能授予保留；gaibang_li 的 2 个绝招已对齐。其余门派 NPC 待回填）。
+- **Task #611-619**：新手可拜师门派文档 + UCL teaching data backfill（gaibang_hong 洪七公 + gaibang_ada/白世镜/黎生/鲁有脚/马大元/彭有敬/全冠清/吴长风/奚长老 共 9 个丐帮 NPC 完成，commit c073fc77；gaibang_jian 仅 青竹令 升袋交互非技能授予保留；gaibang_li 的 2 个绝招已对齐。gumu 古墓派 4 个 NPC 完成：gumu_li 李莫愁（apprentice+7 sect_master_grant+teach_skills，commit 1a14da4c）、gumu_lin 林朝英（apprentice+3 sect_master_grant+teach_skills）、gumu_longnv 小龙女（apprentice+5 sect_master_grant+teach_skills，玉蜂针保留unimplemented）、gumu_yang 杨过（apprentice+4 sect_master_grant cost_gongxian=0+teach_skills）。其余门派 NPC 待回填）。UCL 块内赋值不可用逗号：min_skills = { force = 160, strike = 120 } 报 syntax error，需改为多行块形式。
 - **Task #620-624**：少林派剃度机制移植计划 + audits（部分已完结）。
 - **Task #703-721**：遗留保真度差异修复（部分已完结，见 TaskList #722-723）。
 

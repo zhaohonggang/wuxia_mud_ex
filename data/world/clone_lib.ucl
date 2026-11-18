@@ -18887,6 +18887,30 @@ chats = [
   ]
 
 
+  # LPC recognize_apprentice: 仅传 poison/dispel-poison/medical/yaowang-miaoshu，
+  # 且须 family=关外胡家、shen>=0；当前引擎无 recognize_apprentice 门控（GAP #738）。
+  teach = {
+    family = "关外胡家"
+    teach_skills = {
+      poison = {
+        max = 270
+        gongxian = 0
+      }
+      dispel_poison = {
+        max = 270
+        gongxian = 0
+      }
+      medical = {
+        max = 270
+        gongxian = 0
+      }
+      yaowang_miaoshu = {
+        max = 270
+        gongxian = 0
+      }
+    }
+  }
+
   carry = [
     { id = items.cloth.id }
   ]
@@ -18918,32 +18942,302 @@ chats = [
   }
 
   inquiries = [
-    { key = "乌龙探海" value = " inquire about skill3 (unimplemented)" },
-    { key = "作茧自缚" value = " inquire about skill4 (unimplemented)" },
-    { key = "八方藏刀势" value = " inquire about skill11 (unimplemented)" },
+    { key = "风卷霹雳" value = {
+      kind = "sect_master_grant"
+      perform_id = "hua-quan/juan"
+      skill = "hua-quan"
+      min_levels = {
+        force = 180
+        hua_quan = 120
+      }
+      min_gongxian = 350
+      min_shen = 5000
+      cost_gongxian = 350
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连西岳华拳都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        hua_quan = "你的西岳华拳火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「风卷霹雳上九天」。"
+    } },
+    { key = "风卷霹雳上九天" value = {
+      kind = "sect_master_grant"
+      perform_id = "hua-quan/juan"
+      skill = "hua-quan"
+      min_levels = {
+        force = 180
+        hua_quan = 120
+      }
+      min_gongxian = 350
+      min_shen = 5000
+      cost_gongxian = 350
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连西岳华拳都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        hua_quan = "你的西岳华拳火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「风卷霹雳上九天」。"
+    } },
+    { key = "奔拳快打" value = {
+      kind = "sect_master_grant"
+      perform_id = "hujia-quan/kuai"
+      skill = "hujia-quan"
+      min_levels = {
+        force = 100
+        hujia_quan = 80
+      }
+      min_gongxian = 100
+      min_shen = 2000
+      cost_gongxian = 100
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连胡家拳法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        hujia_quan = "你的胡家拳法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「奔拳快打」。"
+    } },
+    { key = "乌龙探海" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuhe-zhang/tan"
+      skill = "liuhe-zhang"
+      min_levels = {
+        force = 100
+        liuhe_zhang = 60
+      }
+      min_gongxian = 50
+      min_shen = 1500
+      cost_gongxian = 50
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连六合掌法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        liuhe_zhang = "你的六合掌法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「乌龙探海」。"
+    } },
+    { key = "作茧自缚" value = {
+      kind = "sect_master_grant"
+      perform_id = "chuncan-zhang/jian"
+      skill = "chuncan-zhang"
+      min_levels = {
+        force = 120
+        chuncan_zhang = 80
+      }
+      min_gongxian = 400
+      min_shen = 5000
+      cost_gongxian = 400
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连春蚕掌法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        chuncan_zhang = "你的春蚕掌法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「作茧自缚」。"
+    } },
+    { key = "飞天神行" value = {
+      kind = "sect_master_grant"
+      perform_id = "sixiang-bufa/fei"
+      skill = "sixiang-bufa"
+      min_levels = {
+        force = 150
+        dodge = 150
+        sixiang_bufa = 150
+      }
+      min_gongxian = 1000
+      min_shen = 12000
+      cost_gongxian = 1000
+      min_max_neili = 1000
+      min_dex = 33
+      dex_deny = "你的身法太差，还需多加练习。"
+      max_neili_deny = "你的内力修为不够，修炼高了再来。"
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连四象步法都未曾学过，还神行什么？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        dodge = "你的基本轻功有待提高，暂时还学不成这招。"
+        sixiang_bufa = "你的四象步法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「飞天神行」。"
+    } },
+    { key = "星光闪烁" value = {
+      kind = "sect_master_grant"
+      perform_id = "mantian-xing/shan"
+      skill = "mantian-xing"
+      min_levels = {
+        force = 100
+        mantian_xing = 100
+      }
+      min_gongxian = 200
+      min_shen = 3000
+      cost_gongxian = 200
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连满天星都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        mantian_xing = "你的满天星火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「星光闪烁」。"
+    } },
+    { key = "雄霸群山" value = {
+      kind = "sect_master_grant"
+      perform_id = "chuangwang-dao/xiong"
+      skill = "chuangwang-dao"
+      min_levels = {
+        force = 60
+        chuangwang_dao = 40
+      }
+      min_gongxian = 50
+      min_shen = 500
+      cost_gongxian = 50
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连闯王刀法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        chuangwang_dao = "你的闯王刀法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「雄霸群山」。"
+    } },
+    { key = "闪刀诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuhe-dao/shan"
+      skill = "liuhe-dao"
+      min_levels = {
+        force = 100
+        liuhe_dao = 80
+      }
+      min_gongxian = 200
+      min_shen = 3500
+      cost_gongxian = 200
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连六合刀法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        liuhe_dao = "你的六合刀法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「闪刀诀」。"
+    } },
+    { key = "推天献印势" value = {
+      kind = "sect_master_grant"
+      perform_id = "hujia-daofa/xian"
+      skill = "hujia-daofa"
+      min_levels = {
+        force = 160
+        hujia_daofa = 120
+      }
+      min_gongxian = 900
+      min_shen = 15000
+      cost_gongxian = 900
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连胡家刀法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        hujia_daofa = "你的胡家刀法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「推天献印势」。"
+    } },
+    { key = "卸甲锥心势" value = {
+      kind = "sect_master_grant"
+      perform_id = "hujia-daofa/zhui"
+      skill = "hujia-daofa"
+      min_levels = {
+        force = 200
+        hujia_daofa = 140
+      }
+      min_gongxian = 1300
+      min_shen = 22000
+      cost_gongxian = 1300
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连胡家刀法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        hujia_daofa = "你的胡家刀法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「卸甲锥心势」。"
+    } },
+    { key = "八方藏刀势" value = {
+      kind = "sect_master_grant"
+      perform_id = "hujia-daofa/cang"
+      skill = "hujia-daofa"
+      min_levels = {
+        force = 250
+        hujia_daofa = 180
+      }
+      min_gongxian = 2200
+      min_shen = 30000
+      cost_gongxian = 2200
+      family = "关外胡家"
+      family_deny = "你又不是俺胡家的，还和我罗嗦什么？"
+      skill_deny = "你连胡家刀法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我胡家碌碌无为，这招我先不忙传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        hujia_daofa = "你的胡家刀法火候未到，还得多练习练习。"
+      }
+      maxed = "俺不是已经教过你了吗？还多说什么？"
+      learned = "你学会了「八方藏刀势」。"
+    } },
     { key = "冷月宝刀" value = " inquire about baodao (unimplemented)" },
-    { key = "卸甲锥心势" value = " inquire about skill10 (unimplemented)" },
-    { key = "奔拳快打" value = " inquire about skill2 (unimplemented)" },
-    { key = "推天献印势" value = " inquire about skill9 (unimplemented)" },
-    { key = "星光闪烁" value = " inquire about skill6 (unimplemented)" },
+    { key = "闯王军刀" value = " inquire about jundao (unimplemented)" },
+    { key = "胡家拳经" value = " inquire about quanjing (unimplemented)" },
+    { key = "胡家刀谱" value = " inquire about daopu (unimplemented)" },
     { key = "横扫千军" value = "咦？这是什么招数，我没听说过。" },
     { key = "程灵素" value = "现在我也不知道她在哪里，只是曾经听她说过好像要去襄阳。" },
     { key = "穹外飞星" value = "这招只有你自己去领悟。" },
     { key = "胡一刀" value = "辽东大侠胡一刀是我爹。不过我从没见过他。" },
-    { key = "胡家刀谱" value = " inquire about daopu (unimplemented)" },
-    { key = "胡家拳经" value = " inquire about quanjing (unimplemented)" },
     { key = "苗人凤" value = "苗人凤和家父齐名，本可成为知交好友，然而家父却死在他的剑下。" },
     { key = "苗若兰" value = "不知什么时候还能再见到若兰姑娘。" },
     { key = "若兰" value = "不知什么时候还能再见到若兰姑娘。" },
     { key = "袁紫衣" value = "算了，别提这伤心事了。" },
     { key = "赵半山" value = "我赵三哥啊！他刚来关外看我呢。" },
-    { key = "闪刀诀" value = " inquire about skill8 (unimplemented)" },
-    { key = "闯王军刀" value = " inquire about jundao (unimplemented)" },
-    { key = "阎基" value = "阎基这个狗贼我非杀了他不可。" },
-    { key = "雄霸群山" value = " inquire about skill7 (unimplemented)" },
-    { key = "风卷霹雳" value = " inquire about skill1 (unimplemented)" },
-    { key = "风卷霹雳上九天" value = " inquire about skill1 (unimplemented)" },
-    { key = "飞天神行" value = " inquire about skill5 (unimplemented)" }
+    { key = "阎基" value = "阎基这个狗贼我非杀了他不可。" }
   ]
 
   skills = [
@@ -18977,6 +19271,107 @@ chats = [
   ]
 
 
+  # LPC no_teach 是 skill -> closure（combat_exp 解锁 can_learn/hufei/<skill>），
+  # 当前 loader 仅支持平坦 no_teach 列表（GAP #739）。
+  teach = {
+    family = "关外胡家"
+    teach_skills = {
+      force = {
+        max = 240
+        gongxian = 0
+      }
+      lengyue_shengong = {
+        max = 240
+        gongxian = 0
+      }
+      blade = {
+        max = 260
+        gongxian = 0
+      }
+      liuhe_dao = {
+        max = 260
+        gongxian = 0
+      }
+      chuangwang_dao = {
+        max = 260
+        gongxian = 0
+      }
+      baisheng_daofa = {
+        max = 260
+        gongxian = 0
+      }
+      hujia_daofa = {
+        max = 260
+        gongxian = 0
+      }
+      dodge = {
+        max = 260
+        gongxian = 0
+      }
+      sixiang_bufa = {
+        max = 260
+        gongxian = 0
+      }
+      parry = {
+        max = 240
+        gongxian = 0
+      }
+      throwing = {
+        max = 260
+        gongxian = 0
+      }
+      mantian_xing = {
+        max = 260
+        gongxian = 0
+      }
+      strike = {
+        max = 240
+        gongxian = 0
+      }
+      liuhe_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      chuncan_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      cuff = {
+        max = 240
+        gongxian = 0
+      }
+      hua_quan = {
+        max = 240
+        gongxian = 0
+      }
+      hujia_quan = {
+        max = 240
+        gongxian = 0
+      }
+      literate = {
+        max = 180
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 240
+        gongxian = 0
+      }
+    }
+    no_teach = [
+      "baisheng-daofa",
+      "hujia-daofa",
+      "sixiang-bufa"
+    ]
+  }
+
+  # LPC hu.h permit_recruit + born_family=关外胡家 + 拒绝胡一刀/胡斐/胡子/胡臭。
+  # 后两项当前 loader/sect_master 无字段承载，按 LPC 原文保留于此（GAP）。
+  apprentice = {
+    family = "关外胡家"
+    permit_recruit = true
+    family_deny = "我关外胡家虽然人丁稀少，但也不收纳族外之人。"
+  }
+
   carry = [
     { id = items.cloth.id }
   ]
@@ -19008,7 +19403,30 @@ chats = [
     { key = "百胜刀法" value = " inquire about me (unimplemented)" },
     { key = "美刀王" value = "美刀王已经死了，还提他做甚？" },
     { key = "陈园园" value = "唉！我也没能和她说上几句话。" },
-    { key = "陈圆圆" value = "唉！我也没能和她说上几句话。" }
+    { key = "陈圆圆" value = "唉！我也没能和她说上几句话。" },
+    { key = "横扫千军" value = {
+      kind = "sect_master_grant"
+      perform_id = "baisheng-daofa/heng"
+      skill = "baisheng-daofa"
+      min_levels = {
+        baisheng_daofa = 150
+        force = 200
+      }
+      min_gongxian = 600
+      min_shen = 8000
+      cost_gongxian = 600
+      family = "关外胡家"
+      family_deny = "大侠与我关外胡家素无渊源，不知此话从何说起。"
+      skill_deny = "你连百胜刀法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为关外胡家作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      level_deny = {
+        baisheng_daofa = "你对百胜刀法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「横扫千军」。"
+    } }
   ]
 
   skills = [
@@ -19034,6 +19452,68 @@ chats = [
     { type = "cuff" skill = "hujia-quan" }
   ]
 
+
+  teach = {
+    family = "关外胡家"
+    teach_skills = {
+      force = {
+        max = 240
+        gongxian = 0
+      }
+      lengyue_shengong = {
+        max = 240
+        gongxian = 0
+      }
+      blade = {
+        max = 260
+        gongxian = 0
+      }
+      baisheng_daofa = {
+        max = 260
+        gongxian = 0
+      }
+      hujia_daofa = {
+        max = 240
+        gongxian = 0
+      }
+      dodge = {
+        max = 240
+        gongxian = 0
+      }
+      sixiang_bufa = {
+        max = 240
+        gongxian = 0
+      }
+      parry = {
+        max = 240
+        gongxian = 0
+      }
+      strike = {
+        max = 240
+        gongxian = 0
+      }
+      chuncan_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      cuff = {
+        max = 240
+        gongxian = 0
+      }
+      hujia_quan = {
+        max = 240
+        gongxian = 0
+      }
+      literate = {
+        max = 180
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 240
+        gongxian = 0
+      }
+    }
+  }
 
   carry = [
     { id = items.gangdao.id },
