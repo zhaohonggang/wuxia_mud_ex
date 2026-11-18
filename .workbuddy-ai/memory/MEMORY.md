@@ -81,7 +81,11 @@
 - Task #642 PKS/MKS/WPK 击杀计数持久化（commit da85c8ba，已推送）。
 - Task #643 detach/betrayer 叛门记录落盘（commit 9c8c838f，已推送）。
 - Task #644 清无 gate_order 门控顺序精确对齐（已推送）。
+- Task #695 文档 Section 1 一览表：已结案（15 位师父，含 3 位新 NPC 已回填）。
+- Task #696 文档 Section 2 详细条目：已结案（灭绝师太/血刀老祖/金轮法王 3 个条目，含 LPC 检查顺序、教学技能表、不可学列表）。
+- Task #697 文档 Section 7 LPC/UCL 对比：已结案（3 位新 NPC 一致性均标 ✅，Section 7.1 字段映射 + 各 NPC 差异说明已写入）。
+- Task #698 文档 Section 5/8 统计修正：已结案（apprentice 块 15→13，teach_skills 13→14，门派 13→12，师父条目 14）。
+- 文档 `docs/新手拜师门派指南.zh-CN.md` 已 commit `88d8520c` 并推送 `origin/kalevala`。
 
 ## 待办（当前）
-- 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`（文档实际已完成，此项待确认结案）。
-- 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
+- 已知差异（保真度差异，非功能缺口，按需逐项补齐）：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。

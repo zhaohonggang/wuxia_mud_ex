@@ -25896,16 +25896,160 @@ chats = [
   }
 
   inquiries = [
-    { key = "乱气剑" value = " inquire about luan (unimplemented)" },
-    { key = "伤神剑" value = " inquire about shang (unimplemented)" },
-    { key = "折元剑" value = " inquire about zhe (unimplemented)" },
-    { key = "清心剑" value = " inquire about qingxin (unimplemented)" },
+    { key = "乱气剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/qingxin"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩乱气剑」。"
+    } },
+    { key = "伤神剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/shang"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩伤神剑」。"
+    } },
+    { key = "折元剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/zhe"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩折元剑」。"
+    } },
+    { key = "清心剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/luan"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩清心剑」。"
+    } },
     { key = "绝技" value = "你想学什么绝技？" },
     { key = "绝招" value = "你想学什么绝招？" },
-    { key = "达摩乱气剑" value = " inquire about luan (unimplemented)" },
-    { key = "达摩伤神剑" value = " inquire about shang (unimplemented)" },
-    { key = "达摩折元剑" value = " inquire about zhe (unimplemented)" },
-    { key = "达摩清心剑" value = " inquire about qingxin (unimplemented)" }
+    { key = "达摩乱气剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/qingxin"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩乱气剑」。"
+    } },
+    { key = "达摩伤神剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/shang"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩伤神剑」。"
+    } },
+    { key = "达摩折元剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/zhe"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩折元剑」。"
+    } },
+    { key = "达摩清心剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "damo-jian/luan"
+      skill = "damo-jian"
+      min_levels = {
+        damo_jian = 200
+      }
+      min_shen = 120000
+      cost_gongxian = 0
+      family = "少林派"
+      family_deny = "你我并非同门，何来讨教绝招之说？"
+      skill_deny = "你连damo-jian都没学，还谈什么绝招可言？"
+      shen_deny = "这一招太过阴恨，若被你用去我恐怕不放心！"
+      level_deny = {
+        damo_jian = "你的修为还不够，练高了再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「达摩清心剑」。"
+    } }
   ]
 
   skills = [
