@@ -89,7 +89,36 @@
 - 少林移植达摩剑四绝授予（§5.8 绝招支线）：commit `5d9e3b4b` 已推送 `origin/kalevala`。
   - `data/world/clone_lib.ucl` 达摩老祖 inquiries：4 个「unimplemented」占位替换为 `sect_master_grant` 配置（清心剑→luan、乱气剑→qingxin、伤神剑→shang、折元剑→zhe，照 LPC da-mo.c 原版错位保留），门槛 shen>=120000 + damo-jian>=200 + 少林派弟子。
   - 验证：mix compile EXIT=0；loader_meta_test 41/0；sect_master_test 96/0。
+- PFM 六绝 + 三绝移植（§5.8 绝招支线）：commit `8d368bf7` 已推送 `origin/kalevala`。
+  - `data/world/clone_lib.ucl` 达摩老祖 inquiries：新增 6 绝技（即世即空/金龙疾空/火麒蚀月/震雷乾坤/大金刚神通/易筋通脉），每招 short key + 达摩前缀 key，共 12 条 `sect_master_grant` 条目；门槛严格对齐 LPC da-mo.c accept_ask（lv1/force/neili/gongxian/shen）。
+  - `data/world/clone_lib.ucl` 玄慈大师 inquiries：替换 2 条 `unimplemented` 占位，新增 3 绝技（一指点三脉/金刚伏魔诀/赤血连环爪），每招 short key + 玄慈前缀 key，共 7 条 `sect_master_grant` 条目；门槛严格对齐 LPC xuan-ci.c accept_ask。
+  - 无引擎代码改动，纯 UCL 数据迁移；门控复用 `SectMaster.inquiry_grant/3`（同门 + 技能等级 + 杀气下限 + 贡献下限 + 内力上限）。
+  - 验证：mix compile EXIT=0；sect_master_grant_test + sect_master_test + loader_meta_test 共 137 tests，0 failures。
+- Task #715–#720 拜师门控保真度差异修复（commit `9bbe5038`，已推送 `origin/kalevala`）：
+  - `loader.ex parse_apprentice/1`：新增 `min_max_neili` 字段解析到 base map（对齐 LPC `query("max_neili")`）。
+  - `sect_master.ex recruit_gate?/3`：新增 `min_max_neili` 内力上限门控（`student_max_neili < min_max_neili` 拒绝），补充 `student_max_neili/1` 读取 `meta.vitals.max_neili`。
+  - `sect_master.ex student_stats/1` 保持不变（仅 `:shen`/`:combat_exp`）；`student_max_neili/1` 单独读取 `:vitals`。
+  - `wudang.ucl` 张三丰：新增 `min_int = 32` + `int_deny`（对齐 LPC `zhang.c` 悟性>=32）。
+  - `clone_lib.ucl` 陈家洛：新增 `min_max_neili = 2000` + `max_neili_deny`（对齐 LPC `chen.c` max_neili>=2000）。
+  - `zhongzhou.ucl` 苗人凤：移除 `min_skills = { miaojia_neigong = 50 }`（LPC `miao.c` 无 `attempt_apprentice`）。
+  - `clone_lib.ucl` 宋远桥：新增完整 `apprentice` 块（shen>=25000, exp>=300000, wudang_xinfa>=100, taoism>=100）。
+  - `wudang.ucl` 俞莲舟：新增完整 `apprentice` 块（shen>=20000, exp>=150000, wudang_xinfa>=80, taoism>=80）。
+  - 验证：mix compile EXIT=0；loader_meta_test + sect_master_test 共 137 tests，0 failures；全量回归 27 个 bcrypt NIF 环境性失败，0 新增失败。
+- Task #695 文档 Section 1 一览表：已结案（15 位师父，含 3 位新 NPC 已回填）。
+- Task #696 文档 Section 2 详细条目：已结案（灭绝师太/血刀老祖/金轮法王 3 个条目，含 LPC 检查顺序、教学技能表、不可学列表）。
+- Task #697 文档 Section 7 LPC/UCL 对比：已结案（3 位新 NPC 一致性均标 ✅，Section 7.1 字段映射 + 各 NPC 差异说明已写入）。
+- Task #698 文档 Section 5/8 统计修正：已结案（apprentice 块 15→13，teach_skills 13→14，门派 13→12，师父条目 14）。
+- 文档 `docs/新手拜师门派指南.zh-CN.md` 已 commit `88d8520c` 并推送 `origin/kalevala`。
+- 少林移植达摩剑四绝授予（§5.8 绝招支线）：commit `5d9e3b4b` 已推送 `origin/kalevala`。
+  - `data/world/clone_lib.ucl` 达摩老祖 inquiries：4 个「unimplemented」占位替换为 `sect_master_grant` 配置（清心剑→luan、乱气剑→qingxin、伤神剑→shang、折元剑→zhe，照 LPC da-mo.c 原版错位保留），门槛 shen>=120000 + damo-jian>=200 + 少林派弟子。
+  - 验证：mix compile EXIT=0；loader_meta_test 41/0；sect_master_test 96/0。
+- PFM 六绝 + 三绝移植（§5.8 绝招支线）：commit `8d368bf7` 已推送 `origin/kalevala`。
+  - `data/world/clone_lib.ucl` 达摩老祖 inquiries：新增 6 绝技（即世即空/金龙疾空/火麒蚀月/震雷乾坤/大金刚神通/易筋通脉），每招 short key + 达摩前缀 key，共 12 条 `sect_master_grant` 条目；门槛严格对齐 LPC da-mo.c accept_ask（lv1/force/neili/gongxian/shen）。
+  - `data/world/clone_lib.ucl` 玄慈大师 inquiries：替换 2 条 `unimplemented` 占位，新增 3 绝技（一指点三脉/金刚伏魔诀/赤血连环爪），每招 short key + 玄慈前缀 key，共 7 条 `sect_master_grant` 条目；门槛严格对齐 LPC xuan-ci.c accept_ask。
+  - 无引擎代码改动，纯 UCL 数据迁移；门控复用 `SectMaster.inquiry_grant/3`（同门 + 技能等级 + 杀气下限 + 贡献下限 + 内力上限）。
+  - 验证：mix compile EXIT=0；sect_master_grant_test + sect_master_test + loader_meta_test 共 137 tests，0 failures。
 
 ## 待办（当前）
-- 已知差异（保真度差异，非功能缺口，按需逐项补齐）：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
-- 少林派剩余：PFM 六绝（达摩其他绝招，见 `da-mo.c:398-470`，需 `accept_ask`/`teach_pfm` 管道配置，属 §5.8 独立支线）。
+
+- 柳溪派 王重九 无 LPC source，`apprentice` 块无法回填（非代码缺口，保留缺失）。
+- 俞莲舟 LPC 已核查，`apprentice` 块已回填（Task #720 已完结）。

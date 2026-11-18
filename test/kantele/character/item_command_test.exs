@@ -403,5 +403,27 @@ defmodule Kantele.Character.ItemCommandTest do
 
       assert text =~ "找不到"
     end
+
+    test "get from 尸体：背包已满时拒绝" do
+      full_inventory =
+        Enum.map(1..80, fn i ->
+          %Kalevala.World.Item.Instance{id: "item-#{i}", item_id: @normal_item_id}
+        end)
+
+      p = player(inventory: full_inventory, room_id: @room_id)
+      conn = build_conn(p)
+
+      conn = ItemCommand.get(conn, %{"item_name" => "#{@meat_id} from 尸体"})
+
+      text =
+        conn.output
+        |> Enum.flat_map(fn
+          %Kalevala.Character.Conn.Text{data: d} -> [IO.iodata_to_binary(d)]
+          _ -> []
+        end)
+        |> Enum.join("")
+
+      assert text =~ "太多了"
+    end
   end
 end
