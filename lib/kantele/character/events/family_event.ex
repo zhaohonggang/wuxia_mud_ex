@@ -24,6 +24,7 @@ defmodule Kantele.Character.FamilyEvent do
   alias Kantele.Character.Records
   alias Kantele.SectMaster
   alias Kantele.World.NameD
+  alias Kantele.World.NpcActions.Helpers, as: NpcHelpers
   alias Kantele.World.RoomActions.Helpers, as: RoomHelpers
   alias Kantele.World.ShaolinApprenticeDialogue
 
@@ -43,6 +44,13 @@ defmodule Kantele.Character.FamilyEvent do
   def result(conn, _event), do: conn
 
   defp reject(conn, reason) do
+    reason =
+      if is_binary(reason) do
+        String.replace(reason, "%respect%", NpcHelpers.respect(conn.character))
+      else
+        reason
+      end
+
     conn
     |> render(CommandView, "text", %{text: "#{reason}\n"})
     |> prompt(CommandView, "prompt", %{})
@@ -78,7 +86,13 @@ defmodule Kantele.Character.FamilyEvent do
     text =
       case Map.get(apprentice, :accept_msg) do
         msg when is_binary(msg) and byte_size(msg) > 0 ->
-          custom = String.replace(msg, "%new_name%", character.name) |> ensure_lf()
+          custom =
+            msg
+            |> String.replace("%new_name%", character.name)
+            # 昆仑 RANK_D->query_respect(me) 以显式占位落地；完整动态敬称见缺口 #758。
+            |> String.replace("%respect%", NpcHelpers.respect(character))
+            |> ensure_lf()
+
           warning <> custom
 
         _ ->

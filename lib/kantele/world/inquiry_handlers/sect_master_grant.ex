@@ -28,6 +28,9 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
         learned = "你学会了「五丁开山」。"     # 学会文案（缺省用 perform_name）
         msg_one = "$N微微点了点头……"   # LPC msg1 演示文案，向房间广播（UCL 标识符不能含数字）
         gate_order = "lpc_masterd"       # 绝情谷：按 masterd.c 原顺序判门控
+        level_order = [ "force", "tanqin-jifa", "kunlun-jian" ]  # 昆仑：逐条固定顺序
+        requires_perform = "qiankun-jian/qian"  # 昆仑逆转乾坤的前置绝招
+        improve_skills = [ "sword", "qiankun-jian", "martial-cognize" ]  # 昆仑：各 +1 级
       }
 
   门控顺序（严格按 `SectMaster.inquiry_grant/3`）：
@@ -37,6 +40,10 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
 
   `gate_order = "lpc_masterd"`（绝情谷）改为 masterd.c 原顺序：
   同门 → 已学会 → 神 → 贡献 → 技能存在/等级 → 内力。
+
+  `gate_order = "lpc_kunlun"`（昆仑内联 ask_skill*）改为：
+  已学会 → 同门 → 必修技能存在 → 贡献 → 前置绝招 → `level_order` 有序门槛。
+  `dex` / `max-neili` 以伪技能键出现在 `min_levels`，从而精确保留 LPC 的相对顺序。
 
   与 `npc_script_event.ex` 的 `perform_result/2` 同源：`stats_with_family/1` 把
   `meta.family` 门派名和 `meta.vitals.max_neili` 并入 stats map 后传给
@@ -82,6 +89,7 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
         stats =
           character.meta.stats
           |> Stats.learn_perform(perform_id)
+          |> improve_all(Map.get(config, "improve_skills") || [])
           |> deduct_gongxian(cost)
 
         character = %{character | meta: %{character.meta | stats: stats}}
@@ -161,6 +169,23 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   defp current(%{character: character}), do: character
 
   # ---- 门控细节（与 inquiry_grant 保持同源，供测试/扩展使用）----
+
+  # 昆仑 LPC 每招成功后 `improve_skill(...,1500000)`：在本引擎中每次调用 = +1 级。
+  # 缺省空数组，既有配置零影响。
+  defp improve_all(stats, skills) when is_list(skills) do
+    Enum.reduce(skills, stats, fn skill, acc ->
+      case skill do
+        name when is_binary(name) and byte_size(name) > 0 ->
+          {acc, _improved?} = Stats.improve_skill(acc, name)
+          acc
+
+        _ ->
+          acc
+      end
+    end)
+  end
+
+  defp improve_all(stats, _skills), do: stats
 
   defp deduct_gongxian(%Stats{} = stats, cost) when is_integer(cost) and cost > 0 do
     %{stats | gongxian: max((stats.gongxian || 0) - cost, 0)}

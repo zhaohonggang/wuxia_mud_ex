@@ -22208,15 +22208,67 @@ chats = [
   }
 
   inquiries = [
+    { key = "损筋诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "sanyin-shou/sun"
+      skill = "sanyin-shou"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 200
+        sanyin_shou = 140
+      }
+      level_order = ["force", "sanyin-shou"]
+      min_gongxian = 400
+      cost_gongxian = 400
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连三阴手都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        sanyin_shou = "你的三阴手修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "自己下去练，别老跟我纠缠不休！"
+      msg_one = "$n微微一笑，对$N说道：看好了。说完单手轻轻拂\n过身前的茶几，不着半点力道。$N正诧异间，茶几突然\n从中碎裂，“喀嚓”一声断为两截。\n"
+      learned = "你学会了「损筋诀」。\n"
+      improve_skills = ["hand", "sanyin-shou", "martial-cognize"]
+    } },
+    { key = "无声无色" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhengliangyi-jian/wu"
+      skill = "zhengliangyi-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 220
+        dodge = 220
+        dex = 45
+        zhengliangyi_jian = 160
+      }
+      level_order = ["force", "dodge", "dex", "zhengliangyi-jian"]
+      min_gongxian = 1200
+      cost_gongxian = 1200
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连正两仪剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招。"
+        dodge = "你的轻功火候不足，学不了这一招。"
+        dex = "你的身法实在太差，学不了这一招。"
+        zhengliangyi_jian = "你的正两仪剑法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "自己下去练，别老跟我纠缠不休！"
+      msg_one = "$n眉头微微一皱，一挥手，示意其它弟子全部出去。\n待其余昆仑派弟子陆续退下后，$n谨慎的环顾了下\n四周，最后将$N招至身边，悄声在$N耳旁细说良久。\n"
+      learned = "你学会了「无声无色」。\n"
+      improve_skills = ["sword", "zhengliangyi-jian", "martial-cognize"]
+    } },
     { key = "域外梵音" value = "这招你找我丈夫学去，别来烦我。" },
-    { key = "损筋诀" value = " inquire about skill1 (unimplemented)" },
-    { key = "无声无色" value = " inquire about skill2 (unimplemented)" },
     { key = "流星电闪" value = "这招你找我丈夫学去，别来烦我。" },
     { key = "玉碎昆冈" value = "这招你找我丈夫学去，别来烦我。" },
     { key = "石破天惊" value = "这招你找我丈夫学去，别来烦我。" },
+    { key = "迅雷一击" value = "这招你找我丈夫学去，别来烦我。" },
     { key = "绝技" value = "你要问什么绝技？" },
-    { key = "绝招" value = "你要问什么绝招？" },
-    { key = "迅雷一击" value = "这招你找我丈夫学去，别来烦我。" }
+    { key = "绝招" value = "你要问什么绝招？" }
   ]
 
   skills = [
@@ -22250,6 +22302,110 @@ chats = [
     { type = "tanqin-jifa" skill = "qiuyue-lai" }
   ]
 
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 210
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 200
+        gongxian = 0
+      }
+      liangyi_shengong = {
+        max = 210
+        gongxian = 0
+      }
+      dodge = {
+        max = 180
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 180
+        gongxian = 0
+      }
+      hand = {
+        max = 210
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 210
+        gongxian = 0
+      }
+      cuff = {
+        max = 210
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 210
+        gongxian = 0
+      }
+      parry = {
+        max = 200
+        gongxian = 0
+      }
+      sword = {
+        max = 200
+        gongxian = 0
+      }
+      kunlun_jian = {
+        max = 200
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 200
+        gongxian = 0
+      }
+      zhengliangyi_jian = {
+        max = 200
+        gongxian = 0
+      }
+      throwing = {
+        max = 180
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 180
+        gongxian = 0
+      }
+      tanqin_jifa = {
+        max = 160
+        gongxian = 0
+      }
+      qiuyue_lai = {
+        max = 160
+        gongxian = 0
+      }
+      literate = {
+        max = 220
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 200
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "女性"
+    gender_deny = "我看见你们这些臭男人就烦，快给我滚开！"
+    min_exp = 150000
+    min_exp_deny = "你的江湖经验太浅，还是锻炼锻炼再说吧。"
+    min_skills = {
+      kunlun_xinfa = 80
+    }
+    min_skills_deny = {
+      kunlun_xinfa = "你对本门的内功心法所知尚浅，练习高了再来找我吧。"
+    }
+    accept_msg = "好吧，以后你就跟我吧，你须得安心学艺，不可乱来。\n"
+  }
 
   carry = [
     { id = items.changjian.id },
@@ -22262,6 +22418,84 @@ chats = [
     characters "kunlun_gaozecheng" {
       name = "高则成"
       aliases = ["kunlun_gaozecheng", "gao zecheng", "gao", "zecheng"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 100
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 100
+        gongxian = 0
+      }
+      dodge = {
+        max = 80
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 80
+        gongxian = 0
+      }
+      hand = {
+        max = 80
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 80
+        gongxian = 0
+      }
+      cuff = {
+        max = 80
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 80
+        gongxian = 0
+      }
+      parry = {
+        max = 80
+        gongxian = 0
+      }
+      sword = {
+        max = 100
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 100
+        gongxian = 0
+      }
+      throwing = {
+        max = 50
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 50
+        gongxian = 0
+      }
+      literate = {
+        max = 100
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 80
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "男性"
+    gender_deny = "师傅不准我收女弟子，你去找我师姊吧。"
+    accept_msg = "既然%respect%慕昆仑派之名，千里而来，我昆仑派自当广纳天下英才，我就收下你吧。\n"
+  }
+
       description = "他穿青色长袍，背上斜插长剑，二十八九岁年纪。 脸罩寒霜，一副要惹事生非的模样。"
   gender = "男性"
   age = 28
@@ -22315,6 +22549,112 @@ chats = [
     characters "kunlun_hetaichong" {
       name = "何太冲"
       aliases = ["kunlun_hetaichong", "he taichong", "he", "taichong"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 220
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 200
+        gongxian = 0
+      }
+      liangyi_shengong = {
+        max = 220
+        gongxian = 0
+      }
+      dodge = {
+        max = 200
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 200
+        gongxian = 0
+      }
+      hand = {
+        max = 200
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 200
+        gongxian = 0
+      }
+      cuff = {
+        max = 200
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 200
+        gongxian = 0
+      }
+      parry = {
+        max = 200
+        gongxian = 0
+      }
+      sword = {
+        max = 220
+        gongxian = 0
+      }
+      kunlun_jian = {
+        max = 220
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 220
+        gongxian = 0
+      }
+      zhengliangyi_jian = {
+        max = 220
+        gongxian = 0
+      }
+      throwing = {
+        max = 200
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 200
+        gongxian = 0
+      }
+      tanqin_jifa = {
+        max = 240
+        gongxian = 0
+      }
+      tieqin_yin = {
+        max = 240
+        gongxian = 0
+      }
+      literate = {
+        max = 220
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 200
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "男性"
+    gender_deny = "我不收女徒弟，你去找我夫人好了。"
+    min_exp = 150000
+    min_exp_deny = "你的江湖经验太浅，还是锻炼锻炼再说吧。"
+    min_skills = {
+      kunlun_xinfa = 80
+    }
+    min_skills_deny = {
+      kunlun_xinfa = "你对本门的内功心法所知尚浅，练习高了再来找我吧。"
+    }
+    accept_msg = "既然你如此有心，我便收下你，希望你能够有所作为。\n"
+  }
+
       description = "他就是名扬江湖的昆仑派第四代掌门铁琴先生 何太冲。虽然此时他年纪已大，但仍然看得出 他年轻时的英俊潇洒。"
   nickname = "铁琴先生"
   gender = "男性"
@@ -22335,18 +22675,140 @@ chats = [
   }
 
   inquiries = [
-    { key = "剑经" value = " inquire about jing (unimplemented)" },
-    { key = "域外梵音" value = " inquire about skill4 (unimplemented)" },
+    { key = "石破天惊" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhentian-quan/shi"
+      skill = "zhentian-quan"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        zhentian_quan = 80
+      }
+      level_order = ["zhentian-quan"]
+      min_gongxian = 100
+      cost_gongxian = 100
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连震天拳法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        zhentian_quan = "你的震天拳法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "咦？这招你不是已经会了吗？"
+      msg_one = "$n略微点了点头，说道：我这给你演示一遍，你可要看好了。\n说完便只见$n拉开架式，提运内劲，聚力于掌一拳挥出，顿\n时$N周围呼啸声骤起，气势当真有如石破天惊。\n"
+      learned = "你学会了「石破天惊」。\n"
+      improve_skills = ["cuff", "zhentian-quan", "martial-cognize"]
+    } },
+    { key = "流星电闪" value = {
+      kind = "sect_master_grant"
+      perform_id = "kunlun-qifa/liu"
+      skill = "kunlun-qifa"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 200
+        kunlun_qifa = 120
+      }
+      level_order = ["force", "kunlun-qifa"]
+      min_gongxian = 300
+      cost_gongxian = 300
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连昆仑器法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为怎么这么差？练好了再来吧！"
+        kunlun_qifa = "你的昆仑器法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "咦？这招你不是已经会了吗？"
+      msg_one = "$n凝视了$N一会，干咳了一声，其余弟子会意连忙全部退下。\n$n这才将$N招到面前，在$N耳边轻声嘀咕了些话，$N一边听\n一边不住的点头，看来对$n的教导大有所悟。\n"
+      learned = "你学会了「流星电闪」。\n"
+      improve_skills = ["throwing", "kunlun-qifa", "martial-cognize"]
+    } },
+    { key = "迅雷一击" value = {
+      kind = "sect_master_grant"
+      perform_id = "xunlei-jian/xun"
+      skill = "xunlei-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 150
+        xunlei_jian = 100
+      }
+      level_order = ["force", "xunlei-jian"]
+      min_gongxian = 50
+      cost_gongxian = 50
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连迅雷剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        xunlei_jian = "你的迅雷剑法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "这招我已经解释得很清楚了，还有什么不懂就自己下去练！"
+      msg_one = "$n点了点头，随手从身后的书架上取出一本剑经，指着其中\n一段对$N细说了良久，$N一边听一边点头。\n"
+      learned = "你学会了「迅雷一击」。\n"
+      improve_skills = ["sword", "xunlei-jian", "martial-cognize"]
+    } },
+    { key = "域外梵音" value = {
+      kind = "sect_master_grant"
+      perform_id = "kunlun-jian/fanyin"
+      skill = "kunlun-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 200
+        tanqin_jifa = 120
+        kunlun_jian = 130
+      }
+      level_order = ["force", "tanqin-jifa", "kunlun-jian"]
+      min_gongxian = 1000
+      cost_gongxian = 1000
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连昆仑剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        tanqin_jifa = "你的弹琴技法尚且不够熟练, 学不了这一招！"
+        kunlun_jian = "你的昆仑剑法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "给我自己下去练，少跟我纠缠不休！"
+      msg_one = "$n凝视了$N半天，说道：“既然你剑术已成，我今日便\n传你这招吧。其余不相干的人都给我出去！”待其余弟子退\n下后，$n警惕的望了望四周，确定四下没人后，这才从\n铁琴下抽出一柄长剑，慢慢的演示剑招。$N只觉剑招精妙奇\n巧，实乃前所谓闻。\n"
+      learned = "你学会了「域外梵音」。\n"
+      improve_skills = ["tanqin-jifa", "sword", "kunlun-jian", "martial-cognize"]
+    } },
+    { key = "玉碎昆冈" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhengliangyi-jian/sui"
+      skill = "zhengliangyi-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 250
+        max_neili = 3000
+        zhengliangyi_jian = 180
+      }
+      level_order = ["force", "max-neili", "zhengliangyi-jian"]
+      min_gongxian = 800
+      cost_gongxian = 800
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连正两仪剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招。"
+        max_neili = "你的内力修为不足，学不了这一招。"
+        zhengliangyi_jian = "你的正两仪剑法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "自己下去练，别老跟我纠缠不休！"
+      msg_one = "$n眉头微微一皱，一挥手，示意其它弟子全部出去。待\n其余弟子陆续退下后，$n谨慎的环顾下四周，确定四下\n没人后，这才将$N招至身边，悄声在$N耳旁细说良久。待授\n招完毕后，$n又缓缓的摇了摇头，接着道：这一招乃是\n宁为玉碎，不为瓦全的拼死一击，使用前一定要慎重考虑。\n"
+      learned = "你学会了「玉碎昆冈」。\n"
+      improve_skills = ["sword", "zhengliangyi-jian", "martial-cognize"]
+    } },
     { key = "损筋诀" value = "嗯，这招你去找我内子求教吧。" },
     { key = "无声无色" value = "嗯，这招你去找我内子求教吧。" },
-    { key = "流星电闪" value = " inquire about skill2 (unimplemented)" },
-    { key = "玉碎昆冈" value = " inquire about skill5 (unimplemented)" },
-    { key = "石破天惊" value = " inquire about skill1 (unimplemented)" },
+    { key = "铁琴剑" value = " inquire about jian (unimplemented: Kunlun NPC-held unique sword, GAP #756)" },
+    { key = "剑经" value = " inquire about jing (unimplemented: Kunlun quest book holder traversal, GAP #756)" },
+    { key = "迅雷剑经" value = " inquire about jing (unimplemented: Kunlun quest book holder traversal, GAP #756)" },
     { key = "绝技" value = "你要问什么绝技？" },
-    { key = "绝招" value = "你要问什么绝招？" },
-    { key = "迅雷一击" value = " inquire about skill3 (unimplemented)" },
-    { key = "迅雷剑经" value = " inquire about jing (unimplemented)" },
-    { key = "铁琴剑" value = " inquire about jian (unimplemented)" }
+    { key = "绝招" value = "你要问什么绝招？" }
   ]
 
   skills = [
@@ -22391,6 +22853,140 @@ chats = [
     characters "kunlun_hezudao" {
       name = "何足道"
       aliases = ["kunlun_hezudao", "he zudao", "he", "zudao"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 300
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 300
+        gongxian = 0
+      }
+      liangyi_shengong = {
+        max = 300
+        gongxian = 0
+      }
+      dodge = {
+        max = 300
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 300
+        gongxian = 0
+      }
+      strike = {
+        max = 300
+        gongxian = 0
+      }
+      kunlun_zhang = {
+        max = 300
+        gongxian = 0
+      }
+      hand = {
+        max = 300
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 300
+        gongxian = 0
+      }
+      cuff = {
+        max = 300
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 300
+        gongxian = 0
+      }
+      parry = {
+        max = 300
+        gongxian = 0
+      }
+      sword = {
+        max = 320
+        gongxian = 0
+      }
+      kunlun_jian = {
+        max = 300
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 300
+        gongxian = 0
+      }
+      zhengliangyi_jian = {
+        max = 300
+        gongxian = 0
+      }
+      qiankun_jian = {
+        max = 320
+        gongxian = 0
+      }
+      throwing = {
+        max = 300
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 300
+        gongxian = 0
+      }
+      tanqin_jifa = {
+        max = 320
+        gongxian = 0
+      }
+      jian_jia = {
+        max = 320
+        gongxian = 0
+      }
+      qiuyue_lai = {
+        max = 320
+        gongxian = 0
+      }
+      tieqin_yin = {
+        max = 300
+        gongxian = 0
+      }
+      chess = {
+        max = 320
+        gongxian = 0
+      }
+      literate = {
+        max = 280
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 300
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    min_shen = 10000
+    min_shen_deny = "武学之道深久长远，要成为当之无愧的大侠，德行还在首位。\n我那几个后辈不成气候，但却希望%respect%你能够多多注意。"
+    min_exp = 400000
+    min_exp_deny = "你的江湖经验太浅，我就算收了你，恐怕你也难有所作为。"
+    hard_min_int = 38
+    int_deny = "高深的武功以及精深的技艺都需灵性极高的人才能悟其真谛，不致背道而驰。\n我看%respect%还是先回去多读点书吧。"
+    min_skills = {
+      liangyi_shengong = 100
+      zhengliangyi_jian = 100
+    }
+    min_skills_deny = {
+      liangyi_shengong = "修习我的武功及剑法都需强大的内力为辅。\n我看%respect%是否还应该先在本门的内功上多下点功夫？"
+      zhengliangyi_jian = "本派的正两仪剑法乃武林一绝，，我看%respect%对此还练得不够。"
+    }
+    accept_msg = "看来你也是性情中人，我就教你一些琴剑棋的知识吧。\n"
+  }
+
       description = "这就是昆仑派开山祖师，号称琴剑棋三绝的昆 仑三圣何足道。见他长脸深目，面目清秀。却 是瘦骨棱棱，身着一青衫。"
   title = "昆仑派开山祖师"
   nickname = "昆仑三圣"
@@ -22411,13 +23007,111 @@ chats = [
   }
 
   inquiries = [
-    { key = "两极剑" value = " inquire about jian (unimplemented)" },
-    { key = "乾坤劲" value = " inquire about skill1 (unimplemented)" },
-    { key = "日入空山" value = " inquire about skill4 (unimplemented)" },
-    { key = "日月乾坤" value = " inquire about skill2 (unimplemented)" },
+    { key = "乾坤劲" value = {
+      kind = "sect_master_grant"
+      perform_id = "qiankun-jian/qian"
+      skill = "qiankun-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 150
+        qiankun_jian = 100
+      }
+      level_order = ["force", "qiankun-jian"]
+      min_gongxian = 300
+      cost_gongxian = 300
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连乾坤神剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        qiankun_jian = "你的乾坤神剑修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "咦？这招你不是已经会了吗？"
+      msg_one = "$n微微一笑，转身从弦琴上取出一本剑经，指着其中一段对$N细说\n良久，$N一边听一边点头。\n"
+      learned = "你学会了「乾坤劲」。\n"
+      improve_skills = ["sword", "qiankun-jian", "martial-cognize"]
+    } },
+    { key = "日月乾坤" value = {
+      kind = "sect_master_grant"
+      perform_id = "qiankun-jian/riyue"
+      skill = "qiankun-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 220
+        qiankun_jian = 150
+      }
+      level_order = ["force", "qiankun-jian"]
+      min_gongxian = 1500
+      cost_gongxian = 1500
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连乾坤神剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        qiankun_jian = "你的乾坤神剑修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "咦？这招你不是已经会了吗？"
+      msg_one = "$n点了点头，道：我将这招给你演示一遍，你可看好了。$n话\n音刚落，只见他身形一展，以指作剑，指尖微颤，将乾坤剑法连环施而\n出。$N霎时只觉剑影重重，直看得眼花缭乱。\n"
+      learned = "你学会了「日月乾坤」。\n"
+      improve_skills = ["sword", "qiankun-jian", "martial-cognize"]
+    } },
+    { key = "逆转乾坤" value = {
+      kind = "sect_master_grant"
+      perform_id = "qiankun-jian/ni"
+      skill = "qiankun-jian"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 300
+        qiankun_jian = 180
+      }
+      level_order = ["force", "qiankun-jian"]
+      min_gongxian = 1800
+      cost_gongxian = 1800
+      requires_perform = "qiankun-jian/qian"
+      requires_perform_deny = "要学此招，必须先通晓「乾坤劲」的奥秘。"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连乾坤神剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        qiankun_jian = "你的乾坤神剑修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "咦？这招你不是已经会了吗？"
+      msg_one = "$n微笑道：既然你的剑术已经到达超凡的境界，今日我就传你这招。\n$n说着“刷”的一声，从背负的瑶琴底下抽出一柄长剑，纵身近\n前，长剑陡然弯弯弹出，剑尖直刺$N胸口，出招之快真乃为任何剑法所\n不及。$N顿时措手不及，当场呆立，完全不知道该如何应招。$n哈\n哈一笑，收起长剑，说道：刚才这一招不是直刺，却是先聚内力，然后\n蓄劲弹出。这逆转乾坤的奥秘便是将乾坤剑法逆行施展即可。\n"
+      learned = "你学会了「逆转乾坤」。\n"
+      improve_skills = ["force", "liangyi-shengong", "sword", "qiankun-jian", "martial-cognize"]
+    } },
+    { key = "日入空山" value = {
+      kind = "sect_master_grant"
+      perform_id = "kunlun-zhang/kong"
+      skill = "kunlun-zhang"
+      gate_order = "lpc_kunlun"
+      family = "昆仑派"
+      min_levels = {
+        force = 150
+        kunlun_zhang = 120
+      }
+      level_order = ["force", "kunlun-zhang"]
+      min_gongxian = 600
+      cost_gongxian = 600
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连昆仑掌法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你对本派所作出的贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不了这一招！"
+        kunlun_zhang = "你的昆仑掌法修为还不够，自己下去练练再来吧。"
+      }
+      maxed = "咦？这招你不是已经会了吗？"
+      msg_one = "$n点了点头，将$N招至身边，在耳旁低声细说良久，$N听\n后会心的一笑，看来大有所悟。\n"
+      learned = "你学会了「日入空山」。\n"
+      improve_skills = ["strike", "kunlun-zhang", "martial-cognize"]
+    } },
+    { key = "两极剑" value = " inquire about jian (unimplemented: Kunlun NPC-held unique sword, owner traversal, accept_object, GAP #756)" },
     { key = "绝技" value = "你要问什么绝技？" },
-    { key = "绝招" value = "你要问什么绝招？" },
-    { key = "逆转乾坤" value = " inquire about skill3 (unimplemented)" }
+    { key = "绝招" value = "你要问什么绝招？" }
   ]
 
   skills = [
@@ -22477,6 +23171,84 @@ chats = [
     characters "kunlun_jiangtao" {
       name = "蒋涛"
       aliases = ["kunlun_jiangtao", "jiang tao", "jiang", "tao"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 100
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 100
+        gongxian = 0
+      }
+      dodge = {
+        max = 80
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 80
+        gongxian = 0
+      }
+      hand = {
+        max = 80
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 80
+        gongxian = 0
+      }
+      cuff = {
+        max = 80
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 80
+        gongxian = 0
+      }
+      parry = {
+        max = 80
+        gongxian = 0
+      }
+      sword = {
+        max = 100
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 100
+        gongxian = 0
+      }
+      throwing = {
+        max = 50
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 50
+        gongxian = 0
+      }
+      literate = {
+        max = 100
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 80
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "男性"
+    gender_deny = "师傅不准我收女弟子，你去找我师姊吧。"
+    accept_msg = "好吧，我就收下你，教你一些皮毛功夫。\n"
+  }
+
       description = "他穿青色长袍，背上斜插长剑，二十八九岁年纪。 脸罩寒霜，一副要惹事生非的模样。"
   gender = "男性"
   age = 28
@@ -22530,6 +23302,104 @@ chats = [
     characters "kunlun_weisiniang" {
       name = "卫四娘"
       aliases = ["kunlun_weisiniang", "wei siniang", "wei", "siniang"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 130
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 130
+        gongxian = 0
+      }
+      dodge = {
+        max = 130
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 130
+        gongxian = 0
+      }
+      hand = {
+        max = 140
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 140
+        gongxian = 0
+      }
+      cuff = {
+        max = 140
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 140
+        gongxian = 0
+      }
+      parry = {
+        max = 140
+        gongxian = 0
+      }
+      sword = {
+        max = 130
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 130
+        gongxian = 0
+      }
+      throwing = {
+        max = 140
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 140
+        gongxian = 0
+      }
+      literate = {
+        max = 140
+        gongxian = 0
+      }
+      liangyi_shengong = {
+        max = 130
+        gongxian = 0
+      }
+      zhengliangyi_jian = {
+        max = 130
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 120
+        gongxian = 0
+      }
+    }
+    no_teach = {
+      liangyi_shengong = "两仪神功需得掌门人亲自传授。"
+      zhengliangyi_jian = "正两仪剑法乃本门神功，需要掌门人亲自传授。"
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "女性"
+    gender_deny = "师傅不准我收男弟子，你去找我师兄去吧。"
+    min_exp = 10000
+    min_exp_deny = "你的江湖经验实在太浅，还是锻炼锻炼再说吧。"
+    min_skills = {
+      kunlun_xinfa = 30
+    }
+    min_skills_deny = {
+      kunlun_xinfa = "你对本门的内功心法所知尚浅，练习高了再来找我吧。"
+    }
+    accept_msg = "既然%respect%这么努力，我就收下你吧。\n"
+  }
+
       description = "她昆仑派第五代弟子，容颜俏丽，身材丰满，举 手投足间带着点挑逗之意。"
   nickname = "闪电娘娘"
   gender = "女性"
@@ -22586,6 +23456,104 @@ chats = [
     characters "kunlun_xihuazi" {
       name = "西华子"
       aliases = ["kunlun_xihuazi", "xi huazi", "xi", "huazi"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 150
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 150
+        gongxian = 0
+      }
+      dodge = {
+        max = 120
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 120
+        gongxian = 0
+      }
+      hand = {
+        max = 120
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 120
+        gongxian = 0
+      }
+      cuff = {
+        max = 120
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 120
+        gongxian = 0
+      }
+      parry = {
+        max = 120
+        gongxian = 0
+      }
+      sword = {
+        max = 150
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 150
+        gongxian = 0
+      }
+      throwing = {
+        max = 120
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 120
+        gongxian = 0
+      }
+      literate = {
+        max = 140
+        gongxian = 0
+      }
+      liangyi_shengong = {
+        max = 120
+        gongxian = 0
+      }
+      zhengliangyi_jian = {
+        max = 120
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 100
+        gongxian = 0
+      }
+    }
+    no_teach = {
+      liangyi_shengong = "两仪神功需得掌门人亲自传授。"
+      zhengliangyi_jian = "正两仪剑法乃本门神功，需要掌门人亲自传授。"
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "男性"
+    gender_deny = "师傅不准我收女弟子，你去找我几个师妹吧。"
+    min_exp = 10000
+    min_exp_deny = "你的江湖经验实在太浅，还是锻炼锻炼再说吧。"
+    min_skills = {
+      kunlun_xinfa = 30
+    }
+    min_skills_deny = {
+      kunlun_xinfa = "你对本门的内功心法所知尚浅，练习高了再来找我吧。"
+    }
+    accept_msg = "既然%respect%这么努力，我就收下你吧。\n"
+  }
+
       description = "他是昆仑派第五代弟子，满腮虬髯，性子十分暴躁。"
   gender = "男性"
   age = 38
@@ -22642,6 +23610,84 @@ chats = [
     characters "kunlun_zhanchun" {
       name = "詹春"
       aliases = ["kunlun_zhanchun", "zhan chun", "zhan", "chun"]
+
+  teach = {
+    family = "昆仑派"
+    teach_skills = {
+      force = {
+        max = 80
+        gongxian = 0
+      }
+      kunlun_xinfa = {
+        max = 80
+        gongxian = 0
+      }
+      dodge = {
+        max = 80
+        gongxian = 0
+      }
+      chuanyun_bu = {
+        max = 80
+        gongxian = 0
+      }
+      hand = {
+        max = 80
+        gongxian = 0
+      }
+      sanyin_shou = {
+        max = 80
+        gongxian = 0
+      }
+      cuff = {
+        max = 80
+        gongxian = 0
+      }
+      zhentian_quan = {
+        max = 80
+        gongxian = 0
+      }
+      parry = {
+        max = 80
+        gongxian = 0
+      }
+      sword = {
+        max = 80
+        gongxian = 0
+      }
+      xunlei_jian = {
+        max = 80
+        gongxian = 0
+      }
+      throwing = {
+        max = 80
+        gongxian = 0
+      }
+      kunlun_qifa = {
+        max = 80
+        gongxian = 0
+      }
+      literate = {
+        max = 100
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 60
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "昆仑派"
+    permit_recruit = true
+    betray_sect_deny = "亏你还有脸回我昆仑山？给我滚开！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "阁下既有了名师指点，还来我们昆仑派做什么？"
+    gender = "女性"
+    gender_deny = "师傅不准我收男弟子，你去找我师兄去吧。"
+    accept_msg = "既然%respect%慕昆仑派之名，千里而来，我昆仑派自当广纳天下英才，我就收下你吧。\n"
+  }
+
       description = "她是何太冲最喜欢的弟子，长得倒也颇为俏丽。"
   gender = "女性"
   age = 24

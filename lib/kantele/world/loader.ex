@@ -885,6 +885,17 @@ defmodule Kantele.World.Loader do
     end)
   end
 
+  # 昆仑 `gate_order = "lpc_kunlun"` 用 level_order 显式固定逐条门槛顺序；
+  # 与 min_levels 同形归一，使 dex / max_neili 伪键和技能 id 都能命中 level_deny。
+  defp normalize_inquiry_field("level_order", keys) when is_list(keys) do
+    Enum.map(keys, &String.replace(to_string(&1), "_", "-"))
+  end
+
+  # LPC `improve_skill(skill, 1500000)`：数组每项即一次 +1 级。
+  defp normalize_inquiry_field("improve_skills", skills) when is_list(skills) do
+    Enum.map(skills, &String.replace(to_string(&1), "_", "-"))
+  end
+
   defp normalize_inquiry_field("max_skill_levels", levels) when is_map(levels) do
     Enum.into(levels, %{}, fn {skill, level} ->
       {String.replace(to_string(skill), "_", "-"), level}
@@ -1244,6 +1255,8 @@ defmodule Kantele.World.Loader do
       require_class: class_value(Map.get(apprentice, :require_class)),
       exact_generation: int_value(Map.get(apprentice, :exact_generation)),
       min_int: int_value(Map.get(apprentice, :min_int)),
+      # 昆仑何足道：`query_int() < 38` 是带 return 的硬门，与达摩 min_int（只提示）不同。
+      hard_min_int: int_value(Map.get(apprentice, :hard_min_int)),
       max_wpk: int_value(Map.get(apprentice, :max_wpk)),
       rename_index: int_value(Map.get(apprentice, :rename_index)) || 1,
       family_deny: Map.get(apprentice, :family_deny),
@@ -1297,6 +1310,10 @@ defmodule Kantele.World.Loader do
       gender_deny: Map.get(apprentice, :gender_deny),
       min_skills_deny: min_skills_deny,
       min_exp_deny: Map.get(apprentice, :min_exp_deny),
+      # 昆仑 kunlun.h permit_recruit 三句逐字覆写；未配置保持少林缺省文案。
+      betray_sect_deny: Map.get(apprentice, :betray_sect_deny),
+      betray_times_deny: Map.get(apprentice, :betray_times_deny),
+      other_family_deny: Map.get(apprentice, :other_family_deny),
       # #745 绝情谷：LPC chi.c/zhi.c 的「不收仇家弟子」门控 + 逐字文案；
       # fan/zhi/chi 的收徒成功文案与「公孙→裘」按姓改名（chi.c:132-145）。
       reject_master_name: Map.get(apprentice, :reject_master_name),

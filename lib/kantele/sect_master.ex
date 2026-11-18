@@ -38,6 +38,11 @@ defmodule Kantele.SectMaster do
     student_family = family_of(student)
 
     cond do
+      # #742/#752：LPC `no_teach/<skill>` 是 learn 的逐技能硬拒，且文案逐 NPC 不同。
+      # loader 已把 map 形态落为 teach.no_teach_deny；此前无消费端导致文案静默丢弃。
+      no_teach = no_teach_reason(teacher, skill) ->
+        {:error, no_teach}
+
       # 同门派但非嫡传：Master.prevent_learn? 判定（skills_event.ex:43-45）
       Master.prevent_learn?(my_family, student_family, student_family) ->
         {:error, "你已入别派，老夫不便传授。\n"}
@@ -85,6 +90,7 @@ defmodule Kantele.SectMaster do
     require_class = Map.get(config, :require_class)
     exact_generation = Map.get(config, :exact_generation)
     min_int = Map.get(config, :min_int)
+    hard_min_int = Map.get(config, :hard_min_int)
     max_wpk = Map.get(config, :max_wpk)
     min_max_neili = Map.get(config, :min_max_neili)
 
@@ -111,15 +117,23 @@ defmodule Kantele.SectMaster do
           student_gender(student) != gender ->
         gender_deny(student, gender, config)
 
-      # permit_recruit（shaolin.h）三条，顺序与 LPC 一致
+      # permit_recruit（kunlun.h / shaolin.h）三条，顺序与 LPC 一致。
+      # #752 昆仑：UCL 可逐句覆写原文；未配置时保持少林缺省，老配置零回归。
       permit_recruit and betrayed_sect?(student, family_name) ->
-        {:error, "你反反复复，唉！怎么一心向佛？\n"}
+        {:error,
+         deny_text(config, :betray_sect_deny, "你反反复复，唉！怎么一心向佛？\n")}
 
       permit_recruit and betrayed_before?(student) ->
-        {:error, "你大逆不道，私自判师，不能容于少林！\n"}
+        {:error,
+         deny_text(config, :betray_times_deny, "你大逆不道，私自判师，不能容于少林！\n")}
 
       permit_recruit and other_family?(student, family_name) ->
-        {:error, "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"}
+        {:error,
+         deny_text(
+           config,
+           :other_family_deny,
+           "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"
+         )}
 
       # #745 绝情谷 chi.c/zhi.c：若拜师者的师父正是仇家，则拒收。
       # 位置紧随 permit_recruit，之后才是 shen/exp/技能，与 LPC 顺序一致。
@@ -169,6 +183,12 @@ defmodule Kantele.SectMaster do
 
       exp < min_exp ->
         {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
+
+      # 昆仑何足道 LPC `if (me->query_int() < 38) { ...; return; }` 是硬门，
+      # 与达摩 min_int「只提示不拒」不同；二者分开配置，禁止互相复用。
+      not is_nil(hard_min_int) and (student_int(student) || 0) < hard_min_int ->
+        {:error,
+         deny_text(config, :int_deny, "大侠悟性仍有不足，先回去多读点书吧。\n")}
 
       not is_nil(failing_skill = first_failing_recruit_skill(student, min_skills)) ->
         {:error, min_skills_deny(config, failing_skill)}
@@ -431,10 +451,10 @@ defmodule Kantele.SectMaster do
   # #745：`gate_order = "lpc_masterd"` 走 LPC masterd.c 原始门控顺序
   # （同门 → 已会 → 神 → 贡献 → 技能存在/等级）；缺省顺序保持既有配置零回归。
   def inquiry_grant(player_stats, npc_stats, config) do
-    if Map.get(config, "gate_order") == "lpc_masterd" do
-      inquiry_grant_lpc(player_stats, npc_stats, config)
-    else
-      inquiry_grant_default(player_stats, npc_stats, config)
+    case Map.get(config, "gate_order") do
+      "lpc_masterd" -> inquiry_grant_lpc(player_stats, npc_stats, config)
+      "lpc_kunlun" -> inquiry_grant_kunlun(player_stats, npc_stats, config)
+      _ -> inquiry_grant_default(player_stats, npc_stats, config)
     end
   end
 
@@ -545,6 +565,108 @@ defmodule Kantele.SectMaster do
       true ->
         {:ok, perform_id, cost}
     end
+  end
+
+  # 昆仑 8 NPC 的 ask_skill* 都是内联实现，不经过 MASTER_D->teach_pfm。
+  # LPC 顺序固定：已会 → 同门 → 必修技能≥1 → 贡献 → 前置绝招 →
+  # level_order 指定的逐条门槛 → 通过。dex / max_neili 以伪技能键进入同一有序链，
+  # 否则「内力不足」与「最终技能等级不足」会互换拒绝文案（#752）。
+  defp inquiry_grant_kunlun(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    levels = Map.get(config, "min_levels", %{}) || %{}
+    order = Map.get(config, "level_order") || []
+    requires_perform = Map.get(config, "requires_perform")
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny_lf(config, "maxed", "咦？这招你不是已经会了吗？\n")}
+
+      not same_family?(player, npc) ->
+        {:error, deny_lf(config, "family_deny", "和本派素无瓜葛，何出此言？\n")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error,
+         deny_lf(config, "skill_deny", "你连这门功夫都没学，还谈什么绝招可言？\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error,
+         deny_lf(
+           config,
+           "gongxian_deny",
+           "你对本派所作出的贡献不够，这一招我暂时还不能传你。\n"
+         )}
+
+      is_binary(requires_perform) and not perform_known?(player, requires_perform) ->
+        {:error,
+         deny_lf(config, "requires_perform_deny", "要学此招，必须先通晓「乾坤劲」的奥秘。\n")}
+
+      failing = first_failing_ordered_level(player, order, levels) ->
+        {:error, ordered_level_deny(config, failing)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  defp first_failing_ordered_level(player, order, levels) when is_list(order) and is_map(levels) do
+    Enum.find(order, fn key ->
+      value = Map.get(levels, key)
+
+      case value do
+        min when is_integer(min) -> named_level_value(player, key) < min
+        _ -> false
+      end
+    end)
+  end
+
+  defp first_failing_ordered_level(player, _order, levels) when is_map(levels) do
+    Enum.find(levels, fn {key, min} ->
+      is_integer(min) and named_level_value(player, key) < min
+    end)
+    |> case do
+      {key, _min} -> key
+      _ -> nil
+    end
+  end
+
+  defp first_failing_ordered_level(_player, _order, _levels), do: nil
+
+  # UCL 键经 loader 归一：max_neili → "max-neili"，其余技能 id 用连字符。
+  defp named_level_value(player, key) when key in ["dex", "dexterity"],
+    do: stat(player, :dex)
+
+  defp named_level_value(player, key) when key in ["max-neili", "max_neili"],
+    do: stat(player, :max_neili)
+
+  defp named_level_value(player, key), do: skill_level_of(player, key)
+
+  defp ordered_level_deny(config, key) do
+    default = "你的修为还不够，练高了再来吧。\n"
+
+    text =
+      case Map.get(config, "level_deny") do
+        denies when is_map(denies) ->
+          Map.get(denies, key) ||
+            Map.get(denies, String.replace(key, "-", "_")) ||
+            default
+
+        value when is_binary(value) and byte_size(value) > 0 ->
+          value
+
+        _ ->
+          default
+      end
+
+    if String.ends_with?(text, "\n"), do: text, else: text <> "\n"
   end
 
   # LPC `query_dex() < N`：缺 key 不拦（老配置零影响）。
@@ -724,6 +846,18 @@ defmodule Kantele.SectMaster do
   # 配置覆盖的拒绝文案；缺省走通用文案
   defp deny(config, key, default), do: Map.get(config, key) || default
 
+  # 昆仑 LPC 的 `return "..."` 均由 tell_object 换行渲染；UCL 文案可省略 \n，
+  # 这里统一补齐，避免逐条数据重复写转义且保证测试形状一致。
+  defp deny_lf(config, key, default) do
+    text = deny(config, key, default)
+
+    if is_binary(text) do
+      if String.ends_with?(text, "\n"), do: text, else: text <> "\n"
+    else
+      text
+    end
+  end
+
   # `level_deny` 可为整句，也可为逐技能 map（Loader 已把 UCL 下划线键归一为连字符）。
   # 多技能门槛同时不足时取第一个未达标技能，复刻 masterd.c 的逐条 return 顺序。
   defp level_deny_text(config, player, min_levels) do
@@ -901,6 +1035,27 @@ defmodule Kantele.SectMaster do
     stats = Map.get(meta_of(character), :stats)
     Map.get(Map.get(stats || %{}, :skills) || %{}, skill, 0)
   end
+
+  # LPC `query("no_teach/" + skill)`：师父逐技能拒教。loader 把 UCL 的
+  # `teach.no_teach = { skill = "..." }` 归一到 `meta.teach.no_teach_deny`。
+  defp no_teach_reason(teacher, skill) when is_binary(skill) do
+    teach = Map.get(meta_of(teacher), :teach) || %{}
+
+    case Map.get(teach, :no_teach_deny) || Map.get(teach, "no_teach_deny") do
+      denies when is_map(denies) ->
+        text =
+          Map.get(denies, skill) ||
+            Map.get(denies, String.replace(skill, "_", "-")) ||
+            Map.get(denies, String.replace(skill, "-", "_"))
+
+        if is_binary(text) and byte_size(text) > 0, do: ensure_lf(text), else: nil
+
+      _ ->
+        nil
+    end
+  end
+
+  defp no_teach_reason(_teacher, _skill), do: nil
 
   # 收徒门控的逐技能拒绝文案：华山岳不群/岳夫人对「心法不足」与「剑法不足」
   # 各有一句 LPC 原文（#740），故返回首个未达标技能 id 再按 UCL map 取文案。

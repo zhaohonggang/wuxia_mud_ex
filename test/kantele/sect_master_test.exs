@@ -1771,4 +1771,202 @@ defmodule Kantele.SectMasterDamoGateTest do
                SectMaster.inquiry_grant(outsider, %{family: "绝情谷"}, config)
     end
   end
+
+  describe "昆仑派门控（Task #752）" do
+    test "teachable?/3：no_teach_deny 按技能返回 LPC 原文拒教文案" do
+      teacher = %{
+        meta: %{
+          family: %{name: "昆仑派"},
+          teach: %{
+            family: "昆仑派",
+            no_teach: ["liangyi-shengong", "zhengliangyi-jian"],
+            no_teach_deny: %{
+              "liangyi-shengong" => "两仪神功需得掌门人亲自传授。",
+              "zhengliangyi-jian" => "正两仪剑法乃本门神功，需要掌门人亲自传授。"
+            }
+          },
+          stats: %{skills: %{"liangyi-shengong" => 130, "zhengliangyi-jian" => 130}}
+        }
+      }
+
+      student = %{
+        meta: %{
+          family: %{name: "昆仑派"},
+          stats: %{skills: %{"liangyi-shengong" => 10, "zhengliangyi-jian" => 10}}
+        }
+      }
+
+      assert {:error, "两仪神功需得掌门人亲自传授。\n"} =
+               SectMaster.teachable?(teacher, student, "liangyi-shengong")
+
+      assert {:error, "正两仪剑法乃本门神功，需要掌门人亲自传授。\n"} =
+               SectMaster.teachable?(teacher, student, "zhengliangyi-jian")
+    end
+
+    test "recruit_gate?：permit_recruit 三句可由 UCL 逐字覆写" do
+      gate = %{
+        family: "昆仑派",
+        permit_recruit: true,
+        betray_sect_deny: "亏你还有脸回我昆仑山？给我滚开！",
+        betray_times_deny: "阁下不忠不信，我最痛恨你这种人了。",
+        other_family_deny: "阁下既有了名师指点，还来我们昆仑派做什么？"
+      }
+
+      betrayed_sect = %{
+        meta: %{
+          env: %{betrayer: %{"昆仑派" => 1}},
+          stats: %{shen: 20_000, combat_exp: 400_000, skills: %{}}
+        }
+      }
+
+      assert {:error, "亏你还有脸回我昆仑山？给我滚开！\n"} =
+               SectMaster.recruit_gate?(nil, betrayed_sect, gate)
+
+      betrayed_times = %{
+        meta: %{
+          env: %{betrayer: %{times: 1}},
+          stats: %{shen: 20_000, combat_exp: 400_000, skills: %{}}
+        }
+      }
+
+      assert {:error, "阁下不忠不信，我最痛恨你这种人了。\n"} =
+               SectMaster.recruit_gate?(nil, betrayed_times, gate)
+
+      other_sect = %{
+        meta: %{
+          family: %{name: "武当派"},
+          stats: %{shen: 20_000, combat_exp: 400_000, skills: %{}}
+        }
+      }
+
+      assert {:error, "阁下既有了名师指点，还来我们昆仑派做什么？\n"} =
+               SectMaster.recruit_gate?(nil, other_sect, gate)
+    end
+
+    test "recruit_gate?：hard_min_int 是硬门，不与达摩 min_int 提示语义混用" do
+      gate = %{
+        family: "昆仑派",
+        min_shen: 10_000,
+        min_exp: 400_000,
+        hard_min_int: 38,
+        int_deny:
+          "高深的武功以及精深的技艺都需灵性极高的人才能悟其真谛，不致背道而驰。\n我看大侠还是先回去多读点书吧。"
+      }
+
+      student = fn int ->
+        %{
+          meta: %{
+            stats: %{
+              shen: 20_000,
+              combat_exp: 400_000,
+              int: int,
+              skills: %{"liangyi-shengong" => 100, "zhengliangyi-jian" => 100}
+            }
+          }
+        }
+      end
+
+      assert {:error, "高深的武功以及精深的技艺都需灵性极高的人才能悟其真谛，不致背道而驰。\n我看大侠还是先回去多读点书吧。\n"} =
+               SectMaster.recruit_gate?(nil, student.(37), gate)
+
+      assert :ok = SectMaster.recruit_gate?(nil, student.(38), gate)
+    end
+
+    test "inquiry_grant：lpc_kunlun 按 level_order 判定，dex 早于最终技能等级" do
+      config = %{
+        "perform_id" => "zhengliangyi-jian/wu",
+        "skill" => "zhengliangyi-jian",
+        "gate_order" => "lpc_kunlun",
+        "min_gongxian" => 1200,
+        "cost_gongxian" => 1200,
+        "min_levels" => %{
+          "force" => 220,
+          "dodge" => 220,
+          "dex" => 45,
+          "zhengliangyi-jian" => 160
+        },
+        "level_order" => ["force", "dodge", "dex", "zhengliangyi-jian"],
+        "level_deny" => %{
+          "force" => "你的内功火候不足，学不了这一招。",
+          "dodge" => "你的轻功火候不足，学不了这一招。",
+          "dex" => "你的身法实在太差，学不了这一招。",
+          "zhengliangyi-jian" => "你的正两仪剑法修为还不够，自己下去练练再来吧。"
+        }
+      }
+
+      npc = %{family: "昆仑派"}
+
+      player = fn overrides ->
+        %{
+          family: "昆仑派",
+          gongxian: 1200,
+          skills: %{
+            "force" => 100,
+            "dodge" => 250,
+            "zhengliangyi-jian" => 100
+          },
+          dex: 44,
+          performs: MapSet.new()
+        }
+        |> Map.merge(overrides)
+      end
+
+      # force / dex / 技能等级三项同时不足 → LPC 先报内功
+      assert {:error, "你的内功火候不足，学不了这一招。\n"} =
+               SectMaster.inquiry_grant(player.(%{force: 100}), npc, config)
+
+      # force 达标后 → LPC 先报身法，而不是最终剑法等级
+      force_ok =
+        player.(%{})
+        |> put_in([:skills, "force"], 220)
+
+      assert {:error, "你的身法实在太差，学不了这一招。\n"} =
+               SectMaster.inquiry_grant(force_ok, npc, config)
+
+      ok =
+        force_ok
+        |> put_in([:dex], 45)
+        |> put_in([:skills, "zhengliangyi-jian"], 160)
+
+      assert {:ok, "zhengliangyi-jian/wu", 1200} =
+               SectMaster.inquiry_grant(ok, npc, config)
+    end
+
+    test "inquiry_grant：lpc_kunlun 的 requires_perform 位于贡献之后、等级之前" do
+      config = %{
+        "perform_id" => "qiankun-jian/ni",
+        "skill" => "qiankun-jian",
+        "gate_order" => "lpc_kunlun",
+        "min_gongxian" => 1800,
+        "cost_gongxian" => 1800,
+        "requires_perform" => "qiankun-jian/qian",
+        "requires_perform_deny" => "要学此招，必须先通晓「乾坤劲」的奥秘。",
+        "min_levels" => %{"force" => 300, "qiankun-jian" => 180},
+        "level_order" => ["force", "qiankun-jian"],
+        "level_deny" => %{"force" => "你的内功火候不足，学不了这一招！"}
+      }
+
+      npc = %{family: "昆仑派"}
+      base = %{
+        family: "昆仑派",
+        gongxian: 1800,
+        skills: %{"force" => 100, "qiankun-jian" => 100},
+        performs: MapSet.new()
+      }
+
+      assert {:error, "你对本派所作出的贡献不够，这一招我暂时还不能传你。\n"} =
+               SectMaster.inquiry_grant(%{base | gongxian: 0}, npc, config)
+
+      assert {:error, "要学此招，必须先通晓「乾坤劲」的奥秘。\n"} =
+               SectMaster.inquiry_grant(base, npc, config)
+
+      ready = %{
+        base
+        | skills: %{"force" => 300, "qiankun-jian" => 180},
+          performs: MapSet.new(["qiankun-jian/qian"])
+      }
+
+      assert {:ok, "qiankun-jian/ni", 1800} = SectMaster.inquiry_grant(ready, npc, config)
+    end
+  end
 end

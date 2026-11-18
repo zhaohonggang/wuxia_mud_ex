@@ -804,4 +804,142 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert String.contains?(inquiry(zhi, "锻炼"), "GAP #747")
     end
   end
+
+  describe "昆仑派 UCL 数据回填（Task #750-#755）" do
+    defp kunlun_npc(world, name) do
+      Enum.find(world.characters, fn c ->
+        c.name == name and Map.get(Map.get(c.meta, :teach) || %{}, :family) == "昆仑派"
+      end)
+    end
+
+    test "8 NPC 的 teach/apprentice 全部落位，技能上限与 LPC 一致", %{world: world} do
+      expected = [
+        {"班淑娴", 20},
+        {"高则成", 15},
+        {"何太冲", 20},
+        {"何足道", 26},
+        {"蒋涛", 15},
+        {"卫四娘", 17},
+        {"西华子", 17},
+        {"詹春", 15}
+      ]
+
+      for {name, skill_count} <- expected do
+        npc = kunlun_npc(world, name)
+        assert npc, "#{name} 应随世界加载"
+        assert npc.meta.teach.family == "昆仑派"
+        assert map_size(npc.meta.teach.teach_skills) == skill_count
+        assert npc.meta.apprentice.family == "昆仑派"
+        assert npc.meta.apprentice.permit_recruit == true
+        assert npc.meta.apprentice.betray_sect_deny == "亏你还有脸回我昆仑山？给我滚开！"
+        assert npc.meta.apprentice.betray_times_deny == "阁下不忠不信，我最痛恨你这种人了。"
+
+        assert npc.meta.apprentice.other_family_deny ==
+                 "阁下既有了名师指点，还来我们昆仑派做什么？"
+      end
+    end
+
+    test "班淑娴 2 招 / 何太冲 5 招：level_order 与逐条文案落位", %{world: world} do
+      ban = kunlun_npc(world, "班淑娴")
+      assert map_size(ban.meta.inquiries) == 9
+
+      sun = inquiry(ban, "损筋诀")
+      assert sun["kind"] == "sect_master_grant"
+      assert sun["perform_id"] == "sanyin-shou/sun"
+      assert sun["gate_order"] == "lpc_kunlun"
+      assert sun["level_order"] == ["force", "sanyin-shou"]
+      assert sun["min_levels"] == %{"force" => 200, "sanyin-shou" => 140}
+      assert sun["cost_gongxian"] == 400
+      assert sun["improve_skills"] == ["hand", "sanyin-shou", "martial-cognize"]
+
+      wu = inquiry(ban, "无声无色")
+      assert wu["level_order"] == ["force", "dodge", "dex", "zhengliangyi-jian"]
+      assert wu["min_levels"]["dex"] == 45
+
+      he = kunlun_npc(world, "何太冲")
+      assert map_size(he.meta.inquiries) == 12
+
+      sui = inquiry(he, "玉碎昆冈")
+      assert sui["perform_id"] == "zhengliangyi-jian/sui"
+      assert sui["level_order"] == ["force", "max-neili", "zhengliangyi-jian"]
+      assert sui["min_levels"]["max-neili"] == 3000
+      assert sui["level_deny"]["max-neili"] == "你的内力修为不足，学不了这一招。"
+
+      fan = inquiry(he, "域外梵音")
+      assert fan["level_order"] == ["force", "tanqin-jifa", "kunlun-jian"]
+      assert fan["level_deny"]["tanqin-jifa"] == "你的弹琴技法尚且不够熟练, 学不了这一招！"
+      assert String.contains?(fan["msg_one"], "前所谓闻")
+
+      assert String.contains?(inquiry(he, "铁琴剑"), "GAP #756")
+      assert String.contains?(inquiry(he, "迅雷剑经"), "GAP #756")
+    end
+
+    test "何足道 4 招：requires_perform / 五技能提升 / 两极剑缺口标记", %{world: world} do
+      he = kunlun_npc(world, "何足道")
+      assert map_size(he.meta.teach.teach_skills) == 26
+      assert he.meta.apprentice.hard_min_int == 38
+      assert String.contains?(he.meta.apprentice.min_shen_deny, "%respect%")
+
+      ni = inquiry(he, "逆转乾坤")
+      assert ni["requires_perform"] == "qiankun-jian/qian"
+      assert ni["requires_perform_deny"] == "要学此招，必须先通晓「乾坤劲」的奥秘。"
+      assert ni["improve_skills"] == [
+               "force",
+               "liangyi-shengong",
+               "sword",
+               "qiankun-jian",
+               "martial-cognize"
+             ]
+
+      assert String.contains?(inquiry(he, "两极剑"), "GAP #756")
+    end
+
+    test "真实 UCL 配置：max-neili 在最终技能等级之前判定", %{world: world} do
+      he = kunlun_npc(world, "何太冲")
+      config = inquiry(he, "玉碎昆冈")
+
+      player = %{
+        family: "昆仑派",
+        gongxian: 800,
+        max_neili: 2999,
+        skills: %{"force" => 250, "zhengliangyi-jian" => 180},
+        performs: MapSet.new()
+      }
+
+      assert {:error, "你的内力修为不足，学不了这一招。\n"} =
+               SectMaster.inquiry_grant(player, %{family: "昆仑派"}, config)
+    end
+
+    test "真实 UCL 配置：逆转乾坤必须先会乾坤劲", %{world: world} do
+      he = kunlun_npc(world, "何足道")
+      config = inquiry(he, "逆转乾坤")
+
+      player = %{
+        family: "昆仑派",
+        gongxian: 1800,
+        skills: %{"force" => 300, "qiankun-jian" => 180},
+        performs: MapSet.new()
+      }
+
+      assert {:error, "要学此招，必须先通晓「乾坤劲」的奥秘。\n"} =
+               SectMaster.inquiry_grant(player, %{family: "昆仑派"}, config)
+
+      ready = %{player | performs: MapSet.new(["qiankun-jian/qian"])}
+
+      assert {:ok, "qiankun-jian/ni", 1800} =
+               SectMaster.inquiry_grant(ready, %{family: "昆仑派"}, config)
+    end
+
+    test "卫四娘/西华子的 no_teach 两条逐字落位", %{world: world} do
+      for name <- ["卫四娘", "西华子"] do
+        npc = kunlun_npc(world, name)
+
+        assert npc.meta.teach.no_teach_deny["liangyi-shengong"] ==
+                 "两仪神功需得掌门人亲自传授。"
+
+        assert npc.meta.teach.no_teach_deny["zhengliangyi-jian"] ==
+                 "正两仪剑法乃本门神功，需要掌门人亲自传授。"
+      end
+    end
+  end
 end
