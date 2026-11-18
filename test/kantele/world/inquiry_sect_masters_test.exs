@@ -599,4 +599,129 @@ defmodule Kantele.World.InquirySectMastersTest do
                SectMaster.inquiry_grant(full, %{family: "商家堡"}, sha)
     end
   end
+
+  describe "华山派 UCL 数据回填（Task #740）" do
+    defp huashan_player(overrides \\ %{}) do
+      disciple(%{
+        skills: %{"huashan-jian" => 160, "kuangfeng-jian" => 140, "force" => 150, "dodge" => 180},
+        family: "华山派"
+      })
+      |> Map.merge(overrides)
+    end
+
+    test "成不忧：直授狂风快剑 + 天外飞龙/风扫落叶双招，剑宗上界原样落位", %{world: world} do
+      cheng = npc(world, "成不忧", "huashan:jzroad6")
+      assert cheng, "成不忧应随世界加载"
+      assert cheng.meta.teach.family == "华山派"
+      assert map_size(cheng.meta.teach.teach_skills) == 13
+
+      kf = inquiry(cheng, "狂风快剑")
+      assert kf["kind"] == "sect_master_teach_skill"
+      assert kf["skill"] == "kuangfeng-jian"
+      assert kf["max_neili_cap"] == 2000
+      assert kf["max_skill_levels"] == %{"force" => 205}
+      assert kf["min_skill_levels"] == %{"sword" => 120, "dodge" => 180}
+      assert kf["min_skill_deny"]["dodge"] == "你轻功修为不足，无法学习狂风快剑！"
+
+      long = inquiry(cheng, "天外飞龙")
+      assert long["perform_id"] == "huashan-jian/long"
+      assert long["max_neili_cap"] == 2000
+      assert long["max_skill_levels"] == %{"force" => 205}
+      assert long["min_levels"] == %{"force" => 150, "huashan-jian" => 150}
+
+      assert {:ok, "huashan-jian/long", 0} =
+               SectMaster.inquiry_grant(huashan_player(), %{family: "华山派"}, long)
+
+      heretic = huashan_player(%{skills: %{"huashan-jian" => 10, "force" => 206}})
+
+      assert {:error, "我剑宗以剑术为主，气为次！你的内功修为已入了气宗歧途，再不能修炼剑宗剑术。"} =
+               SectMaster.inquiry_grant(heretic, %{family: "华山派"}, long)
+    end
+
+    test "风清扬 8 破式走 potential 解锁 handler；丛不弃仅教学不收徒", %{world: world} do
+      feng = npc(world, "风清扬", "huashan:luoyan")
+      assert feng.meta.teach.family == "华山剑宗"
+      assert feng.meta.teach.no_teach == ["dugu-jiujian"]
+
+      for key <- ~w(破剑式 破刀式 破枪式 破鞭式 破索式 破掌式 破箭式 破气式) do
+        cfg = inquiry(feng, key)
+        assert cfg["kind"] == "sect_master_unlock_perform"
+        assert cfg["perform_id"] == "dugu-jiujian/po"
+        assert cfg["min_potential"] == 10
+        assert is_binary(cfg["learned"])
+      end
+
+      assert {:exhausted, "你听了风清扬的教导，颇觉迷茫，看来是潜能不够了。"} =
+               SectMaster.unlock_perform(
+                 huashan_player(%{skills: %{"dugu-jiujian" => 100}, potential: 9}),
+                 inquiry(feng, "破剑式")
+               )
+
+      cong = npc(world, "丛不弃", "huashan:shangu")
+      assert cong.meta.teach.family == "华山剑宗"
+      assert map_size(cong.meta.teach.teach_skills) == 11
+      assert is_nil(cong.meta.inquiries)
+      assert is_nil(cong.meta.apprentice)
+    end
+
+    test "劳德诺 4 门绝招 + 收徒侠义门；岳不群 5 招 + 紫霞秘籍 + 性别收徒门", %{world: world} do
+      lao = npc(world, "劳德诺", "huashan:laojun")
+      jie = inquiry(lao, "截手式")
+      assert jie["perform_id"] == "huashan-jian/jie"
+      assert jie["min_gongxian"] == 60
+      assert jie["min_shen"] == 500
+      assert jie["cost_gongxian"] == 60
+      assert lao.meta.apprentice.min_shen == 0
+      assert lao.meta.apprentice.min_shen_deny == "我华山派乃名门正派，不收你这种心术不正之徒！"
+
+      assert {:ok, "huashan-jian/jie", 60} =
+               SectMaster.inquiry_grant(
+                 huashan_player(%{gongxian: 60, shen: 500}),
+                 %{family: "华山派"},
+                 jie
+               )
+
+      yue = npc(world, "岳不群", "huashan:qunxianguan")
+      san = inquiry(yue, "华岳三神峰")
+      assert san["perform_id"] == "fanliangyi-dao/san"
+      assert san["min_max_neili"] == 2000
+      assert san["min_gongxian"] == 300
+      assert san["min_shen"] == 24_000
+      assert san["cost_gongxian"] == 300
+
+      book = inquiry(yue, "紫霞秘籍")
+      assert book["kind"] == "give_item"
+      assert book["item"] == "clone_lib:zixia_book"
+      assert book["min_shen"] == 30_000
+      # min_skill_levels 的 UCL 键保留下划线；消费端 GiveItem 双查连字符 skill id。
+      assert book["min_skill_levels"] == %{"huashan_xinfa" => 160}
+      assert yue.meta.apprentice.gender == "男性"
+      assert yue.meta.apprentice.gender_deny == "我不收女徒弟，你还是去找我师妹吧！"
+      assert yue.meta.apprentice.min_skills_deny["huashan-jian"] ==
+               "你华山剑法还不够熟练，下去多练习练习再来找我吧！"
+      assert yue.meta.teach.no_teach_deny["pixie-jian"] ==
+               "哈哈！那是林家的家传武功，我怎么可能会呢？"
+    end
+
+    test "令狐冲琴谱/冲灵剑法与岳夫人宁氏一剑落位", %{world: world} do
+      linghu = npc(world, "令狐冲", "huashan:sgyhole1")
+      assert linghu.meta.inquiries["琴谱"]["item"] == "clone_lib:qin"
+      assert linghu.meta.inquiries["琴谱"]["count"] == "music_book"
+      assert linghu.meta.inquiry_state == %{"music_book" => 1}
+
+      chongling = inquiry(linghu, "冲灵剑法")
+      assert chongling["kind"] == "sect_master_teach_skill"
+      assert chongling["gate_order"] == "known_first"
+      assert chongling["level_source"] == "huashan-jian"
+      assert chongling["level_divisor"] == 10
+      assert map_size(linghu.meta.teach.no_teach_deny) == 2
+
+      wife = npc(world, "岳夫人", "huashan:jushi")
+      ning = inquiry(wife, "宁氏一剑")
+      assert ning["perform_id"] == "shunv-jian/ning"
+      assert ning["min_gongxian"] == 600
+      assert ning["min_shen"] == 30_000
+      assert wife.meta.apprentice.gender == "女性"
+    end
+  end
 end

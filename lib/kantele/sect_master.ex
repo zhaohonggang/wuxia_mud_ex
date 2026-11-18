@@ -105,7 +105,7 @@ defmodule Kantele.SectMaster do
       gate_order == "gender_first" and
           gender not in [nil, ""] and
           student_gender(student) != gender ->
-        gender_deny(student, gender)
+        gender_deny(student, gender, config)
 
       # permit_recruit（shaolin.h）三条，顺序与 LPC 一致
       permit_recruit and betrayed_sect?(student, family_name) ->
@@ -138,14 +138,14 @@ defmodule Kantele.SectMaster do
       gate_order == "permit_first" and
           gender not in [nil, ""] and
           student_gender(student) != gender ->
-        gender_deny(student, gender)
+        gender_deny(student, gender, config)
 
       # 达摩 #6：WPK > 3
       not is_nil(max_wpk) and (student_wpk(student) || 0) > max_wpk ->
         {:error, deny_text(config, :wpk_deny, "大侠杀戮心太重，不适合继续学习武功。")}
 
       shen < min_shen ->
-        {:error, "你的杀气不足，师父未同意收你为徒。\n"}
+        {:error, deny_text(config, :min_shen_deny, "你的杀气不足，师父未同意收你为徒。\n")}
 
       not is_nil(max_shen) and shen > max_shen ->
         {:error, deny_text(config, :max_shen_deny, "你心慈手软，杀气不够重，本派不收。\n")}
@@ -156,8 +156,8 @@ defmodule Kantele.SectMaster do
       exp < min_exp ->
         {:error, "你经验尚浅，武功未成，师父未同意收你为徒。\n"}
 
-      not meets_min_skills?(student, min_skills) ->
-        {:error, "你根基尚浅，这几样本事还未练成，先回去打好基础再来吧。\n"}
+      not is_nil(failing_skill = first_failing_recruit_skill(student, min_skills)) ->
+        {:error, min_skills_deny(config, failing_skill)}
 
       true ->
         :ok
@@ -394,10 +394,16 @@ defmodule Kantele.SectMaster do
       玩家侧 `max_neili` 由调用方从 `meta.vitals` 并入 stats map 后传入
     - `"min_dex"` 身法门槛（LPC `query_dex() < N` 即拒，如 hu/hufei.c ask_skill5
       「飞天神行」要求 dex >= 33）；玩家侧 `dex` 取自 `meta.stats.dex`
+    - `"max_skill_levels"` 技能上限 map（LPC masterd.c `teach_pfm` 的
+      `force` / `dodge` 上界：华山剑宗要求 `query_skill("force") <= 205`，
+      超过即拒；loader 会把嵌套键 `_` 归一为 `-`）
+    - `"max_neili_cap"` 内力上限的**上界**（LPC
+      `me->query("max_neili") > 2000` 即拒；与既有下界 `min_max_neili` 并存）
 
   各门槛的拒绝文案可用同名 `*_deny` 键覆盖（`maxed` / `family_deny` /
   `skill_deny` / `max_shen_deny` / `gongxian_deny` / `shen_deny` /
-  `level_deny` / `max_neili_deny` / `dex_deny` / `perform_deny`），缺省用通用文案。
+  `level_deny` / `max_neili_deny` / `dex_deny` / `force_cap_deny` /
+  `neili_cap_deny` / `perform_deny`），缺省用通用文案。
   门派问询的 LPC 文案每招每NPC 都不同（如血刀门「再罗嗦我宰了你」），
   故按配置回填而不是写死在引擎里。
 
@@ -442,6 +448,14 @@ defmodule Kantele.SectMaster do
       is_integer(min_shen) and stat(player, :shen) < min_shen ->
         {:error, deny(config, "shen_deny", "这一招太过阴恨，若被你用去我恐怕不放心！\n")}
 
+      # 华山剑宗的 attempt_ask 在调用 MASTER_D->teach_pfm 之前先判「气宗歧途」，
+      # 所以这两个上界必须早于 min_levels（否则低技能+高内功会命中错误文案）。
+      exceeds_max_levels?(player, config) ->
+        {:error, deny(config, "force_cap_deny", "你内功修为已入了旁门，本门绝招不能再传。\n")}
+
+      above_neili_cap?(player, config) ->
+        {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
+
       not meets_levels?(player, min_levels) ->
         {:error, deny(config, "level_deny", "你的修为还不够，练高了再来吧。\n")}
 
@@ -461,6 +475,171 @@ defmodule Kantele.SectMaster do
   defp below_min_dex?(player, config) do
     case Map.get(config, "min_dex") do
       min when is_integer(min) -> stat(player, :dex) < min
+      _ -> false
+    end
+  end
+
+  @doc """
+  问询直授技能（`SectMasterTeachSkill` 的纯门控），对应 LPC 不用
+  `MASTER_D->teach_pfm`、直接在 ask 闭包里 `me->set_skill(...)` 的分支。
+
+  `config` 键为字符串（loader `parse_inquiry_value/1` 归一）：
+    - `"skill"` 目标技能 id（缺省直接拒绝）
+    - `"family"` 限制门派；`"gate_order" = "known_first"` 时「已会」先判
+      （令狐冲），否则「同门」先判（成不忧），严格对应两份 LPC 源码顺序
+    - `"max_neili_cap"` / `"max_skill_levels"` 上界（剑宗「入了气宗歧途」）
+    - `"min_skill_levels"` 下界（剑法 120 / 轻功 180 / 华山剑法 100）
+    - `"level_source" = "int"` 时按悟性分档：`int <= pivot ? int : pivot + (int - pivot) * factor`；
+      其它值按技能 id 取等级后整除 `"level_divisor"`（冲灵剑法 `lv / 10`）
+
+  拒绝文案键：`maxed` / `family_deny` / `neili_cap_deny` / `max_skill_deny` /
+  `min_skill_deny`。返回 `{:ok, skill, level}` | `{:error, msg}`。
+  """
+  def teach_skill_grant(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+    skill = Map.get(config, "skill")
+    known_first? = Map.get(config, "gate_order") == "known_first"
+    known? = is_binary(skill) and skill_level_of(player, skill) > 0
+    same_family? = same_family?(player, npc)
+
+    cond do
+      not is_binary(skill) ->
+        {:error, deny(config, "perform_deny", "这门功夫暂不外传。\n")}
+
+      known_first? and known? ->
+        {:error, deny(config, "maxed", "我该教的都已经教你了。\n")}
+
+      known_first? and not same_family? ->
+        {:error, deny(config, "family_deny", "你说什么，我不明白！\n")}
+
+      not known_first? and not same_family? ->
+        {:error, deny(config, "family_deny", "你我毫无瓜葛，何出此言？\n")}
+
+      known? ->
+        {:error, deny(config, "maxed", "我该教的都已经教你了。\n")}
+
+      above_neili_cap?(player, config) ->
+        {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门功夫已不适合你。\n")}
+
+      exceeds_max_levels?(player, config) ->
+        {:error, deny(config, "max_skill_deny", "你的内功修为已入了旁门，不能再学本门剑术。\n")}
+
+      not is_nil(failing = first_failing_min_skill(player, Map.get(config, "min_skill_levels", %{}) || %{})) ->
+        {:error, min_skill_deny(config, failing)}
+
+      true ->
+        {:ok, skill, granted_level(player, config)}
+    end
+  end
+
+  @doc """
+  风清扬 `accept_ask` 的破式解锁纯门控（`SectMasterUnlockPerform`）。
+
+  LPC 顺序：会独孤九剑 → 该式已解锁 → 可用潜能（`potential - learned_points >= 10`）
+  → 扣 10 点 `learned_points` → `random(2)` 半数失败 → 授予。失败也扣潜能。
+
+  UCL 键：`perform_id` / `skill` / `min_potential` / `skill_deny` / `maxed` /
+  `potential_deny` / `learned`。随机与技能提升由 handler 负责。
+  """
+  def unlock_perform(player_stats, config) do
+    player = normalize_stats(player_stats)
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    min_potential = config_int(config, "min_potential", 10)
+    potential = Map.get(player, :potential) || 0
+    learned_points = Map.get(player, :learned_points) || 0
+
+    cond do
+      not is_binary(perform_id) or not is_binary(skill) ->
+        {:error, deny(config, "perform_deny", "这门功夫暂不外传。\n")}
+
+      skill_level_of(player, skill) < 1 ->
+        {:error, deny(config, "skill_deny", "你会独孤九剑么？就向我问这个？\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny(config, "maxed", "你不是已经学会这一式了么？\n")}
+
+      potential - learned_points < min_potential ->
+        {:exhausted, deny(config, "potential_deny", "你听了教导，颇觉迷茫，看来是潜能不够了。\n")}
+
+      true ->
+        {:ok, perform_id, learned_points + min_potential}
+    end
+  end
+
+  # LPC learn_kuangfeng：`lv = me->query("int")`；
+  # `lv <= 30 ? lv : 30 + (lv - 30) * 2`。
+  # LPC learn_chongling：`lv = me->query_skill("huashan-jian", 1); set_skill(..., lv/10)`。
+  defp granted_level(player, config) do
+    case Map.get(config, "level_source") do
+      "int" ->
+        int = stat(player, :int)
+        pivot = config_int(config, "level_pivot", 30)
+        factor = config_int(config, "level_factor", 2)
+
+        if int <= pivot do
+          int
+        else
+          pivot + (int - pivot) * factor
+        end
+
+      source when is_binary(source) ->
+        divisor = config_int(config, "level_divisor", 1)
+        level = skill_level_of(player, source)
+        if divisor > 0, do: div(level, divisor), else: 0
+
+      _ ->
+        0
+    end
+  end
+
+  defp config_int(config, key, default) do
+    case Map.get(config, key) do
+      value when is_integer(value) -> value
+      _ -> default
+    end
+  end
+
+  # LPC 每个下界各有独立文案（成不忧：剑法不足 / 轻功不足），故返回首个未达标
+  # 技能 id，由 UCL 的 min_skill_deny map 逐项取原文；平坦字符串仍可覆盖全部。
+  defp first_failing_min_skill(player, levels) when is_map(levels) do
+    case Enum.find(levels, fn {skill, min} -> skill_level_of(player, skill) < min end) do
+      {skill, _min} -> skill
+      nil -> nil
+    end
+  end
+
+  defp first_failing_min_skill(_player, _levels), do: nil
+
+  defp min_skill_deny(config, skill) do
+    default = "你的基本功夫还不够，练好了再来。\n"
+
+    case Map.get(config, "min_skill_deny") do
+      denies when is_map(denies) -> Map.get(denies, skill) || default
+      text when is_binary(text) and byte_size(text) > 0 -> text
+      _ -> default
+    end
+  end
+
+  # LPC masterd.c teach_pfm 的 sk1..sk5 下界判定后，华山剑宗额外要求
+  # `query_skill("force") <= 205`（成不忧/封不平）。以 map 承载，便于 dodge 等
+  # 其它上界沿用；缺 key 不拦（老配置零影响）。
+  defp exceeds_max_levels?(player, config) do
+    case Map.get(config, "max_skill_levels") do
+      levels when is_map(levels) ->
+        skills = Map.get(player, :skills) || %{}
+        Enum.any?(levels, fn {skill, max} -> (Map.get(skills, skill, 0) || 0) > max end)
+
+      _ ->
+        false
+    end
+  end
+
+  # LPC `me->query("max_neili") > N`：上界；与 `min_max_neili`（下界）并存。
+  defp above_neili_cap?(player, config) do
+    case Map.get(config, "max_neili_cap") do
+      max when is_integer(max) -> (Map.get(player, :max_neili) || 0) > max
       _ -> false
     end
   end
@@ -535,7 +714,16 @@ defmodule Kantele.SectMaster do
   # - 清无/清为：女性「女施主呀，贫僧可不敢开这等玩笑啊」/ 无性「这位公公…」
   # - 清法 ask_for_join：女性「可去后山庵里受戒」/ 无性「回去伺候皇上」
   # 此处是拜师(attempt_apprentice)门控，用清无/清为文案。
-  defp gender_deny(character, _required) do
+  # 性别拒绝文案：UCL `gender_deny` 可覆写（华山岳不群「我不收女徒弟…」、
+  # 岳夫人「这位…你还是找我师哥去吧」）；未配置时回退少林既有文案。
+  defp gender_deny(character, _required, config) do
+    case Map.get(config, :gender_deny) do
+      text when is_binary(text) and byte_size(text) > 0 -> {:error, ensure_lf(text)}
+      _ -> gender_deny(character)
+    end
+  end
+
+  defp gender_deny(character) do
     case student_gender(character) do
       "女性" -> {:error, "阿弥陀佛！女施主呀，贫僧可不敢开这等玩笑啊。\n"}
       "无性" -> {:error, "阿弥陀佛！这位公公，你还是回去伺候皇上吧。\n"}
@@ -595,8 +783,25 @@ defmodule Kantele.SectMaster do
     Map.get(Map.get(stats || %{}, :skills) || %{}, skill, 0)
   end
 
-  defp meets_min_skills?(character, min_skills) do
-    Enum.all?(min_skills, fn {skill, level} -> skill_level(character, skill) >= level end)
+  # 收徒门控的逐技能拒绝文案：华山岳不群/岳夫人对「心法不足」与「剑法不足」
+  # 各有一句 LPC 原文（#740），故返回首个未达标技能 id 再按 UCL map 取文案。
+  defp first_failing_recruit_skill(character, min_skills) when is_map(min_skills) do
+    case Enum.find(min_skills, fn {skill, level} -> skill_level(character, skill) < level end) do
+      {skill, _level} -> skill
+      nil -> nil
+    end
+  end
+
+  defp first_failing_recruit_skill(_character, _min_skills), do: nil
+
+  defp min_skills_deny(config, skill) do
+    default = "你根基尚浅，这几样本事还未练成，先回去打好基础再来吧。\n"
+
+    case Map.get(config, :min_skills_deny) do
+      denies when is_map(denies) -> ensure_lf(Map.get(denies, skill) || default)
+      text when is_binary(text) and byte_size(text) > 0 -> ensure_lf(text)
+      _ -> default
+    end
   end
 
   # ---- inquiry_grant 内部（%Stats{} / map 归一为 map，family 走 Map.get） ----
@@ -616,8 +821,17 @@ defmodule Kantele.SectMaster do
   defp perform_known?(player, perform_id),
     do: MapSet.member?(Map.get(player, :performs) || MapSet.new(), perform_id)
 
-  defp skill_level_of(player, skill),
-    do: Map.get(Map.get(player, :skills) || %{}, skill, 0)
+  defp skill_level_of(player, skill) do
+    skills = Map.get(player, :skills) || %{}
+
+    case Map.get(skills, skill, 0) do
+      0 when is_binary(skill) ->
+        Map.get(skills, String.replace(skill, "_", "-"), 0) || 0
+
+      level ->
+        level || 0
+    end
+  end
 
   defp stat(player, key), do: Map.get(player, key) || 0
 

@@ -2,6 +2,7 @@ defmodule Kantele.SectMasterTest do
   use ExUnit.Case, async: true
 
   alias Kantele.Character.Stats
+  alias Kantele.SectMaster
 
   # 形状镜像真宿主（不再臆造）：
   # - 门派 family 是 map（%{name: ..}，family_event.ex:17）；字符串会 BadMapError
@@ -1375,6 +1376,9 @@ end
 defmodule Kantele.SectMasterDamoGateTest do
   use ExUnit.Case, async: true
 
+  alias Kantele.Character.Stats
+  alias Kantele.SectMaster
+
   # 达摩祖师 attempt_apprentice 11 项门槛（少林移植 #626/#636）。
   # 每项单独破坏一个条件，验证拒绝文案与「int<35 只提示不 return」原版行为。
   defp damo_gate(overrides \\ %{}) do
@@ -1509,5 +1513,155 @@ defmodule Kantele.SectMasterDamoGateTest do
 
     assert {:error, "施主杀气未消，且慢。\n"} =
              Kantele.SectMaster.recruit_gate?(nil, student, gate)
+  end
+
+  describe "华山派门控（Task #740）" do
+    defp huashan_player(overrides \\ %{}) do
+      %Stats{
+        skills: %{"huashan-jian" => 160, "kuangfeng-jian" => 140, "force" => 150, "dodge" => 180},
+        gongxian: 0,
+        shen: 0,
+        potential: 100,
+        learned_points: 0,
+        int: 40,
+        performs: MapSet.new()
+      }
+      |> Map.put(:family, "华山派")
+      |> Map.put(:max_neili, 1900)
+      |> Map.merge(overrides)
+    end
+
+    test "inquiry_grant：剑宗上界先于技能下界判定，保持 LPC 气宗歧途文案" do
+      config = %{
+        "perform_id" => "huashan-jian/long",
+        "skill" => "huashan-jian",
+        "min_levels" => %{"huashan-jian" => 150, "force" => 150},
+        "max_skill_levels" => %{"force" => 205},
+        "max_neili_cap" => 2000,
+        "force_cap_deny" => "内功入了气宗歧途。\n",
+        "neili_cap_deny" => "内力太深。\n"
+      }
+
+      assert {:ok, "huashan-jian/long", 0} =
+               SectMaster.inquiry_grant(huashan_player(), %{family: "华山派"}, config)
+
+      assert {:error, "内功入了气宗歧途。\n"} =
+               SectMaster.inquiry_grant(
+                 huashan_player(%{skills: %{"huashan-jian" => 10, "force" => 206}}),
+                 %{family: "华山派"},
+                 config
+               )
+
+      assert {:error, "内力太深。\n"} =
+               SectMaster.inquiry_grant(huashan_player(%{max_neili: 2001}), %{family: "华山派"}, config)
+    end
+
+    test "recruit_gate?：性别/侠义/逐技能文案可由 UCL 覆写" do
+      student = %{
+        meta: %{
+          family: %{name: "华山派"},
+          env: %{gender: "女性"},
+          stats: %{combat_exp: 1_000_000, shen: 0, skills: %{"huashan-jian" => 139, "huashan-xinfa" => 150}}
+        }
+      }
+
+      gate = %{
+        family: "华山派",
+        gender: "男性",
+        gender_deny: "我不收女徒弟，你还是去找我师妹吧！",
+        min_shen: 20_000,
+        min_shen_deny: "你行侠仗义的事还做得不够！",
+        min_skills: %{"huashan-jian" => 140, "huashan-xinfa" => 140},
+        min_skills_deny: %{"huashan-jian" => "你华山剑法还不够熟练！"}
+      }
+
+      assert {:error, "我不收女徒弟，你还是去找我师妹吧！\n"} =
+               SectMaster.recruit_gate?(nil, student, gate)
+
+      male = put_in(student, [:meta, :env, :gender], "男性")
+
+      assert {:error, "你行侠仗义的事还做得不够！\n"} =
+               SectMaster.recruit_gate?(nil, male, gate)
+
+      loyal = put_in(male, [:meta, :stats, :shen], 20_000)
+
+      assert {:error, "你华山剑法还不够熟练！\n"} =
+               SectMaster.recruit_gate?(nil, loyal, gate)
+    end
+
+    test "teach_skill_grant：狂风快剑按 int 分档 + 剑宗上界 + 逐技能拒绝文案" do
+      config = %{
+        "skill" => "kuangfeng-jian",
+        "family" => "华山派",
+        "level_source" => "int",
+        "level_pivot" => 30,
+        "level_factor" => 2,
+        "max_neili_cap" => 2000,
+        "max_skill_levels" => %{"force" => 205},
+        "min_skill_levels" => %{"sword" => 120, "dodge" => 180},
+        "min_skill_deny" => %{"sword" => "剑法不足", "dodge" => "轻功不足"}
+      }
+
+      player = huashan_player(%{int: 40, skills: %{"sword" => 120, "dodge" => 180}})
+      assert {:ok, "kuangfeng-jian", 50} = SectMaster.teach_skill_grant(player, %{family: "华山派"}, config)
+
+      assert {:error, "轻功不足"} =
+               SectMaster.teach_skill_grant(
+                 huashan_player(%{skills: %{"sword" => 120, "dodge" => 179}}),
+                 %{family: "华山派"},
+                 config
+               )
+
+      assert {:error, "你的内功修为已入了旁门，不能再学本门剑术。\n"} =
+               SectMaster.teach_skill_grant(
+                 huashan_player(%{skills: %{"sword" => 120, "dodge" => 180, "force" => 206}}),
+                 %{family: "华山派"},
+                 config
+               )
+    end
+
+    test "teach_skill_grant：已知/异门顺序（known_first）+ 冲灵剑法 lv/10" do
+      config = %{
+        "skill" => "chongling-jian",
+        "family" => "华山派",
+        "gate_order" => "known_first",
+        "level_source" => "huashan-jian",
+        "level_divisor" => 10,
+        "min_skill_levels" => %{"huashan-jian" => 100},
+        "maxed" => "你不是已经会了吗？"
+      }
+
+      player = huashan_player(%{skills: %{"huashan-jian" => 145}})
+      assert {:ok, "chongling-jian", 14} = SectMaster.teach_skill_grant(player, %{family: "华山派"}, config)
+
+      known = huashan_player(%{skills: %{"huashan-jian" => 145, "chongling-jian" => 1}})
+
+      assert {:error, "你不是已经会了吗？"} =
+               SectMaster.teach_skill_grant(known, %{family: "丐帮"}, config)
+    end
+
+    test "unlock_perform：独孤九剑破式的潜能/已会门槛" do
+      config = %{
+        "perform_id" => "dugu-jiujian/po",
+        "skill" => "dugu-jiujian",
+        "min_potential" => 10,
+        "skill_deny" => "你会独孤九剑么？",
+        "potential_deny" => "潜能不够。"
+      }
+
+      assert {:error, "你会独孤九剑么？"} =
+               SectMaster.unlock_perform(huashan_player(), config)
+
+      learned = huashan_player(%{skills: %{"dugu-jiujian" => 100}, potential: 9})
+      assert {:exhausted, "潜能不够。"} = SectMaster.unlock_perform(learned, config)
+
+      enough = huashan_player(%{skills: %{"dugu-jiujian" => 100}, potential: 100})
+      assert {:ok, "dugu-jiujian/po", 10} = SectMaster.unlock_perform(enough, config)
+
+      known = Map.put(enough, :performs, MapSet.new(["dugu-jiujian/po"]))
+
+      assert {:error, "你不是已经学会这一式了么？\n"} =
+               SectMaster.unlock_perform(known, config)
+    end
   end
 end

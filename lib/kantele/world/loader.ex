@@ -891,6 +891,13 @@ defmodule Kantele.World.Loader do
     end)
   end
 
+  # sect_master_teach_skill 的逐技能拒绝文案，键须与 min_skill_levels 对齐。
+  defp normalize_inquiry_field("min_skill_deny", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} ->
+      {String.replace(to_string(skill), "_", "-"), text}
+    end)
+  end
+
   # min_skill_levels 键与 Stats.skills 保持一致（字符串 + 下划线，不做 _→- 归一），
   # 方便 give_item 的 below_min_skill? 直接 Map.get(skills, skill) 命中。
   defp normalize_inquiry_field("min_skill_levels", levels) when is_map(levels) do
@@ -1123,16 +1130,29 @@ defmodule Kantele.World.Loader do
           %{}
       end
 
-    no_teach =
+    # LPC no_teach 有两种形状：平坦字符串列表（如 hu/hufei.c 的三项解锁占位）
+    # 与 skill -> 拒绝文案 map（如 linghu.c 的 yijinjing/dugu-jiujian、
+    # yue-buqun.c 的 pixie-jian）。两者都落位：列表供展示，文案单独成 map，
+    # 避免把华山逐字文案静默丢弃（GAP #742 消费端另立计划）。
+    {no_teach, no_teach_deny} =
       case Map.get(teach, :no_teach) do
-        list when is_list(list) -> Enum.map(list, &to_string/1)
-        _ -> []
+        list when is_list(list) -> {Enum.map(list, &to_string/1), %{}}
+
+        map when is_map(map) ->
+          Enum.reduce(map, {[], %{}}, fn {skill, reason}, {skills, denies} ->
+            skill_id = String.replace(to_string(skill), "_", "-")
+            {[skill_id | skills], Map.put(denies, skill_id, to_string(reason))}
+          end)
+
+        _ ->
+          {[], %{}}
       end
 
     %{
       family: Map.get(teach, :family) && to_string(Map.get(teach, :family)),
       teach_skills: teach_skills,
-      no_teach: no_teach
+      no_teach: no_teach,
+      no_teach_deny: no_teach_deny
     }
   end
 
@@ -1252,6 +1272,18 @@ defmodule Kantele.World.Loader do
       delete_flags_on_rename: to_bool(Map.get(apprentice, :delete_flags_on_rename))
     }
 
+    # #740 华山：收徒 min_skills 的逐技能拒绝文案，键与 min_skills 同形。
+    min_skills_deny =
+      case Map.get(apprentice, :min_skills_deny) do
+        denies when is_map(denies) ->
+          Enum.into(denies, %{}, fn {skill, text} ->
+            {String.replace(to_string(skill), "_", "-"), text}
+          end)
+
+        other ->
+          other
+      end
+
     # #652：LPC 各字辈 attempt_apprentice 成功文案可用 UCL 覆写；未配置时由
     # ShaolinApprenticeDialogue 按字辈/分支回退到 LPC 逐字原文。
     dialogue_fields = %{
@@ -1259,7 +1291,11 @@ defmodule Kantele.World.Loader do
       direct_msg: Map.get(apprentice, :direct_msg),
       promotion_msg_1: Map.get(apprentice, :promotion_msg_1),
       promotion_msg_2: Map.get(apprentice, :promotion_msg_2),
-      promotion_msg_3: Map.get(apprentice, :promotion_msg_3)
+      promotion_msg_3: Map.get(apprentice, :promotion_msg_3),
+      # 华山：LPC 逐字拒绝文案（性别/侠义不足），未配置时 sect_master 回退缺省。
+      min_shen_deny: Map.get(apprentice, :min_shen_deny),
+      gender_deny: Map.get(apprentice, :gender_deny),
+      min_skills_deny: min_skills_deny
     }
 
     Map.merge(base, Map.merge(da_mo_fields, Map.merge(promotion_fields, dialogue_fields)))

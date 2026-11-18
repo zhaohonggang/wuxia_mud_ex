@@ -19,6 +19,8 @@ defmodule Kantele.World.InquiryHandlers do
     "hostile" => Kantele.World.InquiryHandlers.Hostile,
     "jobs_job" => Kantele.World.InquiryHandlers.JobsJob,
     "sect_master_grant" => Kantele.World.InquiryHandlers.SectMasterGrant,
+    "sect_master_teach_skill" => Kantele.World.InquiryHandlers.SectMasterTeachSkill,
+    "sect_master_unlock_perform" => Kantele.World.InquiryHandlers.SectMasterUnlockPerform,
     "tonsure" => Kantele.World.InquiryHandlers.Tonsure
   }
 

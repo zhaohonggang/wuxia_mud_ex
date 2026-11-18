@@ -17,6 +17,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         family_deny = "与本派..."      # 非本门时的返回值（自动加敬称）
         exhausted = "抱歉...发完了。"  # 库存耗尽时的返回值
         max_shen = -10000             # 杀气上限（LPC `shen > -10000` 即拒）
+        min_shen = 30000              # 侠义下限（LPC `0 < shen < N` 即拒，如紫霞秘籍）
         min_combat_exp = 100000       # 经验下限
         max_skill_levels = { poison = 119 }  # 技能上限（LPC `query_skill("poison") > 119` 即拒）
         min_skill_levels = { bagua_dao = 150 }  # 技能下限（LPC `query_skill(...) < 150` 即拒）
@@ -26,6 +27,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         perform_id = "bagua-dao/tian" # 发放同时习得绝招（LPC set can_perform/...=1）
         cost_gongxian = 2200          # 发放后扣除贡献（LPC add("gongxian", -2200)）
         max_shen_deny = "..."         # 杀气过高时的返回值
+        min_shen_deny = "..."         # 侠义不足时的返回值
         min_exp_deny = "..."          # 经验不足时的返回值
         max_skill_deny = "..."        # 技能过高时的返回值
         min_skill_deny = "..."        # 技能不足时的返回值
@@ -223,6 +225,9 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
       exceeds_max_shen?(stats, config) ->
         Map.get(config, "max_shen_deny") || "像你这样心慈手软，这东西给了你也干不了大事。"
 
+      below_min_shen?(stats, config) ->
+        Map.get(config, "min_shen_deny") || "你目前所做的侠义正事不够，这东西暂时还不能交给你。"
+
       below_min_exp?(stats, config) ->
         Map.get(config, "min_exp_deny") || "你现在经验太浅，不用忙着来要这个。"
 
@@ -255,6 +260,15 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     end
   end
 
+  # LPC masterd.c give_item `shen > 0 && who->query("shen") < shen`：
+  # 华山岳不群「紫霞秘籍」要求 shen >= 30000。
+  defp below_min_shen?(stats, config) do
+    case Map.get(config, "min_shen") do
+      min when is_integer(min) -> stat(stats, :shen) < min
+      _ -> false
+    end
+  end
+
   defp below_min_exp?(stats, config) do
     case Map.get(config, "min_combat_exp") do
       min when is_integer(min) -> stat(stats, :combat_exp) < min
@@ -274,11 +288,23 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   end
 
   # LPC `query_skill("<skill>", 1) < N`：任一技能未达下限即拒。
+  # min_skill_levels 的 UCL 键保留下划线（loader 不归一），但 Stats.skills
+  # 用连字符 skill id，故这里双查，否则紫霞秘籍的 huashan_xinfa 永不命中。
   defp below_min_skill?(stats, config) do
     case Map.get(config, "min_skill_levels") do
       levels when is_map(levels) ->
         skills = Map.get(stats, :skills) || %{}
-        Enum.any?(levels, fn {skill, min} -> Map.get(skills, skill, 0) < min end)
+
+        Enum.any?(levels, fn {skill, min} ->
+          level = Map.get(skills, skill, 0) || 0
+
+          level =
+            if level == 0 and is_binary(skill),
+              do: Map.get(skills, String.replace(skill, "_", "-"), 0) || 0,
+              else: level
+
+          level < min
+        end)
 
       _ ->
         false
