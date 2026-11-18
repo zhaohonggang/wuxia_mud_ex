@@ -47,6 +47,7 @@
 - #643 detach/betrayer 叛门记录落盘（commit 9c8c838f）：meta.env 持久化 + Records.save/apply 恢复。
 - #644 清无 gate_order 门控顺序精确对齐（已推送）。
 - #695-698 新手拜师门派指南：Section 1/2/5/7/8 全部结案，39 个门派详细配置，文档 commit 88d8520c 已推送。
+- Task #619 丐帮 NPC UCL 教学数据回填（第2批）：gaibang_ada（3 sect_master_grant: pichen-jian/ao, guanri-jian/fen, guanri-jian/guan + teach_skills sword/179）、gaibang_bai（apprentice+教学+缠丝擒拿 chansi-shou/qin）、gaibang_lu（apprentice 门控 exp>=150000/shen>=20000/force>=120）、gaibang_ma（apprentice+铁爪锁喉 suohou-gong/suo）、gaibang_peng（apprentice+群魔乱舞 fengmo-zhang/luan）、gaibang_quan（apprentice 仅 permit_recruit）、gaibang_wu（apprentice+乌龙探海 liuhe-zhang/tan + 闪刀诀 liuhe-dao/shan）、gaibang_xi（apprentice+风火轮 fumo-zhang/lun）。gaibang_li 的 2 个绝招（五丁开山/绝命一踢）已先于此对齐。gaibang_jian 仅 青竹令（升袋给物品交互，非技能授予，保留 unimplemented）。全量回归 7941/28（+1 bcrypt 抖动，非回归），定向 137/0。
 - #715-#720 拜师门控保真度差异修复（commit 9bbe5038）：min_max_neili 门控、张三丰 min_int=32、陈家洛 min_max_neili=2000、苗人凤移除 miaojia_neigong、宋远桥/俞莲舟 apprentice 块。
 - 少林达摩剑四绝 + PFM 六绝/三绝授予（纯 UCL 数据迁移，无引擎改动）。
 - #543 严格 LPC 狩猎掉落（commit 148390c8）：hunting.ex 概率门控 + Corpse 直接给击杀者背包；hunting_test 23 例全绿；corpse-drop doc §2.4 已改为 direct-to-killer。
@@ -57,7 +58,7 @@
 
 - **Task #1**：提交 P0 产物（R1 阻塞项）：5 个只读脚本 + 4 份文档入 git，确保工作树干净。工作树已 clean（commit 148390c8），仅 `.workbuddy-ai/memory/2026-11-18.md` 为未跟踪待提交工作日志。
 - **Task #544-561**：衡阳猎人教学链（hunting 技能可学、玩家尸体、三段腐烂、生肉不可吃、烤熟闭环、测试、文档）。代码已全部落地，定向测试 62/0 全绿，全量回归 0 新增回归。需同步文档/记忆并闭环标记。
-- **Task #611-619**：新手可拜师门派文档 + UCL teaching data backfill（gaibang_hong 洪七公  apprentice+teach_skills+11 sect_master_grant inquiries 已落地，UCL 编译通过，定向测试 137/0 全绿，全量回归 7941/27，0 新增回归，已提交推送）。
+- **Task #611-619**：新手可拜师门派文档 + UCL teaching data backfill（gaibang_hong 洪七公 + gaibang_ada/白世镜/黎生/鲁有脚/马大元/彭有敬/全冠清/吴长风/奚长老 共 9 个丐帮 NPC 完成；gaibang_jian 仅 青竹令 升袋交互非技能授予保留；gaibang_li 的 2 个绝招已对齐。其余门派 NPC 待回填）。
 - **Task #620-624**：少林派剃度机制移植计划 + audits（部分已完结）。
 - **Task #703-721**：遗留保真度差异修复（部分已完结，见 TaskList #722-723）。
 

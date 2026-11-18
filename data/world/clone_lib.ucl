@@ -14505,10 +14505,73 @@ chats = [
   }
 
   inquiries = [
-    { key = "傲尘剑" value = " inquire about skill1 (unimplemented)" },
-    { key = "焚阳剑" value = " inquire about skill2 (unimplemented)" },
-    { key = "观日神诀" value = " inquire about skill3 (unimplemented)" }
+    { key = "傲尘剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "pichen-jian/ao"
+      skill = "pichen-jian"
+      min_levels = {
+        pichen_jian = 100
+      }
+      min_gongxian = 300
+      cost_gongxian = 300
+      family = "丐帮"
+      family_deny = "给我滚开。"
+      skill_deny = "你学过辟尘剑法吗？不学哪来绝招。"
+      gongxian_deny = "你在帮内毫无作为可言，这样的人不值得我怜悯。"
+      level_deny = {
+        pichen_jian = "你的辟尘剑法还不到家，要多练练。"
+      }
+      maxed = "自己去领悟吧，好自为之。"
+      learned = "你学会了「傲尘剑」。"
+    } },
+    { key = "焚阳剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "guanri-jian/fen"
+      skill = "guanri-jian"
+      min_levels = {
+        guanri_jian = 150
+      }
+      min_gongxian = 1200
+      min_max_neili = 2000
+      cost_gongxian = 1200
+      family = "丐帮"
+      family_deny = "给我滚开。"
+      skill_deny = "你学过观日剑法吗？不学哪来绝招。"
+      gongxian_deny = "你在帮内毫无作为可言，这样的人不值得我怜悯。"
+      level_deny = {
+        guanri_jian = "你的观日剑法还不到家，要多练练。"
+      }
+      maxed = "自己去领悟吧，好自为之。"
+      learned = "你学会了「焚阳剑」。"
+    } },
+    { key = "观日神诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "guanri-jian/guan"
+      skill = "guanri-jian"
+      min_levels = {
+        guanri_jian = 280
+      }
+      min_gongxian = 3000
+      min_max_neili = 5000
+      cost_gongxian = 3000
+      family = "丐帮"
+      family_deny = "给我滚开。"
+      skill_deny = "你学过观日剑法吗？不学哪来绝招。"
+      gongxian_deny = "你在帮内毫无作为可言，这样的人不值得我怜悯。"
+      level_deny = {
+        guanri_jian = "你的观日剑法还不到家，要多练练。"
+      }
+      maxed = "自己去领悟吧，好自为之。"
+      learned = "你学会了「观日神诀」。"
+    } }
   ]
+
+  teach_skills = {
+    sword = {
+      max = 179
+      gongxian = 0
+    }
+  }
 
   skills = [
     { skill = "force" level = 300 },
@@ -14575,9 +14638,48 @@ chats = [
     str = 35
   }
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 120000
+    min_shen = 20000
+    min_skills = { force = 90 }
+  }
+
   inquiries = [
-    { key = "缠丝擒拿" value = " inquire about skill1 (unimplemented)" }
+    { key = "缠丝擒拿" value = {
+      kind = "sect_master_grant"
+      perform_id = "chansi-shou/qin"
+      skill = "chansi-shou"
+      min_levels = {
+        chansi_shou = 120
+      }
+      min_gongxian = 400
+      min_shen = 30000
+      cost_gongxian = 400
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连缠丝擒拿手都没学，何谈绝招可言？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = {
+        chansi_shou = "你的缠丝擒拿手火候还不够，还是下去练高点再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「缠丝擒拿」。"
+    } }
   ]
+
+  teach_skills = {
+    hand = {
+      max = 240
+      gongxian = 0
+    }
+    chansi_shou = {
+      max = 240
+      gongxian = 0
+    }
+  }
 
   skills = [
     { skill = "force" level = 220 },
@@ -15263,6 +15365,14 @@ chats = [
     { type = "dodge" skill = "feiyan-zoubi" }
   ]
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 150000
+    min_shen = 20000
+    min_skills = { force = 120 }
+  }
+
 
   carry = [
     { id = items.cloth.id },
@@ -15295,9 +15405,52 @@ chats = [
     str = 35
   }
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 200000
+    min_shen = 30000
+    min_skills = { force = 150 }
+  }
+
   inquiries = [
-    { key = "铁爪锁喉" value = " inquire about skill1 (unimplemented)" }
+    { key = "铁爪锁喉" value = {
+      kind = "sect_master_grant"
+      perform_id = "suohou-gong/suo"
+      skill = "suohou-gong"
+      min_levels = {
+        suohou_gong = 150
+      }
+      min_gongxian = 400
+      min_shen = 20000
+      cost_gongxian = 400
+      family = "丐帮"
+      family_deny = "那是江湖上朋友送的外号，你问这个干嘛？"
+      skill_deny = "你学过锁喉功吗？不学哪来绝招。"
+      gongxian_deny = "你在丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你侠义正事做得不够，这招我暂时还不能传你。"
+      level_deny = {
+        suohou_gong = "你的锁喉功还不到家，要多练练。"
+      }
+      maxed = "自己下去练习，别老是纠缠不休。"
+      learned = "你学会了「铁爪锁喉」。"
+    } }
   ]
+
+  teach_skills = {
+    claw = {
+      max = 240
+      gongxian = 0
+    }
+    suohou_gong = {
+      max = 240
+      gongxian = 0
+    }
+    force = {
+      max = 240
+      gongxian = 0
+    }
+  }
 
   skills = [
     { skill = "force" level = 240 },
@@ -15362,9 +15515,49 @@ chats = [
     str = 35
   }
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 130000
+    min_skills = { force = 90 }
+  }
+
   inquiries = [
-    { key = "群魔乱舞" value = " inquire about skill1 (unimplemented)" }
+    { key = "群魔乱舞" value = {
+      kind = "sect_master_grant"
+      perform_id = "fengmo-zhang/luan"
+      skill = "fengmo-zhang"
+      min_levels = {
+        fengmo_zhang = 120
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连疯魔杖法都没学，何谈绝招可言？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      level_deny = {
+        fengmo_zhang = "你的疯魔杖法火候还不够，还是下去练高点再来吧。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「群魔乱舞」。"
+    } }
   ]
+
+  teach_skills = {
+    staff = {
+      max = 240
+      gongxian = 0
+    }
+    fengmo_zhang = {
+      max = 240
+      gongxian = 0
+    }
+    force = {
+      max = 220
+      gongxian = 0
+    }
+  }
 
   skills = [
     { skill = "force" level = 220 },
@@ -15423,6 +15616,11 @@ chats = [
     max_neili = 2200
     max_qi = 2500
     str = 32
+  }
+
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
   }
 
   skills = [
@@ -15485,10 +15683,77 @@ chats = [
     str = 35
   }
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 120000
+    min_shen = 20000
+    min_skills = { force = 90 }
+  }
+
   inquiries = [
-    { key = "乌龙探海" value = " inquire about skill1 (unimplemented)" },
-    { key = "闪刀诀" value = " inquire about skill2 (unimplemented)" }
+    { key = "乌龙探海" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuhe-zhang/tan"
+      skill = "liuhe-zhang"
+      min_levels = {
+        liuhe_zhang = 60
+      }
+      min_gongxian = 50
+      min_shen = 3000
+      cost_gongxian = 50
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连六合掌法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        liuhe_zhang = "你的六合掌法火候未到，还得多练习练习。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「乌龙探海」。"
+    } },
+    { key = "闪刀诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuhe-dao/shan"
+      skill = "liuhe-dao"
+      min_levels = {
+        liuhe_dao = 80
+      }
+      min_gongxian = 200
+      min_shen = 5000
+      cost_gongxian = 200
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连六合刀法都未曾学过，哪里来绝招？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你侠义正事做得不够，这招我先不忙传你。"
+      level_deny = {
+        liuhe_dao = "你的六合刀法火候未到，还得多练习练习。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「闪刀诀」。"
+    } }
   ]
+
+  teach_skills = {
+    strike = {
+      max = 240
+      gongxian = 0
+    }
+    liuhe_zhang = {
+      max = 240
+      gongxian = 0
+    }
+    blade = {
+      max = 240
+      gongxian = 0
+    }
+    liuhe_dao = {
+      max = 240
+      gongxian = 0
+    }
+  }
 
   skills = [
     { skill = "force" level = 240 },
@@ -15552,9 +15817,56 @@ chats = [
     str = 35
   }
 
+  apprentice = {
+    family = "丐帮"
+    permit_recruit = true
+    min_exp = 120000
+    min_shen = 20000
+    min_skills = { force = 90 }
+  }
+
   inquiries = [
-    { key = "风火轮" value = " inquire about skill1 (unimplemented)" }
+    { key = "风火轮" value = {
+      kind = "sect_master_grant"
+      perform_id = "fumo-zhang/lun"
+      skill = "fumo-zhang"
+      min_levels = {
+        fumo_zhang = 120
+      }
+      min_gongxian = 350
+      min_shen = 30000
+      cost_gongxian = 350
+      family = "丐帮"
+      family_deny = "阁下与在下素不相识，不知此话从何说起？"
+      skill_deny = "你连伏魔杖法都没学，何谈绝招可言？"
+      gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      level_deny = {
+        fumo_zhang = "你的二十四路伏魔杖火候不够，下去练高点再来吧。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「风火轮」。"
+    } }
   ]
+
+  teach_skills = {
+    staff = {
+      max = 240
+      gongxian = 0
+    }
+    fumo_zhang = {
+      max = 240
+      gongxian = 0
+    }
+    force = {
+      max = 240
+      gongxian = 0
+    }
+    strike = {
+      max = 220
+      gongxian = 0
+    }
+  }
 
   skills = [
     { skill = "force" level = 240 },
