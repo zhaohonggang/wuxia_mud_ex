@@ -86,6 +86,10 @@
 - Task #697 文档 Section 7 LPC/UCL 对比：已结案（3 位新 NPC 一致性均标 ✅，Section 7.1 字段映射 + 各 NPC 差异说明已写入）。
 - Task #698 文档 Section 5/8 统计修正：已结案（apprentice 块 15→13，teach_skills 13→14，门派 13→12，师父条目 14）。
 - 文档 `docs/新手拜师门派指南.zh-CN.md` 已 commit `88d8520c` 并推送 `origin/kalevala`。
+- 少林移植达摩剑四绝授予（§5.8 绝招支线）：commit `5d9e3b4b` 已推送 `origin/kalevala`。
+  - `data/world/clone_lib.ucl` 达摩老祖 inquiries：4 个「unimplemented」占位替换为 `sect_master_grant` 配置（清心剑→luan、乱气剑→qingxin、伤神剑→shang、折元剑→zhe，照 LPC da-mo.c 原版错位保留），门槛 shen>=120000 + damo-jian>=200 + 少林派弟子。
+  - 验证：mix compile EXIT=0；loader_meta_test 41/0；sect_master_test 96/0。
 
 ## 待办（当前）
 - 已知差异（保真度差异，非功能缺口，按需逐项补齐）：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
+- 少林派剩余：PFM 六绝（达摩其他绝招，见 `da-mo.c:398-470`，需 `accept_ask`/`teach_pfm` 管道配置，属 §5.8 独立支线）。
