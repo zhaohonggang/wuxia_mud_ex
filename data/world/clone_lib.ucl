@@ -23779,6 +23779,34 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      lingjiu_xinfa = { max = 120 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      yueying_wubu = { max = 120 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      strike = { max = 120 gongxian = 0 }
+      piaomiao_zhang = { max = 120 gongxian = 0 }
+      sword = { max = 140 gongxian = 0 }
+      tianyu_qijian = { max = 140 gongxian = 0 }
+      literate = { max = 150 gongxian = 0 }
+      martial_cognize = { max = 100 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "走开，灵鹫宫素来不收男徒。"
+    min_skills = {
+      lingjiu_xinfa = 25
+    }
+    min_skills_deny = "你把本门的心法炼好了再来找我。"
+    accept_msg = "那你以后就跟着我吧。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -23814,7 +23842,33 @@ chats = [
   inquiries = [
     { key = "五斗米神功" value = "这…这个……这是由地火功演化而来的一门功夫。" },
     { key = "地火功" value = "地火功是我海南岛五指山赤焰洞一派的基本功夫。" },
-    { key = "归去来兮" value = " inquire about me (unimplemented)" },
+    { key = "归去来兮" value = {
+      kind = "sect_master_grant"
+      perform_id = "wudoumi-shengong/gui"
+      skill = "wudoumi-shengong"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        wudoumi_shengong = 140
+        force = 200
+        max_neili = 2000
+      }
+      level_order = ["wudoumi-shengong", "force", "max-neili"]
+      min_gongxian = 1500
+      cost_gongxian = 1500
+      family_deny = "哪里钻来的鬼东西，快给本洞主滚开！"
+      skill_deny = "嘿！你学过本洞主的五斗米神功吗？"
+      gongxian_deny = "嗯，主公说过了，不得传功给无功劳的弟子。"
+      level_deny = {
+        wudoumi_shengong = "你的五斗米神功火候还差得远，再回去练练！"
+        force = "你看你，内功练成这样，像什么话！"
+        max_neili = "你的内力弱成这样，怎么学习归去来兮？"
+      }
+      maxed = "本洞主已经说得够多了，自己下去练吧。"
+      msg_one = "$n点了点头，一声咳嗽，朝着$N吐出一口浓痰，$N不明其理，当即侧身躲过。可霎时却见那口浓痰在$N身后转了个弯，又飞了回来，正直打在$N的后脑上。\n"
+      learned = "你学会了「归去来兮」。\n你学会了如何将五斗米神功作为拳脚施展。\n"
+      improve_skills = ["force", "unarmed", "wudoumi-shengong", "martial-cognize"]
+    } },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -23834,6 +23888,25 @@ chats = [
     { type = "unarmed" skill = "wudoumi-shengong" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 200 gongxian = 0 }
+      wudoumi_shengong = { max = 200 gongxian = 0 }
+      dodge = { max = 180 gongxian = 0 }
+      feiyan_zoubi = { max = 180 gongxian = 0 }
+      unarmed = { max = 200 gongxian = 0 }
+      parry = { max = 200 gongxian = 0 }
+      martial_cognize = { max = 180 gongxian = 0 }
+      literate = { max = 140 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    accept_msg = "你…你没搞错吧？既然这样，那你跟着我好了。"
+  }
 
   carry = [
     { id = items.cloth.id }
@@ -23883,6 +23956,34 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 140 gongxian = 0 }
+      lingjiu_xinfa = { max = 140 gongxian = 0 }
+      dodge = { max = 160 gongxian = 0 }
+      yueying_wubu = { max = 160 gongxian = 0 }
+      parry = { max = 140 gongxian = 0 }
+      strike = { max = 120 gongxian = 0 }
+      piaomiao_zhang = { max = 120 gongxian = 0 }
+      sword = { max = 140 gongxian = 0 }
+      tianyu_qijian = { max = 140 gongxian = 0 }
+      literate = { max = 180 gongxian = 0 }
+      martial_cognize = { max = 120 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "走开，灵鹫宫素来不收男徒。"
+    min_skills = {
+      lingjiu_xinfa = 30
+    }
+    min_skills_deny = "你把本门的心法炼好了再来找我。"
+    accept_msg = "那你以后就跟着我吧。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -23933,6 +24034,30 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      lingjiu_xinfa = { max = 100 gongxian = 0 }
+      dodge = { max = 80 gongxian = 0 }
+      yueying_wubu = { max = 80 gongxian = 0 }
+      parry = { max = 80 gongxian = 0 }
+      strike = { max = 80 gongxian = 0 }
+      piaomiao_zhang = { max = 80 gongxian = 0 }
+      sword = { max = 80 gongxian = 0 }
+      tianyu_qijian = { max = 80 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+      martial_cognize = { max = 60 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "我看你还是去少林寺吧，我们主公天天都在怀念。"
+    accept_msg = "既然这样，那你就留在这儿下吧，以后我就是你师父了。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -23983,6 +24108,30 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 80 gongxian = 0 }
+      lingjiu_xinfa = { max = 80 gongxian = 0 }
+      dodge = { max = 80 gongxian = 0 }
+      yueying_wubu = { max = 80 gongxian = 0 }
+      parry = { max = 80 gongxian = 0 }
+      strike = { max = 80 gongxian = 0 }
+      piaomiao_zhang = { max = 80 gongxian = 0 }
+      sword = { max = 100 gongxian = 0 }
+      tianyu_qijian = { max = 100 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+      martial_cognize = { max = 60 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "我看你还是去少林寺吧，我们主公天天都在怀念。"
+    accept_msg = "既然这样，那你就留在这儿下吧，以后我就是你师父了。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -24015,8 +24164,58 @@ chats = [
   }
 
   inquiries = [
-    { key = "云霞幻生" value = " inquire about skill (unimplemented)" },
-    { key = "截筋断脉" value = " inquire about skill2 (unimplemented)" },
+    { key = "云霞幻生" value = {
+      kind = "sect_master_grant"
+      perform_id = "caiyan-gong/huan"
+      skill = "caiyan-gong"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        dodge = 180
+        caiyan_gong = 120
+      }
+      level_order = ["dodge", "caiyan-gong"]
+      min_gongxian = 500
+      cost_gongxian = 500
+      family_deny = "还不给老娘滚开！"
+      skill_deny = "你采燕功都未曾练过，还谈什么绝招。"
+      gongxian_deny = "主公有令，不得传功给无功劳的弟子。"
+      level_deny = {
+        dodge = "你的轻功火候未到，学不了这招。"
+        caiyan_gong = "你的采燕功火候还差得远，再回去练练！"
+      }
+      maxed = "你不是已经学会了吗？何故来消遣老娘！"
+      msg_one = "$n点了点头，喝道：“看好了！”说完单手一抖，已抽出背负在背上的钓竿，随即急速舞动，顿时只见钓竿由一变二，由二变四，由四变八，由八变十六……幻出无数竿影连连刺出，全全笼罩$N四周各个方位。\n"
+      learned = "你学会了「云霞幻生」。\n"
+      improve_skills = ["dodge", "club", "caiyan-gong", "martial-cognize"]
+    } },
+    { key = "截筋断脉" value = {
+      kind = "sect_master_grant"
+      perform_id = "jieshou-jiushi/jie"
+      skill = "jieshou-jiushi"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        max_neili = 850
+        force = 120
+        jieshou_jiushi = 100
+      }
+      level_order = ["max-neili", "force", "jieshou-jiushi"]
+      min_gongxian = 300
+      cost_gongxian = 300
+      family_deny = "你是哪里来的？快给我滚开！"
+      skill_deny = "你连截手九式都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中碌碌无为，这一招我暂时还不能传你。"
+      level_deny = {
+        max_neili = "你的内力修行太浅，尚且学不了这一招。"
+        force = "你的内功修行太浅，尚且学不了这一招。"
+        jieshou_jiushi = "你的截手九式火候未到，尚且学不了这一招。"
+      }
+      maxed = "这招我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n甚喜，对$N点头道：“不错，不错。你这孩子，真不亏了我平时的教诲。”说完将$N招至跟前，细说良久。\n"
+      learned = "你学会了「截筋断脉」。\n"
+      improve_skills = ["hand", "jieshou-jiushi", "martial-cognize"]
+    } },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -24040,6 +24239,28 @@ chats = [
     { type = "hand" skill = "jieshou-jiushi" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 180 gongxian = 0 }
+      linji_zhuang = { max = 180 gongxian = 0 }
+      dodge = { max = 180 gongxian = 0 }
+      caiyan_gong = { max = 180 gongxian = 0 }
+      hand = { max = 180 gongxian = 0 }
+      jieshou_jiushi = { max = 180 gongxian = 0 }
+      parry = { max = 180 gongxian = 0 }
+      club = { max = 180 gongxian = 0 }
+      literate = { max = 160 gongxian = 0 }
+      martial_cognize = { max = 160 gongxian = 0 }
+      mahayana = { max = 180 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    accept_msg = "好吧，既然你想闹着玩，老娘就收下你好了！"
+  }
 
   carry = [
     { id = items.diaogan.id },
@@ -24089,6 +24310,30 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 80 gongxian = 0 }
+      lingjiu_xinfa = { max = 80 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      yueying_wubu = { max = 100 gongxian = 0 }
+      parry = { max = 80 gongxian = 0 }
+      strike = { max = 80 gongxian = 0 }
+      piaomiao_zhang = { max = 80 gongxian = 0 }
+      sword = { max = 80 gongxian = 0 }
+      tianyu_qijian = { max = 80 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+      martial_cognize = { max = 60 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "我看你还是去少林寺吧，我们主公天天都在怀念。"
+    accept_msg = "既然这样，那你就留在这儿下吧，以后我就是你师父了。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -24121,7 +24366,31 @@ chats = [
   }
 
   inquiries = [
-    { key = "幻遁寒星" value = " inquire about skill (unimplemented)" },
+    { key = "幻遁寒星" value = {
+      kind = "sect_master_grant"
+      perform_id = "pidi-shenzhen/huan"
+      skill = "pidi-shenzhen"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 200
+        pidi_shenzhen = 140
+      }
+      level_order = ["force", "pidi-shenzhen"]
+      min_gongxian = 600
+      cost_gongxian = 600
+      family_deny = "快给我滚开！我可没时间和你耗。"
+      skill_deny = "你辟地神针都没学，还谈什么绝招。"
+      gongxian_deny = "嗯，主公说过了，不得传功给无功劳的弟子。"
+      level_deny = {
+        force = "你的内功差成这样，怎么学绝技？"
+        pidi_shenzhen = "你的辟地神针火候还差得远，再回去练练！"
+      }
+      maxed = "我不是已经教会你了吗？"
+      msg_one = "$n阴阴一笑，将$N招至跟前，轻声在耳旁秘密说了些什么。随后又伸出右手，十指箕张，一伸一缩，看样子是一种很特别的暗器法门。\n"
+      learned = "你学会了「幻遁寒星」。\n"
+      improve_skills = ["throwing", "pidi-shenzhen", "martial-cognize"]
+    } },
     { key = "斓蜈金针" value = " inquire about me (unimplemented)" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
@@ -24153,6 +24422,33 @@ chats = [
     { type = "staff" skill = "shennong-zhang" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 180 gongxian = 0 }
+      shennong_xinjing = { max = 180 gongxian = 0 }
+      dodge = { max = 200 gongxian = 0 }
+      xuefu_mizong = { max = 200 gongxian = 0 }
+      strike = { max = 180 gongxian = 0 }
+      dusha_zhang = { max = 180 gongxian = 0 }
+      hand = { max = 180 gongxian = 0 }
+      lansha_shou = { max = 180 gongxian = 0 }
+      parry = { max = 180 gongxian = 0 }
+      staff = { max = 180 gongxian = 0 }
+      shennong_zhang = { max = 180 gongxian = 0 }
+      throwing = { max = 220 gongxian = 0 }
+      pidi_shenzhen = { max = 220 gongxian = 0 }
+      literate = { max = 160 gongxian = 0 }
+      poison = { max = 200 gongxian = 0 }
+      martial_cognize = { max = 180 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    accept_msg = "这个世道真是什么人都有，摆着那么多门派不拜，却跑来拜我。亏你也想得出来，既然来了，我就收下你吧。"
+  }
 
   carry = [
     { id = items.gangzhang.id },
@@ -24203,6 +24499,34 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 140 gongxian = 0 }
+      lingjiu_xinfa = { max = 140 gongxian = 0 }
+      dodge = { max = 160 gongxian = 0 }
+      yueying_wubu = { max = 160 gongxian = 0 }
+      parry = { max = 140 gongxian = 0 }
+      strike = { max = 140 gongxian = 0 }
+      piaomiao_zhang = { max = 140 gongxian = 0 }
+      sword = { max = 160 gongxian = 0 }
+      tianyu_qijian = { max = 160 gongxian = 0 }
+      literate = { max = 180 gongxian = 0 }
+      martial_cognize = { max = 120 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "走开，灵鹫宫素来不收男徒。"
+    min_skills = {
+      lingjiu_xinfa = 40
+    }
+    min_skills_deny = "你把本门的心法炼好了再来找我。"
+    accept_msg = "那你以后就跟着我吧。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -24237,14 +24561,208 @@ chats = [
   }
 
   inquiries = [
-    { key = "寰阳式" value = " inquire about skill7 (unimplemented)" },
-    { key = "幻剑诀" value = " inquire about skill2 (unimplemented)" },
-    { key = "折梅式" value = " inquire about skill4 (unimplemented)" },
-    { key = "海渊式" value = " inquire about skill5 (unimplemented)" },
-    { key = "生死符" value = " inquire about skill6 (unimplemented)" },
-    { key = "破神诀" value = " inquire about skill8 (unimplemented)" },
-    { key = "聚剑诀" value = " inquire about skill3 (unimplemented)" },
-    { key = "闪剑诀" value = " inquire about skill1 (unimplemented)" }
+    { key = "寰阳式" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyang-zhang/huan"
+      skill = "liuyang-zhang"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 200
+        liuyang_zhang = 130
+      }
+      level_order = ["force", "liuyang-zhang"]
+      min_gongxian = 1000
+      cost_gongxian = 1000
+      family_deny = "你不是灵鹫宫中人，何来讨教寰阳式之说？"
+      skill_deny = "你连六阳掌都没学，还谈什么寰阳式？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了寰阳式。"
+        liuyang_zhang = "你的六阳掌火候还差得远，再回去练练！"
+      }
+      maxed = "寰阳式我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n仰天长啸，双掌推出，一股雄浑掌力如排山倒海般向$N压来。\n"
+      learned = "你学会了「寰阳式」。\n"
+      improve_skills = ["strike", "liuyang-zhang", "martial-cognize"]
+    } },
+    { key = "幻剑诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianyu-qijian/huan"
+      skill = "tianyu-qijian"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 160
+        tianyu_qijian = 120
+      }
+      level_order = ["force", "tianyu-qijian"]
+      min_gongxian = 300
+      cost_gongxian = 300
+      family_deny = "你不是灵鹫宫中人，何来讨教幻剑诀之说？"
+      skill_deny = "你连天羽奇剑都没学，还谈什么幻剑诀？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了幻剑诀。"
+        tianyu_qijian = "你的天羽奇剑火候还差得远，再回去练练！"
+      }
+      maxed = "幻剑诀我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n手中剑剑光大盛，剑影重重，幻出无数道剑芒，将$N团团围住。\n"
+      learned = "你学会了「幻剑诀」。\n"
+      improve_skills = ["sword", "tianyu-qijian", "martial-cognize"]
+    } },
+    { key = "折梅式" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhemei-shou/zhe"
+      skill = "zhemei-shou"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 120
+        zhemei_shou = 80
+      }
+      level_order = ["force", "zhemei-shou"]
+      min_gongxian = 300
+      cost_gongxian = 300
+      family_deny = "你不是灵鹫宫中人，何来讨教折梅式之说？"
+      skill_deny = "你连折梅手都没学，还谈什么折梅式？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了折梅式。"
+        zhemei_shou = "你的折梅手火候还差得远，再回去练练！"
+      }
+      maxed = "折梅式我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n双手一错，一招「折梅式」轻描淡写地拍向$N，$N竟全然闪避不得。\n"
+      learned = "你学会了「折梅式」。\n"
+      improve_skills = ["hand", "zhemei-shou", "martial-cognize"]
+    } },
+    { key = "海渊式" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhemei-shou/hai"
+      skill = "zhemei-shou"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 200
+        zhemei_shou = 130
+      }
+      level_order = ["force", "zhemei-shou"]
+      min_gongxian = 800
+      cost_gongxian = 800
+      family_deny = "你不是灵鹫宫中人，何来讨教海渊式之说？"
+      skill_deny = "你连折梅手都没学，还谈什么海渊式？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了海渊式。"
+        zhemei_shou = "你的折梅手火候还差得远，再回去练练！"
+      }
+      maxed = "海渊式我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n一掌拍出，掌风如海，波涛汹涌，向$N涌去。\n"
+      learned = "你学会了「海渊式」。\n"
+      improve_skills = ["hand", "zhemei-shou", "martial-cognize"]
+    } },
+    { key = "生死符" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyang-zhang/zhong"
+      skill = "liuyang-zhang"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 200
+        liuyang_zhang = 150
+      }
+      level_order = ["force", "liuyang-zhang"]
+      min_gongxian = 600
+      cost_gongxian = 600
+      family_deny = "你不是灵鹫宫中人，何来讨教生死符之说？"
+      skill_deny = "你连六阳掌都没学，还谈什么生死符？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了生死符。"
+        liuyang_zhang = "你的六阳掌火候还差得远，再回去练练！"
+      }
+      maxed = "生死符我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n袖袍一挥，一缕无形气劲直射$N，$N只觉胸口一紧。\n"
+      learned = "你学会了「生死符」。\n"
+      improve_skills = ["strike", "liuyang-zhang", "martial-cognize"]
+    } },
+    { key = "破神诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyang-zhang/po"
+      skill = "liuyang-zhang"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        bahuang_gong = 220
+        liuyang_zhang = 220
+        max_neili = 3500
+      }
+      level_order = ["bahuang-gong", "liuyang-zhang", "max-neili"]
+      min_gongxian = 2200
+      cost_gongxian = 2200
+      family_deny = "你不是灵鹫宫中人，何来讨教破神诀之说？"
+      skill_deny = "你连六阳掌都没学，还谈什么破神诀？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        bahuang_gong = "你的八荒六合功火候还差得远，再回去练练！"
+        liuyang_zhang = "你的六阳掌火候还差得远，再回去练练！"
+        max_neili = "你的内力修为太浅，尚且学不了破神诀。"
+      }
+      maxed = "破神诀我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n深深吸一口气，双掌缓缓推出，看似平淡无奇，实则蕴含毁天灭地之力。\n"
+      learned = "你学会了「破神诀」。\n"
+      improve_skills = ["strike", "liuyang-zhang", "force", "bahuang-gong", "martial-cognize"]
+    } },
+    { key = "聚剑诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianyu-qijian/ju"
+      skill = "tianyu-qijian"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 180
+        tianyu_qijian = 130
+      }
+      level_order = ["force", "tianyu-qijian"]
+      min_gongxian = 400
+      cost_gongxian = 400
+      family_deny = "你不是灵鹫宫中人，何来讨教聚剑诀之说？"
+      skill_deny = "你连天羽奇剑都没学，还谈什么聚剑诀？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了聚剑诀。"
+        tianyu_qijian = "你的天羽奇剑火候还差得远，再回去练练！"
+      }
+      maxed = "聚剑诀我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n一声长啸，四面八方飞来的剑光汇聚于一处，化作一道巨剑，向$N劈下。\n"
+      learned = "你学会了「聚剑诀」。\n"
+      improve_skills = ["sword", "tianyu-qijian", "martial-cognize"]
+    } },
+    { key = "闪剑诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianyu-qijian/shan"
+      skill = "tianyu-qijian"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 100
+        tianyu_qijian = 60
+      }
+      level_order = ["force", "tianyu-qijian"]
+      min_gongxian = 100
+      cost_gongxian = 100
+      family_deny = "你不是灵鹫宫中人，何来讨教闪剑诀之说？"
+      skill_deny = "你连天羽奇剑都没学，还谈什么闪剑诀？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了闪剑诀。"
+        tianyu_qijian = "你的天羽奇剑火候还差得远，再回去练练！"
+      }
+      maxed = "闪剑诀我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n点了点头，剑尖一颤，一道剑气直取$N面门，$N侧身避开，却见剑光闪过，已在$N肩上留下一道白痕。\n"
+      learned = "你学会了「闪剑诀」。\n"
+      improve_skills = ["sword", "tianyu-qijian", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -24283,6 +24801,55 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" },
     { type = "throwing" skill = "liuyang-zhang" }
   ]
+
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 320 gongxian = 0 }
+      shaolin_xinfa = { max = 100 gongxian = 0 }
+      xiaowuxiang = { max = 280 gongxian = 0 }
+      beiming_shengong = { max = 280 gongxian = 0 }
+      bahuang_gong = { max = 320 gongxian = 0 }
+      lingjiu_xinfa = { max = 240 gongxian = 0 }
+      dodge = { max = 260 gongxian = 0 }
+      yueying_wubu = { max = 260 gongxian = 0 }
+      shaolin_shenfa = { max = 100 gongxian = 0 }
+      parry = { max = 260 gongxian = 0 }
+      hand = { max = 260 gongxian = 0 }
+      zhemei_shou = { max = 260 gongxian = 0 }
+      strike = { max = 280 gongxian = 0 }
+      piaomiao_zhang = { max = 240 gongxian = 0 }
+      liuyang_zhang = { max = 280 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      luohan_quan = { max = 100 gongxian = 0 }
+      unarmed = { max = 220 gongxian = 0 }
+      shaolin_quan = { max = 100 gongxian = 0 }
+      sword = { max = 240 gongxian = 0 }
+      tianyu_qijian = { max = 240 gongxian = 0 }
+      throwing = { max = 240 gongxian = 0 }
+      buddhism = { max = 120 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 280 gongxian = 0 }
+    }
+    no_teach = {
+      shaolin_xinfa = "…这…这东西我都没学好。"
+      xiaowuxiang = "唉……这是师尊注如我体内的，教我怎么教给你？"
+      beiming_shengong = "唉……这是师尊注如我体内的，教我怎么教给你？"
+      shaolin_shenfa = "…这个…嗯…我还是教你本门的轻功好了。"
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    min_shen = 0
+    min_skills = {
+      lingjiu_xinfa = 100
+    }
+    min_max_neili = 1200
+    min_exp = 300000
+    accept_msg = "今日小僧…在下就收下你，以后你要多做好事。"
+  }
 
 
   carry = [
@@ -24333,6 +24900,34 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 160 gongxian = 0 }
+      lingjiu_xinfa = { max = 160 gongxian = 0 }
+      dodge = { max = 140 gongxian = 0 }
+      yueying_wubu = { max = 140 gongxian = 0 }
+      parry = { max = 140 gongxian = 0 }
+      strike = { max = 160 gongxian = 0 }
+      piaomiao_zhang = { max = 160 gongxian = 0 }
+      sword = { max = 140 gongxian = 0 }
+      tianyu_qijian = { max = 140 gongxian = 0 }
+      literate = { max = 180 gongxian = 0 }
+      martial_cognize = { max = 120 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "走开，灵鹫宫素来不收男徒。"
+    min_skills = {
+      lingjiu_xinfa = 40
+    }
+    min_skills_deny = "你把本门的心法炼好了再来找我。"
+    accept_msg = "那你以后就跟着我吧。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -24383,6 +24978,30 @@ chats = [
     { type = "sword" skill = "tianyu-qijian" }
   ]
 
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 80 gongxian = 0 }
+      lingjiu_xinfa = { max = 80 gongxian = 0 }
+      dodge = { max = 80 gongxian = 0 }
+      yueying_wubu = { max = 80 gongxian = 0 }
+      parry = { max = 80 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaomiao_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 80 gongxian = 0 }
+      tianyu_qijian = { max = 80 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+      martial_cognize = { max = 60 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "我看你还是去少林寺吧，我们主公天天都在怀念。"
+    accept_msg = "既然这样，那你就留在这儿下吧，以后我就是你师父了。"
+  }
 
   carry = [
     { id = items.qingyi.id },
@@ -24418,7 +25037,33 @@ chats = [
   inquiries = [
     { key = "剑法" value = "我的周公剑天下无双，除了主公，没第二人能够敌过。" },
     { key = "剑神" value = "论空手，自然是我主公虚竹子第一。但若是论剑法嘛，还得是我。" },
-    { key = "剑芒" value = " inquire about me (unimplemented)" },
+    { key = "剑芒" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhougong-jian/mang"
+      skill = "zhougong-jian"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 200
+        max_neili = 2200
+        zhougong_jian = 140
+      }
+      level_order = ["force", "max-neili", "zhougong-jian"]
+      min_gongxian = 1000
+      cost_gongxian = 1000
+      family_deny = "你不是灵鹫宫中人，何来讨教剑芒之说？"
+      skill_deny = "你连周公剑都没学，还谈什么剑芒？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了剑芒。"
+        max_neili = "你的内力修为太浅，尚且学不了剑芒。"
+        zhougong_jian = "你的周公剑火候还差得远，再回去练练！"
+      }
+      maxed = "剑芒我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n剑光一闪，一道剑芒直射$N，$N勉强闪避，剑芒已擦肩而过。\n"
+      learned = "你学会了「剑芒」。\n"
+      improve_skills = ["sword", "zhougong-jian", "martial-cognize"]
+    } },
     { key = "周公剑" value = "此乃天下第一剑法。" },
     { key = "天山童姥" value = "她杀尽我一字慧剑门满门师徒，幸亏她死得早！" },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
@@ -24443,6 +25088,29 @@ chats = [
     { type = "parry" skill = "zhougong-jian" },
     { type = "strike" skill = "liuyang-zhang" }
   ]
+
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 220 gongxian = 0 }
+      zixia_shengong = { max = 220 gongxian = 0 }
+      sword = { max = 240 gongxian = 0 }
+      zhougong_jian = { max = 240 gongxian = 0 }
+      dodge = { max = 220 gongxian = 0 }
+      feiyan_zoubi = { max = 220 gongxian = 0 }
+      strike = { max = 180 gongxian = 0 }
+      liuyang_zhang = { max = 180 gongxian = 0 }
+      parry = { max = 220 gongxian = 0 }
+      martial_cognize = { max = 220 gongxian = 0 }
+      literate = { max = 180 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    accept_msg = "甚好！甚好！我一字慧剑门门下无徒，今日老夫便收下你。"
+  }
 
 
   carry = [
@@ -24475,7 +25143,31 @@ chats = [
   }
 
   inquiries = [
-    { key = "乾坤无量" value = " inquire about me (unimplemented)" },
+    { key = "乾坤无量" value = {
+      kind = "sect_master_grant"
+      perform_id = "wuliang-jian/qian"
+      skill = "wuliang-jian"
+      gate_order = "lpc_kunlun"
+      family = "灵鹫宫"
+      min_levels = {
+        force = 150
+        wuliang_jian = 100
+      }
+      level_order = ["force", "wuliang-jian"]
+      min_gongxian = 300
+      cost_gongxian = 300
+      family_deny = "你不是灵鹫宫中人，何来讨教乾坤无量之说？"
+      skill_deny = "你连无量剑都没学，还谈什么乾坤无量？"
+      gongxian_deny = "你对本宫所作贡献不够，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为太浅，尚且学不了乾坤无量。"
+        wuliang_jian = "你的无量剑火候还差得远，再回去练练！"
+      }
+      maxed = "乾坤无量我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n长剑一展，剑气纵横，乾坤无量之势瞬间展开。\n"
+      learned = "你学会了「乾坤无量」。\n"
+      improve_skills = ["sword", "wuliang-jian", "martial-cognize"]
+    } },
     { key = "虚竹" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" },
     { key = "虚竹子" value = "他是我们灵鹫宫新的主公，我们全部听他号令。" }
   ]
@@ -24502,6 +25194,32 @@ chats = [
     { type = "unarmed" skill = "liuhe-quan" },
     { type = "claw" skill = "da-qinna" }
   ]
+
+  teach = {
+    family = "灵鹫宫"
+    teach_skills = {
+      force = { max = 180 gongxian = 0 }
+      wuliang_xinfa = { max = 180 gongxian = 0 }
+      dahai_wuliang = { max = 180 gongxian = 0 }
+      dodge = { max = 180 gongxian = 0 }
+      feiyan_zoubi = { max = 180 gongxian = 0 }
+      sword = { max = 180 gongxian = 0 }
+      wuliang_jian = { max = 180 gongxian = 0 }
+      unarmed = { max = 160 gongxian = 0 }
+      liuhe_quan = { max = 160 gongxian = 0 }
+      claw = { max = 160 gongxian = 0 }
+      da_qinna = { max = 160 gongxian = 0 }
+      parry = { max = 180 gongxian = 0 }
+      martial_cognize = { max = 160 gongxian = 0 }
+      literate = { max = 160 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "灵鹫宫"
+    permit_recruit = true
+    accept_msg = "那你以后就跟着我好了。"
+  }
 
 
   carry = [
