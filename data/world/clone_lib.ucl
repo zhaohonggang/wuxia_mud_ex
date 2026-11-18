@@ -14566,10 +14566,13 @@ chats = [
     } }
   ]
 
-  teach_skills = {
-    sword = {
-      max = 179
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      sword = {
+        max = 179
+        gongxian = 0
+      }
     }
   }
 
@@ -14670,14 +14673,17 @@ chats = [
     } }
   ]
 
-  teach_skills = {
-    hand = {
-      max = 240
-      gongxian = 0
-    }
-    chansi_shou = {
-      max = 240
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      hand = {
+        max = 240
+        gongxian = 0
+      }
+      chansi_shou = {
+        max = 240
+        gongxian = 0
+      }
     }
   }
 
@@ -15047,22 +15053,25 @@ chats = [
     { type = "strike" skill = "xianglong-zhang" }
   ]
 
-  teach_skills = {
-    strike = {
-      max = 179
-      gongxian = 0
-    }
-    unarmed = {
-      max = 179
-      gongxian = 0
-    }
-    xianglong_zhang = {
-      max = 340
-      gongxian = 0
-    }
-    xiaoyaoyou = {
-      max = 320
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      strike = {
+        max = 179
+        gongxian = 0
+      }
+      unarmed = {
+        max = 179
+        gongxian = 0
+      }
+      xianglong_zhang = {
+        max = 340
+        gongxian = 0
+      }
+      xiaoyaoyou = {
+        max = 320
+        gongxian = 0
+      }
     }
   }
 
@@ -15437,18 +15446,21 @@ chats = [
     } }
   ]
 
-  teach_skills = {
-    claw = {
-      max = 240
-      gongxian = 0
-    }
-    suohou_gong = {
-      max = 240
-      gongxian = 0
-    }
-    force = {
-      max = 240
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      claw = {
+        max = 240
+        gongxian = 0
+      }
+      suohou_gong = {
+        max = 240
+        gongxian = 0
+      }
+      force = {
+        max = 240
+        gongxian = 0
+      }
     }
   }
 
@@ -15544,18 +15556,21 @@ chats = [
     } }
   ]
 
-  teach_skills = {
-    staff = {
-      max = 240
-      gongxian = 0
-    }
-    fengmo_zhang = {
-      max = 240
-      gongxian = 0
-    }
-    force = {
-      max = 220
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      staff = {
+        max = 240
+        gongxian = 0
+      }
+      fengmo_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      force = {
+        max = 220
+        gongxian = 0
+      }
     }
   }
 
@@ -15736,22 +15751,25 @@ chats = [
     } }
   ]
 
-  teach_skills = {
-    strike = {
-      max = 240
-      gongxian = 0
-    }
-    liuhe_zhang = {
-      max = 240
-      gongxian = 0
-    }
-    blade = {
-      max = 240
-      gongxian = 0
-    }
-    liuhe_dao = {
-      max = 240
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      strike = {
+        max = 240
+        gongxian = 0
+      }
+      liuhe_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      blade = {
+        max = 240
+        gongxian = 0
+      }
+      liuhe_dao = {
+        max = 240
+        gongxian = 0
+      }
     }
   }
 
@@ -15849,22 +15867,25 @@ chats = [
     } }
   ]
 
-  teach_skills = {
-    staff = {
-      max = 240
-      gongxian = 0
-    }
-    fumo_zhang = {
-      max = 240
-      gongxian = 0
-    }
-    force = {
-      max = 240
-      gongxian = 0
-    }
-    strike = {
-      max = 220
-      gongxian = 0
+  teach = {
+    family = "丐帮"
+    teach_skills = {
+      staff = {
+        max = 240
+        gongxian = 0
+      }
+      fumo_zhang = {
+        max = 240
+        gongxian = 0
+      }
+      force = {
+        max = 240
+        gongxian = 0
+      }
+      strike = {
+        max = 220
+        gongxian = 0
+      }
     }
   }
 
@@ -16156,38 +16177,41 @@ chats = [
     { type = "unarmed" skill = "meinv-quan" }
   ]
 
-  teach_skills = {
-    force = {
-      max = 220
-      gongxian = 0
-    }
-    strike = {
-      max = 220
-      gongxian = 0
-    }
-    whip = {
-      max = 240
-      gongxian = 0
-    }
-    sanwu_shou = {
-      max = 240
-      gongxian = 0
-    }
-    chilian_shenzhang = {
-      max = 220
-      gongxian = 0
-    }
-    wudu_shenzhang = {
-      max = 220
-      gongxian = 0
-    }
-    bingpo_shenzhen = {
-      max = 240
-      gongxian = 0
-    }
-    yunzhou_fufa = {
-      max = 240
-      gongxian = 0
+  teach = {
+    family = "古墓派"
+    teach_skills = {
+      force = {
+        max = 220
+        gongxian = 0
+      }
+      strike = {
+        max = 220
+        gongxian = 0
+      }
+      whip = {
+        max = 240
+        gongxian = 0
+      }
+      sanwu_shou = {
+        max = 240
+        gongxian = 0
+      }
+      chilian_shenzhang = {
+        max = 220
+        gongxian = 0
+      }
+      wudu_shenzhang = {
+        max = 220
+        gongxian = 0
+      }
+      bingpo_shenzhen = {
+        max = 240
+        gongxian = 0
+      }
+      yunzhou_fufa = {
+        max = 240
+        gongxian = 0
+      }
     }
   }
 
@@ -16326,50 +16350,53 @@ chats = [
     { type = "strike" skill = "tianluo-diwang" }
   ]
 
-  teach_skills = {
-    force = {
-      max = 320
-      gongxian = 0
-    }
-    sword = {
-      max = 320
-      gongxian = 0
-    }
-    suxin_jian = {
-      max = 320
-      gongxian = 0
-    }
-    dodge = {
-      max = 320
-      gongxian = 0
-    }
-    parry = {
-      max = 320
-      gongxian = 0
-    }
-    unarmed = {
-      max = 320
-      gongxian = 0
-    }
-    meinv_quan = {
-      max = 320
-      gongxian = 0
-    }
-    strike = {
-      max = 320
-      gongxian = 0
-    }
-    tianluo_diwang = {
-      max = 320
-      gongxian = 0
-    }
-    whip = {
-      max = 320
-      gongxian = 0
-    }
-    yinsuo_jinling = {
-      max = 320
-      gongxian = 0
+  teach = {
+    family = "古墓派"
+    teach_skills = {
+      force = {
+        max = 320
+        gongxian = 0
+      }
+      sword = {
+        max = 320
+        gongxian = 0
+      }
+      suxin_jian = {
+        max = 320
+        gongxian = 0
+      }
+      dodge = {
+        max = 320
+        gongxian = 0
+      }
+      parry = {
+        max = 320
+        gongxian = 0
+      }
+      unarmed = {
+        max = 320
+        gongxian = 0
+      }
+      meinv_quan = {
+        max = 320
+        gongxian = 0
+      }
+      strike = {
+        max = 320
+        gongxian = 0
+      }
+      tianluo_diwang = {
+        max = 320
+        gongxian = 0
+      }
+      whip = {
+        max = 320
+        gongxian = 0
+      }
+      yinsuo_jinling = {
+        max = 320
+        gongxian = 0
+      }
     }
   }
 
@@ -16571,58 +16598,61 @@ chats = [
     { type = "throwing" skill = "yufeng-zhen" }
   ]
 
-  teach_skills = {
-    force = {
-      max = 220
-      gongxian = 0
-    }
-    sword = {
-      max = 220
-      gongxian = 0
-    }
-    suxin_jian = {
-      max = 220
-      gongxian = 0
-    }
-    whip = {
-      max = 220
-      gongxian = 0
-    }
-    yinsuo_jinling = {
-      max = 220
-      gongxian = 0
-    }
-    dodge = {
-      max = 200
-      gongxian = 0
-    }
-    parry = {
-      max = 200
-      gongxian = 0
-    }
-    unarmed = {
-      max = 200
-      gongxian = 0
-    }
-    meinv_quan = {
-      max = 200
-      gongxian = 0
-    }
-    strike = {
-      max = 220
-      gongxian = 0
-    }
-    tianluo_diwang = {
-      max = 220
-      gongxian = 0
-    }
-    throwing = {
-      max = 220
-      gongxian = 0
-    }
-    yufeng_zhen = {
-      max = 220
-      gongxian = 0
+  teach = {
+    family = "古墓派"
+    teach_skills = {
+      force = {
+        max = 220
+        gongxian = 0
+      }
+      sword = {
+        max = 220
+        gongxian = 0
+      }
+      suxin_jian = {
+        max = 220
+        gongxian = 0
+      }
+      whip = {
+        max = 220
+        gongxian = 0
+      }
+      yinsuo_jinling = {
+        max = 220
+        gongxian = 0
+      }
+      dodge = {
+        max = 200
+        gongxian = 0
+      }
+      parry = {
+        max = 200
+        gongxian = 0
+      }
+      unarmed = {
+        max = 200
+        gongxian = 0
+      }
+      meinv_quan = {
+        max = 200
+        gongxian = 0
+      }
+      strike = {
+        max = 220
+        gongxian = 0
+      }
+      tianluo_diwang = {
+        max = 220
+        gongxian = 0
+      }
+      throwing = {
+        max = 220
+        gongxian = 0
+      }
+      yufeng_zhen = {
+        max = 220
+        gongxian = 0
+      }
     }
   }
 
@@ -16787,78 +16817,81 @@ chats = [
     { type = "strike" skill = "tianluo-diwang" }
   ]
 
-  teach_skills = {
-    force = {
-      max = 390
-      gongxian = 0
-    }
-    yunv_xinjing = {
-      max = 390
-      gongxian = 0
-    }
-    surge_force = {
-      max = 390
-      gongxian = 0
-    }
-    sword = {
-      max = 380
-      gongxian = 0
-    }
-    yunv_jian = {
-      max = 380
-      gongxian = 0
-    }
-    quanzhen_jian = {
-      max = 380
-      gongxian = 0
-    }
-    xuantie_jian = {
-      max = 380
-      gongxian = 0
-    }
-    dodge = {
-      max = 350
-      gongxian = 0
-    }
-    yunv_shenfa = {
-      max = 350
-      gongxian = 0
-    }
-    parry = {
-      max = 385
-      gongxian = 0
-    }
-    unarmed = {
-      max = 385
-      gongxian = 0
-    }
-    meinv_quan = {
-      max = 370
-      gongxian = 0
-    }
-    strike = {
-      max = 380
-      gongxian = 0
-    }
-    sad_strike = {
-      max = 380
-      gongxian = 0
-    }
-    fireice_strike = {
-      max = 380
-      gongxian = 0
-    }
-    tianluo_diwang = {
-      max = 360
-      gongxian = 0
-    }
-    throwing = {
-      max = 340
-      gongxian = 0
-    }
-    yufeng_zhen = {
-      max = 340
-      gongxian = 0
+  teach = {
+    family = "古墓派"
+    teach_skills = {
+      force = {
+        max = 390
+        gongxian = 0
+      }
+      yunv_xinjing = {
+        max = 390
+        gongxian = 0
+      }
+      surge_force = {
+        max = 390
+        gongxian = 0
+      }
+      sword = {
+        max = 380
+        gongxian = 0
+      }
+      yunv_jian = {
+        max = 380
+        gongxian = 0
+      }
+      quanzhen_jian = {
+        max = 380
+        gongxian = 0
+      }
+      xuantie_jian = {
+        max = 380
+        gongxian = 0
+      }
+      dodge = {
+        max = 350
+        gongxian = 0
+      }
+      yunv_shenfa = {
+        max = 350
+        gongxian = 0
+      }
+      parry = {
+        max = 385
+        gongxian = 0
+      }
+      unarmed = {
+        max = 385
+        gongxian = 0
+      }
+      meinv_quan = {
+        max = 370
+        gongxian = 0
+      }
+      strike = {
+        max = 380
+        gongxian = 0
+      }
+      sad_strike = {
+        max = 380
+        gongxian = 0
+      }
+      fireice_strike = {
+        max = 380
+        gongxian = 0
+      }
+      tianluo_diwang = {
+        max = 360
+        gongxian = 0
+      }
+      throwing = {
+        max = 340
+        gongxian = 0
+      }
+      yufeng_zhen = {
+        max = 340
+        gongxian = 0
+      }
     }
   }
 
