@@ -15926,10 +15926,202 @@ chats = [
     str = 30
   }
 
+  apprentice = {
+    family = "古墓派"
+    permit_recruit = true
+    gender = "女性"
+    max_shen = -70000
+    min_exp = 400000
+    min_skills = {
+      force = 160
+      strike = 120
+    }
+  }
+
   inquiries = [
     { key = "冰魄银针" value = " inquire about zhen (unimplemented)" },
     { key = "小龙女" value = "那是我的师妹。你问她想干什么？" },
-    { key = "林朝英" value = "那是我的师祖，不该你问的你别问，小心我宰了你。" }
+    { key = "林朝英" value = "那是我的师祖，不该你问的你别问，小心我宰了你。" },
+    { key = "风魔舞" value = {
+      kind = "sect_master_grant"
+      perform_id = "yunzhou-fufa/feng"
+      skill = "yunzhou-fufa"
+      min_levels = {
+        yunzhou_fufa = 50
+      }
+      min_gongxian = 50
+      min_shen = -75000
+      cost_gongxian = 50
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连云舟舞发都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        yunzhou_fufa = "你的云舟舞发火候还不够，要多练练。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「风魔舞」。"
+    } },
+    { key = "寒冰针" value = {
+      kind = "sect_master_grant"
+      perform_id = "bingpo-shenzhen/bing"
+      skill = "bingpo-shenzhen"
+      min_levels = {
+        bingpo_shenzhen = 110
+        force = 140
+      }
+      min_gongxian = 400
+      min_shen = -80000
+      cost_gongxian = 400
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连冰魄神针都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        bingpo_shenzhen = "你的冰魄神针火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「寒冰针」。"
+    } },
+    { key = "无所不为" value = {
+      kind = "sect_master_grant"
+      perform_id = "sanwu-shou/wei"
+      skill = "sanwu-shou"
+      min_levels = {
+        sanwu_shou = 60
+      }
+      min_gongxian = 300
+      min_shen = -80000
+      cost_gongxian = 300
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连三无三不手都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        sanwu_shou = "你的三无三不手火候还不够，要多练练。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「无所不为」。"
+    } },
+    { key = "赤心连环决" value = {
+      kind = "sect_master_grant"
+      perform_id = "chilian-shenzhang/lian"
+      skill = "chilian-shenzhang"
+      min_levels = {
+        chilian_shenzhang = 110
+        force = 140
+      }
+      min_gongxian = 400
+      min_shen = -85000
+      cost_gongxian = 400
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连五毒神掌都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        chilian_shenzhang = "你的五毒神掌火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「赤心连环决」。"
+    } },
+    { key = "千幻神诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "wudu-shenzhang/huan"
+      skill = "wudu-shenzhang"
+      min_levels = {
+        wudu_shenzhang = 90
+        dodge = 140
+      }
+      min_gongxian = 500
+      min_shen = -90000
+      cost_gongxian = 500
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连五毒神掌都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        wudu_shenzhang = "你的五毒神掌火候还不够，要多练练。"
+        dodge = "你的轻功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「千幻神诀」。"
+    } },
+    { key = "无所不至" value = {
+      kind = "sect_master_grant"
+      perform_id = "sanwu-shou/zhi"
+      skill = "sanwu-shou"
+      min_levels = {
+        sanwu_shou = 90
+        dodge = 100
+      }
+      min_gongxian = 400
+      min_shen = -95000
+      cost_gongxian = 400
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连三无三不手都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        sanwu_shou = "你的三无三不手火候还不够，要多练练。"
+        dodge = "你的轻功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「无所不至」。"
+    } },
+    { key = "无孔不入" value = {
+      kind = "sect_master_grant"
+      perform_id = "sanwu-shou/kong"
+      skill = "sanwu-shou"
+      min_levels = {
+        sanwu_shou = 120
+        force = 160
+      }
+      min_gongxian = 600
+      min_shen = -110000
+      cost_gongxian = 600
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连三无三不手都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        sanwu_shou = "你的三无三不手火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「无孔不入」。"
+    } },
+    { key = "万毒噬心" value = {
+      kind = "sect_master_grant"
+      perform_id = "wudu-shenzhang/shi"
+      skill = "wudu-shenzhang"
+      min_levels = {
+        wudu_shenzhang = 140
+        force = 180
+      }
+      min_gongxian = 800
+      min_shen = -120000
+      cost_gongxian = 800
+      family = "古墓派"
+      family_deny = "我李莫愁可不教外人。"
+      skill_deny = "你连五毒神掌都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
+      level_deny = {
+        wudu_shenzhang = "你的五毒神掌火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「万毒噬心」。"
+    } }
   ]
 
   skills = [
@@ -15964,6 +16156,41 @@ chats = [
     { type = "unarmed" skill = "meinv-quan" }
   ]
 
+  teach_skills = {
+    force = {
+      max = 220
+      gongxian = 0
+    }
+    strike = {
+      max = 220
+      gongxian = 0
+    }
+    whip = {
+      max = 240
+      gongxian = 0
+    }
+    sanwu_shou = {
+      max = 240
+      gongxian = 0
+    }
+    chilian_shenzhang = {
+      max = 220
+      gongxian = 0
+    }
+    wudu_shenzhang = {
+      max = 220
+      gongxian = 0
+    }
+    bingpo_shenzhen = {
+      max = 240
+      gongxian = 0
+    }
+    yunzhou_fufa = {
+      max = 240
+      gongxian = 0
+    }
+  }
+
 
   carry = [
     { id = items.fuchen.id },
@@ -15994,12 +16221,81 @@ chats = [
     str = 30
   }
 
+  apprentice = {
+    family = "古墓派"
+    permit_recruit = true
+    min_skills = { yunv_xinjing = 120 }
+  }
+
   inquiries = [
     { key = "古墓派" value = "是啊，这里就是我一手创下的古墓派" },
     { key = "玉女心经" value = "( : ask_xinjing() :)" },
     { key = "玉蜂针" value = "我这儿没有，别问我。" },
     { key = "王重阳" value = "大胆后辈小子，也敢直呼重阳祖师之名？" },
-    { key = "重阳祖师" value = "重阳是全真教的掌教，自号“活死人”。" }
+    { key = "重阳祖师" value = "重阳是全真教的掌教，自号“活死人”。" },
+    { key = "连环剑术" value = {
+      kind = "sect_master_grant"
+      perform_id = "suxin-jian/lian"
+      skill = "suxin-jian"
+      min_levels = {
+        suxin_jian = 120
+        dodge = 100
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      family = "古墓派"
+      family_deny = "玉女心经的口诀我只传授给我的弟子。"
+      skill_deny = "你连素心剑法都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        suxin_jian = "你的素心剑法火候还不够，要多练练。"
+        dodge = "你的轻功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「连环剑术」。"
+    } },
+    { key = "风神诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinsuo-jinling/feng"
+      skill = "yinsuo-jinling"
+      min_levels = {
+        yinsuo_jinling = 140
+        force = 180
+      }
+      min_gongxian = 700
+      cost_gongxian = 700
+      family = "古墓派"
+      family_deny = "玉女心经的口诀我只传授给我的弟子。"
+      skill_deny = "你连银索金铃都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        yinsuo_jinling = "你的银索金铃火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「风神诀」。"
+    } },
+    { key = "开天辟地" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinsuo-jinling/kai"
+      skill = "yinsuo-jinling"
+      min_levels = {
+        yinsuo_jinling = 130
+        force = 180
+      }
+      min_gongxian = 800
+      cost_gongxian = 800
+      family = "古墓派"
+      family_deny = "玉女心经的口诀我只传授给我的弟子。"
+      skill_deny = "你连银索金铃都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        yinsuo_jinling = "你的银索金铃火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "这招我不是已经教会你了吗？"
+      learned = "你学会了「开天辟地」。"
+    } }
   ]
 
   skills = [
@@ -16030,6 +16326,53 @@ chats = [
     { type = "strike" skill = "tianluo-diwang" }
   ]
 
+  teach_skills = {
+    force = {
+      max = 320
+      gongxian = 0
+    }
+    sword = {
+      max = 320
+      gongxian = 0
+    }
+    suxin_jian = {
+      max = 320
+      gongxian = 0
+    }
+    dodge = {
+      max = 320
+      gongxian = 0
+    }
+    parry = {
+      max = 320
+      gongxian = 0
+    }
+    unarmed = {
+      max = 320
+      gongxian = 0
+    }
+    meinv_quan = {
+      max = 320
+      gongxian = 0
+    }
+    strike = {
+      max = 320
+      gongxian = 0
+    }
+    tianluo_diwang = {
+      max = 320
+      gongxian = 0
+    }
+    whip = {
+      max = 320
+      gongxian = 0
+    }
+    yinsuo_jinling = {
+      max = 320
+      gongxian = 0
+    }
+  }
+
 
   carry = [
     { id = items.changjian.id },
@@ -16059,8 +16402,141 @@ chats = [
     str = 21
   }
 
+  apprentice = {
+    family = "古墓派"
+    permit_recruit = true
+  }
+
   inquiries = [
-    { key = "玉蜂针" value = " inquire about zhen (unimplemented)" }
+    { key = "玉蜂针" value = " inquire about zhen (unimplemented)" },
+    { key = "千姿百媚" value = {
+      kind = "sect_master_grant"
+      perform_id = "yunv-jian/mei"
+      skill = "yunv-jian"
+      min_levels = {
+        yunv_jian = 35
+        dodge = 30
+      }
+      min_gongxian = 50
+      cost_gongxian = 50
+      family = "古墓派"
+      family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+      skill_deny = "你连玉女剑法都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        yunv_jian = "你的玉女剑法火候还不够，要多练练。"
+        dodge = "你的轻功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「千姿百媚」。"
+    } },
+    { key = "天罗地网势" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianluo-diwang/wang"
+      skill = "tianluo-diwang"
+      min_levels = {
+        tianluo_diwang = 60
+        dodge = 30
+      }
+      min_gongxian = 60
+      cost_gongxian = 60
+      family = "古墓派"
+      family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+      skill_deny = "你连天罗地网都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        tianluo_diwang = "你的天罗地网火候还不够，要多练练。"
+        dodge = "你的轻功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「天罗地网势」。"
+    } },
+    { key = "古墓幽居" value = {
+      kind = "sect_master_grant"
+      perform_id = "meinv-quan/you"
+      skill = "meinv-quan"
+      min_levels = {
+        meinv_quan = 70
+        force = 70
+      }
+      min_gongxian = 160
+      cost_gongxian = 160
+      family = "古墓派"
+      family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+      skill_deny = "你连美女拳都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        meinv_quan = "你的美女拳火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「古墓幽居」。"
+    } },
+    { key = "隔空点穴" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinsuo-jinling/dian"
+      skill = "yinsuo-jinling"
+      min_levels = {
+        yinsuo_jinling = 70
+        force = 90
+      }
+      min_gongxian = 260
+      cost_gongxian = 260
+      family = "古墓派"
+      family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+      skill_deny = "你连银索金铃都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        yinsuo_jinling = "你的银索金铃火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「隔空点穴」。"
+    } },
+    { key = "无影针" value = {
+      kind = "sect_master_grant"
+      perform_id = "yufeng-zhen/ying"
+      skill = "yufeng-zhen"
+      min_levels = {
+        yufeng_zhen = 90
+        force = 100
+      }
+      min_gongxian = 300
+      cost_gongxian = 300
+      family = "古墓派"
+      family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+      skill_deny = "你连玉蜂针都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        yufeng_zhen = "你的玉蜂针火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「无影针」。"
+    } },
+    { key = "双剑合壁" value = {
+      kind = "sect_master_grant"
+      perform_id = "suxin-jian/he"
+      skill = "suxin-jian"
+      min_levels = {
+        suxin_jian = 130
+        force = 120
+        dodge = 100
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      family = "古墓派"
+      family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+      skill_deny = "你连素心剑法都没学，何谈绝招？"
+      gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+      level_deny = {
+        suxin_jian = "你的素心剑法火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+        dodge = "你的轻功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你自己去领悟吧。"
+      learned = "你学会了「双剑合壁」。"
+    } }
   ]
 
   skills = [
@@ -16095,6 +16571,61 @@ chats = [
     { type = "throwing" skill = "yufeng-zhen" }
   ]
 
+  teach_skills = {
+    force = {
+      max = 220
+      gongxian = 0
+    }
+    sword = {
+      max = 220
+      gongxian = 0
+    }
+    suxin_jian = {
+      max = 220
+      gongxian = 0
+    }
+    whip = {
+      max = 220
+      gongxian = 0
+    }
+    yinsuo_jinling = {
+      max = 220
+      gongxian = 0
+    }
+    dodge = {
+      max = 200
+      gongxian = 0
+    }
+    parry = {
+      max = 200
+      gongxian = 0
+    }
+    unarmed = {
+      max = 200
+      gongxian = 0
+    }
+    meinv_quan = {
+      max = 200
+      gongxian = 0
+    }
+    strike = {
+      max = 220
+      gongxian = 0
+    }
+    tianluo_diwang = {
+      max = 220
+      gongxian = 0
+    }
+    throwing = {
+      max = 220
+      gongxian = 0
+    }
+    yufeng_zhen = {
+      max = 220
+      gongxian = 0
+    }
+  }
+
 
   carry = [
     { id = items.baipao.id }
@@ -16123,6 +16654,13 @@ chats = [
     str = 35
   }
 
+  apprentice = {
+    family = "古墓派"
+    permit_recruit = true
+    min_skills = { yunv_xinjing = 120 }
+    min_max_neili = 2000
+  }
+
   inquiries = [
     { key = "小龙女" value = "你打听我妻子干什么？" },
     { key = "杨康" value = "算了，不提他也罢。" },
@@ -16131,7 +16669,91 @@ chats = [
     { key = "王重阳" value = "嘿...嘿！" },
     { key = "郭靖" value = "他可真是真正的大侠。" },
     { key = "黄蓉" value = "黄师叔么...真不好说啊。" },
-    { key = "黯然销魂掌" value = "(: teach_sad :)" }
+    { key = "黯然销魂掌" value = "(: teach_sad :)" },
+    { key = "卷字诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuantie-jian/juan"
+      skill = "xuantie-jian"
+      min_levels = {
+        xuantie_jian = 100
+        force = 400
+      }
+      min_gongxian = 0
+      cost_gongxian = 0
+      family = "古墓派"
+      family_deny = "这门武功只适合我古墓派传人。"
+      skill_deny = "你连玄铁剑法都没学，何谈绝招？"
+      gongxian_deny = "这招无需贡献，但你需先练好基础。"
+      level_deny = {
+        xuantie_jian = "你的玄铁剑法火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你不是已经会了吗？"
+      learned = "你学会了「卷字诀」。"
+    } },
+    { key = "大江东去" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuantie-jian/dong"
+      skill = "xuantie-jian"
+      min_levels = {
+        xuantie_jian = 200
+        force = 400
+      }
+      min_gongxian = 0
+      cost_gongxian = 0
+      family = "古墓派"
+      family_deny = "这门武功只适合我古墓派传人。"
+      skill_deny = "你连玄铁剑法都没学，何谈绝招？"
+      gongxian_deny = "这招无需贡献，但你需先练好基础。"
+      level_deny = {
+        xuantie_jian = "你的玄铁剑法火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你不是已经会了吗？"
+      learned = "你学会了「大江东去」。"
+    } },
+    { key = "黯然销魂" value = {
+      kind = "sect_master_grant"
+      perform_id = "sad-strike/xiao"
+      skill = "sad-strike"
+      min_levels = {
+        sad_strike = 150
+        force = 320
+      }
+      min_gongxian = 0
+      cost_gongxian = 0
+      family = "古墓派"
+      family_deny = "这门武功只适合我古墓派传人。"
+      skill_deny = "你连黯然销魂掌都没学，何谈绝招？"
+      gongxian_deny = "这招无需贡献，但你需先练好基础。"
+      level_deny = {
+        sad_strike = "你的黯然销魂掌火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你不是已经会了吗？"
+      learned = "你学会了「黯然销魂」。"
+    } },
+    { key = "拖泥带水" value = {
+      kind = "sect_master_grant"
+      perform_id = "sad-strike/tuo"
+      skill = "sad-strike"
+      min_levels = {
+        sad_strike = 180
+        force = 360
+      }
+      min_gongxian = 0
+      cost_gongxian = 0
+      family = "古墓派"
+      family_deny = "这门武功只适合我古墓派传人。"
+      skill_deny = "你连黯然销魂掌都没学，何谈绝招？"
+      gongxian_deny = "这招无需贡献，但你需先练好基础。"
+      level_deny = {
+        sad_strike = "你的黯然销魂掌火候还不够，要多练练。"
+        force = "你的内功火候不足，先下去练熟了再来。"
+      }
+      maxed = "你不是已经会了吗？"
+      learned = "你学会了「拖泥带水」。"
+    } }
   ]
 
   skills = [
@@ -16164,6 +16786,81 @@ chats = [
     { type = "unarmed" skill = "sad-strike" },
     { type = "strike" skill = "tianluo-diwang" }
   ]
+
+  teach_skills = {
+    force = {
+      max = 390
+      gongxian = 0
+    }
+    yunv_xinjing = {
+      max = 390
+      gongxian = 0
+    }
+    surge_force = {
+      max = 390
+      gongxian = 0
+    }
+    sword = {
+      max = 380
+      gongxian = 0
+    }
+    yunv_jian = {
+      max = 380
+      gongxian = 0
+    }
+    quanzhen_jian = {
+      max = 380
+      gongxian = 0
+    }
+    xuantie_jian = {
+      max = 380
+      gongxian = 0
+    }
+    dodge = {
+      max = 350
+      gongxian = 0
+    }
+    yunv_shenfa = {
+      max = 350
+      gongxian = 0
+    }
+    parry = {
+      max = 385
+      gongxian = 0
+    }
+    unarmed = {
+      max = 385
+      gongxian = 0
+    }
+    meinv_quan = {
+      max = 370
+      gongxian = 0
+    }
+    strike = {
+      max = 380
+      gongxian = 0
+    }
+    sad_strike = {
+      max = 380
+      gongxian = 0
+    }
+    fireice_strike = {
+      max = 380
+      gongxian = 0
+    }
+    tianluo_diwang = {
+      max = 360
+      gongxian = 0
+    }
+    throwing = {
+      max = 340
+      gongxian = 0
+    }
+    yufeng_zhen = {
+      max = 340
+      gongxian = 0
+    }
+  }
 
 
   carry = [
