@@ -120,10 +120,16 @@ UCL drop_a/drop_b/drop_c
   → loader.parse_character/4 → NonPlayerMeta（字段 + Trim 白名单）
   → CombatEvent.die/3 或 Feature.Damage.process_death/2
   → Kantele.World.Corpse.spawn/1
-  → Room.add_item(room_id, 尸体实例)
-  → Room.add_item(room_id, 各掉落物实例)   ← 方案 A，独立实例散在地上
-  → Scheduler.schedule_once(180_000) → Room.remove_item(尸体)
+    ├─→ Room.add_item(room_id, 尸体实例)          尸体容器入房间，三段腐烂 150s
+    └─→ notify_hunting_drops/2
+        → 发送 "hunting/drops" 事件到击杀者进程
+        → CombatEvent.hunting_drops/2（击杀者侧执行）
+        → Hunting.roll(drops, skill) 概率门控
+        → 物品直接 move(me, 1) 进击杀者背包（character.inventory）
 ```
+
+狩猎掉落物**不落地、不进尸体**，与 LPC `quarry.c`/`snake.c` `die()` 的
+`item->move(me, 1)` 对齐；尸体容器只放死者实际背包物品（`inventory_of`）。
 
 `NonPlayerMeta` 的 `Kalevala.Meta.Trim` 白名单包含 `:drop_a/:drop_b/:drop_c/:power`，
 否则房间快照里的裁剪 meta 会丢掉掉落配置（`test/kantele/meta_trim_contract_test.exs` 守护）。
