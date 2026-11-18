@@ -71,7 +71,17 @@
 - `docs/` 下 78 份文档 + 根目录 md 已全量扫描，59 份含待办标记的历史文档已加「📌 归档声明 · 全库待办清零」。
 - `docs/待对照代码核查.zh-CN.md` §6.2 净增量表、§二、§三已标记 ✅ 已完结。
 
+## 已完成（本轮追加，2026-11-17）
+- Task #640 其他出家门派剃度/出家机制移植（峨嵋/血刀/雪山）：commit `f43e77ac` 已推送 `origin kalevala`。
+  - `loader.ex parse_apprentice/1` 新增 `max_shen` 字段解析（`int_value/1`）。
+  - `sect_master.ex recruit_gate?/3` 新增 `shen > max_shen` 邪气上限门控，支持 `max_shen_deny` 文案覆写；未配置时 `nil` 不拦截。
+  - `clone_lib.ucl` 为 `emei_miejue` / `xuedao_laozu` / `xueshan_fawang` 新增 `apprentice` + `teach` UCL 块，严格对齐 LPC `attempt_apprentice`（含峨嵋改名“静”+name[1..1]、血刀/雪山 male+bonze+max_shen）。
+  - `sect_master_test.exs` 新增 `max_shen` 上限测试（达标/超限拒绝/未配置不拦），96 tests 0 failures；`loader_meta_test.exs` 41 tests 0 failures；`mix compile` EXIT=0；全量回归 27 个 bcrypt NIF 环境性失败，0 新增失败。
+- Task #641 NAME_D 姓名注册表（commit 794f7972，已推送）。
+- Task #642 PKS/MKS/WPK 击杀计数持久化（commit da85c8ba，已推送）。
+- Task #643 detach/betrayer 叛门记录落盘（commit 9c8c838f，已推送）。
+- Task #644 清无 gate_order 门控顺序精确对齐（已推送）。
+
 ## 待办（当前）
-- 少林派剃度机制移植：阶段 A–E 代码已落地（#633–#638、#652、#653 全部完成），剩余引擎缺口 #640（#641 NAME_D 已实现并回归通过；#642 PKS/MKS/WPK 持久化已完成，commit da85c8ba 已推送；#643 detach/betrayer 叛门记录落盘已完成；#644 清无 gate_order 已完成，已推送）。
 - 写入 LPC 拜师实现与 UCL 配置对比（Section 7）到 `docs/新手拜师门派指南.zh-CN.md`（文档实际已完成，此项待确认结案）。
 - 已知差异：张三丰 LPC 额外 `int>=32`（UCL 缺 `min_int`）；陈家洛 LPC 额外 `max_neili>=2000`（UCL 缺 `min_neili`）；苗人凤 LPC 无 shen/exp/skill 门槛（UCL 加了 `miaojia_neigong>=50`）；宋远桥 LPC 有完整 `attempt_apprentice` 但 UCL 尚未配置 `apprentice` 块；柳溪派 王重九 无 LPC source；俞莲舟 LPC 未核查。
