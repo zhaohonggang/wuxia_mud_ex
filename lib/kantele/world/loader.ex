@@ -1200,6 +1200,7 @@ defmodule Kantele.World.Loader do
     base = %{
       family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
       min_shen: Map.get(apprentice, :min_shen) || 0,
+      max_shen: int_value(Map.get(apprentice, :max_shen)),
       min_exp: Map.get(apprentice, :min_exp) || 0,
       min_skills: min_skills,
       no_recruit: no_recruit,

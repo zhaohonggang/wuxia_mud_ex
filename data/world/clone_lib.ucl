@@ -13726,6 +13726,69 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  # LPC miejue.c attempt_apprentice：permit_recruit FIRST，shen>=30000，exp>=300000，
+  # mahayana>=100，emei-xinfa>=100。无性别/班门限制。改名 "静"+name[1..1]。
+  teach = {
+    family = "峨嵋派"
+    teach_skills = {
+      force = {
+        max = 60
+        gongxian = 2
+      }
+      emei_xinfa = {
+        max = 60
+        gongxian = 3
+      }
+      dodge = {
+        max = 60
+        gongxian = 2
+      }
+      zhutian_bu = {
+        max = 60
+        gongxian = 3
+      }
+      strike = {
+        max = 60
+        gongxian = 2
+      }
+      jinding_zhang = {
+        max = 60
+        gongxian = 3
+      }
+      parry = {
+        max = 60
+        gongxian = 2
+      }
+      buddhism = {
+        max = 60
+        gongxian = 2
+      }
+      literate = {
+        max = 60
+        gongxian = 2
+      }
+      sword = {
+        max = 60
+        gongxian = 2
+      }
+      emei_jian = {
+        max = 60
+        gongxian = 3
+      }
+    }
+    no_teach = [ "emei-jiuyang" ]
+  }
+
+  apprentice = {
+    family = "峨嵋派"
+    permit_recruit = true
+    min_shen = 30000
+    min_exp = 300000
+    min_skills = { mahayana = 100 emei_xinfa = 100 }
+    rename_prefix = "静"
+    rename_index = 1
+}
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/emei/su.c
@@ -34609,6 +34672,72 @@ chats = [
     { id = items.y_jiasha.id }
   ]
 
+  # LPC laozu.c attempt_apprentice：permit_recruit FIRST，男性，class=bonze，
+  # exp>=350000，shens上限-50000(max_shen)，lamaism>=140，mizong-neigong>=100，blade>=120。
+  teach = {
+    family = "血刀门"
+    teach_skills = {
+      force = {
+        max = 60
+        gongxian = 2
+      }
+      mizong_neigong = {
+        max = 60
+        gongxian = 3
+      }
+      blade = {
+        max = 60
+        gongxian = 2
+      }
+      xueshan_dao = {
+        max = 60
+        gongxian = 3
+      }
+      parry = {
+        max = 60
+        gongxian = 2
+      }
+      lamaism = {
+        max = 60
+        gongxian = 2
+      }
+      dodge = {
+        max = 60
+        gongxian = 2
+      }
+      shenkong_xing = {
+        max = 60
+        gongxian = 3
+      }
+      hand = {
+        max = 60
+        gongxian = 2
+      }
+      dashou_yin = {
+        max = 60
+        gongxian = 3
+      }
+      cuff = {
+        max = 60
+        gongxian = 2
+      }
+      yujiamu_quan = {
+        max = 60
+        gongxian = 3
+      }
+    }
+    no_teach = []
+  }
+
+  apprentice = {
+    family = "血刀门"
+    permit_recruit = true
+    gender = "男性"
+    require_class = "bonze"
+    min_exp = 350000
+    max_shen = -50000
+    min_skills = { lamaism = 140 mizong_neigong = 100 blade = 120 }
+}
 
   accept = [
     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "不错，不错！", "很好，很好！"] }
@@ -34817,6 +34946,81 @@ chats = [
     { type = "hand" skill = "dashou-yin" },
     { type = "cuff" skill = "yujiamu-quan" }
   ]
+
+  # LPC fawang.c attempt_apprentice：permit_recruit FIRST，男性，class=bonze，
+  # exp>=450000，shen上限-80000(max_shen)，mizong-neigong>=120，lamaism>=150。
+  teach = {
+    family = "大轮寺"
+    teach_skills = {
+      force = {
+        max = 60
+        gongxian = 2
+      }
+      mizong_neigong = {
+        max = 60
+        gongxian = 3
+      }
+      longxiang_gong = {
+        max = 60
+        gongxian = 3
+      }
+      unarmed = {
+        max = 60
+        gongxian = 2
+      }
+      dodge = {
+        max = 60
+        gongxian = 2
+      }
+      shenkong_xing = {
+        max = 60
+        gongxian = 3
+      }
+      hammer = {
+        max = 60
+        gongxian = 2
+      }
+      riyue_lun = {
+        max = 60
+        gongxian = 3
+      }
+      parry = {
+        max = 60
+        gongxian = 2
+      }
+      lamaism = {
+        max = 60
+        gongxian = 2
+      }
+      sword = {
+        max = 60
+        gongxian = 2
+      }
+      mingwang_jian = {
+        max = 60
+        gongxian = 3
+      }
+      sanscrit = {
+        max = 60
+        gongxian = 2
+      }
+      literate = {
+        max = 60
+        gongxian = 2
+      }
+    }
+    no_teach = []
+  }
+
+  apprentice = {
+    family = "大轮寺"
+    permit_recruit = true
+    gender = "男性"
+    require_class = "bonze"
+    min_exp = 450000
+    max_shen = -80000
+    min_skills = { mizong_neigong = 120 lamaism = 150 }
+}
 
     }
 

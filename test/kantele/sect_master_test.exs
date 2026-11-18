@@ -120,6 +120,41 @@ defmodule Kantele.SectMasterTest do
              )
   end
 
+  test "recruit_gate?/3：max_shen 上限（shen 超过上限拒绝，未配置不拦）" do
+    # max_shen = 50000，student shen = 20000 <= 50000 → 通过
+    assert :ok =
+             Kantele.SectMaster.recruit_gate?(
+               teacher(%{meta: %{apprentice: %{max_shen: 50_000}}}),
+               teacher_student()
+             )
+
+    # student shen = 60000 > 50000 → 拒绝
+    high_shen_student = %{
+      meta: %{
+        family: %{name: "武当派"},
+        stats: %{combat_exp: 300_000, shen: 60_000, skills: %{"sword" => 40}}
+      }
+    }
+
+    assert {:error, "你心慈手软，杀气不够重，本派不收。\n"} =
+             Kantele.SectMaster.recruit_gate?(
+               teacher(%{meta: %{apprentice: %{max_shen: 50_000}}}),
+               high_shen_student
+             )
+
+    # max_shen 为 nil（未配置）时不拦截，shen 再高也通过
+    assert :ok =
+             Kantele.SectMaster.recruit_gate?(
+               teacher(%{meta: %{apprentice: %{min_shen: 0}}}),
+               %{
+                 meta: %{
+                   family: %{name: "武当派"},
+                   stats: %{combat_exp: 300_000, shen: 999_999, skills: %{"sword" => 40}}
+                 }
+               }
+             )
+  end
+
   test "recruit_gate?/3：min_skills 心法门槛拦截" do
     strict =
       teacher(%{

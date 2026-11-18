@@ -65,6 +65,7 @@ defmodule Kantele.SectMaster do
     config = gate || apprentice_config(teacher)
 
     min_shen = Map.get(config, :min_shen, 0) || 0
+    max_shen = Map.get(config, :max_shen)
     min_exp = Map.get(config, :min_exp, 0) || 0
     min_skills = Map.get(config, :min_skills, %{}) || %{}
     gender = Map.get(config, :gender)
@@ -144,6 +145,9 @@ defmodule Kantele.SectMaster do
 
       shen < min_shen ->
         {:error, "你的杀气不足，师父未同意收你为徒。\n"}
+
+      not is_nil(max_shen) and shen > max_shen ->
+        {:error, deny_text(config, :max_shen_deny, "你心慈手软，杀气不够重，本派不收。\n")}
 
       exp < min_exp ->
         {:error, "你经验尚浅，武功未成，师父未同意收你为徒。\n"}
