@@ -367,6 +367,56 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert letter["max_neili_deny"] == "你的内力修为不足，施展不出这招，等你内力有所攀升后再来找我吧。"
       assert letter["min_skill_deny"] == "你的八卦刀法还练得不到家，自己下去练练再来吧！"
     end
+
+    test "商老太 4 门绝招：商家堡 + max_shen 阴面门派（ask_skill1-4 均为绝招授艺）", %{world: world} do
+      npc = npc(world, "商老太", "shaolin:shang_houyuan")
+      assert npc, "商老太应随世界加载（shaolin:shang_houyuan）"
+      assert npc.meta.teach.family == "商家堡"
+
+      # 4 招：{key, perform_id, min_gongxian, max_shen, min_levels, cost}
+      expected = [
+        {"劈卦拳", "bagua-quan/gua", 100, -10000, %{"force" => 100, "bagua-quan" => 70}, 100},
+        {"背心钉", "bagua-zhang/ding", 150, -20000, %{"force" => 120, "bagua-zhang" => 80}, 150},
+        {"犀牛望月", "tan-tui/wang", 350, -25000, %{"force" => 150, "tan-tui" => 120}, 350},
+        {"天残剑诀", "quemen-jian/can", 60, -5000, %{"force" => 120, "quemen-jian" => 80}, 60}
+      ]
+
+      for {key, perform_id, gongxian, max_shen, levels, cost} <- expected do
+        cfg = inquiry(npc, key)
+        assert cfg, "商老太应能回答「#{key}」"
+
+        assert cfg["perform_id"] == perform_id
+        assert cfg["skill"] == String.split(perform_id, "/") |> List.first()
+        assert cfg["min_gongxian"] == gongxian
+        assert cfg["max_shen"] == max_shen
+        assert cfg["cost_gongxian"] == cost
+        assert cfg["min_levels"] == levels
+      end
+
+      # 共享拒绝文案（阴面门派 max_shen_deny / 同门 family_deny / 贡献门控）
+      gua = inquiry(npc, "劈卦拳")
+      assert gua["family_deny"] == "与我商家堡素无来往，何出此言？"
+      assert gua["max_shen_deny"] == "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      assert gua["skill_deny"] == "你连八卦拳法都没学，还谈什么绝招可言？"
+      assert gua["gongxian_deny"] == "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+
+      # 各招「已会」/「学会」文案不同（LPC 直搬）
+      assert inquiry(npc, "劈卦拳")["maxed"] == "这招我已经教过你了，自己下去练吧。"
+      assert inquiry(npc, "背心钉")["maxed"] == "这招我已经教过你了，自己下去练吧。"
+      assert inquiry(npc, "犀牛望月")["maxed"] == "自己下去练，罗嗦什么！"
+      assert inquiry(npc, "天残剑诀")["maxed"] == "自己下去练，罗嗦什么！"
+
+      assert inquiry(npc, "劈卦拳")["learned"] == "你学会了「劈卦拳」。"
+      assert inquiry(npc, "犀牛望月")["learned"] == "你学会了「犀牛望月转回还」。"
+
+      # no_teach：八卦刀由夫君亲传，外八卦经功力闭包解锁（GAP #739 平坦列表）
+      assert npc.meta.teach.no_teach == ["bagua-dao", "wai-bagua"]
+
+      # 教学上限与 NPC 自身等级一致（tai.c set_skill）
+      assert Map.get(npc.meta.teach.teach_skills, "force") == %{gongxian: 4, max: 160}
+      assert Map.get(npc.meta.teach.teach_skills, "bagua-dao") == %{gongxian: 4, max: 180}
+      assert Map.get(npc.meta.teach.teach_skills, "tan-tui") == %{gongxian: 4, max: 140}
+    end
   end
 
   describe "门控联验（真实配置 + inquiry_grant/3）" do

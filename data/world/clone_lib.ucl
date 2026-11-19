@@ -32907,12 +32907,198 @@ chats = [
     str = 45
   }
 
-  inquiries = [
-    { key = "劈卦拳" value = " inquire about skill1 (unimplemented)" },
-    { key = "天残剑诀" value = " inquire about skill4 (unimplemented)" },
-    { key = "犀牛望月" value = " inquire about skill3 (unimplemented)" },
-    { key = "背心钉" value = " inquire about skill2 (unimplemented)" }
-  ]
+  teach = {
+    # LPC tai.c set_skill 门派武艺上限（教学上限即 NPC 自身等级），gongxian 为传授贡献成本
+    family = "商家堡"
+    teach_skills = {
+      force = {
+        max = 160
+        gongxian = 4
+      }
+      shangjia_neigong = {
+        max = 160
+        gongxian = 4
+      }
+      parry = {
+        max = 160
+        gongxian = 4
+      }
+      wai_bagua = {
+        max = 160
+        gongxian = 4
+      }
+      dodge = {
+        max = 160
+        gongxian = 4
+      }
+      bagua_bu = {
+        max = 160
+        gongxian = 4
+      }
+      unarmed = {
+        max = 140
+        gongxian = 4
+      }
+      tan_tui = {
+        max = 140
+        gongxian = 4
+      }
+      strike = {
+        max = 160
+        gongxian = 4
+      }
+      bagua_zhang = {
+        max = 160
+        gongxian = 4
+      }
+      cuff = {
+        max = 160
+        gongxian = 4
+      }
+      bagua_quan = {
+        max = 160
+        gongxian = 4
+      }
+      sword = {
+        max = 140
+        gongxian = 4
+      }
+      quemen_jian = {
+        max = 140
+        gongxian = 4
+      }
+      blade = {
+        max = 180
+        gongxian = 4
+      }
+      bagua_dao = {
+        max = 180
+        gongxian = 4
+      }
+      shangjia_dao = {
+        max = 160
+        gongxian = 4
+      }
+      throwing = {
+        max = 160
+        gongxian = 4
+      }
+      jinbiao_jue = {
+        max = 160
+        gongxian = 4
+      }
+      literate = {
+        max = 200
+        gongxian = 4
+      }
+      martial_cognize = {
+        max = 160
+        gongxian = 4
+      }
+    }
+    no_teach = [
+      "bagua-dao",
+      "wai-bagua"
+    ]
+  }
+
+  apprentice = {
+    # 商家堡不对外收徒（shang.h permit_recruit 恒 0），此处保留门槛数据供门派信息展示
+    family = "商家堡"
+    max_shen = -30000
+    min_exp = 300000
+    min_skills = {
+      shangjia_neigong = 100
+    }
+  }
+
+  inquiries = {
+    # LPC tai.c ask_skill1-4：劈卦拳 / 背心钉 / 犀牛望月 / 天残剑诀，均走 SectMaster.inquiry_grant
+    劈卦拳 = {
+      perform_id = "bagua-quan/gua"
+      skill = "bagua-quan"
+      min_gongxian = 100
+      max_shen = -10000
+      cost_gongxian = 100
+      min_levels = {
+        force = 100
+        bagua_quan = 70
+      }
+      maxed = "这招我已经教过你了，自己下去练吧。"
+      learned = "你学会了「劈卦拳」。"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连八卦拳法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+        bagua_quan = "你的八卦拳法还练得不到家，自己下去练练再来吧！"
+      }
+    }
+    背心钉 = {
+      perform_id = "bagua-zhang/ding"
+      skill = "bagua-zhang"
+      min_gongxian = 150
+      max_shen = -20000
+      cost_gongxian = 150
+      min_levels = {
+        force = 120
+        bagua_zhang = 80
+      }
+      maxed = "这招我已经教过你了，自己下去练吧。"
+      learned = "你学会了「背心钉」。"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连八卦掌法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+        bagua_zhang = "你的八卦掌法还练得不到家，自己下去练练再来吧！"
+      }
+    }
+    犀牛望月 = {
+      perform_id = "tan-tui/wang"
+      skill = "tan-tui"
+      min_gongxian = 350
+      max_shen = -25000
+      cost_gongxian = 350
+      min_levels = {
+        force = 150
+        tan_tui = 120
+      }
+      maxed = "自己下去练，罗嗦什么！"
+      learned = "你学会了「犀牛望月转回还」。"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连十二路潭腿都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+        tan_tui = "你的十二路潭腿还练得不到家，自己下去练练再来吧！"
+      }
+    }
+    天残剑诀 = {
+      perform_id = "quemen-jian/can"
+      skill = "quemen-jian"
+      min_gongxian = 60
+      max_shen = -5000
+      cost_gongxian = 60
+      min_levels = {
+        force = 120
+        quemen_jian = 80
+      }
+      maxed = "自己下去练，罗嗦什么！"
+      learned = "你学会了「天残剑诀」。"
+      family_deny = "与我商家堡素无来往，何出此言？"
+      skill_deny = "你连缺门剑法都没学，谈什么绝招？"
+      gongxian_deny = "你在我商家堡内碌碌无为，这一招我暂时还不能传你。"
+      max_shen_deny = "哼！你这样的心慈手软之徒，就算学了这招又有何用？"
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+        quemen_jian = "你的缺门剑法还练得不到家，自己下去练练再来吧！"
+      }
+    }
+  }
 
   skills = [
     { skill = "force" level = 160 },
