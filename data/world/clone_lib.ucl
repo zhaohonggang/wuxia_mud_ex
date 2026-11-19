@@ -28225,12 +28225,105 @@ chats = [
   }
 
   inquiries = [
-    { key = "千蛇万噬" value = " inquire about skill3 (unimplemented)" },
-    { key = "千蛇出洞" value = " inquire about skill2 (unimplemented)" },
-    { key = "古筝技法" value = " inquire about music book (unimplemented)" },
-    { key = "横行无忌" value = " inquire about skill1 (unimplemented)" },
-    { key = "灵蛇杖" value = " inquire about zhang (unimplemented)" },
-    { key = "筝谱" value = " inquire about music book (unimplemented)" }
+    { key = "横行无忌" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingshe-zhangfa/wuji"
+      skill = "lingshe-zhangfa"
+      gate_order = "lpc_kunlun"
+      family = "欧阳世家"
+      min_gongxian = 500
+      cost_gongxian = 500
+      family_deny = "哪来的野小子敢在这里撒野！"
+      gongxian_deny = "你为我欧阳家效力还不够，这招我先不忙传你。"
+      skill_deny = "你的杖法还不到家，学不了「横行无忌」！"
+      level_deny = {
+        lingshe_zhangfa = "你的杖法还不到家，学不了「横行无忌」！"
+      }
+      min_levels = {
+        lingshe_zhangfa = 100
+      }
+      level_order = ["lingshe-zhangfa"]
+      maxed = "你还不快去练功去？好好把我们欧阳家发扬光大！"
+      msg_one = "$n将「横行无忌」演练了一遍，$N看得出神，心中惊叹不已。\n"
+      learned = "你学会了「横行无忌」。\n"
+      improve_skills = ["staff", "lingshe-zhangfa", "martial-cognize"]
+    } },
+    { key = "千蛇出洞" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingshe-zhangfa/qianshe"
+      skill = "lingshe-zhangfa"
+      gate_order = "lpc_kunlun"
+      family = "欧阳世家"
+      max_shen = -40000
+      min_gongxian = 800
+      cost_gongxian = 800
+      shen_deny = "你这人手段不够狠毒，我现在还不能传你绝招！"
+      family_deny = "你是哪儿来的？找死么？"
+      gongxian_deny = "你为我欧阳家效力还不够，这招我先不忙传你。"
+      skill_deny = "你先好好把灵蛇杖法练好了再说！"
+      level_deny = {
+        lingshe_zhangfa = "你先好好把灵蛇杖法练好了再说！"
+      }
+      min_levels = {
+        lingshe_zhangfa = 120
+      }
+      level_order = ["lingshe-zhangfa"]
+      maxed = "你还不快去练功去？好好把我们欧阳家发扬光大！"
+      msg_one = "$n喝道：看仔细了！说把荡臂横扫，伸伸缩缩，当真是变幻无穷！\n"
+      learned = "你学会了千蛇出洞。\n"
+      improve_skills = ["staff", "lingshe-zhangfa", "martial-cognize"]
+    } },
+    { key = "千蛇万噬" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingshe-zhangfa/wanshi"
+      skill = "lingshe-zhangfa"
+      gate_order = "lpc_kunlun"
+      family = "欧阳世家"
+      max_shen = -120000
+      min_gongxian = 1000
+      cost_gongxian = 1000
+      shen_deny = "你行事还不够狠毒，学不会这招「千蛇万噬」！"
+      family_deny = "不是我们欧阳世家的人，何出此言？"
+      gongxian_deny = "你为我欧阳家效力还不够，这招我先不忙传你。"
+      skill_deny = "你的灵蛇杖法还不到家，要多练练！"
+      level_deny = {
+        lingshe_zhangfa = "你的灵蛇杖法还不到家，要多练练！"
+      }
+      min_levels = {
+        lingshe_zhangfa = 180
+      }
+      level_order = ["lingshe-zhangfa"]
+      maxed = "自己好好多练习吧！"
+      msg_one = "$n微微颔首，随手拣起一根木条点向$N，$N见来招缓慢，只是随手向上一格。\n忽然$n杖势一变，木条从意想不到的角度拐来，$N大吃一惊，慌乱不迭。\n"
+      learned = "你学会了千蛇万噬。\n"
+      improve_skills = ["staff", "lingshe-zhangfa", "martial-cognize"]
+    } },
+    { key = "筝谱" value = {
+      kind = "give_item"
+      item = "clone_lib:zhengpu"
+      match = "zhengpu"
+      family = "欧阳世家"
+      success = "你拿去自己好好琢磨吧。\n"
+    } },
+    { key = "古筝技法" value = {
+      kind = "give_item"
+      item = "clone_lib:zhengpu"
+      match = "zhengpu"
+      family = "欧阳世家"
+      success = "你拿去自己好好琢磨吧。\n"
+    } },
+    { key = "灵蛇杖" value = {
+      kind = "give_item"
+      item = "baituo:lingshezhang"
+      match = "lingshezhang"
+      family = "欧阳世家"
+      master_id = true
+      max_shen = -60000
+      max_shen_deny = "你还不够心狠手辣，我不能把灵蛇杖交给你。"
+      family_deny = "灵蛇杖是我们欧阳家的宝物，你打听它干什么？"
+      master_deny = "只有我的弟子才能用灵蛇杖，你还是请回吧。"
+      success = "好，你便用这灵蛇杖去对付那些正派人士吧！\n"
+    } }
   ]
 
   chat_chance = 2
@@ -28275,6 +28368,42 @@ chats = [
     { type = "guzheng-jifa" skill = "xiyu-tiezheng" }
   ]
 
+  teach = {
+    family = "欧阳世家"
+    teach_skills = {
+      guzheng_jifa = { max = 400 gongxian = 0 }
+    }
+    no_teach = {
+      force = "该武功仅限本门弟子，不传外人。"
+      strike = "该武功仅限本门弟子，不传外人。"
+      dodge = "该武功仅限本门弟子，不传外人。"
+      parry = "该武功仅限本门弟子，不传外人。"
+      cuff = "该武功仅限本门弟子，不传外人。"
+      finger = "该武功仅限本门弟子，不传外人。"
+      staff = "该武功仅限本门弟子，不传外人。"
+      training = "该武功仅限本门弟子，不传外人。"
+      poison = "该武功仅限本门弟子，不传外人。"
+      shedu_qiqiao = "该武功仅限本门弟子，不传外人。"
+      hamagong = "该武功仅限本门弟子，不传外人。"
+      baituo_xinfa = "该武功仅限本门弟子，不传外人。"
+      chanchu_bufa = "该武功仅限本门弟子，不传外人。"
+      lingshe_quan = "该武功仅限本门弟子，不传外人。"
+      lingshe_zhangfa = "该武功仅限本门弟子，不传外人。"
+      baibian_daxue = "该武功仅限本门弟子，不传外人。"
+      xiyu_tiezheng = "该武功仅限本门弟子，不传外人。"
+      wushe_qu = "该武功仅限本门弟子，不传外人。"
+      literate = "该武功仅限本门弟子，不传外人。"
+      medical = "该武功仅限本门弟子，不传外人。"
+      baituo_michuan = "该武功仅限本门弟子，不传外人。"
+    }
+  }
+
+  apprentice = {
+    family = "欧阳世家"
+    permit_recruit = true
+    min_exp = 200000
+    min_exp_deny = "你的经验还不够，先和我的侄儿欧阳克学习武功吧。"
+  }
 
   carry = [
     { id = items.shezhang.id },
@@ -28307,8 +28436,20 @@ chats = [
   }
 
   inquiries = [
-    { key = "引路神蛇" value = " inquire about shenshe (unimplemented)" },
-    { key = "神蛇" value = " inquire about shenshe (unimplemented)" }
+    { key = "引路神蛇" value = {
+      kind = "give_item"
+      item = "baituo:shenshe"
+      match = "shenshe"
+      family = "欧阳世家"
+      success = "嗯，你可得收好了！别到处乱放。\n"
+    } },
+    { key = "神蛇" value = {
+      kind = "give_item"
+      item = "baituo:shenshe"
+      match = "shenshe"
+      family = "欧阳世家"
+      success = "嗯，你可得收好了！别到处乱放。\n"
+    } }
   ]
 
   chat_chance = 2
@@ -28344,6 +28485,36 @@ chats = [
     { type = "finger" skill = "shedu-qiqiao" }
   ]
 
+  teach = {
+    family = "欧阳世家"
+    teach_skills = {
+      lingshe_quan = { max = 130 gongxian = 0 }
+    }
+    no_teach = {
+      cuff = "该武功仅限本门弟子，不传外人。"
+      dodge = "该武功仅限本门弟子，不传外人。"
+      parry = "该武功仅限本门弟子，不传外人。"
+      force = "该武功仅限本门弟子，不传外人。"
+      staff = "该武功仅限本门弟子，不传外人。"
+      training = "该武功仅限本门弟子，不传外人。"
+      hamagong = "该武功仅限本门弟子，不传外人。"
+      baituo_xinfa = "该武功仅限本门弟子，不传外人。"
+      chanchu_bufa = "该武功仅限本门弟子，不传外人。"
+      baibian_daxue = "该武功仅限本门弟子，不传外人。"
+      poison = "该武功仅限本门弟子，不传外人。"
+      finger = "该武功仅限本门弟子，不传外人。"
+      shedu_qiqiao = "该武功仅限本门弟子，不传外人。"
+      medical = "该武功仅限本门弟子，不传外人。"
+      baituo_michuan = "该武功仅限本门弟子，不传外人。"
+      literate = "该武功仅限本门弟子，不传外人。"
+    }
+  }
+
+  apprentice = {
+    family = "欧阳世家"
+    permit_recruit = true
+    gender_deny = "家规所限，不能传你武功，你还做我的小妾吧。"
+  }
 
   carry = [
     { id = items.baipao.id }
