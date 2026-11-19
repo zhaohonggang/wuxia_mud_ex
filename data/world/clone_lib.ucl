@@ -28628,6 +28628,10 @@ chats = [
     { type = "finger" skill = "zhongnan-zhi" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
 
   carry = [
     { id = items.changjian.id },
@@ -28677,6 +28681,10 @@ chats = [
     { type = "strike" skill = "chongyang-shenzhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
 
   carry = [
     { id = items.grayrobe.id }
@@ -28725,6 +28733,10 @@ chats = [
     { type = "strike" skill = "chongyang-shenzhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
 
   carry = [
     { id = items.grayrobe.id }
@@ -28756,7 +28768,32 @@ chats = [
   }
 
   inquiries = [
-    { key = "破穹云蛟" value = " inquire about skill1 (unimplemented)" }
+    { key = "破穹云蛟" value = {
+      kind = "sect_master_grant"
+      perform_id = "qixing-shou/po"
+      skill = "qixing-shou"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 800
+      cost_gongxian = 800
+      min_shen = 30000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你这人行侠仗义的事情做得太少！"
+      skill_deny = "你连七星分天手都没学，何谈绝招可言？"
+      level_deny = {
+        qixing_shou = "你连七星分天手都没学，何谈绝招可言？"
+      }
+      min_levels = {
+        qixing_shou = 150
+        force = 200
+      }
+      level_order = ["qixing-shou", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n从怀中轻轻取出了一本小册子，指着其中的一段对$N细说良久，$N一边听一边点头。\n"
+      learned = "你学会了「破穹云蛟」。\n"
+      improve_skills = ["hand", "qixing-shou", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -28787,6 +28824,17 @@ chats = [
     { type = "strike" skill = "chongyang-shenzhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_skills = {
+      xuanmen_neigong = 60
+      quanzhen_xinfa = 60
+      taoism = 60
+    }
+    min_shen = 8000
+    min_shen_deny = "你这人行侠仗义的事情做得太少！"
+  }
 
   carry = [
     { id = items.grayrobe.id }
@@ -28888,6 +28936,12 @@ chats = [
     { type = "strike" skill = "chongyang-shenzhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_shen = 3000
+    min_shen_deny = "你行侠仗义之事做得太少，我不能收你。"
+  }
 
   carry = [
     { id = items.changjian.id },
@@ -29120,7 +29174,32 @@ chats = [
   }
 
   inquiries = [
-    { key = "玄门金锁" value = " inquire about skill1 (unimplemented)" }
+    { key = "玄门金锁" value = {
+      kind = "sect_master_grant"
+      perform_id = "jinguan-yusuo/suo"
+      skill = "jinguan-yusuo"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 400
+      cost_gongxian = 400
+      min_shen = 50000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "行侠仗义是我辈学武人的宗旨，你这方面还做得不够。"
+      skill_deny = "你连金关玉锁都没学，何谈绝招可言？"
+      level_deny = {
+        jinguan_yusuo = "你连金关玉锁都没学，何谈绝招可言？"
+      }
+      min_levels = {
+        jinguan_yusuo = 150
+        force = 200
+      }
+      level_order = ["jinguan-yusuo", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n点了点头，说道：“我给你演示一遍，可看仔细了。”只听$n话音刚落，顿时起身而立，双手蓦的回圈，暗含天罡北斗星位，朝$N攻去。霎时$N只觉招数一紧，接着双臂瘫软，全身力道竟似被$n锁住一般。\n"
+      learned = "你学会了「玄门金锁」。\n"
+      improve_skills = ["parry", "jinguan-yusuo", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29157,6 +29236,19 @@ chats = [
     { type = "strike" skill = "haotian-zhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_skills = {
+      xuanmen_neigong = 120
+      quanzhen_xinfa = 120
+      taoism = 120
+    }
+    min_exp = 200000
+    min_exp_deny = "你的实战经验太差，看来难以领略更高深的武功。"
+    min_shen = 30000
+    min_shen_deny = "行侠仗义是我辈学武人的宗旨，你这方面还做得不够。"
+  }
 
   carry = [
     { id = items.grayrobe.id }
@@ -29257,6 +29349,12 @@ chats = [
     { type = "strike" skill = "chongyang-shenzhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_shen = 2000
+    min_shen_deny = "你行侠仗义之事做得太少，我不能收你。"
+  }
 
   carry = [
     { id = items.changjian.id },
@@ -29290,7 +29388,33 @@ chats = [
   }
 
   inquiries = [
-    { key = "玉石俱焚" value = " inquire about skill1 (unimplemented)" }
+    { key = "玉石俱焚" value = {
+      kind = "sect_master_grant"
+      perform_id = "tonggui-jian/fen"
+      skill = "tonggui-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 600
+      cost_gongxian = 600
+      min_shen = 30000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你目前表现太差！多做点行侠仗义的事再来找我！"
+      skill_deny = "你连同归剑法都没学，何谈绝招可言？"
+      level_deny = {
+        tonggui_jian = "你连同归剑法都没学，何谈绝招可言？"
+      }
+      min_levels = {
+        tonggui_jian = 120
+        force = 150
+        max_neili = 1500
+      }
+      level_order = ["tonggui-jian", "force", "max-neili"]
+      maxed = "我不是已经教你了吗，你这人怎么凭的罗嗦！"
+      msg_one = "$n哈哈一笑，赞道：“不错，有志气！难得我全真教内有你这般人材，今日为师就传授你这招！”说罢$n便从怀中轻轻取出了一本剑谱，指着其中一段对$N细说良久，$N一边听一边点头。\n"
+      learned = "你学会了「玉石俱焚」。\n"
+      improve_skills = ["sword", "tonggui-jian", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29324,12 +29448,28 @@ chats = [
     { type = "strike" skill = "haotian-zhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_skills = {
+      xuanmen_neigong = 100
+      quanzhen_xinfa = 100
+    }
+    min_skills_deny = "你连本门最基本的内功都未练足，叫我如何收你？"
+    skill_deny = {
+      sword = "你的剑法差成这样，如何能够杀敌？"
+    }
+    min_skill_deny = {
+      sword = "你的剑法差成这样，如何能够杀敌？"
+    }
+    min_shen = 25000
+    min_shen_deny = "你目前表现太差！多做点行侠仗义的事再来找我！"
+  }
 
   carry = [
     { id = items.changjian.id },
     { id = items.grayrobe.id }
   ]
-
 
   init = {
     greet_delay = 1
@@ -29377,6 +29517,10 @@ chats = [
     { type = "finger" skill = "zhongnan-zhi" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
 
   carry = [
     { id = items.changjian.id },
@@ -29409,7 +29553,32 @@ chats = [
   }
 
   inquiries = [
-    { key = "朝拜天罡" value = " inquire about skill1 (unimplemented)" }
+    { key = "朝拜天罡" value = {
+      kind = "sect_master_grant"
+      perform_id = "tiangang-chenfa/bai"
+      skill = "tiangang-chenfa"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 150
+      cost_gongxian = 150
+      min_shen = 10000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连天罡尘法都没学，何谈绝招可言？"
+      level_deny = {
+        tiangang_chenfa = "你的天罡尘法不够娴熟，练高点再来吧。"
+      }
+      min_levels = {
+        tiangang_chenfa = 120
+        max_neili = 1500
+      }
+      level_order = ["tiangang-chenfa", "max-neili"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n微微一笑，忽地站起身，右手一抖，手中拂尘顿时窜动不已，接连变幻了数种招式，分袭$N各处要害，招式煞为巧妙，令人叹为观止。\n"
+      learned = "你学会了「朝拜天罡」。\n"
+      improve_skills = ["whip", "tiangang-chenfa", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29439,6 +29608,20 @@ chats = [
     { type = "strike" skill = "chongyang-shenzhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "我不收男徒，你还是去拜我几位师兄为师吧。"
+    min_skills = {
+      xuanmen_neigong = 60
+      quanzhen_xinfa = 60
+      taoism = 60
+    }
+    min_skills_deny = "你的本门内功心法火候不足，难以领略更高深的武功。"
+    min_shen = 8000
+    min_shen_deny = "你这人行侠仗义的事情做得太少！"
+  }
 
   carry = [
     { id = items.fuchen.id },
@@ -29471,7 +29654,32 @@ chats = [
   }
 
   inquiries = [
-    { key = "三花聚顶" value = " inquire about skill1 (unimplemented)" }
+    { key = "三花聚顶" value = {
+      kind = "sect_master_grant"
+      perform_id = "haotian-zhang/ju"
+      skill = "haotian-zhang"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 250
+      cost_gongxian = 250
+      min_shen = 30000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连昊天掌都没学，何谈绝招可言？"
+      level_deny = {
+        haotian_zhang = "你的昊天掌不够娴熟，练高点再来吧。"
+      }
+      min_levels = {
+        haotian_zhang = 120
+        force = 180
+      }
+      level_order = ["haotian-zhang", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n眉头一皱，上下打量了$N一番，当下更不答话，衣袖轻轻一抖，猛然大喝一声，顿时双掌纷飞，掌劲朝四面八方云贯而出，气势恢弘之极。\n"
+      learned = "你学会了「三花聚顶」。\n"
+      improve_skills = ["strike", "haotian-zhang", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29504,6 +29712,18 @@ chats = [
     { type = "strike" skill = "haotian-zhang" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_skills = {
+      xuanmen_neigong = 100
+      quanzhen_xinfa = 100
+      taoism = 100
+    }
+    min_skills_deny = "你的本门内功心法火候不足，难以领略更高深的武功。"
+    min_shen = 30000
+    min_shen_deny = "你这人行侠仗义的事情做得太少！"
+  }
 
   carry = [
     { id = items.grayrobe.id }
@@ -29536,16 +29756,177 @@ chats = [
   }
 
   inquiries = [
-    { key = "一气化三清" value = " inquire about skill2 (unimplemented)" },
-    { key = "五气朝元" value = " inquire about skill1 (unimplemented)" },
-    { key = "五阴焚灭" value = " inquire about skill4 (unimplemented)" },
+    { key = "一气化三清" value = {
+      kind = "sect_master_grant"
+      perform_id = "quanzhen-jian/hua"
+      skill = "quanzhen-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 1600
+      cost_gongxian = 1600
+      min_shen = 100000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连全真剑法都没学，何谈绝招可言？"
+      level_deny = {
+        quanzhen_jian = "你对我派剑法的了解还不够透彻，研究透了再来找我吧。"
+      }
+      min_levels = {
+        quanzhen_jian = 200
+        xiantian_gong = 100
+        max_neili = 4500
+      }
+      level_order = ["quanzhen-jian", "xiantian-gong", "max-neili"]
+      maxed = "你全真剑法已达如此造诣，我已没什么可教的了。"
+      msg_one = "$n哈哈一笑，随手从道袍上撕下一角布条，内力吞吐间，只见那布条登时变得如同坚铁，伸手刺处，变幻无方，宛若三把长剑齐出，招式当真绝妙无比。\n"
+      learned = "你学会了「一气化三清」。\n"
+      improve_skills = ["force", "xiantian-gong", "sword", "quanzhen-jian", "martial-cognize"]
+    } },
+    { key = "化三清" value = {
+      kind = "sect_master_grant"
+      perform_id = "quanzhen-jian/hua"
+      skill = "quanzhen-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 1600
+      cost_gongxian = 1600
+      min_shen = 100000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连全真剑法都没学，何谈绝招可言？"
+      level_deny = {
+        quanzhen_jian = "你对我派剑法的了解还不够透彻，研究透了再来找我吧。"
+      }
+      min_levels = {
+        quanzhen_jian = 200
+        xiantian_gong = 100
+        max_neili = 4500
+      }
+      level_order = ["quanzhen-jian", "xiantian-gong", "max-neili"]
+      maxed = "你全真剑法已达如此造诣，我已没什么可教的了。"
+      msg_one = "$n哈哈一笑，随手从道袍上撕下一角布条，内力吞吐间，只见那布条登时变得如同坚铁，伸手刺处，变幻无方，宛若三把长剑齐出，招式当真绝妙无比。\n"
+      learned = "你学会了「一气化三清」。\n"
+      improve_skills = ["force", "xiantian-gong", "sword", "quanzhen-jian", "martial-cognize"]
+    } },
+    { key = "五气朝元" value = {
+      kind = "sect_master_grant"
+      perform_id = "xiantian-gong/hup"
+      skill = "xiantian-gong"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 500
+      cost_gongxian = 500
+      min_shen = 100000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连先天功都没学，何谈绝招可言？"
+      level_deny = {
+        xiantian_gong = "你先天功的修为不够，还是练高了再来吧。"
+      }
+      min_levels = {
+        xiantian_gong = 200
+        max_neili = 2000
+      }
+      level_order = ["xiantian-gong", "max-neili"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n微微一笑，从怀中轻轻取出了一本小册子，指着其中的一段对$N细说良久，$N一边听一边点头。\n"
+      learned = "你学会了「五气朝元」。\n"
+      improve_skills = ["force", "xiantian-gong", "martial-cognize"]
+    } },
+    { key = "天地混元" value = {
+      kind = "sect_master_grant"
+      perform_id = "xiantian-gong/hun"
+      skill = "xiantian-gong"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 1800
+      cost_gongxian = 1800
+      min_shen = 120000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连先天功都没学，何谈绝招可言？"
+      level_deny = {
+        xiantian_gong = "你先天功的修为不够，还是练高了再来吧。"
+      }
+      min_levels = {
+        xiantian_gong = 200
+        max_neili = 4000
+      }
+      level_order = ["xiantian-gong", "max-neili"]
+      maxed = "这招你不是已经学会了吗？"
+      msg_one = "$n哈哈一笑，对$N说道：“你的先天功达此境界，实属不凡，今日为师传你这招又有何妨？”说罢$n便摆开架势，慢慢地演示招数。\n"
+      learned = "你学会了「天地混元」。\n"
+      improve_skills = ["force", "unarmed", "xiantian-gong", "martial-cognize"]
+    } },
+    { key = "五阴焚灭" value = {
+      kind = "sect_master_grant"
+      perform_id = "xiantian-gong/fen"
+      skill = "xiantian-gong"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 2000
+      cost_gongxian = 2000
+      min_shen = 130000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连先天功都没学，何谈绝招可言？"
+      level_deny = {
+        xiantian_gong = "你先天功的修为不够，还是练高了再来吧。"
+      }
+      min_levels = {
+        xiantian_gong = 240
+        max_neili = 4000
+      }
+      level_order = ["xiantian-gong", "max-neili"]
+      maxed = "这招你不是已经学会了吗？"
+      msg_one = "$n微微一笑，对$N说道：“难得你有如此造诣，今日师父就传你这招，可看好了！”$n随即一声清哮，全身真气急速运转，引得周围气流波动不已。左掌微微一抖，先天真气随招式而荡漾，激起千层气浪，威力之强，当可用惊天地、泣鬼神来描述，直看得$N目瞪口呆。\n"
+      learned = "你学会了「五阴焚灭」。\n"
+      improve_skills = ["force", "unarmed", "xiantian-gong", "martial-cognize"]
+    } },
+    { key = "神威浩荡" value = {
+      kind = "sect_master_grant"
+      perform_id = "xiantian-gong/dang"
+      skill = "xiantian-gong"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 2500
+      cost_gongxian = 2500
+      min_shen = 150000
+      requires_perform = "xiantian-gong/fen"
+      requires_perform_deny = "此招乃是由「五阴焚灭」升华而来，你还是逐步学习吧？"
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连先天功都没学，何谈绝招可言？"
+      level_deny = {
+        xiantian_gong = "你先天功的修为不够，还是练高了再来吧。"
+      }
+      min_levels = {
+        xiantian_gong = 240
+        max_neili = 5000
+      }
+      level_order = ["xiantian-gong", "max-neili"]
+      maxed = "这招你不是已经学会了吗？"
+      msg_one = "$n微微点了点头，随手搭在$N的肩上，突然$N陡觉全身筋脉剧震，内息澎湃汹涌之极，犹如江河绝堤，便欲冲关破出一般，不由大惊。\n"
+      learned = "你学会了「神威浩荡」。\n"
+      improve_skills = ["force", "unarmed", "xiantian-gong", "martial-cognize"]
+    } },
     { key = "全真教" value = "我全真教是天下道家玄门正宗。" },
-    { key = "化三清" value = " inquire about skill2 (unimplemented)" },
-    { key = "天地混元" value = " inquire about skill3 (unimplemented)" },
-    { key = "神威浩荡" value = " inquire about skill5 (unimplemented)" },
     { key = "绝技" value = "你想学什么绝招？" },
     { key = "绝招" value = "你想学什么绝招？" }
   ]
+
+  teach = {
+    family = "全真教"
+    no_teach = {
+      yiyang_zhi = "一阳指乃是段家秘传，我不能教你。"
+    }
+  }
 
   skills = [
     { skill = "force" level = 400 },
@@ -29587,6 +29968,21 @@ chats = [
     { type = "hand" skill = "qixing-shou" }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    hard_min_int = 35
+    int_deny = "你的悟性还不够，还是先找我那几个徒弟学习吧。"
+    min_skills = {
+      xuanmen_neigong = 120
+      quanzhen_xinfa = 120
+    }
+    min_skills_deny = "你的本门内功心法火候不足，只怕难以领略更高深的武功。"
+    min_exp = 450000
+    min_exp_deny = "你的实战经验太差，看来难以领略更高深的武功。"
+    min_shen = 80000
+    min_shen_deny = "行侠仗义是我辈学武人的宗旨，你多做些侠义之事，我方能收你为徒。"
+  }
 
   carry = [
     { id = items.greenrobe.id }
@@ -29618,8 +30014,60 @@ chats = [
   }
 
   inquiries = [
-    { key = "定阳针" value = " inquire about skill2 (unimplemented)" },
-    { key = "缠字诀" value = " inquire about skill1 (unimplemented)" }
+    { key = "缠字诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "quanzhen-jian/chan"
+      skill = "quanzhen-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 200
+      cost_gongxian = 200
+      min_shen = 10000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连全真剑法都没学，何谈绝招可言？"
+      level_deny = {
+        quanzhen_jian = "你的全真剑法不够娴熟，练高点再来吧。"
+        force = "你的内功修为不够，修炼高后再来找我吧。"
+      }
+      min_levels = {
+        quanzhen_jian = 80
+        force = 100
+      }
+      level_order = ["quanzhen-jian", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n微笑着点了点头，说道：“看好了。”说罢即抽出腰间长剑，慢慢演示起来。只见$n剑招紧密圆动，连绵不绝，内力便如细丝般从长剑剑锋透出，带出阵阵风声。直看得$N目瞪口呆。\n"
+      learned = "你学会了「缠字诀」。\n"
+      improve_skills = ["sword", "quanzhen-jian", "martial-cognize"]
+    } },
+    { key = "定阳针" value = {
+      kind = "sect_master_grant"
+      perform_id = "quanzhen-jian/ding"
+      skill = "quanzhen-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 400
+      cost_gongxian = 400
+      min_shen = 12000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连全真剑法都没学，何谈绝招可言？"
+      level_deny = {
+        quanzhen_jian = "你的全真剑法不够娴熟，练高点再来吧。"
+        force = "你的内功修为不够，修炼高后再来找我吧。"
+      }
+      min_levels = {
+        quanzhen_jian = 100
+        force = 150
+      }
+      level_order = ["quanzhen-jian", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n点了点头，喝道：“看仔细了。”话音刚落，只见$n脚下左弓右箭，深深吸入一口气，神气完足如雷霆五岳，电光火石间一剑斜斜刺出，顿时只听得“哧”的一声，$N脚下的方砖竟然应声而碎，裂成了数块。\n"
+      learned = "你学会了「定阳针」。\n"
+      improve_skills = ["sword", "quanzhen-jian", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29653,6 +30101,19 @@ chats = [
     { id = items.changjian.id },
     { id = items.grayrobe.id }
   ]
+
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_skills = {
+      xuanmen_neigong = 80
+      quanzhen_xinfa = 80
+      taoism = 80
+    }
+    min_skills_deny = "你的本门内功心法火候不足，只怕难以领略更高深的武功。"
+    min_shen = 10000
+    min_shen_deny = "行侠仗义是我辈学武人的宗旨，你多做些侠义之事，我方能收你为徒。"
+  }
 
     }
 
@@ -29703,6 +30164,11 @@ chats = [
     { id = items.grayrobe.id }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/quanzhen/yin.c
@@ -29728,9 +30194,87 @@ chats = [
   }
 
   inquiries = [
-    { key = "三连环" value = " inquire about skill3 (unimplemented)" },
-    { key = "剑指南山" value = " inquire about skill1 (unimplemented)" },
-    { key = "群星璀璨" value = " inquire about skill2 (unimplemented)" }
+    { key = "剑指南山" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhongnan-zhi/zhi"
+      skill = "zhongnan-zhi"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 50
+      cost_gongxian = 50
+      min_shen = 3000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连终南指法都没学，何谈绝招可言？"
+      level_deny = {
+        zhongnan_zhi = "你的终南指法不够娴熟，练高点再来吧。"
+        force = "你的内功修为不够，修炼高后再来找我吧。"
+      }
+      min_levels = {
+        zhongnan_zhi = 60
+        force = 80
+      }
+      level_order = ["zhongnan-zhi", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n对$N点了点头，当下更不答话，微微探出一指，斜刺而出。但见其指尖晃动不已，招式连贯，颇为精奇。\n"
+      learned = "你学会了「剑指南山」。\n"
+      improve_skills = ["finger", "zhongnan-zhi", "martial-cognize"]
+    } },
+    { key = "群星璀璨" value = {
+      kind = "sect_master_grant"
+      perform_id = "qixing-jian/xing"
+      skill = "qixing-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 80
+      cost_gongxian = 80
+      min_shen = 3500
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连七星剑法都没学，何谈绝招可言？"
+      level_deny = {
+        qixing_jian = "你的七星剑法不够娴熟，练高点再来吧。"
+        force = "你的内功修为不够，修炼高后再来找我吧。"
+      }
+      min_levels = {
+        qixing_jian = 60
+        force = 80
+      }
+      level_order = ["qixing-jian", "force"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n微微点了点头，在$N耳边轻声说了些话，一边说还一边抽出长剑比划着剑招。过得良久，$N方才抬起头，似乎有了什么新的领悟。\n"
+      learned = "你学会了「群星璀璨」。\n"
+      improve_skills = ["sword", "qixing-jian", "martial-cognize"]
+    } },
+    { key = "三连环" value = {
+      kind = "sect_master_grant"
+      perform_id = "quanzhen-jian/lian"
+      skill = "quanzhen-jian"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 1000
+      cost_gongxian = 800
+      min_shen = 100000
+      family_deny = "阁下与贫道素不相识，不知此话从何说起？"
+      gongxian_deny = "你在我全真教内甚无作为，这招我暂时还不能传你。"
+      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+      skill_deny = "你连全真剑法都没学，何谈绝招可言？"
+      level_deny = {
+        quanzhen_jian = "你的全真剑法不够娴熟，练高点再来吧。"
+        max_neili = "你的内力修为不够，还是练高点再来吧。"
+      }
+      min_levels = {
+        quanzhen_jian = 180
+        max_neili = 2500
+      }
+      level_order = ["quanzhen-jian", "max-neili"]
+      maxed = "这招我不是已经教会你了吗？"
+      msg_one = "$n点了点头，喝道：“看仔细了。”话音刚落，只见$n将全真剑法和掌法、拳脚功夫连环使出，只看得$N目不暇接，感叹不已。\n"
+      learned = "你学会了「三连环」绝技。\n"
+      improve_skills = ["sword", "quanzhen-jian", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29763,6 +30307,19 @@ chats = [
     { id = items.changjian.id },
     { id = items.grayrobe.id }
   ]
+
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_skills = {
+      xuanmen_neigong = 30
+      quanzhen_xinfa = 30
+      taoism = 30
+    }
+    min_skills_deny = "你的内功心法火候不足，再多练练吧。"
+    min_shen = 3000
+    min_shen_deny = "你行侠仗义之事做得太少，我不能收你。"
+  }
 
     }
 
@@ -29811,6 +30368,11 @@ chats = [
   carry = [
     { id = items.grayrobe.id }
   ]
+
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
 
     }
 
@@ -29861,6 +30423,11 @@ chats = [
     { id = items.grayrobe.id }
   ]
 
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/quanzhen/zhou.c
@@ -29893,8 +30460,60 @@ chats = [
     { key = "刘瑛" value = "嗯…这个…嗯…嗯？" },
     { key = "段皇爷" value = "段……段皇爷？人家是皇爷，我不认识！" },
     { key = "瑛姑" value = "这个…嗯…你…刚才你说啥来着？" },
-    { key = "空明若玄" value = " inquire about skill1 (unimplemented)" },
-    { key = "空空如也" value = " inquire about skill2 (unimplemented)" }
+    { key = "空明若玄" value = {
+      kind = "sect_master_grant"
+      perform_id = "kongming-quan/ruo"
+      skill = "kongming-quan"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 200
+      cost_gongxian = 200
+      min_shen = 50000
+      family_deny = "你是谁，我怎么不认识你？"
+      gongxian_deny = "你投入我全真教，却不努力做事，我为什么要教你？"
+      shen_deny = "你这人心地还不够好，暂时我还不能教你。"
+      skill_deny = "嘿嘿，你连我的空明拳都没学，又怎么学绝招？"
+      level_deny = {
+        kongming_quan = "你的空明拳还练得不够好，下次再说吧。"
+        max_neili = "你的内力差成这样，真不知道你是怎么练功的。"
+      }
+      min_levels = {
+        kongming_quan = 100
+        max_neili = 1000
+      }
+      level_order = ["kongming-quan", "max-neili"]
+      maxed = "还问这个干嘛？不如来陪我玩玩。"
+      msg_one = "$n抓了抓头，满不情愿的嘀咕了两句，这才说道：“小子，我把口诀说给你听，然后你就自己下去练，别再来烦我了。”说完便一把将$N楸到身边，在$N耳旁唧唧咕咕说了半天。\n"
+      learned = "你学会了「空明若玄」。\n"
+      improve_skills = ["unarmed", "kongming-quan", "martial-cognize"]
+    } },
+    { key = "空空如也" value = {
+      kind = "sect_master_grant"
+      perform_id = "kongming-quan/kong"
+      skill = "kongming-quan"
+      gate_order = "lpc_kunlun"
+      family = "全真教"
+      min_gongxian = 500
+      cost_gongxian = 500
+      min_shen = 60000
+      family_deny = "你是谁，我怎么不认识你？"
+      gongxian_deny = "你投入我全真教，却不努力做事，我为什么要教你？"
+      shen_deny = "你这人心地还不够好，暂时我还不能教你。"
+      skill_deny = "嘿嘿，你连我的空明拳都没学，又怎么学绝招？"
+      level_deny = {
+        kongming_quan = "你的空明拳还练得不够好，下次再说吧。"
+        max_neili = "你的内力差成这样，真不知道你是怎么练功的。"
+      }
+      min_levels = {
+        kongming_quan = 150
+        max_neili = 2000
+      }
+      level_order = ["kongming-quan", "max-neili"]
+      maxed = "快滚，快滚。"
+      msg_one = "$n双目一瞪，对$N说道：“你怎么这么烦，没看见我正在玩吗？”接着$n摇了摇头，又道：“真是后悔当初收了你，看好了！”说话间右手一陡，轻飘飘挥出一拳，拳劲虚实难测，周围登时被激得尘土飞扬。\n"
+      learned = "你学会了「空空如也」。\n"
+      improve_skills = ["unarmed", "kongming-quan", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -29944,6 +30563,23 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  teach = {
+    family = "全真教"
+    no_teach = {
+      xiantian_gong = "这个我也没弄清楚，你还是去找我师兄学吧。"
+      yijin_duangu = "这玩意我还正在想法忘记，不能教你。"
+      shexing_lifan = "这玩意我还正在想法忘记，不能教你。"
+    }
+  }
+
+  apprentice = {
+    family = "全真教"
+    permit_recruit = true
+    min_exp = 400000
+    min_exp_deny = "你经验这么差，还是去找我那几个师侄教你吧。"
+    min_shen = 50000
+    min_shen_deny = "你这人品行不好，跟你一起肯定做不了什么好事。"
+  }
 
   engage = {
     fight = { accept = true }
