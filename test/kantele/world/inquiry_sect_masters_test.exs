@@ -855,6 +855,274 @@ defmodule Kantele.World.InquirySectMastersTest do
     end
   end
 
+  describe "武当派 UCL 数据回填（Task #619）" do
+    test "莫声谷 2 门绝招：太极初升 + 隔山打牛", %{world: world} do
+      mo = npc(world, "莫声谷", "wudang:nanyanfeng")
+      assert mo, "莫声谷应随世界加载（wudang:nanyanfeng）"
+      assert mo.meta.teach.family == "武当派"
+
+      sheng = inquiry(mo, "太极初升")
+      assert sheng["perform_id"] == "wudang-jian/sheng"
+      assert sheng["skill"] == "wudang-jian"
+      assert sheng["min_gongxian"] == 80
+      assert sheng["min_shen"] == 2000
+      assert sheng["cost_gongxian"] == 80
+      assert sheng["min_max_neili"] == 300
+      assert sheng["min_levels"] == %{"force" => 80, "wudang-jian" => 60}
+      assert sheng["family_deny"] == "不是我们武当派的人，何出此言？"
+      assert sheng["skill_deny"] == "你连武当剑法都没学，还谈什么绝招可言？"
+      assert sheng["gongxian_deny"] == "你为我武当派效力还不够，这招我先不忙传你。"
+      assert sheng["shen_deny"] == "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      assert sheng["level_deny"] == %{
+               "force" => "你的内功的修为不够，练高了再来吧。",
+               "wudang-jian" => "你的武当剑法修为太浅，修炼好了再来吧。"
+             }
+      assert sheng["max_neili_deny"] == "你的内力修为太浅，修炼高了再来吧。"
+      assert sheng["maxed"] == "你自己去练习吧。"
+      assert sheng["learned"] == "你学会了「太极初升」。"
+      assert mo.meta.teach.no_teach_deny["taiji-shengong"] == "要想学习太极神功请向张真人请教。"
+
+      da = inquiry(mo, "隔山打牛")
+      assert da["perform_id"] == "zhenshan-zhang/da"
+      assert da["skill"] == "zhenshan-zhang"
+      assert da["min_gongxian"] == 50
+      assert da["min_shen"] == 6000
+      assert da["cost_gongxian"] == 50
+      assert da["min_max_neili"] == 200
+      assert da["min_levels"] == %{"zhenshan-zhang" => 40}
+      assert da["family_deny"] == "不是我们武当派的人，何出此言？"
+      assert da["skill_deny"] == "你连震山掌都没学，还谈什么绝招可言？"
+      assert da["gongxian_deny"] == "你为我武当派效力还不够，这招我先不忙传你。"
+      assert da["shen_deny"] == "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      assert da["max_neili_deny"] == "你的内力修为太浅，修炼高了再来吧。"
+      assert da["level_deny"] == "你的震山掌修为太浅，修炼好了再来吧。"
+      assert da["maxed"] == "能教的我都教了，你自己练习吧。"
+      assert da["learned"] == "你学会了「隔山打牛」。"
+    end
+
+    test "张翠山 1 门绝招：谁与争锋", %{world: world} do
+      shan = npc(world, "张翠山", "wudang:jiejianyan")
+      assert shan, "张翠山应随世界加载（wudang:jiejianyan）"
+      assert shan.meta.teach.family == "武当派"
+
+      zheng = inquiry(shan, "谁与争锋")
+      assert zheng["perform_id"] == "yitian-zhang/zheng"
+      assert zheng["skill"] == "yitian-zhang"
+      assert zheng["min_gongxian"] == 200
+      assert zheng["min_shen"] == 12000
+      assert zheng["cost_gongxian"] == 200
+      assert zheng["min_max_neili"] == 800
+      assert zheng["min_levels"] == %{"yitian-zhang" => 120}
+      assert zheng["max_neili_deny"] == "你的内力修为太浅，修炼高了再来吧。"
+      assert zheng["family_deny"] == "不是我们武当派的人，何出此言？"
+      assert zheng["skill_deny"] == "你连倚天屠龙掌都没学，还谈什么绝招可言？"
+      assert zheng["gongxian_deny"] == "你为我武当派效力还不够，这招我先不忙传你。"
+      assert zheng["shen_deny"] == "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      assert zheng["level_deny"] == "你的倚天屠龙掌还不到家，要多练练！"
+      assert zheng["maxed"] == "你不是已经会了吗？怎么老是纠缠不休。"
+      assert zheng["learned"] == "你学会了「谁与争锋」。"
+    end
+
+    test "张松溪 1 门绝招：乱环诀", %{world: world} do
+      xi = npc(world, "张松溪", "wudang:donglang1")
+      assert xi, "张松溪应随世界加载（wudang:donglang1）"
+      assert xi.meta.teach.family == "武当派"
+
+      huan = inquiry(xi, "乱环诀")
+      assert huan["perform_id"] == "xuanxu-dao/huan"
+      assert huan["skill"] == "xuanxu-dao"
+      assert huan["min_gongxian"] == 150
+      assert huan["min_shen"] == 10000
+      assert huan["cost_gongxian"] == 150
+      assert huan["min_levels"] == %{"xuanxu-dao" => 100}
+      assert huan["family_deny"] == "不是我们武当派的人，何出此言？"
+      assert huan["skill_deny"] == "你连玄虚刀法都没学，还谈什么绝招可言？"
+      assert huan["gongxian_deny"] == "你为我武当派效力还不够，这招我先不忙传你。"
+      assert huan["shen_deny"] == "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      assert huan["level_deny"] == "你的玄虚刀法还不到家，要多练练！"
+      assert huan["maxed"] == "我都教给你了，自己好好多练习吧！"
+      assert huan["learned"] == "你学会了「乱环决」。"
+    end
+
+    test "殷梨亭 1 门绝招：柔月穿空", %{world: world} do
+      yin = npc(world, "殷梨亭", "wudang:caolianfang")
+      assert yin, "殷梨亭应随世界加载（wudang:caolianfang）"
+      assert yin.meta.teach.family == "武当派"
+
+      chuan = inquiry(yin, "柔月穿空")
+      assert chuan["perform_id"] == "raozhi-roujian/chuankong"
+      assert chuan["skill"] == "raozhi-roujian"
+      assert chuan["min_gongxian"] == 250
+      assert chuan["min_shen"] == 15000
+      assert chuan["cost_gongxian"] == 250
+      assert chuan["min_max_neili"] == nil
+      assert chuan["min_levels"] == %{"force" => 150, "raozhi-roujian" => 100}
+      assert chuan["family_deny"] == "不是我们武当派的人，何出此言？"
+      assert chuan["skill_deny"] == "你连绕指柔剑都没学，还谈什么绝招可言？"
+      assert chuan["gongxian_deny"] == "你为我武当派效力还不够，这招我先不忙传你。"
+      assert chuan["shen_deny"] == "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      assert chuan["level_deny"] == %{
+               "force" => "你的内功的修为不够，练高了再来吧。",
+               "raozhi-roujian" => "你的绕指柔剑还不到家，要多练练！"
+             }
+      assert chuan["maxed"] == "自己好好多练习吧！"
+      assert chuan["learned"] == "你学会了「柔月穿空」。"
+    end
+
+    test "俞莲舟 1 门绝招：绝户神抓", %{world: world} do
+      yu = npc(world, "俞莲舟", "wudang:houyuan")
+      assert yu, "俞莲舟应随世界加载（wudang:houyuan）"
+      assert yu.meta.teach.family == "武当派"
+
+      juehu = inquiry(yu, "绝户神抓")
+      assert juehu["perform_id"] == "huzhua-shou/juehu"
+      assert juehu["skill"] == "huzhua-shou"
+      assert juehu["min_gongxian"] == 400
+      assert juehu["min_shen"] == 100000
+      assert juehu["cost_gongxian"] == 400
+      assert juehu["min_levels"] == %{"force" => 180, "huzhua-shou" => 120}
+      assert juehu["family_deny"] == "不是我们武当派的人，何出此言？"
+      assert juehu["skill_deny"] == "你连虎爪绝户手都没学，还谈什么绝招可言？"
+      assert juehu["gongxian_deny"] == "你为我武当派效力还不够，这招我先不忙传你。"
+      assert juehu["shen_deny"] == "这一招太过阴恨，如果被你用去我恐怕不放心！"
+      assert juehu["level_deny"] == %{
+               "force" => "你的内功的修为不够，练高了再来吧。",
+               "huzhua-shou" => "你的虎爪绝户手还不到家，还是自己先下去多多练习吧。"
+             }
+      assert juehu["maxed"] == "这一招你不是已经会了吗？"
+      assert juehu["learned"] == "你学会了「绝户神抓」。"
+    end
+
+    test "俞岱岩：teach + no_teach map，无 inquiry", %{world: world} do
+      yan = npc(world, "俞岱岩", "wudang:gaotai")
+      assert yan, "俞岱岩应随世界加载（wudang:gaotai）"
+      assert yan.meta.teach.family == "武当派"
+      assert is_nil(yan.meta.inquiries)
+
+      assert Enum.sort(yan.meta.teach.no_teach) ==
+               ["taiji-jian", "taiji-quan", "taiji-shengong"]
+      assert yan.meta.teach.no_teach_deny["taiji-shengong"] == "要想学习太极神功请向张真人请教。"
+      assert yan.meta.teach.no_teach_deny["taiji-jian"] == "太极剑必须张真人亲传。"
+      assert yan.meta.teach.no_teach_deny["taiji-quan"] == "太极拳必须张真人亲传。"
+    end
+
+    test "张三丰：武当九阳功不可无条件传授（任务链门控待移植 GAP #789）", %{world: world} do
+      zhang = npc(world, "张三丰", "wudang:xiaoyuan")
+      assert zhang, "张三丰应随世界加载（wudang:xiaoyuan）"
+      assert zhang.meta.teach.family == "武当派"
+
+      # LPC zhang.c ask_jiuyang 需昆仑+少林双任务标记；未实现前绝不直接放入 teach_skills。
+      assert is_nil(Map.get(zhang.meta.teach.teach_skills, "wudang-jiuyang"))
+      assert "wudang-jiuyang" in zhang.meta.teach.no_teach
+    end
+  end
+
+  describe "武当派 门控联验（Task #619）" do
+    defp wudang_disciple(overrides \\ %{}) do
+      disciple(%{
+        skills: %{"wudang-jian" => 60, "force" => 80, "zhenshan-zhang" => 40,
+                  "yitian-zhang" => 120, "xuanxu-dao" => 100, "raozhi-roujian" => 100,
+                  "huzhua-shou" => 120},
+        gongxian: 500,
+        shen: 20000,
+        max_neili: 1000,
+        family: "武当派"
+      })
+      |> Map.merge(overrides)
+    end
+
+    test "武当弟子全达标 → 学会「太极初升」并扣 80 贡献", %{world: world} do
+      cfg = inquiry(npc(world, "莫声谷", "wudang:nanyanfeng"), "太极初升")
+      player = wudang_disciple(%{gongxian: 80, shen: 2000, max_neili: 300})
+
+      assert {:ok, "wudang-jian/sheng", 80} =
+               SectMaster.inquiry_grant(player, %{family: "武当派"}, cfg)
+    end
+
+    test "非武当派 → family_deny", %{world: world} do
+      cfg = inquiry(npc(world, "莫声谷", "wudang:nanyanfeng"), "太极初升")
+      player = wudang_disciple(%{family: "少林派"})
+
+      assert {:error, "不是我们武当派的人，何出此言？"} =
+               SectMaster.inquiry_grant(player, %{family: "武当派"}, cfg)
+    end
+
+    test "贡献不足（太极初升 80）→ gongxian_deny", %{world: world} do
+      cfg = inquiry(npc(world, "莫声谷", "wudang:nanyanfeng"), "太极初升")
+      player = wudang_disciple(%{gongxian: 79, shen: 2000, max_neili: 300})
+
+      assert {:error, "你为我武当派效力还不够，这招我先不忙传你。"} =
+               SectMaster.inquiry_grant(player, %{family: "武当派"}, cfg)
+    end
+
+    test "杀气不足（太极初升 2000）→ shen_deny", %{world: world} do
+      cfg = inquiry(npc(world, "莫声谷", "wudang:nanyanfeng"), "太极初升")
+      player = wudang_disciple(%{gongxian: 80, shen: 1999, max_neili: 300})
+
+      assert {:error, "你行侠仗义的事情做的还很不够，我不能传你绝招！"} =
+               SectMaster.inquiry_grant(player, %{family: "武当派"}, cfg)
+    end
+
+    test "等级不足（隔山打牛 zhenshan-zhang 40）→ level_deny", %{world: world} do
+      cfg = inquiry(npc(world, "莫声谷", "wudang:nanyanfeng"), "隔山打牛")
+      player = wudang_disciple(%{skills: %{"zhenshan-zhang" => 39, "force" => 80,
+                                          "wudang-jian" => 60, "yitian-zhang" => 120,
+                                          "xuanxu-dao" => 100, "raozhi-roujian" => 100,
+                                          "huzhua-shou" => 120},
+                                 gongxian: 50, shen: 6000, max_neili: 200})
+
+      assert {:error, "你的震山掌修为太浅，修炼好了再来吧。"} =
+               SectMaster.inquiry_grant(player, %{family: "武当派"}, cfg)
+    end
+
+    test "内力不足（谁与争锋 800）→ max_neili_deny", %{world: world} do
+      cfg = inquiry(npc(world, "张翠山", "wudang:jiejianyan"), "谁与争锋")
+      player = wudang_disciple(%{gongxian: 200, shen: 12000, max_neili: 799})
+
+      assert {:error, "你的内力修为太浅，修炼高了再来吧。"} =
+               SectMaster.inquiry_grant(player, %{family: "武当派"}, cfg)
+
+      assert {:ok, "yitian-zhang/zheng", 200} =
+               SectMaster.inquiry_grant(%{player | max_neili: 800},
+                                        %{family: "武当派"}, cfg)
+    end
+
+    test "绝户神抓：shen < 100000 → shen_deny；达标过门", %{world: world} do
+      cfg = inquiry(npc(world, "俞莲舟", "wudang:houyuan"), "绝户神抓")
+
+      yu_skills = %{"force" => 180, "huzhua-shou" => 120}
+      too_good = wudang_disciple(%{skills: yu_skills, gongxian: 400, shen: 99_999, max_neili: 1000})
+      assert {:error, "这一招太过阴恨，如果被你用去我恐怕不放心！"} =
+               SectMaster.inquiry_grant(too_good, %{family: "武当派"}, cfg)
+
+      evil = wudang_disciple(%{skills: yu_skills, gongxian: 400, shen: 100_000, max_neili: 1000})
+      assert {:ok, "huzhua-shou/juehu", 400} =
+               SectMaster.inquiry_grant(evil, %{family: "武当派"}, cfg)
+    end
+
+    test "太极初升：force 不足命中内功文案、剑法不足命中剑法文案", %{world: world} do
+      cfg = inquiry(npc(world, "莫声谷", "wudang:nanyanfeng"), "太极初升")
+
+      weak_force =
+        wudang_disciple(%{
+          skills: %{"force" => 79, "wudang-jian" => 60, "zhenshan-zhang" => 40},
+          gongxian: 80, shen: 2000, max_neili: 300
+        })
+
+      assert {:error, "你的内功的修为不够，练高了再来吧。"} =
+               SectMaster.inquiry_grant(weak_force, %{family: "武当派"}, cfg)
+
+      weak_sword =
+        wudang_disciple(%{
+          skills: %{"force" => 80, "wudang-jian" => 59, "zhenshan-zhang" => 40},
+          gongxian: 80, shen: 2000, max_neili: 300
+        })
+
+      assert {:error, "你的武当剑法修为太浅，修炼好了再来吧。"} =
+               SectMaster.inquiry_grant(weak_sword, %{family: "武当派"}, cfg)
+    end
+  end
+
   describe "昆仑派 UCL 数据回填（Task #750-#755）" do
     defp kunlun_npc(world, name) do
       Enum.find(world.characters, fn c ->

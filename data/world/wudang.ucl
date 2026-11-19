@@ -3238,6 +3238,10 @@ characters "wudang_zhang" {
         gongxian = 8
       }
     }
+    # LPC zhang.c try_to_learn_jy：须先经 ask_jiuyang 任务链解锁。
+    no_teach = {
+      wudang_jiuyang = "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。但阁下与贫道素不相识，怎谈得上“指点”二字？"
+    }
   }
 
   apprentice = {
@@ -3252,10 +3256,6 @@ characters "wudang_zhang" {
     class = "taoist"
     int_deny = "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的武当武学。\n"
   }
-
-  # LPC no_teach = ([ "wudang-jiuyang" : (: try_to_learn_jy :) ])
-  #   wudang-jiuyang 走 ask_jiuyang 闭包，不走 perform_id 管道；此处不回填。
-  no_teach = ["wudang-jiuyang"]
 
   # LPC set("class", "taoist")
   class = "taoist"
@@ -3637,14 +3637,17 @@ characters "wudang_shan" {
   # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
   teach = {
     family = "武当派"
+    no_teach = {
+      taiji_shengong = "要想学习太极神功请向张真人请教。"
+      taiji_jian = "太极剑必须张真人亲传。"
+      taiji_quan = "太极拳必须张真人亲传。"
+    }
   }
-
-  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
-  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
 
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     谁与争锋 = {
+      kind = "sect_master_grant"
       perform_id = "yitian-zhang/zheng"
       skill = "yitian-zhang"
       min_levels = {
@@ -3653,6 +3656,16 @@ characters "wudang_shan" {
       min_gongxian = 200
       min_shen = 12000
       cost_gongxian = 200
+      min_max_neili = 800
+      max_neili_deny = "你的内力修为太浅，修炼高了再来吧。"
+      family = "武当派"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连倚天屠龙掌都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我先不忙传你。"
+      shen_deny = "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      level_deny = "你的倚天屠龙掌还不到家，要多练练！"
+      maxed = "你不是已经会了吗？怎么老是纠缠不休。"
+      learned = "你学会了「谁与争锋」。"
     }
   }
 
@@ -3722,14 +3735,17 @@ characters "wudang_xi" {
   # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
   teach = {
     family = "武当派"
+    no_teach = {
+      taiji_shengong = "要想学习太极神功请向张真人请教。"
+      taiji_jian = "太极剑必须张真人亲传。"
+      taiji_quan = "太极拳必须张真人亲传。"
+    }
   }
-
-  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
-  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
 
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     乱环诀 = {
+      kind = "sect_master_grant"
       perform_id = "xuanxu-dao/huan"
       skill = "xuanxu-dao"
       min_levels = {
@@ -3738,6 +3754,14 @@ characters "wudang_xi" {
       min_gongxian = 150
       min_shen = 10000
       cost_gongxian = 150
+      family = "武当派"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连玄虚刀法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我先不忙传你。"
+      shen_deny = "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      level_deny = "你的玄虚刀法还不到家，要多练练！"
+      maxed = "我都教给你了，自己好好多练习吧！"
+      learned = "你学会了「乱环决」。"
     }
   }
 
@@ -3805,14 +3829,17 @@ characters "wudang_yin" {
   # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
   teach = {
     family = "武当派"
+    no_teach = {
+      taiji_shengong = "要想学习太极神功请向张真人请教。"
+      taiji_jian = "太极剑必须张真人亲传。"
+      taiji_quan = "太极拳必须张真人亲传。"
+    }
   }
-
-  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
-  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
 
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     柔月穿空 = {
+      kind = "sect_master_grant"
       perform_id = "raozhi-roujian/chuankong"
       skill = "raozhi-roujian"
       min_levels = {
@@ -3822,6 +3849,17 @@ characters "wudang_yin" {
       min_gongxian = 250
       min_shen = 15000
       cost_gongxian = 250
+      family = "武当派"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连绕指柔剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我先不忙传你。"
+      shen_deny = "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+      level_deny = {
+        force = "你的内功的修为不够，练高了再来吧。"
+        raozhi_roujian = "你的绕指柔剑还不到家，要多练练！"
+      }
+      maxed = "自己好好多练习吧！"
+      learned = "你学会了「柔月穿空」。"
     }
   }
 
@@ -3906,14 +3944,17 @@ characters "wudang_yu" {
   # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
   teach = {
     family = "武当派"
+    no_teach = {
+      taiji_shengong = "要想学习太极神功请向张真人请教。"
+      taiji_jian = "太极剑必须张真人亲传。"
+      taiji_quan = "太极拳必须张真人亲传。"
+    }
   }
-
-  # LPC no_teach = ([ ... ]) —— 太极神功/太极剑/太极拳须张真人亲传，此处不回填。
-  no_teach = ["taiji-shengong", "taiji-jian", "taiji-quan"]
 
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     绝户神抓 = {
+      kind = "sect_master_grant"
       perform_id = "huzhua-shou/juehu"
       skill = "huzhua-shou"
       min_levels = {
@@ -3923,6 +3964,17 @@ characters "wudang_yu" {
       min_gongxian = 400
       min_shen = 100000
       cost_gongxian = 400
+      family = "武当派"
+      family_deny = "不是我们武当派的人，何出此言？"
+      skill_deny = "你连虎爪绝户手都没学，还谈什么绝招可言？"
+      gongxian_deny = "你为我武当派效力还不够，这招我先不忙传你。"
+      shen_deny = "这一招太过阴恨，如果被你用去我恐怕不放心！"
+      level_deny = {
+        force = "你的内功的修为不够，练高了再来吧。"
+        huzhua_shou = "你的虎爪绝户手还不到家，还是自己先下去多多练习吧。"
+      }
+      maxed = "这一招你不是已经会了吗？"
+      learned = "你学会了「绝户神抓」。"
     }
   }
 
