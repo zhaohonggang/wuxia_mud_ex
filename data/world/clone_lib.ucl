@@ -25253,12 +25253,156 @@ chats = [
   }
 
   inquiries = [
-    { key = "冷剑决" value = " inquire about skill1 (unimplemented)" },
-    { key = "凌霄总诀" value = " inquire about skill2 (unimplemented)" },
-    { key = "雪花六出" value = " inquire about skill6 (unimplemented)" },
-    { key = "风回雪舞" value = " inquire about skill5 (unimplemented)" },
-    { key = "飞絮飘零" value = " inquire about skill3 (unimplemented)" },
-    { key = "鹤冲九霄" value = " inquire about skill4 (unimplemented)" }
+    { key = "冷剑决" value = {
+      kind = "sect_master_grant"
+      perform_id = "hanmei-jian/leng"
+      skill = "hanmei-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 50
+        hanmei_jian = 40
+      }
+      level_order = ["force", "hanmei-jian"]
+      min_gongxian = 50
+      cost_gongxian = 50
+      family_deny = "阁下从何而来，这样打听我雪山派绝招是什么意思？"
+      skill_deny = "你连寒梅剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行实在太差，下去练练再来！"
+        hanmei_jian = "亏你寒梅剑法练成这样，也好意思来找我。"
+      }
+      maxed = "自己下去练，别在这里跟我罗嗦个没完！"
+      msg_one = "$n略微点了点头，将$N招至跟前。轻声在$N耳畔细说良久，时不时还伸手演化剑招，$N一边听一边点头。\n"
+      learned = "你学会了「冷剑决」。\n"
+      improve_skills = ["sword", "hanmei-jian", "martial-cognize"]
+    } },
+    { key = "凌霄总诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingxiao-quan/jue"
+      skill = "lingxiao-quan"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 100
+        lingxiao_quan = 60
+      }
+      level_order = ["force", "lingxiao-quan"]
+      min_gongxian = 100
+      cost_gongxian = 100
+      family_deny = "阁下无故打听我雪山派的绝招是什么意思？"
+      skill_deny = "你连凌霄拳法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行实在太差，下去练练再来！"
+        lingxiao_quan = "亏你凌霄拳法练成这样，也好意思来找我。"
+      }
+      maxed = "自己下去练，别老跟我纠缠不休！"
+      msg_one = "$n打量了$N一翻，然后微微一笑，示以赞许。又将$N招至跟前，轻声在$N耳畔细说良久，时不时还伸手比出几式拳法中的精妙之处，$N一边听一边点头。\n"
+      learned = "你学会了「凌宵总诀」。\n"
+      improve_skills = ["cuff", "lingxiao-quan", "martial-cognize"]
+    } },
+    { key = "飞絮飘零" value = {
+      kind = "sect_master_grant"
+      perform_id = "piaoxu-zhang/piao"
+      skill = "piaoxu-zhang"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 100
+        piaoxu_zhang = 80
+      }
+      level_order = ["force", "piaoxu-zhang"]
+      min_gongxian = 150
+      cost_gongxian = 150
+      family_deny = "阁下无故打听我雪山派的绝招是什么意思？"
+      skill_deny = "你连飘絮掌法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行实在太差，下去练练再来！"
+        piaoxu_zhang = "亏你飘絮掌法练成这样，也好意思来找我。"
+      }
+      maxed = "自己下去练，别在这里跟我罗嗦个没完！"
+      msg_one = "$n略微点了点头，说道：“我给你演示一遍，可得瞧仔细了！”随即一声清啸，双掌纷飞贯出，掌影重重叠叠虚实难辨，全全笼罩$N全身。\n"
+      learned = "你学会了「飞絮飘零」。\n"
+      improve_skills = ["strike", "piaoxu-zhang", "martial-cognize"]
+    } },
+    { key = "鹤冲九霄" value = {
+      kind = "sect_master_grant"
+      perform_id = "yunhe-jian/chong"
+      skill = "yunhe-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 150
+        yunhe_jian = 100
+      }
+      level_order = ["force", "yunhe-jian"]
+      min_gongxian = 200
+      cost_gongxian = 200
+      family_deny = "阁下这样打听我雪山派绝招是什么意思？"
+      skill_deny = "你连云鹤七剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行实在太差，下去练练再来！"
+        yunhe_jian = "亏你云鹤七剑练成这样，也好意思来找我。"
+      }
+      maxed = "自己下去练，别老跟我纠缠不休！"
+      msg_one = "$n点了点头，随手从身后的书架上取出一本剑经，指着其中一段对$N细说了良久，$N一边听一边点头。\n"
+      learned = "你学会了「鹤冲九霄」。\n"
+      improve_skills = ["sword", "yunhe-jian", "martial-cognize"]
+    } },
+    { key = "风回雪舞" value = {
+      kind = "sect_master_grant"
+      perform_id = "xueshan-jian/hui"
+      skill = "xueshan-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 100
+        xueshan_jian = 30
+      }
+      level_order = ["force", "xueshan-jian"]
+      min_gongxian = 500
+      cost_gongxian = 500
+      family_deny = "你是哪里来的？快给我快快滚开！"
+      skill_deny = "你连雪山剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行太浅，用不了这一招！"
+        xueshan_jian = "你雪山剑法尚未修炼得精深，没法用这招。"
+      }
+      maxed = "这招我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n微微一笑，点了点头。说着便在$N耳边轻声述说剑诀精要，一边说还一边比划着些什么。过了良久，只见$N会心的一笑，似乎有了什么新的感悟。\n"
+      learned = "你学会了「风回雪舞」。\n"
+      improve_skills = ["sword", "xueshan-jian", "martial-cognize"]
+    } },
+    { key = "雪花六出" value = {
+      kind = "sect_master_grant"
+      perform_id = "xueshan-jian/chu"
+      skill = "xueshan-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 200
+        xueshan_jian = 140
+      }
+      level_order = ["force", "xueshan-jian"]
+      min_gongxian = 1000
+      cost_gongxian = 1000
+      family_deny = "你是哪里来的？快给我快快滚开！"
+      skill_deny = "你连雪山剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行太浅，用不了这一招！"
+        xueshan_jian = "你雪山剑法尚未修炼得精深，没法用这招。"
+      }
+      maxed = "这招我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n微微一笑，对$N赞道：“想不到今日你能有如此造诣，我这就传你这招。”说完$n拔出配剑，单手握住剑诀，顿时只见长剑抖动，虚中有实，实中有虚，剑尖剑锋齐用，凌厉刺出。$N只觉眼前剑光一闪而过，随即木屑纷飞，面前的红漆门柱上竟豁然印出六道剑痕，便宛如盛开的梅花一般，精雕细琢也不过如此。\n"
+      learned = "你学会了「雪花六出」。\n"
+      improve_skills = ["sword", "xueshan-jian", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -25284,6 +25428,39 @@ chats = [
     { type = "sword" skill = "xueshan-jian" },
     { type = "parry" skill = "yunhe-jian" }
   ]
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 200 gongxian = 0 }
+      xueshan_neigong = { max = 200 gongxian = 0 }
+      dodge = { max = 200 gongxian = 0 }
+      taxue_wuhen = { max = 200 gongxian = 0 }
+      cuff = { max = 180 gongxian = 0 }
+      lingxiao_quan = { max = 180 gongxian = 0 }
+      strike = { max = 180 gongxian = 0 }
+      piaoxu_zhang = { max = 180 gongxian = 0 }
+      sword = { max = 220 gongxian = 0 }
+      hanmei_jian = { max = 220 gongxian = 0 }
+      yunhe_jian = { max = 220 gongxian = 0 }
+      xueshan_jian = { max = 220 gongxian = 0 }
+      parry = { max = 200 gongxian = 0 }
+      literate = { max = 200 gongxian = 0 }
+      martial_cognize = { max = 150 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    min_shen = 3000
+    min_exp = 150000
+    min_skills = {
+      xueshan_neigong = 80
+      sword = 80
+    }
+    accept_msg = "很好，很好。念在你有心，今日我便收你为徒，希望日后能有一翻作为。"
+  }
 
 
   carry = [
@@ -25317,8 +25494,56 @@ chats = [
 
   inquiries = [
     { key = "三连环" value = " inquire about skill2 (unimplemented)" },
-    { key = "剑气封喉" value = " inquire about skill1 (unimplemented)" },
-    { key = "神倒鬼跌三连环" value = " inquire about skill2 (unimplemented)" },
+    { key = "剑气封喉" value = {
+      kind = "sect_master_grant"
+      perform_id = "xueshan-jian/feng"
+      skill = "xueshan-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 250
+        xueshan_jian = 160
+      }
+      level_order = ["force", "xueshan-jian"]
+      min_gongxian = 2000
+      cost_gongxian = 2000
+      family_deny = "你是哪里来的？快给我快快滚开！"
+      skill_deny = "你连雪山剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行太浅，用不了这一招！"
+        xueshan_jian = "你雪山剑法尚未修炼得精深，没法用这招。"
+      }
+      maxed = "这招我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n哈哈一笑，对$N赞道：“不错，不错，真不愧是老夫的徒弟。今日老夫高兴，传你这招，可要看好了！”\n"
+      learned = "你学会了「剑气封喉」。\n"
+      improve_skills = ["sword", "xueshan-jian", "martial-cognize"]
+    } },
+    { key = "神倒鬼跌三连环" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingxiao-quan/san"
+      skill = "lingxiao-quan"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 250
+        lingxiao_quan = 180
+      }
+      level_order = ["force", "lingxiao-quan"]
+      min_gongxian = 1500
+      cost_gongxian = 1500
+      family_deny = "你是哪里来的？快给我快快滚开！"
+      skill_deny = "你连凌霄拳法都没学，还谈什么绝招可言？"
+      gongxian_deny = "哼，你在本派中无所作为，这一招我暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修行实在太差，下去练练再来！"
+        lingxiao_quan = "亏你凌霄拳法练成这样，也好意思来找我。"
+      }
+      maxed = "自己下去练，别老跟我纠缠不休！"
+      msg_one = "$n望着$N哈哈一笑，道：“好！好！好！你过来，我传你此招。”\n"
+      learned = "你学会了「神倒鬼跌三连环」。\n"
+      improve_skills = ["cuff", "lingxiao-quan", "martial-cognize"]
+    } },
     { key = "雪花六出" value = "这招你让吾儿教你便成，用不着来麻烦老夫。" },
     { key = "风回雪舞" value = "这招你让吾儿教你便成，用不着来麻烦老夫。" }
   ]
@@ -25348,6 +25573,44 @@ chats = [
     { type = "sword" skill = "xueshan-jian" },
     { type = "parry" skill = "shangqing-jian" }
   ]
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 300 gongxian = 0 }
+      xueshan_neigong = { max = 280 gongxian = 0 }
+      wuwang_shengong = { max = 300 gongxian = 0 }
+      dodge = { max = 260 gongxian = 0 }
+      taxue_wuhen = { max = 260 gongxian = 0 }
+      cuff = { max = 260 gongxian = 0 }
+      lingxiao_quan = { max = 260 gongxian = 0 }
+      strike = { max = 260 gongxian = 0 }
+      piaoxu_zhang = { max = 260 gongxian = 0 }
+      sword = { max = 280 gongxian = 0 }
+      hanmei_jian = { max = 280 gongxian = 0 }
+      yunhe_jian = { max = 280 gongxian = 0 }
+      xueshan_jian = { max = 280 gongxian = 0 }
+      shangqing_jian = { max = 280 gongxian = 0 }
+      parry = { max = 260 gongxian = 0 }
+      literate = { max = 250 gongxian = 0 }
+      martial_cognize = { max = 250 gongxian = 0 }
+    }
+    no_teach = {
+      shangqing_jian = "老夫这套上清剑法乃是得上清观上代掌门天虚道长所授，并不外传。\n白自在又道：这剑法虽不及我雪山剑法精妙，但也颇具威力，玄素庄庄主石清与我交好，他可传你此剑法。"
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    min_shen = 10000
+    min_exp = 400000
+    min_skills = {
+      xueshan_neigong = 120
+      xueshan_jian = 120
+    }
+    accept_msg = "不错，不错。你运气好，碰巧老夫今日高兴，就收下你吧！"
+  }
 
 
   carry = [
@@ -25399,6 +25662,32 @@ chats = [
     { type = "sword" skill = "hanmei-jian" },
     { type = "parry" skill = "hanmei-jian" }
   ]
+
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      lingxiao_quan = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaoxu_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      hanmei_jian = { max = 120 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "很好，你以后就跟着我吧。"
+  }
 
 
   carry = [
@@ -25453,6 +25742,34 @@ chats = [
   ]
 
 
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 80 gongxian = 0 }
+      lingxiao_quan = { max = 80 gongxian = 0 }
+      strike = { max = 80 gongxian = 0 }
+      piaoxu_zhang = { max = 80 gongxian = 0 }
+      sword = { max = 140 gongxian = 0 }
+      hanmei_jian = { max = 140 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    gender = "女性"
+    gender_deny = "我不便收男徒，你去找我师兄吧。"
+    accept_msg = "很好，你以后就跟着我吧。"
+  }
+
+
   carry = [
     { id = items.changjian.id },
     { id = items.xian_cloth.id }
@@ -25504,6 +25821,32 @@ chats = [
   ]
 
 
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      xueshan_neigong = { max = 120 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      taxue_wuhen = { max = 120 gongxian = 0 }
+      cuff = { max = 120 gongxian = 0 }
+      lingxiao_quan = { max = 120 gongxian = 0 }
+      strike = { max = 120 gongxian = 0 }
+      piaoxu_zhang = { max = 120 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      yunhe_jian = { max = 120 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "很好，你以后就跟着我吧。"
+  }
+
+
   carry = [
     { id = items.changjian.id },
     { id = items.cloth.id }
@@ -25553,6 +25896,31 @@ chats = [
     { type = "sword" skill = "yunhe-jian" },
     { type = "parry" skill = "yunhe-jian" }
   ]
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      lingxiao_quan = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaoxu_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      yunhe_jian = { max = 120 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "很好，你以后就跟着我吧。"
+  }
 
 
   carry = [
@@ -25606,6 +25974,31 @@ chats = [
     { type = "parry" skill = "yunhe-jian" }
   ]
 
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      lingxiao_quan = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaoxu_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      yunhe_jian = { max = 120 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "很好，你以后就跟着我吧。"
+  }
+
 
   carry = [
     { id = items.changjian.id },
@@ -25637,7 +26030,31 @@ chats = [
   }
 
   inquiries = [
-    { key = "赤焰暴长" value = " inquire about skill1 (unimplemented)" }
+    { key = "赤焰暴长" value = {
+      kind = "sect_master_grant"
+      perform_id = "jinwu-daofa/chi"
+      skill = "jinwu-daofa"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 150
+        jinwu_daofa = 120
+      }
+      level_order = ["force", "jinwu-daofa"]
+      min_gongxian = 800
+      cost_gongxian = 800
+      family_deny = "你是哪里来的？给我滚开！"
+      skill_deny = "你连金乌刀法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在雪山派中碌碌无为，教我怎能放心传你绝技。"
+      level_deny = {
+        force = "你的内功修行太浅，练好了再来找我。"
+        jinwu_daofa = "你的金乌刀法练成这样，居然还好意思找我。"
+      }
+      maxed = "这招我不是已经教过你了吗？自己下去多练吧！"
+      msg_one = "$n拔出腰间柴刀从上而下直劈下来，又道：“你使这招之时，须得跃起半空，和身直劈！”\n"
+      learned = "你学会了「赤焰暴长」。\n"
+      improve_skills = ["blade", "jinwu-daofa", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -25667,6 +26084,42 @@ chats = [
     { type = "blade" skill = "jinwu-daofa" },
     { type = "parry" skill = "jinwu-daofa" }
   ]
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 220 gongxian = 0 }
+      xueshan_neigong = { max = 220 gongxian = 0 }
+      wuwang_shengong = { max = 180 gongxian = 0 }
+      dodge = { max = 220 gongxian = 0 }
+      taxue_wuhen = { max = 220 gongxian = 0 }
+      cuff = { max = 220 gongxian = 0 }
+      lingxiao_quan = { max = 220 gongxian = 0 }
+      strike = { max = 220 gongxian = 0 }
+      piaoxu_zhang = { max = 220 gongxian = 0 }
+      sword = { max = 200 gongxian = 0 }
+      hanmei_jian = { max = 200 gongxian = 0 }
+      yunhe_jian = { max = 200 gongxian = 0 }
+      xueshan_jian = { max = 200 gongxian = 0 }
+      blade = { max = 240 gongxian = 0 }
+      jinwu_daofa = { max = 240 gongxian = 0 }
+      parry = { max = 200 gongxian = 0 }
+      literate = { max = 200 gongxian = 0 }
+      martial_cognize = { max = 180 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    reject_master_name = "白自在"
+    min_shen = 10000
+    min_exp = 200000
+    min_skills = {
+      xueshan_neigong = 100
+    }
+    accept_msg = "今日我就收下你，你须得勤练功，他日必能胜过那个老鬼。"
+  }
 
 
   carry = [
@@ -25703,8 +26156,62 @@ chats = [
   inquiries = [
     { key = "墨剑" value = " inquire about jian (unimplemented)" },
     { key = "封万里" value = "我亏欠他实在太多，实在太多。" },
-    { key = "浊流剑" value = " inquire about skill1 (unimplemented)" },
-    { key = "清流剑" value = " inquire about skill2 (unimplemented)" },
+    { key = "浊流剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "shangqing-jian/zhuo"
+      skill = "shangqing-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 200
+        shangqing_jian = 140
+      }
+      level_order = ["force", "shangqing-jian"]
+      min_gongxian = 800
+      cost_gongxian = 800
+      min_shen = 15000
+      family_deny = "石某与阁下素无渊源，不知阁下这话从何而来？"
+      skill_deny = "你连上清剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "嗯，你在雪山派中的地位还不足以让我传你这一招。"
+      shen_deny = "学武之人，自应以德义为先。你侠义正事做得不够，这招我不能传你。"
+      level_deny = {
+        force = "你的内功修行太浅，用不了这一招！"
+        shangqing_jian = "你上清剑法尚未修炼得精深，没法用这招。"
+      }
+      maxed = "这招阁下不是已经练成了吗？"
+      msg_one = "$n微微一笑，从怀中轻轻取出了一本剑谱，指着其中一段对$N细说良久，$N一边听一边点头。\n"
+      learned = "你学会了「浊流剑」。\n"
+      improve_skills = ["sword", "shangqing-jian", "martial-cognize"]
+    } },
+    { key = "清流剑" value = {
+      kind = "sect_master_grant"
+      perform_id = "shangqing-jian/qing"
+      skill = "shangqing-jian"
+      gate_order = "lpc_kunlun"
+      family = "凌霄城"
+      min_levels = {
+        force = 220
+        shangqing_jian = 160
+      }
+      level_order = ["force", "shangqing-jian"]
+      min_gongxian = 1600
+      cost_gongxian = 1600
+      min_shen = 30000
+      requires_perform = "shangqing-jian/zhuo"
+      family_deny = "石某与阁下素无渊源，不知阁下这话从何而来？"
+      skill_deny = "你连上清剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "嗯，你在雪山派中的地位还不足以让我传你这一招。"
+      shen_deny = "学武之人，自应以德义为先。你侠义正事做得不够，这招我不能传你。"
+      level_deny = {
+        force = "你的内功修行太浅，用不了这一招！"
+        shangqing_jian = "你上清剑法尚未修炼得精深，没法用这招。"
+      }
+      requires_perform_deny = "欲练清流剑必先通晓浊流剑诀，你先学那招吧。"
+      maxed = "这招阁下不是已经练成了吗？"
+      msg_one = "$n哈哈一笑，对$N笑道：“没想到你身在雪山派，却将我上清观的剑法练得如此出神入化，石某今日便传你这招好了。”\n"
+      learned = "你学会了「清流剑」。\n"
+      improve_skills = ["sword", "shangqing-jian", "martial-cognize"]
+    } },
     { key = "玄铁令" value = "哎……如果有此令，便能请到谢烟客帮忙做三件事。" },
     { key = "白万剑" value = "他是凌宵城主威德先生之子，号称“气寒西北”，剑法很是了得。" },
     { key = "白自在" value = "凌宵城主“威德先生”白自在号称天下武功第一，剑法举世无双。" },
@@ -25731,6 +26238,30 @@ chats = [
     { type = "parry" skill = "shangqing-jian" },
     { type = "strike" skill = "piaoxu-zhang" }
   ]
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 220 gongxian = 0 }
+      wuwang_shengong = { max = 220 gongxian = 0 }
+      sword = { max = 220 gongxian = 0 }
+      shangqing_jian = { max = 220 gongxian = 0 }
+      dodge = { max = 220 gongxian = 0 }
+      feiyan_zoubi = { max = 220 gongxian = 0 }
+      strike = { max = 220 gongxian = 0 }
+      piaoxu_zhang = { max = 220 gongxian = 0 }
+      parry = { max = 220 gongxian = 0 }
+      literate = { max = 250 gongxian = 0 }
+      martial_cognize = { max = 180 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    min_shen = 10000
+    accept_msg = "好吧，那我便收你为徒，你好好练习上清剑法。"
+  }
 
 
   carry = [
@@ -25788,6 +26319,31 @@ chats = [
     { type = "parry" skill = "hanmei-jian" }
   ]
 
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      lingxiao_quan = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaoxu_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      hanmei_jian = { max = 120 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "嗯？拜我为师？好说，好说。"
+  }
+
 
   carry = [
     { id = items.changjian.id },
@@ -25839,6 +26395,31 @@ chats = [
     { type = "parry" skill = "yunhe-jian" }
   ]
 
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      lingxiao_quan = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaoxu_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      yunhe_jian = { max = 120 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "既然这样，我就代师父收下你了。"
+  }
+
 
   carry = [
     { id = items.changjian.id },
@@ -25889,6 +26470,31 @@ chats = [
     { type = "sword" skill = "yunhe-jian" },
     { type = "parry" skill = "yunhe-jian" }
   ]
+
+  teach = {
+    family = "凌霄城"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      xueshan_neigong = { max = 100 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      taxue_wuhen = { max = 100 gongxian = 0 }
+      cuff = { max = 100 gongxian = 0 }
+      lingxiao_quan = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      piaoxu_zhang = { max = 100 gongxian = 0 }
+      sword = { max = 120 gongxian = 0 }
+      yunhe_jian = { max = 120 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "凌霄城"
+    permit_recruit = true
+    accept_msg = "好好好！我今儿高兴，就收下你吧。"
+  }
 
 
   carry = [
