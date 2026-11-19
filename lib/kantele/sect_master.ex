@@ -866,7 +866,13 @@ defmodule Kantele.SectMaster do
     case Map.get(config, "level_deny") do
       denies when is_map(denies) ->
         primary = Map.get(config, "skill")
-        priority = [primary, "force", "dodge"] |> Enum.reject(&is_nil/1)
+        # 只把确实存在于 min_levels 的键纳入优先链。否则 `dodge` 这类固定候选
+        # 在「本招根本没有 dodge 门槛」时会因 `0 < nil` 被误判为失败项，
+        # 使逐技能 level_deny 文案静默退化为缺省（大轮寺破立势实测）。
+        priority =
+          [primary, "force", "dodge"]
+          |> Enum.reject(fn key -> is_nil(key) or not Map.has_key?(min_levels, key) end)
+
         keys = priority ++ (Map.keys(min_levels) -- priority)
 
         failing =

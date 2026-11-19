@@ -1470,4 +1470,73 @@ defmodule Kantele.World.InquirySectMastersTest do
                SectMaster.inquiry_grant(weak_skill, %{family: "血刀门"}, cfg)
     end
   end
+
+  describe "大轮寺（雪山派）UCL 数据回填（Task #619）" do
+    @xueshan_grants [
+      {"达尔巴", "xueshan:cangjingge", "轰雷万钧", "dali-chu/hong", 100, -3000},
+      {"达尔巴", "xueshan:cangjingge", "镇魂舞", "xiangmo-chu/zhen", 200, -6000},
+      {"霍都", "xueshan:tiantai", "破元通虚", "poxu-daxuefa/tong", 400, -10_000},
+      {"金轮法王", "xueshan:neidian", "金刚印", "dashou-yin/yin", 200, -15_000},
+      {"金轮法王", "xueshan:neidian", "修罗降世", "yujiamu-quan/jiang", 300, -18_000},
+      {"金轮法王", "xueshan:neidian", "若悲", "mingwang-jian/ruo", 100, -10_000},
+      {"金轮法王", "xueshan:neidian", "降魔", "mingwang-jian/xiang", 400, -15_000},
+      {"金轮法王", "xueshan:neidian", "破立势", "riyue-lun/po", 800, -50_000},
+      {"金轮法王", "xueshan:neidian", "圆满势", "riyue-lun/yuan", 800, -50_000},
+      {"金轮法王", "xueshan:neidian", "五轮连转", "riyue-lun/lian", 2000, -80_000},
+      {"金轮法王", "xueshan:neidian", "龙吞势", "longxiang-gong/tun", 1800, -80_000},
+      {"金轮法王", "xueshan:neidian", "象跌势", "longxiang-gong/die", 2200, -120_000},
+      {"金轮法王", "xueshan:neidian", "般若极", "longxiang-gong/ji", 2500, -160_000}
+    ]
+
+    test "达而巴/霍都/金轮法王 13 门绝招全部落库", %{world: world} do
+      Enum.each(@xueshan_grants, fn {name, room, key, perform_id, gongxian, max_shen} ->
+        cfg = inquiry(npc(world, name, room), key)
+        assert cfg["kind"] == "sect_master_grant", "#{name} #{key} 应为 grant"
+        assert cfg["perform_id"] == perform_id
+        assert cfg["min_gongxian"] == gongxian
+        assert cfg["cost_gongxian"] == gongxian
+        assert cfg["max_shen"] == max_shen
+        assert cfg["family"] == "大轮寺"
+        assert String.contains?(cfg["learned"], key)
+      end)
+
+      assert length(@xueshan_grants) == 13
+      assert inquiry(npc(world, "金轮法王", "xueshan:neidian"), "密道") =~ "GAP #796"
+      assert inquiry(npc(world, "金轮法王", "xueshan:neidian"), "日月金轮") =~ "GAP #797"
+    end
+
+    test "金轮法王 破立势：龙象/内功/技能等级顺序与文案", %{world: world} do
+      cfg = inquiry(npc(world, "金轮法王", "xueshan:neidian"), "破立势")
+      base = %{
+        gongxian: 800,
+        shen: -50_000,
+        max_neili: 1500,
+        family: "大轮寺",
+        skills: %{"riyue-lun" => 120, "force" => 180}
+      }
+
+      weak_lx = disciple(Map.put(base, :skills, Map.put(base.skills, "longxiang-gong", 29)))
+      assert {:error, "你的龙象般若功修为不足，还学不了这一招。"} =
+               SectMaster.inquiry_grant(weak_lx, %{family: "大轮寺"}, cfg)
+
+      ok = disciple(Map.put(base, :skills, Map.put(base.skills, "longxiang-gong", 30)))
+      assert {:ok, "riyue-lun/po", 800} =
+               SectMaster.inquiry_grant(ok, %{family: "大轮寺"}, cfg)
+    end
+
+    test "达尔巴 镇魂舞：心软（shen 上界）拒绝", %{world: world} do
+      cfg = inquiry(npc(world, "达尔巴", "xueshan:cangjingge"), "镇魂舞")
+      player =
+        disciple(%{
+          skills: %{"xiangmo-chu" => 100, "force" => 150},
+          gongxian: 200,
+          shen: -5999,
+          max_neili: 1500,
+          family: "大轮寺"
+        })
+
+      assert {:error, "你为人太过心软，这招暂时还不能传你。"} =
+               SectMaster.inquiry_grant(player, %{family: "大轮寺"}, cfg)
+    end
+  end
 end

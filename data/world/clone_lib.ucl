@@ -44769,8 +44769,56 @@ chats = [
   }
 
   inquiries = [
-    { key = "轰雷万钧" value = " inquire about skill1 (unimplemented)" },
-    { key = "镇魂舞" value = " inquire about skill2 (unimplemented)" }
+    { key = "轰雷万钧" value = {
+      kind = "sect_master_grant"
+      perform_id = "dali-chu/hong"
+      skill = "dali-chu"
+      min_gongxian = 100
+      max_shen = -3000
+      min_max_neili = 800
+      min_levels = {
+        force = 120
+        dali_chu = 80
+      }
+      cost_gongxian = 100
+      family = "大轮寺"
+      maxed = "你又来干什么？自己下去多练。"
+      family_deny = "我又不认识你，打听这个干什么？"
+      skill_deny = "你连无上大力杵都没学，哪里来绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这招暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为不足，还学不了这一招。"
+        dali_chu = "等你把无上大力杵练熟了再来找我。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「轰雷万钧」。"
+    } },
+    { key = "镇魂舞" value = {
+      kind = "sect_master_grant"
+      perform_id = "xiangmo-chu/zhen"
+      skill = "xiangmo-chu"
+      min_gongxian = 200
+      max_shen = -6000
+      min_max_neili = 1500
+      min_levels = {
+        force = 150
+        xiangmo_chu = 100
+      }
+      cost_gongxian = 200
+      family = "大轮寺"
+      maxed = "我不是让你自己下去练吗，怎么又来了？"
+      family_deny = "我又不认识你，打听这个干什么？"
+      skill_deny = "你连金刚降魔杵都没学，哪里来绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这招暂时还不能传你。"
+      level_deny = {
+        force = "你的内功修为不足，还学不了这一招。"
+        xiangmo_chu = "等你把金刚降魔杵练熟了再来找我。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「镇魂舞」。"
+    } }
   ]
 
   skills = [
@@ -44830,25 +44878,257 @@ chats = [
   }
 
   inquiries = [
-    { key = "五轮连转" value = " inquire about skill7 (unimplemented)" },
-    { key = "修罗降世" value = " inquire about skill2 (unimplemented)" },
-    { key = "圆满势" value = " inquire about skill6 (unimplemented)" },
-    { key = "密道" value = " inquire about midao (unimplemented)" },
-    { key = "日月金轮" value = " inquire about lun (unimplemented)" },
+    { key = "金刚印" value = {
+      kind = "sect_master_grant"
+      perform_id = "dashou-yin/yin"
+      skill = "dashou-yin"
+      min_gongxian = 200
+      max_shen = -15000
+      min_max_neili = 1000
+      min_levels = {
+        force = 140
+        dashou_yin = 100
+      }
+      cost_gongxian = 200
+      family = "大轮寺"
+      maxed = "这招我已经教过你了，自己下去多练习练习吧。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连大手印都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        force = "你的内功修为不足，尚且学不了这一招。"
+        dashou_yin = "等你把大手印练熟了再来找老夫。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「金刚印」。"
+    } },
+    { key = "修罗降世" value = {
+      kind = "sect_master_grant"
+      perform_id = "yujiamu-quan/jiang"
+      skill = "yujiamu-quan"
+      min_gongxian = 300
+      max_shen = -18000
+      min_max_neili = 1200
+      min_levels = {
+        force = 150
+        yujiamu_quan = 100
+      }
+      cost_gongxian = 300
+      family = "大轮寺"
+      maxed = "这招我已经教过你了，自己下去多练习练习吧。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连金刚瑜迦母拳都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        force = "你的内功修为不足，尚且学不了这一招。"
+        yujiamu_quan = "等你把金刚瑜迦母拳练熟了再来找老夫。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「修罗降世」。"
+    } },
+    { key = "若悲" value = {
+      kind = "sect_master_grant"
+      perform_id = "mingwang-jian/ruo"
+      skill = "mingwang-jian"
+      min_gongxian = 100
+      max_shen = -10000
+      min_max_neili = 1200
+      min_levels = {
+        force = 140
+        mingwang_jian = 100
+      }
+      cost_gongxian = 100
+      family = "大轮寺"
+      maxed = "这招我已经教过你了，自己下去多练习练习吧。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连不动明王剑都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        force = "你的内功修为不足，尚且学不了这一招。"
+        mingwang_jian = "等你把不动明王剑练熟了再来找老夫。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「若悲」。"
+    } },
+    { key = "降魔" value = {
+      kind = "sect_master_grant"
+      perform_id = "mingwang-jian/xiang"
+      skill = "mingwang-jian"
+      min_gongxian = 400
+      max_shen = -15000
+      min_max_neili = 1600
+      min_levels = {
+        force = 180
+        mingwang_jian = 140
+      }
+      cost_gongxian = 400
+      family = "大轮寺"
+      maxed = "这招我已经教过你了，自己下去多练习练习吧。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连不动明王剑都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        force = "你的内功修为不足，尚且学不了这一招。"
+        mingwang_jian = "等你把不动明王剑练熟了再来找老夫。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「降魔」。"
+    } },
+    { key = "破立势" value = {
+      kind = "sect_master_grant"
+      perform_id = "riyue-lun/po"
+      skill = "riyue-lun"
+      min_gongxian = 800
+      max_shen = -50000
+      min_max_neili = 1500
+      min_levels = {
+        longxiang_gong = 30
+        force = 180
+        riyue_lun = 120
+      }
+      cost_gongxian = 800
+      family = "大轮寺"
+      maxed = "你又来干什么？自己下去多练。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连日月轮法都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        longxiang_gong = "你的龙象般若功修为不足，还学不了这一招。"
+        force = "你的内功修为不足，尚且学不了这一招。"
+        riyue_lun = "等你把日月轮法练熟了再来找我。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「破立势」。"
+    } },
+    { key = "圆满势" value = {
+      kind = "sect_master_grant"
+      perform_id = "riyue-lun/yuan"
+      skill = "riyue-lun"
+      min_gongxian = 800
+      max_shen = -50000
+      min_max_neili = 1500
+      min_levels = {
+        longxiang_gong = 30
+        force = 180
+        riyue_lun = 120
+      }
+      cost_gongxian = 800
+      family = "大轮寺"
+      maxed = "你又来干什么？自己下去多练。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连日月轮法都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        longxiang_gong = "你的龙象般若功修为不足，还学不了这一招。"
+        force = "你的内功修为不足，尚且学不了这一招。"
+        riyue_lun = "等你把日月轮法练熟了再来找我。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「圆满势」。"
+    } },
+    { key = "五轮连转" value = {
+      kind = "sect_master_grant"
+      perform_id = "riyue-lun/lian"
+      skill = "riyue-lun"
+      min_gongxian = 2000
+      max_shen = -80000
+      min_max_neili = 3000
+      min_levels = {
+        force = 250
+        riyue_lun = 150
+      }
+      cost_gongxian = 2000
+      family = "大轮寺"
+      maxed = "你又来干什么？自己下去多练。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连日月轮法都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = {
+        force = "你的内功修为不足，尚且学不了这一招。"
+        riyue_lun = "等你把日月轮法练熟了再来找我。"
+      }
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「五轮连转」。"
+    } },
+    { key = "龙吞势" value = {
+      kind = "sect_master_grant"
+      perform_id = "longxiang-gong/tun"
+      skill = "longxiang-gong"
+      min_gongxian = 1800
+      max_shen = -80000
+      min_max_neili = 3000
+      min_levels = {
+        longxiang_gong = 180
+      }
+      cost_gongxian = 1800
+      family = "大轮寺"
+      maxed = "我不是已经教过你了么？还罗嗦什么。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连龙象般若功都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = "你的龙象般若功修为不足，练练再来吧。"
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「龙吞势」。"
+    } },
+    { key = "象跌势" value = {
+      kind = "sect_master_grant"
+      perform_id = "longxiang-gong/die"
+      skill = "longxiang-gong"
+      min_gongxian = 2200
+      max_shen = -120000
+      min_max_neili = 4000
+      min_levels = {
+        longxiang_gong = 240
+      }
+      cost_gongxian = 2200
+      family = "大轮寺"
+      maxed = "我不是已经教过你了么？还罗嗦什么。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连龙象般若功都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = "你的龙象般若功修为不足，练练再来吧。"
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「象跌势」。"
+    } },
+    { key = "般若极" value = {
+      kind = "sect_master_grant"
+      perform_id = "longxiang-gong/ji"
+      skill = "longxiang-gong"
+      min_gongxian = 2500
+      max_shen = -160000
+      min_max_neili = 5000
+      min_levels = {
+        longxiang_gong = 300
+      }
+      cost_gongxian = 2500
+      family = "大轮寺"
+      maxed = "我不是已经教过你了么？还罗嗦什么。"
+      family_deny = "阁下与贫僧素无渊源，不知此话从何谈起？"
+      skill_deny = "你连龙象般若功都没学，还谈什么绝招？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "你为人太过心软，这一招你不学也罢。"
+      level_deny = "你的龙象般若功修为不足，练练再来吧。"
+      max_neili_deny = "你的内力修为不足，还是修炼高点再来吧。"
+      learned = "你学会了「般若极」。"
+    } },
     { key = "真般若极" value = "这是传说中的招式，便是我也未能领悟。" },
     { key = "破元通虚" value = "这一招你去让霍都教你好了。" },
-    { key = "破立势" value = " inquire about skill5 (unimplemented)" },
-    { key = "秘道" value = " inquire about midao (unimplemented)" },
-    { key = "般若极" value = " inquire about skill10 (unimplemented)" },
-    { key = "若悲" value = " inquire about skill3 (unimplemented)" },
-    { key = "象跌势" value = " inquire about skill9 (unimplemented)" },
     { key = "轰雷万钧" value = "这一招你去让达而巴教你好了。" },
-    { key = "金刚印" value = " inquire about skill1 (unimplemented)" },
-    { key = "金轮九转" value = "我让你去跟唐楠接口，你来跟我说干嘛？" },
     { key = "镇魂舞" value = "这一招你去让达而巴教你好了。" },
-    { key = "降魔" value = " inquire about skill4 (unimplemented)" },
-    { key = "龙吞势" value = " inquire about skill8 (unimplemented)" },
-    { key = "龙象袈裟" value = "这是我的随身物品，你打听这个做甚？" }
+    { key = "金轮九转" value = "我让你去跟唐楠接口，你来跟我说干嘛？" },
+    { key = "龙象袈裟" value = "这是我的随身物品，你打听这个做甚？" },
+    { key = "密道" value = " inquire about midao (unimplemented: GAP #796)" },
+    { key = "秘道" value = " inquire about midao (unimplemented: GAP #796)" },
+    { key = "日月金轮" value = " inquire about lun (unimplemented: GAP #797)" }
   ]
 
   skills = [
@@ -45047,7 +45327,29 @@ chats = [
   }
 
   inquiries = [
-    { key = "破元通虚" value = " inquire about skill1 (unimplemented)" }
+    { key = "破元通虚" value = {
+      kind = "sect_master_grant"
+      perform_id = "poxu-daxuefa/tong"
+      skill = "poxu-daxuefa"
+      min_gongxian = 400
+      max_shen = -10000
+      min_levels = {
+        force = 160
+        poxu_daxuefa = 120
+      }
+      cost_gongxian = 400
+      family = "大轮寺"
+      maxed = "这招小王不是已经教过你了么？"
+      family_deny = "给我滚开！"
+      skill_deny = "你连破虚打穴法都没学，跟小王罗嗦什么？"
+      gongxian_deny = "你为大轮寺效力不够，这招暂时还不能传你。"
+      max_shen_deny = "嘿！你为人如此正派，看来这招不适合你。"
+      level_deny = {
+        force = "你的内功修为不足，还学不了这一招。"
+        poxu_daxuefa = "等你把破虚打穴法练熟了再来找小王吧。"
+      }
+      learned = "你学会了「破元通虚」。"
+    } }
   ]
 
   skills = [
