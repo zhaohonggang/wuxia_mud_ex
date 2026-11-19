@@ -17,9 +17,14 @@ defmodule Kantele.World.InquiryHandlers.TeleportService do
         family_deny = "你自己没长腿么？" # 非本门时的返回值（自动加敬称）
         room_deny = "我这里还有事，你就自己走回去吧。"  # 不在 startroom 时的返回值
         vision = "平四朝远方一招手，顿时几个参客赶着马车驶了过来..."  # 房间广播
+        max_exp = 100000          # 经验上界（LPC `combat_exp >= N` 即拒）；缺省不限
+        max_exp_vision = "{npc}冷冷的看了一会儿{name}，才道：“你没长腿？”"  # 高经验拒绝广播（无私聊）
+        target_vision = "李四陪着{name}走了过来，说了几句话，阴着脸离去了。"  # 目标房间广播
       }
 
-  门控顺序：家族 → 房间 → 传送。
+  门控顺序：经验上界 → 家族 → 房间 → 传送。
+
+  `{name}` 在入队前替换为问者姓名；`{npc}` 由 VisionView 按接收者渲染。
 
   与 LPC 差异：
   - LPC 检查 NPC 环境是否为 startroom；Elixir 侧等价检查 `data.npc_room_id`，
@@ -50,6 +55,10 @@ defmodule Kantele.World.InquiryHandlers.TeleportService do
 
   defp run_for(conn, character, config, data) do
     cond do
+      max_exp_denied?(character, config) ->
+        # LPC ask_back 的高经验分支只有 message_vision，没有 tell_object 回话。
+        broadcast_template(conn, data, Map.get(config, "max_exp_vision"), character, true)
+
       family_denied?(character, config) ->
         reply(conn, Helpers.respect(character) <> family_deny_text(config))
 
@@ -61,7 +70,7 @@ defmodule Kantele.World.InquiryHandlers.TeleportService do
     end
   end
 
-  defp do_teleport(conn, _character, config, data) do
+  defp do_teleport(conn, character, config, data) do
     target_room = Map.get(config, "target_room")
     room_id = Map.get(data, :npc_room_id)
     npc_name = Map.get(config, "vision_name") || Map.get(data, :npc_name) || "对方"
@@ -75,14 +84,65 @@ defmodule Kantele.World.InquiryHandlers.TeleportService do
           conn
 
         true ->
-          vision = vision_text(config)
           conn
-          |> Helpers.broadcast(room_id, "#{npc_name}#{vision}\n")
+          |> broadcast_template(data, vision_text(config), character, true, npc_name)
           |> Teleport.teleport(target_room)
+          |> broadcast_to_target(target_room, Map.get(config, "target_vision"), character)
       end
 
     reply(conn, success_text(config))
   end
+
+  # LPC message_vision("$N...$n...")：`{npc}` 由 VisionView 按接收者渲染，
+  # `{name}` 在入队前替换成问者姓名（xueshan/xiakedao 离岛文案用）。
+  defp broadcast_template(conn, data, template, character, prefix_npc, npc_name \\ nil)
+
+  defp broadcast_template(conn, _data, nil, _character, _prefix_npc, _npc_name), do: conn
+
+  defp broadcast_template(conn, data, template, character, prefix_npc, npc_name) do
+    case Map.get(data, :npc_room_id) do
+      room_id when is_binary(room_id) ->
+        text =
+          template
+          |> String.replace("{name}", character.name || "你")
+          |> then(fn t -> if prefix_npc, do: "#{npc_name || Map.get(data, :npc_name) || "对方"}#{t}", else: t end)
+
+        Helpers.broadcast(conn, room_id, ensure_newline(text))
+
+      _ ->
+        conn
+    end
+  end
+
+  defp broadcast_to_target(conn, target_room, template, character) do
+    case template do
+      text when is_binary(text) and text != "" ->
+        text
+        |> String.replace("{name}", character.name || "你")
+        |> ensure_newline()
+        |> then(&Helpers.broadcast(conn, target_room, &1))
+
+      _ ->
+        conn
+    end
+  end
+
+  defp ensure_newline(text) do
+    if String.ends_with?(text, "\n"), do: text, else: text <> "\n"
+  end
+
+  defp max_exp_denied?(character, config) do
+    case Map.get(config, "max_exp") do
+      max_exp when is_integer(max_exp) and max_exp > 0 ->
+        exp_of(character) >= max_exp
+
+      _ ->
+        false
+    end
+  end
+
+  defp exp_of(%{meta: %{stats: stats}}) when is_map(stats), do: Map.get(stats, :combat_exp) || 0
+  defp exp_of(_character), do: 0
 
   defp family_denied?(character, config) do
     case Map.get(config, "family") do

@@ -27,7 +27,7 @@ defmodule Kantele.World.InquiryHandlers.TeleportServiceTest do
     meta = %PlayerMeta{
       temp: Keyword.get(opts, :temp, %{}),
       vitals: Keyword.get(opts, :vitals, %Vitals{}),
-      stats: %Stats{},
+      stats: %Stats{combat_exp: Keyword.get(opts, :combat_exp, 0)},
       family: Keyword.get(opts, :family, nil),
       env: Keyword.get(opts, :env, %{})
     }
@@ -286,6 +286,66 @@ defmodule Kantele.World.InquiryHandlers.TeleportServiceTest do
       visions = published_visions(conn2)
       assert length(visions) == 1
       assert hd(visions) =~ "招手示意"
+    end
+  end
+
+  # ---- max_exp（侠客岛 long.c / mu.c ask_back） ----
+
+  describe "run/3 守门：max_exp（侠客岛离岛）" do
+    test "combat_exp >= max_exp → 只广播拒绝 vision，无私聊、不传送" do
+      exp_cfg =
+        config(%{
+          "family" => nil,
+          "startroom" => nil,
+          "max_exp" => 100_000,
+          "max_exp_vision" => "{npc}冷冷的看了一会儿{name}，才道：“你没长腿？”"
+        })
+
+      conn2 =
+        TeleportService.run(
+          conn(combat_exp: 100_000),
+          exp_cfg,
+          data(%{config: exp_cfg, npc_name: "龙岛主"})
+        )
+
+      assert out_text(conn2) == ""
+      visions = published_visions(conn2)
+      assert length(visions) == 1
+      assert hd(visions) =~ "冷冷的看了一会儿玩家"
+      assert hd(visions) =~ "你没长腿？"
+
+      refute Enum.any?(conn2.private.channel_changes, fn
+        {:subscribe, "rooms:beijing:majiu", _, _} -> true
+        _ -> false
+      end)
+    end
+
+    test "combat_exp < max_exp → 传送并在目标房间广播 target_vision" do
+      exp_cfg =
+        config(%{
+          "family" => nil,
+          "startroom" => nil,
+          "max_exp" => 100_000,
+          "max_exp_vision" => "{npc}冷冷的看了一会儿{name}，才道：“你没长腿？”",
+          "vision_name" => "龙岛主",
+          "vision" => "叹了口气，道：“既然这样！还是让李四送你出岛吧！”",
+          "target_vision" => "李四陪着{name}走了过来，说了几句话，阴着脸离去了。",
+          "success" => "李四送你到海滩，冷冷道：“你这废物！好好练好功夫，别总麻烦我们家岛主。”"
+        })
+
+      conn2 =
+        TeleportService.run(
+          conn(combat_exp: 99_999),
+          exp_cfg,
+          data(%{config: exp_cfg, npc_name: "龙岛主"})
+        )
+
+      assert out_text(conn2) =~ "李四送你到海滩"
+      visions = published_visions(conn2)
+      assert length(visions) == 2
+      assert Enum.any?(visions, &String.contains?(&1, "龙岛主叹了口气"))
+      assert Enum.any?(visions, &String.contains?(&1, "李四陪着玩家走了过来"))
+      assert character(conn2).room_id == @target_room
     end
   end
 end

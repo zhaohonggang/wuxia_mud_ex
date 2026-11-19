@@ -42948,10 +42948,26 @@ chats = [
   }
 
   inquiries = [
-    { key = "back" value = " inquire about back (unimplemented)" },
+    { key = "back" value = {
+      kind = "teleport_service"
+      target_room = "xiakedao:haitan"
+      max_exp = 100000
+      max_exp_vision = "{npc}冷冷的看了一会儿{name}，才道：“你没长腿？”"
+      vision = "叹了口气，道：“既然这样！还是让李四送你出岛吧！”"
+      target_vision = "李四陪着{name}走了过来，说了几句话，阴着脸离去了。"
+      success = "李四送你到海滩，冷冷道：“你这废物！好好练好功夫，别总麻烦我们家岛主。”\n你连忙陪了几个笑脸，李四才怏怏离去。"
+    } },
     { key = "侠客岛" value = "这个岛是我和木兄弟无意中发现的。" },
-    { key = "离岛" value = " inquire about back (unimplemented)" },
-    { key = "腊八粥" value = " inquire about zhou (unimplemented)" }
+    { key = "离岛" value = {
+      kind = "teleport_service"
+      target_room = "xiakedao:haitan"
+      max_exp = 100000
+      max_exp_vision = "{npc}冷冷的看了一会儿{name}，才道：“你没长腿？”"
+      vision = "叹了口气，道：“既然这样！还是让李四送你出岛吧！”"
+      target_vision = "李四陪着{name}走了过来，说了几句话，阴着脸离去了。"
+      success = "李四送你到海滩，冷冷道：“你这废物！好好练好功夫，别总麻烦我们家岛主。”\n你连忙陪了几个笑脸，李四才怏怏离去。"
+    } },
+    { key = "腊八粥" value = "这是本岛特有的东西，它主要由一味“断肠独骨腐心草”构成，要开花后效力方著，但这种草每十年才开一次花，所以一般人很难得到的，小兄弟想要就要看你的缘分了！" }
   ]
 
   skills = [
@@ -43006,10 +43022,26 @@ chats = [
   }
 
   inquiries = [
-    { key = "back" value = " inquire about back (unimplemented)" },
+    { key = "back" value = {
+      kind = "teleport_service"
+      target_room = "xiakedao:haitan"
+      max_exp = 100000
+      max_exp_vision = "{npc}皱皱眉头，对{name}道：“你不自己走么？”"
+      vision = "点点头，说道：“好吧！我就让张三送你一程！”"
+      target_vision = "张三陪着{name}走了过来，嘱咐了几句才转身离去。"
+      success = "张三一直送你到海滩，叮嘱道：“江湖险恶，活命不易，以后务必小心谨慎。”\n你连连点头，张三这才离去。"
+    } },
     { key = "侠客岛" value = "这个岛是我和龙兄弟无意中发现的。" },
-    { key = "离岛" value = " inquire about back (unimplemented)" },
-    { key = "腊八粥" value = " inquire about zhou (unimplemented)" }
+    { key = "离岛" value = {
+      kind = "teleport_service"
+      target_room = "xiakedao:haitan"
+      max_exp = 100000
+      max_exp_vision = "{npc}皱皱眉头，对{name}道：“你不自己走么？”"
+      vision = "点点头，说道：“好吧！我就让张三送你一程！”"
+      target_vision = "张三陪着{name}走了过来，嘱咐了几句才转身离去。"
+      success = "张三一直送你到海滩，叮嘱道：“江湖险恶，活命不易，以后务必小心谨慎。”\n你连连点头，张三这才离去。"
+    } },
+    { key = "腊八粥" value = "这是本岛特有的东西，它主要由一味“断肠独骨腐心草”构成，要开花后效力方著，但这种草每十年才开一次花，所以一般人很难得到的，小兄弟想要就要看你的缘分了！" }
   ]
 
   skills = [
@@ -43070,6 +43102,11 @@ chats = [
     { key = "谢烟客" value = "老伯伯可是个好人啊。" },
     { key = "阿绣" value = "呀！你见过她吗？她还好吧。" }
   ]
+
+  apprentice = {
+    deny_all = true
+    deny_msg = "石破天说道：那不成，那不成。我自己都还没学好呢。"
+  }
 
   skills = [
     { skill = "force" level = 340 },
@@ -43133,7 +43170,7 @@ chats = [
 
   inquiries = [
     { key = "腊八粥" value = "拿了赏善罚恶令，上侠客岛就可以喝腊八粥，你也想去？" },
-    { key = "赏善罚恶令" value = "(: give_ling :)" }
+    { key = "赏善罚恶令" value = " inquire about give_ling (unimplemented: GAP #800)" }
   ]
 
   skills = [

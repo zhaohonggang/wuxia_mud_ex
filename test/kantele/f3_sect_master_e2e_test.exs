@@ -16,9 +16,12 @@ defmodule Kantele.F3SectMasterE2ETest do
   alias Kantele.World.Loader
 
   setup_all do
-    yu = Loader.load().characters |> Enum.find(&String.contains?(&1.name, "俞莲舟"))
+    world = Loader.load()
+    yu = world.characters |> Enum.find(&String.contains?(&1.name, "俞莲舟"))
+    shi = world.characters |> Enum.find(&(&1.name == "石破天"))
     assert yu != nil
-    %{yu: yu}
+    assert shi != nil
+    %{yu: yu, shi: shi}
   end
 
   test "F3 数据驱动师父 e2e：拜师门槛→拜师→学艺→问答得绝招→叛师惩罚", %{yu: yu} do
@@ -124,6 +127,19 @@ defmodule Kantele.F3SectMasterE2ETest do
     assert detached.meta.family == nil
     assert detached.meta.stats.gongxian == 0
     assert output_text(conn) =~ "叛离了师门"
+  end
+
+  test "侠客岛石破天 attempt_apprentice 无条件拒绝（LPC ah + say）", %{shi: shi} do
+    assert shi.meta.apprentice.deny_all == true
+
+    NpcFamilyEvent.apprentice(build_conn(shi), %Event{
+      topic: "family/apprentice",
+      data: %{reply_to: self(), student_name: "张三"}
+    })
+
+    assert_receive %Event{topic: "family/result", data: reject}
+    refute reject.ok
+    assert reject.reason == "石破天说道：那不成，那不成。我自己都还没学好呢。"
   end
 
   defp player(opts) do

@@ -2586,9 +2586,9 @@ item_desc = {
   }
 
   inquiries = [
-    { key = "rent" value = " inquire about rent (unimplemented)" },
-    { key = "同门" value = " inquire about rent (unimplemented)" },
-    { key = "师兄" value = " inquire about rent (unimplemented)" }
+    { key = "rent" value = " inquire about rent (unimplemented: GAP #801)" },
+    { key = "同门" value = " inquire about rent (unimplemented: GAP #801)" },
+    { key = "师兄" value = " inquire about rent (unimplemented: GAP #801)" }
   ]
 
   carry = [

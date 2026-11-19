@@ -14,7 +14,7 @@
 - `PATH=/c/Users/honggang/tools/erl-25.3.2.6/bin:/c/Users/honggang/tools/elixir-1.13.4-otp25/bin:$PATH`
 - `MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=/c/files/git/wuxia_mud_ex/_build_win13`（绝对路径）；`ERL_LIBS=$MIX_BUILD_PATH/lib`；`MIX_ENV=test`。
 - `mix compile` / `mix test --seed 831693`；全量约 9-10 min，建议后台重定向日志。
-- 基线 27 failures 全为 `bcrypt_elixir` NIF 环境性；引擎/命令/技能/世界测试 0 失败。最新全量 7971/27（2026-11-19 前）。
+- 基线 27 failures 全为 `bcrypt_elixir` NIF 环境性；引擎/命令/技能/世界测试 0 失败。最新全量 8007/27（2026-11-19）。全量偶发 BEAM heap 中止，重跑可过，非断言回归。
 
 ## 关键约定 / 坑
 - 路由：`parse/2` 裸路由只产 `%{"command"=>...}`；带参命令需 `optional(spaces() |> text(:rest|:target|:category))`。
@@ -30,6 +30,7 @@
 - **区域文件优先于 clone_lib**：`dereference/3` 先用 `zone.characters`，找不到才回退 clone_lib。同名 NPC 同时存在于 `data/world/<zone>.ucl` 与 `clone_lib.ucl` 时，必须改区域文件才生效（wudang 教训）。
 - `Elias.parse/1` 对 `value = { ... }` 字段解析正常；字段缺失先看是否被区域定义覆盖，不要盲目改 UCL 语法。
 - `min_max_neili` 是 inquiry/apprentice 的下界字段；`max_neili_deny` 可覆写文案。
+- `teleport_service` 支持 `max_exp`/`max_exp_vision`/`target_vision`（`{name}` 入队前替换、`{npc}` VisionView 渲染）；`apprentice.deny_all/deny_msg` 走 NpcFamilyEvent 无条件拒收徒。
 - `IO.write` 中文在 Windows 抛 `:no_translation` → 用 `File.write!/2`；`Path.join/3`、`File.rm/2` 不存在。
 - 编辑被 `git checkout` 丢失时可从 session transcript jsonl 的 `function_call.arguments` 精确还原。
 
@@ -39,7 +40,7 @@
 - #640-644：剃度（峨嵋/血刀/雪山）、NAME_D（794f7972）、PKS/MKS/WPK 持久化（da85c8ba）、detach/betrayer 落盘（9c8c838f）、清无 gate_order。
 - #695-698 新手拜师门派指南 39 门派配置（88d8520c）。
 - #543 严格狩猎掉落（148390c8）；#724-729 全量回归 7941/27。
-- Task #619 已回填：丐帮（c073fc77 等）、古墓（1a14da4c）、红花会（b7bfc2df）、关外胡家（#737）、华山 8 NPC（#740）、绝情谷 3 NPC（#745）、慕容 3 NPC（527c1621）、白驼 2 NPC（4b28b5a8）、全真 22 NPC、日月 7 NPC、昆仑（#750-#755）、少林（ca37e867）。
+- Task #619 已回填：丐帮（c073fc77 等）、古墓（1a14da4c）、红花会（b7bfc2df）、关外胡家（#737）、华山 8 NPC（#740）、绝情谷 3 NPC（#745）、慕容 3 NPC（527c1621）、白驼 2 NPC（4b28b5a8）、全真 22 NPC、日月 7 NPC、昆仑（#750-#755）、少林（ca37e867）、武当（7d0de3f1）、血刀（986b0e8d）、大轮寺 13 grant（1e869000）、侠客岛（#799：离岛 exp 传送 + 石破天 deny_all）。
 - #736 `min_dex` 门控 + `dex_deny`；#740 新增剑宗上限门控、`no_teach_deny`、直授/破式 handler；#745 `reject_master_name`/`no_min_shen`/`gate_order="lpc_masterd"`。
 - 吴樂/名流/其他历史批次（详见 daily log）：拱猪子、死亡→地府→还阳、19/19 quarry NPC 掉落、猎人教 hunting。
 
@@ -48,7 +49,8 @@
 - 华山：#741 `recognize_apprentice` 按技能门控（feng.c/linghu.c）；#742 `no_teach_deny` 消费端（已实现）；#743 独孤九剑按武器类型破式数组；#744 QUEST_D 历练问询 + `apprentice_available`。
 - 绝情谷：#747 QUEST_D；#748 masterd `maxed`/`msg2` random 文案；#749 樊一翁 coagents。
 - 日月：任我行 `ren.c` 有 ask_skill1~5 + inquiry + no_teach 但无 UCL 块（待新建任务）。
-- 武当：见 `docs/武当派教学门控移植计划.zh-CN.md`（如存在）；`ask_jiuyang` 任务链解锁 + `try_to_learn_jy` 逐条门控、`recognize_apprentice` 按技能门控为已识别缺口。
+- 武当：见 `docs/武当派教学门控移植计划.zh-CN.md`；`ask_jiuyang` 任务链解锁 + `try_to_learn_jy` 逐条门控、`recognize_apprentice` 按技能门控为已识别缺口。
+- 血刀/大轮寺/侠客岛：见 `docs/血刀派教学门控移植计划.zh-CN.md`、`docs/大轮寺教学门控移植计划.zh-CN.md`、`docs/侠客岛教学门控移植计划.zh-CN.md`；缺口 #792-#803（give_item 多状态、密道、剃度、雇助服务、greeting exp、广播文案）。
 - 计划文档：`docs/关外胡家教学门控移植计划.zh-CN.md`、`docs/华山派教学门控移植计划.zh-CN.md`、`docs/绝情谷教学门控移植计划.zh-CN.md`、`docs/日月教教学门控移植计划.zh-CN.md`。
 
 ## 当前工作流

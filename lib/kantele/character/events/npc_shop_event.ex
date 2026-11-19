@@ -149,8 +149,27 @@ defmodule Kantele.Character.NpcFamilyEvent do
   use Kalevala.Character.Event
 
   def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
+    apprentice = conn.character.meta.apprentice || %{}
     teach = conn.character.meta.teach
 
+    # 侠客岛 shi.c 的 attempt_apprentice 只有 command("ah") + command("say ...")，
+    # 完全没有胜负/门派分支：显式 deny_all=true 时直接回绝，不进入 teach 应允路径。
+    if Map.get(apprentice, :deny_all) == true do
+      reason = Map.get(apprentice, :deny_msg) || "#{conn.character.name}摇了摇头：我不收徒。"
+
+      send(reply_to, %Kalevala.Event{
+        from_pid: self(),
+        topic: "family/result",
+        data: %{ok: false, reason: reason}
+      })
+
+      conn
+    else
+      apprentice_reply(conn, reply_to, student_name, teach, apprentice)
+    end
+  end
+
+  defp apprentice_reply(conn, reply_to, student_name, teach, apprentice) do
     case teach && Map.get(teach, :family) do
       nil ->
         send(reply_to, %Kalevala.Event{
@@ -172,7 +191,7 @@ defmodule Kantele.Character.NpcFamilyEvent do
             master_name: conn.character.name,
             student_name: student_name,
             teach: teach,
-            apprentice: Map.get(conn.character.meta, :apprentice)
+            apprentice: apprentice
           }
         })
 

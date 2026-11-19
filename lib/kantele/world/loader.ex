@@ -1239,7 +1239,11 @@ defmodule Kantele.World.Loader do
       class: class,
       gender: gender,
       permit_recruit: permit_recruit,
-      gate_order: gate_order
+      gate_order: gate_order,
+      # 侠客岛 shi.c：attempt_apprentice 无条件拒绝（连 ah + say）。
+      # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
+      deny_all: to_bool(Map.get(apprentice, :deny_all)),
+      deny_msg: Map.get(apprentice, :deny_msg)
     }
 
     # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/

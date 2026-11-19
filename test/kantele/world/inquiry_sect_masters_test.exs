@@ -1539,4 +1539,49 @@ defmodule Kantele.World.InquirySectMastersTest do
                SectMaster.inquiry_grant(player, %{family: "大轮寺"}, cfg)
     end
   end
+
+  describe "侠客岛 UCL 数据回填（Task #619）" do
+    test "龙岛主/木岛主 离岛为 exp 门控传送服务（back/离岛 同配置）", %{world: world} do
+      cases = [
+        {"龙岛主", "xiakedao:shiroom24", "{npc}冷冷的看了一会儿{name}，才道：“你没长腿？”"},
+        {"木岛主", "xiakedao:shiroom24", "{npc}皱皱眉头，对{name}道：“你不自己走么？”"}
+      ]
+
+      Enum.each(cases, fn {name, room, deny_vision} ->
+        npc = npc(world, name, room)
+        assert npc, "#{name} 应随世界加载（#{room}）"
+
+        for key <- ["back", "离岛"] do
+          cfg = inquiry(npc, key)
+          assert cfg["kind"] == "teleport_service", "#{name} #{key}"
+          assert cfg["target_room"] == "xiakedao:haitan"
+          assert cfg["max_exp"] == 100_000
+          assert cfg["max_exp_vision"] == deny_vision
+        end
+
+        assert inquiry(npc, "腊八粥") =~ "断肠独骨腐心草"
+      end)
+    end
+
+    test "石破天 deny_all apprentice 与已回填文本问询落库", %{world: world} do
+      shi = Enum.find(world.characters, &(&1.name == "石破天"))
+      assert shi
+      assert shi.meta.apprentice.deny_all == true
+      assert shi.meta.apprentice.deny_msg == "石破天说道：那不成，那不成。我自己都还没学好呢。"
+
+      assert inquiry(shi, "太玄功") == "我…我不知道，这个你别问我。"
+      assert inquiry(shi, "石中玉") == "他是我的兄弟，他现在在摩天崖。"
+      assert length(Map.keys(shi.meta.inquiries)) == 8
+    end
+
+    test "赏善罚恶令与黄衣使者雇助服务明确标记 GAP", %{world: world} do
+      zhang = npc(world, "张三", "xiakedao:xkroad6")
+      assert inquiry(zhang, "赏善罚恶令") =~ "GAP #800"
+
+      renter = npc(world, "黄衣使者", "xiakedao:haigang")
+      assert inquiry(renter, "rent") =~ "GAP #801"
+      assert inquiry(renter, "同门") =~ "GAP #801"
+      assert inquiry(renter, "师兄") =~ "GAP #801"
+    end
+  end
 end
