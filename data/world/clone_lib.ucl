@@ -44410,6 +44410,35 @@ chats = [
   engage = {
     kill = { accept = true msg = "神王木鼎原来的确在我这里，可是后来被人抢走啦！" spawn = ["swmuding"] }
   }
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 60 gongxian = 0 }
+      guixi_gong = { max = 60 gongxian = 0 }
+      dodge = { max = 40 gongxian = 0 }
+      zhaixing_gong = { max = 40 gongxian = 0 }
+      strike = { max = 40 gongxian = 0 }
+      chousui_zhang = { max = 40 gongxian = 0 }
+      claw = { max = 40 gongxian = 0 }
+      sanyin_wugongzhao = { max = 40 gongxian = 0 }
+      whip = { max = 80 gongxian = 0 }
+      chanhun_suo = { max = 80 gongxian = 0 }
+      parry = { max = 40 gongxian = 0 }
+      poison = { max = 50 gongxian = 0 }
+      staff = { max = 10 gongxian = 0 }
+      tianshan_zhang = { max = 10 gongxian = 0 }
+    }
+    no_teach = {
+      huagong_dafa = "化功大法让老仙教你吧，我可不愿被他罚。"
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    deny_all = true
+    deny_msg = "阿紫说道：我不收徒弟！"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xingxiu/chuchen.c
@@ -44459,6 +44488,29 @@ chats = [
     { id = items.gangzhang.id }
   ]
 
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      huagong_dafa = { max = 120 gongxian = 0 }
+      dodge = { max = 50 gongxian = 0 }
+      zhaixing_gong = { max = 50 gongxian = 0 }
+      claw = { max = 50 gongxian = 0 }
+      sanyin_wugongzhao = { max = 50 gongxian = 0 }
+      strike = { max = 50 gongxian = 0 }
+      chousui_zhang = { max = 50 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      staff = { max = 120 gongxian = 0 }
+      tianshan_zhang = { max = 120 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    deny_all = true
+    deny_msg = "出尘子说道：老仙还没允许我收徒呢。"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xingxiu/ding.c
@@ -44484,12 +44536,187 @@ chats = [
   }
 
   inquiries = [
-    { key = "星宿毒经" value = " inquire about me (unimplemented)" },
-    { key = "毒经" value = " inquire about me (unimplemented)" },
-    { key = "碧磷针" value = " inquire about du1 (unimplemented)" },
-    { key = "神木王鼎" value = "哼，你休想打它的注意，小心我一掌毙了！" },
-    { key = "逍遥三笑散" value = " inquire about du2 (unimplemented)" },
-    { key = "香料" value = " inquire about xiangliao (unimplemented)" }
+    { key = "毒经" value = {
+      kind = "give_item"
+      item = "clone_lib:dujing_2"
+      match = "dujing_2"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "book_count"
+      success = "好吧，这本「星宿毒经」你拿回去好好钻研。"
+      exhausted = "你来晚了，本派的内功心法不在此处。"
+    } },
+    { key = "星宿毒经" value = {
+      kind = "give_item"
+      item = "clone_lib:dujing_2"
+      match = "dujing_2"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "book_count"
+      success = "好吧，这本「星宿毒经」你拿回去好好钻研。"
+      exhausted = "你来晚了，本派的内功心法不在此处。"
+    } },
+    { key = "碧磷针" value = {
+      kind = "give_item"
+      item = "xiyu:bilinzhen"
+      match = "bilinzhen"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "zhen_count"
+      min_skill_levels = {
+        poison = 50
+      }
+      min_skill_deny = "你的毒技火候未到，用不了这种东西。"
+      success = "好吧，那你就先用这些针吧。"
+      exhausted = "你来晚了，碧磷针都发完了。"
+    } },
+    { key = "逍遥三笑散" value = {
+      kind = "give_item"
+      item = "xiyu:sanxiaosan"
+      match = "sanxiaosan"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "san_count"
+      min_skill_levels = {
+        poison = 100
+      }
+      min_skill_deny = "你的毒技火候未到，用不了这种东西。"
+      success = "好吧，这包毒药你拿回去善加利用吧。"
+      exhausted = "你来晚了，现在没什么剩的了。"
+    } },
+    { key = "香料" value = {
+      kind = "give_item"
+      item = "clone_lib:xiangliao"
+      match = "xiangliao"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "xiangliao_count"
+      min_skill_levels = {
+        poison = 40
+      }
+      min_skill_deny = "你的毒技火候太差，还是练练再说吧！"
+      success = "好吧，这些香料你拿去慢慢用吧。"
+      exhausted = "你来晚了，现在没什么剩下的香料了，你还是去仓库找找看吧！"
+    } },
+    { key = "神木王鼎" value = "哼，你休想打它的注意，小心我一掌毙了！\n" },
+    { key = "夺魂势" value = {
+      kind = "sect_master_grant"
+      perform_id = "chanhun-suo/duo"
+      skill = "chanhun-suo"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -10000
+      min_gongxian = 80
+      cost_gongxian = 80
+      level_order = ["chanhun-suo", "force"]
+      min_force = 80
+      min_levels = {
+        chanhun_suo = 100
+        force = 130
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连缠魂索都未曾学过，何谈绝招可言？"
+      level_deny = {
+        chanhun_suo = "你对缠魂索的了解还不够，尚且无法领悟此招。"
+        force = "你对基本内功的了解还不够，尚且无法领悟此招。"
+      }
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「夺魂势」。\n"
+      improve_skills = ["chanhun-suo", "whip", "parry", "martial-cognize"]
+    } },
+    { key = "炼心弹" value = {
+      kind = "sect_master_grant"
+      perform_id = "chousui-zhang/dan"
+      skill = "chousui-zhang"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -22000
+      min_gongxian = 950
+      cost_gongxian = 950
+      level_order = ["chousui-zhang", "force", "poison", "throwing"]
+      min_max_neili = 1800
+      min_levels = {
+        chousui_zhang = 140
+        force = 140
+        poison = 140
+        throwing = 140
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连抽髓掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        chousui_zhang = "你对抽髓掌的了解还不够，尚且无法领悟此招。"
+        force = "你对基本内功的了解还不够，尚且无法领悟此招。"
+        poison = "你对基本毒技的了解还不够，尚且无法领悟此招。"
+        throwing = "你对基本暗器的了解还不够，尚且无法领悟此招。"
+      }
+      max_neili_deny = "你现在的内力修为不足，修炼高点再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「炼心弹」。\n"
+      improve_skills = ["chousui-zhang", "strike", "parry", "martial-cognize"]
+    } },
+    { key = "碧焰滔天" value = {
+      kind = "sect_master_grant"
+      perform_id = "chousui-zhang/tao"
+      skill = "chousui-zhang"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -38000
+      min_gongxian = 1200
+      cost_gongxian = 1200
+      level_order = ["chousui-zhang", "poison", "huagong-dafa"]
+      min_max_neili = 3000
+      min_levels = {
+        chousui_zhang = 220
+        poison = 250
+        huagong_dafa = 220
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连抽髓掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        chousui_zhang = "你对抽髓掌的了解还不够，尚且无法领悟此招。"
+        poison = "你对基本毒技的了解还不够，尚且无法领悟此招。"
+        huagong_dafa = "你对化功大法的了解还不够，尚且无法领悟此招。"
+      }
+      max_neili_deny = "你现在的内力修为不足，修炼高点再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「碧焰滔天」。\n"
+      improve_skills = ["chousui-zhang", "strike", "parry", "martial-cognize"]
+    } },
+    { key = "柔丝索" value = {
+      kind = "give_item"
+      item = "clone_lib:rousisuo"
+      match = "rousisuo"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      master_id = true
+      min_skill_levels = {
+        chanhun_suo = 140
+      }
+      max_shen = -30000
+      min_skill_deny = "你的缠魂索火候未到，就算拿着柔丝索也没用。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，就算拿着柔丝索也是无用。"
+      master_deny = "只有我的弟子才配使用柔丝索，你还是走吧。"
+      success = "既然这样，那这卷柔丝索你就暂时拿去吧。"
+      exhausted = ""
+    } },
+    # LPC accept_ask「历练/历炼/锻炼」走 QUEST_D->accept_ask；ex 无对应门派 quest 分发。
+    # 按 GAP #813 保留，不伪造实现。
+    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #813)" },
+    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #813)" },
+    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #813)" }
   ]
 
   skills = [
@@ -44534,6 +44761,62 @@ chats = [
     greet_delay = 0
     add_actions = ["flatter"]
   }
+  # LPC ding.c:79-82 的 xiangliao_count 为 random(10)+10；UCL 只能固定下限。
+  # busy/fighting、get_xiangliao 180 秒冷却、random(50)+100 数量见 GAP #814。
+  inquiry_state = {
+    book_count = 1
+    zhen_count = 1
+    san_count = 1
+    xiangliao_count = 10
+  }
+
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 260 gongxian = 0 }
+      huagong_dafa = { max = 260 gongxian = 0 }
+      guixi_gong = { max = 260 gongxian = 0 }
+      throwing = { max = 240 gongxian = 0 }
+      feixing_shu = { max = 240 gongxian = 0 }
+      dodge = { max = 240 gongxian = 0 }
+      zhaixing_gong = { max = 240 gongxian = 0 }
+      strike = { max = 260 gongxian = 0 }
+      chousui_zhang = { max = 260 gongxian = 0 }
+      claw = { max = 240 gongxian = 0 }
+      sanyin_wugongzhao = { max = 240 gongxian = 0 }
+      whip = { max = 240 gongxian = 0 }
+      chanhun_suo = { max = 240 gongxian = 0 }
+      parry = { max = 240 gongxian = 0 }
+      staff = { max = 240 gongxian = 0 }
+      poison = { max = 260 gongxian = 0 }
+      tianshan_zhang = { max = 240 gongxian = 0 }
+      literate = { max = 200 gongxian = 0 }
+      medical = { max = 260 gongxian = 0 }
+      xingxiu_qishu = { max = 260 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    permit_recruit = true
+    no_min_shen = true
+    max_shen = -12000
+    max_shen_deny = "老仙我越看你越象白道派来卧底的。"
+    min_exp = 300000
+    min_exp_deny = "你这点微末道行如何能学到老仙的神妙功夫。"
+    min_skills = {
+      chousui_zhang = 120
+      poison = 120
+    }
+    min_skills_deny = {
+      chousui_zhang = "你抽髓掌都没熟练，居然还有脸来见我？"
+      poison = "你毒技都没学明白，还有脸来见我？"
+    }
+    accept_msg = "这还差不多。"
+    # LPC 数字门过后还需 pending/flatter + flatter 文案匹配才 recruit。
+    # ex 目前一步收徒，完整两步流程见 GAP #812，不做简化替代。
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xingxiu/dizi.c
@@ -44587,6 +44870,33 @@ chats = [
     { id = items.changbian.id }
   ]
 
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 60 gongxian = 0 }
+      guixi_gong = { max = 60 gongxian = 0 }
+      huagong_dafa = { max = 20 gongxian = 0 }
+      dodge = { max = 40 gongxian = 0 }
+      zhaixing_gong = { max = 40 gongxian = 0 }
+      strike = { max = 40 gongxian = 0 }
+      chousui_zhang = { max = 40 gongxian = 0 }
+      claw = { max = 40 gongxian = 0 }
+      sanyin_wugongzhao = { max = 40 gongxian = 0 }
+      whip = { max = 80 gongxian = 0 }
+      chanhun_suo = { max = 80 gongxian = 0 }
+      parry = { max = 40 gongxian = 0 }
+      poison = { max = 50 gongxian = 0 }
+      staff = { max = 10 gongxian = 0 }
+      tianshan_zhang = { max = 10 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    deny_all = true
+    deny_msg = "星宿弟子摇了摇头：我不收徒。"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xingxiu/shihou.c
@@ -44631,6 +44941,33 @@ chats = [
     { type = "parry" skill = "tianshan-zhang" },
     { type = "staff" skill = "tianshan-zhang" }
   ]
+
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      guixi_gong = { max = 140 gongxian = 0 }
+      dodge = { max = 90 gongxian = 0 }
+      zhaixing_gong = { max = 90 gongxian = 0 }
+      strike = { max = 120 gongxian = 0 }
+      chousui_zhang = { max = 120 gongxian = 0 }
+      claw = { max = 100 gongxian = 0 }
+      sanyin_wugongzhao = { max = 100 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      poison = { max = 80 gongxian = 0 }
+      staff = { max = 50 gongxian = 0 }
+      tianshan_zhang = { max = 50 gongxian = 0 }
+    }
+    no_teach = {
+      huagong_dafa = "化功大法要老仙亲自传授。"
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    deny_all = true
+    deny_msg = "狮吼子说道：我不收徒！"
+  }
 
     }
 
@@ -44680,6 +45017,35 @@ chats = [
     { type = "staff" skill = "tianshan-zhang" }
   ]
 
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 100 gongxian = 0 }
+      guixi_gong = { max = 100 gongxian = 0 }
+      dodge = { max = 70 gongxian = 0 }
+      zhaixing_gong = { max = 70 gongxian = 0 }
+      strike = { max = 70 gongxian = 0 }
+      chousui_zhang = { max = 70 gongxian = 0 }
+      claw = { max = 100 gongxian = 0 }
+      sanyin_wugongzhao = { max = 100 gongxian = 0 }
+      whip = { max = 60 gongxian = 0 }
+      chanhun_suo = { max = 60 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      poison = { max = 70 gongxian = 0 }
+      staff = { max = 50 gongxian = 0 }
+      tianshan_zhang = { max = 50 gongxian = 0 }
+    }
+    no_teach = {
+      huagong_dafa = "化功大法要老仙亲自传授。"
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    deny_all = true
+    deny_msg = "天狼子说道：我不收徒。"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xingxiu/zhaixing.c
@@ -44705,9 +45071,201 @@ chats = [
   }
 
   inquiries = [
-    { key = "天山器法" value = " inquire about book (unimplemented)" },
-    { key = "炼心弹" value = " inquire about me (unimplemented)" },
-    { key = "秘籍" value = " inquire about book (unimplemented)" }
+    { key = "炼心弹" value = {
+      kind = "give_item"
+      item = "xiyu:lianxindan"
+      match = "lianxindan"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "dan_count"
+      success = "这些练心弹够你用的了吧。"
+      exhausted = "你来晚了，没有炼心弹了。"
+    } },
+    { key = "秘籍" value = {
+      kind = "give_item"
+      item = "clone_lib:throw_book"
+      match = "throw_book"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "book_count"
+      success = "好吧，这本书你拿回去好好看看吧。"
+      exhausted = "你来晚了，现在没什么剩的了。"
+    } },
+    { key = "天山器法" value = {
+      kind = "give_item"
+      item = "clone_lib:throw_book"
+      match = "throw_book"
+      unique = false
+      family = "星宿派"
+      family_deny = "与我星宿派素无渊源，不知此话从何说起。"
+      count = "book_count"
+      success = "好吧，这本书你拿回去好好看看吧。"
+      exhausted = "你来晚了，现在没什么剩的了。"
+    } },
+    { key = "如蛆附骨" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianshan-zhang/fugu"
+      skill = "tianshan-zhang"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -2200
+      min_gongxian = 80
+      cost_gongxian = 80
+      level_order = ["tianshan-zhang"]
+      min_force = 80
+      min_levels = {
+        tianshan_zhang = 60
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连天山杖法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        tianshan_zhang = "你对天山杖法的了解还不够，尚且无法领悟此招。"
+      }
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「如蛆附骨」。\n"
+      improve_skills = ["tianshan-zhang", "staff", "parry", "martial-cognize"]
+    } },
+    { key = "冰雪纷飞" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianshan-zhang/xue"
+      skill = "tianshan-zhang"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -22000
+      min_gongxian = 80
+      cost_gongxian = 80
+      level_order = ["tianshan-zhang"]
+      min_force = 80
+      min_levels = {
+        tianshan_zhang = 60
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连天山杖法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        tianshan_zhang = "你对天山杖法的了解还不够，尚且无法领悟此招。"
+      }
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「冰雪纷飞」。\n"
+      improve_skills = ["tianshan-zhang", "staff", "parry", "martial-cognize"]
+    } },
+    { key = "满天花雨" value = {
+      kind = "sect_master_grant"
+      perform_id = "feixing-shu/hua"
+      skill = "feixing-shu"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -5500
+      min_gongxian = 400
+      cost_gongxian = 400
+      level_order = ["feixing-shu", "force"]
+      min_levels = {
+        feixing_shu = 100
+        force = 120
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连飞星术都未曾学过，何谈绝招可言？"
+      level_deny = {
+        feixing_shu = "你对飞星术的了解还不够，尚且无法领悟此招。"
+        force = "你对基本内功的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「满天花雨」。\n"
+      improve_skills = ["feixing-shu", "throwing", "dodge", "martial-cognize"]
+    } },
+    { key = "锁魂势" value = {
+      kind = "sect_master_grant"
+      perform_id = "chanhun-suo/suo"
+      skill = "chanhun-suo"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -6500
+      min_gongxian = 400
+      cost_gongxian = 400
+      level_order = ["chanhun-suo", "force"]
+      min_levels = {
+        chanhun_suo = 70
+        force = 120
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连缠魂索都未曾学过，何谈绝招可言？"
+      level_deny = {
+        chanhun_suo = "你对缠魂索的了解还不够，尚且无法领悟此招。"
+        force = "你对基本内功的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「锁魂势」。\n"
+      improve_skills = ["chanhun-suo", "whip", "parry", "martial-cognize"]
+    } },
+    { key = "三阴毒爪" value = {
+      kind = "sect_master_grant"
+      perform_id = "sanyin-wugongzhao/zhua"
+      skill = "sanyin-wugongzhao"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -7000
+      min_gongxian = 500
+      cost_gongxian = 500
+      level_order = ["sanyin-wugongzhao", "force"]
+      min_levels = {
+        sanyin_wugongzhao = 100
+        force = 100
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连三阴蜈蚣爪都未曾学过，何谈绝招可言？"
+      level_deny = {
+        sanyin_wugongzhao = "你对三阴蜈蚣爪的了解还不够，尚且无法领悟此招。"
+        force = "你对基本内功的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「三阴毒爪」。\n"
+      improve_skills = ["sanyin-wugongzhao", "claw", "parry", "martial-cognize"]
+    } },
+    { key = "腐尸毒" value = {
+      kind = "sect_master_grant"
+      perform_id = "chousui-zhang/shi"
+      skill = "chousui-zhang"
+      family = "星宿派"
+      gate_order = "lpc_masterd"
+      max_shen = -10000
+      min_gongxian = 500
+      cost_gongxian = 500
+      level_order = ["chousui-zhang", "force", "poison", "throwing"]
+      min_max_neili = 1200
+      min_levels = {
+        chousui_zhang = 140
+        force = 120
+        poison = 150
+        throwing = 120
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为星宿派作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连抽髓掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        chousui_zhang = "你对抽髓掌的了解还不够，尚且无法领悟此招。"
+        force = "你对基本内功的了解还不够，尚且无法领悟此招。"
+        poison = "你对基本毒技的了解还不够，尚且无法领悟此招。"
+        throwing = "你对基本暗器的了解还不够，尚且无法领悟此招。"
+      }
+      max_neili_deny = "你现在的内力修为不足，修炼高点再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我星宿派素无渊源，不知此话从何说起。"
+      learned = "你学会了「腐尸毒」。\n"
+      improve_skills = ["chousui-zhang", "strike", "parry", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -44744,6 +45302,50 @@ chats = [
   carry = [
     { id = items.lianzi.id }
   ]
+
+  inquiry_state = {
+    dan_count = 1
+    book_count = 1
+  }
+
+  teach = {
+    family = "星宿派"
+    teach_skills = {
+      force = { max = 140 gongxian = 0 }
+      guixi_gong = { max = 140 gongxian = 0 }
+      throwing = { max = 120 gongxian = 0 }
+      feixing_shu = { max = 120 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      zhaixing_gong = { max = 120 gongxian = 0 }
+      whip = { max = 120 gongxian = 0 }
+      chanhun_suo = { max = 120 gongxian = 0 }
+      strike = { max = 120 gongxian = 0 }
+      chousui_zhang = { max = 120 gongxian = 0 }
+      claw = { max = 120 gongxian = 0 }
+      sanyin_wugongzhao = { max = 120 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      staff = { max = 120 gongxian = 0 }
+      tianshan_zhang = { max = 120 gongxian = 0 }
+      poison = { max = 140 gongxian = 0 }
+      medical = { max = 120 gongxian = 0 }
+      xingxiu_qishu = { max = 140 gongxian = 0 }
+    }
+    no_teach = {
+      huagong_dafa = "化功大法要老仙亲自传授。"
+    }
+  }
+
+  apprentice = {
+    family = "星宿派"
+    permit_recruit = true
+    no_min_shen = true
+    max_shen = 0
+    max_shen_deny = "哼！老仙最讨厌你们这些正道中人，你还是回去吧！"
+    accept_msg = "好吧，我就收下你了。"
+    betray_sect_deny = "哈哈！想来想去都是我们星宿派好吧！"
+    betray_times_deny = "没关系，你虽然判过几次师，不过最后终于弃暗投明，可喜可贺！"
+    other_family_deny = "呵呵，好啊！别的门派算什么！"
+  }
 
     }
 

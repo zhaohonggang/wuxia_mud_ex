@@ -26,23 +26,24 @@
 - **区域文件优先于 clone_lib**：`dereference/3` 先用 `zone.characters`；同名 NPC 必须改区域文件（wudang 教训）。
 - `Elias.parse/1` 对 `value = { ... }` 正常；字段缺失先查区域覆盖，勿盲改语法。
 - `teleport_service` 支持 `max_exp`/`max_exp_vision`/`target_vision`；`apprentice.deny_all/deny_msg` 走 NpcFamilyEvent 无条件拒收徒。
-- `apprentice` 另支持 `min_per`/`per_deny`、`any_min_skills` OR 门、gate_order `lpc_xiaoyao`（int 先于 exp）/`lpc_wuyazi`（OR→force/dodge→int→exp）。
+- `apprentice` 另支持 `min_per`/`per_deny`、`any_min_skills` OR 门、gate_order `lpc_xiaoyao`（int 先于 exp）/`lpc_wuyazi`（OR→force/dodge→int→exp）、`max_shen_deny` 逐字覆写。
+- `sect_master_grant` 的 `lpc_masterd` 支持 `level_order` 有序链（sk1..sk5→force→dodge→neili）与独立 `min_force`（与 min_levels.force 并存，不合并）。
 - `IO.write` 中文 Windows 抛 `:no_translation` → 用 `File.write!/2`；`Path.join/3`、`File.rm/2` 不存在。编辑丢失可从 session transcript jsonl 的 `function_call.arguments` 还原。
 
 ## 里程碑（已完成，免重复核查）
 - A1/A2/A4、B1(22 命令桩)/B2(12 arch)/B3、C 类同步全清零。F4：@static 白名单 733、valid_learn 322/322、R5 动态招式 33 技能。
 - #640-644：剃度、NAME_D(794f7972)、PKS/MKS/WPK(da85c8ba)、detach/betrayer(9c8c838f)、清无 gate_order。#695-698 门派指南 39 配置(88d8520c)。#543 严格狩猎掉落(148390c8)。#724-729 全量 7941/27。
-- **Task #619 已回填**（详见 daily log）：丐帮、古墓、红花会、关外胡家(#737)、华山(#740)、绝情谷(#745)、慕容(527c1621)、白驼(4b28b5a8)、全真、日月、昆仑(#750-#755)、少林(ca37e867)、武当(7d0de3f1)、血刀(986b0e8d)、大轮寺 13 grant(1e869000)、侠客岛(#799/a714e488)、逍遥派 9 NPC + 11 grant(#804)。
+- **Task #619 已回填**（详见 daily log）：丐帮、古墓、红花会、关外胡家(#737)、华山(#740)、绝情谷(#745)、慕容(527c1621)、白驼(4b28b5a8)、全真、日月、昆仑(#750-#755)、少林(ca37e867)、武当(7d0de3f1)、血刀(986b0e8d)、大轮寺 13 grant(1e869000)、侠客岛(#799/a714e488)、逍遥派 9 NPC + 11 grant(#804/7649f464)、星宿派 7 NPC + 9 grant(#811)。
 - 引擎扩展：#736 `min_dex`/`dex_deny`；#740 剑宗上限门控 + 直授/破式 handler；#745 `reject_master_name`/`no_min_shen`/`gate_order="lpc_masterd"`；`level_deny_text/3` 只认 min_levels 实存键。
 - 其他历史批次：拱猪子、死亡→地府→还阳、19/19 quarry NPC 掉落、猎人教 hunting。
 
 ## 已报告缺口（必须建计划，严禁简化）
 - 关外胡家 #738/#739；华山 #741/#742(已实现)/#743/#744；绝情谷 #747/#748/#749。
 - 日月：任我行 `ren.c` 有 ask_skill1~5 + no_teach 但无 UCL 块（待建任务）。
-- 武当/血刀/大轮寺/侠客岛/逍遥：见 `docs/{武当派,血刀派,大轮寺,侠客岛,逍遥派}教学门控移植计划.zh-CN.md`，缺口 #789-#810（give_item 多状态、密道、剃度、雇助、greeting exp、广播文案、珍珑分支、guarder）。
+- 武当/血刀/大轮寺/侠客岛/逍遥/星宿：见 `docs/{武当派,血刀派,大轮寺,侠客岛,逍遥派,星宿派}教学门控移植计划.zh-CN.md`，缺口 #789-#816（give_item 多状态、密道、剃度、雇助、greeting exp、广播文案、珍珑分支、guarder、flatter 两步拜师、QUEST_D、香料冷却、coagents、神王木鼎状态机）。
 - 关外胡家/华山/绝情谷/日月计划见 `docs/{关外胡家,华山派,绝情谷,日月教}教学门控移植计划.zh-CN.md`。
 
 ## 当前工作流
-- Task #619 按门派顺序回填 UCL 教学数据；状态以 TaskList 为唯一权威。下一门派：**xingxiu / 星宿派**（xiaoyao 之后）。
+- Task #619 按门派顺序回填 UCL 教学数据；状态以 TaskList 为唯一权威。下一门派：**xuanming / 玄冥谷**（xingxiu 之后）。
 - 已保留缺失（非缺口）：柳溪 王重九无 LPC source；gaibang_jian 青竹令为升袋交互非技能授予。
 - 归档：docs/ 78 份，59 份历史待办加「📌 归档声明」。daily log append-only，超 30 天蒸馏到本文件。

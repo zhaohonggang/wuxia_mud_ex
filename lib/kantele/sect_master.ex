@@ -474,11 +474,15 @@ defmodule Kantele.SectMaster do
       超过即拒；loader 会把嵌套键 `_` 归一为 `-`）
     - `"max_neili_cap"` 内力上限的**上界**（LPC
       `me->query("max_neili") > 2000` 即拒；与既有下界 `min_max_neili` 并存）
+    - `"level_order"` 有序技能门槛键（星宿派：按 masterd.c 的
+      `sk1..sk5 → force → dodge → neili` 逐条判定，避免 map 枚举漂移）
+    - `"min_force"` / `"force_deny"`：`masterd.c b["force"]` 独立内功门，
+      与 `min_levels["force"]` 并存（夺魂势 sk2=force 130 + force=80）
 
   各门槛的拒绝文案可用同名 `*_deny` 键覆盖（`maxed` / `family_deny` /
   `skill_deny` / `max_shen_deny` / `gongxian_deny` / `shen_deny` /
   `level_deny` / `max_neili_deny` / `dex_deny` / `force_cap_deny` /
-  `neili_cap_deny` / `perform_deny`），缺省用通用文案。
+  `force_deny` / `neili_cap_deny` / `perform_deny`），缺省用通用文案。
   门派问询的 LPC 文案每招每NPC 都不同（如血刀门「再罗嗦我宰了你」），
   故按配置回填而不是写死在引擎里。
 
@@ -591,8 +595,17 @@ defmodule Kantele.SectMaster do
       is_binary(skill) and skill_level_of(player, skill) < 1 ->
         {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？\n")}
 
+      # 星宿派（#811）：LPC masterd.c 的 sk1..sk5 → force → dodge → neili
+      # 是固定顺序。配置了 level_order 时走有序链，避免 map 枚举顺序随机
+      # 导致「内功不足」与「招式火候不足」互换文案；未配置的老配置保持原路径。
+      failing_lpc_level = first_failing_lpc_level(player, config, min_levels) ->
+        {:error, ordered_level_deny(config, failing_lpc_level)}
+
       not meets_levels?(player, min_levels) ->
         {:error, level_deny_text(config, player, min_levels)}
+
+      below_min_force?(player, config) ->
+        {:error, deny(config, "force_deny", "你目前的内功火候不足，下去练练再来吧。\n")}
 
       above_neili_cap?(player, config) ->
         {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
@@ -708,6 +721,23 @@ defmodule Kantele.SectMaster do
       end
 
     if String.ends_with?(text, "\n"), do: text, else: text <> "\n"
+  end
+
+  # #811：masterd.c 原路径的 level_order 只在显式配置时启用，
+  # 未配置时保持绝情谷等老配置的原有 map 遍历行为（零回归）。
+  defp first_failing_lpc_level(player, %{"level_order" => order}, levels)
+       when is_list(order),
+       do: first_failing_ordered_level(player, order, levels)
+
+  defp first_failing_lpc_level(_player, _config, _levels), do: nil
+
+  # LPC masterd.c `b["force"]`：技能门槛 sk1..sk5 之后单独判定的内功等级。
+  # 与 min_levels["force"] 并存（夺魂势 sk2=force 130 且 force=80，两条都要保留）。
+  defp below_min_force?(player, config) do
+    case Map.get(config, "min_force") do
+      min when is_integer(min) -> skill_level_of(player, "force") < min
+      _ -> false
+    end
   end
 
   # LPC `query_dex() < N`：缺 key 不拦（老配置零影响）。

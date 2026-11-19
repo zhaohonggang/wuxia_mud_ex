@@ -2083,4 +2083,96 @@ defmodule Kantele.SectMasterDamoGateTest do
       }
     end
   end
+
+  describe "星宿派 grant 有序门控（Task #811）" do
+    defp xx_player(overrides \\ %{}) do
+      %Stats{
+        skills: %{},
+        gongxian: 500,
+        shen: -20_000,
+        performs: MapSet.new()
+      }
+      |> Map.put(:family, "星宿派")
+      |> Map.put(:max_neili, 1200)
+      |> Map.merge(overrides)
+    end
+
+    defp xx_config(extra \\ %{}) do
+      Map.merge(
+        %{
+          "perform_id" => "chousui-zhang/shi",
+          "skill" => "chousui-zhang",
+          "gate_order" => "lpc_masterd",
+          "max_shen" => -10_000,
+          "min_gongxian" => 500,
+          "cost_gongxian" => 500,
+          "level_deny" => %{
+            "force" => "你对基本内功的了解还不够，尚且无法领悟此招。\n",
+            "poison" => "你对基本毒技的了解还不够，尚且无法领悟此招。\n"
+          }
+        },
+        extra
+      )
+    end
+
+    test "level_order 固定 sk1→force→poison 顺序，不随 map 枚举漂移" do
+      config =
+        xx_config(%{
+          "min_levels" => %{
+            "chousui-zhang" => 140,
+            "force" => 120,
+            "poison" => 150,
+            "throwing" => 120
+          },
+          "level_order" => ["chousui-zhang", "force", "poison", "throwing"]
+        })
+
+      player =
+        xx_player(%{
+          skills: %{
+            "chousui-zhang" => 140,
+            "force" => 100,
+            "poison" => 100,
+            "throwing" => 120
+          }
+        })
+
+      assert {:error, "你对基本内功的了解还不够，尚且无法领悟此招。\n"} =
+               Kantele.SectMaster.inquiry_grant(player, %{family: "星宿派"}, config)
+
+      ready = %{player | skills: %{player.skills | "force" => 120}}
+      assert {:error, "你对基本毒技的了解还不够，尚且无法领悟此招。\n"} =
+               Kantele.SectMaster.inquiry_grant(ready, %{family: "星宿派"}, config)
+    end
+
+    test "min_force 是 masterd.c 独立字段：sk2 force 130 满足后再判 force 80" do
+      config =
+        xx_config(%{
+          "perform_id" => "chanhun-suo/duo",
+          "skill" => "chanhun-suo",
+          "min_levels" => %{"chanhun-suo" => 100, "force" => 130},
+          "level_order" => ["chanhun-suo", "force"],
+          "min_force" => 80
+        })
+
+      low = xx_player(%{skills: %{"chanhun-suo" => 100, "force" => 129}})
+
+      assert {:error, "你对基本内功的了解还不够，尚且无法领悟此招。\n"} =
+               Kantele.SectMaster.inquiry_grant(low, %{family: "星宿派"}, config)
+
+      ok = xx_player(%{skills: %{"chanhun-suo" => 100, "force" => 130}})
+      assert {:ok, "chanhun-suo/duo", 500} =
+               Kantele.SectMaster.inquiry_grant(ok, %{family: "星宿派"}, config)
+    end
+
+    test "未配置 level_order / min_force 的老 masterd 配置零回归" do
+      config =
+        xx_config(%{"min_levels" => %{"chousui-zhang" => 140, "force" => 120}})
+
+      player = xx_player(%{skills: %{"chousui-zhang" => 140, "force" => 119}})
+
+      assert {:error, _reason} =
+               Kantele.SectMaster.inquiry_grant(player, %{family: "星宿派"}, config)
+    end
+  end
 end

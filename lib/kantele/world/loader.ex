@@ -1332,6 +1332,8 @@ defmodule Kantele.World.Loader do
       promotion_msg_3: Map.get(apprentice, :promotion_msg_3),
       # 华山：LPC 逐字拒绝文案（性别/侠义不足），未配置时 sect_master 回退缺省。
       min_shen_deny: Map.get(apprentice, :min_shen_deny),
+      # #811 星宿派负神上界（摘星子 shen>0 / 丁春秋 shen>-12000）需逐字文案。
+      max_shen_deny: Map.get(apprentice, :max_shen_deny),
       gender_deny: Map.get(apprentice, :gender_deny),
       min_skills_deny: min_skills_deny,
       min_exp_deny: Map.get(apprentice, :min_exp_deny),

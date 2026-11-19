@@ -1689,4 +1689,199 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert inquiry(xy(world, "无崖子"), "掌门人信物") =~ "GAP #807"
     end
   end
+
+  describe "星宿派 UCL 数据回填（Task #811）" do
+    defp xx(world, name) do
+      npc = Enum.find(world.characters, &(&1.name == name))
+      assert npc, "#{name} 应随世界加载"
+      npc
+    end
+
+    @xingxiu_names ["阿紫", "出尘子", "丁春秋", "星宿弟子", "狮吼子", "天狼子", "摘星子"]
+
+    test "七名星宿 NPC 全部带 teach 与 apprentice 数据", %{world: world} do
+      for name <- @xingxiu_names do
+        npc = xx(world, name)
+        assert npc.meta.teach.family == "星宿派", "#{name} teach.family"
+        assert map_size(npc.meta.teach.teach_skills) > 0, "#{name} teach_skills"
+        assert npc.meta.apprentice.family == "星宿派", "#{name} apprentice.family"
+      end
+    end
+
+    test "no_teach 逐技能 map 与 LPC 原文一致", %{world: world} do
+      assert inquiry(xx(world, "阿紫"), "木鼎") == "仓库里面一大堆，你自己去找吧！"
+
+      for {name, text} <- [
+            {"阿紫", "化功大法让老仙教你吧，我可不愿被他罚。"},
+            {"狮吼子", "化功大法要老仙亲自传授。"},
+            {"天狼子", "化功大法要老仙亲自传授。"},
+            {"摘星子", "化功大法要老仙亲自传授。"}
+          ] do
+        npc = xx(world, name)
+        assert npc.meta.teach.no_teach_deny["huagong-dafa"] == text
+        refute Map.has_key?(npc.meta.teach.teach_skills, "huagong-dafa")
+      end
+
+      assert is_nil(xx(world, "丁春秋").meta.teach.no_teach_deny["huagong-dafa"])
+    end
+
+    @xingxiu_grants [
+      {"摘星子", "如蛆附骨", "tianshan-zhang/fugu", -2200, 80,
+       %{"tianshan-zhang" => 60}, 80, nil},
+      {"摘星子", "冰雪纷飞", "tianshan-zhang/xue", -22000, 80,
+       %{"tianshan-zhang" => 60}, 80, nil},
+      {"摘星子", "满天花雨", "feixing-shu/hua", -5500, 400,
+       %{"feixing-shu" => 100, "force" => 120}, nil, nil},
+      {"摘星子", "锁魂势", "chanhun-suo/suo", -6500, 400,
+       %{"chanhun-suo" => 70, "force" => 120}, nil, nil},
+      {"摘星子", "三阴毒爪", "sanyin-wugongzhao/zhua", -7000, 500,
+       %{"sanyin-wugongzhao" => 100, "force" => 100}, nil, nil},
+      {"摘星子", "腐尸毒", "chousui-zhang/shi", -10000, 500,
+       %{"chousui-zhang" => 140, "force" => 120, "poison" => 150, "throwing" => 120},
+       nil, 1200},
+      {"丁春秋", "夺魂势", "chanhun-suo/duo", -10000, 80,
+       %{"chanhun-suo" => 100, "force" => 130}, 80, nil},
+      {"丁春秋", "炼心弹", "chousui-zhang/dan", -22000, 950,
+       %{"chousui-zhang" => 140, "force" => 140, "poison" => 140, "throwing" => 140},
+       nil, 1800},
+      {"丁春秋", "碧焰滔天", "chousui-zhang/tao", -38000, 1200,
+       %{"chousui-zhang" => 220, "poison" => 250, "huagong-dafa" => 220},
+       nil, 3000}
+    ]
+
+    test "九条 sect_master_grant 的门控字段与 masterd.c 一致", %{world: world} do
+      for {name, key, perform_id, shen, gong, levels, min_force, neili} <- @xingxiu_grants do
+        cfg = inquiry(xx(world, name), key)
+        assert cfg["kind"] == "sect_master_grant", "#{name}/#{key}"
+        assert cfg["gate_order"] == "lpc_masterd", "#{name}/#{key}"
+        assert cfg["perform_id"] == perform_id, "#{name}/#{key}"
+        assert cfg["max_shen"] == shen, "#{name}/#{key}"
+        assert cfg["min_gongxian"] == gong, "#{name}/#{key}"
+        assert cfg["cost_gongxian"] == gong, "#{name}/#{key}"
+        assert cfg["min_levels"] == levels, "#{name}/#{key}"
+        assert cfg["min_force"] == min_force, "#{name}/#{key}"
+        assert cfg["min_max_neili"] == neili, "#{name}/#{key}"
+        assert is_list(cfg["level_order"]) and length(cfg["level_order"]) > 0, "#{name}/#{key}"
+      end
+    end
+
+    test "如蛆附骨：sk1 等级门先于 masterd force 字段门", %{world: world} do
+      zhaixing = xx(world, "摘星子")
+      cfg = inquiry(zhaixing, "如蛆附骨")
+
+      base = %{
+        family: "星宿派",
+        shen: -3000,
+        gongxian: 80,
+        skills: %{"tianshan-zhang" => 60, "force" => 79}
+      }
+
+      assert {:error, "你目前的内功火候不足，下去练练再来吧。"} =
+               SectMaster.inquiry_grant(disciple(base), zhaixing, cfg)
+
+      assert {:error, "你对天山杖法的了解还不够，尚且无法领悟此招。\n"} =
+               SectMaster.inquiry_grant(
+                 disciple(%{base | skills: %{"tianshan-zhang" => 59, "force" => 120}}),
+                 zhaixing,
+                 cfg
+               )
+
+      assert {:ok, "tianshan-zhang/fugu", 80} =
+               SectMaster.inquiry_grant(
+                 disciple(%{base | skills: %{"tianshan-zhang" => 60, "force" => 80}}),
+                 zhaixing,
+                 cfg
+               )
+    end
+
+    test "腐尸毒：四项技能之后才判 max_neili 1200", %{world: world} do
+      zhaixing = xx(world, "摘星子")
+      cfg = inquiry(zhaixing, "腐尸毒")
+
+      base = %{
+        family: "星宿派",
+        shen: -20_000,
+        gongxian: 500,
+        max_neili: 1200,
+        skills: %{
+          "chousui-zhang" => 140,
+          "force" => 120,
+          "poison" => 150,
+          "throwing" => 120
+        }
+      }
+
+      assert {:error, "你现在的内力修为不足，修炼高点再来吧。"} =
+               SectMaster.inquiry_grant(disciple(%{base | max_neili: 1199}), zhaixing, cfg)
+
+      assert {:ok, "chousui-zhang/shi", 500} =
+               SectMaster.inquiry_grant(disciple(base), zhaixing, cfg)
+    end
+
+    test "夺魂势保留 sk2 force 130 与独立 force 80 两道门", %{world: world} do
+      ding = xx(world, "丁春秋")
+      cfg = inquiry(ding, "夺魂势")
+
+      base = %{
+        family: "星宿派",
+        shen: -20_000,
+        gongxian: 80,
+        skills: %{"chanhun-suo" => 100, "force" => 100}
+      }
+
+      assert {:error, "你对基本内功的了解还不够，尚且无法领悟此招。\n"} =
+               SectMaster.inquiry_grant(disciple(base), ding, cfg)
+
+      assert {:ok, "chanhun-suo/duo", 80} =
+               SectMaster.inquiry_grant(
+                 disciple(%{base | skills: %{"chanhun-suo" => 100, "force" => 130}}),
+                 ding,
+                 cfg
+               )
+    end
+
+    test "物品问询、计数库存与 GAP #813/#814 标记", %{world: world} do
+      ding = xx(world, "丁春秋")
+      zhaixing = xx(world, "摘星子")
+
+      assert inquiry(ding, "毒经")["kind"] == "give_item"
+      assert inquiry(ding, "毒经")["item"] == "clone_lib:dujing_2"
+      assert inquiry(ding, "星宿毒经")["count"] == "book_count"
+      assert inquiry(ding, "碧磷针")["item"] == "xiyu:bilinzhen"
+      assert inquiry(ding, "碧磷针")["min_skill_levels"] == %{"poison" => 50}
+      assert inquiry(ding, "逍遥三笑散")["min_skill_levels"] == %{"poison" => 100}
+      assert inquiry(ding, "香料")["min_skill_levels"] == %{"poison" => 40}
+      assert inquiry(ding, "柔丝索")["master_id"] == "true"
+      assert inquiry(ding, "柔丝索")["max_shen"] == -30000
+      assert inquiry(ding, "神木王鼎") =~ "休想打它的注意"
+
+      assert inquiry(zhaixing, "炼心弹")["item"] == "xiyu:lianxindan"
+      assert inquiry(zhaixing, "秘籍")["item"] == "clone_lib:throw_book"
+      assert inquiry(zhaixing, "天山器法")["count"] == "book_count"
+      assert ding.meta.inquiry_state["xiangliao_count"] == 10
+      assert zhaixing.meta.inquiry_state["dan_count"] == 1
+
+      assert inquiry(ding, "历练") =~ "GAP #813"
+      assert inquiry(ding, "历炼") =~ "GAP #813"
+      assert inquiry(ding, "锻炼") =~ "GAP #813"
+    end
+
+    test "收徒门控：摘星子 shen<=0、丁春秋负神与技能链", %{world: world} do
+      zhaixing = xx(world, "摘星子").meta.apprentice
+      assert zhaixing.no_min_shen == true
+      assert zhaixing.max_shen == 0
+      assert zhaixing.max_shen_deny =~ "老仙最讨厌你们这些正道中人"
+
+      ding = xx(world, "丁春秋").meta.apprentice
+      assert ding.no_min_shen == true
+      assert ding.max_shen == -12000
+      assert ding.min_exp == 300000
+      assert ding.min_skills == %{"chousui-zhang" => 120, "poison" => 120}
+      assert ding.min_skills_deny["poison"] == "你毒技都没学明白，还有脸来见我？"
+
+      for name <- ["阿紫", "出尘子", "星宿弟子", "狮吼子", "天狼子"] do
+        assert xx(world, name).meta.apprentice.deny_all == true, name
+      end
+    end
+  end
 end
