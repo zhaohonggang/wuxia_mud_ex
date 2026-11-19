@@ -1584,4 +1584,109 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert inquiry(renter, "师兄") =~ "GAP #801"
     end
   end
+
+  describe "逍遥派 UCL 数据回填（Task #804）" do
+    defp xy(world, name) do
+      npc = Enum.find(world.characters, &(&1.name == name))
+      assert npc, "#{name} 应随世界加载"
+      npc
+    end
+
+    @xiaoyao_names [
+      "范百龄", "冯阿三", "苟读", "康广陵", "石清露",
+      "苏星河", "吴领军", "无崖子", "薛慕华"
+    ]
+
+    test "九名逍遥 NPC 全部带 teach 数据与收徒门控", %{world: world} do
+      for name <- @xiaoyao_names do
+        npc = xy(world, name)
+        assert npc.meta.teach.family == "逍遥派", "#{name} teach.family"
+        assert map_size(npc.meta.teach.teach_skills) > 0, "#{name} teach_skills"
+        assert npc.meta.apprentice.family == "逍遥派", "#{name} apprentice.family"
+        assert npc.meta.apprentice.permit_recruit == true, "#{name} permit_recruit"
+        assert npc.meta.apprentice.min_per == 28, "#{name} min_per"
+      end
+    end
+
+    test "苏星河 no_teach 为逐技能 map，两招不得出现在 teach_skills", %{world: world} do
+      su = xy(world, "苏星河")
+
+      assert su.meta.teach.no_teach_deny["zhemei-shou"] ==
+               "逍遥折梅手乃本门神功，只能由掌门人传授。"
+
+      assert su.meta.teach.no_teach_deny["liuyang-zhang"] ==
+               "这天山六阳掌向来只能由逍遥派掌门传功，我不便教授。"
+
+      refute Map.has_key?(su.meta.teach.teach_skills, "zhemei-shou")
+      refute Map.has_key?(su.meta.teach.teach_skills, "liuyang-zhang")
+    end
+
+    @xiaoyao_grants [
+      {"苏星河", "捕风捉影", "qingyun-shou/zhuo", 50, %{"force" => 100, "qingyun-shou" => 50}},
+      {"苏星河", "攀阳邀月", "panyang-zhang/pan", 100, %{"force" => 100, "panyang-zhang" => 60}},
+      {"苏星河", "如意六刀", "ruyi-dao/ruyi", 200, %{"force" => 150, "ruyi-dao" => 100}},
+      {"无崖子", "流月剑诀", "liuyue-jian/liu", 400, %{"force" => 180, "liuyue-jian" => 120}},
+      {"无崖子", "天升剑诀", "liuyue-jian/sheng", 500, %{"force" => 200, "liuyue-jian" => 140}},
+      {"无崖子", "洛神凌波", "lingbo-weibu/ling", 600, %{"force" => 180, "lingbo-weibu" => 120}},
+      {"无崖子", "生死符", "liuyang-zhang/zhong", 600, %{"force" => 200, "liuyang-zhang" => 150}},
+      {"无崖子", "寰阳式", "liuyang-zhang/huan", 900, %{"force" => 200, "liuyang-zhang" => 130}},
+      {"无崖子", "折梅式", "zhemei-shou/zhe", 400, %{"force" => 120, "zhemei-shou" => 80}},
+      {"无崖子", "海渊式", "zhemei-shou/hai", 900, %{"force" => 200, "zhemei-shou" => 130}},
+      {"无崖子", "化妖功", "zhemei-shou/hua", 2500, %{"zhemei-shou" => 220, "max-neili" => 3500}}
+    ]
+
+    test "十一条 sect_master_grant 的门控字段与 LPC 一致", %{world: world} do
+      for {name, key, perform_id, gongxian, levels} <- @xiaoyao_grants do
+        cfg = inquiry(xy(world, name), key)
+        assert cfg["kind"] == "sect_master_grant", "#{name}/#{key}"
+        assert cfg["perform_id"] == perform_id, "#{name}/#{key}"
+        assert cfg["min_gongxian"] == gongxian, "#{name}/#{key}"
+        assert cfg["cost_gongxian"] == gongxian, "#{name}/#{key}"
+        assert cfg["min_levels"] == levels, "#{name}/#{key}"
+      end
+    end
+
+    test "苏星河逐条 level_order：内功不足先于招式火候不足", %{world: world} do
+      su = xy(world, "苏星河")
+      cfg = inquiry(su, "捕风捉影")
+      player = disciple(%{family: "逍遥派", gongxian: 50, skills: %{"qingyun-shou" => 50}})
+
+      assert {:error, "你的内功火候不足，学不成这招。\n"} =
+               SectMaster.inquiry_grant(player, su, cfg)
+
+      ready_force = %{player | skills: %{"force" => 100, "qingyun-shou" => 20}}
+      assert {:error, "你的青云手火候未到，还得多练习练习。\n"} =
+               SectMaster.inquiry_grant(ready_force, su, cfg)
+    end
+
+    test "化妖功 max_neili 伪键与 LPC 三连提升次数保留", %{world: world} do
+      wu = xy(world, "无崖子")
+      cfg = inquiry(wu, "化妖功")
+
+      assert cfg["level_order"] == ["zhemei-shou", "max-neili"]
+      assert cfg["improve_skills"] == [
+               "hand", "hand", "hand",
+               "zhemei-shou", "zhemei-shou", "zhemei-shou",
+               "force", "force", "force", "martial-cognize"
+             ]
+
+      player = disciple(%{
+        family: "逍遥派",
+        gongxian: 2500,
+        max_neili: 3400,
+        skills: %{"zhemei-shou" => 220}
+      })
+
+      assert {:error, "你的内力修为不够，强运这招会扰乱自身的真元。\n"} =
+               SectMaster.inquiry_grant(player, wu, cfg)
+    end
+
+    test "物品授予类问询明确标记 GAP #805/#806/#807", %{world: world} do
+      assert inquiry(xy(world, "冯阿三"), "铁八卦") =~ "GAP #805"
+      assert inquiry(xy(world, "冯阿三"), "布阵箱") =~ "GAP #805"
+      assert inquiry(xy(world, "苟读"), "论语") =~ "GAP #806"
+      assert inquiry(xy(world, "无崖子"), "逍遥神仙环") =~ "GAP #807"
+      assert inquiry(xy(world, "无崖子"), "掌门人信物") =~ "GAP #807"
+    end
+  end
 end

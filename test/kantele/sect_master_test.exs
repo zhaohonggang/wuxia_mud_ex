@@ -1969,4 +1969,118 @@ defmodule Kantele.SectMasterDamoGateTest do
       assert {:ok, "qiankun-jian/ni", 1800} = SectMaster.inquiry_grant(ready, npc, config)
     end
   end
+
+  describe "逍遥派 apprentice 门控（Task #804）" do
+    defp xy_student(stats_overrides \\ %{}) do
+      stats =
+        %{
+          per: 30,
+          int: 30,
+          combat_exp: 200_000,
+          shen: 0,
+          skills: %{"xiaoyao-xinfa" => 50}
+        }
+        |> Map.merge(stats_overrides)
+
+      %{meta: %{family: %{name: "逍遥派"}, env: %{}, stats: stats}}
+    end
+
+    test "min_per 容貌硬门：per<28 按 xiaoyao.h 文案拒绝" do
+      gate = %{
+        family: "逍遥派",
+        permit_recruit: true,
+        min_per: 28,
+        per_deny: "容貌不足\n",
+        hard_min_int: 27,
+        int_deny: "悟性不足\n",
+        min_skills: %{"xiaoyao-xinfa" => 30},
+        min_skills_deny: %{"xiaoyao-xinfa" => "心法不足\n"},
+        betray_sect_deny: "叛门\n",
+        betray_times_deny: "判师\n",
+        other_family_deny: "他派\n"
+      }
+
+      assert {:error, "容貌不足\n"} = SectMaster.recruit_gate?(nil, xy_student(%{per: 27}), gate)
+      assert :ok = SectMaster.recruit_gate?(nil, xy_student(%{per: 28}), gate)
+    end
+
+    test "gate_order=lpc_xiaoyao：悟性硬门先于经验门（苏星河顺序）" do
+      student = xy_student(%{int: 20, combat_exp: 100_000})
+      gate = recruit_gate_fixture()
+
+      assert {:error, "你经验尚浅，武功未成，师父未同意收你为徒。\n"} =
+               SectMaster.recruit_gate?(nil, student, gate)
+
+      assert {:error, "悟性不足\n"} =
+               SectMaster.recruit_gate?(nil, student, Map.put(gate, :gate_order, "lpc_xiaoyao"))
+    end
+
+    test "gate_order=lpc_wuyazi：任一内功 OR 门 → force/dodge → int → exp" do
+      gate = %{
+        family: "逍遥派",
+        permit_recruit: true,
+        gate_order: "lpc_wuyazi",
+        any_min_skills: %{
+          "xiaoyao-xinfa" => 130,
+          "xiaowuxiang" => 130,
+          "beiming-shengong" => 130
+        },
+        any_min_skills_deny: "本门内功不足\n",
+        min_skills: %{"force" => 130, "dodge" => 130},
+        min_skills_deny: %{"force" => "内功不足\n", "dodge" => "轻功不足\n"},
+        hard_min_int: 40,
+        int_deny: "悟性不足\n",
+        min_exp: 500_000,
+        min_exp_deny: "经验不足\n"
+      }
+
+      assert {:error, "本门内功不足\n"} =
+               SectMaster.recruit_gate?(
+                 nil,
+                 xy_student(%{
+                   skills: %{"xiaoyao-xinfa" => 100, "force" => 200, "dodge" => 200}
+                 }),
+                 gate
+               )
+
+      assert {:error, "内功不足\n"} =
+               SectMaster.recruit_gate?(
+                 nil,
+                 xy_student(%{
+                   int: 20,
+                   combat_exp: 100_000,
+                   skills: %{"beiming-shengong" => 200, "force" => 100, "dodge" => 200}
+                 }),
+                 gate
+               )
+
+      assert :ok =
+               SectMaster.recruit_gate?(
+                 nil,
+                 xy_student(%{
+                   int: 41,
+                   combat_exp: 600_000,
+                   skills: %{"xiaowuxiang" => 150, "force" => 150, "dodge" => 150}
+                 }),
+                 gate
+               )
+    end
+
+    defp recruit_gate_fixture do
+      %{
+        family: "逍遥派",
+        permit_recruit: true,
+        min_per: 28,
+        per_deny: "容貌不足\n",
+        hard_min_int: 27,
+        int_deny: "悟性不足\n",
+        min_exp: 200_000,
+        min_skills: %{"xiaoyao-xinfa" => 30},
+        min_skills_deny: %{"xiaoyao-xinfa" => "心法不足\n"},
+        betray_sect_deny: "叛门\n",
+        betray_times_deny: "判师\n",
+        other_family_deny: "他派\n"
+      }
+    end
+  end
 end

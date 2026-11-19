@@ -1224,7 +1224,7 @@ defmodule Kantele.World.Loader do
     # - "gender_first"：先 gender，再 permit_recruit —— 对齐 清无 LPC qing-wu.c
     gate_order =
       case Map.get(apprentice, :gate_order) do
-        "gender_first" -> "gender_first"
+        value when value in ["gender_first", "lpc_xiaoyao", "lpc_wuyazi"] -> value
         _ -> "permit_first"
       end
 
@@ -1301,6 +1301,27 @@ defmodule Kantele.World.Loader do
           other
       end
 
+    # #804 逍遥派 xiaoyao.h：`query("per") < 28` 容貌硬门；
+    # 无崖子 wuyazi.c：逍遥心法/小无相功/北冥神功任一 >= 130 的 OR 门。
+    # 二者既有字段无法表达，按不简化原则新增专用字段原样透传。
+    any_min_skills =
+      case Map.get(apprentice, :any_min_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, level} ->
+            {String.replace(to_string(key), "_", "-"), level}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    apprentice_fields = %{
+      min_per: int_value(Map.get(apprentice, :min_per)),
+      per_deny: Map.get(apprentice, :per_deny),
+      any_min_skills: any_min_skills,
+      any_min_skills_deny: Map.get(apprentice, :any_min_skills_deny)
+    }
+
     # #652：LPC 各字辈 attempt_apprentice 成功文案可用 UCL 覆写；未配置时由
     # ShaolinApprenticeDialogue 按字辈/分支回退到 LPC 逐字原文。
     dialogue_fields = %{
@@ -1329,7 +1350,10 @@ defmodule Kantele.World.Loader do
       rename_surname_index: int_value(Map.get(apprentice, :rename_surname_index))
     }
 
-    Map.merge(base, Map.merge(da_mo_fields, Map.merge(promotion_fields, dialogue_fields)))
+    Map.merge(
+      base,
+      Map.merge(da_mo_fields, Map.merge(promotion_fields, Map.merge(dialogue_fields, apprentice_fields)))
+    )
   end
 
   defp class_value(value) when is_binary(value) and value != "", do: value

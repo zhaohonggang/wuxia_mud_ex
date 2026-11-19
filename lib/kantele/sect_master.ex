@@ -93,6 +93,11 @@ defmodule Kantele.SectMaster do
     hard_min_int = Map.get(config, :hard_min_int)
     max_wpk = Map.get(config, :max_wpk)
     min_max_neili = Map.get(config, :min_max_neili)
+    min_per = Map.get(config, :min_per)
+    any_min_skills = Map.get(config, :any_min_skills, %{}) || %{}
+
+    # #804 逍遥派：xiaoyao.h 的 per 门位于 permit_recruit 内部第四条；
+    # 无崖子常规收徒顺序为「任一内功≥130 → force/dodge → int → exp」。
 
     # 达摩 #5：int < 35 —— LPC 在此只 `command("say ...")`、**不 return**。
     # 先记下提示，后续硬门槛照常判定；最终以 {:ok, warning} / {:error, warning <> reason}
@@ -105,6 +110,7 @@ defmodule Kantele.SectMaster do
       end
 
     promotion_reason = promotion_error(student, config)
+    failing_recruit_skill = first_failing_recruit_skill(student, min_skills)
 
     # Task #644：gate_order 控制 permit_recruit 与 gender 检查先后。
     #   "gender_first"（清无 LPC qing-wu.c）：gender 先于 permit_recruit
@@ -134,6 +140,39 @@ defmodule Kantele.SectMaster do
            :other_family_deny,
            "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"
          )}
+
+      # #804 逍遥派 xiaoyao.h permit_recruit 第四条：`query("per") < 28`。
+      # 位置紧随他派门，仍是 permit_recruit 内部，早于各 NPC 自门控。
+      not is_nil(min_per) and (student_per(student) || 0) < min_per ->
+        {:error,
+         deny_text(config, :per_deny, "大侠的尊容未免次了点，这样可入不了本派！\n")}
+
+      # #804 无崖子 wuyazi.c:185-191：逍遥心法/小无相功/北冥神功任一 >= 130。
+      # 这是 OR 门（min_skills 是 AND），且位于 force/dodge/int/exp 之前。
+      gate_order == "lpc_wuyazi" and any_min_skills_failing?(student, any_min_skills) ->
+        {:error,
+         deny_text(
+           config,
+           :any_min_skills_deny,
+           "我逍遥派的本门内功的你都没有学利索，还谈什么？\n"
+         )}
+
+      gate_order == "lpc_wuyazi" and not is_nil(failing_recruit_skill) ->
+        {:error, min_skills_deny(config, failing_recruit_skill)}
+
+      gate_order == "lpc_wuyazi" and
+          not is_nil(hard_min_int) and (student_int(student) || 0) < hard_min_int ->
+        {:error,
+         deny_text(config, :int_deny, "大侠悟性仍有不足，先回去多读点书吧。\n")}
+
+      gate_order == "lpc_wuyazi" and exp < min_exp ->
+        {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
+
+      # #804 苏星河 suxingh.c:123-134：先 int30（带 return），再 exp200000。
+      gate_order == "lpc_xiaoyao" and
+          not is_nil(hard_min_int) and (student_int(student) || 0) < hard_min_int ->
+        {:error,
+         deny_text(config, :int_deny, "大侠悟性仍有不足，先回去多读点书吧。\n")}
 
       # #745 绝情谷 chi.c/zhi.c：若拜师者的师父正是仇家，则拒收。
       # 位置紧随 permit_recruit，之后才是 shen/exp/技能，与 LPC 顺序一致。
@@ -181,17 +220,19 @@ defmodule Kantele.SectMaster do
       not is_nil(min_max_neili) and (student_max_neili(student) || 0) < min_max_neili ->
         {:error, deny_text(config, :max_neili_deny, "你的内力修为不足，师父未同意收你为徒。\n")}
 
-      exp < min_exp ->
+      gate_order != "lpc_wuyazi" and exp < min_exp ->
         {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
 
       # 昆仑何足道 LPC `if (me->query_int() < 38) { ...; return; }` 是硬门，
       # 与达摩 min_int「只提示不拒」不同；二者分开配置，禁止互相复用。
-      not is_nil(hard_min_int) and (student_int(student) || 0) < hard_min_int ->
+      # 逍遥派两种 gate_order 已在上面按 LPC 顺序提前判定，此处跳过避免文案互换。
+      gate_order not in ["lpc_xiaoyao", "lpc_wuyazi"] and
+          not is_nil(hard_min_int) and (student_int(student) || 0) < hard_min_int ->
         {:error,
          deny_text(config, :int_deny, "大侠悟性仍有不足，先回去多读点书吧。\n")}
 
-      not is_nil(failing_skill = first_failing_recruit_skill(student, min_skills)) ->
-        {:error, min_skills_deny(config, failing_skill)}
+      gate_order != "lpc_wuyazi" and not is_nil(failing_recruit_skill) ->
+        {:error, min_skills_deny(config, failing_recruit_skill)}
 
       true ->
         :ok
@@ -1026,6 +1067,18 @@ defmodule Kantele.SectMaster do
   defp student_int(character) do
     Map.get(Map.get(meta_of(character), :stats) || %{}, :int, 0) || 0
   end
+
+  # #804 逍遥派 xiaoyao.h `query("per")`：容貌取自 stats.per。
+  defp student_per(character) do
+    Map.get(Map.get(meta_of(character), :stats) || %{}, :per, 0) || 0
+  end
+
+  # #804 无崖子：任一内功达到门槛即通过（OR），全部不足才拒绝。
+  defp any_min_skills_failing?(character, skills) when is_map(skills) and map_size(skills) > 0 do
+    Enum.all?(skills, fn {skill, level} -> skill_level(character, skill) < level end)
+  end
+
+  defp any_min_skills_failing?(_character, _skills), do: false
 
   defp student_wpk(character) do
     meta = meta_of(character)

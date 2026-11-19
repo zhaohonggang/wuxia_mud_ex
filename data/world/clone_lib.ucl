@@ -43216,6 +43216,41 @@ chats = [
     str = 25
   }
 
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 180 gongxian = 0 }
+      xiaoyao_xinfa = { max = 180 gongxian = 0 }
+      dodge = { max = 160 gongxian = 0 }
+      feiyan_zoubi = { max = 160 gongxian = 0 }
+      strike = { max = 160 gongxian = 0 }
+      panyang_zhang = { max = 160 gongxian = 0 }
+      hand = { max = 160 gongxian = 0 }
+      qingyun_shou = { max = 160 gongxian = 0 }
+      parry = { max = 160 gongxian = 0 }
+      blade = { max = 160 gongxian = 0 }
+      ruyi_dao = { max = 160 gongxian = 0 }
+      chess = { max = 240 gongxian = 0 }
+      literate = { max = 160 gongxian = 0 }
+      martial_cognize = { max = 160 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 27
+    int_deny = "学习棋道要求悟性极高之人，我看你并不适合。"
+    min_skills = { xiaoyao_xinfa = 30 }
+    min_skills_deny = { xiaoyao_xinfa = "你连本门的入门心法都没有学好，教我如何收你？" }
+    accept_msg = "好吧，既然如此，我就收下你了。"
+  }
+
   skills = [
     { skill = "force" level = 180 },
     { skill = "xiaoyao-xinfa" level = 180 },
@@ -43270,9 +43305,42 @@ chats = [
   }
 
   inquiries = [
-    { key = "布阵箱" value = " inquire about item2 (unimplemented)" },
-    { key = "铁八卦" value = " inquire about item1 (unimplemented)" }
+    { key = "布阵箱" value = " inquire about item2 (unimplemented: GAP #805)" },
+    { key = "铁八卦" value = " inquire about item1 (unimplemented: GAP #805)" }
   ]
+
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      xiaoyao_xinfa = { max = 120 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      feiyan_zoubi = { max = 120 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      panyang_zhang = { max = 100 gongxian = 0 }
+      hand = { max = 100 gongxian = 0 }
+      qingyun_shou = { max = 100 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      blade = { max = 120 gongxian = 0 }
+      ruyi_dao = { max = 120 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      qimen_wuxing = { max = 180 gongxian = 0 }
+      martial_cognize = { max = 100 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 26
+    int_deny = "你脑袋又不灵光，能跟我做什么？"
+    accept_msg = "好吧，我就收下你了，多干活，少说话！"
+  }
 
   skills = [
     { skill = "force" level = 120 },
@@ -43330,8 +43398,40 @@ chats = [
   }
 
   inquiries = [
-    { key = "论语" value = " inquire about me (unimplemented)" }
+    { key = "论语" value = " inquire about me (unimplemented: GAP #806)" }
   ]
+
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      xiaoyao_xinfa = { max = 120 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      feiyan_zoubi = { max = 100 gongxian = 0 }
+      strike = { max = 100 gongxian = 0 }
+      panyang_zhang = { max = 100 gongxian = 0 }
+      hand = { max = 100 gongxian = 0 }
+      qingyun_shou = { max = 100 gongxian = 0 }
+      parry = { max = 100 gongxian = 0 }
+      blade = { max = 80 gongxian = 0 }
+      ruyi_dao = { max = 80 gongxian = 0 }
+      literate = { max = 220 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 26
+    int_deny = "这个…你的头脑太不开窍…怎么能够逍遥？"
+    accept_msg = "甚好，甚好！\n有徒至远方来，不矣乐呼。"
+  }
 
   skills = [
     { skill = "force" level = 120 },
@@ -43383,6 +43483,42 @@ chats = [
     max_neili = 4000
     max_qi = 3500
     str = 28
+  }
+
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 180 gongxian = 0 }
+      xiaoyao_xinfa = { max = 180 gongxian = 0 }
+      dodge = { max = 160 gongxian = 0 }
+      feiyan_zoubi = { max = 160 gongxian = 0 }
+      strike = { max = 160 gongxian = 0 }
+      panyang_zhang = { max = 160 gongxian = 0 }
+      hand = { max = 160 gongxian = 0 }
+      qingyun_shou = { max = 160 gongxian = 0 }
+      parry = { max = 160 gongxian = 0 }
+      blade = { max = 180 gongxian = 0 }
+      ruyi_dao = { max = 180 gongxian = 0 }
+      literate = { max = 140 gongxian = 0 }
+      tanqin_jifa = { max = 220 gongxian = 0 }
+      qiuyue_lai = { max = 220 gongxian = 0 }
+      martial_cognize = { max = 160 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 28
+    int_deny = "你的悟性太差，怎么学我的琴技？"
+    min_skills = { xiaoyao_xinfa = 30 }
+    min_skills_deny = { xiaoyao_xinfa = "你连本门的入门心法都没有学好，教我如何收你？" }
+    accept_msg = "好吧，我收你为徒，多学些东西，别整天就想着练武。"
   }
 
   skills = [
@@ -43440,6 +43576,38 @@ chats = [
     str = 25
   }
 
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 80 gongxian = 0 }
+      xiaoyao_xinfa = { max = 80 gongxian = 0 }
+      dodge = { max = 100 gongxian = 0 }
+      feiyan_zoubi = { max = 100 gongxian = 0 }
+      strike = { max = 80 gongxian = 0 }
+      panyang_zhang = { max = 80 gongxian = 0 }
+      hand = { max = 80 gongxian = 0 }
+      qingyun_shou = { max = 80 gongxian = 0 }
+      parry = { max = 80 gongxian = 0 }
+      blade = { max = 80 gongxian = 0 }
+      ruyi_dao = { max = 80 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+      martial_cognize = { max = 80 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 25
+    int_deny = "唉，你悟性太差，逍遥派是不会收留的。"
+    accept_msg = "…嗯…那你以后就跟着我吧。"
+  }
+
   skills = [
     { skill = "force" level = 80 },
     { skill = "xiaoyao-xinfa" level = 80 },
@@ -43492,10 +43660,135 @@ chats = [
   }
 
   inquiries = [
-    { key = "如意六刀" value = " inquire about skill3 (unimplemented)" },
-    { key = "捕风捉影" value = " inquire about skill1 (unimplemented)" },
-    { key = "攀阳邀月" value = " inquire about skill2 (unimplemented)" }
+    { key = "捕风捉影" value = {
+      kind = "sect_master_grant"
+      perform_id = "qingyun-shou/zhuo"
+      skill = "qingyun-shou"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "qingyun-shou"]
+      family = "逍遥派"
+      min_levels = {
+        force = 100
+        qingyun_shou = 50
+      }
+      min_gongxian = 50
+      cost_gongxian = 50
+      maxed = "我不是已经教过你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连青云手都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        qingyun_shou = "你的青云手火候未到，还得多练习练习。"
+      }
+      msg_one = "$n点了点头，伸手将$N招至身边，在耳旁低声细说良久，$N听后会心的一笑，看来大有所悟。\n"
+      learned = "你学会了「捕风捉影」。\n"
+      improve_skills = ["hand", "qingyun-shou", "martial-cognize"]
+    } },
+    { key = "攀阳邀月" value = {
+      kind = "sect_master_grant"
+      perform_id = "panyang-zhang/pan"
+      skill = "panyang-zhang"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "panyang-zhang"]
+      family = "逍遥派"
+      min_levels = {
+        force = 100
+        panyang_zhang = 60
+      }
+      min_gongxian = 100
+      cost_gongxian = 100
+      maxed = "我不是已经教过你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连攀阳掌都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        panyang_zhang = "你的攀阳掌火候未到，还得多练习练习。"
+      }
+      msg_one = "$n略微点了点头，说道：“我给你演示一遍，可瞧仔细了！”随即一声清啸，双掌纷飞贯出，掌影重重叠叠虚实难辨，全全笼罩$N全身。\n"
+      learned = "你学会了「攀阳邀月」。\n"
+      improve_skills = ["strike", "panyang-zhang", "martial-cognize"]
+    } },
+    { key = "如意六刀" value = {
+      kind = "sect_master_grant"
+      perform_id = "ruyi-dao/ruyi"
+      skill = "ruyi-dao"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "ruyi-dao"]
+      family = "逍遥派"
+      min_levels = {
+        force = 150
+        ruyi_dao = 100
+      }
+      min_gongxian = 200
+      cost_gongxian = 200
+      maxed = "我不是已经教过你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连如意刀法都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        ruyi_dao = "你的如意刀法火候未到，还得多练习练习。"
+      }
+      msg_one = "$n点点头，微笑着示意赞许，伸手将$N招到身前，低声在$N耳旁嘀咕了半天。不时还拔出腰刀挥舞几下，似乎是一种颇为神妙的刀诀。\n"
+      learned = "你学会了「如意六刀」。\n"
+      improve_skills = ["blade", "ruyi-dao", "martial-cognize"]
+    } }
   ]
+
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 260 gongxian = 0 }
+      xiaoyao_xinfa = { max = 240 gongxian = 0 }
+      xiaowuxiang = { max = 260 gongxian = 0 }
+      dodge = { max = 240 gongxian = 0 }
+      feiyan_zoubi = { max = 240 gongxian = 0 }
+      strike = { max = 240 gongxian = 0 }
+      panyang_zhang = { max = 240 gongxian = 0 }
+      qingyun_shou = { max = 240 gongxian = 0 }
+      parry = { max = 240 gongxian = 0 }
+      blade = { max = 240 gongxian = 0 }
+      ruyi_dao = { max = 240 gongxian = 0 }
+      literate = { max = 280 gongxian = 0 }
+      medical = { max = 260 gongxian = 0 }
+      xiaoyao_qixue = { max = 260 gongxian = 0 }
+      mathematics = { max = 240 gongxian = 0 }
+      qimen_wuxing = { max = 240 gongxian = 0 }
+      drawing = { max = 240 gongxian = 0 }
+      chuixiao_jifa = { max = 240 gongxian = 0 }
+      tanqin_jifa = { max = 240 gongxian = 0 }
+      chess = { max = 280 gongxian = 0 }
+      calligraphy = { max = 240 gongxian = 0 }
+      martial_cognize = { max = 240 gongxian = 0 }
+    }
+    no_teach = {
+      zhemei_shou = "逍遥折梅手乃本门神功，只能由掌门人传授。"
+      liuyang_zhang = "这天山六阳掌向来只能由逍遥派掌门传功，我不便教授。"
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    gate_order = "lpc_xiaoyao"
+    hard_min_int = 30
+    int_deny = "大侠是否还应该在学问上多下点功夫，笨人可逍遥不了！"
+    min_exp = 200000
+    min_exp_deny = "你现在经验尚浅，不能领会高深的武功，先锻炼要紧。"
+    min_skills = { force = 100 xiaoyao_xinfa = 100 }
+    min_skills_deny = {
+      force = "我们逍遥派的武功都要以内功为基础，你先把基础内功学扎实吧。"
+      xiaoyao_xinfa = "你连本门的入门心法都没有学好，还想学本门的上乘武学？"
+    }
+    accept_msg = "好吧，我就收下你了，今后要多加努力啊！"
+  }
 
   skills = [
     { skill = "force" level = 260 },
@@ -43561,6 +43854,41 @@ chats = [
     str = 25
   }
 
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 140 gongxian = 0 }
+      xiaoyao_xinfa = { max = 140 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      feiyan_zoubi = { max = 120 gongxian = 0 }
+      strike = { max = 120 gongxian = 0 }
+      panyang_zhang = { max = 120 gongxian = 0 }
+      hand = { max = 120 gongxian = 0 }
+      qingyun_shou = { max = 120 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      blade = { max = 120 gongxian = 0 }
+      ruyi_dao = { max = 120 gongxian = 0 }
+      drawing = { max = 240 gongxian = 0 }
+      literate = { max = 140 gongxian = 0 }
+      martial_cognize = { max = 120 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 26
+    int_deny = "你悟性太差，怎么学习丹青妙技？"
+    min_skills = { xiaoyao_xinfa = 20 }
+    min_skills_deny = { xiaoyao_xinfa = "你还是先将本门入门心法学好吧。" }
+    accept_msg = "好吧，既然如此，我就收下你了。"
+  }
+
   skills = [
     { skill = "force" level = 140 },
     { skill = "xiaoyao-xinfa" level = 140 },
@@ -43614,17 +43942,268 @@ chats = [
   }
 
   inquiries = [
-    { key = "化妖功" value = " inquire about skill8 (unimplemented)" },
-    { key = "天升剑诀" value = " inquire about skill2 (unimplemented)" },
-    { key = "寰阳式" value = " inquire about skill5 (unimplemented)" },
-    { key = "折梅式" value = " inquire about skill6 (unimplemented)" },
-    { key = "掌门人信物" value = " inquire about zhihuan (unimplemented)" },
-    { key = "洛神凌波" value = " inquire about skill3 (unimplemented)" },
-    { key = "流月剑诀" value = " inquire about skill1 (unimplemented)" },
-    { key = "海渊式" value = " inquire about skill7 (unimplemented)" },
-    { key = "生死符" value = " inquire about skill4 (unimplemented)" },
-    { key = "逍遥神仙环" value = " inquire about zhihuan (unimplemented)" }
+    { key = "流月剑诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyue-jian/liu"
+      skill = "liuyue-jian"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "liuyue-jian"]
+      family = "逍遥派"
+      min_levels = {
+        force = 180
+        liuyue_jian = 120
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连流月剑舞都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        liuyue_jian = "你的流月剑舞火候未到，还得多练习练习。"
+      }
+      msg_one = "$n点了点头，从怀中轻轻取出了一本剑谱，指着其中的一段对$N不厌其烦的细说良久，$N一边听一边点头。\n"
+      learned = "你学会了「流月剑诀」。\n"
+      improve_skills = ["sword", "liuyue-jian", "martial-cognize"]
+    } },
+    { key = "天升剑诀" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyue-jian/sheng"
+      skill = "liuyue-jian"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "liuyue-jian"]
+      family = "逍遥派"
+      min_levels = {
+        force = 200
+        liuyue_jian = 140
+      }
+      min_gongxian = 500
+      cost_gongxian = 500
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连流月剑舞都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        liuyue_jian = "你的流月剑舞火候未到，还得多练习练习。"
+      }
+      msg_one = "$n笑了笑，当即从$N手中接过长剑，慢慢的演示剑招，$N见招式优美华丽，轻盈灵动，实乃前所谓闻，顿时大有所悟。\n"
+      learned = "你学会了「天升剑诀」。\n"
+      improve_skills = ["sword", "liuyue-jian", "martial-cognize"]
+    } },
+    { key = "洛神凌波" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingbo-weibu/ling"
+      skill = "lingbo-weibu"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "lingbo-weibu"]
+      family = "逍遥派"
+      min_levels = {
+        force = 180
+        lingbo_weibu = 120
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连凌波微步都未曾练过，何来洛神凌波？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        lingbo_weibu = "你的凌波微步火候未到，还得多练习练习。"
+      }
+      msg_one = "$n对$N微笑道：“想不到今日你的轻功能有如此造诣，我便传你此招，看好了！”说完只见$n提起真气，依照先天伏羲六十四卦将凌波微步由头到尾迅速无比的走了一次。但见$n意态飘逸，影子乱飞，真个将逍遥二字发挥得淋漓尽至。\n"
+      learned = "你学会了「洛神凌波」。\n"
+      improve_skills = ["dodge", "lingbo-weibu", "martial-cognize"]
+    } },
+    { key = "生死符" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyang-zhang/zhong"
+      skill = "liuyang-zhang"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "liuyang-zhang"]
+      family = "逍遥派"
+      min_levels = {
+        force = 200
+        liuyang_zhang = 150
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连天山六阳掌都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        liuyang_zhang = "你的天山六阳掌火候未到，尚且学不了这一招。"
+      }
+      msg_one = "$n看了看$N，微微一笑，随即便点了点头，将$N招至身边，在耳旁低声细说良久，$N听后会心的一笑，看来大有所悟。\n"
+      learned = "你学会了「生死符」。\n"
+      improve_skills = ["strike", "liuyang-zhang", "martial-cognize"]
+    } },
+    { key = "寰阳式" value = {
+      kind = "sect_master_grant"
+      perform_id = "liuyang-zhang/huan"
+      skill = "liuyang-zhang"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "liuyang-zhang"]
+      family = "逍遥派"
+      min_levels = {
+        force = 200
+        liuyang_zhang = 130
+      }
+      min_gongxian = 900
+      cost_gongxian = 900
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连天山六阳掌都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        liuyang_zhang = "你的天山六阳掌火候未到，尚且学不了这一招。"
+      }
+      msg_one = "$n微微一笑，慢悠悠伸出一掌，正搭在$N的左肩之上，$N稍作诧异，霎时只觉$n内力源源不绝的汹涌而入，异种真气注满体内，全身竟似快要炸裂开来，不禁大惊失色。\n"
+      learned = "你学会了「寰阳式」。\n"
+      improve_skills = ["strike", "liuyang-zhang", "martial-cognize"]
+    } },
+    { key = "折梅式" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhemei-shou/zhe"
+      skill = "zhemei-shou"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "zhemei-shou"]
+      family = "逍遥派"
+      min_levels = {
+        force = 120
+        zhemei_shou = 80
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连逍遥折梅手都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        zhemei_shou = "你的逍遥折梅手火候未到，尚且学不了这一招。"
+      }
+      msg_one = "$n看了看$N，微微一笑。当下一声清啸，合逍遥折梅手诸多变化为一式，随手轻轻挥出，招数虚虚实实，煞是精妙。直看得$N眼花缭乱，目瞪口呆。\n"
+      learned = "你学会了「折梅式」。\n"
+      improve_skills = ["hand", "zhemei-shou", "martial-cognize"]
+    } },
+    { key = "海渊式" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhemei-shou/hai"
+      skill = "zhemei-shou"
+      gate_order = "lpc_kunlun"
+      level_order = ["force", "zhemei-shou"]
+      family = "逍遥派"
+      min_levels = {
+        force = 200
+        zhemei_shou = 130
+      }
+      min_gongxian = 900
+      cost_gongxian = 900
+      maxed = "这招我不是已经教会你了吗？"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连逍遥折梅手都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        force = "你的内功火候不足，学不成这招。"
+        zhemei_shou = "你的逍遥折梅手火候未到，尚且学不了这一招。"
+      }
+      msg_one = "$n对$N点了点头，当下也不答话，单手轻轻一挥而出，手出如风，单掌顿时变化出漫天掌影，虚虚实实，重重叠叠，霎那间已罩住$N周身穴道，$n那掌影却只是一沾而过，未伤$N半毫。招数之巧妙，当真只能用“无可比拟”四字形容。\n"
+      learned = "你学会了「海渊式」。\n"
+      improve_skills = ["hand", "zhemei-shou", "martial-cognize"]
+    } },
+    { key = "逍遥神仙环" value = " inquire about zhihuan (unimplemented: GAP #807)" },
+    { key = "掌门人信物" value = " inquire about zhihuan (unimplemented: GAP #807)" },
+    { key = "化妖功" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhemei-shou/hua"
+      skill = "zhemei-shou"
+      gate_order = "lpc_kunlun"
+      level_order = ["zhemei-shou", "max-neili"]
+      family = "逍遥派"
+      min_levels = {
+        zhemei_shou = 220
+        max_neili = 3500
+      }
+      min_gongxian = 2500
+      cost_gongxian = 2500
+      maxed = "你自己下去练习吧。"
+      family_deny = "大侠和本派素无瓜葛，何出此言？"
+      skill_deny = "你连逍遥折梅手都未曾学过，何来绝招？"
+      gongxian_deny = "你虽在我逍遥门下，却甚无作为，这招我先不忙传你。"
+      level_deny = {
+        zhemei_shou = "你的逍遥折梅手火候未到，尚且学不了这一招。"
+        max_neili = "你的内力修为不够，强运这招会扰乱自身的真元。"
+      }
+      msg_one = "$n对$N微微一笑，模样颇为赞许，说道：“我在这里给你演示一遍，能否领悟就全靠你的悟性了。”话音刚落，只见$n起身而立，大袖一挥，掌缘顿时幻起万道霞光，$n翻过掌心，掌中霞光也随之荡漾。$n接着催动内力，霎那间，掌中霞光竟由紫变红，由红转白……竟接连幻出七种颜色，便宛如一道彩虹横架于掌心之上。此时，$n一声断喝，七色掌劲相继迸出掌心。只听得“哧哧哧哧哧哧哧”七声连响，$N对面的石壁竟被$n的七色掌劲贯穿出七个碗口粗的深穴。\n"
+      learned = "你学会了「化妖功」。\n"
+      improve_skills = ["hand", "hand", "hand", "zhemei-shou", "zhemei-shou", "zhemei-shou", "force", "force", "force", "martial-cognize"]
+    } }
   ]
+
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 360 gongxian = 0 }
+      xiaoyao_xinfa = { max = 340 gongxian = 0 }
+      beiming_shengong = { max = 360 gongxian = 0 }
+      xiaowuxiang = { max = 360 gongxian = 0 }
+      dodge = { max = 360 gongxian = 0 }
+      lingbo_weibu = { max = 360 gongxian = 0 }
+      feiyan_zoubi = { max = 340 gongxian = 0 }
+      throwing = { max = 320 gongxian = 0 }
+      strike = { max = 360 gongxian = 0 }
+      panyang_zhang = { max = 340 gongxian = 0 }
+      liuyang_zhang = { max = 360 gongxian = 0 }
+      hand = { max = 360 gongxian = 0 }
+      qingyun_shou = { max = 340 gongxian = 0 }
+      zhemei_shou = { max = 360 gongxian = 0 }
+      parry = { max = 360 gongxian = 0 }
+      sword = { max = 340 gongxian = 0 }
+      liuyue_jian = { max = 340 gongxian = 0 }
+      blade = { max = 340 gongxian = 0 }
+      ruyi_dao = { max = 340 gongxian = 0 }
+      literate = { max = 360 gongxian = 0 }
+      medical = { max = 360 gongxian = 0 }
+      xiaoyao_qixue = { max = 360 gongxian = 0 }
+      mathematics = { max = 360 gongxian = 0 }
+      qimen_wuxing = { max = 360 gongxian = 0 }
+      drawing = { max = 360 gongxian = 0 }
+      chuixiao_jifa = { max = 360 gongxian = 0 }
+      tanqin_jifa = { max = 360 gongxian = 0 }
+      chess = { max = 360 gongxian = 0 }
+      calligraphy = { max = 360 gongxian = 0 }
+      martial_cognize = { max = 340 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    gate_order = "lpc_wuyazi"
+    any_min_skills = { xiaoyao_xinfa = 130 xiaowuxiang = 130 beiming_shengong = 130 }
+    any_min_skills_deny = "我逍遥派的本门内功的你都没有学利索，还谈什么？"
+    min_skills = { force = 130 dodge = 130 }
+    min_skills_deny = {
+      force = "我逍遥派的的武功基础就是内功，你先把内功基础打好。"
+      dodge = "逍遥逍遥，你轻功基础这么差，何谈逍遥？"
+    }
+    hard_min_int = 40
+    int_deny = "大侠的悟性似乎还有待提高啊。"
+    min_exp = 500000
+    min_exp_deny = "你的经验也忒低了点，好好锻炼锻炼再说吧。"
+    accept_msg = "想不到在这世上竟然还有人可以继承我逍遥派的衣钵！"
+  }
 
   skills = [
     { skill = "force" level = 360 },
@@ -43700,6 +44279,42 @@ chats = [
   inquiries = [
     { key = "疗伤" value = "疗…疗什么伤？我逍遥派医术深博，学好了自己给自己疗。" }
   ]
+
+  teach = {
+    family = "逍遥派"
+    teach_skills = {
+      force = { max = 160 gongxian = 0 }
+      xiaoyao_xinfa = { max = 160 gongxian = 0 }
+      dodge = { max = 140 gongxian = 0 }
+      feiyan_zoubi = { max = 140 gongxian = 0 }
+      strike = { max = 160 gongxian = 0 }
+      panyang_zhang = { max = 160 gongxian = 0 }
+      hand = { max = 160 gongxian = 0 }
+      qingyun_shou = { max = 160 gongxian = 0 }
+      parry = { max = 160 gongxian = 0 }
+      blade = { max = 140 gongxian = 0 }
+      ruyi_dao = { max = 140 gongxian = 0 }
+      xiaoyao_qixue = { max = 220 gongxian = 0 }
+      medical = { max = 220 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+      martial_cognize = { max = 140 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "逍遥派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了逍遥派，何必又要回来？"
+    betray_times_deny = "我们逍遥派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们逍遥派作甚？"
+    min_per = 28
+    per_deny = "大侠的尊容未免次了点，这样可入不了我们逍遥派！"
+    hard_min_int = 26
+    int_deny = "虽然都说勤能补拙，可是……我看你还是走吧。"
+    min_skills = { xiaoyao_xinfa = 30 }
+    min_skills_deny = { xiaoyao_xinfa = "你连本门的入门心法都没有学好，教我如何收你？" }
+    accept_msg = "好吧，我就收下你了，以后要多为逍遥派出力啊。"
+  }
 
   skills = [
     { skill = "force" level = 160 },
