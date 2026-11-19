@@ -31116,8 +31116,48 @@ chats = [
   }
 
   inquiries = [
-    { key = "开天辟地" value = " inquire about skill1 (unimplemented)" },
-    { key = "破阳神斧" value = " inquire about fu (unimplemented)" }
+    { key = "开天辟地" value = {
+      kind = "sect_master_grant"
+      perform_id = "pangu-qishi/kai"
+      skill = "pangu-qishi"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 1200
+      cost_gongxian = 1200
+      max_shen = -120000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连盘古七势都没学，还谈什么绝招可言？"
+      level_deny = {
+        pan_gu_qi_shi = "你的盘古七势还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        pan_gu_qi_shi = 180
+        force = 300
+      }
+      level_order = ["pangu-qishi", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n朝$N微微点了点头，说道：“看好了！”说完$n一声断喝，手中巨斧如山岳巍峙，携着开天辟地之势猛劈而下，气势恢弘之极。顿时只听轰然一声巨响，$n面前的山壁已被劈出一道人来宽的裂缝，威力之强，真可谓是惊天地，泣鬼神。直把$N看得目瞪口呆。"
+      learned = "你学会了「开天辟地」。"
+      improve_skills = ["hammer", "pangu-qishi", "martial-cognize"]
+    } },
+    { key = "破阳神斧" value = {
+      kind = "give_item"
+      item = "clone_lib:poyangfu"
+      match = "poyangfu"
+      family = "日月神教"
+      max_shen = -100000
+      min_skill_levels = {
+        pan_gu_qi_shi = 150
+      }
+      vision_name = "范松"
+      success = "既然这样，老夫这柄神斧你就拿去。"
+      family_deny = "给我滚开！"
+      max_shen_deny = "你这样心慈手软，拿了神斧又有什么用？"
+      min_skill_deny = "你连盘古七势都没学好，就算神兵在手又有何用？"
+    } }
   ]
 
   skills = [
@@ -31146,6 +31186,27 @@ chats = [
     { type = "claw" skill = "poyue-zhao" }
   ]
 
+  teach = {
+    family = "日月神教"
+    teach_skills = {
+      force = { max = 260 gongxian = 4 }
+      tianhuan_shenjue = { max = 260 gongxian = 4 }
+      riyue_xinfa = { max = 220 gongxian = 4 }
+      dodge = { max = 220 gongxian = 4 }
+      juechen_shenfa = { max = 220 gongxian = 4 }
+      cuff = { max = 240 gongxian = 4 }
+      zhen_yu_quan = { max = 240 gongxian = 4 }
+      claw = { max = 240 gongxian = 4 }
+      po_yue_zhao = { max = 240 gongxian = 4 }
+      parry = { max = 240 gongxian = 4 }
+      hammer = { max = 220 gongxian = 4 }
+      pan_gu_qi_shi = { max = 220 gongxian = 4 }
+      club = { max = 260 gongxian = 4 }
+      jin_yuan_gun = { max = 220 gongxian = 4 }
+      martial_cognize = { max = 240 gongxian = 4 }
+      literate = { max = 180 gongxian = 4 }
+    }
+  }
 
   carry = [
     { id = items.jinpao.id }
@@ -31178,11 +31239,51 @@ chats = [
   }
 
   inquiries = [
-    { key = "上崖" value = " inquire about back (unimplemented)" },
-    { key = "乾坤一击" value = " inquire about skill1 (unimplemented)" },
-    { key = "南海神木" value = " inquire about gun (unimplemented)" },
-    { key = "回去" value = " inquire about back (unimplemented)" },
-    { key = "回崖" value = " inquire about back (unimplemented)" }
+    { key = "上崖" value = "咦？…嗯…这个…这…你还是自己看着办吧。" },
+    { key = "乾坤一击" value = {
+      kind = "sect_master_grant"
+      perform_id = "jinyuan-gun/qian"
+      skill = "jinyuan-gun"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 800
+      cost_gongxian = 800
+      max_shen = -100000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连金猿棍法都没学，还谈什么绝招可言？"
+      level_deny = {
+        jin_yuan_gun = "你的金猿棍法还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        jin_yuan_gun = 120
+        force = 180
+      }
+      level_order = ["jinyuan-gun", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n咳嗽一声，对$N点了点头道：“看好了！”说完便大步上前，怒吼一声，手中熟铜棍急速舞动，霎时间飞沙走石，罡气激荡。便在那狂沙飓风中，$n忽然高高跃起，迎头一棒猛然劈落。数招一气呵成，连贯之极，煞为壮观。"
+      learned = "你学会了「乾坤一击」。"
+      improve_skills = ["club", "jinyuan-gun", "martial-cognize"]
+    } },
+    { key = "南海神木" value = {
+      kind = "give_item"
+      item = "clone_lib:shenmu"
+      match = "shenmu"
+      family = "日月神教"
+      max_shen = -80000
+      min_skill_levels = {
+        jin_yuan_gun = 120
+      }
+      vision_name = "张乘风"
+      success = "既然这样，老夫这根南海神木你就拿去。"
+      family_deny = "给我滚开！"
+      max_shen_deny = "你这样心慈手软，拿了神木又有什么用？"
+      min_skill_deny = "你连金猿棍法都没学好，就算神兵在手又有何用？"
+    } },
+    { key = "回去" value = "他奶奶的，你找死么？" },
+    { key = "回崖" value = "他奶奶的，你找死么？" }
   ]
 
   skills = [
@@ -31211,6 +31312,27 @@ chats = [
     { type = "claw" skill = "poyue-zhao" }
   ]
 
+  teach = {
+    family = "日月神教"
+    teach_skills = {
+      force = { max = 260 gongxian = 4 }
+      tianhuan_shenjue = { max = 260 gongxian = 4 }
+      riyue_xinfa = { max = 220 gongxian = 4 }
+      dodge = { max = 220 gongxian = 4 }
+      juechen_shenfa = { max = 220 gongxian = 4 }
+      cuff = { max = 240 gongxian = 4 }
+      zhen_yu_quan = { max = 240 gongxian = 4 }
+      claw = { max = 240 gongxian = 4 }
+      po_yue_zhao = { max = 240 gongxian = 4 }
+      parry = { max = 240 gongxian = 4 }
+      hammer = { max = 220 gongxian = 4 }
+      pan_gu_qi_shi = { max = 220 gongxian = 4 }
+      club = { max = 260 gongxian = 4 }
+      jin_yuan_gun = { max = 260 gongxian = 4 }
+      martial_cognize = { max = 240 gongxian = 4 }
+      literate = { max = 180 gongxian = 4 }
+    }
+  }
 
   carry = [
     { id = items.jinpao.id }
@@ -31242,7 +31364,33 @@ chats = [
   }
 
   inquiries = [
-    { key = "惊虹一笔" value = " inquire about skill1 (unimplemented)" }
+    { key = "惊虹一笔" value = {
+      kind = "sect_master_grant"
+      perform_id = "canghong-bifa/jing"
+      skill = "canghong-bifa"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -30000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连苍虹笔法都没学，还谈什么绝招可言？"
+      level_deny = {
+        cang_hong_bi_fa = "你的苍虹笔法还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        cang_hong_bi_fa = 100
+        force = 150
+      }
+      level_order = ["canghong-bifa", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n哈哈一笑，说道：不错，不错，孺子可教也。今天老夫就传你这招。$n说完便将$N招至身前，嘀嘀咕咕说了半天。"
+      learned = "你学会了「惊虹一笔」。"
+      improve_skills = ["dagger", "canghong-bifa", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -31271,13 +31419,52 @@ chats = [
     { type = "strike" skill = "qingmang-zhang" }
   ]
 
+  teach = {
+    family = "日月神教"
+    teach_skills = {
+      force = { max = 240 gongxian = 4 }
+      tianhuan_shenjue = { max = 240 gongxian = 4 }
+      riyue_xinfa = { max = 220 gongxian = 4 }
+      dodge = { max = 220 gongxian = 4 }
+      juechen_shenfa = { max = 240 gongxian = 4 }
+      feiyan_zoubi = { max = 220 gongxian = 4 }
+      blade = { max = 240 gongxian = 4 }
+      dan_ding_dao = { max = 240 gongxian = 4 }
+      shi_ying_lian_huan = { max = 240 gongxian = 4 }
+      strike = { max = 180 gongxian = 3 }
+      qingmang_zhang = { max = 180 gongxian = 3 }
+      parry = { max = 220 gongxian = 4 }
+      cuff = { max = 200 gongxian = 3 }
+      zhen_yu_quan = { max = 200 gongxian = 3 }
+      claw = { max = 200 gongxian = 3 }
+      po_yue_zhao = { max = 200 gongxian = 3 }
+      martial_cognize = { max = 220 gongxian = 4 }
+      literate = { max = 140 gongxian = 3 }
+    }
+  }
+
+  apprentice = {
+    family = "日月神教"
+    permit_recruit = true
+    max_shen = -25000
+    max_shen_deny = "老子最讨厌伪君子，再不滚开我毙了你！"
+    min_exp = 200000
+    min_exp_deny = "你现在江湖经验太浅，应该多走动走动。"
+    min_skills = {
+      dagger = 80
+      tianhuan_shenjue = 80
+      riyue_xinfa = 80
+    }
+    min_skills_deny = "俺是用刀的，你我习武的路线不对，难以教授。你连本门最基本的内功都没修好，怎么学习上乘武学。"
+  }
 
   carry = [
     { id = items.jinpao.id },
-    { id = items.panguanbi.id }
+    { id = items.gangdao.id }
   ]
 
     }
+
 
 # LPC: C:/files/git/mud/kungfu/class/riyue/qin.c
     characters "riyue_qin" {
@@ -31302,7 +31489,33 @@ chats = [
   }
 
   inquiries = [
-    { key = "环环相扣" value = " inquire about skill1 (unimplemented)" }
+    { key = "环环相扣" value = {
+      kind = "sect_master_grant"
+      perform_id = "danding-dao/kou"
+      skill = "danding-dao"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 80
+      cost_gongxian = 80
+      max_shen = -8000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连丹碇刀法都没学，还谈什么绝招可言？"
+      level_deny = {
+        dan_ding_dao = "你的丹碇刀法还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        dan_ding_dao = 80
+        force = 100
+      }
+      level_order = ["danding-dao", "force"]
+      maxed = "这招我已经教过你了，自己下去练吧。"
+      msg_one = "$n点了点头，将$N招至身边，在耳旁低声细说良久，$N听后不禁会心地一笑，看来大有所悟。\n"
+      learned = "你学会了「环环相扣」。\n"
+      improve_skills = ["blade", "danding-dao", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -31327,6 +31540,33 @@ chats = [
     { type = "claw" skill = "poyue-zhao" }
   ]
 
+  teach = {
+    family = "日月神教"
+    teach_skills = {
+      force = { max = 160 gongxian = 4 }
+      riyue_xinfa = { max = 160 gongxian = 4 }
+      dodge = { max = 150 gongxian = 4 }
+      feiyan_zoubi = { max = 150 gongxian = 4 }
+      blade = { max = 160 gongxian = 4 }
+      dan_ding_dao = { max = 160 gongxian = 4 }
+      parry = { max = 150 gongxian = 4 }
+      cuff = { max = 150 gongxian = 4 }
+      zhenyu_quan = { max = 150 gongxian = 4 }
+      claw = { max = 150 gongxian = 4 }
+      poyue_zhao = { max = 150 gongxian = 4 }
+      martial_cognize = { max = 150 gongxian = 4 }
+      literate = { max = 160 gongxian = 4 }
+    }
+  }
+
+  apprentice = {
+    family = "日月神教"
+    permit_recruit = true
+    max_shen = 0
+    max_shen_deny = "我日月神教从来不和正派人士结交，快给我滚开。"
+    gender = "男性"
+    gender_deny = "教内规矩甚严，我职位未到，不敢私收女徒。"
+  }
 
   carry = [
     { id = items.jinpao.id },
@@ -31656,9 +31896,87 @@ chats = [
   }
 
   inquiries = [
-    { key = "断脉破岳" value = " inquire about skill2 (unimplemented)" },
-    { key = "无痕杀" value = " inquire about skill1 (unimplemented)" },
-    { key = "百鬼恸哭" value = " inquire about skill3 (unimplemented)" }
+    { key = "无痕杀" value = {
+      kind = "sect_master_grant"
+      perform_id = "shiying-lianhuan/sha"
+      skill = "shiying-lianhuan"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -40000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连弑鹰九连环都没学，还谈什么绝招可言？"
+      level_deny = {
+        shi_ying_lian_huan = "你的弑鹰九连环还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        shi_ying_lian_huan = 150
+        force = 200
+      }
+      level_order = ["shiying-lianhuan", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n笑了笑，伸手将$N招到身前，低声在$N耳旁嘀咕了半天。然后又拔出腰刀翻转数下，斜撩而出。似乎是一种颇为独特的刀诀。"
+      learned = "你学会了「无痕杀」。"
+      improve_skills = ["blade", "shiying-lianhuan", "martial-cognize"]
+    } },
+    { key = "断脉破岳" value = {
+      kind = "sect_master_grant"
+      perform_id = "poyue-zhao/duan"
+      skill = "poyue-zhao"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 100
+      cost_gongxian = 100
+      max_shen = -10000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连破岳神爪都没学，还谈什么绝招可言？"
+      level_deny = {
+        po_yue_zhao = "你的破岳神爪还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        po_yue_zhao = 80
+        force = 100
+      }
+      level_order = ["poyue-zhao", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n望着$N赞许的点了点头，笑道：“不错，不错。老夫念你平时练功努力，今日就传你此招，可瞧好了。”说完便只见$n身形一展，双爪疾攻而上，霎时间爪影层层叠叠，虚实难辩，招数甚为巧妙。"
+      learned = "你学会了「断脉破岳」。"
+      improve_skills = ["claw", "poyue-zhao", "martial-cognize"]
+    } },
+    { key = "百鬼恸哭" value = {
+      kind = "sect_master_grant"
+      perform_id = "zhenyu-quan/tong"
+      skill = "zhenyu-quan"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 150
+      cost_gongxian = 150
+      max_shen = -12000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连镇狱拳法都没学，还谈什么绝招可言？"
+      level_deny = {
+        zhen_yu_quan = "你的镇狱拳法还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        zhen_yu_quan = 80
+        force = 120
+      }
+      level_order = ["zhenyu-quan", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n微微一笑，招手示意$N到他跟前，然后俯身在$N耳边轻声嘀嘀咕咕了半天，$N直听得眉开眼笑，一边听一边不住地点头。"
+      learned = "你学会了「百鬼恸哭」。"
+      improve_skills = ["cuff", "zhenyu-quan", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -31689,6 +32007,44 @@ chats = [
     { type = "strike" skill = "qingmang-zhang" }
   ]
 
+  teach = {
+    family = "日月神教"
+    teach_skills = {
+      force = { max = 240 gongxian = 4 }
+      tianhuan_shenjue = { max = 240 gongxian = 4 }
+      riyue_xinfa = { max = 220 gongxian = 4 }
+      dodge = { max = 220 gongxian = 4 }
+      juechen_shenfa = { max = 240 gongxian = 4 }
+      feiyan_zoubi = { max = 220 gongxian = 4 }
+      blade = { max = 240 gongxian = 4 }
+      dan_ding_dao = { max = 240 gongxian = 4 }
+      shi_ying_lian_huan = { max = 240 gongxian = 4 }
+      strike = { max = 180 gongxian = 3 }
+      qingmang_zhang = { max = 180 gongxian = 3 }
+      parry = { max = 220 gongxian = 4 }
+      cuff = { max = 200 gongxian = 3 }
+      zhen_yu_quan = { max = 200 gongxian = 3 }
+      claw = { max = 200 gongxian = 3 }
+      po_yue_zhao = { max = 200 gongxian = 3 }
+      martial_cognize = { max = 220 gongxian = 4 }
+      literate = { max = 140 gongxian = 3 }
+    }
+  }
+
+  apprentice = {
+    family = "日月神教"
+    permit_recruit = true
+    max_shen = -30000
+    max_shen_deny = "老子最讨厌伪君子，再不滚开我毙了你！"
+    min_exp = 200000
+    min_exp_deny = "你现在江湖经验太浅，应该多走动走动。"
+    min_skills = {
+      blade = 80
+      tianhuan_shenjue = 80
+      riyue_xinfa = 80
+    }
+    min_skills_deny = "我所精研的乃是刀法，你既然要做我的弟子，就应该在刀法上面多下功夫。你连本门最基本的内功都没修好，怎么学习上乘武学。"
+  }
 
   carry = [
     { id = items.jinpao.id },
@@ -31832,9 +32188,75 @@ chats = [
   }
 
   inquiries = [
-    { key = "绝命七杀" value = " inquire about skill2 (unimplemented)" },
-    { key = "赤龙金索" value = " inquire about bian (unimplemented)" },
-    { key = "跗骨缠魂" value = " inquire about skill1 (unimplemented)" }
+    { key = "跗骨缠魂" value = {
+      kind = "sect_master_grant"
+      perform_id = "panlong-suo/chan"
+      skill = "panlong-suo"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 500
+      cost_gongxian = 500
+      max_shen = -120000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连霹雳盘龙索都没学，还谈什么绝招可言？"
+      level_deny = {
+        pan_long_suo = "你的霹雳盘龙索还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        pan_long_suo = 120
+        force = 180
+      }
+      level_order = ["panlong-suo", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n点了点头，随即便将$N招至身边，在耳旁低声细说良久，$N听后会心的一笑，看来大有所悟。"
+      learned = "你学会了「跗骨缠魂」。"
+      improve_skills = ["whip", "panlong-suo", "martial-cognize"]
+    } },
+    { key = "绝命七杀" value = {
+      kind = "sect_master_grant"
+      perform_id = "panlong-suo/sha"
+      skill = "panlong-suo"
+      gate_order = "lpc_kunlun"
+      family = "日月神教"
+      min_gongxian = 1500
+      cost_gongxian = 1500
+      max_shen = -160000
+      family_deny = "你又不是我日月神教的，跑来捣什么乱？"
+      gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
+      max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
+      skill_deny = "你连霹雳盘龙索都没学，还谈什么绝招可言？"
+      level_deny = {
+        pan_long_suo = "你的霹雳盘龙索还练得不到家，自己下去练练再来吧！"
+        force = "你的内功火候尚需提高，练好了再来找我吧。"
+      }
+      min_levels = {
+        pan_long_suo = 180
+        force = 220
+      }
+      level_order = ["panlong-suo", "force"]
+      maxed = "这一招我不是已经教过你了吗？"
+      msg_one = "$n对$N赞许地点了点头，道：“既然你有心为本教出力，今日老夫便传你此招，可看好了。”说完$n招了招手，$N连忙迎上前去，只见$n轻声在$N说了些话，接着手中长索一抖，登时幻出漫天鞭影，宛如蛟龙通天，无数鞭影向四面八方劲点而去。"
+      learned = "你学会了「绝命七杀」。"
+      improve_skills = ["whip", "panlong-suo", "martial-cognize"]
+    } },
+    { key = "赤龙金索" value = {
+      kind = "give_item"
+      item = "clone_lib:chilongsuo"
+      match = "chilongsuo"
+      family = "日月神教"
+      max_shen = -100000
+      min_skill_levels = {
+        pan_long_suo = 140
+      }
+      vision_name = "向问天"
+      success = "你拿去用吧。"
+      family_deny = "给我滚开，少在老夫面前罗嗦！"
+      max_shen_deny = "你这样心慈手软干不了大事，这神索你不用也罢。"
+      min_skill_deny = "你连霹雳盘龙索都没学好，就算神兵在手又有何用？"
+    } }
   ]
 
   skills = [
@@ -31871,6 +32293,21 @@ chats = [
     { type = "throwing" skill = "heixue-shenzhen" }
   ]
 
+  no_teach = [ "xixing-xiaofa" ]
+
+  apprentice = {
+    family = "日月神教"
+    permit_recruit = true
+    max_shen = -50000
+    max_shen_deny = "老子最讨厌伪君子，再不滚开我毙了你！"
+    min_exp = 300000
+    min_exp_deny = "你现在江湖经验太浅，应该多走动走动。"
+    min_skills = {
+      tianhuan_shenjue = 140
+      riyue_xinfa = 140
+    }
+    min_skills_deny = "你连本门最基本的内功都没修好，怎么学习上乘武学。"
+  }
 
   carry = [
     { id = items.jinpao.id }
@@ -31935,6 +32372,16 @@ chats = [
     { type = "throwing" skill = "heixue-shenzhen" }
   ]
 
+  no_teach = [ "tianhuan-shenjue" ]
+
+  apprentice = {
+    family = "日月神教"
+    permit_recruit = true
+    max_shen = 0
+    max_shen_deny = "我日月神教从来不和正派人士结交，你还是走吧。"
+    gender = "女性"
+    gender_deny = "你还是去找教内的其他人吧。"
+  }
 
   carry = [
     { id = items.belt.id },
