@@ -863,6 +863,7 @@ behavior_config = {
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
           level_deny = "你的内功修为实在太差，快去多练练再来。"
           max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
+          learned = "你学会了「流星火雨」。"
         }
       }
 
@@ -1020,6 +1021,7 @@ behavior_config = {
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
           level_deny = "你的内功修为实在太差，快去多练练再来。"
           max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
+          learned = "你学会了「冰河开封」。"
         }
       }
 

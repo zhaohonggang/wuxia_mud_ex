@@ -1395,4 +1395,79 @@ defmodule Kantele.World.InquirySectMastersTest do
                )
     end
   end
+
+  describe "血刀派 UCL 数据回填（Task #619）" do
+    @xuedao_grants [
+      {"浴血重生", "xuedao-dafa/resurrect", "xuedao-dafa", 500, -60_000, 1000},
+      {"金刚印", "dashou-yin/yin", "dashou-yin", 200, -15_000, 1000},
+      {"修罗降世", "yujiamu-quan/jiang", "yujiamu-quan", 300, -18_000, 1200},
+      {"若悲", "mingwang-jian/ruo", "mingwang-jian", 100, -10_000, 1200},
+      {"降魔", "mingwang-jian/xiang", "mingwang-jian", 400, -15_000, 1600},
+      {"无影神刀", "xuedao-dafa/ying", "xuedao-dafa", 300, -60_000, 1500},
+      {"赤炼神刀", "xuedao-dafa/chi", "xuedao-dafa", 800, -70_000, 2400},
+      {"祭血神刀", "xuedao-dafa/xue", "xuedao-dafa", 1000, -80_000, 2400},
+      {"噬血穹苍", "xuedao-dafa/shi", "xuedao-dafa", 2000, -100_000, 2600}
+    ]
+
+    test "血刀老祖 9 门绝招全部落库且保留 LPC 文案", %{world: world} do
+      laozu = npc(world, "血刀老祖", "xuedao:shandong3")
+      assert laozu, "血刀老祖应随世界加载（xuedao:shandong3）"
+      assert laozu.meta.teach.family == "血刀门"
+
+      Enum.each(@xuedao_grants, fn {key, perform_id, skill, gongxian, max_shen, neili} ->
+        cfg = inquiry(laozu, key)
+        assert cfg["kind"] == "sect_master_grant", "#{key} 应为 sect_master_grant"
+        assert cfg["perform_id"] == perform_id
+        assert cfg["skill"] == skill
+        assert cfg["min_gongxian"] == gongxian
+        assert cfg["cost_gongxian"] == gongxian
+        assert cfg["max_shen"] == max_shen
+        assert cfg["min_max_neili"] == neili
+        assert cfg["max_shen_deny"] == "你这人是怎么做的？连杀人都不会了？"
+        assert cfg["maxed"] == "自己下去练，啰嗦什么！"
+        assert cfg["family_deny"] == "你是什么人？我看你怎么不象是我血刀门的弟子呢？"
+        assert String.contains?(cfg["learned"], key)
+      end)
+
+      assert length(@xuedao_grants) == 9
+    end
+
+    test "血刀老祖 未回填的血刀/血刀经/密道 明确标记为 GAP", %{world: world} do
+      laozu = npc(world, "血刀老祖", "xuedao:shandong3")
+      assert inquiry(laozu, "密道") =~ "GAP #792"
+      assert inquiry(laozu, "血刀") =~ "GAP #793"
+      assert inquiry(laozu, "血刀经") =~ "GAP #793"
+      assert inquiry(laozu, "冰河开封") == "这一招你去让胜谛教你好了。"
+    end
+
+    test "浴血重生：shen 上界 -60000（正神被拒，够邪通过）", %{world: world} do
+      cfg = inquiry(npc(world, "血刀老祖", "xuedao:shandong3"), "浴血重生")
+      base = %{skills: %{"xuedao-dafa" => 120}, gongxian: 500, max_neili: 1000}
+
+      good = disciple(Map.merge(base, %{shen: -59_999, family: "血刀门"}))
+      assert {:error, "你这人是怎么做的？连杀人都不会了？"} =
+               SectMaster.inquiry_grant(good, %{family: "血刀门"}, cfg)
+
+      evil = disciple(Map.merge(base, %{shen: -60_000, family: "血刀门"}))
+      assert {:ok, "xuedao-dafa/resurrect", 500} =
+               SectMaster.inquiry_grant(evil, %{family: "血刀门"}, cfg)
+    end
+
+    test "金刚印：force 与大手印逐技能拒绝文案", %{world: world} do
+      cfg = inquiry(npc(world, "血刀老祖", "xuedao:shandong3"), "金刚印")
+      base = %{gongxian: 200, shen: -15_000, max_neili: 1000, family: "血刀门"}
+
+      weak_force =
+        disciple(Map.merge(base, %{skills: %{"dashou-yin" => 100, "force" => 139}}))
+
+      assert {:error, "你的内功修为实在太差，修炼高了再来找老夫吧。"} =
+               SectMaster.inquiry_grant(weak_force, %{family: "血刀门"}, cfg)
+
+      weak_skill =
+        disciple(Map.merge(base, %{skills: %{"dashou-yin" => 99, "force" => 140}}))
+
+      assert {:error, "等你把大手印练熟了再来找老夫。"} =
+               SectMaster.inquiry_grant(weak_skill, %{family: "血刀门"}, cfg)
+    end
+  end
 end
