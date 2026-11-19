@@ -992,4 +992,139 @@ defmodule Kantele.World.InquirySectMastersTest do
       end
     end
   end
+
+  describe "少林派 UCL 数据回填（Task #619）" do
+    test "无名老僧 3 门绝招：万佛朝宗 / 如影随形 / 避云遮日，door 控字段与 LPC ask_skill1/accept_ask 一致", %{world: world} do
+      npc = npc(world, "无名老僧", "shaolin:cjlou")
+      assert npc, "无名老僧应随世界加载（shaolin:cjlou）"
+
+      # 万佛朝宗：ask_skill1，perform_id rulai-zhang/zong
+      zong = inquiry(npc, "万佛朝宗")
+      assert zong["kind"] == "sect_master_grant"
+      assert zong["perform_id"] == "rulai-zhang/zong"
+      assert zong["skill"] == "rulai-zhang"
+      assert zong["min_gongxian"] == 800
+      assert zong["min_shen"] == 150_000
+      assert zong["cost_gongxian"] == 800
+      assert zong["min_levels"] == %{"force" => 350, "rulai-zhang" => 220}
+      assert zong["family"] == "少林派"
+      assert zong["family_deny"] == "老衲与阁下素无渊源，不知阁下这话从何而来？"
+      assert zong["skill_deny"] == "你连千手如来掌都没学，还谈什么绝招可言？"
+      assert zong["gongxian_deny"] == "嗯，你在少林派没什么作为，这招我不传你。"
+      assert zong["shen_deny"] == "你侠义正事做得不够，这招我不能传你。"
+      assert zong["level_deny"] == %{
+        "force" => "你的内功火候不足，用不了这一招！",
+        "rulai-zhang" => "你千手如来掌尚未修炼得精深，难以运用此招。"
+      }
+      assert zong["maxed"] == "你已经学会了此招，还和老衲开这种玩笑。"
+      assert zong["learned"] == "你学会了「万佛朝宗」。"
+
+      # 如影随形：accept_ask，perform_id ruying-suixingtui/ruying
+      ruying = inquiry(npc, "如影随形")
+      assert ruying["kind"] == "sect_master_grant"
+      assert ruying["perform_id"] == "ruying-suixingtui/ruying"
+      assert ruying["skill"] == "ruying-suixingtui"
+      assert ruying["min_gongxian"] == 800
+      assert ruying["min_shen"] == 30_000
+      assert ruying["cost_gongxian"] == 800
+      assert ruying["min_levels"] == %{"ruying-suixingtui" => 160, "force" => 250}
+
+      # 避云遮日：accept_ask，perform_id jiasha-fumogong/zhe
+      zhe = inquiry(npc, "避云遮日")
+      assert zhe["kind"] == "sect_master_grant"
+      assert zhe["perform_id"] == "jiasha-fumogong/zhe"
+      assert zhe["skill"] == "jiasha-fumogong"
+      assert zhe["min_gongxian"] == 1000
+      assert zhe["min_shen"] == 70_000
+      assert zhe["cost_gongxian"] == 1000
+      assert zhe["min_levels"] == %{"jiasha-fumogong" => 180, "force" => 300}
+    end
+
+    defp shaolin_disciple(overrides \\ %{}) do
+      disciple(%{
+        skills: %{"rulai-zhang" => 220, "force" => 350},
+        gongxian: 800,
+        shen: 150_000,
+        max_neili: 0,
+        family: "少林派"
+      })
+      |> Map.merge(overrides)
+    end
+
+    test "少林弟子全达标 → 学会「万佛朝宗」并扣 800 贡献", %{world: world} do
+      cfg = inquiry(npc(world, "无名老僧", "shaolin:cjlou"), "万佛朝宗")
+
+      assert {:ok, "rulai-zhang/zong", 800} =
+               SectMaster.inquiry_grant(
+                 shaolin_disciple(),
+                 %{family: "少林派"},
+                 cfg
+               )
+    end
+
+    test "非少林派 → family_deny", %{world: world} do
+      cfg = inquiry(npc(world, "无名老僧", "shaolin:cjlou"), "万佛朝宗")
+
+      outsider = shaolin_disciple(%{family: "武当派"})
+
+      assert {:error, "老衲与阁下素无渊源，不知阁下这话从何而来？"} =
+               SectMaster.inquiry_grant(
+                 outsider,
+                 %{family: "少林派"},
+                 cfg
+               )
+    end
+
+    test "杀气不足（shen < 150000）→ shen_deny", %{world: world} do
+      cfg = inquiry(npc(world, "无名老僧", "shaolin:cjlou"), "万佛朝宗")
+
+      low_shen = shaolin_disciple(%{shen: 149_999})
+
+      assert {:error, "你侠义正事做得不够，这招我不能传你。"} =
+               SectMaster.inquiry_grant(
+                 low_shen,
+                 %{family: "少林派"},
+                 cfg
+               )
+    end
+
+    test "贡献不足（gongxian < 800）→ gongxian_deny", %{world: world} do
+      cfg = inquiry(npc(world, "无名老僧", "shaolin:cjlou"), "万佛朝宗")
+
+      low_gongxian = shaolin_disciple(%{gongxian: 799})
+
+      assert {:error, "嗯，你在少林派没什么作为，这招我不传你。"} =
+               SectMaster.inquiry_grant(
+                 low_gongxian,
+                 %{family: "少林派"},
+                 cfg
+               )
+    end
+
+    test "内功等级不足（force < 350）→ level_deny force", %{world: world} do
+      cfg = inquiry(npc(world, "无名老僧", "shaolin:cjlou"), "万佛朝宗")
+
+      low_force = shaolin_disciple(%{skills: %{"rulai-zhang" => 220, "force" => 349}})
+
+      assert {:error, "你的内功火候不足，用不了这一招！"} =
+               SectMaster.inquiry_grant(
+                 low_force,
+                 %{family: "少林派"},
+                 cfg
+               )
+    end
+
+    test "千手如来掌等级不足（rulai-zhang < 220）→ level_deny rulai-zhang", %{world: world} do
+      cfg = inquiry(npc(world, "无名老僧", "shaolin:cjlou"), "万佛朝宗")
+
+      low_skill = shaolin_disciple(%{skills: %{"rulai-zhang" => 219, "force" => 350}})
+
+      assert {:error, "你千手如来掌尚未修炼得精深，难以运用此招。"} =
+               SectMaster.inquiry_grant(
+                 low_skill,
+                 %{family: "少林派"},
+                 cfg
+               )
+    end
+  end
 end

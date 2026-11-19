@@ -37127,6 +37127,60 @@ chats = [
     { kind = "item_id" id = "lengjia jing" accept = true msg = ["多谢，多谢。", "{npc}满脸欢喜的对{name}道：施主宅心仁厚，日后必有大成，贫僧多谢了。", "sigh"] },
     { kind = "any" accept = false msg = ["多谢，多谢。", "{npc}满脸欢喜的对{name}道：施主宅心仁厚，日后必有大成，贫僧多谢了。", "sigh"] }
   ]
+
+  teach = {
+    family = "少林派"
+    teach_skills = {
+      force = {
+        max = 380
+        gongxian = 2
+      }
+      jiuyang_shengong = {
+        max = 400
+        gongxian = 3
+      }
+      shaolin_jiuyang = {
+        max = 180
+        gongxian = 3
+      }
+      wudang_jiuyang = {
+        max = 180
+        gongxian = 3
+      }
+      emei_jiuyang = {
+        max = 180
+        gongxian = 3
+      }
+      dodge = {
+        max = 220
+        gongxian = 2
+      }
+      shaolin_shenfa = {
+        max = 220
+        gongxian = 2
+      }
+      unarmed = {
+        max = 380
+        gongxian = 2
+      }
+      parry = {
+        max = 260
+        gongxian = 2
+      }
+      martial_cognize = {
+        max = 300
+        gongxian = 2
+      }
+      buddhism = {
+        max = 200
+        gongxian = 2
+      }
+      literate = {
+        max = 100
+        gongxian = 2
+      }
+    }
+  }
     }
 
 # LPC: C:/files/git/mud/kungfu/class/shaolin/kong-jian.c
@@ -37176,6 +37230,16 @@ chats = [
     { type = "finger" skill = "nianhua-zhi" },
     { type = "parry" skill = "jingang-buhuaiti" }
   ]
+
+  teach = {
+    family = "少林派"
+    teach_skills = {
+      jingang_buhuaiti = {
+        max = 280
+        gongxian = 3
+      }
+    }
+  }
 
 
   carry = [
@@ -38050,7 +38114,75 @@ chats = [
   }
 
   inquiries = [
-    { key = "万佛朝宗" value = " inquire about skill1 (unimplemented)" }
+    { key = "万佛朝宗" value = {
+      kind = "sect_master_grant"
+      perform_id = "rulai-zhang/zong"
+      skill = "rulai-zhang"
+      min_levels = {
+        force = 350
+        rulai_zhang = 220
+      }
+      min_gongxian = 800
+      min_shen = 150000
+      cost_gongxian = 800
+      family = "少林派"
+      family_deny = "老衲与阁下素无渊源，不知阁下这话从何而来？"
+      skill_deny = "你连千手如来掌都没学，还谈什么绝招可言？"
+      gongxian_deny = "嗯，你在少林派没什么作为，这招我不传你。"
+      shen_deny = "你侠义正事做得不够，这招我不能传你。"
+      level_deny = {
+        force = "你的内功火候不足，用不了这一招！"
+        rulai_zhang = "你千手如来掌尚未修炼得精深，难以运用此招。"
+      }
+      maxed = "你已经学会了此招，还和老衲开这种玩笑。"
+      learned = "你学会了「万佛朝宗」。"
+    } },
+    { key = "如影随形" value = {
+      kind = "sect_master_grant"
+      perform_id = "ruying-suixingtui/ruying"
+      skill = "ruying-suixingtui"
+      min_levels = {
+        ruying_suixingtui = 160
+        force = 250
+      }
+      min_gongxian = 800
+      min_shen = 30000
+      cost_gongxian = 800
+      family = "少林派"
+      family_deny = "老衲与阁下素无渊源，不知阁下这话从何而来？"
+      skill_deny = "你连如影随形腿都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在少林派没什么作为，这招我不传你。"
+      shen_deny = "你侠义正事做得不够，这招我不能传你。"
+      level_deny = {
+        ruying_suixingtui = "你的如影随形腿尚未修炼得精深，难以运用此招。"
+        force = "你的内功火候不足，用不了这一招！"
+      }
+      maxed = "你已经学会了此招，还和老衲开这种玩笑。"
+      learned = "你学会了「如影随形」。"
+    } },
+    { key = "避云遮日" value = {
+      kind = "sect_master_grant"
+      perform_id = "jiasha-fumogong/zhe"
+      skill = "jiasha-fumogong"
+      min_levels = {
+        jiasha_fumogong = 180
+        force = 300
+      }
+      min_gongxian = 1000
+      min_shen = 70000
+      cost_gongxian = 1000
+      family = "少林派"
+      family_deny = "老衲与阁下素无渊源，不知阁下这话从何而来？"
+      skill_deny = "你连袈裟伏魔功都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在少林派没什么作为，这招我不传你。"
+      shen_deny = "你侠义正事做得不够，这招我不能传你。"
+      level_deny = {
+        jiasha_fumogong = "你的袈裟伏魔功尚未修炼得精深，难以运用此招。"
+        force = "你的内功火候不足，用不了这一招！"
+      }
+      maxed = "你已经学会了此招，还和老衲开这种玩笑。"
+      learned = "你学会了「避云遮日」。"
+    } }
   ]
 
   skills = [
