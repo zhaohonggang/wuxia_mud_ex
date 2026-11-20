@@ -12,7 +12,9 @@
 
 ## 验证环境（Windows Git Bash，Docker 不可用）
 - `PATH=/c/Users/honggang/tools/erl-25.3.2.6/bin:/c/Users/honggang/tools/elixir-1.13.4-otp25/bin:$PATH`
-- `MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=/c/files/git/wuxia_mud_ex/_build_win13`；`ERL_LIBS=$MIX_BUILD_PATH/lib`；`MIX_ENV=test`。
+- `MIX_HOME=/c/Users/honggang/tools/mix-1.13`；`MIX_BUILD_PATH=/c/files/git/wuxia_mud_ex/_build_win13`；`ERL_LIBS=$MIX_BUILD_PATH/lib`；`MIX_ENV=test`；**`ERL_CRASH_DUMP_BYTES=0`（必须，见下）**。
+- **禁止产生巨型 crash dump**：BEAM 遇 `eheap_alloc` 等不可恢复错误会往 cwd 写 `erl_crash.dump`，内容=全进程堆+全 ETS 快照，实测 13-20 GB，可占满 C 盘（2026-11-19 已发生一次 13.9 GB）。所有 mix 调用前必须 `export ERL_CRASH_DUMP_BYTES=0`；`verify.sh` 已内置。
+- **回归只跑一次**：全量 663 文件按 6 chunk 顺序跑；chunk 遇 VM `eheap_alloc` 中止时**只补跑该 chunk**（可再拆 24 文件/组），不要整段重跑。 Prior 批次（逍遥/星宿）已确认该中止是环境性，非断言失败。
 - `mix compile` / `mix test --seed 831693`；全量 9-10 min，后台重定向日志。基线 27 failures 全为 bcrypt NIF 环境性；最新全量 8007/27（0 新增）。偶发 BEAM heap 中止，重跑可过。
 
 ## 关键约定 / 坑
