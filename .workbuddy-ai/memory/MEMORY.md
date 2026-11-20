@@ -52,7 +52,11 @@
 - 武当/血刀/大轮寺/侠客岛/逍遥/星宿：见 `docs/{武当派,血刀派,大轮寺,侠客岛,逍遥派,星宿派}教学门控移植计划.zh-CN.md`，缺口 #789-#816（give_item 多状态、密道、剃度、雇助、greeting exp、广播文案、珍珑分支、guarder、flatter 两步拜师、QUEST_D、香料冷却、coagents、神王木鼎状态机）。
 - 关外胡家/华山/绝情谷/日月计划见 `docs/{关外胡家,华山派,绝情谷,日月教}教学门控移植计划.zh-CN.md`。
 
+## 语法参考（写代码前必读，减少语法错误）
+- `docs/UCL语法参考.zh-CN.md`：UCL/Elias 实测语法（词法 token、5 种值、键/值规则、数组、字符串/反斜杠、校验与提交）。凡与 README/旧文档冲突以它为准。
+- `docs/Elixir语法参考.zh-CN.md`：本仓库 Elixir 1.13.4 实测约定（formatter 120 列、Behaviour 守护进程、safe_run/safely、Scheduler、string/atom-key、Enum 累加器陷阱 R20、Windows 中文 IO 坑、提交前自测）。
+
 ## 当前工作流
-- Task #619 按门派顺序回填 UCL 教学数据；状态以 TaskList 为唯一权威。下一门派：**xuanming / 玄冥谷**（xingxiu 之后）。
+- Task #619 按门派顺序回填 UCL 教学数据；状态以 TaskList 为唯一权威。**xuanming / 玄冥谷批已完成**（commit `4233847d`，待回归）；下一门派：按门派顺序取 xingxiu 之后的下一门（以 LPC `kungfu/class/*` 顺序为准）。
 - 已保留缺失（非缺口）：柳溪 王重九无 LPC source；gaibang_jian 青竹令为升袋交互非技能授予。
-- 归档：docs/ 78 份，59 份历史待办加「📌 归档声明」。daily log append-only，超 30 天蒸馏到本文件。
+- 归档：docs/ 100 份，59 份历史待办加「📌 归档声明」。daily log append-only，超 30 天蒸馏到本文件。
