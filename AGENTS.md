@@ -262,7 +262,7 @@ This ensures future passes can complete the conversion without re-reading LPC.
 ## Dev Workflow
 
 1. Edit code in `lib/kantele/`
-2. `mix compile` —— **日常改动只需编译通过即可，不必每次都跑全量测试。**
+2. `mix compile` —— **日常改动只需编译通过即可，不必每次都跑全量测试**（判定标准见 Core Rules #1）
 3. `mix format && mix credo` (pre-commit)
 4. Targeted test in container (可选，仅在涉及核心逻辑变更或修复 Bug 时运行)：`docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:ex_venture_test app mix test test/kantele/...`
 5. Full suite（**AI 不得自行运行 · §0.4**）：仅在用户审阅 `docs/待全量回归清单.zh-CN.md`
@@ -275,7 +275,7 @@ This ensures future passes can complete the conversion without re-reading LPC.
 
 | # | 规则 | 说明 |
 |---|------|------|
-| 1 | **修改 ex 前必编译** | 任何对 `lib/**/*.ex` 的修改，在提交前必须运行 `mix compile` 确保该 ex 文件能通过编译。不必运行完整回归测试，但编译必须通过。 |
+| 1 | **提交前必编译** | 改动 `lib/**/*.ex` → 提交前必须 `mix compile` 通过。**改动 `test/**/*.exs` → 必须 `mix test <该文件>` 通过**：`.exs` 是脚本、不参与编译，语法错误只在加载/运行时暴露，`mix compile` 查不出来。改动 `config/*.exs`、`mix.exs` → 至少确认 `mix` 命令能正常启动。**跑过定向测试即视为编译已验证**，不必再单独 `mix compile` 一遍。不必跑全量回归（见 §0.4）。 |
 | 2 | **改动前先核实现有状态** | 开始任何改动前，都先核实一下现有状态（grep 代码、读文档、查 git log）。如果该功能已经做了，不要重新做，只更新相关文档和记忆，把它标记完成。 |
 | 3 | **改动后必更新文档与记忆** | 做完每一个改动，都要更新相关文档（如 `docs/*.md`、`AGENTS.md`）和记忆（`.workbuddy-ai/memory/` 日志与 MEMORY.md），并在文档中把该项标记完成，以免之后重新做。 |
 
