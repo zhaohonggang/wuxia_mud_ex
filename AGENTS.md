@@ -38,6 +38,30 @@
    仍应自行运行 —— 改动是否正确必须自己验证，不得跳过。
 5. 禁令同样适用于后台/异步执行、脚本包装、或「只跑一部分 chunk」等任何变体。
 
+### 0.5 语法参考（写任何代码前必读 · 用户 2026-11-19 确立）
+
+> 本章节位于宪章内，与 §0.1–§0.4 同等必读。**每次会话开始、以及任何写 / 改
+> `lib/**/*.ex` 或 `data/**/*.ucl` 之前，必须先读这两份文件。**
+
+| 要改什么 | 先读 | 覆盖内容 |
+|---|---|---|
+| `data/**/*.ucl`（世界数据） | **`docs/UCL语法参考.zh-CN.md`** | Elias 词法 token、5 种值、键/值规则、块与引用、数组、字符串/反斜杠、注释、顶层块字段、真实约定、校验与提交、错误速查 |
+| `lib/**/*.ex`（游戏逻辑） | **`docs/Elixir语法参考.zh-CN.md`** | Elixir 1.13.4 / OTP 25 实测约定：工具链与命令、模块命名、formatter 120 列 + Credo、Behaviour 守护进程、`safe_run/safely`、Scheduler、string/atom-key、Enum 累加器陷阱 R20、Windows 中文 IO、错误速查、提交前自测 |
+
+**这两份文件的权威性**：
+
+1. **以文件为准**：两份文档的所有规则均来自本仓库的**实际实测**（`mix run -e 'Elias.parse(...)'`
+   逐条验证 / 直接读 `.formatter.exs` `.credo.exs` 与真实源码）。
+   凡与 `README.md`、旧文档、你的直觉冲突 —— **一律以这两份为准**。
+2. **已知与旧文档冲突的点**（别被带偏）：
+   - README 说「数组建议加尾随逗号」→ **错**，实测尾随逗号报错。
+   - README 说 UCL 字符串里不能写 `\` → **不准**，`\n` 合法且是换行约定写法。
+   - UCL **无浮点**、**负数不能进数组**、**裸值含 `/` 必须加引号**。
+3. **改文档**：若你发现文档与实测不符，先跑实测确认，**修正文档**（并更新本节），
+   不要在代码里将就。
+
+> 一句话：**先读语法参考，再动手。** 这两份文件能挡掉本项目绝大多数低级语法错误。
+
 ---
 
 > ## 📌 归档声明 · 全库待办清零（2026-11-12）
@@ -198,7 +222,12 @@ lib/
 ## Data-Driven (UCL)
 
 - World data: `data/world/*.ucl` (liuxi.ucl, signature.ucl, nature/weather.ucl)
-- **Parser**: Elias (`:stein` dep). **Gotcha**: No `;` inside strings, arrays need trailing commas
+- **Parser**: Elias (`:stein` dep, 0.2.8)
+- **语法必读 `docs/UCL语法参考.zh-CN.md`**（实测版）。高频坑：
+  - 字符串里不能出现 `;` `[` `]`；`\` 只能接普通字符或引号（`\n` 合法且是换行约定）
+  - 数组元素**必须逗号分隔**，**末元素不能带尾随逗号**（实测报错，别信旧表述）
+  - 键不能含数字 / 连字符 / 中文（`a1`、`a-b`、`乾` 全报错 → 用 `msg_one`）
+  - **无浮点**；**负数不能进数组**；裸值含 `/` 必须加引号
 - Object refs: `{ id = items.xxx.id }` → loader resolves to `"zone:key"`
 - Item ID format: `zone:key` (e.g., `liuxi:changjian`, `liuxi:task/xxx`)
 
@@ -238,16 +267,23 @@ This ensures future passes can complete the conversion without re-reading LPC.
 
 ## Code Style
 
+> **Elixir 语法与约定必读 `docs/Elixir语法参考.zh-CN.md`**（实测版，含高频坑速查）。
+
 - **Formatter**: `mix format` (imports ecto, phoenix; line length 120 via credo)
-- **Credo**: `mix credo --all` (strict: false, TagTODO exit_status: 2)
+- **Credo**: `mix credo --all` (strict: false, TagTODO exit_status: 2 —— 新增裸 TODO 会让 credo 失败)
 - **Max line**: 120 (Readability.MaxLineLength)
 - **ModuleDoc ignored** for *Channel, *Controller, *Command, *Event, *View
+- **数据流 key 类型**：结构体字段 = atom；ETS / 世界动态态 = string。新增读 ETS 的
+  helper 必须配一条「插入真实数据」的测试（R19）
+- **禁止**：在 `Enum.each` / `for` 里重绑定外层累加器（R20，credo 抓不到，已炸 4 次）
 
 ## GenServer Patterns
 
-- All long-lived processes: `Behaviour` with `prompt/1`, `init_state/1`, `start_round/1`, `stop_round/1`, `status/1`
-- **Schedule once**: chain `Process.send_after(self(), :tick, ms)` — avoid `send_interval`
-- **Error handling**: `safe_run/2` / `safely/1` wrapper to prevent crashes
+> 本仓库**不裸用 `use GenServer`** —— 详见 `docs/Elixir语法参考.zh-CN.md` §4。
+
+- All long-lived processes: `Behaviour`（`prompt/1`, `init_state/1`, `start_round/1`, `stop_round/1`, `status/1`）+ Kalevala 事件循环。新增守护进程先找已有 `*/behaviour.ex` / `mirror_daemon` / `story` / `invasion` 目录照抄骨架
+- **Schedule once**: `Kantele.Scheduler.schedule_once/2` —— **不要用 `send_interval`**
+- **Error handling**: `safe_run/2` / `safely/1` wrapper to prevent crashes —— **必须 `rescue` + `catch :exit` 双写**（`rescue` 抓不到进程退出）
 
 ## Common Gotchas
 
@@ -255,12 +291,14 @@ This ensures future passes can complete the conversion without re-reading LPC.
 |-------|-----|
 | `mix test` hangs on recompile | Exclude `reload_command_test` (known flaky 60s timeout) |
 | 测试中途生成 10GB+ `erl_crash.dump` 占满系统盘 | BEAM 遇 `eheap_alloc` 等不可恢复错误会往 cwd 写 crash dump（= 全进程堆 + 全 ETS 快照）。跑任何 `mix` 前 `export ERL_CRASH_DUMP_BYTES=0`；`verify.sh` 已内置 |
-| UCL parse fails | Check for stray `;` in strings, missing trailing commas in arrays |
+| UCL parse fails | 先读 `docs/UCL语法参考.zh-CN.md` §11 速查表；再 `python scripts/validate_ucl.py <file>` |
 | perform_known? missing | Use `Stats.perform_known?/2` before calling perform module |
 | World load order | `kickoff_test.exs` validates loader phases; run it first after UCL changes |
 
 ## Dev Workflow
 
+0. **先读语法参考（§0.5）**：改 `data/**/*.ucl` → `docs/UCL语法参考.zh-CN.md`；
+   改 `lib/**/*.ex` → `docs/Elixir语法参考.zh-CN.md`。**每次会话首批动作之一。**
 1. Edit code in `lib/kantele/`
 2. `mix compile` —— **日常改动只需编译通过即可，不必每次都跑全量测试**（判定标准见 Core Rules #1）
 3. `mix format && mix credo` (pre-commit)
@@ -278,6 +316,7 @@ This ensures future passes can complete the conversion without re-reading LPC.
 | 1 | **提交前必检查** | 提交前必须做两项检查，都必须通过：① 改了 `lib/**/*.ex` → 跑 `mix compile`；② 改了 `data/**/*.ucl` → 跑 `python scripts/validate_ucl.py <文件>`。`.exs`（测试 / 脚本 / 配置）不做要求，日后跑测试发现语法错误再修。 |
 | 2 | **改动前先核实现有状态** | 开始任何改动前，都先核实一下现有状态（grep 代码、读文档、查 git log）。如果该功能已经做了，不要重新做，只更新相关文档和记忆，把它标记完成。 |
 | 3 | **改动后必更新文档与记忆** | 做完每一个改动，都要更新相关文档（如 `docs/*.md`、`AGENTS.md`）和记忆（`.workbuddy-ai/memory/` 日志与 MEMORY.md），并在文档中把该项标记完成，以免之后重新做。 |
+| 4 | **写代码前先读语法参考** | 改 `data/**/*.ucl` 前读 `docs/UCL语法参考.zh-CN.md`；改 `lib/**/*.ex` 前读 `docs/Elixir语法参考.zh-CN.md`（见 §0.5）。两份文档为实测版，与旧文档/直觉冲突时以它们为准。 |
 
 ## Docker Notes
 
@@ -327,6 +366,9 @@ Get-Process beam.smp -ErrorAction SilentlyContinue | Stop-Process -Force
 ```
 
 ## References
+
+> **首先读语法参考（§0.5）**：`docs/UCL语法参考.zh-CN.md`、`docs/Elixir语法参考.zh-CN.md`。
+> 写 / 改 `data/**/*.ucl` 或 `lib/**/*.ex` 之前必读。
 
 - `README.md` — full architecture, test guide, UCL examples
 - `docs/dev-test-config.zh-CN.md` — dev / test 配置总表（每个开关的取值 + `文件:行`，改端口/换库/查开关先看它）

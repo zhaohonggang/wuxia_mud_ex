@@ -6,6 +6,19 @@
 
 ---
 
+## 📖 写代码前必读（AI / 新人第一站）
+
+**两份实测语法参考**（规则均来自本仓库实测，与本文档下方旧示例冲突时**以它们为准**）：
+
+| 要改什么 | 先读 |
+|---|---|
+| `data/**/*.ucl`（世界数据） | **[`docs/UCL语法参考.zh-CN.md`](docs/UCL语法参考.zh-CN.md)** |
+| `lib/**/*.ex`（游戏逻辑） | **[`docs/Elixir语法参考.zh-CN.md`](docs/Elixir语法参考.zh-CN.md)** |
+
+同时必读 [`AGENTS.md`](AGENTS.md)（项目宪章 §0.5 亦强制要求）。
+
+---
+
 ## 🚀 快速开始
 
 ### 依赖环境
@@ -205,15 +218,33 @@ docker exec wuxia_mud_dev-app-1 /bin/sh -c 'cd /app && MIX_ENV=test mix test --s
 
 ## ⚙️ 开发规范与约定
 
-### GenServer 模式
-- 所有长驻进程使用 `Behaviour` 定义契约 (`prompt`/`init_state`/`start_round`/`stop_round`/`status`)
-- **schedule_once 链式定时** — 避免 `Process.send_interval` 取消 bug
-- **safe_run / safely** — 统一异常捕获，防止进程崩溃
+> 📖 语法与约定完整参考：**[`docs/UCL语法参考.zh-CN.md`](docs/UCL语法参考.zh-CN.md)** /
+> **[`docs/Elixir语法参考.zh-CN.md`](docs/Elixir语法参考.zh-CN.md)**（均为实测版，权威）。
+
+### 进程与调度（详见 Elixir 语法参考 §4/§5）
+- 所有长驻进程使用 `Behaviour` 定义契约 (`prompt`/`init_state`/`start_round`/`stop_round`/`status`)，**不裸用 `use GenServer`**
+- 定时用 `Kantele.Scheduler.schedule_once/2`，避免 `send_interval` 取消 bug
+- `safe_run` / `safely` 统一异常捕获 —— **必须 `rescue` + `catch :exit` 双写**（`rescue` 抓不到进程退出）
 
 ### UCL 语法注意
-- **数组元素需逗号分隔** — 单元素也建议加尾随逗号
-- **字符串内禁用 `;`** — Elias 解析器会将其视为 token 分隔符
+
+> ⚠️ 完整规则见 **[`docs/UCL语法参考.zh-CN.md`](docs/UCL语法参考.zh-CN.md)**（实测版，权威）。
+
+- **数组元素需逗号分隔**；**末元素不能带尾随逗号**（实测报错 —— 旧表述「建议加尾随逗号」是错的）
+- **字符串内禁用 `;` `[` `]`**；`\` 只能接普通字符或引号（`\n` 合法，是换行约定写法）
+- **键不能含数字 / 连字符 / 中文**（`a1` / `a-b` / `乾` 均报错）
+- **无浮点**；**负数不能进数组**；**裸值含 `/` 必须加引号**（`"tie-zhang/lei"`）
 - **对象引用** — `{ id = items.xxx.id }` 由 loader 解析为 `"zone:xxx"` 字符串
+
+### Elixir 编码注意
+
+> ⚠️ 完整规则见 **[`docs/Elixir语法参考.zh-CN.md`](docs/Elixir语法参考.zh-CN.md)**（实测版，权威）。
+
+- 长驻进程用 `Behaviour`（`prompt`/`init_state`/`start_round`/`stop_round`/`status`），**不裸用 `use GenServer`**
+- 定时用 `Kantele.Scheduler.schedule_once/2` — 避免 `send_interval`
+- `safe_run` / `safely` — 统一异常捕获，**必须 `rescue` + `catch :exit` 双写**
+- **不要在 `Enum.each` / `for` 里重绑定外层累加器**（credo 抓不到，R20）
+- 结构体字段 = atom；ETS / 世界动态态 = string
 
 ### 物品 ID 规则
 - 格式：`zone:key` (如 `liuxi:changjian`, `signature:jinggang`)
