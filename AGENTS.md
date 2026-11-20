@@ -275,7 +275,7 @@ This ensures future passes can complete the conversion without re-reading LPC.
 
 | # | 规则 | 说明 |
 |---|------|------|
-| 1 | **提交前必编译** | 改动 `lib/**/*.ex` → 提交前必须 `mix compile` 通过。**改动 `test/**/*.exs` → 必须 `mix test <该文件>` 通过**：`.exs` 是脚本、不参与编译，语法错误只在加载/运行时暴露，`mix compile` 查不出来。改动 `config/*.exs`、`mix.exs` → 至少确认 `mix` 命令能正常启动。**跑过定向测试即视为编译已验证**，不必再单独 `mix compile` 一遍。不必跑全量回归（见 §0.4）。 |
+| 1 | **提交前必编译** | 提交前必须跑 `mix compile`，且必须通过。适用于 `lib/**/*.ex` 与 `data/**/*.ucl` 的改动。`.exs`（测试 / 脚本 / 配置）不做要求，日后跑测试发现语法错误再修。 |
 | 2 | **改动前先核实现有状态** | 开始任何改动前，都先核实一下现有状态（grep 代码、读文档、查 git log）。如果该功能已经做了，不要重新做，只更新相关文档和记忆，把它标记完成。 |
 | 3 | **改动后必更新文档与记忆** | 做完每一个改动，都要更新相关文档（如 `docs/*.md`、`AGENTS.md`）和记忆（`.workbuddy-ai/memory/` 日志与 MEMORY.md），并在文档中把该项标记完成，以免之后重新做。 |
 
