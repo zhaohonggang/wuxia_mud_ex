@@ -1884,4 +1884,201 @@ defmodule Kantele.World.InquirySectMastersTest do
       end
     end
   end
+
+  describe "玄冥谷 UCL 数据回填（Task #817）" do
+    @describetag :xuanming
+    defp xm(world, name) do
+      npc = Enum.find(world.characters, &(&1.name == name))
+      assert npc, "#{name} 应随世界加载"
+      npc
+    end
+
+    @xuanming_names ["百损道人", "鹤笔翁", "鹿杖客", "乌旺阿普"]
+
+    test "四名玄冥 NPC 全部带 teach 与 apprentice 数据", %{world: world} do
+      for name <- @xuanming_names do
+        npc = xm(world, name)
+        assert npc.meta.teach.family == "玄冥谷", "#{name} teach.family"
+        assert map_size(npc.meta.teach.teach_skills) > 0, "#{name} teach_skills"
+        assert npc.meta.apprentice.family == "玄冥谷", "#{name} apprentice.family"
+      end
+    end
+
+    test "no_teach 逐技能 map 与 LPC 原文一致且从 teach_skills 剔除", %{world: world} do
+      he = xm(world, "鹤笔翁")
+      assert he.meta.teach.no_teach_deny["xuanming-shengong"] ==
+               "玄冥神功要我师父百损道人亲自传授。"
+
+      assert he.meta.teach.no_teach_deny["xuanming-zhang"] ==
+               "玄冥神掌要我师父亲自传授，你还是去找他老人家吧！"
+
+      assert he.meta.teach.no_teach_deny["dulong-shenzhua"] ==
+               "这个你还是找我师兄鹿杖客吧，他比我厉害多了！"
+
+      lu = xm(world, "鹿杖客")
+      assert lu.meta.teach.no_teach_deny["xuanming-shengong"] ==
+               "玄冥神功要我师父百损道人亲自传授。"
+
+      assert lu.meta.teach.no_teach_deny["xuanming-zhang"] ==
+               "玄冥神掌要我师父亲自传授，你还是去找他老人家吧！"
+
+      for npc <- [he, lu] do
+        for skill <- ["xuanming-shengong", "xuanming-zhang"] do
+          refute Map.has_key?(npc.meta.teach.teach_skills, skill)
+        end
+      end
+
+      refute Map.has_key?(he.meta.teach.teach_skills, "dulong-shenzhua")
+      assert Map.has_key?(xm(world, "百损道人").meta.teach.teach_skills, "xuanming-zhang")
+    end
+
+    @xuanming_grants [
+      {"百损道人", "蛟龙抱", "dulong-shenzhua/bao", -38000, 420,
+       %{"dulong-shenzhua" => 100}, nil, 150, nil},
+      {"百损道人", "真龙聚", "dulong-shenzhua/ju", -43000, 580,
+       %{"dulong-shenzhua" => 130}, 180, nil, nil},
+      {"百损道人", "惊涛骇浪", "xuanming-zhang/lang", -68000, 1200,
+       %{"xuanming-zhang" => 180, "xuanming-shengong" => 180}, nil, nil, 3000},
+      {"百损道人", "玄冥双行", "xuanming-zhang/xing", -108000, 1500,
+       %{"xuanming-zhang" => 220, "xuanming-shengong" => 220}, nil, nil, 4000},
+      {"鹤笔翁", "掌打飞花", "feihua-zhang/fei", -2000, 100,
+       %{"feihua-zhang" => 40}, nil, nil, nil},
+      {"鹤笔翁", "卷字决", "piaofeng-quan/juan", -500, 80,
+       %{"piaofeng-quan" => 30}, nil, nil, nil},
+      {"鹤笔翁", "残月刺", "jingyue-bifa/ci", -2400, 200,
+       %{"jingyue-bifa" => 30}, nil, nil, nil},
+      {"鹤笔翁", "内点乾坤", "hexing-bifa/dian", -8000, 320,
+       %{"hexing-bifa" => 100}, nil, nil, nil},
+      {"鹤笔翁", "如影相随", "xuanming-zhang/ying", -32000, 380,
+       %{"xuanming-zhang" => 100}, nil, 180, nil},
+      {"鹿杖客", "缤纷雪舞", "ningxue-zhang/xue", -20000, 220,
+       %{"ningxue-zhang" => 50}, nil, nil, nil},
+      {"鹿杖客", "通天彻地", "lutou-zhang/tong", -23000, 380,
+       %{"lutou-zhang" => 100}, 140, nil, nil},
+      {"鹿杖客", "只手遮天", "xuanming-zhang/zhe", -50000, 880,
+       %{"xuanming-zhang" => 150, "xuanming-shengong" => 150}, nil, nil, 2000}
+    ]
+
+    test "十二条 sect_master_grant 的门控字段与 masterd.c 一致", %{world: world} do
+      for {name, key, perform_id, shen, gong, levels, force, dodge, neili} <- @xuanming_grants do
+        cfg = inquiry(xm(world, name), key)
+        assert cfg["kind"] == "sect_master_grant", "#{name}/#{key}"
+        assert cfg["gate_order"] == "lpc_masterd", "#{name}/#{key}"
+        assert cfg["perform_id"] == perform_id, "#{name}/#{key}"
+        assert cfg["max_shen"] == shen, "#{name}/#{key}"
+        assert cfg["min_gongxian"] == gong, "#{name}/#{key}"
+        assert cfg["cost_gongxian"] == gong, "#{name}/#{key}"
+        assert cfg["min_levels"] == levels, "#{name}/#{key}"
+        assert cfg["min_force"] == force, "#{name}/#{key}"
+        assert cfg["min_dodge"] == dodge, "#{name}/#{key}"
+        assert cfg["min_max_neili"] == neili, "#{name}/#{key}"
+        assert is_list(cfg["level_order"]) and length(cfg["level_order"]) > 0, "#{name}/#{key}"
+      end
+    end
+
+    test "蛟龙抱：主技能门之后才判独立 dodge 150", %{world: world} do
+      bai = xm(world, "百损道人")
+      cfg = inquiry(bai, "蛟龙抱")
+
+      base = %{
+        family: "玄冥谷",
+        shen: -40_000,
+        gongxian: 420,
+        skills: %{"dulong-shenzhua" => 100, "dodge" => 149}
+      }
+
+      assert {:error, "你目前的轻功火候不足，下去练练再来吧。"} =
+               SectMaster.inquiry_grant(disciple(base), bai, cfg)
+
+      assert {:ok, "dulong-shenzhua/bao", 420} =
+               SectMaster.inquiry_grant(
+                 disciple(%{base | skills: %{"dulong-shenzhua" => 100, "dodge" => 150}}),
+                 bai,
+                 cfg
+               )
+    end
+
+    test "真龙聚与惊涛骇浪：force/neili 独立门按 LPC 阈值", %{world: world} do
+      bai = xm(world, "百损道人")
+      ju = inquiry(bai, "真龙聚")
+      low_force = disciple(%{
+        family: "玄冥谷",
+        shen: -50_000,
+        gongxian: 580,
+        skills: %{"dulong-shenzhua" => 130, "force" => 179}
+      })
+
+      assert {:error, "你目前的内功火候不足，下去练练再来吧。"} =
+               SectMaster.inquiry_grant(low_force, bai, ju)
+
+      assert {:ok, "dulong-shenzhua/ju", 580} =
+               SectMaster.inquiry_grant(
+                 disciple(%{low_force | skills: %{"dulong-shenzhua" => 130, "force" => 180}}),
+                 bai,
+                 ju
+               )
+
+      lang = inquiry(bai, "惊涛骇浪")
+      base = %{
+        family: "玄冥谷",
+        shen: -70_000,
+        gongxian: 1200,
+        max_neili: 3000,
+        skills: %{"xuanming-zhang" => 180, "xuanming-shengong" => 180}
+      }
+
+      assert {:error, "你现在的内力修为不足，修炼高点再来吧。"} =
+               SectMaster.inquiry_grant(disciple(%{base | max_neili: 2999}), bai, lang)
+
+      assert {:ok, "xuanming-zhang/lang", 1200} =
+               SectMaster.inquiry_grant(disciple(base), bai, lang)
+    end
+
+    test "鹤形笔/鹿头杖 give_item 与 QUEST_D、owner traversal GAP 标记", %{world: world} do
+      he = xm(world, "鹤笔翁")
+      bi = inquiry(he, "鹤形笔")
+      assert bi["kind"] == "give_item"
+      assert bi["item"] == "clone_lib:hexingbi"
+      assert bi["min_skill_levels"] == %{"hexing_bifa" => 100}
+      assert bi["max_shen"] == -10000
+      refute Map.has_key?(bi, "master_id")
+      assert bi["note"] =~ "GAP #820"
+
+      zhang = inquiry(xm(world, "鹿杖客"), "鹿头杖")
+      assert zhang["item"] == "clone_lib:lutouzhang"
+      assert zhang["min_skill_levels"] == %{"lutou_zhang" => 100}
+      assert zhang["max_shen"] == -20000
+      assert zhang["master_id"] == "true"
+      assert zhang["note"] =~ "GAP #820"
+
+      assert inquiry(xm(world, "百损道人"), "历练") =~ "GAP #818"
+      assert inquiry(xm(world, "百损道人"), "历炼") =~ "GAP #818"
+      assert inquiry(xm(world, "百损道人"), "锻炼") =~ "GAP #818"
+      assert xm(world, "百损道人").meta.inquiries["鹿杖客"] == "他是我大徒弟。"
+    end
+
+    test "收徒门控：百损/鹿杖客 skills 先于 exp，鹤笔翁负神门，乌旺阿普拒收", %{world: world} do
+      bai = xm(world, "百损道人").meta.apprentice
+      assert bai.gate_order == "lpc_xuanming"
+      assert bai.no_min_shen == true
+      assert bai.max_shen == -35000
+      assert bai.max_shen_deny == "哼，我百损道人从不和正道中人交往。"
+      assert bai.min_skills == %{"minggu-xinfa" => 160, "strike" => 160}
+      assert bai.min_skills_deny["minggu-xinfa"] =~ "冥谷心法火候不足"
+      assert bai.min_exp == 500000
+
+      lu = xm(world, "鹿杖客").meta.apprentice
+      assert lu.gate_order == "lpc_xuanming"
+      assert lu.max_shen == -20000
+      assert lu.min_skills == %{"minggu-xinfa" => 120, "strike" => 120}
+      assert lu.min_exp == 0
+
+      he = xm(world, "鹤笔翁").meta.apprentice
+      assert he.no_min_shen == true
+      assert he.max_shen == 0
+      assert he.max_shen_deny =~ "正道人士交往"
+
+      assert xm(world, "乌旺阿普").meta.apprentice.deny_all == true
+    end
+  end
 end

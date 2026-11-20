@@ -45371,7 +45371,120 @@ chats = [
 
   inquiries = [
     { key = "鹤笔翁" value = "他是我小徒弟。" },
-    { key = "鹿杖客" value = "他是我大徒弟。" }
+    { key = "鹿杖客" value = "他是我大徒弟。" },
+    # LPC accept_ask「历练/历炼/锻炼」走 QUEST_D->accept_ask。
+    # 按 GAP #818 保留，不伪造实现。
+    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #818)" },
+    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #818)" },
+    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #818)" },
+    { key = "蛟龙抱" value = {
+      kind = "sect_master_grant"
+      perform_id = "dulong-shenzhua/bao"
+      skill = "dulong-shenzhua"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -38000
+      min_gongxian = 420
+      cost_gongxian = 420
+      level_order = ["dulong-shenzhua"]
+      min_dodge = 150
+      min_levels = {
+        dulong_shenzhua = 100
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连毒龙神爪功都未曾学过，何谈绝招可言？"
+      level_deny = {
+        dulong_shenzhua = "你对毒龙神爪功的了解还不够，尚且无法领悟此招。"
+      }
+      dodge_deny = "你目前的轻功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「蛟龙抱」。\n"
+      improve_skills = ["dulong-shenzhua", "claw", "parry", "martial-cognize"]
+    } },
+    { key = "真龙聚" value = {
+      kind = "sect_master_grant"
+      perform_id = "dulong-shenzhua/ju"
+      skill = "dulong-shenzhua"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -43000
+      min_gongxian = 580
+      cost_gongxian = 580
+      level_order = ["dulong-shenzhua"]
+      min_force = 180
+      min_levels = {
+        dulong_shenzhua = 130
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连毒龙神爪功都未曾学过，何谈绝招可言？"
+      level_deny = {
+        dulong_shenzhua = "你对毒龙神爪功的了解还不够，尚且无法领悟此招。"
+      }
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「真龙聚」。\n"
+      improve_skills = ["dulong-shenzhua", "claw", "parry", "martial-cognize"]
+    } },
+    { key = "惊涛骇浪" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuanming-zhang/lang"
+      skill = "xuanming-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -68000
+      min_gongxian = 1200
+      cost_gongxian = 1200
+      level_order = ["xuanming-zhang", "xuanming-shengong"]
+      min_max_neili = 3000
+      min_levels = {
+        xuanming_zhang = 180
+        xuanming_shengong = 180
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连玄冥神掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        xuanming_zhang = "你对玄冥神掌的了解还不够，尚且无法领悟此招。"
+        xuanming_shengong = "你对玄冥神功的了解还不够，尚且无法领悟此招。"
+      }
+      max_neili_deny = "你现在的内力修为不足，修炼高点再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「惊涛骇浪」。\n"
+      improve_skills = ["xuanming-zhang", "strike", "parry", "martial-cognize"]
+    } },
+    { key = "玄冥双行" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuanming-zhang/xing"
+      skill = "xuanming-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -108000
+      min_gongxian = 1500
+      cost_gongxian = 1500
+      level_order = ["xuanming-zhang", "xuanming-shengong"]
+      min_max_neili = 4000
+      min_levels = {
+        xuanming_zhang = 220
+        xuanming_shengong = 220
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连玄冥神掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        xuanming_zhang = "你对玄冥神掌的了解还不够，尚且无法领悟此招。"
+        xuanming_shengong = "你对玄冥神功的了解还不够，尚且无法领悟此招。"
+      }
+      max_neili_deny = "你现在的内力修为不足，修炼高点再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「玄冥双行」。\n"
+      improve_skills = ["xuanming-zhang", "strike", "parry", "martial-cognize"]
+    } }
   ]
 
   skills = [
@@ -45403,6 +45516,50 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  teach = {
+    family = "玄冥谷"
+    teach_skills = {
+      force = { max = 320 gongxian = 0 }
+      xuanming_shengong = { max = 320 gongxian = 0 }
+      minggu_xinfa = { max = 300 gongxian = 0 }
+      dodge = { max = 300 gongxian = 0 }
+      liuying_bu = { max = 300 gongxian = 0 }
+      strike = { max = 320 gongxian = 0 }
+      feihua_zhang = { max = 320 gongxian = 0 }
+      xuanming_zhang = { max = 320 gongxian = 0 }
+      cuff = { max = 300 gongxian = 0 }
+      piaofeng_quan = { max = 300 gongxian = 0 }
+      parry = { max = 320 gongxian = 0 }
+      claw = { max = 320 gongxian = 0 }
+      dulong_shenzhua = { max = 320 gongxian = 0 }
+      literate = { max = 260 gongxian = 0 }
+      martial_cognize = { max = 220 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "玄冥谷"
+    permit_recruit = true
+    gate_order = "lpc_xuanming"
+    no_min_shen = true
+    max_shen = -35000
+    max_shen_deny = "哼，我百损道人从不和正道中人交往。"
+    min_skills = {
+      minggu_xinfa = 160
+      strike = 160
+    }
+    min_skills_deny = {
+      minggu_xinfa = "你冥谷心法火候不足，还是跟我徒儿多练习练习吧！"
+      strike = "你基本掌法修为还不够，以后如何学习我玄冥谷绝学玄冥神掌？"
+    }
+    min_exp = 500000
+    min_exp_deny = "你江湖经验还不足，还是去多闯荡一下吧！"
+    accept_msg = "好，好，老夫今日就收下你。"
+    betray_sect_deny = "哼，你既然走了就不要再回来！"
+    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
+    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xuanming/he.c
@@ -45427,9 +45584,147 @@ chats = [
 
   inquiries = [
     { key = "张无忌" value = "哼，臭小子屡次坏我大事！我非杀了他不可！" },
-    { key = "百损道人" value = "他是我恩师，你问这干什么？" },
     { key = "赵敏" value = "那丫头诡计多端，忘恩负义，枉我兄弟为她出生入死。" },
-    { key = "鹿杖客" value = "他是我师兄，我们从小跟着师父学艺，亲同手足。" }
+    { key = "百损道人" value = "他是我恩师，你问这干什么？" },
+    { key = "鹿杖客" value = "他是我师兄，我们从小跟着师父学艺，亲同手足。" },
+    { key = "掌打飞花" value = {
+      kind = "sect_master_grant"
+      perform_id = "feihua-zhang/fei"
+      skill = "feihua-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -2000
+      min_gongxian = 100
+      cost_gongxian = 100
+      level_order = ["feihua-zhang"]
+      min_levels = {
+        feihua_zhang = 40
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连飞花掌法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        feihua_zhang = "你对飞花掌法的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「掌打飞花」。\n"
+      improve_skills = ["feihua-zhang", "strike", "parry", "martial-cognize"]
+    } },
+    { key = "卷字决" value = {
+      kind = "sect_master_grant"
+      perform_id = "piaofeng-quan/juan"
+      skill = "piaofeng-quan"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -500
+      min_gongxian = 80
+      cost_gongxian = 80
+      level_order = ["piaofeng-quan"]
+      min_levels = {
+        piaofeng_quan = 30
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连飘风拳法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        piaofeng_quan = "你对飘风拳法的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「卷字决」。\n"
+      improve_skills = ["piaofeng-quan", "cuff", "parry", "martial-cognize"]
+    } },
+    { key = "残月刺" value = {
+      kind = "sect_master_grant"
+      perform_id = "jingyue-bifa/ci"
+      skill = "jingyue-bifa"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -2400
+      min_gongxian = 200
+      cost_gongxian = 200
+      level_order = ["jingyue-bifa"]
+      min_levels = {
+        jingyue_bifa = 30
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连惊月笔法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        jingyue_bifa = "你对惊月笔法的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「残月刺」。\n"
+      improve_skills = ["jingyue-bifa", "dagger", "parry", "martial-cognize"]
+    } },
+    { key = "内点乾坤" value = {
+      kind = "sect_master_grant"
+      perform_id = "hexing-bifa/dian"
+      skill = "hexing-bifa"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -8000
+      min_gongxian = 320
+      cost_gongxian = 320
+      level_order = ["hexing-bifa"]
+      min_levels = {
+        hexing_bifa = 100
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连鹤形笔法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        hexing_bifa = "你对鹤形笔法的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「内点乾坤」。\n"
+      improve_skills = ["hexing-bifa", "dagger", "parry", "martial-cognize"]
+    } },
+    { key = "如影相随" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuanming-zhang/ying"
+      skill = "xuanming-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -32000
+      min_gongxian = 380
+      cost_gongxian = 380
+      level_order = ["xuanming-zhang"]
+      min_dodge = 180
+      min_levels = {
+        xuanming_zhang = 100
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连玄冥神掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        xuanming_zhang = "你对玄冥神掌的了解还不够，尚且无法领悟此招。"
+      }
+      dodge_deny = "你目前的轻功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「如影相随」。\n"
+      improve_skills = ["xuanming-zhang", "strike", "parry", "martial-cognize"]
+    } },
+    { key = "鹤形笔" value = {
+      kind = "give_item"
+      item = "clone_lib:hexingbi"
+      match = "hexingbi"
+      unique = false
+      family = "玄冥谷"
+      family_deny = "与我玄冥谷素无渊源，不知此话从何说起。"
+      note = "masterd give_item 持有者遍历多分支文案见 GAP #820"
+      min_skill_levels = {
+        hexing_bifa = 100
+      }
+      max_shen = -10000
+      min_skill_deny = "你的鹤形笔法火候未到，就算拿着也没用。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，就算拿着也是无用。"
+      success = "既然这样，那这支鹤形笔你就暂时拿去吧。"
+    } }
   ]
 
   skills = [
@@ -45465,6 +45760,43 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  teach = {
+    family = "玄冥谷"
+    teach_skills = {
+      force = { max = 260 gongxian = 0 }
+      minggu_xinfa = { max = 260 gongxian = 0 }
+      dodge = { max = 240 gongxian = 0 }
+      liuying_bu = { max = 240 gongxian = 0 }
+      dagger = { max = 240 gongxian = 0 }
+      jingyue_bifa = { max = 260 gongxian = 0 }
+      strike = { max = 260 gongxian = 0 }
+      feihua_zhang = { max = 260 gongxian = 0 }
+      cuff = { max = 260 gongxian = 0 }
+      piaofeng_quan = { max = 260 gongxian = 0 }
+      parry = { max = 240 gongxian = 0 }
+      claw = { max = 240 gongxian = 0 }
+      literate = { max = 220 gongxian = 0 }
+      martial_cognize = { max = 200 gongxian = 0 }
+    }
+    no_teach = {
+      xuanming_shengong = "玄冥神功要我师父百损道人亲自传授。"
+      xuanming_zhang = "玄冥神掌要我师父亲自传授，你还是去找他老人家吧！"
+      dulong_shenzhua = "这个你还是找我师兄鹿杖客吧，他比我厉害多了！"
+    }
+  }
+
+  apprentice = {
+    family = "玄冥谷"
+    permit_recruit = true
+    no_min_shen = true
+    max_shen = 0
+    max_shen_deny = "我玄冥谷向来不和你们这些正道人士交往。\n你还是请回吧！"
+    accept_msg = "今日我就暂且收下你，日后定须刻苦练武。"
+    betray_sect_deny = "哼，你既然走了就不要再回来！"
+    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
+    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/xuanming/lu.c
@@ -45489,9 +45821,105 @@ chats = [
 
   inquiries = [
     { key = "张无忌" value = "哼，臭小子屡次坏我大事！我非杀了他不可！" },
-    { key = "百损道人" value = "他是我恩师，你问这干什么？" },
     { key = "赵敏" value = "那丫头诡计多端，忘恩负义，枉我兄弟为她出生入死。" },
-    { key = "鹤笔翁" value = "他是我师弟，我们从小跟着师父学艺，亲同手足。" }
+    { key = "百损道人" value = "他是我恩师，你问这干什么？" },
+    { key = "鹤笔翁" value = "他是我师弟，我们从小跟着师父学艺，亲同手足。" },
+    { key = "缤纷雪舞" value = {
+      kind = "sect_master_grant"
+      perform_id = "ningxue-zhang/xue"
+      skill = "ningxue-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -20000
+      min_gongxian = 220
+      cost_gongxian = 220
+      level_order = ["ningxue-zhang"]
+      min_levels = {
+        ningxue_zhang = 50
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连凝雪杖法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        ningxue_zhang = "你对凝雪杖法的了解还不够，尚且无法领悟此招。"
+      }
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「缤纷雪舞」。\n"
+      improve_skills = ["ningxue-zhang", "staff", "parry", "martial-cognize"]
+    } },
+    { key = "通天彻地" value = {
+      kind = "sect_master_grant"
+      perform_id = "lutou-zhang/tong"
+      skill = "lutou-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -23000
+      min_gongxian = 380
+      cost_gongxian = 380
+      level_order = ["lutou-zhang"]
+      min_force = 140
+      min_levels = {
+        lutou_zhang = 100
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连鹿头杖法都未曾学过，何谈绝招可言？"
+      level_deny = {
+        lutou_zhang = "你对鹿头杖法的了解还不够，尚且无法领悟此招。"
+      }
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「通天彻地」。\n"
+      improve_skills = ["lutou-zhang", "staff", "parry", "martial-cognize"]
+    } },
+    { key = "只手遮天" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuanming-zhang/zhe"
+      skill = "xuanming-zhang"
+      family = "玄冥谷"
+      gate_order = "lpc_masterd"
+      max_shen = -50000
+      min_gongxian = 880
+      cost_gongxian = 880
+      level_order = ["xuanming-zhang", "xuanming-shengong"]
+      min_max_neili = 2000
+      min_levels = {
+        xuanming_zhang = 150
+        xuanming_shengong = 150
+      }
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为玄冥谷作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连玄冥神掌都未曾学过，何谈绝招可言？"
+      level_deny = {
+        xuanming_zhang = "你对玄冥神掌的了解还不够，尚且无法领悟此招。"
+        xuanming_shengong = "你对玄冥神功的了解还不够，尚且无法领悟此招。"
+      }
+      max_neili_deny = "你现在的内力修为不足，修炼高点再来吧。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我玄冥谷素无渊源，不知此话从何说起。"
+      learned = "你学会了「只手遮天」。\n"
+      improve_skills = ["xuanming-zhang", "strike", "parry", "martial-cognize"]
+    } },
+    { key = "鹿头杖" value = {
+      kind = "give_item"
+      item = "clone_lib:lutouzhang"
+      match = "lutouzhang"
+      unique = false
+      family = "玄冥谷"
+      family_deny = "与我玄冥谷素无渊源，不知此话从何说起。"
+      note = "masterd give_item 持有者遍历多分支文案见 GAP #820"
+      master_id = true
+      master_deny = "只有我的弟子才配使用，你还是走吧。"
+      min_skill_levels = {
+        lutou_zhang = 100
+      }
+      max_shen = -20000
+      min_skill_deny = "你的鹿头杖法火候未到，就算拿着也没用。"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，就算拿着也是无用。"
+      success = "既然这样，那这根鹿头杖你就暂时拿去吧。"
+    } }
   ]
 
   skills = [
@@ -45526,6 +45954,52 @@ chats = [
   carry = [
     { id = items.baipao.id }
   ]
+
+  teach = {
+    family = "玄冥谷"
+    teach_skills = {
+      force = { max = 280 gongxian = 0 }
+      minggu_xinfa = { max = 280 gongxian = 0 }
+      dodge = { max = 260 gongxian = 0 }
+      liuying_bu = { max = 260 gongxian = 0 }
+      staff = { max = 280 gongxian = 0 }
+      ningxue_zhang = { max = 280 gongxian = 0 }
+      lutou_zhang = { max = 280 gongxian = 0 }
+      strike = { max = 280 gongxian = 0 }
+      feihua_zhang = { max = 280 gongxian = 0 }
+      cuff = { max = 260 gongxian = 0 }
+      piaofeng_quan = { max = 260 gongxian = 0 }
+      parry = { max = 260 gongxian = 0 }
+      claw = { max = 260 gongxian = 0 }
+      literate = { max = 240 gongxian = 0 }
+      martial_cognize = { max = 220 gongxian = 0 }
+    }
+    no_teach = {
+      xuanming_shengong = "玄冥神功要我师父百损道人亲自传授。"
+      xuanming_zhang = "玄冥神掌要我师父亲自传授，你还是去找他老人家吧！"
+    }
+  }
+
+  apprentice = {
+    family = "玄冥谷"
+    permit_recruit = true
+    gate_order = "lpc_xuanming"
+    no_min_shen = true
+    max_shen = -20000
+    max_shen_deny = "哼，看见你一副正义凛然的样子我就是气。"
+    min_skills = {
+      minggu_xinfa = 120
+      strike = 120
+    }
+    min_skills_deny = {
+      minggu_xinfa = "你冥谷心法火候不足，还是跟我师弟多练习练习吧！"
+      strike = "你基本掌法修为还不够，以后如何学习我玄冥谷绝学玄冥神掌？"
+    }
+    accept_msg = "好，好，今日我就收你为弟子。"
+    betray_sect_deny = "哼，你既然走了就不要再回来！"
+    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
+    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+  }
 
     }
 
@@ -45579,6 +46053,29 @@ chats = [
   carry = [
     { id = items.cloth.id }
   ]
+
+  teach = {
+    family = "玄冥谷"
+    teach_skills = {
+      force = { max = 80 gongxian = 0 }
+      minggu_xinfa = { max = 80 gongxian = 0 }
+      dodge = { max = 80 gongxian = 0 }
+      liuying_bu = { max = 80 gongxian = 0 }
+      parry = { max = 60 gongxian = 0 }
+      feihua_zhang = { max = 80 gongxian = 0 }
+      piaofeng_quan = { max = 80 gongxian = 0 }
+      strike = { max = 80 gongxian = 0 }
+      cuff = { max = 60 gongxian = 0 }
+      literate = { max = 40 gongxian = 0 }
+      martial_cognize = { max = 20 gongxian = 0 }
+    }
+  }
+
+  apprentice = {
+    family = "玄冥谷"
+    deny_all = true
+    deny_msg = "乌旺阿普说道：要入玄冥谷，你还是找我师父或者师伯吧！"
+  }
 
     }
 

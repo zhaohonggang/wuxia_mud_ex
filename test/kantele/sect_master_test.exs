@@ -2175,4 +2175,89 @@ defmodule Kantele.SectMasterDamoGateTest do
                Kantele.SectMaster.inquiry_grant(player, %{family: "星宿派"}, config)
     end
   end
+
+  describe "玄冥谷门控（Task #817）" do
+    @describetag :xuanming_engine
+    test "min_dodge 独立门位于 force 之后、内力之前（masterd.c b[\"dodge\"]）" do
+      config = %{
+        "perform_id" => "dulong-shenzhua/bao",
+        "skill" => "dulong-shenzhua",
+        "gate_order" => "lpc_masterd",
+        "max_shen" => -38000,
+        "min_gongxian" => 420,
+        "cost_gongxian" => 420,
+        "min_levels" => %{"dulong-shenzhua" => 100},
+        "level_order" => ["dulong-shenzhua"],
+        "min_dodge" => 150,
+        "min_force" => 80
+      }
+
+      base = %Stats{
+        skills: %{"dulong-shenzhua" => 100, "dodge" => 149, "force" => 120},
+        gongxian: 420,
+        shen: -40_000,
+        performs: MapSet.new()
+      }
+      |> Map.put(:family, "玄冥谷")
+
+      assert {:error, "你目前的轻功火候不足，下去练练再来吧。\n"} =
+               Kantele.SectMaster.inquiry_grant(base, %{family: "玄冥谷"}, config)
+
+      ready = %{base | skills: %{base.skills | "dodge" => 150}}
+      assert {:ok, "dulong-shenzhua/bao", 420} =
+               Kantele.SectMaster.inquiry_grant(ready, %{family: "玄冥谷"}, config)
+    end
+
+    test "gate_order=lpc_xuanming：技能门先于经验门（百损道人/鹿杖客顺序）" do
+      gate = %{
+        family: "玄冥谷",
+        permit_recruit: true,
+        gate_order: "lpc_xuanming",
+        no_min_shen: true,
+        max_shen: -35000,
+        max_shen_deny: "杀气门\n",
+        min_skills: %{"minggu-xinfa" => 160, "strike" => 160},
+        min_skills_deny: %{
+          "minggu-xinfa" => "冥谷心法不足\n",
+          "strike" => "掌法不足\n"
+        },
+        min_exp: 500000,
+        min_exp_deny: "经验不足\n",
+        betray_sect_deny: "叛门\n",
+        betray_times_deny: "判师\n",
+        other_family_deny: "他派\n"
+      }
+
+      student = fn skills, exp ->
+        %{
+          meta: %{
+            family: %{name: "玄冥谷"},
+            env: %{},
+            stats: %{shen: -40_000, combat_exp: exp, skills: skills}
+          }
+        }
+      end
+
+      assert {:error, "冥谷心法不足\n"} =
+               Kantele.SectMaster.recruit_gate?(
+                 nil,
+                 student.(%{"minggu-xinfa" => 159, "strike" => 160}, 100_000),
+                 gate
+               )
+
+      assert {:error, "经验不足\n"} =
+               Kantele.SectMaster.recruit_gate?(
+                 nil,
+                 student.(%{"minggu-xinfa" => 160, "strike" => 160}, 499_999),
+                 gate
+               )
+
+      assert :ok =
+               Kantele.SectMaster.recruit_gate?(
+                 nil,
+                 student.(%{"minggu-xinfa" => 160, "strike" => 160}, 500_000),
+                 gate
+               )
+    end
+  end
 end

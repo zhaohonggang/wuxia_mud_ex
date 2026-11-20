@@ -220,7 +220,11 @@ defmodule Kantele.SectMaster do
       not is_nil(min_max_neili) and (student_max_neili(student) || 0) < min_max_neili ->
         {:error, deny_text(config, :max_neili_deny, "你的内力修为不足，师父未同意收你为徒。\n")}
 
-      gate_order != "lpc_wuyazi" and exp < min_exp ->
+      # #817 玄冥谷 bai.c/lu.c：负神门之后先判冥谷心法/基本掌法，最后才是经验。
+      gate_order == "lpc_xuanming" and not is_nil(failing_recruit_skill) ->
+        {:error, min_skills_deny(config, failing_recruit_skill)}
+
+      gate_order not in ["lpc_wuyazi", "lpc_xuanming"] and exp < min_exp ->
         {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
 
       # 昆仑何足道 LPC `if (me->query_int() < 38) { ...; return; }` 是硬门，
@@ -233,6 +237,9 @@ defmodule Kantele.SectMaster do
 
       gate_order != "lpc_wuyazi" and not is_nil(failing_recruit_skill) ->
         {:error, min_skills_deny(config, failing_recruit_skill)}
+
+      gate_order == "lpc_xuanming" and exp < min_exp ->
+        {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
 
       true ->
         :ok
@@ -478,11 +485,13 @@ defmodule Kantele.SectMaster do
       `sk1..sk5 → force → dodge → neili` 逐条判定，避免 map 枚举漂移）
     - `"min_force"` / `"force_deny"`：`masterd.c b["force"]` 独立内功门，
       与 `min_levels["force"]` 并存（夺魂势 sk2=force 130 + force=80）
+    - `"min_dodge"` / `"dodge_deny"`：`masterd.c b["dodge"]` 独立轻功门，
+      位于 force 之后、neili 之前（蛟龙抱 dodge150 / 如影相随 dodge180）
 
   各门槛的拒绝文案可用同名 `*_deny` 键覆盖（`maxed` / `family_deny` /
   `skill_deny` / `max_shen_deny` / `gongxian_deny` / `shen_deny` /
   `level_deny` / `max_neili_deny` / `dex_deny` / `force_cap_deny` /
-  `force_deny` / `neili_cap_deny` / `perform_deny`），缺省用通用文案。
+  `force_deny` / `dodge_deny` / `neili_cap_deny` / `perform_deny`），缺省用通用文案。
   门派问询的 LPC 文案每招每NPC 都不同（如血刀门「再罗嗦我宰了你」），
   故按配置回填而不是写死在引擎里。
 
@@ -606,6 +615,9 @@ defmodule Kantele.SectMaster do
 
       below_min_force?(player, config) ->
         {:error, deny(config, "force_deny", "你目前的内功火候不足，下去练练再来吧。\n")}
+
+      below_min_dodge?(player, config) ->
+        {:error, deny(config, "dodge_deny", "你目前的轻功火候不足，下去练练再来吧。\n")}
 
       above_neili_cap?(player, config) ->
         {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
@@ -736,6 +748,14 @@ defmodule Kantele.SectMaster do
   defp below_min_force?(player, config) do
     case Map.get(config, "min_force") do
       min when is_integer(min) -> skill_level_of(player, "force") < min
+      _ -> false
+    end
+  end
+
+  # #817 玄冥谷 masterd.c `b["dodge"]`：位于 force 之后、neili 之前。
+  defp below_min_dodge?(player, config) do
+    case Map.get(config, "min_dodge") do
+      min when is_integer(min) -> skill_level_of(player, "dodge") < min
       _ -> false
     end
   end

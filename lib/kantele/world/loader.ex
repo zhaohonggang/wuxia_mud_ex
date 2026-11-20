@@ -1224,7 +1224,7 @@ defmodule Kantele.World.Loader do
     # - "gender_first"：先 gender，再 permit_recruit —— 对齐 清无 LPC qing-wu.c
     gate_order =
       case Map.get(apprentice, :gate_order) do
-        value when value in ["gender_first", "lpc_xiaoyao", "lpc_wuyazi"] -> value
+        value when value in ["gender_first", "lpc_xiaoyao", "lpc_wuyazi", "lpc_xuanming"] -> value
         _ -> "permit_first"
       end
 
