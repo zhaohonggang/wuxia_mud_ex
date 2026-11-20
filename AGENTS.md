@@ -27,6 +27,17 @@
 - 遇到任何困难、障碍，都**积极、耐心地解决**，而不是逃避、偷懒、走捷径或找借口。
 - 发现缺口是「工作量」不是「麻烦」——主动承接、主动规划、主动完成。
 
+### 0.4 全量回归由用户决定（2026-11-19 用户确立 · 永久生效）
+
+1. **AI 永远不自行运行全量回归** —— 即不自行执行 `mix test`（全部 663 个测试文件），
+   也不自行分 chunk 跑完整套。
+2. 当某批改动按项目惯例「本该跑全量回归」时（见 §Dev Workflow 第 5 条），
+   **不要跑**，改为把该批登记到 `docs/待全量回归清单.zh-CN.md`，然后**继续推进下一批**。
+3. 用户审阅该清单并明确指示后，才执行全量回归，并把结果回填到清单对应条目。
+4. **定向测试不受此限**：改动相关的测试文件（如 `mix test test/kantele/xxx_test.exs`）
+   仍应自行运行 —— 改动是否正确必须自己验证，不得跳过。
+5. 禁令同样适用于后台/异步执行、脚本包装、或「只跑一部分 chunk」等任何变体。
+
 ---
 
 > ## 📌 归档声明 · 全库待办清零（2026-11-12）
@@ -243,6 +254,7 @@ This ensures future passes can complete the conversion without re-reading LPC.
 | Issue | Fix |
 |-------|-----|
 | `mix test` hangs on recompile | Exclude `reload_command_test` (known flaky 60s timeout) |
+| 测试中途生成 10GB+ `erl_crash.dump` 占满系统盘 | BEAM 遇 `eheap_alloc` 等不可恢复错误会往 cwd 写 crash dump（= 全进程堆 + 全 ETS 快照）。跑任何 `mix` 前 `export ERL_CRASH_DUMP_BYTES=0`；`verify.sh` 已内置 |
 | UCL parse fails | Check for stray `;` in strings, missing trailing commas in arrays |
 | perform_known? missing | Use `Stats.perform_known?/2` before calling perform module |
 | World load order | `kickoff_test.exs` validates loader phases; run it first after UCL changes |
@@ -253,7 +265,9 @@ This ensures future passes can complete the conversion without re-reading LPC.
 2. `mix compile` —— **日常改动只需编译通过即可，不必每次都跑全量测试。**
 3. `mix format && mix credo` (pre-commit)
 4. Targeted test in container (可选，仅在涉及核心逻辑变更或修复 Bug 时运行)：`docker compose -f docker-compose.dev.yml run --rm -e MIX_ENV=test -e TEST_DATABASE_URL=postgresql://postgres:postgres@db:ex_venture_test app mix test test/kantele/...`
-5. Full suite (仅在提交前或重大功能完成后运行)：同第 4 条命令，加 `--seed 731933`
+5. Full suite（**AI 不得自行运行 · §0.4**）：仅在用户审阅 `docs/待全量回归清单.zh-CN.md`
+   并明确指示后执行；同第 4 条命令，加 `--seed 731933`。
+   未获指示时 —— 把本批改动登记到该清单，然后直接继续下一批。
 6. **Pre-commit check**: Before committing modified tracked files, compare with `git show HEAD:<file>` — if the new version loses significant info or is noticeably smaller, **do not commit**; investigate or report to user
 7. Commit by sect/family (not per-skill): `git commit -m "Shaolin: implement damo-jian performs"`
 
