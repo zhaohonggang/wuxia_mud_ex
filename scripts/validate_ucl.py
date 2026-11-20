@@ -381,7 +381,23 @@ def check_integrity(data):
 # ---------------------------------------------------------------------------
 def check_chars(data):
     issues = []
-    if _CHARS_DOUBLE_BRACE_RE.search(data):
+    # 纯物件库区（zones + items/characters，无 rooms —— clone_lib / tangmen）豁免两条
+    # 启发式规则，因为它们描述的是「转换器输出布局」，而这类文件是手工维护的标准库：
+    #   1. `} }` / `} },`：内联对象作为数组元素时的合法收尾，例如
+    #        inquiries = [
+    #          { key = "x" value = {
+    #            kind = "a"
+    #          } },
+    #        ]
+    #      clone_lib.ucl 有 358 处（300 带逗号 + 58 不带）。实测 Elias.parse/1
+    #      接受（顶层键 = [:characters, :items, :zones]），本校验器自己的 Syntax
+    #      检查也接受；只有这条字符级启发式会误报。
+    #   2. `$N` / `$n`：ex 引擎仍在一等使用这些 LPC 占位符 ——
+    #      RoomActions.Helpers.broadcast_vision/3 做 String.replace(template,
+    #      "$N", "{npc}")，Combat.Messages.interpolate/2 同时替换 $N/$n。
+    #      clone_lib 的 msg_one 是照抄 LPC masterd.c 的演示文案，不是转换器泄漏。
+    object_only = _is_object_only_zone(data)
+    if not object_only and _CHARS_DOUBLE_BRACE_RE.search(data):
         issues.append("double closing brace")
     if _CHARS_TRAILING_COMMA_RE.search(data):
         issues.append("trailing comma before }")
@@ -390,9 +406,9 @@ def check_chars(data):
     # Elias parser issues that Python validator doesn't catch but elias chokes on:
     # - $N / $n placeholders not replaced by converter (must be {npc} / {name})
     # - [ ] inside quoted strings (elias chokes; converter should emit ( ) )
-    if b'$N' in data:
+    if not object_only and b'$N' in data:
         issues.append("raw $N placeholder (should be {npc})")
-    if b'$n' in data:
+    if not object_only and b'$n' in data:
         issues.append("raw $n placeholder (should be {name})")
     # Check for [ ] inside quoted strings (elias parser error "syntax error before: [")
     if _has_brackets_in_strings(data):

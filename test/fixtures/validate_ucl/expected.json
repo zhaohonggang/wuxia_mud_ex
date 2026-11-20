@@ -68,7 +68,8 @@
         "square brackets inside string literals (elias parser rejects them; converter should emit ( ) )",
         "duplicate direction keys inside a single `room_exits \"...\"` block (elias merges them into an array, so the loader's String.split receives an array and crashes)",
         "raw Python repr leaking into a UCL value, i.e. a single-quoted token directly after `[` or `{`, or a `'key': 'value'` pair. UCL only ever writes `key = value` with double quotes, so this can only come from the converter interpolating str(dict)/str(list). The detail must include the 1-based line number.",
-        "an unconverted LPC runtime expression leaking into an object id, i.e. an `items.`/`characters.`/`rooms.` reference whose local name contains a subscript `[...]`, a `$var` interpolation, or parentheses (e.g. `items. + books[random(sizeof(books))].id`). The converter must skip such keys rather than emit them. The detail must include the 1-based line number."
+        "an unconverted LPC runtime expression leaking into an object id, i.e. an `items.`/`characters.`/`rooms.` reference whose local name contains a subscript `[...]`, a `$var` interpolation, or parentheses (e.g. `items. + books[random(sizeof(books))].id`). The converter must skip such keys rather than emit them. The detail must include the 1-based line number.",
+        "EXEMPTION: the same room-less (object-only) zones that structure/integrity exempt (see _is_object_only_zone, fixture 47_ok_object_only_zone) are ALSO exempt from the `double closing brace`, `$N` and `$n` rules. Those three rules describe *converter output layout*; clone_lib.ucl and tangmen.ucl are hand-maintained standard libraries whose `} }` array-element closings are legitimate and whose `$N`/`$n` are first-class engine placeholders (broadcast_vision replaces $N->{npc}; Combat.Messages.interpolate replaces both). The remaining chars rules (unpaired quote, trailing comma, brackets-in-strings, duplicate exit keys, python repr, elias-unlexable, elias bad key, stray backslash) still apply everywhere."
       ]
     }
   },
@@ -178,6 +179,12 @@
     {
       "file": "47_ok_object_only_zone.ucl",
       "why": "regression fixture for the real tangmen zone, which is object-only: mud/d/tangmen contains just obj/feidao.c and obj/jili.c, so its converted output has a `zones` block plus `items` blocks and NO rooms at all. That output is genuinely valid - Elias.parse/1 accepts it and Kantele.World.Loader.load/1 loads the whole world with it present - so `structure` and `integrity` must exempt it. The exemption is deliberately narrow (`_is_object_only_zone`): a `zones` block, zero `rooms` AND zero `room_exits` blocks, and at least one `items`/`characters` block as proof the converter ran. So 22_bad_integrity_zero_rooms (only a zones block, no objects) still fails, 21_bad_structure_no_exits (rooms but no room_exits) still fails, and exits-without-rooms still fails. Contrast 30_bad_integrity_mismatch, which has 2 rooms and must still fail.",
+      "exit_code": 0,
+      "failing_checks": []
+    },
+    {
+      "file": "48_ok_object_only_chars_exempt.ucl",
+      "why": "pins the `chars` half of the object-only exemption. An object-only zone (zones + items + characters, no rooms) that legitimately contains ALL THREE converter-layout patterns: an inline object closing an array element (`} },`), a raw `$N`, and a raw `$n`. In a room-bearing converter-output zone each of these would be a Chars violation; in a hand-maintained standard library (clone_lib.ucl, tangmen.ucl) they are all legitimate - `} }` is valid inline-object-in-array, and `$N`/`$n` are first-class engine placeholders (broadcast_vision replaces $N->{npc}; Combat.Messages.interpolate replaces both). Must PASS. Confirms the exemption is scoped to object-only zones only: 40_bad_chars_double_close (has rooms) still fails Chars+Syntax, and the raw-$N/$n real-world files under real_world_regression still fail Chars.",
       "exit_code": 0,
       "failing_checks": []
     },

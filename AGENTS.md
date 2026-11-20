@@ -275,7 +275,7 @@ This ensures future passes can complete the conversion without re-reading LPC.
 
 | # | 规则 | 说明 |
 |---|------|------|
-| 1 | **提交前必编译** | 提交前必须跑 `mix compile`，且必须通过。适用于 `lib/**/*.ex` 与 `data/**/*.ucl` 的改动。`.exs`（测试 / 脚本 / 配置）不做要求，日后跑测试发现语法错误再修。 |
+| 1 | **提交前必检查** | 提交前必须做两项检查，都必须通过：① 改了 `lib/**/*.ex` → 跑 `mix compile`；② 改了 `data/**/*.ucl` → 跑 `python scripts/validate_ucl.py <文件>`。`.exs`（测试 / 脚本 / 配置）不做要求，日后跑测试发现语法错误再修。 |
 | 2 | **改动前先核实现有状态** | 开始任何改动前，都先核实一下现有状态（grep 代码、读文档、查 git log）。如果该功能已经做了，不要重新做，只更新相关文档和记忆，把它标记完成。 |
 | 3 | **改动后必更新文档与记忆** | 做完每一个改动，都要更新相关文档（如 `docs/*.md`、`AGENTS.md`）和记忆（`.workbuddy-ai/memory/` 日志与 MEMORY.md），并在文档中把该项标记完成，以免之后重新做。 |
 

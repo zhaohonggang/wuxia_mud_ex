@@ -1,0 +1,21 @@
+zones "objonlychars" {
+  name = "objonlychars"
+}
+
+    items "demo" {
+      name = "演示物件"
+      id = items.demo.id
+      msg_one = "$N点了点头，在$n耳边轻声嘀咕了几句。"
+      msg_two = "$n微微一笑，转身演示。"
+    }
+
+    characters "demo_master" {
+      name = "演示师父"
+      id = characters.demo_master.id
+      inquiries = [
+        { key = "看招" value = {
+          kind = "sect_master_grant"
+          msg_one = "$N凝视了$n许久，方才微微点了点头。"
+        } }
+      ]
+    }

@@ -12,6 +12,7 @@
 - **定向测试不受限**：改动相关的测试文件必须自己跑（验证改动是否正确），不得跳过。
 
 ## Iron rules
+- **提交前必检查**（AGENTS.md Core Rule #1）：① 改 `lib/**/*.ex` → `mix compile` 必过；② 改 `data/**/*.ucl` → `python scripts/validate_ucl.py <文件>` 必过。`.exs` 不做要求。
 - 无 git commit/push 除非用户明确要求（2026-11-10 已授权「提交推送，然后继续推进」）。
 - 改动前 Grep lib/test/docs + LPC 源确认真缺口，不臆造语义；不要升级 nimble_parsec。
 - `character_metadata_backup.sql` 为启动时自动生成，提交前还原。
