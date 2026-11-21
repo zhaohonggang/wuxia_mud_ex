@@ -3807,6 +3807,10 @@ defmodule Kantele.World.Room.CombatEvent do
           student_family: Map.get(event.data, :student_family),
           student_env: Map.get(event.data, :student_env),
           student_spouse: Map.get(event.data, :student_spouse),
+          # #879 条件 no_teach 解锁：师父侧 SectMaster.teachable?/3 读学生 marks
+          # 判定 can_learn/<family>/<skill> 是否已解锁；缺字段 → marks 回落 %{} → 未解锁。
+          student_marks: Map.get(event.data, :student_marks),
+          student_character: Map.get(event.data, :student_character),
           student_equipped: Map.get(event.data, :student_equipped),
           reply_to: student.pid
         })

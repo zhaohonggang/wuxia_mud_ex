@@ -59,15 +59,22 @@ defmodule Kantele.Character.SkillsEvent do
 
     case SectMaster.teachable?(
            character,
-           %{meta: %{family: student_family, stats: student_stats}},
+           %{meta: %{family: student_family, stats: student_stats, marks: student_marks || %{}}},
            skill
          ) do
       {:error, message} ->
         reply(reply_to, message)
         conn
 
+      # #879 条件 no_teach 解锁：放行授艺，并在授艺成功后给学生落解锁 mark。
+      # mark 为 nil 表示「已持有 mark」分支（无需再写）；非 nil 为「本次 exp 达标」分支。
+      {:unlock, learned, mark} ->
+        do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate,
+          reply_to, {learned, mark})
+
       :ok ->
-        do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate, reply_to)
+        do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate,
+          reply_to, nil)
     end
   end
 
@@ -77,7 +84,18 @@ defmodule Kantele.Character.SkillsEvent do
     Map.put(character, :conditions, get_session(conn, "conditions") || %{})
   end
 
-  defp do_teach(conn, module, base_skill?, skill, times, student_stats, student_character, gate, reply_to) do
+  defp do_teach(
+         conn,
+         module,
+         base_skill?,
+         skill,
+         times,
+         student_stats,
+         student_character,
+         gate,
+         reply_to,
+         unlock
+       ) do
     character = conn.character
 
     cond do
@@ -103,7 +121,8 @@ defmodule Kantele.Character.SkillsEvent do
           reply_to,
           character,
           skill,
-          teachable(times, character.meta.stats, student_stats, skill)
+          teachable(times, character.meta.stats, student_stats, skill),
+          unlock
         )
 
         conn
@@ -115,7 +134,8 @@ defmodule Kantele.Character.SkillsEvent do
               reply_to,
               character,
               skill,
-              teachable(times, character.meta.stats, student_stats, skill)
+              teachable(times, character.meta.stats, student_stats, skill),
+              unlock
             )
 
             conn
@@ -133,11 +153,11 @@ defmodule Kantele.Character.SkillsEvent do
     max(min(requested, gap), 0)
   end
 
-  defp grant(reply_to, _teacher, _skill, times) when times < 1 do
+  defp grant(reply_to, _teacher, _skill, times, _unlock) when times < 1 do
     reply(reply_to, "这一门功夫你已不弱于老夫，没什么可教的了。\n")
   end
 
-  defp grant(reply_to, teacher, skill, times) do
+  defp grant(reply_to, teacher, skill, times, unlock) do
     text =
       if times > 1 do
         "#{teacher.name}细心指点你#{skill_title(skill)}的要诀，你连听了 #{times} 讲。\n"
@@ -145,7 +165,28 @@ defmodule Kantele.Character.SkillsEvent do
         "#{teacher.name}细心指点你#{skill_title(skill)}的要诀。\n"
       end
 
+    # #879 条件 no_teach 解锁：LPC try_to_learn_* 在 exp 达标时 say + set mark 后 return 0
+    # （本次调用只解锁、不授艺）。host 先回显 learned 台词，再给学生落解锁 mark；
+    # 已持有 mark 的分支（mark 为 nil）不重复写。
+    text =
+      case unlock do
+        {learned, _mark} when is_binary(learned) and byte_size(learned) > 0 -> learned <> text
+        _ -> text
+      end
+
     reply(reply_to, text)
+
+    case unlock do
+      {_learned, mark} when is_binary(mark) and byte_size(mark) > 0 ->
+        send(reply_to, %Kalevala.Event{
+          from_pid: self(),
+          topic: "skills/unlock-mark",
+          data: %{mark: mark}
+        })
+
+      _ ->
+        :ok
+    end
 
     send(reply_to, %Kalevala.Event{
       from_pid: self(),
@@ -219,6 +260,20 @@ defmodule Kantele.Character.SkillsEvent do
       |> prompt(CommandView, "prompt", %{})
     end
   end
+
+  # #879 条件 no_teach 解锁的落 mark（对照 miao.c try_to_learn_* 的
+  # `ob->set("can_learn/<family>/<skill>", 1)`）。师父侧 exp 达标时发本事件，
+  # 学生侧写 meta.marks 后落盘；幂等（重复写同值无副作用）。
+  def unlock_mark(conn, %{data: %{mark: mark}}) when is_binary(mark) and byte_size(mark) > 0 do
+    character = conn.character
+    meta = Kantele.Character.put_mark(character.meta, mark, 1)
+    character = %{character | meta: meta}
+    Records.save(character)
+
+    put_character(conn, character)
+  end
+
+  def unlock_mark(conn, _event), do: conn
 
   # 逐级学习：潜能池(b1)/耗精(b3)/经验门(b4) 任一不过即停，已学部分保留
   defp learn_levels(vitals, stats, _skill, remaining, n) when remaining < 1,

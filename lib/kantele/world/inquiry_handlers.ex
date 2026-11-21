@@ -21,6 +21,7 @@ defmodule Kantele.World.InquiryHandlers do
     "sect_master_grant" => Kantele.World.InquiryHandlers.SectMasterGrant,
     "sect_master_teach_skill" => Kantele.World.InquiryHandlers.SectMasterTeachSkill,
     "sect_master_unlock_perform" => Kantele.World.InquiryHandlers.SectMasterUnlockPerform,
+    "meizhuang_riyue" => Kantele.World.InquiryHandlers.MeizhuangRiyue,
     "tonsure" => Kantele.World.InquiryHandlers.Tonsure
   }
 

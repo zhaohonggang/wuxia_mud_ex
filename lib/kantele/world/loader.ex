@@ -1141,33 +1141,60 @@ defmodule Kantele.World.Loader do
           %{}
       end
 
-    # LPC no_teach 有两种形状：平坦字符串列表（如 hu/hufei.c 的三项解锁占位）
-    # 与 skill -> 拒绝文案 map（如 linghu.c 的 yijinjing/dugu-jiujian、
-    # yue-buqun.c 的 pixie-jian）。两者都落位：列表供展示，文案单独成 map，
-    # 避免把华山逐字文案静默丢弃（GAP #742 消费端另立计划）。
-    {no_teach, no_teach_deny} =
+    # LPC no_teach 有三种形状：平坦字符串列表（如 hu/hufei.c 的三项解锁占位）、
+    # skill -> 拒绝文案 map（如 linghu.c 的 yijinjing/dugu-jiujian、yue-buqun.c 的 pixie-jian）、
+    # 以及 skill -> map（含 unlock 条件解锁，如 miao.c 的 miaojia-jian/tianlong-jian/chongtian-zhang）。
+    # 三者都落位：列表供展示，文案落 no_teach_deny，unlock 落 no_teach_unlock，
+    # 避免把逐字文案与条件解锁静默丢弃（GAP #742 / #879）。
+    {no_teach, no_teach_deny, no_teach_unlock} =
       case Map.get(teach, :no_teach) do
-        list when is_list(list) -> {Enum.map(list, &to_string/1), %{}}
+        list when is_list(list) ->
+          {Enum.map(list, &to_string/1), %{}, %{}}
 
         map when is_map(map) ->
-          Enum.reduce(map, {[], %{}}, fn {skill, reason}, {skills, denies} ->
-            skill_id = String.replace(to_string(skill), "_", "-")
-            {[skill_id | skills], Map.put(denies, skill_id, to_string(reason))}
+          Enum.reduce(map, {[], %{}, %{}}, fn
+            {skill, %{unlock: _} = conf}, {skills, denies, unlocks} ->
+              skill_id = String.replace(to_string(skill), "_", "-")
+
+              unlock =
+                case Map.get(conf, :unlock) do
+                  u when is_map(u) -> u
+                  _ -> %{}
+                end
+
+              {[skill_id | skills], Map.put(denies, skill_id, ""),
+               Map.put(unlocks, skill_id, normalize_unlock(unlock))}
+
+            {skill, reason}, {skills, denies, unlocks} ->
+              skill_id = String.replace(to_string(skill), "_", "-")
+              {[skill_id | skills], Map.put(denies, skill_id, to_string(reason)), unlocks}
           end)
 
         _ ->
-          {[], %{}}
+          {[], %{}, %{}}
       end
 
     %{
       family: Map.get(teach, :family) && to_string(Map.get(teach, :family)),
       teach_skills: teach_skills,
       no_teach: no_teach,
-      no_teach_deny: no_teach_deny
+      no_teach_deny: no_teach_deny,
+      no_teach_unlock: no_teach_unlock
     }
   end
 
   defp parse_teach(_), do: nil
+
+  # #879 条件 no_teach 解锁：mark 键（can_learn/<family>/<skill>）与 exp 阈值归一。
+  # min_exp 缺省 0（仅看 mark）；learned/locked 为师父台词，缺省 nil（teachable? 回退通用文案）。
+  defp normalize_unlock(unlock) do
+    %{
+      mark: class_value(Map.get(unlock, :mark)),
+      min_exp: int_value(Map.get(unlock, :min_exp)) || 0,
+      learned: Map.get(unlock, :learned),
+      locked: Map.get(unlock, :locked)
+    }
+  end
 
   # 收徒门槛（F3 切片 1）：镜像 parse_teach/1 的卫句/归约形状。
   # UCL 例 apprentice = {
@@ -1194,6 +1221,18 @@ defmodule Kantele.World.Loader do
       case Map.get(apprentice, :no_recruit) do
         list when is_list(list) -> Enum.map(list, &to_string/1)
         _ -> []
+      end
+
+    # 恒山派 attempt_apprentice 先判 henshan-jian 再判 force，两句 LPC 文案不同；
+    # min_skills 是 map（遍历顺序不保证），故允许显式给出有序技能链。
+    # 缺 key → []，既有门派走原来的 map 遍历，零回归影响（Task #860）。
+    recruit_skill_order =
+      case Map.get(apprentice, :recruit_skill_order) do
+        skills when is_list(skills) ->
+          Enum.map(skills, &String.replace(to_string(&1), "_", "-"))
+
+        _ ->
+          []
       end
 
     # class 继承（F3 切片 6）：LPC attempt_apprentice 成功时 ob->set("class", ...)
@@ -1224,8 +1263,18 @@ defmodule Kantele.World.Loader do
     # - "gender_first"：先 gender，再 permit_recruit —— 对齐 清无 LPC qing-wu.c
     gate_order =
       case Map.get(apprentice, :gate_order) do
-        value when value in ["gender_first", "lpc_xiaoyao", "lpc_wuyazi", "lpc_xuanming"] -> value
-        _ -> "permit_first"
+        value
+        when value in [
+               "gender_first",
+               "lpc_xiaoyao",
+               "lpc_wuyazi",
+               "lpc_xuanming",
+               "lpc_meizhuang"
+             ] ->
+          value
+
+        _ ->
+          "permit_first"
       end
 
     base = %{
@@ -1235,11 +1284,17 @@ defmodule Kantele.World.Loader do
       min_max_neili: int_value(Map.get(apprentice, :min_max_neili)),
       min_exp: Map.get(apprentice, :min_exp) || 0,
       min_skills: min_skills,
+      recruit_skill_order: recruit_skill_order,
       no_recruit: no_recruit,
       class: class,
       gender: gender,
       permit_recruit: permit_recruit,
       gate_order: gate_order,
+      # #879 中原苗家 miao.h：`born_family != "中原苗家"` 收徒硬门（我苗家向来便不收容外人）。
+      # 读玩家 meta.env.born_family（setup_controller.ex:174 put_character_env(:born_family, ...)）。
+      # 缺 key（nil/空）→ 恒不命中，段氏/胡/欧阳/慕容等未配置的世家零回归。
+      required_born_family: class_value(Map.get(apprentice, :required_born_family)),
+      born_family_deny: Map.get(apprentice, :born_family_deny),
       # 侠客岛 shi.c：attempt_apprentice 无条件拒绝（连 ah + say）。
       # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
       deny_all: to_bool(Map.get(apprentice, :deny_all)),
@@ -1322,6 +1377,25 @@ defmodule Kantele.World.Loader do
       any_min_skills_deny: Map.get(apprentice, :any_min_skills_deny)
     }
 
+    # 梅庄 meizhuang.h permit_recruit 例外：`family == 日月神教` 或
+    # `master_name == 东方不败` 时「他派」第三条不拦（Task #869）。
+    # attempt_apprentice 首段还要写 `move_party/日月神教--梅庄` 标记：
+    # 老配置全 nil / false，原有门派零影响。
+    meizhuang_fields = %{
+      allow_families:
+        case Map.get(apprentice, :allow_families) do
+          list when is_list(list) -> Enum.map(list, &to_string/1)
+          _ -> []
+        end,
+      allow_master_name: Map.get(apprentice, :allow_master_name),
+      defer_family: Map.get(apprentice, :defer_family),
+      defer_master_name: Map.get(apprentice, :defer_master_name),
+      defer_mark: Map.get(apprentice, :defer_mark),
+      defer_msg: Map.get(apprentice, :defer_msg),
+      defer_continue: to_bool(Map.get(apprentice, :defer_continue)),
+      delete_mark_on_accept: to_bool(Map.get(apprentice, :delete_mark_on_accept))
+    }
+
     # #652：LPC 各字辈 attempt_apprentice 成功文案可用 UCL 覆写；未配置时由
     # ShaolinApprenticeDialogue 按字辈/分支回退到 LPC 逐字原文。
     dialogue_fields = %{
@@ -1354,7 +1428,13 @@ defmodule Kantele.World.Loader do
 
     Map.merge(
       base,
-      Map.merge(da_mo_fields, Map.merge(promotion_fields, Map.merge(dialogue_fields, apprentice_fields)))
+      Map.merge(
+        da_mo_fields,
+        Map.merge(
+          promotion_fields,
+          Map.merge(meizhuang_fields, Map.merge(dialogue_fields, apprentice_fields))
+        )
+      )
     )
   end
 
@@ -1425,14 +1505,64 @@ defmodule Kantele.World.Loader do
 
   defp parse_quest(_), do: nil
 
-  # 帮手列表（coagent.c）：UCL 例 coagents = ["liuxi:mafu"]，帮手 NPC 的 id 列表
+  # 帮手列表（coagent.c / feature/guarder.c kill_enemy）：
+  # LPC 原生形态是「map 列表」——每项 `("startroom" : "<room>", "id" : "<npc id>")`，
+  # 如 `d/huashan/npc/dayou.c`、`d/miao/wen.c`。`Guarder.kill_enemy/1` 按**字符串键** map
+  # 消费（`Map.get(c, "id")` / `Map.get(c, "startroom")`，见 traits_test.exs）。
+  #
+  # 兼容两种来源：
+  #   1. 转换器/LPC 的 map 列表 → 归一为字符串键 map `%{"id" =>, "startroom" =>}`；
+  #   2. 旧式纯字符串 id 列表（如 `coagents = ["liuxi:mafu"]`）→ 归一为 `%{"id" => <id>}`。
+  #
+  # 消费端：`Guarder.kill_enemy`（guarder 路径，room.ex）与 `combat_event.ex notify_coagents`
+  # 均按 `id` 取帮手 pid。早期实现 `Enum.map(&to_string/1)` 对 map 会抛
+  # `Protocol.UndefinedError`（String.Chars 未实现于 Map），任何带 LPC 原生 coagents 的 NPC
+  # 直接解析崩溃。本批（miao/wen.c）首次落地该字段，故一并修正。
   defp parse_coagents(nil), do: nil
 
-  defp parse_coagents(coagents) do
+  defp parse_coagents(coagents) when is_list(coagents) do
     coagents
-    |> List.wrap()
-    |> Enum.map(&to_string/1)
+    |> Enum.map(&normalize_coagent/1)
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      list -> list
+    end
   end
+
+  defp parse_coagents(_), do: nil
+
+  # map 形态（LPC 原生）：取 id / startroom 两键，归一为字符串键 map。
+  # 缺 id 的 map 视为无效项（Guarder.kill_enemy 会跳过非 map/无 id 项）。
+  defp normalize_coagent(coagent) when is_map(coagent) do
+    id = Map.get(coagent, :id) || Map.get(coagent, "id")
+
+    if is_nil(id) or id == "" do
+      nil
+    else
+      %{
+        "id" => to_string(id),
+        "startroom" =>
+          present_or_nil(Map.get(coagent, :startroom) || Map.get(coagent, "startroom"))
+      }
+    end
+  end
+
+  # 字符串形态（旧式）：直接当 id。
+  defp normalize_coagent(coagent) when is_binary(coagent) do
+    if coagent == "" do
+      nil
+    else
+      %{"id" => coagent, "startroom" => nil}
+    end
+  end
+
+  defp normalize_coagent(_), do: nil
+
+  defp present_or_nil(nil), do: nil
+  defp present_or_nil(""), do: nil
+  defp present_or_nil(value) when is_binary(value), do: value
+  defp present_or_nil(value), do: to_string(value)
 
   # 可切割部位（cutable.c）：UCL 例 parts = {
   #   head = { level = 3, unit = "颗", name = "头", name_left = "头",

@@ -716,6 +716,108 @@ valid_leave = [
       name = "狄修"
       aliases = ["di xiu", "xiu", "di"]
       description = ""
+  # LPC: C:/files/git/mud/kungfu/class/songshan/di.c
+  teach = {
+    family = "嵩山派"
+    teach_skills = {
+      cuff = { max = 60 gongxian = 0 }
+      songshan_quan = { max = 60 gongxian = 0 }
+      strike = { max = 60 gongxian = 0 }
+      songshan_zhang = { max = 60 gongxian = 0 }
+      sword = { max = 80 gongxian = 0 }
+      songshan_jian = { max = 80 gongxian = 0 }
+      force = { max = 80 gongxian = 0 }
+      parry = { max = 60 gongxian = 0 }
+      dodge = { max = 60 gongxian = 0 }
+      lingxu_bu = { max = 60 gongxian = 0 }
+      songshan_xinfa = { max = 80 gongxian = 0 }
+      literate = { max = 80 gongxian = 0 }
+      martial_cognize = { max = 60 gongxian = 0 }
+    }
+  }
+  apprentice = {
+    family = "嵩山派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了嵩山派，何必又要回来？"
+    betray_times_deny = "我们嵩山派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们嵩山派作甚？"
+    min_shen_deny = "你这人不做好事，我嵩山派可容你不得。"
+    accept_msg = "既然如此，那你以后就跟着我吧。"
+  }
+  inquiries = [
+    { key = "千斤锤" value = {
+      kind = "sect_master_grant"
+      perform_id = "songshan-quan/chui"
+      skill = "songshan-quan"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连嵩山拳法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 60
+      cost_gongxian = 60
+      min_shen = 2000
+      min_levels = { songshan_quan = 30 }
+      level_order = ["songshan-quan"]
+      level_deny = { songshan_quan = "你对嵩山拳法的了解还不够，尚且无法领悟此招。" }
+      min_force = 30
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["songshan-quan", "cuff", "parry", "martial-cognize"]
+      learned = "你学会了「千斤锤」。"
+    }
+    },
+    { key = "破山斧" value = {
+      kind = "sect_master_grant"
+      perform_id = "songshan-zhang/po"
+      skill = "songshan-zhang"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连嵩山掌法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 60
+      cost_gongxian = 60
+      min_shen = 2000
+      min_levels = { songshan_zhang = 30 }
+      level_order = ["songshan-zhang"]
+      level_deny = { songshan_zhang = "你对嵩山掌法的了解还不够，尚且无法领悟此招。" }
+      min_force = 30
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["songshan-zhang", "parry", "strike", "martial-cognize"]
+      learned = "你学会了「破山斧」。"
+    }
+    },
+    { key = "如梦如幻" value = {
+      kind = "sect_master_grant"
+      perform_id = "songshan-jian/meng"
+      skill = "songshan-jian"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连嵩山剑法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 80
+      cost_gongxian = 80
+      min_shen = 2800
+      min_levels = { songshan_jian = 40 }
+      level_order = ["songshan-jian"]
+      level_deny = { songshan_jian = "你对嵩山剑法的了解还不够，尚且无法领悟此招。" }
+      improve_skills = ["songshan-jian", "sword", "parry", "martial-cognize"]
+      learned = "你学会了「如梦如幻」。"
+    }
+    }
+  ]
+  coagents = [
+    { id = "songshan:zuo" startroom = "" }
+  ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.meng", "strike.po", "cuff.chui", "recover"]
   gender = "男性"
   age = 25
 
@@ -807,6 +909,124 @@ valid_leave = [
       name = "费彬"
       aliases = ["fei bing", "bing", "fei"]
       description = ""
+  # LPC: C:/files/git/mud/kungfu/class/songshan/fei.c
+  teach = {
+    family = "嵩山派"
+    teach_skills = {
+      cuff = { max = 200 gongxian = 0 }
+      strike = { max = 220 gongxian = 0 }
+      sword = { max = 220 gongxian = 0 }
+      force = { max = 200 gongxian = 0 }
+      parry = { max = 200 gongxian = 0 }
+      dodge = { max = 200 gongxian = 0 }
+      songshan_jian = { max = 220 gongxian = 0 }
+      lingyun_jian = { max = 220 gongxian = 0 }
+      chuanyue_jian = { max = 220 gongxian = 0 }
+      jiuqu_jian = { max = 220 gongxian = 0 }
+      songshan_xinfa = { max = 200 gongxian = 0 }
+      songyang_zhang = { max = 200 gongxian = 0 }
+      songshan_zhang = { max = 200 gongxian = 0 }
+      songshan_quan = { max = 200 gongxian = 0 }
+      literate = { max = 200 gongxian = 0 }
+      martial_cognize = { max = 180 gongxian = 0 }
+    }
+  }
+  apprentice = {
+    family = "嵩山派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了嵩山派，何必又要回来？"
+    betray_times_deny = "我们嵩山派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们嵩山派作甚？"
+    min_shen = 30000
+    min_shen_deny = "我嵩山剑派乃是堂堂名门正派，对弟子要求严格。你在这侠义与德行方面是否还做得不够？"
+    min_exp = 200000
+    min_exp_deny = "你现在经验尚浅，还是多在江湖上走走吧。"
+    recruit_skill_order = ["songshan-jian", "songshan-xinfa"]
+    min_skills = {
+      songshan_jian = 120
+      songshan_xinfa = 100
+    }
+    min_skills_deny = {
+      songshan_jian = "我嵩山剑派乃五岳剑派之一，最为重视剑法。你的嵩山剑法还不够熟练，下去练练再来吧。"
+      songshan_xinfa = "我嵩山剑派虽善用剑，但内功却是御剑之本。你是否还应该在嵩山心法上多下点功夫？"
+    }
+    accept_msg = "孺子可教，孺子可教。今日我就收下你吧。你以后定要勤练武，多行善，扬我嵩山派雄风。"
+  }
+  inquiries = [
+    { key = "无影掌" value = {
+      kind = "sect_master_grant"
+      perform_id = "songyang-zhang/ying"
+      skill = "songyang-zhang"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连嵩阳掌都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 300
+      cost_gongxian = 300
+      min_shen = 32000
+      min_levels = { songyang_zhang = 80 }
+      level_order = ["songyang-zhang"]
+      level_deny = { songyang_zhang = "你对嵩阳掌的了解还不够，尚且无法领悟此招。" }
+      min_force = 80
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      min_dodge = 80
+      dodge_deny = "你目前的轻功火候不足，下去练练再来吧。"
+      improve_skills = ["songyang-zhang", "parry", "strike", "martial-cognize"]
+      learned = "你学会了「无影掌」。"
+    }
+    },
+    { key = "剑气冲霄" value = {
+      kind = "sect_master_grant"
+      perform_id = "lingyun-jian/xiao"
+      skill = "lingyun-jian"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连凌云剑法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 400
+      cost_gongxian = 400
+      min_shen = 41000
+      min_levels = { lingyun_jian = 100 }
+      level_order = ["lingyun-jian"]
+      level_deny = { lingyun_jian = "你对凌云剑法的了解还不够，尚且无法领悟此招。" }
+      min_force = 120
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["lingyun-jian", "parry", "sword", "martial-cognize"]
+      learned = "你学会了「剑气冲霄」。"
+    }
+    },
+    { key = "皓月穿空" value = {
+      kind = "sect_master_grant"
+      perform_id = "chuanyue-jian/hao"
+      skill = "chuanyue-jian"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连穿月剑法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 520
+      cost_gongxian = 520
+      min_shen = 52000
+      min_levels = { chuanyue_jian = 120 }
+      level_order = ["chuanyue-jian"]
+      level_deny = { chuanyue_jian = "你对穿月剑法的了解还不够，尚且无法领悟此招。" }
+      min_force = 120
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["chuanyue-jian", "sword", "parry", "martial-cognize"]
+      learned = "你学会了「皓月穿空」。"
+    }
+    }
+  ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.hao", "strike.ying", "cuff.chui", "recover", "powerup"]
   nickname = "大嵩阳手"
   gender = "男性"
   age = 45
@@ -821,6 +1041,12 @@ valid_leave = [
     max_neili = 2000
     max_qi = 2000
     str = 26
+    apply = {
+      attack = 60
+      damage = 60
+      unarmed_damage = 60
+      armor = 120
+    }
   }
 
   skills = [
@@ -1164,6 +1390,98 @@ valid_leave = [
       name = "乐厚"
       aliases = ["yao hou", "hou", "yao"]
       description = ""
+  # LPC: C:/files/git/mud/kungfu/class/songshan/yao.c
+  teach = {
+    family = "嵩山派"
+    teach_skills = {
+      cuff = { max = 160 gongxian = 0 }
+      strike = { max = 160 gongxian = 0 }
+      sword = { max = 160 gongxian = 0 }
+      force = { max = 160 gongxian = 0 }
+      parry = { max = 140 gongxian = 0 }
+      dodge = { max = 140 gongxian = 0 }
+      songshan_jian = { max = 160 gongxian = 0 }
+      jiuqu_jian = { max = 160 gongxian = 0 }
+      lingxu_bu = { max = 140 gongxian = 0 }
+      songshan_xinfa = { max = 160 gongxian = 0 }
+      yinyang_zhang = { max = 160 gongxian = 0 }
+      songshan_zhang = { max = 160 gongxian = 0 }
+      songshan_quan = { max = 160 gongxian = 0 }
+      literate = { max = 160 gongxian = 0 }
+      martial_cognize = { max = 120 gongxian = 0 }
+    }
+  }
+  apprentice = {
+    family = "嵩山派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了嵩山派，何必又要回来？"
+    betray_times_deny = "我们嵩山派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们嵩山派作甚？"
+    min_shen = 3000
+    min_shen_deny = "你非侠义之辈，岂能入我嵩山剑派？"
+    min_exp = 22000
+    min_exp_deny = "你现在经验尚浅，还是多在江湖上走走吧。"
+    recruit_skill_order = ["songshan-jian", "force"]
+    min_skills = {
+      songshan_jian = 40
+      force = 80
+    }
+    min_skills_deny = {
+      songshan_jian = "你嵩山剑法练成这样，平时都干什么去了？"
+      force = "你的内功心法太差，又能跟我学什么？"
+    }
+    accept_msg = "我收下你便是，日后将我嵩山发扬光大。"
+  }
+  inquiries = [
+    { key = "千掌环" value = {
+      kind = "sect_master_grant"
+      perform_id = "yinyang-zhang/qian"
+      skill = "yinyang-zhang"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连阴阳掌都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 220
+      cost_gongxian = 220
+      min_shen = 3400
+      min_levels = { yinyang_zhang = 80 }
+      level_order = ["yinyang-zhang"]
+      level_deny = { yinyang_zhang = "你对阴阳掌的了解还不够，尚且无法领悟此招。" }
+      min_dodge = 80
+      dodge_deny = "你目前的轻功火候不足，下去练练再来吧。"
+      improve_skills = ["yinyang-zhang", "parry", "strike", "martial-cognize"]
+      learned = "你学会了「千掌环」。"
+    }
+    },
+    { key = "九曲十八弯" value = {
+      kind = "sect_master_grant"
+      perform_id = "jiuqu-jian/wan"
+      skill = "jiuqu-jian"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连九曲剑法都未曾学过，何谈绝招可言？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      shen_deny = "你目前所做的侠义正事不够，这招暂时还不能传你。"
+      min_gongxian = 260
+      cost_gongxian = 260
+      min_shen = 36000
+      min_levels = { jiuqu_jian = 80 }
+      level_order = ["jiuqu-jian"]
+      level_deny = { jiuqu_jian = "你对九曲剑法的了解还不够，尚且无法领悟此招。" }
+      min_dodge = 80
+      dodge_deny = "你目前的轻功火候不足，下去练练再来吧。"
+      improve_skills = ["jiuqu-jian", "sword", "parry", "martial-cognize"]
+      learned = "你学会了「九曲十八弯」。"
+    }
+    }
+  ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.wan", "strike.qian", "cuff.chui", "recover"]
   nickname = "大阴阳手"
   gender = "男性"
   age = 45
@@ -1257,6 +1575,194 @@ valid_leave = [
       name = "左冷禅"
       aliases = ["zuo lengchan", "zuo"]
       description = ""
+  # LPC: C:/files/git/mud/kungfu/class/songshan/zuo.c
+  teach = {
+    family = "嵩山派"
+    teach_skills = {
+      cuff = { max = 240 gongxian = 0 }
+      strike = { max = 260 gongxian = 0 }
+      sword = { max = 260 gongxian = 0 }
+      force = { max = 280 gongxian = 0 }
+      parry = { max = 240 gongxian = 0 }
+      dodge = { max = 240 gongxian = 0 }
+      lingxu_bu = { max = 240 gongxian = 0 }
+      songshan_jian = { max = 260 gongxian = 0 }
+      lingyun_jian = { max = 260 gongxian = 0 }
+      chuanyue_jian = { max = 260 gongxian = 0 }
+      jiuqu_jian = { max = 260 gongxian = 0 }
+      poyang_jian = { max = 260 gongxian = 0 }
+      songshan_xinfa = { max = 280 gongxian = 0 }
+      hanbing_zhenqi = { max = 280 gongxian = 0 }
+      hanbing_zhang = { max = 260 gongxian = 0 }
+      songshan_zhang = { max = 260 gongxian = 0 }
+      songshan_quan = { max = 240 gongxian = 0 }
+      literate = { max = 220 gongxian = 0 }
+      martial_cognize = { max = 200 gongxian = 0 }
+    }
+  }
+  apprentice = {
+    family = "嵩山派"
+    permit_recruit = true
+    betray_sect_deny = "你当年都已经离开了嵩山派，何必又要回来？"
+    betray_times_deny = "我们嵩山派乃名门正派，决不收判师之徒！"
+    other_family_deny = "你既然已经有了名师指点，不好好学习，来我们嵩山派作甚？"
+    no_min_shen = true
+    max_shen = -30000
+    max_shen_deny = "我最看不惯你们这些侠义之士，你还是请回吧！"
+    min_exp = 360000
+    min_exp_deny = "你现在经验尚浅，还是多在江湖上走走吧。"
+    recruit_skill_order = ["songshan-jian", "songshan-xinfa"]
+    min_skills = {
+      songshan_jian = 160
+      songshan_xinfa = 160
+    }
+    min_skills_deny = {
+      songshan_jian = "我嵩山剑派乃五岳剑派之一，最为重视剑法。你的嵩山剑法还不够熟练，下去练练再来吧。"
+      songshan_xinfa = "我嵩山剑派虽善用剑，但内功却是御剑之本。你是否还应该在嵩山心法上多下点功夫？"
+    }
+    accept_msg = "孺子可教，孺子可教。今日我就收下你吧。你以后定要勤练武，扬我嵩山派雄风。"
+  }
+  inquiries = [
+    { key = "踏雪无痕" value = {
+      kind = "sect_master_grant"
+      perform_id = "hanbing-zhang/hen"
+      skill = "hanbing-zhang"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连寒冰掌都未曾学过，何谈绝招可言？"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      min_gongxian = 550
+      cost_gongxian = 550
+      max_shen = -32000
+      min_levels = { hanbing_zhang = 100 }
+      level_order = ["hanbing-zhang"]
+      level_deny = { hanbing_zhang = "你对寒冰掌的了解还不够，尚且无法领悟此招。" }
+      min_force = 160
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["hanbing-zhang", "parry", "strike", "martial-cognize"]
+      learned = "你学会了「踏雪无痕」。"
+    }
+    },
+    { key = "极天寒掌" value = {
+      kind = "sect_master_grant"
+      perform_id = "hanbing-zhang/han"
+      skill = "hanbing-zhang"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连寒冰掌都未曾学过，何谈绝招可言？"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      min_gongxian = 750
+      cost_gongxian = 750
+      max_shen = -48000
+      min_levels = { hanbing_zhang = 120 }
+      level_order = ["hanbing-zhang"]
+      level_deny = { hanbing_zhang = "你对寒冰掌的了解还不够，尚且无法领悟此招。" }
+      min_force = 200
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["hanbing-zhang", "parry", "strike", "martial-cognize"]
+      learned = "你学会了「极天寒掌」。"
+    }
+    },
+    { key = "神光再现" value = {
+      kind = "sect_master_grant"
+      perform_id = "poyang-jian/xian"
+      skill = "poyang-jian"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连破阳冷光剑都未曾学过，何谈绝招可言？"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      min_gongxian = 650
+      cost_gongxian = 650
+      max_shen = -54000
+      min_levels = { poyang_jian = 100 }
+      level_order = ["poyang-jian"]
+      level_deny = { poyang_jian = "你对破阳冷光剑的了解还不够，尚且无法领悟此招。" }
+      min_dodge = 140
+      dodge_deny = "你目前的轻功火候不足，下去练练再来吧。"
+      improve_skills = ["poyang-jian", "parry", "sword", "martial-cognize"]
+      learned = "你学会了「神光再现」。"
+    }
+    },
+    { key = "天外玉龙" value = {
+      kind = "sect_master_grant"
+      perform_id = "poyang-jian/long"
+      skill = "poyang-jian"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连破阳冷光剑都未曾学过，何谈绝招可言？"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      min_gongxian = 900
+      cost_gongxian = 900
+      max_shen = -72000
+      min_levels = { poyang_jian = 120 }
+      level_order = ["poyang-jian"]
+      level_deny = { poyang_jian = "你对破阳冷光剑的了解还不够，尚且无法领悟此招。" }
+      min_force = 180
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["poyang-jian", "parry", "sword", "martial-cognize"]
+      learned = "你学会了「天外玉龙」。"
+    }
+    },
+    { key = "寒冰真气" value = {
+      kind = "sect_master_grant"
+      perform_id = "hanbing-zhenqi/freezing"
+      skill = "hanbing-zhenqi"
+      family = "嵩山派"
+      gate_order = "lpc_masterd"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      family_deny = "大侠与我嵩山派素无渊源，不知此话从何说起。"
+      skill_deny = "你连寒冰真气都未曾学过，何谈绝招可言？"
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为嵩山派作出的贡献不够，这招暂时还不能传你。"
+      min_gongxian = 1500
+      cost_gongxian = 1500
+      max_shen = -93000
+      min_levels = { hanbing_zhenqi = 80 }
+      level_order = ["hanbing-zhenqi"]
+      level_deny = { hanbing_zhenqi = "你对寒冰真气的了解还不够，尚且无法领悟此招。" }
+      min_force = 140
+      force_deny = "你目前的内功火候不足，下去练练再来吧。"
+      improve_skills = ["hanbing-zhenqi", "force", "martial-cognize"]
+      learned = "你学会了「寒冰真气」。"
+    }
+    },
+    { key = "残阳宝剑" value = {
+      kind = "give_item"
+      item = "clone_lib:canyang"
+      match = "canyang"
+      unique = true
+      family = "嵩山派"
+      master_id = true
+      max_shen = -20000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，就算拿着残阳宝剑也是无用。"
+      min_skill_levels = {
+        songshan_jian = 120
+      }
+      min_skill_deny = "你的嵩山剑法火候未到，就算拿着残阳宝剑也没用。"
+      family_deny = "与我嵩山派素无渊源，不知此话从何说起。"
+      master_deny = "只有我的弟子才配使用残阳宝剑，你还是走吧。"
+      already = "那柄残阳宝剑不就是你拿着在用么，怎么反倒找我来了？"
+      success = "既然这样，那这柄残阳宝剑你就暂时拿去吧。"
+    }
+    },
+    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #892)" },
+    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #892)" },
+    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #892)" }
+  ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.long", "sword.xian", "strike.hen", "strike.han", "recover", "powerup", "freezing"]
   title = "五岳剑派盟主嵩山派第十三掌门"
   gender = "男性"
   age = 55
@@ -1271,6 +1777,12 @@ valid_leave = [
     max_neili = 4800
     max_qi = 4500
     str = 26
+    apply = {
+      attack = 100
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
   }
 
   skills = [

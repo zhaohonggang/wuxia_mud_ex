@@ -20,6 +20,7 @@ defmodule Kantele.Character.FamilyEvent do
   import Kalevala.Character.Conn
 
   alias ExVenture.Characters
+  alias Kantele.Character, as: PlayerMeta
   alias Kantele.Character.CommandView
   alias Kantele.Character.Records
   alias Kantele.SectMaster
@@ -33,9 +34,38 @@ defmodule Kantele.Character.FamilyEvent do
     apprentice = Map.get(data, :apprentice) || %{}
 
     case SectMaster.recruit_gate?(nil, character, apprentice) do
-      {:error, reason} -> reject(conn, reason)
-      :ok -> accept(conn, character, data, apprentice, "")
-      {:ok, warning} -> accept(conn, character, data, apprentice, warning)
+      {:error, reason} ->
+        reject(conn, reason)
+
+      # #869 梅庄东方不败弟子：只写 move_party 标记，LPC 不收徒。
+      {:defer, reason, mark} ->
+        character = put_character_mark(character, mark)
+        Records.save(character)
+
+        conn
+        |> put_character(character)
+        |> render(CommandView, "text", %{text: "#{reason}\n"})
+        |> prompt(CommandView, "prompt", %{})
+
+      # #869 黑白子/黄钟公：标记先落盘，但被 exp/技能门拒绝（LPC 原样）。
+      {:error_with_mark, reason, mark} ->
+        character = put_character_mark(character, mark)
+        Records.save(character)
+        conn = put_character(conn, character)
+        reject(conn, reason)
+
+      :ok ->
+        accept(conn, character, data, apprentice, "")
+
+      {:ok, warning} ->
+        accept(conn, character, data, apprentice, warning)
+
+      # #869 黑白子/黄钟公：先落 move_party 标记，再按常规门控收徒。
+      {:ok_with_mark, warning, mark} ->
+        character = put_character_mark(character, mark)
+        Records.save(character)
+        conn = put_character(conn, character)
+        accept(conn, character, data, apprentice, warning)
     end
   end
 
@@ -70,6 +100,7 @@ defmodule Kantele.Character.FamilyEvent do
       |> Map.put(:family, family)
       |> Map.put(:stats, init_gongxian(character.meta.stats))
       |> delete_promotion_flags(apprentice)
+      |> delete_mark_on_accept(apprentice)
 
     character =
       character
@@ -103,6 +134,24 @@ defmodule Kantele.Character.FamilyEvent do
     conn
     |> render(CommandView, "text", %{text: text})
     |> prompt(CommandView, "prompt", %{})
+  end
+
+  # #869 梅庄：黑白子/黄钟公收徒成功后 `delete("move_party/日月神教--梅庄")`。
+  defp put_character_mark(character, mark) when is_binary(mark) and byte_size(mark) > 0 do
+    %{character | meta: PlayerMeta.put_mark(character.meta, mark, 1)}
+  end
+
+  defp put_character_mark(character, _mark), do: character
+
+  # #869 收徒成功后删除 move_party 标记；未配置该字段的门派完全不变。
+  defp delete_mark_on_accept(meta, apprentice) do
+    case {Map.get(apprentice, :delete_mark_on_accept), Map.get(apprentice, :defer_mark)} do
+      {true, mark} when is_binary(mark) and byte_size(mark) > 0 ->
+        %{meta | marks: Map.delete(meta.marks || %{}, mark)}
+
+      _ ->
+        meta
+    end
   end
 
   # LPC `new_name = "渡" + name[1..1]`（rename_index=1 → 第二字，0-based grapheme）。
@@ -176,13 +225,17 @@ defmodule Kantele.Character.FamilyEvent do
         NameD.map_name(new_name, character.id)
 
         case Characters.rename_by_name(old_name, new_name) do
-          {:ok, _} -> %{character | name: new_name}
+          {:ok, _} ->
+            %{character | name: new_name}
+
           {:error, :not_found} ->
             Logger.warn("name_d: 旧名 #{old_name} 未在 DB 中找到，保留旧名")
             character
+
           {:error, :invalid} ->
             Logger.warn("name_d: 新名 #{new_name} 不合法或已被占用，保留旧名")
             character
+
           {:error, :db_unavailable} ->
             Logger.warn("name_d: DB 不可用，#{old_name} 未落盘")
             character

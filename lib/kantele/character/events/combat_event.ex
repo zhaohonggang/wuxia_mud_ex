@@ -457,7 +457,10 @@ defmodule Kantele.Character.CombatEvent do
       combat = Combat.start_busy(character.meta.combat, busy)
 
       conn =
-        put_character(conn, %{character | meta: %{character.meta | vitals: vitals, combat: combat}})
+        put_character(conn, %{
+          character
+          | meta: %{character.meta | vitals: vitals, combat: combat}
+        })
 
       if unconcious do
         case Damage.unconcious(conn.character) do
@@ -540,10 +543,15 @@ defmodule Kantele.Character.CombatEvent do
   # 他人挑衅我时，通知我登记在案的帮手（coagent.c）前来助战。
   # 帮手可能在其他房间：通过其唯一角色频道（characters:<id>）定位 pid，
   # 直接投递 coagent/help 事件，由帮手侧自行 start_help 决策（移动/参战）。
+  #
+  # coagents 经 loader 归一为字符串键 map 列表 `%{"id" =>, "startroom" =>}`
+  # （见 loader.ex parse_coagents）；兼容历史纯字符串 id 列表。
   defp notify_coagents(conn, character, enemy) do
     case Map.get(character.meta, :coagents) do
-      ids when is_list(ids) and ids != [] ->
-        Enum.each(ids, fn coagent_id ->
+      entries when is_list(entries) and entries != [] ->
+        entries
+        |> Enum.flat_map(&coagent_entry_id/1)
+        |> Enum.each(fn coagent_id ->
           case coagent_pid(coagent_id) do
             nil ->
               :ok
@@ -568,6 +576,17 @@ defmodule Kantele.Character.CombatEvent do
         conn
     end
   end
+
+  # 归一后的 coagent 项：字符串键 map（loader）或裸字符串（旧式），取 id。
+  defp coagent_entry_id(entry) when is_map(entry) do
+    case Map.get(entry, "id") || Map.get(entry, :id) do
+      id when is_binary(id) and id != "" -> [id]
+      _ -> []
+    end
+  end
+
+  defp coagent_entry_id(entry) when is_binary(entry) and entry != "", do: [entry]
+  defp coagent_entry_id(_), do: []
 
   defp coagent_pid(coagent_id) when is_binary(coagent_id) do
     case Kantele.Communication.subscribers("characters:#{coagent_id}") do
@@ -999,8 +1018,7 @@ defmodule Kantele.Character.CombatEvent do
   defp set_env(character, key, value) do
     %{
       character
-      | meta:
-          Map.update(character.meta, :env, %{key => value}, &Map.put(&1, key, value))
+      | meta: Map.update(character.meta, :env, %{key => value}, &Map.put(&1, key, value))
     }
   end
 
@@ -1059,13 +1077,14 @@ defmodule Kantele.Character.CombatEvent do
         # 给予精元丹物品实例（对应 LPC lost() 给 ob("jingyuandan")）
         case Kantele.World.Items.get("death:jingyuandan") do
           {:ok, _item} ->
-            instance =
-              %Kalevala.World.Item.Instance{
-                id: Kalevala.World.Item.Instance.generate_id(),
-                item_id: "death:jingyuandan",
-                created_at: DateTime.utc_now()
-              }
+            instance = %Kalevala.World.Item.Instance{
+              id: Kalevala.World.Item.Instance.generate_id(),
+              item_id: "death:jingyuandan",
+              created_at: DateTime.utc_now()
+            }
+
             character = %{character | inventory: [instance | character.inventory]}
+
           _ ->
             :ok
         end
@@ -1152,13 +1171,50 @@ defmodule Kantele.Character.CombatEvent do
 
     combat =
       combat
-      |> Map.put(:temp, Map.put(combat.temp, :PKS, Map.get(combat.temp, :PKS, 0) + (if can_speak, do: 1, else: 0)))
-      |> Map.put(:temp, Map.put(combat.temp, :MKS, Map.get(combat.temp, :MKS, 0) + (if can_speak, do: 0, else: 1)))
-      |> Map.put(:temp, Map.put(combat.temp, :WPK, Map.get(combat.temp, :WPK, 0) + (if can_speak, do: 1, else: 0)))
-      |> Map.put(:temp, Map.put(combat.temp, :WPK_GOOD, Map.get(combat.temp, :WPK_GOOD, 0) + (if victim_shen > 500, do: 1, else: 0)))
-      |> Map.put(:temp, Map.put(combat.temp, :WPK_BAD, Map.get(combat.temp, :WPK_BAD, 0) + (if victim_shen < -500, do: 1, else: 0)))
-      |> Map.put(:temp, Map.put(combat.temp, :WPK_NOTGOOD, Map.get(combat.temp, :WPK_NOTGOOD, 0) + (if victim_shen < 500, do: 1, else: 0)))
-      |> Map.put(:temp, Map.put(combat.temp, :WPK_NOTBAD, Map.get(combat.temp, :WPK_NOTBAD, 0) + (if victim_shen > -500, do: 1, else: 0)))
+      |> Map.put(
+        :temp,
+        Map.put(combat.temp, :PKS, Map.get(combat.temp, :PKS, 0) + if(can_speak, do: 1, else: 0))
+      )
+      |> Map.put(
+        :temp,
+        Map.put(combat.temp, :MKS, Map.get(combat.temp, :MKS, 0) + if(can_speak, do: 0, else: 1))
+      )
+      |> Map.put(
+        :temp,
+        Map.put(combat.temp, :WPK, Map.get(combat.temp, :WPK, 0) + if(can_speak, do: 1, else: 0))
+      )
+      |> Map.put(
+        :temp,
+        Map.put(
+          combat.temp,
+          :WPK_GOOD,
+          Map.get(combat.temp, :WPK_GOOD, 0) + if(victim_shen > 500, do: 1, else: 0)
+        )
+      )
+      |> Map.put(
+        :temp,
+        Map.put(
+          combat.temp,
+          :WPK_BAD,
+          Map.get(combat.temp, :WPK_BAD, 0) + if(victim_shen < -500, do: 1, else: 0)
+        )
+      )
+      |> Map.put(
+        :temp,
+        Map.put(
+          combat.temp,
+          :WPK_NOTGOOD,
+          Map.get(combat.temp, :WPK_NOTGOOD, 0) + if(victim_shen < 500, do: 1, else: 0)
+        )
+      )
+      |> Map.put(
+        :temp,
+        Map.put(
+          combat.temp,
+          :WPK_NOTBAD,
+          Map.get(combat.temp, :WPK_NOTBAD, 0) + if(victim_shen > -500, do: 1, else: 0)
+        )
+      )
 
     character = put_combat(character, combat)
 

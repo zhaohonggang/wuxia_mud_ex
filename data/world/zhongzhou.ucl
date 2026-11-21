@@ -2932,11 +2932,29 @@ chats = [
           claw = "panlong-zhao"
           unarmed = "pobei-tui"
         }
+        # LPC: kungfu/class/miao/miao.c
+        #   set_temp("apply/damage", 100) / apply/unarmed_damage 100 / apply/armor 200
+        apply = {
+          damage = 100
+          unarmed_damage = 100
+          armor = 200
+        }
       }
 
       # LPC: kungfu/class/miao/miao.c
-      #   create_family("中原苗家", 6, "传人")
-      #   carry_object("/clone/cloth/cloth")
+      #   create(): 腾龙剑（若已被他人持有→改用普通长剑 fallback，属 owner
+      #   遍历机制 → GAP #886）+ carry_object("/clone/cloth/cloth")->wear()
+      carry = [
+        { id = items.tenglongjian.id },
+        { id = items.cloth.id }
+      ]
+
+      # LPC: kungfu/class/miao/miao.c
+      #   set("chat_chance_combat", 120)
+      #   set("chat_msg_combat", (...8 招: sword.zhai/zhu/jian/gan,
+      #     strike.zhan, claw.tan, recover, powerup...))
+      chat_chance_combat = 120
+      chat_msg_combat = ["sword.zhai", "sword.zhu", "sword.jian", "sword.gan", "strike.zhan", "claw.tan", "recover", "powerup"]
 
       # LPC: kungfu/class/miao/miao.c
       #   create_family("中原苗家", 6, "传人") —— 门派身份供同门校验/授技读取
@@ -3036,16 +3054,57 @@ chats = [
             gongxian = 5
           }
         }
-        no_teach = [
-          "miaojia-jian",
-          "tianlong-jian",
-          "chongtian-zhang",
-          "hujia-daofa"
-        ]
+        # LPC: kungfu/class/miao/miao.c set("no_teach", ([...]))
+        # 三招绝学为「条件解锁」：try_to_learn_* 在学生 combat_exp 达标时 say + set mark
+        # 后 return 0（本次只解锁、不授艺），未达标回 locked 文案硬拒。
+        # 引擎 #879 支持 teach.no_teach 的 map 形态（skill → { unlock = {...} }），
+        # SectMaster.teachable? 先判 mark/exp 再决定放行；mark 落 meta.marks（can_learn/...）。
+        # hujia-daofa 为纯字符串硬拒（不便外传）。
+        no_teach = {
+          miaojia_jian = {
+            unlock = {
+              mark = "can_learn/miao/miaojia-jian"
+              min_exp = 400000
+              learned = "既然今日你能达此地步，我就传你苗家剑法。"
+              locked = "你此时功力太浅，我还是先传授你些简单的剑法。"
+            }
+          }
+          tianlong_jian = {
+            unlock = {
+              mark = "can_learn/miao/tianlong-jian"
+              min_exp = 120000
+              learned = "不错，不错。今日为师就传你天龙剑法。"
+              locked = "天龙剑法对你来说过于深奥，还是先打好基础再说吧。"
+            }
+          }
+          chongtian_zhang = {
+            unlock = {
+              mark = "can_learn/miao/chongtian-zhang"
+              min_exp = 100000
+              learned = "看来你武功已经有了一定的基础，今日我就传你白鹤冲天掌。"
+              locked = "这套白鹤冲天掌过于繁杂，我还是先教你些简单的武功吧。"
+            }
+          }
+          hujia_daofa = "胡家刀法乃是我当年从胡世兄处习得，不便外传。"
+        }
       }
 
+      # LPC: kungfu/class/miao/miao.c 苗人凤 attempt_apprentice → miao.h permit_recruit
+      # 三条收徒硬门（顺序即 LPC）：
+      #   1. detach/betrayer 中原苗家 → heng + say 你反复无常，我不能收你为徒！
+      #   2. born_family != "中原苗家" → hmm + say 我苗家向来便不收容外人！
+      #   3. 已入他派(family_name 存在且 != 中原苗家) → hmm + say 你既已在外面投师学艺，就应有所作为，又跑回来作甚？
+      # required_born_family 走 #879 新增的 meta.env.born_family 硬门（loader + sect_master）。
+      # 姓名门（苗人凤/苗若兰/苗鬼凤/苗人龙 4 分支重名拒绝）引擎无 reject_names 列表门，
+      # 登记 GAP #884（不伪造简化）；收徒成功 2 句台词由 accept_msg 落地。
       apprentice = {
         family = "中原苗家"
+        required_born_family = "中原苗家"
+        born_family_deny = "我苗家向来便不收容外人。"
+        permit_recruit = true
+        betray_sect_deny = "你反复无常，我不能收你为徒！"
+        other_family_deny = "你既已在外面投师学艺，就应有所作为，又跑回来作甚？"
+        accept_msg = "我本已打算不收徒弟，让我田家与胡、苗、范三家的纷争得以平息。可是这祖传三十七势苗家剑就在我处失传，未免太过不孝。"
       }
 
       # LPC kungfu/class/miao/miao.c：苗人凤（中原苗家师父）的问询
@@ -3257,11 +3316,12 @@ chats = [
         }
 
         # ask_jian / ask_jianpu1-2（腾龙剑·剑谱）item_grant 回填。
-        # 已还原门控：family(中原苗家)、master_id(本人弟子)、min_combat_exp、min/max_skill_levels、unique(已持有)。
-        # 已知缺口（give_item 引擎限制，暂不强制）：
-        #   - 只支持 max_shen（杀气上限），不支持 LPC 的 min_shen（侠义下限 shen>=20000/15000/50000）；
-        #   - LPC 的 owner 分支（剑在别人手里/兄弟在用）暂不还原；
-        #   - max_skill_levels 的多词技能键做了 _→- 归一，与 Stats.skills 下划线键是否命中视引擎版本而定。
+        # 已还原门控：family(中原苗家)、master_id(本人弟子)、min_shen(侠义下限)、
+        #   min_combat_exp、min/max_skill_levels、unique(已持有)。
+        # #879 修正：give_item 早已支持 min_shen（give_item.ex below_min_shen? + min_shen_deny），
+        #   旧注释「不支持 min_shen」为陈旧错误；本批为 3 个 grant 补齐 20000/15000/50000。
+        # 已知缺口：LPC 的 owner 分支（剑在别人手里/兄弟在用/不在本人处 + 收剑换长剑）
+        #   属 give_item 持有者遍历类机制 → GAP #885；carry 腾龙剑被他人持有改长剑 → GAP #886。
         腾龙剑 = {
           kind = "give_item"
           item = "clone_lib:tenglongjian"
@@ -3269,6 +3329,7 @@ chats = [
           unique = true
           family = "中原苗家"
           master_id = true
+          min_shen = 20000
           min_skill_levels = {
             sword = 150
           }
@@ -3277,6 +3338,7 @@ chats = [
           already = "腾龙剑现在不就是你拿着在用吗？"
           family_deny = "给我走开！"
           master_deny = "你又不是我的弟子，跟我罗嗦些什么？"
+          shen_deny = "你非我侠义中人，这腾龙剑我不能给你。"
           min_skill_deny = "你剑法都没练好，就算利剑在手又有何用？"
         }
 
@@ -3287,6 +3349,7 @@ chats = [
           unique = true
           family = "中原苗家"
           master_id = true
+          min_shen = 15000
           min_combat_exp = 10000
           max_skill_levels = {
             suqin_beijian = 119
@@ -3296,6 +3359,7 @@ chats = [
           already = "我苗家的家传剑谱不就是你拿着在看吗？"
           family_deny = "给我走开！"
           master_deny = "你又不是我的弟子，跟我罗嗦些什么？"
+          shen_deny = "你不是我侠义中人，这剑谱我不能给你。"
           min_exp_deny = "你现在经验太浅，这本剑谱对你来说过于深奥了。"
           max_skill_deny = "你的剑法根基已经很扎实了，这剑谱还是留给后辈们吧。"
         }
@@ -3307,6 +3371,7 @@ chats = [
           unique = true
           family = "中原苗家"
           master_id = true
+          min_shen = 15000
           min_combat_exp = 10000
           max_skill_levels = {
             suqin_beijian = 119
@@ -3316,6 +3381,7 @@ chats = [
           already = "我苗家的家传剑谱不就是你拿着在看吗？"
           family_deny = "给我走开！"
           master_deny = "你又不是我的弟子，跟我罗嗦些什么？"
+          shen_deny = "你不是我侠义中人，这剑谱我不能给你。"
           min_exp_deny = "你现在经验太浅，这本剑谱对你来说过于深奥了。"
           max_skill_deny = "你的剑法根基已经很扎实了，这剑谱还是留给后辈们吧。"
         }
@@ -3327,6 +3393,7 @@ chats = [
           unique = true
           family = "中原苗家"
           master_id = true
+          min_shen = 50000
           min_combat_exp = 300000
           max_skill_levels = {
             sword = 199
@@ -3336,6 +3403,7 @@ chats = [
           already = "我苗家的家传剑谱不就是你拿着在看吗？"
           family_deny = "给我走开！"
           master_deny = "你又不是我的弟子，跟我罗嗦些什么？"
+          shen_deny = "你不是我侠义中人，这剑谱我不能给你。"
           min_exp_deny = "你现在经验太浅，这本剑谱对你来说过于深奥了。"
           max_skill_deny = "你的剑法造诣已算得上是登峰造极了，这剑谱还是留给后辈们吧。"
         }
@@ -3347,6 +3415,7 @@ chats = [
           unique = true
           family = "中原苗家"
           master_id = true
+          min_shen = 50000
           min_combat_exp = 300000
           max_skill_levels = {
             sword = 199
@@ -3356,6 +3425,7 @@ chats = [
           already = "我苗家的家传剑谱不就是你拿着在看吗？"
           family_deny = "给我走开！"
           master_deny = "你又不是我的弟子，跟我罗嗦些什么？"
+          shen_deny = "你不是我侠义中人，这剑谱我不能给你。"
           min_exp_deny = "你现在经验太浅，这本剑谱对你来说过于深奥了。"
           max_skill_deny = "你的剑法造诣已算得上是登峰造极了，这剑谱还是留给后辈们吧。"
         }

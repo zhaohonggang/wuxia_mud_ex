@@ -380,6 +380,8 @@ defmodule Kantele.Character.NonPlayerEvents do
 
     module(SkillsEvent) do
       event("skills/teach", :teach)
+      # #879 条件 no_teach 解锁：师父侧 exp 达标后回传 mark，学生侧落盘。
+      event("skills/unlock-mark", :unlock_mark)
     end
 
     module(NpcShopEvent) do

@@ -3053,6 +3053,15 @@ item_desc = {
       # LPC: kungfu/class/emei/daoming.c
       #   create_family("峨嵋派", 5, "弟子")
       #   carry_object("/clone/cloth/dao-cloth")
+      teach = {
+        family = "峨嵋派"
+        teach_skills = {
+          force = { max = 30 gongxian = 0 }
+          dodge = { max = 20 gongxian = 0 }
+          unarmed = { max = 20 gongxian = 0 }
+          parry = { max = 20 gongxian = 0 }
+        }
+      }
     }
 
     characters "zaohongma" {
