@@ -121,6 +121,17 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
     base
     |> put_family(character)
     |> put_max_neili(character)
+    |> put_marks(character)
+  end
+
+  # #903 桃花岛九阴四招：LPC `can_learn/jiuyin-shengong/<perform>` 是 accept_object
+  # 写入的 temp/mark。门控在 SectMaster 读 stats.marks，故此处必须显式带入。
+  # marks 为空时不改变既有 map（老配置零影响）。
+  defp put_marks(stats, character) do
+    case Map.get(character.meta, :marks) do
+      marks when is_map(marks) and map_size(marks) > 0 -> Map.put(stats, :marks, marks)
+      _ -> stats
+    end
   end
 
   defp put_family(stats, character) do
@@ -143,14 +154,23 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   # LPC masterd.c:214-261 `message_sort(HIY "\n" + msg1 + "\n\n" NOR, ob, who)`：
   # 私定演示文案时向房间广播；未配置或不在房间时静默跳过（老配置零影响）。
   defp broadcast_msg1(conn, config, data) do
-    case {Map.get(config, "msg_one") || Map.get(config, "msg1"),
-          Map.get(data, :npc_room_id)} do
+    case {Map.get(config, "msg_one") || Map.get(config, "msg1"), Map.get(data, :npc_room_id)} do
       {msg, room_id} when is_binary(msg) and byte_size(msg) > 0 and is_binary(room_id) ->
-        Helpers.broadcast(conn, room_id, msg)
+        Helpers.broadcast(conn, room_id, render_msg1(msg, data))
 
       _ ->
         conn
     end
+  end
+
+  @doc """
+  LPC `message_vision(msg1, me, this_object())` 占位符替换：`$n` = 提问者、`$N` = NPC。
+  旧路径把 `$n` 原样广播（GAP #822），此处在广播前替换，保留逐字文案。
+  """
+  def render_msg1(msg, data) when is_binary(msg) and is_map(data) do
+    msg
+    |> String.replace("$n", to_string(Map.get(data, :asker_name) || ""))
+    |> String.replace("$N", to_string(Map.get(data, :npc_name) || ""))
   end
 
   # ---- 消息渲染 ----

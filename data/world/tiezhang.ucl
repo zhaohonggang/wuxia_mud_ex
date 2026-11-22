@@ -1498,10 +1498,30 @@ item_desc = {
 
   combat = {
     combat_exp = 500
+    apply = { attack = 10 defense = 10 damage = 5 }
   }
 
+  teach = {
+    teach_skills = {
+      literate = {
+        max = 200
+        gongxian = 0
+      }
+    }
+  }
+
+
   inquiries = [
-    { key = "上官剑南" value = " inquire about jiannan (unimplemented)" },
+    { key = "上官剑南" value = {
+      kind = "give_item"
+      item = "tiezhang:zitie"
+      match = "zitie"
+      unique = true
+      vision_name = "顾炎武"
+      success = "看来大侠也是我辈中人，老朽这里有一幅字帖送给你，希望能不忘驱除胡虏，还我河山的志向！"
+      already = "我不是已经告诉你了么，怎么还问？"
+    }
+    },
     { key = "二瞻" value = "他乃是当今一位大画家。" },
     { key = "伊璜" value = "查伊璜, 也就是查继佐, 因大力将军所助, 免罪不究。" },
     { key = "反清复明" value = "你也要学一学当年岳武穆尽忠报国, 刺字以决你心?" },
@@ -1509,9 +1529,9 @@ item_desc = {
     { key = "吴六奇" value = "吴六奇将军身在曹营心在汉, 实际上是天地会洪顺堂香主。" },
     { key = "大力" value = "大力将军乃广东提督吴六奇将军。" },
     { key = "天地会" value = "天地会是台湾国姓爷延平郡王郑成功手下谋主陈永华所创。" },
-    { key = "岳武穆" value = " inquire about wumu (unimplemented)" },
+    { key = "岳武穆" value = "岳武穆名飞字鹏举，乃抗金的名将，一生用兵如神。据说他死后留下了一部武穆遗书，其中记载着他一生戎马生涯的兵法要诀。" },
     { key = "查士标" value = "二瞻先生有位本家伊璜先生牵连在这场‘明史’大案中。" },
-    { key = "武穆遗书" value = " inquire about yishu (unimplemented)" },
+    { key = "武穆遗书" value = "这部遗书最早收藏在皇宫之中，后听说铁掌帮帮主上官剑南率帮中高手，将此书偷走，不知是真是假。" },
     { key = "画" value = "这是二瞻先生的丹青。" },
     { key = "陈永华" value = "陈先生暗中联络老兄弟，胸口所刺八字便是会里的口号。" }
   ]

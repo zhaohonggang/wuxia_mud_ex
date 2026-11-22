@@ -42000,16 +42000,86 @@ chats = [
     str = 32
   }
 
+  teach = {
+    family = "神龙教"
+    teach_skills = {
+      force = { max = 250 gongxian = 0 }
+      shenlong_xinfa = { max = 250 gongxian = 0 }
+      dodge = { max = 230 gongxian = 0 }
+      yixingbu = { max = 230 gongxian = 0 }
+      hand = { max = 240 gongxian = 0 }
+      shenlong_bashi = { max = 240 gongxian = 0 }
+      strike = { max = 240 gongxian = 0 }
+      huagu_mianzhang = { max = 240 gongxian = 0 }
+      parry = { max = 250 gongxian = 0 }
+      staff = { max = 250 gongxian = 0 }
+      sword = { max = 250 gongxian = 0 }
+      shedao_qigong = { max = 250 gongxian = 0 }
+      unarmed = { max = 250 gongxian = 0 }
+      literate = { max = 220 gongxian = 0 }
+      medical = { max = 270 gongxian = 0 }
+      shenlong_mixin = { max = 270 gongxian = 0 }
+    }
+  }
+
   inquiries = [
     { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)。" },
-    { key = "摧心断肠" value = " inquire about cui (unimplemented)" },
+    { key = "摧心断肠" value = {
+      kind = "sect_master_grant"
+      perform_id = "shedao-qigong/cui"
+      skill = "shedao-qigong"
+      family = "神龙教"
+      gate_order = "lpc_hong"
+      maxed = "自己多练练，少在我面前罗嗦！"
+      family_deny = "你是哪儿来的？找死啊？"
+      max_shen_deny = "你要好好为我神教效力，手段要更狠更毒。我才能传你这门绝招！"
+      skill_deny = "你的蛇岛奇功根基不够，岂能就窥测其中奥妙？"
+      max_shen = -50000
+      min_levels = { shedao_qigong = 120 }
+      improve_skills = ["sword", "staff", "unarmed"]
+      msg_one = "$N点头道：“你且看着，只听$N大喝一声，一掌击出，隐隐然有风雷之声。一时间$n只觉得呼吸困难，他掌力犹如排山倒海一般，撼天动地。这招不求花巧变化，乃是以力取胜，你可明白？"
+      learned = "你学会了摧心断肠。"
+    }
+    },
     { key = "教主" value = "我就是神龙教教主。" },
     { key = "洪安通" value = "你不想活了是不是？" },
-    { key = "神龙再现" value = " inquire about xian (unimplemented)" },
+    { key = "神龙再现" value = {
+      kind = "sect_master_grant"
+      perform_id = "shedao-qigong/xian"
+      skill = "shedao-qigong"
+      family = "神龙教"
+      gate_order = "lpc_hong"
+      maxed = "自己多练练，少在我面前罗嗦！"
+      family_deny = "你是哪儿来的？找死啊？"
+      max_shen_deny = "你要好好为我神教效力，手段要更狠更毒。我才能传你这门绝招！"
+      skill_deny = "你的蛇岛奇功根基不够，岂能就窥测其中奥妙？"
+      max_shen = -50000
+      min_levels = { shedao_qigong = 120 }
+      improve_skills = ["sword", "staff", "unarmed"]
+      msg_one = "$N点头道：“你且看着，说罢双掌齐推，眼见招式已老，忽然间去势一变，宛若龙行天际，曲折婉转不留半点痕迹。你可懂了其中奥妙？"
+      learned = "你学会了神龙再现。"
+    }
+    },
     { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)。" },
     { key = "绝技" value = "你想学什么绝技啊？" },
     { key = "绝招" value = "你想学什么绝技啊？" },
-    { key = "飞仙法" value = " inquire about fei (unimplemented)" }
+    { key = "飞仙法" value = {
+      kind = "sect_master_grant"
+      perform_id = "shedao-qigong/fei"
+      skill = "shedao-qigong"
+      family = "神龙教"
+      gate_order = "lpc_hong"
+      maxed = "自己多练练，少在我面前罗嗦！"
+      family_deny = "你是哪儿来的？找死啊？"
+      max_shen_deny = "你的手段还不够毒，我可不能传给你绝招！"
+      skill_deny = "你的蛇岛奇功学好了么？还好意思来问我？"
+      max_shen = -40000
+      min_levels = { shedao_qigong = 100 }
+      improve_skills = ["sword"]
+      msg_one = "$N点头道：“看清楚了！”说罢以掌为剑唰唰唰接连劈出数剑，宛若数把剑在手，真是神乎其神！运用很简单，不过你懂了没有？"
+      learned = "你学会了飞仙术。"
+    }
+    }
   ]
 
   skills = [
@@ -42071,6 +42141,22 @@ chats = [
     max_neili = 3300
     max_qi = 3500
     str = 24
+  }
+
+  teach = {
+    family = "神龙教"
+    teach_skills = {
+      force = { max = 120 gongxian = 0 }
+      shenlong_xinfa = { max = 120 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      yixingbu = { max = 120 gongxian = 0 }
+      hand = { max = 120 gongxian = 0 }
+      shenlong_bashi = { max = 120 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      staff = { max = 120 gongxian = 0 }
+      shedao_qigong = { max = 120 gongxian = 0 }
+      literate = { max = 120 gongxian = 0 }
+    }
   }
 
   inquiries = [
@@ -42193,6 +42279,26 @@ chats = [
     max_neili = 3700
     max_qi = 3500
     str = 35
+  }
+
+  teach = {
+    family = "神龙教"
+    teach_skills = {
+      force = { max = 150 gongxian = 0 }
+      shenlong_xinfa = { max = 150 gongxian = 0 }
+      dodge = { max = 180 gongxian = 0 }
+      yixingbu = { max = 160 gongxian = 0 }
+      hand = { max = 150 gongxian = 0 }
+      strike = { max = 180 gongxian = 0 }
+      shenlong_bashi = { max = 150 gongxian = 0 }
+      huagu_mianzhang = { max = 120 gongxian = 0 }
+      parry = { max = 150 gongxian = 0 }
+      staff = { max = 150 gongxian = 0 }
+      shedao_qigong = { max = 120 gongxian = 0 }
+      literate = { max = 100 gongxian = 0 }
+      medical = { max = 200 gongxian = 0 }
+      shenlong_mixin = { max = 200 gongxian = 0 }
+    }
   }
 
   inquiries = [
@@ -42326,7 +42432,7 @@ chats = [
     { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" },
     { key = "教主" value = "教主脾气不好,要讨他欢心才好。" },
     { key = "洪安通" value = "教主脾气不好,要讨他欢心才好。" },
-    { key = "百花腹蛇膏" value = " inquire about gao (unimplemented)" },
+    { key = "百花腹蛇膏" value = "许雪亭悄声对你说：这可是本教禁物啊。它一遇鲜血，便生浓香，我们住在这灵蛇岛上，人人都服惯了雄黄酒，以避毒蛇，这股香气一碰到雄黄酒，便使人筋骨酥软，不能动弹。对了，你怎么也知道？" },
     { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." }
   ]
 
@@ -42391,6 +42497,25 @@ chats = [
     max_neili = 3500
     max_qi = 2900
     str = 22
+  }
+
+  teach = {
+    family = "神龙教"
+    teach_skills = {
+      force = { max = 130 gongxian = 0 }
+      dodge = { max = 120 gongxian = 0 }
+      strike = { max = 110 gongxian = 0 }
+      claw = { max = 110 gongxian = 0 }
+      parry = { max = 120 gongxian = 0 }
+      staff = { max = 110 gongxian = 0 }
+      literate = { max = 50 gongxian = 0 }
+      huagong_dafa = { max = 130 gongxian = 0 }
+      zhaixinggong = { max = 120 gongxian = 0 }
+      chousui_zhang = { max = 110 gongxian = 0 }
+      sanyin_wugongzhao = { max = 110 gongxian = 0 }
+      shenlong_xinfa = { max = 100 gongxian = 0 }
+      shedao_qigong = { max = 100 gongxian = 0 }
+    }
   }
 
   inquiries = [
@@ -42486,6 +42611,82 @@ chats = [
     { id = items.cloth.id }
   ]
 
+
+  init = {
+    greet_delay = 2
+  }
+    }
+
+# LPC: C:/files/git/mud/kungfu/class/shenlong/shou.c
+    characters "shenlong_shou" {
+      name = "瘦头陀"
+      aliases = ["shenlong_shou", "shou toutuo", "shou", "toutuo"]
+      description = "这头陀身材奇矮，而且胖得出奇，整个人就活脱脱是一个大冬瓜。 光溜溜的脑袋上瞪着一对铜铃大眼，样子非常滑稽。"
+  title = "神龙教右护法"
+  nickname = "辽东瘦尊者"
+  gender = "男性"
+  age = 44
+
+  combat = {
+    attitude = "peaceful"
+    combat_exp = 680000
+    con = 31
+    dex = 25
+    int = 18
+    max_jing = 1800
+    max_neili = 4200
+    max_qi = 3600
+    str = 26
+  }
+
+  teach = {
+    family = "神龙教"
+    teach_skills = {
+      force = { max = 150 gongxian = 0 }
+      hand = { max = 150 gongxian = 0 }
+      strike = { max = 150 gongxian = 0 }
+      staff = { max = 150 gongxian = 0 }
+      parry = { max = 150 gongxian = 0 }
+      dodge = { max = 150 gongxian = 0 }
+      yixingbu = { max = 150 gongxian = 0 }
+      shenlong_bashi = { max = 150 gongxian = 0 }
+      huagu_mianzhang = { max = 150 gongxian = 0 }
+      shenlong_xinfa = { max = 150 gongxian = 0 }
+      shedao_qigong = { max = 150 gongxian = 0 }
+    }
+  }
+
+  inquiries = [
+    { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
+    { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" },
+    { key = "教主" value = "教主脾气不好,要讨他欢心才好。" },
+    { key = "洪安通" value = "教主脾气不好,要讨他欢心才好。" },
+    { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." }
+  ]
+
+  skills = [
+    { skill = "force" level = 150 },
+    { skill = "hand" level = 150 },
+    { skill = "strike" level = 150 },
+    { skill = "staff" level = 150 },
+    { skill = "parry" level = 150 },
+    { skill = "dodge" level = 150 },
+    { skill = "yixingbu" level = 150 },
+    { skill = "shenlong-bashi" level = 150 },
+    { skill = "huagu-mianzhang" level = 150 },
+    { skill = "shenlong-xinfa" level = 150 },
+    { skill = "shedao-qigong" level = 150 },
+    { type = "force" skill = "shenlong-xinfa" },
+    { type = "staff" skill = "shedao-qigong" },
+    { type = "hand" skill = "shenlong-bashi" },
+    { type = "strike" skill = "huagu-mianzhang" },
+    { type = "parry" skill = "shenlong-bashi" },
+    { type = "dodge" skill = "yixingbu" }
+  ]
+
+  carry = [
+    { id = items.cloth.id }
+  ]
 
   init = {
     greet_delay = 2
@@ -42650,6 +42851,38 @@ chats = [
   shen_type = 0
   score = 7000
 
+  # LPC: kungfu/class/tangmen/tangrou.c create_family("唐门世家", 3, "弟子") + 16 set_skill
+  teach = {
+    family = "唐门世家"
+    teach_skills = {
+      force = { max = 80 gongxian = 0 }
+      throwing = { max = 80 gongxian = 0 }
+      dodge = { max = 80 gongxian = 0 }
+      parry = { max = 80 gongxian = 0 }
+      literate = { max = 80 gongxian = 0 }
+      hand = { max = 80 gongxian = 0 }
+      sword = { max = 80 gongxian = 0 }
+      boyun_suowu = { max = 80 gongxian = 0 }
+      biyun_xinfa = { max = 80 gongxian = 0 }
+      qiulin_shiye = { max = 80 gongxian = 0 }
+      wuzhan_mei = { max = 80 gongxian = 0 }
+      poison = { max = 80 gongxian = 0 }
+      medical = { max = 80 gongxian = 0 }
+      tangmen_throwing = { max = 80 gongxian = 0 }
+      tangmen_poison = { max = 80 gongxian = 0 }
+      tangmen_medical = { max = 80 gongxian = 0 }
+    }
+  }
+
+  # LPC tangmen.h permit_recruit() 首行无条件回绝；其后各门控在 LPC 中不可达，不移植。
+  apprentice = {
+    deny_all = true
+    deny_msg = "对不起，唐门暂不收徒，你过段时间再来吧。"
+  }
+
+  chat_chance_combat = 20
+  chat_msg_combat = ["recover", "powerup", "throwing.san"]
+
   combat = {
     attitude = "peaceful"
     combat_exp = 100000
@@ -42659,6 +42892,11 @@ chats = [
     max_neili = 2000
     max_qi = 8000
     str = 30
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
   }
 
   inquiries = [
@@ -42693,9 +42931,12 @@ chats = [
   ]
 
 
+  # LPC: cloth(wear) + /d/tangmen/obj/jili(set_temp handing) + /d/tangmen/obj/feidao
+  # 跨区引用必须写 tangmen.items.*.id：clone_lib 自带 items.jili 是「铁蒺藜」，不是毒蒺藜。
   carry = [
     { id = items.cloth.id },
-    { id = items.feidao.id }
+    { id = tangmen.items.jili.id },
+    { id = tangmen.items.feidao.id }
   ]
 
     }
@@ -42705,6 +42946,14 @@ chats = [
       name = "陈玄风"
       aliases = ["taohua_chen", "chen xuanfeng", "chen", "xuanfeng"]
       description = "此人是黄药师的二弟子，他浓眉大眼，背厚膀宽，躯体甚 是壮健，只是面色微微泛黄。"
+
+  apprentice = {
+    family = "桃花岛"
+    deny_all = true
+    deny_msg = "少烦我，快滚！"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["claw.duo", "claw.zhua", "strike.cui", "recover"]
   title = "黑风双煞"
   nickname = "铜尸"
   gender = "男性"
@@ -42713,6 +42962,11 @@ chats = [
   combat = {
     attitude = "aggressive"
     combat_exp = 2000000
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
     con = 30
     dex = 25
     int = 25
@@ -42770,6 +43024,44 @@ chats = [
       name = "冯默风"
       aliases = ["taohua_feng", "feng mofeng", "feng", "mofeng"]
       description = "冯默风是黄药师最小的一个徒弟，他的根基不错，但性子 较为愚鲁。他的基本功扎实，一副忠厚老实的样子。"
+
+  teach = {
+    family = "桃花岛"
+    teach_skills = {
+      force = { max = 180 gongxian = 0 }
+      luoying_xinfa = { max = 180 gongxian = 0 }
+      unarmed = { max = 160 gongxian = 0 }
+      xuanfeng_tui = { max = 160 gongxian = 0 }
+      strike = { max = 160 gongxian = 0 }
+      pikong_zhang = { max = 160 gongxian = 0 }
+      finger = { max = 140 gongxian = 0 }
+      canglang_zhi = { max = 140 gongxian = 0 }
+      dodge = { max = 160 gongxian = 0 }
+      parry = { max = 160 gongxian = 0 }
+      sword = { max = 160 gongxian = 0 }
+      luoying_shenjian = { max = 160 gongxian = 0 }
+      literate = { max = 140 gongxian = 0 }
+      martial_cognize = { max = 140 gongxian = 0 }
+    }
+    gongxian = 0
+  }
+  apprentice = {
+    family = "桃花岛"
+    permit_recruit = true
+    gate_order = "lpc_taohua"
+    master_mark = "taohua/master"
+    master_name = "冯默风"
+    master_absent_msg = "我可不敢擅自收徒，你还是找家师黄岛主吧！"
+    master_reject_msg = "家师不是让你拜%master%的吗？你怎么来找我来了？"
+    master_accept_msg = "好吧，既然家师有令，我就收下你了，不过要好好遵守桃花岛的规矩。"
+    defer_mark = "taohua/master"
+    delete_mark_on_accept = true
+    betray_sect_deny = "亏你还有脸回桃花岛？滚！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "你既有了名师指点，还来我们桃花岛做什么？"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.sui", "finger.tao", "strike.dai", "unarmed.kuang", "powerup", "recover"]
   gender = "男性"
   age = 39
   shen_type = 1
@@ -42790,13 +43082,36 @@ chats = [
     { key = "东邪" value = "家师人称东邪！呵呵。" },
     { key = "北丐" value = "北丐洪七公是丐帮帮主，现在扬州城外。" },
     { key = "南帝" value = "听家师说段王爷现在出家当了和尚，法名一灯。" },
-    { key = "学艺" value = " inquire about learn (unimplemented)" },
-    { key = "带我过迷阵，否则弄死你，信不信？" value = " inquire about provoke (unimplemented)" },
-    { key = "投师" value = " inquire about me (unimplemented)" },
-    { key = "拜师" value = " inquire about me (unimplemented)" },
+    { key = "学艺" value = " inquire about learn (unimplemented: GAP #911)" },
+    { key = "带我过迷阵，否则弄死你，信不信？" value = " inquire about provoke (unimplemented: GAP #911)" },
+    { key = "投师" value = " inquire about me (unimplemented: GAP #911)" },
+    { key = "拜师" value = " inquire about me (unimplemented: GAP #911)" },
     { key = "桃花岛" value = "这儿就是桃花岛，你若不是本派弟子，要过桃花阵。" },
     { key = "桃花阵" value = "往南就是了。" },
-    { key = "碧浪滔天" value = " inquire about skill1 (unimplemented)" },
+    { key = "碧浪滔天" value = {
+      kind = "sect_master_grant"
+      perform_id = "canglang-zhi/tao"
+      skill = "canglang-zhi"
+      family = "你不是我们桃花岛的人，问这个干嘛？"
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连沧浪指法都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 50
+      cost_gongxian = 50
+      min_levels = {
+        force = 120
+        canglang_zhi = 80
+      }
+      level_order = ["force", "canglang-zhi"]
+      level_deny = {
+        force = "你的内功修为不够，还是多锻炼锻炼吧。"
+        canglang_zhi = "你的沧浪指法还不够熟练，练高了再来找我。"
+      }
+      improve_skills = ["finger", "canglang-zhi", "martial-cognize"]
+      learned = "你学会了「碧浪滔天」。"
+    }
+    },
     { key = "西毒" value = "欧阳锋是与家师并世齐名的高手，人称老毒物。" },
     { key = "黄药师" value = "你要拜访家师？" },
     { key = "黄蓉" value = "她是师父的爱女。" }
@@ -42847,6 +43162,70 @@ chats = [
       name = "黄药师"
       aliases = ["taohua_huang", "huang yaoshi", "huang", "yaoshi"]
       description = "他就是桃花岛主。行事好恶全由己心，因此被 人称作「东邪」。"
+
+  teach = {
+    family = "桃花岛"
+    teach_skills = {
+      force = { max = 340 gongxian = 0 }
+      bibo_shengong = { max = 340 gongxian = 0 }
+      luoying_xinfa = { max = 320 gongxian = 0 }
+      hand = { max = 320 gongxian = 0 }
+      finger = { max = 340 gongxian = 0 }
+      canglang_zhi = { max = 320 gongxian = 0 }
+      tanzhi_shentong = { max = 340 gongxian = 0 }
+      unarmed = { max = 320 gongxian = 0 }
+      strike = { max = 320 gongxian = 0 }
+      pikong_zhang = { max = 320 gongxian = 0 }
+      luoying_shenzhang = { max = 320 gongxian = 0 }
+      xuanfeng_tui = { max = 320 gongxian = 0 }
+      dodge = { max = 320 gongxian = 0 }
+      anying_fuxiang = { max = 320 gongxian = 0 }
+      parry = { max = 320 gongxian = 0 }
+      sword = { max = 320 gongxian = 0 }
+      throwing = { max = 340 gongxian = 0 }
+      luoying_shenjian = { max = 320 gongxian = 0 }
+      yuxiao_jian = { max = 320 gongxian = 0 }
+      lanhua_shou = { max = 320 gongxian = 0 }
+      qimen_wuxing = { max = 350 gongxian = 0 }
+      count = { max = 350 gongxian = 0 }
+      jingluo_xue = { max = 350 gongxian = 0 }
+      mathematics = { max = 350 gongxian = 0 }
+      literate = { max = 350 gongxian = 0 }
+      chuixiao_jifa = { max = 400 gongxian = 0 }
+      bihai_chaosheng = { max = 400 gongxian = 0 }
+      taohua_yuan = { max = 400 gongxian = 0 }
+      drawing = { max = 350 gongxian = 0 }
+      chess = { max = 350 gongxian = 0 }
+      calligraphy = { max = 350 gongxian = 0 }
+      medical = { max = 350 gongxian = 0 }
+      taohua_yaoli = { max = 350 gongxian = 0 }
+      martial_cognize = { max = 320 gongxian = 0 }
+    }
+    gongxian = 0
+  }
+  apprentice = {
+    family = "桃花岛"
+    permit_recruit = true
+    gate_order = "lpc_taohua"
+    hard_min_int = 25
+    int_deny = "我不收资质差的弟子，您请回吧！"
+    min_shen = -10000
+    max_shen = 10000
+    shen_deny = "我不与成名人物打交道，您请回吧！"
+    exp_defer_max = 400000
+    master_mark = "taohua/master"
+    defer_masters = ["冯默风", "陆乘风", "曲灵风"]
+    defer_msg = "嗯…念你长途跋涉赶来拜师，老夫就收你入桃花岛。不过你武学方面成就有限，还是先跟我弟子%master%学习吧。"
+    defer_mark_msg = "不是让你和%master%学艺吗？你怎么回事？"
+    defer_master_msg = "你好好跟%master%学艺，水平到了老夫自然会亲自点拨你。"
+    defer_family = "桃花岛"
+    accept_msg = "很好，很好。"
+    betray_sect_deny = "亏你还有脸回桃花岛？滚！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "你既有了名师指点，还来我们桃花岛做什么？"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.bihai", "sword.qing", "sword.tian", "finger.ding", "finger.xiao", "finger.po", "finger.zhuan", "powerup", "recover"]
   title = "东海桃花岛岛主"
   nickname = "东邪"
   gender = "男性"
@@ -42856,6 +43235,11 @@ chats = [
   combat = {
     attitude = "peaceful"
     combat_exp = 4000000
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
     con = 40
     dex = 40
     int = 40
@@ -42869,34 +43253,380 @@ chats = [
     { key = "九花玉露丸" value = "这个东西难制得紧，你好好学学桃花药理，以后自己制吧。" },
     { key = "九阴真经" value = "如果你能帮我取得真经，我一定重重谢你。" },
     { key = "九阴神功" value = "九阴神功恢弘正大，乃盖世奇功！" },
-    { key = "九阴神手" value = " inquire about shou (unimplemented)" },
-    { key = "九阴神指" value = " inquire about zhi (unimplemented)" },
-    { key = "九阴神掌" value = " inquire about zhang (unimplemented)" },
+    { key = "九阴神手" value = {
+      kind = "sect_master_grant"
+      perform_id = "jiuyin-shengong/shou"
+      no_family_check = true
+      maxed = "你不是已经会了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连这门功夫都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 0
+      cost_gongxian = 0
+      required_mark = "can_learn/jiuyin-shengong/shou"
+      mark_deny = "我与阁下毫无瓜葛，为何有此一问？"
+      min_levels = {
+        jiuyin_shengong = 260
+        hand = 0
+        force = 240
+        martial_cognize = 240
+      }
+      level_order = ["jiuyin-shengong", "hand", "force", "martial-cognize", "max_neili"]
+      level_deny = {
+        jiuyin_shengong = "你九阴神功火候不够，我还不能传你这招！"
+        hand = "你基本手法不够娴熟，我不能传你这招！"
+        force = "你内功修为不够，我不能传你这招！"
+        martial_cognize = "你武学修养不够，我不能传你绝招！"
+      }
+      min_max_neili = 5000
+      max_neili_deny = "你内力修为不足，我还不能传你绝招！"
+      improve_skills = ["hand", "jiuyin-shengong", "martial-cognize"]
+      learned = "你学会了「九阴神手」！"
+    }
+    },
+    { key = "九阴神指" value = {
+      kind = "sect_master_grant"
+      perform_id = "jiuyin-shengong/zhi"
+      no_family_check = true
+      maxed = "你不是已经会了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连这门功夫都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 0
+      cost_gongxian = 0
+      required_mark = "can_learn/jiuyin-shengong/zhi"
+      mark_deny = "我与阁下毫无瓜葛，为何有此一问？"
+      min_levels = {
+        jiuyin_shengong = 250
+        finger = 0
+        force = 240
+        martial_cognize = 240
+      }
+      level_order = ["jiuyin-shengong", "finger", "force", "martial-cognize", "max_neili"]
+      level_deny = {
+        jiuyin_shengong = "你九阴神功火候不够，我还不能传你这招！"
+        finger = "你基本指法不够娴熟，我不能传你这招！"
+        force = "你内功修为不够，我不能传你这招！"
+        martial_cognize = "你武学修养不够，我不能传你绝招！"
+      }
+      min_max_neili = 5000
+      max_neili_deny = "你内力修为不足，我还不能传你绝招！"
+      improve_skills = ["finger", "jiuyin-shengong", "martial-cognize"]
+      learned = "你学会了「九阴神指」！"
+    }
+    },
+    { key = "九阴神掌" value = {
+      kind = "sect_master_grant"
+      perform_id = "jiuyin-shengong/zhang"
+      no_family_check = true
+      maxed = "你不是已经会了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连这门功夫都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 0
+      cost_gongxian = 0
+      required_mark = "can_learn/jiuyin-shengong/zhang"
+      mark_deny = "我与阁下毫无瓜葛，为何有此一问？"
+      min_levels = {
+        jiuyin_shengong = 260
+        strike = 0
+        force = 240
+        martial_cognize = 240
+      }
+      level_order = ["jiuyin-shengong", "strike", "force", "martial-cognize", "max_neili"]
+      level_deny = {
+        jiuyin_shengong = "你九阴神功火候不够，我还不能传你这招！"
+        strike = "你基本掌法不够娴熟，我不能传你这招！"
+        force = "你内功修为不够，我不能传你这招！"
+        martial_cognize = "你武学修养不够，我不能传你绝招！"
+      }
+      min_max_neili = 5000
+      max_neili_deny = "你内力修为不足，我还不能传你绝招！"
+      improve_skills = ["strike", "jiuyin-shengong", "martial-cognize"]
+      learned = "你学会了「九阴神掌」！"
+    }
+    },
     { key = "兰花手" value = "兰花拂穴手…唉…可惜我几个弟子都算不得成才！" },
-    { key = "兰花拂穴" value = " inquire about skill2 (unimplemented)" },
-    { key = "啸沧海" value = " inquire about skill8 (unimplemented)" },
-    { key = "天地情长" value = " inquire about skill5 (unimplemented)" },
-    { key = "天外清音" value = " inquire about skill4 (unimplemented)" },
-    { key = "奇门五转" value = " inquire about skill1 (unimplemented)" },
-    { key = "定昆仑" value = " inquire about skill7 (unimplemented)" },
+    { key = "兰花拂穴" value = {
+      kind = "sect_master_grant"
+      perform_id = "lanhua-shou/fu"
+      skill = "lanhua-shou"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连兰花拂穴手都没学，跑来捣什么乱？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 300
+      cost_gongxian = 300
+      min_levels = {
+        force = 160
+        jingluo_xue = 120
+        lanhua_shou = 120
+      }
+      level_order = ["force", "jingluo-xue", "lanhua-shou"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        jingluo_xue = "你连经络学都没学通，怎么点人穴道？"
+        lanhua_shou = "等你把兰花拂穴手练熟了再来找老夫。"
+      }
+      improve_skills = ["jingluo-xue", "hand", "lanhua-shou", "martial-cognize"]
+      learned = "你学会了「兰花拂穴」。"
+    }
+    },
+    { key = "啸沧海" value = {
+      kind = "sect_master_grant"
+      perform_id = "tanzhi-shentong/xiao"
+      skill = "tanzhi-shentong"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连弹指神通都没学，瞎胡闹什么？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 800
+      cost_gongxian = 800
+      min_levels = {
+        force = 280
+        jingluo_xue = 200
+        tanzhi_shentong = 200
+      }
+      level_order = ["force", "max_neili", "jingluo-xue", "tanzhi-shentong"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        jingluo_xue = "运用这一招需先通晓经络学，你下去练练再来吧。"
+        tanzhi_shentong = "你的弹指神通火候还不够，等你练熟了再来找我。"
+      }
+      min_max_neili = 3000
+      max_neili_deny = "你的内力修为太差，还是练高点再来吧。"
+      improve_skills = ["jingluo-xue", "finger", "tanzhi-shentong", "martial-cognize"]
+      learned = "你学会了「啸沧海」。"
+    }
+    },
+    { key = "天地情长" value = {
+      kind = "sect_master_grant"
+      perform_id = "yuxiao-jian/qing"
+      skill = "yuxiao-jian"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连玉箫剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 400
+      cost_gongxian = 400
+      min_levels = {
+        force = 200
+        yuxiao_jian = 150
+      }
+      level_order = ["force", "yuxiao-jian"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        yuxiao_jian = "就你这点本事？等你把玉箫剑法练熟了再来找我吧！"
+      }
+      improve_skills = ["sword", "yuxiao-jian", "martial-cognize"]
+      learned = "你学会了「天地情长」。"
+    }
+    },
+    { key = "天外清音" value = {
+      kind = "sect_master_grant"
+      perform_id = "yuxiao-jian/tian"
+      skill = "yuxiao-jian"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连玉箫剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 350
+      cost_gongxian = 350
+      min_levels = {
+        bibo_shengong = 120
+        yuxiao_jian = 120
+      }
+      level_order = ["bibo-shengong", "yuxiao-jian"]
+      level_deny = {
+        bibo_shengong = "你碧波神功的修为不够，学不了这一招。"
+        yuxiao_jian = "你的玉箫剑法还不够熟练，练高了再来找我。"
+      }
+      improve_skills = ["force", "sword", "yuxiao-jian", "bibo-shengong", "martial-cognize"]
+      learned = "你学会了「天外清音」。"
+    }
+    },
+    { key = "奇门五转" value = {
+      kind = "sect_master_grant"
+      perform_id = "luoying-shenzhang/zhuan"
+      skill = "luoying-shenzhang"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连落英神剑掌都没学，跑来捣什么乱？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 350
+      cost_gongxian = 350
+      min_levels = {
+        force = 180
+        qimen_wuxing = 120
+        luoying_shenzhang = 120
+      }
+      level_order = ["force", "qimen-wuxing", "luoying-shenzhang"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        qimen_wuxing = "你对奇门五行的研究不够，这招还学不会。"
+        luoying_shenzhang = "哼！等你把落英神剑掌练熟了再来找我！"
+      }
+      improve_skills = ["qimen-wuxing", "strike", "luoying-shenzhang", "martial-cognize"]
+      learned = "你学会了「奇门五转」。"
+    }
+    },
+    { key = "定昆仑" value = {
+      kind = "sect_master_grant"
+      perform_id = "tanzhi-shentong/ding"
+      skill = "tanzhi-shentong"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连弹指神通都没学，瞎胡闹什么？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 450
+      cost_gongxian = 450
+      min_levels = {
+        force = 180
+        jingluo_xue = 120
+        tanzhi_shentong = 120
+      }
+      level_order = ["force", "jingluo-xue", "tanzhi-shentong"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        jingluo_xue = "运用这一招需先通晓经络学，你下去练练再来吧。"
+        tanzhi_shentong = "你的弹指神通火候还不够，等你练熟了再来找我。"
+      }
+      improve_skills = ["jingluo-xue", "finger", "tanzhi-shentong", "martial-cognize"]
+      learned = "你学会了「定昆仑」。"
+    }
+    },
     { key = "弹指神通" value = "…唉…我一身绝艺竟然无人可以继承？" },
-    { key = "影落飞花" value = " inquire about skill3 (unimplemented)" },
+    { key = "影落飞花" value = {
+      kind = "sect_master_grant"
+      perform_id = "lanhua-shou/fei"
+      skill = "lanhua-shou"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "唉…你自己下去练吧。"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连兰花拂穴手都没学，跑来捣什么乱？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 400
+      cost_gongxian = 400
+      min_levels = {
+        force = 200
+        lanhua_shou = 140
+      }
+      level_order = ["force", "lanhua-shou"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        lanhua_shou = "等你把兰花拂穴手练熟了再来找老夫。"
+      }
+      improve_skills = ["hand", "lanhua-shou", "martial-cognize"]
+      learned = "你学会了「影落飞花」。"
+    }
+    },
     { key = "披星戴月" value = "这招你去让陆乘风教你吧。" },
-    { key = "旋风扫叶腿" value = " inquire about book3 (unimplemented)" },
+    { key = "旋风扫叶腿" value = " inquire about book3 (unimplemented: GAP #908)" },
     { key = "无常丹" value = "…嗯…等你学通了桃花药理的奥妙，自己慢慢制吧。" },
-    { key = "桃花药理" value = " inquire about book1 (unimplemented)" },
-    { key = "河图" value = " inquire about book4 (unimplemented)" },
-    { key = "洛书" value = " inquire about book4 (unimplemented)" },
+    { key = "桃花药理" value = " inquire about book1 (unimplemented: GAP #908)" },
+    { key = "河图" value = " inquire about book4 (unimplemented: GAP #908)" },
+    { key = "洛书" value = " inquire about book4 (unimplemented: GAP #908)" },
     { key = "狂风绝技" value = "这招你去让陆乘风教你吧。" },
-    { key = "玉箫" value = " inquire about yuxiao (unimplemented)" },
+    { key = "玉箫" value = " inquire about yuxiao (unimplemented: GAP #908)" },
     { key = "玉萧剑法" value = "不是性情中人，如何能够领会这剑法？" },
-    { key = "破九域" value = " inquire about skill9 (unimplemented)" },
+    { key = "破九域" value = {
+      kind = "sect_master_grant"
+      perform_id = "tanzhi-shentong/po"
+      skill = "tanzhi-shentong"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连弹指神通都没学，瞎胡闹什么？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 1300
+      cost_gongxian = 1300
+      min_levels = {
+        force = 250
+        throwing = 180
+        tanzhi_shentong = 180
+      }
+      level_order = ["force", "max_neili", "throwing", "tanzhi-shentong"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        throwing = "你的暗器运用还不够娴熟，下去练练再来吧。"
+        tanzhi_shentong = "你的弹指神通火候还不够，等你练熟了再来找我。"
+      }
+      min_max_neili = 2500
+      max_neili_deny = "你的内力修为太差，还是练高点再来吧。"
+      improve_skills = ["throwing", "throwing", "tanzhi-shentong", "tanzhi-shentong", "martial-cognize"]
+      learned = "你学会了「破九域」。"
+    }
+    },
     { key = "碧波神功" value = "…唉…我桃花岛的内功何等厉害，可惜…" },
     { key = "碧浪滔天" value = "这招你去让冯默风教你吧。" },
-    { key = "碧海潮生" value = " inquire about skill6 (unimplemented)" },
-    { key = "离岛" value = " inquire about leave (unimplemented)" },
-    { key = "箫谱" value = " inquire about book2 (unimplemented)" },
-    { key = "转乾坤" value = " inquire about skill10 (unimplemented)" },
+    { key = "碧海潮生" value = {
+      kind = "sect_master_grant"
+      perform_id = "yuxiao-jian/bihai"
+      skill = "yuxiao-jian"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连玉箫剑法都没学，还谈什么绝招可言？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 1000
+      cost_gongxian = 1000
+      any_min_skills = {
+        yuxiao_jian = 1
+        bibo_shengong = 1
+        bihai_chaosheng = 1
+      }
+      any_min_skills_deny = "你玉箫剑法、碧波神功、碧海潮生曲一样都没学，捣什么乱？"
+      min_levels = {
+        bibo_shengong = 180
+        yuxiao_jian = 180
+        bihai_chaosheng = 180
+      }
+      level_order = ["bibo-shengong", "yuxiao-jian", "bihai-chaosheng"]
+      level_deny = {
+        bibo_shengong = "你碧波神功的修为不够，学不了这一招。"
+        yuxiao_jian = "你的玉箫剑法还不够熟练，练高了再来找我。"
+        bihai_chaosheng = "你的碧海潮生曲练好了吗？"
+      }
+      improve_skills = ["force", "sword", "chuixiao-jifa", "yuxiao-jian", "bibo-shengong", "bihai-chaosheng", "martial-cognize"]
+      learned = "你学会了「碧海潮生按玉箫」。"
+    }
+    },
+    { key = "离岛" value = " inquire about leave (unimplemented: GAP #911)" },
+    { key = "箫谱" value = " inquire about book2 (unimplemented: GAP #908)" },
+    { key = "转乾坤" value = {
+      kind = "sect_master_grant"
+      perform_id = "tanzhi-shentong/zhuan"
+      skill = "tanzhi-shentong"
+      family = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      maxed = "这一招我不是已经教过你了吗？还罗嗦什么！"
+      family_deny = "你不是我们桃花岛的人，打听老夫的武功有何企图？"
+      skill_deny = "你连弹指神通都没学，瞎胡闹什么？"
+      gongxian_deny = "你在我桃花岛无所作为，这招老夫暂时还不能传你。"
+      min_gongxian = 2200
+      cost_gongxian = 2200
+      min_levels = {
+        force = 300
+        qimen_wuxing = 200
+        tanzhi_shentong = 220
+      }
+      level_order = ["force", "max_neili", "qimen-wuxing", "tanzhi-shentong"]
+      level_deny = {
+        force = "你的内功火候尚需提高，练好了再来吧。"
+        qimen_wuxing = "你对奇门五行的研究不够，这招还学不会。"
+        tanzhi_shentong = "你的弹指神通火候还不够，等你练熟了再来找我。"
+      }
+      min_max_neili = 3500
+      max_neili_deny = "你的内力修为太差，还是练高点再来吧。"
+      improve_skills = ["qimen-wuxing", "qimen-wuxing", "qimen-wuxing", "finger", "finger", "finger", "tanzhi-shentong", "tanzhi-shentong", "tanzhi-shentong", "martial-cognize"]
+      learned = "你学会了「转乾坤」。"
+    }
+    },
     { key = "阴阳八卦" value = "(: try_to_learn_count :)" },
     { key = "随波逐流" value = "这招你去让曲灵风教你吧。" },
     { key = "黄蓉" value = "你敢直称我女儿的闺名？" }
@@ -42966,6 +43696,46 @@ chats = [
       name = "陆乘风"
       aliases = ["taohua_lu", "lu chengfeng", "lu", "chengfeng"]
       description = "陆乘风是黄药师的第四个徒弟。他的鬓角已微见白发，但 身材魁梧，双眼有神。"
+
+  teach = {
+    family = "桃花岛"
+    teach_skills = {
+      force = { max = 200 gongxian = 0 }
+      luoying_xinfa = { max = 200 gongxian = 0 }
+      unarmed = { max = 200 gongxian = 0 }
+      xuanfeng_tui = { max = 200 gongxian = 0 }
+      strike = { max = 200 gongxian = 0 }
+      pikong_zhang = { max = 200 gongxian = 0 }
+      finger = { max = 180 gongxian = 0 }
+      canglang_zhi = { max = 180 gongxian = 0 }
+      dodge = { max = 180 gongxian = 0 }
+      parry = { max = 180 gongxian = 0 }
+      sword = { max = 200 gongxian = 0 }
+      luoying_shenjian = { max = 200 gongxian = 0 }
+      literate = { max = 180 gongxian = 0 }
+      qimen_wuxing = { max = 160 gongxian = 0 }
+      calligraphy = { max = 160 gongxian = 0 }
+      martial_cognize = { max = 160 gongxian = 0 }
+    }
+    gongxian = 0
+  }
+  apprentice = {
+    family = "桃花岛"
+    permit_recruit = true
+    gate_order = "lpc_taohua"
+    master_mark = "taohua/master"
+    master_name = "陆乘风"
+    master_absent_msg = "我可不敢擅自收徒，你还是找家师黄岛主吧！"
+    master_reject_msg = "家师不是让你拜%master%的吗？你怎么来找我来了？"
+    master_accept_msg = "好吧，既然家师有令，我就收下你了，不过要好好遵守桃花岛的规矩。"
+    defer_mark = "taohua/master"
+    delete_mark_on_accept = true
+    betray_sect_deny = "亏你还有脸回桃花岛？滚！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "你既有了名师指点，还来我们桃花岛做什么？"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.sui", "finger.tao", "strike.dai", "unarmed.kuang", "powerup", "recover"]
   nickname = "归云庄主"
   gender = "男性"
   age = 52
@@ -42986,10 +43756,58 @@ chats = [
     { key = "东邪" value = "家师人称东邪！呵呵。" },
     { key = "北丐" value = "北丐洪七公是丐帮帮主，现在扬州城外。" },
     { key = "南帝" value = "听家师说段王爷现在出家当了和尚，法名一灯。" },
-    { key = "披星戴月" value = " inquire about skill1 (unimplemented)" },
+    { key = "披星戴月" value = {
+      kind = "sect_master_grant"
+      perform_id = "pikong-zhang/dai"
+      skill = "pikong-zhang"
+      family = "你不是我们桃花岛的人，问这个干嘛？"
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连劈空掌都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 80
+      cost_gongxian = 80
+      min_levels = {
+        force = 120
+        pikong_zhang = 80
+      }
+      level_order = ["force", "pikong-zhang"]
+      level_deny = {
+        force = "你的内功修为不够，还是多锻炼锻炼吧。"
+        pikong_zhang = "你的劈空掌还不够熟练，练高了再来找我。"
+      }
+      improve_skills = ["strike", "pikong-zhang", "martial-cognize"]
+      learned = "你学会了「披星戴月」。"
+    }
+    },
     { key = "桃花岛" value = "这儿就是桃花岛，你若不是本派弟子，要过桃花阵。" },
     { key = "桃花阵" value = "往南就是了。" },
-    { key = "狂风绝技" value = " inquire about skill2 (unimplemented)" },
+    { key = "狂风绝技" value = {
+      kind = "sect_master_grant"
+      perform_id = "xuanfeng-tui/kuang"
+      skill = "xuanfeng-tui"
+      family = "你不是我们桃花岛的人，问这个干嘛？"
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连旋风扫叶腿都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 300
+      cost_gongxian = 300
+      min_levels = {
+        force = 150
+        xuanfeng_tui = 100
+        pikong_zhang = 100
+      }
+      level_order = ["force", "xuanfeng-tui", "pikong-zhang"]
+      level_deny = {
+        force = "你的内功修为不够，还是多锻炼锻炼吧。"
+        xuanfeng_tui = "你的旋风扫叶腿还不够熟练，练高了再来。"
+        pikong_zhang = "你的劈空掌还不够熟练，练高了再来找我。"
+      }
+      improve_skills = ["unarmed", "strike", "xuanfeng-tui", "pikong-zhang", "martial-cognize"]
+      learned = "你学会了「狂风绝技」。"
+    }
+    },
     { key = "西毒" value = "欧阳锋是与家师并世齐名的高手，人称老毒物。" },
     { key = "黄药师" value = "你要拜访家师？" },
     { key = "黄蓉" value = "她是师父的爱女。" }
@@ -43034,6 +43852,14 @@ chats = [
       name = "梅超风"
       aliases = ["taohua_mei", "mei chaofeng", "mei", "chaofeng"]
       description = "梅超风是黄药师唯一的女弟子，本来极受黄药师疼爱，可 惜她与师兄陈玄风暗生情愫，他们偷了「九阴真经」私奔。 她面色大概因为久居海岛显得黝黑，模样却颇为俏丽。她 在桃花弟子中尤精通鞭法。"
+
+  apprentice = {
+    family = "桃花岛"
+    deny_all = true
+    deny_msg = "滚开！"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["claw.duo", "claw.sha", "strike.cui", "whip.chan", "whip.jiao", "recover"]
   title = "黑风双煞"
   nickname = "铁尸"
   gender = "女性"
@@ -43042,6 +43868,11 @@ chats = [
   combat = {
     attitude = "aggressive"
     combat_exp = 1800000
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
     con = 35
     dex = 31
     int = 32
@@ -43054,7 +43885,37 @@ chats = [
   inquiries = [
     { key = "东邪" value = "那是我师父的绰号。" },
     { key = "九阴真经" value = "那是我师父的秘籍！你可别打注意！" },
-    { key = "九阴神爪" value = " inquire about skill (unimplemented)" },
+    { key = "九阴神爪" value = {
+      kind = "sect_master_grant"
+      perform_id = "jiuyin-shengong/zhua"
+      no_family_check = true
+      maxed = "你不是已经会了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连这门功夫都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 0
+      cost_gongxian = 0
+      required_mark = "can_learn/jiuyin-shengong/zhua"
+      mark_deny = "你去将「九阴真经下册」找来给我，我便传你这招！"
+      min_levels = {
+        jiuyin_shengong = 240
+        claw = 240
+        force = 260
+        martial_cognize = 240
+      }
+      level_order = ["jiuyin-shengong", "claw", "force", "martial-cognize", "max_neili"]
+      level_deny = {
+        jiuyin_shengong = "你九阴神功火候不够，我还不能传你这招！"
+        claw = "你基本爪法不够娴熟，我不能传你这招！"
+        force = "你内功修为不够，我不能传你这招！"
+        martial_cognize = "你武学修养不够，我不能传你绝招！"
+      }
+      min_max_neili = 5500
+      max_neili_deny = "你内力修为不足，我还不能传你绝招！"
+      improve_skills = ["claw", "jiuyin-shengong", "martial-cognize"]
+      learned = "你学会了「九阴神爪」！"
+    }
+    },
     { key = "北丐" value = "北丐统领中原的丐帮，势力颇为强大。" },
     { key = "南帝" value = "段王爷已出家当和尚去了，法名叫一灯。" },
     { key = "梅超风" value = "不就是我么？你是白痴啊？" },
@@ -43108,6 +43969,44 @@ chats = [
       name = "曲灵风"
       aliases = ["taohua_qu", "qu lingfeng", "qu", "lingfeng"]
       description = "曲灵风是黄药师的大徒弟，也是黄药师最得意的徒儿。他 对黄药师一贯忠心耿耿，尤其是性格古怪，象极了他师父 的邪气。他身形修长，相貌英俊，白衣飘飘，形容潇洒。"
+
+  teach = {
+    family = "桃花岛"
+    teach_skills = {
+      force = { max = 200 gongxian = 0 }
+      luoying_xinfa = { max = 200 gongxian = 0 }
+      unarmed = { max = 180 gongxian = 0 }
+      xuanfeng_tui = { max = 180 gongxian = 0 }
+      strike = { max = 180 gongxian = 0 }
+      pikong_zhang = { max = 180 gongxian = 0 }
+      finger = { max = 200 gongxian = 0 }
+      canglang_zhi = { max = 200 gongxian = 0 }
+      dodge = { max = 200 gongxian = 0 }
+      parry = { max = 200 gongxian = 0 }
+      sword = { max = 200 gongxian = 0 }
+      luoying_shenjian = { max = 200 gongxian = 0 }
+      literate = { max = 200 gongxian = 0 }
+      martial_cognize = { max = 180 gongxian = 0 }
+    }
+    gongxian = 0
+  }
+  apprentice = {
+    family = "桃花岛"
+    permit_recruit = true
+    gate_order = "lpc_taohua"
+    master_mark = "taohua/master"
+    master_name = "曲灵风"
+    master_absent_msg = "我可不敢擅自收徒，你还是找家师黄岛主吧！"
+    master_reject_msg = "家师不是让你拜%master%的吗？你怎么来找我来了？"
+    master_accept_msg = "好吧，既然家师有令，我就收下你了，不过要好好遵守桃花岛的规矩。"
+    defer_mark = "taohua/master"
+    delete_mark_on_accept = true
+    betray_sect_deny = "亏你还有脸回桃花岛？滚！"
+    betray_times_deny = "阁下不忠不信，我最痛恨你这种人了。"
+    other_family_deny = "你既有了名师指点，还来我们桃花岛做什么？"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.sui", "finger.tao", "strike.dai", "unarmed.kuang", "powerup", "recover"]
   gender = "男性"
   age = 46
   shen_type = 1
@@ -43130,10 +44029,33 @@ chats = [
     { key = "南帝" value = "听家师说段王爷现在出家当了和尚，法名一灯。" },
     { key = "桃花岛" value = "这儿就是桃花岛，你若不是本派弟子，要过桃花阵。" },
     { key = "桃花阵" value = "往南就是了。" },
-    { key = "河图" value = " inquire about book1 (unimplemented)" },
-    { key = "洛书" value = " inquire about book2 (unimplemented)" },
+    { key = "河图" value = " inquire about book1 (unimplemented: GAP #908)" },
+    { key = "洛书" value = " inquire about book2 (unimplemented: GAP #908)" },
     { key = "西毒" value = "欧阳锋是与家师并世齐名的高手，人称老毒物。" },
-    { key = "随波逐流" value = " inquire about skill1 (unimplemented)" },
+    { key = "随波逐流" value = {
+      kind = "sect_master_grant"
+      perform_id = "luoying-shenjian/sui"
+      skill = "luoying-shenjian"
+      family = "你不是我们桃花岛的人，问这个干嘛？"
+      maxed = "这一招我不是已经教过你了吗？"
+      family_deny = "你不是我们桃花岛的人，问这个干嘛？"
+      skill_deny = "你连落英神剑都没学，还谈什么绝招可言？"
+      gongxian_deny = "师父吩咐过，不传功给无功劳的弟子。"
+      min_gongxian = 120
+      cost_gongxian = 120
+      min_levels = {
+        force = 120
+        luoying_shenjian = 80
+      }
+      level_order = ["force", "luoying-shenjian"]
+      level_deny = {
+        force = "你的内功修为不够，还是多锻炼锻炼吧。"
+        luoying_shenjian = "你的落英神剑还不够熟练，练高了再来找我。"
+      }
+      improve_skills = ["sword", "luoying-shenjian", "martial-cognize"]
+      learned = "你学会了「随波逐流」。"
+    }
+    },
     { key = "黄药师" value = "你要拜访家师？" },
     { key = "黄蓉" value = "她是师父的爱女。" }
   ]
@@ -43175,6 +44097,47 @@ chats = [
       name = "黄蓉"
       aliases = ["taohua_rong", "huang rong", "huang", "rong"]
       description = "这便是桃花岛岛主的独生女儿。由于岛主夫人 早死，岛主对这个女儿备加疼爱。她生性跳脱 飞扬，喜欢四处乱跑。"
+
+  teach = {
+    family = "桃花岛"
+    teach_skills = {
+      force = { max = 240 gongxian = 0 }
+      bibo_shengong = { max = 240 gongxian = 0 }
+      luoying_xinfa = { max = 220 gongxian = 0 }
+      hand = { max = 240 gongxian = 0 }
+      strike = { max = 240 gongxian = 0 }
+      pikong_zhang = { max = 220 gongxian = 0 }
+      luoying_shenzhang = { max = 240 gongxian = 0 }
+      dodge = { max = 240 gongxian = 0 }
+      anying_fuxiang = { max = 240 gongxian = 0 }
+      parry = { max = 220 gongxian = 0 }
+      sword = { max = 220 gongxian = 0 }
+      luoying_shenjian = { max = 220 gongxian = 0 }
+      yuxiao_jian = { max = 220 gongxian = 0 }
+      lanhua_shou = { max = 240 gongxian = 0 }
+      staff = { max = 240 gongxian = 0 }
+      dagou_bang = { max = 240 gongxian = 0 }
+      unarmed = { max = 200 gongxian = 0 }
+      xiaoyaoyou = { max = 200 gongxian = 0 }
+      throwing = { max = 200 gongxian = 0 }
+      mantianhuayu_zhen = { max = 200 gongxian = 0 }
+      qimen_wuxing = { max = 280 gongxian = 0 }
+      count = { max = 280 gongxian = 0 }
+      jingluo_xue = { max = 260 gongxian = 0 }
+      literate = { max = 280 gongxian = 0 }
+      mathematics = { max = 280 gongxian = 0 }
+      cooking = { max = 280 gongxian = 0 }
+      martial_cognize = { max = 220 gongxian = 0 }
+    }
+    gongxian = 0
+  }
+  apprentice = {
+    family = "桃花岛"
+    deny_all = true
+    deny_msg = "现在国难当头，我哪里有时间收徒啊。"
+  }
+  chat_chance_combat = 120
+  chat_msg_combat = ["hand.fu", "hand.fei", "strike.zhuan", "powerup", "recover"]
   title = "东海桃花岛主之女"
   nickname = "丐帮前任帮主"
   gender = "女性"
@@ -43183,6 +44146,11 @@ chats = [
   combat = {
     attitude = "peaceful"
     combat_exp = 3000000
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
     con = 30
     dex = 30
     int = 40
@@ -43452,12 +44420,37 @@ chats = [
       name = "枯荣大师"
       aliases = ["tianlongsi_kurong", "kurong", "ku"]
       description = "他的面壁而坐，看不见面貌。"
+
+  teach = {
+    family = "大理段家"
+    teach_skills = {
+      lamaism = { max = 260 gongxian = 0 }
+      buddhism = { max = 260 gongxian = 0 }
+    }
+    gongxian = 0
+    no_teach = {
+      literate = "抱歉，想学文化请去找教书先生。"
+      force = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      dodge = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      parry = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      finger = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      tiannan_step = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      kurong_changong = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      duanshi_xinfa = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      sun_finger = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+      martial_cognize = "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。"
+    }
+  }
   title = "天龙寺第十六代僧人"
   gender = "男性"
   age = 95
   shen_type = 1
 
   combat = {
+    apply = {
+      damage = 50
+      armor = 50
+    }
     combat_exp = 2700000
     con = 31
     dex = 32
@@ -43469,9 +44462,24 @@ chats = [
   }
 
   inquiries = [
-    { key = "六脉神剑" value = " inquire about me (unimplemented)" },
-    { key = "六脉神剑剑谱" value = " inquire about me (unimplemented)" },
-    { key = "六脉神剑谱" value = " inquire about me (unimplemented)" }
+    { key = "六脉神剑" value = {
+      kind = "born_family_reply"
+      required_born_family = "段氏皇族"
+      msg_other = "$N冷笑一声道：{respect}打听我们天龙寺镇寺之宝干什么？"
+      msg_match = "$N淡然对$n道：你虽然是皇族之人，但是也不得染指六脉神剑剑谱。"
+    } },
+    { key = "六脉神剑剑谱" value = {
+      kind = "born_family_reply"
+      required_born_family = "段氏皇族"
+      msg_other = "$N冷笑一声道：{respect}打听我们天龙寺镇寺之宝干什么？"
+      msg_match = "$N淡然对$n道：你虽然是皇族之人，但是也不得染指六脉神剑剑谱。"
+    } },
+    { key = "六脉神剑谱" value = {
+      kind = "born_family_reply"
+      required_born_family = "段氏皇族"
+      msg_other = "$N冷笑一声道：{respect}打听我们天龙寺镇寺之宝干什么？"
+      msg_match = "$N淡然对$n道：你虽然是皇族之人，但是也不得染指六脉神剑剑谱。"
+    } }
   ]
 
   skills = [
@@ -43506,6 +44514,117 @@ chats = [
   }
     }
 
+# LPC: C:/files/git/mud/kungfu/class/tianlongsi/jiumozhi.c
+    characters "tianlongsi_jiumozhi" {
+      name = "鸠摩智"
+      aliases = ["tianlongsi_jiumozhi", "jiumo zhi", "zhi", "ming wang"]
+      description = "他就是雪山寺的掌门，人称大轮明王的鸠摩智。他对佛法有精深的研究。身穿一件大红袈裟，头带僧帽。"
+  title = "雪山寺掌门"
+  nickname = "大轮明王"
+  gender = "男性"
+  age = 60
+  attitude = "friendly"
+  shen_type = -1
+  class = "bonze"
+  score = 40000
+
+  combat = {
+    attitude = "friendly"
+    combat_exp = 4000000
+    con = 31
+    dex = 31
+    int = 40
+    jiali = 200
+    max_jing = 3000
+    max_neili = 8000
+    max_qi = 6000
+    str = 32
+  }
+
+  chat_chance_combat = 120
+  chat_msg_combat = ["recover", "powerup"]
+
+  inquiries = [
+    { key = "焚身" value = {
+      kind = "sect_master_grant"
+      perform_id = "huoyan-dao/fen"
+      gate_order = "lpc_jiumozhi_fen"
+      no_family_check = true
+      min_levels = { huoyan_dao = 180 }
+      level_order = [ "huoyan-dao" ]
+      level_deny = { huoyan_dao = "你的火焰刀法修为还不够，等你练好了再说吧！" }
+      max_shen = -65000
+      min_gongxian = 600
+      cost_gongxian = 600
+      maxed = "绝技你已经学会了，剩下的就要靠你自己多练习了。"
+      max_shen_deny = "你为人太过心软，这招暂时还不能传你。"
+      gongxian_deny = "你的贡献还不够，这招暂时还不能传你。"
+      msg_one = "鸠摩智右掌一竖，几路无形刀气袭击向$n，$n连忙伸手格挡，不禁发现鸠摩智的内力运用可谓是奥妙无穷！"
+      learned = "你通晓了焚身的奥妙。"
+      improve_skills = [ "strike", "huoyan-dao", "martial-cognize" ]
+    } },
+    { key = "天寰神炎" value = {
+      kind = "sect_master_grant"
+      perform_id = "huoyan-dao/yan"
+      gate_order = "lpc_jiumozhi_yan"
+      no_family_check = true
+      min_gongxian = 1200
+      cost_gongxian = 1200
+      max_shen = -120000
+      min_levels = { force = 220 max_neili = 5000 huoyan_dao = 220 }
+      level_order = [ "force", "max_neili", "huoyan_dao" ]
+      level_deny = {
+        force = "你的内功修为不足，还学不了这一招。"
+        max_neili = "你的内力修为不足，还是修炼高点再来吧。"
+        huoyan_dao = "等你把火焰刀练熟了再来找我。"
+      }
+      maxed = "你又来干什么？自己下去多练。"
+      max_shen_deny = "你为人太过心软，这招暂时还不能传你。"
+      gongxian_deny = "你的贡献还不够，这招暂时还不能传你。"
+      msg_one = "鸠摩智对$n点了点头，喝道：“瞧仔细了。”话音刚落，只见鸠摩智高举手中的刚刀，在空中挥舞成盘，气势惊人！便在此时，那柄刚刀已携带着震天撞击之声猛然击落。直把$n看得目瞪口呆。"
+      learned = "你学会了「天寰神炎」。"
+      improve_skills = [ "strike", "huoyan-dao", "martial-cognize" ]
+    } }
+  ]
+
+  skills = [
+    { skill = "force" level = 260 },
+    { skill = "xiaowuxiang" level = 260 },
+    { skill = "mizong_neigong" level = 260 },
+    { skill = "dodge" level = 260 },
+    { skill = "shenkong_xing" level = 260 },
+    { skill = "parry" level = 260 },
+    { skill = "unarmed" level = 260 },
+    { skill = "sword" level = 260 },
+    { skill = "mingwang_jian" level = 260 },
+    { skill = "hammer" level = 260 },
+    { skill = "dali_chu" level = 260 },
+    { skill = "xiangmo_chu" level = 260 },
+    { skill = "lamaism" level = 260 },
+    { skill = "literate" level = 260 },
+    { skill = "strike" level = 600 },
+    { skill = "huoyan_dao" level = 260 },
+    { skill = "cuff" level = 260 },
+    { skill = "yujiamu_quan" level = 260 },
+    { skill = "hand" level = 260 },
+    { skill = "dashou_yin" level = 260 },
+    { skill = "martial_cognize" level = 260 },
+    { skill = "longxiang_gong" level = 260 },
+    { type = "force" skill = "xiaowuxiang" },
+    { type = "dodge" skill = "shenkong-xing" },
+    { type = "parry" skill = "huoyan-dao" },
+    { type = "sword" skill = "mingwang-jian" },
+    { type = "strike" skill = "huoyan-dao" },
+    { type = "cuff" skill = "yujiamu-quan" },
+    { type = "hammer" skill = "xiangmo-chu" }
+  ]
+
+  carry = [
+    { id = xueshan.items.r_jiasha.id },
+    { id = xueshan.items.sengmao.id }
+  ]
+    }
+
 # LPC: C:/files/git/mud/kungfu/class/tiezhang/fen.c
     characters "tiezhang_fen" {
       name = "司徒焚"
@@ -43514,6 +44633,96 @@ chats = [
   gender = "男性"
   age = 40
   score = 40000
+
+  teach = {
+    family = "铁掌帮"
+    teach_skills = {
+      force = {
+        max = 180
+        gongxian = 0
+      }
+      tiezhang_xinfa = {
+        max = 200
+        gongxian = 0
+      }
+      dodge = {
+        max = 200
+        gongxian = 0
+      }
+      dengping_dushui = {
+        max = 200
+        gongxian = 0
+      }
+      strike = {
+        max = 200
+        gongxian = 0
+      }
+      parry = {
+        max = 200
+        gongxian = 0
+      }
+      chuanxin_zhang = {
+        max = 200
+        gongxian = 0
+      }
+      tongbi_zhang = {
+        max = 200
+        gongxian = 0
+      }
+      cuff = {
+        max = 180
+        gongxian = 0
+      }
+      tiexian_quan = {
+        max = 180
+        gongxian = 0
+      }
+      unarmed = {
+        max = 180
+        gongxian = 0
+      }
+      tiexue_dao = {
+        max = 180
+        gongxian = 0
+      }
+      blade = {
+        max = 180
+        gongxian = 0
+      }
+      literate = {
+        max = 160
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 160
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "铁掌帮"
+    permit_recruit = true
+    allow_families = [ "绝情谷" ]
+    allow_master_name = "裘千尺"
+    defer_family = "绝情谷"
+    defer_master_name = "裘千尺"
+    defer_mark = "绝情谷--铁掌帮"
+    defer_msg = "原来阁下是裘千尺师叔的后裔，想来你和本帮有极深的渊源。这个事情我做不了主，你还是直接去找帮主吧。"
+    no_min_shen = true
+    max_shen = -10000
+    max_shen_deny = "你这样心慈手软可不行。"
+    min_exp = 140000
+    min_exp_deny = "你这点能力怎能成大器，还是练练再来吧！"
+    min_skills = { force = 60 strike = 40 }
+    recruit_skill_order = [ "force", "strike" ]
+    min_skills_deny = {
+      force = "学武之人最讲究内功精纯，我看你下的工夫还不够呀。"
+      strike = "入帮之后连最基本的掌法都没练好，那你入铁掌帮作甚？"
+    }
+    accept_msg = "既然这样，我便收下你，希望你苦练本帮神功，将之发扬光大。"
+  }
+
   # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
@@ -43553,6 +44762,100 @@ chats = [
   ]
 
 
+  inquiries = [
+    { key = "血浪滔天" value = {
+      kind = "sect_master_grant"
+      perform_id = "tiexue-dao/xue"
+      skill = "tiexue-dao"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tiexue_dao = 100
+        force = 60
+      }
+      level_order = [ "tiexue-dao", "force" ]
+      level_deny = {
+        tiexue_dao = "你对铁血刀法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      min_gongxian = 60
+      cost_gongxian = 60
+      max_shen = -15000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁血刀法都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「血浪滔天」。"
+    } },
+    { key = "穿心锥" value = {
+      kind = "sect_master_grant"
+      perform_id = "chuanxin-zhang/zhui"
+      skill = "chuanxin-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        chuanxin_zhang = 100
+        force = 150
+        dodge = 220
+        max_neili = 200
+      }
+      level_order = [ "chuanxin-zhang", "force", "dodge", "max-neili" ]
+      level_deny = {
+        chuanxin_zhang = "你对穿心掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        dodge = "你目前的轻功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 200
+      cost_gongxian = 200
+      max_shen = -18000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连穿心掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「穿心锥」。"
+    } },
+    { key = "破甲推山" value = {
+      kind = "sect_master_grant"
+      perform_id = "tiexian-quan/tui"
+      skill = "tiexian-quan"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tiexian_quan = 100
+        force = 90
+        max_neili = 400
+      }
+      level_order = [ "tiexian-quan", "force", "max-neili" ]
+      level_deny = {
+        tiexian_quan = "你对铁线拳的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 260
+      cost_gongxian = 260
+      max_shen = -23000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁线拳都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「破甲推山」。"
+    } }
+  ]
+
+  chat_chance_combat = 120
+  chat_msg_combat = [
+    "blade.xue",
+    "cuff.kai",
+    "unarmed.zhui",
+    "recover",
+    "powerup"
+  ]
+
+
   carry = [
     { id = items.cloth.id },
     { id = items.gangdao.id }
@@ -43569,6 +44872,110 @@ chats = [
   gender = "男性"
   age = 60
   score = 40000
+
+  teach = {
+    family = "铁掌帮"
+    teach_skills = {
+      force = {
+        max = 280
+        gongxian = 0
+      }
+      tiezhang_xinfa = {
+        max = 280
+        gongxian = 0
+      }
+      tianlei_shengong = {
+        max = 280
+        gongxian = 0
+      }
+      dodge = {
+        max = 320
+        gongxian = 0
+      }
+      dengping_dushui = {
+        max = 320
+        gongxian = 0
+      }
+      strike = {
+        max = 320
+        gongxian = 0
+      }
+      parry = {
+        max = 280
+        gongxian = 0
+      }
+      tie_zhang = {
+        max = 320
+        gongxian = 0
+      }
+      chuanxin_zhang = {
+        max = 280
+        gongxian = 0
+      }
+      cuff = {
+        max = 280
+        gongxian = 0
+      }
+      tiexian_quan = {
+        max = 280
+        gongxian = 0
+      }
+      unarmed = {
+        max = 280
+        gongxian = 0
+      }
+      feilong_zhang = {
+        max = 260
+        gongxian = 0
+      }
+      staff = {
+        max = 260
+        gongxian = 0
+      }
+      blade = {
+        max = 260
+        gongxian = 0
+      }
+      tianlei_dao = {
+        max = 260
+        gongxian = 0
+      }
+      literate = {
+        max = 200
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 200
+        gongxian = 0
+      }
+    }
+  }
+
+  apprentice = {
+    family = "铁掌帮"
+    permit_recruit = true
+    allow_families = [ "绝情谷" ]
+    allow_master_name = "裘千尺"
+    defer_family = "绝情谷"
+    defer_master_name = "裘千尺"
+    defer_mark = "绝情谷--铁掌帮"
+    defer_msg = "原来是三妹的后裔，这样也好，我们本来就是一家人。且让我先看看你的能力。"
+    defer_continue = true
+    delete_mark_on_accept = true
+    no_min_shen = true
+    max_shen = -60000
+    max_shen_deny = "我裘千仞可不收心慈手软的人做徒弟。"
+    min_exp = 500000
+    min_exp_deny = "你这点能力怎能继承我的衣钵？"
+    min_skills = { force = 220 strike = 160 }
+    recruit_skill_order = [ "force", "strike" ]
+    min_skills_deny = {
+      force = "要学我的铁掌绝技，内功非精纯不可，你还是先多练练吧。"
+      strike = "要学我的铁掌绝技，需要精湛的掌法作基础，我看你在那上面下的工夫还不够啊。"
+    }
+    accept_msg = "不错，不错！我就收下你了，希望你苦练铁掌神功，将之发扬光大。公孙止那老家伙不是个东西，你以后还是跟我学习铁掌帮的功夫吧。"
+  }
+
   # brain = brains.quester  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
@@ -43591,7 +44998,201 @@ chats = [
     { key = "绝招" value = "你要问什么绝招？" },
     { key = "裘千丈" value = "哼，大哥老是打着我的名号到处招摇撞骗，总有一天我要……" },
     { key = "裘千尺" value = "三妹下嫁到绝情谷去了，你问这个有什么事吗？" },
-    { key = "铁掌掌谱" value = "这本秘籍不在我手里，想必已经失落很久了。" }
+    { key = "铁掌掌谱" value = "这本秘籍不在我手里，想必已经失落很久了。" },
+    { key = "掌心雷" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/lei"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tie_zhang = 160
+        force = 220
+        max_neili = 2200
+      }
+      level_order = [ "tie-zhang", "force", "max-neili" ]
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -65000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "$N投以赞许的一笑，说道：“看好了！”随即只见$N猛催内力，双掌登时变得火红，你正惊诧之际$N双掌幻为一对掌刀凌空劈斩而出，只听「喀嚓」一声，大厅内一张青石桌应声而碎！"
+      learned = "你学会了「掌心雷」。"
+    } },
+    { key = "九穹绝刹掌" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/juesha"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tie_zhang = 200
+        force = 300
+        max_neili = 2200
+      }
+      level_order = [ "tie-zhang", "force", "max-neili" ]
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 800
+      cost_gongxian = 800
+      max_shen = -85000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      msg_one = "$N默默注视了你良久，说道：“既然如此，今日我便传你这招！我只演示一遍，你可要看仔细了！”说完一声怒喝，体内所积存数十载的天雷真气澎湃而发，衣衫鼓动，双臂陡然暴长数尺。只听四周破空之声骤然响之，$N双掌幻出漫天掌影，铺天盖地向四面八方云涌而出，当真气势磅礴，无与伦比！"
+      learned = "你学会了「九穹绝刹掌」。"
+    } },
+    { key = "龙影掌" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/long"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tie_zhang = 100
+        force = 80
+        max_neili = 1300
+      }
+      level_order = [ "tie-zhang", "force", "max-neili" ]
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 300
+      cost_gongxian = 300
+      max_shen = -60000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「龙影掌」。"
+    } },
+    { key = "五指刀" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/dao"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tie_zhang = 180
+        force = 260
+        max_neili = 2500
+      }
+      level_order = [ "tie-zhang", "force", "max-neili" ]
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 700
+      cost_gongxian = 700
+      max_shen = -90000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「五指刀」。"
+    } },
+    { key = "阴阳磨" value = {
+      kind = "sect_master_grant"
+      perform_id = "tie-zhang/yin"
+      skill = "tie-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tie_zhang = 220
+        force = 300
+        max_neili = 3500
+      }
+      level_order = [ "tie-zhang", "force", "max-neili" ]
+      level_deny = {
+        tie_zhang = "你对铁掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 900
+      cost_gongxian = 900
+      max_shen = -95000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连铁掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「阴阳磨」。"
+    } },
+    { key = "春雷炸空" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianlei-dao/zha"
+      skill = "tianlei-dao"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tianlei_dao = 150
+        force = 140
+        max_neili = 1500
+      }
+      level_order = [ "tianlei-dao", "force", "max-neili" ]
+      level_deny = {
+        tianlei_dao = "你对天雷绝刀的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -75000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连天雷绝刀都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「春雷炸空」。"
+    } },
+    { key = "五雷连闪" value = {
+      kind = "sect_master_grant"
+      perform_id = "tianlei-dao/shan"
+      skill = "tianlei-dao"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tianlei_dao = 150
+        force = 150
+        max_neili = 1500
+      }
+      level_order = [ "tianlei-dao", "force", "max-neili" ]
+      level_deny = {
+        tianlei_dao = "你对天雷绝刀的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 600
+      cost_gongxian = 600
+      max_shen = -75000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连天雷绝刀都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「五雷连闪」。"
+    } },
+    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #927)" },
+    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #927)" },
+    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #927)" }
   ]
 
   skills = [
@@ -43624,6 +45225,18 @@ chats = [
   ]
 
 
+  chat_chance_combat = 120
+  chat_msg_combat = [
+    "strike.juesha",
+    "strike.lei",
+    "strike.yin",
+    "cuff.kai",
+    "unarmed.zhui",
+    "recover",
+    "powerup"
+  ]
+
+
   carry = [
     { id = items.cloth.id }
   ]
@@ -43639,6 +45252,88 @@ chats = [
   age = 60
   score = 40000
 
+  teach = {
+    family = "铁掌帮"
+    teach_skills = {
+      force = {
+        max = 100
+        gongxian = 0
+      }
+      tiezhang_xinfa = {
+        max = 100
+        gongxian = 0
+      }
+      dodge = {
+        max = 120
+        gongxian = 0
+      }
+      lingxu_bu = {
+        max = 120
+        gongxian = 0
+      }
+      strike = {
+        max = 120
+        gongxian = 0
+      }
+      parry = {
+        max = 120
+        gongxian = 0
+      }
+      tongbi_zhang = {
+        max = 120
+        gongxian = 0
+      }
+      tie_zhang = {
+        max = 120
+        gongxian = 0
+      }
+      chuanxin_zhang = {
+        max = 120
+        gongxian = 0
+      }
+      feilong_zhang = {
+        max = 120
+        gongxian = 0
+      }
+      guyue_chan = {
+        max = 120
+        gongxian = 0
+      }
+      staff = {
+        max = 100
+        gongxian = 0
+      }
+      literate = {
+        max = 80
+        gongxian = 0
+      }
+      martial_cognize = {
+        max = 80
+        gongxian = 0
+      }
+    }
+    no_teach = {
+      tie_zhang = "嘿嘿嘿，这玩意不厉害，我的通臂六合掌才是武林绝学，你还是用心练这个吧。"
+    }
+  }
+
+  apprentice = {
+    family = "铁掌帮"
+    permit_recruit = true
+    allow_families = [ "绝情谷" ]
+    allow_master_name = "裘千尺"
+    defer_family = "绝情谷"
+    defer_master_name = "裘千尺"
+    defer_mark = "绝情谷--铁掌帮"
+    defer_msg = "我道是谁，原来是三妹的弟子，我们本来就是一家人。这个事情我做不了主，你还是去找二弟吧。"
+    defer_continue = true
+    no_min_shen = true
+    max_shen = 0
+    max_shen_deny = "他妈的！爷爷我最恨你这样心慈手软的小王八蛋！。"
+    accept_msg = "爷爷我武功盖世，你这娃娃好好跟着我学，准没错！"
+  }
+
+
   combat = {
     attitude = "friendly"
     combat_exp = 100000
@@ -43653,7 +45348,84 @@ chats = [
 
   inquiries = [
     { key = "here" value = "这里就是铁掌帮的总坛所在，你如没事，不要四处乱走，免招杀身之祸！！！" },
-    { key = "name" value = "记得先父曾给我起过一个名，叫甚么‘千丈’。我念着不好听，也就难得用它。" }
+    { key = "name" value = "记得先父曾给我起过一个名，叫甚么‘千丈’。我念着不好听，也就难得用它。" },
+    { key = "孤雁出群" value = {
+      kind = "sect_master_grant"
+      perform_id = "tongbi-zhang/chu"
+      skill = "tongbi-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        tongbi_zhang = 80
+        force = 40
+      }
+      level_order = [ "tongbi-zhang", "force" ]
+      level_deny = {
+        tongbi_zhang = "你对通臂六合掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      min_gongxian = 60
+      cost_gongxian = 60
+      max_shen = -5000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连通臂六合掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「孤雁出群」。"
+    } },
+    { key = "皓月惊空" value = {
+      kind = "sect_master_grant"
+      perform_id = "guyue-chan/jing"
+      skill = "guyue-chan"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        guyue_chan = 80
+        force = 40
+      }
+      level_order = [ "guyue-chan", "force" ]
+      level_deny = {
+        guyue_chan = "你对孤月铲法的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+      }
+      min_gongxian = 80
+      cost_gongxian = 80
+      max_shen = -8000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连孤月铲法都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「皓月惊空」。"
+    } },
+    { key = "龙飞势" value = {
+      kind = "sect_master_grant"
+      perform_id = "feilong-zhang/fei"
+      skill = "feilong-zhang"
+      gate_order = "lpc_masterd"
+      family = "铁掌帮"
+      min_levels = {
+        feilong_zhang = 160
+        force = 240
+        max_neili = 2500
+      }
+      level_order = [ "feilong-zhang", "force", "max-neili" ]
+      level_deny = {
+        feilong_zhang = "你对飞龙掌的了解还不够，尚且无法领悟此招。"
+        force = "你目前的内功火候不足，下去练练再来吧。"
+        max_neili = "你现在的内力修为不足，修炼高点再来吧。"
+      }
+      min_gongxian = 400
+      cost_gongxian = 400
+      max_shen = -20000
+      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+      gongxian_deny = "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"
+      skill_deny = "你连飞龙掌都未曾学过，何谈绝招可言？"
+      family_deny = "大侠与我铁掌帮素无渊源，不知此话从何说起。"
+      maxed = "这招你不是已经会了么，还缠着我做甚？"
+      learned = "你学会了「龙飞势」。"
+    } }
   ]
 
   chat_chance = 10
@@ -43686,6 +45458,15 @@ chats = [
   ]
 
 
+  chat_chance_combat = 120
+  chat_msg_combat = [
+    "strike.chu",
+    "cuff.jia",
+    "staff.fei",
+    "recover"
+  ]
+
+
   carry = [
     { id = items.cloth.id },
     { id = items.gangzhang.id }
@@ -43693,7 +45474,7 @@ chats = [
 
 
   engage = {
-    fight = { accept = false msg = "啊哟，糟糕，糟糕，这会儿当真不凑巧！你等一会，我肚子痛，要出恭！" }
+    fight = { accept = false msg = "大侠怕是活腻了，来来来，让爷爷教训教训你！啊哟，糟糕，糟糕，这会儿当真不凑巧！你等一会，我肚子痛，要出恭！" }
   }
     }
 
@@ -44153,6 +45934,30 @@ chats = [
     }
   }
 
+  # LPC mo.c:98-131 attempt_apprentice：permit_recruit → shen5000 → xinfa50
+  # → taoism50，成功 set class=taoist。逐字文案覆写，顺序由 gate_order 固定。
+  # 注：taoism 拒绝原文「一味的练武是不可取的做！」（带「做」，与其它武当 NPC 不同）。
+  apprentice = {
+    family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "standard"
+    permit_recruit = true
+    min_shen = 5000
+    min_skills = {
+      wudang_xinfa = 50
+      taoism = 50
+    }
+    class = "taoist"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的做！我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。希望你能好好用功，发扬我武当精神！"
+  }
+
+  # LPC mo.c:78-91 chat_chance_combat 120 + 11 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.chan", "sword.jia", "sword.sui", "sword.zhuan", "unarmed.zhen", "unarmed.zhan", "unarmed.ji", "unarmed.yin", "recover", "powerup", "shield"]
+
   carry = [
     { id = items.changjian.id },
     { id = items.whiterobe.id }
@@ -44411,19 +46216,46 @@ chats = [
     str = 31
   }
 
+  # LPC song.c:121-160 attempt_apprentice：permit_recruit → shen25000 → exp300000
+  # → xinfa100 → taoism100，成功 set class=taoist。逐字文案覆写，顺序由 gate_order 固定。
   apprentice = {
     family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "standard"
+    permit_recruit = true
     min_shen = 25000
     min_exp = 300000
     min_skills = {
       wudang_xinfa = 100
       taoism = 100
     }
+    class = "taoist"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    exp_deny = "你现在经验尚浅，不能领会高深的武功，先锻炼要紧。"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的。我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。希望你能全心修炼道家心法，领悟道家真髓！"
+  }
+
+  # LPC song.c:88 set("book_count", 1)：太极十三式 force_book 仅发一部。
+  inquiry_state = {
+    book_count = 1
   }
 
     inquiries = {
-      太极十三式 = "武当剑法共有十三式，每式皆含太极阴阳之理，需你自行领悟。"
-      武当药理 = "武当派以道家养生之术配合药理，可治内伤、补气血，乃武当弟子必修之学。"
+      武当药理 = " GAP #937：LPC ask_book1 发放 /clone/lonely/book/wudang（武当药理书），ex data 无此 item；且 owner 遍历（同门/外人/借出）无法用 GiveItem 表达。"
+      太极十三式 = {
+        kind = "give_item"
+        item = "clone_lib:force_book"
+        match = "force_book"
+        unique = false
+        family = "武当派"
+        vision_name = "宋远桥"
+        count = "book_count"
+        success = "好吧，这本「太极十三式」你拿回去好好钻研。"
+        exhausted = "你来晚了，本派的内功心法不在此处。"
+        family_deny = "与本派素无来往，不知此话从何谈起？"
+      }
       神门刺 = {
         perform_id = "shenmen-jian/ci"
         skill = "shenmen-jian"
@@ -44434,12 +46266,16 @@ chats = [
           shenmen_jian = 120
         }
         cost_gongxian = 200
-        maxed = "这招我不是已经教会你了吗？"
-        family_deny = "阁下与我武当派素无瓜葛，何出此言？"
-        skill_deny = "你连神门刺法都没学，何谈绝招可言？"
-        gongxian_deny = "你在我武当派内甚无作为，这招我暂时还不能传你。"
-        shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
-        level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+        maxed = "你不是已经会了吗？"
+        family_deny = "不是我们武当派的人，何出此言？"
+        skill_deny = "你连神门十三剑都没学，还谈什么绝招可言？"
+        gongxian_deny = "你为我武当派效力还不够，这招我先不忙传你。"
+        shen_deny = "你行侠仗义的事情做的还很不够，我不能传你绝招！"
+        level_deny = {
+          force = "你的内功的修为不够，练高了再来吧。"
+          shenmen_jian = "你的神门十三剑还不到家，要多练练！"
+        }
+        learned = "你学会了「神门刺」。"
       }
     }
 
@@ -44523,20 +46359,10 @@ chats = [
           gongxian = 4
         }
       }
-      no_teach = [
-        "taiji-shengong",
-        "taiji-jian",
-        "taiji-quan"
-      ]
-    }
-
-    apprentice = {
-      family = "武当派"
-      min_shen = 25000
-      min_exp = 300000
-      min_skills = {
-        wudang_xinfa = 100
-        taoism = 100
+      no_teach = {
+        taiji_shengong = "要想学习太极神功请向张真人请教。"
+        taiji_jian = "太极剑必须张真人亲传。"
+        taiji_quan = "太极拳必须张真人亲传。"
       }
     }
 
@@ -44573,6 +46399,14 @@ chats = [
     { type = "medical" skill = "wudang-yaoli" }
   ]
 
+  # LPC song.c:111-114 coagents：yu lianzhou @ houyuan（助战）。
+  coagents = [
+    { id = "yu lianzhou" startroom = "wudang:houyuan" }
+  ]
+
+  # LPC song.c:90-104 chat_chance_combat 120 + 12 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.zhenwu", "sword.chan", "sword.jia", "sword.sui", "sword.zhuan", "unarmed.zhen", "unarmed.zhan", "unarmed.ji", "unarmed.yin", "recover", "powerup", "shield"]
 
   carry = [
     { id = items.changjian.id },
@@ -44724,9 +46558,22 @@ chats = [
     str = 25
   }
 
+  # LPC xiaosong.c:88-96 ask_for_zhou：heng → say「<名>你是什么东西？敢直呼芷若的名字？」
+  # → kill_ob(this_player()) → return -1（无私发）。走 kind = "hostile" 无条件开打管道。
+  # GAP #938：grep 报告本 NPC 属 wudang 而非 emei，与 hostile.ex 文档引用的
+  #           d/emei/npc/songqingshu.c 是同名不同文件的另一个宋青书，二者行为一致。
   inquiries = [
-    { key = "周芷若" value = " inquire about for zhou (unimplemented)" }
+    { key = "周芷若" value = {
+      kind = "hostile"
+      emote = "哼了一声"
+      say = true
+      message = "{name}你是什么东西？敢直呼芷若的名字？"
+    } }
   ]
+
+  # LPC xiaosong.c:73-82 chat_chance_combat 120 + 7 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["claw.duo", "claw.zhua", "strike.cuixin", "dodge.guiyuan", "recover", "powerup", "shield"]
 
   skills = [
     { skill = "force" level = 200 },
@@ -44902,6 +46749,34 @@ chats = [
       taiji_quan = "太极拳必须张真人亲传。"
     }
   }
+
+  # LPC yan.c:130-168 attempt_apprentice：permit_recruit → xinfa30(提示太极神功)
+  # → shen10000 → xinfa70 → taoism70。逐字文案覆写，顺序由 gate_order 固定。
+  # 注意首段 xinfa<30 用的是「太极神功」文案（pre_xinfa_deny），不同于常规 xinfa_deny。
+  apprentice = {
+    family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "yan"
+    permit_recruit = true
+    min_shen = 10000
+    pre_min_skills = {
+      wudang_xinfa = 30
+    }
+    min_skills = {
+      wudang_xinfa = 70
+      taoism = 70
+    }
+    class = "taoist"
+    pre_xinfa_deny = "我武当派乃内家武功，最重视内功心法。%respect%是否还应该在太极神功上多下点功夫？"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的！我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。"
+  }
+
+  # LPC yan.c:68-81 chat_chance_combat 120 + 11 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.chan", "sword.jia", "sword.sui", "sword.zhuan", "unarmed.zhen", "unarmed.zhan", "unarmed.ji", "unarmed.yin", "shield", "powerup", "recover"]
 
   carry = [
     { id = items.changjian.id },

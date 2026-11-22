@@ -1192,8 +1192,49 @@ defmodule Kantele.World.Loader do
       mark: class_value(Map.get(unlock, :mark)),
       min_exp: int_value(Map.get(unlock, :min_exp)) || 0,
       learned: Map.get(unlock, :learned),
-      locked: Map.get(unlock, :locked)
+      locked: Map.get(unlock, :locked),
+      # #789 武当张三丰「武当九阳功」链式授受（zhang.c try_to_learn_jy / recognize_apprentice）：
+      # - required_marks：按序前置标记（ kunlun / shaolin ），逐条带拒绝文案
+      # - master_only：仅本弟子（family==武当派 或 master==张三丰）可学
+      # - restricted_skill：仅对指定技能（wudang-jiuyang）放行
+      # - max_skill_level：技能等级超过上限则拒（>180 提示自己研究）
+      # - min_shen：侠义下限（<0 拒）
+      # - unlock_on_exp：是否允许仅靠 combat_exp 越过阈值自动解锁（默认 true；九阳功设 false）
+      # - 各分支逐字文案：not_master_deny / master_deny / maxed_deny / shen_deny / wrong_skill_deny
+      required_marks: normalize_required_marks(Map.get(unlock, :required_marks)),
+      master_only: to_bool(Map.get(unlock, :master_only)),
+      restricted_skill: class_value(Map.get(unlock, :restricted_skill)),
+      max_skill_level: int_value(Map.get(unlock, :max_skill_level)),
+      min_shen: int_value(Map.get(unlock, :min_shen)),
+      unlock_on_exp: unlock_on_exp_value(Map.get(unlock, :unlock_on_exp)),
+      not_master_deny: Map.get(unlock, :not_master_deny),
+      master_deny: Map.get(unlock, :master_deny),
+      maxed_deny: Map.get(unlock, :maxed_deny),
+      shen_deny: Map.get(unlock, :shen_deny),
+      wrong_skill_deny: Map.get(unlock, :wrong_skill_deny)
     }
+  end
+
+  # required_marks 归一成有序 [{mark, deny}] 列表（缺 deny 时 nil）。
+  # UCL 里可写 [ "kunlun", "shaolin" ]（无文案）或 [ { mark = "kunlun" deny = "..." } ... ]。
+  defp normalize_required_marks(marks) when is_list(marks) do
+    Enum.map(marks, fn
+      mark when is_binary(mark) -> {mark, nil}
+      mark when is_atom(mark) -> {to_string(mark), nil}
+      %{mark: mark} = conf when is_map(conf) -> {to_string(mark), Map.get(conf, :deny)}
+      other -> {to_string(other), nil}
+    end)
+  end
+
+  defp normalize_required_marks(_), do: []
+
+  # unlock_on_exp 缺省 true（既有门派行为不变）；显式 false 表示九阳功不得仅靠 exp 解锁。
+  defp unlock_on_exp_value(value) do
+    case value do
+      false -> false
+      "false" -> false
+      _ -> true
+    end
   end
 
   # 收徒门槛（F3 切片 1）：镜像 parse_teach/1 的卫句/归约形状。
@@ -1221,6 +1262,31 @@ defmodule Kantele.World.Loader do
       case Map.get(apprentice, :no_recruit) do
         list when is_list(list) -> Enum.map(list, &to_string/1)
         _ -> []
+      end
+
+    # 武当派俞岱岩：先判 wudang-xinfa>=30（提示「太极神功」），之后才判
+    # shen 与 wudang-xinfa>=70/taoism>=70。用独立的 pre_min_skills 表达，
+    # 避免与后面的正式 min_skills 共用同一份文案。
+    pre_min_skills =
+      case Map.get(apprentice, :pre_min_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, level} ->
+            {String.replace(to_string(key), "_", "-"), level}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    pre_min_skills_deny =
+      case Map.get(apprentice, :pre_min_skills_deny) do
+        denies when is_map(denies) ->
+          Enum.into(denies, %{}, fn {skill, text} ->
+            {String.replace(to_string(skill), "_", "-"), text}
+          end)
+
+        other ->
+          other
       end
 
     # 恒山派 attempt_apprentice 先判 henshan-jian 再判 force，两句 LPC 文案不同；
@@ -1269,7 +1335,9 @@ defmodule Kantele.World.Loader do
                "lpc_xiaoyao",
                "lpc_wuyazi",
                "lpc_xuanming",
-               "lpc_meizhuang"
+               "lpc_meizhuang",
+               "lpc_taohua",
+               "lpc_wudang"
              ] ->
           value
 
@@ -1285,6 +1353,13 @@ defmodule Kantele.World.Loader do
       min_exp: Map.get(apprentice, :min_exp) || 0,
       min_skills: min_skills,
       recruit_skill_order: recruit_skill_order,
+      # 武当派俞岱岩 yan.c：先判 wudang-xinfa>=30（pre_min_skills，提示「太极神功」），
+      # 之后才判 shen 与正式 min_skills。两档文案不同，故用独立字段。
+      pre_min_skills: pre_min_skills,
+      pre_min_skills_deny: pre_min_skills_deny,
+      # 武当派 9 位师父各自的 attempt_apprentice 门控顺序互不相同（zhang/shan/standard/
+      # yan/guxu），用 recruit_profile 选择 sect_master.ex 里的对应分支。
+      recruit_profile: class_value(Map.get(apprentice, :recruit_profile)),
       no_recruit: no_recruit,
       class: class,
       gender: gender,
@@ -1377,6 +1452,18 @@ defmodule Kantele.World.Loader do
       any_min_skills_deny: Map.get(apprentice, :any_min_skills_deny)
     }
 
+    # #789 武当派 9 位师父（zhang/shan/xi/yin/yu/yan/guxu/mo/song）的
+    # attempt_apprentice 门控顺序互不相同，逐字文案也各不相同；sect_master.ex
+    # wudang_*_gate 会按 recruit_profile 读取这几个 key 覆写缺省文案。
+    # 缺 key → 回退 sect_master.ex 内的 LPC 逐字缺省，未配置门派零影响。
+    wudang_fields = %{
+      xinfa_deny: Map.get(apprentice, :xinfa_deny),
+      exp_deny: Map.get(apprentice, :exp_deny),
+      taoism_deny: Map.get(apprentice, :taoism_deny),
+      # 俞岱岩 yan.c：先判 wudang-xinfa>=30 的独立文案（提示「太极神功」）。
+      pre_xinfa_deny: Map.get(apprentice, :pre_xinfa_deny)
+    }
+
     # 梅庄 meizhuang.h permit_recruit 例外：`family == 日月神教` 或
     # `master_name == 东方不败` 时「他派」第三条不拦（Task #869）。
     # attempt_apprentice 首段还要写 `move_party/日月神教--梅庄` 标记：
@@ -1394,6 +1481,31 @@ defmodule Kantele.World.Loader do
       defer_msg: Map.get(apprentice, :defer_msg),
       defer_continue: to_bool(Map.get(apprentice, :defer_continue)),
       delete_mark_on_accept: to_bool(Map.get(apprentice, :delete_mark_on_accept))
+    }
+
+    # #903 桃花岛 attempt_apprentice：feng/lu/qu 认黄药师写的 taohua/master 指派，
+    # huang 低经验随机指派弟子（defer + family 落位但不 recruit）。
+    # 全部字段缺省 nil / 0 / []，未配置的门派零影响。
+    taohua_fields = %{
+      master_mark: class_value(Map.get(apprentice, :master_mark)),
+      master_name: Map.get(apprentice, :master_name),
+      master_absent_msg: Map.get(apprentice, :master_absent_msg),
+      master_reject_msg: Map.get(apprentice, :master_reject_msg),
+      master_accept_msg: Map.get(apprentice, :master_accept_msg),
+      # 桃花岛黄药师「我不与成名人物打交道」逐字文案（上下界共用）。
+      shen_deny: Map.get(apprentice, :shen_deny),
+      # 原始 UCL 是否显式写了侠义上下界。loader 后面总会补 min_shen: 0，
+      # 单看归一后的 config 无法区分「黄药师有门」与「冯默风等无门」。
+      taohua_shen_gate:
+        Map.has_key?(apprentice, :min_shen) or Map.has_key?(apprentice, :max_shen),
+      exp_defer_max: int_value(Map.get(apprentice, :exp_defer_max)),
+      defer_masters:
+        case Map.get(apprentice, :defer_masters) do
+          list when is_list(list) -> Enum.map(list, &to_string/1)
+          _ -> []
+        end,
+      defer_mark_msg: Map.get(apprentice, :defer_mark_msg),
+      defer_master_msg: Map.get(apprentice, :defer_master_msg)
     }
 
     # #652：LPC 各字辈 attempt_apprentice 成功文案可用 UCL 覆写；未配置时由
@@ -1432,7 +1544,10 @@ defmodule Kantele.World.Loader do
         da_mo_fields,
         Map.merge(
           promotion_fields,
-          Map.merge(meizhuang_fields, Map.merge(dialogue_fields, apprentice_fields))
+          Map.merge(
+            meizhuang_fields,
+            Map.merge(taohua_fields, Map.merge(dialogue_fields, Map.merge(apprentice_fields, wudang_fields)))
+          )
         )
       )
     )

@@ -18,6 +18,9 @@ defmodule Kantele.World.InquirySectMastersTest do
 
   alias Kantele.Character.Stats
   alias Kantele.SectMaster
+  alias Kantele.World.InquiryHandlers.BornFamilyReply
+  alias Kantele.World.Loader
+  alias Kantele.World.Zone
 
   setup_all do
     %{world: Kantele.World.Loader.load()}
@@ -1245,6 +1248,382 @@ defmodule Kantele.World.InquirySectMastersTest do
 
       assert {:error, "你的武当剑法修为太浅，修炼好了再来吧。"} =
                SectMaster.inquiry_grant(weak_sword, %{family: "武当派"}, cfg)
+    end
+  end
+
+  describe "武当派 教学门控回填（Task #930 / GAP #789-791 · 9 NPC）" do
+    # ---- 收徒门控：wudang_recruit_gate 5 档 profile ----
+
+    defp wudang_student(overrides \\ %{}) do
+      base = %{
+        meta: %{
+          family: %{name: "武当派", master_id: nil, master_name: nil},
+          family_name: "武当派",
+          stats: %{
+            combat_exp: 1_000_000,
+            shen: 100_000,
+            int: 40,
+            skills: %{"wudang-xinfa" => 200, "taoism" => 200}
+          }
+        }
+      }
+
+      apply_student(base, overrides)
+    end
+
+    defp apply_student(student, overrides) do
+      Enum.reduce(overrides, student, fn
+        {:meta, meta}, acc ->
+          %{acc | meta: deep_merge(Map.get(acc, :meta), meta)}
+
+        {:stats, stats}, acc ->
+          %{acc | meta: %{acc.meta | stats: deep_merge(acc.meta.stats, stats)}}
+
+        {k, v}, acc ->
+          Map.put(acc, k, v)
+      end)
+    end
+
+    defp deep_merge(a, b) when is_map(a) and is_map(b) do
+      Map.merge(a, b, fn _k, av, bv ->
+        if is_map(av) and is_map(bv), do: deep_merge(av, bv), else: bv
+      end)
+    end
+
+    defp deep_merge(_a, b), do: b
+
+    defp teacher_with(config) do
+      %{meta: %{apprentice: config}}
+    end
+
+    test "zhang profile：xinfa120 先判 → xinfa_deny 逐字" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "zhang",
+        permit_recruit: true,
+        min_shen: 80_000,
+        min_exp: 500_000,
+        hard_min_int: 32,
+        min_skills: %{"wudang-xinfa" => 120, "taoism" => 120},
+        xinfa_deny: "我武当派乃内家武功，最重视内功心法。%respect%是否还应该在武当心法上多下点功夫？"
+      }
+
+      weak = wudang_student(%{stats: %{skills: %{"wudang-xinfa" => 119, "taoism" => 200}}})
+
+      assert {:error, reason} = SectMaster.recruit_gate?(teacher_with(cfg), weak)
+      assert reason =~ "我武当派乃内家武功，最重视内功心法。"
+      assert reason =~ "武当心法上多下点功夫"
+      refute reason =~ "大侠"
+    end
+
+    test "zhang profile：int 硬门（hard_min_int=32）→ int_deny 逐字" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "zhang",
+        permit_recruit: true,
+        min_shen: 80_000,
+        min_exp: 500_000,
+        hard_min_int: 32,
+        min_skills: %{"wudang-xinfa" => 120, "taoism" => 120},
+        int_deny:
+          "我武当派武功极需靠自己领悟。要能达到炉火纯青之境，体质什么的倒是无关紧要，悟性却是半点也马虎不得。%respect%的悟性还大有潜力可挖，还是请回吧。"
+      }
+
+      low_int =
+        wudang_student(%{
+          stats: %{int: 31, combat_exp: 1_000_000, shen: 100_000, skills: %{"wudang-xinfa" => 200, "taoism" => 200}}
+        })
+
+      assert {:error, reason} = SectMaster.recruit_gate?(teacher_with(cfg), low_int)
+      assert reason =~ "悟性却是半点也马虎不得"
+    end
+
+    test "zhang profile：全达标 → :ok" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "zhang",
+        permit_recruit: true,
+        min_shen: 80_000,
+        min_exp: 500_000,
+        hard_min_int: 32,
+        min_skills: %{"wudang-xinfa" => 120, "taoism" => 120}
+      }
+
+      good =
+        wudang_student(%{
+          stats: %{int: 40, combat_exp: 600_000, shen: 90_000, skills: %{"wudang-xinfa" => 120, "taoism" => 120}}
+        })
+
+      assert :ok = SectMaster.recruit_gate?(teacher_with(cfg), good)
+    end
+
+    test "shan profile：int30 硬门先于 shen → int_deny「铁划银钩」" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "shan",
+        permit_recruit: true,
+        hard_min_int: 30,
+        min_shen: 8000,
+        min_skills: %{"wudang-xinfa" => 70, "taoism" => 70},
+        int_deny: "你的资质还没到铁划银钩的境界，收你也是白搭。"
+      }
+
+      low_int = wudang_student(%{stats: %{int: 29, shen: 100_000, skills: %{"wudang-xinfa" => 200, "taoism" => 200}}})
+
+      assert {:error, reason} = SectMaster.recruit_gate?(teacher_with(cfg), low_int)
+      assert reason =~ "你的资质还没到铁划银钩的境界，收你也是白搭。"
+    end
+
+    test "yan profile：pre xinfa30 提示太极神功 → pre_xinfa_deny" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "yan",
+        permit_recruit: true,
+        min_shen: 10_000,
+        pre_min_skills: %{"wudang-xinfa" => 30},
+        min_skills: %{"wudang-xinfa" => 70, "taoism" => 70},
+        pre_xinfa_deny: "我武当派乃内家武功，最重视内功心法。%respect%是否还应该在太极神功上多下点功夫？"
+      }
+
+      low = wudang_student(%{stats: %{shen: 100_000, skills: %{"wudang-xinfa" => 29, "taoism" => 200}}})
+
+      assert {:error, reason} = SectMaster.recruit_gate?(teacher_with(cfg), low)
+      assert reason =~ "我武当派乃内家武功，最重视内功心法。"
+      assert reason =~ "太极神功上多下点功夫"
+    end
+
+    test "guxu profile：shen>=0 即过；负神拒 → shen_deny" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "guxu",
+        permit_recruit: true,
+        min_shen: 0,
+        shen_deny: "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+      }
+
+      evil = wudang_student(%{stats: %{shen: -1, skills: %{"wudang-xinfa" => 200, "taoism" => 200}}})
+
+      assert {:error, reason} = SectMaster.recruit_gate?(teacher_with(cfg), evil)
+      assert reason =~ "我武当乃是堂堂名门正派，对弟子要求极严。"
+      assert reason =~ "德行方面"
+
+      good = wudang_student(%{stats: %{shen: 0, skills: %{"wudang-xinfa" => 200, "taoism" => 200}}})
+      assert :ok = SectMaster.recruit_gate?(teacher_with(cfg), good)
+    end
+
+    test "standard profile（mo）：shen5000 → xinfa50 → taoism50，taoism deny 带「做」" do
+      cfg = %{
+        gate_order: "lpc_wudang",
+        recruit_profile: "standard",
+        permit_recruit: true,
+        min_shen: 5000,
+        min_skills: %{"wudang-xinfa" => 50, "taoism" => 50},
+        taoism_deny: "习武是为了强身健体，一味的练武是不可取的做！我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+      }
+
+      low_tao =
+        wudang_student(%{
+          stats: %{shen: 100_000, skills: %{"wudang-xinfa" => 200, "taoism" => 49}}
+        })
+
+      assert {:error, reason} = SectMaster.recruit_gate?(teacher_with(cfg), low_tao)
+      assert reason =~ "不可取的做"
+    end
+
+    test "apprentice 配置经 loader 归一：permit/profile/各 deny 逐字落地", %{world: world} do
+      zhang =
+        Enum.find(world.characters, fn c ->
+          c.name == "张三丰" and c.room_id == "wudang:xiaoyuan"
+        end)
+
+      # 用真实加载数据验证配置字段存在
+      cfg = zhang.meta.apprentice
+      assert cfg.gate_order == "lpc_wudang"
+      assert cfg.recruit_profile == "zhang"
+      assert cfg.permit_recruit == true
+      assert cfg.hard_min_int == 32
+      assert cfg.min_shen == 80_000
+      assert cfg.min_exp == 500_000
+      assert cfg.min_skills == %{"wudang-xinfa" => 120, "taoism" => 120}
+      assert cfg.xinfa_deny =~ "最重视内功心法"
+      assert cfg.int_deny =~ "悟性却是半点也马虎不得"
+      assert cfg.accept_msg =~ "又觅得一个可塑之才"
+    end
+
+    # ---- 九阳功 no_teach unlock + 问询链 ----
+
+    test "张三丰：wudang-jiuyang no_teach 为 master_only unlock map（GAP #789）", %{world: world} do
+      zhang =
+        Enum.find(world.characters, fn c ->
+          c.name == "张三丰" and c.room_id == "wudang:xiaoyuan"
+        end)
+
+      unlock = zhang.meta.teach.no_teach_unlock["wudang-jiuyang"]
+      assert unlock
+      assert unlock.master_only == true
+      assert unlock.max_skill_level == 180
+      assert unlock.min_shen == 0
+      assert unlock.unlock_on_exp == false
+      assert unlock.not_master_deny =~ "素不相识"
+      assert unlock.master_deny =~ "就算是我的弟子也不传授"
+      assert unlock.maxed_deny =~ "自己研究吧"
+      assert unlock.shen_deny =~ "改过自新"
+    end
+
+    test "张三丰：九阳功 4 问询词（觉远/九阳真经/九阳神功/武当九阳功）走 wudang_jiuyang handler", %{world: world} do
+      zhang =
+        Enum.find(world.characters, fn c ->
+          c.name == "张三丰" and c.room_id == "wudang:xiaoyuan"
+        end)
+
+      for key <- ["觉远", "九阳真经", "九阳神功", "武当九阳功"] do
+        cfg = zhang.meta.inquiries[key]
+        assert cfg["kind"] == "wudang_jiuyang", "#{key} 应为 wudang_jiuyang"
+        assert cfg["wudang_mark"] == "can_learn/jiuyang-shengong/wudang"
+        assert cfg["kunlun_mark"] == "can_learn/jiuyang-shengong/kunlun"
+        assert cfg["shaolin_mark"] == "can_learn/jiuyang-shengong/shaolin"
+        assert cfg["say_one"] =~ "当年还送经书予觉远大师"
+        assert cfg["say_two"] =~ "大恩不言谢"
+        assert cfg["say_three"] =~ "将这套九阳功传授于你"
+      end
+    end
+
+    test "张三丰：真武剑 give_item（master_id + min_shen 60000 + 逐字 deny）", %{world: world} do
+      zhang =
+        Enum.find(world.characters, fn c ->
+          c.name == "张三丰" and c.room_id == "wudang:xiaoyuan"
+        end)
+
+      jian = zhang.meta.inquiries["真武剑"]
+      assert jian["kind"] == "give_item"
+      assert jian["item"] == "clone_lib:zhenwu"
+      assert jian["unique"] == "true"
+      assert jian["family"] == "武当派"
+      assert jian["master_id"] == "true"
+      assert jian["min_shen"] == 60_000
+      assert jian["family_deny"] =~ "镇派之宝"
+      assert jian["master_deny"] =~ "只有我的弟子才能用真武剑"
+      assert jian["min_shen_deny"] =~ "行侠仗义的事情做得不够"
+      assert jian["already"] =~ "不是在你的手中么"
+    end
+
+    test "张三丰：chat_chance_combat 120 + 13 actions", %{world: world} do
+      zhang =
+        Enum.find(world.characters, fn c ->
+          c.name == "张三丰" and c.room_id == "wudang:xiaoyuan"
+        end)
+
+      assert zhang.meta.chat_chance_combat == 120
+      assert length(zhang.meta.chat_msg_combat) == 13
+      assert "sword.zhenwu" in zhang.meta.chat_msg_combat
+      assert "unarmed.yin" in zhang.meta.chat_msg_combat
+    end
+
+    # ---- 道德经 book_count / count / exhausted ----
+
+    test "谷虚道长：book_count=1 + give_item count + exhausted，无 unique", %{world: world} do
+      guxu =
+        Enum.find(world.characters, fn c ->
+          c.name == "谷虚道长" and c.room_id == "wudang:sanqingdian"
+        end)
+
+      assert guxu.meta.inquiry_state == %{"book_count" => 1}
+      book = guxu.meta.inquiries["道德经"]
+      assert book["kind"] == "give_item"
+      assert book["item"] == "clone_lib:daodejing_i"
+      assert book["count"] == "book_count"
+      assert book["unique"] == "false"
+      assert book["exhausted"] =~ "你来晚了"
+      assert book["family"] == "武当派"
+    end
+
+    test "清虚道长：book_count=1 + daodejing_ii + chat", %{world: world} do
+      qingxu =
+        Enum.find(world.characters, fn c ->
+          c.name == "清虚道长" and c.room_id == "wudang:chaotiangong"
+        end)
+
+      assert qingxu.meta.inquiry_state == %{"book_count" => 1}
+      book = qingxu.meta.inquiries["道德经"]
+      assert book["item"] == "clone_lib:daodejing_ii"
+      assert book["count"] == "book_count"
+      assert qingxu.meta.chat_chance_combat == 120
+    end
+
+    # ---- coagents ----
+
+    test "张翠山/张松溪 coagents 助战配置（song yuanqiao / yu lianzhou）", %{world: world} do
+      shan =
+        Enum.find(world.characters, fn c ->
+          c.name == "张翠山" and c.room_id == "wudang:jiejianyan"
+        end)
+
+      xi =
+        Enum.find(world.characters, fn c ->
+          c.name == "张松溪" and c.room_id == "wudang:donglang1"
+        end)
+
+      assert [%{"id" => "song yuanqiao", "startroom" => "wudang:sanqingdian"}] = shan.meta.coagents
+
+      assert [%{"id" => "yu lianzhou", "startroom" => "wudang:houyuan"},
+              %{"id" => "song yuanqiao", "startroom" => "wudang:sanqingdian"}] = xi.meta.coagents
+    end
+
+    # ---- clone_lib NPC：mo/song/yan ----
+
+    test "莫声谷：apprentice standard profile + chat 11 actions", %{world: world} do
+      mo =
+        Enum.find(world.characters, fn c -> c.name == "莫声谷" end)
+
+      assert mo
+      assert mo.meta.apprentice.recruit_profile == "standard"
+      assert mo.meta.apprentice.permit_recruit == true
+      assert mo.meta.apprentice.min_shen == 5000
+      assert mo.meta.chat_chance_combat == 120
+      assert length(mo.meta.chat_msg_combat) == 11
+    end
+
+    test "宋远桥：apprentice standard + book_count + coagents + 太极十三式 give_item", %{world: world} do
+      song =
+        Enum.find(world.characters, fn c -> c.name == "宋远桥" end)
+
+      assert song
+      assert song.meta.apprentice.recruit_profile == "standard"
+      assert song.meta.apprentice.min_shen == 25_000
+      assert song.meta.apprentice.min_exp == 300_000
+      assert song.meta.inquiry_state == %{"book_count" => 1}
+
+      book = song.meta.inquiries["太极十三式"]
+      assert book["kind"] == "give_item"
+      assert book["item"] == "clone_lib:force_book"
+      assert book["count"] == "book_count"
+
+      assert [%{"id" => "yu lianzhou", "startroom" => "wudang:houyuan"}] = song.meta.coagents
+    end
+
+    test "俞岱岩：apprentice yan profile + pre_min_skills + chat", %{world: world} do
+      yan =
+        Enum.find(world.characters, fn c -> c.name == "俞岱岩" end)
+
+      assert yan
+      assert yan.meta.apprentice.recruit_profile == "yan"
+      assert yan.meta.apprentice.permit_recruit == true
+      assert yan.meta.apprentice.pre_min_skills == %{"wudang-xinfa" => 30}
+      assert yan.meta.apprentice.pre_xinfa_deny =~ "太极神功"
+      assert yan.meta.chat_chance_combat == 120
+    end
+
+    test "宋青书：周芷若 hostile（emote + say + kill_ob）+ chat", %{world: world} do
+      song =
+        Enum.find(world.characters, fn c -> c.name == "宋青书" end)
+
+      assert song
+      zhou = song.meta.inquiries["周芷若"]
+      assert zhou["kind"] == "hostile"
+      assert zhou["emote"] == "哼了一声"
+      assert zhou["say"] == "true"
+      assert zhou["message"] =~ "敢直呼芷若的名字"
+      assert song.meta.chat_chance_combat == 120
     end
   end
 
@@ -4438,11 +4817,13 @@ defmodule Kantele.World.InquirySectMastersTest do
         c = ss(world, name, room)
 
         assert c.meta.teach.family == "嵩山派", "#{name} teach.family"
+
         assert map_size(c.meta.teach.teach_skills) == skills,
                "#{name} teach_skills 应为 #{skills}，实际 #{map_size(c.meta.teach.teach_skills)}"
 
         assert c.meta.apprentice.family == "嵩山派", "#{name} apprentice.family"
         assert c.meta.apprentice.permit_recruit == true, "#{name} permit_recruit"
+
         assert map_size(c.meta.inquiries) == grants,
                "#{name} inquiries 应为 #{grants}，实际 #{map_size(c.meta.inquiries)}"
 
@@ -4489,18 +4870,13 @@ defmodule Kantele.World.InquirySectMastersTest do
       }
 
       for {name, room, min_shen, no_min_shen, max_shen, exp, order, skills, accept} <- [
-            {"狄修", "dadian", 0, false, nil, 0, [], %{},
-             "既然如此，那你以后就跟着我吧。"},
-            {"费彬", "chaotian", 30_000, false, nil, 200_000,
-             ["songshan-jian", "songshan-xinfa"],
+            {"狄修", "dadian", 0, false, nil, 0, [], %{}, "既然如此，那你以后就跟着我吧。"},
+            {"费彬", "chaotian", 30_000, false, nil, 200_000, ["songshan-jian", "songshan-xinfa"],
              %{"songshan-jian" => 120, "songshan-xinfa" => 100},
              "孺子可教，孺子可教。今日我就收下你吧。你以后定要勤练武，多行善，扬我嵩山派雄风。"},
-            {"乐厚", "luyanpubu", 3_000, false, nil, 22_000,
-             ["songshan-jian", "force"],
-             %{"songshan-jian" => 40, "force" => 80},
-             "我收下你便是，日后将我嵩山发扬光大。"},
-            {"左冷禅", "fengchantai", 0, true, -30_000, 360_000,
-             ["songshan-jian", "songshan-xinfa"],
+            {"乐厚", "luyanpubu", 3_000, false, nil, 22_000, ["songshan-jian", "force"],
+             %{"songshan-jian" => 40, "force" => 80}, "我收下你便是，日后将我嵩山发扬光大。"},
+            {"左冷禅", "fengchantai", 0, true, -30_000, 360_000, ["songshan-jian", "songshan-xinfa"],
              %{"songshan-jian" => 160, "songshan-xinfa" => 160},
              "孺子可教，孺子可教。今日我就收下你吧。你以后定要勤练武，扬我嵩山派雄风。"}
           ] do
@@ -4571,6 +4947,7 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert sword["family"] == "嵩山派"
       assert sword["master_id"] in [true, "true"]
       assert sword["max_shen"] == -20_000
+
       # give_item 的 min_skill_levels 键在 loader 中不做 `_`→`-` 归一（handler 双查兜底）
       assert sword["min_skill_levels"] == %{"songshan_jian" => 120}
       assert sword["family_deny"] == "与我嵩山派素无渊源，不知此话从何说起。"
@@ -4609,8 +4986,7 @@ defmodule Kantele.World.InquirySectMastersTest do
           family: "少林派"
         })
 
-      assert {:error, "大侠与我嵩山派素无渊源，不知此话从何说起。"} =
-               SectMaster.inquiry_grant(outsider, stats, cfg)
+      assert {:error, "大侠与我嵩山派素无渊源，不知此话从何说起。"} = SectMaster.inquiry_grant(outsider, stats, cfg)
     end
 
     @tag songshan: true
@@ -4626,13 +5002,1010 @@ defmodule Kantele.World.InquirySectMastersTest do
           family: "嵩山派"
         })
 
-      assert {:ok, "hanbing-zhang/hen", 550} =
-               SectMaster.inquiry_grant(qualified, stats, cfg)
+      assert {:ok, "hanbing-zhang/hen", 550} = SectMaster.inquiry_grant(qualified, stats, cfg)
 
       softhearted = %{qualified | shen: -31_999}
 
       assert {:error, "哼！像你这样的心慈手软之辈，又能干成什么大事？"} =
                SectMaster.inquiry_grant(softhearted, stats, cfg)
+    end
+  end
+
+  describe "唐门 UCL 数据回填（Task #901）" do
+    @tag tangmen: true
+    test "唐柔 teach 与 LPC create_family + 16 set_skill 一致", %{world: world} do
+      tang = npc(world, "唐柔", "chengdu:tanggate")
+      assert tang, "唐柔应随世界加载（chengdu:tanggate）"
+
+      assert tang.meta.teach.family == "唐门世家"
+
+      expected = %{
+        "force" => 80,
+        "throwing" => 80,
+        "dodge" => 80,
+        "parry" => 80,
+        "literate" => 80,
+        "hand" => 80,
+        "sword" => 80,
+        "boyun-suowu" => 80,
+        "biyun-xinfa" => 80,
+        "qiulin-shiye" => 80,
+        "wuzhan-mei" => 80,
+        "poison" => 80,
+        "medical" => 80,
+        "tangmen-throwing" => 80,
+        "tangmen-poison" => 80,
+        "tangmen-medical" => 80
+      }
+
+      assert map_size(tang.meta.teach.teach_skills) == map_size(expected)
+
+      for {skill, level} <- expected do
+        assert %{max: ^level, gongxian: 0} = tang.meta.teach.teach_skills[skill],
+               "#{skill} 应为 max=#{level} / gongxian=0"
+      end
+    end
+
+    @tag tangmen: true
+    test "唐柔收徒门：tangmen.h 无条件拒收（逐字文案）", %{world: world} do
+      gate = npc(world, "唐柔", "chengdu:tanggate").meta.apprentice
+
+      assert gate.deny_all == true
+      assert gate.deny_msg == "对不起，唐门暂不收徒，你过段时间再来吧。"
+    end
+
+    @tag tangmen: true
+    test "唐柔 apply / chat / carry / combat 块完整（防回填误删）", %{world: world} do
+      tang = npc(world, "唐柔", "chengdu:tanggate")
+
+      # LPC set_temp apply：damage/unarmed_damage 100、armor 200，attack 未设
+      apply = tang.meta.combat_config.apply
+
+      assert {apply.damage, apply.unarmed_damage, apply.armor, apply.attack} ==
+               {100, 100, 200, 0}
+
+      # LPC chat_chance_combat 20 + recover / powerup / throwing.san
+      assert tang.meta.chat_chance_combat == 20
+      assert tang.meta.chat_msg_combat == ["recover", "powerup", "throwing.san"]
+
+      # 跨区引用必须解析到 tangmen 区（clone_lib 自带的 jili 是「铁蒺藜」，不是毒蒺藜）
+      assert tang.meta.carry == ["clone_lib:cloth", "tangmen:jili", "tangmen:feidao"]
+
+      # combat 原属性零误删
+      assert tang.meta.stats.combat_exp == 100_000
+      assert tang.meta.stats.str == 30
+      assert tang.meta.stats.con == 24
+      assert tang.meta.stats.dex == 28
+      assert tang.meta.stats.int == 25
+      assert tang.meta.vitals.max_neili == 2000
+      assert tang.meta.vitals.max_qi == 8000
+
+      # 原 inquiries 唐门文本不得丢失
+      assert tang.meta.inquiries["唐门"] == "要入唐门，先通过我的试练。"
+    end
+  end
+
+  describe "桃花岛 UCL 数据回填（Task #903）" do
+    defp tao(world, name, room_id) do
+      character = npc(world, name, room_id)
+      assert character, "#{name} 应随世界加载（#{room_id}）"
+      character
+    end
+
+    defp grant_count(character) do
+      Enum.count(character.meta.inquiries || %{}, fn {_key, value} ->
+        is_map(value) and Map.get(value, "kind") == "sect_master_grant"
+      end)
+    end
+
+    defp tao_student(opts) do
+      %{
+        meta: %{
+          stats: %{
+            shen: Keyword.get(opts, :shen, 0),
+            combat_exp: Keyword.get(opts, :exp, 0),
+            int: Keyword.get(opts, :int, 30)
+          },
+          marks: Keyword.get(opts, :marks, %{}),
+          env: %{},
+          family: Keyword.get(opts, :family),
+          vitals: %{max_neili: 0}
+        }
+      }
+    end
+
+    defp tao_player(overrides) do
+      %{
+        family: "桃花岛",
+        skills: %{},
+        gongxian: 0,
+        shen: 0,
+        marks: %{},
+        max_neili: 0,
+        performs: MapSet.new()
+      }
+      |> Map.merge(overrides)
+    end
+
+    @tag taohua: true
+    test "7 名桃花岛 NPC：teach / grants / chat / apply / 战斗属性零误删", %{world: world} do
+      rows = [
+        {"陈玄风", "huanghe:shidong", nil, 0, 2_000_000, 16_000},
+        {"冯默风", "taohua:tao_in", 14, 1, 800_000, 4_500},
+        {"黄药师", "taohua:dating", 34, 13, 4_000_000, 7_000},
+        {"陆乘风", "guiyun:shufang", 16, 2, 1_000_000, 5_000},
+        {"梅超风", "huanghe:shidong", nil, 1, 1_800_000, 5_000},
+        {"曲灵风", "taohua:shufang", 14, 1, 1_000_000, 5_000},
+        {"黄蓉", "xiangyang:guofuhuayuan", 27, 0, 3_000_000, 5_500}
+      ]
+
+      for {name, room, skill_count, grants, exp, neili} <- rows do
+        character = tao(world, name, room)
+
+        assert character.meta.chat_chance_combat == 120, "#{name} chat_chance_combat"
+        assert character.meta.chat_msg_combat != [], "#{name} chat_msg_combat"
+        assert grant_count(character) == grants, "#{name} grants"
+
+        assert character.meta.stats.combat_exp == exp, "#{name} combat_exp"
+        assert character.meta.vitals.max_neili == neili, "#{name} max_neili"
+
+        if is_integer(skill_count) do
+          assert character.meta.teach.family == "桃花岛", "#{name} teach.family"
+
+          assert map_size(character.meta.teach.teach_skills) == skill_count,
+                 "#{name} teach_skills 应为 #{skill_count}"
+
+          for {skill, conf} <- character.meta.teach.teach_skills do
+            assert is_integer(conf.max) and conf.max > 0,
+                   "#{name}/#{skill} 的 max 被 loader 归零（UCL 必须写 { max = N gongxian = 0 }）"
+
+            assert conf.gongxian == 0, "#{name}/#{skill} gongxian"
+          end
+        end
+      end
+
+      feng = tao(world, "冯默风", "taohua:tao_in").meta.teach.teach_skills
+      assert feng["force"] == %{max: 180, gongxian: 0}
+      assert feng["luoying-xinfa"] == %{max: 180, gongxian: 0}
+      assert feng["canglang-zhi"] == %{max: 140, gongxian: 0}
+
+      huang = tao(world, "黄药师", "taohua:dating").meta.teach.teach_skills
+      assert huang["bibo-shengong"] == %{max: 340, gongxian: 0}
+      assert huang["qimen-wuxing"] == %{max: 350, gongxian: 0}
+      assert huang["chuixiao-jifa"] == %{max: 400, gongxian: 0}
+
+      lu = tao(world, "陆乘风", "guiyun:shufang").meta.teach.teach_skills
+      assert lu["force"] == %{max: 200, gongxian: 0}
+      assert lu["calligraphy"] == %{max: 160, gongxian: 0}
+
+      qu = tao(world, "曲灵风", "taohua:shufang").meta.teach.teach_skills
+      assert qu["finger"] == %{max: 200, gongxian: 0}
+      assert qu["pikong-zhang"] == %{max: 180, gongxian: 0}
+
+      rong = tao(world, "黄蓉", "xiangyang:guofuhuayuan").meta.teach.teach_skills
+      assert rong["qimen-wuxing"] == %{max: 280, gongxian: 0}
+      assert rong["dagou-bang"] == %{max: 240, gongxian: 0}
+      assert rong["cooking"] == %{max: 280, gongxian: 0}
+
+      for {name, room} <- [
+            {"陈玄风", "huanghe:shidong"},
+            {"黄药师", "taohua:dating"},
+            {"梅超风", "huanghe:shidong"},
+            {"黄蓉", "xiangyang:guofuhuayuan"}
+          ] do
+        apply = tao(world, name, room).meta.combat_config.apply
+
+        assert {apply.damage, apply.unarmed_damage, apply.armor, apply.attack} ==
+                 {100, 100, 200, 0},
+               "#{name} apply"
+      end
+    end
+
+    @tag taohua: true
+    test "18 条绝招问询：perform_id / 贡献 / min_levels 与 LPC 逐条一致", %{world: world} do
+      rows = [
+        {"冯默风", "taohua:tao_in", "碧浪滔天", "canglang-zhi/tao", 50, 2},
+        {"陆乘风", "guiyun:shufang", "披星戴月", "pikong-zhang/dai", 80, 2},
+        {"陆乘风", "guiyun:shufang", "狂风绝技", "xuanfeng-tui/kuang", 300, 3},
+        {"曲灵风", "taohua:shufang", "随波逐流", "luoying-shenjian/sui", 120, 2},
+        {"黄药师", "taohua:dating", "奇门五转", "luoying-shenzhang/zhuan", 350, 3},
+        {"黄药师", "taohua:dating", "兰花拂穴", "lanhua-shou/fu", 300, 3},
+        {"黄药师", "taohua:dating", "影落飞花", "lanhua-shou/fei", 400, 2},
+        {"黄药师", "taohua:dating", "天外清音", "yuxiao-jian/tian", 350, 2},
+        {"黄药师", "taohua:dating", "天地情长", "yuxiao-jian/qing", 400, 2},
+        {"黄药师", "taohua:dating", "碧海潮生", "yuxiao-jian/bihai", 1000, 3},
+        {"黄药师", "taohua:dating", "定昆仑", "tanzhi-shentong/ding", 450, 3},
+        {"黄药师", "taohua:dating", "啸沧海", "tanzhi-shentong/xiao", 800, 3},
+        {"黄药师", "taohua:dating", "破九域", "tanzhi-shentong/po", 1300, 3},
+        {"黄药师", "taohua:dating", "转乾坤", "tanzhi-shentong/zhuan", 2200, 3},
+        {"黄药师", "taohua:dating", "九阴神指", "jiuyin-shengong/zhi", 0, 4},
+        {"黄药师", "taohua:dating", "九阴神手", "jiuyin-shengong/shou", 0, 4},
+        {"黄药师", "taohua:dating", "九阴神掌", "jiuyin-shengong/zhang", 0, 4},
+        {"梅超风", "huanghe:shidong", "九阴神爪", "jiuyin-shengong/zhua", 0, 4}
+      ]
+
+      assert length(rows) == 18
+
+      for {name, room, key, perform, gongxian, levels} <- rows do
+        cfg = inquiry(tao(world, name, room), key)
+        assert is_map(cfg), "#{name}/#{key} 应为 map"
+        assert cfg["kind"] == "sect_master_grant", "#{key} kind"
+        assert cfg["perform_id"] == perform, "#{key} perform_id"
+        assert cfg["min_gongxian"] == gongxian, "#{key} min_gongxian"
+        assert cfg["cost_gongxian"] == gongxian, "#{key} cost_gongxian"
+        assert map_size(cfg["min_levels"]) == levels, "#{key} min_levels"
+        assert is_list(cfg["level_order"]) and cfg["level_order"] != [], "#{key} level_order"
+      end
+
+      huang = tao(world, "黄药师", "taohua:dating")
+
+      for key <- ["九阴神指", "九阴神手", "九阴神掌"] do
+        cfg = inquiry(huang, key)
+        assert cfg["no_family_check"] in [true, "true"], "#{key} 必须跳过同门门"
+        assert is_binary(cfg["required_mark"]), "#{key} required_mark"
+        assert cfg["min_max_neili"] == 5000, "#{key} min_max_neili"
+      end
+
+      mei = inquiry(tao(world, "梅超风", "huanghe:shidong"), "九阴神爪")
+      assert mei["no_family_check"] in [true, "true"]
+      assert mei["required_mark"] == "can_learn/jiuyin-shengong/zhua"
+      assert mei["min_max_neili"] == 5500
+
+      bihai = inquiry(huang, "碧海潮生")
+      assert map_size(bihai["any_min_skills"]) == 3
+
+      po = inquiry(huang, "破九域")["improve_skills"]
+      assert length(po) == 5
+      assert Enum.count(po, &(&1 == "throwing")) == 2
+
+      zhuan = inquiry(huang, "转乾坤")["improve_skills"]
+      assert length(zhuan) == 10
+      assert Enum.count(zhuan, &(&1 == "qimen-wuxing")) == 3
+      assert Enum.count(zhuan, &(&1 == "finger")) == 3
+      assert Enum.count(zhuan, &(&1 == "tanzhi-shentong")) == 3
+
+      # 未落地机制必须带 GAP 编号，禁止裸露 unimplemented。
+      for {name, room, keys, gap} <- [
+            {"冯默风", "taohua:tao_in", ["学艺", "投师", "拜师", "带我过迷阵，否则弄死你，信不信？"], "GAP #911"},
+            {"黄药师", "taohua:dating", ["桃花药理", "箫谱", "旋风扫叶腿", "玉箫", "河图", "洛书", "离岛"], "GAP #"},
+            {"曲灵风", "taohua:shufang", ["河图", "洛书"], "GAP #908"}
+          ] do
+        character = tao(world, name, room)
+
+        for key <- keys do
+          assert String.contains?(inquiry(character, key), gap),
+                 "#{name}/#{key} 应登记 #{gap}"
+        end
+      end
+    end
+
+    @tag taohua: true
+    test "收徒门配置：feng/lu/qu 只认黄药师指派标记，huang 有悟性/侠义/经验分支", %{world: world} do
+      for {name, room, master} <- [
+            {"冯默风", "taohua:tao_in", "冯默风"},
+            {"陆乘风", "guiyun:shufang", "陆乘风"},
+            {"曲灵风", "taohua:shufang", "曲灵风"}
+          ] do
+        gate = tao(world, name, room).meta.apprentice
+
+        assert gate.gate_order == "lpc_taohua", "#{name} gate_order"
+        assert gate.permit_recruit == true, "#{name} permit_recruit"
+        assert gate.master_mark == "taohua/master", "#{name} master_mark"
+        assert gate.master_name == master, "#{name} master_name"
+        assert gate.delete_mark_on_accept == true, "#{name} delete_mark_on_accept"
+        assert gate.taohua_shen_gate == false, "#{name} 不应有侠义门"
+        assert gate.master_absent_msg == "我可不敢擅自收徒，你还是找家师黄岛主吧！"
+        assert gate.master_reject_msg == "家师不是让你拜%master%的吗？你怎么来找我来了？"
+        assert gate.master_accept_msg == "好吧，既然家师有令，我就收下你了，不过要好好遵守桃花岛的规矩。"
+        assert gate.betray_sect_deny == "亏你还有脸回桃花岛？滚！"
+        assert gate.betray_times_deny == "阁下不忠不信，我最痛恨你这种人了。"
+        assert gate.other_family_deny == "你既有了名师指点，还来我们桃花岛做什么？"
+      end
+
+      huang = tao(world, "黄药师", "taohua:dating").meta.apprentice
+
+      assert huang.gate_order == "lpc_taohua"
+      assert huang.hard_min_int == 25
+      assert huang.int_deny == "我不收资质差的弟子，您请回吧！"
+      assert huang.min_shen == -10_000 and huang.max_shen == 10_000
+      assert huang.taohua_shen_gate == true
+      assert huang.shen_deny == "我不与成名人物打交道，您请回吧！"
+      assert huang.exp_defer_max == 400_000
+      assert huang.defer_masters == ["冯默风", "陆乘风", "曲灵风"]
+      assert huang.defer_family == "桃花岛"
+      assert huang.accept_msg == "很好，很好。"
+
+      for {name, room, msg} <- [
+            {"陈玄风", "huanghe:shidong", "少烦我，快滚！"},
+            {"梅超风", "huanghe:shidong", "滚开！"},
+            {"黄蓉", "xiangyang:guofuhuayuan", "现在国难当头，我哪里有时间收徒啊。"}
+          ] do
+        gate = tao(world, name, room).meta.apprentice
+        assert gate.deny_all == true, "#{name} deny_all"
+        assert gate.deny_msg == msg, "#{name} deny_msg"
+      end
+    end
+
+    @tag taohua: true
+    test "门控联验：冯默风认指派标记，负侠义玩家不被缺省 min_shen 误拒", %{world: world} do
+      gate = tao(world, "冯默风", "taohua:tao_in").meta.apprentice
+
+      assert {:error, "我可不敢擅自收徒，你还是找家师黄岛主吧！\n"} =
+               SectMaster.recruit_gate?(nil, tao_student(shen: -5_000, exp: 100_000), gate)
+
+      mismatch = tao_student(marks: %{"taohua/master" => "曲灵风"})
+      assert {:error, "家师不是让你拜曲灵风的吗？你怎么来找我来了？\n"} = SectMaster.recruit_gate?(nil, mismatch, gate)
+
+      matched = tao_student(shen: -5_000, marks: %{"taohua/master" => "冯默风"})
+
+      assert {:ok, "好吧，既然家师有令，我就收下你了，不过要好好遵守桃花岛的规矩。\n"} =
+               SectMaster.recruit_gate?(nil, matched, gate)
+    end
+
+    @tag taohua: true
+    test "门控联验：黄药师悟性/侠义硬门、低经验随机指派、高经验直收", %{world: world} do
+      gate = tao(world, "黄药师", "taohua:dating").meta.apprentice
+
+      assert {:error, "我不收资质差的弟子，您请回吧！\n"} =
+               SectMaster.recruit_gate?(nil, tao_student(int: 24, exp: 500_000), gate)
+
+      assert {:error, "我不与成名人物打交道，您请回吧！\n"} =
+               SectMaster.recruit_gate?(nil, tao_student(shen: 10_001, exp: 500_000), gate)
+
+      marked = tao_student(exp: 100_000, marks: %{"taohua/master" => "陆乘风"}, family: nil)
+
+      assert {:error, "不是让你和陆乘风学艺吗？你怎么回事？\n"} = SectMaster.recruit_gate?(nil, marked, gate)
+
+      disciple = tao_student(exp: 100_000, family: %{name: "桃花岛", master_name: "冯默风"})
+
+      assert {:error, "你好好跟冯默风学艺，水平到了老夫自然会亲自点拨你。\n"} =
+               SectMaster.recruit_gate?(nil, disciple, gate)
+
+      case SectMaster.recruit_gate?(nil, tao_student(exp: 399_999), gate) do
+        {:defer, reason, {"taohua/master", master}} ->
+          assert master in ["冯默风", "陆乘风", "曲灵风"]
+          assert String.contains?(reason, master)
+
+        other ->
+          flunk("低经验分支应返回 {:defer, reason, {mark, master}}，实际 #{inspect(other)}")
+      end
+
+      assert {:ok, "很好，很好。\n"} = SectMaster.recruit_gate?(nil, tao_student(exp: 400_000), gate)
+    end
+
+    @tag taohua: true
+    test "门控联验：九阴四招标记门/无同门门、碧海潮生三选一、level_order 顺序", %{world: world} do
+      huang = tao(world, "黄药师", "taohua:dating")
+
+      zhi_cfg = inquiry(huang, "九阴神指")
+
+      qualified =
+        tao_player(%{
+          family: "少林派",
+          marks: %{"can_learn/jiuyin-shengong/zhi" => 1},
+          skills: %{
+            "jiuyin-shengong" => 300,
+            "finger" => 300,
+            "force" => 300,
+            "martial-cognize" => 300
+          },
+          max_neili: 6000
+        })
+
+      assert {:ok, "jiuyin-shengong/zhi", 0} =
+               SectMaster.inquiry_grant(qualified, %{family: "桃花岛"}, zhi_cfg)
+
+      assert {:error, "我与阁下毫无瓜葛，为何有此一问？"} =
+               SectMaster.inquiry_grant(%{qualified | marks: %{}}, %{family: "桃花岛"}, zhi_cfg)
+
+      bihai_cfg = inquiry(huang, "碧海潮生")
+
+      # any_min_skills 的 inline map 是 atom 键；有一门 yuxiao-jian 即应通过 OR 门，
+      # 落到逐技能等级门（若键未归一，会误报「一样都没学」）。
+      one_skill =
+        tao_player(%{
+          skills: %{"yuxiao-jian" => 1},
+          gongxian: 1000
+        })
+
+      assert {:error, "你碧波神功的修为不够，学不了这一招。"} =
+               SectMaster.inquiry_grant(one_skill, %{family: "桃花岛"}, bihai_cfg)
+
+      qimen_cfg = inquiry(huang, "奇门五转")
+
+      ordered =
+        tao_player(%{
+          skills: %{"force" => 100, "luoying-shenzhang" => 50, "qimen-wuxing" => 120},
+          gongxian: 350
+        })
+
+      assert {:error, "你的内功火候尚需提高，练好了再来吧。"} =
+               SectMaster.inquiry_grant(ordered, %{family: "桃花岛"}, qimen_cfg)
+    end
+  end
+
+  describe "天龙寺 UCL 数据回填与门控（Task #911/#912）" do
+    defp tianlongsi(world, name), do: npc(world, name, "tianlongsi:munitang")
+
+    # 鸠摩智按 LPC 无静态房间放置，世界加载不会产出实例；直接经公开 parse_character/4
+    # 解析 clone_lib 原始定义，检查经 loader 归一后的 inquire/teach/carry 数据。
+    defp jiumozhi_definition do
+      raw = Elias.parse(File.read!("data/world/clone_lib.ucl"))
+      data = raw.characters[:tianlongsi_jiumozhi]
+
+      Loader.parse_character(
+        %Zone{id: "clone_lib"},
+        :tianlongsi_jiumozhi,
+        data,
+        %{}
+      )
+      |> elem(1)
+    end
+
+    defp tianlongsi_player(overrides) do
+      %{
+        family: "少林派",
+        skills: %{},
+        gongxian: 0,
+        shen: 0,
+        max_neili: 0,
+        performs: MapSet.new()
+      }
+      |> Map.merge(overrides)
+    end
+
+    @tag tianlongsi: true
+    test "枯荣：两技能授课、十项逐字拒教、apply 50/50、三键出身问询", %{world: world} do
+      ku = tianlongsi(world, "枯荣大师")
+      assert ku
+
+      assert ku.meta.teach.family == "大理段家"
+
+      assert ku.meta.teach.teach_skills == %{
+               "lamaism" => %{max: 260, gongxian: 0},
+               "buddhism" => %{max: 260, gongxian: 0}
+             }
+
+      denies = ku.meta.teach.no_teach_deny
+      assert map_size(denies) == 10
+      assert denies["literate"] == "抱歉，想学文化请去找教书先生。"
+
+      for skill <- [
+            "force",
+            "dodge",
+            "parry",
+            "finger",
+            "tiannan-step",
+            "kurong-changong",
+            "duanshi-xinfa",
+            "sun-finger",
+            "martial-cognize"
+          ] do
+        assert denies[skill] == "做人不要一味凶猛好杀，尽学一些杀伤人命的武技。",
+               "#{skill} 拒教文案"
+      end
+
+      apply = ku.meta.combat_config.apply
+      assert {apply.damage, apply.armor} == {50, 50}
+
+      for key <- ["六脉神剑", "六脉神剑谱", "六脉神剑剑谱"] do
+        cfg = ku.meta.inquiries[key]
+        assert is_map(cfg), "#{key} 应为 born_family_reply map"
+        assert cfg["kind"] == "born_family_reply"
+        assert cfg["required_born_family"] == "段氏皇族"
+
+        assert cfg["msg_other"] ==
+                 "$N冷笑一声道：{respect}打听我们天龙寺镇寺之宝干什么？"
+
+        assert cfg["msg_match"] ==
+                 "$N淡然对$n道：你虽然是皇族之人，但是也不得染指六脉神剑剑谱。"
+      end
+
+      assert BornFamilyReply.render_text(ku.meta.inquiries["六脉神剑"]["msg_other"], "枯荣大师", "段誉") ==
+               "枯荣大师冷笑一声道：大侠打听我们天龙寺镇寺之宝干什么？"
+
+      assert BornFamilyReply.render_text(ku.meta.inquiries["六脉神剑"]["msg_match"], "枯荣大师", "段誉") ==
+               "枯荣大师淡然对段誉道：你虽然是皇族之人，但是也不得染指六脉神剑剑谱。"
+    end
+
+    @tag tianlongsi: true
+    test "鸠摩智（无静态放置）：完整定义、两条不同门序、无同门门", %{world: world} do
+      assert is_nil(tianlongsi(world, "鸠摩智")),
+             "LPC 中鸠摩智仅由枯荣战斗动态生成，不得静态放置（GAP #915）"
+
+      raw = Elias.parse(File.read!("data/world/clone_lib.ucl"))
+      data = raw.characters[:tianlongsi_jiumozhi]
+      assert length(data.skills) == 29
+      assert Enum.count(data.skills, &(&1[:type] != nil)) == 7
+
+      zhi = jiumozhi_definition()
+      assert zhi.name == "鸠摩智"
+      assert zhi.meta.stats.combat_exp == 4_000_000
+      assert zhi.meta.vitals.max_neili == 8_000
+      assert zhi.meta.chat_chance_combat == 120
+      assert zhi.meta.chat_msg_combat == ["recover", "powerup"]
+
+      assert zhi.meta.carry == [
+               "xueshan.items.r_jiasha.id",
+               "xueshan.items.sengmao.id"
+             ]
+
+      fen = zhi.meta.inquiries["焚身"]
+      assert fen["kind"] == "sect_master_grant"
+      assert fen["perform_id"] == "huoyan-dao/fen"
+      assert fen["gate_order"] == "lpc_jiumozhi_fen"
+      assert fen["no_family_check"] in [true, "true"]
+      assert fen["min_levels"] == %{"huoyan-dao" => 180}
+      assert fen["level_order"] == ["huoyan-dao"]
+      assert fen["level_deny"] == %{"huoyan-dao" => "你的火焰刀法修为还不够，等你练好了再说吧！"}
+      assert fen["max_shen"] == -65_000
+      assert fen["min_gongxian"] == 600 and fen["cost_gongxian"] == 600
+
+      yan = zhi.meta.inquiries["天寰神炎"]
+      assert yan["perform_id"] == "huoyan-dao/yan"
+      assert yan["gate_order"] == "lpc_jiumozhi_yan"
+      assert yan["no_family_check"] in [true, "true"]
+      assert yan["min_gongxian"] == 1_200 and yan["cost_gongxian"] == 1_200
+      assert yan["max_shen"] == -120_000
+
+      assert yan["level_order"] == ["force", "max-neili", "huoyan-dao"]
+
+      assert yan["min_levels"] == %{
+               "force" => 220,
+               "max-neili" => 5_000,
+               "huoyan-dao" => 220
+             }
+
+      assert yan["level_deny"] == %{
+               "force" => "你的内功修为不足，还学不了这一招。",
+               "max-neili" => "你的内力修为不足，还是修炼高点再来吧。",
+               "huoyan-dao" => "等你把火焰刀练熟了再来找我。"
+             }
+    end
+
+    @tag tianlongsi: true
+    test "焚身门序：已会 → 火焰刀等级 → 侠义上界 → 贡献，且无同门门" do
+      cfg = jiumozhi_definition().meta.inquiries["焚身"]
+      npc = %{family: "密宗"}
+
+      qualified =
+        tianlongsi_player(%{
+          skills: %{"huoyan-dao" => 180},
+          shen: -65_000,
+          gongxian: 600
+        })
+
+      assert {:ok, "huoyan-dao/fen", 600} = SectMaster.inquiry_grant(qualified, npc, cfg)
+
+      assert {:error, "绝技你已经学会了，剩下的就要靠你自己多练习了。\n"} =
+               SectMaster.inquiry_grant(
+                 Map.put(qualified, :performs, MapSet.new(["huoyan-dao/fen"])),
+                 npc,
+                 cfg
+               )
+
+      # 火焰刀等级不足与侠义超标同时成立，必须先报等级（LPC ask_me 原顺序）。
+      assert {:error, "你的火焰刀法修为还不够，等你练好了再说吧！\n"} =
+               SectMaster.inquiry_grant(
+                 tianlongsi_player(%{
+                   skills: %{"huoyan-dao" => 179},
+                   shen: -64_999,
+                   gongxian: 600
+                 }),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "你为人太过心软，这招暂时还不能传你。\n"} =
+               SectMaster.inquiry_grant(
+                 tianlongsi_player(%{
+                   skills: %{"huoyan-dao" => 180},
+                   shen: -64_999,
+                   gongxian: 600
+                 }),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "你的贡献还不够，这招暂时还不能传你。\n"} =
+               SectMaster.inquiry_grant(
+                 tianlongsi_player(%{
+                   skills: %{"huoyan-dao" => 180},
+                   shen: -65_000,
+                   gongxian: 599
+                 }),
+                 npc,
+                 cfg
+               )
+    end
+
+    @tag tianlongsi: true
+    test "天寰神炎门序：已会 → 贡献 → 侠义上界 → 内功 → 内力 → 火焰刀" do
+      cfg = jiumozhi_definition().meta.inquiries["天寰神炎"]
+      npc = %{family: "密宗"}
+
+      qualified =
+        tianlongsi_player(%{
+          skills: %{"force" => 220, "huoyan-dao" => 220},
+          shen: -120_000,
+          max_neili: 5_000,
+          gongxian: 1_200
+        })
+
+      assert {:ok, "huoyan-dao/yan", 1_200} = SectMaster.inquiry_grant(qualified, npc, cfg)
+
+      assert {:error, "你又来干什么？自己下去多练。\n"} =
+               SectMaster.inquiry_grant(
+                 Map.put(qualified, :performs, MapSet.new(["huoyan-dao/yan"])),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "你的贡献还不够，这招暂时还不能传你。\n"} =
+               SectMaster.inquiry_grant(Map.put(qualified, :gongxian, 1_199), npc, cfg)
+
+      assert {:error, "你为人太过心软，这招暂时还不能传你。\n"} =
+               SectMaster.inquiry_grant(Map.put(qualified, :shen, -119_999), npc, cfg)
+
+      assert {:error, "你的内功修为不足，还学不了这一招。\n"} =
+               SectMaster.inquiry_grant(
+                 tianlongsi_player(%{
+                   skills: %{"force" => 219, "huoyan-dao" => 219},
+                   shen: -120_000,
+                   max_neili: 4_999,
+                   gongxian: 1_200
+                 }),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "你的内力修为不足，还是修炼高点再来吧。\n"} =
+               SectMaster.inquiry_grant(
+                 tianlongsi_player(%{
+                   skills: %{"force" => 220, "huoyan-dao" => 219},
+                   shen: -120_000,
+                   max_neili: 4_999,
+                   gongxian: 1_200
+                 }),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "等你把火焰刀练熟了再来找我。\n"} =
+               SectMaster.inquiry_grant(
+                 tianlongsi_player(%{
+                   skills: %{"force" => 220, "huoyan-dao" => 219},
+                   shen: -120_000,
+                   max_neili: 5_000,
+                   gongxian: 1_200
+                 }),
+                 npc,
+                 cfg
+               )
+    end
+
+    @tag tianlongsi: true
+    test "msg_one 的 LPC $n/$N 占位符在广播前替换（GAP #822 修复）" do
+      assert Kantele.World.InquiryHandlers.SectMasterGrant.render_msg1(
+               "$N右掌一竖，袭击向$n。",
+               %{npc_name: "鸠摩智", asker_name: "段誉"}
+             ) == "鸠摩智右掌一竖，袭击向段誉。"
+    end
+  end
+
+  describe "铁掌帮 UCL 数据回填与门控（Task #921/#923）" do
+    defp tz(world, name, room), do: npc(world, name, room)
+
+    defp tz_student(opts) do
+      family = if opts[:family], do: %{name: opts[:family]}, else: %{}
+      family = if opts[:master_name], do: Map.put(family, :master_name, opts[:master_name]), else: family
+
+      %{
+        meta: %{
+          family: family,
+          stats: %{
+            shen: Keyword.get(opts, :shen, 0),
+            combat_exp: Keyword.get(opts, :exp, 0),
+            skills: Keyword.get(opts, :skills, %{})
+          }
+        }
+      }
+    end
+
+    defp tz_player(opts) do
+      %{
+        family: "铁掌帮",
+        skills: Map.get(opts, :skills, %{}),
+        gongxian: Map.get(opts, :gongxian, 0),
+        shen: Map.get(opts, :shen, 0),
+        max_neili: Map.get(opts, :max_neili, 0),
+        performs: MapSet.new()
+      }
+      |> Map.merge(opts)
+    end
+
+    @tag tiezhang: true
+    test "三师父 teach/apprentice/绝招问询与静态数据完整回填", %{world: world} do
+      fen = tz(world, "司徒焚", "tiezhang:guangchang")
+      ren = tz(world, "裘千仞", "tiezhang:wztang")
+      zhang = tz(world, "裘千丈", "tiezhang:guajia")
+
+      for npc <- [fen, ren, zhang] do
+        assert npc, "LPC 静态放置的师父必须随世界加载"
+        assert npc.meta.teach.family == "铁掌帮"
+
+        for {skill, %{max: max}} <- npc.meta.teach.teach_skills do
+          assert max > 0, "#{npc.name} 的 #{skill} 不能静默落成 max=0"
+        end
+
+        gate = npc.meta.apprentice
+        assert gate.permit_recruit == true
+        assert gate.allow_families == ["绝情谷"]
+        assert gate.allow_master_name == "裘千尺"
+        assert gate.defer_family == "绝情谷"
+        assert gate.defer_master_name == "裘千尺"
+        assert gate.defer_mark == "绝情谷--铁掌帮"
+        assert gate.no_min_shen == true
+
+        assert npc.meta.chat_chance_combat == 120
+        assert length(npc.meta.chat_msg_combat) >= 4
+      end
+
+      assert map_size(fen.meta.teach.teach_skills) == 15
+      assert map_size(ren.meta.teach.teach_skills) == 18
+      assert map_size(zhang.meta.teach.teach_skills) == 14
+
+      assert zhang.meta.teach.no_teach_deny["tie-zhang"] ==
+               "嘿嘿嘿，这玩意不厉害，我的通臂六合掌才是武林绝学，你还是用心练这个吧。"
+
+      assert fen.meta.inquiries["血浪滔天"]["perform_id"] == "tiexue-dao/xue"
+      assert length(ren.meta.inquiries |> Map.keys() |> Enum.filter(&is_binary/1)) >= 18
+
+      for {name, perform} <- [
+            {"掌心雷", "tie-zhang/lei"},
+            {"九穹绝刹掌", "tie-zhang/juesha"},
+            {"龙影掌", "tie-zhang/long"},
+            {"五指刀", "tie-zhang/dao"},
+            {"阴阳磨", "tie-zhang/yin"},
+            {"春雷炸空", "tianlei-dao/zha"},
+            {"五雷连闪", "tianlei-dao/shan"}
+          ] do
+        cfg = ren.meta.inquiries[name]
+        assert cfg["kind"] == "sect_master_grant", "#{name} 应为绝招问询"
+        assert cfg["perform_id"] == perform
+        assert cfg["gate_order"] == "lpc_masterd"
+      end
+
+      assert ren.meta.inquiries["掌心雷"]["msg_one"] =~ "大厅内一张青石桌应声而碎！"
+      assert ren.meta.inquiries["九穹绝刹掌"]["msg_one"] =~ "双掌幻出漫天掌影"
+
+      assert zhang.meta.inquiries["孤雁出群"]["perform_id"] == "tongbi-zhang/chu"
+      assert zhang.meta.inquiries["皓月惊空"]["perform_id"] == "guyue-chan/jing"
+      assert zhang.meta.inquiries["龙飞势"]["perform_id"] == "feilong-zhang/fei"
+
+      # 原有静态问询/战斗/携带数据不得被回填覆盖
+      assert fen.meta.stats.combat_exp == 2_000_000
+      assert ren.meta.inquiries["裘千尺"] == "三妹下嫁到绝情谷去了，你问这个有什么事吗？"
+      assert zhang.meta.inquiries["here"] =~ "铁掌帮的总坛所在"
+      assert zhang.meta.engage.fight.accept == false
+    end
+
+    @tag tiezhang: true
+    test "收徒门序：司徒焚 defer 直返，裘千仞/裘千丈 defer 后继续", %{world: world} do
+      fen = tz(world, "司徒焚", "tiezhang:guangchang").meta.apprentice
+      ren = tz(world, "裘千仞", "tiezhang:wztang").meta.apprentice
+      zhang = tz(world, "裘千丈", "tiezhang:guajia").meta.apprentice
+
+      qianchi =
+        tz_student(family: "绝情谷", master_name: "裘千尺", shen: -100_000, exp: 900_000,
+          skills: %{"force" => 300, "strike" => 300})
+
+      assert {:defer, msg, "绝情谷--铁掌帮"} = SectMaster.recruit_gate?(nil, qianchi, fen)
+      assert msg =~ "你还是直接去找帮主吧"
+
+      assert {:ok_with_mark, warning, "绝情谷--铁掌帮"} =
+               SectMaster.recruit_gate?(nil, qianchi, ren)
+
+      assert warning =~ "且让我先看看你的能力"
+
+      # 司徒焚：负神上界 → 经验 → force → strike（逐条原文）
+      good = tz_student(shen: -10_000, exp: 140_000, skills: %{"force" => 60, "strike" => 40})
+
+      assert :ok = SectMaster.recruit_gate?(nil, good, fen)
+
+      assert {:error, "你这样心慈手软可不行。\n"} =
+               SectMaster.recruit_gate?(nil, %{good | meta: put_in(good.meta.stats.shen, -9_999)}, fen)
+
+      assert {:error, "你这点能力怎能成大器，还是练练再来吧！\n"} =
+               SectMaster.recruit_gate?(nil, tz_student(shen: -10_000, exp: 139_999, skills: %{}), fen)
+
+      assert {:error, "学武之人最讲究内功精纯，我看你下的工夫还不够呀。\n"} =
+               SectMaster.recruit_gate?(
+                 nil,
+                 tz_student(shen: -10_000, exp: 140_000, skills: %{"force" => 59, "strike" => 40}),
+                 fen
+               )
+
+      # 裘千丈只有 shen > 0 一条硬门
+      assert :ok = SectMaster.recruit_gate?(nil, tz_student(shen: 0, exp: 0, skills: %{}), zhang)
+
+      assert {:error, "他妈的！爷爷我最恨你这样心慈手软的小王八蛋！。\n"} =
+               SectMaster.recruit_gate?(nil, tz_student(shen: 1, exp: 0, skills: %{}), zhang)
+
+      assert ren.delete_mark_on_accept == true
+      assert zhang.delete_mark_on_accept != true
+    end
+
+    @tag tiezhang: true
+    test "masterd 门序：穿心锥逐条拒绝文案与主技能/轻功/内力链", %{world: world} do
+      cfg = tz(world, "司徒焚", "tiezhang:guangchang").meta.inquiries["穿心锥"]
+      npc = %{family: "铁掌帮"}
+
+      qualified =
+        tz_player(%{
+          skills: %{"chuanxin-zhang" => 100, "force" => 150, "dodge" => 220},
+          shen: -18_000,
+          gongxian: 200,
+          max_neili: 200
+        })
+
+      assert {:ok, "chuanxin-zhang/zhui", 200} = SectMaster.inquiry_grant(qualified, npc, cfg)
+
+      assert {:error, "大侠与我铁掌帮素无渊源，不知此话从何说起。"} =
+               SectMaster.inquiry_grant(qualified, %{family: "绝情谷"}, cfg)
+
+      assert {:error, "这招你不是已经会了么，还缠着我做甚？"} =
+               SectMaster.inquiry_grant(
+                 Map.put(qualified, :performs, MapSet.new(["chuanxin-zhang/zhui"])),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "哼！像你这样的心慈手软之辈，又能干成什么大事？"} =
+               SectMaster.inquiry_grant(Map.put(qualified, :shen, -17_999), npc, cfg)
+
+      assert {:error, "你为铁掌帮作出的贡献不够，这招暂时还不能传你。"} =
+               SectMaster.inquiry_grant(Map.put(qualified, :gongxian, 199), npc, cfg)
+
+      assert {:error, "你连穿心掌都未曾学过，何谈绝招可言？"} =
+               SectMaster.inquiry_grant(Map.put(qualified, :skills, %{}), npc, cfg)
+
+      assert {:error, "你对穿心掌的了解还不够，尚且无法领悟此招。\n"} =
+               SectMaster.inquiry_grant(
+                 Map.put(qualified, :skills, %{"chuanxin-zhang" => 99, "force" => 150, "dodge" => 220}),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "你目前的轻功火候不足，下去练练再来吧。\n"} =
+               SectMaster.inquiry_grant(
+                 tz_player(%{
+                   skills: %{"chuanxin-zhang" => 100, "force" => 150, "dodge" => 219},
+                   shen: -18_000,
+                   gongxian: 200,
+                   max_neili: 200
+                 }),
+                 npc,
+                 cfg
+               )
+
+      assert {:error, "你现在的内力修为不足，修炼高点再来吧。\n"} =
+               SectMaster.inquiry_grant(Map.put(qualified, :max_neili, 199), npc, cfg)
+    end
+
+    @tag tiezhang: true
+    test "顾炎武：三条函数式问询替换为静态文案与字帖发放，literate 授课保留" do
+      # LPC gu.c 无静态房间放置；直接解析 tiezhang.ucl 定义（同鸠摩智批处理方式）。
+      raw = Elias.parse(File.read!("data/world/tiezhang.ucl"))
+      gu = Loader.parse_character(%Zone{id: "tiezhang"}, :gu, raw.characters[:gu], %{}) |> elem(1)
+      assert gu
+
+      assert gu.meta.inquiries["岳武穆"] =~ "岳武穆名飞字鹏举"
+      assert gu.meta.inquiries["武穆遗书"] =~ "此书偷走"
+
+      jiannan = gu.meta.inquiries["上官剑南"]
+      assert jiannan["kind"] == "give_item"
+      assert jiannan["item"] == "tiezhang:zitie"
+      assert jiannan["unique"] in [true, "true"]
+      assert jiannan["success"] =~ "老朽这里有一幅字帖送给你"
+
+      assert gu.meta.teach.teach_skills["literate"] == %{max: 200, gongxian: 0}
+      assert {gu.meta.combat_config.apply.attack, gu.meta.combat_config.apply.damage} == {10, 5}
+    end
+  end
+
+  describe "神龙教 UCL 数据回填（Task #931）" do
+    test "洪安通 teach + 3 绝招 grant 字段与 LPC ask_fei/xian/cui 一致", %{world: world} do
+      npc = npc(world, "洪安通", "shenlong:dating")
+      assert npc, "洪安通应随世界加载（shenlong:dating）"
+      assert npc.meta.teach.family == "神龙教"
+      assert npc.meta.teach.teach_skills["shedao-qigong"].max == 250
+      assert npc.meta.teach.teach_skills["medical"].max == 270
+
+      fei = npc.meta.inquiries["飞仙法"]
+      assert fei["kind"] == "sect_master_grant"
+      assert fei["perform_id"] == "shedao-qigong/fei"
+      assert fei["gate_order"] == "lpc_hong"
+      assert fei["max_shen"] == -40_000
+      assert fei["min_levels"] == %{"shedao-qigong" => 100}
+      assert fei["improve_skills"] == ["sword"]
+      assert fei["learned"] == "你学会了飞仙术。"
+      assert fei["msg_one"] =~ "看清楚了"
+
+      xian = npc.meta.inquiries["神龙再现"]
+      assert xian["perform_id"] == "shedao-qigong/xian"
+      assert xian["max_shen"] == -50_000
+      assert xian["min_levels"] == %{"shedao-qigong" => 120}
+      assert xian["improve_skills"] == ["sword", "staff", "unarmed"]
+
+      cui = npc.meta.inquiries["摧心断肠"]
+      assert cui["perform_id"] == "shedao-qigong/cui"
+      assert cui["max_shen"] == -50_000
+      assert cui["min_levels"] == %{"shedao-qigong" => 120}
+    end
+
+    test "陆高轩/苏荃/殷锦/张淡月 teach 家族与关键上限", %{world: world} do
+      assert npc(world, "陆高轩", "shenlong:xiaowu").meta.teach.family == "神龙教"
+      assert npc(world, "陆高轩", "shenlong:xiaowu").meta.teach.teach_skills["shedao-qigong"].max == 120
+      assert npc(world, "苏荃", "shenlong:jushi").meta.teach.teach_skills["dodge"].max == 180
+      assert npc(world, "殷锦", "shenlong:houting").meta.teach.teach_skills["huagong-dafa"].max == 130
+      # 张淡月为 zone 本地块（原 clone_lib 副本已去重），仍带 guarder + teach
+      zhang = npc(world, "张淡月", "shenlong:zoulang")
+      assert zhang.meta.teach.family == "神龙教"
+      assert zhang.meta.teach.teach_skills["huntian-qigong"].max == 145
+      assert zhang.meta.guarder.family == "神龙教"
+    end
+
+    test "无根道长/张淡月不再重复加载（去重后各 1 个）", %{world: world} do
+      wugen = Enum.filter(world.characters, &(&1.name == "无根道长"))
+      zhang = Enum.filter(world.characters, &(&1.name == "张淡月"))
+      assert length(wugen) == 1
+      assert length(zhang) == 1
+    end
+
+    test "飞仙法 lpc_hong 门序：maxed → family → max_shen(-40000) → shedao>=100", %{world: world} do
+      cfg = inquiry(npc(world, "洪安通", "shenlong:dating"), "飞仙法")
+      npc_stats = %{family: "神龙教"}
+
+      good = disciple(%{family: "神龙教", shen: -50_000, skills: %{"shedao-qigong" => 100}})
+      assert {:ok, "shedao-qigong/fei", 0} = SectMaster.inquiry_grant(good, npc_stats, cfg)
+
+      maxed =
+        disciple(%{
+          family: "神龙教",
+          shen: -50_000,
+          skills: %{"shedao-qigong" => 100},
+          performs: MapSet.new(["shedao-qigong/fei"])
+        })
+
+      assert {:error, "自己多练练，少在我面前罗嗦！"} =
+               SectMaster.inquiry_grant(maxed, npc_stats, cfg)
+
+      outsider = disciple(%{family: "少林派", shen: -50_000, skills: %{"shedao-qigong" => 100}})
+      assert {:error, "你是哪儿来的？找死啊？"} =
+               SectMaster.inquiry_grant(outsider, npc_stats, cfg)
+
+      # shen=0 > -40000 → 杀气不足（心慈手软）
+      soft = disciple(%{family: "神龙教", shen: 0, skills: %{"shedao-qigong" => 100}})
+      assert {:error, "你的手段还不够毒，我可不能传给你绝招！"} =
+               SectMaster.inquiry_grant(soft, npc_stats, cfg)
+
+      # shedao-qigong 99 < 100 → 蛇岛奇功未到家
+      weak = disciple(%{family: "神龙教", shen: -50_000, skills: %{"shedao-qigong" => 99}})
+      assert {:error, "你的蛇岛奇功学好了么？还好意思来问我？"} =
+               SectMaster.inquiry_grant(weak, npc_stats, cfg)
+    end
+
+    test "神龙再现：max_shen=-50000（shen=-50000 边界放行，shen=-40000 拒绝）", %{world: world} do
+      cfg = inquiry(npc(world, "洪安通", "shenlong:dating"), "神龙再现")
+      npc_stats = %{family: "神龙教"}
+
+      boundary = disciple(%{family: "神龙教", shen: -50_000, skills: %{"shedao-qigong" => 120}})
+      assert {:ok, "shedao-qigong/xian", 0} = SectMaster.inquiry_grant(boundary, npc_stats, cfg)
+
+      too_soft = disciple(%{family: "神龙教", shen: -40_000, skills: %{"shedao-qigong" => 120}})
+      assert {:error, "你要好好为我神教效力，手段要更狠更毒。我才能传你这门绝招！"} =
+               SectMaster.inquiry_grant(too_soft, npc_stats, cfg)
     end
   end
 end

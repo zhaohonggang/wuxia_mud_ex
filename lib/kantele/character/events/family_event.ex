@@ -38,8 +38,12 @@ defmodule Kantele.Character.FamilyEvent do
         reject(conn, reason)
 
       # #869 梅庄东方不败弟子：只写 move_party 标记，LPC 不收徒。
+      # #903 桃花岛黄药师低经验分支：标记值须为随机指派的弟子名（元组形式），
+      # 且 LPC 同时 set("family/family_name","桃花岛") 但不 recruit → defer_family。
       {:defer, reason, mark} ->
-        character = put_character_mark(character, mark)
+        {mark_key, mark_value} = normalize_defer_mark(mark)
+        character = put_character_mark(character, mark_key, mark_value)
+        character = maybe_defer_family(character, apprentice)
         Records.save(character)
 
         conn
@@ -136,10 +140,31 @@ defmodule Kantele.Character.FamilyEvent do
     |> prompt(CommandView, "prompt", %{})
   end
 
-  # #869 梅庄：黑白子/黄钟公收徒成功后 `delete("move_party/日月神教--梅庄")`。
-  defp put_character_mark(character, mark) when is_binary(mark) and byte_size(mark) > 0 do
-    %{character | meta: PlayerMeta.put_mark(character.meta, mark, 1)}
+  # #903 标记可带值：{mark_key, value}（黄药师指派弟子），裸字符串保持旧行为（值 1）。
+  defp normalize_defer_mark({key, value}) when is_binary(key), do: {key, value}
+  defp normalize_defer_mark(key), do: {key, 1}
+
+  # #903 黄药师 `set("family/family_name", "桃花岛")` 但不 `recruit`。
+  # 只在配置显式给出 defer_family 时写入，老配置零影响。
+  defp maybe_defer_family(character, apprentice) do
+    case Map.get(apprentice, :defer_family) do
+      family when is_binary(family) and byte_size(family) > 0 ->
+        meta = %{character.meta | family: Map.put(character.meta.family || %{}, :name, family)}
+        %{character | meta: meta}
+
+      _ ->
+        character
+    end
   end
+
+  # #869 梅庄：黑白子/黄钟公收徒成功后 `delete("move_party/日月神教--梅庄")`。
+  defp put_character_mark(character, mark, value)
+       when is_binary(mark) and byte_size(mark) > 0 do
+    %{character | meta: PlayerMeta.put_mark(character.meta, mark, value)}
+  end
+
+  defp put_character_mark(character, mark) when is_binary(mark),
+    do: put_character_mark(character, mark, 1)
 
   defp put_character_mark(character, _mark), do: character
 

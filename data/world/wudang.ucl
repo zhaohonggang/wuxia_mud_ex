@@ -3238,23 +3238,49 @@ characters "wudang_zhang" {
         gongxian = 8
       }
     }
-    # LPC zhang.c try_to_learn_jy：须先经 ask_jiuyang 任务链解锁。
+    # LPC zhang.c:107-109 no_teach["wudang-jiuyang"] = (: try_to_learn_jy :)。
+    # 这是「链式任务解锁 + master_only」形态，由 check_jiuyang_unlock/4 消费：
+    # 未持 wudang 标记时按是否本弟子分两支逐字拒绝（素不相识 / 弟子也不传）；
+    # 已持标记再判 wudang-jiuyang > 180 → maxed_deny、shen < 0 → shen_deny，否则放行。
+    # mark 由 ask_jiuyang 问询链（wudang_jiuyang handler）写入，不在 no_teach 内落 mark。
     no_teach = {
-      wudang_jiuyang = "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。但阁下与贫道素不相识，怎谈得上“指点”二字？"
+      wudang_jiuyang = {
+        unlock = {
+          master_only = true
+          mark = "can_learn/jiuyang-shengong/wudang"
+          unlock_on_exp = false
+          max_skill_level = 180
+          min_shen = 0
+          not_master_deny = "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。但阁下与贫道素不相识，怎谈得上“指点”二字？"
+          master_deny = "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。虽然这武功在我手里有所改动，但它还是少林的武功，就算是我的弟子也不传授。"
+          maxed_deny = "你的武当九阳功力已颇为深厚了，以后你就自己研究吧。"
+          shen_deny = "老道倒是有心传你九阳功，可是你中邪魔外道如此之深。等你改过自新后再来找老道我吧。"
+        }
+      }
     }
   }
 
   apprentice = {
     family = "武当派"
+    # LPC zhang.c:171-217 attempt_apprentice：permit_recruit → xinfa120 → shen80000
+    # → exp500000 → taoism120 → int32(硬)。逐字文案覆写，顺序由 gate_order 固定。
+    gate_order = "lpc_wudang"
+    recruit_profile = "zhang"
+    permit_recruit = true
     min_shen = 80000
     min_exp = 500000
-    min_int = 32
+    hard_min_int = 32
     min_skills = {
       wudang_xinfa = 120
       taoism = 120
     }
     class = "taoist"
-    int_deny = "大侠悟性仍有不足，需要进一步锻炼才能领悟更高深的武当武学。\n"
+    xinfa_deny = "我武当派乃内家武功，最重视内功心法。%respect%是否还应该在武当心法上多下点功夫？"
+    shen_deny = "学武之人，德义为先，功夫的高低倒还在其次，未练武，要先学做人。在德行方面，%respect%是否还做得不够？"
+    exp_deny = "你现在经验尚浅，不能领会高深的武功，先锻炼要紧。"
+    taoism_deny = "我武当派武功全从道藏悟出。你对道家心法的领悟还不够。%respect%还是多研究研究道学心法吧。"
+    int_deny = "我武当派武功极需靠自己领悟。要能达到炉火纯青之境，体质什么的倒是无关紧要，悟性却是半点也马虎不得。%respect%的悟性还大有潜力可挖，还是请回吧。"
+    accept_msg = "想不到老道在垂死之年，又觅得一个可塑之才，真是可喜可贺。"
   }
 
   # LPC set("class", "taoist")
@@ -3422,7 +3448,99 @@ characters "wudang_zhang" {
       min_shen = 120000
       cost_gongxian = 2000
     }
+
+    # LPC zhang.c:114-131 inquiry 的四个九阳功问询词（觉远/九阳真经/九阳神功/武当九阳功）
+    # 都映射到 ask_jiuyang → wudang_jiuyang handler：判 wudang/kunlun/shaolin 三标记，
+    # 齐备则广播 vision + 三句 say + improve martial-cognize + 置 wudang 标记。
+    觉远 = {
+      kind = "wudang_jiuyang"
+      wudang_mark = "can_learn/jiuyang-shengong/wudang"
+      kunlun_mark = "can_learn/jiuyang-shengong/kunlun"
+      shaolin_mark = "can_learn/jiuyang-shengong/shaolin"
+      maxed = "老道已经答应传授你武当九阳功了，你怎么还那么罗嗦？"
+      missing_kunlun = "昔日《九阳真经》在我师父觉远大师手中丢失，现在也不知道流落何方。"
+      missing_shaolin = "唉，如果当时能够追回《九阳真经》，觉远大师也不至于落难。"
+      vision = "张三丰仔细打量了{npc}好一阵，目光陡然一亮。"
+      say_one = "你不就是当年还送经书予觉远大师之人吗？"
+      say_two = "所谓‘大恩不言谢’，这九阳神功老道倒是通晓一点，现已化为武当九阳功。"
+      say_three = "如果阁下不嫌弃，老道倒是可以将这套九阳功传授于你。"
+      learned = "张三丰同意传授你「武当九阳功」。"
+      improve_skill = "martial-cognize"
+    }
+
+    九阳真经 = {
+      kind = "wudang_jiuyang"
+      wudang_mark = "can_learn/jiuyang-shengong/wudang"
+      kunlun_mark = "can_learn/jiuyang-shengong/kunlun"
+      shaolin_mark = "can_learn/jiuyang-shengong/shaolin"
+      maxed = "老道已经答应传授你武当九阳功了，你怎么还那么罗嗦？"
+      missing_kunlun = "昔日《九阳真经》在我师父觉远大师手中丢失，现在也不知道流落何方。"
+      missing_shaolin = "唉，如果当时能够追回《九阳真经》，觉远大师也不至于落难。"
+      vision = "张三丰仔细打量了{npc}好一阵，目光陡然一亮。"
+      say_one = "你不就是当年还送经书予觉远大师之人吗？"
+      say_two = "所谓‘大恩不言谢’，这九阳神功老道倒是通晓一点，现已化为武当九阳功。"
+      say_three = "如果阁下不嫌弃，老道倒是可以将这套九阳功传授于你。"
+      learned = "张三丰同意传授你「武当九阳功」。"
+      improve_skill = "martial-cognize"
+    }
+
+    九阳神功 = {
+      kind = "wudang_jiuyang"
+      wudang_mark = "can_learn/jiuyang-shengong/wudang"
+      kunlun_mark = "can_learn/jiuyang-shengong/kunlun"
+      shaolin_mark = "can_learn/jiuyang-shengong/shaolin"
+      maxed = "老道已经答应传授你武当九阳功了，你怎么还那么罗嗦？"
+      missing_kunlun = "昔日《九阳真经》在我师父觉远大师手中丢失，现在也不知道流落何方。"
+      missing_shaolin = "唉，如果当时能够追回《九阳真经》，觉远大师也不至于落难。"
+      vision = "张三丰仔细打量了{npc}好一阵，目光陡然一亮。"
+      say_one = "你不就是当年还送经书予觉远大师之人吗？"
+      say_two = "所谓‘大恩不言谢’，这九阳神功老道倒是通晓一点，现已化为武当九阳功。"
+      say_three = "如果阁下不嫌弃，老道倒是可以将这套九阳功传授于你。"
+      learned = "张三丰同意传授你「武当九阳功」。"
+      improve_skill = "martial-cognize"
+    }
+
+    武当九阳功 = {
+      kind = "wudang_jiuyang"
+      wudang_mark = "can_learn/jiuyang-shengong/wudang"
+      kunlun_mark = "can_learn/jiuyang-shengong/kunlun"
+      shaolin_mark = "can_learn/jiuyang-shengong/shaolin"
+      maxed = "老道已经答应传授你武当九阳功了，你怎么还那么罗嗦？"
+      missing_kunlun = "昔日《九阳真经》在我师父觉远大师手中丢失，现在也不知道流落何方。"
+      missing_shaolin = "唉，如果当时能够追回《九阳真经》，觉远大师也不至于落难。"
+      vision = "张三丰仔细打量了{npc}好一阵，目光陡然一亮。"
+      say_one = "你不就是当年还送经书予觉远大师之人吗？"
+      say_two = "所谓‘大恩不言谢’，这九阳神功老道倒是通晓一点，现已化为武当九阳功。"
+      say_three = "如果阁下不嫌弃，老道倒是可以将这套九阳功传授于你。"
+      learned = "张三丰同意传授你「武当九阳功」。"
+      improve_skill = "martial-cognize"
+    }
+
+    # LPC zhang.c:782-842 ask_jian：真武剑为武当镇派之宝，仅传嫡传弟子。
+    # 本引擎 GiveItem 支持 family / master_id / min_shen / unique，可覆盖：
+    #   非武当派、非本人嫡传、侠义不足、已持剑 四类拒绝 + 发放。
+    # GAP #935：LPC is_bad() 分支与「真武剑被他人持有时遍历 owner」无法用 GiveItem 表达，
+    #           已登记移植计划；此处先落地可表达的门槛。
+    真武剑 = {
+      kind = "give_item"
+      item = "clone_lib:zhenwu"
+      match = "zhenwu"
+      unique = true
+      family = "武当派"
+      master_id = true
+      min_shen = 60000
+      vision_name = "张三丰"
+      success = "好，你用这真武剑要多做一些行侠仗义的事情！"
+      already = "真武剑不是在你的手中么，怎么反而来找我呢？"
+      family_deny = "真武剑是我们武当镇派之宝，你打听它干什么？"
+      master_deny = "只有我的弟子才能用真武剑，你还是请回吧。"
+      min_shen_deny = "你行侠仗义的事情做得不够，我不能把真武剑交给你。"
+    }
   }
+
+  # LPC zhang.c:133-148 chat_chance_combat 120 + 13 actions（5 剑 + 5 拳 + 3 内功）
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.chan", "sword.jia", "sword.sui", "sword.zhuan", "sword.zhenwu", "unarmed.tu", "unarmed.zhen", "unarmed.zhan", "unarmed.ji", "unarmed.yin", "recover", "powerup", "shield"]
 
   # 随身装备（LPC carry_object("/d/wudang/obj/greyrobe")->wear()）
   carry = [
@@ -3483,23 +3601,48 @@ characters "wudang_guxu" {
     family = "武当派"
   }
 
+  # LPC guxu.c:74-88 attempt_apprentice：permit_recruit → shen>=0，成功文案。
+  apprentice = {
+    family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "guxu"
+    permit_recruit = true
+    min_shen = 0
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    accept_msg = "好吧，贫道就收下你了。即入武当门来，勿忘行善！"
+  }
+
   # LPC set("class", "taoist")
   class = "taoist"
 
+  # LPC guxu.c:67 set("book_count", 1)：道德经「上卷」仅发一部。
+  inquiry_state = {
+    book_count = 1
+  }
+
   # ask_me 绝招 → inquiries 脚本。
+  # LPC guxu.c:90-114 ask_me：family 校验 → book_count<1 拒绝 → 发书 + vision。
+  # 注意：LPC **无** present() 已持检查（靠 book_count 递减防重复），故 unique = false。
+  # GAP #936：message_vision 逐字文案「谷虚道长拿出道德经「上卷」(jing)给提问者。」GiveItem 的
+  #            broadcast 格式不同（「给提问者一件...」），已登记移植计划。
   inquiries = {
     道德经 = {
       kind = "give_item"
       item = "clone_lib:daodejing_i"
       match = "daodejing_i"
-      unique = true
+      unique = false
       family = "武当派"
       vision_name = "谷虚道长"
+      count = "book_count"
       success = "好吧，这本「道德经」你拿回去好好钻研。"
-      already = "你不是已经拿着道德经「上卷」了吗？"
+      exhausted = "你来晚了，本派的道德真经不在此处。"
       family_deny = "与本派素无来往，不知此话从何谈起？"
     }
   }
+
+  # LPC guxu.c:61-65 chat_chance_combat 120 + 2 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.sheng", "recover"]
 
   # 随身装备（LPC carry_object(...)->wear()）
   carry = [
@@ -3562,20 +3705,33 @@ characters "wudang_qingxu" {
   # LPC set("class", "taoist")
   class = "taoist"
 
+  # LPC qingxu.c:64 set("book_count", 1)：道德经「下卷」仅发一部。
+  inquiry_state = {
+    book_count = 1
+  }
+
   # ask_me 绝招 → inquiries 脚本。
+  # LPC qingxu.c:71-92 ask_me：family 校验 → book_count<1 拒绝 → 发书 + vision。
+  # 注意：LPC **无** present() 已持检查（靠 book_count 递减防重复），故 unique = false。
+  # GAP #936：message_vision 逐字文案 GiveItem broadcast 格式不同，已登记移植计划。
   inquiries = {
     道德经 = {
       kind = "give_item"
       item = "clone_lib:daodejing_ii"
       match = "daodejing_ii"
-      unique = true
+      unique = false
       family = "武当派"
       vision_name = "清虚道长"
+      count = "book_count"
       success = "好吧，这本「道德经」你拿回去好好钻研。"
-      already = "你不是已经拿着道德经「下卷」了吗？"
+      exhausted = "你来晚了，本派的道德真经不在此处。"
       family_deny = "与本派素无来往，不知此话从何谈起？"
     }
   }
+
+  # LPC qingxu.c:58-62 chat_chance_combat 120 + 2 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.sheng", "recover"]
 
 }
 
@@ -3644,6 +3800,27 @@ characters "wudang_shan" {
     }
   }
 
+  # LPC shan.c:122-158 attempt_apprentice：permit_recruit → int30(硬) → shen8000
+  # → xinfa70 → taoism70。逐字文案覆写，顺序由 gate_order 固定。
+  apprentice = {
+    family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "shan"
+    permit_recruit = true
+    hard_min_int = 30
+    min_shen = 8000
+    min_skills = {
+      wudang_xinfa = 70
+      taoism = 70
+    }
+    class = "taoist"
+    int_deny = "你的资质还没到铁划银钩的境界，收你也是白搭。"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的。我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。"
+  }
+
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     谁与争锋 = {
@@ -3668,6 +3845,17 @@ characters "wudang_shan" {
       learned = "你学会了「谁与争锋」。"
     }
   }
+
+  # LPC shan.c:81-84 coagents：song yuanqiao @ sanqingdian（助战）。
+  # id 沿用 LPC `"song yuanqiao"`（与 miao wen.c 助战回填同惯例）；
+  # 运行时 id→pid 解析（Communication subscribers）见 GAP #791/#924。
+  coagents = [
+    { id = "song yuanqiao" startroom = "wudang:sanqingdian" }
+  ]
+
+  # LPC shan.c:73-79 chat_chance_combat 120 + 4 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["strike.zheng", "recover", "powerup", "shield"]
 
   # 随身装备（LPC carry_object(...)->wear()）
   carry = [
@@ -3742,6 +3930,25 @@ characters "wudang_xi" {
     }
   }
 
+  # LPC xi.c:96-129 attempt_apprentice：permit_recruit → shen8000 → xinfa60
+  # → taoism60，成功 set class=taoist。逐字文案覆写，顺序由 gate_order 固定。
+  apprentice = {
+    family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "standard"
+    permit_recruit = true
+    min_shen = 8000
+    min_skills = {
+      wudang_xinfa = 60
+      taoism = 60
+    }
+    class = "taoist"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的。我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。希望你能好好用功，消灭邪魔外道！"
+  }
+
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     乱环诀 = {
@@ -3764,6 +3971,16 @@ characters "wudang_xi" {
       learned = "你学会了「乱环决」。"
     }
   }
+
+  # LPC xi.c:76-81 coagents：yu lianzhou @ houyuan + song yuanqiao @ sanqingdian（助战）。
+  coagents = [
+    { id = "yu lianzhou" startroom = "wudang:houyuan" },
+    { id = "song yuanqiao" startroom = "wudang:sanqingdian" }
+  ]
+
+  # LPC xi.c:83-89 chat_chance_combat 40 + 4 actions
+  chat_chance_combat = 40
+  chat_msg_combat = ["blade.huan", "recover", "powerup", "shield"]
 
   # 随身装备（LPC carry_object(...)->wear()）
   carry = [
@@ -3836,6 +4053,25 @@ characters "wudang_yin" {
     }
   }
 
+  # LPC yin.c:91-124 attempt_apprentice：permit_recruit → shen8000 → xinfa70
+  # → taoism70，成功 set class=taoist。逐字文案覆写，顺序由 gate_order 固定。
+  apprentice = {
+    family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "standard"
+    permit_recruit = true
+    min_shen = 8000
+    min_skills = {
+      wudang_xinfa = 70
+      taoism = 70
+    }
+    class = "taoist"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的。我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。希望你能好好用功，消灭邪魔外道！"
+  }
+
   # ask_me 绝招 → inquiries 脚本。
   inquiries = {
     柔月穿空 = {
@@ -3862,6 +4098,10 @@ characters "wudang_yin" {
       learned = "你学会了「柔月穿空」。"
     }
   }
+
+  # LPC yin.c:74-84 chat_chance_combat 120 + 8 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.chuan", "unarmed.zhen", "unarmed.zhan", "unarmed.ji", "unarmed.yin", "recover", "powerup", "shield"]
 
   # 随身装备（LPC carry_object(...)->wear()）
   carry = [
@@ -3931,14 +4171,25 @@ characters "wudang_yu" {
     }
   }
 
+  # LPC yu.c:100-139 attempt_apprentice：permit_recruit → shen20000 → exp150000
+  # → xinfa80 → taoism80，成功 set class=taoist。逐字文案覆写，顺序由 gate_order 固定。
   apprentice = {
     family = "武当派"
+    gate_order = "lpc_wudang"
+    recruit_profile = "standard"
+    permit_recruit = true
     min_shen = 20000
     min_exp = 150000
     min_skills = {
       wudang_xinfa = 80
       taoism = 80
     }
+    class = "taoist"
+    shen_deny = "我武当乃是堂堂名门正派，对弟子要求极严。在德行方面，%respect%是否还做得不够？"
+    exp_deny = "你现在经验尚浅，不能领会高深的武功，先锻炼要紧。"
+    xinfa_deny = "我武当派最注重内功心法%respect%是否应该在武当心法上多下点功夫啊?"
+    taoism_deny = "习武是为了强身健体，一味的练武是不可取的。我看你还需要在修身养性方面多锻炼锻炼，以提高你的道德心法。"
+    accept_msg = "好吧，我就收下你了。希望你能好好用功，发扬我武当精神！"
   }
 
   # 门派身份（供 inquiry_grant 同门校验，LPC create_family("武当派", N, "弟子/侠")）
@@ -3977,6 +4228,10 @@ characters "wudang_yu" {
       learned = "你学会了「绝户神抓」。"
     }
   }
+
+  # LPC yu.c:82-88 chat_chance_combat 120 + 4 actions
+  chat_chance_combat = 120
+  chat_msg_combat = ["claw.juehu", "recover", "powerup", "shield"]
 
   # 随身装备（LPC carry_object(...)->wear()）
   carry = [

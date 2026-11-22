@@ -146,8 +146,7 @@ behavior_config = {
     room_id = rooms.dating.id
     characters = [
       { id = characters.yunsumei.id }, { id = characters.wugendaozhang.id },
-      { id = characters.shenlong_hong.id },
-      { id = characters.shenlong_wugen.id } ]
+      { id = characters.shenlong_hong.id } ]
   }
 
 
@@ -506,8 +505,7 @@ behavior_config = {
 
   room_characters "zoulang" {
     room_id = rooms.zoulang.id
-    characters = [ { id = characters.zhangdanyue.id },
-      { id = characters.shenlong_zhang.id } ]
+    characters = [ { id = characters.zhangdanyue.id } ]
   }
 
 
@@ -1204,6 +1202,7 @@ chats = [
       name = "无根道长"
       aliases = ["wugen daozhang", "wugen", "daozhang"]
       description = "这是个五十来岁的黑须道长，相貌威武，眼中略带杀气。"
+  title = "神龙教赤龙使"
       gender = "男性"
       age = 55
       shen_type = -1
@@ -1246,12 +1245,29 @@ chats = [
           msgs = {}
         }
       }
+
+      inquiries = [
+        { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
+        { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" },
+        { key = "教主" value = "教主脾气不好,要讨他欢心才好。" },
+        { key = "洪安通" value = "教主脾气不好,要讨他欢心才好。" },
+        { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." }
+      ]
+
+      carry = [
+        { id = items.duanjian.id }
+      ]
+
+      init = {
+        greet_delay = 3
+      }
     }
 
     characters "zhangdanyue" {
       name = "张淡月"
       aliases = ["zhang danyue", "zhang"]
       description = "这是一个黑衣大汉，身躯笔挺，容貌威严。"
+  title = "神龙教黑龙使"
       gender = "男性"
       age = 44
       shen_type = -1
@@ -1294,6 +1310,23 @@ chats = [
         }
       }
 
+      teach = {
+        family = "神龙教"
+        teach_skills = {
+          force = { max = 140 gongxian = 0 }
+          huntian_qigong = { max = 145 gongxian = 0 }
+          dodge = { max = 130 gongxian = 0 }
+          feiyan_zoubi = { max = 130 gongxian = 0 }
+          unarmed = { max = 130 gongxian = 0 }
+          changquan = { max = 130 gongxian = 0 }
+          shedao_qigong = { max = 140 gongxian = 0 }
+          shenlong_xinfa = { max = 140 gongxian = 0 }
+          parry = { max = 140 gongxian = 0 }
+          staff = { max = 140 gongxian = 0 }
+          literate = { max = 50 gongxian = 0 }
+        }
+      }
+
       # LPC kungfu/class/shenlong/zhang.c：张淡月的问询（纯字符串条目）
     inquiries = [
       { key = "神龙教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
@@ -1302,6 +1335,14 @@ chats = [
       { key = "入教" value = "一般人是入不了我神龙教的(join shenlongjiao)." },
       { key = "口号" value = "万年不老！永享仙福！寿与天齐！文武仁圣！" }
     ]
+
+      carry = [
+        { id = items.cloth.id }
+      ]
+
+      init = {
+        greet_delay = 2
+      }
     }
 
     characters "dushe" {
