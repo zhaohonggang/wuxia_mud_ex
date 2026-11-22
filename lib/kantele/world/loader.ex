@@ -1191,6 +1191,9 @@ defmodule Kantele.World.Loader do
     %{
       mark: class_value(Map.get(unlock, :mark)),
       min_exp: int_value(Map.get(unlock, :min_exp)) || 0,
+      # #940 欧阳克 recognize_apprentice：必须有 can_learn/lingshe-quan/ke 标记，
+      # 不可靠 combat_exp 自动解锁。缺省 false → 既有门派行为完全不变。
+      require_mark_only: to_bool(Map.get(unlock, :require_mark_only)),
       learned: Map.get(unlock, :learned),
       locked: Map.get(unlock, :locked),
       # #789 武当张三丰「武当九阳功」链式授受（zhang.c try_to_learn_jy / recognize_apprentice）：
@@ -1318,6 +1321,14 @@ defmodule Kantele.World.Loader do
         _ -> nil
       end
 
+    # #940 欧阳世家 ouyang.h：玩家姓名硬门（名叫「欧阳锋」/「欧阳克」即拒）。
+    # UCL 数组元素是裸词/字符串，统一转字符串；缺 key → []，老配置零影响。
+    reject_student_names =
+      case Map.get(apprentice, :reject_student_names) do
+        names when is_list(names) -> Enum.map(names, &to_string/1)
+        _ -> []
+      end
+
     # permit_recruit 门控（少林移植 #639，对应 shaolin.h permit_recruit 三条）：
     # 启用后检查 detach/betrayer/他派。默认 false 保持既有门派行为不变。
     # Elias 把 UCL 里的 `true` 解析成字符串 "true"（见 parse_exit_vetoes 注释），
@@ -1335,6 +1346,9 @@ defmodule Kantele.World.Loader do
                "lpc_xiaoyao",
                "lpc_wuyazi",
                "lpc_xuanming",
+               "lpc_mingjiao",
+               "lpc_ouyang",
+               "lpc_quanzhen",
                "lpc_meizhuang",
                "lpc_taohua",
                "lpc_wudang"
@@ -1370,6 +1384,10 @@ defmodule Kantele.World.Loader do
       # 缺 key（nil/空）→ 恒不命中，段氏/胡/欧阳/慕容等未配置的世家零回归。
       required_born_family: class_value(Map.get(apprentice, :required_born_family)),
       born_family_deny: Map.get(apprentice, :born_family_deny),
+      # #940 欧阳世家 ouyang.h/ouyangke.c：姓名硬门 + 女性外姓专属拒绝文案。
+      reject_student_names: reject_student_names,
+      reject_student_name_deny: Map.get(apprentice, :reject_student_name_deny),
+      female_born_family_deny: Map.get(apprentice, :female_born_family_deny),
       # 侠客岛 shi.c：attempt_apprentice 无条件拒绝（连 ah + say）。
       # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
       deny_all: to_bool(Map.get(apprentice, :deny_all)),
@@ -1546,7 +1564,10 @@ defmodule Kantele.World.Loader do
           promotion_fields,
           Map.merge(
             meizhuang_fields,
-            Map.merge(taohua_fields, Map.merge(dialogue_fields, Map.merge(apprentice_fields, wudang_fields)))
+            Map.merge(
+              taohua_fields,
+              Map.merge(dialogue_fields, Map.merge(apprentice_fields, wudang_fields))
+            )
           )
         )
       )

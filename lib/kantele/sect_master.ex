@@ -76,22 +76,35 @@ defmodule Kantele.SectMaster do
     if Map.get(unlock, :master_only) == true do
       check_jiuyang_unlock(unlock, teacher, student, skill)
     else
-      check_mark_exp_unlock(unlock, teacher, student)
+      check_mark_exp_unlock(unlock, student, skill)
     end
   end
 
-  defp check_mark_exp_unlock(unlock, _teacher, student) do
+  defp check_mark_exp_unlock(unlock, student, skill) do
     mark = Map.get(unlock, :mark)
     min_exp = Map.get(unlock, :min_exp) || 0
     learned = Map.get(unlock, :learned)
     locked = Map.get(unlock, :locked)
+    restricted = Map.get(unlock, :restricted_skill)
+    wrong_skill_deny = Map.get(unlock, :wrong_skill_deny)
 
     marks = student_marks(student)
     exp = Map.get(student_stats_of(student), :combat_exp, 0) || 0
 
     cond do
+      # #968 周伯通 recognize_apprentice：有 can_learn/zuoyou-hubo/zhou 标记后，
+      # 仍需限定技能；其余技能走独立的「你教我还差不多」文案。
+      is_binary(mark) and Map.get(marks, mark) not in [nil, 0, false] and
+        is_binary(restricted) and normalize_skill(skill) != normalize_skill(restricted) ->
+        {:error, wrong_skill_deny || "你的武功比我还好，你教我还差不多。"}
+
       is_binary(mark) and Map.get(marks, mark) not in [nil, 0, false] ->
         {:unlock, learned, nil}
+
+      # #940 欧阳克 `recognize_apprentice`：标记由 accept_object 送女人流程写入，
+      # 不能靠经验自动解锁；无标记一律按 locked 文案硬拒。
+      Map.get(unlock, :require_mark_only) == true ->
+        {:error, locked || "你此时功力尚浅，此功暂不能传你。\n"}
 
       is_binary(mark) and exp > min_exp ->
         {:unlock, learned, mark}
@@ -111,7 +124,8 @@ defmodule Kantele.SectMaster do
 
     cond do
       # 未持 mark：按是否本弟子分两支（LPC try_to_learn_jy 两个 command(say) 分支）
-      not has_mark? and Map.get(unlock, :master_only) == true and not my_disciple?(teacher, student) ->
+      not has_mark? and Map.get(unlock, :master_only) == true and
+          not my_disciple?(teacher, student) ->
         {:error, ensure_lf(Map.get(unlock, :not_master_deny) || jiuyang_not_master_default())}
 
       not has_mark? ->
@@ -131,12 +145,10 @@ defmodule Kantele.SectMaster do
   end
 
   defp jiuyang_not_master_default,
-    do:
-      "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。但阁下与贫道素不相识，怎谈得上“指点”二字？"
+    do: "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。但阁下与贫道素不相识，怎谈得上“指点”二字？"
 
   defp jiuyang_disciple_default,
-    do:
-      "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。虽然这武功在我手里有所改动，但它还是少林的武功，就算是我的弟子也不传授。"
+    do: "武当九阳神功乃是九阳神功的分支，我少年时得师父觉远大师所授。虽然这武功在我手里有所改动，但它还是少林的武功，就算是我的弟子也不传授。"
 
   defp jiuyang_maxed_default, do: "你的武当九阳功力已颇为深厚了，以后你就自己研究吧。"
 
@@ -286,6 +298,11 @@ defmodule Kantele.SectMaster do
     #   "permit_first"（缺省，清为/清法 LPC）：permit_recruit 先于 gender
     result =
       cond do
+        # #940 欧阳世家 ouyang.h + ouyangke.c：姓名 → 出身(女性专属文案) → 叛门 → 他派，
+        # 顺序与 LPC 逐条 return 一致；仅显式 gate_order="lpc_ouyang" 生效。
+        gate_order == "lpc_ouyang" ->
+          ouyang_recruit_gate(student, config, exp, family_name)
+
         # 性别门控（清无 gate_order="gender_first" 时置于 permit_recruit 之前，对齐 LPC）
         gate_order == "gender_first" and
           gender not in [nil, ""] and
@@ -338,6 +355,19 @@ defmodule Kantele.SectMaster do
             Map.get(config, :recruit_profile) || "standard",
             Map.get(config, :min_skills, %{}) || %{},
             Map.get(config, :pre_min_skills, %{}) || %{}
+          )
+
+        # #951 全真教 quanzhen.h + 22 份 attempt_apprentice：permit 之后各 NPC 门序不同，
+        # 用 recruit_profile 分派；内功 OR 门与 AND 技能门分别走 any_min_skills / min_skills。
+        gate_order == "lpc_quanzhen" ->
+          quanzhen_recruit_gate(
+            student,
+            config,
+            exp,
+            family_name,
+            Map.get(config, :recruit_profile) || "simple",
+            min_skills,
+            any_min_skills
           )
 
         # #879 中原苗家 miao.h：`born_family != "中原苗家"` → 我苗家向来便不收容外人。
@@ -447,10 +477,13 @@ defmodule Kantele.SectMaster do
           {:error, deny_text(config, :max_neili_deny, "你的内力修为不足，师父未同意收你为徒。\n")}
 
         # #817 玄冥谷 bai.c/lu.c：负神门之后先判冥谷心法/基本掌法，最后才是经验。
-        gate_order == "lpc_xuanming" and not is_nil(failing_recruit_skill) ->
+        # #933 明教 7 位师父 attempt_apprentice：shen → 圣火心法/附加技能 → exp
+        # （技能先于经验，与默认 permit_first 的 exp→skills 相反），与 lpc_xuanming
+        # 同构，故共享此「技能先于经验」分支；拒绝文案仍走 min_skills_deny 逐技能覆写。
+        gate_order in ["lpc_xuanming", "lpc_mingjiao"] and not is_nil(failing_recruit_skill) ->
           {:error, min_skills_deny(config, failing_recruit_skill)}
 
-        gate_order not in ["lpc_wuyazi", "lpc_xuanming", "lpc_meizhuang"] and
+        gate_order not in ["lpc_wuyazi", "lpc_xuanming", "lpc_meizhuang", "lpc_mingjiao"] and
             exp < min_exp ->
           {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
 
@@ -464,7 +497,7 @@ defmodule Kantele.SectMaster do
         gate_order != "lpc_wuyazi" and not is_nil(failing_recruit_skill) ->
           {:error, min_skills_deny(config, failing_recruit_skill)}
 
-        gate_order == "lpc_xuanming" and exp < min_exp ->
+        gate_order in ["lpc_xuanming", "lpc_mingjiao"] and exp < min_exp ->
           {:error, deny_text(config, :min_exp_deny, "你经验尚浅，武功未成，师父未同意收你为徒。\n")}
 
         true ->
@@ -777,6 +810,12 @@ defmodule Kantele.SectMaster do
       # 缺省路径把 skill 排在 max_shen 之前、lpc_masterd 把 family 排在 maxed 之前，
       # 两者都会与 hong.c 的逐条 return 顺序错位（见 docs/神龙教教学门控移植计划.zh-CN.md §3）。
       "lpc_hong" -> inquiry_grant_hong(player_stats, npc_stats, config)
+      # #940 欧阳锋 ask_skill1/2/3：已会 → 同门 → 负 shen 上界 → 贡献 → 杖法等级。
+      # 不能用 lpc_kunlun：该门序只认 min_shen，会静默跳过 max_shen 负上界。
+      "lpc_ouyang" -> inquiry_grant_ouyang(player_stats, npc_stats, config)
+      # #951 全真教 18 条内联 ask_skill*：贡献在侠义之前，且神威浩荡的前置绝招门
+      # 位于 max_neili 之后；lpc_kunlun 两处次序都不同，必须独立门序。
+      "lpc_quanzhen" -> inquiry_grant_quanzhen(player_stats, npc_stats, config)
       _ -> inquiry_grant_default(player_stats, npc_stats, config)
     end
   end
@@ -869,7 +908,10 @@ defmodule Kantele.SectMaster do
       is_nil(perform_id) ->
         {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
 
-      not same_family?(player, npc) ->
+      # #933 明教 5 条 `free:1` 绝招（张无忌混沌一阳等）：masterd.c teach_pfm
+      # 在 free>0 时跳过同门校验。UCL 配置 `no_family_check = true` 表达。
+      Map.get(config, "no_family_check") not in [true, "true"] and
+          not same_family?(player, npc) ->
         {:error, deny(config, "family_deny", "你我并非同门，何来讨教绝招之说？\n")}
 
       perform_known?(player, perform_id) ->
@@ -946,6 +988,107 @@ defmodule Kantele.SectMaster do
       # （技能不存在=0 也 < 阈值，故无需单独 `skill < 1` 分支。）
       not meets_levels?(player, min_levels) ->
         {:error, deny(config, "skill_deny", "你的蛇岛奇功学好了么？还好意思来问我？")}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # 欧阳锋 ouyangfeng.c ask_skill1/2/3 的逐条 return 顺序：
+  #   已会(can_perform) → 同门(family) → shen 上界(负数) → 贡献 → 灵蛇杖法等级。
+  # 例：ask_skill2 是 maxed → family → `shen > -40000` → gongxian≥800 →
+  #     `query_skill("lingshe-zhangfa",1) < 120`。缺 max_shen 的左路会被正道玩家绕过。
+  defp inquiry_grant_ouyang(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    max_shen = Map.get(config, "max_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+    order = Map.get(config, "level_order") || []
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny_lf(config, "maxed", "你还不快去练功去？好好把我们欧阳家发扬光大！\n")}
+
+      not same_family?(player, npc) ->
+        {:error, deny_lf(config, "family_deny", "哪来的野小子敢在这里撒野！\n")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error, deny_lf(config, "shen_deny", "你这人手段不够狠毒，我现在还不能传你绝招！\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny_lf(config, "gongxian_deny", "你为我欧阳家效力还不够，这招我先不忙传你。\n")}
+
+      failing = first_failing_ordered_level(player, order, min_levels) ->
+        {:error, ordered_level_deny(config, failing)}
+
+      not meets_levels?(player, min_levels) ->
+        {:error, level_deny_text(config, player, min_levels)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # #951 全真教 quanzhen.h + 18 条 ask_skill* 原始门序：
+  #   perform nil → 已会 → 同门 → 主技能存在 → 贡献 → 侠义 → level_order → 前置绝招。
+  # 与 lpc_kunlun 的差别：贡献/侠义互换，且 requires_perform 在等级链之后。
+  defp inquiry_grant_quanzhen(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    min_shen = Map.get(config, "min_shen")
+    levels = Map.get(config, "min_levels", %{}) || %{}
+    order = Map.get(config, "level_order") || []
+    requires_perform = Map.get(config, "requires_perform")
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny_lf(config, "maxed", "这招我不是已经教会你了吗？\n")}
+
+      not same_family?(player, npc) ->
+        {:error, deny_lf(config, "family_deny", "阁下与贫道素不相识，不知此话从何说起？\n")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny_lf(config, "skill_deny", "你连#{skill}都没学，何谈绝招可言？\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error,
+         deny_lf(
+           config,
+           "gongxian_deny",
+           "你在我全真教内甚无作为，这招我暂时还不能传你。\n"
+         )}
+
+      is_integer(min_shen) and stat(player, :shen) < min_shen ->
+        {:error, deny_lf(config, "shen_deny", "你的侠义正事还做得不够，这招我暂时还不能传你。\n")}
+
+      failing = first_failing_ordered_level(player, order, levels) ->
+        {:error, ordered_level_deny(config, failing)}
+
+      not meets_levels?(player, levels) ->
+        {:error, level_deny_text(config, player, levels)}
+
+      is_binary(requires_perform) and not perform_known?(player, requires_perform) ->
+        {:error,
+         deny_lf(
+           config,
+           "requires_perform_deny",
+           "此招乃是由「五阴焚灭」升华而来，你还是逐步学习吧？\n"
+         )}
 
       true ->
         {:ok, perform_id, cost}
@@ -1715,6 +1858,154 @@ defmodule Kantele.SectMaster do
     end
   end
 
+  # #940 欧阳世家 `kungfu/class/ouyang/{ouyang.h,ouyangfeng.c,ouyangke.c}`。
+  # ouyang.h permit_recruit 四条按 LPC 原序：姓名 → 出身 → 叛门 → 他派；
+  # ouyangke.c 在 permit_recruit 之前还有「女性外姓」专属拒绝。
+  defp ouyang_recruit_gate(student, config, exp, family_name) do
+    names = Map.get(config, :reject_student_names, []) || []
+    born = Map.get(config, :required_born_family)
+    name = student_name(student)
+    student_born = student_born_family(student)
+    gender = Map.get(config, :gender)
+
+    cond do
+      is_list(names) and is_binary(name) and name in names ->
+        {:error,
+         deny_text(
+           config,
+           :reject_student_name_deny,
+           "大怒：他奶奶的！你起这个名字是什么意思啊？"
+         )}
+
+      is_binary(born) and student_born != born ->
+        deny =
+          if student_gender(student) == "女性" and Map.get(config, :female_born_family_deny) do
+            deny_text(config, :female_born_family_deny, "你不是我们欧阳家的人，我怎能收你为徒？")
+          else
+            deny_text(config, :born_family_deny, "你不是我们欧阳家的人，我怎能收你为徒？")
+          end
+
+        {:error, deny}
+
+      betrayed_sect?(student, family_name) ->
+        {:error, deny_text(config, :betray_sect_deny, "你反复无常，我不能收你为徒！")}
+
+      betrayed_before?(student) ->
+        {:error, deny_text(config, :betray_times_deny, "你反复无常，我不能收你为徒！")}
+
+      other_family?(student, family_name) ->
+        {:error,
+         deny_text(
+           config,
+           :other_family_deny,
+           "你虽然是我们欧阳家的人，但你入了其他门派，我不能收你为徒！"
+         )}
+
+      is_binary(gender) and student_gender(student) != gender ->
+        gender_deny(student, gender, config)
+
+      exp < (Map.get(config, :min_exp) || 0) ->
+        {:error,
+         deny_text(
+           config,
+           :min_exp_deny,
+           "你的经验还不够，先和我的侄儿欧阳克学习武功吧。"
+         )}
+
+      true ->
+        {:ok, deny_text(config, :accept_msg, "好... 很好！")}
+    end
+  end
+
+  # #951 全真教 `kungfu/class/quanzhen/*.c`：quanzhen.h permit_recruit 三条为所有
+  # 可收徒 NPC 共用；之后各 NPC 门序互不相同，按 recruit_profile 分派。
+  # 门序与拒绝文案逐条对齐 LPC；ji.c / pi.c 走 deny_all，不进入本函数。
+  defp quanzhen_recruit_gate(
+         student,
+         config,
+         exp,
+         family_name,
+         profile,
+         min_skills,
+         any_min_skills
+       ) do
+    shen = Map.get(student_stats(student), :shen, 0) || 0
+    accept = deny_text(config, :accept_msg, "好吧，我就收下你这个徒弟。")
+
+    cond do
+      # quanzhen.h 三条，顺序与 LPC 逐条 return 一致。
+      betrayed_sect?(student, family_name) ->
+        {:error, deny_text(config, :betray_sect_deny, "你当年既然离开全真教，何必又要回来？")}
+
+      betrayed_before?(student) ->
+        {:error, deny_text(config, :betray_times_deny, "我们全真教乃名门正派，决不收判师之徒！")}
+
+      other_family?(student, family_name) ->
+        {:error,
+         deny_text(
+           config,
+           :other_family_deny,
+           "你既然已经有了名师指点，不好好学习，来我们全真教作甚？"
+         )}
+
+      # sun.c:92 只拒男性；LPC 不是「必须为女性」。
+      profile == "sun" and student_gender(student) == "男性" ->
+        {:error, deny_text(config, :gender_deny, "我不收男徒，你还是去拜我几位师兄为师吧。\n")}
+
+      # wang.c:130 int 硬门位于其它 attempt_apprentice 门之前。
+      profile == "wang" and
+          (student_int(student) || 0) < (Map.get(config, :hard_min_int) || 0) ->
+        {:error, deny_text(config, :int_deny, "你的悟性还不够，还是先找我那几个徒弟学习吧。")}
+
+      profile == "zhou" and exp < (Map.get(config, :min_exp) || 0) ->
+        {:error, deny_text(config, :min_exp_deny, "你经验这么差，还是去找我那几个师侄教你吧。")}
+
+      # 内功 OR 门：xuanmen-neigong / quanzhen-xinfa 任一达到阈值即通过。
+      profile in ["hao", "liu", "ma", "qiu", "sun", "tan", "wang", "wangchuyi", "yin"] and
+          any_min_skills_failing?(student, any_min_skills) ->
+        {:error,
+         deny_text(
+           config,
+           :any_min_skills_deny,
+           "你的本门内功心法火候不足，难以领略更高深的武功。"
+         )}
+
+      profile in ["qiu"] and quanzhen_skill_below?(student, min_skills, "sword") ->
+        {:error, deny_text(config, :sword_deny, "你的剑法差成这样，如何能够杀敌？")}
+
+      profile in ["hao", "liu", "sun", "tan", "wangchuyi"] and
+          quanzhen_skill_below?(student, min_skills, "taoism") ->
+        {:error,
+         deny_text(
+           config,
+           :taoism_deny,
+           "你在修身养性方面还需多加锻炼，等你道学心法够高后再来吧。"
+         )}
+
+      profile == "ma" and quanzhen_skill_below?(student, min_skills, "taoism") ->
+        {:error,
+         deny_text(
+           config,
+           :taoism_deny,
+           "你在修身养性方面还需多加锻炼，等你道学心法够高后再来吧。"
+         )}
+
+      # ma.c:114 / wang.c:145：经验门在技能门之后、侠义门之前。
+      profile in ["ma", "wang"] and exp < (Map.get(config, :min_exp) || 0) ->
+        {:error, deny_text(config, :min_exp_deny, "你的实战经验太差，看来难以领略更高深的武功。")}
+
+      shen < (Map.get(config, :min_shen) || 0) ->
+        {:error, deny_text(config, :min_shen_deny, "你行侠仗义之事做得太少，我不能收你。\n")}
+
+      true ->
+        {:ok, accept}
+    end
+  end
+
+  defp quanzhen_skill_below?(student, skills, skill) do
+    skill_level(student, skill) < (Map.get(skills, skill) || 0)
+  end
+
   # #903 桃花岛 `kungfu/class/taohua/{feng,lu,qu,huang}.c attempt_apprentice`：
   # feng/lu/qu 只认黄药师写在 temp["taohua/master"] 上的指派；huang 低经验时
   # 随机指派一名弟子（置 family=桃花岛 但**不** recruit，LPC 原样），高经验直收。
@@ -1807,7 +2098,15 @@ defmodule Kantele.SectMaster do
 
   # #789 武当派 wudang.h permit_recruit（已在上面统一判定）+ 9 位师父 attempt_apprentice：
   # 各 NPC 门控顺序互不相同，按 recruit_profile 分派。全部逐字对齐 LPC。
-  defp wudang_recruit_gate(student, config, exp, _family_name, profile, min_skills, pre_min_skills) do
+  defp wudang_recruit_gate(
+         student,
+         config,
+         exp,
+         _family_name,
+         profile,
+         min_skills,
+         pre_min_skills
+       ) do
     case profile do
       "zhang" -> wudang_zhang_gate(student, config, exp, min_skills)
       "shan" -> wudang_shan_gate(student, config, min_skills)
@@ -2030,6 +2329,9 @@ defmodule Kantele.SectMaster do
   end
 
   defp teaches?(character, skill), do: skill_level(character, skill) > 0
+
+  defp normalize_skill(skill) when is_binary(skill), do: String.replace(skill, "_", "-")
+  defp normalize_skill(skill) when is_atom(skill), do: skill |> to_string() |> normalize_skill()
 
   defp skill_level(character, skill) do
     stats = Map.get(meta_of(character), :stats)

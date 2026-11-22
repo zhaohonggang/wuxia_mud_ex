@@ -211,5 +211,11 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
     %{stats | gongxian: max((stats.gongxian || 0) - cost, 0)}
   end
 
+  # #940 欧阳锋 ask_skill3 原文是 `me->add("gongxian",1000)`（增加而非扣除）。
+  # 不改写 LPC 笔误；UCL 以负 cost_gongxian 表达，仅在显式负值时走此分支。
+  defp deduct_gongxian(%Stats{} = stats, cost) when is_integer(cost) and cost < 0 do
+    %{stats | gongxian: (stats.gongxian || 0) - cost}
+  end
+
   defp deduct_gongxian(stats, _cost), do: stats
 end
