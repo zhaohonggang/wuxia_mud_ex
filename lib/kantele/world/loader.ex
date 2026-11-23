@@ -1214,9 +1214,22 @@ defmodule Kantele.World.Loader do
       master_deny: Map.get(unlock, :master_deny),
       maxed_deny: Map.get(unlock, :maxed_deny),
       shen_deny: Map.get(unlock, :shen_deny),
-      wrong_skill_deny: Map.get(unlock, :wrong_skill_deny)
+      wrong_skill_deny: Map.get(unlock, :wrong_skill_deny),
+      # #日月 任我行「吸星大法」：LPC try_to_learn_xixingdafa 以
+      # `query_skill("force",1) > 180` 判定，属技能阈值而非 combat_exp。
+      # UCL 写 `min_skills = { force = 180 }`，键归一 _→- 对齐 Stats.skills。
+      min_skills: normalize_min_skills(Map.get(unlock, :min_skills))
     }
   end
+
+  # 技能阈值解锁表：{ force = 180 } -> %{"force" => 180}（键 _→-，值取整）。
+  defp normalize_min_skills(skills) when is_map(skills) do
+    Enum.into(skills, %{}, fn {skill, level} ->
+      {String.replace(to_string(skill), "_", "-"), int_value(level)}
+    end)
+  end
+
+  defp normalize_min_skills(_), do: %{}
 
   # required_marks 归一成有序 [{mark, deny}] 列表（缺 deny 时 nil）。
   # UCL 里可写 [ "kunlun", "shaolin" ]（无文案）或 [ { mark = "kunlun" deny = "..." } ... ]。
@@ -1351,7 +1364,8 @@ defmodule Kantele.World.Loader do
                "lpc_quanzhen",
                "lpc_meizhuang",
                "lpc_taohua",
-               "lpc_wudang"
+               "lpc_wudang",
+               "lpc_ren"
              ] ->
           value
 

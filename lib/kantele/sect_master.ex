@@ -38,11 +38,16 @@ defmodule Kantele.SectMaster do
     student_family = family_of(student)
 
     cond do
-      # #742/#752：LPC `no_teach/<skill>` 是 learn 的逐技能硬拒，且文案逐 NPC 不同。
-      # loader 已把 map 形态落为 teach.no_teach_deny；此前无消费端导致文案静默丢弃。
-      # #879：若该技能配置了 unlock（mark + min_exp），先看学生是否已解锁——
-      # 已解锁返回 {:unlock, learned}（host 放行授艺）；未解锁且 exp 达标返回同一
-      # 信号（host 授艺 + 落 mark）；否则按原有 no_teach 硬拒（locked 文案）。
+      # LPC `cmds/skill/learn.c:62`：`! me->is_apprentice_of(ob)` 时先调
+      # `ob->recognize_apprentice(me, skill)`——参数是**本次请求的技能**，不是固定技能。
+      # 该函数分两支，未持本门 mark 一律硬拒（return -1，NPC 已自行 say 过）：
+      #   #968 周伯通 zhou.c:151-168：未持 can_learn/zuoyou-hubo/zhou → locked；
+      #     已持 mark 但 skill != "zuoyou-hubo" → wrong_skill_deny；
+      #   #940 欧阳克 ouyangke.c:354-368：未持 can_learn/lingshe-quan/ke → locked。
+      # 已入门弟子（is_apprentice_of）不再走 recognize_apprentice，直接落到下面。
+      recognize = recognize_apprentice_reply(teacher, student, skill) ->
+        recognize
+
       unlock = no_teach_unlock(teacher, skill) ->
         check_no_teach_unlock(unlock, teacher, student, skill)
 
@@ -80,31 +85,75 @@ defmodule Kantele.SectMaster do
     end
   end
 
+  # #968 周伯通 / #940 欧阳克 recognize_apprentice：
+  # LPC `learn.c` 在「求学者尚未 is_apprentice_of(师父)」时，**无论求教哪门技能**，
+  # 都先调 `ob->recognize_apprentice(me, skill)`。该函数按请求的技能决定答复：
+  #   - 未持本门 mark（如 `can_learn/zuoyou-hubo/zhou`）→ locked 文案，return -1；
+  #   - 已持 mark 但请求的技能 != 本门所限技能（`restricted_skill`）→ wrong_skill_deny；
+  #   - 请求的正是所限技能 → return 1（放行，后续 no_teach/等级判定照常）。
+  # 因此这里遍历该师父全部 `no_teach_unlock` 条目，而不是只查 skill 自己那一条：
+  # 「force」自己没有 unlock 段，但周伯通的 zuoyou-hubo 段管着它。
+  # 已入门弟子不再走 recognize_apprentice，故只在非嫡传时判定。
+  defp recognize_apprentice_reply(teacher, student, skill) do
+    my_family = family_of(teacher)
+
+    if Family.is_apprentice_of?(my_family, family_of(student)) do
+      nil
+    else
+      teach = Map.get(meta_of(teacher), :teach) || %{}
+      unlocks = Map.get(teach, :no_teach_unlock) || %{}
+
+      Enum.find_value(unlocks, fn {_key, unlock} ->
+        cond do
+          not (is_map(unlock) and is_binary(Map.get(unlock, :restricted_skill))) ->
+            nil
+
+          not has_mark?(student, Map.get(unlock, :mark)) ->
+            nil
+
+          normalize_skill(skill) == normalize_skill(Map.get(unlock, :restricted_skill)) ->
+            nil
+
+          true ->
+            {:error, Map.get(unlock, :wrong_skill_deny) || "你的武功比我还好，你教我还差不多。"}
+        end
+      end)
+    end
+  end
+
+  defp has_mark?(_student, mark) when not is_binary(mark), do: false
+
+  defp has_mark?(student, mark) do
+    Map.get(student_marks(student), mark) not in [nil, 0, false]
+  end
+
   defp check_mark_exp_unlock(unlock, student, skill) do
     mark = Map.get(unlock, :mark)
     min_exp = Map.get(unlock, :min_exp) || 0
+    # #日月 任我行「吸星大法」：force > 180 技能阈值解锁（非 combat_exp）。
+    min_skills = Map.get(unlock, :min_skills) || %{}
     learned = Map.get(unlock, :learned)
     locked = Map.get(unlock, :locked)
-    restricted = Map.get(unlock, :restricted_skill)
-    wrong_skill_deny = Map.get(unlock, :wrong_skill_deny)
 
     marks = student_marks(student)
     exp = Map.get(student_stats_of(student), :combat_exp, 0) || 0
 
     cond do
-      # #968 周伯通 recognize_apprentice：有 can_learn/zuoyou-hubo/zhou 标记后，
-      # 仍需限定技能；其余技能走独立的「你教我还差不多」文案。
-      is_binary(mark) and Map.get(marks, mark) not in [nil, 0, false] and
-        is_binary(restricted) and normalize_skill(skill) != normalize_skill(restricted) ->
-        {:error, wrong_skill_deny || "你的武功比我还好，你教我还差不多。"}
-
       is_binary(mark) and Map.get(marks, mark) not in [nil, 0, false] ->
         {:unlock, learned, nil}
 
-      # #940 欧阳克 `recognize_apprentice`：标记由 accept_object 送女人流程写入，
-      # 不能靠经验自动解锁；无标记一律按 locked 文案硬拒。
+      # 未持 mark：只认标记则硬拒（#940 欧阳克 / #968 周伯通 recognize_apprentice），
+      # 否则允许 combat_exp 严格大于阈值自动解锁。
       Map.get(unlock, :require_mark_only) == true ->
         {:error, locked || "你此时功力尚浅，此功暂不能传你。\n"}
+
+      # 技能阈值解锁（force > 180）：达标则本次解锁并落 mark。
+      map_size(min_skills) > 0 ->
+        if meets_min_skills?(student, min_skills) do
+          {:unlock, learned, mark}
+        else
+          {:error, locked || "你此时功力尚浅，此功暂不能传你。\n"}
+        end
 
       is_binary(mark) and exp > min_exp ->
         {:unlock, learned, mark}
@@ -113,6 +162,15 @@ defmodule Kantele.SectMaster do
         {:error, locked || "你此时功力尚浅，此功暂不能传你。\n"}
     end
   end
+
+  # 技能阈值表全部达标（严格大于，复刻 LPC `query_skill(...,1) > N`）。
+  defp meets_min_skills?(student, min_skills) when is_map(min_skills) do
+    Enum.all?(min_skills, fn {skill_id, need} ->
+      skill_level(student, skill_id) > need
+    end)
+  end
+
+  defp meets_min_skills?(_student, _min_skills), do: true
 
   # 九阳功：未持 mark 两支逐字拒绝；已持 mark 再判上限/侠义，否则放行。
   defp check_jiuyang_unlock(unlock, teacher, student, skill) do
@@ -494,6 +552,18 @@ defmodule Kantele.SectMaster do
           not is_nil(hard_min_int) and (student_int(student) || 0) < hard_min_int ->
           {:error, deny_text(config, :int_deny, "大侠悟性仍有不足，先回去多读点书吧。\n")}
 
+        # #日月 任我行 ren.c attempt_apprentice 第 5 门：
+        # `tianhuan-shenjue < 150 && riyue-xinfa < 150` → 任一达标即过（OR 门）。
+        # 缺省 permit_first 路径无 any_min_skills 分支，故按 gate_order 显式补上；
+        # 仅 lpc_ren 命中，其它门派零影响。
+        gate_order == "lpc_ren" and any_min_skills_failing?(student, any_min_skills) ->
+          {:error,
+           deny_text(
+             config,
+             :any_min_skills_deny,
+             "你连本门最基本的内功都没修好，怎么学习上乘武学。\n"
+           )}
+
         gate_order != "lpc_wuyazi" and not is_nil(failing_recruit_skill) ->
           {:error, min_skills_deny(config, failing_recruit_skill)}
 
@@ -816,6 +886,10 @@ defmodule Kantele.SectMaster do
       # #951 全真教 18 条内联 ask_skill*：贡献在侠义之前，且神威浩荡的前置绝招门
       # 位于 max_neili 之后；lpc_kunlun 两处次序都不同，必须独立门序。
       "lpc_quanzhen" -> inquiry_grant_quanzhen(player_stats, npc_stats, config)
+      # #日月 任我行 ren.c ask_skill1..5：已会 → 同门 → 技能存在 → 贡献 → 杀气(负上界)
+      # → 前置绝招(反璞归真需 zhuo+yu) → 内力 → 内功等级 → 绝招技能等级。
+      # 与缺省路径三处不同：贡献在杀气之前、内力在内功之前、两档等级文案分列。
+      "lpc_ren" -> inquiry_grant_ren(player_stats, npc_stats, config)
       _ -> inquiry_grant_default(player_stats, npc_stats, config)
     end
   end
@@ -889,6 +963,90 @@ defmodule Kantele.SectMaster do
         {:ok, perform_id, cost}
     end
   end
+
+  # #日月 任我行 ren.c ask_skill1..5 的逐字门序：
+  #   1) 已会 (can_perform) → maxed
+  #   2) 非同门 (family/family_name) → family_deny
+  #   3) 本招技能 < 1 → skill_deny
+  #   4) gongxian < min_gongxian → gongxian_deny（贡献在杀气之前）
+  #   5) shen > max_shen（负上界，杀气太重反倒拒） → max_shen_deny
+  #   6) ask_skill5 专属：can_perform/guzhuo-zhang/zhuo 与 yu 两招须先成 → requires_perform_deny
+  #   7) max_neili < min_max_neili → max_neili_deny
+  #   8) force < force 门槛 → force_deny
+  #   9) 本招技能 < 技能门槛 → skill_level_deny
+  defp inquiry_grant_ren(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    max_shen = Map.get(config, "max_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny(config, "maxed", "这一招我不是已经教过你了吗？\n")}
+
+      not same_family?(player, npc) ->
+        {:error, deny(config, "family_deny", "你又不是我日月神教的，跑来捣什么乱？\n")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny(config, "skill_deny", "你连本门武功都没学，还谈什么绝招可言？\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny(config, "gongxian_deny", "你在教内甚无作为，这招我暂时还不能传你。\n")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error, deny(config, "max_shen_deny", "你这样心慈手软，就算学会这招又有什么用？\n")}
+
+      not requires_performs_known?(player, config) ->
+        {:error, deny(config, "requires_perform_deny", "你连前两招都未练成，怎么学这最后一招？\n")}
+
+      below_max_neili?(player, config) ->
+        {:error, deny(config, "max_neili_deny", "你的内力太差，怎么修炼上乘武功？\n")}
+
+      below_min_force_level?(player, min_levels) ->
+        {:error, deny(config, "force_deny", "你的内功火候尚需提高，练好了再来找我吧。\n")}
+
+      below_min_skill_level?(player, skill, min_levels) ->
+        {:error, deny(config, "skill_level_deny", "你的武功还练得不到家，自己下去练练再来吧！\n")}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # ask_skill5 需先成 guzhuo-zhang/zhuo 与 yu 两招；单招/缺省一律放行。
+  defp requires_performs_known?(player, config) do
+    case Map.get(config, "requires_performs") do
+      ids when is_list(ids) and ids != [] -> Enum.all?(ids, &perform_known?(player, &1))
+      _ -> true
+    end
+  end
+
+  # LPC `query_skill("force") < N`（min_levels 的 force 键）；缺省不拦。
+  # 名字带 `_level` 以区别于 masterd 的 `below_min_force?/2`（读 min_force）。
+  defp below_min_force_level?(player, min_levels) do
+    case Map.get(min_levels, "force") do
+      need when is_integer(need) -> skill_level_of(player, "force") < need
+      _ -> false
+    end
+  end
+
+  # LPC `query_skill(<本招技能>,1) < N`（min_levels 的绝招技能键）；缺省不拦。
+  defp below_min_skill_level?(player, skill, min_levels) when is_binary(skill) do
+    case Map.get(min_levels, skill) do
+      need when is_integer(need) -> skill_level_of(player, skill) < need
+      _ -> false
+    end
+  end
+
+  defp below_min_skill_level?(_player, _skill, _min_levels), do: false
 
   # LPC masterd.c:76-211 的原始顺序。绝情谷的「神」门槛全为负数（上界），
   # 与贡献/技能门槛同时失败时必须先报杀气文案，不能沿用缺省顺序。
@@ -1054,32 +1212,32 @@ defmodule Kantele.SectMaster do
 
     cond do
       is_nil(perform_id) ->
-        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。")}
 
       perform_known?(player, perform_id) ->
-        {:error, deny_lf(config, "maxed", "这招我不是已经教会你了吗？\n")}
+        {:error, deny_lf(config, "maxed", "这招我不是已经教会你了吗？")}
 
       not same_family?(player, npc) ->
-        {:error, deny_lf(config, "family_deny", "阁下与贫道素不相识，不知此话从何说起？\n")}
+        {:error, deny_lf(config, "family_deny", "阁下与贫道素不相识，不知此话从何说起？")}
 
       is_binary(skill) and skill_level_of(player, skill) < 1 ->
-        {:error, deny_lf(config, "skill_deny", "你连#{skill}都没学，何谈绝招可言？\n")}
+        {:error, deny_lf(config, "skill_deny", "你连#{skill}都没学，何谈绝招可言？")}
 
       stat(player, :gongxian) < min_gongxian ->
         {:error,
          deny_lf(
            config,
            "gongxian_deny",
-           "你在我全真教内甚无作为，这招我暂时还不能传你。\n"
+           "你在我全真教内甚无作为，这招我暂时还不能传你。"
          )}
 
       is_integer(min_shen) and stat(player, :shen) < min_shen ->
-        {:error, deny_lf(config, "shen_deny", "你的侠义正事还做得不够，这招我暂时还不能传你。\n")}
+        {:error, deny_lf(config, "shen_deny", "你的侠义正事还做得不够，这招我暂时还不能传你。")}
 
       failing = first_failing_ordered_level(player, order, levels) ->
         {:error, ordered_level_deny(config, failing)}
 
-      not meets_levels?(player, levels) ->
+      not meets_named_levels?(player, levels) ->
         {:error, level_deny_text(config, player, levels)}
 
       is_binary(requires_perform) and not perform_known?(player, requires_perform) ->
@@ -1087,7 +1245,7 @@ defmodule Kantele.SectMaster do
          deny_lf(
            config,
            "requires_perform_deny",
-           "此招乃是由「五阴焚灭」升华而来，你还是逐步学习吧？\n"
+           "此招乃是由「五阴焚灭」升华而来，你还是逐步学习吧？"
          )}
 
       true ->
@@ -1950,7 +2108,7 @@ defmodule Kantele.SectMaster do
 
       # sun.c:92 只拒男性；LPC 不是「必须为女性」。
       profile == "sun" and student_gender(student) == "男性" ->
-        {:error, deny_text(config, :gender_deny, "我不收男徒，你还是去拜我几位师兄为师吧。\n")}
+        {:error, deny_text(config, :gender_deny, "我不收男徒，你还是去拜我几位师兄为师吧。")}
 
       # wang.c:130 int 硬门位于其它 attempt_apprentice 门之前。
       profile == "wang" and
@@ -1995,7 +2153,7 @@ defmodule Kantele.SectMaster do
         {:error, deny_text(config, :min_exp_deny, "你的实战经验太差，看来难以领略更高深的武功。")}
 
       shen < (Map.get(config, :min_shen) || 0) ->
-        {:error, deny_text(config, :min_shen_deny, "你行侠仗义之事做得太少，我不能收你。\n")}
+        {:error, deny_text(config, :min_shen_deny, "你行侠仗义之事做得太少，我不能收你。")}
 
       true ->
         {:ok, accept}

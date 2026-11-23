@@ -27,13 +27,16 @@
 - inquiries 键 `_`→`-` 归一：`min_levels`/`level_deny`/`level_order`/`improve_skills`/`min_skills`/`min_skills_deny`/`recruit_skill_order`；**`min_skill_levels`（give_item）不归一**。`min_max_neili` 是下界。`no_family_check`/`master_id` 可能加载为字符串 `"true"`。
 - **区域文件优先 clone_lib**（`dereference/3` 先查 zone.characters）；`IO.write` 中文 Windows 抛 `:no_translation` → 用 `File.write!/2`；无 `Path.join/3`/`File.rm/2`。
 - **字面 `\n` 不换行**，显示文案一律别写。`Stats` 无 `:family`/`:max_neili`（测试用 `Map.put`）；`coagents` 加载为 string-key map；`recruit_gate?/3` 成功返回 `:ok`；收徒成功文案键 `accept_msg`。
+- **房间级 UCL 不能写裸 `$n`/`$N`**（`validate_ucl.py` Chars 对非 object_only 文件是 **exit 1 硬失败**；clone_lib.ucl 因 object_only 豁免）。msg_one 写 `{npc}`(=NPC)/`{name}`(=提问者)；`SectMasterGrant.render_msg1/2` 已同时替换 `{npc}/{name}` 与 `$n/$N`。
+- **Elixir 同 name/arity 的 `defp` 是「重定义」**（仅告警、后者覆盖前者）→ 危险：新 helper 若与既有同名（如 `below_min_force?/2` 读 `min_force`）会被静默覆盖，务必改唯一名（任我行用 `below_min_force_level?/2`）。
 
 ## 引擎门速查
-- **apprentice gate_order**（loader allowlist）：`permit_first`(默认)、`gender_first`、`lpc_xiaoyao`、`lpc_wuyazi`、`lpc_xuanming`、`lpc_mingjiao`、`lpc_ouyang`、`lpc_meizhuang`、`lpc_taohua`、`lpc_wudang`、`lpc_quanzhen`。默认 exp 在 skills 前；`lpc_xuanming`/`lpc_mingjiao` 是 shen→skills→exp；`lpc_ouyang` 是姓名→出身→叛门→他派→性别→exp。
-- **inquiry grant gate_order**（另一套）：`lpc_masterd`(teach_pfm 逐字门序；`level_order`+`max-neili` 伪键；`no_family_check=true` ↔ `free:1`)、`lpc_kunlun`、`lpc_duan`、`lpc_emei`、`lpc_meizhuang`、`lpc_jiumozhi_fen/yan`、`lpc_hong`、`lpc_ouyang`(负 `max_shen`；勿与只有 min_shen 的 lpc_kunlun 混用)、`lpc_quanzhen`。
+- **apprentice gate_order**（loader allowlist）：`permit_first`(默认)、`gender_first`、`lpc_xiaoyao`、`lpc_wuyazi`、`lpc_xuanming`、`lpc_mingjiao`、`lpc_ouyang`、`lpc_meizhuang`、`lpc_taohua`、`lpc_wudang`、`lpc_quanzhen`、`lpc_ren`。默认 exp 在 skills 前；`lpc_xuanming`/`lpc_mingjiao` 是 shen→skills→exp；`lpc_ouyang` 是姓名→出身→叛门→他派→性别→exp；`lpc_ren` 是 permit→max_shen→exp→int→any_min_skills(OR)。
+- **inquiry grant gate_order**（另一套）：`lpc_masterd`(teach_pfm 逐字门序；`level_order`+`max-neili` 伪键；`no_family_check=true` ↔ `free:1`)、`lpc_kunlun`、`lpc_duan`、`lpc_emei`、`lpc_meizhuang`、`lpc_jiumozhi_fen/yan`、`lpc_hong`、`lpc_ouyang`(负 `max_shen`；勿与只有 min_shen 的 lpc_kunlun 混用)、`lpc_quanzhen`、`lpc_ren`(贡献先于杀气、内力先于内功、force_deny/skill_level_deny 两档)。
 - `teach_pfm` 的 `neili` = `query("max_neili")`（masterd.c:201-205），UCL 写 `max-neili`。详细门序见 `lib/kantele/sect_master.ex`、`lib/kantele/world/loader.ex`、`test/kantele/world/*_test.exs`。
 
 ## 当前工作流
-- Task #619 按门派顺序回填 UCL；已回填见 `docs/待全量回归清单.zh-CN.md` #1-#17；逐门缺口见 `docs/*教学门控移植计划.zh-CN.md`。
-- 最近完成：明教（#932-#934）、慕容派（#763）、欧阳世家（#940-#943，GAP #961-#967 → Task #944-#950）。全真教审计完成（#951-#966），正在实现。
+- Task #619 按门派顺序回填 UCL；已回填见 `docs/待全量回归清单.zh-CN.md` #1-#19；逐门缺口见 `docs/*教学门控移植计划*.md`。
+- 最近完成：欧阳世家（#940-#943，GAP #961-#967）、全真教（#951-#966 + 引擎，GAP #968-#978）、**日月教任我行 ren.c（#19，lpc_ren 引擎 + `characters "ren"` 就地扩展，GAP：NPC score/prepare_skill/message_sort 反置/emote/色号）**。
+- **待办**：按 Task #619 顺序推进下一门派（`kungfu/class/` 下尚未回填者，先审计确认）。
 - daily log append-only。

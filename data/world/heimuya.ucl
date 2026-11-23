@@ -2975,6 +2975,11 @@ item_desc = {
       age = 65
       shen_type = -1
 
+      # LPC ren.c: set("score", 50000) —— ex NonPlayerMeta 无 score 字段（仅玩家 metadata 有），
+      # 属引擎缺口，暂不落地（见 docs/日月教教学门控移植计划.zh-CN.md GAP）。
+      # LPC ren.c: prepare_skill("strike","guzhuo-zhang") —— ex 仅 sects.ex preps 用于随机 NPC 生成，
+      # 无 per-NPC prepare 消费端，属引擎缺口（同上 GAP）。
+
       combat = {
         attitude = "friendly"
         str = 40
@@ -2987,6 +2992,12 @@ item_desc = {
         max_neili = 9000
         jiali = 200
         combat_exp = 4000000
+        # LPC ren.c: set_temp("apply/damage",100) / apply/unarmed_damage 100 / apply/armor 200
+        apply = {
+          damage = 100
+          unarmed_damage = 100
+          armor = 200
+        }
         skills = {
           force = 340
           xixing_dafa = 340
@@ -3035,14 +3046,15 @@ item_desc = {
 
       # LPC: kungfu/class/riyue/ren.c ask_skill1..5 —— 五门绝招问答授艺。
       # 门派同门校验走 SectMaster.inquiry_grant（NPC 侧 teach.family = 日月神教）。
-      # 每门：gongxian >= N + shen <= -N（max_shen）+ min_levels + 扣 gongxian。
-      # fidelity 缺口（LPC 有、引擎无对应物，均不影响门控语义）：
-      #   - ask_skill5 的「须先会 guzhuo-zhang/zhuo 与 yu」前置绝招条件未进管线；
-      #   - message_sort 的演示描写 / command("say") 台词未回填（走通用学会文案）；
-      #   - LPC 的 force 与绝招技能各有独立等级拒绝文案，此处合用一条 level_deny
-      #     （取 LPC 先判的 force 文案）。
+      # 门序 gate_order = "lpc_ren"：已会 → 同门 → 技能存在 → 贡献 → 杀气(负上界)
+      #   → 前置绝招(反璞归真需 zhuo+yu) → 内力 → 内功等级 → 绝招技能等级（ren.c 逐字序）。
+      # 每招 improve_skills = LPC improve_skill(...,1500000) 逐次 +1 级；
+      # msg_one = LPC message_sort 逐字文案（去色号/换行）；learned = tell_object 学会文案。
+      # 仍未落地（引擎缺口，见移植计划 GAP）：score / prepare_skill / 表情动作
+      #   (sneer/hmm/nod2/haha) / message_sort 色号。
       inquiries = {
         天地归元 = {
+          gate_order = "lpc_ren"
           perform_id = "yuanshi-jian/gui"
           skill = "yuanshi-jian"
           min_gongxian = 500
@@ -3052,15 +3064,20 @@ item_desc = {
             yuanshi_jian = 140
           }
           cost_gongxian = 500
+          improve_skills = ["sword", "yuanshi-jian", "martial-cognize"]
           maxed = "这一招我不是已经教过你了吗？"
           family_deny = "你又不是我日月神教的，跑来捣什么乱？"
           skill_deny = "你连原始剑法都没学，还谈什么绝招可言？"
           gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          force_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          skill_level_deny = "你的原始剑法还练得不到家，自己下去练练再来吧！"
+          learned = "你学会了「天地归元」。"
+          msg_one = "{npc}点了点头，随即便将{name}招至身边，在耳旁低声细说良久，{name}听后会心的一笑，看来大有所悟。"
         }
 
         天旋地转 = {
+          gate_order = "lpc_ren"
           perform_id = "yuanshi-jian/xuan"
           skill = "yuanshi-jian"
           min_gongxian = 1400
@@ -3070,15 +3087,20 @@ item_desc = {
             yuanshi_jian = 180
           }
           cost_gongxian = 1400
+          improve_skills = ["sword", "yuanshi-jian", "martial-cognize"]
           maxed = "这一招我不是已经教过你了吗？"
           family_deny = "你又不是我日月神教的，跑来捣什么乱？"
           skill_deny = "你连原始剑法都没学，还谈什么绝招可言？"
           gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          force_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          skill_level_deny = "你的原始剑法还练得不到家，自己下去练练再来吧！"
+          learned = "你学会了「天旋地转」。"
+          msg_one = "{npc}微微一笑，从怀中轻轻取出了一本剑谱，指着其中一段对{name}细说良久，{name}一边听一边不住地点头。"
         }
 
         大巧若拙 = {
+          gate_order = "lpc_ren"
           perform_id = "guzhuo-zhang/zhuo"
           skill = "guzhuo-zhang"
           min_gongxian = 600
@@ -3089,16 +3111,21 @@ item_desc = {
             guzhuo_zhang = 150
           }
           cost_gongxian = 600
+          improve_skills = ["strike", "guzhuo-zhang", "martial-cognize"]
           maxed = "这一招我不是已经教过你了吗？"
           family_deny = "你又不是我日月神教的，跑来捣什么乱？"
           skill_deny = "你连古拙掌法都没学，何谈绝招可言？"
           gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          force_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          skill_level_deny = "你的古拙掌法还练得不到家，自己下去练练再来吧！"
           max_neili_deny = "你的内力太差，怎么修炼上乘武功？"
+          learned = "你学会了「大巧若拙」。"
+          msg_one = "{npc}冷笑一声，更不答话，只是随手挥出一掌，毫无半点招式可言。可哪知这看似不经意的一掌，竟激得周围尘沙四起，掌风呼啸而至，直刮得{name}面庞隐隐生疼。招式之巧，实乃{name}前所未闻。"
         }
 
         大智若愚 = {
+          gate_order = "lpc_ren"
           perform_id = "guzhuo-zhang/yu"
           skill = "guzhuo-zhang"
           min_gongxian = 1200
@@ -3109,16 +3136,21 @@ item_desc = {
             guzhuo_zhang = 180
           }
           cost_gongxian = 1200
+          improve_skills = ["strike", "guzhuo-zhang", "martial-cognize"]
           maxed = "这一招我不是已经教过你了吗？"
           family_deny = "你又不是我日月神教的，跑来捣什么乱？"
           skill_deny = "你连古拙掌法都没学，何谈绝招可言？"
           gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          force_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          skill_level_deny = "你的古拙掌法还练得不到家，自己下去练练再来吧！"
           max_neili_deny = "你的内力太差，怎么修炼上乘武功？"
+          learned = "你学会了「大智若愚」。"
+          msg_one = "{npc}大笑数声，对{name}赞道：“想不到你的掌法居然已达如此造诣，今日老夫传你这招又有何妨？”{npc}随即摆开架势，慢慢的演示招数。"
         }
 
         反璞归真 = {
+          gate_order = "lpc_ren"
           perform_id = "guzhuo-zhang/zhen"
           skill = "guzhuo-zhang"
           min_gongxian = 2200
@@ -3129,22 +3161,99 @@ item_desc = {
             guzhuo_zhang = 220
           }
           cost_gongxian = 2200
+          # LPC ask_skill5：须先成 guzhuo-zhang/zhuo 与 yu 两招（requires_performs 两招皆会）
+          requires_performs = ["guzhuo-zhang/zhuo", "guzhuo-zhang/yu"]
+          requires_perform_deny = "你连前两招都未练成，怎么学这最后一招？"
+          improve_skills = [
+            "strike",
+            "strike",
+            "strike",
+            "guzhuo-zhang",
+            "guzhuo-zhang",
+            "guzhuo-zhang",
+            "martial-cognize"
+          ]
           maxed = "这一招我不是已经教过你了吗？"
           family_deny = "你又不是我日月神教的，跑来捣什么乱？"
           skill_deny = "你连古拙掌法都没学，何谈绝招可言？"
           gongxian_deny = "你在教内甚无作为，这招我暂时还不能传你。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          force_deny = "你的内功火候尚需提高，练好了再来找我吧。"
+          skill_level_deny = "你的古拙掌法还练得不到家，自己下去练练再来吧！"
           max_neili_deny = "你的内力太差，怎么修炼上乘武功？"
+          learned = "你学会了「反璞归真」。"
+          msg_one = "{npc}对{name}微微点了点头，沉声说道：“看来你这套古拙掌法已经练得相当纯熟了，今日老夫就传你这招。”说完便将{name}招至跟前细说良久，陡然间只见{npc}忽然探出右手，平推而出，{name}只觉掌风澎湃，凌厉之极，顿时胸口一阵郁闷，难受得说不出话来。"
         }
       }
 
       # LPC: kungfu/class/riyue/ren.c
       #   create_family("日月神教", 13, "教主") —— 门派身份供同门校验/授技读取
+      #   set("no_teach", ...) —— 吸星大法条件解锁 + 五岳剑派剑法硬拒
       teach = {
         family = "日月神教"
+        no_teach = {
+          # try_to_learn_xixingdafa：force > 180 方可传（技能阈值解锁）；已持 mark 放行
+          xixing_dafa = {
+            unlock = {
+              mark = "can_learn/xixing-dafa/ren"
+              min_skills = {
+                force = 180
+              }
+              locked = "你此时功力太浅，强修此功会走火入魔。"
+            }
+          }
+          taishan_sword = "你给我好好专研本门武功，五岳剑派的剑法学它作甚？"
+          hengshan_jian = "你给我好好专研本门武功，五岳剑派的剑法学它作甚？"
+          hengshan_sword = "你给我好好专研本门武功，五岳剑派的剑法学它作甚？"
+          huashan_jian = "你给我好好专研本门武功，五岳剑派的剑法学它作甚？"
+          songshan_sword = "你给我好好专研本门武功，五岳剑派的剑法学它作甚？"
+        }
       }
-      #   carry_object("/d/heimuya/npc/obj/zaohong")
+
+      # LPC ren.c attempt_apprentice：permit_recruit → shen > -80000 → exp < 500000
+      #   → int < 34 → tianhuan-shenjue/riyue-xinfa 任一 < 150 → recruit。
+      # gate_order = "lpc_ren" 使 any_min_skills OR 门在 hard_min_int 之后生效。
+      apprentice = {
+        family = "日月神教"
+        gate_order = "lpc_ren"
+        permit_recruit = true
+        reject_master_name = "任我行"
+        reject_master_name_deny = "既然教主慧眼识青，收你为徒，你就应该好好珍惜。你这样不求上进，朝三暮四，岂不辜负了教主的一片苦心？"
+        betray_sect_deny = "你当年既然已经离开了黑木崖，今日何必又要回来？"
+        betray_times_deny = "我日月神教即日便一统江湖，可不招收你这样的背信弃义之徒。"
+        other_family_deny = "你既然已经有了师承，又来我日月神教来干嘛？"
+        no_min_shen = true
+        max_shen = -80000
+        max_shen_deny = "老夫平生最痛恨的就是你这样的假仁假义之徒。"
+        min_exp = 500000
+        min_exp_deny = "你现在江湖经验太浅，还是先跟随几位长老学习吧。"
+        hard_min_int = 34
+        int_deny = "你悟性那么差，怎么领会我的武功？"
+        any_min_skills = {
+          tianhuan_shenjue = 150
+          riyue_xinfa = 150
+        }
+        any_min_skills_deny = "你连本门最基本的内功都没修好，怎么学习上乘武学。"
+        accept_msg = "念在你如此有心，对本教又忠心耿耿，今日我便收你为徒。"
+      }
+
+      # LPC ren.c: set("chat_chance_combat", 120) + chat_msg_combat 八条
+      chat_chance_combat = 120
+      chat_msg_combat = [
+        "perform sword.gui",
+        "perform sword.xuan",
+        "perform strike.zhuo",
+        "perform strike.yu",
+        "perform strike.zhen",
+        "exert recover",
+        "exert powerup",
+        "exert suck"
+      ]
+
+      # LPC ren.c: carry_object("/d/heimuya/npc/obj/zaohong")->wear()
+      carry = [
+        { id = items.zaohong.id }
+      ]
     }
 
     characters "dushe" {

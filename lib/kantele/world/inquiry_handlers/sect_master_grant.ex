@@ -166,11 +166,18 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   @doc """
   LPC `message_vision(msg1, me, this_object())` 占位符替换：`$n` = 提问者、`$N` = NPC。
   旧路径把 `$n` 原样广播（GAP #822），此处在广播前替换，保留逐字文案。
+
+  同时支持转换器归一化占位 `{npc}`（= NPC）与 `{name}`（= 提问者）——`data/world/*.ucl`
+  的房间级文件不允许出现裸 `$n`/`$N`（见 `scripts/validate_ucl.py` 的 Chars 校验），
+  故 2026-11-22 起 manually-authored 的 msg_one 一律写 `{npc}`/`{name}`，与
+  `clone_lib.ucl` 的逐字归档（object_only，豁免）并存。
   """
   def render_msg1(msg, data) when is_binary(msg) and is_map(data) do
     msg
     |> String.replace("$n", to_string(Map.get(data, :asker_name) || ""))
     |> String.replace("$N", to_string(Map.get(data, :npc_name) || ""))
+    |> String.replace("{npc}", to_string(Map.get(data, :npc_name) || ""))
+    |> String.replace("{name}", to_string(Map.get(data, :asker_name) || ""))
   end
 
   # ---- 消息渲染 ----
