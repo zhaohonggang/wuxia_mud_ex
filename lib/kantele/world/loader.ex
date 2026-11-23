@@ -1365,7 +1365,8 @@ defmodule Kantele.World.Loader do
                "lpc_meizhuang",
                "lpc_taohua",
                "lpc_wudang",
-               "lpc_ren"
+               "lpc_ren",
+               "lpc_wudu"
              ] ->
           value
 
@@ -1377,6 +1378,9 @@ defmodule Kantele.World.Loader do
       family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
       min_shen: Map.get(apprentice, :min_shen) || 0,
       max_shen: int_value(Map.get(apprentice, :max_shen)),
+      # #973 五毒教有序负侠义阶梯：数组对象，逐档 max(负上界)+deny(逐字文案)。
+      # 由 lpc_wudu 门序逐档消费；未配置为空列表，老配置零影响。
+      shen_ladder: parse_shen_ladder(Map.get(apprentice, :shen_ladder)),
       min_max_neili: int_value(Map.get(apprentice, :min_max_neili)),
       min_exp: Map.get(apprentice, :min_exp) || 0,
       min_skills: min_skills,
@@ -1595,6 +1599,21 @@ defmodule Kantele.World.Loader do
   defp int_value(value) when is_integer(value), do: value
   defp int_value(value) when is_binary(value), do: String.to_integer(value)
   defp int_value(_), do: nil
+
+  # #973 五毒教 wudu.h permit_recruit 之后的两层负侠义阶梯（何红药 -1000/-8000、
+  # 齐云敖 -1000/-15000、何铁手 -1000/-50000，各配不同 deny 文案）。
+  # UCL 数组对象 `[{ max = -1000 deny = "..." }, { max = -8000 deny = "..." }]`
+  # 解析为 list-of-map；`max` 经 int_value（负整数合法），deny 原样透传。
+  defp parse_shen_ladder(ladder) when is_list(ladder) do
+    Enum.map(ladder, fn rung when is_map(rung) ->
+      %{
+        max: int_value(Map.get(rung, :max)) || Map.get(rung, "max"),
+        deny: Map.get(rung, :deny) || Map.get(rung, "deny")
+      }
+    end)
+  end
+
+  defp parse_shen_ladder(_), do: []
 
   defp parse_apprentice(_), do: nil
 

@@ -361,6 +361,12 @@ defmodule Kantele.SectMaster do
         gate_order == "lpc_ouyang" ->
           ouyang_recruit_gate(student, config, exp, family_name)
 
+        # #973 五毒教 wudu.h permit_recruit + 7 位师父 apprentice_gate：
+        # 五护法共用 permit_recruit 四门（离教/判师/他派/何铁手旧徒），之后
+        # 逐师父的 shen 两档负侠义阶梯（shen_ladder）+ min_exp + min_skills。
+        gate_order == "lpc_wudu" ->
+          wudu_recruit_gate(student, config, exp, family_name)
+
         # 性别门控（清无 gate_order="gender_first" 时置于 permit_recruit 之前，对齐 LPC）
         gate_order == "gender_first" and
           gender not in [nil, ""] and
@@ -890,6 +896,9 @@ defmodule Kantele.SectMaster do
       # → 前置绝招(反璞归真需 zhuo+yu) → 内力 → 内功等级 → 绝招技能等级。
       # 与缺省路径三处不同：贡献在杀气之前、内力在内功之前、两档等级文案分列。
       "lpc_ren" -> inquiry_grant_ren(player_stats, npc_stats, config)
+      # #973 五毒教 qiyunao 三绝招 + hetieshou 锁龙诀：已会 → 同门 → 杀气(负上界)
+      # → 贡献 → 等级链。与 lpc_ouyang 的差别：杀气在贡献**之前**（ouyang 相反）。
+      "lpc_wudu" -> inquiry_grant_wudu(player_stats, npc_stats, config)
       _ -> inquiry_grant_default(player_stats, npc_stats, config)
     end
   end
@@ -1182,6 +1191,50 @@ defmodule Kantele.SectMaster do
 
       stat(player, :gongxian) < min_gongxian ->
         {:error, deny_lf(config, "gongxian_deny", "你为我欧阳家效力还不够，这招我先不忙传你。\n")}
+
+      failing = first_failing_ordered_level(player, order, min_levels) ->
+        {:error, ordered_level_deny(config, failing)}
+
+      not meets_levels?(player, min_levels) ->
+        {:error, level_deny_text(config, player, min_levels)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # #973 五毒教 qiyunao 三绝招 + hetieshou 锁龙诀：perform nil → 已会 → 同门 →
+  # shen 负上界 → 贡献 → level_order/force 链。与 lpc_ouyang 的差别：**杀气在贡献
+  # 之前**（ouyang 贡献在杀气前）；锁龙诀 ask_skill3 与其余三绝招的贡献/杀气顺序相反，
+  # 故锁龙诀也用本门序。max_shen 为负上界，UCL 逐技能配 shen_deny 原文。
+  defp inquiry_grant_wudu(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    max_shen = Map.get(config, "max_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+    order = Map.get(config, "level_order") || []
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny_lf(config, "maxed", "你不是已经会了吗？")}
+
+      not same_family?(player, npc) ->
+        {:error, deny_lf(config, "family_deny", "不是我们五毒教的人，何出此言？")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error,
+         deny_lf(config, "shen_deny", "像你这样心慈手软的人是干不成大事的！\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error,
+         deny_lf(config, "gongxian_deny", "你为我五毒教效力还不够，这招我先不忙传你。\n")}
 
       failing = first_failing_ordered_level(player, order, min_levels) ->
         {:error, ordered_level_deny(config, failing)}
@@ -2072,6 +2125,66 @@ defmodule Kantele.SectMaster do
 
       true ->
         {:ok, deny_text(config, :accept_msg, "好... 很好！")}
+    end
+  end
+
+  # #973 五毒教 `kungfu/class/wudu/wudu.h` permit_recruit 四门 + 逐师父 apprentice_gate。
+  # 五护法/长老/教主共用 wudu.h 前三条（离教 → 判师 → 他派）；第四条 `master_name ==
+  # "何铁手"`（sneer + 拒绝）逐师父不同。之后走 shen_ladder 负侠义阶梯 → min_exp →
+  # min_skills（wudu-xinfa / wudu-qishu）。仅显式 gate_order="lpc_wudu" 命中。
+  defp wudu_recruit_gate(student, config, exp, family_name) do
+    reject_master = Map.get(config, :reject_master_name)
+
+    cond do
+      betrayed_sect?(student, family_name) ->
+        {:error, deny_text(config, :betray_sect_deny, "你既然已经离教，就别再回来！")}
+
+      betrayed_before?(student) ->
+        {:error, deny_text(config, :betray_times_deny, "判师之徒，哼！小心我把你千刀万剐！")}
+
+      other_family?(student, family_name) ->
+        {:error,
+         deny_text(
+           config,
+           :other_family_deny,
+           "你不是已经有了师傅么，还来干什么？做卧底么？"
+         )}
+
+      is_binary(reject_master) and student_master_name(student) == reject_master ->
+        # LPC 此处先 sneer emote 再 say；ex 仅 say（NPC emote 通道 GAP 已登记 §5）。
+        {:error,
+         deny_text(config, :reject_master_name_deny, "既然你已经跟随了那个贱人，却又来找我作甚？")}
+
+      failing = first_failing_shen_ladder(student, config) ->
+        {:error, failing}
+
+      exp < (Map.get(config, :min_exp) || 0) ->
+        {:error, deny_text(config, :min_exp_deny, "先去增长点经验吧。")}
+
+      failing_skill =
+          first_failing_recruit_skill(
+            student,
+            Map.get(config, :min_skills, %{}) || %{},
+            Map.get(config, :recruit_skill_order, []) || []
+          ) ->
+        {:error, min_skills_deny(config, failing_skill)}
+
+      true ->
+        {:ok, deny_text(config, :accept_msg, "不错，不错。")}
+    end
+  end
+
+  # shen_ladder 逐档消费：数组对象 `[{max=负上界, deny=逐字文案}, ...]`。
+  # LPC `if (shen > N) deny` → 返回首个 `shen > rung.max` 的 rung.deny；全过（shen 很负）
+  # → nil，继续后续 min_exp/min_skills。缺省空列表不拦（老配置零影响）。
+  defp first_failing_shen_ladder(student, config) do
+    ladder = Map.get(config, :shen_ladder, []) || []
+    shen = Map.get(student_stats(student), :shen, 0) || 0
+
+    case Enum.find(ladder, fn rung -> is_integer(rung.max) and shen > rung.max end) do
+      %{deny: text} when is_binary(text) and byte_size(text) > 0 -> ensure_lf(text)
+      %{deny: text} -> text
+      _ -> nil
     end
   end
 

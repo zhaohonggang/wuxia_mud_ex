@@ -3311,6 +3311,38 @@ chats = [
       }
     }
 
+# Generated from C:/files/git/mud/clone/lonely/book/dujing3.c by LPCConverter
+# LPC dujing3.c：skill wudu-qishu / exp_required 150000 / jing_cost 50 /
+# difficulty 50 / min_skill 50 / max_skill 149。weight 按本文件 set_weight(500)
+# → 50 的转换约定与 dujing2 对齐；名称/别名/文案照 LPC 逐字。
+# 注：本文件既存 dujing2 的 max_skill=99、jing_cost/difficulty=40 与 LPC
+# （119 / 50 / 50）不符，属既有数据偏差（另见 GAP §5 毒经下篇持有者状态机）。
+
+    items "dujing3" {
+      name = "「毒经下篇」"
+      aliases = ["du jing3", "jing3", "book3"]
+      description = "这是一本薄薄的小册，上面记满了五毒教特有的用毒的法门。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 50
+        unit = "本"
+        material = "silk"
+        book = {
+          skill = "wudu-qishu"
+          min_skill = 50
+          max_skill = 149
+          exp_required = 150000
+          jing_cost = 50
+          difficulty = 50
+        }
+      }
+    }
+
 # Generated from C:/files/git/mud/d/wudu/obj/fugu.c by LPCConverter
 # Zone: wudu
 
@@ -4088,15 +4120,57 @@ chats = [
         ]
       }
 
+      # LPC hehongyao.c attempt_apprentice：wudu.h permit_recruit 四门 -> shen>-1000
+      # -> shen>-8000 -> combat_exp<60000 -> wudu-xinfa>=80 -> wudu-qishu>=50；
+      # 成功 nod + 「不错，不错。」 + title「五毒教护法」（收徒 title GAP §5）。
       apprentice = {
         family = "五毒教"
-        max_shen = -8000
+        gate_order = "lpc_wudu"
+        permit_recruit = true
+        reject_master_name = "何铁手"
+        reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+        betray_sect_deny = "你既然已经离教，就别再回来！"
+        betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+        other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+        shen_ladder = [
+          { max = -1000 deny = "我越看你越象六扇门派来的卧底。" },
+          { max = -8000 deny = "你心慈手软，我是不会收你的！" }
+        ]
         min_exp = 60000
+        min_exp_deny = "你还是先去增长点经验吧。"
         min_skills = {
           wudu_xinfa = 80
           wudu_qishu = 50
         }
+        recruit_skill_order = ["wudu-xinfa", "wudu-qishu"]
+        min_skills_deny = {
+          wudu_xinfa = "你的五毒心法还学的不够啊。"
+          wudu_qishu = "我五毒教弟子以毒杀人，修习毒技是首要的。\n你是否还应该多多钻研本门的绝学？"
+        }
+        accept_msg = "不错，不错。"
       }
+
+      # LPC hehongyao.c coagents：([ "startroom" : "/d/wudu/huating1", "id" : "he tieshou" ])
+      coagents = [
+        { startroom = "/d/wudu/huating1" id = "he tieshou" }
+      ]
+
+      # LPC hehongyao.c guarder：F_GUARDER 守门拒绝文案（refuse_other/refuse_carry）。
+      # family 即 LPC guarder.c 的 my_fam（五毒教）；refuse_other 拒绝非本教+非出生本教者，
+      # refuse_carry 拒绝背着非本教玩家者。文案占位符已转为 {npc}/{name}。
+      meta = {
+        guarder = {
+          family = "五毒教"
+          msgs = {
+            refuse_other = "{npc}身形一晃，挡住{name}，喝道：没有教主准许，谁也不得进入本教圣地。"
+            refuse_carry = "{npc}对{name}喝道：你背上背的是什么人？给我放下来！"
+          }
+        }
+      }
+
+      # LPC hehongyao.c chat_chance_combat 120 + 5 条战斗闲聊（perform_action/exert_function）。
+      chat_chance_combat = 120
+      chat_msg_combat = ["sword.duo", "claw.lian", "strike.chan", "recover", "powerup"]
 
       # LPC: kungfu/class/wudu/hehongyao.c
       #   create_family("五毒教", 11, "长老")
@@ -4247,43 +4321,101 @@ characters "wudu_qiyunao" {
   # LPC no_teach = ([ "xiuluo-yinshagong" : ... , "ruanhong-zhusuo" : ... ])
   no_teach = ["xiuluo-yinshagong", "ruanhong-zhusuo"]
 
+  # LPC qiyunao.c attempt_apprentice：wudu.h permit_recruit 四门 -> shen>-1000
+  # -> shen>-15000 -> combat_exp<150000 -> wudu-xinfa>=80 -> wudu-qishu>=80；
+  # 成功 nod + 「不错，不错。」 + title「五毒教护法」（收徒 title GAP §5）。
+  apprentice = {
+    family = "五毒教"
+    gate_order = "lpc_wudu"
+    permit_recruit = true
+    reject_master_name = "何铁手"
+    reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+    betray_sect_deny = "你既然已经离教，就别再回来！"
+    betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+    other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+    shen_ladder = [
+      { max = -1000 deny = "我越看你越象六扇门派来的卧底。" },
+      { max = -15000 deny = "你心慈手软，我是不会收你的！" }
+    ]
+    min_exp = 150000
+    min_exp_deny = "你还是先去增长点经验吧。"
+    min_skills = {
+      wudu_xinfa = 80
+      wudu_qishu = 80
+    }
+    recruit_skill_order = ["wudu-xinfa", "wudu-qishu"]
+    min_skills_deny = {
+      wudu_xinfa = "你的五毒心法还学的不够啊。"
+      wudu_qishu = "我五毒教弟子以毒杀人，修习毒技是首要的。\n你是否还应该多多钻研本门的绝学？"
+    }
+    accept_msg = "不错，不错。"
+  }
+
   # 3 门 ask_skill 绝招 → inquiries perform_id 脚本。
   # LPC 校验 `shen > -20000/-35000/-40000` 即拒（需足够邪恶），故用 max_shen
   # （inquiry_grant 支持 `shen > max_shen` 拒绝；-20000 本身可通过）。
   inquiries = {
     腾蛇诀 = {
-      perform_id = "xiewei-bian/tengshe"
+      perform_id = "xiewei-bian/teng"
       skill = "xiewei-bian"
+      gate_order = "lpc_wudu"
+      max_shen = -20000
+      min_gongxian = 100
       min_levels = {
         xiewei_bian = 100
       }
-      min_gongxian = 100
-      max_shen = -20000
       cost_gongxian = 100
+      maxed = "你不是已经会了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      shen_deny = "像你这样心慈手软，就算学了这招也干不了大事！"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      level_deny = {
+        xiewei_bian = "你的蝎尾鞭还不到家，要多练练！"
+      }
     }
 
     毒蟾掌 = {
       perform_id = "tianchan-zhang/chan"
       skill = "tianchan-zhang"
-      min_levels = {
-        tianchan_zhang = 120
-        force = 150
-      }
-      min_gongxian = 200
+      gate_order = "lpc_wudu"
       max_shen = -35000
+      min_gongxian = 200
+      min_levels = {
+        force = 150
+        tianchan_zhang = 120
+      }
+      level_order = ["force", "tianchan-zhang"]
       cost_gongxian = 200
+      maxed = "你不是已经会了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      shen_deny = "像你这样心慈手软，就算学了这招也干不了大事！"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      level_deny = {
+        force = "你的内功火候不够，练不成这招！"
+        tianchan_zhang = "你的天蟾掌法还不到家，要多练练！"
+      }
     }
 
     夺命连环 = {
       perform_id = "wusheng-zhao/lian"
       skill = "wusheng-zhao"
-      min_levels = {
-        wusheng_zhao = 120
-        force = 150
-      }
-      min_gongxian = 300
+      gate_order = "lpc_wudu"
       max_shen = -40000
+      min_gongxian = 300
+      min_levels = {
+        force = 150
+        wusheng_zhao = 120
+      }
+      level_order = ["force", "wusheng-zhao"]
       cost_gongxian = 300
+      maxed = "我不是已经教会你了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      shen_deny = "像你这样心慈手软，就算学了这招也干不了大事！\n"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。\n"
+      level_deny = {
+        force = "你的内功火候不够，练不成这招！"
+        wusheng_zhao = "你的五圣毒爪还不到家，要多练练！"
+      }
     }
 
     # LPC ask_me → 毒经中篇（/clone/lonely/book/dujing2），限五毒教，玩家已有时不重发。

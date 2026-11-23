@@ -49273,6 +49273,33 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  # LPC: kungfu/class/wudu/cenqisi.c attempt_apprentice
+  #   收徒：wudu.h permit_recruit 四门 -> shen>-5000 -> wudu-xinfa>=40 -> wudu-qishu>=30
+  #   success nod + 「不错，不错。」（LPC 不设玩家 title；收徒 title GAP 已登记 §5）。
+  apprentice = {
+    family = "五毒教"
+    gate_order = "lpc_wudu"
+    permit_recruit = true
+    reject_master_name = "何铁手"
+    reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+    betray_sect_deny = "你既然已经离教，就别再回来！"
+    betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+    other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+    shen_ladder = [
+      { max = -5000 deny = "做我五毒教弟子必须心狠手辣。" }
+    ]
+    min_skills = {
+      wudu_xinfa = 40
+      wudu_qishu = 30
+    }
+    recruit_skill_order = ["wudu-xinfa", "wudu-qishu"]
+    min_skills_deny = {
+      wudu_xinfa = "你的五毒心法还学的不够啊。"
+      wudu_qishu = "我五毒教弟子以毒杀人，修习毒技是首要的。\n你是否还应该多多钻研本门的绝学？"
+    }
+    accept_msg = "不错，不错。"
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/wudu/daoshi.c
@@ -49293,11 +49320,41 @@ chats = [
     max_qi = 1800
   }
 
+  # LPC daoshi.c ask_me → 回教传送（teleport_service 覆盖）。
+  # 非五毒教拒；不在 startroom 拒；马车 + 传送到 /d/wudu/damen。
   inquiries = [
-    { key = "五毒教" value = " inquire about me (unimplemented)" },
-    { key = "回五毒教" value = " inquire about me (unimplemented)" },
-    { key = "回去" value = " inquire about me (unimplemented)" },
-    { key = "回教" value = " inquire about me (unimplemented)" }
+    { key = "五毒教" value = {
+      kind = "teleport_service"
+      target_room = "wudu:damen"
+      family_deny = "你大爷的，你罗里八嗦到底想说啥子？"
+      family = "五毒教"
+      success = "游方道人一招手，一辆马车驶过来停在门前。\n你急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+      target_vision = "车把势说道：这位已经到了，请下车吧。"
+    } },
+    { key = "回五毒教" value = {
+      kind = "teleport_service"
+      target_room = "wudu:damen"
+      family_deny = "你大爷的，你罗里八嗦到底想说啥子？"
+      family = "五毒教"
+      success = "游方道人一招手，一辆马车驶过来停在门前。\n你急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+      target_vision = "车把势说道：这位已经到了，请下车吧。"
+    } },
+    { key = "回去" value = {
+      kind = "teleport_service"
+      target_room = "wudu:damen"
+      family_deny = "你大爷的，你罗里八嗦到底想说啥子？"
+      family = "五毒教"
+      success = "游方道人一招手，一辆马车驶过来停在门前。\n你急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+      target_vision = "车把势说道：这位已经到了，请下车吧。"
+    } },
+    { key = "回教" value = {
+      kind = "teleport_service"
+      target_room = "wudu:damen"
+      family_deny = "你大爷的，你罗里八嗦到底想说啥子？"
+      family = "五毒教"
+      success = "游方道人一招手，一辆马车驶过来停在门前。\n你急忙钻进车中，只听一阵清脆的鞭响，马车绝尘而去。"
+      target_vision = "车把势说道：这位已经到了，请下车吧。"
+    } }
   ]
 
   skills = [
@@ -49327,6 +49384,27 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  # LPC daoshi.c vendor_goods ([ "/d/wudu/obj/jiedudan" : 300000 ])
+  goods = [
+    { id = items.jiedudan.id price = 300000 }
+  ]
+
+  # LPC daoshi.c attempt_apprentice：wudu.h permit_recruit 四门 -> shen>0 拒；
+  # 成功 title「五毒教教众」（LPC ob->set；收徒 title GAP 已登记 §5）。
+  apprentice = {
+    family = "五毒教"
+    gate_order = "lpc_wudu"
+    permit_recruit = true
+    reject_master_name = "何铁手"
+    reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+    betray_sect_deny = "你既然已经离教，就别再回来！"
+    betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+    other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+    shen_ladder = [
+      { max = 0 deny = "我教弟子贵在随心所欲，不收伪君子。" }
+    ]
+    accept_msg = ""
+  }
 
   init = {
     greet_delay = 1
@@ -49364,27 +49442,220 @@ chats = [
     str = 30
   }
 
+  # LPC hetieshou.c set("inquiry", [...])。perform 门序用 lpc_wudu（shen 在贡献前）；
+  # ask_skill1/2/4/5 在 LPC 实为「贡献在杀气前」（同 ouyang），ask_skill3 为「杀气在贡献前」，
+  # 二者优先级差异（多门槛同时失败时的拒绝文案先后）属 §5 GAP（已登记），
+  # 数据按 lpc_wudu 落位保证两门槛都触发、只错文案先后、不静默丢门。
+  # 武器授予（ask_gou/suo/she/jing）与 ask_skill6 的持有者状态机/score 读档属 §5 GAP。
   inquiries = [
     { key = "万毒窟" value = "只有我的弟子才能进入万毒窟。" },
     { key = "上篇" value = "毒经上篇你去问炼毒室的道人要吧。" },
-    { key = "下篇" value = " inquire about jing (unimplemented)" },
+    { key = "下篇" value = {
+      # LPC ask_jing：家族 -> shen>-30000 -> combat_exp<150000 -> wudu-qishu>149。
+      # 持有者状态机（谁拿着毒经下篇）属 §5 GAP；dujing3 物品新建于 wudu.ucl。
+      kind = "give_item"
+      item = "wudu:dujing3"
+      match = "dujing3"
+      unique = true
+      family = "五毒教"
+      max_shen = -30000
+      min_combat_exp = 150000
+      max_skill_levels = {
+        wudu_qishu = 149
+      }
+      family_deny = "你是谁？我认识你么？"
+      max_shen_deny = "你这人心肠那么好，又去学毒做甚？"
+      min_exp_deny = "你现在经验太浅，不用忙着去阅读毒经。"
+      max_skill_deny = "你对本门的毒技已经通晓得比较透彻了，还是自己多研究吧。"
+      already = "不就是你拿着么？怎么反倒问我来了？"
+      success = "你拿去看吧，若有不解之处可以来问我。"
+      vision_name = "何铁手"
+    } },
     { key = "中篇" value = "毒经中篇在齐长老手中，你去问他要吧。" },
-    { key = "千蛛万毒手" value = " inquire about skill6 (unimplemented)" },
-    { key = "含沙射影" value = " inquire about she (unimplemented)" },
-    { key = "搏虎诀" value = " inquire about skill2 (unimplemented)" },
-    { key = "无影针" value = " inquire about skill5 (unimplemented)" },
+    { key = "千蛛万毒手" value = {
+      # LPC ask_skill6：can_learn/qianzhu-wandushou 标记门 -> combat_exp<1000000
+      # -> score<100000（LPC 读玩家 score，读档 GAP §5）-> shen>-200000；
+      # 成功仅设 can_learn 标记（非 perform、非物品授予），无现成 handler 可表达
+      # 「问询成功即写 can_learn 标记」——登记 §5 GAP，不落误导性 give_item 配置。
+      kind = "unimplemented_gap"
+      note = "ask_skill6 千蛛万毒手 can_learn 标记 + score 读档门，见五毒教移植计划 §5"
+    } },
+    { key = "含沙射影" value = {
+      # LPC ask_she：is_good -> 家族 -> master_id -> shen>-10000 -> hansha-sheying<50。
+      # 持有者状态机 + wield/whisper 属 §5 GAP。
+      kind = "give_item"
+      item = "clone_lib:sheying"
+      match = "hansha sheying"
+      unique = true
+      family = "五毒教"
+      max_shen = -10000
+      min_skill_levels = {
+        hansha_sheying = 50
+      }
+      family_deny = "你不是我们五毒教的，打听它干什么？"
+      max_shen_deny = "你这样心慈手软，这含沙射影你不用也罢。"
+      min_skill_deny = "你这门暗器手法太差，用不好还会伤及自身。"
+      already = "嗯？含沙射影现在不是你拿着在用吗？"
+      success = "你拿去吧，叫他们尝尝我们五毒教的厉害！"
+      vision_name = "何铁手"
+    } },
+    { key = "搏虎诀" value = {
+      perform_id = "ruanhong-zhusuo/bohu"
+      skill = "ruanhong-zhusuo"
+      gate_order = "lpc_wudu"
+      min_gongxian = 1300
+      max_shen = -50000
+      min_levels = {
+        ruanhong_zhusuo = 160
+      }
+      cost_gongxian = 1300
+      maxed = "你不是已经会了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      shen_deny = "心慈手软的人永远成不了大器，这招你不学也罢！"
+      level_deny = {
+        ruanhong_zhusuo = "你的软红蛛索还练得不到家，自己下去练练再来吧！"
+      }
+    } },
+    { key = "无影针" value = {
+      perform_id = "hansha-sheying/zhen"
+      skill = "hansha-sheying"
+      gate_order = "lpc_wudu"
+      min_gongxian = 300
+      max_shen = -80000
+      min_levels = {
+        hansha_sheying = 120
+      }
+      cost_gongxian = 300
+      maxed = "这招我不是已经教过你了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      shen_deny = "哼！你这样心慈手软能干成什么事？这招你不学也罢！"
+      level_deny = {
+        hansha_sheying = "你的含沙射影还练得不到家，自己下去练练再来吧！"
+      }
+    } },
     { key = "毒经" value = "你是要毒经上篇、中篇还是下篇？" },
     { key = "毒经上篇" value = "毒经上篇你去问炼毒室的道人要吧。" },
-    { key = "毒经下篇" value = " inquire about jing (unimplemented)" },
+    { key = "毒经下篇" value = {
+      kind = "give_item"
+      item = "wudu:dujing3"
+      match = "dujing3"
+      unique = true
+      family = "五毒教"
+      max_shen = -30000
+      min_combat_exp = 150000
+      max_skill_levels = {
+        wudu_qishu = 149
+      }
+      family_deny = "你是谁？我认识你么？"
+      max_shen_deny = "你这人心肠那么好，又去学毒做甚？"
+      min_exp_deny = "你现在经验太浅，不用忙着去阅读毒经。"
+      max_skill_deny = "你对本门的毒技已经通晓得比较透彻了，还是自己多研究吧。"
+      already = "不就是你拿着么？怎么反倒问我来了？"
+      success = "你拿去看吧，若有不解之处可以来问我。"
+      vision_name = "何铁手"
+    } },
     { key = "毒经中篇" value = "毒经中篇在齐长老手中，你去问他要吧。" },
-    { key = "盘鹰诀" value = " inquire about skill1 (unimplemented)" },
+    { key = "盘鹰诀" value = {
+      perform_id = "ruanhong-zhusuo/pan"
+      skill = "ruanhong-zhusuo"
+      gate_order = "lpc_wudu"
+      min_gongxian = 300
+      max_shen = -30000
+      min_levels = {
+        ruanhong_zhusuo = 130
+      }
+      cost_gongxian = 300
+      maxed = "你不是已经会了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      shen_deny = "心慈手软的人永远成不了大器，这招你不学也罢！"
+      level_deny = {
+        ruanhong_zhusuo = "你的软红蛛索还练得不到家，自己下去练练再来吧！"
+      }
+    } },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" },
     { key = "腾蛇诀" value = "这一招你去找齐长老学吧。" },
-    { key = "软红蛛索" value = " inquire about suo (unimplemented)" },
-    { key = "金蜈钩" value = " inquire about gou (unimplemented)" },
-    { key = "金钩夺魄" value = " inquire about skill4 (unimplemented)" },
-    { key = "锁龙诀" value = " inquire about skill3 (unimplemented)" }
+    { key = "软红蛛索" value = {
+      # LPC ask_suo：is_good -> 家族 -> master_id -> shen>-35000 -> ruanhong-zhusuo<150。
+      # 持有者状态机属 §5 GAP。
+      kind = "give_item"
+      item = "clone_lib:zhusuo"
+      match = "ruanhong zhusuo"
+      unique = true
+      family = "五毒教"
+      master_id = true
+      max_shen = -35000
+      min_skill_levels = {
+        ruanhong_zhusuo = 150
+      }
+      family_deny = "你不是我们五毒教的，打听它干什么？"
+      master_deny = "只有我的弟子才能用软红蛛索，你拿去用只会替我丢脸。"
+      max_shen_deny = "你这样心慈手软，这蛛索你不用也罢。"
+      min_skill_deny = "你连软红蛛索都没学好，就算用蛛索也是白搭。"
+      already = "嗯？软红蛛索现在不是你拿着在用吗？"
+      success = "这根软红蛛索你就拿去，让那些正派人士尝尝咱五毒教的厉害！"
+      vision_name = "何铁手"
+    } },
+    { key = "金蜈钩" value = {
+      # LPC ask_gou：is_good -> 家族 -> master_id -> shen>-35000 -> jinwu-goufa<120。
+      # 持有者状态机 + wield changbian 属 §5 GAP。
+      kind = "give_item"
+      item = "clone_lib:jinwugou"
+      match = "jinwu gou"
+      unique = true
+      family = "五毒教"
+      master_id = true
+      max_shen = -35000
+      min_skill_levels = {
+        jinwu_goufa = 120
+      }
+      family_deny = "你不是我们五毒教的，打听它干什么？"
+      master_deny = "只有我的弟子才能用金蜈钩，你拿去用只会替我丢脸。"
+      max_shen_deny = "你这样心慈手软，这金钩你不用也罢。"
+      min_skill_deny = "你连金蜈钩法都没学好，就算用金钩也是白搭。"
+      already = "嗯？金蜈钩现在不是你拿着在用吗？"
+      success = "这柄金蜈钩你就拿去，让那些正派人士尝尝咱五毒教的厉害！"
+      vision_name = "何铁手"
+    } },
+    { key = "金钩夺魄" value = {
+      perform_id = "jinwu-goufa/duo"
+      skill = "jinwu-goufa"
+      gate_order = "lpc_wudu"
+      min_gongxian = 1300
+      max_shen = -80000
+      min_levels = {
+        jinwu_goufa = 160
+      }
+      cost_gongxian = 1300
+      maxed = "这招我已经教过你了，还是自己下去多多练习吧！"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      shen_deny = "哼！你这样心慈手软能干成什么事？这招你不学也罢！"
+      level_deny = {
+        jinwu_goufa = "你的金蜈钩法还练得不到家，自己下去练练再来吧！"
+      }
+    } },
+    { key = "锁龙诀" value = {
+      perform_id = "ruanhong-zhusuo/suo"
+      skill = "ruanhong-zhusuo"
+      gate_order = "lpc_wudu"
+      min_gongxian = 1500
+      max_shen = -80000
+      min_levels = {
+        ruanhong_zhusuo = 160
+      }
+      cost_gongxian = 1500
+      maxed = "你不是已经会了吗？"
+      family_deny = "不是我们五毒教的人，何出此言？"
+      shen_deny = "心慈手软的人永远成不了大器，这招你不学也罢！"
+      gongxian_deny = "你在教中所作的贡献还不够，这招我不忙传你。"
+      level_deny = {
+        ruanhong_zhusuo = "你的软红蛛索还练得不到家，自己下去练练再来吧！"
+      }
+    } }
   ]
 
   skills = [
@@ -49425,12 +49696,44 @@ chats = [
     { id = items.moon_dress.id }
   ]
 
+  # LPC hetieshou.c attempt_apprentice：wudu.h permit_recruit 四门 -> shen>-1000
+  # -> shen>-50000 -> combat_exp<350000 -> wudu-xinfa>=120 -> wudu-qishu>=120；
+  # 成功 title「五毒教长老」（LPC ob->set；收徒 title GAP 已登记 §5）。
+  apprentice = {
+    family = "五毒教"
+    gate_order = "lpc_wudu"
+    permit_recruit = true
+    reject_master_name = "何铁手"
+    reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+    betray_sect_deny = "你既然已经离教，就别再回来！"
+    betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+    other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+    shen_ladder = [
+      { max = -1000 deny = "我越看你越象六扇门派来的卧底。" },
+      { max = -50000 deny = "像你这样心慈手软的人是干不成大事的！" }
+    ]
+    min_exp = 350000
+    min_exp_deny = "你现在经验尚浅，不能领会高深的武功，还是先去增长点经验吧。"
+    min_skills = {
+      wudu_xinfa = 120
+      wudu_qishu = 120
+    }
+    recruit_skill_order = ["wudu-xinfa", "wudu-qishu"]
+    min_skills_deny = {
+      wudu_xinfa = "你的五毒心法还学的不够啊。"
+      wudu_qishu = "你把本门的施毒绝学钻研透了再来找我吧。"
+    }
+    accept_msg = "好吧，既然如此本姑娘就收下你这个徒弟。"
+  }
 
   init = {
     greet_delay = 0
     add_actions = ["show"]
   }
 
+  # LPC hetieshou.c accept_object：base_name 属金蜈钩/软红蛛索才收回（destruct(ob)），
+  # 否则「你给我这种东西干什么？」。ex accept 仅支持 kind=any 收任意物（武器收回
+  # 的 base_name 校验/destruct 属 §5 GAP，见移植计划 §2.6）。
   accept = [
     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "很好，很好！"] }
   ]
@@ -49488,6 +49791,40 @@ chats = [
     { id = items.cloth.id }
   ]
 
+  # LPC jiaotou.c coagents：([ "startroom" : "/d/wudu/dating", "id" : "qi yunao" ])
+  coagents = [
+    { startroom = "/d/wudu/dating" id = "qi yunao" }
+  ]
+
+  # LPC jiaotou.c guarder：F_GUARDER 守门拒绝文案（refuse_other/refuse_carry）。
+  # family 即 LPC guarder.c 的 my_fam（五毒教）。文案占位符已转为 {npc}/{name}。
+  meta = {
+    guarder = {
+      family = "五毒教"
+      msgs = {
+        refuse_other = "{npc}身形一晃，挡在{name}跟前，厉声说道：非本教弟子，不得进入本教禁地。"
+        refuse_carry = "{npc}对{name}喝道：你背上背的是什么人？快给我放下来！"
+      }
+    }
+  }
+
+  # LPC jiaotou.c attempt_apprentice：wudu.h permit_recruit 四门 -> shen>-1000 拒；
+  # 成功 title「五毒教教众」（LPC ob->set；收徒 title GAP 已登记 §5）。
+  apprentice = {
+    family = "五毒教"
+    gate_order = "lpc_wudu"
+    permit_recruit = true
+    reject_master_name = "何铁手"
+    reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+    betray_sect_deny = "你既然已经离教，就别再回来！"
+    betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+    other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+    shen_ladder = [
+      { max = -1000 deny = "我教弟子贵在随心所欲，不收伪君子" }
+    ]
+    accept_msg = ""
+  }
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/wudu/panxiuda.c
@@ -49543,6 +49880,33 @@ chats = [
     { id = items.ganggou.id },
     { id = items.cloth.id }
   ]
+
+  # LPC panxiuda.c attempt_apprentice：wudu.h permit_recruit 四门 -> shen>-5000
+  # -> wudu-xinfa>=40 -> wudu-qishu>=30；success smile + 「不错，不错。」。
+  # （LPC 不设玩家 title；收徒 title GAP 已登记 §5。smile emote 通道 GAP §5。）
+  apprentice = {
+    family = "五毒教"
+    gate_order = "lpc_wudu"
+    permit_recruit = true
+    reject_master_name = "何铁手"
+    reject_master_name_deny = "既然你已经跟随了那个贱人，却又来找我作甚？"
+    betray_sect_deny = "你既然已经离教，就别再回来！"
+    betray_times_deny = "判师之徒，哼！小心我把你千刀万剐！"
+    other_family_deny = "你不是已经有了师傅么，还来干什么？做卧底么？"
+    shen_ladder = [
+      { max = -5000 deny = "做我五毒教弟子必须心狠手辣。" }
+    ]
+    min_skills = {
+      wudu_xinfa = 40
+      wudu_qishu = 30
+    }
+    recruit_skill_order = ["wudu-xinfa", "wudu-qishu"]
+    min_skills_deny = {
+      wudu_xinfa = "你的五毒心法还学的不够啊。"
+      wudu_qishu = "我五毒教弟子以毒杀人，修习毒技是首要的。\n你是否还应该多多钻研本门的绝学？"
+    }
+    accept_msg = "不错，不错。"
+  }
 
     }
 
