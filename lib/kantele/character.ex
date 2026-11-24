@@ -374,6 +374,9 @@ defmodule Kantele.Character.NonPlayerMeta do
     :accept,
     :guarder,
     :engage,
+    # LPC wenwanfu.c::kill_ob 群体助战配置 `%{npc_ids:, types:, vision:}`：
+    # room.ex `maybe_rescue_allies` 读它召唤同房间同门弟子。见 loader.parse_rescue/1。
+    :rescue,
     # LPC `carry_object(...)` 的 item_id 列表（转换器的 `carry = [...]`）。
     # 装备动作在 SpawnController 出生时做 —— 加载期 Items cache 还没就绪。
     {:carry, []},

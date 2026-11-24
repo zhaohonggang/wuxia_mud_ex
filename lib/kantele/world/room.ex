@@ -3842,7 +3842,92 @@ defmodule Kantele.World.Room.CombatEvent do
     |> start_combat(target, initiator, type)
     |> start_combat(initiator, target, type)
     |> maybe_summon_coagents(initiator, target, type)
+    |> maybe_rescue_allies(initiator, target, type)
     |> maybe_shaolin_promotion(initiator, target, type)
+  end
+
+  # #1027 目标侧群体助战（LPC wenwanfu.c::kill_ob）：
+  #
+  #     void kill_ob(object ob)
+  #     {
+  #         set_temp("my_killer", ob);
+  #         ::kill_ob(ob);
+  #         foreach (ob in all_inventory(environment())) {
+  #             if (present("lingxiao dizi", ...) ...
+  #                 ob->kill_ob(this_object());
+  #         }
+  #     }
+  #
+  # ex 端没有 `my_killer` 临时槽（LPC 用它把「凶手」递给被调用的 kill_ob），
+  # 这里直接用本次攻击者，语义等价。只对 `meta.rescue.types` 内的开战类型触发
+  # （闻万夫只响应 kill），先按 `rescue.vision` 广播一句助战台词，再让同房间
+  # 的 `npc_ids` 各自 engage 攻击者。
+  # `rescue` 是 Elixir 保留字，局部变量用 rescue_cfg 代替。
+  defp maybe_rescue_allies(context, initiator, target, type) do
+    rescue_cfg = Map.get(target.meta || %{}, :rescue)
+
+    if is_map(rescue_cfg) and type in (Map.get(rescue_cfg, :types) || ["kill"]) do
+      context = broadcast_rescue_vision(context, target, rescue_cfg)
+
+      (Map.get(rescue_cfg, :npc_ids) || [])
+      |> Enum.reduce({context, MapSet.new([target.pid])}, fn keyword, {acc, engaged} ->
+        # LPC wenwanfu.c 找 "lingxiao dizi" / "dizi 2" / "dizi 3" 三个**不同**弟子。
+        # npc_ids 里同名重复（npc 只能按名字表达「再找一个」），所以已参战者要排除，
+        # 否则三个 keyword 会全部命中第一个弟子，只叫来一个帮手。
+        ally = find_ally(acc.characters, keyword, target, engaged)
+
+        if ally and not dead?(ally) and ally.pid != initiator.pid do
+          engage(acc, ally, initiator, "kill")
+          {acc, MapSet.put(engaged, ally.pid)}
+        else
+          {acc, engaged}
+        end
+      end)
+      |> elem(0)
+    else
+      context
+    end
+  end
+
+  # LPC `present("lingxiao dizi", where)` 走的是 NPC 的 id 表（set_name 的第二参数
+  # 别名列表），不是显示名。房间侧的 NameMatch 只吃角色 name（中文名），所以这里
+  # 同时匹配 name 与 meta.aliases（小写比较），否则 rescue/coagents 永远找不到人。
+  defp find_ally(characters, keyword, target, engaged) do
+    characters
+    |> Enum.reject(&(&1.pid == target.pid or MapSet.member?(engaged, &1.pid)))
+    |> Enum.find(fn character ->
+      not dead?(character) and ally_matches?(character, keyword)
+    end)
+  end
+
+  defp ally_matches?(character, keyword) when is_binary(keyword) do
+    keyword = String.downcase(String.trim(keyword))
+
+    names =
+      [character.name | Map.get(character.meta || %{}, :aliases, [])]
+      |> Enum.flat_map(fn
+        n when is_binary(n) -> [String.downcase(n)]
+        _ -> []
+      end)
+
+    name = character.name |> to_string() |> String.downcase()
+
+    name == keyword or String.starts_with?(name, "#{keyword} ") or keyword in names
+  end
+
+  defp ally_matches?(_character, _keyword), do: false
+
+  defp broadcast_rescue_vision(context, target, rescue_cfg) do
+    vision = Map.get(rescue_cfg, :vision)
+
+    room = %Kantele.World.Room{id: Map.get(context.data, :id) || target.room_id}
+
+    if is_binary(vision) and byte_size(vision) > 0 do
+      Kantele.World.Room.tell_room(room, vision)
+      context
+    else
+      context
+    end
   end
 
   # LPC qing/cheng/hui/dao.h 的 `accept_fight(ob)`：开战后 NPC 起 1 拍

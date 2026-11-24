@@ -120,8 +120,20 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
 
     base
     |> put_family(character)
+    |> put_beggarlvl(character)
     |> put_max_neili(character)
     |> put_marks(character)
+  end
+
+  # #986 洪七公「天下无狗」LPC `query("family/beggarlvl") < 9`：从门派 map 带入
+  # 袋数（无持久列时缺省 0，与 LPC 查询缺省一致）。不配置袋数的门派 stats 不变。
+  defp put_beggarlvl(stats, character) do
+    family = character.meta.family || %{}
+
+    case Map.get(family, :beggarlvl) || Map.get(family, "beggarlvl") do
+      lvl when is_integer(lvl) -> Map.put(stats, :beggarlvl, lvl)
+      _ -> stats
+    end
   end
 
   # #903 桃花岛九阴四招：LPC `can_learn/jiuyin-shengong/<perform>` 是 accept_object

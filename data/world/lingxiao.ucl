@@ -251,6 +251,13 @@ item_desc = {
   flags = [
     "startroom"
   ]
+behavior = "guarded_exit"
+# LPC: dadian.c valid_leave 只对 east/west/north 三个方向盘查（up 到 bar、south 到 meiroad1 放行）。
+behavior_config = {
+  guard_directions = ["east", "west", "north"]
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
 item_desc = {
  duilian = "##############            ##############              ##############            ##############              ####      ####            ####      ####              ####　宝　####            ####  梅  ####              ####　 　 ####            ####      ####              ####  剑  ####            ####  花  ####              ####      ####            ####      ####              ####  锋  ####            ####  香  ####              ####      ####            ####      ####              ####  自  ####            ####  自  ####              ####      ####            ####      ####              ####  磨  ####            ####  苦  ####              ####    　####            ####      ####              ####  砺  ####            ####  寒  ####              ####    　####            ####      ####              ####  出  ####            ####  来  ####              ####    　####            ####      ####              ##############            ##############              ##############            ##############"
 }

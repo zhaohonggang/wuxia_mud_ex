@@ -2997,10 +2997,13 @@ direction = ~
   ]
     }
 
+  # LPC d/shaolin/shang_dating.c set("objects", ([".../ming" : 1])) —— 大厅只有 1 个商剑鸣。
+  # 原写法同时列了 characters.shang_jianming.id（本 zone 薄副本）与 characters.shang_ming.id，
+  # 会刷出 2 个商剑鸣；薄副本已退役（见本文件 characters "shang_jianming" 处注释），
+  # 此处只保留 clone_lib.ucl 的全量 characters "shang_ming"。
   room_characters "shang_dating" {
     room_id = rooms.shang_dating.id
-    characters = [ { id = characters.shang_jianming.id },
-      { id = characters.shang_ming.id } ]
+    characters = [ { id = characters.shang_ming.id } ]
   }
 
   room_exits "shang_dating" {
@@ -3150,6 +3153,13 @@ item_desc = {
   x = 3
   y = 4
   z = 16
+# LPC: d/shaolin/shang_men.c valid_leave 只对 north 盘查（商宝震在场时交 Guarder.permit_pass；
+# 不在场放行；south 直通 shang_road3 官道放行）。
+# 「山东商家出身且未入门派者放行」旁路 Guarder.permit_pass/1 无法表达 → GAP #1035。
+behavior = "guarded_exit"
+behavior_config = {
+  guard_directions = ["north"]
+}
     }
 
   room_exits "shang_men" {
@@ -3440,8 +3450,9 @@ direction = ~
 
   room_characters "shanmen" {
     room_id = rooms.shanmen.id
-    characters = [ { id = characters.xu_ming.id }, { id = characters.xu_tong.id },
-      { id = characters.xu_tong.id } ]
+    # #1046 修复：原重复列出 xu_tong 两次 → 山门刷出 2 个虚通；LPC d/shaolin/shanmen.c
+    # 只有 虚明(xu_ming) + 虚通(xu_tong) 各一。
+    characters = [ { id = characters.xu_ming.id }, { id = characters.xu_tong.id } ]
   }
 
   room_exits "shanmen" {
@@ -7458,40 +7469,40 @@ chats = [
     }
 
     characters "xu_tong" {
-      name = "徐通"
+      name = "虚通"
       aliases = ["xu tong", "xu", "tong"]
       description = "他是一位身穿黄布袈裟的青年僧人。脸上稚气未脱，身手却已相当矫捷，看来似乎学过一点武功。"
       nickname = "知客僧"
       gender = "男性"
       class = "bonze"
-      age = 22
+      age = 20
       shen_type = 1
 
       combat = {
         attitude = "friendly"
         str = 20
         int = 20
-        con = 35
+        con = 20
         dex = 20
-        max_qi = 350
-        max_jing = 200
-        neili = 300
-        max_neili = 300
-        jiali = 20
-        combat_exp = 15000
+        max_qi = 500
+        max_jing = 300
+        neili = 500
+        max_neili = 500
+        jiali = 100
+        combat_exp = 2000
         skills = {
-          force = 30
-          shaolin_xinfa = 30
-          dodge = 30
-          shaolin_shenfa = 30
-          strike = 30
-          banruo_zhang = 30
-          parry = 30
-          sword = 30
-          damo_jian = 30
+          force = 20
+          shaolin_xinfa = 20
+          dodge = 20
+          shaolin_shenfa = 20
+          strike = 20
+          banruo_zhang = 20
+          parry = 20
+          sword = 20
+          damo_jian = 20
         }
         map_skill = {
-          force = "hunyuan-yiqi"
+          force = "shaolin-xinfa"
           dodge = "shaolin-shenfa"
           strike = "banruo-zhang"
           parry = "damo-jian"
@@ -7499,84 +7510,20 @@ chats = [
         }
       }
 
-      # LPC kungfu/class/shaolin/xu-tong.c
+      # #1046 LPC kungfu/class/shaolin/xu-tong.c（虚通，con 20、jiali 100、exp 2000）
       #   create_family("少林派", 41, "弟子")
-      #   carry_object("/d/shaolin/obj/xu-cloth") 等未落地
+      #   carry_object("/d/shaolin/obj/xu-cloth")->wear()
+      carry = [
+        { id = items.xu_cloth.id }
+      ]
     }
 
-    characters "shang_jianming" {
-      name = "商剑鸣"
-      aliases = ["shang jianming", "shang", "jianming"]
-      description = "这人身着长衫，身材高大魁梧，留着短须，神 情严肃，模样甚为威严。他就是山东大豪、商 家堡的现任堡主「八卦刀」商剑鸣，相传他刀 掌双绝，武功了得，在江湖上罕逢敌手。"
-      nickname = "八卦刀"
-      title = "商家堡堡主"
-      gender = "男性"
-      class = "fighter"
-      attitude = "peaceful"
-      age = 45
-      shen_type = -1
-
-      combat = {
-        attitude = "peaceful"
-        str = 45
-        int = 30
-        con = 30
-        dex = 30
-        max_qi = 5000
-        max_jing = 3300
-        neili = 6000
-        max_neili = 6000
-        jiali = 180
-        combat_exp = 3800000
-        skills = {
-          force = 240
-          nei_bagua = 240
-          shangjia_neigong = 220
-          parry = 220
-          wai_bagua = 220
-          dodge = 200
-          bagua_bu = 200
-          unarmed = 200
-          tan_tui = 200
-          strike = 240
-          bagua_zhang = 240
-          bazhen_zhang = 220
-          cuff = 200
-          bagua_quan = 200
-          baisheng_quan = 200
-          sword = 200
-          quemen_jian = 200
-          blade = 240
-          bagua_dao = 240
-          shangjia_dao = 220
-          throwing = 200
-          jinbiao_jue = 200
-          literate = 240
-          martial_cognize = 220
-        }
-        map_skill = {
-          unarmed = "tan-tui"
-          dodge = "bagua-bu"
-          force = "nei-bagua"
-          strike = "bagua-zhang"
-          sword = "quemen-jian"
-          blade = "bagua-dao"
-          cuff = "bagua-quan"
-          parry = "wai-bagua"
-          throwing = "jinbiao-jue"
-        }
-      }
-
-      # LPC: kungfu/class/shang/ming.c
-      #   create_family("商家堡", 3, "堡主")
-      #   carry_object("/clone/misc/cloth")
-      #   carry_object("/d/beijing/npc/obj/jinbiao")
-
-      # LPC kungfu/class/shang/ming.c：商剑鸣的问询（纯字符串条目）
-    inquiries = [
-      { key = "胡一刀" value = "哦？听说此人刀法甚是了得，可惜我没见过他。" }
-    ]
-    }
+    # 退役：此处原为商剑鸣的薄副本（inquiries 写成 list-of-maps，loader 的 inquiries 是 map，
+    # 该段实际未生效），且与 clone_lib.ucl 的全量 characters "shang_ming" 重复，
+    # 导致 room_characters "shang_dating" 同时列出两者 → 大厅刷出 2 个商剑鸣。
+    # LPC d/shaolin/shang_dating.c 只有 1 个商剑鸣；权威定义见
+    #   data/world/clone_lib.ucl  characters "shang_ming"
+    # 请勿在此重新添加（shaolin.ucl:room_characters "shang_dating" 已只引用 shang_ming）。
 
     characters "zaohongma" {
       name = "枣红马"

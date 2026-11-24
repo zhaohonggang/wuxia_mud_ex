@@ -48,6 +48,13 @@ defmodule Kantele.SectMaster do
       recognize = recognize_apprentice_reply(teacher, student, skill) ->
         recognize
 
+      # #1022 石清 shiqing.c::recognize_apprentice 是**另一种形状**：不是
+      # mark 门，而是「师父名 → 侠义 → 技能白名单 → 技能上限」四道硬门。
+      # 顶层 teach.recognize 存在时整段接管（与 no_teach_unlock 的周伯通/欧阳克
+      # 形状互斥，二者不会同时配置）。
+      recognize = recognize_gate(teacher, student, skill) ->
+        recognize
+
       unlock = no_teach_unlock(teacher, skill) ->
         check_no_teach_unlock(unlock, teacher, student, skill)
 
@@ -125,6 +132,69 @@ defmodule Kantele.SectMaster do
 
   defp has_mark?(student, mark) do
     Map.get(student_marks(student), mark) not in [nil, 0, false]
+  end
+
+  # #1022 石清 shiqing.c::recognize_apprentice 四门（LPC 原序）：
+  #   1. `ob->query("family/master_name") != "白自在"` → 「素无渊源」；
+  #   2. `ob->query("shen") < 10000` → 侠义不足；
+  #   3. `skill != "shangqing-jian" && skill != "sword"` → 另投名师；
+  #   4. `ob->query_skill(skill, 1) > 179` → 我教不了。
+  # 只对**尚未入门**的学生生效；已入门弟子跳过 recognize，直接落到常规授艺链。
+  # 返回 nil 表示该段不配置/不命中，继续走后面的 no_teach / 等级判定。
+  defp recognize_gate(teacher, student, skill) do
+    teach = Map.get(meta_of(teacher), :teach) || %{}
+
+    case Map.get(teach, :recognize) do
+      recognize when is_map(recognize) and map_size(recognize) > 0 ->
+        if apprentice_of_teacher?(teacher, student) do
+          nil
+        else
+          check_recognize_gate(recognize, student, skill)
+        end
+
+      _ ->
+        nil
+    end
+  end
+
+  defp apprentice_of_teacher?(teacher, student) do
+    Family.is_apprentice_of?(family_of(teacher), family_of(student))
+  end
+
+  defp check_recognize_gate(recognize, student, skill) do
+    master_name = Map.get(recognize, :require_master_name)
+    min_shen = Map.get(recognize, :min_shen) || 0
+    allowed = Map.get(recognize, :allowed_skills) || []
+    max_level = Map.get(recognize, :max_skill_level)
+
+    cond do
+      is_binary(master_name) and student_master_name(student) != master_name ->
+        {:error, deny_text(recognize, :not_master_deny, "石某与阁下素无渊源，不知阁下这话从何而来？")}
+
+      is_integer(min_shen) and min_shen > 0 and student_shen(student) < min_shen ->
+        {:error,
+         deny_text(
+           recognize,
+           :shen_deny,
+           "学武之人，自应以德义为先。你侠义正事做得不够，这招我不能传你。"
+         )}
+
+      is_list(allowed) and allowed != [] and skill_id(skill) not in allowed ->
+        {:error, deny_text(recognize, :wrong_skill_deny, "阁下的武功，在下实在无从指点，请另投名师吧。")}
+
+      is_integer(max_level) and skill_level(student, skill_id(skill)) > max_level ->
+        {:error, deny_text(recognize, :maxed_deny, "这一门功夫你已不弱于在下，没什么可教的了。")}
+
+      true ->
+        nil
+    end
+  end
+
+  defp skill_id(skill) when is_binary(skill), do: String.replace(skill, "_", "-")
+  defp skill_id(skill) when is_atom(skill), do: skill |> to_string() |> skill_id()
+
+  defp student_shen(character) do
+    Map.get(Map.get(meta_of(character), :stats) || %{}, :shen, 0) || 0
   end
 
   defp check_mark_exp_unlock(unlock, student, skill) do
@@ -366,6 +436,29 @@ defmodule Kantele.SectMaster do
         # 逐师父的 shen 两档负侠义阶梯（shen_ladder）+ min_exp + min_skills。
         gate_order == "lpc_wudu" ->
           wudu_recruit_gate(student, config, exp, family_name)
+
+        # #986 丐帮 gaibang.h permit_recruit + 10 位可收徒师父
+        # （ada/jian/liang 走 deny_all，不进本函数）。门序与 LPC 逐条 return 一致：
+        # permit(3) → exp → shen → beggarlvl → force(min_skills) → 属性门 → max_neili。
+        gate_order == "lpc_gaibang" ->
+          gaibang_recruit_gate(student, config, exp, family_name)
+
+        # #1006 古墓派 yang.c attempt_apprentice：permit(gumu.h 三问) → str →
+        # 玉女心经 → max_neili。缺省 permit_first 把 max_neili 放在技能之前且无 str 门，
+        # 两门同时失败时文案与 LPC 相反，故独立门序（仅杨过启用，其余三师父走缺省）。
+        gate_order == "lpc_gumu_yang" ->
+          gumu_yang_recruit_gate(student, config, family_name)
+
+        # #1010 红花会陈家洛 chen.c:129-167：honghua.h permit → shen → combat_exp →
+        # honghua-xinfa → max_neili。缺省 permit_first 把 max_neili 放在经验之前，
+        # 两门同时失败时文案与 LPC 相反，故独立门序。
+        gate_order == "lpc_honghua_chen" ->
+          honghua_chen_recruit_gate(student, config, family_name)
+
+        # #1010 红花会余鱼同 yu.c:95-102：先走 honghua.h permit，再无条件拒收。
+        # 不能直接用 deny_all（会跳过 permit 三问），故单列门序。
+        gate_order == "lpc_honghua_yu" ->
+          honghua_yu_recruit_gate(student, config, family_name)
 
         # 性别门控（清无 gate_order="gender_first" 时置于 permit_recruit 之前，对齐 LPC）
         gate_order == "gender_first" and
@@ -899,6 +992,12 @@ defmodule Kantele.SectMaster do
       # #973 五毒教 qiyunao 三绝招 + hetieshou 锁龙诀：已会 → 同门 → 杀气(负上界)
       # → 贡献 → 等级链。与 lpc_ouyang 的差别：杀气在贡献**之前**（ouyang 相反）。
       "lpc_wudu" -> inquiry_grant_wudu(player_stats, npc_stats, config)
+      # #986 丐帮绝招：masterd.c teach_pfm 原序 + 洪七公天下无狗的 beggarlvl≥9
+      # 与四棒诀前置门（requires_performs，lpc_masterd 路径未消费）。
+      "lpc_gaibang" -> inquiry_grant_gaibang(player_stats, npc_stats, config)
+      # #1010 红花会 16 条内联 ask_skill*：已会 → 同门 → 技能存在 → 贡献 → 侠义 →
+      # 前置绝招 → 有序等级链（dex/max-neili/force/dodge/本招技能各有逐字文案）。
+      "lpc_honghua" -> inquiry_grant_honghua(player_stats, npc_stats, config)
       _ -> inquiry_grant_default(player_stats, npc_stats, config)
     end
   end
@@ -1125,6 +1224,143 @@ defmodule Kantele.SectMaster do
     end
   end
 
+  # #986 丐帮绝招：LPC 各师父 ask_skill* 是内联门序，不交 masterd.c。
+  # 与缺省路径逐条一致，仅 hong.c ask_skill7「天下无狗」在 shen 之后多两门：
+  #   `query("family/beggarlvl") < 9` → 四棒诀前置门 → force/打狗棒法等级。
+  # 这两门必须插在技能链之前：若外包在 default 成功之后，低内力会先命中
+  # level_deny 文案，与 LPC 返回次序不符。袋数缺省 0（ex 无持久列，见 GAP #996）。
+  defp inquiry_grant_gaibang(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    max_shen = Map.get(config, "max_shen")
+    min_shen = Map.get(config, "min_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+    min_beggarlvl = Map.get(config, "min_beggarlvl")
+    required_mark = Map.get(config, "required_mark")
+    marks = Map.get(player, :marks) || %{}
+    skip_family = Map.get(config, "no_family_check") in [true, "true"]
+    any_skills = Map.get(config, "any_min_skills", %{}) || %{}
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny(config, "maxed", "你这一招我不是已经教过你了吗？\n")}
+
+      is_binary(required_mark) and Map.get(marks, required_mark) in [nil, 0, false] ->
+        {:error, deny(config, "mark_deny", "我与阁下毫无瓜葛，为何有此一问？\n")}
+
+      not skip_family and not same_family?(player, npc) ->
+        {:error, deny(config, "family_deny", "你我并非同门，何来讨教绝招之说？\n")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？\n")}
+
+      any_min_skills_failing_stats?(player, any_skills) ->
+        {:error, deny(config, "any_min_skills_deny", "你一样功夫都没学，捣什么乱？\n")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error, deny(config, "max_shen_deny", "像你这样心慈手软，就算学了这招也干不了大事！\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny(config, "gongxian_deny", "你为本派效力还不够，这招我先不忙传你。\n")}
+
+      is_integer(min_shen) and stat(player, :shen) < min_shen ->
+        {:error, deny(config, "shen_deny", "这一招太过阴恨，若被你用去我恐怕不放心！\n")}
+
+      is_integer(min_beggarlvl) and (Map.get(player, :beggarlvl) || 0) < min_beggarlvl ->
+        {:error, deny_lf(config, "beggarlvl_deny", "你在帮中的辈分还不够，等成为长老再说吧。")}
+
+      not requires_performs_known?(player, config) ->
+        {:error, deny_lf(config, "requires_perform_deny", "你连前两招都未练成，怎么学这最后一招？")}
+
+      exceeds_max_levels?(player, config) ->
+        {:error, deny(config, "force_cap_deny", "你内功修为已入了旁门，本门绝招不能再传。\n")}
+
+      above_neili_cap?(player, config) ->
+        {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
+
+      not meets_levels?(player, min_levels) ->
+        {:error, level_deny_text(config, player, min_levels)}
+
+      below_max_neili?(player, config) ->
+        {:error, deny(config, "max_neili_deny", "你的内力修为不够，学不成这招。\n")}
+
+      below_min_dex?(player, config) ->
+        {:error, deny(config, "dex_deny", "你的身法太差，还需多加练习。\n")}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # #1010 红花会 16 条内联 ask_skill* 的逐条 return 顺序：
+  #   1) 已会(can_perform) → 2) 同门（陆菲青同时接受 红花会/武当派）→
+  #   3) 本招技能 < 1 → 4) gongxian → 5) shen → 6) 前置绝招（诛天刹神）→
+  #   7) level_order 有序门槛（dex / max-neili / force / dodge / 本招技能）。
+  # 与缺省路径相比，已会在同门前、技能存在在贡献前、等级链有固定顺序且每档独立文案；
+  # 与 lpc_masterd 相比，同门在已会后。所有新键缺省空/nil → 其它配置零影响。
+  defp inquiry_grant_honghua(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    min_shen = Map.get(config, "min_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+
+    family_ok? =
+      case Map.get(config, "allowed_families") do
+        families when is_list(families) and families != [] ->
+          Enum.any?(families, &(&1 == Map.get(player, :family)))
+
+        _ ->
+          same_family?(player, npc)
+      end
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny(config, "maxed", "这招我不是早传授给你了吗？")}
+
+      not family_ok? ->
+        {:error, deny(config, "family_deny", "大侠和本会素无瓜葛，何出此言？")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny(config, "gongxian_deny", "你在会中所作的贡献还不够，这招我不忙传你。")}
+
+      is_integer(min_shen) and stat(player, :shen) < min_shen ->
+        {:error, deny(config, "shen_deny", "你侠义正事做得不够，这招我不能传你。")}
+
+      not requires_performs_known?(player, config) ->
+        {:error,
+         deny(
+           config,
+           "requires_perform_deny",
+           "这招是由前招演化而来，等你通晓那招后再来吧。"
+         )}
+
+      failing = first_failing_lpc_level(player, config, min_levels) ->
+        {:error, ordered_level_deny(config, failing)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
   # 神龙教洪安通 ask_fei/ask_xian/ask_cui 的原始门序（hong.c:170/199/232）：
   #   已会(perform) → 非同门 → shen 上界(负数，`shen > 上界` 即拒) → 主技能存在 → 通过。
   # 与缺省/lpc_masterd 的差别：maxed 在 family 之前、max_shen 在 skill 之前。
@@ -1229,12 +1465,10 @@ defmodule Kantele.SectMaster do
         {:error, deny_lf(config, "family_deny", "不是我们五毒教的人，何出此言？")}
 
       is_integer(max_shen) and stat(player, :shen) > max_shen ->
-        {:error,
-         deny_lf(config, "shen_deny", "像你这样心慈手软的人是干不成大事的！\n")}
+        {:error, deny_lf(config, "shen_deny", "像你这样心慈手软的人是干不成大事的！\n")}
 
       stat(player, :gongxian) < min_gongxian ->
-        {:error,
-         deny_lf(config, "gongxian_deny", "你为我五毒教效力还不够，这招我先不忙传你。\n")}
+        {:error, deny_lf(config, "gongxian_deny", "你为我五毒教效力还不够，这招我先不忙传你。\n")}
 
       failing = first_failing_ordered_level(player, order, min_levels) ->
         {:error, ordered_level_deny(config, failing)}
@@ -2152,8 +2386,7 @@ defmodule Kantele.SectMaster do
 
       is_binary(reject_master) and student_master_name(student) == reject_master ->
         # LPC 此处先 sneer emote 再 say；ex 仅 say（NPC emote 通道 GAP 已登记 §5）。
-        {:error,
-         deny_text(config, :reject_master_name_deny, "既然你已经跟随了那个贱人，却又来找我作甚？")}
+        {:error, deny_text(config, :reject_master_name_deny, "既然你已经跟随了那个贱人，却又来找我作甚？")}
 
       failing = first_failing_shen_ladder(student, config) ->
         {:error, failing}
@@ -2185,6 +2418,242 @@ defmodule Kantele.SectMaster do
       %{deny: text} when is_binary(text) and byte_size(text) > 0 -> ensure_lf(text)
       %{deny: text} -> text
       _ -> nil
+    end
+  end
+
+  # #986 丐帮 `kungfu/class/gaibang/gaibang.h` permit_recruit 三条 + 10 位可收徒师父
+  # 的 attempt_apprentice 逐条门序（ada/jian/liang 无条件拒收，走 npc_shop_event 的
+  # deny_all，不进入本函数）。LPC 原序：
+  #   permit(离帮/叛师/他派) → combat_exp → shen → beggarlvl → force → 属性 → max_neili
+  # 与缺省 `permit_first` 的 `permit→shen→exp→skills` 不同（exp/shen 互换且有袋数/属性门），
+  # 故独立门序。所有新增字段缺省 nil → 对应门跳过，其它门派零影响。
+  defp gaibang_recruit_gate(student, config, exp, family_name) do
+    shen = Map.get(student_stats(student), :shen, 0) || 0
+    no_min_shen = Map.get(config, :no_min_shen) == true
+    min_shen = Map.get(config, :min_shen, 0) || 0
+    min_exp = Map.get(config, :min_exp, 0) || 0
+    min_skills = Map.get(config, :min_skills, %{}) || %{}
+    skill_order = Map.get(config, :recruit_skill_order, []) || []
+    accept = deny_text(config, :accept_msg, "好吧，你以后就跟着我吧。")
+
+    cond do
+      # gaibang.h 三条，顺序与 LPC 逐条 return 一致（缺省文案对齐原文）。
+      betrayed_sect?(student, family_name) ->
+        {:error, deny_text(config, :betray_sect_deny, "嘿嘿，你当初走的时候是怎么说的？")}
+
+      betrayed_before?(student) ->
+        {:error, deny_text(config, :betray_times_deny, "我们丐帮行事堂堂正正，绝不接纳判师之徒。")}
+
+      other_family?(student, family_name) ->
+        {:error,
+         deny_text(
+           config,
+           :other_family_deny,
+           "你既然已经有了名师指点，还来我们丐帮干什么？"
+         )}
+
+      exp < min_exp ->
+        {:error, deny_text(config, :min_exp_deny, "你的江湖经验不够，还是先向各位长老学习吧。")}
+
+      not no_min_shen and shen < min_shen ->
+        {:error, deny_text(config, :min_shen_deny, "你身为丐帮弟子，竟然不做好事？")}
+
+      failing = gaibang_beggarlvl_gate(student, config) ->
+        {:error, failing}
+
+      failing_skill = first_failing_recruit_skill(student, min_skills, skill_order) ->
+        {:error, min_skills_deny(config, failing_skill)}
+
+      failing = gaibang_attribute_gate(student, config) ->
+        {:error, failing}
+
+      not is_nil(Map.get(config, :min_max_neili)) and
+          (student_max_neili(student) || 0) < Map.get(config, :min_max_neili) ->
+        {:error, deny_text(config, :max_neili_deny, "就你那点内力哪里学得了什么上乘武功？")}
+
+      true ->
+        {:ok, accept}
+    end
+  end
+
+  # LPC `query("family/beggarlvl") < N`（丐帮袋数）。ex 玩家 family map 里
+  # beggarlvl 目前无持久列，测试/后续落地走 meta.env.beggarlvl（atom/string 双读）。
+  # 未配置 min_beggarlvl 或玩家无该 key → nil，不拦（老配置零影响）。
+  defp gaibang_beggarlvl_gate(student, config) do
+    case Map.get(config, :min_beggarlvl) do
+      need when is_integer(need) ->
+        if student_beggarlvl(student) < need do
+          deny_text(config, :beggarlvl_deny, "你在本帮的地位太低，还是先向其他师父学习吧。")
+        else
+          nil
+        end
+
+      _ ->
+        nil
+    end
+  end
+
+  defp student_beggarlvl(character) do
+    env = student_env(character)
+
+    case Map.get(env, :beggarlvl) || Map.get(env, "beggarlvl") do
+      lvl when is_integer(lvl) -> lvl
+      _ -> 0
+    end
+  end
+
+  # 两类属性门（互斥，同一 NPC 只配其一）：
+  #   min_str         — 马大元 query_str() < 26（硬拒）
+  #   min_any_attribute — 洪七公 str<40 && int<40 && con<40 && dex<40 才拒（OR 门）
+  defp gaibang_attribute_gate(student, config) do
+    cond do
+      is_integer(Map.get(config, :min_str)) and
+          student_attr(student, :str) < Map.get(config, :min_str) ->
+        deny_text(config, :str_deny, "我的武艺以刚猛为主，你膂力不行，还是算了吧。")
+
+      is_integer(Map.get(config, :min_any_attribute)) and
+          Enum.all?([:str, :int, :con, :dex], fn attr ->
+            student_attr(student, attr) < Map.get(config, :min_any_attribute)
+          end) ->
+        deny_text(
+          config,
+          :any_attribute_deny,
+          "我说你这人体格也不行，脑筋也不灵光，还能和我学什么？"
+        )
+
+      true ->
+        nil
+    end
+  end
+
+  defp student_attr(character, attr) do
+    Map.get(Map.get(meta_of(character), :stats) || %{}, attr, 0) || 0
+  end
+
+  # #1006 古墓派 yang.c attempt_apprentice（LPC 原序逐条 return）：
+  #   gumu.h permit(离派/判师/他派) → str < 45 → yunv-xinjing < 120 → max_neili < 2000 → 收徒。
+  # 缺省 permit_first 把 max_neili 判在技能之前、且完全没有 str 门；两门同时失败时
+  # 文案顺序与 LPC 相反，故为杨过独立门序。字段缺省 nil → 对应门跳过，其它门派零影响。
+  defp gumu_yang_recruit_gate(student, config, family_name) do
+    min_str = Map.get(config, :min_str)
+    min_skills = Map.get(config, :min_skills, %{}) || %{}
+    skill_order = Map.get(config, :recruit_skill_order, []) || []
+    min_max_neili = Map.get(config, :min_max_neili)
+    accept = deny_text(config, :accept_msg, "好吧，看你资质尚可，我就收下你这个徒弟了。\n")
+
+    cond do
+      # gumu.h 三条，缺省文案对齐 LPC 原文（UCL 可逐句覆写）。
+      betrayed_sect?(student, family_name) ->
+        {:error, deny_text(config, :betray_sect_deny, "唉！去便去了，回来又是何苦由来？")}
+
+      betrayed_before?(student) ->
+        {:error, deny_text(config, :betray_times_deny, "阁下不忠不信，我不敢收你为徒。")}
+
+      other_family?(student, family_name) ->
+        {:error,
+         deny_text(
+           config,
+           :other_family_deny,
+           "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+         )}
+
+      is_integer(min_str) and student_attr(student, :str) < min_str ->
+        {:error, deny_text(config, :str_deny, "连玄铁剑都拿不动，怎么做我徒弟。")}
+
+      failing_skill = first_failing_recruit_skill(student, min_skills, skill_order) ->
+        {:error, min_skills_deny(config, failing_skill)}
+
+      is_integer(min_max_neili) and
+          (student_max_neili(student) || 0) < min_max_neili ->
+        {:error, deny_text(config, :max_neili_deny, "你把内力锻炼好了再来也不迟啊！")}
+
+      true ->
+        {:ok, accept}
+    end
+  end
+
+  # #1010 红花会 honghua.h 三条共用 permit 门（9/11 clone_lib NPC 调用）。
+  # 返回 nil 表示放行；返回 {:error, text} 供各 NPC 门序直接短路。
+  defp honghua_permit_error(student, config, family_name) do
+    cond do
+      betrayed_sect?(student, family_name) ->
+        {:error,
+         deny_text(
+           config,
+           :betray_sect_deny,
+           "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
+         )}
+
+      betrayed_before?(student) ->
+        {:error, deny_text(config, :betray_times_deny, "哼，阁下不忠不信，我们红花会可不会收留。")}
+
+      other_family?(student, family_name) ->
+        {:error, deny_text(config, :other_family_deny, "阁下既有了师承，还来我们红花会做什么？")}
+
+      true ->
+        nil
+    end
+  end
+
+  # #1010 陈家洛 chen.c:129-167：permit → shen → combat_exp → honghua-xinfa → max_neili。
+  defp honghua_chen_recruit_gate(student, config, family_name) do
+    case honghua_permit_error(student, config, family_name) do
+      {:error, _reason} = error ->
+        error
+
+      nil ->
+        stats = student_stats(student)
+        shen = Map.get(stats, :shen, 0) || 0
+        exp = Map.get(stats, :combat_exp, 0) || 0
+        min_shen = Map.get(config, :min_shen, 0) || 0
+        min_exp = Map.get(config, :min_exp, 0) || 0
+        min_skills = Map.get(config, :min_skills, %{}) || %{}
+        skill_order = Map.get(config, :recruit_skill_order, []) || []
+        min_max_neili = Map.get(config, :min_max_neili)
+        accept = deny_text(config, :accept_msg, "不错，不错。念在你如此有心，今日我便收下你。")
+
+        cond do
+          shen < min_shen ->
+            {:error,
+             deny_text(
+               config,
+               :min_shen_deny,
+               "我红花会乃为救天下苍生而建，所做的一切无不以侠义为重。阁下在德行方面，似乎还做得不够。"
+             )}
+
+          exp < min_exp ->
+            {:error,
+             deny_text(
+               config,
+               :min_exp_deny,
+               "你的江湖经验太浅，我就算收了你，恐怕你也难有所作为。"
+             )}
+
+          failing = first_failing_recruit_skill(student, min_skills, skill_order) ->
+            {:error, min_skills_deny(config, failing)}
+
+          is_integer(min_max_neili) and (student_max_neili(student) || 0) < min_max_neili ->
+            {:error,
+             deny_text(
+               config,
+               :max_neili_deny,
+               "我的武功全需强大的内功为辅，阁下似乎应该多练练内力。"
+             )}
+
+          true ->
+            {:ok, accept}
+        end
+    end
+  end
+
+  # #1010 余鱼同 yu.c:95-102：先 permit_recruit，再无条件拒绝（differ from deny_all）。
+  defp honghua_yu_recruit_gate(student, config, family_name) do
+    case honghua_permit_error(student, config, family_name) do
+      {:error, _reason} = error ->
+        error
+
+      nil ->
+        {:error, deny_text(config, :deny_msg, "我不收徒，你找其余几位当家的好了。")}
     end
   end
 

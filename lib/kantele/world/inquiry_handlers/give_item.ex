@@ -24,6 +24,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         min_gongxian = 2200           # 门派贡献下限（LPC `query("gongxian") < 2200` 即拒）
         max_neili = 3200              # 内力上限下限（LPC `query("max_neili") < 3200` 即拒）
         master_id = true              # 仅本门师父亲传弟子（family/master_id == npc id）
+        allowed_master_ids = ["chen jialuo", "wuchen daozhang"]  # 多师父白名单（红花会 #1010）
+        master_before_gates = true    # 师父门移到 shen/技能门之前（红花会 ask_jian/ask_bi）
+        allowed_families = ["红花会", "武当派"]  # 多门派白名单（陆菲青 #1010）
+        family_denies = { 武当派 = "专属拒绝文案" }  # 按门派给出不同拒绝（LPC 分支）
         perform_id = "bagua-dao/tian" # 发放同时习得绝招（LPC set can_perform/...=1）
         cost_gongxian = 2200          # 发放后扣除贡献（LPC add("gongxian", -2200)）
         max_shen_deny = "..."         # 杀气过高时的返回值
@@ -74,17 +78,23 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   def run(conn, _config, _data), do: conn
 
   defp run_for(conn, character, config, data) do
+    master_first? = master_before_gates?(config)
+    gate = if master_first?, do: nil, else: gate_denial(character, config)
+
     cond do
       already_known?(character, config) ->
         reply(conn, Helpers.respect(character) <> maxed_text(config))
 
-      family_denied?(character, config) ->
-        reply(conn, Helpers.respect(character) <> family_deny_text(config))
+      denial = family_denial(character, config) ->
+        reply(conn, Helpers.respect(character) <> denial)
 
-      gate = gate_denial(character, config) ->
+      master_first? and master_denied?(character, config, data) ->
+        reply(conn, Helpers.respect(character) <> master_deny_text(config))
+
+      gate ->
         reply(conn, gate)
 
-      master_denied?(character, config, data) ->
+      not master_first? and master_denied?(character, config, data) ->
         reply(conn, Helpers.respect(character) <> master_deny_text(config))
 
       unique?(config) and carries?(character, config) ->
@@ -207,10 +217,38 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp item_id_suffix(_item_id), do: nil
 
+  # #1010 红花会：先查逐门派专属拒绝，再走通用单门派/多门派白名单。
+  defp family_denial(character, config) do
+    case family_specific_denial(character, config) do
+      text when is_binary(text) and byte_size(text) > 0 ->
+        text
+
+      _ ->
+        if family_denied?(character, config), do: family_deny_text(config), else: nil
+    end
+  end
+
+  # UCL `family_denies = { 武当派 = "..." }`：LPC `if (family == "武当派") return "...";`。
+  defp family_specific_denial(character, config) do
+    case Map.get(config, "family_denies") do
+      denies when is_map(denies) ->
+        Map.get(denies, family_name(character))
+
+      _ ->
+        nil
+    end
+  end
+
   defp family_denied?(character, config) do
-    case Map.get(config, "family") do
-      family when is_binary(family) and family != "" -> family_name(character) != family
-      _ -> false
+    case {Map.get(config, "allowed_families"), Map.get(config, "family")} do
+      {families, _} when is_list(families) and families != [] ->
+        not Enum.any?(families, &(&1 == family_name(character)))
+
+      {_, family} when is_binary(family) and family != "" ->
+        family_name(character) != family
+
+      _ ->
+        false
     end
   end
 
@@ -221,9 +259,14 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   defp gate_denial(character, config) do
     stats = stats_of(character)
 
+    skill_first? = skill_before_shen?(config)
+
     cond do
       exceeds_max_shen?(stats, config) ->
         Map.get(config, "max_shen_deny") || "像你这样心慈手软，这东西给了你也干不了大事。"
+
+      skill_first? and below_min_skill?(stats, config) ->
+        Map.get(config, "min_skill_deny") || "你这门功夫还练得不到家，自己下去练练再来吧！"
 
       below_min_shen?(stats, config) ->
         Map.get(config, "min_shen_deny") || "你目前所做的侠义正事不够，这东西暂时还不能交给你。"
@@ -234,7 +277,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
       exceeds_max_skill?(stats, config) ->
         Map.get(config, "max_skill_deny") || "你这方面的造诣已经不浅了，这个不看也罢。"
 
-      below_min_skill?(stats, config) ->
+      not skill_first? and below_min_skill?(stats, config) ->
         Map.get(config, "min_skill_deny") || "你这门功夫还练得不到家，自己下去练练再来吧！"
 
       below_min_gongxian?(stats, config) ->
@@ -352,13 +395,33 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   # LPC `query("family/master_id") != query("id")`：仅本师亲传弟子可取。
   # UCL 解析器把 `master_id = true` 读为字符串 "true"；仅显式 true/"true" 开启门控，
   # 未配置（nil）时不拦。
+  # #1010 红花会物品可由多位当家发放（如白龙剑：陈家洛/无尘/赵半山），
+  # `allowed_master_ids = [...]` 用 LPC 原样 id 列表；旧 `master_id` 行为完全不变。
   defp master_denied?(character, config, data) do
-    case Map.get(config, "master_id") do
-      true -> not own_disciple?(character, Map.get(data, :npc_id))
-      "true" -> not own_disciple?(character, Map.get(data, :npc_id))
-      _ -> false
+    case {Map.get(config, "allowed_master_ids"), Map.get(config, "master_id")} do
+      {ids, _} when is_list(ids) and ids != [] ->
+        not Enum.any?(ids, &own_disciple?(character, &1))
+
+      {_, true} ->
+        not own_disciple?(character, Map.get(data, :npc_id))
+
+      {_, "true"} ->
+        not own_disciple?(character, Map.get(data, :npc_id))
+
+      _ ->
+        false
     end
   end
+
+  # #1010 红花会 ask_* 的师父门在 is_bad/family/shen/技能门之前；
+  # 布尔值经 UCL 解析器可能是字符串 "true"，两种写法都接受。
+  defp master_before_gates?(config),
+    do: Map.get(config, "master_before_gates") in [true, "true"]
+
+  # #1010 赵半山 ask_bi：LPC 是「技能等级 → shen」，与 give_item 缺省
+  # 「shen → 技能等级」相反；显式开启后只影响配置了该键的物品。
+  defp skill_before_shen?(config),
+    do: Map.get(config, "skill_before_shen") in [true, "true"]
 
   defp own_disciple?(%{meta: %{family: family}}, npc_id) when is_map(family) do
     master_id = Map.get(family, :master_id) || Map.get(family, "master_id")

@@ -619,6 +619,7 @@ defmodule Kantele.World.Loader do
         init: parse_enter_init(Map.get(character_data, :init)),
         accept: parse_accept_rules(Map.get(character_data, :accept)),
         guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder)),
+        rescue: parse_rescue(Map.get(Map.get(character_data, :meta, %{}), :rescue)),
         engage: parse_engage(Map.get(character_data, :engage)),
         carry: parse_carry(Map.get(character_data, :carry)),
         chat_msg_combat: parse_chat_msg_combat(Map.get(character_data, :chat_msg_combat)),
@@ -885,6 +886,12 @@ defmodule Kantele.World.Loader do
     end)
   end
 
+  # #1010 红花会陆菲青白龙剑：按门派给出不同的逐字拒绝（武当派专属），
+  # UCL map 键经 Elias 解析后可能是 atom/中文字符串，统一成字符串键。
+  defp normalize_inquiry_field("family_denies", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {family, text} -> {to_string(family), text} end)
+  end
+
   # 昆仑 `gate_order = "lpc_kunlun"` 用 level_order 显式固定逐条门槛顺序；
   # 与 min_levels 同形归一，使 dex / max_neili 伪键和技能 id 都能命中 level_deny。
   defp normalize_inquiry_field("level_order", keys) when is_list(keys) do
@@ -1005,6 +1012,10 @@ defmodule Kantele.World.Loader do
   defp parse_accept_rules(_), do: nil
 
   # 守卫配置：UCL guarder = { family = "白驼山庄" msgs = { refuse_other = "..." } }
+  #
+  # msg 占位符归一：老数据（miao/wen.c 等）把 LPC `message_vision` 的 `$N`/`$n`
+  # 原样写进了 msgs；MoveView.render_guarder_msg/1 只替换 `{npc}`/`{name}`，
+  # 于是旧数据会在拒绝文案里露出字面 `$N`/`$n`。这里统一转成 `{npc}`/`{name}`。
   defp parse_guarder(nil), do: nil
 
   defp parse_guarder(guarder) when is_map(guarder) do
@@ -1014,7 +1025,15 @@ defmodule Kantele.World.Loader do
     if is_nil(family) do
       nil
     else
-      parsed_msgs = if is_map(msgs), do: msgs, else: %{}
+      parsed_msgs =
+        if is_map(msgs) do
+          msgs
+          |> Enum.into(%{}, fn {key, value} ->
+            {key, normalize_guarder_msg(value)}
+          end)
+        else
+          %{}
+        end
 
       %{
         family: family,
@@ -1024,6 +1043,60 @@ defmodule Kantele.World.Loader do
   end
 
   defp parse_guarder(_), do: nil
+
+  # LPC message_vision 的 `$N` = 被喊话者 / `$n` = 喊话者（守门人自己）。
+  # 宿主 MoveView 渲染的是 `{npc}`（守门人）/ `{name}`（玩家）。
+  defp normalize_guarder_msg(text) when is_binary(text) do
+    text
+    |> String.replace("$N", "{npc}")
+    |> String.replace("$n", "{name}")
+  end
+
+  defp normalize_guarder_msg(other), do: other
+
+  # 群体助战配置（LPC wenwanfu.c::kill_ob）：被 kill 时呼喊同房间同门弟子上前助战。
+  # UCL 形状：
+  #   meta = {
+  #     rescue = {
+  #       npc_ids = ["lingxiao dizi", "lingxiao dizi"]
+  #       types = ["kill"]
+  #       vision = "闻万夫大怒，喝道：居然欺到我们凌宵城头上来了，大家并肩子上！"
+  #     }
+  #   }
+  # 说明：LPC `set_temp("my_killer")` + `::kill_ob(ob)` 是「记录凶手 → 原语再入」的两段式，
+  # ex 端在 engage 里直接用本次攻击者，语义等价（见 room.ex maybe_rescue_allies）。
+  defp parse_rescue(nil), do: nil
+
+  # `rescue` 是 Elixir 保留字，不能作变量名，用 rescue_cfg 代替。
+  defp parse_rescue(rescue_cfg) when is_map(rescue_cfg) do
+    npc_ids =
+      case Map.get(rescue_cfg, :npc_ids) do
+        ids when is_list(ids) ->
+          ids
+          |> Enum.map(&class_value/1)
+          |> Enum.reject(&is_nil/1)
+
+        _ ->
+          []
+      end
+
+    types =
+      case Map.get(rescue_cfg, :types) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        single when is_binary(single) -> [single]
+        _ -> ["kill"]
+      end
+
+    vision = string_or_nil(Map.get(rescue_cfg, :vision))
+
+    if npc_ids == [] do
+      nil
+    else
+      %{npc_ids: npc_ids, types: types, vision: vision}
+    end
+  end
+
+  defp parse_rescue(_), do: nil
 
   # 开战接受规则（accept_fight/hit/kill）：
   # UCL engage = {
@@ -1179,11 +1252,56 @@ defmodule Kantele.World.Loader do
       teach_skills: teach_skills,
       no_teach: no_teach,
       no_teach_deny: no_teach_deny,
-      no_teach_unlock: no_teach_unlock
+      no_teach_unlock: no_teach_unlock,
+      recognize: parse_recognize(Map.get(teach, :recognize))
     }
   end
 
   defp parse_teach(_), do: nil
+
+  # 石清 shiqing.c::recognize_apprentice：非本门弟子来学艺时的四道门。
+  #   master_name != "白自在"            -> 素无渊源
+  #   shen < 10000                       -> 侠义不足
+  #   skill 不在 {shangqing-jian, sword} -> 另投名师
+  #   skill 等级 > max_skill_level(179)  -> 我教不了
+  # UCL 形状：
+  #   recognize = {
+  #     require_master_name = "白自在"
+  #     min_shen = 10000
+  #     allowed_skills = ["shangqing-jian", "sword"]
+  #     max_skill_level = 179
+  #     not_master_deny = "..."   # master_name 不匹配
+  #     shen_deny = "..."         # shen 不足
+  #     wrong_skill_deny = "..."  # 技能不在白名单
+  #     maxed_deny = "..."        # 技能已过上限
+  #   }
+  defp parse_recognize(nil), do: nil
+
+  defp parse_recognize(recognize) when is_map(recognize) do
+    allowed_skills =
+      case Map.get(recognize, :allowed_skills) do
+        skills when is_list(skills) ->
+          skills
+          |> Enum.map(&class_value/1)
+          |> Enum.reject(&is_nil/1)
+
+        _ ->
+          []
+      end
+
+    %{
+      require_master_name: class_value(Map.get(recognize, :require_master_name)),
+      min_shen: int_value(Map.get(recognize, :min_shen)) || 0,
+      allowed_skills: allowed_skills,
+      max_skill_level: int_value(Map.get(recognize, :max_skill_level)),
+      not_master_deny: Map.get(recognize, :not_master_deny),
+      shen_deny: Map.get(recognize, :shen_deny),
+      wrong_skill_deny: Map.get(recognize, :wrong_skill_deny),
+      maxed_deny: Map.get(recognize, :maxed_deny)
+    }
+  end
+
+  defp parse_recognize(_), do: nil
 
   # #879 条件 no_teach 解锁：mark 键（can_learn/<family>/<skill>）与 exp 阈值归一。
   # min_exp 缺省 0（仅看 mark）；learned/locked 为师父台词，缺省 nil（teachable? 回退通用文案）。
@@ -1366,7 +1484,11 @@ defmodule Kantele.World.Loader do
                "lpc_taohua",
                "lpc_wudang",
                "lpc_ren",
-               "lpc_wudu"
+               "lpc_wudu",
+               "lpc_gaibang",
+               "lpc_gumu_yang",
+               "lpc_honghua_chen",
+               "lpc_honghua_yu"
              ] ->
           value
 
@@ -1409,7 +1531,17 @@ defmodule Kantele.World.Loader do
       # 侠客岛 shi.c：attempt_apprentice 无条件拒绝（连 ah + say）。
       # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
       deny_all: to_bool(Map.get(apprentice, :deny_all)),
-      deny_msg: Map.get(apprentice, :deny_msg)
+      deny_msg: Map.get(apprentice, :deny_msg),
+      # #986 丐帮 gaibang.h permit_recruit + 各师父 attempt_apprentice：
+      # `family/beggarlvl`（袋数）门槛、min_str（马大元 query_str）、
+      # min_any_attribute（洪七公 str/int/con/dex 四属性 OR，任一 ≥ 阈值即过）。
+      # 三者缺省 nil → lpc_gaibang 门序逐门跳过，其它门派零影响。
+      min_beggarlvl: int_value(Map.get(apprentice, :min_beggarlvl)),
+      min_str: int_value(Map.get(apprentice, :min_str)),
+      min_any_attribute: int_value(Map.get(apprentice, :min_any_attribute)),
+      beggarlvl_deny: Map.get(apprentice, :beggarlvl_deny),
+      str_deny: Map.get(apprentice, :str_deny),
+      any_attribute_deny: Map.get(apprentice, :any_attribute_deny)
     }
 
     # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/
@@ -1559,6 +1691,9 @@ defmodule Kantele.World.Loader do
       gender_deny: Map.get(apprentice, :gender_deny),
       min_skills_deny: min_skills_deny,
       min_exp_deny: Map.get(apprentice, :min_exp_deny),
+      # #1006 古墓杨过 min_max_neili 门：LPC yang.c `query("max_neili") < 2000`
+      # 的逐字拒绝文案。此前 sect_master 读该键但 loader 未透传，缺省回退通用文案。
+      max_neili_deny: Map.get(apprentice, :max_neili_deny),
       # 昆仑 kunlun.h permit_recruit 三句逐字覆写；未配置保持少林缺省文案。
       betray_sect_deny: Map.get(apprentice, :betray_sect_deny),
       betray_times_deny: Map.get(apprentice, :betray_times_deny),
