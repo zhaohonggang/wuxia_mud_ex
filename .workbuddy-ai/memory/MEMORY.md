@@ -46,10 +46,10 @@
 - `teach_pfm` 的 `neili` = `query("max_neili")`（masterd.c:201-205），UCL 写 `max-neili`。详细门序见 `lib/kantele/sect_master.ex`、`lib/kantele/world/loader.ex`、`test/kantele/world/*_test.exs`。
 
 ## 当前工作流
-- Task #619 按门派顺序回填 UCL；已回填见 `docs/待全量回归清单.zh-CN.md` #1-#26；逐门缺口见 `docs/*教学门控移植计划*.md`。
-- 最近完成：丐帮（#21）、古墓派（#22）、红花会（#23）、凌霄城/雪山剑派（#24）、商家堡（#25，零引擎改动）、**少林派（#26，Task #1046 完成；data-only 零引擎改动）**。少林批：14 个 clone NPC 补 chat/apply/no_teach/deny_all/guarder/coagents/give_item/pfm；修正 shaolin.ucl 知客僧 徐通→虚通 + 修 shanmen 重复刷怪；**移除 clone_lib 新增 xu_ming/xu_tong（与 shaolin.ucl 重复，改修正已有块）**；25 tests / 0 failures。
+- Task #619 按门派顺序回填 UCL；已回填门派（有 Task #619 提交 + plan doc，共 32 门派）：丐帮/中原苗家/五毒教/侠客岛/全真教/关外胡家/凌霄城/华山/古墓派/唐门/商家堡/大理段氏/大轮寺/少林派/峨眉派/嵩山派/恒山派/慕容世家/日月教/桃花岛/武当派/灵鹫宫/玄冥谷/神龙教/红花会/绝情谷/血刀派/逍遥派/铁掌帮/镇远镖局/云龙/星宿派。见 git log `Task #619` / `feat(sects)` 系列提交；逐门缺口见 `docs/*教学门控移植计划*.md`。
+- 逍遥派（Task #804）：9 个 NPC（fanbail/fengas/goudu/kanggl/shiqingl/suxingh/wulingj/wuyazi/xuemuh）的 teach + apprentice + sect_master_grant 均已回填至 `data/world/clone_lib.ucl`，已 commit `7649f464`；UCL 校验通过、`mix compile` 清白、`sect_master_test.exs` 121 测试 0 失败。UCL 数据层已完毕，不再需要重复实现。逍遥派剩余 engine GAP（非 UCL 数据）：#805 铁八卦/布阵箱、#806 论语书、#807 神仙环、#808 珍珑分支、#809 coagents、#810 guarder/permit_pass（已在 `docs/逍遥派教学门控移植计划.zh-CN.md` §3 登记）。
 - **GAP 状态**：#1032（loader 不解析 `combat.jiali`）与 **#1040（NPC 顶层 `skills=[]` 解析）均已实现关闭**；#1040 实测 1,341 块/11,160 条 set_skill，`npc_stats/3` + `parse_npc_skills/1` 并入 Stats.skills/mapped，零 UCL 改动，全量登记 #28。**#1041 十八罗汉大阵已完成**（状态机+协调器+问询处理器+UCL 回填+33 测试全过，已 commit 369fbedd 并 push）。仍待办：#1042 渡厄/渡劫/渡难 give_item+`accept_object`；#1045 道果 follow + 道象2/清乐 give_item 门缺口（bonze_drug/guilty/min_int/动态 lvl/vision 模板）。
 - **give_item 前缀坑**：handler 自动给 `family_deny`/`already` 前缀「大侠」，**不加**到 `min_skill_deny`。
 - **共享别名坑**：道相(dao_xiang)与道象2(dao_xiang2) 共享别名 "daoxiang chanshi" → 测试须用块 id 别名（`"shaolin_dao_xiang2"`）精确定位。
-- **待办**：按 Task #619 字母序继续（重新扫 `kungfu/class/*` 确认下一门）。未提交批次 #21-#26 待用户指示才 commit（届时带上 `character_metadata_backup.sql`）。
+- **待办**：Task #619 剩余 6 个门派（有 plan doc 但无 UCL 回填提交）：地狱地藏王、大宗师ultra、天地会、昆仑派、明教、欧阳世家。雪山剑派无独立 plan doc（仅剃度/守卫提交），是否纳入需确认。按字母序继续，下一门可从 昆仑派/明教/欧阳世家 开始。无 commit/push 除非明确要求（届时带上 `character_metadata_backup.sql`）。
 - daily log append-only。
