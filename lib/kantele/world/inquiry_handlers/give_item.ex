@@ -39,6 +39,14 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         max_neili_deny = "..."        # 内力不足时的返回值
         master_deny = "..."           # 非本师弟子时的返回值
         maxed = "..."                 # perform_id 已习得时的返回值
+        # #1045 少林道象/清乐：条件/属性/辈分门控
+        bonze_drug = true             # 启用 query_condition("bonze_drug") > 0 门控（dao-xiang2 金创药）
+        bonze_drug_deny = "..."       # bonze_drug 过剩时的返回值
+        guilty_deny = "..."           # query("guilty") > 0 时的返回值（qing-le 手谕）
+        min_int = 30                  # query_int() 下限（qing-le 手谕）
+        min_int_deny = "..."          # 智力不足时的返回值
+        generation_skill_levels = { buddhism = 150, dodge = 100, ... }  # 动态门槛 (41-generation)*20+30 的技能名表（qing-le 达摩令）
+        generation_skill_deny = "..." # 达摩令技能不足时的返回值，文案可含 {skill}
       }
 
   ## 与 LPC 的差异
@@ -55,9 +63,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   NPC 侧预留（先减，玩家侧失败时回补）。
   """
 
-  import Kalevala.Character.Conn, only: [render: 4, prompt: 4, put_character: 2]
+  import Kalevala.Character.Conn, only: [render: 4, prompt: 4, put_character: 2, get_session: 2]
 
   alias Kantele.Character.CommandView
+  alias Kantele.Character.Conditions
   alias Kantele.Character.Family
   alias Kantele.Character.Records
   alias Kantele.Character.Stats
@@ -79,7 +88,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp run_for(conn, character, config, data) do
     master_first? = master_before_gates?(config)
-    gate = if master_first?, do: nil, else: gate_denial(character, config)
+    gate = if master_first?, do: nil, else: gate_denial(conn, character, config)
 
     cond do
       already_known?(character, config) ->
@@ -256,12 +265,25 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   defp family_name(_character), do: nil
 
   # LPC ask_me 的额外门槛：杀气上限 / 经验下限 / 技能上限（kungfu/class/wudu/qiyunao.c ask_me）。
-  defp gate_denial(character, config) do
+  # #1045 新增：bonze_drug 条件 / guilty 戒律 / min_int 资质 / generation_skill 辈分动态门槛。
+  defp gate_denial(conn, character, config) do
     stats = stats_of(character)
 
     skill_first? = skill_before_shen?(config)
 
     cond do
+      # #1045 少林道象：query_condition("bonze_drug") > 0 → 拒（LPC dao-xiang2.c ask_me_1）
+      bonze_drug_denied?(conn, config) ->
+        Map.get(config, "bonze_drug_deny") || "你是不是刚吃过药，怎麽又来要了？ 灵药多吃有害无宜，过段时间再来吧。"
+
+      # #1045 少林清乐：query("guilty") > 0 → 拒（LPC qing-le.c ask_me_1）
+      guilty_gt_zero?(character, config) ->
+        Map.get(config, "guilty_deny") || "你累犯数戒，身带重罪，我如何能给你这手谕！"
+
+      # #1045 少林清乐：query_int() < N → 拒（LPC qing-le.c ask_me_1）
+      below_min_int?(character, config) ->
+        Map.get(config, "min_int_deny") || "资质不够，不能进入藏经楼。"
+
       exceeds_max_shen?(stats, config) ->
         Map.get(config, "max_shen_deny") || "像你这样心慈手软，这东西给了你也干不了大事。"
 
@@ -285,6 +307,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
       below_max_neili?(character, config) ->
         Map.get(config, "max_neili_deny") || "你的内力修为不足，施展不出这招。"
+
+      # #1045 少林清乐：辈分动态技能门槛 lvl=(41-generation)*20+30 → 拒（LPC qing-le.c ask_me_2 达摩令）
+      below_generation_skill?(character, config) ->
+        Map.get(config, "generation_skill_deny") || "你{skill}的功力不够，不能领取达摩令。"
 
       require_fumoquan?(config) and not valid_in_fumoquan?(character) ->
         Map.get(config, "fumoquan_deny") || "你尚未在金刚伏魔圈中，无法领取此物。"
@@ -382,6 +408,84 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   defp valid_in_fumoquan?(%{meta: %{temp: temp}}) when is_map(temp),
     do: Map.get(temp, "valid_in_fumoquan") == 1 or Map.get(temp, :valid_in_fumoquan) == 1
   defp valid_in_fumoquan?(_character), do: false
+
+  # #1045 少林道象：query_condition("bonze_drug") > 0 → 吃药冷却中，拒发金创药。
+  # conditions 存于 session（见 ConditionEvent），需经 get_session(conn, "conditions") 取出。
+  defp bonze_drug_denied?(conn, config) do
+    case Map.get(config, "bonze_drug") do
+      true ->
+        check_bonze_drug(conn)
+      "true" ->
+        check_bonze_drug(conn)
+      _ ->
+        false
+    end
+  end
+
+  defp check_bonze_drug(conn) do
+    conditions = get_session(conn, "conditions") || %{}
+    case Conditions.query_condition(%{conditions: conditions}, "bonze_drug") do
+      n when is_integer(n) and n > 0 -> true
+      _ -> false
+    end
+  end
+
+  # #1045 少林清乐：query("guilty") > 0 → 累犯戒律，拒发手谕。
+  defp guilty_gt_zero?(character, config) do
+    case Map.get(config, "guilty_deny") do
+      nil ->
+        false
+      "" ->
+        false
+      _ ->
+        meta = character.meta || %{}
+        guilty = Map.get(meta, :guilty) || Map.get(meta, "guilty") || 0
+        is_integer(guilty) and guilty > 0
+    end
+  end
+
+  # #1045 少林清乐：query_int() < N → 资质不足，拒发手谕。
+  defp below_min_int?(character, config) do
+    case Map.get(config, "min_int") do
+      min when is_integer(min) ->
+        stats = case character.meta do
+          %{stats: stats} -> stats
+          _ -> %{}
+        end
+        Stats.int(stats) < min
+      _ -> false
+    end
+  end
+
+  # #1045 少林清乐：辈分动态技能门槛 lvl = (41 - generation) * 20 + 30。
+  # 检查 generation_skill_levels 里列出的每门技能，任一不达标即拒。
+  defp below_generation_skill?(character, config) do
+    case Map.get(config, "generation_skill_levels") do
+      levels when is_map(levels) and map_size(levels) > 0 ->
+        generation =
+          case character.meta do
+            %{family: family} when is_map(family) ->
+              Map.get(family, :generation) || Map.get(family, "generation") || 0
+            _ -> 0
+          end
+
+        threshold = (41 - generation) * 20 + 30
+        stats = stats_of(character)
+        skills = Map.get(stats, :skills) || %{}
+
+        Enum.any?(levels, fn {skill, _min} ->
+          level = Map.get(skills, skill, 0) || 0
+          level =
+            if level == 0 and is_binary(skill),
+              do: Map.get(skills, String.replace(skill, "_", "-"), 0) || 0,
+              else: level
+          level < threshold
+        end)
+
+      _ ->
+        false
+    end
+  end
 
   defp family_deny_text(config),
     do: Map.get(config, "family_deny") || "与本派素无来往，不知此话从何谈起？"

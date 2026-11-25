@@ -41044,9 +41044,9 @@ chats = [
   }
 
   inquiries = [
-    { key = "修木人" value = " inquire about me (unimplemented)" },
-    { key = "修理" value = " inquire about me (unimplemented)" },
-    { key = "木人" value = " inquire about me (unimplemented)" }
+    { key = "修木人" value = { kind = "npc_reply" } },
+    { key = "修理" value = { kind = "npc_reply" } },
+    { key = "木人" value = { kind = "npc_reply" } }
   ]
 
   apprentice = {
@@ -41495,6 +41495,8 @@ chats = [
       already = "你现在身上不是有颗药丸吗，怎麼又来要了？ 真是贪得无餍！"
       family_deny = "与本派素无来往，不知此话从何谈起？"
       exhausted = "对不起，金创药已经发完了"
+      bonze_drug = true
+      bonze_drug_deny = "你刚服过金创药，药力尚未耗尽，暂时不必再服。"
     }
   }
 
@@ -43378,6 +43380,9 @@ chats = [
       min_skill_deny = "功力不够，不够资格领取手谕。"
       success = "好吧，凭这封手谕，你可自由进入藏经阁二楼研习上乘武功。"
       family_deny = "与本派素无来往，不知此话从何谈起？"
+      guilty_deny = "你累犯数戒，身带重罪，我如何能给你这手谕！"
+      min_int = 30
+      min_int_deny = "资质不够，不能进入藏经楼。"
     }
 
     七十二绝艺 = {
@@ -43397,6 +43402,9 @@ chats = [
       min_skill_deny = "功力不够，不够资格领取手谕。"
       success = "好吧，凭这封手谕，你可自由进入藏经阁二楼研习上乘武功。"
       family_deny = "与本派素无来往，不知此话从何谈起？"
+      guilty_deny = "你累犯数戒，身带重罪，我如何能给你这手谕！"
+      min_int = 30
+      min_int_deny = "资质不够，不能进入藏经楼。"
     }
 
     达摩令 = {
@@ -43408,6 +43416,17 @@ chats = [
       vision_name = "清乐"
       success = "好吧，凭这面达摩令，你可自由向你的师尊挑战。"
       family_deny = "与本派素无来往，不知此话从何谈起？"
+      guilty_deny = "你累犯数戒，身带重罪，我如何能给你这达摩令！"
+      min_int = 30
+      min_int_deny = "资质不够，不能领取达摩令。"
+      generation_skill_levels = {
+        buddhism = 150
+        dodge = 100
+        shaolin_shenfa = 100
+        force = 100
+        parry = 100
+      }
+      generation_skill_deny = "你{skill}的功力不够，不能领取达摩令。"
     }
   }
 
