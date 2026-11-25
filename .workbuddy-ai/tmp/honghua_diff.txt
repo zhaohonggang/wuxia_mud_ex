@@ -1,0 +1,3056 @@
+diff --git a/data/world/clone_lib.ucl b/data/world/clone_lib.ucl
+index 2271533c..d711b051 100644
+--- a/data/world/clone_lib.ucl
++++ b/data/world/clone_lib.ucl
+@@ -16397,6 +16397,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/ada.c
+     characters "gaibang_ada" {
+       name = "阿大"
++  # #986 LPC ada.c:76-81 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["sword.fen", "sword.guan", "recover", "powerup"]
+       aliases = ["gaibang_ada", "a da", "a", "da"]
+       description = "八臂神剑方东白本是丐帮四大长老之首，剑术 之精，名动江湖，只因他出剑奇快，有如生了 七八条手臂一般，因此上得了这个外号。十多 年前听说他身染重病身亡，当时人人都感惋惜， 不觉他竟尚在人世。"
+   title = "丐帮四大长老之首"
+@@ -16404,6 +16407,9 @@ teach = {
+   gender = "男性"
+   age = 68
+   score = 500000
++  # #986 丐帮 ada.c:95-99 attempt_apprentice 无条件拒收（走开，我不收徒）。
++  # 曾有 teach.family 却无 apprentice，导致 npc_shop_event 放行任何人——修复。
++  shen_type = -1
+ 
+   combat = {
+     attitude = "peaceful"
+@@ -16417,6 +16423,12 @@ teach = {
+     str = 35
+   }
+ 
++  # #986 LPC ada.c:95-99 无条件拒收；显式 deny_all 修复误收徒漏洞。
++  apprentice = {
++    deny_all = true
++    deny_msg = "走开，我不收徒。"
++  }
++
+   inquiries = [
+     { key = "傲尘剑" value = {
+       kind = "sect_master_grant"
+@@ -16435,6 +16447,8 @@ teach = {
+         pichen_jian = "你的辟尘剑法还不到家，要多练练。"
+       }
+       maxed = "自己去领悟吧，好自为之。"
++      msg_one = "$n一声长叹，摇头道：“也罢，也罢，你过来。”说完便将$N招到一旁的僻静处，轻声在$N耳边低声嘀咕了半天，不时还伸指捏作剑诀，比划演示剑招，所示全为辟尘剑法绝招的精微要诣，$N听后大有所悟。"
++      improve_skills = ["sword", "pichen-jian", "martial-cognize"]
+       learned = "你学会了「傲尘剑」。"
+     } },
+     { key = "焚阳剑" value = {
+@@ -16455,6 +16469,8 @@ teach = {
+         guanri_jian = "你的观日剑法还不到家，要多练练。"
+       }
+       maxed = "自己去领悟吧，好自为之。"
++      msg_one = "$n一声长叹，摇头道：“也罢，也罢，你过来。”说完便将$N招到一旁的僻静处，轻声在$N耳边低声嘀咕了半天，不时还伸指捏作剑诀，比划演示剑招，所示全为观日剑法绝招的精微要诣，$N听后大有所悟。"
++      improve_skills = ["sword", "guanri-jian", "martial-cognize"]
+       learned = "你学会了「焚阳剑」。"
+     } },
+     { key = "观日神诀" value = {
+@@ -16475,6 +16491,8 @@ teach = {
+         guanri_jian = "你的观日剑法还不到家，要多练练。"
+       }
+       maxed = "自己去领悟吧，好自为之。"
++      msg_one = "$n一声长叹，摇头道：“也罢，也罢，你过来。”说完便将$N招到一旁的僻静处，轻声在$N耳边低声嘀咕了半天，不时还伸指捏作剑诀，比划演示剑招，所示全为观日剑法绝招的精微要诣，$N听后大有所悟。"
++      improve_skills = ["sword", "guanri-jian", "martial-cognize"]
+       learned = "你学会了「观日神诀」。"
+     } }
+   ]
+@@ -16533,6 +16551,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/bai.c
+     characters "gaibang_bai" {
+       name = "白世镜"
++  # #986 LPC bai.c:76-82 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["hand.qin", "recover", "powerup"]
+       aliases = ["gaibang_bai", "bai shijing", "bai", "shijing"]
+       description = "这是一位须眉皆白的老丐，双目间透出一丝寒 气。他就是丐帮的传功长老白世镜，所擅的缠 丝擒拿手在武林中享名已久。"
+   title = "丐帮九袋长老"
+@@ -16557,9 +16578,20 @@ teach = {
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 120000
+     min_shen = 20000
++    min_beggarlvl = 4
+     min_skills = { force = 90 }
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的江湖经验不够，还是先向各位长老学习吧。"
++    min_shen_deny = "你身为丐帮弟子，竟然不做好事？"
++    beggarlvl_deny = "你在本帮的地位太低，还是先向其他师父学习吧。"
++    min_skills_deny = { force = "你的内功火候还不够，还是先向其他师父学习吧。" }
++    accept_msg = "我收下你便是，可别给我添麻烦。"
+   }
+ 
+   inquiries = [
+@@ -16569,6 +16601,8 @@ teach = {
+       skill = "chansi-shou"
+       min_levels = {
+         chansi_shou = 120
++        # #986 LPC bai.c:171 force<150 独立门（转换器遗漏）。
++        force = 150
+       }
+       min_gongxian = 400
+       min_shen = 30000
+@@ -16580,8 +16614,11 @@ teach = {
+       shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+       level_deny = {
+         chansi_shou = "你的缠丝擒拿手火候还不够，还是下去练高点再来吧。"
++        force = "你现在的内功修为不足，还是练高点再来吧。"
+       }
+       maxed = "这招我不是已经教会你了吗？"
++      msg_one = "$n冷笑一声，大袖一挥，随即只见其双手忽折忽扭，或抓或甩，直琐$N各处要脉。$N见状不由大惊，连忙左闪右避，招架拆解，可始终未能摆脱$n的纠缠，心下甚为折服。"
++      improve_skills = ["hand", "chansi-shou", "martial-cognize"]
+       learned = "你学会了「缠丝擒拿」。"
+     } }
+   ]
+@@ -16639,6 +16676,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/hong.c
+     characters "gaibang_hong" {
+       name = "洪七公"
++  # #986 LPC hong.c:120-133 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["strike.qu", "strike.zhen", "strike.fei", "dodge.xian", "staff.chan", "staff.chuo", "staff.feng", "staff.ban", "staff.tian", "recover", "powerup"]
+       aliases = ["gaibang_hong", "hong qigong", "hong", "qigong"]
+       description = "他就是丐帮第十七任帮主，号称九指神丐的洪 七公老爷子。只见他须眉皆白，周身上下邋遢 不已，模样甚是龌龊。可是他目光如电，显得 正义凛然，不怒而自威。"
+   nickname = "北丐"
+@@ -16662,9 +16702,23 @@ teach = {
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 400000
++    # LPC hong.c:162-166 `str<40 && int<40 && con<40 && dex<40` 才拒（OR 门）。
++    min_any_attribute = 40
++    # 洪七公无 shen 门；缺省 min_shen=0 会误拒负神玩家，显式关闭。
++    no_min_shen = true
+     min_skills = { force = 180 }
+     min_max_neili = 2000
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的经验这么差，又能跟我学什么？"
++    any_attribute_deny = "我说你这人体格也不行，脑筋也不灵光，还能和我学什么？"
++    min_skills_deny = { force = "你的内功火候太差了，先好好练练再来找我。" }
++    max_neili_deny = "就你那点内力哪里学得了什么上乘武功？"
++    accept_msg = "念你平时用功努力，今日老叫花就收下你。以后好好练功，可别给我丢脸。"
+   }
+ 
+   inquiries = [
+@@ -16689,6 +16743,8 @@ teach = {
+         force = "你的内功火候不足，先下去练熟了再来。"
+       }
+       maxed = "我不是已经教过你了么？"
++      msg_one = "$n愣了一愣，随即伸手将$N招到了面前，在$N耳边轻声嘀咕了些话。$N听了半天，突然间不由会心的一笑，看来大有所悟。"
++      improve_skills = ["dodge", "xiaoyaoyou", "martial-cognize"]
+       learned = "你学会了「仙游诀」。"
+     } },
+     { key = "金针渡劫" value = {
+@@ -16712,6 +16768,8 @@ teach = {
+         force = "你的内功火候不足，先下去练熟了再来。"
+       }
+       maxed = "我不是已经教过你了么？还罗嗦什么？"
++      msg_one = "$n哈哈一笑，将$N招至跟前，轻声在$N耳旁嘀咕了半天。随后又伸出右手，十指箕张，一伸一缩，看样子是一种很特别的暗器法门。"
++      improve_skills = ["throwing", "pomie-jinzhen", "martial-cognize"]
+       learned = "你学会了「金针渡劫」。"
+     } },
+     { key = "缠字诀" value = {
+@@ -16735,6 +16793,8 @@ teach = {
+         force = "你的内功火候不足，回去练高点再来。"
+       }
+       maxed = "我不是已经教过你了么？还罗嗦什么？"
++      msg_one = "$n看了$N一眼，皱了皱眉，当下拍了拍身上的尘土，起身而立。$N正感疑惑间，却只见眼前一道绿芒闪过，四周皆是$n挥出的棒影，窜动不已，顿被闹了个手忙脚乱。"
++      improve_skills = ["staff", "dagou-bang", "martial-cognize"]
+       learned = "你学会了「缠字诀」。"
+     } },
+     { key = "戳字诀" value = {
+@@ -16758,6 +16818,8 @@ teach = {
+         force = "你的内功火候不足，回去练高点再来。"
+       }
+       maxed = "我不是已经教过你了么？还罗嗦什么？"
++      msg_one = "$n哈哈一笑，将$N招至跟前，轻声在$N耳旁嘀咕了半天。随后又拔出腰间的玉竹杖虚击划圆，再猛的直刺而出，看样子是一种很精妙的杖法绝学。$N一边听一边不住的点头。"
++      improve_skills = ["staff", "dagou-bang", "martial-cognize"]
+       learned = "你学会了「戳字诀」。"
+     } },
+     { key = "封字诀" value = {
+@@ -16781,6 +16843,8 @@ teach = {
+         force = "你的内功火候不足，回去练高点再来。"
+       }
+       maxed = "我不是已经教过你了么？还罗嗦什么？"
++      msg_one = "$n愣了一愣，随即伸手将$N招到了面前，在$N耳边轻声嘀咕了些话。$N听了半天，突然间不由会心的一笑，看来大有所悟。"
++      improve_skills = ["staff", "dagou-bang", "martial-cognize"]
+       learned = "你学会了「封字诀」。"
+     } },
+     { key = "绊字诀" value = {
+@@ -16804,10 +16868,14 @@ teach = {
+         force = "你的内功火候不足，回去练高点再来。"
+       }
+       maxed = "我不是已经教过你了么？还罗嗦什么？"
++      msg_one = "$n看了$N一眼，皱了皱眉，当下拍了拍身上的尘土，起身而立。$N正感疑惑间，却只见眼前一道绿芒闪过，四周皆是$n挥出的棒影，窜动不已，顿被闹了个手忙脚乱。"
++      improve_skills = ["staff", "dagou-bang", "martial-cognize"]
+       learned = "你学会了「绊字诀」。"
+     } },
+     { key = "天下无狗" value = {
+       kind = "sect_master_grant"
++      # #986 hong.c:620-680：sk7 额外四棒诀前置门，走 lpc_gaibang（default 门序 + requires_performs）。
++      gate_order = "lpc_gaibang"
+       perform_id = "dagou-bang/tian"
+       skill = "dagou-bang"
+       min_levels = {
+@@ -16817,6 +16885,9 @@ teach = {
+       min_gongxian = 2000
+       min_shen = 100000
+       cost_gongxian = 2000
++      # LPC 缠/戳/封/绊四棒诀皆须先成。
++      requires_performs = ["dagou-bang/chan", "dagou-bang/chuo", "dagou-bang/feng", "dagou-bang/ban"]
++      requires_perform_deny = "你打狗棒法的四个棒诀都了解透彻了么？"
+       family = "丐帮"
+       family_deny = "干啥？我什么时候说过要教你？"
+       skill_deny = "你连打狗棒法都没学过，哪里来绝招？"
+@@ -16827,6 +16898,11 @@ teach = {
+         force = "你的内功火候不足，回去练高点再来。"
+       }
+       maxed = "自己去练吧，老缠着我干什么？"
++      min_beggarlvl = 9
++      beggarlvl_deny = "你在帮中的辈分还不够，等成为长老再说吧。"
++      level_order = ["force", "dagou-bang"]
++      msg_one = "$n凝视了$N好一会，方才点了点头，随手抄起玉竹杖，蓦地一卷，带起阵阵风声，便犹若千百根相似，层层叠叠将$N笼罩于劲风之中，招式精奇，无与伦比，令人叹为观止。"
++      improve_skills = ["staff", "staff", "staff", "dagou-bang", "dagou-bang", "dagou-bang", "martial-cognize"]
+       learned = "你学会了「天下无狗」。"
+     } },
+     { key = "双龙取水" value = {
+@@ -16850,6 +16926,8 @@ teach = {
+         force = "你内功火候不足，暂时还无法运用这招。"
+       }
+       maxed = "我不是已经教过你了么？"
++      msg_one = "$n点了点头，转过身来对$N说道：“我给你演示一遍，看好了。”话音刚落，听得$n一声暴喝，全身内劲迸发，气贯右臂奋力外扯。一时间你只觉周围气流涌动，地上尘土尽数向$n的掌心涌去。"
++      improve_skills = ["strike", "xianglong-zhang", "martial-cognize"]
+       learned = "你学会了「双龙取水」。"
+     } },
+     { key = "震惊百里" value = {
+@@ -16873,6 +16951,8 @@ teach = {
+         force = "你内功火候不足，暂时还无法运用这招。"
+       }
+       maxed = "我不是已经教过你了么？"
++      msg_one = "$n点了点头，转过身来对$N说道：“我给你演示一遍，看好了。”话音刚落，听得$n一声暴喝，全身真气鼓动，双掌排山倒海般压出。顿时只听“喀嚓”一声脆响，$n身前那棵碗口粗的松树应声而倒，直看得$N目瞪口呆，半天说不出话来。"
++      improve_skills = ["strike", "xianglong-zhang", "martial-cognize"]
+       learned = "你学会了「震惊百里」。"
+     } },
+     { key = "飞龙在天" value = {
+@@ -16896,6 +16976,8 @@ teach = {
+         force = "你内功火候不足，暂时还无法运用这招。"
+       }
+       maxed = "我不是已经教过你了么？"
++      msg_one = "$n沉思良久，方才缓缓点了点头，伸手将$N招至身旁，低声讲解了良久。过得片刻，却见$n蓦地起身而立，深深吸入一口气，双掌猛然翻滚，宛如一条神龙攀蜒于九天之上，气势恢弘，荡气回肠。"
++      improve_skills = ["strike", "xianglong-zhang", "martial-cognize"]
+       learned = "你学会了「飞龙在天」。"
+     } },
+     { key = "亢龙有悔" value = {
+@@ -16919,6 +17001,8 @@ teach = {
+         force = "你基本内功火候不足，暂时还无法运用这招。"
+       }
+       maxed = "我不是已经教过你了么？"
++      msg_one = "$n沉思良久，方才缓缓点了点头，伸手将$N招至身旁，低声讲解了良久。过得片刻，忽然$n身形激进，左手一划，右手呼的一掌拍向虚空，正是降龙十八掌“亢龙有悔” 。力自掌生之际说到便到，以排山倒海之势向虚空狂涌而去，当真石破天惊，威力无比。"
++      improve_skills = ["strike", "xianglong-zhang", "martial-cognize"]
+       learned = "你学会了「亢龙有悔」。"
+     } },
+     { key = "玉竹杖" value = " inquire about me (unimplemented)" }
+@@ -17001,6 +17085,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/jian.c
+     characters "gaibang_jian" {
+       name = "简长老"
++  # #986 LPC jian.c:72-79 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["strike.kai", "unarmed.jue", "staff.lun", "recover", "powerup"]
+       aliases = ["gaibang_jian", "jian zhanglao", "jian", "zhanglao"]
+       description = "简长老是丐邦的执法长老，代帮主执掌法刀以 及青竹令等。他向来嫉恶如仇，弟子中有谁犯 过，出手决不容情。"
+   title = "丐帮九袋长老"
+@@ -17061,6 +17148,12 @@ teach = {
+   ]
+ 
+ 
++  # #986 LPC jian.c:94-98 无条件拒收；原 UCL 无 apprentice，显式 deny_all 固定拒收语义。
++  apprentice = {
++    deny_all = true
++    deny_msg = "老夫不收徒弟，你还是请回吧。"
++  }
++
+   accept = [
+     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "你这快破布是从哪里偷来的？", "你真的挑胜了么？我怎么就没听说？", "你已经是本帮长老了，还想当帮主？", "这个…你为本帮效力不够，暂时不能给你升袋。", "既然升袋，就当牢记帮规，为民除害！", "{npc}接过了破布，然后将其钉在{name}的破衣服上，俨然一个新口袋。", "nod"] }
+   ]
+@@ -17069,6 +17162,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/li.c
+     characters "gaibang_li" {
+       name = "黎生"
++  # #986 LPC li.c:83-88 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["recover", "powerup"]
+       aliases = ["gaibang_li", "li sheng", "li", "sheng"]
+       description = "这是位生性刚直，嫉恶如仇的丐帮八袋弟子。"
+   title = "丐帮八袋弟子"
+@@ -17090,6 +17186,47 @@ teach = {
+     str = 32
+   }
+ 
++  # #986 LPC li.c:97-122：permit_recruit → shen<0 拒 → 收徒（class=beggar + 保留袋数/title）。
++  # 原 UCL 无 apprentice → 永远拒收；补真实门控。为便于 teach（LPC li.c set_skill 教学），
++  # 同时补 teach wrapper，使 npc_shop_event 能进入 recruit_gate?。
++  apprentice = {
++    family = "丐帮"
++    permit_recruit = true
++    gate_order = "lpc_gaibang"
++    min_shen = 0
++    class = "beggar"
++    min_shen_deny = "你为非作歹，竟然还想成为丐帮弟子？"
++    accept_msg = "我便收你为徒，日后可得行侠仗义，莫损我丐帮名声。"
++  }
++
++  teach = {
++    family = "丐帮"
++    teach_skills = {
++      strike = {
++        max = 160
++        gongxian = 0
++      }
++      unarmed = {
++        max = 160
++        gongxian = 0
++      }
++      staff = {
++        max = 160
++        gongxian = 0
++      }
++    }
++    no_teach = {
++      shenlong_baiwei = "这招掌法乃是蒙帮主他老人家所赐，不能轻易传授。"
++      huntian_qigong = "这内功便是我也未修炼纯熟，我还是教你点别的吧。"
++    }
++  }
++
++  # #986 LPC li.c:71-76 coagents 两位长老，startroom=/d/gaibang/undertre。
++  coagents = [
++    { id = "liang zhanglao" startroom = "gaibang:undertre" },
++    { id = "jian zhanglao" startroom = "gaibang:undertre" }
++  ]
++
+   inquiries = [
+     { key = "五丁开山" value = {
+       kind = "sect_master_grant"
+@@ -17112,6 +17249,8 @@ teach = {
+         force = "你现在的内功修为不足，还是练高点再来吧。"
+       }
+       maxed = "这招我不是已经教会你了吗？"
++      msg_one = "$n微微一笑，从怀中轻轻取出了一本小册子，指着其中的一段对$N细说良久，$N一边听一边点头。"
++      improve_skills = ["strike", "tongchui-zhang", "martial-cognize"]
+       learned = "你学会了「五丁开山」。"
+     } },
+     { key = "绝命一踢" value = {
+@@ -17135,6 +17274,8 @@ teach = {
+         force = "你现在的内功修为不足，还是练高点再来吧。"
+       }
+       maxed = "这招我不是已经教会你了吗？"
++      msg_one = "$n哈哈一笑，伸手将$N招到了面前，在$N耳边轻声嘀咕了些话。$N听了半天，突然间不由会心的一笑，看来大有所悟。"
++      improve_skills = ["unarmed", "jueming-tui", "martial-cognize"]
+       learned = "你学会了「绝命一踢」。"
+     } }
+   ]
+@@ -17176,6 +17317,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/liang.c
+     characters "gaibang_liang" {
+       name = "梁长老"
++  # #986 LPC liang.c:70-77 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["staff.chan", "staff.feng", "staff.ban", "recover", "powerup"]
+       aliases = ["gaibang_liang", "liang zhanglao", "liang", "zhanglao"]
+       description = "梁长老是丐帮出道最久，武功最高的长老，在 武林中享名已久。丐帮武功向来较强，近来梁 长老一力整顿，更是蒸蒸日上。"
+   title = "丐帮九袋长老"
+@@ -17184,6 +17328,11 @@ teach = {
+   age = 48
+   shen_type = 1
+   score = 350000
++  # #986 LPC liang.c:88-95：permit_recruit 之后无条件拒收（只传功不收徒）。
++  apprentice = {
++    deny_all = true
++    deny_msg = "老夫只负责给低袋弟子传功，并不收徒。"
++  }
+ 
+   combat = {
+     attitude = "peaceful"
+@@ -17235,6 +17384,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/lu.c
+     characters "gaibang_lu" {
+       name = "鲁有脚"
++  # #986 LPC lu.c:85-94 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["staff.chan", "staff.chuo", "staff.feng", "staff.ban", "staff.tian", "recover", "powerup"]
+       aliases = ["gaibang_lu", "lu youjiao", "lu", "youjiao"]
+       description = "鲁有脚虽然武功算不得顶尖高手，可是在江湖 上却颇有声望。因为他在丐帮中有仁有义，行 事光明磊落，深得洪七公的器重。"
+   title = "丐帮九袋长老"
+@@ -17287,12 +17439,54 @@ teach = {
+     { type = "dodge" skill = "feiyan-zoubi" }
+   ]
+ 
++  # #986 LPC lu.c:105-148 attempt_apprentice 门序 + 逐字文案。
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 150000
+     min_shen = 20000
++    min_beggarlvl = 4
+     min_skills = { force = 120 }
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的江湖经验不够，还是先向各位长老学习吧。"
++    min_shen_deny = "你身为丐帮弟子，竟然不做好事？"
++    beggarlvl_deny = "你在本帮的地位太低，还是先向各位长老学习吧。"
++    min_skills_deny = { force = "你的内功火候还不够，还是先向各位长老学习吧。" }
++    accept_msg = "以后你就跟着我吧，可别给我生事。"
++  }
++
++  # #986 LPC lu.c:80-83 coagents 洪七公 @ /d/city/gbxiaowu。
++  coagents = [
++    { id = "hong qigong" startroom = "city:gbxiaowu" }
++  ]
++
++  # #986 LPC lu.c:61-66 no_teach 四条（打狗棒法 + 洪老帮主三掌法，硬拒）。
++  teach = {
++    family = "丐帮"
++    teach_skills = {
++      strike = {
++        max = 240
++        gongxian = 0
++      }
++      staff = {
++        max = 240
++        gongxian = 0
++      }
++      force = {
++        max = 240
++        gongxian = 0
++      }
++    }
++    no_teach = {
++      dagou_bang = "打狗棒法向来只有继位帮主能够学习，要学去找帮主。"
++      zhenjing_baili = "这套掌法乃是洪老帮主所赐，我不能轻易传授。"
++      qianlong_wuyong = "这套掌法乃是洪老帮主所赐，我不能轻易传授。"
++      hongjian_yulu = "这套掌法乃是洪老帮主所赐，我不能轻易传授。"
++    }
+   }
+ 
+ 
+@@ -17306,6 +17500,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/ma.c
+     characters "gaibang_ma" {
+       name = "马大元"
++  # #986 LPC ma.c:82-87 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["claw.suo", "recover", "powerup"]
+       aliases = ["gaibang_ma", "ma dayuan", "ma", "dayuan"]
+       description = "这是一个四十多岁的精壮汉子，身材魁梧，双 目如电。此人就是丐帮副帮主马大元。"
+   title = "丐帮副帮主"
+@@ -17327,12 +17524,26 @@ teach = {
+     str = 35
+   }
+ 
++  # #986 LPC ma.c:97-146 attempt_apprentice 门序（含 query_str()<26 硬门）。
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 200000
+     min_shen = 30000
++    min_beggarlvl = 5
++    min_str = 26
+     min_skills = { force = 150 }
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的江湖经验不够，还是先向各位长老学习吧。"
++    min_shen_deny = "你身为丐帮弟子，竟然不做好事？"
++    beggarlvl_deny = "你在本帮的地位太低，还是先向各位长老学习吧。"
++    str_deny = "我的武艺以刚猛为主，你膂力不行，还是算了吧。"
++    min_skills_deny = { force = "你的内功火候还不够，还是先向各位长老学习吧。" }
++    accept_msg = "我今日便收你为徒，倘若勤恳努力，将来必有一番作为。"
+   }
+ 
+   inquiries = [
+@@ -17355,6 +17566,8 @@ teach = {
+         suohou_gong = "你的锁喉功还不到家，要多练练。"
+       }
+       maxed = "自己下去练习，别老是纠缠不休。"
++      msg_one = "$n笑了笑，将$N招至身旁，轻声在$N耳边低声吩咐了几句，不时还握拳成爪比划演示，全是锁喉功绝招的精微要诣，$N一边听一边不住地点头。"
++      improve_skills = ["claw", "suohou-gong", "martial-cognize"]
+       learned = "你学会了「铁爪锁喉」。"
+     } }
+   ]
+@@ -17375,6 +17588,10 @@ teach = {
+         gongxian = 0
+       }
+     }
++    # #986 LPC ma.c:61-64 no_teach/dagou-bang（硬拒，打狗棒法只继位帮主能学）。
++    no_teach = {
++      dagou_bang = "打狗棒法向来只有继位帮主能够学习，要学去找帮主。"
++    }
+   }
+ 
+   skills = [
+@@ -17419,6 +17636,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/peng.c
+     characters "gaibang_peng" {
+       name = "彭有敬"
++  # #986 LPC peng.c:84-89 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["staff.luan", "recover", "powerup"]
+       aliases = ["gaibang_peng", "peng youjing", "peng", "youjing"]
+       description = "彭有敬是丐帮中净衣派的首领，衣着干净华丽 不象叫化子。他脸上挂着慈祥的笑容，一双眼 睛有摄人心魄的力量。"
+   title = "丐帮九袋长老"
+@@ -17426,6 +17646,8 @@ teach = {
+   gender = "男性"
+   age = 48
+   score = 300000
++  # #986 LPC peng.c shen_type=-1（恶人 NPC，与 ada 同类）；原 UCL 缺失。
++  shen_type = -1
+   # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+ 
+   combat = {
+@@ -17440,13 +17662,30 @@ teach = {
+     str = 35
+   }
+ 
++  # #986 LPC peng.c:100-137：无 shen 门（no_min_shen 关闭缺省侠义下界）。
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 130000
++    no_min_shen = true
++    min_beggarlvl = 4
+     min_skills = { force = 90 }
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的江湖经验不够，还是先向各位长老学习吧。"
++    beggarlvl_deny = "你在本帮的地位太低，还是先向其他师父学习吧。"
++    min_skills_deny = { force = "你的内功火候还不够，还是先向其他师父学习吧。" }
++    accept_msg = "那你以后就跟着我吧。"
+   }
+ 
++  # #986 LPC peng.c:75-78 coagents 洪七公 @ /d/city/gbxiaowu。
++  coagents = [
++    { id = "hong qigong" startroom = "city:gbxiaowu" }
++  ]
++
+   inquiries = [
+     { key = "群魔乱舞" value = {
+       kind = "sect_master_grant"
+@@ -17454,6 +17693,8 @@ teach = {
+       skill = "fengmo-zhang"
+       min_levels = {
+         fengmo_zhang = 120
++        # #986 LPC peng.c:171 force<150 独立门（转换器遗漏）。
++        force = 150
+       }
+       min_gongxian = 400
+       cost_gongxian = 400
+@@ -17463,8 +17704,11 @@ teach = {
+       gongxian_deny = "你在我们丐帮内甚无作为，这招我暂时还不能传你。"
+       level_deny = {
+         fengmo_zhang = "你的疯魔杖法火候还不够，还是下去练高点再来吧。"
++        force = "你现在的内功修为不足，还是练高点再来吧。"
+       }
+       maxed = "这招我不是已经教会你了吗？"
++      msg_one = "$n点了点头，对$N说道：“给我看清楚了。”突然陡听$n一声暴喝，手中铁杖一阵乱舞，竟似毫无章理，挥舞出数道杖影，气势澎湃，力不可挡。正是疯魔杖法的精要所在。"
++      improve_skills = ["staff", "fengmo-zhang", "martial-cognize"]
+       learned = "你学会了「群魔乱舞」。"
+     } }
+   ]
+@@ -17485,6 +17729,10 @@ teach = {
+         gongxian = 0
+       }
+     }
++    # #986 LPC peng.c:71 no_teach/mihun-dafa（硬拒）。
++    no_teach = {
++      mihun_dafa = "你弄错了吧？这种下三滥的东西我怎么会。"
++    }
+   }
+ 
+   skills = [
+@@ -17526,6 +17774,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/quan.c
+     characters "gaibang_quan" {
+       name = "全冠清"
++  # #986 LPC quan.c:73-80 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["strike.kai", "unarmed.jue", "blade.shan", "recover", "powerup"]
+       aliases = ["gaibang_quan", "quan guanqing", "quan", "guanqing"]
+       description = "这是位沉默寡言却颇有心计的阴毒的丐帮八袋弟子。"
+   title = "丐帮八袋弟子"
+@@ -17546,11 +17797,26 @@ teach = {
+     str = 32
+   }
+ 
++  # #986 LPC quan.c:92-112：permit_recruit 之后无其它硬门，直收。
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
++    no_min_shen = true
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    accept_msg = "嗯…也好。你以后就跟着我吧。"
+   }
+ 
++  # #986 LPC quan.c:64-71 coagents 马大元/吴长风/奚长老 @ /d/city/ma_zhengting。
++  coagents = [
++    { id = "ma dayuan" startroom = "city:ma_zhengting" },
++    { id = "wu changfeng" startroom = "city:ma_zhengting" },
++    { id = "xi zhanglao" startroom = "city:ma_zhengting" }
++  ]
++
+   skills = [
+     { skill = "force" level = 160 },
+     { skill = "jiaohua-neigong" level = 160 },
+@@ -17590,6 +17856,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/wu.c
+     characters "gaibang_wu" {
+       name = "吴长风"
++  # #986 LPC wu.c:78-84 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["strike.tan", "blade.shan", "recover", "powerup"]
+       aliases = ["gaibang_wu", "wu changfeng", "wu", "changfeng"]
+       description = "吴长风乃丐帮元老，武功甚为了得。"
+   title = "丐帮九袋长老"
+@@ -17611,12 +17880,24 @@ teach = {
+     str = 35
+   }
+ 
++  # #986 LPC wu.c:95-138 attempt_apprentice 门序（「其他师父」文案变体）。
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 120000
+     min_shen = 20000
++    min_beggarlvl = 4
+     min_skills = { force = 90 }
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的江湖经验不够，还是先向其他师父学习吧。"
++    min_shen_deny = "你身为丐帮弟子，竟然不做好事？"
++    beggarlvl_deny = "你在本帮的地位太低，还是先向其他师父学习吧。"
++    min_skills_deny = { force = "你的内功火候还不够，还是先向其他师父学习吧。" }
++    accept_msg = "我便收下你，希望日后努力上进，能有所作为。"
+   }
+ 
+   inquiries = [
+@@ -17639,6 +17920,8 @@ teach = {
+         liuhe_zhang = "你的六合掌法火候未到，还得多练习练习。"
+       }
+       maxed = "这招我不是已经教会你了吗？"
++      msg_one = "$n哈哈一笑，也不答话，忽然间单掌飕的探出，正向$N胸前拍落。$N登时大惊失色，急忙向后跃开数尺，可已然不及，$n的单掌正搭在$N的胸部左侧，招术甚为奇巧。"
++      improve_skills = ["strike", "liuhe-zhang", "martial-cognize"]
+       learned = "你学会了「乌龙探海」。"
+     } },
+     { key = "闪刀诀" value = {
+@@ -17660,6 +17943,8 @@ teach = {
+         liuhe_dao = "你的六合刀法火候未到，还得多练习练习。"
+       }
+       maxed = "这招我不是已经教会你了吗？"
++      msg_one = "$n对$N笑了笑，拔出腰间佩刀握在手中，说道：“这六合刀法的要诀不过是展、抹、钩、剁、砍、劈六势，看好了。”说完便只见$n手中钢刀吞吐不定，形若游龙，势如猛虎。接连变换了数种方位，最后只听哧的一声砍落，刀身震得嗡嗡直响。"
++      improve_skills = ["blade", "liuhe-dao", "martial-cognize"]
+       learned = "你学会了「闪刀诀」。"
+     } }
+   ]
+@@ -17727,6 +18012,9 @@ teach = {
+ # LPC: C:/files/git/mud/kungfu/class/gaibang/xi.c
+     characters "gaibang_xi" {
+       name = "奚长老"
++  # #986 LPC xi.c:75-81 战斗闲聊闭包（ex 仅广播台词，命令语义 GAP #954）。
++  chat_chance_combat = 120
++  chat_msg_combat = ["staff.lun", "recover", "powerup"]
+       aliases = ["gaibang_xi", "xi zhanglao", "xi", "zhanglao"]
+       description = "奚长老乃丐帮元老，武功甚为了得。"
+   title = "丐帮九袋长老"
+@@ -17748,12 +18036,24 @@ teach = {
+     str = 35
+   }
+ 
++  # #986 LPC xi.c:91-134 attempt_apprentice 门序（「其他师父」文案变体）。
+   apprentice = {
+     family = "丐帮"
+     permit_recruit = true
++    gate_order = "lpc_gaibang"
+     min_exp = 120000
+     min_shen = 20000
++    min_beggarlvl = 4
+     min_skills = { force = 90 }
++    class = "beggar"
++    betray_sect_deny = "嘿嘿，你当初走的时候是怎么说的？"
++    betray_times_deny = "我们丐帮行事堂堂正正，绝不接纳判师之徒。"
++    other_family_deny = "你既然已经有了名师指点，还来我们丐帮干什么？"
++    min_exp_deny = "你的江湖经验不够，还是先向其他师父学习吧。"
++    min_shen_deny = "你身为丐帮弟子，竟然不做好事？"
++    beggarlvl_deny = "你在本帮的地位太低，还是先向其他师父学习吧。"
++    min_skills_deny = { force = "你的内功火候还不够，还是先向其他师父学习吧。" }
++    accept_msg = "我便收下你，希望日后努力上进，能有所作为。"
+   }
+ 
+   inquiries = [
+@@ -17776,6 +18076,8 @@ teach = {
+         fumo_zhang = "你的二十四路伏魔杖火候不够，下去练高点再来吧。"
+       }
+       maxed = "你自己去领悟吧。"
++      msg_one = "$n微笑着对$N点了点头，蓦地起身而立，陡然一声暴喝，手中竹棒挥转如轮，残影化出无数个大圈，瞬间已将$N团团裹罩其中，便似那风火轮一般，气势如虹，招式精奇，令人叹为观止。"
++      improve_skills = ["staff", "fumo-zhang", "martial-cognize"]
+       learned = "你学会了「风火轮」。"
+     } }
+   ]
+@@ -17846,6 +18148,7 @@ teach = {
+   nickname = "赤练仙子"
+   gender = "女性"
+   age = 27
++  shen_type = -1
+   # brain = brains.quester  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
+ 
+   combat = {
+@@ -17860,16 +18163,32 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 120
++  chat_msg_combat = ["strike.huan", "strike.shi", "recover", "powerup"]
++
+   apprentice = {
++    betray_sect_deny = "唉！去便去了，回来又是何苦由来？"
++    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
++    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+     family = "古墓派"
+     permit_recruit = true
+     gender = "女性"
++    gender_deny = "我李莫愁可不收臭男人做徒弟。"
++    no_min_shen = true
+     max_shen = -70000
++    max_shen_deny = "我李莫愁可不收心慈手软的人做徒弟。"
+     min_exp = 400000
++    min_exp_deny = "你这点能力怎能继承我的衣钵？"
+     min_skills = {
+       force = 160
+       strike = 120
+     }
++    recruit_skill_order = ["force", "strike"]
++    min_skills_deny = {
++      force = "要学我五毒神掌，得先将内功练扎实。"
++      strike = "要学我的五毒神掌，需要精湛的掌法作基础，我看你在那上面下的工夫还不够啊。"
++    }
++    accept_msg = "好吧，我就收下你这个徒弟了。"
+   }
+ 
+   inquiries = [
+@@ -17878,19 +18197,22 @@ teach = {
+     { key = "林朝英" value = "那是我的师祖，不该你问的你别问，小心我宰了你。" },
+     { key = "风魔舞" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "yunzhou-fufa/feng"
+       skill = "yunzhou-fufa"
+       min_levels = {
+         yunzhou_fufa = 50
+       }
+       min_gongxian = 50
+-      min_shen = -75000
++      max_shen = -75000
+       cost_gongxian = 50
++      level_order = ["yunzhou-fufa"]
++      improve_skills = ["whip", "yunzhou-fufa", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连云舟舞发都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         yunzhou_fufa = "你的云舟舞发火候还不够，要多练练。"
+       }
+@@ -17899,6 +18221,7 @@ teach = {
+     } },
+     { key = "寒冰针" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "bingpo-shenzhen/bing"
+       skill = "bingpo-shenzhen"
+       min_levels = {
+@@ -17906,13 +18229,15 @@ teach = {
+         force = 140
+       }
+       min_gongxian = 400
+-      min_shen = -80000
++      max_shen = -80000
+       cost_gongxian = 400
++      level_order = ["bingpo-shenzhen", "force"]
++      improve_skills = ["throwing", "bingpo-shenzhen", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连冰魄神针都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         bingpo_shenzhen = "你的冰魄神针火候还不够，要多练练。"
+         force = "你的内功火候不足，先下去练熟了再来。"
+@@ -17922,19 +18247,22 @@ teach = {
+     } },
+     { key = "无所不为" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "sanwu-shou/wei"
+       skill = "sanwu-shou"
+       min_levels = {
+         sanwu_shou = 60
+       }
+       min_gongxian = 300
+-      min_shen = -80000
++      max_shen = -80000
+       cost_gongxian = 300
++      level_order = ["sanwu-shou"]
++      improve_skills = ["whip", "sanwu-shou", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连三无三不手都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         sanwu_shou = "你的三无三不手火候还不够，要多练练。"
+       }
+@@ -17943,6 +18271,7 @@ teach = {
+     } },
+     { key = "赤心连环决" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "chilian-shenzhang/lian"
+       skill = "chilian-shenzhang"
+       min_levels = {
+@@ -17950,13 +18279,15 @@ teach = {
+         force = 140
+       }
+       min_gongxian = 400
+-      min_shen = -85000
++      max_shen = -85000
+       cost_gongxian = 400
++      level_order = ["chilian-shenzhang", "force"]
++      improve_skills = ["strike", "chilian-shenzhang", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连五毒神掌都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         chilian_shenzhang = "你的五毒神掌火候还不够，要多练练。"
+         force = "你的内功火候不足，先下去练熟了再来。"
+@@ -17966,6 +18297,7 @@ teach = {
+     } },
+     { key = "千幻神诀" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "wudu-shenzhang/huan"
+       skill = "wudu-shenzhang"
+       min_levels = {
+@@ -17973,13 +18305,15 @@ teach = {
+         dodge = 140
+       }
+       min_gongxian = 500
+-      min_shen = -90000
++      max_shen = -90000
+       cost_gongxian = 500
++      level_order = ["wudu-shenzhang", "dodge"]
++      improve_skills = ["strike", "wudu-shenzhang", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连五毒神掌都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         wudu_shenzhang = "你的五毒神掌火候还不够，要多练练。"
+         dodge = "你的轻功火候不足，先下去练熟了再来。"
+@@ -17989,6 +18323,7 @@ teach = {
+     } },
+     { key = "无所不至" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "sanwu-shou/zhi"
+       skill = "sanwu-shou"
+       min_levels = {
+@@ -17996,13 +18331,15 @@ teach = {
+         dodge = 100
+       }
+       min_gongxian = 400
+-      min_shen = -95000
++      max_shen = -95000
+       cost_gongxian = 400
++      level_order = ["sanwu-shou", "dodge"]
++      improve_skills = ["whip", "sanwu-shou", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连三无三不手都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         sanwu_shou = "你的三无三不手火候还不够，要多练练。"
+         dodge = "你的轻功火候不足，先下去练熟了再来。"
+@@ -18012,6 +18349,7 @@ teach = {
+     } },
+     { key = "无孔不入" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "sanwu-shou/kong"
+       skill = "sanwu-shou"
+       min_levels = {
+@@ -18019,13 +18357,15 @@ teach = {
+         force = 160
+       }
+       min_gongxian = 600
+-      min_shen = -110000
++      max_shen = -110000
+       cost_gongxian = 600
++      level_order = ["sanwu-shou", "force"]
++      improve_skills = ["whip", "sanwu-shou", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连三无三不手都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         sanwu_shou = "你的三无三不手火候还不够，要多练练。"
+         force = "你的内功火候不足，先下去练熟了再来。"
+@@ -18035,6 +18375,7 @@ teach = {
+     } },
+     { key = "万毒噬心" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "wudu-shenzhang/shi"
+       skill = "wudu-shenzhang"
+       min_levels = {
+@@ -18042,13 +18383,15 @@ teach = {
+         force = 180
+       }
+       min_gongxian = 800
+-      min_shen = -120000
++      max_shen = -120000
+       cost_gongxian = 800
++      level_order = ["wudu-shenzhang", "force"]
++      improve_skills = ["strike", "wudu-shenzhang", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "我李莫愁可不教外人。"
+       skill_deny = "你连五毒神掌都没学，何谈绝招？"
+       gongxian_deny = "你在本门毫无作为，这招我暂时还不能传你。"
+-      shen_deny = "你心慈手软，不适合学我古墓派的阴毒武功。"
++      max_shen_deny = "哼！像你这样的心慈手软之辈，又能干成什么大事？"
+       level_deny = {
+         wudu_shenzhang = "你的五毒神掌火候还不够，要多练练。"
+         force = "你的内功火候不足，先下去练熟了再来。"
+@@ -18158,10 +18501,23 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 120
++  chat_msg_combat = ["sword.lian", "sword.feng", "sword.kai", "unarmed.you", "strike.wang", "recover", "powerup"]
++
+   apprentice = {
++    betray_sect_deny = "唉！去便去了，回来又是何苦由来？"
++    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
++    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+     family = "古墓派"
+     permit_recruit = true
++    reject_master_name = "李莫愁"
++    reject_master_name_deny = "我林朝英可不收那叛徒的徒弟。"
++    hard_min_int = 35
++    int_deny = "我古墓派的功夫最讲一个悟字，你的资质不够。"
++    no_min_shen = true
+     min_skills = { yunv_xinjing = 120 }
++    min_skills_deny = { yunv_xinjing = "玉女心经乃本门绝学，你应该在这方面多加练习。" }
++    accept_msg = "好吧，看你也是性情中人，我就收下你这个徒弟了。"
+   }
+ 
+   inquiries = [
+@@ -18172,6 +18528,7 @@ teach = {
+     { key = "重阳祖师" value = "重阳是全真教的掌教，自号“活死人”。" },
+     { key = "连环剑术" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "suxin-jian/lian"
+       skill = "suxin-jian"
+       min_levels = {
+@@ -18180,6 +18537,8 @@ teach = {
+       }
+       min_gongxian = 600
+       cost_gongxian = 600
++      level_order = ["suxin-jian", "dodge"]
++      improve_skills = ["sword", "suxin-jian", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "玉女心经的口诀我只传授给我的弟子。"
+       skill_deny = "你连素心剑法都没学，何谈绝招？"
+@@ -18193,6 +18552,7 @@ teach = {
+     } },
+     { key = "风神诀" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "yinsuo-jinling/feng"
+       skill = "yinsuo-jinling"
+       min_levels = {
+@@ -18201,6 +18561,8 @@ teach = {
+       }
+       min_gongxian = 700
+       cost_gongxian = 700
++      level_order = ["yinsuo-jinling", "force"]
++      improve_skills = ["whip", "yinsuo-jinling", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "玉女心经的口诀我只传授给我的弟子。"
+       skill_deny = "你连银索金铃都没学，何谈绝招？"
+@@ -18214,6 +18576,7 @@ teach = {
+     } },
+     { key = "开天辟地" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "yinsuo-jinling/kai"
+       skill = "yinsuo-jinling"
+       min_levels = {
+@@ -18222,6 +18585,8 @@ teach = {
+       }
+       min_gongxian = 800
+       cost_gongxian = 800
++      level_order = ["yinsuo-jinling", "force"]
++      improve_skills = ["whip", "yinsuo-jinling", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "玉女心经的口诀我只传授给我的弟子。"
+       skill_deny = "你连银索金铃都没学，何谈绝招？"
+@@ -18342,15 +18707,41 @@ teach = {
+     str = 21
+   }
+ 
++  chat_chance_combat = 120
++  chat_msg_combat = ["perform strike.wang and unarmed.you", "recover", "powerup", "whip.feng twice"]
++
+   apprentice = {
++    betray_sect_deny = "唉！去便去了，回来又是何苦由来？"
++    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
++    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+     family = "古墓派"
+     permit_recruit = true
++    no_min_shen = true
++    min_per = 26
++    per_deny = "尊容实在不敢恭维，我看你还是算了吧。"
++    accept_msg = "好吧，我就收下你这个徒儿了。"
+   }
+ 
+   inquiries = [
++    { key = "银索金铃" value = {
++      kind = "give_item"
++      item = "clone_lib:yinsuo"
++      match = "yinsuo"
++      unique = true
++      family = "古墓派"
++      master_id = true
++      min_skill_levels = { yinsuo_jinling = 150 }
++      min_skill_deny = "你的银索金铃火候未到，就算拿着也没用。"
++      master_deny = "只有我的弟子才配使用银索金铃，你还是走吧。"
++      family_deny = "你与我古墓派素无渊源，不知此话从何说起。"
++      already = "那根银索金铃不就是你拿着在用么，怎么反倒找我了？"
++      vision_name = "小龙女"
++      success = "既然这样，那这根银索金铃你就暂时拿去吧。"
++    } },
+     { key = "玉蜂针" value = " inquire about zhen (unimplemented)" },
+     { key = "千姿百媚" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "yunv-jian/mei"
+       skill = "yunv-jian"
+       min_levels = {
+@@ -18359,6 +18750,8 @@ teach = {
+       }
+       min_gongxian = 50
+       cost_gongxian = 50
++      level_order = ["yunv-jian", "dodge"]
++      improve_skills = ["sword", "yunv-jian", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+       skill_deny = "你连玉女剑法都没学，何谈绝招？"
+@@ -18372,6 +18765,7 @@ teach = {
+     } },
+     { key = "天罗地网势" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "tianluo-diwang/wang"
+       skill = "tianluo-diwang"
+       min_levels = {
+@@ -18380,6 +18774,8 @@ teach = {
+       }
+       min_gongxian = 60
+       cost_gongxian = 60
++      level_order = ["tianluo-diwang", "dodge"]
++      improve_skills = ["strike", "tianluo-diwang", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+       skill_deny = "你连天罗地网都没学，何谈绝招？"
+@@ -18393,6 +18789,7 @@ teach = {
+     } },
+     { key = "古墓幽居" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "meinv-quan/you"
+       skill = "meinv-quan"
+       min_levels = {
+@@ -18401,6 +18798,8 @@ teach = {
+       }
+       min_gongxian = 160
+       cost_gongxian = 160
++      level_order = ["meinv-quan", "force"]
++      improve_skills = ["unarmed", "meinv-quan", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+       skill_deny = "你连美女拳都没学，何谈绝招？"
+@@ -18414,6 +18813,7 @@ teach = {
+     } },
+     { key = "隔空点穴" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "yinsuo-jinling/dian"
+       skill = "yinsuo-jinling"
+       min_levels = {
+@@ -18422,6 +18822,8 @@ teach = {
+       }
+       min_gongxian = 260
+       cost_gongxian = 260
++      level_order = ["yinsuo-jinling", "force"]
++      improve_skills = ["whip", "yinsuo-jinling", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+       skill_deny = "你连银索金铃都没学，何谈绝招？"
+@@ -18435,6 +18837,7 @@ teach = {
+     } },
+     { key = "无影针" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "yufeng-zhen/ying"
+       skill = "yufeng-zhen"
+       min_levels = {
+@@ -18443,6 +18846,8 @@ teach = {
+       }
+       min_gongxian = 300
+       cost_gongxian = 300
++      level_order = ["yufeng-zhen", "force"]
++      improve_skills = ["throwing", "yufeng-zhen", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+       skill_deny = "你连玉蜂针都没学，何谈绝招？"
+@@ -18456,6 +18861,7 @@ teach = {
+     } },
+     { key = "双剑合壁" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "suxin-jian/he"
+       skill = "suxin-jian"
+       min_levels = {
+@@ -18465,6 +18871,8 @@ teach = {
+       }
+       min_gongxian = 400
+       cost_gongxian = 400
++      level_order = ["suxin-jian", "force", "dodge"]
++      improve_skills = ["sword", "suxin-jian", "martial-cognize"]
+       family = "古墓派"
+       family_deny = "你与本门毫无瓜葛，何以问起本派暗器？"
+       skill_deny = "你连素心剑法都没学，何谈绝招？"
+@@ -18597,11 +19005,24 @@ teach = {
+     str = 35
+   }
+ 
++  chat_chance_combat = 120
++  chat_msg_combat = ["strike.wang", "unarmed.xiao", "unarmed.tuo", "recover", "powerup"]
++
+   apprentice = {
++    betray_sect_deny = "唉！去便去了，回来又是何苦由来？"
++    betray_times_deny = "阁下不忠不信，我不敢收你为徒。"
++    other_family_deny = "你既有了名师指点，就要勤下苦功，勿要三心二意！"
+     family = "古墓派"
+     permit_recruit = true
++    gate_order = "lpc_gumu_yang"
++    min_str = 45
++    str_deny = "连玄铁剑都拿不动，怎么做我徒弟。"
++    no_min_shen = true
+     min_skills = { yunv_xinjing = 120 }
++    min_skills_deny = { yunv_xinjing = "你还是先跟龙儿学点玉女心经吧。" }
+     min_max_neili = 2000
++    max_neili_deny = "你把内力锻炼好了再来也不迟啊！"
++    accept_msg = "好吧，看你资质尚可，我就收下你这个徒弟了。"
+   }
+ 
+   inquiries = [
+@@ -18615,6 +19036,7 @@ teach = {
+     { key = "黯然销魂掌" value = "(: teach_sad :)" },
+     { key = "卷字诀" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "xuantie-jian/juan"
+       skill = "xuantie-jian"
+       min_levels = {
+@@ -18623,7 +19045,11 @@ teach = {
+       }
+       min_gongxian = 0
+       cost_gongxian = 0
++      level_order = ["xuantie-jian", "force"]
++      improve_skills = ["sword", "xuantie-jian", "martial-cognize"]
++      min_max_neili = 3000
+       family = "古墓派"
++      no_family_check = true
+       family_deny = "这门武功只适合我古墓派传人。"
+       skill_deny = "你连玄铁剑法都没学，何谈绝招？"
+       gongxian_deny = "这招无需贡献，但你需先练好基础。"
+@@ -18636,6 +19062,7 @@ teach = {
+     } },
+     { key = "大江东去" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "xuantie-jian/dong"
+       skill = "xuantie-jian"
+       min_levels = {
+@@ -18644,7 +19071,11 @@ teach = {
+       }
+       min_gongxian = 0
+       cost_gongxian = 0
++      level_order = ["xuantie-jian", "force"]
++      improve_skills = ["sword", "xuantie-jian", "martial-cognize"]
++      min_max_neili = 5000
+       family = "古墓派"
++      no_family_check = true
+       family_deny = "这门武功只适合我古墓派传人。"
+       skill_deny = "你连玄铁剑法都没学，何谈绝招？"
+       gongxian_deny = "这招无需贡献，但你需先练好基础。"
+@@ -18657,6 +19088,7 @@ teach = {
+     } },
+     { key = "黯然销魂" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "sad-strike/xiao"
+       skill = "sad-strike"
+       min_levels = {
+@@ -18665,7 +19097,11 @@ teach = {
+       }
+       min_gongxian = 0
+       cost_gongxian = 0
++      level_order = ["sad-strike", "force"]
++      improve_skills = ["unarmed", "sad-strike", "martial-cognize"]
++      min_max_neili = 3200
+       family = "古墓派"
++      no_family_check = true
+       family_deny = "这门武功只适合我古墓派传人。"
+       skill_deny = "你连黯然销魂掌都没学，何谈绝招？"
+       gongxian_deny = "这招无需贡献，但你需先练好基础。"
+@@ -18678,6 +19114,7 @@ teach = {
+     } },
+     { key = "拖泥带水" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_masterd"
+       perform_id = "sad-strike/tuo"
+       skill = "sad-strike"
+       min_levels = {
+@@ -18686,7 +19123,11 @@ teach = {
+       }
+       min_gongxian = 0
+       cost_gongxian = 0
++      level_order = ["sad-strike", "force"]
++      improve_skills = ["unarmed", "sad-strike", "martial-cognize"]
++      min_max_neili = 4000
+       family = "古墓派"
++      no_family_check = true
+       family_deny = "这门武功只适合我古墓派传人。"
+       skill_deny = "你连黯然销魂掌都没学，何谈绝招？"
+       gongxian_deny = "这招无需贡献，但你需先练好基础。"
+@@ -19640,29 +20081,36 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["strike.cui", "powerup", "recover"]
++
+   inquiries = [
+     { key = "催魂掌" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "heisha-zhang/cui"
+       skill = "heisha-zhang"
+       min_levels = {
+-        heisha_zhang = 100
+         force = 150
++        heisha_zhang = 100
++      }
++      level_order = ["force", "heisha_zhang"]
++      level_deny = {
++        force = "你龟儿内功都没学好，学啥子这招哦！"
++        heisha_zhang = "你黑砂掌学成这副龟儿子德性，咋个练催魂掌嘛？"
+       }
+       min_gongxian = 150
+       min_shen = 5000
+       cost_gongxian = 150
+       family = "红花会"
++      maxed = "老子把啥子都给你说完了，你龟儿咋那么烦哦！"
+       family_deny = "你龟儿子是哪儿来的？老子认不到你。"
+       skill_deny = "你龟儿黑砂掌都没学，还说啥子催魂掌哦！"
+       gongxian_deny = "你龟儿贡献都做得不够，喊我咋个传你嘛？"
+       shen_deny = "你连行侠仗义都搞忘了，我还敢传你啥子嘛？"
+-      level_deny = {
+-        heisha_zhang = "你黑砂掌学成这副龟儿子德性，咋个练催魂掌嘛？"
+-        force = "你龟儿内功都没学好，学啥子这招哦！"
+-      }
+-      maxed = "老子把啥子都给你说完了，你龟儿咋那么烦哦！"
++      msg_one = "$n看了看$N，哈哈一笑，说道：“要得，要得！看你娃学得还可以，今天我就教你催魂掌。”$n说罢，便轻轻拍出一掌，看似不着半点力道。正当$N纳闷间，听得“噗”的一声，随即尘沙滚滚，飘然四起，身前沙地豁然留下一个乌黑的掌印，煞是惊人。"
+       learned = "你学会了「催魂掌」。"
++      improve_skills = ["strike", "heisha_zhang", "martial_cognize"]
+     } }
+   ]
+ 
+@@ -19726,10 +20174,18 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = 5000
++    min_shen_deny = "你非我侠义中人，我不能收你。"
+     min_skills = {
+       honghua_xinfa = 50
+     }
++    min_skills_deny = {
++      honghua_xinfa = "你把本门的心法练好了再来。"
++    }
++    accept_msg = "以后你就跟着老子吧。"
+   }
+ 
+   skills = [
+@@ -19783,6 +20239,9 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["strike.cui", "powerup", "recover"]
++
+   teach = {
+     family = "红花会"
+     teach_skills = {
+@@ -19843,10 +20302,18 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = 5000
++    min_shen_deny = "你非我侠义中人，我不能收你。"
+     min_skills = {
+       honghua_xinfa = 50
+     }
++    min_skills_deny = {
++      honghua_xinfa = "你把本门的心法练好了再来。"
++    }
++    accept_msg = "以后你就跟着老子吧。"
+   }
+ 
+   skills = [
+@@ -19900,127 +20367,200 @@ teach = {
+     str = 40
+   }
+ 
+-  inquiries = {
+-    剑盾珠索 = {
+-      perform_id = "jiandun-zhusuo/suo"
++  chat_chance_combat = 100
++  chat_msg_combat = ["unarmed.luan", "unarmed.yi", "unarmed.hong", "whip.qian", "whip.fu", "dodge.hua", "powerup", "shield", "recover"]
++
++  inquiries = [
++    { key = "剑盾珠索" value = {
++      kind = "give_item"
++      item = "clone_lib:jiansuo"
++      match = "jiansuo"
++      unique = true
++      family = "红花会"
++      master_id = true
++      master_before_gates = true
++      min_shen = 80000
++      min_skill_levels = {
++        jiandun_zhusuo = 120
++      }
++      family_deny = "你又不是我们红花会的兄弟，打听它干什么？"
++      master_deny = "只有我的弟子才能用我这剑盾珠索。"
++      min_shen_deny = "你侠义正事做得还不够，这剑盾珠索我不能教给你。"
++      min_skill_deny = "你连剑盾珠索都没学好，就算用也是白搭。"
++      already = "剑盾珠索现在不就在你手里吗？"
++      vision_name = "陈家洛"
++      success = "这剑盾珠索你就拿去，多用它行侠仗义，惩奸除恶。"
++    } },
++    { key = "缚字诀" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
++      perform_id = "jiandun-zhusuo/fu"
+       skill = "jiandun-zhusuo"
+       min_levels = {
+-        force = 200
+-        jiandun_zhusuo = 160
++        max_neili = 600
++        jiandun_zhusuo = 50
+       }
+-      min_gongxian = 500
+-      min_shen = 65000
+-      cost_gongxian = 500
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
++      level_order = ["max_neili", "jiandun_zhusuo"]
++      level_deny = {
++        max_neili = "你的内力修为不够，学不成这招。"
++        jiandun_zhusuo = "你的剑盾珠索还练得不到家，自己下去练练再来吧！"
++      }
++      min_gongxian = 200
++      min_shen = 60000
++      cost_gongxian = 200
++      family = "红花会"
++      maxed = "这招我不是早就传授给你了吗？"
++      family_deny = "和本会素无瓜葛，何出此言？"
+       skill_deny = "你连剑盾珠索都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-    化蝶 = {
+-      perform_id = "baihua-cuoquan/hua"
+-      skill = "baihua-cuoquan"
++      gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n点了点头，将$N招至身边，在耳旁低声细说良久，$N听后会心的一笑，看来大有所悟。"
++      learned = "你学会了「缚字诀」。"
++      improve_skills = ["whip", "jiandun_zhusuo", "martial_cognize"]
++    } },
++    { key = "千头万绪" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
++      perform_id = "jiandun-zhusuo/qian"
++      skill = "jiandun-zhusuo"
+       min_levels = {
+         force = 180
+-        baihua_cuoquan = 140
++        jiandun_zhusuo = 120
+       }
+-      min_gongxian = 500
+-      min_shen = 65000
+-      cost_gongxian = 500
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+-      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-    千头万绪 = {
+-      perform_id = "baihua-cuoquan/qian"
+-      skill = "baihua-cuoquan"
+-      min_levels = {
+-        force = 160
+-        baihua_cuoquan = 120
++      level_order = ["force", "jiandun_zhusuo"]
++      level_deny = {
++        force = "你的内力修为不够，学不成这招。"
++        jiandun_zhusuo = "你的剑盾珠索还练得不到家，自己下去练练再来吧！"
+       }
+-      min_gongxian = 400
+-      min_shen = 65000
+-      cost_gongxian = 400
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+-      skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-    战神轰天诀 = {
+-      perform_id = "zhanshen-xinjing/hong"
+-      skill = "zhanshen-xinjing"
++      min_gongxian = 1200
++      min_shen = 100000
++      cost_gongxian = 1200
++      family = "红花会"
++      maxed = "这招我不是早就传授给你了吗？"
++      family_deny = "和本会素无瓜葛，何出此言？"
++      skill_deny = "你连剑盾珠索都没学，还谈什么绝招可言？"
++      gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n对$N赞许地点了点头，道：“既然你如此有心，今日我便传你此招。”$n招了招手，$N连忙走上前去，只见$n轻声在$N说了些话，接着手中长索一抖，登时幻出漫天鞭影，宛如蛟龙通天，无数鞭影向四面八方劲点而去。"
++      learned = "你学会了「千头万绪」。"
++      improve_skills = ["whip", "jiandun_zhusuo", "martial_cognize"]
++    } },
++    { key = "化蝶" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
++      perform_id = "zhuangzi-wu/hua"
++      skill = "zhuangzi-wu"
+       min_levels = {
+-        force = 260
+-        zhanshen_xinjing = 200
++        dex = 32
++        max_neili = 2000
++        zhuangzi_wu = 150
+       }
+-      min_gongxian = 800
+-      min_shen = 65000
+-      cost_gongxian = 800
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
+-      skill_deny = "你连战神心经都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-    百花错乱 = {
++      level_order = ["dex", "max_neili", "zhuangzi_wu"]
++      level_deny = {
++        dex = "你的身法灵动性不足，学不成这招。"
++        max_neili = "你的内力修为不够，学不成这招。"
++        zhuangzi_wu = "你的庄子舞还练得不到家，自己下去练练再来吧！"
++      }
++      min_dex = 32
++      min_gongxian = 1000
++      min_shen = 100000
++      cost_gongxian = 1000
++      family = "红花会"
++      maxed = "这招我不是已经教给你了吗？"
++      family_deny = "和本会素无瓜葛，何出此言？"
++      skill_deny = "你连庄子舞都没学，还谈什么绝招可言？"
++      gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n微微一笑，对$N点头道：“你今日有此造诣，传你这招，又有何难？”说话随即一声清啸，身形一展，舞步宛如行云流水、彩蝶飞扬般，速度变得异常敏捷。$N见得如此神妙的舞步，不禁赞叹不已。"
++      learned = "你学会了「化蝶」。"
++      improve_skills = ["dodge", "force", "zhuangzi_wu", "martial_cognize"]
++    } },
++    { key = "百花错乱" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "baihua-cuoquan/luan"
+       skill = "baihua-cuoquan"
+       min_levels = {
+-        force = 200
+-        baihua_cuoquan = 160
++        max_neili = 2000
++        baihua_cuoquan = 120
+       }
+-      min_gongxian = 600
+-      min_shen = 65000
+-      cost_gongxian = 600
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
++      level_order = ["max_neili", "baihua_cuoquan"]
++      level_deny = {
++        max_neili = "你的内力修为不够，学不成这招。"
++        baihua_cuoquan = "你的百花错拳还练得不到家，自己下去练练再来吧！"
++      }
++      min_gongxian = 400
++      min_shen = 80000
++      cost_gongxian = 400
++      family = "红花会"
++      maxed = "这招我不是已经教给你了吗？"
++      family_deny = "和本会素无瓜葛，何出此言？"
+       skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-    百花错易 = {
++      gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n对$N点了点头，说道：“我给你演示一遍，可要仔细看好了。”说罢只见$n顿步沉身，双掌交错打出，掌锋拳影重重叠叠，虚实难辨。"
++      learned = "你学会了「百花错乱」。"
++      improve_skills = ["unarmed", "baihua_cuoquan", "martial_cognize"]
++    } },
++    { key = "百花错易" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "baihua-cuoquan/yi"
+       skill = "baihua-cuoquan"
+       min_levels = {
+-        force = 220
+-        baihua_cuoquan = 180
++        max_neili = 3000
++        force = 280
++        baihua_cuoquan = 150
+       }
+-      min_gongxian = 700
+-      min_shen = 65000
+-      cost_gongxian = 700
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
++      level_order = ["max_neili", "force", "baihua_cuoquan"]
++      level_deny = {
++        max_neili = "你的内力修为不够，学不成这招。"
++        force = "你的内功修为不够，学不成这招。"
++        baihua_cuoquan = "你的百花错拳还练得不到家，自己下去练练再来吧！"
++      }
++      min_gongxian = 1000
++      min_shen = 100000
++      cost_gongxian = 1000
++      family = "红花会"
++      maxed = "这招我不是已经教给你了吗？"
++      family_deny = "和本会素无瓜葛，何出此言？"
+       skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-    缚字诀 = {
+-      perform_id = "baihua-cuoquan/fu"
++      gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n对$N微微一笑，说道：“看好了！”只听$n话音刚落，随即大喝一声，双掌纷飞，擒拿手中夹着鹰爪功，左手查拳，右手绵掌。攻出去八卦掌，收回时已是太极拳，诸家杂陈，毫无规律，铺天盖地连续贯出。气势恢弘，无与伦比。只看得$N呆立当场，不知所措。"
++      learned = "你学会了「百花错易」。"
++      improve_skills = ["unarmed", "baihua_cuoquan", "martial_cognize"]
++    } },
++    { key = "战神轰天诀" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
++      perform_id = "baihua-cuoquan/hong"
+       skill = "baihua-cuoquan"
+       min_levels = {
+-        force = 160
+-        baihua_cuoquan = 120
++        max_neili = 5000
++        baihua_cuoquan = 250
++        zhanshen_xinjing = 250
+       }
+-      min_gongxian = 300
+-      min_shen = 65000
+-      cost_gongxian = 300
+-      maxed = "这招我不是已经教会你了吗？"
+-      family_deny = "你又不是我红花会的，跑来捣什么乱？"
++      level_order = ["max_neili", "baihua_cuoquan", "zhanshen_xinjing"]
++      level_deny = {
++        max_neili = "你的内力修为不够，学不成这招。"
++        baihua_cuoquan = "你的百花错拳还练得不到家，自己下去练练再来吧！"
++        zhanshen_xinjing = "你的战神心经修为不够，自己下去练练再来吧！"
++      }
++      min_gongxian = 2500
++      min_shen = 150000
++      cost_gongxian = 2500
++      family = "红花会"
++      maxed = "我已将拳诀尽数传予了你，还有什么疑问？"
++      family_deny = "和本会素无瓜葛，何出此言？"
+       skill_deny = "你连百花错拳都没学，还谈什么绝招可言？"
+-      gongxian_deny = "你在我红花会内甚无作为，这招我暂时还不能传你。"
+-      shen_deny = "你的侠义正事还做得不够，这招我暂时还不能传你。"
+-      level_deny = "你的内功修为不够，修炼高后再来找我吧。"
+-    }
+-  }
++      gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n对$N微微一笑，叹道：“你今日造诣非凡，确有能力继承我这拳法，我先将总诀说予你听罢。方今之时，臣以神遇，而不以目视，官知止而神欲行，依乎天理，批大却，导大窍，因其固然……”$N听得满脸迷茫，问道：“师父，这…不是《庄子》中庖丁解……”$n笑道：“起初我也是这般的怀疑，但破敌秘诀，却尽都在此。”说完便接着沉吟道：“行为迟，动刀甚微，孑然已解，如土委地，提刀而立，为之四顾，为之踌躇满志……”良久，良久……。"
++      learned = "你学会了「战神轰天诀」。"
++      improve_skills = ["unarmed", "unarmed", "unarmed", "baihua_cuoquan", "baihua_cuoquan", "baihua_cuoquan", "force", "force", "force", "zhanshen_xinjing", "zhanshen_xinjing", "zhanshen_xinjing", "martial_cognize"]
++    } }
++  ]
+ 
+   teach = {
+     family = "红花会"
+@@ -20119,13 +20659,24 @@ teach = {
+ 
+   apprentice = {
+     family = "红花会"
++    permit_recruit = true
++    gate_order = "lpc_honghua_chen"
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = 65000
++    min_shen_deny = "我红花会乃为救天下苍生而建，所做的一切无不以侠义为重。阁下在德行方面，似乎还做得不够。"
+     min_exp = 400000
+-    min_max_neili = 2000
++    min_exp_deny = "你的江湖经验太浅，我就算收了你，恐怕你也难有所作为。"
+     min_skills = {
+       honghua_xinfa = 100
+     }
+-    max_neili_deny = "大侠内力修为不足，暂不宜学红花会绝技。\n"
++    min_skills_deny = {
++      honghua_xinfa = "你本门的内功心法都未练透，如何跟我习高深的武学？"
++    }
++    min_max_neili = 2000
++    max_neili_deny = "我的武功全需强大的内功为辅，阁下似乎应该多练练内力。"
++    accept_msg = "不错，不错。念在你如此有心，又乃我侠义中人，今日我便收下你。希望阁下日后多行善事，为我红花会发扬壮大。"
+   }
+ 
+   skills = [
+@@ -20213,6 +20764,9 @@ teach = {
+   ]
+ 
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["staff.lun", "powerup", "recover"]
++
+   teach = {
+     family = "红花会"
+     teach_skills = {
+@@ -20266,7 +20820,12 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = -1000
++    min_shen_deny = "我红花会不收不义之人，你还是走吧。"
++    accept_msg = "嗯。那我就收下你吧。"
+   }
+ 
+   carry = [
+@@ -20299,79 +20858,134 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["unarmed.xuan", "sword.tao", "throwing.xian", "shield", "powerup", "recover"]
++
++  inquiry_state = {
++    zhen_count = 3
++  }
++
+   inquiries = [
++    { key = "芙蓉金针" value = {
++      kind = "give_item"
++      item = "kaifeng:jinzhen"
++      match = "jinzhen"
++      count = "zhen_count"
++      unique = false
++      allowed_families = ["红花会", "武当派"]
++      min_skill_levels = {
++        furong_jinzhen = 80
++      }
++      min_skill_deny = "你芙蓉金针的手法还不到家，拿了芙蓉金针也没什么用。"
++      exhausted = "我又不是卖这个的，哪里带得了这么多。"
++      vision_name = "陆菲青"
++      success = "既然这样，我这儿的芙蓉金针你就先拿去用吧。"
++    } },
++    { key = "白龙剑" value = {
++      kind = "give_item"
++      item = "clone_lib:bailongjian"
++      match = "bailongjian"
++      unique = true
++      allowed_families = ["红花会", "武当派"]
++      family_denies = {
++        武当派 = "你虽和我同在武当，但这配剑是我随身之物，现大敌当前，不便交予。"
++      }
++      allowed_master_ids = ["chen jialuo", "wuchen daozhang", "zhao banshan"]
++      master_before_gates = true
++      min_shen = 30000
++      min_skill_levels = {
++        rouyun_jian = 150
++      }
++      family_deny = "贫道与阁下素不相识，不知阁下无故打听在下的配剑究是为何？"
++      master_deny = "我与你师父不熟，这白龙剑不能交给你。"
++      min_shen_deny = "学武之人，自应以德义为先。我的配剑不会随便给人，你走吧。"
++      min_skill_deny = "你还是先在贫道这里把柔云剑法练成之后再说吧。"
++      already = "嗯？贫道的白龙宝剑不就在你身上吗？"
++      vision_name = "陆菲青"
++      success = "配剑你拿去吧，但切记行走江湖侠义为重，莫坏了红花会的名声。"
++    } },
++    { key = "金针现影" value = {
++      kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
++      perform_id = "furong-jinzhen/xian"
++      skill = "furong-jinzhen"
++      allowed_families = ["红花会", "武当派"]
++      min_levels = {
++        force = 120
++        furong_jinzhen = 80
++      }
++      level_order = ["force", "furong_jinzhen"]
++      level_deny = {
++        force = "你的内功火候不足，用不了这一招！"
++        furong_jinzhen = "你芙蓉金针尚未修炼得精深，难以运用此招。"
++      }
++      min_gongxian = 300
++      min_shen = 30000
++      cost_gongxian = 300
++      maxed = "自己下去练，能教的我都尽数教给你了。"
++      family_deny = "贫道与阁下素无渊源，不知阁下这话从何而来？"
++      skill_deny = "你连芙蓉金针都没学，还谈什么绝招可言？"
++      gongxian_deny = "嗯，你对本门所作的贡献不够，这招我不传你。"
++      shen_deny = "你侠义正事做得不够，这招我不能传你。"
++      msg_one = "$n对$N笑了笑，俯身从腰囊中拈出一根金针，轻轻弹出，顿时只听“飕”的一声，金针化作一道金芒，没入$N脚跟前的青石地，只留下一个小孔。"
++      learned = "你学会了「金针现影」。"
++      improve_skills = ["throwing", "furong_jinzhen", "martial_cognize"]
++    } },
+     { key = "三环套月" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "rouyun-jian/tao"
+       skill = "rouyun-jian"
++      allowed_families = ["红花会", "武当派"]
+       min_levels = {
+-        rouyun_jian = 140
+-        dodge = 180
+         force = 180
++        dodge = 180
++        rouyun_jian = 140
++      }
++      level_order = ["force", "dodge", "rouyun_jian"]
++      level_deny = {
++        force = "你的内功修行太浅，用不了这一招！"
++        dodge = "你的轻功修为不够，用不了这一招！"
++        rouyun_jian = "你柔云剑法尚未修炼得精深，难以运用此招。"
+       }
+       min_gongxian = 700
+       min_shen = 60000
+       cost_gongxian = 700
+-      family = "红花会"
++      maxed = "这招你不是已经学会了吗？"
+       family_deny = "贫道与阁下素无渊源，不知阁下这话从何而来？"
+       skill_deny = "你连柔云剑法都没学，还谈什么绝招可言？"
+-      gongxian_deny = "嗯，你对红花会所作的贡献不够，这招我不传你。"
++      gongxian_deny = "嗯，你对本门所作的贡献不够，这招我不传你。"
+       shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-      level_deny = {
+-        rouyun_jian = "你柔云剑法尚未修炼得精深，难以运用此招。"
+-        dodge = "你的轻功修为不够，用不了这一招！"
+-        force = "你的内功修行太浅，用不了这一招！"
+-      }
+-      maxed = "这招你不是已经学会了吗？"
++      msg_one = "$n微微一笑，从怀中轻轻取出了一本剑谱，指着其中一段对$N细说良久，$N一边听一边点头。"
+       learned = "你学会了「三环套月」。"
++      improve_skills = ["sword", "rouyun_jian", "martial_cognize"]
+     } },
+     { key = "玄功无极劲" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "xuangong-quan/xuan"
+       skill = "xuangong-quan"
++      allowed_families = ["红花会", "武当派"]
+       min_levels = {
+-        xuangong_quan = 120
+         force = 160
++        xuangong_quan = 120
++      }
++      level_order = ["force", "xuangong_quan"]
++      level_deny = {
++        force = "你的内功修行太浅，用不了这一招！"
++        xuangong_quan = "你无极玄功拳尚未修炼得精深，难以运用此招。"
+       }
+       min_gongxian = 400
+       min_shen = 50000
+       cost_gongxian = 400
+-      family = "红花会"
++      maxed = "这招我已经教过你了，自己下去练吧。"
+       family_deny = "贫道与阁下素无渊源，不知阁下这话从何而来？"
+       skill_deny = "你连无极玄功拳都没学，还谈什么绝招可言？"
+-      gongxian_deny = "嗯，你对红花会所作的贡献不够，这招我不传你。"
++      gongxian_deny = "嗯，你对本门所作的贡献不够，这招我不传你。"
+       shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-      level_deny = {
+-        xuangong_quan = "你无极玄功拳尚未修炼得精深，难以运用此招。"
+-        force = "你的内功修行太浅，用不了这一招！"
+-      }
+-      maxed = "这招我已经教过你了，自己下去练吧。"
++      msg_one = "$n点了点头，将$N招至身边，在耳旁低声细说良久，$N听后会心的一笑，看来大有所悟。"
+       learned = "你学会了「玄功无极劲」。"
+-    } },
+-    { key = "白龙剑" value = " inquire about jian (unimplemented)" },
+-    { key = "芙蓉金针" value = " inquire about zhen (unimplemented)" },
+-    { key = "金针现影" value = {
+-      kind = "sect_master_grant"
+-      perform_id = "furong-jinzhen/xian"
+-      skill = "furong-jinzhen"
+-      min_levels = {
+-        furong_jinzhen = 80
+-        force = 120
+-      }
+-      min_gongxian = 300
+-      min_shen = 30000
+-      cost_gongxian = 300
+-      family = "红花会"
+-      family_deny = "贫道与阁下素无渊源，不知阁下这话从何而来？"
+-      skill_deny = "你连芙蓉金针都没学，还谈什么绝招可言？"
+-      gongxian_deny = "嗯，你对红花会所作的贡献不够，这招我不传你。"
+-      shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-      level_deny = {
+-        furong_jinzhen = "你芙蓉金针尚未修炼得精深，难以运用此招。"
+-        force = "你的内功火候不足，用不了这一招！"
+-      }
+-      maxed = "自己下去练，能教的我都尽数教给你了。"
+-      learned = "你学会了「金针现影」。"
++      improve_skills = ["unarmed", "xuangong_quan", "martial_cognize"]
+     } }
+   ]
+ 
+@@ -20461,6 +21075,12 @@ teach = {
+   ]
+ 
+ 
++  apprentice = {
++    family = "红花会"
++    deny_all = true
++    deny_msg = "我不收徒，若要拜师你直接去武当山好了。"
++  }
++
+   carry = [
+     { id = items.greyrobe.id }
+   ]
+@@ -20491,29 +21111,36 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["blade.ying", "powerup", "recover"]
++
+   inquiries = [
+     { key = "刀影重重" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "hanwang-qingdao/ying"
+       skill = "hanwang-qingdao"
+       min_levels = {
+-        hanwang_qingdao = 80
+         force = 120
++        hanwang_qingdao = 80
++      }
++      level_order = ["force", "hanwang_qingdao"]
++      level_deny = {
++        force = "你的内功火候不足，学不了这一招！"
++        hanwang_qingdao = "你的韩王青刀还练得不到家，自己下去练练再来吧！"
+       }
+       min_gongxian = 80
+       min_shen = 5000
+       cost_gongxian = 80
+       family = "红花会"
++      maxed = "你不是已经会了吗？"
+       family_deny = "和本教素无瓜葛，何出此言？"
+       skill_deny = "你连韩王青刀都没学，何谈此言？"
+       gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+       shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-      level_deny = {
+-        hanwang_qingdao = "你的韩王青刀还练得不到家，自己下去练练再来吧！"
+-        force = "你的内功火候不足，学不了这一招！"
+-      }
+-      maxed = "你不是已经会了吗？"
++      msg_one = "$n点了点头，将$N招至身边，在耳旁低声细说良久，$N听后会心的一笑，看来大有所悟。"
+       learned = "你学会了「刀影重重」。"
++      improve_skills = ["blade", "hanwang_qingdao", "martial_cognize"]
+     } }
+   ]
+ 
+@@ -20570,7 +21197,12 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = -1000
++    min_shen_deny = "我红花会不收不义之人，你还是走吧。"
++    accept_msg = "既然这样，我就收下你好了。"
+   }
+ 
+   skills = [
+@@ -20644,6 +21276,9 @@ teach = {
+   ]
+ 
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["staff.lun", "powerup", "recover"]
++
+   teach = {
+     family = "红花会"
+     teach_skills = {
+@@ -20694,6 +21329,12 @@ teach = {
+     }
+   }
+ 
++  apprentice = {
++    family = "红花会"
++    deny_all = true
++    deny_msg = "你不收徒，你找其余当家的吧。"
++  }
++
+   carry = [
+     { id = items.cloth.id }
+   ]
+@@ -20725,29 +21366,36 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["strike.lei", "powerup", "recover"]
++
+   inquiries = [
+     { key = "雷霆万钧" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "benlei-zhang/lei"
+       skill = "benlei-zhang"
+       min_levels = {
+-        benlei_zhang = 120
+         force = 200
++        benlei_zhang = 120
++      }
++      level_order = ["force", "benlei_zhang"]
++      level_deny = {
++        force = "你的内功火候不足，学不成这一招。"
++        benlei_zhang = "你的霹雳奔雷掌还练得不到家，自己下去练练再来吧！"
+       }
+       min_gongxian = 600
+       min_shen = 20000
+       cost_gongxian = 600
+       family = "红花会"
++      maxed = "这招俺不是已经教给你了吗？"
+       family_deny = "和本教素无瓜葛，何出此言？"
+       skill_deny = "你连霹雳奔雷掌都没学，还谈什么绝招可言？"
+       gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+       shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-      level_deny = {
+-        benlei_zhang = "你的霹雳奔雷掌还练得不到家，自己下去练练再来吧！"
+-        force = "你的内功火候不足，学不成这一招。"
+-      }
+-      maxed = "这招俺不是已经教给你了吗？"
++      msg_one = "$n大笑数声，对$N说道：“想不到你的掌法居然能有如此造诣，今日我传你这招又何妨？”说罢，$n随即摆开架势，慢慢的演示招数。"
+       learned = "你学会了「雷霆万钧」。"
++      improve_skills = ["strike", "benlei_zhang", "martial_cognize"]
+     } }
+   ]
+ 
+@@ -20808,11 +21456,20 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = 10000
++    min_shen_deny = "哼，我文泰来从不收无义之人。"
+     min_exp = 150000
++    min_exp_deny = "你的江湖经验太浅，就算收了你，恐怕也难有作为。"
+     min_skills = {
+       honghua_xinfa = 60
+     }
++    min_skills_deny = {
++      honghua_xinfa = "你连本门内功心法都没练好，怎么习我高深的掌法？"
++    }
++    accept_msg = "不错，不错，你以后就跟着我吧。"
+   }
+ 
+   skills = [
+@@ -20887,6 +21544,9 @@ teach = {
+   ]
+ 
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["staff.lun", "powerup", "recover"]
++
+   teach = {
+     family = "红花会"
+     teach_skills = {
+@@ -20940,7 +21600,12 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = -1000
++    min_shen_deny = "我红花会不收不义之人，你还是走吧。"
++    accept_msg = "嗯。那你以后跟着我好了。"
+   }
+ 
+   carry = [
+@@ -20998,6 +21663,9 @@ teach = {
+   ]
+ 
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["unarmed.xuan", "sword.tao", "throwing.xian", "shield", "powerup", "recover"]
++
+   teach = {
+     family = "红花会"
+     teach_skills = {
+@@ -21056,6 +21724,16 @@ teach = {
+     }
+   }
+ 
++  apprentice = {
++    family = "红花会"
++    permit_recruit = true
++    gate_order = "lpc_honghua_yu"
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
++    deny_msg = "我不收徒，你找其余几位当家的好了。"
++  }
++
+   carry = [
+     { id = items.jinduan.id },
+     { id = items.jindi.id }
+@@ -21087,30 +21765,58 @@ teach = {
+     str = 30
+   }
+ 
++  chat_chance_combat = 100
++  chat_msg_combat = ["sword.chan", "throwing.cang", "powerup", "recover"]
++
+   inquiries = [
+-    { key = "回龙璧" value = " inquire about bi (unimplemented)" },
++    { key = "回龙璧" value = {
++      kind = "give_item"
++      item = "clone_lib:huilongbi"
++      match = "huilongbi"
++      unique = true
++      family = "红花会"
++      allowed_master_ids = ["chen jialuo", "wuchen daozhang", "zhao banshan"]
++      master_before_gates = true
++      skill_before_shen = true
++      min_skill_levels = {
++        huilong_bifa = 150
++      }
++      min_shen = 30000
++      family_deny = "嘿，你是哪里来的？我可不认识你。"
++      master_deny = "这个…你师父说了，不能太宠着你，过些日子吧。"
++      min_skill_deny = "等你回龙璧法练成后再来找我，快下去练练。"
++      min_shen_deny = "哎呀呀，我这倒不是吝啬，可是你的德行也……"
++      already = "我的回龙璧不正是你拿着在用吗，为何还反倒问起我来了？"
++      exhausted = "你来晚了，回龙璧现在并不在我手中。"
++      vision_name = "赵半山"
++      success = "既然这样，我这支回龙璧你就暂时拿去用吧。"
++    } },
+     { key = "掌藏龙" value = {
+       kind = "sect_master_grant"
++      gate_order = "lpc_honghua"
+       perform_id = "huilong-bifa/cang"
+       skill = "huilong-bifa"
+       min_levels = {
+-        huilong_bifa = 120
+         force = 160
++        huilong_bifa = 120
++      }
++      level_order = ["force", "huilong_bifa"]
++      level_deny = {
++        force = "你的内功火候不足，学不成这一招。"
++        huilong_bifa = "你的回龙璧法还练得不到家，自己下去练练再来吧！"
+       }
+       min_gongxian = 600
+       min_shen = 30000
+       cost_gongxian = 600
+       family = "红花会"
++      maxed = "这招我不是早传授给你了吗？"
+       family_deny = "和本教素无瓜葛，何出此言？"
+       skill_deny = "你连回龙璧法都没学，还谈什么绝招可言？"
+       gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+       shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-      level_deny = {
+-        huilong_bifa = "你的回龙璧法还练得不到家，自己下去练练再来吧！"
+-        force = "你的内功火候不足，学不成这一招。"
+-      }
+-      maxed = "这招我不是早传授给你了吗？"
++      msg_one = "$n哈哈一笑，将$N招至跟前，轻声在耳旁秘密说了些什么。随后又伸出右手，十指箕张，一伸一缩，看样子是一种很特别的暗器法门。"
+       learned = "你学会了「掌藏龙」。"
++      improve_skills = ["throwing", "huilong_bifa", "martial_cognize"]
+     } }
+   ]
+ 
+@@ -21179,11 +21885,20 @@ teach = {
+   apprentice = {
+     family = "红花会"
+     permit_recruit = true
++    betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++    betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++    other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
+     min_shen = 15000
++    min_shen_deny = "你侠义之事做得太少，需要多多注意。"
+     min_exp = 200000
++    min_exp_deny = "你的江湖经验太浅，还是先跟着其它几位当家练练吧。"
+     min_skills = {
+       honghua_xinfa = 80
+     }
++    min_skills_deny = {
++      honghua_xinfa = "你下去把本门的心法练好了再来找我。"
++    }
++    accept_msg = "念在你如此有心，我便收下你好了。"
+   }
+ 
+   skills = [
+diff --git a/data/world/kaifeng.ucl b/data/world/kaifeng.ucl
+index 4d46ced4..8de68580 100644
+--- a/data/world/kaifeng.ucl
++++ b/data/world/kaifeng.ucl
+@@ -5159,75 +5159,133 @@ chats = [
+         }
+       }
+ 
+-      # LPC: kungfu/class/honghua/wuchen.c ask_skill1..3 —— 三门绝招问答授艺。
+-      # fidelity 缺口（不影响门控语义）：
+-      #   - ask_skill3 的「须先会 zhuihun-jian/zhui」前置绝招条件未进管线；
+-      #   - message_vision 演示描写 / command("haha"|"say") 台词未回填；
+-      #   - force 与轻功/绝招技能各有独立等级文案，此处合用一条 level_deny
+-      #     （取 LPC 先判的 force 文案）。
++      # LPC: kungfu/class/honghua/wuchen.c ask_skill1..3 —— 内联 ask_skill*
++      # 原序：已会 → 同门 → 本招技能存在 → gongxian → shen → 前置绝招 →
++      # force / dodge / max_neili / 本招技能（各有逐字文案）。
+       inquiries = {
+         夺命连环 = {
++          kind = "sect_master_grant"
++          gate_order = "lpc_honghua"
+           perform_id = "lianhuan-mizongtui/lian"
+           skill = "lianhuan-mizongtui"
+-          min_gongxian = 600
+-          min_shen = 50000
+-          min_max_neili = 1800
+           min_levels = {
+             force = 150
+             dodge = 150
++            max_neili = 1800
+             lianhuan_mizongtui = 120
+           }
++          level_order = ["force", "dodge", "max_neili", "lianhuan_mizongtui"]
++          level_deny = {
++            force = "你的内功火候不足，学不成这招。"
++            dodge = "你的轻功火候不足，学不成这招。"
++            max_neili = "你的内力修为不够，学不成这招。"
++            lianhuan_mizongtui = "你的连环迷踪腿还练得不到家，自己下去练练再来吧！"
++          }
++          min_gongxian = 600
++          min_shen = 50000
+           cost_gongxian = 600
++          family = "红花会"
+           maxed = "这招俺不是已经教给你了吗？"
+-          family_deny = "大侠和本会素无瓜葛，何出此言？"
++          family_deny = "和本会素无瓜葛，何出此言？"
+           skill_deny = "你连连环迷踪腿都没学，还谈什么绝招可言？"
+           gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+           shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-          level_deny = "你的内功火候不足，学不成这招。"
+-          max_neili_deny = "你的内力修为不够，学不成这招。"
++          msg_one = "{name}大笑数声，对{npc}说道：“想不到你的腿法居然能有如此造诣，今日我传你这招又何妨？”说罢，{name}随即摆开架势，慢慢的演示招数。"
++          learned = "你学会了「夺命连环」。"
++          improve_skills = ["unarmed", "lianhuan_mizongtui", "martial_cognize"]
+         }
+ 
+         追魂夺命 = {
++          kind = "sect_master_grant"
++          gate_order = "lpc_honghua"
+           perform_id = "zhuihun-jian/zhui"
+           skill = "zhuihun-jian"
+-          min_gongxian = 300
+-          min_shen = 35000
+-          min_max_neili = 800
+           min_levels = {
+             force = 120
++            max_neili = 800
+             zhuihun_jian = 100
+           }
++          level_order = ["force", "max_neili", "zhuihun_jian"]
++          level_deny = {
++            force = "你的内功火候不足，学不成这招。"
++            max_neili = "你的内力修为不够，学不成这招。"
++            zhuihun_jian = "你的追魂夺命剑还练得不到家，自己下去练练再来吧！"
++          }
++          min_gongxian = 300
++          min_shen = 35000
+           cost_gongxian = 300
++          family = "红花会"
+           maxed = "自己下去练，别跟我纠缠个没完！"
+-          family_deny = "大侠和本会素无瓜葛，何出此言？"
++          family_deny = "和本会素无瓜葛，何出此言？"
+           skill_deny = "你连追魂夺命剑都没学，还谈什么绝招可言？"
+           gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+           shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-          level_deny = "你的内功火候不足，学不成这招。"
+-          max_neili_deny = "你的内力修为不够，学不成这招。"
++          msg_one = "{name}点了点头，从怀中轻轻取出了一本剑谱，指着其中一段对{npc}细说良久，{npc}一边听一边点头。"
++          learned = "你学会了「追魂夺命」。"
++          improve_skills = ["sword", "zhuihun_jian", "martial_cognize"]
+         }
+ 
+         诛天刹神 = {
++          kind = "sect_master_grant"
++          gate_order = "lpc_honghua"
+           perform_id = "zhuihun-jian/zhu"
+           skill = "zhuihun-jian"
+-          min_gongxian = 1200
+-          min_shen = 80000
+-          min_max_neili = 1800
+           min_levels = {
+             force = 200
++            max_neili = 1800
+             zhuihun_jian = 160
+           }
++          level_order = ["force", "max_neili", "zhuihun_jian"]
++          level_deny = {
++            force = "你的内功火候不足，学不成这招。"
++            max_neili = "你的内力修为不够，学不成这招。"
++            zhuihun_jian = "你的追魂夺命剑还练得不到家，自己下去练练再来吧！"
++          }
++          requires_performs = ["zhuihun-jian/zhui"]
++          requires_perform_deny = "这招是由「追魂夺命」演化而来，等你通晓那招后再来吧。"
++          min_gongxian = 1200
++          min_shen = 80000
+           cost_gongxian = 1200
++          family = "红花会"
+           maxed = "多说无益，赶快去练功，以后行侠仗义就靠你们了。"
+-          family_deny = "大侠和本会素无瓜葛，何出此言？"
++          family_deny = "和本会素无瓜葛，何出此言？"
+           skill_deny = "你连追魂夺命剑都没学，还谈什么绝招可言？"
+           gongxian_deny = "你在会中所作的贡献还不够，这招我不忙传你。"
+           shen_deny = "你侠义正事做得不够，这招我不能传你。"
+-          level_deny = "你的内功火候不足，学不成这招。"
+-          max_neili_deny = "你的内力修为不够，学不成这招。"
++          msg_one = "{name}凝视了{npc}好一会儿，随即大笑数声，赞道：“不错，不错。今日我传你这招，可要看好了！”{name}话音刚落，随即便一声清啸，手中长剑龙吟不止，迸出万道光华疾闪而过。顿时只见石屑飞溅，只听“嗤”的一声，{npc}对面的青石桌案竟已被{name}手中长剑激荡出的剑芒贯穿，砖地尚留下碗口粗的大洞，直看得{npc}目瞪口呆，半天说不出一句话。"
++          learned = "你学会了「诛天刹神」。"
++          improve_skills = ["sword", "zhuihun_jian", "martial_cognize"]
++        }
++      }
++
++      # LPC kungfu/class/honghua/honghua.h permit_recruit 三问 +
++      # kungfu/class/honghua/wuchen.c attempt_apprentice:
++      # permit → shen 20000 → combat_exp 350000 → 红花心法 80 → sword 80。
++      apprentice = {
++        family = "红花会"
++        permit_recruit = true
++        betray_sect_deny = "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++        betray_times_deny = "哼，阁下不忠不信，我们红花会可不会收留。"
++        other_family_deny = "阁下既有了师承，还来我们红花会做什么？"
++        min_shen = 20000
++        min_shen_deny = "你非我侠义中人，我不能收你。"
++        min_exp = 350000
++        min_exp_deny = "你的江湖经验太浅，就算收了你，恐怕也难有作为。"
++        min_skills = {
++          honghua_xinfa = 80
++          sword = 80
+         }
++        recruit_skill_order = ["honghua_xinfa", "sword"]
++        min_skills_deny = {
++          honghua_xinfa = "你内功修炼得太差，下去把本门的心法练好了再来。"
++          sword = "你的剑法练成这样，叫我如何传你精深的剑技？"
++        }
++        accept_msg = "既然如此，那你以后就跟着我好了。"
+       }
+ 
++      chat_chance_combat = 100
++      chat_msg_combat = ["sword.zhu", "sword.zhui", "unarmed.lian", "powerup", "recover"]
++
+       # LPC: kungfu/class/honghua/wuchen.c
+       #   create_family("红花会", 4, "当家") —— 门派身份供同门校验/授技读取
+       teach = {
+diff --git a/lib/kantele/sect_master.ex b/lib/kantele/sect_master.ex
+index bcd7e927..d5f6024d 100644
+--- a/lib/kantele/sect_master.ex
++++ b/lib/kantele/sect_master.ex
+@@ -367,6 +367,29 @@ defmodule Kantele.SectMaster do
+         gate_order == "lpc_wudu" ->
+           wudu_recruit_gate(student, config, exp, family_name)
+ 
++        # #986 丐帮 gaibang.h permit_recruit + 10 位可收徒师父
++        # （ada/jian/liang 走 deny_all，不进本函数）。门序与 LPC 逐条 return 一致：
++        # permit(3) → exp → shen → beggarlvl → force(min_skills) → 属性门 → max_neili。
++        gate_order == "lpc_gaibang" ->
++          gaibang_recruit_gate(student, config, exp, family_name)
++
++        # #1006 古墓派 yang.c attempt_apprentice：permit(gumu.h 三问) → str →
++        # 玉女心经 → max_neili。缺省 permit_first 把 max_neili 放在技能之前且无 str 门，
++        # 两门同时失败时文案与 LPC 相反，故独立门序（仅杨过启用，其余三师父走缺省）。
++        gate_order == "lpc_gumu_yang" ->
++          gumu_yang_recruit_gate(student, config, family_name)
++
++        # #1010 红花会陈家洛 chen.c:129-167：honghua.h permit → shen → combat_exp →
++        # honghua-xinfa → max_neili。缺省 permit_first 把 max_neili 放在经验之前，
++        # 两门同时失败时文案与 LPC 相反，故独立门序。
++        gate_order == "lpc_honghua_chen" ->
++          honghua_chen_recruit_gate(student, config, family_name)
++
++        # #1010 红花会余鱼同 yu.c:95-102：先走 honghua.h permit，再无条件拒收。
++        # 不能直接用 deny_all（会跳过 permit 三问），故单列门序。
++        gate_order == "lpc_honghua_yu" ->
++          honghua_yu_recruit_gate(student, config, family_name)
++
+         # 性别门控（清无 gate_order="gender_first" 时置于 permit_recruit 之前，对齐 LPC）
+         gate_order == "gender_first" and
+           gender not in [nil, ""] and
+@@ -899,6 +922,12 @@ defmodule Kantele.SectMaster do
+       # #973 五毒教 qiyunao 三绝招 + hetieshou 锁龙诀：已会 → 同门 → 杀气(负上界)
+       # → 贡献 → 等级链。与 lpc_ouyang 的差别：杀气在贡献**之前**（ouyang 相反）。
+       "lpc_wudu" -> inquiry_grant_wudu(player_stats, npc_stats, config)
++      # #986 丐帮绝招：masterd.c teach_pfm 原序 + 洪七公天下无狗的 beggarlvl≥9
++      # 与四棒诀前置门（requires_performs，lpc_masterd 路径未消费）。
++      "lpc_gaibang" -> inquiry_grant_gaibang(player_stats, npc_stats, config)
++      # #1010 红花会 16 条内联 ask_skill*：已会 → 同门 → 技能存在 → 贡献 → 侠义 →
++      # 前置绝招 → 有序等级链（dex/max-neili/force/dodge/本招技能各有逐字文案）。
++      "lpc_honghua" -> inquiry_grant_honghua(player_stats, npc_stats, config)
+       _ -> inquiry_grant_default(player_stats, npc_stats, config)
+     end
+   end
+@@ -1125,6 +1154,143 @@ defmodule Kantele.SectMaster do
+     end
+   end
+ 
++  # #986 丐帮绝招：LPC 各师父 ask_skill* 是内联门序，不交 masterd.c。
++  # 与缺省路径逐条一致，仅 hong.c ask_skill7「天下无狗」在 shen 之后多两门：
++  #   `query("family/beggarlvl") < 9` → 四棒诀前置门 → force/打狗棒法等级。
++  # 这两门必须插在技能链之前：若外包在 default 成功之后，低内力会先命中
++  # level_deny 文案，与 LPC 返回次序不符。袋数缺省 0（ex 无持久列，见 GAP #996）。
++  defp inquiry_grant_gaibang(player_stats, npc_stats, config) do
++    player = normalize_stats(player_stats)
++    npc = normalize_stats(npc_stats)
++
++    perform_id = Map.get(config, "perform_id")
++    skill = Map.get(config, "skill")
++    cost = Map.get(config, "cost_gongxian", 0) || 0
++    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
++    max_shen = Map.get(config, "max_shen")
++    min_shen = Map.get(config, "min_shen")
++    min_levels = Map.get(config, "min_levels", %{}) || %{}
++    min_beggarlvl = Map.get(config, "min_beggarlvl")
++    required_mark = Map.get(config, "required_mark")
++    marks = Map.get(player, :marks) || %{}
++    skip_family = Map.get(config, "no_family_check") in [true, "true"]
++    any_skills = Map.get(config, "any_min_skills", %{}) || %{}
++
++    cond do
++      is_nil(perform_id) ->
++        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
++
++      perform_known?(player, perform_id) ->
++        {:error, deny(config, "maxed", "你这一招我不是已经教过你了吗？\n")}
++
++      is_binary(required_mark) and Map.get(marks, required_mark) in [nil, 0, false] ->
++        {:error, deny(config, "mark_deny", "我与阁下毫无瓜葛，为何有此一问？\n")}
++
++      not skip_family and not same_family?(player, npc) ->
++        {:error, deny(config, "family_deny", "你我并非同门，何来讨教绝招之说？\n")}
++
++      is_binary(skill) and skill_level_of(player, skill) < 1 ->
++        {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？\n")}
++
++      any_min_skills_failing_stats?(player, any_skills) ->
++        {:error, deny(config, "any_min_skills_deny", "你一样功夫都没学，捣什么乱？\n")}
++
++      is_integer(max_shen) and stat(player, :shen) > max_shen ->
++        {:error, deny(config, "max_shen_deny", "像你这样心慈手软，就算学了这招也干不了大事！\n")}
++
++      stat(player, :gongxian) < min_gongxian ->
++        {:error, deny(config, "gongxian_deny", "你为本派效力还不够，这招我先不忙传你。\n")}
++
++      is_integer(min_shen) and stat(player, :shen) < min_shen ->
++        {:error, deny(config, "shen_deny", "这一招太过阴恨，若被你用去我恐怕不放心！\n")}
++
++      is_integer(min_beggarlvl) and (Map.get(player, :beggarlvl) || 0) < min_beggarlvl ->
++        {:error, deny_lf(config, "beggarlvl_deny", "你在帮中的辈分还不够，等成为长老再说吧。")}
++
++      not requires_performs_known?(player, config) ->
++        {:error, deny_lf(config, "requires_perform_deny", "你连前两招都未练成，怎么学这最后一招？")}
++
++      exceeds_max_levels?(player, config) ->
++        {:error, deny(config, "force_cap_deny", "你内功修为已入了旁门，本门绝招不能再传。\n")}
++
++      above_neili_cap?(player, config) ->
++        {:error, deny(config, "neili_cap_deny", "你的内力修为太深，本门剑法已不适合你。\n")}
++
++      not meets_levels?(player, min_levels) ->
++        {:error, level_deny_text(config, player, min_levels)}
++
++      below_max_neili?(player, config) ->
++        {:error, deny(config, "max_neili_deny", "你的内力修为不够，学不成这招。\n")}
++
++      below_min_dex?(player, config) ->
++        {:error, deny(config, "dex_deny", "你的身法太差，还需多加练习。\n")}
++
++      true ->
++        {:ok, perform_id, cost}
++    end
++  end
++
++  # #1010 红花会 16 条内联 ask_skill* 的逐条 return 顺序：
++  #   1) 已会(can_perform) → 2) 同门（陆菲青同时接受 红花会/武当派）→
++  #   3) 本招技能 < 1 → 4) gongxian → 5) shen → 6) 前置绝招（诛天刹神）→
++  #   7) level_order 有序门槛（dex / max-neili / force / dodge / 本招技能）。
++  # 与缺省路径相比，已会在同门前、技能存在在贡献前、等级链有固定顺序且每档独立文案；
++  # 与 lpc_masterd 相比，同门在已会后。所有新键缺省空/nil → 其它配置零影响。
++  defp inquiry_grant_honghua(player_stats, npc_stats, config) do
++    player = normalize_stats(player_stats)
++    npc = normalize_stats(npc_stats)
++
++    perform_id = Map.get(config, "perform_id")
++    skill = Map.get(config, "skill")
++    cost = Map.get(config, "cost_gongxian", 0) || 0
++    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
++    min_shen = Map.get(config, "min_shen")
++    min_levels = Map.get(config, "min_levels", %{}) || %{}
++
++    family_ok? =
++      case Map.get(config, "allowed_families") do
++        families when is_list(families) and families != [] ->
++          Enum.any?(families, &(&1 == Map.get(player, :family)))
++
++        _ ->
++          same_family?(player, npc)
++      end
++
++    cond do
++      is_nil(perform_id) ->
++        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
++
++      perform_known?(player, perform_id) ->
++        {:error, deny(config, "maxed", "这招我不是早传授给你了吗？")}
++
++      not family_ok? ->
++        {:error, deny(config, "family_deny", "大侠和本会素无瓜葛，何出此言？")}
++
++      is_binary(skill) and skill_level_of(player, skill) < 1 ->
++        {:error, deny(config, "skill_deny", "你连#{skill}都没学，还谈什么绝招可言？")}
++
++      stat(player, :gongxian) < min_gongxian ->
++        {:error, deny(config, "gongxian_deny", "你在会中所作的贡献还不够，这招我不忙传你。")}
++
++      is_integer(min_shen) and stat(player, :shen) < min_shen ->
++        {:error, deny(config, "shen_deny", "你侠义正事做得不够，这招我不能传你。")}
++
++      not requires_performs_known?(player, config) ->
++        {:error,
++         deny(
++           config,
++           "requires_perform_deny",
++           "这招是由前招演化而来，等你通晓那招后再来吧。"
++         )}
++
++      failing = first_failing_lpc_level(player, config, min_levels) ->
++        {:error, ordered_level_deny(config, failing)}
++
++      true ->
++        {:ok, perform_id, cost}
++    end
++  end
++
+   # 神龙教洪安通 ask_fei/ask_xian/ask_cui 的原始门序（hong.c:170/199/232）：
+   #   已会(perform) → 非同门 → shen 上界(负数，`shen > 上界` 即拒) → 主技能存在 → 通过。
+   # 与缺省/lpc_masterd 的差别：maxed 在 family 之前、max_shen 在 skill 之前。
+@@ -1229,12 +1395,10 @@ defmodule Kantele.SectMaster do
+         {:error, deny_lf(config, "family_deny", "不是我们五毒教的人，何出此言？")}
+ 
+       is_integer(max_shen) and stat(player, :shen) > max_shen ->
+-        {:error,
+-         deny_lf(config, "shen_deny", "像你这样心慈手软的人是干不成大事的！\n")}
++        {:error, deny_lf(config, "shen_deny", "像你这样心慈手软的人是干不成大事的！\n")}
+ 
+       stat(player, :gongxian) < min_gongxian ->
+-        {:error,
+-         deny_lf(config, "gongxian_deny", "你为我五毒教效力还不够，这招我先不忙传你。\n")}
++        {:error, deny_lf(config, "gongxian_deny", "你为我五毒教效力还不够，这招我先不忙传你。\n")}
+ 
+       failing = first_failing_ordered_level(player, order, min_levels) ->
+         {:error, ordered_level_deny(config, failing)}
+@@ -2152,8 +2316,7 @@ defmodule Kantele.SectMaster do
+ 
+       is_binary(reject_master) and student_master_name(student) == reject_master ->
+         # LPC 此处先 sneer emote 再 say；ex 仅 say（NPC emote 通道 GAP 已登记 §5）。
+-        {:error,
+-         deny_text(config, :reject_master_name_deny, "既然你已经跟随了那个贱人，却又来找我作甚？")}
++        {:error, deny_text(config, :reject_master_name_deny, "既然你已经跟随了那个贱人，却又来找我作甚？")}
+ 
+       failing = first_failing_shen_ladder(student, config) ->
+         {:error, failing}
+@@ -2188,6 +2351,242 @@ defmodule Kantele.SectMaster do
+     end
+   end
+ 
++  # #986 丐帮 `kungfu/class/gaibang/gaibang.h` permit_recruit 三条 + 10 位可收徒师父
++  # 的 attempt_apprentice 逐条门序（ada/jian/liang 无条件拒收，走 npc_shop_event 的
++  # deny_all，不进入本函数）。LPC 原序：
++  #   permit(离帮/叛师/他派) → combat_exp → shen → beggarlvl → force → 属性 → max_neili
++  # 与缺省 `permit_first` 的 `permit→shen→exp→skills` 不同（exp/shen 互换且有袋数/属性门），
++  # 故独立门序。所有新增字段缺省 nil → 对应门跳过，其它门派零影响。
++  defp gaibang_recruit_gate(student, config, exp, family_name) do
++    shen = Map.get(student_stats(student), :shen, 0) || 0
++    no_min_shen = Map.get(config, :no_min_shen) == true
++    min_shen = Map.get(config, :min_shen, 0) || 0
++    min_exp = Map.get(config, :min_exp, 0) || 0
++    min_skills = Map.get(config, :min_skills, %{}) || %{}
++    skill_order = Map.get(config, :recruit_skill_order, []) || []
++    accept = deny_text(config, :accept_msg, "好吧，你以后就跟着我吧。")
++
++    cond do
++      # gaibang.h 三条，顺序与 LPC 逐条 return 一致（缺省文案对齐原文）。
++      betrayed_sect?(student, family_name) ->
++        {:error, deny_text(config, :betray_sect_deny, "嘿嘿，你当初走的时候是怎么说的？")}
++
++      betrayed_before?(student) ->
++        {:error, deny_text(config, :betray_times_deny, "我们丐帮行事堂堂正正，绝不接纳判师之徒。")}
++
++      other_family?(student, family_name) ->
++        {:error,
++         deny_text(
++           config,
++           :other_family_deny,
++           "你既然已经有了名师指点，还来我们丐帮干什么？"
++         )}
++
++      exp < min_exp ->
++        {:error, deny_text(config, :min_exp_deny, "你的江湖经验不够，还是先向各位长老学习吧。")}
++
++      not no_min_shen and shen < min_shen ->
++        {:error, deny_text(config, :min_shen_deny, "你身为丐帮弟子，竟然不做好事？")}
++
++      failing = gaibang_beggarlvl_gate(student, config) ->
++        {:error, failing}
++
++      failing_skill = first_failing_recruit_skill(student, min_skills, skill_order) ->
++        {:error, min_skills_deny(config, failing_skill)}
++
++      failing = gaibang_attribute_gate(student, config) ->
++        {:error, failing}
++
++      not is_nil(Map.get(config, :min_max_neili)) and
++          (student_max_neili(student) || 0) < Map.get(config, :min_max_neili) ->
++        {:error, deny_text(config, :max_neili_deny, "就你那点内力哪里学得了什么上乘武功？")}
++
++      true ->
++        {:ok, accept}
++    end
++  end
++
++  # LPC `query("family/beggarlvl") < N`（丐帮袋数）。ex 玩家 family map 里
++  # beggarlvl 目前无持久列，测试/后续落地走 meta.env.beggarlvl（atom/string 双读）。
++  # 未配置 min_beggarlvl 或玩家无该 key → nil，不拦（老配置零影响）。
++  defp gaibang_beggarlvl_gate(student, config) do
++    case Map.get(config, :min_beggarlvl) do
++      need when is_integer(need) ->
++        if student_beggarlvl(student) < need do
++          deny_text(config, :beggarlvl_deny, "你在本帮的地位太低，还是先向其他师父学习吧。")
++        else
++          nil
++        end
++
++      _ ->
++        nil
++    end
++  end
++
++  defp student_beggarlvl(character) do
++    env = student_env(character)
++
++    case Map.get(env, :beggarlvl) || Map.get(env, "beggarlvl") do
++      lvl when is_integer(lvl) -> lvl
++      _ -> 0
++    end
++  end
++
++  # 两类属性门（互斥，同一 NPC 只配其一）：
++  #   min_str         — 马大元 query_str() < 26（硬拒）
++  #   min_any_attribute — 洪七公 str<40 && int<40 && con<40 && dex<40 才拒（OR 门）
++  defp gaibang_attribute_gate(student, config) do
++    cond do
++      is_integer(Map.get(config, :min_str)) and
++          student_attr(student, :str) < Map.get(config, :min_str) ->
++        deny_text(config, :str_deny, "我的武艺以刚猛为主，你膂力不行，还是算了吧。")
++
++      is_integer(Map.get(config, :min_any_attribute)) and
++          Enum.all?([:str, :int, :con, :dex], fn attr ->
++            student_attr(student, attr) < Map.get(config, :min_any_attribute)
++          end) ->
++        deny_text(
++          config,
++          :any_attribute_deny,
++          "我说你这人体格也不行，脑筋也不灵光，还能和我学什么？"
++        )
++
++      true ->
++        nil
++    end
++  end
++
++  defp student_attr(character, attr) do
++    Map.get(Map.get(meta_of(character), :stats) || %{}, attr, 0) || 0
++  end
++
++  # #1006 古墓派 yang.c attempt_apprentice（LPC 原序逐条 return）：
++  #   gumu.h permit(离派/判师/他派) → str < 45 → yunv-xinjing < 120 → max_neili < 2000 → 收徒。
++  # 缺省 permit_first 把 max_neili 判在技能之前、且完全没有 str 门；两门同时失败时
++  # 文案顺序与 LPC 相反，故为杨过独立门序。字段缺省 nil → 对应门跳过，其它门派零影响。
++  defp gumu_yang_recruit_gate(student, config, family_name) do
++    min_str = Map.get(config, :min_str)
++    min_skills = Map.get(config, :min_skills, %{}) || %{}
++    skill_order = Map.get(config, :recruit_skill_order, []) || []
++    min_max_neili = Map.get(config, :min_max_neili)
++    accept = deny_text(config, :accept_msg, "好吧，看你资质尚可，我就收下你这个徒弟了。\n")
++
++    cond do
++      # gumu.h 三条，缺省文案对齐 LPC 原文（UCL 可逐句覆写）。
++      betrayed_sect?(student, family_name) ->
++        {:error, deny_text(config, :betray_sect_deny, "唉！去便去了，回来又是何苦由来？")}
++
++      betrayed_before?(student) ->
++        {:error, deny_text(config, :betray_times_deny, "阁下不忠不信，我不敢收你为徒。")}
++
++      other_family?(student, family_name) ->
++        {:error,
++         deny_text(
++           config,
++           :other_family_deny,
++           "你既有了名师指点，就要勤下苦功，勿要三心二意！"
++         )}
++
++      is_integer(min_str) and student_attr(student, :str) < min_str ->
++        {:error, deny_text(config, :str_deny, "连玄铁剑都拿不动，怎么做我徒弟。")}
++
++      failing_skill = first_failing_recruit_skill(student, min_skills, skill_order) ->
++        {:error, min_skills_deny(config, failing_skill)}
++
++      is_integer(min_max_neili) and
++          (student_max_neili(student) || 0) < min_max_neili ->
++        {:error, deny_text(config, :max_neili_deny, "你把内力锻炼好了再来也不迟啊！")}
++
++      true ->
++        {:ok, accept}
++    end
++  end
++
++  # #1010 红花会 honghua.h 三条共用 permit 门（9/11 clone_lib NPC 调用）。
++  # 返回 nil 表示放行；返回 {:error, text} 供各 NPC 门序直接短路。
++  defp honghua_permit_error(student, config, family_name) do
++    cond do
++      betrayed_sect?(student, family_name) ->
++        {:error,
++         deny_text(
++           config,
++           :betray_sect_deny,
++           "我们红花会四大戒条你还记得吗？亏你还有脸回来！"
++         )}
++
++      betrayed_before?(student) ->
++        {:error, deny_text(config, :betray_times_deny, "哼，阁下不忠不信，我们红花会可不会收留。")}
++
++      other_family?(student, family_name) ->
++        {:error, deny_text(config, :other_family_deny, "阁下既有了师承，还来我们红花会做什么？")}
++
++      true ->
++        nil
++    end
++  end
++
++  # #1010 陈家洛 chen.c:129-167：permit → shen → combat_exp → honghua-xinfa → max_neili。
++  defp honghua_chen_recruit_gate(student, config, family_name) do
++    case honghua_permit_error(student, config, family_name) do
++      {:error, _reason} = error ->
++        error
++
++      nil ->
++        stats = student_stats(student)
++        shen = Map.get(stats, :shen, 0) || 0
++        exp = Map.get(stats, :combat_exp, 0) || 0
++        min_shen = Map.get(config, :min_shen, 0) || 0
++        min_exp = Map.get(config, :min_exp, 0) || 0
++        min_skills = Map.get(config, :min_skills, %{}) || %{}
++        skill_order = Map.get(config, :recruit_skill_order, []) || []
++        min_max_neili = Map.get(config, :min_max_neili)
++        accept = deny_text(config, :accept_msg, "不错，不错。念在你如此有心，今日我便收下你。")
++
++        cond do
++          shen < min_shen ->
++            {:error,
++             deny_text(
++               config,
++               :min_shen_deny,
++               "我红花会乃为救天下苍生而建，所做的一切无不以侠义为重。阁下在德行方面，似乎还做得不够。"
++             )}
++
++          exp < min_exp ->
++            {:error,
++             deny_text(
++               config,
++               :min_exp_deny,
++               "你的江湖经验太浅，我就算收了你，恐怕你也难有所作为。"
++             )}
++
++          failing = first_failing_recruit_skill(student, min_skills, skill_order) ->
++            {:error, min_skills_deny(config, failing)}
++
++          is_integer(min_max_neili) and (student_max_neili(student) || 0) < min_max_neili ->
++            {:error,
++             deny_text(
++               config,
++               :max_neili_deny,
++               "我的武功全需强大的内功为辅，阁下似乎应该多练练内力。"
++             )}
++
++          true ->
++            {:ok, accept}
++        end
++    end
++  end
++
++  # #1010 余鱼同 yu.c:95-102：先 permit_recruit，再无条件拒绝（differ from deny_all）。
++  defp honghua_yu_recruit_gate(student, config, family_name) do
++    case honghua_permit_error(student, config, family_name) do
++      {:error, _reason} = error ->
++        error
++
++      nil ->
++        {:error, deny_text(config, :deny_msg, "我不收徒，你找其余几位当家的好了。")}
++    end
++  end
++
+   # #951 全真教 `kungfu/class/quanzhen/*.c`：quanzhen.h permit_recruit 三条为所有
+   # 可收徒 NPC 共用；之后各 NPC 门序互不相同，按 recruit_profile 分派。
+   # 门序与拒绝文案逐条对齐 LPC；ji.c / pi.c 走 deny_all，不进入本函数。
+diff --git a/lib/kantele/world/inquiry_handlers/give_item.ex b/lib/kantele/world/inquiry_handlers/give_item.ex
+index 1c470654..daefc544 100644
+--- a/lib/kantele/world/inquiry_handlers/give_item.ex
++++ b/lib/kantele/world/inquiry_handlers/give_item.ex
+@@ -24,6 +24,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
+         min_gongxian = 2200           # 门派贡献下限（LPC `query("gongxian") < 2200` 即拒）
+         max_neili = 3200              # 内力上限下限（LPC `query("max_neili") < 3200` 即拒）
+         master_id = true              # 仅本门师父亲传弟子（family/master_id == npc id）
++        allowed_master_ids = ["chen jialuo", "wuchen daozhang"]  # 多师父白名单（红花会 #1010）
++        master_before_gates = true    # 师父门移到 shen/技能门之前（红花会 ask_jian/ask_bi）
++        allowed_families = ["红花会", "武当派"]  # 多门派白名单（陆菲青 #1010）
++        family_denies = { 武当派 = "专属拒绝文案" }  # 按门派给出不同拒绝（LPC 分支）
+         perform_id = "bagua-dao/tian" # 发放同时习得绝招（LPC set can_perform/...=1）
+         cost_gongxian = 2200          # 发放后扣除贡献（LPC add("gongxian", -2200)）
+         max_shen_deny = "..."         # 杀气过高时的返回值
+@@ -74,17 +78,23 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
+   def run(conn, _config, _data), do: conn
+ 
+   defp run_for(conn, character, config, data) do
++    master_first? = master_before_gates?(config)
++    gate = if master_first?, do: nil, else: gate_denial(character, config)
++
+     cond do
+       already_known?(character, config) ->
+         reply(conn, Helpers.respect(character) <> maxed_text(config))
+ 
+-      family_denied?(character, config) ->
+-        reply(conn, Helpers.respect(character) <> family_deny_text(config))
++      denial = family_denial(character, config) ->
++        reply(conn, Helpers.respect(character) <> denial)
++
++      master_first? and master_denied?(character, config, data) ->
++        reply(conn, Helpers.respect(character) <> master_deny_text(config))
+ 
+-      gate = gate_denial(character, config) ->
++      gate ->
+         reply(conn, gate)
+ 
+-      master_denied?(character, config, data) ->
++      not master_first? and master_denied?(character, config, data) ->
+         reply(conn, Helpers.respect(character) <> master_deny_text(config))
+ 
+       unique?(config) and carries?(character, config) ->
+@@ -207,10 +217,38 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
+ 
+   defp item_id_suffix(_item_id), do: nil
+ 
++  # #1010 红花会：先查逐门派专属拒绝，再走通用单门派/多门派白名单。
++  defp family_denial(character, config) do
++    case family_specific_denial(character, config) do
++      text when is_binary(text) and byte_size(text) > 0 ->
++        text
++
++      _ ->
++        if family_denied?(character, config), do: family_deny_text(config), else: nil
++    end
++  end
++
++  # UCL `family_denies = { 武当派 = "..." }`：LPC `if (family == "武当派") return "...";`。
++  defp family_specific_denial(character, config) do
++    case Map.get(config, "family_denies") do
++      denies when is_map(denies) ->
++        Map.get(denies, family_name(character))
++
++      _ ->
++        nil
++    end
++  end
++
+   defp family_denied?(character, config) do
+-    case Map.get(config, "family") do
+-      family when is_binary(family) and family != "" -> family_name(character) != family
+-      _ -> false
++    case {Map.get(config, "allowed_families"), Map.get(config, "family")} do
++      {families, _} when is_list(families) and families != [] ->
++        not Enum.any?(families, &(&1 == family_name(character)))
++
++      {_, family} when is_binary(family) and family != "" ->
++        family_name(character) != family
++
++      _ ->
++        false
+     end
+   end
+ 
+@@ -221,10 +259,15 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
+   defp gate_denial(character, config) do
+     stats = stats_of(character)
+ 
++    skill_first? = skill_before_shen?(config)
++
+     cond do
+       exceeds_max_shen?(stats, config) ->
+         Map.get(config, "max_shen_deny") || "像你这样心慈手软，这东西给了你也干不了大事。"
+ 
++      skill_first? and below_min_skill?(stats, config) ->
++        Map.get(config, "min_skill_deny") || "你这门功夫还练得不到家，自己下去练练再来吧！"
++
+       below_min_shen?(stats, config) ->
+         Map.get(config, "min_shen_deny") || "你目前所做的侠义正事不够，这东西暂时还不能交给你。"
+ 
+@@ -234,7 +277,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
+       exceeds_max_skill?(stats, config) ->
+         Map.get(config, "max_skill_deny") || "你这方面的造诣已经不浅了，这个不看也罢。"
+ 
+-      below_min_skill?(stats, config) ->
++      not skill_first? and below_min_skill?(stats, config) ->
+         Map.get(config, "min_skill_deny") || "你这门功夫还练得不到家，自己下去练练再来吧！"
+ 
+       below_min_gongxian?(stats, config) ->
+@@ -352,14 +395,34 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
+   # LPC `query("family/master_id") != query("id")`：仅本师亲传弟子可取。
+   # UCL 解析器把 `master_id = true` 读为字符串 "true"；仅显式 true/"true" 开启门控，
+   # 未配置（nil）时不拦。
++  # #1010 红花会物品可由多位当家发放（如白龙剑：陈家洛/无尘/赵半山），
++  # `allowed_master_ids = [...]` 用 LPC 原样 id 列表；旧 `master_id` 行为完全不变。
+   defp master_denied?(character, config, data) do
+-    case Map.get(config, "master_id") do
+-      true -> not own_disciple?(character, Map.get(data, :npc_id))
+-      "true" -> not own_disciple?(character, Map.get(data, :npc_id))
+-      _ -> false
++    case {Map.get(config, "allowed_master_ids"), Map.get(config, "master_id")} do
++      {ids, _} when is_list(ids) and ids != [] ->
++        not Enum.any?(ids, &own_disciple?(character, &1))
++
++      {_, true} ->
++        not own_disciple?(character, Map.get(data, :npc_id))
++
++      {_, "true"} ->
++        not own_disciple?(character, Map.get(data, :npc_id))
++
++      _ ->
++        false
+     end
+   end
+ 
++  # #1010 红花会 ask_* 的师父门在 is_bad/family/shen/技能门之前；
++  # 布尔值经 UCL 解析器可能是字符串 "true"，两种写法都接受。
++  defp master_before_gates?(config),
++    do: Map.get(config, "master_before_gates") in [true, "true"]
++
++  # #1010 赵半山 ask_bi：LPC 是「技能等级 → shen」，与 give_item 缺省
++  # 「shen → 技能等级」相反；显式开启后只影响配置了该键的物品。
++  defp skill_before_shen?(config),
++    do: Map.get(config, "skill_before_shen") in [true, "true"]
++
+   defp own_disciple?(%{meta: %{family: family}}, npc_id) when is_map(family) do
+     master_id = Map.get(family, :master_id) || Map.get(family, "master_id")
+     is_binary(master_id) and master_id == npc_id
+diff --git a/lib/kantele/world/inquiry_handlers/sect_master_grant.ex b/lib/kantele/world/inquiry_handlers/sect_master_grant.ex
+index 1d2468f2..5767094f 100644
+--- a/lib/kantele/world/inquiry_handlers/sect_master_grant.ex
++++ b/lib/kantele/world/inquiry_handlers/sect_master_grant.ex
+@@ -120,10 +120,22 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
+ 
+     base
+     |> put_family(character)
++    |> put_beggarlvl(character)
+     |> put_max_neili(character)
+     |> put_marks(character)
+   end
+ 
++  # #986 洪七公「天下无狗」LPC `query("family/beggarlvl") < 9`：从门派 map 带入
++  # 袋数（无持久列时缺省 0，与 LPC 查询缺省一致）。不配置袋数的门派 stats 不变。
++  defp put_beggarlvl(stats, character) do
++    family = character.meta.family || %{}
++
++    case Map.get(family, :beggarlvl) || Map.get(family, "beggarlvl") do
++      lvl when is_integer(lvl) -> Map.put(stats, :beggarlvl, lvl)
++      _ -> stats
++    end
++  end
++
+   # #903 桃花岛九阴四招：LPC `can_learn/jiuyin-shengong/<perform>` 是 accept_object
+   # 写入的 temp/mark。门控在 SectMaster 读 stats.marks，故此处必须显式带入。
+   # marks 为空时不改变既有 map（老配置零影响）。
+diff --git a/lib/kantele/world/loader.ex b/lib/kantele/world/loader.ex
+index d7c50740..1d526c65 100644
+--- a/lib/kantele/world/loader.ex
++++ b/lib/kantele/world/loader.ex
+@@ -885,6 +885,12 @@ defmodule Kantele.World.Loader do
+     end)
+   end
+ 
++  # #1010 红花会陆菲青白龙剑：按门派给出不同的逐字拒绝（武当派专属），
++  # UCL map 键经 Elias 解析后可能是 atom/中文字符串，统一成字符串键。
++  defp normalize_inquiry_field("family_denies", denies) when is_map(denies) do
++    Enum.into(denies, %{}, fn {family, text} -> {to_string(family), text} end)
++  end
++
+   # 昆仑 `gate_order = "lpc_kunlun"` 用 level_order 显式固定逐条门槛顺序；
+   # 与 min_levels 同形归一，使 dex / max_neili 伪键和技能 id 都能命中 level_deny。
+   defp normalize_inquiry_field("level_order", keys) when is_list(keys) do
+@@ -1366,7 +1372,11 @@ defmodule Kantele.World.Loader do
+                "lpc_taohua",
+                "lpc_wudang",
+                "lpc_ren",
+-               "lpc_wudu"
++               "lpc_wudu",
++               "lpc_gaibang",
++               "lpc_gumu_yang",
++               "lpc_honghua_chen",
++               "lpc_honghua_yu"
+              ] ->
+           value
+ 
+@@ -1409,7 +1419,17 @@ defmodule Kantele.World.Loader do
+       # 侠客岛 shi.c：attempt_apprentice 无条件拒绝（连 ah + say）。
+       # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
+       deny_all: to_bool(Map.get(apprentice, :deny_all)),
+-      deny_msg: Map.get(apprentice, :deny_msg)
++      deny_msg: Map.get(apprentice, :deny_msg),
++      # #986 丐帮 gaibang.h permit_recruit + 各师父 attempt_apprentice：
++      # `family/beggarlvl`（袋数）门槛、min_str（马大元 query_str）、
++      # min_any_attribute（洪七公 str/int/con/dex 四属性 OR，任一 ≥ 阈值即过）。
++      # 三者缺省 nil → lpc_gaibang 门序逐门跳过，其它门派零影响。
++      min_beggarlvl: int_value(Map.get(apprentice, :min_beggarlvl)),
++      min_str: int_value(Map.get(apprentice, :min_str)),
++      min_any_attribute: int_value(Map.get(apprentice, :min_any_attribute)),
++      beggarlvl_deny: Map.get(apprentice, :beggarlvl_deny),
++      str_deny: Map.get(apprentice, :str_deny),
++      any_attribute_deny: Map.get(apprentice, :any_attribute_deny)
+     }
+ 
+     # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/
+@@ -1559,6 +1579,9 @@ defmodule Kantele.World.Loader do
+       gender_deny: Map.get(apprentice, :gender_deny),
+       min_skills_deny: min_skills_deny,
+       min_exp_deny: Map.get(apprentice, :min_exp_deny),
++      # #1006 古墓杨过 min_max_neili 门：LPC yang.c `query("max_neili") < 2000`
++      # 的逐字拒绝文案。此前 sect_master 读该键但 loader 未透传，缺省回退通用文案。
++      max_neili_deny: Map.get(apprentice, :max_neili_deny),
+       # 昆仑 kunlun.h permit_recruit 三句逐字覆写；未配置保持少林缺省文案。
+       betray_sect_deny: Map.get(apprentice, :betray_sect_deny),
+       betray_times_deny: Map.get(apprentice, :betray_times_deny),

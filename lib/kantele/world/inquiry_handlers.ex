@@ -24,7 +24,8 @@ defmodule Kantele.World.InquiryHandlers do
     "meizhuang_riyue" => Kantele.World.InquiryHandlers.MeizhuangRiyue,
     "tonsure" => Kantele.World.InquiryHandlers.Tonsure,
     "born_family_reply" => Kantele.World.InquiryHandlers.BornFamilyReply,
-    "wudang_jiuyang" => Kantele.World.InquiryHandlers.WudangJiuyang
+    "wudang_jiuyang" => Kantele.World.InquiryHandlers.WudangJiuyang,
+    "luohan_zhen" => Kantele.World.InquiryHandlers.LuohanZhen
   }
 
   @doc "按 `kind` 查处理模块；未知 kind 返回 nil（静默忽略）"

@@ -163,13 +163,24 @@ defmodule Kantele.SectMaster do
 
   defp check_recognize_gate(recognize, student, skill) do
     master_name = Map.get(recognize, :require_master_name)
+    # #1044：家族门（无名 family/family_name）、技能下限（空见 buddhism）、
+    # 逐技能上限（无名 strike/unarmed >179）均按 LPC 原序插入。
+    require_family = Map.get(recognize, :require_family)
+    min_skill = Map.get(recognize, :min_skill)
+    min_skill_level = Map.get(recognize, :min_skill_level) || 0
+    max_levels = Map.get(recognize, :max_skill_levels) || %{}
+    maxed_denies = Map.get(recognize, :maxed_denies) || %{}
     min_shen = Map.get(recognize, :min_shen) || 0
     allowed = Map.get(recognize, :allowed_skills) || []
     max_level = Map.get(recognize, :max_skill_level)
+    max_skill_cap = Map.get(max_levels, skill_id(skill))
 
     cond do
       is_binary(master_name) and student_master_name(student) != master_name ->
         {:error, deny_text(recognize, :not_master_deny, "石某与阁下素无渊源，不知阁下这话从何而来？")}
+
+      is_binary(require_family) and student_family_name(student) != require_family ->
+        {:error, deny_text(recognize, :family_deny, "阁下与本门素无渊源，不能传授。")}
 
       is_integer(min_shen) and min_shen > 0 and student_shen(student) < min_shen ->
         {:error,
@@ -182,11 +193,30 @@ defmodule Kantele.SectMaster do
       is_list(allowed) and allowed != [] and skill_id(skill) not in allowed ->
         {:error, deny_text(recognize, :wrong_skill_deny, "阁下的武功，在下实在无从指点，请另投名师吧。")}
 
+      is_binary(min_skill) and min_skill_level > 0 and skill_level(student, skill_id(min_skill)) < min_skill_level ->
+        {:error, deny_text(recognize, :min_skill_deny, "你这门功夫火候不足，仍需勤加修习。")}
+
+      is_integer(max_skill_cap) and max_skill_cap > 0 and
+          skill_level(student, skill_id(skill)) > max_skill_cap ->
+        {:error, per_skill_maxed_text(recognize, maxed_denies, skill)}
+
       is_integer(max_level) and skill_level(student, skill_id(skill)) > max_level ->
         {:error, deny_text(recognize, :maxed_deny, "这一门功夫你已不弱于在下，没什么可教的了。")}
 
       true ->
         nil
+    end
+  end
+
+  # 无名 wuming.c:162-171 的 strike/unarmed 两支独立逐字拒绝；未配置时回退
+  # recognize.maxed_deny（石清等旧配置零影响）。
+  defp per_skill_maxed_text(recognize, maxed_denies, skill) do
+    case Map.get(maxed_denies, skill_id(skill)) do
+      text when is_binary(text) and byte_size(text) > 0 ->
+        ensure_lf(text)
+
+      _ ->
+        deny_text(recognize, :maxed_deny, "这一门功夫你已不弱于在下，没什么可教的了。")
     end
   end
 

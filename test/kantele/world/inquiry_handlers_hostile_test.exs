@@ -15,6 +15,7 @@ defmodule Kantele.World.InquiryHandlers.HostileTest do
   alias Kantele.Character.Vitals
   alias Kantele.World.InquiryHandlers
   alias Kantele.World.InquiryHandlers.Hostile
+  alias Kantele.World.Loader
 
   defp conn(opts \\ []) do
     meta = %PlayerMeta{
@@ -171,6 +172,40 @@ defmodule Kantele.World.InquiryHandlers.HostileTest do
       conn2 = Hostile.run(conn(), data.config, data)
 
       assert publishes(conn2) == []
+      assert_receive %Kalevala.Event{topic: "combat/start", data: %{type: "kill"}}, 200
+    end
+  end
+
+  # #1043：LPC kungfu/class/shaolin/du-yuan.c:70-73,111-118 的 ask_me。
+  # 两条 inquiry 都指向同一函数：红字 message_vision + kill_ob + return -1。
+  describe "渡元禅师（#1043）" do
+    @du_yuan_message "{color foreground=\"red\"}渡元禅师尖叫道：你怎么知道？今日要怪就只能怪你多嘴了！{/color}"
+
+    test "UCL 两条占位已换成 hostile 配置，逐字文案与 HIR 红色标签都在" do
+      npc = Enum.find(Loader.load().characters, &(&1.name == "渡元禅师"))
+      assert npc, "clone_lib:shaolin_du_yuan 应加载进 world.characters"
+
+      for key <- ["葵花宝典", "辟邪剑法"] do
+        config = Map.get(npc.meta.inquiries || %{}, key)
+
+        assert %{"kind" => "hostile", "message" => @du_yuan_message} = config,
+               "#{key} 的 inquiry 应走 hostile 并保留 LPC 原文：#{inspect(config)}"
+      end
+    end
+
+    test "handler 广播红字原文 + 双方开战，且 return -1 无私发" do
+      data =
+        lin_data(%{
+          config: %{"message" => @du_yuan_message},
+          npc_id: "shaolin_du_yuan",
+          npc_name: "渡元禅师"
+        })
+
+      conn2 = Hostile.run(conn(), data.config, data)
+
+      assert publishes(conn2) == [@du_yuan_message <> "\n"]
+      assert conn2.output == []
+      assert_receive %Kalevala.Event{topic: "combat/start", data: %{type: "kill"}}, 200
       assert_receive %Kalevala.Event{topic: "combat/start", data: %{type: "kill"}}, 200
     end
   end

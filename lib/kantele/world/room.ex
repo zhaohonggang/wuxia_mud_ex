@@ -1543,7 +1543,18 @@ defmodule Kantele.World.Room.ApprenticeRequestEvent do
             event(acc, character.pid, self(), "family/apprentice", %{
               reply_to: requester.pid,
               student_id: requester.id,
-              student_name: requester.name
+              student_name: requester.name,
+              # #1044 无名的同门/异门双分支拒绝、地藏王的 born 双分支拒绝：
+              # NPC 侧需要玩家的门派/出身，随事件带过去（不查进程状态）。
+              student_family: Map.get(requester.meta || %{}, :family),
+              student_born_family:
+                case Map.get(requester.meta || %{}, :env) do
+                  env when is_map(env) ->
+                    Map.get(env, :born_family) || Map.get(env, "born_family")
+
+                  _ ->
+                    nil
+                end
             })
           else
             acc

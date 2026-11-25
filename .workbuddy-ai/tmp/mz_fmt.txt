@@ -1,0 +1,6 @@
+warning: default values for the optional arguments in disciple/1 are never used
+  test/kantele/world/inquiry_sect_masters_test.exs:37
+
+warning: default values for the optional arguments in wudang_disciple/1 are never used
+  test/kantele/world/inquiry_sect_masters_test.exs:1044
+

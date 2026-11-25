@@ -148,14 +148,14 @@ defmodule Kantele.Character.NpcFamilyEvent do
 
   use Kalevala.Character.Event
 
-  def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name}}) do
+  def apprentice(conn, %{data: %{reply_to: reply_to, student_name: student_name} = data}) do
     apprentice = conn.character.meta.apprentice || %{}
     teach = conn.character.meta.teach
 
     # 侠客岛 shi.c 的 attempt_apprentice 只有 command("ah") + command("say ...")，
     # 完全没有胜负/门派分支：显式 deny_all=true 时直接回绝，不进入 teach 应允路径。
     if Map.get(apprentice, :deny_all) == true do
-      reason = Map.get(apprentice, :deny_msg) || "#{conn.character.name}摇了摇头：我不收徒。"
+      reason = deny_reason(conn, apprentice, data)
 
       send(reply_to, %Kalevala.Event{
         from_pid: self(),
@@ -166,6 +166,48 @@ defmodule Kantele.Character.NpcFamilyEvent do
       conn
     else
       apprentice_reply(conn, reply_to, student_name, teach, apprentice)
+    end
+  end
+
+  # #1044 条件分文案拒绝：LPC 同一 attempt_apprentice 内按门派/born 分支说不同话。
+  # 未配置分支表时完全回退静态 deny_msg（老配置零影响）。
+  defp deny_reason(conn, apprentice, data) do
+    default = Map.get(apprentice, :deny_msg) || "#{conn.character.name}摇了摇头：我不收徒。"
+    by_family = Map.get(apprentice, :deny_msg_by_family) || %{}
+    by_born = Map.get(apprentice, :deny_msg_by_born) || %{}
+
+    cond do
+      is_map(by_family) and map_size(by_family) > 0 ->
+        Map.get(by_family, student_family_name(data)) || default
+
+      is_map(by_born) and map_size(by_born) > 0 ->
+        born = Map.get(data, :student_born_family)
+
+        if is_binary(born) and byte_size(born) > 0 do
+          Map.get(by_born, born) || Map.get(by_born, "*") || default
+        else
+          Map.get(by_born, "(none)") || Map.get(by_born, "none") || default
+        end
+
+      true ->
+        default
+    end
+  end
+
+  defp student_family_name(data) do
+    case Map.get(data, :student_family) do
+      family when is_map(family) ->
+        # Kalevala Family.name/1 读 :name，部分 load 出来的 map 用 :family_name。
+        name = Map.get(family, :name) || Map.get(family, "name") ||
+          Map.get(family, :family_name) || Map.get(family, "family_name")
+
+        is_binary(name) && name || nil
+
+      family when is_binary(family) ->
+        family
+
+      _ ->
+        nil
     end
   end
 

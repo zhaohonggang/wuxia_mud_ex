@@ -349,8 +349,9 @@ defmodule Kantele.World.LingxiaoTeachingTest do
     test "recognize 放行且为非同门（散人）→ 落到「师父不高于学生」门", %{world: world} do
       # 非凌霄城 + 白自在门下（LPC 第一门只查 master_name）+ 侠义达标 + sword 100
       # → recognize 四门全过；非同派 → 不撞「你已入别派」。
-      # 但 NPC 的 stats.skills 在 loader 里恒为 %{}（skills 是独立字段），
-      # 「师父不高于学生」门必然命中——这锁的是「recognize 放行后交给常规链」。
+      # #1040 后 NPC 顶层 skills 已进 stats.skills：石清 sword 真实等级高于学生，
+      # 常规「师父不高于学生」门不再命中 → recognize 四门全过后应落到 :ok。
+      # 这锁的是「recognize 放行后交给常规链」，而非旧的空技能恒拒假设。
       sq = npc(world, "lingxiao_shiqing")
 
       outsider =
@@ -359,7 +360,7 @@ defmodule Kantele.World.LingxiaoTeachingTest do
           stats: %{shen: 20_000, skills: %{"sword" => 100}}
         )
 
-      assert {:error, "这一门功夫你已不弱于老夫，没什么可教的了。\n"} = SectMaster.teachable?(sq, outsider, "sword")
+      assert SectMaster.teachable?(sq, outsider, "sword") == :ok
 
       # 上清剑法同理：shangqing-jian=200 > 179 → 先撞 recognize 第四门（maxed_deny「在下」）
       outsider2 =

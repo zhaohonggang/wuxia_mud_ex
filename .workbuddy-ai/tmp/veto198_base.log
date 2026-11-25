@@ -1,0 +1,20 @@
+
+19:18:43.595 [info]  Migrations already up
+Excluding tags: [:test]
+Including tags: [line: "198"]
+
+
+
+  1) test 总账：178 条里 167 条会拦人、11 条不会 (Kantele.World.VetoEffectivenessTest)
+     test/kantele/world/veto_effectiveness_test.exs:198
+     会拦人的条数变了：166
+     code: assert tally[:live] == 167, "会拦人的条数变了：#{tally[:live]}"
+     stacktrace:
+       test/kantele/world/veto_effectiveness_test.exs:220: (test)
+
+
+
+Finished in 6.0 seconds (0.00s async, 6.0s sync)
+15 tests, 1 failure, 14 excluded
+
+Randomized with seed 580944

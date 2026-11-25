@@ -1,0 +1,20 @@
+
+19:18:58.706 [info]  Migrations already up
+Excluding tags: [:test]
+Including tags: [line: "678"]
+
+
+
+  1) test 玩家身上的物品不算「不在房里」，且「不在房里」已清零 (Kantele.World.VetoEffectivenessTest)
+     test/kantele/world/veto_effectiveness_test.exs:678
+     不该再有「NPC 有定义但没放进房间」的条件：["shang jianming"]
+     code: assert absent == [],
+     stacktrace:
+       test/kantele/world/veto_effectiveness_test.exs:699: (test)
+
+
+
+Finished in 6.1 seconds (0.00s async, 6.1s sync)
+15 tests, 1 failure, 14 excluded
+
+Randomized with seed 699303

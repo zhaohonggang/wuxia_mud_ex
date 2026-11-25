@@ -1386,15 +1386,33 @@ defmodule Kantele.World.Loader do
 
     %{
       require_master_name: class_value(Map.get(recognize, :require_master_name)),
+      # #1044 空见/无名 recognize_apprentice：LPC 先比 family/family_name，
+      # 空见再比 buddhism>=250（技能下限），无名再比逐技能 >179（strike/unarmed）。
+      require_family: class_value(Map.get(recognize, :require_family)),
+      min_skill: class_value(Map.get(recognize, :min_skill)),
+      min_skill_level: int_value(Map.get(recognize, :min_skill_level)) || 0,
+      max_skill_levels: normalize_min_skills(Map.get(recognize, :max_skill_levels)),
       min_shen: int_value(Map.get(recognize, :min_shen)) || 0,
       allowed_skills: allowed_skills,
       max_skill_level: int_value(Map.get(recognize, :max_skill_level)),
+      family_deny: Map.get(recognize, :family_deny),
       not_master_deny: Map.get(recognize, :not_master_deny),
       shen_deny: Map.get(recognize, :shen_deny),
       wrong_skill_deny: Map.get(recognize, :wrong_skill_deny),
-      maxed_deny: Map.get(recognize, :maxed_deny)
+      min_skill_deny: Map.get(recognize, :min_skill_deny),
+      maxed_deny: Map.get(recognize, :maxed_deny),
+      maxed_denies: normalize_skill_denies(Map.get(recognize, :maxed_denies))
     }
   end
+
+  # 逐技能拒绝文案：键与 normalize_min_skills 同形（下划线→横线）。
+  defp normalize_skill_denies(denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} ->
+      {String.replace(to_string(skill), "_", "-"), text}
+    end)
+  end
+
+  defp normalize_skill_denies(_), do: %{}
 
   defp parse_recognize(_), do: nil
 
@@ -1627,6 +1645,10 @@ defmodule Kantele.World.Loader do
       # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
       deny_all: to_bool(Map.get(apprentice, :deny_all)),
       deny_msg: Map.get(apprentice, :deny_msg),
+      # #1044 同门/异门双分支拒绝文案。UCL 键不能含中文，故写成
+      # [{ family = "少林派" msg = "..." }]，这里归一成 %{"少林派" => "..."}。
+      deny_msg_by_family: normalize_deny_by_family(Map.get(apprentice, :deny_msg_by_family)),
+      deny_msg_by_born: normalize_deny_by_family(Map.get(apprentice, :deny_msg_by_born)),
       # #986 丐帮 gaibang.h permit_recruit + 各师父 attempt_apprentice：
       # `family/beggarlvl`（袋数）门槛、min_str（马大元 query_str）、
       # min_any_attribute（洪七公 str/int/con/dex 四属性 OR，任一 ≥ 阈值即过）。
@@ -1846,6 +1868,38 @@ defmodule Kantele.World.Loader do
   defp parse_shen_ladder(_), do: []
 
   defp parse_apprentice(_), do: nil
+
+  # [{ family = "少林派" msg = "..." }] -> %{"少林派" => "..."}
+  # 兼容直接 map 形态（未来转换器若支持中文键）。
+  defp normalize_deny_by_family(entries) when is_list(entries) do
+    Enum.reduce(entries, %{}, fn entry, acc ->
+      case entry do
+        map when is_map(map) ->
+          key =
+            class_value(
+              Map.get(map, :family) || Map.get(map, "family") ||
+                Map.get(map, :born) || Map.get(map, "born")
+            )
+
+          msg = Map.get(map, :msg) || Map.get(map, "msg")
+
+          if is_binary(key) and is_binary(msg) do
+            Map.put(acc, key, msg)
+          else
+            acc
+          end
+
+        _ ->
+          acc
+      end
+    end)
+  end
+
+  defp normalize_deny_by_family(denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {family, msg} -> {to_string(family), msg} end)
+  end
+
+  defp normalize_deny_by_family(_), do: %{}
 
   # 任务交付（A11/N6 v0）：item 为引用串（items.yupai.id），延后到 parse_characters 解
   defp parse_turn_in(nil), do: nil

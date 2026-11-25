@@ -222,6 +222,18 @@ item_desc = {
     attitude = "peaceful"
   }
 
+  # #1044 LPC hell/dizangwang.c:78-87 attempt_apprentice 按 born 双分支拒绝：
+  # 无 born → 洗脱筋骨/投胎；有 born → 滚。UCL 字符串键受限，用
+  # [{ born = "(none)" | "*" msg = ... }] 编码（"(none)"=born 未定义，"*"=任意已定义）。
+  apprentice = {
+    deny_all = true
+    deny_msg = "地藏王说道：滚！给我一边儿去！"
+    deny_msg_by_born = [
+      { born = "(none)" msg = "地藏王说道：你快投胎去，在这里瞎搅和什么？" },
+      { born = "*" msg = "地藏王说道：滚！给我一边儿去！" }
+    ]
+  }
+
   carry = [
     { id = items.cloth2.id }
   ]

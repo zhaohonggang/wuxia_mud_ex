@@ -56,6 +56,22 @@ definitions =
       |> Enum.reduce(acc, fn body, a -> MapSet.union(a, parse_aliases.(body)) end)
   end
 
+# room_characters 里的 `characters.<key>.id` 可能是跨 zone 引用（如
+# shaolin:shang_dating -> clone_lib 的 shang_ming），本 zone 文件里未必有同名块。
+# 与 veto_effectiveness_test.exs 保持同口径：按 key 建全局别名索引。
+aliases_by_key =
+  for f <- Path.wildcard("data/world/*.ucl"), reduce: %{} do
+    acc ->
+      t = File.read!(f)
+
+      Regex.scan(~r/characters\s+"([^"]+)"\s*\{(.*?)\n\s*\}/s, t, capture: :all_but_first)
+      |> Enum.reduce(acc, fn [key, body], a ->
+        Map.update(a, to_string(key), parse_aliases.(body), fn old ->
+          MapSet.union(old, parse_aliases.(body))
+        end)
+      end)
+  end
+
 IO.puts("已定义 NPC/物品别名: #{MapSet.size(definitions)}")
 
 # ---------- 某房间在场的 NPC 别名 ----------
@@ -78,10 +94,14 @@ room_occupants = fn room_id, zone_id ->
     ids
     |> Enum.uniq()
     |> Enum.reduce(MapSet.new(), fn cid, acc ->
-      case cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s*\}/s, t) do
-        [cb | _] -> MapSet.union(acc, parse_aliases.(cb))
-        _ -> acc
-      end
+      local =
+        case cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s*\}/s, t) do
+          [cb | _] -> parse_aliases.(cb)
+          _ -> MapSet.new()
+        end
+
+      global = Map.get(aliases_by_key, cid, MapSet.new())
+      MapSet.union(acc, MapSet.union(local, global))
     end)
   end
 end
@@ -104,12 +124,12 @@ dirs_of = fn c -> cap.(~r/dir\s*==\s*'(\w+)'/, c) end
 # 所以走解析器而不是正则 —— 正则会在 `present("x", ...)` 上漏掉。
 presents_of = fn c -> LpcCondition.present_refs(c) end
 
-
 # `present(x, environment(me))` / `present(x, this_object())` 要求目标**在场**；
 # `present(x, me)` 是「玩家自己身上」，只需要物品有定义（玩家捡到就能用）。
 # 脚本里没有模块作用域，defp 用不了，所以写成匿名函数。
 room_ref? = fn alias, cond ->
   re = ~r/present\('#{Regex.escape(alias)}'\s*,\s*([^)]+)\)/
+
   case Regex.run(re, cond) do
     [_, second] -> second =~ "environment" or second =~ "this_object"
     _ -> false

@@ -1,0 +1,3119 @@
+defmodule Kantele.World.Loader do
+  @moduledoc """
+  Load the world from data files
+  """
+
+  alias Kalevala.Character
+  alias Kalevala.World.Item
+  alias Kalevala.World.Room.Feature
+  alias Kantele.Character.Stats
+  alias Kantele.World.LoaderError
+  alias Kantele.World.Room
+  alias Kantele.World.Zone
+  alias Kantele.NameGenerator
+
+  @paths %{
+    brains_path: "data/brains",
+    help_path: "data/help",
+    verbs_path: "data/verbs.ucl",
+    world_path: "data/world",
+    extra_world_paths: []
+  }
+
+  # 测试夹具区（test.ucl / global.ucl）所在目录。**只有测试会显式挂它。**
+  @fixture_world_path "test/fixtures/world"
+
+  @doc """
+  Load zone files into Kalevala structs
+
+  任一数据文件出错都会抛 `Kantele.World.LoaderError`，并尽量附带出错的
+  文件路径，方便上层定位是哪个 .ucl 写坏了。
+
+  ## `extra_world_paths`：只给测试用的夹具区
+
+  `data/world` 里曾经混着 `test.ucl` / `global.ucl` 两个区。它们是当年拿
+  `test_minimal_world_v2_modified/` 挑 `.c` 文件跑转换器测试的产物，跟真实区
+  大量重名（`test` 的 34 个房间有 33 个在别的区也存在，`global` 是 20/27），
+  而且互不连通 —— 没有任何真实区引用 `test:` / `global:` 的房间，玩家走不到。
+
+  留在正式目录里的代价是实打实的：61 个走不到的房间、25 个 NPC、84 个物品
+  混进运行时世界并参与别名统计，悬空引用报告和门禁审计也跟着被污染。
+  所以它们现在搬到 `#{@fixture_world_path}`，**默认不再加载**。
+
+  需要它们的测试显式传：
+
+      Loader.load(%{extra_world_paths: ["test/fixtures/world"]})
+
+  合并顺序是「夹具先、正式区后」：万一将来出现同名 zone key，
+  后写入的正式区会覆盖夹具 —— 重复内容一律以正式区为准。
+  """
+  def load(paths \\ %{}) do
+    paths = Map.merge(@paths, paths)
+
+    world_data = load_world_data(paths)
+    brain_data = load_brains(paths.brains_path)
+    verbs = load_verbs(paths.verbs_path)
+
+    context = %{
+      verbs: verbs,
+      brains: brain_data
+    }
+
+    zones =
+      Enum.map(world_data, fn {key, zone_data} ->
+        parse_zone_with_context({key, zone_data}, context)
+      end)
+
+    world =
+      zones
+      |> Enum.map(&build_zone(&1, world_data, zones))
+      |> parse_world()
+
+    # 悬空引用汇总放在最后打 —— 逐条 warn 会淹掉日志（实测 805 条 = 16000 行）
+    report_unresolved()
+
+    world
+  end
+
+  # ---- 文件级错误包装：读入/解析/构建出错时把文件路径挂进 LoaderError ----
+
+  # 附加目录在前、正式目录在后：`Enum.into/2` 后写入的覆盖先写入的，
+  # 所以同名 zone 最终以正式区为准（夹具不参与真实世界的定义）。
+  defp load_world_data(paths) do
+    merge = &merge_world_data/1
+
+    (List.wrap(paths.extra_world_paths) ++ [paths.world_path])
+    |> Enum.flat_map(&load_folder(&1, ".ucl", merge))
+    |> Enum.into(%{})
+  end
+
+  @doc """
+  测试夹具区的路径。只有测试该用它，生产/审计脚本不要挂。
+  """
+  def fixture_world_path, do: @fixture_world_path
+
+  def load_fixture_world(paths \\ %{}) do
+    load(Map.put(paths, :extra_world_paths, [fixture_world_path()]))
+  end
+
+  defp load_folder(path, file_extension, merge_fun) do
+    ls!(path)
+    |> Enum.filter(fn file ->
+      String.ends_with?(file, file_extension)
+    end)
+    |> Enum.flat_map(fn file ->
+      load_data_file(Path.join(path, file), merge_fun)
+    end)
+    |> Enum.into(%{})
+  end
+
+  defp load_data_file(path, merge_fun) do
+    path
+    |> File.read!()
+    |> Elias.parse()
+    |> merge_fun.()
+  rescue
+    exception ->
+      reraise LoaderError,
+              [
+                message: "世界数据文件处理失败",
+                file: path,
+                reason: exception
+              ],
+              __STACKTRACE__
+  end
+
+  defp ls!(path) do
+    File.ls!(path)
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "读取目录失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  defp load_brains(path) do
+    Kantele.Brain.load_all(path)
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "大脑配置加载失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  defp load_verbs(path) do
+    path
+    |> File.read!()
+    |> Elias.parse()
+    |> parse_verbs()
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "动词配置处理失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  defp parse_zone_with_context(zone_data, context) do
+    parse_zone(zone_data, context)
+  rescue
+    exception ->
+      {key, _zone_data} = zone_data
+
+      reraise LoaderError,
+              [
+                message: "区域数据解析失败",
+                file: zone_file_path(to_string(key)),
+                reason: exception
+              ],
+              __STACKTRACE__
+  end
+
+  # 区域结构构建（exits/characters/items/minimap）逐区执行，出错归因到区域文件。
+  # 与原先分阶段 Enum.map 等价：各阶段只改动本区域的副本，不跨区域写状态。
+  defp build_zone(zone, world_data, zones) do
+    zone
+    |> parse_exits(world_data, zones)
+    |> parse_object_sets(world_data, zones)
+    |> parse_characters(world_data, zones)
+    |> parse_items(world_data, zones)
+    |> zone_items_to_list()
+    |> zone_rooms_to_list()
+    |> generate_minimap()
+  rescue
+    exception ->
+      reraise LoaderError,
+              [
+                message: "区域数据处理失败",
+                file: zone_file_path(zone.id),
+                reason: exception
+              ],
+              __STACKTRACE__
+  end
+
+  # 约定区域文件名与 zones key 一致（liuxi -> data/world/liuxi.ucl）
+  defp zone_file_path(zone_id), do: Path.join(@paths.world_path, "#{zone_id}.ucl")
+
+  defp merge_world_data(zone_data) do
+    zone_data = string_keys_to_atoms(zone_data)
+    [key] = Map.keys(zone_data.zones)
+    [{to_string(key), zone_data}]
+  end
+
+  defp string_keys_to_atoms(data) do
+    case data do
+      %{__struct__: _} = struct ->
+        struct
+
+      map when is_map(map) ->
+        map
+        |> Enum.into(%{}, fn {k, v} ->
+          {key_to_atom(k), string_keys_to_atoms(v)}
+        end)
+
+      list when is_list(list) ->
+        Enum.map(list, &string_keys_to_atoms/1)
+
+      other ->
+        other
+    end
+  end
+
+  defp key_to_atom(key) do
+    case key do
+      k when is_binary(k) -> String.to_existing_atom(k)
+      k when is_atom(k) -> k
+      other -> other
+    end
+  end
+
+  defp zone_items_to_list(zone) do
+    items = Map.values(zone.items)
+    %{zone | items: items}
+  end
+
+  defp zone_rooms_to_list(zone) do
+    rooms = Map.values(zone.rooms)
+    %{zone | rooms: rooms}
+  end
+
+  @doc """
+  Load help files
+  """
+  def load_help(path \\ @paths.help_path) do
+    ls!(path)
+    |> Enum.map(fn file ->
+      load_help_file(Path.join(path, file))
+    end)
+  end
+
+  defp load_help_file(path) do
+    [ucl, content] =
+      path
+      |> File.read!()
+      |> String.split("---")
+
+    help_topic =
+      ucl
+      |> Elias.parse()
+      |> Map.put(:content, String.trim(content))
+
+    struct(Kalevala.Help.HelpTopic, help_topic)
+  rescue
+    exception ->
+      reraise LoaderError,
+              [message: "帮助文件处理失败", file: path, reason: exception],
+              __STACKTRACE__
+  end
+
+  @doc """
+  Parse verb data into structs
+  """
+  def parse_verbs(%{verbs: verbs}) do
+    verbs
+    |> Enum.map(fn {key, verb} ->
+      {key, Map.put(verb, :key, key)}
+    end)
+    |> Enum.map(fn {key, verb} ->
+      conditions = struct(Kalevala.Verb.Conditions, verb.conditions)
+      {key, Map.put(verb, :conditions, conditions)}
+    end)
+    |> Enum.map(fn {key, verb} ->
+      {key, struct(Kalevala.Verb, verb)}
+    end)
+    |> Enum.into(%{})
+  end
+
+  @doc """
+  Parse a zone
+
+  Loads basic data and rooms
+  """
+  def parse_zone({key, zone_data}, context) do
+    zone = %Zone{}
+    seed? = Map.get(zone_data, :seed, "true") == "true"
+
+    name = get_in(zone_data.zones, [String.to_atom(key), :name])
+    zone = %{zone | id: to_string(key), name: name, seed?: seed?}
+
+    rooms = Map.get(zone_data, :rooms, [])
+
+    rooms =
+      Enum.into(rooms, %{}, fn {key, room_data} ->
+        parse_room(zone, key, room_data, zone_data)
+      end)
+
+    characters = Map.get(zone_data, :characters, [])
+
+    characters =
+      Enum.into(characters, %{}, fn {key, character_data} ->
+        parse_character(zone, key, character_data, context.brains)
+      end)
+
+    items = Map.get(zone_data, :items, [])
+
+    items =
+      Enum.into(items, %{}, fn {key, item_data} ->
+        parse_item(zone, key, item_data, context.verbs)
+      end)
+
+    %{zone | rooms: rooms, characters: characters, items: items}
+  end
+
+  @doc """
+  Parse room data
+
+  ID is the zone's id concatenated with the room's key
+  """
+  def parse_room(zone, key, room_data, zone_data) do
+    room = %Room{
+      id: "#{zone.id}:#{key}",
+      key: to_string(key),
+      zone_id: zone.id,
+      name: room_data.name,
+      description: room_data.description,
+      map_color: Map.get(room_data, :map_color),
+      map_icon: Map.get(room_data, :map_icon),
+      x: room_data.x,
+      y: room_data.y,
+      z: room_data.z,
+      flags: parse_flags(Map.get(room_data, :flags)),
+      light: Map.get(room_data, :light, 1),
+      features: parse_features(room_data, zone_data),
+      item_desc:
+        Map.merge(
+          parse_item_desc(Map.get(room_data, :item_desc)),
+          parse_item_desc_dynamic(Map.get(room_data, :item_desc_dynamic))
+        ),
+      exit_vetoes: parse_room_vetoes(Map.get(room_data, :valid_leave)),
+      behavior: Map.get(room_data, :behavior),
+      behavior_config: parse_behavior_config(Map.get(room_data, :behavior_config)),
+      room_owner: Map.get(room_data, :room_owner),
+      room_name: Map.get(room_data, :room_name),
+      room_position: Map.get(room_data, :room_position),
+      room_owner_id: Map.get(room_data, :room_owner_id),
+      actions: parse_room_actions(Map.get(room_data, :actions)),
+      state: parse_room_state(Map.get(room_data, :state)),
+      valid_startroom:
+        if(Map.get(room_data, :invalid_startroom, false),
+          do: false,
+          else: Map.get(room_data, :valid_startroom, true)
+        )
+    }
+
+    {key, room}
+  end
+
+  # P5-4h：房间初始 temp（LPC `create()` 里的 `set("status", 0)` /
+  # `set("book_count", 1)`）。UCL: `state = { status = 0  book_count = 1 }`。
+  # 缺省 `%{}` —— 未回填 state 的房间行为完全不变（P7）。
+  # 只把顶层键转成字符串；值原样保留（整数/布尔/字符串），因为运行时
+  # `Room.put_state_by_id/3` 写的也是原样值，比较时要精确相等。
+  defp parse_room_state(nil), do: %{}
+
+  defp parse_room_state(state) when is_map(state) do
+    Map.new(state, fn {key, value} -> {keyword_to_string(key), value} end)
+  end
+
+  defp parse_room_state(_), do: %{}
+
+  # P5-1：房间级 verb→handler 映射（LPC add_action("verb","handler") 的回源回填结果）。
+  # UCL: actions = { convert = "bian"  climb = "pan" }。缺省 %{}（无行为变化，P7）。
+  defp parse_room_actions(nil), do: %{}
+
+  defp parse_room_actions(actions) when is_map(actions),
+    do: Map.new(actions, fn {k, v} -> {to_string(k), to_string(v)} end)
+
+  defp parse_room_actions(_), do: %{}
+
+  # 房间墙上器物/菜单（LPC set("item_desc", ...)）：keyword -> 文本
+  # 房间级行为配置（LPC set("behavior_config", ...)），目前只有 guarded_exit。
+  #
+  # 只认两种方向表达，因为原 LPC 的 valid_leave 就是这两种写法：
+  #   guard_directions  = ["north"]   这些方向要盘查
+  #   exempt_directions = ["south"]   除这些方向外都盘查
+  #
+  # 转换器统一记成单个 `direction`，但它不可靠：shenlong:dating / zoulang 上
+  # 记的恰好是「豁免的那个方向」（语义相反），hengyang:zhurongdian 与
+  # taohua:dating 又只记了两个盘查方向中的一个。所以不能直接采信，见 B 节。
+  defp parse_behavior_config(nil), do: nil
+
+  defp parse_behavior_config(cfg) when is_map(cfg) do
+    Enum.reduce(cfg, %{}, fn {k, v}, acc ->
+      Map.put(acc, behavior_key(k), normalize_behavior_value(v))
+    end)
+  end
+
+  defp parse_behavior_config(_), do: nil
+
+  defp behavior_key(key) when is_atom(key), do: key
+  defp behavior_key(key) when is_binary(key), do: String.to_atom(key)
+  defp behavior_key(key), do: key
+
+  defp normalize_behavior_value(v) when is_list(v), do: Enum.map(v, &to_string/1)
+  defp normalize_behavior_value(v) when is_binary(v), do: v
+  defp normalize_behavior_value(v) when is_atom(v) and not is_nil(v), do: to_string(v)
+  defp normalize_behavior_value(v), do: v
+
+  defp parse_item_desc(nil), do: %{}
+
+  defp parse_item_desc(item_desc) when is_map(item_desc) do
+    Enum.reduce(item_desc, %{}, fn {key, value}, acc ->
+      Map.put(acc, keyword_to_string(key), parse_item_desc_value(value))
+    end)
+  end
+
+  defp parse_item_desc(_), do: %{}
+
+  # P5-4d: `item_desc_dynamic` 用数组承载含数字的关键词（如 `pic1`）。
+  # elias 的 UCL key 不能含数字（word + digit），故不能写成 map key。
+  defp parse_item_desc_dynamic(nil), do: %{}
+
+  defp parse_item_desc_dynamic(entries) when is_list(entries) do
+    Enum.reduce(entries, %{}, fn entry, acc ->
+      with %{} <- entry,
+           keyword when is_binary(keyword) and keyword != "" <-
+             Map.get(entry, :keyword) || Map.get(entry, "keyword") do
+        config =
+          entry
+          |> Map.delete(:keyword)
+          |> Map.delete("keyword")
+
+        Map.put(acc, keyword, parse_item_desc_value(config))
+      else
+        _ -> acc
+      end
+    end)
+  end
+
+  defp parse_item_desc_dynamic(_), do: %{}
+
+  # P5-4d: 动态 item_desc（LPC closure，如 `(: look_bi :)`）以 map 保留配置；
+  # 纯文本仍为字符串，保持已回填数据与 P7 兼容。
+  defp parse_item_desc_value(%{} = value) do
+    Map.new(value, fn {key, val} ->
+      {keyword_to_string(key), normalize_item_desc_value(val)}
+    end)
+  end
+
+  defp parse_item_desc_value(value), do: to_string(value)
+
+  defp normalize_item_desc_value(value) when is_binary(value), do: value
+
+  defp normalize_item_desc_value(value) when is_atom(value) and not is_nil(value),
+    do: to_string(value)
+
+  defp normalize_item_desc_value(value) when is_list(value),
+    do: Enum.map(value, &normalize_item_desc_value/1)
+
+  defp normalize_item_desc_value(%{} = value) do
+    Map.new(value, fn {key, val} ->
+      {keyword_to_string(key), normalize_item_desc_value(val)}
+    end)
+  end
+
+  defp normalize_item_desc_value(value), do: value
+
+  # 出口阻挡兜底消息（LPC valid_leave 的 notify_fail）：结构化保留，不做数据驱动拦截
+  defp parse_room_vetoes(nil), do: []
+
+  defp parse_room_vetoes(vetoes) when is_list(vetoes) do
+    Enum.map(vetoes, fn
+      %{} = veto ->
+        %{
+          direction: to_veto_dir(Map.get(veto, :direction)),
+          condition: to_string_or_nil(Map.get(veto, :condition)),
+          message: to_string_or_nil(Map.get(veto, :message)),
+          # `all_dirs = true` 表示这条条件在 LPC 里本来就拦所有方向
+          # （例如厨房里端着汤不许走）。缺这个标记而条件里又没有 dir 时，
+          # 按「转换器丢了外层守卫」处理，运行时跳过 —— 宁可少拦，不能锁死玩家。
+          # 注意：Elias 把 UCL 里的 `true` 解析成**字符串** "true"（不是布尔、也不是原子），
+          # 三种形态都接受，避免以后有人手改数据时静默失效。
+          all_dirs: Map.get(veto, :all_dirs) in [true, true, "true"]
+        }
+
+      _ ->
+        nil
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp parse_room_vetoes(_), do: []
+
+  defp to_veto_dir("~"), do: "*"
+  defp to_veto_dir(nil), do: "*"
+  defp to_veto_dir(dir), do: to_string(dir)
+
+  defp to_string_or_nil(nil), do: nil
+  defp to_string_or_nil(nil), do: nil
+  defp to_string_or_nil(v), do: to_string(v)
+
+  defp keyword_to_string(key) when is_atom(key), do: Atom.to_string(key)
+  defp keyword_to_string(key) when is_binary(key), do: key
+  defp keyword_to_string(key), do: to_string(key)
+
+  # 房间标志位（A5/D2）：no_fight/outdoors/water/startroom；
+  # outdoors/water 本期只存不用（供日后天气/溺水）
+  defp parse_flags(nil), do: []
+  defp parse_flags(flags) when is_list(flags), do: Enum.map(flags, &to_string/1)
+  defp parse_flags(flag) when is_binary(flag), do: [flag]
+  defp parse_flags(_), do: []
+
+  def parse_features(%{features: features}, zone_data) when is_list(features) do
+    Enum.map(features, fn feature ->
+      parse_feature(feature, zone_data)
+    end)
+  end
+
+  def parse_features(_room, _zone_data), do: []
+
+  defp parse_feature(%{ref: "features." <> ref}, zone_data) do
+    feature = Map.get(zone_data.features, String.to_atom(ref))
+    parse_feature(feature, zone_data)
+  end
+
+  defp parse_feature(feature, _zone_data) do
+    %Feature{
+      id: feature.keyword,
+      keyword: feature.keyword,
+      short_description: feature.short,
+      description: feature.long
+    }
+  end
+
+  @doc """
+  Parse character data
+
+  ID is the zone's id concatenated with the character's key
+
+  支持可选的 `combat {}` 块描述武侠战斗属性：
+
+      characters "heihu" {
+        name = "黑虎"
+        combat = {
+          attitude = "aggressive"
+          max_qi = 900
+          str = 30
+          combat_exp = 8000
+          skills = { unarmed = 80, dodge = 70 }
+          map_skill = { sword = "liuxin-jian" }
+          apply = { attack = 45, damage = 35, armor = 20 }
+        }
+      }
+  """
+  def parse_character(zone, key, character_data, brains) do
+    inquiries = parse_inquiries(Map.get(character_data, :inquiries))
+    combat_data = Map.get(character_data, :combat)
+    jiali = if is_map(combat_data), do: numeric_or_nil(Map.get(combat_data, :jiali)) || 0, else: 0
+
+    character = %Character{
+      id: "#{zone.id}:#{key}",
+      name:
+        case Map.get(character_data, :random_name_type, :none) do
+          "ghost" ->
+            # LPC ghost.h 风格随机名字：颜色 + 动物 + "鬼"（如「赤兔鬼」）
+            NameGenerator.random_ghost_name()
+
+          "cn" ->
+            # LPC NPC_D->generate_cn_name()：随机中文全名（如丐帮弟子）
+            # random_name/2 返回 {姓名, [拼音id]}，取第 0 元素作为 name
+            elem(NameGenerator.random_name(Map.get(character_data, :gender, "男性")), 0)
+
+          "biaoshi" ->
+            # LPC biaoshi.c：随机姓氏 + "镖师"（如「赵镖师」）
+            NameGenerator.random_biaoshi_name()
+
+          "biaotou" ->
+            # LPC biaotou.c：随机姓氏 + "镖头"（如「赵镖头」）
+            NameGenerator.random_biaotou_name()
+
+          _ ->
+            character_data.name
+        end,
+      description: character_data.description,
+      brain:
+        character_data
+        |> build_brain(brains),
+      meta: %Kantele.Character.NonPlayerMeta{
+        zone_id: zone.id,
+        initial_events: parse_initial_events(character_data),
+        vitals: npc_vitals(combat_data),
+        # #1040: LPC `set_skill()` / `map_skill()` 被转换器写成角色块顶层
+        # `skills = [...]`，旧 loader 只读 combat.skills → 1,300+ NPC 技能全丢。
+        stats:
+          npc_stats(
+            combat_data,
+            Map.get(character_data, :score),
+            Map.get(character_data, :skills)
+          ),
+        combat_config: npc_combat_config(combat_data),
+        # #1032: LPC `set("jiali", N)`（UCL `combat.jiali`）此前被 loader 丢弃，
+        # NPC 加力恒为 0。落进运行时 combat 状态，攻击/毒/绝招按 N 判定。
+        combat: %{Kantele.Character.Combat.new() | jiali: jiali},
+        goods: parse_goods(Map.get(character_data, :goods)),
+        inquiries: inquiries,
+        # 交互提示用的关键词快照：只存键名，房间侧经 Meta.trim 也能拿到
+        ask_topics: Map.keys(inquiries || %{}) |> Enum.sort(),
+        inquiry_state: parse_inquiry_state(Map.get(character_data, :inquiry_state)),
+        aliases: parse_aliases(Map.get(character_data, :aliases)),
+        teach: parse_teach(Map.get(character_data, :teach)),
+        apprentice: parse_apprentice(Map.get(character_data, :apprentice)),
+        turn_in: parse_turn_in(Map.get(character_data, :turn_in)),
+        quest: parse_quest(Map.get(character_data, :quest)),
+        coagents: parse_coagents(Map.get(character_data, :coagents)),
+        parts: parse_parts(Map.get(character_data, :parts)),
+        no_cut: parse_no_cut(Map.get(character_data, :no_cut)),
+        default_clone:
+          Map.get(character_data, :default_clone) &&
+            to_string(Map.get(character_data, :default_clone)),
+        loot: parse_goods(Map.get(character_data, :loot)),
+        greetings: parse_greetings(Map.get(character_data, :greetings)),
+        init: parse_enter_init(Map.get(character_data, :init)),
+        accept: parse_accept_rules(Map.get(character_data, :accept)),
+        guarder: parse_guarder(Map.get(Map.get(character_data, :meta, %{}), :guarder)),
+        rescue: parse_rescue(Map.get(Map.get(character_data, :meta, %{}), :rescue)),
+        engage: parse_engage(Map.get(character_data, :engage)),
+        carry: parse_carry(Map.get(character_data, :carry)),
+        chat_msg_combat: parse_chat_msg_combat(Map.get(character_data, :chat_msg_combat)),
+        chat_chance_combat: Map.get(character_data, :chat_chance_combat) || 0,
+        # LPC `set("ask_handler", "...")`（转换器降级为顶层 `ask_handler = "..."`）：
+        # NPC 收到 `ask <npc> <关键词>` 时由 AskCommand 优先分发到该 AskHandler 模块。
+        # 不解析则 meta.ask_handler 恒为 nil，ask 命令会穿透到 characters/ask 事件流而失效
+        # （白无常 ask 还阳、地藏王 ask 转世 等都会静默失败）。
+        ask_handler: Map.get(character_data, :ask_handler),
+        power: Map.get(character_data, :power) || 0,
+        drop_a: parse_item_ref(Map.get(character_data, :drop_a)),
+        drop_b: parse_item_ref(Map.get(character_data, :drop_b)),
+        drop_c: parse_item_ref(Map.get(character_data, :drop_c)),
+        # LPC `create_family(<门派>, <代>, <称号>)`：原转换器只写进 teach/apprentice
+        # 块；无教学内容的 NPC（如 none/libai.c 侠客盟、misc/shangguan.c 金钱帮）
+        # 门派归属整组丢失。顶层 `family` 补齐这一层。
+        family: string_or_nil(Map.get(character_data, :family)),
+        # LPC `set("...", ...)` 属性仓库（如 libai.c 的 dugu-jiujian/nothing）。
+        # UCL 键不允许 `/`，用 `env = [ { key = "a/b" value = N } ]` 保真。
+        env: parse_env(Map.get(character_data, :env)),
+        # LPC `set_temp("handing", carry_object(...))`：李白手持天乙神酒。
+        handing: parse_item_ref(Map.get(character_data, :handing)),
+        # ultra 大宗师配置（评价类别 / 技能表 / 逐字文案），由 AskHandler 消费。
+        ultra: parse_ultra(Map.get(character_data, :ultra))
+      }
+    }
+
+    character = attach_npc_applies(character, combat_data)
+
+    {key, character}
+  end
+
+  @doc """
+  LPC `carry_object(...)`：NPC 出生时随身带的装备。
+
+  转换器把 LPC 的
+
+      carry_object("/clone/weapon/gangdao")->wield();
+      carry_object("/clone/cloth/cloth")->wear();
+
+  降级成一条不带动作的列表：
+
+      carry = [ { id = items.gangdao.id }, { id = items.cloth.id } ]
+
+  **`wield()` / `wear()` 的动作信息在转换时丢了**，所以这里只把
+  **item_id 列表**存进 `meta.carry`，真正「穿上 / 拿着」由
+  `Kantele.Character.SpawnController` 在 NPC 进程起来时做 ——
+  那时候 Items cache 已经就绪（见 `Kantele.World.Kickoff`：load 完
+  第 138 行才 `cache_item`）。
+
+  ⚠️ 曾经在 loader 里直接装备，结果 `Kantele.World.Items.get/1` 打
+  `:ets.lookup` 时 ETS 表还不存在 -> `argument error`，
+  整个 `kunming.ucl` 解析失败。**加载期不能碰 cache**。
+  """
+  def parse_carry(carry) when is_list(carry) do
+    Enum.map(carry, fn entry -> entry && entry.id end)
+  end
+
+  def parse_carry(_), do: []
+
+  # LPC QUARRY `set("drop_a", __DIR__"item/x")`：单个物品引用 { id = "xxx" }。
+  defp parse_item_ref(nil), do: nil
+  defp parse_item_ref(%{id: id}) when is_binary(id), do: id
+  defp parse_item_ref(ref) when is_binary(ref), do: ref
+  defp parse_item_ref(_), do: nil
+
+  # LPC `set("foo/bar", N)` / `set("foo", N)` 的保真形态。UCL 键不能含 `/`，
+  # 故数组形态用 `{ key = "foo/bar" value = N }`（键名原样保留）；
+  # map 形态（键均为合法标识符）也接受，统一 string-key。
+  defp parse_env(nil), do: %{}
+
+  defp parse_env(env) when is_list(env) do
+    Enum.reduce(env, %{}, fn
+      %{key: key, value: value}, acc when is_binary(key) -> Map.put(acc, key, value)
+      _, acc -> acc
+    end)
+  end
+
+  defp parse_env(env) when is_map(env), do: stringify_map(env)
+  defp parse_env(_), do: %{}
+
+  # ultra 大宗师配置：`ultra = { category = ... opinion_type = ... opinions = [...] msgs = { ... } }`。
+  # 文案全部落在 UCL（零信息丢失），引擎只做结构归一。
+  defp parse_ultra(nil), do: nil
+
+  defp parse_ultra(ultra) when is_map(ultra) do
+    %{
+      category: string_or_nil(Map.get(ultra, :category)),
+      opinion_type: string_or_nil(Map.get(ultra, :opinion_type)),
+      want_key: string_or_nil(Map.get(ultra, :want_key)),
+      calc_mode: string_or_nil(Map.get(ultra, :calc_mode)),
+      opinions:
+        case Map.get(ultra, :opinions) do
+          list when is_list(list) -> Enum.map(list, &to_string/1)
+          _ -> []
+        end,
+      weapon_required: to_bool(Map.get(ultra, :weapon_required, false)),
+      msgs:
+        case Map.get(ultra, :msgs) do
+          msgs when is_map(msgs) -> stringify_map(msgs)
+          _ -> %{}
+        end
+    }
+  end
+
+  defp parse_ultra(_), do: nil
+
+  # LPC `set("chat_msg_combat", (...))` → 字符串列表（转换器已过滤 closure，
+  # 此处只做容错：非 list 返回 []）。
+  def parse_chat_msg_combat(nil), do: []
+  def parse_chat_msg_combat(list) when is_list(list), do: list
+  def parse_chat_msg_combat(_), do: []
+
+  defp build_brain(character_data, brains) do
+    brain = Kantele.Brain.process(Map.get(character_data, :brain), brains)
+
+    case chat_node(Map.get(character_data, :chat_chance), Map.get(character_data, :chats)) do
+      nil ->
+        brain
+
+      node ->
+        %Kalevala.Brain{
+          root: %Kalevala.Brain.Sequence{
+            nodes: [node, brain.root]
+          }
+        }
+    end
+  end
+
+  # 概率闲聊：ChatChance 门控（冷却 + 概率）命中后从台词池随机说一条。
+  #
+  # 必须用 ChatChance 而不是裸的 Conditions.Random：NPC 订阅了所在房间频道，
+  # ChatAction 又往同一频道发言，因此「发言 → 收到自己的事件 → 掷骰 → 再发言」
+  # 会自激。房间里有 N 个同配置 NPC 时繁殖率 = N × chance/100，mingjiao 的
+  # miaorenbuluo（4 个 miaozuwushi × chat_chance 30）达到 1.2 > 1，指数刷屏。
+  # ChatChance 的时间冷却把过程变成有界速率。详见该模块的 @moduledoc。
+  defp chat_node(chance, chats)
+       when is_integer(chance) and chance > 0 and is_list(chats) and chats != [] do
+    %Kalevala.Brain.ConditionalSelector{
+      nodes: [
+        %Kalevala.Brain.Condition{
+          type: Kantele.Brain.Conditions.ChatChance,
+          data: %{
+            chance: chance,
+            cooldown_ms: Kantele.Brain.Conditions.ChatChance.default_cooldown_ms()
+          }
+        },
+        %Kalevala.Brain.Action{
+          type: Kantele.Character.ChatAction,
+          data: %{lines: Enum.map(chats, &to_string/1)},
+          delay: 0
+        }
+      ]
+    }
+  end
+
+  defp chat_node(_, _), do: nil
+
+  # 商品表：UCL 写法与 room_items 一致（{ id = items.xxx.id } 对象数组），
+  # 先存原始引用串，待 parse_characters 阶段有 zones 上下文时再解引用
+  defp parse_goods(nil), do: nil
+
+  defp parse_goods(goods) when is_list(goods) do
+    Enum.map(goods, fn
+      # `{ id = [items.a.id,items.b.id] }` - the converter's alternative list for
+      # an LPC runtime pick, e.g. emei/cangjingge.c's
+      #     __DIR__"obj/fojing1" + random(2)
+      # The driver calls random(2) ONCE, so the room gets exactly one of the two.
+      # Expand the list here and pick, rather than letting the converter emit
+      # every candidate (which would put two fojings where the MUD puts one).
+      %{id: choices} when is_list(choices) ->
+        choices
+        |> Enum.flat_map(fn
+          item when is_binary(item) -> String.split(item, ",")
+          _other -> []
+        end)
+        |> Enum.reject(&(String.trim(&1) == ""))
+        |> case do
+          [] -> nil
+          candidates -> Enum.random(candidates)
+        end
+
+      %{id: ref} when is_binary(ref) ->
+        ref
+
+      ref when is_binary(ref) ->
+        ref
+
+      _ ->
+        nil
+    end)
+    |> Enum.reject(&is_nil/1)
+  end
+
+  defp parse_goods(_), do: nil
+
+  # LPC set_name 的 id 表（present/ask/get 的匹配依据）
+  defp parse_aliases(nil), do: []
+
+  defp parse_aliases(list) when is_list(list) do
+    Enum.map(list, &to_string/1)
+  end
+
+  defp parse_aliases(other) when is_binary(other), do: [other]
+  defp parse_aliases(_), do: []
+
+  # 商品引用形如 `items.<名>.id`（本区）或 `<区>.items.<名>.id`（跨区）。
+  # 跨区是 LPC 原有语义：vendor_goods 里写的是绝对路径（`/d/xiyu/obj/fire`），
+  # 哪个区的商人都能卖，因此引用也必须能指向别的区。
+  # 只对「点分隔的小写标识符」尝试解引用，普通 id（含 `:`）原样保留。
+  @item_ref ~r/^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/
+
+  defp resolve_goods(goods, zone, zones) when is_list(goods) do
+    Enum.map(goods, fn
+      ref when is_binary(ref) -> deref_item_ref(ref, zone, zones)
+      id -> id
+    end)
+  end
+
+  defp resolve_goods(goods, _zone, _zones), do: goods
+
+  defp deref_item_ref(ref, zone, zones) do
+    if Regex.match?(@item_ref, ref) do
+      case safe_dereference(zones, zone, ref) do
+        {:ok, item_id} when is_binary(item_id) -> item_id
+        _ -> ref
+      end
+    else
+      ref
+    end
+  end
+
+  defp safe_dereference(zones, zone, reference) do
+    {:ok, dereference(zones, zone, reference)}
+  rescue
+    _ -> :error
+  end
+
+  # 单条物品引用（handing）：与 resolve_turn_in 同款，引用形态解不出 -> nil。
+  defp resolve_single_ref(nil, _zone, _zones), do: nil
+
+  defp resolve_single_ref(ref, zone, zones) when is_binary(ref) do
+    # `dereference/3` 的跨区 items 分支对 zone.items（列表）会抛 BadMapError；
+    # 单条物品引用直接按 <zone>.items.<key>.id → "<zone>:<key>" 归一化即可。
+    case String.split(ref, ".") do
+      [zone_id, "items", item_key, "id"] ->
+        "#{zone_id}:#{item_key}"
+
+      ["items", item_key, "id"] ->
+        "#{zone.id}:#{item_key}"
+
+      _ ->
+        if Regex.match?(@item_ref, ref) do
+          case safe_dereference(zones, zone, ref) do
+            {:ok, item_id} when is_binary(item_id) -> item_id
+            _ -> nil
+          end
+        else
+          ref
+        end
+    end
+  end
+
+  defp resolve_single_ref(_, _zone, _zones), do: nil
+
+  # 解引用任务交付物品（items.yupai.id -> "liuxi:yupai"，跨区同 goods）
+  defp resolve_turn_in(nil, _zone, _zones), do: nil
+
+  defp resolve_turn_in(turn_in, zone, zones) do
+    item =
+      case Map.get(turn_in, :item) do
+        item when is_binary(item) ->
+          case safe_dereference(zones, zone, item) do
+            {:ok, item_id} when is_binary(item_id) ->
+              item_id
+
+            _ ->
+              # 引用形态解不出 -> nil（悬空交付物）；普通 id 原样保留
+              if Regex.match?(@item_ref, item), do: nil, else: item
+          end
+
+        _ ->
+          nil
+      end
+
+    %{turn_in | item: item}
+  end
+
+  # 问答表：%{关键词 => 回答}，键统一字符串；值可为文本（直接回话）或
+  # 脚本化 map（Q6 数据驱动事件：reply/give/learn_skill/family/gongxian）
+  defp parse_inquiries(nil), do: nil
+
+  defp parse_inquiries(inquiries) when is_map(inquiries) do
+    Enum.into(inquiries, %{}, fn {key, value} ->
+      {to_string(key), parse_inquiry_value(value)}
+    end)
+  end
+
+  defp parse_inquiries(inquiries) when is_list(inquiries) do
+    Enum.reduce(inquiries, %{}, fn item, acc ->
+      case item do
+        %{key: key, value: value} ->
+          Map.put(acc, to_string(key), parse_inquiry_value(value))
+
+        _ ->
+          acc
+      end
+    end)
+  end
+
+  defp parse_inquiries(_), do: nil
+
+  # 问询可消耗库存（LPC `set("huju_count", 20)`）：UCL
+  # `inquiry_state = { huju_count = 20 }` → `%{"huju_count" => 20}`。
+  defp parse_inquiry_state(nil), do: %{}
+
+  defp parse_inquiry_state(state) when is_map(state) do
+    Enum.into(state, %{}, fn {key, value} -> {to_string(key), value} end)
+  end
+
+  defp parse_inquiry_state(_), do: %{}
+
+  defp parse_inquiry_value(value) when is_map(value) do
+    Enum.into(value, %{}, fn {key, val} ->
+      key = to_string(key)
+      {key, normalize_inquiry_field(key, val)}
+    end)
+  end
+
+  defp parse_inquiry_value(value), do: to_string(value)
+
+  # 授绝招配置的 min_levels 是嵌套 map：键归一为字符串（下划线->连字符，与
+  # Stats.skills 键一致），否则 inquiry_grant 的技能门槛查不到等级。
+  # level_deny（counter_perform 的每技能拒绝文案）同形同理，键与 min_levels 对齐。
+  defp normalize_inquiry_field("min_levels", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} ->
+      {String.replace(to_string(skill), "_", "-"), level}
+    end)
+  end
+
+  defp normalize_inquiry_field("level_deny", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} ->
+      {String.replace(to_string(skill), "_", "-"), text}
+    end)
+  end
+
+  # #1010 红花会陆菲青白龙剑：按门派给出不同的逐字拒绝（武当派专属），
+  # UCL map 键经 Elias 解析后可能是 atom/中文字符串，统一成字符串键。
+  defp normalize_inquiry_field("family_denies", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {family, text} -> {to_string(family), text} end)
+  end
+
+  # 昆仑 `gate_order = "lpc_kunlun"` 用 level_order 显式固定逐条门槛顺序；
+  # 与 min_levels 同形归一，使 dex / max_neili 伪键和技能 id 都能命中 level_deny。
+  defp normalize_inquiry_field("level_order", keys) when is_list(keys) do
+    Enum.map(keys, &String.replace(to_string(&1), "_", "-"))
+  end
+
+  # LPC `improve_skill(skill, 1500000)`：数组每项即一次 +1 级。
+  defp normalize_inquiry_field("improve_skills", skills) when is_list(skills) do
+    Enum.map(skills, &String.replace(to_string(&1), "_", "-"))
+  end
+
+  defp normalize_inquiry_field("max_skill_levels", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} ->
+      {String.replace(to_string(skill), "_", "-"), level}
+    end)
+  end
+
+  # sect_master_teach_skill 的逐技能拒绝文案，键须与 min_skill_levels 对齐。
+  defp normalize_inquiry_field("min_skill_deny", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} ->
+      {String.replace(to_string(skill), "_", "-"), text}
+    end)
+  end
+
+  # min_skill_levels 键与 Stats.skills 保持一致（字符串 + 下划线，不做 _→- 归一），
+  # 方便 give_item 的 below_min_skill? 直接 Map.get(skills, skill) 命中。
+  defp normalize_inquiry_field("min_skill_levels", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} ->
+      {to_string(skill), level}
+    end)
+  end
+
+  defp normalize_inquiry_field(_key, val), do: val
+
+  # 欢迎台词池：UCL greetings = [ { line = "..." } ]，归一为字符串列表
+  defp parse_greetings(nil), do: nil
+
+  defp parse_greetings(greetings) when is_list(greetings) do
+    Enum.map(greetings, fn
+      %{line: line} when is_binary(line) -> line
+      line when is_binary(line) -> line
+      _ -> nil
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      lines -> lines
+    end
+  end
+
+  defp parse_greetings(_), do: nil
+
+  # 入场配置：UCL init = { greet_delay = 1  add_actions = [...]  heartbeat = 5 }
+  defp parse_enter_init(nil), do: nil
+
+  defp parse_enter_init(init) when is_map(init) do
+    add_actions =
+      case Map.get(init, :add_actions) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        _ -> []
+      end
+
+    %{
+      greet_delay: Map.get(init, :greet_delay) || 0,
+      add_actions: add_actions,
+      heartbeat: Map.get(init, :heartbeat) || 0
+    }
+  end
+
+  defp parse_enter_init(_), do: nil
+
+  # 收受规则（accept_object）：UCL accept = [ { kind = "money" min = 1000 } ... ]
+  defp parse_accept_rules(nil), do: nil
+
+  defp parse_accept_rules(rules) when is_list(rules) do
+    Enum.map(rules, fn rule when is_map(rule) ->
+      kind = Map.get(rule, :kind)
+
+      if kind in [
+           "money",
+           "item_id",
+           "item_name",
+           "any",
+           "forge",
+           "wuxiuwen",
+           "reborn",
+           "suoyangdan",
+           "hunter",
+           "shaolin_promotion",
+           "ultra"
+         ] do
+        %{
+          kind: kind,
+          min: numeric_or_nil(Map.get(rule, :min)),
+          id: string_or_nil(Map.get(rule, :id)),
+          name: string_or_nil(Map.get(rule, :name)),
+          accept: to_bool(Map.get(rule, :accept, true)),
+          msg: accept_msg(Map.get(rule, :msg)),
+          fail_msg: accept_msg(Map.get(rule, :fail_msg)),
+          # 少林辈分晋升（#634/#635）：accept_object 的专用参数。
+          action: string_or_nil(Map.get(rule, :action)),
+          master_generation: numeric_or_nil(Map.get(rule, :master_generation)),
+          award_item: string_or_nil(Map.get(rule, :award_item)),
+          require_flag: string_or_nil(Map.get(rule, :require_flag)),
+          set_flag: string_or_nil(Map.get(rule, :set_flag)),
+          already_msg: accept_msg(Map.get(rule, :already_msg))
+        }
+      else
+        nil
+      end
+    end)
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      clean -> clean
+    end
+  end
+
+  defp parse_accept_rules(_), do: nil
+
+  # 守卫配置：UCL guarder = { family = "白驼山庄" msgs = { refuse_other = "..." } }
+  #
+  # msg 占位符归一：老数据（miao/wen.c 等）把 LPC `message_vision` 的 `$N`/`$n`
+  # 原样写进了 msgs；MoveView.render_guarder_msg/1 只替换 `{npc}`/`{name}`，
+  # 于是旧数据会在拒绝文案里露出字面 `$N`/`$n`。这里统一转成 `{npc}`/`{name}`。
+  defp parse_guarder(nil), do: nil
+
+  defp parse_guarder(guarder) when is_map(guarder) do
+    family = string_or_nil(Map.get(guarder, :family))
+    msgs = Map.get(guarder, :msgs)
+
+    if is_nil(family) do
+      nil
+    else
+      parsed_msgs =
+        if is_map(msgs) do
+          msgs
+          |> Enum.into(%{}, fn {key, value} ->
+            {key, normalize_guarder_msg(value)}
+          end)
+        else
+          %{}
+        end
+
+      %{
+        family: family,
+        msgs: parsed_msgs
+      }
+    end
+  end
+
+  defp parse_guarder(_), do: nil
+
+  # LPC message_vision 的 `$N` = 被喊话者 / `$n` = 喊话者（守门人自己）。
+  # 宿主 MoveView 渲染的是 `{npc}`（守门人）/ `{name}`（玩家）。
+  defp normalize_guarder_msg(text) when is_binary(text) do
+    text
+    |> String.replace("$N", "{npc}")
+    |> String.replace("$n", "{name}")
+  end
+
+  defp normalize_guarder_msg(other), do: other
+
+  # 群体助战配置（LPC wenwanfu.c::kill_ob）：被 kill 时呼喊同房间同门弟子上前助战。
+  # UCL 形状：
+  #   meta = {
+  #     rescue = {
+  #       npc_ids = ["lingxiao dizi", "lingxiao dizi"]
+  #       types = ["kill"]
+  #       vision = "闻万夫大怒，喝道：居然欺到我们凌宵城头上来了，大家并肩子上！"
+  #     }
+  #   }
+  # 说明：LPC `set_temp("my_killer")` + `::kill_ob(ob)` 是「记录凶手 → 原语再入」的两段式，
+  # ex 端在 engage 里直接用本次攻击者，语义等价（见 room.ex maybe_rescue_allies）。
+  defp parse_rescue(nil), do: nil
+
+  # `rescue` 是 Elixir 保留字，不能作变量名，用 rescue_cfg 代替。
+  defp parse_rescue(rescue_cfg) when is_map(rescue_cfg) do
+    npc_ids =
+      case Map.get(rescue_cfg, :npc_ids) do
+        ids when is_list(ids) ->
+          ids
+          |> Enum.map(&class_value/1)
+          |> Enum.reject(&is_nil/1)
+
+        _ ->
+          []
+      end
+
+    types =
+      case Map.get(rescue_cfg, :types) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        single when is_binary(single) -> [single]
+        _ -> ["kill"]
+      end
+
+    vision = string_or_nil(Map.get(rescue_cfg, :vision))
+
+    if npc_ids == [] do
+      nil
+    else
+      %{npc_ids: npc_ids, types: types, vision: vision}
+    end
+  end
+
+  defp parse_rescue(_), do: nil
+
+  # 开战接受规则（accept_fight/hit/kill）：
+  # UCL engage = {
+  #   fight = { accept = false msg = "..." }
+  #   hit   = { accept = true retaliate = true msg = "..." }
+  #   kill  = { accept = false spawn = ["baobiao"] }
+  # }
+  defp parse_engage(nil), do: nil
+
+  defp parse_engage(engage) when is_map(engage) do
+    parsed =
+      Enum.reduce([:fight, :hit, :kill], %{}, fn key, acc ->
+        case Map.get(engage, key) do
+          nil ->
+            acc
+
+          rule when is_map(rule) ->
+            accept = parse_engage_accept(Map.get(rule, :accept))
+
+            if is_nil(accept) do
+              acc
+            else
+              Map.put(acc, key, %{
+                accept: accept,
+                kind: string_or_nil(Map.get(rule, :kind)),
+                # 动态 accept_fight 处理器（ultra 大宗师按 ask 次数/状态放拒）；
+                # 由 Kantele.Npc.EngageRule.decide/4 按 NPC 与攻击者实时判定。
+                handler: string_or_nil(Map.get(rule, :handler)),
+                master_generation: numeric_or_nil(Map.get(rule, :master_generation)),
+                award_item: string_or_nil(Map.get(rule, :award_item)),
+                msg: string_or_nil(Map.get(rule, :msg)),
+                win_msg: string_or_nil(Map.get(rule, :win_msg)),
+                lose_msg: string_or_nil(Map.get(rule, :lose_msg)),
+                retaliate: to_bool(Map.get(rule, :retaliate, false)),
+                spawn:
+                  case Map.get(rule, :spawn) do
+                    list when is_list(list) -> Enum.map(list, &to_string/1)
+                    item when not is_nil(item) -> [to_string(item)]
+                    _ -> []
+                  end
+              })
+            end
+
+          _ ->
+            acc
+        end
+      end)
+
+    case parsed do
+      %{} = p when map_size(p) > 0 -> p
+      _ -> nil
+    end
+  end
+
+  defp parse_engage(_), do: nil
+
+  # accept 转布尔：true/false（含字符串形式）之外一律按缺省放行（nil = 无规则）
+  defp parse_engage_accept(true), do: true
+  defp parse_engage_accept(false), do: false
+  defp parse_engage_accept("true"), do: true
+  defp parse_engage_accept("false"), do: false
+
+  defp parse_engage_accept(value) when value in [1, "1", 0, "0"] do
+    value == 1 or value == "1"
+  end
+
+  defp parse_engage_accept(_), do: nil
+
+  defp numeric_or_nil(v) when is_integer(v), do: v
+  defp numeric_or_nil(v) when is_binary(v), do: String.to_integer(v)
+  defp numeric_or_nil(_), do: nil
+
+  defp string_or_nil(v) when is_binary(v), do: v
+  defp string_or_nil(v) when is_atom(v) and not is_nil(v), do: to_string(v)
+  defp string_or_nil(_), do: nil
+
+  # accept 规则台词：单条字符串或台词池（列表）→ 统一归一为台词池；空池为 nil
+  defp accept_msg(nil), do: nil
+  defp accept_msg(v) when is_binary(v), do: [v]
+
+  defp accept_msg(v) when is_list(v) do
+    v = Enum.reject(v, &(not is_binary(&1) or &1 == ""))
+    if v == [], do: nil, else: v
+  end
+
+  defp accept_msg(_), do: nil
+
+  defp to_bool(v) when v in [true, "true", 1, "1"], do: true
+  defp to_bool(_), do: false
+
+  # 教学配置（A11/D4）：归一化字符串键，本期只解析落位供门派信息展示，
+  # 消费端校验等 b 期 learn 重构接入
+  defp parse_teach(nil), do: nil
+
+  defp parse_teach(teach) when is_map(teach) do
+    teach_skills =
+      case Map.get(teach, :teach_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, conf} ->
+            skill_id = String.replace(to_string(key), "_", "-")
+
+            conf =
+              case conf do
+                %{max: max, gongxian: gongxian} ->
+                  %{max: max, gongxian: gongxian}
+
+                %{max: max} ->
+                  %{max: max, gongxian: 0}
+
+                _ ->
+                  %{max: 0, gongxian: 0}
+              end
+
+            {skill_id, conf}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    # LPC no_teach 有三种形状：平坦字符串列表（如 hu/hufei.c 的三项解锁占位）、
+    # skill -> 拒绝文案 map（如 linghu.c 的 yijinjing/dugu-jiujian、yue-buqun.c 的 pixie-jian）、
+    # 以及 skill -> map（含 unlock 条件解锁，如 miao.c 的 miaojia-jian/tianlong-jian/chongtian-zhang）。
+    # 三者都落位：列表供展示，文案落 no_teach_deny，unlock 落 no_teach_unlock，
+    # 避免把逐字文案与条件解锁静默丢弃（GAP #742 / #879）。
+    {no_teach, no_teach_deny, no_teach_unlock} =
+      case Map.get(teach, :no_teach) do
+        list when is_list(list) ->
+          {Enum.map(list, &to_string/1), %{}, %{}}
+
+        map when is_map(map) ->
+          Enum.reduce(map, {[], %{}, %{}}, fn
+            {skill, %{unlock: _} = conf}, {skills, denies, unlocks} ->
+              skill_id = String.replace(to_string(skill), "_", "-")
+
+              unlock =
+                case Map.get(conf, :unlock) do
+                  u when is_map(u) -> u
+                  _ -> %{}
+                end
+
+              {[skill_id | skills], Map.put(denies, skill_id, ""),
+               Map.put(unlocks, skill_id, normalize_unlock(unlock))}
+
+            {skill, reason}, {skills, denies, unlocks} ->
+              skill_id = String.replace(to_string(skill), "_", "-")
+              {[skill_id | skills], Map.put(denies, skill_id, to_string(reason)), unlocks}
+          end)
+
+        _ ->
+          {[], %{}, %{}}
+      end
+
+    %{
+      family: Map.get(teach, :family) && to_string(Map.get(teach, :family)),
+      teach_skills: teach_skills,
+      no_teach: no_teach,
+      no_teach_deny: no_teach_deny,
+      no_teach_unlock: no_teach_unlock,
+      recognize: parse_recognize(Map.get(teach, :recognize))
+    }
+  end
+
+  defp parse_teach(_), do: nil
+
+  # 石清 shiqing.c::recognize_apprentice：非本门弟子来学艺时的四道门。
+  #   master_name != "白自在"            -> 素无渊源
+  #   shen < 10000                       -> 侠义不足
+  #   skill 不在 {shangqing-jian, sword} -> 另投名师
+  #   skill 等级 > max_skill_level(179)  -> 我教不了
+  # UCL 形状：
+  #   recognize = {
+  #     require_master_name = "白自在"
+  #     min_shen = 10000
+  #     allowed_skills = ["shangqing-jian", "sword"]
+  #     max_skill_level = 179
+  #     not_master_deny = "..."   # master_name 不匹配
+  #     shen_deny = "..."         # shen 不足
+  #     wrong_skill_deny = "..."  # 技能不在白名单
+  #     maxed_deny = "..."        # 技能已过上限
+  #   }
+  defp parse_recognize(nil), do: nil
+
+  defp parse_recognize(recognize) when is_map(recognize) do
+    allowed_skills =
+      case Map.get(recognize, :allowed_skills) do
+        skills when is_list(skills) ->
+          skills
+          |> Enum.map(&class_value/1)
+          |> Enum.reject(&is_nil/1)
+
+        _ ->
+          []
+      end
+
+    %{
+      require_master_name: class_value(Map.get(recognize, :require_master_name)),
+      min_shen: int_value(Map.get(recognize, :min_shen)) || 0,
+      allowed_skills: allowed_skills,
+      max_skill_level: int_value(Map.get(recognize, :max_skill_level)),
+      not_master_deny: Map.get(recognize, :not_master_deny),
+      shen_deny: Map.get(recognize, :shen_deny),
+      wrong_skill_deny: Map.get(recognize, :wrong_skill_deny),
+      maxed_deny: Map.get(recognize, :maxed_deny)
+    }
+  end
+
+  defp parse_recognize(_), do: nil
+
+  # #879 条件 no_teach 解锁：mark 键（can_learn/<family>/<skill>）与 exp 阈值归一。
+  # min_exp 缺省 0（仅看 mark）；learned/locked 为师父台词，缺省 nil（teachable? 回退通用文案）。
+  defp normalize_unlock(unlock) do
+    %{
+      mark: class_value(Map.get(unlock, :mark)),
+      min_exp: int_value(Map.get(unlock, :min_exp)) || 0,
+      # #940 欧阳克 recognize_apprentice：必须有 can_learn/lingshe-quan/ke 标记，
+      # 不可靠 combat_exp 自动解锁。缺省 false → 既有门派行为完全不变。
+      require_mark_only: to_bool(Map.get(unlock, :require_mark_only)),
+      learned: Map.get(unlock, :learned),
+      locked: Map.get(unlock, :locked),
+      # #789 武当张三丰「武当九阳功」链式授受（zhang.c try_to_learn_jy / recognize_apprentice）：
+      # - required_marks：按序前置标记（ kunlun / shaolin ），逐条带拒绝文案
+      # - master_only：仅本弟子（family==武当派 或 master==张三丰）可学
+      # - restricted_skill：仅对指定技能（wudang-jiuyang）放行
+      # - max_skill_level：技能等级超过上限则拒（>180 提示自己研究）
+      # - min_shen：侠义下限（<0 拒）
+      # - unlock_on_exp：是否允许仅靠 combat_exp 越过阈值自动解锁（默认 true；九阳功设 false）
+      # - 各分支逐字文案：not_master_deny / master_deny / maxed_deny / shen_deny / wrong_skill_deny
+      required_marks: normalize_required_marks(Map.get(unlock, :required_marks)),
+      master_only: to_bool(Map.get(unlock, :master_only)),
+      restricted_skill: class_value(Map.get(unlock, :restricted_skill)),
+      max_skill_level: int_value(Map.get(unlock, :max_skill_level)),
+      min_shen: int_value(Map.get(unlock, :min_shen)),
+      unlock_on_exp: unlock_on_exp_value(Map.get(unlock, :unlock_on_exp)),
+      not_master_deny: Map.get(unlock, :not_master_deny),
+      master_deny: Map.get(unlock, :master_deny),
+      maxed_deny: Map.get(unlock, :maxed_deny),
+      shen_deny: Map.get(unlock, :shen_deny),
+      wrong_skill_deny: Map.get(unlock, :wrong_skill_deny),
+      # #日月 任我行「吸星大法」：LPC try_to_learn_xixingdafa 以
+      # `query_skill("force",1) > 180` 判定，属技能阈值而非 combat_exp。
+      # UCL 写 `min_skills = { force = 180 }`，键归一 _→- 对齐 Stats.skills。
+      min_skills: normalize_min_skills(Map.get(unlock, :min_skills))
+    }
+  end
+
+  # 技能阈值解锁表：{ force = 180 } -> %{"force" => 180}（键 _→-，值取整）。
+  defp normalize_min_skills(skills) when is_map(skills) do
+    Enum.into(skills, %{}, fn {skill, level} ->
+      {String.replace(to_string(skill), "_", "-"), int_value(level)}
+    end)
+  end
+
+  defp normalize_min_skills(_), do: %{}
+
+  # required_marks 归一成有序 [{mark, deny}] 列表（缺 deny 时 nil）。
+  # UCL 里可写 [ "kunlun", "shaolin" ]（无文案）或 [ { mark = "kunlun" deny = "..." } ... ]。
+  defp normalize_required_marks(marks) when is_list(marks) do
+    Enum.map(marks, fn
+      mark when is_binary(mark) -> {mark, nil}
+      mark when is_atom(mark) -> {to_string(mark), nil}
+      %{mark: mark} = conf when is_map(conf) -> {to_string(mark), Map.get(conf, :deny)}
+      other -> {to_string(other), nil}
+    end)
+  end
+
+  defp normalize_required_marks(_), do: []
+
+  # unlock_on_exp 缺省 true（既有门派行为不变）；显式 false 表示九阳功不得仅靠 exp 解锁。
+  defp unlock_on_exp_value(value) do
+    case value do
+      false -> false
+      "false" -> false
+      _ -> true
+    end
+  end
+
+  # 收徒门槛（F3 切片 1）：镜像 parse_teach/1 的卫句/归约形状。
+  # UCL 例 apprentice = {
+  #   family = "武当派"
+  #   min_shen = 20000  min_exp = 300000
+  #   min_skills = { sword = 80  force = 60 }
+  #   no_recruit = [ "张翠山" ]
+  # }
+  defp parse_apprentice(nil), do: nil
+
+  defp parse_apprentice(apprentice) when is_map(apprentice) do
+    min_skills =
+      case Map.get(apprentice, :min_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, level} ->
+            {String.replace(to_string(key), "_", "-"), level}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    no_recruit =
+      case Map.get(apprentice, :no_recruit) do
+        list when is_list(list) -> Enum.map(list, &to_string/1)
+        _ -> []
+      end
+
+    # 武当派俞岱岩：先判 wudang-xinfa>=30（提示「太极神功」），之后才判
+    # shen 与 wudang-xinfa>=70/taoism>=70。用独立的 pre_min_skills 表达，
+    # 避免与后面的正式 min_skills 共用同一份文案。
+    pre_min_skills =
+      case Map.get(apprentice, :pre_min_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, level} ->
+            {String.replace(to_string(key), "_", "-"), level}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    pre_min_skills_deny =
+      case Map.get(apprentice, :pre_min_skills_deny) do
+        denies when is_map(denies) ->
+          Enum.into(denies, %{}, fn {skill, text} ->
+            {String.replace(to_string(skill), "_", "-"), text}
+          end)
+
+        other ->
+          other
+      end
+
+    # 恒山派 attempt_apprentice 先判 henshan-jian 再判 force，两句 LPC 文案不同；
+    # min_skills 是 map（遍历顺序不保证），故允许显式给出有序技能链。
+    # 缺 key → []，既有门派走原来的 map 遍历，零回归影响（Task #860）。
+    recruit_skill_order =
+      case Map.get(apprentice, :recruit_skill_order) do
+        skills when is_list(skills) ->
+          Enum.map(skills, &String.replace(to_string(&1), "_", "-"))
+
+        _ ->
+          []
+      end
+
+    # class 继承（F3 切片 6）：LPC attempt_apprentice 成功时 ob->set("class", ...)
+    class =
+      case Map.get(apprentice, :class) do
+        value when is_binary(value) -> value
+        value when is_atom(value) and not is_nil(value) -> to_string(value)
+        _ -> nil
+      end
+
+    # 性别门控（少林移植 #639）：LPC attempt_apprentice 的 gender 检查
+    # （清无/清为/清法要求男性、达摩不检查）。值如 "男性"；nil/空 = 不限制。
+    gender =
+      case Map.get(apprentice, :gender) do
+        value when is_binary(value) and value != "" -> value
+        value when is_atom(value) and not is_nil(value) -> to_string(value)
+        _ -> nil
+      end
+
+    # #940 欧阳世家 ouyang.h：玩家姓名硬门（名叫「欧阳锋」/「欧阳克」即拒）。
+    # UCL 数组元素是裸词/字符串，统一转字符串；缺 key → []，老配置零影响。
+    reject_student_names =
+      case Map.get(apprentice, :reject_student_names) do
+        names when is_list(names) -> Enum.map(names, &to_string/1)
+        _ -> []
+      end
+
+    # permit_recruit 门控（少林移植 #639，对应 shaolin.h permit_recruit 三条）：
+    # 启用后检查 detach/betrayer/他派。默认 false 保持既有门派行为不变。
+    # Elias 把 UCL 里的 `true` 解析成字符串 "true"（见 parse_exit_vetoes 注释），
+    # 必须走 to_bool/1，否则清无/清为/清法/达摩的 permit_recruit 恒 false（#639 隐藏 bug）。
+    permit_recruit = to_bool(Map.get(apprentice, :permit_recruit))
+
+    # gate_order：控制 permit_recruit 与 gender 检查的先后顺序（Task #644）
+    # - "permit_first"（缺省）：先 permit_recruit，再 gender —— 对齐 清为/清法 LPC
+    # - "gender_first"：先 gender，再 permit_recruit —— 对齐 清无 LPC qing-wu.c
+    gate_order =
+      case Map.get(apprentice, :gate_order) do
+        value
+        when value in [
+               "gender_first",
+               "lpc_xiaoyao",
+               "lpc_wuyazi",
+               "lpc_xuanming",
+               "lpc_mingjiao",
+               "lpc_ouyang",
+               "lpc_quanzhen",
+               "lpc_meizhuang",
+               "lpc_taohua",
+               "lpc_wudang",
+               "lpc_ren",
+               "lpc_wudu",
+               "lpc_gaibang",
+               "lpc_gumu_yang",
+               "lpc_honghua_chen",
+               "lpc_honghua_yu"
+             ] ->
+          value
+
+        _ ->
+          "permit_first"
+      end
+
+    base = %{
+      family: Map.get(apprentice, :family) && to_string(Map.get(apprentice, :family)),
+      min_shen: Map.get(apprentice, :min_shen) || 0,
+      max_shen: int_value(Map.get(apprentice, :max_shen)),
+      # #973 五毒教有序负侠义阶梯：数组对象，逐档 max(负上界)+deny(逐字文案)。
+      # 由 lpc_wudu 门序逐档消费；未配置为空列表，老配置零影响。
+      shen_ladder: parse_shen_ladder(Map.get(apprentice, :shen_ladder)),
+      min_max_neili: int_value(Map.get(apprentice, :min_max_neili)),
+      min_exp: Map.get(apprentice, :min_exp) || 0,
+      min_skills: min_skills,
+      recruit_skill_order: recruit_skill_order,
+      # 武当派俞岱岩 yan.c：先判 wudang-xinfa>=30（pre_min_skills，提示「太极神功」），
+      # 之后才判 shen 与正式 min_skills。两档文案不同，故用独立字段。
+      pre_min_skills: pre_min_skills,
+      pre_min_skills_deny: pre_min_skills_deny,
+      # 武当派 9 位师父各自的 attempt_apprentice 门控顺序互不相同（zhang/shan/standard/
+      # yan/guxu），用 recruit_profile 选择 sect_master.ex 里的对应分支。
+      recruit_profile: class_value(Map.get(apprentice, :recruit_profile)),
+      no_recruit: no_recruit,
+      class: class,
+      gender: gender,
+      permit_recruit: permit_recruit,
+      gate_order: gate_order,
+      # #879 中原苗家 miao.h：`born_family != "中原苗家"` 收徒硬门（我苗家向来便不收容外人）。
+      # 读玩家 meta.env.born_family（setup_controller.ex:174 put_character_env(:born_family, ...)）。
+      # 缺 key（nil/空）→ 恒不命中，段氏/胡/欧阳/慕容等未配置的世家零回归。
+      required_born_family: class_value(Map.get(apprentice, :required_born_family)),
+      born_family_deny: Map.get(apprentice, :born_family_deny),
+      # #940 欧阳世家 ouyang.h/ouyangke.c：姓名硬门 + 女性外姓专属拒绝文案。
+      reject_student_names: reject_student_names,
+      reject_student_name_deny: Map.get(apprentice, :reject_student_name_deny),
+      female_born_family_deny: Map.get(apprentice, :female_born_family_deny),
+      # 侠客岛 shi.c：attempt_apprentice 无条件拒绝（连 ah + say）。
+      # 只有显式 deny_all = true 的 NPC 才走该分支，老配置零影响。
+      deny_all: to_bool(Map.get(apprentice, :deny_all)),
+      deny_msg: Map.get(apprentice, :deny_msg),
+      # #986 丐帮 gaibang.h permit_recruit + 各师父 attempt_apprentice：
+      # `family/beggarlvl`（袋数）门槛、min_str（马大元 query_str）、
+      # min_any_attribute（洪七公 str/int/con/dex 四属性 OR，任一 ≥ 阈值即过）。
+      # 三者缺省 nil → lpc_gaibang 门序逐门跳过，其它门派零影响。
+      min_beggarlvl: int_value(Map.get(apprentice, :min_beggarlvl)),
+      min_str: int_value(Map.get(apprentice, :min_str)),
+      min_any_attribute: int_value(Map.get(apprentice, :min_any_attribute)),
+      beggarlvl_deny: Map.get(apprentice, :beggarlvl_deny),
+      str_deny: Map.get(apprentice, :str_deny),
+      any_attribute_deny: Map.get(apprentice, :any_attribute_deny)
+    }
+
+    # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/
+    # min_skills 表达，按「不简化」原则新增专用字段原样透传，禁止丢弃。
+    # - exact_family: 必须有门派且门派名 == family（LPC `ob_fam["family_name"] != "少林派"`）
+    # - require_class: 必须为指定 class（LPC `query("class") != "bonze"`）
+    # - exact_generation: 辈分必须精确相等（LPC `ob_fam["generation"] != 36`）
+    # - min_int: 悟性下限，且**只提示不拒**（原版缺 return，见 plan §5.4 #5）
+    # - max_wpk: WPK 上限（LPC `query("WPK") > 3`）
+    # - *_deny: 逐条 LPC 原文拒绝/提示文案（RANK_D 敬称在文案里以「大侠」落地）
+    da_mo_fields = %{
+      exact_family: to_bool(Map.get(apprentice, :exact_family)),
+      require_class: class_value(Map.get(apprentice, :require_class)),
+      exact_generation: int_value(Map.get(apprentice, :exact_generation)),
+      min_int: int_value(Map.get(apprentice, :min_int)),
+      # 昆仑何足道：`query_int() < 38` 是带 return 的硬门，与达摩 min_int（只提示）不同。
+      hard_min_int: int_value(Map.get(apprentice, :hard_min_int)),
+      max_wpk: int_value(Map.get(apprentice, :max_wpk)),
+      rename_index: int_value(Map.get(apprentice, :rename_index)) || 1,
+      family_deny: Map.get(apprentice, :family_deny),
+      class_deny: Map.get(apprentice, :class_deny),
+      generation_deny: Map.get(apprentice, :generation_deny),
+      int_deny: Map.get(apprentice, :int_deny),
+      wpk_deny: Map.get(apprentice, :wpk_deny),
+      rename_prefix: Map.get(apprentice, :rename_prefix)
+    }
+
+    # 少林辈分晋升（#633）：master_generation 是师父自己的 generation，
+    # recruit_apprentice 会把学生 generation 设为它 +1。其余字段逐条对应
+    # qing.h/cheng.h/hui.h/dao.h/xuan.h/du.h 的 attempt_apprentice 分支。
+    promotion_fields = %{
+      master_generation: int_value(Map.get(apprentice, :master_generation)),
+      allow_zero_generation: to_bool(Map.get(apprentice, :allow_zero_generation)),
+      direct_name_prefix: class_value(Map.get(apprentice, :direct_name_prefix)),
+      require_apprentice_ok: to_bool(Map.get(apprentice, :require_apprentice_ok)),
+      allow_luohan_winner: to_bool(Map.get(apprentice, :allow_luohan_winner)),
+      require_fumoquan: to_bool(Map.get(apprentice, :require_fumoquan)),
+      fumoquan_min_skills: int_value(Map.get(apprentice, :fumoquan_min_skills)) || 0,
+      promotion_deny: Map.get(apprentice, :promotion_deny),
+      no_letter_deny: Map.get(apprentice, :no_letter_deny),
+      no_fumoquan_deny: Map.get(apprentice, :no_fumoquan_deny),
+      fumoquan_skill_deny: Map.get(apprentice, :fumoquan_skill_deny),
+      delete_flags_on_rename: to_bool(Map.get(apprentice, :delete_flags_on_rename))
+    }
+
+    # #740 华山：收徒 min_skills 的逐技能拒绝文案，键与 min_skills 同形。
+    min_skills_deny =
+      case Map.get(apprentice, :min_skills_deny) do
+        denies when is_map(denies) ->
+          Enum.into(denies, %{}, fn {skill, text} ->
+            {String.replace(to_string(skill), "_", "-"), text}
+          end)
+
+        other ->
+          other
+      end
+
+    # #804 逍遥派 xiaoyao.h：`query("per") < 28` 容貌硬门；
+    # 无崖子 wuyazi.c：逍遥心法/小无相功/北冥神功任一 >= 130 的 OR 门。
+    # 二者既有字段无法表达，按不简化原则新增专用字段原样透传。
+    any_min_skills =
+      case Map.get(apprentice, :any_min_skills) do
+        skills when is_map(skills) ->
+          Enum.into(skills, %{}, fn {key, level} ->
+            {String.replace(to_string(key), "_", "-"), level}
+          end)
+
+        _ ->
+          %{}
+      end
+
+    apprentice_fields = %{
+      min_per: int_value(Map.get(apprentice, :min_per)),
+      per_deny: Map.get(apprentice, :per_deny),
+      any_min_skills: any_min_skills,
+      any_min_skills_deny: Map.get(apprentice, :any_min_skills_deny)
+    }
+
+    # #789 武当派 9 位师父（zhang/shan/xi/yin/yu/yan/guxu/mo/song）的
+    # attempt_apprentice 门控顺序互不相同，逐字文案也各不相同；sect_master.ex
+    # wudang_*_gate 会按 recruit_profile 读取这几个 key 覆写缺省文案。
+    # 缺 key → 回退 sect_master.ex 内的 LPC 逐字缺省，未配置门派零影响。
+    wudang_fields = %{
+      xinfa_deny: Map.get(apprentice, :xinfa_deny),
+      exp_deny: Map.get(apprentice, :exp_deny),
+      taoism_deny: Map.get(apprentice, :taoism_deny),
+      # 俞岱岩 yan.c：先判 wudang-xinfa>=30 的独立文案（提示「太极神功」）。
+      pre_xinfa_deny: Map.get(apprentice, :pre_xinfa_deny)
+    }
+
+    # 梅庄 meizhuang.h permit_recruit 例外：`family == 日月神教` 或
+    # `master_name == 东方不败` 时「他派」第三条不拦（Task #869）。
+    # attempt_apprentice 首段还要写 `move_party/日月神教--梅庄` 标记：
+    # 老配置全 nil / false，原有门派零影响。
+    meizhuang_fields = %{
+      allow_families:
+        case Map.get(apprentice, :allow_families) do
+          list when is_list(list) -> Enum.map(list, &to_string/1)
+          _ -> []
+        end,
+      allow_master_name: Map.get(apprentice, :allow_master_name),
+      defer_family: Map.get(apprentice, :defer_family),
+      defer_master_name: Map.get(apprentice, :defer_master_name),
+      defer_mark: Map.get(apprentice, :defer_mark),
+      defer_msg: Map.get(apprentice, :defer_msg),
+      defer_continue: to_bool(Map.get(apprentice, :defer_continue)),
+      delete_mark_on_accept: to_bool(Map.get(apprentice, :delete_mark_on_accept))
+    }
+
+    # #903 桃花岛 attempt_apprentice：feng/lu/qu 认黄药师写的 taohua/master 指派，
+    # huang 低经验随机指派弟子（defer + family 落位但不 recruit）。
+    # 全部字段缺省 nil / 0 / []，未配置的门派零影响。
+    taohua_fields = %{
+      master_mark: class_value(Map.get(apprentice, :master_mark)),
+      master_name: Map.get(apprentice, :master_name),
+      master_absent_msg: Map.get(apprentice, :master_absent_msg),
+      master_reject_msg: Map.get(apprentice, :master_reject_msg),
+      master_accept_msg: Map.get(apprentice, :master_accept_msg),
+      # 桃花岛黄药师「我不与成名人物打交道」逐字文案（上下界共用）。
+      shen_deny: Map.get(apprentice, :shen_deny),
+      # 原始 UCL 是否显式写了侠义上下界。loader 后面总会补 min_shen: 0，
+      # 单看归一后的 config 无法区分「黄药师有门」与「冯默风等无门」。
+      taohua_shen_gate:
+        Map.has_key?(apprentice, :min_shen) or Map.has_key?(apprentice, :max_shen),
+      exp_defer_max: int_value(Map.get(apprentice, :exp_defer_max)),
+      defer_masters:
+        case Map.get(apprentice, :defer_masters) do
+          list when is_list(list) -> Enum.map(list, &to_string/1)
+          _ -> []
+        end,
+      defer_mark_msg: Map.get(apprentice, :defer_mark_msg),
+      defer_master_msg: Map.get(apprentice, :defer_master_msg)
+    }
+
+    # #652：LPC 各字辈 attempt_apprentice 成功文案可用 UCL 覆写；未配置时由
+    # ShaolinApprenticeDialogue 按字辈/分支回退到 LPC 逐字原文。
+    dialogue_fields = %{
+      zero_generation_msg: Map.get(apprentice, :zero_generation_msg),
+      direct_msg: Map.get(apprentice, :direct_msg),
+      promotion_msg_1: Map.get(apprentice, :promotion_msg_1),
+      promotion_msg_2: Map.get(apprentice, :promotion_msg_2),
+      promotion_msg_3: Map.get(apprentice, :promotion_msg_3),
+      # 华山：LPC 逐字拒绝文案（性别/侠义不足），未配置时 sect_master 回退缺省。
+      min_shen_deny: Map.get(apprentice, :min_shen_deny),
+      # #811 星宿派负神上界（摘星子 shen>0 / 丁春秋 shen>-12000）需逐字文案。
+      max_shen_deny: Map.get(apprentice, :max_shen_deny),
+      gender_deny: Map.get(apprentice, :gender_deny),
+      min_skills_deny: min_skills_deny,
+      min_exp_deny: Map.get(apprentice, :min_exp_deny),
+      # #1006 古墓杨过 min_max_neili 门：LPC yang.c `query("max_neili") < 2000`
+      # 的逐字拒绝文案。此前 sect_master 读该键但 loader 未透传，缺省回退通用文案。
+      max_neili_deny: Map.get(apprentice, :max_neili_deny),
+      # 昆仑 kunlun.h permit_recruit 三句逐字覆写；未配置保持少林缺省文案。
+      betray_sect_deny: Map.get(apprentice, :betray_sect_deny),
+      betray_times_deny: Map.get(apprentice, :betray_times_deny),
+      other_family_deny: Map.get(apprentice, :other_family_deny),
+      # #745 绝情谷：LPC chi.c/zhi.c 的「不收仇家弟子」门控 + 逐字文案；
+      # fan/zhi/chi 的收徒成功文案与「公孙→裘」按姓改名（chi.c:132-145）。
+      reject_master_name: Map.get(apprentice, :reject_master_name),
+      reject_master_name_deny: Map.get(apprentice, :reject_master_name_deny),
+      no_min_shen: to_bool(Map.get(apprentice, :no_min_shen)),
+      accept_msg: Map.get(apprentice, :accept_msg),
+      rename_surname_from: Map.get(apprentice, :rename_surname_from),
+      rename_surname_to: Map.get(apprentice, :rename_surname_to),
+      rename_surname_index: int_value(Map.get(apprentice, :rename_surname_index))
+    }
+
+    Map.merge(
+      base,
+      Map.merge(
+        da_mo_fields,
+        Map.merge(
+          promotion_fields,
+          Map.merge(
+            meizhuang_fields,
+            Map.merge(
+              taohua_fields,
+              Map.merge(dialogue_fields, Map.merge(apprentice_fields, wudang_fields))
+            )
+          )
+        )
+      )
+    )
+  end
+
+  defp class_value(value) when is_binary(value) and value != "", do: value
+  defp class_value(value) when is_atom(value) and not is_nil(value), do: to_string(value)
+  defp class_value(_), do: nil
+
+  defp int_value(value) when is_integer(value), do: value
+  defp int_value(value) when is_binary(value), do: String.to_integer(value)
+  defp int_value(_), do: nil
+
+  # #973 五毒教 wudu.h permit_recruit 之后的两层负侠义阶梯（何红药 -1000/-8000、
+  # 齐云敖 -1000/-15000、何铁手 -1000/-50000，各配不同 deny 文案）。
+  # UCL 数组对象 `[{ max = -1000 deny = "..." }, { max = -8000 deny = "..." }]`
+  # 解析为 list-of-map；`max` 经 int_value（负整数合法），deny 原样透传。
+  defp parse_shen_ladder(ladder) when is_list(ladder) do
+    Enum.map(ladder, fn rung when is_map(rung) ->
+      %{
+        max: int_value(Map.get(rung, :max)) || Map.get(rung, "max"),
+        deny: Map.get(rung, :deny) || Map.get(rung, "deny")
+      }
+    end)
+  end
+
+  defp parse_shen_ladder(_), do: []
+
+  defp parse_apprentice(_), do: nil
+
+  # 任务交付（A11/N6 v0）：item 为引用串（items.yupai.id），延后到 parse_characters 解
+  defp parse_turn_in(nil), do: nil
+
+  defp parse_turn_in(turn_in) when is_map(turn_in) do
+    rewards =
+      case Map.get(turn_in, :rewards) do
+        rewards when is_map(rewards) -> rewards
+        _ -> %{}
+      end
+
+    %{
+      quest: Map.get(turn_in, :quest) && to_string(Map.get(turn_in, :quest)),
+      item: Map.get(turn_in, :item) && to_string(Map.get(turn_in, :item)),
+      prompt: Map.get(turn_in, :prompt) && to_string(Map.get(turn_in, :prompt)),
+      rumor: Map.get(turn_in, :rumor) && to_string(Map.get(turn_in, :rumor)),
+      rewards: %{
+        exp: Map.get(rewards, :exp) || 0,
+        potential: Map.get(rewards, :potential) || 0,
+        score: Map.get(rewards, :score) || 0,
+        weiwang: Map.get(rewards, :weiwang) || 0,
+        coins: Map.get(rewards, :coins) || 0
+      }
+    }
+  end
+
+  defp parse_turn_in(_), do: nil
+
+  # 任务发布（A11/N6 v1 + Q1-T2）：NPC 可发布的任务规格
+  # UCL 例：quest = { file = "song-yupai", kill = ["monster1"], item = ["item1"] }
+  # 扩展字段（Q1-T2/T4，透传供 quest.ex meta / 阶梯奖励 / 链式前置）：
+  # type / level / limit / repeatable / master_name / master_id / chain / mutex
+  defp parse_quest(nil), do: nil
+
+  defp parse_quest(quest) when is_map(quest) do
+    base = %{
+      file: Map.get(quest, :file) && to_string(Map.get(quest, :file)),
+      kill: Map.get(quest, :kill) && List.wrap(Map.get(quest, :kill)) |> Enum.map(&to_string/1),
+      item: Map.get(quest, :item) && List.wrap(Map.get(quest, :item)) |> Enum.map(&to_string/1)
+    }
+
+    extra =
+      quest
+      |> Map.take([:type, :level, :limit, :repeatable, :master_name, :master_id, :chain, :mutex])
+      |> Map.update(:chain, [], fn
+        nil -> []
+        chain -> List.wrap(chain) |> Enum.map(&to_string/1)
+      end)
+      |> Map.update(:mutex, [], fn
+        nil -> []
+        mutex -> List.wrap(mutex) |> Enum.map(&to_string/1)
+      end)
+
+    Map.merge(base, extra)
+  end
+
+  defp parse_quest(_), do: nil
+
+  # 帮手列表（coagent.c / feature/guarder.c kill_enemy）：
+  # LPC 原生形态是「map 列表」——每项 `("startroom" : "<room>", "id" : "<npc id>")`，
+  # 如 `d/huashan/npc/dayou.c`、`d/miao/wen.c`。`Guarder.kill_enemy/1` 按**字符串键** map
+  # 消费（`Map.get(c, "id")` / `Map.get(c, "startroom")`，见 traits_test.exs）。
+  #
+  # 兼容两种来源：
+  #   1. 转换器/LPC 的 map 列表 → 归一为字符串键 map `%{"id" =>, "startroom" =>}`；
+  #   2. 旧式纯字符串 id 列表（如 `coagents = ["liuxi:mafu"]`）→ 归一为 `%{"id" => <id>}`。
+  #
+  # 消费端：`Guarder.kill_enemy`（guarder 路径，room.ex）与 `combat_event.ex notify_coagents`
+  # 均按 `id` 取帮手 pid。早期实现 `Enum.map(&to_string/1)` 对 map 会抛
+  # `Protocol.UndefinedError`（String.Chars 未实现于 Map），任何带 LPC 原生 coagents 的 NPC
+  # 直接解析崩溃。本批（miao/wen.c）首次落地该字段，故一并修正。
+  defp parse_coagents(nil), do: nil
+
+  defp parse_coagents(coagents) when is_list(coagents) do
+    coagents
+    |> Enum.map(&normalize_coagent/1)
+    |> Enum.reject(&is_nil/1)
+    |> case do
+      [] -> nil
+      list -> list
+    end
+  end
+
+  defp parse_coagents(_), do: nil
+
+  # map 形态（LPC 原生）：取 id / startroom 两键，归一为字符串键 map。
+  # 缺 id 的 map 视为无效项（Guarder.kill_enemy 会跳过非 map/无 id 项）。
+  defp normalize_coagent(coagent) when is_map(coagent) do
+    id = Map.get(coagent, :id) || Map.get(coagent, "id")
+
+    if is_nil(id) or id == "" do
+      nil
+    else
+      %{
+        "id" => to_string(id),
+        "startroom" =>
+          present_or_nil(Map.get(coagent, :startroom) || Map.get(coagent, "startroom"))
+      }
+    end
+  end
+
+  # 字符串形态（旧式）：直接当 id。
+  defp normalize_coagent(coagent) when is_binary(coagent) do
+    if coagent == "" do
+      nil
+    else
+      %{"id" => coagent, "startroom" => nil}
+    end
+  end
+
+  defp normalize_coagent(_), do: nil
+
+  defp present_or_nil(nil), do: nil
+  defp present_or_nil(""), do: nil
+  defp present_or_nil(value) when is_binary(value), do: value
+  defp present_or_nil(value), do: to_string(value)
+
+  # 可切割部位（cutable.c）：UCL 例 parts = {
+  #   head = { level = 3, unit = "颗", name = "头", name_left = "头",
+  #            id_left = "head", verb = "割了下来", clone = "meat" }
+  # }
+  # 归一化为 8 字段数组对齐 cutable.c：[level, unit, name, name_left, id_left,
+  # ass_part, verb, clone]；ass_part 为关联部位 id => 新 id 映射。
+  defp parse_parts(nil), do: nil
+
+  defp parse_parts(parts) when is_map(parts) do
+    Map.new(parts, fn {id, part} ->
+      {to_string(id), normalize_part(part)}
+    end)
+  end
+
+  defp parse_parts(_), do: nil
+
+  defp normalize_part(part) when is_map(part) do
+    [
+      Map.get(part, :level) || 0,
+      of_binary(Map.get(part, :unit)),
+      of_binary(Map.get(part, :name)),
+      of_binary(Map.get(part, :name_left)),
+      of_binary(Map.get(part, :id_left)),
+      parse_ass_part(Map.get(part, :ass_part)),
+      of_binary(Map.get(part, :verb)),
+      of_binary(Map.get(part, :clone))
+    ]
+  end
+
+  defp normalize_part(_), do: nil
+
+  defp parse_ass_part(nil), do: nil
+
+  defp parse_ass_part(ass) when is_map(ass) do
+    Map.new(ass, fn {k, v} -> {to_string(k), to_string(v)} end)
+  end
+
+  defp parse_ass_part(_), do: nil
+
+  # 不可切割部位（cutable.c no_cut）：UCL 例 no_cut = { horn = "这样东西你割不下来。" }
+  defp parse_no_cut(nil), do: %{}
+
+  defp parse_no_cut(no_cut) when is_map(no_cut) do
+    Map.new(no_cut, fn {k, v} ->
+      {to_string(k), if(is_binary(v), do: v, else: true)}
+    end)
+  end
+
+  defp parse_no_cut(_), do: %{}
+
+  defp of_binary(nil), do: nil
+  defp of_binary(value), do: to_string(value)
+
+  defp npc_vitals(nil), do: Kantele.Character.Vitals.new()
+
+  defp npc_vitals(combat) do
+    base = Kantele.Character.Vitals.new()
+
+    %Kantele.Character.Vitals{
+      qi: Map.get(combat, :max_qi, base.qi),
+      max_qi: Map.get(combat, :max_qi, base.max_qi),
+      base_qi: Map.get(combat, :max_qi, base.max_qi),
+      jing: Map.get(combat, :max_jing, base.jing),
+      max_jing: Map.get(combat, :max_jing, base.max_jing),
+      base_jing: Map.get(combat, :max_jing, base.max_jing),
+      # LPC 允许 `neili` 与 `max_neili` 不同（老 NPC 尤其常见）；缺省仍是满内力。
+      neili: Map.get(combat, :neili, Map.get(combat, :max_neili, base.neili)),
+      max_neili: Map.get(combat, :max_neili, base.max_neili),
+      base_neili: Map.get(combat, :max_neili, base.max_neili)
+    }
+  end
+
+  # #1040: 顶层 `skills = [...]` 是 LPC `set_skill` / `map_skill` 的转换器输出。
+  # 与 combat.skills / combat.map_skill 同时兼容；同名时以顶层列表为准（后者
+  # 更贴近 LPC 原始调用顺序，且实际数据中两种写法不重叠）。
+  defp npc_stats(combat, top_score, top_skills) do
+    {list_skills, list_mapped} = parse_npc_skills(top_skills)
+
+    base =
+      if is_map(combat) do
+        %Stats{
+          str: Map.get(combat, :str, 20),
+          dex: Map.get(combat, :dex, 20),
+          con: Map.get(combat, :con, 20),
+          int: Map.get(combat, :int, 20),
+          # LPC `set("per", N)`：转换器将部分 NPC 的容貌值写在 combat 块里，
+          # 此前 loader 未读 → Stats.per 恒 nil（逍遥派 `query("per")` 门控失效）。
+          per: Map.get(combat, :per, 20),
+          combat_exp: Map.get(combat, :combat_exp, 0),
+          potential: Map.get(combat, :potential, 0),
+          # `score` 在 UCL 里既可能是 combat 子键，也可能是 characters 顶层键
+          # （转换器对老 NPC 的两种输出都存在）；两者都接住。
+          score: Map.get(combat, :score, top_score || 0),
+          weiwang: 0,
+          gongxian: 0,
+          shen: 0,
+          skills: skill_keys(Map.get(combat, :skills, %{})),
+          mapped: skill_keys(Map.get(combat, :map_skill, %{})),
+          performs: MapSet.new()
+        }
+      else
+        Stats.new()
+      end
+
+    %Stats{
+      base
+      | skills: Map.merge(base.skills || %{}, list_skills),
+        mapped: Map.merge(base.mapped || %{}, list_mapped)
+    }
+  end
+
+  # LPC 转换器输出两种条目：
+  #   { skill = "hunyuan-yiqi" level = 50 }  ← set_skill("hunyuan-yiqi", 50)
+  #   { type = "force" skill = "hunyuan-yiqi" } ← map_skill("force", "hunyuan-yiqi")
+  # 技能名中的下划线与 skill_keys/1 一致归一为横线（Stats.skills 的键约定）。
+  defp parse_npc_skills(nil), do: {%{}, %{}}
+
+  defp parse_npc_skills(entries) when is_list(entries) do
+    Enum.reduce(entries, {%{}, %{}}, fn entry, {skills, mapped} ->
+      cond do
+        is_map(entry) and Map.has_key?(entry, :level) ->
+          skill = string_or_nil(Map.get(entry, :skill))
+          level = numeric_or_nil(Map.get(entry, :level))
+
+          if not is_nil(skill) and not is_nil(level) do
+            {Map.put(skills, npc_skill_key(skill), level), mapped}
+          else
+            {skills, mapped}
+          end
+
+        is_map(entry) and Map.has_key?(entry, :type) ->
+          type = string_or_nil(Map.get(entry, :type))
+          skill = string_or_nil(Map.get(entry, :skill))
+
+          if not is_nil(type) and not is_nil(skill) do
+            {skills, Map.put(mapped, npc_skill_key(type), npc_skill_key(skill))}
+          else
+            {skills, mapped}
+          end
+
+        true ->
+          {skills, mapped}
+      end
+    end)
+  end
+
+  defp parse_npc_skills(_), do: {%{}, %{}}
+
+  defp npc_skill_key(key), do: String.replace(to_string(key), "_", "-")
+
+  # UCL 键名不支持横线，约定用下划线书写（liuxin_jian -> liuxin-jian）
+  defp skill_keys(map) do
+    Enum.into(map, %{}, fn {key, value} ->
+      {String.replace(to_string(key), "_", "-"), value}
+    end)
+  end
+
+  defp npc_combat_config(combat) when combat != nil do
+    %Kantele.Character.NPCConfig{
+      attitude: Map.get(combat, :attitude),
+      no_kill: Map.get(combat, :no_kill) in [true, "true"],
+      spawn_room_id: nil,
+      respawn_delay: Map.get(combat, :respawn_delay),
+      apply:
+        Kantele.Character.Combat.new().temp
+        |> Map.merge(stringify_apply(Map.get(combat, :apply, %{})))
+    }
+  end
+
+  defp npc_combat_config(_), do: Kantele.Character.NPCConfig.new()
+
+  defp attach_npc_applies(character, combat) when combat != nil do
+    apply = stringify_apply(Map.get(combat, :apply, %{}))
+
+    # 空手攻击读取 unarmed_damage：未单独配置时沿用 damage（LPC NPC 惯例）
+    apply =
+      case Map.get(apply, :damage) do
+        nil -> apply
+        dmg -> Map.put_new(apply, :unarmed_damage, dmg)
+      end
+
+    combat_state = Kantele.Character.Combat.apply_temp(character.meta.combat, apply)
+    meta = Map.put(character.meta, :combat, combat_state)
+
+    %{character | meta: meta}
+  end
+
+  defp attach_npc_applies(character, _), do: character
+
+  defp stringify_map(map) do
+    Enum.into(map, %{}, fn {key, value} -> {to_string(key), value} end)
+  end
+
+  defp stringify_apply(apply) do
+    apply
+    |> stringify_map()
+    |> Enum.into(%{}, fn {key, value} ->
+      {String.to_atom(key), value}
+    end)
+  end
+
+  defp parse_initial_events(%{initial_events: initial_events}) do
+    Enum.map(initial_events, fn initial_event ->
+      %Kantele.Character.InitialEvent{
+        data: initial_event.data,
+        delay: initial_event.delay,
+        topic: initial_event.topic
+      }
+    end)
+  end
+
+  defp parse_initial_events(_), do: []
+
+  @doc """
+  Parse item data
+
+  ID is the zone's id concatenated with the item's key
+
+  支持可选的 `meta = {}` 块描述战斗属性（damage/skill_type/armor/value），
+  以及顶层的 `actions`（物品 add_action 动词表）/ `read_text`（书册文案）。
+  """
+  def parse_item(zone, key, item_data, verbs) do
+    # `verbs` 是**可选**的：R7 把 `npc/obj/*` 下被误分类成 `characters` 的物品块
+    # 改名回 `items` 后，它们带着的是 NPC 形状的键（aliases/description/name），
+    # 从来没有 `verbs`。同函数里 meta/aliases/messages/actions/read_text 全都走
+    # `Map.get` 容错，唯独这里原本是裸访问 —— 一改名就 `KeyError` 把整个区加载
+    # 打翻（实测：`key :verbs not found in: %{aliases: ..., name: ...}`）。
+    # 缺失即空动词表：`Item.verbs` 为 `[]`，消费端按空遍历，无行为变化。
+    item_verbs =
+      Map.get(item_data, :verbs, [])
+      |> Enum.map(&String.to_atom/1)
+      |> Enum.map(fn verb ->
+        Map.get(verbs, verb)
+      end)
+
+    # LPC 的 id 表写在物品块的**顶层**（与 name 同级，scripts/migrate_aliases.py 的写法），
+    # 而 parse_item_meta 只认 meta.aliases —— 两处都读，否则已有数据的别名会被丢掉
+    # （`present("<拼音id>", room)` 就匹配不到物品）。
+    item_meta = parse_item_meta(Map.get(item_data, :meta))
+
+    item_meta = %{
+      item_meta
+      | aliases:
+          Enum.uniq((item_meta.aliases || []) ++ parse_aliases(Map.get(item_data, :aliases)))
+    }
+
+    # `messages` 同样在物品块**顶层**（与 name 同级，不在 meta 块内）：
+    # 转换器早已输出 `messages = { wield = "…" unwield = "…" }`，这里只是装进来
+    # （P7：只加 Map.get，无消费端 → 行为不变）。全库 220 块 / 373 条文案。
+    item_meta = %{item_meta | messages: Map.get(item_data, :messages)}
+
+    # `actions` / `read_text` 同样在物品块顶层（第十二批物品动作通道）：
+    # `actions = [{ verb = "play" handler = "play_qin" }]` 是物品侧
+    # `add_action` 的回填（LPC `add_action(<handler_fn>, <verb>)` 的两个参数），
+    # 转换器只为 NPC 的 characters 块输出过 `init.add_actions`；`read_text` 是
+    # 书册 `do_read` 的长文案。默认值由 Meta struct 提供（`[]` / nil），
+    # 未回填的物品零行为变化（P7）。消费端见 ItemActionDispatcher。
+    item_meta = %{
+      item_meta
+      | actions: parse_item_actions(Map.get(item_data, :actions)),
+        read_text: parse_read_text(Map.get(item_data, :read_text))
+    }
+
+    item = %Item{
+      id: "#{zone.id}:#{key}",
+      name: item_data.name,
+      description: item_data.description,
+      verbs: item_verbs,
+      callback_module: Kantele.World.Item,
+      meta: item_meta
+    }
+
+    {key, item}
+  end
+
+  defp parse_item_meta(nil), do: %Kantele.World.Item.Meta{}
+
+  defp parse_item_meta(meta) do
+    # 注意不能用 %Item.Meta{}：本模块顶部 alias 的 Item 指 Kalevala.World.Item
+    meta = %Kantele.World.Item.Meta{
+      damage: Map.get(meta, :damage),
+      skill_type: Map.get(meta, :skill_type),
+      armor: Map.get(meta, :armor),
+      value: Map.get(meta, :value),
+      weight: Map.get(meta, :weight),
+      unit: Map.get(meta, :unit),
+      material: Map.get(meta, :material),
+      food: Map.get(meta, :food),
+      medicine: parse_medicine(Map.get(meta, :medicine)),
+      effect: Map.get(meta, :effect),
+      book: parse_book(Map.get(meta, :book)),
+      armor_type: Kantele.World.Item.Meta.normalize_armor_type(Map.get(meta, :armor_type)),
+      weapon_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :weapon_prop)),
+      armor_prop: Kantele.World.Item.Meta.sanitize_prop(Map.get(meta, :armor_prop)),
+      flag: Map.get(meta, :flag) || 1,
+      storage_bag: Map.get(meta, :storage_bag),
+      no_sell: Map.get(meta, :no_sell),
+      no_put: Map.get(meta, :no_put),
+      owner: Map.get(meta, :owner),
+      owner_id: Map.get(meta, :owner_id),
+      female_only: to_bool(Map.get(meta, :female_only)),
+      max_liquid: Map.get(meta, :max_liquid),
+      liquid: parse_liquid(Map.get(meta, :liquid)),
+      can_make: Map.get(meta, :can_make),
+      not_make: Map.get(meta, :not_make),
+      power_point: Map.get(meta, :power_point),
+      item_origin: Map.get(meta, :item_origin),
+      material_attrib: Map.get(meta, :material_attrib),
+      material_name: Map.get(meta, :material_name),
+      item_make: to_bool(Map.get(meta, :item_make)),
+      aliases: parse_aliases(Map.get(meta, :aliases)),
+      # 生肉 / 篝火 / 火折 / 尸体容器闭环（LPC meat.h / needfire.c / fire.c / corpse.c）
+      raw_meat: to_bool(Map.get(meta, :raw_meat)),
+      broil_to: Map.get(meta, :broil_to),
+      fire_to: Map.get(meta, :fire_to),
+      fire_source: to_bool(Map.get(meta, :fire_source)),
+      fire_count: Map.get(meta, :fire_count),
+      no_get: Map.get(meta, :no_get),
+      no_fire: Map.get(meta, :no_fire),
+      no_light: Map.get(meta, :no_light),
+      is_corpse: to_bool(Map.get(meta, :is_corpse)),
+      contents: []
+    }
+
+    meta
+  end
+
+  # 药效原样透传（qi/jing/neili/stats 等键由消费端定义），非 map 一律丢弃
+  defp parse_medicine(nil), do: nil
+  defp parse_medicine(medicine) when is_map(medicine), do: medicine
+  defp parse_medicine(_), do: nil
+
+  # LPC `set("liquid", ([ "type":"alcohol" "name":"米酒"
+  #                       "remaining":15 "drunk_apply":3 ]))`
+  # → `%{type: "alcohol", name: "米酒", remaining: 15, drunk_apply: 3}`。
+  #
+  # elias 把 UCL 的 `{ k = v }` 表解析成 **atom 键** map，数值字段按整型给出，
+  # 故这里只需把数值键归一（字符串 "15" 也收），其余原样保留。
+  #
+  # 缺 `remaining` / 非 map → nil：`drink_command` 退回原有
+  # `Effect.consume`（药水）路径，坏数据不拖垮加载（P7）。
+  defp parse_liquid(nil), do: nil
+
+  defp parse_liquid(liquid) when is_map(liquid) do
+    case to_int(Map.get(liquid, :remaining)) do
+      nil ->
+        nil
+
+      remaining ->
+        liquid
+        |> Map.put(:remaining, remaining)
+        |> put_int_if_present(:max, Map.get(liquid, :max))
+        |> put_int_if_present(:drunk_apply, Map.get(liquid, :drunk_apply))
+        |> put_int_if_present(:drunk_supply, Map.get(liquid, :drunk_supply))
+        |> put_int_if_present(:supply, Map.get(liquid, :supply))
+    end
+  end
+
+  defp parse_liquid(_), do: nil
+
+  defp put_int_if_present(map, _key, nil), do: map
+
+  defp put_int_if_present(map, key, value) do
+    case to_int(value) do
+      nil -> map
+      int -> Map.put(map, key, int)
+    end
+  end
+
+  defp to_int(value) when is_integer(value), do: value
+
+  defp to_int(value) when is_binary(value) do
+    case Integer.parse(String.trim(value)) do
+      {int, ""} -> int
+      _ -> nil
+    end
+  end
+
+  defp to_int(_), do: nil
+
+  # 物品侧 add_action 动词表（第十二批）：`[{ verb = "play" handler = "play_qin" }]`。
+  # elias 把 UCL 的 `{ k = v }` 表解析成 atom 键 map；逐条校验 verb/handler
+  # 均为非空二进制，畸形条目丢弃（P7：坏数据不拖垮加载）。
+  defp parse_item_actions(nil), do: []
+
+  defp parse_item_actions(actions) when is_list(actions) do
+    Enum.flat_map(actions, fn
+      %{verb: verb, handler: handler} when is_binary(verb) and is_binary(handler) ->
+        verb = String.trim(verb)
+        handler = String.trim(handler)
+        if verb != "" and handler != "", do: [%{verb: verb, handler: handler}], else: []
+
+      _ ->
+        []
+    end)
+  end
+
+  defp parse_item_actions(_), do: []
+
+  # 书册 do_read 长文案：非空二进制才收，空串/非串归一为 nil
+  defp parse_read_text(nil), do: nil
+
+  defp parse_read_text(text) when is_binary(text) do
+    if String.trim(text) == "", do: nil, else: text
+  end
+
+  defp parse_read_text(_), do: nil
+
+  defp parse_book(nil), do: nil
+
+  defp parse_book(book) when is_map(book) do
+    %Kantele.World.Item.Meta.Book{
+      skill: Map.get(book, :skill),
+      min_skill: Map.get(book, :min_skill),
+      max_skill: Map.get(book, :max_skill),
+      exp_required: Map.get(book, :exp_required),
+      jing_cost: Map.get(book, :jing_cost),
+      difficulty: Map.get(book, :difficulty),
+      skills: parse_book_skills(Map.get(book, :skills))
+    }
+  end
+
+  defp parse_book(_), do: nil
+
+  # wuji 类书籍的候选列表（`clone/book/wuji*.c` 的 titles[]/skills[]）：
+  # `[ { name = "罗汉拳法" skill = "luohan-quan" }, ... ]`，实例化时掷一次骰。
+  defp parse_book_skills(nil), do: nil
+
+  defp parse_book_skills(skills) when is_list(skills) do
+    Enum.map(skills, fn skill ->
+      %{name: Map.get(skill, :name), skill: Map.get(skill, :skill)}
+    end)
+  end
+
+  defp parse_book_skills(_), do: nil
+
+  @doc """
+  Collapse a runtime-picked exit target to a single room reference.
+
+  Some LPC rooms choose their destination at run time, e.g. gaochang/shulin1.c
+
+      "east" : __DIR__"shulin" + (random(10) + 2),
+
+  which names one of shulin2..shulin11.  lpc_converter.py expands the whole set
+  into a bracketed UCL list of candidates:
+
+      east = [rooms.shulin2.id,rooms.shulin3.id,...,rooms.shulin11.id]
+
+  elias parses that as a one-element array whose single element is the whole
+  comma-joined string (it has no nested-reference grammar), so unwrap it, split
+  on commas, and pick one - the same choice `random(n) + k` made in the driver.
+  The pick happens once, at load time, so a room's exits are stable for the
+  lifetime of the world rather than changing on every step.
+  """
+  defp pick_runtime_exit(value) when is_list(value) do
+    value
+    |> Enum.flat_map(fn
+      item when is_binary(item) -> String.split(item, ",")
+      _other -> []
+    end)
+    |> Enum.reject(&(String.trim(&1) == ""))
+    |> case do
+      [] -> nil
+      candidates -> Enum.random(candidates)
+    end
+  end
+
+  defp pick_runtime_exit(value), do: value
+
+  @doc """
+  Parse exits for zones
+
+  Dereferences the exit exit_names, creates structs for each exit_name,
+  and attaches them to the matching room.
+  """
+  def parse_exits(zone, data, zones) do
+    zone_data = Map.get(data, zone.id)
+
+    room_exits = Map.get(zone_data, :room_exits, [])
+
+    exits =
+      Enum.flat_map(room_exits, fn {_key, room_exit} ->
+        room_exit =
+          Enum.into(room_exit, %{}, fn {key, value} ->
+            {key, dereference(zones, zone, pick_runtime_exit(value))}
+          end)
+
+        room_id = room_exit.room_id
+        room_exit = Map.delete(room_exit, :room_id)
+
+        room_exit
+        |> Enum.filter(fn {_key, value} -> not is_nil(value) end)
+        |> Enum.map(fn {key, value} ->
+          %Kalevala.World.Exit{
+            id: "#{room_id}:#{key}",
+            exit_name: to_string(key),
+            start_room_id: room_id,
+            end_room_id: value
+          }
+        end)
+      end)
+
+    Enum.reduce(exits, zone, fn exit, zone ->
+      {room_key, room} =
+        Enum.find(zone.rooms, fn {_key, room} ->
+          room.id == exit.start_room_id
+        end)
+
+      room = %{room | exits: [exit | room.exits]}
+
+      rooms = Map.put(zone.rooms, room_key, room)
+      %{zone | rooms: rooms}
+    end)
+  end
+
+  @doc """
+  Parse characters for zones
+
+  Dereferences the world characters, creates structs and attachs them to the
+  matching room.
+  """
+  def parse_characters(zone, data, zones) do
+    zone_data = Map.get(data, zone.id)
+
+    room_characters = Map.get(zone_data, :room_characters, [])
+
+    characters =
+      Enum.flat_map(room_characters, fn {_key, room_character} ->
+        room_id = dereference(zones, zone, room_character.room_id)
+
+        build_room_characters(zones, zone, room_character.characters, room_id)
+      end)
+
+    attach_room_characters(zone, characters)
+  end
+
+  # 按引用建出房间里的 NPC 实体（此时还没挂进房间）。
+  #
+  # `parse_characters` 和 `parse_object_sets` 都要走这一步：后者的一个候选组
+  # 里 NPC 和物品是混装的 —— taohua/daojufang 的每个分支都是 `npc/yapu` 加
+  # 几样道具，所以「一条 room_characters 通道」装不下，必须两类一起处理。
+  defp build_room_characters(zones, zone, refs, room_id) do
+    refs
+    |> Enum.with_index()
+    |> Enum.flat_map(fn {character_data, index} ->
+      case find_character_for_room(zones, zone, character_data.id) do
+        {_key, character} ->
+          meta = character.meta
+          combat_config = Map.get(meta, :combat_config)
+
+          combat_config =
+            case combat_config do
+              %Kantele.Character.NPCConfig{} ->
+                %{combat_config | spawn_room_id: room_id}
+
+              _ ->
+                combat_config
+            end
+
+          meta = %{meta | combat_config: combat_config}
+
+          # 商品引用此时才有 zones 上下文可解（A10/N2）
+          meta = %{meta | goods: resolve_goods(Map.get(meta, :goods), zone, zones)}
+
+          # 任务交付物品引用同上（A11/N6）；掉落表同商品解引用
+          meta = %{meta | turn_in: resolve_turn_in(Map.get(meta, :turn_in), zone, zones)}
+          meta = %{meta | loot: resolve_goods(Map.get(meta, :loot), zone, zones)}
+
+          # 随身装备的物品引用同商品：此时才有 zones 上下文可解。
+          # 之前没解，meta.carry 里存的是原始引用串 `"items.cloth.id"`，
+          # 到 SpawnController 按 item_id 查 Items cache 时全都 not_found。
+          meta = %{meta | carry: resolve_goods(Map.get(meta, :carry), zone, zones)}
+          # `set_temp("handing", carry_object(...))` 的物品引用同 carry：
+          # 加载期没有 zones 上下文，放在这里解引用（如李白的天乙神酒）。
+          meta = %{meta | handing: resolve_single_ref(Map.get(meta, :handing), zone, zones)}
+          meta = %{meta | quest: Map.get(meta, :quest)}
+
+          [
+            %Character{
+              character
+              | id: "#{room_id}:#{character.id}:#{index}",
+                name: Map.get(character_data, :name, character.name),
+                room_id: room_id,
+                meta: meta
+            }
+          ]
+
+        nil ->
+          # NPC 数据缺失（引用不存在）时跳过，避免悬挂引用。
+          #
+          # 但**必须 warn** —— 静默跳过会让「数据里写了引用、运行时其实
+          # 不存在」这类问题长期查不出来。转换器把 LPC
+          # `set("objects", ...)` 里的 NPC 错写成 `items.X` 时就是这么
+          # 藏了很久的：房间一直是空的，相关 valid_leave 门禁永不触发，
+          # 而加载日志一个字都没有。见 docs/dangling-room-items-report.zh-CN.md。
+          warn_unresolved(:character, zone.id, room_id, character_data.id)
+
+          []
+      end
+    end)
+  end
+
+  defp attach_room_characters(zone, characters) do
+    Enum.reduce(characters, zone, fn character, zone ->
+      {room_key, room} =
+        Enum.find(zone.rooms, fn {_key, room} ->
+          room.id == character.room_id
+        end)
+
+      characters = Map.get(room, :characters, [])
+      character = %{character | id: Character.generate_id()}
+      room = Map.put(room, :characters, [character | characters])
+
+      rooms = Map.put(zone.rooms, room_key, room)
+      %{zone | rooms: rooms}
+    end)
+  end
+
+  defp match_character({_key, character}, character_id), do: character.id == character_id
+
+  # clone_lib 的区名。**必须定义在所有使用者之前**：Elixir 的模块属性按文件
+  # 顺序展开，先用后设会展开成 nil，于是 `Enum.find(zones, &(&1.id == nil))`
+  # 恒为 nil —— 症状是 dereference 能拿到 `clone_lib:xxx`，紧接着的回退查找
+  # 却说 clone_lib 不存在，共享 NPC 全被当成悬空丢掉。
+  @clone_zone_id "clone_lib"
+
+  # 房间摆放的 NPC：**本区优先，找不到才去 clone_lib**。
+  #
+  # 对应 LPC 里作者图省事的跨区引用（`d/baituo/jiudian.c` 写
+  # `"/d/city/npc/xiaoer2"`）。按 clone/ 约定这类共享角色应该在 clone_lib，
+  # 所以那边备了一份；UCL 里**保持 `characters.x.id` 的裸引用**，
+  # 不改成 `clone_lib.characters.x.id` —— 那样虽然也能work，但有两个坏处：
+  #   1. 数据里出现区名前缀，与转换器产物不一致，重转就会漂移；
+  #   2. 同名不同人的情况会被抹平。实测 `bing` 在 clone_lib 是「官兵」，
+  #      而 dali 自己的 bing 是「士兵」、xiangyang 的是「宋兵 exp20000」——
+  #      这些区有本地定义，本就该用自己的。
+  #
+  # `dereference/3` 里已经会对 characters/rooms/items 统一回退到 clone_lib，
+  # 这里补的是**拿到 id 之后按 id 找定义**的那一步 —— 之前只在 `zone.characters`
+  # 里找，clone_lib 的 id 匹配不上，于是共享角色仍被当成悬空丢掉。
+  defp find_character_for_room(zones, zone, reference) do
+    character_id = dereference(zones, zone, reference)
+
+    case Enum.find(zone.characters, &match_character(&1, character_id)) do
+      nil ->
+        # 本区没有 -> clone_lib（find_character/3 按 "#{zone.id}:#{name}" 拼 id，
+        # 所以这里要传 clone 自己，否则会拼成本区的 id）
+        clone = Enum.find(zones, fn z -> z.id == @clone_zone_id end)
+
+        if clone && clone.id != zone.id do
+          Enum.find(clone.characters, &match_character(&1, character_id))
+        end
+
+      found ->
+        found
+    end
+  end
+
+  @doc """
+  Parse items for zones
+
+  Dereferences the world items, creates structs and attachs them to the
+  matching room.
+  """
+  def parse_items(zone, data, zones) do
+    zone_data = Map.get(data, zone.id)
+
+    room_items = Map.get(zone_data, :room_items, [])
+
+    Enum.reduce(room_items, zone, fn {_key, room_item}, zone ->
+      room_id = dereference(zones, zone, room_item.room_id)
+
+      Enum.reduce(room_item.items, zone, fn item_data, zone ->
+        # `{ id = [items.a.id,items.b.id] }` - the converter's alternative list for
+        # an LPC runtime pick, e.g. emei/cangjingge.c's
+        #     __DIR__"obj/fojing1" + random(2)
+        # The driver calls random(2) ONCE per key, so the room ends up with exactly
+        # one of the two.  Picking here (rather than letting the converter emit
+        # every candidate) keeps the room's contents the same size as the MUD's.
+        item_id =
+          case item_data do
+            %{id: choices} when is_list(choices) ->
+              choices
+              |> Enum.flat_map(fn
+                choice when is_binary(choice) -> String.split(choice, ",")
+                _other -> []
+              end)
+              |> Enum.reject(&(String.trim(&1) == ""))
+              |> case do
+                [] -> nil
+                candidates -> Enum.random(candidates)
+              end
+
+            _ ->
+              item_data.id
+          end
+
+        item_id = dereference(zones, zone, item_id)
+
+        # 物品数据缺失（引用不存在）时跳过，避免悬挂引用。
+        # 同样**必须 warn**，理由见 parse_characters 里的注释。
+        if is_nil(item_id) do
+          warn_unresolved(:item, zone.id, room_id, item_data.id)
+          zone
+        else
+          parse_room_item(zone, room_id, item_id)
+        end
+      end)
+    end)
+  end
+
+  @doc """
+  Parse `room_object_sets` -- rooms whose LPC `create()` picks one of several
+  whole object layouts at random.
+
+  LPC lets a room do
+
+      if (random(1000) > 998)
+              set("objects", ([ "/clone/money/gold" : 10, ... ]));
+      else if (random(100) > 98)
+              set("objects", ([ ... ]));
+
+  Because `set("objects", ...)` **replaces** the property, exactly one of those
+  branches is what the room actually holds.  The converter used to keep only the
+  last one, which for `taohua/mushi` meant the ~10% branch won 100% of the time
+  and the three rare drops could never appear.  It now emits every branch here
+  and we draw one.
+
+  **Why a load-time draw is faithful**: LPC runs a room's `create()` once, when
+  the object is created at driver start, so the branch is drawn once per boot as
+  well.  Rooms whose randomness is per-*instance* rather than per-`create()` are
+  a different problem -- `wuji1`-`wuji4` draw a random skill per book, which has
+  to happen in the instance-creation path.  See docs/lpc-port-gaps.zh-CN.md.
+
+  **Probabilities are not preserved.**  `Enum.random/1` gives every branch equal
+  odds, so mushi's 0.2% / 1% / 2% / 96.8% split becomes 25% each.  That matches
+  how the per-object `{ id = [a, b] }` alternative lists already behave.
+  """
+  def parse_object_sets(zone, data, zones) do
+    zone_data = Map.get(data, zone.id)
+
+    room_object_sets = Map.get(zone_data, :room_object_sets, [])
+
+    Enum.reduce(room_object_sets, zone, fn {_key, block}, zone ->
+      room_id = dereference(zones, zone, block.room_id)
+
+      # elias cannot parse a list of lists, so each group is a single-key object
+      # (`{ refs = [...] }`) inside `sets`.  List order is the branch order.
+      # Enum.random([]) is nil, so an empty `sets` list just installs nothing.
+      case block |> Map.get(:sets, []) |> Enum.random() do
+        nil ->
+          zone
+
+        group ->
+          install_object_set(zone, zones, room_id, Map.get(group, :refs, []))
+      end
+    end)
+  end
+
+  # One group holds both people and things -- taohua/daojufang's every branch is
+  # `npc/yapu` plus a few items -- so the kind comes from the reference prefix
+  # (`characters.` / `items.`) rather than a separate `kind` field.  That also
+  # puts cross-zone refs like `clone_lib.items.x.id` on the items side for free.
+  defp install_object_set(zone, zones, room_id, refs) do
+    {char_ids, item_ids} =
+      refs
+      |> Enum.map(&object_set_ref_id/1)
+      |> Enum.split_with(&String.starts_with?(&1, "characters."))
+
+    zone =
+      Enum.reduce(item_ids, zone, fn item_ref, zone ->
+        case dereference(zones, zone, item_ref) do
+          nil ->
+            warn_unresolved(:item, zone.id, room_id, item_ref)
+            zone
+
+          item_id ->
+            parse_room_item(zone, room_id, item_id)
+        end
+      end)
+
+    attach_room_characters(
+      zone,
+      build_room_characters(zones, zone, Enum.map(char_ids, &%{id: &1}), room_id)
+    )
+  end
+
+  # room_characters entries are `%{id: ...}`; room_object_sets also accepts a
+  # bare reference string.
+  defp object_set_ref_id(%{id: id}) when is_binary(id), do: id
+  defp object_set_ref_id(id) when is_binary(id), do: id
+  defp object_set_ref_id(_ref), do: ""
+
+  @doc """
+  记录一个解析不到的 `room_items` / `room_characters` 引用。
+
+  **不在这里打印** —— 一条 `IO.warn` 会连着 10 行 stacktrace，
+  而悬空引用实测一次加载就有 805 条（合起来 16000 行日志），
+  那样会把真正的告警淹掉。改为只累计，最后由 `report_unresolved/0`
+  打一份汇总。
+
+  按 (zone, kind, ref) 去重计数（`room_id` 留首个出现的用于定位）。
+  计数放在进程字典里：`Loader.load/1` 本来就是在单个进程里同步跑完的
+  （脚本、测试、`Kantele.World.Kickoff` 那个 GenServer 都是），
+  所以不需要 ETS —— 早先试过 ETS，`:ets.new` 的具名表失败被 rescue 之后
+  `:ets.insert/3` 会报 "undefined or private"，反而把整个加载搞崩。
+  """
+  def warn_unresolved(kind, zone_id, room_id, ref) do
+    # 注意：`:erlang.get/1` 缺键时返回 **`:undefined`**，不是 `nil`。
+    # 而 `:undefined` 在 Elixir 里是真值，所以 `x || %{}` 兜不住 ——
+    # 早先就因为这个直接 `Map.get(:undefined, ...)` 把整个加载搞崩了。
+    seen =
+      case :erlang.get(:world_unresolved) do
+        m when is_map(m) -> m
+        _ -> %{}
+      end
+
+    key = {zone_id, kind, ref}
+
+    entry =
+      case Map.get(seen, key) do
+        {count, _first} -> {count + 1, room_id}
+        nil -> {1, room_id}
+      end
+
+    :erlang.put(:world_unresolved, Map.put(seen, key, entry))
+    :ok
+  end
+
+  @doc """
+  打印悬空引用汇总。由 `load/1` 在最后调用。
+  """
+  def report_unresolved do
+    seen =
+      case :erlang.get(:world_unresolved) do
+        m when is_map(m) -> m
+        _ -> %{}
+      end
+
+    if map_size(seen) == 0 do
+      :ok
+    else
+      total = seen |> Map.values() |> Enum.map(fn {c, _} -> c end) |> Enum.sum()
+
+      by_kind =
+        Enum.reduce(seen, %{}, fn {{_z, kind, _r}, {c, _room}}, acc ->
+          Map.update(acc, kind, {c, 1}, fn {cc, n} -> {cc + c, n + 1} end)
+        end)
+
+      head = [
+        "[world] 悬空引用汇总：#{total} 条 / #{map_size(seen)} 个 (zone, kind, ref) 组合，全部已跳过"
+      ]
+
+      kinds =
+        Enum.map(by_kind, fn {k, {c, n}} ->
+          "    #{k} #{c} 条 / #{n} 个"
+        end)
+
+      top =
+        seen
+        |> Enum.sort_by(fn {_, {c, _}} -> -c end)
+        |> Enum.take(15)
+        |> Enum.map(fn {{z, k, r}, {c, room}} ->
+          "    #{String.pad_trailing(to_string(c), 5)} " <>
+            "#{String.pad_trailing(z, 14)} #{String.pad_trailing(to_string(k), 10)} " <>
+            "#{inspect(r)}  例 #{room}"
+        end)
+
+      tail = [
+        "  （每条 IO.warn 会带 10 行 stacktrace，所以只打汇总；完整清单见",
+        "   docs/dangling-room-items-report.zh-CN.md）",
+        "  典型成因：转换器把 LPC set(\"objects\") 写错位置 —— 人物被写进了 items，",
+        "  或引用了本区没有定义的 id（characters / items 都只在本区解析）"
+      ]
+
+      IO.puts(Enum.join(head ++ kinds ++ top ++ tail, "\n"))
+      :ok
+    end
+  end
+
+  @doc false
+  def reset_unresolved_warnings do
+    :erlang.erase(:world_unresolved)
+    :ok
+  end
+
+  defp parse_room_item(zone, room_id, item_id) do
+    instance = %Item.Instance{
+      id: Item.Instance.generate_id(),
+      item_id: item_id,
+      created_at: DateTime.utc_now()
+    }
+
+    {room_key, room} =
+      Enum.find(zone.rooms, fn {_key, room} ->
+        room.id == room_id
+      end)
+
+    item_instances = Map.get(room, :item_instances, [])
+    room = Map.put(room, :item_instances, [instance | item_instances])
+
+    rooms = Map.put(zone.rooms, room_key, room)
+    %{zone | rooms: rooms}
+  end
+
+  @doc """
+  Strip a zone of extra information that Kalevala doesn't care about
+  """
+  def strip_zone(zone) do
+    zone
+    |> Map.put(:characters, [])
+    |> Map.put(:items, [])
+    |> Map.put(:rooms, [])
+  end
+
+  @doc """
+  Dereference a variable to it's value
+
+  If a known key is found, use the current zone
+  """
+  def dereference(zones, zone, reference) do
+    [key | reference] = String.split(reference, ".")
+
+    case key in ["characters", "rooms", "items"] do
+      true ->
+        zone
+        |> flatten_characters()
+        |> flatten_items()
+        |> flatten_rooms()
+        |> dereference([key | reference])
+        |> case do
+          nil -> dereference_in_clone(zones, zone, [key | reference])
+          found -> found
+        end
+
+      false ->
+        zone =
+          Enum.find(zones, fn z ->
+            z.id == key
+          end)
+
+        case zone do
+          nil ->
+            nil
+
+          found_zone ->
+            found_zone
+            |> flatten_characters()
+            |> flatten_items()
+            |> flatten_rooms()
+            |> dereference(reference)
+        end
+    end
+  end
+
+  # ---- clone_lib 回退：对应 LPC 的 /clone/** 共享对象层 ----
+
+  # LPC 的 `clone/` 目录（1003 个 .c）是全服共享对象，每个只有一份。
+  # 我们这边就是 `data/world/clone_lib.ucl`。
+  #
+  # 解析顺序：**本区优先，找不到才回退 clone_lib**。这跟 LPC 的
+  # `carry_object("/clone/weapon/blade")` 一致：NPC 自己区里的东西优先，
+  # 没有才用共享的那份。
+  #
+  # clone_lib 现在同时收**物品和 NPC**：
+  #   - 物品：`/clone/**` 语义上的全服共享（530 个）
+  #   - NPC：**被多个区共用的角色**。LPC 作者图省事直接跨区引私有路径
+  #     （`d/baituo/jiudian.c` 写 `"/d/city/npc/xiaoer2"`），实测 53 个 NPC
+  #     被 2~11 个区引用、共 215 处。按 LPC 自己的 clone/ 约定它们本就该是共享的，
+  #     所以补进 clone_lib 而不是让每个区各抄一份。
+  #
+  # 为什么只回退到 clone_lib、而不是「随便找个有定义的区」：
+  # `jitui` 在 7 个区有 **4 个不同变体**（changan=炸鸡腿 / wudu=烤山鸡腿 /
+  # 其余=烤鸡腿），按短 id 猜会静默拿错东西。
+  # clone_lib 是**唯一权威的共享层**，它内部不可能有同名两份（一个 UCL 文件里
+  # 不会有两个同 key 的块），所以回退到它是确定性的。
+  #
+  # 剩下**区间引用**（`obj/jitui` 这种区特有物品被别的区引用）不在此列 ——
+  # 见 docs/lpc-port-gaps.zh-CN.md §七。
+  defp dereference_in_clone(zones, zone, reference) do
+    # 本区就是 clone_lib 时不必再回退自己
+    if zone.id == @clone_zone_id do
+      nil
+    else
+      case Enum.find(zones, fn z -> z.id == @clone_zone_id end) do
+        nil ->
+          nil
+
+        clone ->
+          # find_item/3 是按 "#{zone.id}:#{name}" 拼 id 的，
+          # 所以这里必须传 clone 自己，否则会拼成 "<本区>:<name>" 匹配不上。
+          clone
+          |> flatten_characters()
+          |> flatten_items()
+          |> flatten_rooms()
+          |> dereference(reference)
+      end
+    end
+  end
+
+  defp flatten_characters(zone) do
+    characters = Map.values(zone.characters)
+    Map.put(zone, :characters, characters)
+  end
+
+  defp flatten_items(zone) do
+    items = Map.values(zone.items)
+    Map.put(zone, :items, items)
+  end
+
+  defp flatten_rooms(zone) do
+    rooms = Map.values(zone.rooms)
+    Map.put(zone, :rooms, rooms)
+  end
+
+  @doc """
+  Convert zones into a world struct
+  """
+  def parse_world(zones) do
+    world = %Kantele.World{
+      zones: zones
+    }
+
+    world
+    |> split_out_rooms()
+    |> split_out_characters()
+    |> split_out_items()
+  end
+
+  defp split_out_rooms(world) do
+    Enum.reduce(world.zones, world, fn zone, world ->
+      rooms =
+        Enum.map(zone.rooms, fn room ->
+          Map.delete(room, :characters)
+        end)
+
+      Map.put(world, :rooms, rooms ++ world.rooms)
+    end)
+  end
+
+  defp split_out_characters(world) do
+    Enum.reduce(world.zones, world, fn zone, world ->
+      characters =
+        Enum.flat_map(zone.rooms, fn room ->
+          Map.get(room, :characters, [])
+        end)
+
+      Map.put(world, :characters, characters ++ world.characters)
+    end)
+  end
+
+  defp split_out_items(world) do
+    Enum.reduce(world.zones, world, fn zone, world ->
+      Map.put(world, :items, zone.items ++ world.items)
+    end)
+  end
+
+  def generate_minimap(zone) do
+    mini_map = %Kantele.MiniMap{id: zone.id}
+
+    cells =
+      Enum.map(zone.rooms, fn room ->
+        %Kantele.MiniMap.Cell{
+          id: room.id,
+          map_color: room.map_color,
+          map_icon: room.map_icon,
+          name: room.name,
+          x: room.x,
+          y: room.y,
+          z: room.z,
+          connections: %Kantele.MiniMap.Connections{
+            north: exit_id(room.exits, :north),
+            south: exit_id(room.exits, :south),
+            east: exit_id(room.exits, :east),
+            west: exit_id(room.exits, :west),
+            up: exit_id(room.exits, :up),
+            down: exit_id(room.exits, :down)
+          }
+        }
+      end)
+
+    mini_map =
+      Enum.reduce(cells, mini_map, fn cell, mini_map ->
+        cells = Map.put(mini_map.cells, {cell.x, cell.y, cell.z}, cell)
+        %{mini_map | cells: cells}
+      end)
+
+    %{zone | mini_map: mini_map}
+  end
+
+  defp exit_id(exits, direction) do
+    room_exit =
+      Enum.find(exits, fn room_exit ->
+        room_exit.exit_name == to_string(direction)
+      end)
+
+    case room_exit != nil do
+      true ->
+        room_exit.end_room_id
+
+      false ->
+        nil
+    end
+  end
+
+  @doc """
+  Dereference a variable for a specific zone
+  """
+  def dereference(zone, reference) when is_list(reference) do
+    case reference do
+      ["characters" | character] ->
+        [character_name, character_key] = character
+
+        case find_character(zone.characters, zone, character_name) do
+          nil -> nil
+          char -> Map.get(char, String.to_atom(character_key))
+        end
+
+      ["items" | item] ->
+        [item_name, item_key] = item
+
+        case find_item(zone.items, zone, item_name) do
+          nil -> nil
+          found_item -> Map.get(found_item, String.to_atom(item_key))
+        end
+
+      ["rooms" | room] ->
+        [room_name, room_key] = room
+
+        case find_room(zone.rooms, zone, room_name) do
+          nil -> nil
+          found_room -> Map.get(found_room, String.to_atom(room_key))
+        end
+    end
+  end
+
+  defp find_character(characters, zone, character_name) do
+    Enum.find(characters, fn character ->
+      character.id == "#{zone.id}:#{character_name}"
+    end)
+  end
+
+  defp find_item(items, zone, item_name) do
+    Enum.find(items, fn item ->
+      item.id == "#{zone.id}:#{item_name}"
+    end)
+  end
+
+  defp find_room(rooms, zone, room_name) do
+    Enum.find(rooms, fn room ->
+      room.id == "#{zone.id}:#{room_name}"
+    end)
+  end
+end

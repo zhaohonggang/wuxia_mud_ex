@@ -42074,9 +42074,20 @@ chats = [
     }
   }
 
+  # LPC du-yuan.c:70-73 / 111-118：两个 ask_me 都是同一函数 —— 红字房间广播
+  # + kill_ob(this_player()) + return -1（无私发）。走通用 kind="hostile" 管道，
+  # 颜色用前端 {color} 标签保留 LPC HIR/NOR（#1043）。
   inquiries = [
-    { key = "葵花宝典" value = " inquire about me (unimplemented)" },
-    { key = "辟邪剑法" value = " inquire about me (unimplemented)" }
+    { key = "葵花宝典" value = {
+      kind = "hostile"
+      message = "{color foreground=\"red\"}渡元禅师尖叫道：你怎么知道？今日要怪就只能怪你多嘴了！{/color}"
+    }
+    },
+    { key = "辟邪剑法" value = {
+      kind = "hostile"
+      message = "{color foreground=\"red\"}渡元禅师尖叫道：你怎么知道？今日要怪就只能怪你多嘴了！{/color}"
+    }
+    }
   ]
 
   apprentice = {
@@ -43033,12 +43044,32 @@ chats = [
     { type = "parry" skill = "jingang-buhuaiti" }
   ]
 
+  # #1044 LPC kong-jian.c:91-111 recognize_apprentice 原序：
+  #   同门 → 只认 jingang-buhuaiti → buddhism>=250（否则逐字拒） → 首次成功
+  #   放 line 并 set_temp("can_learn/kongjian/jingang-buhuaiti")。
+  # 异门/错技能在 LPC 是静默 return 0；ex 的 teach.family/teach_skills 已挡住，
+  # 故 recognize 只显式配置有文案的 buddhism 门。
   teach = {
     family = "少林派"
     teach_skills = {
       jingang_buhuaiti = {
         max = 280
         gongxian = 3
+      }
+    }
+    recognize = {
+      allowed_skills = ["jingang-buhuaiti"]
+      min_skill = "buddhism"
+      min_skill_level = 250
+      min_skill_deny = "唉！你还是好好修习佛法吧，不要耽于武学。"
+    }
+    no_teach = {
+      jingang_buhuaiti = {
+        unlock = {
+          mark = "can_learn/kongjian/jingang-buhuaiti"
+          min_exp = -1
+          learned = "好吧，我就传你我少林派的护体神功，日后普渡众生，却少不了它。"
+        }
       }
     }
   }
@@ -44113,13 +44144,75 @@ chats = [
     { type = "whip" skill = "riyue-bian" }
   ]
 
-  # #1046 LPC wuming.c attempt_apprentice 双分支均不招徒；异门文案入 deny_msg。
-  # 同门文案「我早就不收徒弟了，不过你也是我们少林的弟子，就传你一些老僧的粗浅功夫吧！
-  # 我就教你如影随行腿(ruying-suixingtui)和千手如来掌(rulai-zhang)吧！」依赖
-  # recognize_apprentice（同门传功），ex 尚无按门派分支 deny——见 GAP #1044。
+  # #1044 LPC wuming.c:137-181 recognize_apprentice 原序：
+  #   同门 → shen>=50000 → 四技能白名单 → strike/unarmed 各 >179 独立拒文
+  #   → 首次成功 say 三句并 set_temp("can_learn/wuming")。
+  # UCL 字符串不能含真实换行，三句 say 以原文顺序连写（文字逐字保留）。
+  teach = {
+    family = "少林派"
+    teach_skills = {
+      strike = { max = 300 gongxian = 0 }
+      rulai_zhang = { max = 300 gongxian = 0 }
+      unarmed = { max = 300 gongxian = 0 }
+      ruying_suixingtui = { max = 300 gongxian = 0 }
+    }
+    recognize = {
+      require_family = "少林派"
+      min_shen = 50000
+      allowed_skills = ["strike", "rulai-zhang", "unarmed", "ruying-suixingtui"]
+      max_skill_levels = {
+        strike = 179
+        unarmed = 179
+      }
+      family_deny = "老衲与阁下素无渊源，何谈传授二字？"
+      shen_deny = "我少林派素以普渡众生为根本，你似乎做的还不够。"
+      wrong_skill_deny = "我只传授你一些拳脚和掌法的功夫，其它还是找你师父学吧。"
+      maxed_denies = {
+        strike = "你的掌法造诣已经非同凡响了，剩下就自己去练吧。"
+        unarmed = "你的拳脚功夫已经非同凡响了，剩下就自己去练吧。"
+      }
+    }
+    no_teach = {
+      strike = {
+        unlock = {
+          mark = "can_learn/wuming"
+          min_exp = -1
+          learned = "阁下既然已经拜达摩祖师，想必已是得道高僧。这如影随行腿、千手如来掌乃是正大恢弘的武功，就传给你好了。我这儿还有一套袈裟功的绝招，不知道你能学会吗？"
+        }
+      }
+      rulai_zhang = {
+        unlock = {
+          mark = "can_learn/wuming"
+          min_exp = -1
+          learned = "阁下既然已经拜达摩祖师，想必已是得道高僧。这如影随行腿、千手如来掌乃是正大恢弘的武功，就传给你好了。我这儿还有一套袈裟功的绝招，不知道你能学会吗？"
+        }
+      }
+      unarmed = {
+        unlock = {
+          mark = "can_learn/wuming"
+          min_exp = -1
+          learned = "阁下既然已经拜达摩祖师，想必已是得道高僧。这如影随行腿、千手如来掌乃是正大恢弘的武功，就传给你好了。我这儿还有一套袈裟功的绝招，不知道你能学会吗？"
+        }
+      }
+      ruying_suixingtui = {
+        unlock = {
+          mark = "can_learn/wuming"
+          min_exp = -1
+          learned = "阁下既然已经拜达摩祖师，想必已是得道高僧。这如影随行腿、千手如来掌乃是正大恢弘的武功，就传给你好了。我这儿还有一套袈裟功的绝招，不知道你能学会吗？"
+        }
+      }
+    }
+  }
+
+  # #1046/#1044 LPC wuming.c attempt_apprentice 双分支均不招徒；异门文案入 deny_msg，
+  # 同门分支走 deny_msg_by_family（#1044 引擎扩展）。
   apprentice = {
     deny_all = true
     deny_msg = "我只是少林的一名扫地僧，哪里懂什么武功。"
+    # UCL 键只能是 ASCII 标识符，故用 [{ family = ... msg = ... }] 编码。
+    deny_msg_by_family = [
+      { family = "少林派" msg = "我早就不收徒弟了，不过你也是我们少林的弟子，就传你一些老僧的粗浅功夫吧！我就教你如影随行腿(ruying-suixingtui)和千手如来掌(rulai-zhang)吧！" }
+    ]
   }
 
 
@@ -44603,8 +44696,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "十八罗汉阵" value = " inquire about me (unimplemented)" },
-    { key = "罗汉大阵" value = " inquire about me (unimplemented)" }
+    { key = "十八罗汉阵" value = { kind = "luohan_zhen" } },
+    { key = "罗汉大阵" value = { kind = "luohan_zhen" } }
   ]
 
   apprentice = {
@@ -44699,8 +44792,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "十八罗汉阵" value = " inquire about me (unimplemented)" },
-    { key = "罗汉大阵" value = " inquire about me (unimplemented)" }
+    { key = "十八罗汉阵" value = { kind = "luohan_zhen" } },
+    { key = "罗汉大阵" value = { kind = "luohan_zhen" } }
   ]
 
   apprentice = {

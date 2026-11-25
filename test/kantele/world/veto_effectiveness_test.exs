@@ -51,7 +51,30 @@ defmodule Kantele.World.VetoEffectivenessTest do
           |> Enum.reduce(acc, fn body, a -> MapSet.union(a, parse_aliases.(body)) end)
       end
 
-    %{world: world, cap: cap, parse_aliases: parse_aliases, definitions: definitions}
+    # room_characters 里的 `characters.<key>.id` 可能是跨 zone 引用：
+    # 例如 shaolin:shang_dating 引 `characters.shang_ming.id`，全量块在 clone_lib.ucl，
+    # 本 zone 文件里没有 `characters "shang_ming"`。按 key 建全局别名索引，
+    # 否则 present('shang jianming', environment(me)) 会被误判成「NPC 不在房里」。
+    aliases_by_key =
+      for f <- Path.wildcard("data/world/*.ucl"), reduce: %{} do
+        acc ->
+          t = File.read!(f)
+
+          Regex.scan(~r/characters\s+"([^"]+)"\s*\{(.*?)\n\s*\}/s, t, capture: :all_but_first)
+          |> Enum.reduce(acc, fn [key, body], a ->
+            Map.update(a, to_string(key), parse_aliases.(body), fn old ->
+              MapSet.union(old, parse_aliases.(body))
+            end)
+          end)
+      end
+
+    %{
+      world: world,
+      cap: cap,
+      parse_aliases: parse_aliases,
+      definitions: definitions,
+      aliases_by_key: aliases_by_key
+    }
   end
 
   # present() 的第二个参数决定判据：environment(me) / this_object() 要在场，me 不要
@@ -151,10 +174,15 @@ defmodule Kantele.World.VetoEffectivenessTest do
         ids
         |> Enum.uniq()
         |> Enum.reduce(MapSet.new(), fn cid, acc ->
-          case ctx.cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s*\}/s, t) do
-            [cb | _] -> MapSet.union(acc, ctx.parse_aliases.(cb))
-            _ -> acc
-          end
+          local =
+            case ctx.cap.(~r/characters\s+"#{Regex.escape(cid)}"\s*\{(.*?)\n\s*\}/s, t) do
+              [cb | _] -> ctx.parse_aliases.(cb)
+              _ -> MapSet.new()
+            end
+
+          # 本 zone 没有同名块时（典型：clone_lib 全量 NPC），回全局索引取别名。
+          global = Map.get(ctx.aliases_by_key, cid, MapSet.new())
+          MapSet.union(acc, MapSet.union(local, global))
         end)
 
       # `present(x, environment(me))` / `present(x, this_object())` 要求**在场**；
@@ -293,6 +321,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
     Kantele.World.Loader.reset_unresolved_warnings()
     Kantele.World.Loader.warn_unresolved(:item, "z", "room-a", "items.probe.id")
     Kantele.World.Loader.warn_unresolved(:item, "z", "room-b", "items.probe.id")
+
     # :character 维度也显式打桩，避免真实数据悬空清零后失去该维度的覆盖。
     Kantele.World.Loader.warn_unresolved(:character, "z", "room-c", "characters.probe.id")
 
@@ -303,6 +332,7 @@ defmodule Kantele.World.VetoEffectivenessTest do
     # 的 `{count + 1, room_id}`），这里不断言房间是哪个。
     assert {2, _room} = probe[{"z", :item, "items.probe.id"}],
            "同一 ref 被两个房间引用时，次数应累加"
+
     assert {1, "room-c"} = probe[{"z", :character, "characters.probe.id"}],
            "room_characters 维度的悬空也应被记录"
 
@@ -345,7 +375,6 @@ defmodule Kantele.World.VetoEffectivenessTest do
     # 归位到 clone_lib 顶层 characters，运行时经 clone_lib 回退可解析，因此**不再**算悬空；
     # 这俩 id 已从「必须悬空」清单移除（若将来数据又把它们挪成本区定义，这里无需改动）。
     # 其余 cheng/liang/liao/qi/mujiang 早已补齐本区定义，本就不在悬空清单里。
-
 
     Kantele.World.Loader.reset_unresolved_warnings()
   end
