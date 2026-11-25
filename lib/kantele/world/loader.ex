@@ -562,6 +562,8 @@ defmodule Kantele.World.Loader do
   """
   def parse_character(zone, key, character_data, brains) do
     inquiries = parse_inquiries(Map.get(character_data, :inquiries))
+    combat_data = Map.get(character_data, :combat)
+    jiali = if is_map(combat_data), do: numeric_or_nil(Map.get(combat_data, :jiali)) || 0, else: 0
 
     character = %Character{
       id: "#{zone.id}:#{key}",
@@ -594,10 +596,19 @@ defmodule Kantele.World.Loader do
       meta: %Kantele.Character.NonPlayerMeta{
         zone_id: zone.id,
         initial_events: parse_initial_events(character_data),
-        vitals: npc_vitals(Map.get(character_data, :combat)),
-        stats: npc_stats(Map.get(character_data, :combat)),
-        combat_config: npc_combat_config(Map.get(character_data, :combat)),
-        combat: Kantele.Character.Combat.new(),
+        vitals: npc_vitals(combat_data),
+        # #1040: LPC `set_skill()` / `map_skill()` 被转换器写成角色块顶层
+        # `skills = [...]`，旧 loader 只读 combat.skills → 1,300+ NPC 技能全丢。
+        stats:
+          npc_stats(
+            combat_data,
+            Map.get(character_data, :score),
+            Map.get(character_data, :skills)
+          ),
+        combat_config: npc_combat_config(combat_data),
+        # #1032: LPC `set("jiali", N)`（UCL `combat.jiali`）此前被 loader 丢弃，
+        # NPC 加力恒为 0。落进运行时 combat 状态，攻击/毒/绝招按 N 判定。
+        combat: %{Kantele.Character.Combat.new() | jiali: jiali},
         goods: parse_goods(Map.get(character_data, :goods)),
         inquiries: inquiries,
         # 交互提示用的关键词快照：只存键名，房间侧经 Meta.trim 也能拿到
@@ -632,11 +643,22 @@ defmodule Kantele.World.Loader do
         power: Map.get(character_data, :power) || 0,
         drop_a: parse_item_ref(Map.get(character_data, :drop_a)),
         drop_b: parse_item_ref(Map.get(character_data, :drop_b)),
-        drop_c: parse_item_ref(Map.get(character_data, :drop_c))
+        drop_c: parse_item_ref(Map.get(character_data, :drop_c)),
+        # LPC `create_family(<门派>, <代>, <称号>)`：原转换器只写进 teach/apprentice
+        # 块；无教学内容的 NPC（如 none/libai.c 侠客盟、misc/shangguan.c 金钱帮）
+        # 门派归属整组丢失。顶层 `family` 补齐这一层。
+        family: string_or_nil(Map.get(character_data, :family)),
+        # LPC `set("...", ...)` 属性仓库（如 libai.c 的 dugu-jiujian/nothing）。
+        # UCL 键不允许 `/`，用 `env = [ { key = "a/b" value = N } ]` 保真。
+        env: parse_env(Map.get(character_data, :env)),
+        # LPC `set_temp("handing", carry_object(...))`：李白手持天乙神酒。
+        handing: parse_item_ref(Map.get(character_data, :handing)),
+        # ultra 大宗师配置（评价类别 / 技能表 / 逐字文案），由 AskHandler 消费。
+        ultra: parse_ultra(Map.get(character_data, :ultra))
       }
     }
 
-    character = attach_npc_applies(character, Map.get(character_data, :combat))
+    character = attach_npc_applies(character, combat_data)
 
     {key, character}
   end
@@ -672,7 +694,49 @@ defmodule Kantele.World.Loader do
   # LPC QUARRY `set("drop_a", __DIR__"item/x")`：单个物品引用 { id = "xxx" }。
   defp parse_item_ref(nil), do: nil
   defp parse_item_ref(%{id: id}) when is_binary(id), do: id
+  defp parse_item_ref(ref) when is_binary(ref), do: ref
   defp parse_item_ref(_), do: nil
+
+  # LPC `set("foo/bar", N)` / `set("foo", N)` 的保真形态。UCL 键不能含 `/`，
+  # 故数组形态用 `{ key = "foo/bar" value = N }`（键名原样保留）；
+  # map 形态（键均为合法标识符）也接受，统一 string-key。
+  defp parse_env(nil), do: %{}
+
+  defp parse_env(env) when is_list(env) do
+    Enum.reduce(env, %{}, fn
+      %{key: key, value: value}, acc when is_binary(key) -> Map.put(acc, key, value)
+      _, acc -> acc
+    end)
+  end
+
+  defp parse_env(env) when is_map(env), do: stringify_map(env)
+  defp parse_env(_), do: %{}
+
+  # ultra 大宗师配置：`ultra = { category = ... opinion_type = ... opinions = [...] msgs = { ... } }`。
+  # 文案全部落在 UCL（零信息丢失），引擎只做结构归一。
+  defp parse_ultra(nil), do: nil
+
+  defp parse_ultra(ultra) when is_map(ultra) do
+    %{
+      category: string_or_nil(Map.get(ultra, :category)),
+      opinion_type: string_or_nil(Map.get(ultra, :opinion_type)),
+      want_key: string_or_nil(Map.get(ultra, :want_key)),
+      calc_mode: string_or_nil(Map.get(ultra, :calc_mode)),
+      opinions:
+        case Map.get(ultra, :opinions) do
+          list when is_list(list) -> Enum.map(list, &to_string/1)
+          _ -> []
+        end,
+      weapon_required: to_bool(Map.get(ultra, :weapon_required, false)),
+      msgs:
+        case Map.get(ultra, :msgs) do
+          msgs when is_map(msgs) -> stringify_map(msgs)
+          _ -> %{}
+        end
+    }
+  end
+
+  defp parse_ultra(_), do: nil
 
   # LPC `set("chat_msg_combat", (...))` → 字符串列表（转换器已过滤 closure，
   # 此处只做容错：非 list 返回 []）。
@@ -804,6 +868,33 @@ defmodule Kantele.World.Loader do
   rescue
     _ -> :error
   end
+
+  # 单条物品引用（handing）：与 resolve_turn_in 同款，引用形态解不出 -> nil。
+  defp resolve_single_ref(nil, _zone, _zones), do: nil
+
+  defp resolve_single_ref(ref, zone, zones) when is_binary(ref) do
+    # `dereference/3` 的跨区 items 分支对 zone.items（列表）会抛 BadMapError；
+    # 单条物品引用直接按 <zone>.items.<key>.id → "<zone>:<key>" 归一化即可。
+    case String.split(ref, ".") do
+      [zone_id, "items", item_key, "id"] ->
+        "#{zone_id}:#{item_key}"
+
+      ["items", item_key, "id"] ->
+        "#{zone.id}:#{item_key}"
+
+      _ ->
+        if Regex.match?(@item_ref, ref) do
+          case safe_dereference(zones, zone, ref) do
+            {:ok, item_id} when is_binary(item_id) -> item_id
+            _ -> nil
+          end
+        else
+          ref
+        end
+    end
+  end
+
+  defp resolve_single_ref(_, _zone, _zones), do: nil
 
   # 解引用任务交付物品（items.yupai.id -> "liuxi:yupai"，跨区同 goods）
   defp resolve_turn_in(nil, _zone, _zones), do: nil
@@ -980,7 +1071,8 @@ defmodule Kantele.World.Loader do
            "reborn",
            "suoyangdan",
            "hunter",
-           "shaolin_promotion"
+           "shaolin_promotion",
+           "ultra"
          ] do
         %{
           kind: kind,
@@ -1122,6 +1214,9 @@ defmodule Kantele.World.Loader do
               Map.put(acc, key, %{
                 accept: accept,
                 kind: string_or_nil(Map.get(rule, :kind)),
+                # 动态 accept_fight 处理器（ultra 大宗师按 ask 次数/状态放拒）；
+                # 由 Kantele.Npc.EngageRule.decide/4 按 NPC 与攻击者实时判定。
+                handler: string_or_nil(Map.get(rule, :handler)),
                 master_generation: numeric_or_nil(Map.get(rule, :master_generation)),
                 award_item: string_or_nil(Map.get(rule, :award_item)),
                 msg: string_or_nil(Map.get(rule, :msg)),
@@ -1933,31 +2028,90 @@ defmodule Kantele.World.Loader do
       jing: Map.get(combat, :max_jing, base.jing),
       max_jing: Map.get(combat, :max_jing, base.max_jing),
       base_jing: Map.get(combat, :max_jing, base.max_jing),
-      neili: Map.get(combat, :max_neili, base.neili),
+      # LPC 允许 `neili` 与 `max_neili` 不同（老 NPC 尤其常见）；缺省仍是满内力。
+      neili: Map.get(combat, :neili, Map.get(combat, :max_neili, base.neili)),
       max_neili: Map.get(combat, :max_neili, base.max_neili),
       base_neili: Map.get(combat, :max_neili, base.max_neili)
     }
   end
 
-  defp npc_stats(nil), do: Stats.new()
+  # #1040: 顶层 `skills = [...]` 是 LPC `set_skill` / `map_skill` 的转换器输出。
+  # 与 combat.skills / combat.map_skill 同时兼容；同名时以顶层列表为准（后者
+  # 更贴近 LPC 原始调用顺序，且实际数据中两种写法不重叠）。
+  defp npc_stats(combat, top_score, top_skills) do
+    {list_skills, list_mapped} = parse_npc_skills(top_skills)
 
-  defp npc_stats(combat) do
+    base =
+      if is_map(combat) do
+        %Stats{
+          str: Map.get(combat, :str, 20),
+          dex: Map.get(combat, :dex, 20),
+          con: Map.get(combat, :con, 20),
+          int: Map.get(combat, :int, 20),
+          # LPC `set("per", N)`：转换器将部分 NPC 的容貌值写在 combat 块里，
+          # 此前 loader 未读 → Stats.per 恒 nil（逍遥派 `query("per")` 门控失效）。
+          per: Map.get(combat, :per, 20),
+          combat_exp: Map.get(combat, :combat_exp, 0),
+          potential: Map.get(combat, :potential, 0),
+          # `score` 在 UCL 里既可能是 combat 子键，也可能是 characters 顶层键
+          # （转换器对老 NPC 的两种输出都存在）；两者都接住。
+          score: Map.get(combat, :score, top_score || 0),
+          weiwang: 0,
+          gongxian: 0,
+          shen: 0,
+          skills: skill_keys(Map.get(combat, :skills, %{})),
+          mapped: skill_keys(Map.get(combat, :map_skill, %{})),
+          performs: MapSet.new()
+        }
+      else
+        Stats.new()
+      end
+
     %Stats{
-      str: Map.get(combat, :str, 20),
-      dex: Map.get(combat, :dex, 20),
-      con: Map.get(combat, :con, 20),
-      int: Map.get(combat, :int, 20),
-      combat_exp: Map.get(combat, :combat_exp, 0),
-      potential: Map.get(combat, :potential, 0),
-      score: 0,
-      weiwang: 0,
-      gongxian: 0,
-      shen: 0,
-      skills: skill_keys(Map.get(combat, :skills, %{})),
-      mapped: skill_keys(Map.get(combat, :map_skill, %{})),
-      performs: MapSet.new()
+      base
+      | skills: Map.merge(base.skills || %{}, list_skills),
+        mapped: Map.merge(base.mapped || %{}, list_mapped)
     }
   end
+
+  # LPC 转换器输出两种条目：
+  #   { skill = "hunyuan-yiqi" level = 50 }  ← set_skill("hunyuan-yiqi", 50)
+  #   { type = "force" skill = "hunyuan-yiqi" } ← map_skill("force", "hunyuan-yiqi")
+  # 技能名中的下划线与 skill_keys/1 一致归一为横线（Stats.skills 的键约定）。
+  defp parse_npc_skills(nil), do: {%{}, %{}}
+
+  defp parse_npc_skills(entries) when is_list(entries) do
+    Enum.reduce(entries, {%{}, %{}}, fn entry, {skills, mapped} ->
+      cond do
+        is_map(entry) and Map.has_key?(entry, :level) ->
+          skill = string_or_nil(Map.get(entry, :skill))
+          level = numeric_or_nil(Map.get(entry, :level))
+
+          if not is_nil(skill) and not is_nil(level) do
+            {Map.put(skills, npc_skill_key(skill), level), mapped}
+          else
+            {skills, mapped}
+          end
+
+        is_map(entry) and Map.has_key?(entry, :type) ->
+          type = string_or_nil(Map.get(entry, :type))
+          skill = string_or_nil(Map.get(entry, :skill))
+
+          if not is_nil(type) and not is_nil(skill) do
+            {skills, Map.put(mapped, npc_skill_key(type), npc_skill_key(skill))}
+          else
+            {skills, mapped}
+          end
+
+        true ->
+          {skills, mapped}
+      end
+    end)
+  end
+
+  defp parse_npc_skills(_), do: {%{}, %{}}
+
+  defp npc_skill_key(key), do: String.replace(to_string(key), "_", "-")
 
   # UCL 键名不支持横线，约定用下划线书写（liuxin_jian -> liuxin-jian）
   defp skill_keys(map) do
@@ -2381,6 +2535,9 @@ defmodule Kantele.World.Loader do
           # 之前没解，meta.carry 里存的是原始引用串 `"items.cloth.id"`，
           # 到 SpawnController 按 item_id 查 Items cache 时全都 not_found。
           meta = %{meta | carry: resolve_goods(Map.get(meta, :carry), zone, zones)}
+          # `set_temp("handing", carry_object(...))` 的物品引用同 carry：
+          # 加载期没有 zones 上下文，放在这里解引用（如李白的天乙神酒）。
+          meta = %{meta | handing: resolve_single_ref(Map.get(meta, :handing), zone, zones)}
           meta = %{meta | quest: Map.get(meta, :quest)}
 
           [

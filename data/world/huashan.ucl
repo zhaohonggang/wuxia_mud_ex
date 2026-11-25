@@ -2984,3 +2984,128 @@ item_desc = {
     { line = "店小二用脖子上的毛巾抹了抹手，说道：这位{respect}，请进请进。" }
   ]
     }
+
+# LPC: C:/files/git/mud/kungfu/class/ultra/dugu.c（大宗师·兵器；startroom /d/huashan/shandong）
+# recognize_apprentice 在 LPC 源内注释禁用 → 不放 apprentice/teach 教学块。
+
+    characters "ultra_dugu" {
+      name = "独孤求败"
+      aliases = ["dugu qiubai", "dugu", "ultra_dugu"]
+      description = "此人诚恳敦厚，眉目菱角分明，气宇轩昂。"
+      title = "大宗师"
+      gender = "男性"
+      age = 48
+
+      combat = {
+        attitude = "peaceful"
+        str = 38
+        int = 39
+        con = 32
+        dex = 33
+        max_qi = 20000
+        max_jing = 20000
+        neili = 30000
+        max_neili = 30000
+        jiali = 100
+        combat_exp = 50000000
+        skills = {
+          unarmed = 500
+          sword = 500
+          blade = 500
+          staff = 500
+          hammer = 500
+          club = 500
+          whip = 500
+          dagger = 500
+          throwing = 500
+          parry = 500
+          dodge = 500
+          force = 500
+          never_defeated = 500
+          martial_cognize = 500
+        }
+        map_skill = {
+          sword = "never-defeated"
+          blade = "never-defeated"
+          staff = "never-defeated"
+          hammer = "never-defeated"
+          club = "never-defeated"
+          whip = "never-defeated"
+          dagger = "never-defeated"
+          parry = "never-defeated"
+          dodge = "never-defeated"
+          force = "never-defeated"
+        }
+      }
+
+      env = [
+        { key = "opinion/ultra" value = 1 },
+        { key = "opinion/master" value = 1 }
+      ]
+      chat_chance_combat = 120
+      ask_handler = "Kantele.NPC.Ultra"
+
+      inquiries = [
+        { key = "独孤九剑" value = "我把天下武功的变化归结在九剑之中，算不得是剑法，若拘泥于形势就无法理解其中奥妙。独孤九剑真正的精妙之处不在于其剑招，而是其剑意。" },
+        { key = "剑意" value = "剑招乃其形，而剑意乃其神，吾花费毕生经历于华山一山洞空室中参悟出独孤九剑之剑意，并将其笔录在「独孤九剑残本」内。" },
+        { key = "空室" value = "穿过我身后的山洞就会发现一个峭壁，我将残本藏于其间的山洞内，并请高手匠人设计出六把不同锁将其锁住，每把琐连接着一个开锁的机关，机关藏于六个不同的石室内，须得将所有锁打开方能进入空室。" },
+        { key = "锁" value = "年深日久，开锁的方法我已不记得了。我只记得如果石门上的六把火炬都点燃了，石门上的锁也就开了。" },
+        { key = "无招胜有招" value = "那就是独孤九剑的最高境界！" },
+        { key = "独孤九剑残本" value = "如果你能拿来给话我到是可以把独孤九剑中的精妙之处传授于你。" },
+        { key = "武学修养" value = "武学修养(martial-cognize)乃武术大义，可谓是以一通通百通！" }
+      ]
+
+      ultra = {
+        category = "weapon"
+        opinion_type = "兵器功夫"
+        want_key = "dugu"
+        calc_mode = "action"
+        weapon_required = true
+        opinions = ["sword", "blade", "staff", "hammer", "club", "whip", "dagger"]
+        msgs = {
+          # LPC dugu.c:117-122 init()：ultrap 玩家进屋 → 微笑点头
+          init = "{npc}微微一笑，对{name}点了点头。"
+          ask_low_exp = "呵呵，你这点武功还谈什么评价？"
+          ask_already = "哈哈，你兵器方面的修为已经称得上是宗师了！咱们要不要过过招？"
+          ask_fighting_npc = "哈哈，废什么话，打赢了我，你自己给自己评价吧！"
+          ask_fighting_player = "你等会儿吧！待我赶走他们。"
+          ask_busy_self = "你着什么急？不要烦我。"
+          ask_busy_other = "{npc}正在沉思，没有回答{name}，只是摆了摆手。"
+          ask_shut_up = "给我闭上你的嘴！"
+          ask_prompt_a = "好吧，你用兵器攻我一招，我看看你的水平如何。"
+          ask_prompt_b = "不是说让你来一招我看看吗？"
+          ask_prompt_c = "{npc}皱眉对{name}道：“我看你这人是够罗嗦的。”"
+          fight_no_intent = "平白无故动什么手？"
+          fight_need_weapon = "没兵器你动什么手？"
+          fight_low_vitals = "你现在状态不佳，等休息好了再说吧！"
+          fight_weak = "{npc}摇摇头对{name}道：“你现在的武功还差得远，连我一招都接不住！”"
+          fight_ok = "看来不能心急，还得等一会儿。"
+          fight_already = "很好，近年我还没有和宗师高手过过招，来吧！"
+          rank_first_fail = "{npc}淡淡一笑，对{name}道：“你的兵器功夫不行啊！好好努力吧！”"
+          rank_no_progress = "{npc}对{name}摇摇头道：“不怎么样，我发现你的兵器功夫比上次没什么太大的进步。”"
+          rank_up = "{npc}沉思片刻，对{name}道：“就目前来看，你的兵器功夫已经可以算得上是{rank}了。”"
+          rank_master = "{npc}对{name}笑道：“恭喜！你的兵器功夫已然到了宗师境界！武道无穷，阁下自重！”"
+          congrat = "这位可要善自珍重，须知强中更有强中手。"
+          vanish = "独孤求败大叫一声，狂吐了一口鲜血，身形一闪，就此不见。"
+          vanish_chat = "在下去也！"
+        }
+      }
+
+      engage = {
+        fight = { accept = true handler = "Kantele.NPC.Ultra" }
+      }
+      accept = [
+        { kind = "ultra" action = "dugubook" id = "clone_lib:dugubook" }
+      ]
+      carry = [
+        { id = items.zhujian.id },
+        { id = items.cloth.id }
+      ]
+    }
+
+  room_characters "shandong" {
+    room_id = rooms.shandong.id
+    characters = [
+      { id = characters.ultra_dugu.id }
+    ]
+  }

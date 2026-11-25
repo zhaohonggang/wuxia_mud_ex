@@ -656,6 +656,35 @@ defmodule Kantele.Character.CombatEvent do
 
   # ---- 死亡与重生 ----
 
+  # ultra 大宗师不可被击杀：LPC dugu/huang/huoshan/kuihua 的 die/unconcious
+  # 都是「吐血闪逝 + chat 本座去也 + destruct」。ex 的 NPC 是世界静态对象，
+  # destruct 后无法重生，故等价实现为：闪逝台词 + 满状态复位、不进尸体/死亡流程。
+  defp die(conn, %{meta: %{ultra: cfg}} = character, _killer) when is_map(cfg) do
+    msgs = Map.get(cfg, :msgs, %{})
+    vanish = Map.get(msgs, "vanish", "#{character.name}脸色一变，吐了一口鲜血，身形一闪，消逝不见。")
+    chat = Map.get(msgs, "vanish_chat", "在下去也！")
+
+    Kantele.World.Room.tell_room(%{id: character.room_id}, vanish)
+    Communication.announce("chat", chat)
+
+    v = character.meta.vitals
+
+    vitals = %Vitals{
+      v
+      | qi: v.max_qi,
+        jing: v.max_jing,
+        neili: v.max_neili
+    }
+
+    character = %{
+      character
+      | meta: %{character.meta | vitals: vitals, combat: Combat.new()},
+        status: ""
+    }
+
+    put_character(conn, character)
+  end
+
   defp die(conn, character, killer) do
     # 决斗结算：倒在 competitor 手下即败者，清理自身决斗状态（胜负广播在胜者端）
     conn = announce_duel_result(conn, character, killer)

@@ -109,6 +109,7 @@ defmodule Kantele.Character.MoveEvent do
 
   def notice(conn, %{data: event}) do
     conn = room_item_init(conn, event)
+    conn = npc_init(conn, event)
     greet(conn, event)
 
     conn
@@ -132,6 +133,34 @@ defmodule Kantele.Character.MoveEvent do
   end
 
   defp room_item_init(conn, _event), do: conn
+
+  # NPC 的 LPC init()（如大宗师对 ultrap 玩家的微笑/皱眉/冷笑）：
+  # 与 greet 一样只对「玩家进屋、NPC 收到 notice」这条路径生效。
+  defp npc_init(conn, %{character: character, direction: :to}) do
+    npc = conn.character
+
+    cond do
+      is_nil(npc) or String.starts_with?(npc.id, "player:") ->
+        conn
+
+      # LPC `if (!interactive(me = this_player())) return;`：只对玩家进屋生效。
+      not is_binary(character.id) or not String.starts_with?(character.id, "player:") ->
+        conn
+
+      true ->
+        case Kantele.World.NpcInit.init(npc, character) do
+          {:vision, text} ->
+            room = %Kantele.World.Room{id: npc.room_id}
+            Kantele.World.Room.tell_room(room, render_greeting(text, npc, character.name))
+            conn
+
+          _ ->
+            conn
+        end
+    end
+  end
+
+  defp npc_init(conn, _event), do: conn
 
   # NPC 欢迎（对应 LPC greeting()）：有玩家进入房间且在欢迎台词，随机挑一句
   # 广播到房间。NPC 自己（player:*）或没有 greetings 的 NPC 直接跳过。

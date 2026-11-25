@@ -5260,3 +5260,107 @@ chats = [
   ]
 
     }
+
+# LPC: C:/files/git/mud/kungfu/class/ultra/huoshan.c（大宗师·内家；startroom /d/mingjiao/xuantianshi）
+# recognize_apprentice 在 LPC 源内注释禁用 → 不放 apprentice/teach 教学块。
+
+    characters "ultra_huoshan" {
+      name = "霍山"
+      aliases = ["huo shan", "huo", "shan", "ultra_huoshan"]
+      description = "他身着奇装异服，相貌平平，便似一般的西域人士。"
+      title = "大宗师"
+      gender = "男性"
+      age = 91
+
+      combat = {
+        attitude = "peaceful"
+        str = 30
+        int = 37
+        con = 39
+        dex = 33
+        max_qi = 20000
+        max_jing = 20000
+        neili = 30000
+        max_neili = 30000
+        jiali = 100
+        combat_exp = 50000000
+        skills = {
+          unarmed = 500
+          parry = 500
+          dodge = 500
+          force = 500
+          sword = 500
+          jiuyang_shengong = 500
+          qiankun_danuoyi = 500
+          martial_cognize = 500
+          literate = 220
+        }
+        map_skill = {
+          parry = "qiankun-danuoyi"
+          force = "jiuyang-shengong"
+          dodge = "qiankun-danuoyi"
+          unarmed = "jiuyang-shengong"
+          sword = "jiuyang-shengong"
+        }
+      }
+
+      env = [
+        { key = "opinion/ultra" value = 1 },
+        { key = "opinion/master" value = 1 }
+      ]
+      ask_handler = "Kantele.NPC.Ultra"
+
+      inquiries = [
+        { key = "乾坤大挪移" value = "嘿，这东西乃是我中年时所创，算不得什么。" },
+        { key = "武学修养" value = "好好提高自己的武学修养(martial-cognize)，到时候什么武功都如小儿科！" }
+      ]
+
+      ultra = {
+        category = "force"
+        opinion_type = "内家功夫"
+        want_key = "shenni"
+        calc_mode = "max_neili_4000"
+        weapon_required = false
+        opinions = ["force"]
+        msgs = {
+          # LPC huoshan.c:87-89 init()：ultrap 玩家进屋 → 皱眉冷哼
+          init = "{npc}眉头一皱，哼了一声。"
+          ask_low_exp = "哼！你这点武功也出来丢人现眼？"
+          ask_already = "不必了，你内功方面的修为已经称得上是宗师了！"
+          ask_fighting_npc = "哈哈，废什么话，打赢了我，你自己给自己评价吧！"
+          ask_fighting_player = "你等会儿吧！待我赶走他们。"
+          ask_busy_self = "你着什么急？不要烦我。"
+          ask_busy_other = "{npc}颇为恼怒的对{name}道：“没看我正忙着吗？”"
+          ask_shut_up = "快给我闭上你的鸟嘴！"
+          ask_prompt_a = "好吧，咱们过一招，比拚一下内力。"
+          ask_prompt_b = "你准备好没有？好了就来吧。"
+          ask_prompt_c = "{npc}皱眉对{name}道：“我看你这人是够罗嗦的。”"
+          fight_no_intent = "你干什么要和我动手？"
+          fight_weak = "{npc}摇摇头对{name}道：“你现在的武功还差得远，连我一招都接不住！”"
+          fight_neili_low = "适才你内力不足，我难以衡量，待你将内力修炼好了再来吧！"
+          fight_ok = "看来不能心急，还得等一会儿。"
+          fight_already = "很好，你也算是宗师高手了，来吧！咱们比划一下！"
+          rank_first_fail = "{npc}淡淡一笑，对{name}道：“你的内家功夫不行啊！好好努力吧！”"
+          rank_no_progress = "{npc}对{name}摇摇头道：“不怎么样，我发现你的内家功夫比上次没什么太大的进步。”"
+          rank_up = "{npc}沉思片刻，对{name}道：“就目前来看，你的内家功夫已经可以算得上是{rank}了。”"
+          rank_master = "{npc}对{name}笑道：“恭喜！你的内家功夫已然到了宗师境界！武道无穷，阁下自重！”"
+          congrat = "不错，不错，真是不错。"
+          vanish = "霍山大叫一声，狂吐了一口鲜血，身形一闪，就此不见。"
+          vanish_chat = "本座去也！"
+        }
+      }
+
+      engage = {
+        fight = { accept = true handler = "Kantele.NPC.Ultra" }
+      }
+      carry = [
+        { id = items.cloth.id }
+      ]
+    }
+
+  room_characters "xuantianshi" {
+    room_id = rooms.xuantianshi.id
+    characters = [
+      { id = characters.ultra_huoshan.id }
+    ]
+  }

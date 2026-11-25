@@ -3594,7 +3594,7 @@ defmodule Kantele.World.Room.CombatEvent do
         # （外门派 hit/kill、同门 hit/kill）
         engage(context, target, attacker, "kill")
 
-      engage_rule_deny?(target, event) ->
+      engage_rule_deny?(target, attacker, event) ->
         # NPC 自己写了 accept_fight/hit/kill 且 accept=false
         # —— LPC 里这是**最优先**的：npc.c 的 accept_* 一开始就
         # `if (is_guarder()) …`，守卫走 check_enemy；非守卫且 NPC 没自己
@@ -4061,10 +4061,16 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # ---- NPC 开战接受规则（accept_fight/hit/kill → engage，见 EngageRule） ----
 
-  defp engage_rule_deny?(target, event) do
+  defp engage_rule_deny?(target, attacker, event) do
     match?(
       {:deny, _},
-      EngageRule.decide(target.meta, Map.get(event.data, :type, "fight"), target.name)
+      EngageRule.decide(
+        target.meta,
+        Map.get(event.data, :type, "fight"),
+        target.name,
+        target,
+        attacker
+      )
     )
   end
 

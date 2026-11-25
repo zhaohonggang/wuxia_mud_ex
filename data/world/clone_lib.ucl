@@ -38065,6 +38065,10 @@ chats = [
     max_jing = 3300
     max_neili = 6000
     max_qi = 5000
+    # LPC ming.c:48-50 set("neili", 6000) / set("max_neili", 6000) / set("jiali", 180)
+    # loader 现解析 combat.neili 与 combat.jiali（GAP #1032），此处保真回填
+    neili = 6000
+    jiali = 180
     str = 45
   }
 
@@ -57348,5 +57352,84 @@ chats = [
         weight = 30
         unit = "瓶"
         no_sell = 1
+      }
+    }
+
+# LPC: C:/files/git/mud/kungfu/class/misc/shangguan.c（金钱帮帮主，唯一继承 F_MASTER 的 misc NPC）
+# 该 NPC 在 LPC 中无 attempt_apprentice/recognize_apprentice，ask_me 是死声明；
+# 这里只保属性、门派与随身装备，不放任何教学块。
+
+    characters "misc_shangguan" {
+      name = "上官银票"
+      aliases = ["cash"]
+      description = "他就是金钱帮帮主。"
+      gender = "男性"
+      age = 61
+      shen_type = 1
+      family = "金钱帮"
+
+      combat = {
+        attitude = "peaceful"
+        str = 31
+        int = 27
+        con = 32
+        dex = 30
+        max_qi = 5000
+        max_jing = 3000
+        neili = 7000
+        max_neili = 7000
+        jiali = 160
+        combat_exp = 1500000
+        score = 70000
+        skills = {
+          idle_force = 500
+        }
+      }
+
+      carry = [
+        { id = items.changjian.id },
+        { id = items.cloth.id }
+      ]
+    }
+
+# LPC: C:/files/git/mud/clone/lonely/book/dugubook.c / zhenjing1.c / zhenjing2.c
+# 大宗师绝招 quest 物（原转换器整组丢失，#1049 补齐）。
+
+    items "dugubook" {
+      name = "「独孤九剑残本」"
+      aliases = ["dugu canben", "dugu", "canben"]
+      description = "这是一本用薄纸写成的书，封皮上写有「独孤九剑残本」六字。书皮泛黄，看来已经保存很久了。书中记载了剑魔独孤求败所创独孤九剑之精髓。"
+      verbs = ["get", "drop", "give"]
+      meta = {
+        unit = "本"
+        material = "paper"
+        no_sell = 1
+        weight = 500
+      }
+    }
+
+    items "zhenjing1" {
+      name = "「九阴真经」上册"
+      aliases = ["zhenjing shangce", "shangce", "zhenjing", "jing"]
+      description = "这是一本用薄纸写成的书，封皮上写有「九阴真经」上册六字。书皮泛黄，看来已经保存很久了。真经中记载有大伏魔拳、易筋锻骨和蛇行狸翻等绝技。"
+      verbs = ["get", "drop", "give"]
+      meta = {
+        unit = "本"
+        material = "paper"
+        no_sell = 1
+        weight = 500
+      }
+    }
+
+    items "zhenjing2" {
+      name = "「九阴真经」下册"
+      aliases = ["zhenjing xiace", "xiace", "zhenjing", "jing"]
+      description = "这是一本用薄纸写成的书，封皮上写有「九阴真经」下册六字。书皮泛黄，看来已经保存很久了。真经中记载有催心掌、九阴白骨爪和银龙鞭法等绝技。"
+      verbs = ["get", "drop", "give"]
+      meta = {
+        unit = "本"
+        material = "paper"
+        no_sell = 1
+        weight = 500
       }
     }

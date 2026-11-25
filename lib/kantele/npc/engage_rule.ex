@@ -18,13 +18,42 @@ defmodule Kantele.Npc.EngageRule do
 
   @doc "战斗类型是否命中拒绝规则；返回 {:deny, msg} 或 :allow"
   def decide(meta, type, name \\ nil) when is_map(meta) do
+    do_decide(meta, type, name)
+  end
+
+  @doc """
+  带 NPC 与攻击者的动态判定（ultra 大宗师 `accept_fight` 按 ask 次数/状态放拒）。
+
+  `handler` 由 UCL `engage.fight.handler` 指定；目前仅
+  `Kantele.NPC.Ultra` 实现了 `engage_decide/3`。未配置时与 `decide/3` 完全一致。
+  """
+  def decide(meta, type, name, npc, attacker) when is_map(meta) do
+    case engage_rule(meta, type) do
+      %{handler: handler} when is_binary(handler) and not is_nil(npc) and not is_nil(attacker) ->
+        case dynamic_decide(handler, npc, attacker, type) do
+          {:deny, _} = deny -> deny
+          _ -> do_decide(meta, type, name)
+        end
+
+      _ ->
+        do_decide(meta, type, name)
+    end
+  end
+
+  def decide(_meta, _type, _name, _npc, _attacker), do: :allow
+
+  defp do_decide(meta, type, name) do
     case engage_rule(meta, type) do
       %{accept: false} -> {:deny, deny_msg(meta, type, name)}
       _ -> :allow
     end
   end
 
-  def decide(_meta, _type, _name), do: :allow
+  defp dynamic_decide("Kantele.NPC.Ultra", npc, attacker, type) do
+    Kantele.NPC.Ultra.engage_decide(npc, attacker, type)
+  end
+
+  defp dynamic_decide(_, _npc, _attacker, _type), do: :allow
 
   @doc "取战斗类型对应的 engage 规则（fight/hit/kill → engage[type]）"
   def engage_rule(meta, type) do

@@ -3716,6 +3716,14 @@ chats = [
   gender = "男性"
   age = 37
   shen_type = 1
+  # LPC libai.c:68 create_family("侠客盟", 1, "盟主")
+  family = "侠客盟"
+  # LPC libai.c:26 set("dugu-jiujian/nothing", 1)；UCL 键不允许 "/"，用 key/value 对象保真
+  env = [
+    { key = "dugu-jiujian/nothing" value = 1 }
+  ]
+  # LPC libai.c:74 set_temp("handing", carry_object("/d/sky/obj/shenjiu"))
+  handing = death.items.shenjiu.id
   # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
@@ -3728,6 +3736,10 @@ chats = [
     max_neili = 12000
     max_qi = 12000
     str = 50
+    # LPC libai.c:25/31/32（原转换器整组丢失；jiali 另见 GAP #1032）
+    per = 50
+    neili = 12000
+    jiali = 250
   }
 
   goods = [

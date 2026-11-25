@@ -11828,3 +11828,107 @@ chats = [
         }
       }
     }
+
+# LPC: C:/files/git/mud/kungfu/class/ultra/kuihua.c（大宗师·轻功；startroom /d/beijing/shanlu3）
+# recognize_apprentice 在 LPC 源内注释禁用 → 不放 apprentice/teach 教学块。
+
+    characters "ultra_kuihua" {
+      name = "葵花太监"
+      aliases = ["kuihua taijian", "kuihua", "taijian", "ultra_kuihua"]
+      description = "此人脸型瘦削，满是阴骛，不知是喜是怒。"
+      title = "大宗师"
+      gender = "男性"
+      age = 99
+
+      combat = {
+        attitude = "peaceful"
+        str = 31
+        int = 39
+        con = 34
+        dex = 36
+        max_qi = 20000
+        max_jing = 20000
+        neili = 30000
+        max_neili = 30000
+        jiali = 100
+        combat_exp = 50000000
+        skills = {
+          unarmed = 500
+          finger = 500
+          parry = 500
+          dodge = 500
+          force = 500
+          sword = 500
+          kuihua_mogong = 500
+          martial_cognize = 500
+          literate = 220
+        }
+        map_skill = {
+          parry = "kuihua-mogong"
+          force = "kuihua-mogong"
+          dodge = "kuihua-mogong"
+          finger = "kuihua-mogong"
+          sword = "kuihua-mogong"
+        }
+      }
+
+      env = [
+        { key = "opinion/ultra" value = 1 },
+        { key = "opinion/master" value = 1 }
+      ]
+      ask_handler = "Kantele.NPC.Ultra"
+
+      inquiries = [
+        { key = "葵花宝典" value = "那是我写的一本关于轻功方面的心得，怎么，你有兴趣？" },
+        { key = "武学修养" value = "学习深奥武功，没有深厚的武学修养(martial-cognize)，提也休提！" }
+      ]
+
+      ultra = {
+        category = "dodge"
+        opinion_type = "轻身功夫"
+        want_key = "kuihua"
+        calc_mode = "flat_20"
+        weapon_required = false
+        opinions = ["dodge"]
+        msgs = {
+          # LPC kuihua.c:87-90 init()：ultrap 玩家进屋 → 扫一眼冷笑
+          init = "{npc}扫了{name}一眼，冷笑一声。"
+          ask_low_exp = "嘿，你这点武功只好抓抓老鼠。"
+          ask_already = "嗯，你轻功方面的修为已经称得上是宗师了！要是有兴趣咱们过两招？"
+          ask_fighting_npc = "哈哈，废什么话，打赢了我，你自己给自己评价吧！"
+          ask_fighting_player = "你等会儿吧！待我赶走他们。"
+          ask_busy_self = "你着什么急？不要烦我。"
+          ask_busy_other = "{npc}颇为恼怒的对{name}道：“没看我正忙着吗？”"
+          ask_shut_up = "快给我闭上你的鸟嘴！"
+          ask_prompt_a = "好吧，你准备好了就接我一招，我看看你的水平如何。"
+          ask_prompt_b = "你准备好没有？好了就来吧。"
+          ask_prompt_c = "{npc}皱眉对{name}道：“我看你这人是够罗嗦的。”"
+          fight_no_intent = "你干什么要和我动手？"
+          fight_weak = "{npc}摇摇头对{name}道：“你现在的武功还差得远，连我一招都接不住！”"
+          fight_ok = "看来不能心急，还得等一会儿。"
+          fight_already = "很好，你也算是顶尖高手了，来吧！咱们比划一下！"
+          rank_first_fail = "{npc}淡淡一笑，对{name}道：“你的轻身功夫不行啊！好好努力吧！”"
+          rank_no_progress = "{npc}对{name}摇摇头道：“不怎么样，我发现你的轻身功夫比上次没什么太大的进步。”"
+          rank_up = "{npc}沉思片刻，对{name}道：“就目前来看，你的轻身功夫已经可以算得上是{rank}了。”"
+          rank_master = "{npc}对{name}笑道：“恭喜！你的轻身功夫已然到了宗师境界！武道无穷，阁下自重！”"
+          congrat = "嘿嘿，不错。"
+          vanish = "葵花太监大叫一声，狂吐了一口鲜血，身形一闪，就此不见。"
+          vanish_chat = "老夫去也！"
+        }
+      }
+
+      engage = {
+        fight = { accept = true handler = "Kantele.NPC.Ultra" }
+      }
+      carry = [
+        { id = clone_lib.items.spin.id },
+        { id = items.cloth.id }
+      ]
+    }
+
+  room_characters "shanlu3" {
+    room_id = rooms.shanlu3.id
+    characters = [
+      { id = characters.ultra_kuihua.id }
+    ]
+  }

@@ -96,14 +96,18 @@ defmodule Kantele.Character.Events do
       event("forge/refund", :forge_refund)
       # 干将的私有提示（`tell_rules` 的 tell_object）
       event("forge/notice", :forge_notice)
+
       # 转世献丹回执（地藏王进程 → 玩家进程，销毁精元丹 + 传送无间道）
       event("reborn/give-jingyuandan", :reborn_give_jingyuandan)
       # 锁阳丹药引回执（阎罗进程 → 玩家进程，收四味药引 + 置位已解）
       event("suoyangdan/give-ingredient", :suoyangdan_give_ingredient)
+
       # 猎人收捕兽夹回执（猎人进程 → 玩家进程，置位 marks/hunter 放行捕猎教学）
       event("hunter/give-trap", :hunter_give_trap)
       # 武修文收还工具回执（武修文进程 → 玩家进程，落 mark/还了）
       event("wuxiuwen/returned", :wuxiuwen_returned)
+      # 大宗师绝招 quest 回执（独孤九剑残本 / 九阴真经上下册）
+      event("ultra/give-item", :ultra_give_item)
     end
 
     module(EnterWorldEvent) do
@@ -468,6 +472,14 @@ defmodule Kantele.Character.NonPlayerEvents do
     module(ShaolinPromotionEvent) do
       event("shaolin_promotion/give-result", :npc_give_result)
       event("shaolin_promotion/accept-fight", :accept_fight)
+    end
+
+    # 大宗师评价（ultra.h）：NPC 侧 2 拍评级 + 玩家侧试招/评级回执。
+    module(UltraEvent) do
+      event("ultra/accept-fight", :accept_fight)
+      event("ultra/fight-result", :fight_result)
+      event("ultra/rank-result", :rank_result)
+      event("ultra/init", :clear_intent)
     end
   end
 end

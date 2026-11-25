@@ -400,7 +400,16 @@ defmodule Kantele.Character.NonPlayerMeta do
     {:power, 0},
     {:drop_a, nil},
     {:drop_b, nil},
-    {:drop_c, nil}
+    {:drop_c, nil},
+    # LPC `create_family(<门派>, <代>, <称号>)`：无 teach/apprentice 块的 NPC
+    # （李白·侠客盟、上官银票·金钱帮）也需保住门派归属。
+    {:family, nil},
+    # LPC `set()` 属性仓库中 UCL 键无法直写的斜杠键（如 `dugu-jiujian/nothing`）。
+    {:env, %{}},
+    # LPC `set_temp("handing", carry_object(...))`：李白手持天乙神酒。
+    {:handing, nil},
+    # ultra 大宗师评价配置（类别 / 技能表 / 逐字文案），AskHandler + accept 消费。
+    {:ultra, nil}
   ]
 
   defimpl Kalevala.Meta.Trim do
@@ -443,7 +452,8 @@ defmodule Kantele.Character.NonPlayerMeta do
     def trim(meta) do
       Map.take(meta, [:vitals, :stats, :guarder, :aliases, :init, :ask_handler,
                       :ask_topics, :temp, :combat, :combat_config, :coins,
-                      :drop_a, :drop_b, :drop_c, :power, :goods, :accept])
+                      :drop_a, :drop_b, :drop_c, :power, :goods, :accept,
+                      :family, :env, :handing, :ultra])
     end
   end
 

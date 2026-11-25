@@ -78,6 +78,9 @@ defmodule Kantele.Character.GiveEvent do
           rule
         )
 
+      {:ultra, rule} ->
+        Kantele.World.UltraAccept.handle(conn, npc, item_instance, data, from_name, rule)
+
       {:ok, reply} ->
         npc = take_item(npc, item_instance)
 
@@ -159,6 +162,9 @@ defmodule Kantele.Character.GiveEvent do
         {:shaolin_promotion, _rule} ->
           acc
 
+        {:ultra, _rule} ->
+          acc
+
         _ ->
           case rule_hit(rule, item) do
             :hit -> {:ok, take_message(rule, item)}
@@ -168,6 +174,7 @@ defmodule Kantele.Character.GiveEvent do
             :suoyangdan -> {:suoyangdan}
             :hunter -> {:hunter}
             {:shaolin_promotion, _rule} = match -> match
+            {:ultra, _rule} = match -> match
             :miss -> acc
           end
       end
@@ -220,6 +227,15 @@ defmodule Kantele.Character.GiveEvent do
     cond do
       Map.get(rule, :id) && rule.id == item.id -> :hunter
       Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> :hunter
+      true -> :miss
+    end
+  end
+
+  # 大宗师绝招 quest：收残本 / 九阴真经上下册，玩家侧 handler 落 flag 与奖励。
+  defp rule_hit(%{kind: "ultra"} = rule, item) do
+    cond do
+      Map.get(rule, :id) && rule.id == item.id -> {:ultra, rule}
+      Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> {:ultra, rule}
       true -> :miss
     end
   end
@@ -808,6 +824,83 @@ defmodule Kantele.Character.GiveEvent do
       conn
     end
   end
+
+  # ---- 大宗师绝招 quest 回执（NPC 进程 → 玩家进程）----
+  # LPC dugu.c / huang.c accept_object：玩家交残本/九阴真经上下册，
+  # 玩家进程落 can_learn flag 与练功奖励（NPC 侧看不到玩家 meta）。
+  def ultra_give_item(conn, %{data: data}) do
+    character = conn.character
+    quest = Map.get(data, :quest)
+    instance_id = Map.get(data, :instance_id)
+
+    inventory =
+      if is_nil(instance_id) do
+        character.inventory
+      else
+        Enum.reject(character.inventory, &(&1.id == instance_id))
+      end
+
+    env = character.meta.env || %{}
+    stats = character.meta.stats
+    {env, stats, text} = ultra_quest_result(env, stats, quest)
+    meta = %{character.meta | env: env, stats: stats}
+    character = %{character | inventory: inventory, meta: meta}
+    Records.save(character)
+
+    conn
+    |> put_character(character)
+    |> render(CommandView, "text", %{text: text})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  def ultra_give_item(conn, _event), do: conn
+
+  defp ultra_quest_result(env, stats, "dugubook") do
+    cond do
+      Kantele.Character.Stats.skill(stats, "dugu-jiujian") < 340 ->
+        {env, stats, "可惜，可惜！你独孤九剑还不够熟练，还无法领悟独孤九剑的精妙之处！\n"}
+
+      Map.get(env, "can_learn/dugu-jiujian/nothing") ->
+        {env, stats, "你已经领悟了独孤九剑之精髓，下去好好练习吧！\n"}
+
+      stats.int < 39 ->
+        {env, stats, "你先天悟性不足，不知道你是怎么学的独孤九剑！\n"}
+
+      stats.con < 36 and stats.dex < 36 ->
+        {env, stats, "你先天身法和根骨都不足，无法体会独孤九剑的精髓！\n"}
+
+      true ->
+        names = ["sword", "sword", "sword", "dugu-jiujian", "dugu-jiujian", "dugu-jiujian",
+                 "martial-cognize", "martial-cognize", "martial-cognize"]
+        skills =
+          Enum.reduce(names, stats.skills, fn name, acc ->
+            Map.put(acc, name, Map.get(acc, name, 0) + 1_500_000)
+          end)
+
+        env = Map.put(env, "can_learn/dugu-jiujian/nothing", 1)
+        {env, %{stats | skills: skills}, "你学会了独孤九剑之「无招」。\n"}
+    end
+  end
+
+  defp ultra_quest_result(env, stats, quest) when quest in ["zhenjing1", "zhenjing2"] do
+    other = if quest == "zhenjing1", do: "give_zhenjing2", else: "give_zhenjing1"
+
+    if Map.get(env, other) do
+      env =
+        env
+        |> Map.put("can_learn/jiuyin-shengong/xin", 1)
+        |> Map.delete("give_zhenjing1")
+        |> Map.delete("give_zhenjing2")
+
+      {env, stats, "黄裳决定传你「摄心大法」。\n"}
+    else
+      env = Map.put(env, "give_#{quest}", 1)
+      missing = if quest == "zhenjing1", do: "下册", else: "上册"
+      {env, stats, "还有一本「九阴真经#{missing}」，你尽快找到交还与我！\n"}
+    end
+  end
+
+  defp ultra_quest_result(env, stats, _quest), do: {env, stats, "你给我这种东西干什么？\n"}
 
   # ---- 武修文收还工具回执（武修文进程 → 玩家进程）----
   # 玩家把工具交给武修文后，武修文进程 `WuxiuwenAccept` 发回此事件：玩家侧落

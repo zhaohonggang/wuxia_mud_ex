@@ -8292,3 +8292,125 @@ chats = [
   ]
 
     }
+
+# LPC: C:/files/git/mud/kungfu/class/ultra/huang.c（大宗师·拳脚；startroom /d/dali/lushui）
+# recognize_apprentice 在 LPC 源内注释禁用 → 不放 apprentice/teach 教学块。
+
+    characters "ultra_huang" {
+      name = "黄裳"
+      aliases = ["huang shang", "huang", "ultra_huang"]
+      description = "此人气度闲雅，看不出武功高低。"
+      title = "大宗师"
+      gender = "男性"
+      age = 92
+
+      combat = {
+        attitude = "peaceful"
+        str = 32
+        int = 39
+        con = 37
+        dex = 32
+        max_qi = 20000
+        max_jing = 20000
+        neili = 30000
+        max_neili = 30000
+        jiali = 100
+        combat_exp = 50000000
+        skills = {
+          unarmed = 500
+          finger = 500
+          claw = 500
+          strike = 500
+          hand = 500
+          cuff = 500
+          parry = 500
+          dodge = 500
+          force = 500
+          jiuyin_shengong = 500
+          martial_cognize = 500
+          literate = 200
+        }
+        map_skill = {
+          parry = "jiuyin-shengong"
+          force = "jiuyin-shengong"
+          dodge = "jiuyin-shengong"
+          unarmed = "jiuyin-shengong"
+          finger = "jiuyin-shengong"
+          strike = "jiuyin-shengong"
+          hand = "jiuyin-shengong"
+          cuff = "jiuyin-shengong"
+          claw = "jiuyin-shengong"
+        }
+      }
+
+      env = [
+        { key = "opinion/ultra" value = 1 },
+        { key = "opinion/master" value = 1 }
+      ]
+      ask_handler = "Kantele.NPC.Ultra"
+
+      inquiries = [
+        { key = "九阴真经" value = "想不到当年我随手写的一本武学心得竟成为危害江湖的不祥之物。" },
+        { key = "武学修养" value = "武学修养(martial-cognize)不到家，还谈什么武功呢？" }
+      ]
+
+      ultra = {
+        category = "unarmed"
+        opinion_type = "拳脚功夫"
+        want_key = "huang"
+        calc_mode = "action"
+        weapon_required = false
+        opinions = ["unarmed", "finger", "strike", "cuff", "hand", "claw"]
+        msgs = {
+          # LPC huang.c:97-102 init()：ultrap 玩家进屋 → 微笑点头
+          init = "{npc}微微一笑，对{name}点了点头。"
+          ask_low_exp = "呵呵，你这点武功还谈什么评价？"
+          ask_already = "哈哈，你拳脚方面的修为已经称得上是宗师了！咱们要不要过过招？"
+          ask_fighting_npc = "哈哈，废什么话，打赢了我，你自己给自己评价吧！"
+          ask_fighting_player = "你等会儿吧！待我赶走他们。"
+          ask_busy_self = "你着什么急？不要烦我。"
+          ask_busy_other = "{npc}正在沉思，没有回答{name}，只是摆了摆手。"
+          ask_shut_up = "给我闭上你的嘴！"
+          ask_prompt_a = "好吧，你空手攻我一招，我看看你的水平如何。"
+          ask_prompt_b = "不是说让你来一招我看看吗？"
+          ask_prompt_c = "{npc}皱眉对{name}道：“我看你这人是够罗嗦的。”"
+          fight_no_intent = "平白无故动什么手？"
+          fight_need_empty_hand = "把你手中的兵器给我放下！"
+          fight_low_vitals = "你现在状态不佳，等休息好了再说吧！"
+          fight_weak = "{npc}摇摇头对{name}道：“你现在的武功还差得远，连我一招都接不住！”"
+          fight_ok = "看来不能心急，还得等一会儿。"
+          fight_already = "很好，近年我还没有和宗师高手过过招，来吧！"
+          rank_first_fail = "{npc}淡淡一笑，对{name}道：“你的拳脚功夫不行啊！好好努力吧！”"
+          rank_no_progress = "{npc}对{name}摇摇头道：“不怎么样，我发现你的拳脚功夫比上次没什么太大的进步。”"
+          rank_up = "{npc}沉思片刻，对{name}道：“就目前来看，你的拳脚功夫已经可以算得上是{rank}了。”"
+          rank_master = "{npc}对{name}笑道：“恭喜！你的拳脚功夫已然到了宗师境界！武道无穷，阁下自重！”"
+          congrat = "恭喜这位，不过武道永无止境，还望继续努力啊！"
+          skill_already = "你不是已经会了吗？"
+          skill_need_books = "黄裳叹道：当年我随手写了一本武学心得，名曰「九阴真经」，本欲留与后人研究武学之用，不料竟成为危害江湖的不祥之物。如果阁下能将其上、下两册收集齐交还与我，我便传你绝招「摄心大法」。阁下意下如何？"
+          skill_force_low = "你九阴神功火候还不够，我还不能传你这招！"
+          skill_cognize_low = "你武学修养不足，还是下去多磨练一下吧！"
+          skill_other_performs = "等你将九阴神功其他绝招领悟后再来找我吧！"
+          skill_granted = "很好，很好！既然这样我就传你摄心大法！"
+          vanish = "黄裳大叫一声，狂吐了一口鲜血，身形一闪，就此不见。"
+          vanish_chat = "老夫去也！"
+        }
+      }
+
+      engage = {
+        fight = { accept = true handler = "Kantele.NPC.Ultra" }
+      }
+      accept = [
+        { kind = "ultra" action = "zhenjing1" id = "clone_lib:zhenjing1" },
+        { kind = "ultra" action = "zhenjing2" id = "clone_lib:zhenjing2" }
+      ]
+      carry = [
+        { id = items.cloth.id }
+      ]
+    }
+
+  room_characters "lushui" {
+    room_id = rooms.lushui.id
+    characters = [
+      { id = characters.ultra_huang.id }
+    ]
+  }
