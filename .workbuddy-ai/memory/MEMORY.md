@@ -51,5 +51,5 @@
 - **GAP 状态**：#1032（loader 不解析 `combat.jiali`）与 **#1040（NPC 顶层 `skills=[]` 解析）均已实现关闭**；#1040 实测 1,341 块/11,160 条 set_skill，`npc_stats/3` + `parse_npc_skills/1` 并入 Stats.skills/mapped，零 UCL 改动，全量登记 #28。**#1041 十八罗汉大阵已完成**（状态机+协调器+问询处理器+UCL 回填+33 测试全过，已 commit 369fbedd 并 push）。仍待办：#1042 渡厄/渡劫/渡难 give_item+`accept_object`；#1045 道果 follow + 道象2/清乐 give_item 门缺口（bonze_drug/guilty/min_int/动态 lvl/vision 模板）。
 - **give_item 前缀坑**：handler 自动给 `family_deny`/`already` 前缀「大侠」，**不加**到 `min_skill_deny`。
 - **共享别名坑**：道相(dao_xiang)与道象2(dao_xiang2) 共享别名 "daoxiang chanshi" → 测试须用块 id 别名（`"shaolin_dao_xiang2"`）精确定位。
-- **待办**：Task #619 剩余 6 个门派（有 plan doc 但无 UCL 回填提交）：地狱地藏王、大宗师ultra、天地会、昆仑派、明教、欧阳世家。雪山剑派无独立 plan doc（仅剃度/守卫提交），是否纳入需确认。按字母序继续，下一门可从 昆仑派/明教/欧阳世家 开始。无 commit/push 除非明确要求（届时带上 `character_metadata_backup.sql`）。
+- **待办**：Task #619 剩余 5 个门派（有 plan doc 但无 UCL 回填提交）：地狱地藏王、大宗师ultra、天地会、明教、欧阳世家。**昆仑派已完成**（8/8 NPC teach+apprentice+inquiries 均已回填，lpc_kunlun 引擎门序 + requires_perform + hard_min_int + no_teach_deny + improve_skills 均已支持，sect_master_test.exs + inquiry_sect_masters_test.exs 0 失败）。雪山剑派无独立 plan doc（仅剃度/守卫提交），是否纳入需确认。按字母序继续，下一门可从 明教/欧阳世家 开始。无 commit/push 除非明确要求（届时带上 `character_metadata_backup.sql`）。
 - daily log append-only。
