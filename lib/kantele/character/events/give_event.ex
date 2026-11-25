@@ -68,6 +68,9 @@ defmodule Kantele.Character.GiveEvent do
       {:hunter} ->
         Kantele.World.HunterAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:shaolin_du} ->
+        Kantele.World.ShaolinDuAccept.handle(conn, npc, item_instance, data, from_name)
+
       {:shaolin_promotion, rule} ->
         Kantele.World.ShaolinPromotionAccept.handle(
           conn,
@@ -159,6 +162,9 @@ defmodule Kantele.Character.GiveEvent do
         {:hunter} ->
           acc
 
+        {:shaolin_du} ->
+          acc
+
         {:shaolin_promotion, _rule} ->
           acc
 
@@ -221,12 +227,19 @@ defmodule Kantele.Character.GiveEvent do
   end
 
   # 猎人收捕兽夹：命中即交给 Kantele.World.HunterAccept 处理（衡阳猎人）
-  # 兼容按 id 或按 name 匹配：物品真实 id 带区前缀（如 clone_lib:items.bushoujia），
-  # UCL 直接用 name = "捕兽夹" 更稳妥，避免 id 格式错位导致永远不命中。
   defp rule_hit(%{kind: "hunter"} = rule, item) do
     cond do
       Map.get(rule, :id) && rule.id == item.id -> :hunter
       Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> :hunter
+      true -> :miss
+    end
+  end
+
+  # 少林三老收黑索/赐物：命中即交给 Kantele.World.ShaolinDuAccept 处理。
+  # 匹配 name = "黑索"（heisuo1/2/3 三项同名）或各自赐物名（九环锡杖/锦襕袈裟/神草结）。
+  defp rule_hit(%{kind: "shaolin_du"} = rule, item) do
+    cond do
+      Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> :shaolin_du
       true -> :miss
     end
   end
@@ -819,6 +832,27 @@ defmodule Kantele.Character.GiveEvent do
       |> render(CommandView, "text", %{
         text: "你把捕兽夹交给了猎人。\n猎人点点头道：这个我正用得着，我教你捕猎技巧和驭兽之术。\n"
       })
+      |> prompt(CommandView, "prompt", %{})
+    else
+      conn
+    end
+  end
+
+  # ---- 少林三老收黑索/赐物回执（NPC 进程 → 玩家进程）----
+  # 三老收下黑索或赐物后，通过 `shaolin_du/destruct-item` 事件送达玩家：
+  #   玩家侧移除该物品实例（LPC accept_object 返回 1 → destruct(ob)，不进入 NPC 背包）。
+  def shaolin_du_destruct_item(conn, %{data: %{item_id: _item_id, instance_id: instance_id, from_id: from_id}}) do
+    character = conn.character
+
+    if from_id == character.id do
+      inventory = Enum.reject(character.inventory, fn inst -> inst.id == instance_id end)
+
+      character = %{character | inventory: inventory}
+      Records.save(character)
+
+      conn
+      |> put_character(character)
+      |> render(CommandView, "text", %{text: "你把东西交给了对方，对方点了点头说：「甚好，甚好。」\n"})
       |> prompt(CommandView, "prompt", %{})
     else
       conn

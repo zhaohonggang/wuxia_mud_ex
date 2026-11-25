@@ -41748,7 +41748,19 @@ chats = [
   }
 
   inquiries = [
-    { key = "九环锡杖" value = " inquire about me (unimplemented)" }
+    { key = "九环锡杖" value = {
+      kind = "give_item"
+      item = "shaolin:jiuhuan"
+      match = "jiuhuan"
+      unique = true
+      family = "少林派"
+      vision_name = "渡厄"
+      min_combat_exp = 1000000
+      require_fumoquan = true
+      success = "拿去吧。"
+      already = "你现在身上已经有这样东西了。"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+    } }
   ]
 
   apprentice = {
@@ -41818,6 +41830,7 @@ chats = [
 
 
   accept = [
+    { kind = "shaolin_du" name = "黑索" },
     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "甚好，甚好。", "nod"] }
   ]
     }
@@ -41862,7 +41875,19 @@ chats = [
   }
 
   inquiries = [
-    { key = "锦襕袈裟" value = " inquire about me (unimplemented)" }
+    { key = "锦襕袈裟" value = {
+      kind = "give_item"
+      item = "shaolin:jinlan"
+      match = "jinlan"
+      unique = true
+      family = "少林派"
+      vision_name = "渡劫"
+      min_combat_exp = 1000000
+      require_fumoquan = true
+      success = "拿去吧。"
+      already = "你现在身上已经有这样东西了。"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+    } }
   ]
 
   apprentice = {
@@ -41926,6 +41951,7 @@ chats = [
 
 
   accept = [
+    { kind = "shaolin_du" name = "黑索" },
     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "甚好，甚好。", "nod"] }
   ]
     }
@@ -41970,7 +41996,19 @@ chats = [
   }
 
   inquiries = [
-    { key = "神草结" value = " inquire about me (unimplemented)" }
+    { key = "神草结" value = {
+      kind = "give_item"
+      item = "shaolin:caojie"
+      match = "caojie"
+      unique = true
+      family = "少林派"
+      vision_name = "渡难"
+      min_combat_exp = 1000000
+      require_fumoquan = true
+      success = "拿去吧。"
+      already = "你现在身上已经有这样东西了。"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+    } }
   ]
 
   apprentice = {
@@ -42039,6 +42077,7 @@ chats = [
 
 
   accept = [
+    { kind = "shaolin_du" name = "黑索" },
     { kind = "any" accept = true msg = ["你给我这种东西干什么？", "甚好，甚好。", "nod"] }
   ]
     }

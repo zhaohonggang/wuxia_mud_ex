@@ -286,6 +286,9 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
       below_max_neili?(character, config) ->
         Map.get(config, "max_neili_deny") || "你的内力修为不足，施展不出这招。"
 
+      require_fumoquan?(config) and not valid_in_fumoquan?(character) ->
+        Map.get(config, "fumoquan_deny") || "你尚未在金刚伏魔圈中，无法领取此物。"
+
       true ->
         nil
     end
@@ -372,6 +375,13 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp max_neili_of(%{meta: %{vitals: %{max_neili: n}}}) when is_integer(n), do: n
   defp max_neili_of(_character), do: 0
+
+  # LPC `query_temp("valid_in_fumoquan")`：仅在金刚伏魔圈内且少林辈分<=36 时置位。
+  defp require_fumoquan?(config), do: Map.get(config, "require_fumoquan") in [true, "true"]
+
+  defp valid_in_fumoquan?(%{meta: %{temp: temp}}) when is_map(temp),
+    do: Map.get(temp, "valid_in_fumoquan") == 1 or Map.get(temp, :valid_in_fumoquan) == 1
+  defp valid_in_fumoquan?(_character), do: false
 
   defp family_deny_text(config),
     do: Map.get(config, "family_deny") || "与本派素无来往，不知此话从何谈起？"

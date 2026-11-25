@@ -26,7 +26,7 @@ defmodule Kantele.World.RoomItemInit do
     毒性**累加**（已有 10 点则变 40），不是覆盖。
   """
 
-  import Kalevala.Character.Conn, only: [get_session: 2]
+  import Kalevala.Character.Conn, only: [get_session: 2, put_character: 2]
 
   alias Kalevala.Character.Conn
   alias Kantele.Character.ConditionEvent
@@ -56,6 +56,22 @@ defmodule Kantele.World.RoomItemInit do
     end
   end
 
+  # LPC `d/shaolin/fumoquan.c init()`：少林辈分<=36 者进入金刚伏魔圈即置位
+  # `valid_in_fumoquan` temp 标记，供三老 ask_me（give_item）门控使用。
+  def on_enter(conn, "shaolin:fumoquan", _present_fun) do
+    case conn.character do
+      %{id: "player:" <> _, meta: %{family: family}} when is_map(family) ->
+        case {Map.get(family, :name), Map.get(family, :generation)} do
+          {"少林派", gen} when is_integer(gen) and gen <= 36 ->
+            set_valid_in_fumoquan(conn)
+          _ ->
+            conn
+        end
+      _ ->
+        conn
+    end
+  end
+
   def on_enter(conn, _room_id, _present_fun), do: conn
 
   # LPC `30 + (int)me->query_condition("flower_poison")`
@@ -75,6 +91,15 @@ defmodule Kantele.World.RoomItemInit do
   defp render_poison(conn) do
     entry = %Conn.Text{data: @poison_msg, newline: true}
     Map.put(conn, :output, conn.output ++ [entry])
+  end
+
+  defp set_valid_in_fumoquan(conn) do
+    character = conn.character
+    temp = Map.get(character.meta || %{}, :temp) || %{}
+    put_character(conn, %{
+      character
+      | meta: Map.put(character.meta, :temp, Map.put(temp, "valid_in_fumoquan", 1))
+    })
   end
 
   # LPC `present("duanchang hua", environment(me))`：房间物品实例里按 id/别名匹配

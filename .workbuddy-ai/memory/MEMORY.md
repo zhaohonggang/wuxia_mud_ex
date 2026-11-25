@@ -48,7 +48,7 @@
 ## 当前工作流
 - Task #619 按门派顺序回填 UCL；已回填见 `docs/待全量回归清单.zh-CN.md` #1-#26；逐门缺口见 `docs/*教学门控移植计划*.md`。
 - 最近完成：丐帮（#21）、古墓派（#22）、红花会（#23）、凌霄城/雪山剑派（#24）、商家堡（#25，零引擎改动）、**少林派（#26，Task #1046 完成；data-only 零引擎改动）**。少林批：14 个 clone NPC 补 chat/apply/no_teach/deny_all/guarder/coagents/give_item/pfm；修正 shaolin.ucl 知客僧 徐通→虚通 + 修 shanmen 重复刷怪；**移除 clone_lib 新增 xu_ming/xu_tong（与 shaolin.ucl 重复，改修正已有块）**；25 tests / 0 failures。
-- **GAP 状态**：#1032（loader 不解析 `combat.jiali`）与 **#1040（NPC 顶层 `skills=[]` 解析）均已实现关闭**；#1040 实测 1,341 块/11,160 条 set_skill，`npc_stats/3` + `parse_npc_skills/1` 并入 Stats.skills/mapped，零 UCL 改动，全量登记 #28。仍待办：#1041 十八罗汉大阵；#1042 渡厄/渡劫/渡难 give_item+`accept_object`；#1043 渡元 kill_ob；#1044 空见/无名 recognize 每技门+无名同门分条件文本；#1045 道果 follow + 道象2/清乐 give_item 门缺口（bonze_drug/guilty/min_int/动态 lvl/vision 模板）。
+- **GAP 状态**：#1032（loader 不解析 `combat.jiali`）与 **#1040（NPC 顶层 `skills=[]` 解析）均已实现关闭**；#1040 实测 1,341 块/11,160 条 set_skill，`npc_stats/3` + `parse_npc_skills/1` 并入 Stats.skills/mapped，零 UCL 改动，全量登记 #28。**#1041 十八罗汉大阵已完成**（状态机+协调器+问询处理器+UCL 回填+33 测试全过，已 commit 369fbedd 并 push）。仍待办：#1042 渡厄/渡劫/渡难 give_item+`accept_object`；#1045 道果 follow + 道象2/清乐 give_item 门缺口（bonze_drug/guilty/min_int/动态 lvl/vision 模板）。
 - **give_item 前缀坑**：handler 自动给 `family_deny`/`already` 前缀「大侠」，**不加**到 `min_skill_deny`。
 - **共享别名坑**：道相(dao_xiang)与道象2(dao_xiang2) 共享别名 "daoxiang chanshi" → 测试须用块 id 别名（`"shaolin_dao_xiang2"`）精确定位。
 - **待办**：按 Task #619 字母序继续（重新扫 `kungfu/class/*` 确认下一门）。未提交批次 #21-#26 待用户指示才 commit（届时带上 `character_metadata_backup.sql`）。
