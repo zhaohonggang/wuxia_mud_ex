@@ -55568,9 +55568,12 @@ chats = [
     { key = "镇魂舞" value = "这一招你去让达而巴教你好了。" },
     { key = "金轮九转" value = "我让你去跟唐楠接口，你来跟我说干嘛？" },
     { key = "龙象袈裟" value = "这是我的随身物品，你打听这个做甚？" },
-    { key = "密道" value = " inquire about midao (unimplemented: GAP #796)" },
-    { key = "秘道" value = " inquire about midao (unimplemented: GAP #796)" },
-    { key = "日月金轮" value = " inquire about lun (unimplemented: GAP #797)" }
+    { key = "密道" value = { kind = "xueshan_midao" } },
+    { key = "秘道" value = { kind = "xueshan_midao" } },
+    { key = "日月金轮" value = {
+      kind = "xueshan_lun"
+      item = "clone_lib:jinlun"
+    } }
   ]
 
   skills = [

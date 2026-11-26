@@ -198,10 +198,11 @@ defmodule Kantele.Character.NpcFamilyEvent do
     case Map.get(data, :student_family) do
       family when is_map(family) ->
         # Kalevala Family.name/1 读 :name，部分 load 出来的 map 用 :family_name。
-        name = Map.get(family, :name) || Map.get(family, "name") ||
-          Map.get(family, :family_name) || Map.get(family, "family_name")
+        name =
+          Map.get(family, :name) || Map.get(family, "name") ||
+            Map.get(family, :family_name) || Map.get(family, "family_name")
 
-        is_binary(name) && name || nil
+        (is_binary(name) && name) || nil
 
       family when is_binary(family) ->
         family
@@ -637,9 +638,14 @@ defmodule Kantele.Character.NpcAskEvent do
         do: Map.get(state, fallback_count_key, 0),
         else: :infinity
 
-    # #807 无崖子：LPC ask_zhihuan 沿 environment() 向上找信物持有者，
-    # 这段遍历必须在 NPC 进程完成（与 LPC 同相位）；结果以 owner 回执给玩家侧。
-    owner = if kind == "xiaoyao_zhihuan", do: zhihuan_owner(conn, data, script), else: nil
+    # #807 无崖子 / #797 金轮法王：LPC ask_zhihuan / ask_lun 沿 environment()
+    # 向上找信物持有者，这段遍历必须在 NPC 进程完成（与 LPC 同相位）；结果以
+    # owner 回执给玩家侧。两者持有者链语义相同（:asker/:object/:character/:npc），
+    # 各 handler 按自己的门序解释（ask_lun 额外有 is_good/shen 前门）。
+    owner =
+      if kind in ["xiaoyao_zhihuan", "xueshan_lun"],
+        do: zhihuan_owner(conn, data, script),
+        else: nil
 
     send(reply_to, %Kalevala.Event{
       from_pid: self(),
@@ -699,7 +705,8 @@ defmodule Kantele.Character.NpcAskEvent do
 
   defp inventory_has_item?(_inventory, _item_id), do: false
 
-  defp character_holds_item?(%{inventory: inventory}, item_id) when is_list(inventory) and is_binary(item_id) do
+  defp character_holds_item?(%{inventory: inventory}, item_id)
+       when is_list(inventory) and is_binary(item_id) do
     inventory_has_item?(inventory, item_id)
   end
 
