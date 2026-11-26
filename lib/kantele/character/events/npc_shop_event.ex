@@ -643,7 +643,7 @@ defmodule Kantele.Character.NpcAskEvent do
     # owner 回执给玩家侧。两者持有者链语义相同（:asker/:object/:character/:npc），
     # 各 handler 按自己的门序解释（ask_lun 额外有 is_good/shen 前门）。
     owner =
-      if kind in ["xiaoyao_zhihuan", "xueshan_lun"],
+      if kind in ["xiaoyao_zhihuan", "xueshan_lun", "xuedao_dao", "xuedao_book"],
         do: zhihuan_owner(conn, data, script),
         else: nil
 

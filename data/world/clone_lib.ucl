@@ -55006,8 +55006,8 @@ chats = [
     { key = "血海无边" value = "操！老子让你去跟铁匠接口，你来问我干嘛？" },
     { key = "密道" value = { kind = "xuedao_midao" } },
     { key = "秘道" value = { kind = "xuedao_midao" } },
-    { key = "血刀" value = " inquire about dao (unimplemented: GAP #793)" },
-    { key = "血刀经" value = " inquire about book (unimplemented: GAP #793)" }
+    { key = "血刀" value = { kind = "xuedao_dao" item = "clone_lib:xuedao" } },
+    { key = "血刀经" value = { kind = "xuedao_book" item = "clone_lib:xuedao_jing" } }
   ]
 
   skills = [

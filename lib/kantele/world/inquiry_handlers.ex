@@ -33,6 +33,8 @@ defmodule Kantele.World.InquiryHandlers do
     "xueshan_midao" => Kantele.World.InquiryHandlers.XueshanMidao,
     "xueshan_lun" => Kantele.World.InquiryHandlers.XueshanLun,
     "xuedao_midao" => Kantele.World.InquiryHandlers.XuedaoMidao,
+    "xuedao_dao" => Kantele.World.InquiryHandlers.XuedaoTreasure,
+    "xuedao_book" => Kantele.World.InquiryHandlers.XuedaoTreasure,
     "quest" => Kantele.World.InquiryHandlers.Quest
   }
 
