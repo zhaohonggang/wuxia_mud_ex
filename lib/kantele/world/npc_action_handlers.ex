@@ -243,6 +243,9 @@ defmodule Kantele.World.NpcActionHandlers do
     "xueshan:cedian2" => %{
       "kneel" => {Kantele.World.NpcActions.XueshanKneel, :run}
     },
+    "xuedao:wangyougu" => %{
+      "kneel" => {Kantele.World.NpcActions.XuedaoKneel, :run}
+    },
     "kaifeng:yaopu" => %{
       "peiyao" => {Kantele.World.NpcActions.Peiyao, :run}
     },

@@ -55137,8 +55137,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = { kind = "xueshan_tonsure" } },
-    { key = "剃度" value = { kind = "xueshan_tonsure" } }
+    { key = "出家" value = { kind = "xuedao_tonsure" } },
+    { key = "剃度" value = { kind = "xuedao_tonsure" } }
   ]
 
   skills = [

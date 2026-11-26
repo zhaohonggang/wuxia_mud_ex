@@ -35,6 +35,7 @@ defmodule Kantele.World.InquiryHandlers do
     "xuedao_midao" => Kantele.World.InquiryHandlers.XuedaoMidao,
     "xuedao_dao" => Kantele.World.InquiryHandlers.XuedaoTreasure,
     "xuedao_book" => Kantele.World.InquiryHandlers.XuedaoTreasure,
+    "xuedao_tonsure" => Kantele.World.InquiryHandlers.XuedaoTonsure,
     "quest" => Kantele.World.InquiryHandlers.Quest
   }
 
