@@ -28,7 +28,8 @@ defmodule Kantele.World.InquiryHandlers do
     "luohan_zhen" => Kantele.World.InquiryHandlers.LuohanZhen,
     "npc_item_grant" => Kantele.World.InquiryHandlers.NpcItemGrant,
     "npc_reply" => Kantele.World.InquiryHandlers.NpcReply,
-    "xiaoyao_zhihuan" => Kantele.World.InquiryHandlers.XiaoyaoZhihuan
+    "xiaoyao_zhihuan" => Kantele.World.InquiryHandlers.XiaoyaoZhihuan,
+    "xueshan_tonsure" => Kantele.World.InquiryHandlers.XueshanTonsure
   }
 
   @doc "按 `kind` 查处理模块；未知 kind 返回 nil（静默忽略）"

@@ -55116,8 +55116,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = " inquire about for join (unimplemented)" },
-    { key = "剃度" value = " inquire about for join (unimplemented)" }
+    { key = "出家" value = { kind = "xueshan_tonsure" } },
+    { key = "剃度" value = { kind = "xueshan_tonsure" } }
   ]
 
   skills = [
@@ -55710,8 +55710,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = " inquire about for join (unimplemented)" },
-    { key = "剃度" value = " inquire about for join (unimplemented)" }
+    { key = "出家" value = { kind = "xueshan_tonsure" } },
+    { key = "剃度" value = { kind = "xueshan_tonsure" } }
   ]
 
   skills = [
@@ -55896,8 +55896,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = " inquire about for join (unimplemented)" },
-    { key = "剃度" value = " inquire about for join (unimplemented)" }
+    { key = "出家" value = { kind = "xueshan_tonsure" } },
+    { key = "剃度" value = { kind = "xueshan_tonsure" } }
   ]
 
   skills = [
@@ -55961,8 +55961,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = " inquire about for join (unimplemented)" },
-    { key = "剃度" value = " inquire about for join (unimplemented)" }
+    { key = "出家" value = { kind = "xueshan_tonsure" } },
+    { key = "剃度" value = { kind = "xueshan_tonsure" } }
   ]
 
   skills = [
@@ -56026,8 +56026,8 @@ chats = [
   }
 
   inquiries = [
-    { key = "出家" value = " inquire about for join (unimplemented)" },
-    { key = "剃度" value = " inquire about for join (unimplemented)" }
+    { key = "出家" value = { kind = "xueshan_tonsure" } },
+    { key = "剃度" value = { kind = "xueshan_tonsure" } }
   ]
 
   skills = [

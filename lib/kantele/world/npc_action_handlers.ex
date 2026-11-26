@@ -231,6 +231,18 @@ defmodule Kantele.World.NpcActionHandlers do
     "shaolin:guangchang1" => %{
       "kneel" => {Kantele.World.NpcActions.ShaolinKneel, :run}
     },
+    "xueshan:shanmen" => %{
+      "kneel" => {Kantele.World.NpcActions.XueshanKneel, :run}
+    },
+    "xueshan:cedian1" => %{
+      "kneel" => {Kantele.World.NpcActions.XueshanKneel, :run}
+    },
+    "xueshan:dadian" => %{
+      "kneel" => {Kantele.World.NpcActions.XueshanKneel, :run}
+    },
+    "xueshan:cedian2" => %{
+      "kneel" => {Kantele.World.NpcActions.XueshanKneel, :run}
+    },
     "kaifeng:yaopu" => %{
       "peiyao" => {Kantele.World.NpcActions.Peiyao, :run}
     },
