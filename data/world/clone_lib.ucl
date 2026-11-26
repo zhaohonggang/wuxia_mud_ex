@@ -32456,6 +32456,27 @@ chats = [
       }
       learned = "你学会了「魔光日无极」。"
       improve_skills = ["unarmed", "jiuyang-shengong", "martial-cognize"]
+    } },
+    { key = "历练" value = {
+      kind = "quest"
+      file = "mingjiao_lilian"
+      master_name = "张无忌"
+      master_id = "mingjiao_zhangwuji"
+      place = "明教大殿"
+    } },
+    { key = "历炼" value = {
+      kind = "quest"
+      file = "mingjiao_lilian"
+      master_name = "张无忌"
+      master_id = "mingjiao_zhangwuji"
+      place = "明教大殿"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest"
+      file = "mingjiao_lilian"
+      master_name = "张无忌"
+      master_id = "mingjiao_zhangwuji"
+      place = "明教大殿"
     } }
   ]
 
