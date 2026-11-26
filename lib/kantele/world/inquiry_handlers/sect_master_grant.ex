@@ -27,6 +27,8 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
         maxed = "这招我不是已经教会你了吗？"  # 已习得文案（inquiry_grant 返回错误时使用）
         learned = "你学会了「五丁开山」。"     # 学会文案（缺省用 perform_name）
         msg_one = "$N微微点了点头……"   # LPC msg1 演示文案，向房间广播（UCL 标识符不能含数字）
+        emotes = "bored"                  # LPC command("bored") / command("nod") —— NPC 动作广播
+        npc_say = "好了，好了。"          # LPC command("say <text>") —— NPC 台词广播
         gate_order = "lpc_masterd"       # 绝情谷：按 masterd.c 原顺序判门控
         level_order = [ "force", "tanqin-jifa", "kunlun-jian" ]  # 昆仑：逐条固定顺序
         requires_perform = "qiankun-jian/qian"  # 昆仑逆转乾坤的前置绝招
@@ -85,6 +87,8 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
 
       {:ok, perform_id, cost} ->
         conn = broadcast_msg1(conn, config, data)
+        conn = broadcast_emotes(conn, config, data)
+        conn = broadcast_npc_say(conn, config, data)
 
         stats =
           character.meta.stats
@@ -169,6 +173,31 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
     case {Map.get(config, "msg_one") || Map.get(config, "msg1"), Map.get(data, :npc_room_id)} do
       {msg, room_id} when is_binary(msg) and byte_size(msg) > 0 and is_binary(room_id) ->
         Helpers.broadcast(conn, room_id, render_msg1(msg, data))
+
+      _ ->
+        conn
+    end
+  end
+
+  # LPC `command("bored")` / `command("nod")`：向房间广播 NPC 动作。
+  defp broadcast_emotes(conn, config, data) do
+    case {Map.get(config, "emotes"), Map.get(data, :npc_room_id), Map.get(data, :npc_name)} do
+      {emote, room_id, npc_name}
+      when is_binary(emote) and byte_size(emote) > 0 and is_binary(room_id) and
+             is_binary(npc_name) ->
+        Helpers.broadcast(conn, room_id, "#{npc_name} #{emote}")
+
+      _ ->
+        conn
+    end
+  end
+
+  # LPC `command("say <text>")`：以 NPC 名向房间广播一句台词。
+  defp broadcast_npc_say(conn, config, data) do
+    case {Map.get(config, "npc_say"), Map.get(data, :npc_room_id), Map.get(data, :npc_name)} do
+      {say, room_id, npc_name}
+      when is_binary(say) and byte_size(say) > 0 and is_binary(room_id) and is_binary(npc_name) ->
+        Helpers.say(conn, room_id, npc_name, say)
 
       _ ->
         conn

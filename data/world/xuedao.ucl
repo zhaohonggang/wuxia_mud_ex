@@ -843,7 +843,6 @@ behavior_config = {
       }
 
       # LPC: kungfu/class/xuedao/baoxiang.c ask_skill1 —— 红莲刀法「流星火雨」。
-      # fidelity 缺口：message_vision 演示描写 / command("bored"|"say") 台词未回填。
       inquiries = {
         流星火雨 = {
           perform_id = "honglian-dao/huo"
@@ -864,6 +863,9 @@ behavior_config = {
           level_deny = "你的内功修为实在太差，快去多练练再来。"
           max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
           learned = "你学会了「流星火雨」。"
+          msg_one = "{name}狞笑数声，伸手将{npc}招到身前，低声在{npc}耳旁嘀咕了半天。然后又拔出腰刀翻转数下，斜撩而出。似乎是一种颇为独特的刀诀。"
+          emotes = "bored"
+          npc_say = "好了，好了。你自己去练吧。"
         }
       }
 
@@ -1001,7 +1003,6 @@ behavior_config = {
       }
 
       # LPC: kungfu/class/xuedao/shengdi.c ask_skill1 —— 雪山刀法「冰河开封」。
-      # fidelity 缺口：message_vision 演示描写 / command("nod"|"say") 台词未回填。
       inquiries = {
         冰河开封 = {
           perform_id = "xueshan-dao/kai"
@@ -1022,6 +1023,9 @@ behavior_config = {
           level_deny = "你的内功修为实在太差，快去多练练再来。"
           max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
           learned = "你学会了「冰河开封」。"
+          msg_one = "{name}微微一笑，在{npc}耳边轻声嘀咕了几句，然后顺手拔出腰间的刚刀凌空劈斩了几下，霎时只见刀光一展而过，招式煞是惊奇。{npc}看后若有所悟的点了点头。"
+          emotes = "nod"
+          npc_say = "招数便是如此，你看懂了多少？"
         }
       }
 
