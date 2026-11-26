@@ -54,3 +54,4 @@
 - **待办**：Task #619 **无剩余门派**——全部 39 门派已回填并验证通过。此前记录的「剩余 4 个」（地狱地藏王、大宗师ultra、天地会、欧阳世家）经审计均已提交并通过测试，见上文已更正。雪山剑派无独立 plan doc（仅剃度/守卫提交），是否纳入 Task #619 需用户确认。无 commit/push 除非明确要求（届时带上 `character_metadata_backup.sql`）。
 - daily log append-only。
 - 2026-11-25：GAP #798 大轮寺剃度/kneel 流程已完成并 push（commit 95867f3a）：新增 XueshanTonsure 问询处理器 + XueshanKneel NPC 动作，4 房间注册，clone_lib.ucl 4 名 NPC inquiries 回填，23 测试全过，validate_ucl + mix compile 干净。见 2026-11-25.md 第 9 条。
+- 2026-11-25：GAP #796/#797 已完成并 push（commit 18d700c6）：XueshanMidao 私有密语 + XueshanLun 全部门序/持有者分支，zhihuan_owner 扩展到 xueshan_lun，clone_lib.ucl 3 个 GAP 占位转真实配置；21 定向 + 59 邻近回归全过，validate/compile/format 通过；全量登记待回归清单 #30。见 2026-11-25.md 第 10 条。
