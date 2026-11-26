@@ -55255,6 +55255,39 @@ chats = [
     { type = "cuff" skill = "yujiamu-quan" }
   ]
 
+  # LPC daerba.c attempt_apprentice：permit_recruit → gender(男性) → class(bonze) → shen > -3000 → mizong-neigong >= 50 → lamaism >= 30 → recruit。
+  teach = {
+    family = "大轮寺"
+    teach_skills = {
+      force = { max = 60 gongxian = 2 }
+      mizong_neigong = { max = 60 gongxian = 3 }
+      lamaism = { max = 60 gongxian = 2 }
+      dodge = { max = 60 gongxian = 2 }
+      shenkong_xing = { max = 60 gongxian = 3 }
+      hammer = { max = 60 gongxian = 2 }
+      dali_chu = { max = 60 gongxian = 3 }
+      parry = { max = 60 gongxian = 2 }
+      xiangmo_chu = { max = 60 gongxian = 3 }
+      hand = { max = 60 gongxian = 2 }
+      dashou_yin = { max = 60 gongxian = 3 }
+      cuff = { max = 60 gongxian = 2 }
+      yujiamu_quan = { max = 60 gongxian = 3 }
+      sanscrit = { max = 60 gongxian = 2 }
+      literate = { max = 60 gongxian = 2 }
+      martial_cognize = { max = 60 gongxian = 2 }
+    }
+    no_teach = []
+  }
+
+  apprentice = {
+    family = "大轮寺"
+    permit_recruit = true
+    gender = "男性"
+    require_class = "bonze"
+    max_shen = -3000
+    min_skills = { mizong_neigong = 50 lamaism = 30 }
+  }
+
 
   carry = [
     { id = items.gangchu.id },
@@ -55705,6 +55738,15 @@ chats = [
     { type = "cuff" skill = "yujiamu-quan" }
   ]
 
+  # LPC gelunbu.c attempt_apprentice：permit_recruit → gender(男性) → class(非bonze仅设俗家弟子头衔，仍收徒) → recruit。
+  # 注：引擎 require_class 为硬拒，gelunbu 的「非bonze警告但仍收徒」无法精确复刻，
+  # 故仅落位 gender 门控，class 警告记为 engine GAP（与 plan doc §3 #798 并列）。
+  apprentice = {
+    family = "大轮寺"
+    permit_recruit = true
+    gender = "男性"
+  }
+
 
   carry = [
     { id = items.b_jiasha.id },
@@ -55790,6 +55832,40 @@ chats = [
     { type = "cuff" skill = "yujiamu-quan" }
   ]
 
+  # LPC huodu.c attempt_apprentice：permit_recruit → gender(男性/无性) → class(bonze) → shen > -5000 → mizong-neigong >= 50 → recruit。
+  teach = {
+    family = "大轮寺"
+    teach_skills = {
+      force = { max = 60 gongxian = 2 }
+      mizong_neigong = { max = 60 gongxian = 3 }
+      lamaism = { max = 60 gongxian = 2 }
+      dodge = { max = 60 gongxian = 2 }
+      shenkong_xing = { max = 60 gongxian = 3 }
+      dagger = { max = 60 gongxian = 2 }
+      finger = { max = 60 gongxian = 3 }
+      poxu_daxuefa = { max = 60 gongxian = 3 }
+      sword = { max = 60 gongxian = 2 }
+      mingwang_jian = { max = 60 gongxian = 3 }
+      hand = { max = 60 gongxian = 2 }
+      dashou_yin = { max = 60 gongxian = 3 }
+      cuff = { max = 60 gongxian = 2 }
+      yujiamu_quan = { max = 60 gongxian = 3 }
+      sanscrit = { max = 60 gongxian = 2 }
+      literate = { max = 60 gongxian = 2 }
+      martial_cognize = { max = 60 gongxian = 2 }
+    }
+    no_teach = []
+  }
+
+  apprentice = {
+    family = "大轮寺"
+    permit_recruit = true
+    gender = "男性"
+    require_class = "bonze"
+    max_shen = -5000
+    min_skills = { mizong_neigong = 50 }
+  }
+
 
   carry = [
     { id = items.gushan.id },
@@ -55848,6 +55924,12 @@ chats = [
     { type = "hand" skill = "dashou-yin" },
     { type = "cuff" skill = "yujiamu-quan" }
   ]
+
+  # LPC jiamu.c attempt_apprentice：permit_recruit → "贫僧只研佛法，并不收徒" (unconditional refuse)。
+  apprentice = {
+    deny_all = true
+    deny_msg = "贫僧只研佛法，并不收徒。"
+  }
 
 
   carry = [
@@ -55908,6 +55990,12 @@ chats = [
     { type = "cuff" skill = "yujiamu-quan" }
   ]
 
+  # LPC lazhang.c attempt_apprentice：permit_recruit → "贫僧只研佛法，并不收徒" (unconditional refuse)。
+  apprentice = {
+    deny_all = true
+    deny_msg = "贫僧只研佛法，并不收徒。"
+  }
+
 
   carry = [
     { id = items.y_jiasha.id },
@@ -55966,6 +56054,12 @@ chats = [
     { type = "hand" skill = "dashou-yin" },
     { type = "cuff" skill = "yujiamu-quan" }
   ]
+
+  # LPC samu.c attempt_apprentice：permit_recruit → "贫僧只研佛法，并不收徒" (unconditional refuse)。
+  apprentice = {
+    deny_all = true
+    deny_msg = "贫僧只研佛法，并不收徒。"
+  }
 
 
   carry = [
