@@ -5,6 +5,7 @@ defmodule Kantele.Character.MoveEvent do
 
   alias Kantele.Character.CommandView
   alias Kantele.Character.MoveView
+  alias Kantele.World.NpcActions.Helpers
   alias Kantele.World.SnowRegion
 
   def commit(conn, %{data: event}) do
@@ -151,7 +152,7 @@ defmodule Kantele.Character.MoveEvent do
         case Kantele.World.NpcInit.init(npc, character) do
           {:vision, text} ->
             room = %Kantele.World.Room{id: npc.room_id}
-            Kantele.World.Room.tell_room(room, render_greeting(text, npc, character.name))
+            Kantele.World.Room.tell_room(room, render_greeting(text, npc, character))
             conn
 
           _ ->
@@ -204,7 +205,7 @@ defmodule Kantele.Character.MoveEvent do
 
   defp say_greeting(npc, character, line) do
     room = %Kantele.World.Room{id: npc.room_id}
-    Kantele.World.Room.tell_room(room, render_greeting(line, npc, character.name))
+    Kantele.World.Room.tell_room(room, render_greeting(line, npc, character))
   end
 
   # handler 台词条目：二进制 = `command("say ...")`；
@@ -212,7 +213,7 @@ defmodule Kantele.Character.MoveEvent do
   # （`room_id`/`except` 可为 nil：默认 NPC 所在房间、不排除任何人）。
   defp emit_greeting(npc, character, {:vision, text, room_id, except}) when is_binary(text) do
     room = %Kantele.World.Room{id: room_id || npc.room_id}
-    Kantele.World.Room.tell_room(room, render_greeting(text, npc, character.name), except)
+    Kantele.World.Room.tell_room(room, render_greeting(text, npc, character), except)
   end
 
   defp emit_greeting(npc, character, {:vision, text}) when is_binary(text) do
@@ -242,14 +243,19 @@ defmodule Kantele.Character.MoveEvent do
 
   defp run_greeting_action(_npc, _character, _action), do: :ok
 
-  defp render_greeting(line, npc, player_name) do
+  # LPC `RANK_D->query_respect(me)`（me = 进屋玩家）：按性别/身份/年龄动态敬称。
+  # 旧实现把 {respect} 写死为「客官」，与 LPC rankd.c:748-831 不等价（GAP #758）。
+  defp render_greeting(line, npc, player) do
     line
     |> String.replace("{npc}", npc.name)
-    |> String.replace("{name}", player_name)
-    |> String.replace("{respect}", "客官")
+    |> String.replace("{name}", player.name)
+    |> String.replace("{respect}", respect_of(player))
     |> String.replace("{rude}", "")
     |> String.replace("{expr}", "")
   end
+
+  # trimmed 角色 / 无 meta 时 Helpers.respect/1 仍能按缺省（男性/20岁/无身份）返回。
+  defp respect_of(player), do: Helpers.respect(player)
 
   def unsubscribe_error(conn, error) do
     Logger.error("Tried to unsubscribe from the old room and failed - #{inspect(error)}")

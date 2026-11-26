@@ -950,7 +950,7 @@ defmodule Kantele.World.Room do
           :allow
 
         :guard ->
-          check_guarders_for_dir(context, mover)
+          check_guarders_for_dir(room, context, mover)
       end
     end
 
@@ -976,7 +976,7 @@ defmodule Kantele.World.Room do
       end
     end
 
-    defp check_guarders_for_dir(context, mover) do
+    defp check_guarders_for_dir(room, context, mover) do
       # 找房间里的守卫 NPC（有 guarder 配置且 is_guarder? 为 true）
       guarders =
         Enum.filter(context.characters, fn c ->
@@ -991,6 +991,13 @@ defmodule Kantele.World.Room do
 
             case Guarder.permit_pass(opts) do
               {:allow} -> {:cont, :allow}
+
+              # #810 LPC `command("sigh"); command("say 去吧，去吧！...")`：
+              # 守卫放行时的动作/口白必须广播，不能只放行不说话。
+              {:allow, pass_lines} ->
+                announce_guarder_pass(room, guarder, mover, pass_lines)
+                {:cont, :allow}
+
               {:deny, msg} -> {:halt, {:deny, msg}}
             end
 
@@ -1000,7 +1007,7 @@ defmodule Kantele.World.Room do
       end)
     end
 
-    defp build_guarder_opts(guarder, mover, context) do
+    defp build_guarder_opts(guarder, mover, _context) do
       my_family = Map.get(guarder.meta.guarder, :family)
       guest_family = mover.meta.family && Map.get(mover.meta.family, :name)
       guest_born_family = mover.meta.family && Map.get(mover.meta.family, :born_family)
@@ -1019,6 +1026,8 @@ defmodule Kantele.World.Room do
         |> Enum.uniq()
 
       msgs = guarder.meta.guarder.msgs || %{}
+      stats = Map.get(mover.meta, :stats) || %{}
+      family_meta = Map.get(mover.meta, :family) || %{}
 
       %{
         # LPC: if (!living(this_object())) return 1;  守卫倒下就放行。
@@ -1030,8 +1039,31 @@ defmodule Kantele.World.Room do
         guest_family: guest_family,
         guest_born_family: guest_born_family,
         carried_families: carried_families,
-        msgs: msgs
+        msgs: msgs,
+        # #810 suxingh.c permit_pass 自定义门
+        allow_master_ids: Map.get(guarder.meta.guarder, :allow_master_ids),
+        min_exp: Map.get(guarder.meta.guarder, :min_exp),
+        min_skills: Map.get(guarder.meta.guarder, :min_skills),
+        guest_master_id: Map.get(family_meta, :master_id),
+        guest_exp: Map.get(stats, :combat_exp, 0),
+        guest_skill_levels: Map.get(stats, :skills) || %{}
       }
+    end
+
+    defp announce_guarder_pass(room, guarder, mover, pass_lines) do
+      npc_name = Map.get(guarder, :name) || "守门人"
+      player_name = Map.get(mover, :name) || "你"
+
+      Enum.each(List.wrap(pass_lines), fn line ->
+        if is_binary(line) do
+          rendered =
+            line
+            |> String.replace("{npc}", npc_name)
+            |> String.replace("{name}", player_name)
+
+          Kantele.World.Room.tell_room(room, String.trim_trailing(rendered) <> "\n")
+        end
+      end)
     end
 
     @impl true
@@ -1506,6 +1538,11 @@ defmodule Kantele.World.Room.AskRequestEvent do
               reply_to: requester.pid,
               asker_id: requester.id,
               asker_name: requester.name,
+              # #807 无崖子 ask_zhihuan：LPC 用 environment() 找信物持有者；
+              # 房间快照是 ex 唯一能同时看到提问者/其他角色/地面物品的入口，
+              # 故把提问者背包随 ask 事件带给 NPC 进程（纯增量字段）。
+              asker_inventory: requester.inventory,
+              asker_family: Map.get(requester.meta || %{}, :family),
               keyword: keyword
             })
           else

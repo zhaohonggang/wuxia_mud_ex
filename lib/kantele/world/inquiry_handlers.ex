@@ -26,7 +26,9 @@ defmodule Kantele.World.InquiryHandlers do
     "born_family_reply" => Kantele.World.InquiryHandlers.BornFamilyReply,
     "wudang_jiuyang" => Kantele.World.InquiryHandlers.WudangJiuyang,
     "luohan_zhen" => Kantele.World.InquiryHandlers.LuohanZhen,
-    "npc_reply" => Kantele.World.InquiryHandlers.NpcReply
+    "npc_item_grant" => Kantele.World.InquiryHandlers.NpcItemGrant,
+    "npc_reply" => Kantele.World.InquiryHandlers.NpcReply,
+    "xiaoyao_zhihuan" => Kantele.World.InquiryHandlers.XiaoyaoZhihuan
   }
 
   @doc "按 `kind` 查处理模块；未知 kind 返回 nil（静默忽略）"

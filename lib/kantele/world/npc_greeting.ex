@@ -9,17 +9,31 @@ defmodule Kantele.World.NpcGreeting do
 
   约定：NPC id 形如 `"zone:name"`（如 `"wuguan:zhuziliu"`，见 loader.ex:2250）。
   注册表 `handler/1` 返回 `fun/2`（`(npc, player) -> result`）；新增时加一条子句。
+
+  # #758：clone_lib.ucl 的角色块经 loader 生成的是 hash id（如何足道 = "90740dc0"），
+  # 不是 "zone:name"，故 id 注册表无法命中。补一条**别名**注册表 `alias_handler/1`，
+  # 用 UCL 块 id 别名（如 "kunlun_hezudao"）派发，与 id 注册表并存、后者优先。
   """
 
-  @doc "按 NPC id 派发问候，返回 `{:say, lines}` | `:skip` | `:fallback`。"
+  @doc "按 NPC id / 块 id 别名派发问候，返回 `{:say, lines}` | `:skip` | `:fallback`。"
   def greet(%{id: id} = npc, player) do
-    case handler(id) do
+    case handler(id) || alias_handler(npc) do
       nil -> :fallback
       fun when is_function(fun, 2) -> fun.(npc, player)
     end
   end
 
   def greet(_npc, _player), do: :fallback
+
+  # ---- 注册表：UCL 块 id 别名 => fun/2（hash id 的 clone_lib 角色专用）----
+  defp alias_handler(%{meta: %{aliases: aliases}}) when is_list(aliases) do
+    Enum.find_value(aliases, fn
+      "kunlun_hezudao" -> &__MODULE__.KunlunHezudao.greet/2
+      _ -> nil
+    end)
+  end
+
+  defp alias_handler(_), do: nil
 
   # ---- 注册表：NPC id => fun/2 ----
   defp handler("wuguan:zhuziliu"), do: &__MODULE__.WuguanZhuziliu.greet/2
@@ -488,5 +502,52 @@ defmodule Kantele.World.NpcGreeting do
 
       :skip
     end
+  end
+
+  defmodule KunlunHezudao do
+    @moduledoc """
+    昆仑 何足道（`kungfu/class/kunlun/hezudao.c` `init()` + `greeting()`，GAP #758）：
+
+        if (interactive(ob = this_player()) && ! is_fighting() && random(10) < 3) {
+                remove_call_out("greeting");
+                call_out("greeting", 1, ob);
+        }
+        void greeting(object ob) {
+                if (! ob || environment(ob) != environment()) return;
+                command("play jian-jia");
+        }
+
+    三个门：① 只对 interactive 玩家（本引擎此钩子本就只在玩家进屋触发）；
+    ② NPC 不在战斗（fight）；③ `random(10) < 3`（30%）。满足则
+    `command("play jian-jia")`。
+
+    `play jian-jia` 走 `tanqin-jifa.c:play()`：何足道 jian-jia=320 +
+    tanqin-jifa/2=160 → lvl=480 ≥ 300，命中最高档文案
+    「摆好$n弹了一首蒹葭，宛若清溪流上心头，令人无酒自醉，却又似身至仙境，心灵空明。」
+    `$N`=NPC，`$n`=手中所抱的琴（jwqin 焦尾琴）。以 `{:vision, ...}` 广播，
+    `{npc}`/`{name}` 由 MoveEvent.render_greeting 渲染（这里是 NPC 弹琴，用 `{npc}`）。
+
+    近似说明：LPC 的 `remove_call_out` + `call_out("greeting", 1, ob)` 是 1 拍
+    （约 1 秒）的纯展示延迟 + 到期复查「玩家仍在 NPC 同房」。本引擎 greeting
+    在玩家进屋当拍同步广播，无观测点依赖这 1 秒间隔；入住即时广播等价于
+    「到期且仍在同房」。仅当玩家进屋后 1 秒内又离开这一竞态有差异，属可接受近似
+    （与 #756 的持有者遍历近似同类，已显式记录，不冒充完全等价）。
+    """
+
+    alias Kantele.Character.Combat
+
+    @play_text "{npc}摆好焦尾琴弹了一首蒹葭，宛若清溪流上心头，令人无酒自醉，却又似身至仙境，心灵空明。"
+
+    def greet(npc, _player) do
+      cond do
+        fighting?(npc) -> :skip
+        :rand.uniform(10) > 3 -> :skip
+        true -> {:say, [{:vision, @play_text}]}
+      end
+    end
+
+    # LPC !is_fighting()：NPC meta.combat.enemies 非空即战斗中。
+    defp fighting?(%{meta: %{combat: %Combat{} = combat}}), do: Combat.fighting?(combat)
+    defp fighting?(_), do: false
   end
 end

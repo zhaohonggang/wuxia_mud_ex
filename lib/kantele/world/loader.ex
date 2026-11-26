@@ -948,10 +948,30 @@ defmodule Kantele.World.Loader do
   defp parse_inquiry_state(nil), do: %{}
 
   defp parse_inquiry_state(state) when is_map(state) do
-    Enum.into(state, %{}, fn {key, value} -> {to_string(key), value} end)
+    Enum.into(state, %{}, fn {key, value} ->
+      {to_string(key), roll_inquiry_count(value)}
+    end)
   end
 
   defp parse_inquiry_state(_), do: %{}
+
+  # LPC create() 里 `if (random(5) > 3) set("bagua_count", 1)` 的初值掷骰。
+  # UCL 写 `key = { random_sides = 5 random_threshold = 3 }`，装载时按 LPC
+  # `random(n) ∈ 0..n-1` 掷一次，结果落为 0/1 整数；普通整数初值原样保留。
+  defp roll_inquiry_count(value) when is_map(value) do
+    sides = Map.get(value, :random_sides) || Map.get(value, "random_sides")
+    threshold = Map.get(value, :random_threshold) || Map.get(value, "random_threshold")
+
+    case {sides, threshold} do
+      {s, t} when is_integer(s) and s > 0 and is_integer(t) ->
+        if :rand.uniform(s) - 1 > t, do: 1, else: 0
+
+      _ ->
+        value
+    end
+  end
+
+  defp roll_inquiry_count(value), do: value
 
   defp parse_inquiry_value(value) when is_map(value) do
     Enum.into(value, %{}, fn {key, val} ->
@@ -1015,6 +1035,17 @@ defmodule Kantele.World.Loader do
     end)
   end
 
+  # #756 npc_item_grant：OR 门技能表与 per-skill 拒绝文案表同为 skill 键 map，
+  # 与 min_skill_levels 同形（字符串 + 下划线；handler 内再双查 _ / -），
+  # 否则 UCL 的裸 skill 键会被解析成 atom，handler 字符串查表恒 0 → 门控恒拒。
+  defp normalize_inquiry_field("min_skill_levels_or", levels) when is_map(levels) do
+    Enum.into(levels, %{}, fn {skill, level} -> {to_string(skill), level} end)
+  end
+
+  defp normalize_inquiry_field("min_skill_denies", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} -> {to_string(skill), text} end)
+  end
+
   defp normalize_inquiry_field(_key, val), do: val
 
   # 欢迎台词池：UCL greetings = [ { line = "..." } ]，归一为字符串列表
@@ -1072,7 +1103,8 @@ defmodule Kantele.World.Loader do
            "suoyangdan",
            "hunter",
            "shaolin_promotion",
-           "ultra"
+           "ultra",
+           "kunlun_liangji"
          ] do
         %{
           kind: kind,
@@ -1129,12 +1161,48 @@ defmodule Kantele.World.Loader do
 
       %{
         family: family,
-        msgs: parsed_msgs
+        msgs: parsed_msgs,
+        # #810 苏星河 suxingh.c:156-179 的 permit_pass 覆写：
+        # master_id == "wuya zi" 直放；否则 exp → xiaoyao-xinfa 逐条门。
+        allow_master_ids: string_list(Map.get(guarder, :allow_master_ids)),
+        min_exp: integer_or_nil(Map.get(guarder, :min_exp)),
+        min_skills: normalize_guarder_min_skills(Map.get(guarder, :min_skills))
       }
     end
   end
 
   defp parse_guarder(_), do: nil
+
+  defp string_list(nil), do: nil
+
+  defp string_list(values) when is_list(values) do
+    case Enum.map(values, &to_string/1) do
+      [] -> nil
+      list -> list
+    end
+  end
+
+  defp string_list(_), do: nil
+
+  defp integer_or_nil(value) when is_integer(value), do: value
+  defp integer_or_nil(value) when is_binary(value) do
+    case Integer.parse(value) do
+      {number, _rest} -> number
+      :error -> nil
+    end
+  end
+
+  defp integer_or_nil(_), do: nil
+
+  # 与 give_item 的 min_skill_levels 同形：保留下划线键，消费端再双查 _ / -。
+  defp normalize_guarder_min_skills(skills) when is_map(skills) do
+    case Enum.into(skills, %{}, fn {skill, level} -> {to_string(skill), level} end) do
+      empty when map_size(empty) == 0 -> nil
+      normalized -> normalized
+    end
+  end
+
+  defp normalize_guarder_min_skills(_), do: nil
 
   # LPC message_vision 的 `$N` = 被喊话者 / `$n` = 喊话者（守门人自己）。
   # 宿主 MoveView 渲染的是 `{npc}`（守门人）/ `{name}`（玩家）。
@@ -1143,6 +1211,9 @@ defmodule Kantele.World.Loader do
     |> String.replace("$N", "{npc}")
     |> String.replace("$n", "{name}")
   end
+
+  # #810 成功放行台词是一组动作/口白（sigh + say），逐条归一。
+  defp normalize_guarder_msg(texts) when is_list(texts), do: Enum.map(texts, &normalize_guarder_msg/1)
 
   defp normalize_guarder_msg(other), do: other
 

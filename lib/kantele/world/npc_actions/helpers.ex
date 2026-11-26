@@ -154,10 +154,68 @@ defmodule Kantele.World.NpcActions.Helpers do
   @doc """
   `RANK_D->query_respect(me)` 等价：对玩家的敬称。
 
-  尊称系统尚未建模（@todo）：暂统一返回「大侠」，保证文案完整；接入等级/门派
-  尊称后替换此处即可。
+  对照 LPC `adm/daemons/rankd.c:748-831`：按 gender + class + age 返回称谓。
+  女性：bonze（小师太/师太）、taoist（小仙姑/仙姑）、默认（小姑娘/姑娘/大婶/婆婆）；
+  男性：bonze（小师父/大师）、taoist（道兄/道长）、scholar（小相公/相公/老先生）、
+  fighter/swordsman（小老弟/壮士/老前辈）、默认（小兄弟/壮士/老爷子）。
+  缺省年龄按 20 岁处理，缺省性别「男性」，缺省 class 走默认分支。
+
+  GAP #758：此前尊称系统未建模，统一返回「大侠」；现按 LPC 原文逐条复刻。
   """
-  def respect(_character), do: "大侠"
+  def respect(character) do
+    env = Map.get(character.meta || %{}, :env) || %{}
+    family = Map.get(character.meta || %{}, :family) || %{}
+    gender = Map.get(env, :gender) || Map.get(env, "gender") || "男性"
+    char_class = Map.get(family, :class) || Map.get(family, "class")
+    age = Map.get(env, :age) || Map.get(env, "age") || 20
+
+    cond do
+      gender == "女性" -> respect_female(char_class, age)
+      true -> respect_male(char_class, age)
+    end
+  end
+
+  defp respect_female("bonze", age) when is_integer(age) and age < 18, do: "小师太"
+  defp respect_female("bonze", _age), do: "师太"
+
+  defp respect_female("taoist", age) when is_integer(age) and age < 18, do: "小仙姑"
+  defp respect_female("taoist", _age), do: "仙姑"
+
+  defp respect_female(nil, age) when is_integer(age) and age < 18, do: "小姑娘"
+  defp respect_female(nil, age) when is_integer(age) and age < 30, do: "姑娘"
+  defp respect_female(nil, age) when is_integer(age) and age < 40, do: "大婶"
+  defp respect_female(nil, _age), do: "婆婆"
+
+  defp respect_female(_class, age) when is_integer(age) and age < 18, do: "小姑娘"
+  defp respect_female(_class, age) when is_integer(age) and age < 30, do: "姑娘"
+  defp respect_female(_class, age) when is_integer(age) and age < 40, do: "大婶"
+  defp respect_female(_class, _age), do: "婆婆"
+
+  defp respect_male("bonze", age) when is_integer(age) and age < 18, do: "小师父"
+  defp respect_male("bonze", _age), do: "大师"
+
+  defp respect_male("taoist", age) when is_integer(age) and age < 18, do: "道兄"
+  defp respect_male("taoist", _age), do: "道长"
+
+  defp respect_male("scholar", age) when is_integer(age) and age < 18, do: "小相公"
+  defp respect_male("scholar", age) when is_integer(age) and age < 50, do: "相公"
+  defp respect_male("scholar", _age), do: "老先生"
+
+  defp respect_male("fighter", age) when is_integer(age) and age < 18, do: "小老弟"
+  defp respect_male("fighter", age) when is_integer(age) and age < 50, do: "壮士"
+  defp respect_male("fighter", _age), do: "老前辈"
+
+  defp respect_male("swordsman", age) when is_integer(age) and age < 18, do: "小老弟"
+  defp respect_male("swordsman", age) when is_integer(age) and age < 50, do: "壮士"
+  defp respect_male("swordsman", _age), do: "老前辈"
+
+  defp respect_male(nil, age) when is_integer(age) and age < 20, do: "小兄弟"
+  defp respect_male(nil, age) when is_integer(age) and age < 50, do: "壮士"
+  defp respect_male(nil, _age), do: "老爷子"
+
+  defp respect_male(_class, age) when is_integer(age) and age < 20, do: "小兄弟"
+  defp respect_male(_class, age) when is_integer(age) and age < 50, do: "壮士"
+  defp respect_male(_class, _age), do: "老爷子"
 
   @doc """
   `query("food") >= max_food_capacity()*90/100`

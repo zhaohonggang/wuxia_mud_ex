@@ -628,8 +628,18 @@ defmodule Kantele.Character.NpcAskEvent do
        ) do
     keyword = Map.get(data, :keyword, "")
     count_key = Map.get(script, "count")
+    fallback_count_key = Map.get(script, "fallback_count")
     state = inquiry_state(conn.character)
     remaining = if is_binary(count_key), do: Map.get(state, count_key, 0), else: :infinity
+
+    fallback_remaining =
+      if is_binary(fallback_count_key),
+        do: Map.get(state, fallback_count_key, 0),
+        else: :infinity
+
+    # #807 无崖子：LPC ask_zhihuan 沿 environment() 向上找信物持有者，
+    # 这段遍历必须在 NPC 进程完成（与 LPC 同相位）；结果以 owner 回执给玩家侧。
+    owner = if kind == "xiaoyao_zhihuan", do: zhihuan_owner(conn, data, script), else: nil
 
     send(reply_to, %Kalevala.Event{
       from_pid: self(),
@@ -645,11 +655,91 @@ defmodule Kantele.Character.NpcAskEvent do
         asker_id: asker_id,
         asker_name: Map.get(data, :asker_name),
         perform_name: keyword,
-        remaining: remaining
+        remaining: remaining,
+        fallback_remaining: fallback_remaining,
+        owner: owner
       }
     })
 
     conn
+  end
+
+  # #807 LPC wuyazi.c:623-633 的持有者链：
+  #   environment(zhihuan) 逐层向上，遇到角色或最外层对象即停。
+  # ex 没有全局对象环境链，等价取数顺序为：
+  #   提问者背包 -> 无崖子背包 -> 同房间其他角色背包 -> 房间地面物品 -> 无崖子新开出的信物。
+  defp zhihuan_owner(conn, data, script) do
+    item_id = Map.get(script, "item")
+    asker_id = Map.get(data, :asker_id)
+    asker_inventory = Map.get(data, :asker_inventory) || []
+    room_id = conn.character.room_id
+
+    cond do
+      inventory_has_item?(asker_inventory, item_id) ->
+        %{kind: :asker, name: Map.get(data, :asker_name), family: nil}
+
+      character_holds_item?(conn.character, item_id) ->
+        %{kind: :npc, name: conn.character.name, family: nil}
+
+      owner = find_carrier_owner(room_id, item_id, asker_id) ->
+        owner
+
+      find_ground_owner(room_id, item_id) ->
+        %{kind: :object, name: "逍遥神仙环", family: nil}
+
+      true ->
+        # LPC find_object/load_object 在无 environment 时由 create() move 到无崖子身上。
+        %{kind: :npc, name: conn.character.name, family: nil}
+    end
+  end
+
+  defp inventory_has_item?(inventory, item_id) when is_list(inventory) and is_binary(item_id) do
+    Enum.any?(inventory, fn instance -> Map.get(instance, :item_id) == item_id end)
+  end
+
+  defp inventory_has_item?(_inventory, _item_id), do: false
+
+  defp character_holds_item?(%{inventory: inventory}, item_id) when is_list(inventory) and is_binary(item_id) do
+    inventory_has_item?(inventory, item_id)
+  end
+
+  defp character_holds_item?(_character, _item_id), do: false
+
+  defp find_carrier_owner(room_id, item_id, asker_id) do
+    Enum.find_value(Room.npc_characters_by_id(room_id), fn character ->
+      if Map.get(character, :id) != asker_id and
+           inventory_has_item?(Map.get(character, :inventory), item_id) do
+        %{
+          kind: :character,
+          name: Map.get(character, :name),
+          family: family_name_of_character(character)
+        }
+      else
+        nil
+      end
+    end)
+  end
+
+  defp find_ground_owner(room_id, item_id) do
+    Enum.any?(Room.item_instances_by_id(room_id), fn instance ->
+      Map.get(instance, :item_id) == item_id
+    end)
+  end
+
+  defp family_name_of_character(character) do
+    meta = Map.get(character, :meta) || %{}
+
+    case Map.get(meta, :family) do
+      family when is_map(family) ->
+        Map.get(family, :name) || Map.get(family, "name") ||
+          Map.get(family, :family_name) || Map.get(family, "family_name")
+
+      family when is_binary(family) ->
+        family
+
+      _ ->
+        nil
+    end
   end
 
   defp inquiry_state(%{meta: %{inquiry_state: state}}) when is_map(state), do: state
@@ -669,6 +759,57 @@ defmodule Kantele.Character.NpcAskEvent do
   end
 
   def inquiry_consume(conn, _event), do: conn
+
+  # #756 昆仑何太冲/何足道：把独特剑给予玩家后，NPC 按 LPC
+  # `new("clone/weapon/changjian"); ->move(this_object()); ->wield()` 装备替代长剑。
+  # 与 SpawnController.equip_carry/1 共用同一武器快照算法（wield 语义一致）。
+  def inquiry_equip(conn, %{data: %{item_id: item_id}}) when is_binary(item_id) do
+    case Items.get(item_id) do
+      {:ok, item} ->
+        instance = %Kalevala.World.Item.Instance{
+          id: Kalevala.World.Item.Instance.generate_id(),
+          item_id: item_id,
+          created_at: DateTime.utc_now(),
+          item: item
+        }
+
+        character = %{conn.character | inventory: conn.character.inventory ++ [instance]}
+
+        case equip_weapon_meta(item) do
+          nil ->
+            Kalevala.Character.Conn.put_character(conn, character)
+
+          snapshot ->
+            combat = Kantele.Character.Combat.equip(character.meta.combat, :weapon, snapshot)
+            meta = %{character.meta | combat: combat}
+            Kalevala.Character.Conn.put_character(conn, %{character | meta: meta})
+        end
+
+      _ ->
+        conn
+    end
+  end
+
+  def inquiry_equip(conn, _event), do: conn
+
+  # 与 SpawnController.equip_slot(conn, :weapon, item) 的快照字段一致。
+  defp equip_weapon_meta(item) do
+    meta = item.meta || %{}
+
+    case Map.get(meta, :skill_type) do
+      skill_type when skill_type not in [nil, ""] ->
+        %{
+          name: item.name,
+          skill_type: skill_type,
+          damage: Map.get(meta, :damage) || 0,
+          prop: Map.get(meta, :weapon_prop),
+          flag: Map.get(meta, :flag, 1)
+        }
+
+      _ ->
+        nil
+    end
+  end
 
   defp publish_tell(conn, asker_id, text) do
     Kalevala.Character.Conn.publish_message(

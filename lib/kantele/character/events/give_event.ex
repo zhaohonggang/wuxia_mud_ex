@@ -68,6 +68,9 @@ defmodule Kantele.Character.GiveEvent do
       {:hunter} ->
         Kantele.World.HunterAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:kunlun_liangji} ->
+        Kantele.World.KunlunLiangjiAccept.handle(conn, npc, item_instance, data, from_name)
+
       {:shaolin_du} ->
         Kantele.World.ShaolinDuAccept.handle(conn, npc, item_instance, data, from_name)
 
@@ -162,6 +165,9 @@ defmodule Kantele.Character.GiveEvent do
         {:hunter} ->
           acc
 
+        {:kunlun_liangji} ->
+          acc
+
         {:shaolin_du} ->
           acc
 
@@ -179,6 +185,7 @@ defmodule Kantele.Character.GiveEvent do
             :wuxiuwen -> {:wuxiuwen}
             :suoyangdan -> {:suoyangdan}
             :hunter -> {:hunter}
+            :kunlun_liangji -> {:kunlun_liangji}
             {:shaolin_promotion, _rule} = match -> match
             {:ultra, _rule} = match -> match
             :miss -> acc
@@ -233,6 +240,11 @@ defmodule Kantele.Character.GiveEvent do
       Map.get(rule, :name) && Kantele.World.Item.matches?(item, rule.name) -> :hunter
       true -> :miss
     end
+  end
+
+  # #756 昆仑何足道还剑两极剑：命中即交给 KunlunLiangjiAccept 处理。
+  defp rule_hit(%{kind: "kunlun_liangji"} = rule, item) do
+    if rule.id == item.id, do: :kunlun_liangji, else: :miss
   end
 
   # 少林三老收黑索/赐物：命中即交给 Kantele.World.ShaolinDuAccept 处理。
@@ -858,6 +870,49 @@ defmodule Kantele.Character.GiveEvent do
       conn
     end
   end
+
+  # ---- 昆仑何足道收还两极剑回执（NPC 进程 → 玩家进程）----
+  # LPC hezudao.c accept_object：两极剑 destruct(ob) 不进 NPC 背包；
+  #   嫡传（family.master_id == "kunlun_hezudao"）→ "很好，很好！"
+  #   非嫡传 → "多谢这位<respect>将我的宝剑交回。"
+  def kunlun_liangji_return(
+        conn,
+        %{data: %{item_id: _item_id, instance_id: instance_id, from_id: from_id}}
+      ) do
+    character = conn.character
+
+    if from_id == character.id do
+      # 销毁两极剑实例（LPC destruct(ob)，物品不进 NPC 背包）
+      inventory = Enum.reject(character.inventory, fn inst -> inst.id == instance_id end)
+      character = %{character | inventory: inventory}
+      Records.save(character)
+
+      text =
+        if hezudao_disciple?(character) do
+          "何足道接过两极剑，说道：「很好，很好！」\n"
+        else
+          respect = Kantele.World.NpcActions.Helpers.respect(character)
+          "何足道接过两极剑，说道：「多谢这位#{respect}将我的宝剑交回。」\n"
+        end
+
+      conn
+      |> put_character(character)
+      |> render(CommandView, "text", %{text: text})
+      |> prompt(CommandView, "prompt", %{})
+    else
+      conn
+    end
+  end
+
+  # 何足道嫡传：family.master_id 为 NPC id。UCL loader 里 NPC id 是 "kunlun_hezudao"，
+  # 但 LPC 原文用 id "he zudao"，两者都接受（兼容历史存档）。
+  defp hezudao_disciple?(%{meta: %{family: family}}) when is_map(family) do
+    master_id = Map.get(family, :master_id) || Map.get(family, "master_id")
+
+    master_id in ["kunlun_hezudao", "he zudao"]
+  end
+
+  defp hezudao_disciple?(_character), do: false
 
   # ---- 大宗师绝招 quest 回执（NPC 进程 → 玩家进程）----
   # LPC dugu.c / huang.c accept_object：玩家交残本/九阴真经上下册，

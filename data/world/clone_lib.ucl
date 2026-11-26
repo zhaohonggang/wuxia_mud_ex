@@ -6490,6 +6490,33 @@ zones "clone_lib" {
   actions = [{ verb = "play" handler = "play_qin" }]
     }
 
+# 来自 LPC clone/lonely/book/xunleijian.c（昆仑何太冲 ask_jing 发放；GAP #756）
+# LPC: set_name("「迅雷剑经」", ({ "xunlei jianjing", "jianjing", "xunlei", "jing", "book" }))
+    items "xunleijian" {
+      name = "「迅雷剑经」"
+      description = "这是一本薄薄的书册，书皮已然发黄，看样子已经有一段历史了。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  aliases = ["xunlei jianjing", "jianjing", "xunlei", "jing", "book"]
+
+      meta = {
+        value = 1
+        weight = 500
+        unit = "本"
+        material = "paper"
+        no_sell = "这本破书你自己留着吧。"
+        book = {
+          skill = "xunlei-jian"
+          min_skill = 0
+          max_skill = 119
+          jing_cost = 100
+          difficulty = 30
+        }
+      }
+    }
+
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
 
     items "tulongdao" {
@@ -25274,6 +25301,9 @@ chats = [
     characters "kunlun_banshuxian" {
       name = "班淑娴"
       aliases = ["kunlun_banshuxian", "ban shuxian", "ban", "shuxian"]
+  # LPC banshuxian.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.wu", "throwing.liu", "cuff.shi", "hand.sun", "recover", "powerup"]
       description = "她就是昆仑派第四代掌门铁琴先生何太冲的夫 人班淑娴。只见她身材高大，头发花白，双目 含威。眉心间聚有煞气。"
   title = "昆仑派掌门夫人"
   gender = "女性"
@@ -25492,6 +25522,24 @@ chats = [
     accept_msg = "好吧，以后你就跟我吧，你须得安心学艺，不可乱来。\n"
   }
 
+  # LPC: banshuxian.c inherit F_GUARDER; set("guarder", ([ "refuse_other":..., "refuse_carry":... ]));
+  # 班淑娴守三圣堂，擅闯/背负他人者拒之。$N/$n 已按 loader 约定转 {npc}/{name}（守门人/玩家）。
+  meta = {
+    guarder = {
+      family = "昆仑派"
+      msgs = {
+        refuse_other = "{npc}对{name}冷喝道：你给我站住！我们昆仑派岂是由得外人随便走动地方？"
+        refuse_carry = "{npc}对{name}喝道：你背上背的是什么人？给我放下来！"
+      }
+    }
+  }
+
+  # LPC: banshuxian.c set("coagents", ({ [ "startroom":"/d/kunlun/tieqinju", "id":"he taichong" ] }));
+  # 被 kill 时呼唤何太冲助战（startroom 与区域键一致：kunlun:tieqinju）。
+  coagents = [
+    { id = "he taichong" startroom = "kunlun:tieqinju" }
+  ]
+
   carry = [
     { id = items.changjian.id },
     { id = items.cloth.id }
@@ -25503,6 +25551,9 @@ chats = [
     characters "kunlun_gaozecheng" {
       name = "高则成"
       aliases = ["kunlun_gaozecheng", "gao zecheng", "gao", "zecheng"]
+  # LPC gaozecheng.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["cuff.shi", "sword.xun", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -25634,6 +25685,9 @@ chats = [
     characters "kunlun_hetaichong" {
       name = "何太冲"
       aliases = ["kunlun_hetaichong", "he taichong", "he", "taichong"]
+  # LPC hetaichong.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.fanyin", "throwing.liu", "cuff.shi", "hand.sun", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -25889,9 +25943,68 @@ chats = [
     } },
     { key = "损筋诀" value = "嗯，这招你去找我内子求教吧。" },
     { key = "无声无色" value = "嗯，这招你去找我内子求教吧。" },
-    { key = "铁琴剑" value = " inquire about jian (unimplemented: Kunlun NPC-held unique sword, GAP #756)" },
-    { key = "剑经" value = " inquire about jing (unimplemented: Kunlun quest book holder traversal, GAP #756)" },
-    { key = "迅雷剑经" value = " inquire about jing (unimplemented: Kunlun quest book holder traversal, GAP #756)" },
+    { key = "铁琴剑" value = {
+      kind = "npc_item_grant"
+      item = "clone_lib:tieqin"
+      npc_carry_key = "clone_lib:tieqin"
+      replacement_item = "clone_lib:changjian"
+      match = "tieqin jian"
+      count = "tieqin_count"
+      family = "昆仑派"
+      allowed_master_ids = ["he zudao", "ban shuxian", "he taichong"]
+      min_skill_levels = {
+        kunlun_jian = 150
+        tanqin_jifa = 100
+      }
+      min_skill_denies = {
+        kunlun_jian = "还不快给我滚回去用心练剑，少在这里罗嗦！"
+        tanqin_jifa = "你连琴都弹不好，还用什么铁琴剑？"
+      }
+      success = "我这柄铁琴剑你就暂且拿去吧，多用它扬扬我们昆仑派的威风。"
+      already = "我的铁琴剑现在不就在你手里吗？"
+      family_deny = "你是哪里来的？少在这里跟我罗嗦！"
+      master_deny = "哼！你还没有资格使用我的宝剑。"
+      no_item = "你来晚了，铁琴剑现在不在我这里。"
+      accept_object = true
+    } },
+    { key = "剑经" value = {
+      kind = "npc_item_grant"
+      item = "clone_lib:xunleijian"
+      npc_carry_key = "clone_lib:xunleijian"
+      match = "xunlei jianjing"
+      family = "昆仑派"
+      max_skill_levels = {
+        xunlei_jian = 120
+      }
+      min_skill_levels = {
+        sword = 30
+      }
+      already = "我不是已经把剑经给你了吗，难道是弄丢了？"
+      family_deny = "你是哪里来的？少在这里跟我罗嗦！"
+      max_skill_deny = "你的迅雷剑法已经到这个地步，没必要再去参读剑经了。"
+      min_skill_deny = "你的剑法这么差，还读不懂剑经，练高点再来吧。"
+      no_item = "你来晚了一步，那本「迅雷剑经」已经让你同门师兄拿去了。"
+      vision_msg = "$N说道：既然如此，这本「迅雷剑经」今日我便交与你，可别弄丢了。"
+    } },
+    { key = "迅雷剑经" value = {
+      kind = "npc_item_grant"
+      item = "clone_lib:xunleijian"
+      npc_carry_key = "clone_lib:xunleijian"
+      match = "xunlei jianjing"
+      family = "昆仑派"
+      max_skill_levels = {
+        xunlei_jian = 120
+      }
+      min_skill_levels = {
+        sword = 30
+      }
+      already = "我不是已经把剑经给你了吗，难道是弄丢了？"
+      family_deny = "你是哪里来的？少在这里跟我罗嗦！"
+      max_skill_deny = "你的迅雷剑法已经到这个地步，没必要再去参读剑经了。"
+      min_skill_deny = "你的剑法这么差，还读不懂剑经，练高点再来吧。"
+      no_item = "你来晚了一步，那本「迅雷剑经」已经让你同门师兄拿去了。"
+      vision_msg = "$N说道：既然如此，这本「迅雷剑经」今日我便交与你，可别弄丢了。"
+    } },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" }
   ]
@@ -25927,9 +26040,13 @@ chats = [
     { type = "tanqin-jifa" skill = "tieqin-yin" }
   ]
 
+  inquiry_state = {
+    tieqin_count = 1
+  }
 
   carry = [
-    { id = items.cloth.id }
+    { id = items.cloth.id },
+    { id = items.tieqin.id }
   ]
 
     }
@@ -25938,6 +26055,9 @@ chats = [
     characters "kunlun_hezudao" {
       name = "何足道"
       aliases = ["kunlun_hezudao", "he zudao", "he", "zudao"]
+  # LPC hezudao.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["sword.ni", "sword.riyue", "strike.kong", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -26194,7 +26314,31 @@ chats = [
       learned = "你学会了「日入空山」。\n"
       improve_skills = ["strike", "kunlun-zhang", "martial-cognize"]
     } },
-    { key = "两极剑" value = " inquire about jian (unimplemented: Kunlun NPC-held unique sword, owner traversal, accept_object, GAP #756)" },
+    { key = "两极剑" value = {
+      kind = "npc_item_grant"
+      item = "clone_lib:liangjijian"
+      npc_carry_key = "clone_lib:liangjijian"
+      replacement_item = "clone_lib:changjian"
+      match = "两极剑"
+      count = "liangji_count"
+      family = "昆仑派"
+      master_id = true
+      min_skill_levels = {
+        qiankun_jian = 150
+      }
+      min_skill_levels_or = {
+        tanqin_jifa = 120
+        chess = 120
+      }
+      success = "既然这样，我这柄两极剑你就暂时拿去用吧。"
+      already = "我的佩剑不正是你拿着在用吗，为何还反倒问起我来了？"
+      family_deny = "阁下素来和本派并无渊源，何故来打听我的随身之物？"
+      master_deny = "只有我的弟子才有资格使用我的随身宝剑，阁下还是请回吧。"
+      min_skill_deny = "等你剑术大成之日，我自然不会吝惜佩剑，你再下去练练吧。"
+      min_skill_or_deny = "你跟了我这么久，琴和棋却是这般…唉。"
+      no_item = "你来晚了，我的两极剑现在并不在我手中。"
+      accept_object = true
+    } },
     { key = "绝技" value = "你要问什么绝技？" },
     { key = "绝招" value = "你要问什么绝招？" }
   ]
@@ -26237,9 +26381,13 @@ chats = [
     { type = "tanqin-jifa" skill = "jian-jia" }
   ]
 
+  inquiry_state = {
+    liangji_count = 1
+  }
 
   carry = [
-    { id = items.cloth.id }
+    { id = items.cloth.id },
+    { id = items.liangjijian.id }
   ]
 
 
@@ -26247,8 +26395,12 @@ chats = [
     greet_delay = 1
   }
 
+  # LPC hezudao.c accept_object()：非两极剑拒收（"你给我这种东西干什么？"）；
+  # 两极剑由嫡传（"很好，很好！"）/非嫡传（"多谢这位<respect>将我的宝剑交回。"）
+  # 分别回话后 destruct(ob) 并 return 1（物品销毁，不进 NPC 背包）。
   accept = [
-    { kind = "any" accept = true msg = ["你给我这种东西干什么？", "很好，很好！"] }
+    { kind = "kunlun_liangji" id = "clone_lib:liangjijian" },
+    { kind = "any" accept = false fail_msg = ["你给我这种东西干什么？"] }
   ]
     }
 
@@ -26256,6 +26408,9 @@ chats = [
     characters "kunlun_jiangtao" {
       name = "蒋涛"
       aliases = ["kunlun_jiangtao", "jiang tao", "jiang", "tao"]
+  # LPC jiangtao.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["cuff.shi", "sword.xun", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -26387,6 +26542,9 @@ chats = [
     characters "kunlun_weisiniang" {
       name = "卫四娘"
       aliases = ["kunlun_weisiniang", "wei siniang", "wei", "siniang"]
+  # LPC weisiniang.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["cuff.shi", "sword.xun", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -26541,6 +26699,9 @@ chats = [
     characters "kunlun_xihuazi" {
       name = "西华子"
       aliases = ["kunlun_xihuazi", "xi huazi", "xi", "huazi"]
+  # LPC xihuazi.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["cuff.shi", "sword.xun", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -26684,6 +26845,23 @@ chats = [
   ]
 
 
+  # LPC: xihuazi.c inherit F_GUARDER; set("guarder", ([ "refuse_other":..., "refuse_carry":... ]));
+  # 西华子守前厅，擅闯/背负他人者拒之。$N/$n 已按 loader 约定转 {npc}/{name}。
+  meta = {
+    guarder = {
+      family = "昆仑派"
+      msgs = {
+        refuse_other = "{npc}对{name}怒喝道：他奶奶的，你是什么人？昆仑派岂是让你随便走动地方？"
+        refuse_carry = "{npc}对{name}喝道：你背上背的是什么人？给我放下来！"
+      }
+    }
+  }
+
+  # LPC: xihuazi.c set("coagents", ({ [ "startroom":"/d/kunlun/tieqinju", "id":"he taichong" ] }));
+  coagents = [
+    { id = "he taichong" startroom = "kunlun:tieqinju" }
+  ]
+
   carry = [
     { id = items.sword.id },
     { id = items.pao3.id }
@@ -26695,6 +26873,9 @@ chats = [
     characters "kunlun_zhanchun" {
       name = "詹春"
       aliases = ["kunlun_zhanchun", "zhan chun", "zhan", "chun"]
+  # LPC zhanchun.c chat_chance_combat=100 + perform_action/exert_function 列表
+  chat_chance_combat = 100
+  chat_msg_combat = ["cuff.shi", "sword.xun", "recover", "powerup"]
 
   teach = {
     family = "昆仑派"
@@ -51669,9 +51850,42 @@ chats = [
     str = 38
   }
 
+  inquiry_state = {
+    bagua_count = { random_sides = 5 random_threshold = 3 }
+    xiang_count = { random_sides = 4 random_threshold = 2 }
+  }
+
   inquiries = [
-    { key = "布阵箱" value = " inquire about item2 (unimplemented: GAP #805)" },
-    { key = "铁八卦" value = " inquire about item1 (unimplemented: GAP #805)" }
+    { key = "铁八卦" value = {
+      kind = "npc_item_grant"
+      item = "taohua:bagua"
+      match = "tie bagua"
+      family = "逍遥派"
+      allowed_master_ids = ["wuya zi", "su xinghe"]
+      min_skill_levels = { qimen_wuxing = 80 }
+      count = "bagua_count"
+      vision_msg = "{npc}拿出一只铁八卦给{name}。"
+      success = "这只铁八卦你就先拿去用吧。"
+      family_deny = "你是谁？哪里来的？我认识你么？"
+      master_deny = "哈哈，你刚入我逍遥派就问我要东西？"
+      min_skill_deny = "你又不懂奇门五行，拿去干嘛用？"
+      no_item = "我这里也没有了，你自己去城里买一个吧。"
+    } },
+    { key = "布阵箱" value = {
+      kind = "npc_item_grant"
+      item = "taohua:xiang"
+      match = "buzhen xiang"
+      family = "逍遥派"
+      allowed_master_ids = ["wuya zi", "su xinghe"]
+      min_skill_levels = { qimen_wuxing = 80 }
+      count = "xiang_count"
+      vision_msg = "{npc}拿出一个布阵箱给{name}。"
+      success = "布阵箱给你了，可别到处去瞎搅和。"
+      family_deny = "你是谁？哪里来的？我认识你么？"
+      master_deny = "哈哈，你刚入我逍遥派就问我要东西？"
+      min_skill_deny = "你又不懂奇门五行，拿去干嘛用？"
+      no_item = "我这里也没有了，你等两天再来吧。"
+    } }
   ]
 
   teach = {
@@ -51762,8 +51976,35 @@ chats = [
     str = 25
   }
 
+  coagents = [
+    { id = "kang guangling" startroom = "xiaoyao:muwu1" },
+    { id = "xue muhua" startroom = "xiaoyao:muwu2" }
+  ]
+
+  inquiry_state = {
+    lunyu_count = 1
+    book_count = 1
+  }
+
   inquiries = [
-    { key = "论语" value = " inquire about me (unimplemented: GAP #806)" }
+    { key = "论语" value = {
+      kind = "npc_item_grant"
+      item = "clone_lib:lbook4"
+      match = "lbook4"
+      family = "逍遥派"
+      allowed_master_ids = ["wuya zi", "su xinghe"]
+      count = "lunyu_count"
+      fallback_items = ["clone_lib:strike_book", "clone_lib:hand_book"]
+      fallback_count = "book_count"
+      vision_msg = "{npc}从怀里掏出一本旧书，交了给{name}。"
+      fallback_vision_msg = "{npc}翻箱倒柜找了半天，找出一本旧书，交了给{name}。"
+      success = "这本书可千万不要借给别人啊，他们一借就不还的了。"
+      fallback_success = "这本书可千万不要借给别人啊，他们一借就不还的了。"
+      family_deny = "干嘛你要？"
+      master_deny = "你来晚了，那本《论语》我已经赠送给别入了。"
+      no_item = "你来晚了，那本《论语》我已经赠送给别入了。"
+      fallback_no_item = "我现在手头没有什么书了。"
+    } }
   ]
 
   teach = {
@@ -52022,6 +52263,29 @@ chats = [
     max_neili = 5500
     max_qi = 5000
     str = 29
+  }
+
+  coagents = [
+    { id = "wuya zi" startroom = "xiaoyao:shishi" }
+  ]
+
+  meta = {
+    guarder = {
+      family = "逍遥派"
+      allow_master_ids = ["wuya zi"]
+      min_exp = 300000
+      min_skills = { xiaoyao_xinfa = 120 }
+      msgs = {
+        refuse_other = "{npc}对{name}冷喝道：阁下请留步，此处乃本门禁地，旁人不得入内。"
+        refuse_carry = "{npc}对{name}喝道：你背负的是什么人，还不快快给我放下！"
+        refuse_exp = "{npc}对{name}说道：你这种身手不要去那里，好好学我们逍遥派武功。"
+        refuse_skill = "{npc}对{name}说道：连我们逍遥心法都学不好，乱走什么？"
+        pass = [
+          "{npc}叹了口气。",
+          "{npc}对{name}说道：去吧，去吧！有缘者事竟成。"
+        ]
+      }
+    }
   }
 
   inquiries = [
@@ -52482,8 +52746,36 @@ chats = [
       learned = "你学会了「海渊式」。\n"
       improve_skills = ["hand", "zhemei-shou", "martial-cognize"]
     } },
-    { key = "逍遥神仙环" value = " inquire about zhihuan (unimplemented: GAP #807)" },
-    { key = "掌门人信物" value = " inquire about zhihuan (unimplemented: GAP #807)" },
+    { key = "逍遥神仙环" value = {
+      kind = "xiaoyao_zhihuan"
+      item = "clone_lib:zhihuan"
+      family = "逍遥派"
+      master_id = true
+      min_skill_levels_or = { zhemei_shou = 200 liuyang_zhang = 200 }
+      family_deny = "给我滚开！"
+      master_deny = "你还不配！"
+      skill_deny = "你拿去也没用。"
+      in_hand = "本门的信物不就在你手中吗？"
+      not_here = "你来晚了，逍遥神仙环现在不在我手中。"
+      same_family = "逍遥神仙环现在落在本派{name}手中，你要用就去找他吧。"
+      other_family = "我正为此事担忧呢，本门信物现在落入了{name}之手，你赶快去把他杀了，把指环取回来！"
+      vision_msg = "$N微微一笑，道：“这逍遥神仙环你便拿去，希望日后你能继承我的衣钵。”"
+    } },
+    { key = "掌门人信物" value = {
+      kind = "xiaoyao_zhihuan"
+      item = "clone_lib:zhihuan"
+      family = "逍遥派"
+      master_id = true
+      min_skill_levels_or = { zhemei_shou = 200 liuyang_zhang = 200 }
+      family_deny = "给我滚开！"
+      master_deny = "你还不配！"
+      skill_deny = "你拿去也没用。"
+      in_hand = "本门的信物不就在你手中吗？"
+      not_here = "你来晚了，逍遥神仙环现在不在我手中。"
+      same_family = "逍遥神仙环现在落在本派{name}手中，你要用就去找他吧。"
+      other_family = "我正为此事担忧呢，本门信物现在落入了{name}之手，你赶快去把他杀了，把指环取回来！"
+      vision_msg = "$N微微一笑，道：“这逍遥神仙环你便拿去，希望日后你能继承我的衣钵。”"
+    } },
     { key = "化妖功" value = {
       kind = "sect_master_grant"
       perform_id = "zhemei-shou/hua"
@@ -52614,7 +52906,8 @@ chats = [
 
 
   carry = [
-    { id = items.cloth.id }
+    { id = items.cloth.id },
+    { id = items.zhihuan.id }
   ]
 
     }

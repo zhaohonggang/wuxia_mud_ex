@@ -80,6 +80,26 @@ defmodule Kantele.World.NpcGreetingTest do
     refute String.contains?(text, "{respect}")
   end
 
+  test "{respect} 用动态敬称渲染（GAP #758：性别/身份/年龄，而非写死「客官」）" do
+    # 女性玩家（无身份、年龄 25）→ RANK_D->query_respect = "姑娘"
+    player =
+      player_with_literate(50)
+      |> Map.put(:name, "阿碧")
+      |> Map.put(:meta, %PlayerMeta{
+        vitals: Vitals.new(),
+        stats: Stats.new(),
+        combat: Kantele.Character.Combat.new(),
+        env: %{"gender" => "女性", "age" => 25}
+      })
+
+    MoveEvent.notice(build_conn(zhuziliu_npc()), notice_event(player))
+
+    assert_receive {:room_message, text}
+    assert text =~ "这位姑娘"
+    refute String.contains?(text, "客官")
+    refute String.contains?(text, "{respect}")
+  end
+
   test "识字>99 的玩家进入：朱子柳不问候（LPC return）" do
     MoveEvent.notice(build_conn(zhuziliu_npc()), notice_event(player_with_literate(100)))
     refute_receive {:room_message, _}, 100

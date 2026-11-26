@@ -23,53 +23,201 @@ defmodule Kantele.Character.FamilyEvent do
   alias Kantele.Character, as: PlayerMeta
   alias Kantele.Character.CommandView
   alias Kantele.Character.Records
+  alias Kantele.Character.Stats
   alias Kantele.SectMaster
   alias Kantele.World.NameD
   alias Kantele.World.NpcActions.Helpers, as: NpcHelpers
   alias Kantele.World.RoomActions.Helpers, as: RoomHelpers
   alias Kantele.World.ShaolinApprenticeDialogue
 
+  # #808 珍珓 pass_zhenlong 分支：优先于 recruit_gate?/3（permit_recruit），
+  # 仅当 NPC 为「无崖子」且玩家持有 temp["pass_zhenlong"] 时触发。
+  # 依据 LPC wuyazi.c:143-180 attempt_apprentice pass_zhenlong 分支。
   def result(conn, %{data: %{ok: true} = data}) do
     character = conn.character
     apprentice = Map.get(data, :apprentice) || %{}
 
-    case SectMaster.recruit_gate?(nil, character, apprentice) do
-      {:error, reason} ->
-        reject(conn, reason)
+    cond do
+      wuyazi_pass_zhenlong?(character, data) ->
+        handle_pass_zhenlong(conn, character, data, apprentice)
 
-      # #869 梅庄东方不败弟子：只写 move_party 标记，LPC 不收徒。
-      # #903 桃花岛黄药师低经验分支：标记值须为随机指派的弟子名（元组形式），
-      # 且 LPC 同时 set("family/family_name","桃花岛") 但不 recruit → defer_family。
-      {:defer, reason, mark} ->
-        {mark_key, mark_value} = normalize_defer_mark(mark)
-        character = put_character_mark(character, mark_key, mark_value)
-        character = maybe_defer_family(character, apprentice)
+      true ->
+        gate_result = SectMaster.recruit_gate?(nil, character, apprentice)
+        handle_recruit_gate_result(conn, character, data, apprentice, gate_result)
+    end
+  end
+
+  # 提取既有 case 体，供 pass_zhenlong 分支在执行完传功后复用常规门控分支。
+  defp handle_recruit_gate_result(conn, _character, _data, _apprentice, {:error, reason}) do
+    reject(conn, reason)
+  end
+
+  defp handle_recruit_gate_result(conn, character, data, apprentice, {:defer, reason, mark}) do
+    {mark_key, mark_value} = normalize_defer_mark(mark)
+    character = put_character_mark(character, mark_key, mark_value)
+    character = maybe_defer_family(character, apprentice)
+    Records.save(character)
+
+    conn
+    |> put_character(character)
+    |> render(CommandView, "text", %{text: "#{reason}\n"})
+    |> prompt(CommandView, "prompt", %{})
+  end
+
+  defp handle_recruit_gate_result(conn, character, data, apprentice, {:error_with_mark, reason, mark}) do
+    character = put_character_mark(character, mark)
+    Records.save(character)
+    conn = put_character(conn, character)
+    reject(conn, reason)
+  end
+
+  defp handle_recruit_gate_result(conn, character, data, apprentice, :ok) do
+    accept(conn, character, data, apprentice, "")
+  end
+
+  defp handle_recruit_gate_result(conn, character, data, apprentice, {:ok, warning}) do
+    accept(conn, character, data, apprentice, warning)
+  end
+
+  defp handle_recruit_gate_result(conn, character, data, apprentice, {:ok_with_mark, warning, mark}) do
+    character = put_character_mark(character, mark)
+    Records.save(character)
+    conn = put_character(conn, character)
+    accept(conn, character, data, apprentice, warning)
+  end
+
+  # #808 珍珓 pass_zhenlong 分支：无崖子优先于 permit_recruit 的收徒分支。
+  # 依据 LPC wuyazi.c:143-180 attempt_apprentice。
+  defp wuyazi_pass_zhenlong?(character, data) do
+    Map.get(data, :master_name) == "无崖子" and
+      Kantele.Character.PlayerMeta.get_temp(character.meta, "pass_zhenlong")
+  end
+
+  defp handle_pass_zhenlong(conn, character, data, apprentice) do
+    # 1. delete_temp("pass_zhenlong")
+    character =
+      %{character | meta: Kantele.Character.PlayerMeta.delete_temp(character.meta, "pass_zhenlong")}
+
+    # 2. 检查 betrayer/times：>0 时叹息+告白拒绝（优先于 recruit_gate?/3）
+    env = Map.get(character.meta, :env) || %{}
+    betrayer = Map.get(env, :betrayer) || Map.get(env, "betrayer") || %{}
+    btimes =
+      case betrayer do
+        %{times: t} when is_integer(t) -> t
+        %{"times" => t} when is_integer(t) -> t
+        _ -> 0
+      end
+
+    cond do
+      is_integer(btimes) and btimes > 0 ->
+        room_id = character.room_id
+        conn = maybe_broadcast_sigh(conn, room_id, data.master_name)
+        conn = maybe_broadcast_say(conn, room_id, data.master_name, "你背叛过师门，我不收你。")
+
+        reject(conn, "无崖子说道：「你背叛过师门，我不收你。」\n")
+
+      true ->
+        # 3. set("betryer/times", btimes) —— 拼写保留，与 LPC typo 对齐
+        env =
+          Map.put(
+            env,
+            "betryer",
+            Map.put(Map.get(env, "betryer") || %{}, :times, btimes)
+          )
+        character =
+          %{character | meta: %{character.meta | env: env}}
+
+        # 4. max_neili < 500 时传功：内力上限 + 随机[500,600)，force/bei ming shengong 提至 50+random(10)
+        vitals = Map.get(character.meta, :vitals) || %{}
+        max_neili = Map.get(vitals, :max_neili) || 0
+
+        character =
+          if max_neili < 500 do
+            new_max_neili = 500 + :rand.uniform(100)
+            vitals = %{vitals | max_neili: new_max_neili}
+            character = %{character | meta: %{character.meta | vitals: vitals}}
+
+            stats = Map.get(character.meta, :stats) || %Stats{}
+            stats =
+              maybe_set_force(stats)
+              |> maybe_set_beiming_shengong()
+
+            character = %{character | meta: %{character.meta | stats: stats}}
+
+            room_id = character.room_id
+            conn =
+              if is_binary(room_id) do
+                RoomHelpers.broadcast_vision(
+                  conn,
+                  room_id,
+                  "$N对$n道：「你内力修为不足，老朽传你一股内力助你一臂之力。」\n"
+                )
+              else
+                conn
+              end
+            {character, conn}
+          else
+            {character, conn}
+          end
+
+        {character, conn} = character
+
+        # 落盘传功/删除临时标记，然后进入常规 recruit_gate?/3
+        # 注意：拒绝时不 put_character，保持 update_character 为 nil（与 {:error, reason} 分支一致）；
+        # 收徒成功由 accept/5 负责 put_character。
         Records.save(character)
 
-        conn
-        |> put_character(character)
-        |> render(CommandView, "text", %{text: "#{reason}\n"})
-        |> prompt(CommandView, "prompt", %{})
+        gate_result = SectMaster.recruit_gate?(nil, character, apprentice)
+        handle_recruit_gate_result(conn, character, data, apprentice, gate_result)
+    end
+  end
 
-      # #869 黑白子/黄钟公：标记先落盘，但被 exp/技能门拒绝（LPC 原样）。
-      {:error_with_mark, reason, mark} ->
-        character = put_character_mark(character, mark)
-        Records.save(character)
-        conn = put_character(conn, character)
-        reject(conn, reason)
+  # force < 50 时提至 50+random(10)
+  defp maybe_set_force(%Stats{} = stats) do
+    if (Map.get(stats.skills, "force") || 0) < 50 do
+      Stats.set_skill(stats, "force", 50 + :rand.uniform(10))
+    else
+      stats
+    end
+  end
 
-      :ok ->
-        accept(conn, character, data, apprentice, "")
+  defp maybe_set_force(stats), do: stats
 
-      {:ok, warning} ->
-        accept(conn, character, data, apprentice, warning)
+  # beiming-shengong < 50 时提至 50+random(10)
+  defp maybe_set_beiming_shengong(%Stats{} = stats) do
+    if (Map.get(stats.skills, "beiming-shengong") || 0) < 50 do
+      Stats.set_skill(stats, "beiming-shengong", 50 + :rand.uniform(10))
+    else
+      stats
+    end
+  end
 
-      # #869 黑白子/黄钟公：先落 move_party 标记，再按常规门控收徒。
-      {:ok_with_mark, warning, mark} ->
-        character = put_character_mark(character, mark)
-        Records.save(character)
-        conn = put_character(conn, character)
-        accept(conn, character, data, apprentice, warning)
+  defp maybe_set_beiming_shengong(stats), do: stats
+
+  # LPC command("sigh")：向房间广播叹息动作（不包含行动者自己，对应 {me} 排除）
+  defp maybe_broadcast_sigh(conn, room_id, _master_name) do
+    if is_binary(room_id) do
+      RoomHelpers.broadcast_vision(
+        conn,
+        room_id,
+        "$N叹了口气。\n",
+        exclude_actor: true
+      )
+    else
+      conn
+    end
+  end
+
+  # LPC command("say ...")：向房间广播说话（含行动者自己）
+  defp maybe_broadcast_say(conn, room_id, master_name, text) do
+    if is_binary(room_id) do
+      RoomHelpers.broadcast_vision(
+        conn,
+        room_id,
+        "#{master_name}说道：#{text}\n"
+      )
+    else
+      conn
     end
   end
 

@@ -14,18 +14,21 @@ defmodule Kantele.Npc.Guarder do
   @doc "守卫识别 (LPC: is_guarder)"
   def is_guarder?(_self), do: true
 
-  @doc "放行判定 (LPC: permit_pass) full 版本"
-  def permit_pass(opts) do
-    %{
-      living?: living,
-      my_family: my_fam,
-      guest_family: fam,
-      guest_born_family: born_fam,
-      carried_families: carried,
-      msgs: msgs
-    } = opts
+  @doc """
+  放行判定 (LPC: permit_pass) full 版本。
 
-    msgs = msgs || %{}
+  #810 苏星河 `suxingh.c:156-179` 在 `::permit_pass`（门派/携带者）之后追加
+  自定义门：`master_id == "wuya zi"` 直放 → `combat_exp >= min_exp` →
+  `min_skills` 全部达标 → 放行（并回传 sigh/say 台词由宿主广播）。
+  新字段全部可选，未配置时与旧版逐字等价。
+  """
+  def permit_pass(opts) do
+    living = Map.get(opts, :living?, true)
+    my_fam = Map.get(opts, :my_family)
+    fam = Map.get(opts, :guest_family)
+    born_fam = Map.get(opts, :guest_born_family)
+    carried = Map.get(opts, :carried_families) || []
+    msgs = Map.get(opts, :msgs) || %{}
 
     cond do
       not living ->
@@ -40,9 +43,80 @@ defmodule Kantele.Npc.Guarder do
       Enum.any?(carried, fn c -> c != fam end) ->
         {:deny, Map.get(msgs, :refuse_carry) || "你背的是谁？还不快快放下！"}
 
+      master_bypass?(opts) ->
+        allow_with_pass_msg(msgs)
+
+      below_exp?(opts) ->
+        {:deny, Map.get(msgs, :refuse_exp) || "你这种身手不要去那里，好好学本派武功。"}
+
+      failing_skill = below_min_skill(opts) ->
+        {:deny, per_skill_deny(msgs, failing_skill)}
+
       true ->
-        {:allow}
+        allow_with_pass_msg(msgs)
     end
+  end
+
+  defp allow_with_pass_msg(msgs) do
+    case Map.get(msgs, :pass) do
+      lines when is_list(lines) and lines != [] -> {:allow, lines}
+      text when is_binary(text) and text != "" -> {:allow, [text]}
+      _ -> {:allow}
+    end
+  end
+
+  defp master_bypass?(opts) do
+    case Map.get(opts, :allow_master_ids) do
+      ids when is_list(ids) and ids != [] ->
+        Enum.any?(ids, &(&1 == Map.get(opts, :guest_master_id)))
+
+      _ ->
+        false
+    end
+  end
+
+  defp below_exp?(opts) do
+    case {Map.get(opts, :min_exp), Map.get(opts, :guest_exp, 0)} do
+      {min, exp} when is_integer(min) -> (exp || 0) < min
+      _ -> false
+    end
+  end
+
+  defp below_min_skill(opts) do
+    skills = Map.get(opts, :guest_skill_levels) || %{}
+
+    case Map.get(opts, :min_skills) do
+      levels when is_map(levels) and map_size(levels) > 0 ->
+        Enum.find_value(levels, fn {skill, min} ->
+          if skill_level(skills, skill) < min, do: skill, else: nil
+        end)
+
+      _ ->
+        nil
+    end
+  end
+
+  defp skill_level(skills, skill) when is_binary(skill) do
+    Map.get(skills, skill) || Map.get(skills, String.replace(skill, "_", "-")) || 0
+  end
+
+  defp skill_level(_skills, _skill), do: 0
+
+  defp per_skill_deny(msgs, skill) do
+    denies = Map.get(msgs, :refuse_min_skills)
+
+    per_skill =
+      case {denies, skill} do
+        {map, key} when is_map(map) and is_binary(key) ->
+          Map.get(map, key) ||
+            Map.get(map, String.replace(key, "_", "-")) ||
+            Map.get(map, String.replace(key, "-", "_"))
+
+        _ ->
+          nil
+      end
+
+    per_skill || Map.get(msgs, :refuse_skill) || "你这点本事还是别乱走了。"
   end
 
   @doc """

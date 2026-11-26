@@ -178,6 +178,13 @@ zones "xiaoyao" {
   flags = [
     "startroom"
   ]
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "su xinghe"
+  guard_directions = ["in"]
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
     }
 
   room_exits "qingcaop" {

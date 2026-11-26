@@ -73,10 +73,12 @@ defmodule Kantele.World.NpcActions.ChooseTest do
   end
 
   describe "run/2（pet/money 守卫）" do
-    test "无 pet/money temp → say 报价（RANK_D 尊称按 Helpers.respect 落「大侠」）" do
+    test "无 pet/money temp → say 报价（RANK_D 尊称按 Helpers.respect 动态渲染）" do
       conn2 = Choose.run(conn(%Stats{skills: %{"training" => 50}}), params())
 
-      assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "老板说道：这位大侠，每只宠物一百两黄金！"))
+      # #758：尊称已由写死「大侠」改为 LPC rankd.c 动态敬称；夹具无 gender/class/age
+      # → 缺省「男性/20岁/无身份」→ respect/1 = "壮士"。
+      assert Enum.any?(vision_texts(conn2), &String.contains?(&1, "老板说道：这位壮士，每只宠物一百两黄金！"))
       # say 是广播；不推私聊
       assert out_text(conn2) == ""
     end
