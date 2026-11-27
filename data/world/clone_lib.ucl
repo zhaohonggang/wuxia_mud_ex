@@ -51737,7 +51737,20 @@ chats = [
 
   inquiries = [
     { key = "腊八粥" value = "拿了赏善罚恶令，上侠客岛就可以喝腊八粥，你也想去？" },
-    { key = "赏善罚恶令" value = " inquire about give_ling (unimplemented: GAP #800)" }
+    { key = "赏善罚恶令" value = {
+      kind = "give_item"
+      item = "clone_lib:shangfaling"
+      unique = true
+      hostile_shen = -100000
+      hostile_emote = "哼了一声"
+      hostile_say = "尔等邪魔歪道，我正欲相除，你却反找上门来了！"
+      min_weiwang = 100000
+      min_weiwang_deny = "阁下非江湖成名人士，还是请回吧！"
+      min_skill_levels = { force = 200 martial_cognize = 200 }
+      min_skill_deny = "阁下内功不济，这腊八粥你还是喝不得！"
+      success = "拿去吧，记得上侠客岛喝腊八粥！"
+      already = "阁下也太贪心了吧！"
+    } }
   ]
 
   skills = [

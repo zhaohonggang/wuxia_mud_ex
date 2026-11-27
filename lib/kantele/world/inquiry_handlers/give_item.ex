@@ -23,6 +23,11 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
         min_skill_levels = { bagua_dao = 150 }  # 技能下限（LPC `query_skill(...) < 150` 即拒）
         min_gongxian = 2200           # 门派贡献下限（LPC `query("gongxian") < 2200` 即拒）
         max_neili = 3200              # 内力上限下限（LPC `query("max_neili") < 3200` 即拒）
+        hostile_shen = -100000        # 杀气低于此值直接翻脸开打（LPC `shen < -100000` → kill_ob）
+        hostile_emote = "哼了一声"   # 开打前 NPC 动作（LPC command("heng")，缺省不播）
+        hostile_say = "..."           # 开打前 NPC 室内说（LPC command("say ...")，缺省不播）
+        min_weiwang = 100000          # 威望下限（LPC `query("weiwang") < 100000` 即拒）
+        min_weiwang_deny = "..."      # 威望不足时的返回值
         master_id = true              # 仅本门师父亲传弟子（family/master_id == npc id）
         allowed_master_ids = ["chen jialuo", "wuchen daozhang"]  # 多师父白名单（红花会 #1010）
         master_before_gates = true    # 师父门移到 shen/技能门之前（红花会 ask_jian/ask_bi）
@@ -73,6 +78,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   alias Kantele.World.Item
   alias Kantele.World.Items
   alias Kantele.World.NpcActions.Helpers
+  alias Kantele.World.NpcActions.NpcAttack
 
   def run(conn, config, data) when is_map(config) and is_map(data) do
     character = current(conn)
@@ -91,6 +97,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     gate = if master_first?, do: nil, else: gate_denial(conn, character, config)
 
     cond do
+      # LPC zhangsan2.c give_ling 首项：shen < -100000 → heng + say + kill_ob，return 1（不私发文本）。
+      hostile_shen?(conn, character, config, data) ->
+        hostile_shen_attack(conn, character, config, data)
+
       already_known?(character, config) ->
         reply(conn, Helpers.respect(character) <> maxed_text(config))
 
@@ -302,6 +312,9 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
       not skill_first? and below_min_skill?(stats, config) ->
         Map.get(config, "min_skill_deny") || "你这门功夫还练得不到家，自己下去练练再来吧！"
 
+      below_min_weiwang?(stats, config) ->
+        Map.get(config, "min_weiwang_deny") || "你在我这里碌碌无为，这东西暂时还不能给你。"
+
       below_min_gongxian?(stats, config) ->
         Map.get(config, "min_gongxian_deny") || "你在我这里碌碌无为，这东西暂时还不能给你。"
 
@@ -318,6 +331,60 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
       true ->
         nil
     end
+  end
+
+  # LPC zhangsan2.c give_ling：shen < -100000 时翻脸开打。
+  # 顺序：emote（heng）→ say（室内广播）→ kill_ob，不私发 tell_object（对应 return 1）。
+  defp hostile_shen?(conn, character, config, data) do
+    case Map.get(config, "hostile_shen") do
+      threshold when is_integer(threshold) ->
+        stat(stats_of(character), :shen) < threshold
+
+      _ ->
+        false
+    end
+  end
+
+  defp hostile_shen_attack(conn, character, config, data) do
+    room_id = Map.get(data, :npc_room_id)
+    npc_name = Map.get(data, :npc_name) || "对方"
+
+    conn =
+      case {Map.get(config, "hostile_emote"), room_id} do
+        {emote, room_id} when is_binary(emote) and is_binary(room_id) ->
+          Helpers.broadcast(conn, room_id, "#{npc_name}#{emote}。\n")
+
+        _ ->
+          conn
+      end
+
+    conn =
+      case {Map.get(config, "hostile_say"), room_id} do
+        {say, room_id} when is_binary(say) and is_binary(room_id) ->
+          message = String.replace(say, "{name}", character.name || "你")
+          Helpers.say(conn, room_id, npc_name, message)
+
+        _ ->
+          conn
+      end
+
+    npc = %{
+      id: Map.get(data, :npc_id),
+      pid: Map.get(data, :npc_pid),
+      name: Map.get(data, :npc_name),
+      room_id: room_id
+    }
+
+    player = %{
+      id: character.id,
+      pid: self(),
+      name: character.name,
+      room_id: character.room_id
+    }
+
+    NpcAttack.kill_ob(npc, player)
+
+    conn
   end
 
   defp stats_of(%{meta: %{stats: stats}}) when not is_nil(stats), do: stats
@@ -391,6 +458,14 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     end
   end
 
+  # LPC `query("weiwang") < N`：侠客岛赏善使者要求 weiwang >= 100000。
+  defp below_min_weiwang?(stats, config) do
+    case Map.get(config, "min_weiwang") do
+      min when is_integer(min) -> stat(stats, :weiwang) < min
+      _ -> false
+    end
+  end
+
   # LPC `query("max_neili") < N`：内力上限存于 meta.vitals.max_neili。
   defp below_max_neili?(character, config) do
     case Map.get(config, "max_neili") do
@@ -407,6 +482,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp valid_in_fumoquan?(%{meta: %{temp: temp}}) when is_map(temp),
     do: Map.get(temp, "valid_in_fumoquan") == 1 or Map.get(temp, :valid_in_fumoquan) == 1
+
   defp valid_in_fumoquan?(_character), do: false
 
   # #1045 少林道象：query_condition("bonze_drug") > 0 → 吃药冷却中，拒发金创药。
@@ -415,8 +491,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     case Map.get(config, "bonze_drug") do
       true ->
         check_bonze_drug(conn)
+
       "true" ->
         check_bonze_drug(conn)
+
       _ ->
         false
     end
@@ -424,6 +502,7 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp check_bonze_drug(conn) do
     conditions = get_session(conn, "conditions") || %{}
+
     case Conditions.query_condition(%{conditions: conditions}, "bonze_drug") do
       n when is_integer(n) and n > 0 -> true
       _ -> false
@@ -435,8 +514,10 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
     case Map.get(config, "guilty_deny") do
       nil ->
         false
+
       "" ->
         false
+
       _ ->
         meta = character.meta || %{}
         guilty = Map.get(meta, :guilty) || Map.get(meta, "guilty") || 0
@@ -448,12 +529,16 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
   defp below_min_int?(character, config) do
     case Map.get(config, "min_int") do
       min when is_integer(min) ->
-        stats = case character.meta do
-          %{stats: stats} -> stats
-          _ -> %{}
-        end
+        stats =
+          case character.meta do
+            %{stats: stats} -> stats
+            _ -> %{}
+          end
+
         Stats.int(stats) < min
-      _ -> false
+
+      _ ->
+        false
     end
   end
 
@@ -466,7 +551,9 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
           case character.meta do
             %{family: family} when is_map(family) ->
               Map.get(family, :generation) || Map.get(family, "generation") || 0
-            _ -> 0
+
+            _ ->
+              0
           end
 
         threshold = (41 - generation) * 20 + 30
@@ -475,10 +562,12 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
         Enum.any?(levels, fn {skill, _min} ->
           level = Map.get(skills, skill, 0) || 0
+
           level =
             if level == 0 and is_binary(skill),
               do: Map.get(skills, String.replace(skill, "_", "-"), 0) || 0,
               else: level
+
           level < threshold
         end)
 
@@ -492,6 +581,9 @@ defmodule Kantele.World.InquiryHandlers.GiveItem do
 
   defp already_text(config),
     do: Map.get(config, "already") || "你现在身上已经有这样东西了。"
+
+  defp min_weiwang_deny_text(config),
+    do: Map.get(config, "min_weiwang_deny") || "你在我这里碌碌无为，这东西暂时还不能给你。"
 
   # LPC `can_perform/<perform_id>` 已习得：发放前先确认（如 商剑鸣「你不是已经会了吗？」）。
   defp already_known?(%{meta: %{stats: %Stats{} = stats}}, config) do
