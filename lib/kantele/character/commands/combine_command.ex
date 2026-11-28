@@ -168,7 +168,7 @@ defmodule Kantele.Character.CombineCommand do
         else
           inst =
             Enum.find(character.inventory, fn i ->
-              item = Items.get!(i.item_id)
+              item = Kantele.World.Item.fetch(i.item_id)
               item.callback_module.matches?(item, name)
             end)
 

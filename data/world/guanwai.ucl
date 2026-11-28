@@ -1672,7 +1672,7 @@ behavior_config = {
 
   carry = [
     { id = items.cloth.id },
-    { id = items.stick.id }
+    { id = quanzhen.items.stick.id }
   ]
 
 

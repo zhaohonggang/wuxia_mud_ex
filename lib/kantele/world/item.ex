@@ -11,6 +11,12 @@ defmodule Kantele.World.Items do
   # （起不来的话所有角色登录都会 `get!` 失败）。
   @impl true
   def initialize(_state) do
+    # 全服单件物品登记表（#893 残阳宝剑类 singleton carry 的消费端依赖）。
+    # 挂在本缓存进程的 initialize 里：进程随 Kickoff 起来且长期存活，
+    # ETS 表不会因为某个 Foreman 重启而丢失；重启清空 = LPC 重启后
+    # find_object 重新 load 的"回池"语义。
+    Kantele.World.SingletonItems.init()
+
     try do
       count = Kantele.World.ForgeTemplates.load_all()
 
@@ -142,6 +148,10 @@ defmodule Kantele.World.Item do
       id: item_id,
       name: "未知物品（#{item_id}）",
       description: "这件物品的定义不在世界数据里。",
+      # 必须带 callback_module：大量命令在拿到定义后调
+      # `item.callback_module.matches?(item, arg)` 做名字匹配，nil 会在
+      # 占位路径上二次崩溃（占位本是为了不崩 Foreman）。
+      callback_module: Kantele.World.Item,
       meta: %{}
     }
   end

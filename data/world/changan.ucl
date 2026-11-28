@@ -3446,7 +3446,8 @@ item_desc = {
 
 
   carry = [
-    { id = items..id },
+    { id = changan.items.changjian.id },
+    # LPC fujiang.c weapon_file=random(5)（changjian/gangdao/gangzhang/changbian/axe 随机），随机武器未建模，暂取 changjian
     { id = items.zhanjia.id }
   ]
 
@@ -5090,7 +5091,7 @@ chats = [
 
 
   carry = [
-    { id = items.yayifu.id },
+    { id = changan.items.yayifu.id },
     { id = items.shawei.id }
   ]
 

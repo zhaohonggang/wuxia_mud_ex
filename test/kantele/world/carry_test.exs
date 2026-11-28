@@ -32,12 +32,17 @@ defmodule Kantele.World.CarryTest do
     end
 
     test "carry 引用能解引用到具体物品（未解引用的是真缺口）", %{world: world} do
-      # 原始形态是 "items.cloth.id"（含点、未解引用），解引用后 "clone_lib:cloth"（不含点）
+      # 原始形态是 "items.cloth.id"（含点、未解引用），解引用后 "clone_lib:cloth"（不含点）。
+      # #893 起 carry 还可能有 singleton map 项（id/fallback 都已解引用、不含点），
+      # 归入"已解引用"侧。
       {unresolved, resolved} =
         world.characters
         |> Enum.flat_map(&(Map.get(&1.meta, :carry) || []))
         |> Enum.uniq()
-        |> Enum.split_with(&String.contains?(&1, "."))
+        |> Enum.split_with(fn
+          %{} -> false
+          ref -> String.contains?(ref, ".")
+        end)
 
       total = length(unresolved) + length(resolved)
 

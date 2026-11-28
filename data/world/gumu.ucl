@@ -1553,8 +1553,11 @@ item_desc = {
 
   chat_chance_combat = 120
   chat_msg_combat = ["perform unarmed.you", "recover", "powerup", "sword.mei"]
-    }
 
+  coagents = [
+    { id = "xiao longnv" startroom = "gumu:zhengting" }
+  ]
+    }
 # Generated from C:/files/git/mud/d/gumu/npc/obj/baipao.c by LPCConverter
 # Zone: gumu
 

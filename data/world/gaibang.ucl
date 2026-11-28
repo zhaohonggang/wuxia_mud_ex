@@ -188,7 +188,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -240,7 +240,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -292,7 +292,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -459,7 +459,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -516,7 +516,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 

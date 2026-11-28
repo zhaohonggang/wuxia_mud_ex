@@ -222,7 +222,7 @@ defmodule Kantele.Character.MakeCommand do
     Enum.reduce_while(recipe.herbs, :ok, fn {herb, count}, _ ->
       inst =
         Enum.find(character.inventory, fn inst ->
-          item = Items.get!(inst.item_id)
+          item = Kantele.World.Item.fetch(inst.item_id)
           item.callback_module.matches?(item, herb)
         end)
 
@@ -242,7 +242,7 @@ defmodule Kantele.Character.MakeCommand do
       Enum.reduce(recipe.herbs, {inventory, []}, fn {herb, count}, {inv, parts} ->
         inv =
           Enum.map(inv, fn inst ->
-            item = Items.get!(inst.item_id)
+            item = Kantele.World.Item.fetch(inst.item_id)
 
             if item.callback_module.matches?(item, herb) do
               %{inst | amount: (inst.amount || 1) - count}

@@ -3372,7 +3372,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.ycloth.id }
+    { id = emei.items.ycloth.id }
   ]
 
   chat_chance_combat = 60

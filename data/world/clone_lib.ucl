@@ -5865,6 +5865,16 @@ zones "clone_lib" {
     wield = "{npc}蓦地纵声长啸，霎时寒芒一闪，一道金光破空划过，落于{npc}掌间。"
     unwield = "{npc}一声轻哼，将手中的残阳宝剑插入剑鞘。"
   }
+
+      meta = {
+        value = 800000
+        weight = 8000
+        unit = "柄"
+        material = "steel"
+        no_sell = 1
+        damage = 140
+        skill_type = "sword"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -6525,6 +6535,13 @@ zones "clone_lib" {
     wield = "{npc}唰的抽出一柄利剑握在手中，剑身青光荡漾，寒气逼人。"
     unwield = "{npc}空舞了数个剑花，将腾龙宝剑插回腰间。"
   }
+
+    meta = {
+      value = 800000
+      unit = "柄"
+      material = "steel"
+      no_sell = "…嗯…这剑倒是口好剑，不过这价钱不好开，我看还是算了吧。"
+    }
     }
 
     items "miaojia1" {
@@ -6539,6 +6556,7 @@ zones "clone_lib" {
       weight = 500
       unit = "本"
       material = "paper"
+      no_sell = "…苗…苗家…金面佛他老人家我可得罪不起。"
       book = {
         skill = "suqin-beijian"
         min_skill = 0
@@ -6562,6 +6580,7 @@ zones "clone_lib" {
       weight = 500
       unit = "本"
       material = "paper"
+      no_sell = "…苗…苗家…金面佛他老人家我可得罪不起。"
       book = {
         skill = "sword"
         min_skill = 150
@@ -8925,7 +8944,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth4.id }
+    { id = beijing.items.cloth4.id }
   ]
 
     }
@@ -8979,7 +8998,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id }
+    { id = beijing.items.cloth1.id }
   ]
 
     }
@@ -9009,7 +9028,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth2.id }
+    { id = beijing.items.cloth2.id }
   ]
 
     }
@@ -9661,7 +9680,7 @@ chats = [
 
 
   carry = [
-    { id = items.yayifu.id }
+    { id = city.items.yayifu.id }
   ]
 
     }
@@ -9717,9 +9736,9 @@ chats = [
 
 
   carry = [
-    { id = items.armor1.id },
+    { id = death.items.armor1.id },
     { id = items.armor2.id },
-    { id = items.blade1.id }
+    { id = death.items.blade1.id }
   ]
 
   ask_handler = "Kantele.NPC.Niutou"
@@ -9775,7 +9794,7 @@ chats = [
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -9824,7 +9843,7 @@ chats = [
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -9873,7 +9892,7 @@ chats = [
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -10027,7 +10046,7 @@ chats = [
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -10079,7 +10098,7 @@ chats = [
 
 
   carry = [
-    { id = items.staff.id },
+    { id = gaibang.items.staff.id },
     { id = items.cloth.id }
   ]
 
@@ -10139,7 +10158,7 @@ chats = [
 
   carry = [
     { id = items.liuxingchui.id },
-    { id = items.hat.id },
+    { id = city.items.hat.id },
     { id = items.boots.id },
     { id = items.xian_cloth.id }
   ]
@@ -10428,8 +10447,8 @@ chats = [
 
 
   carry = [
-    { id = items.bi.id },
-    { id = items.beixin.id }
+    { id = huanghe.items.bi.id },
+    { id = city.items.beixin.id }
   ]
 
     }
@@ -10496,7 +10515,7 @@ chats = [
 
 
   carry = [
-    { id = items.tiejiang.id },
+    { id = hangzhou.items.tiejiang.id },
     { id = items.tiejia.id }
   ]
 
@@ -12167,7 +12186,7 @@ chats = [
 
 
   carry = [
-    { id = items.yayifu.id }
+    { id = city.items.yayifu.id }
   ]
 
     }
@@ -17958,7 +17977,7 @@ teach = {
 
   carry = [
     { id = items.cloth.id },
-    { id = items.staff.id }
+    { id = gaibang.items.staff.id }
   ]
 
     }
@@ -18717,7 +18736,7 @@ teach = {
 
   carry = [
     { id = items.cloth.id },
-    { id = items.staff.id }
+    { id = gaibang.items.staff.id }
   ]
 
     }
@@ -19055,8 +19074,8 @@ teach = {
 
 
   carry = [
-    { id = items.fuchen.id },
-    { id = items.greenrobe.id }
+    { id = quanzhou.items.fuchen.id },
+    { id = wudang.items.greenrobe.id }
   ]
 
     }
@@ -20891,7 +20910,7 @@ teach = {
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -21763,7 +21782,7 @@ teach = {
   }
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -22175,7 +22194,7 @@ teach = {
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -22608,7 +22627,7 @@ teach = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -31366,7 +31385,7 @@ chats = [
 
 
   carry = [
-    { id = items.greenrobe.id }
+    { id = quanzhen.items.greenrobe.id }
   ]
 
 
@@ -35969,7 +35988,7 @@ chats = [
   chat_chance_combat = 120
   chat_msg_combat = ["perform whip.bai", "perform finger.zhi", "perform strike.lian", "powerup", "recover"]
   carry = [
-    { id = items.fuchen.id },
+    { id = beijing.items.fuchen.id },
     { id = items.grayrobe.id }
   ]
 
@@ -36417,7 +36436,7 @@ chats = [
   chat_chance_combat = 120
   chat_msg_combat = ["perform unarmed.hun", "perform unarmed.fen", "perform unarmed.dang", "perform unarmed.jian", "perform parry.suo", "hup", "shield", "recover", "powerup"]
   carry = [
-    { id = items.greenrobe.id }
+    { id = quanzhen.items.greenrobe.id }
   ]
 
     }
@@ -49752,7 +49771,7 @@ chats = [
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -49850,7 +49869,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.greenrobe.id }
+    { id = wudang.items.greenrobe.id }
   ]
 
     }
@@ -49886,7 +49905,7 @@ chats = [
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -50105,7 +50124,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.whiterobe.id }
+    { id = wudang.items.whiterobe.id }
   ]
 
     }
@@ -50141,7 +50160,7 @@ chats = [
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -50278,7 +50297,7 @@ chats = [
 
 
   carry = [
-    { id = items.whiterobe.id }
+    { id = wudang.items.whiterobe.id }
   ]
 
 
@@ -50555,7 +50574,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }
@@ -50677,7 +50696,7 @@ chats = [
 
   carry = [
     { id = items.blade.id },
-    { id = items.whiterobe.id }
+    { id = wudang.items.whiterobe.id }
   ]
 
     }
@@ -50925,7 +50944,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
 
@@ -51021,7 +51040,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.whiterobe.id }
+    { id = wudang.items.whiterobe.id }
   ]
 
     }
@@ -51112,7 +51131,7 @@ chats = [
 
 
   carry = [
-    { id = items.whiterobe.id }
+    { id = wudang.items.whiterobe.id }
   ]
 
     }
@@ -51558,7 +51577,7 @@ chats = [
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
 
@@ -51606,7 +51625,7 @@ chats = [
 
 
   carry = [
-    { id = items.greenrobe.id },
+    { id = wudang.items.greenrobe.id },
     { id = items.changjian.id }
   ]
 
@@ -58846,7 +58865,7 @@ chats = [
       unarmed = "huntian-baojian"
     }
     carry = [
-      { id = "clone_lib:whiterobe" }
+      { id = wudang.items.whiterobe.id }
     ]
   }
 

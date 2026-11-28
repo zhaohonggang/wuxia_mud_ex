@@ -214,7 +214,7 @@ defmodule Kantele.Character.ForgeCustomizeCommand do
     sid = session.sid
     item_id = "forge:#{owner_id}-#{sid}"
 
-    material = Items.get!(session.material_item_id)
+    material = Kantele.World.Item.fetch(session.material_item_id)
     entry = Forging.type_entry(session.ctype)
 
     weight = div((material.meta.weight || 150) * (session.wscale || 150), 100)

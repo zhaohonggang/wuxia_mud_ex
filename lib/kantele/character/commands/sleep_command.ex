@@ -66,7 +66,7 @@ defmodule Kantele.Character.SleepCommand do
 
     has_sleepbag =
       Enum.any?(character.inventory, fn inst ->
-        Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
+        Kalevala.Meta.get(Kantele.World.Item.fetch(inst.item_id).meta, "sleepbag") == true
       end)
 
     room_sleep = Map.get(room, :attrs, %{})["sleep_room"] == true
@@ -135,7 +135,7 @@ defmodule Kantele.Character.SleepCommand do
 
     has_sleepbag =
       Enum.any?(character.inventory, fn inst ->
-        Kalevala.Meta.get(Items.get!(inst.item_id).meta, "sleepbag") == true
+        Kalevala.Meta.get(Kantele.World.Item.fetch(inst.item_id).meta, "sleepbag") == true
       end)
 
     room_sleep = room_attrs["sleep_room"] == true

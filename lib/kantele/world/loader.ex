@@ -688,7 +688,16 @@ defmodule Kantele.World.Loader do
   整个 `kunming.ucl` 解析失败。**加载期不能碰 cache**。
   """
   def parse_carry(carry) when is_list(carry) do
-    Enum.map(carry, fn entry -> entry && entry.id end)
+    Enum.map(carry, fn
+      # #893 singleton carry 项：`{ id = <ref> singleton = true fallback = <ref> }`
+      # —— LPC 全服单件（/clone/lonely/*）的持有者遍历表达。保留结构，
+      # 引用串由 resolve_goods 在 build_room_characters（有 zones 上下文）解。
+      entry when is_map(entry) and is_map_key(entry, :singleton) ->
+        entry
+
+      entry ->
+        entry && entry.id
+    end)
   end
 
   def parse_carry(_), do: []
@@ -848,7 +857,21 @@ defmodule Kantele.World.Loader do
   defp resolve_goods(goods, zone, zones) when is_list(goods) do
     Enum.map(goods, fn
       ref when is_binary(ref) -> deref_item_ref(ref, zone, zones)
-      id -> id
+      # #893 singleton carry 项：id 与 fallback 引用都要解（fallback 可能 nil）。
+      # 注意 UCL 裸 true 加载为字符串 "true"（既有坑），用 in [true, "true"] 判定。
+      %{id: ref} = entry when is_binary(ref) ->
+        %{
+          id: deref_item_ref(ref, zone, zones),
+          singleton: Map.get(entry, :singleton) in [true, "true"],
+          fallback: case Map.get(entry, :fallback) do
+            nil -> nil
+            fb when is_binary(fb) -> deref_item_ref(fb, zone, zones)
+            _ -> nil
+          end
+        }
+
+      id ->
+        id
     end)
   end
 
@@ -857,11 +880,84 @@ defmodule Kantele.World.Loader do
   defp deref_item_ref(ref, zone, zones) do
     if Regex.match?(@item_ref, ref) do
       case safe_dereference(zones, zone, ref) do
-        {:ok, item_id} when is_binary(item_id) -> item_id
-        _ -> ref
+        {:ok, item_id} when is_binary(item_id) ->
+          item_id
+
+        _ ->
+          # 本区 + clone_lib 都解不出：转换器把 LPC `carry_object("/d/<zone>/obj/<key>")`
+          # 写成了不带区前缀的 `items.<key>.id`（原型进了 clone_lib 后，键所在的
+          # 具体区已经不是当前区）。回退到**全 zone 扫描**：唯一命中才用并 warn
+          # 提示数据应补全限定前缀；多区同名或无定义保持原串（消费端查不到
+          # 即空手），由数据侧按 LPC 源逐条回填，引擎不猜。
+          case global_item_fallback(ref, zones) do
+            {:ok, item_id} -> item_id
+            :ambiguous -> warn_ambiguous_item_ref(ref, zone) && ref
+            :missing -> ref
+          end
       end
     else
       ref
+    end
+  end
+
+  # 全 zone 扫描 `items.<key>.id`：恰好一个区定义该键才命中。
+  defp global_item_fallback(ref, zones) do
+    case String.split(ref, ".") do
+      ["items", key, "id"] when key != "" ->
+        defining =
+          Enum.filter(zones, fn z ->
+            item_key? = fn item_key -> item_key == key end
+
+            case z.items do
+              # 加载中期：parsed zone，items 是 %{key => item} map
+              items when is_map(items) ->
+                Enum.any?(items, fn {k, _item} -> item_key?.(to_string(k)) end)
+
+              # 加载完成后：zone 结构体，items 是 list
+              items when is_list(items) ->
+                Enum.any?(items, fn item ->
+                  case String.split(item.id, ":", parts: 2) do
+                    [_, item_key] -> item_key?.(item_key)
+                    _ -> false
+                  end
+                end)
+
+              _ ->
+                false
+            end
+          end)
+
+        case defining do
+          [%{id: zone_id}] ->
+            warn_global_fallback(ref, zone_id)
+            {:ok, "#{zone_id}:#{key}"}
+
+          [] ->
+            :missing
+
+          _multi ->
+            :ambiguous
+        end
+
+      _ ->
+        :missing
+    end
+  end
+
+  defp warn_ambiguous_item_ref(ref, zone) do
+    warn_unresolved(:item_ref_ambiguous, zone.id, zone.id, ref)
+    true
+  end
+
+  defp warn_global_fallback(ref, zone_id) do
+    warn_unresolved(:item_ref_global_fallback, zone_id, zone_id, ref)
+    true
+  end
+
+  defp key_of(ref) do
+    case String.split(ref, ".") do
+      ["items", key, "id"] -> key
+      _ -> ref
     end
   end
 

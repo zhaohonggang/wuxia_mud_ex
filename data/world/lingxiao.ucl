@@ -2450,8 +2450,11 @@ chats = [
 
   chat_chance_combat = 120
   chat_msg_combat = ["sword.chong", "cuff.jue", "strike.piao", "recover"]
-    }
 
+  coagents = [
+    { id = "bai zizai" startroom = "lingxiao:dilao" }
+  ]
+    }
 # Generated from C:/files/git/mud/d/lingxiao/npc/yaoniang.c by LPCConverter
 # Zone: lingxiao
 

@@ -157,7 +157,7 @@ defmodule Kantele.Character.CookCommand do
 
   defp find_cailiao(character) do
     Enum.find(character.inventory, fn inst ->
-      item = Items.get!(inst.item_id)
+      item = Kantele.World.Item.fetch(inst.item_id)
       item.callback_module.matches?(item, "cai liao") || item.id == "cai_liao"
     end)
     |> case do
@@ -166,7 +166,7 @@ defmodule Kantele.Character.CookCommand do
 
       inst ->
         if Map.get(inst, :amount, 1) >= 1 do
-          item = Items.get!(inst.item_id)
+          item = Kantele.World.Item.fetch(inst.item_id)
           {:ok, item, inst}
         else
           {:error, "你现在手头没有菜料，没法做菜。"}

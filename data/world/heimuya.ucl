@@ -2526,6 +2526,35 @@ item_desc = {
 # Generated from C:/files/git/mud/d/heimuya/npc/obj/bishou.c by LPCConverter
 # Zone: heimuya
 
+# Generated from C:/files/git/mud/kungfu/class/riyue/dongfang/zhen.c by LPCConverter
+# Zone: heimuya
+
+    items "zhen" {
+      name = "长针"
+      aliases = ["zhen"]
+      description = "这是一根细长的针。"
+  verbs = [
+    "get",
+    "drop",
+    "wield",
+    "unwield"
+  ]
+
+  messages = {
+    wield = "{npc}拿出一根{name}，捏在手中。"
+    unwield = "{npc}放下手中的{name}。"
+  }
+
+      meta = {
+        damage = 55
+        skill_type = "throwing"
+        value = 300
+        weight = 20
+        unit = "根"
+        material = "iron"
+      }
+    }
+
     items "bishou" {
       name = "月牙匕"
       aliases = ["yueya bi", "yueya", "bi", "dagger"]
@@ -3354,7 +3383,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.zhen.id },
+    { id = heimuya.items.zhen.id },
     { id = items.changpao.id }
   ]
 

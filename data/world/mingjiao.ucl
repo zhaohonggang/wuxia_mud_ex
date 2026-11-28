@@ -3033,8 +3033,10 @@ direction = ~
     { id = items.baipao.id }
   ]
 
+  coagents = [
+    { id = "leng qian" startroom = "mingjiao:shanmen" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/litianyuan.c by LPCConverter
 # Zone: mingjiao
 
@@ -3112,8 +3114,16 @@ direction = ~
     { id = items.cloth.id }
   ]
 
+  coagents = [
+    { id = "zhang wuji" startroom = "mingjiao:dadian" },
+    { id = "fan yao" startroom = "mingjiao:dadian" },
+    { id = "yang xiao" startroom = "mingjiao:dadian" },
+    { id = "xie xun" startroom = "mingjiao:dadian" },
+    { id = "yin tianzheng" startroom = "mingjiao:dadian" },
+    { id = "wei yixiao" startroom = "mingjiao:dadian" },
+    { id = "dai jisi" startroom = "mingjiao:dadian" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/miaozuwushi.c by LPCConverter
 # Zone: mingjiao
 
@@ -3225,8 +3235,14 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  coagents = [
+    { id = "zhang wuji" startroom = "mingjiao:dadian" },
+    { id = "fan yao" startroom = "mingjiao:dadian" },
+    { id = "shuo bude" startroom = "mingjiao:dadian" },
+    { id = "zhou dian" startroom = "mingjiao:dadian" },
+    { id = "zhang zhong" startroom = "mingjiao:dadian" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/sheep.c by LPCConverter
 # Zone: mingjiao
 
@@ -3291,8 +3307,14 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  coagents = [
+    { id = "zhang wuji" startroom = "mingjiao:dadian" },
+    { id = "fan yao" startroom = "mingjiao:dadian" },
+    { id = "zhou dian" startroom = "mingjiao:dadian" },
+    { id = "zhang zhong" startroom = "mingjiao:dadian" },
+    { id = "peng yingyu" startroom = "mingjiao:dadian" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/tangyang.c by LPCConverter
 # Zone: mingjiao
 
@@ -3391,8 +3413,12 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  coagents = [
+    { id = "zhang wuji" startroom = "mingjiao:dadian" },
+    { id = "fan yao" startroom = "mingjiao:dadian" },
+    { id = "yang xiao" startroom = "mingjiao:dadian" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/wensong.c by LPCConverter
 # Zone: mingjiao
 
@@ -3779,8 +3805,14 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  coagents = [
+    { id = "zhang wuji" startroom = "mingjiao:dadian" },
+    { id = "fan yao" startroom = "mingjiao:dadian" },
+    { id = "shuo bude" startroom = "mingjiao:dadian" },
+    { id = "zhou dian" startroom = "mingjiao:dadian" },
+    { id = "peng yingyu" startroom = "mingjiao:dadian" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/zhoudian.c by LPCConverter
 # Zone: mingjiao
 
@@ -3829,8 +3861,14 @@ chats = [
     { id = items.baipao.id }
   ]
 
+  coagents = [
+    { id = "zhang wuji" startroom = "mingjiao:dadian" },
+    { id = "fan yao" startroom = "mingjiao:dadian" },
+    { id = "shuo bude" startroom = "mingjiao:dadian" },
+    { id = "zhang zhong" startroom = "mingjiao:dadian" },
+    { id = "peng yingyu" startroom = "mingjiao:dadian" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/mingjiao/npc/zhuangzheng.c by LPCConverter
 # Zone: mingjiao
 

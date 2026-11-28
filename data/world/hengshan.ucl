@@ -538,7 +538,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.cheng_cloth.id }
+    { id = shaolin.items.cheng_cloth.id }
   ]
 
       engage = {
@@ -592,7 +592,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.xuan_cloth.id }
+    { id = shaolin.items.xuan_cloth.id }
   ]
 
     }
@@ -636,7 +636,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.cheng_cloth.id }
+    { id = shaolin.items.cheng_cloth.id }
   ]
 
     }
@@ -724,7 +724,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.cheng_cloth.id }
+    { id = shaolin.items.cheng_cloth.id }
   ]
 
     }
@@ -768,7 +768,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.cheng_cloth.id }
+    { id = shaolin.items.cheng_cloth.id }
   ]
 
     }
@@ -813,7 +813,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.xuan_cloth.id }
+    { id = shaolin.items.xuan_cloth.id }
   ]
 
     }
@@ -883,7 +883,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.xuan_cloth.id }
+    { id = shaolin.items.xuan_cloth.id }
   ]
 
     }
@@ -971,7 +971,7 @@ zones "hengshan" {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.cheng_cloth.id }
+    { id = shaolin.items.cheng_cloth.id }
   ]
 
     }

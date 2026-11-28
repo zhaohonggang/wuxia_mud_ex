@@ -1534,8 +1534,8 @@ item_desc = {
 
 
   carry = [
-    { id = items.bi.id },
-    { id = items.beixin.id }
+    { id = huanghe.items.bi.id },
+    { id = city.items.beixin.id }
   ]
 
     }
@@ -1631,7 +1631,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.tiejiang.id },
+    { id = hangzhou.items.tiejiang.id },
     { id = items.tiejia.id }
   ]
 

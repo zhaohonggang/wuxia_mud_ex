@@ -28,7 +28,7 @@ defmodule Kantele.Character.FireCommand do
         |> prompt(CommandView, "prompt", %{})
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         fire_to = fire_target(item)
 
         if is_nil(fire_to) do
@@ -49,7 +49,7 @@ defmodule Kantele.Character.FireCommand do
 
   defp find_wood(inventory, item_name) do
     Enum.find(inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       fire_to = fire_target(item)
 
       not is_nil(fire_to) and
@@ -93,7 +93,7 @@ defmodule Kantele.Character.FireCommand do
   end
 
   defp build_instance(item_id) do
-    item = Items.get!(item_id)
+    item = Kantele.World.Item.fetch(item_id)
 
     %Instance{
       id: Instance.generate_id(),

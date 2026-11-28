@@ -1008,7 +1008,7 @@ item_desc = {
 
   carry = [
     { id = items.goldring.id },
-    { id = items.necklace.id },
+    { id = yanziwu.items.necklace.id },
     { id = items.changjian.id },
     { id = items.green_cloth.id },
     { id = items.flower_shoe.id }
@@ -1055,9 +1055,9 @@ item_desc = {
 
   carry = [
     { id = items.goldring.id },
-    { id = items.necklace.id },
+    { id = yanziwu.items.necklace.id },
     { id = items.changjian.id },
-    { id = items.pink_cloth.id },
+    { id = yanziwu.items.pink_cloth.id },
     { id = items.flower_shoe.id },
     { id = items.mask.id }
   ]
@@ -1111,8 +1111,11 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  coagents = [
+    { id = "feng boe" startroom = "yanziwu:qinyun" },
+    { id = "murong bo" startroom = "yanziwu:canheju" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/yanziwu/npc/deng.c by LPCConverter
 # Zone: yanziwu
 
@@ -1160,8 +1163,10 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  coagents = [
+    { id = "murong fu" startroom = "yanziwu:shuiyun" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/yanziwu/npc/feng.c by LPCConverter
 # Zone: yanziwu
 
@@ -1213,12 +1218,16 @@ item_desc = {
     { id = items.gangdao.id }
   ]
 
-      engage = {
+  engage = {
     fight = { accept = false }
     hit = { accept = true }
   }
-}
 
+  coagents = [
+    { id = "bao butong" startroom = "yanziwu:qinyun" },
+    { id = "murong bo" startroom = "yanziwu:shuiyun" }
+  ]
+    }
 # Generated from C:/files/git/mud/d/yanziwu/npc/gongye.c by LPCConverter
 # Zone: yanziwu
 
@@ -1270,8 +1279,11 @@ item_desc = {
     { id = items.gangjian.id }
   ]
 
+  coagents = [
+    { id = "bao butong" startroom = "yanziwu:qinyun" },
+    { id = "murong fu" startroom = "yanziwu:shuiyun" }
+  ]
     }
-
 # Generated from C:/files/git/mud/d/yanziwu/npc/nanpu.c by LPCConverter
 # Zone: yanziwu
 

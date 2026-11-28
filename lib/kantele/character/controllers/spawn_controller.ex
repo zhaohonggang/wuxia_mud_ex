@@ -84,7 +84,24 @@ defmodule Kantele.Character.SpawnController do
     end
   end
 
-  defp put_one(item_id, conn) do
+  # #893 全服单件（LPC /clone/lonely/*）：首个实例登记领取，后续实例改用
+  # fallback（LPC else 分支 new changjian）；无 fallback 则跳过（不带该件）。
+  # 语义对齐 kungfu/class/songshan/zuo.c create() 的持有者遍历：
+  # environment(ob) 只在"从未被 move 过"时为空 → 发放后永不回池，
+  # ETS 随重启清空 = LPC 重启后 find_object 重新 load 的回池语义。
+  defp put_one(%{singleton: true, id: item_id, fallback: fallback} = _entry, conn) do
+    if Kantele.World.SingletonItems.taken?(item_id) do
+      case fallback do
+        fb when is_binary(fb) and fb != "" -> put_one(fb, conn)
+        _ -> conn
+      end
+    else
+      Kantele.World.SingletonItems.register(item_id)
+      put_one(item_id, conn)
+    end
+  end
+
+  defp put_one(item_id, conn) when is_binary(item_id) do
     item = WorldItem.fetch(item_id)
 
     instance = %Instance{

@@ -705,7 +705,7 @@ chats = [
 
   carry = [
     { id = items.liuxingchui.id },
-    { id = items.hat.id },
+    { id = city.items.hat.id },
     { id = items.boots.id },
     { id = items.xian_cloth.id }
   ]

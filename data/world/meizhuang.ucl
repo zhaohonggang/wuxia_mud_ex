@@ -988,7 +988,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.bluecloth.id },
+    { id = wudang.items.bluecloth.id },
     { id = items.changjian.id }
   ]
 
@@ -1050,8 +1050,11 @@ item_desc = {
 
   chat_chance_combat = 100
   chat_msg_combat = ["blade.daomang", "cuff.pigua", "strike.ding", "unarmed.you", "parry.zhen", "recover", "powerup"]
-    }
 
+  coagents = [
+    { id = "huang zhonggong" startroom = "meizhuang:xiaowu" }
+  ]
+    }
 # Generated from C:/files/git/mud/d/meizhuang/npc/obj/heiyi.c by LPCConverter
 # Zone: meizhuang
 

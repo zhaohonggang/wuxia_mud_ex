@@ -59,7 +59,7 @@ defmodule Kantele.Character.DaubCommand do
 
   defp find_poison_item(character, name) do
     Enum.find(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       item.callback_module.matches?(item, name)
     end)
     |> case do
@@ -67,7 +67,7 @@ defmodule Kantele.Character.DaubCommand do
         {:error, "你身上没有这样毒药。"}
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         attrs = item.meta || %{}
 
         if attrs["can_daub"] == true && attrs["poison_type"] do
@@ -87,7 +87,7 @@ defmodule Kantele.Character.DaubCommand do
     else
       # 在背包中查找装备
       Enum.find(character.inventory, fn instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         item.callback_module.matches?(item, name)
       end)
       |> case do
@@ -95,7 +95,7 @@ defmodule Kantele.Character.DaubCommand do
           {:error, "你身上没有这样武器或防具。"}
 
         instance ->
-          item = Items.get!(instance.item_id)
+          item = Kantele.World.Item.fetch(instance.item_id)
           attrs = item.meta || %{}
           type = Kalevala.Meta.get(attrs, "type")
 

@@ -82,13 +82,13 @@ defmodule Kantele.Character.FuseCommand do
 
   defp find_item(character, name) do
     Enum.find(character.inventory, fn inst ->
-      item = Items.get!(inst.item_id)
+      item = Kantele.World.Item.fetch(inst.item_id)
       item.callback_module.matches?(item, name)
     end)
   end
 
   defp fuse_item(conn, character, inst) do
-    item = Items.get!(inst.item_id)
+    item = Kantele.World.Item.fetch(inst.item_id)
     meta = item.meta
 
     # LPC: !ob->query("can_make") || !ob->query("item_origin")

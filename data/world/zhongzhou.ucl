@@ -2464,7 +2464,7 @@ chats = [
 
 
   carry = [
-    { id = items.yayifu.id }
+    { id = city.items.yayifu.id }
   ]
 
     }

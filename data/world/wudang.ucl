@@ -2605,8 +2605,8 @@ chats = [
 
 
   carry = [
-    { id = items.greenrobe.id },
-    { id = items.necklace.id }
+    { id = wudang.items.greenrobe.id },
+    { id = city.items.necklace.id }
   ]
 
     }

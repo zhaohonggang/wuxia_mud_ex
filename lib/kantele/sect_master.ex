@@ -1057,6 +1057,11 @@ defmodule Kantele.SectMaster do
       # #1010 红花会 16 条内联 ask_skill*：已会 → 同门 → 技能存在 → 贡献 → 侠义 →
       # 前置绝招 → 有序等级链（dex/max-neili/force/dodge/本招技能各有逐字文案）。
       "lpc_honghua" -> inquiry_grant_honghua(player_stats, npc_stats, config)
+      # #795 血刀门宝象/胜谛 ask_skill1：已会 → 同门 → 技能存在 → 贡献 → 杀气(负上界)
+      # → 内功等级(force) → 内力(max_neili) → 本招刀法等级。与 lpc_ren 的差别：
+      # force 门槛在 max_neili **之前**（LPC baoxiang.c/shengdi.c 的逐条 return 序）；
+      # force 与本招等级的文案走 level_deny map（每招两条不同文案）。
+      "lpc_xuedao" -> inquiry_grant_xuedao(player_stats, npc_stats, config)
       _ -> inquiry_grant_default(player_stats, npc_stats, config)
     end
   end
@@ -1193,6 +1198,67 @@ defmodule Kantele.SectMaster do
     case Map.get(config, "requires_performs") do
       ids when is_list(ids) and ids != [] -> Enum.all?(ids, &perform_known?(player, &1))
       _ -> true
+    end
+  end
+
+  # #795 血刀门 baoxiang.c/shengdi.c ask_skill1 原序：
+  #   已会 → 同门 → 本招技能 < 1 → 贡献 → 杀气(负上界) → 内功等级(force)
+  #   → 内力(max_neili) → 本招刀法等级。
+  # 与 lpc_ren 的差别：force 门槛在 max_neili 之前；force 与本招等级文案
+  # 走 level_deny map（每招两条逐字文案，UCL 已配）。
+  defp inquiry_grant_xuedao(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    max_shen = Map.get(config, "max_shen")
+    min_levels = Map.get(config, "min_levels", %{}) || %{}
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny(config, "maxed", "我不是都已经教过你了吗？\n")}
+
+      not same_family?(player, npc) ->
+        {:error, deny(config, "family_deny", "你又不是我血刀门的，再罗嗦我宰了你！\n")}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny(config, "skill_deny", "你连本门武功都没学，还罗嗦什么？\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny(config, "gongxian_deny", "老祖说了，咋们的绝技不传无功之人。\n")}
+
+      is_integer(max_shen) and stat(player, :shen) > max_shen ->
+        {:error, deny(config, "max_shen_deny", "你这样心慈手软，就算学会这招又有什么用？\n")}
+
+      below_min_force_level?(player, min_levels) ->
+        {:error, level_deny_for(config, "force", "你的内功修为实在太差，快去多练练再来。\n")}
+
+      below_max_neili?(player, config) ->
+        {:error, deny(config, "max_neili_deny", "你的内力差成这样，居然还好意思来找我？\n")}
+
+      below_min_skill_level?(player, skill, min_levels) ->
+        {:error, level_deny_for(config, skill, "等你把刀法练熟了再来找我吧。\n")}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # 血刀 force/本招等级的逐字文案：level_deny 是 map（`force` / `<skill>` 键）；
+  # 键缺省时用调用方给的缺省文案（引擎兜底，数据侧已配全）。
+  defp level_deny_for(config, key, default) do
+    case Map.get(config, "level_deny") do
+      denies when is_map(denies) ->
+        Map.get(denies, key) || Map.get(denies, to_string(key)) || default
+
+      _ ->
+        default
     end
   end
 

@@ -56,7 +56,7 @@ defmodule Kantele.Character.PourCommand do
 
   defp find_poison_item(character, name) do
     Enum.find(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       item.callback_module.matches?(item, name)
     end)
     |> case do
@@ -64,7 +64,7 @@ defmodule Kantele.Character.PourCommand do
         {:error, "你身上没有这样毒药。"}
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         attrs = Map.get(item, :attrs, %{}) || %{}
 
         if attrs["can_pour"] == true && attrs["poison_type"] do
@@ -77,7 +77,7 @@ defmodule Kantele.Character.PourCommand do
 
   defp find_liquid_container(character, name) do
     Enum.find(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       item.callback_module.matches?(item, name)
     end)
     |> case do
@@ -85,7 +85,7 @@ defmodule Kantele.Character.PourCommand do
         {:error, "你身上没有这样容器。"}
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         attrs = Map.get(item, :attrs, %{}) || %{}
 
         if attrs["liquid"] == true && is_integer(attrs["liquid/remaining"]) &&

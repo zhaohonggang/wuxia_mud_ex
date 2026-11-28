@@ -464,7 +464,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -496,7 +496,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -528,7 +528,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -560,7 +560,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -592,7 +592,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -624,7 +624,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
 
@@ -665,7 +665,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -697,7 +697,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }
@@ -729,7 +729,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
 
@@ -769,7 +769,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.bluecloth.id }
+    { id = wudang.items.bluecloth.id }
   ]
 
     }

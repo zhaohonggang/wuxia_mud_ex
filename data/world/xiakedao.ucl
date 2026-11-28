@@ -2364,7 +2364,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.ycloth.id }
+    { id = xiakedao.items.ycloth.id }
   ]
 
 

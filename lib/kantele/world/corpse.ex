@@ -39,7 +39,7 @@ defmodule Kantele.World.Corpse do
   UCL 的 `drop_a = { id = "zhurou" }` 经 `loader.parse_item_ref/1` 后是**短 id**，
   而 `Kantele.World.Items` 缓存的 key 由 `loader.parse_item/4` 生成为
   `"<zone.id>:<key>"`（如 `"clone_lib:zhurou"`）。`ItemCommand` 拾取时又用
-  `Items.get!(item_instance.item_id)` 取定义，所以短 id 会同时导致「掉落物找不到」
+  `Kantele.World.Item.fetch(item_instance.item_id)` 取定义，所以短 id 会同时导致「掉落物找不到」
   与「get 时抛异常」。`resolve_drop_item/1` 负责把短 id 解析成完整 key + 定义。
   """
 
@@ -112,7 +112,7 @@ defmodule Kantele.World.Corpse do
   纯函数：构造尸体 `Item.Instance`（容器）。
 
   `item_id` 必须是缓存里真实存在的完整 key（默认 `clone_lib:corpse`），否则
-  `get all` / `get 尸体` 里的 `Items.get!(item_instance.item_id)` 会抛
+  `get all` / `get 尸体` 里的 `Kantele.World.Item.fetch(item_instance.item_id)` 会抛
   `Could not find key corpse in cache`。
 
   `contents` 是死者背包转移进来的 `Item.Instance` 列表（LPC

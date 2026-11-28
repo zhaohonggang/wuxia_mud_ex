@@ -117,7 +117,7 @@ defmodule Kantele.Character.NpcShopEvent do
   end
 
   defp item_info(item_id) do
-    item = Items.get!(item_id)
+    item = Kantele.World.Item.fetch(item_id)
     meta = item.meta || %{}
 
     %{

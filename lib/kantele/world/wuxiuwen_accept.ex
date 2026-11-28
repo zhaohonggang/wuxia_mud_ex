@@ -35,7 +35,7 @@ defmodule Kantele.World.WuxiuwenAccept do
   def handle(conn, npc, item_instance, data, _from_name) do
     reply_to = Map.get(data, :reply_to)
     from_id = Map.get(data, :from_id)
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
 
     if not valid_tool?(item) do
       reject(conn, item_instance, reply_to, from_id,

@@ -735,8 +735,12 @@ item_desc = {
 
   chat_chance_combat = 120
   chat_msg_combat = ["powerup", "recover", "sword.can", "sword.xiyan"]
-    }
 
+  coagents = [
+    { id = "huiyue shi" startroom = "tulong:haian" },
+    { id = "miaofeng shi" startroom = "tulong:haian" }
+  ]
+    }
 # Generated from C:/files/git/mud/d/tulong/tulong/npc/mai.c by LPCConverter
 # Zone: tulong
 
@@ -901,7 +905,7 @@ item_desc = {
   }
 
   carry = [
-    { id = items.cloth4.id }
+    { id = beijing.items.cloth4.id }
   ]
 
 
@@ -989,7 +993,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.cloth1.id }
+    { id = beijing.items.cloth1.id }
   ]
 
 
@@ -1976,7 +1980,7 @@ direction = "down"
 
   carry = [
     { id = items.jiasha.id },
-    { id = items.blade1.id }
+    { id = beijing.items.blade1.id }
   ]
 
   chat_chance_combat = 20

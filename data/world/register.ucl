@@ -235,7 +235,7 @@ item_desc = {
   }
 
   carry = [
-    { id = items.cloth2.id }
+    { id = death.items.cloth2.id }
   ]
 
   ask_handler = "Kantele.NPC.Dizangwang"

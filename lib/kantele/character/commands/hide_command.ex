@@ -63,7 +63,7 @@ defmodule Kantele.Character.HideCommand do
         |> prompt(CommandView, "prompt", %{})
 
       item_instance ->
-        item = Items.get!(item_instance.item_id)
+        item = Kantele.World.Item.fetch(item_instance.item_id)
 
         {:ok, character} = Damage.receive_damage(character, :jing, @jingli_cost)
 
@@ -80,7 +80,7 @@ defmodule Kantele.Character.HideCommand do
 
   defp find_item(inventory, item_name) do
     Enum.find_value(inventory, fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = Kantele.World.Item.fetch(item_instance.item_id)
       if Kantele.World.Item.matches?(item, item_name), do: item_instance
     end)
   end

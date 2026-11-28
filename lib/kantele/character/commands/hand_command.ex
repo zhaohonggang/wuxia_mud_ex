@@ -172,7 +172,7 @@ defmodule Kantele.Character.HandCommand do
     case find_instance(character.inventory, item_name) do
       nil -> render_error(conn, "你的身上没有这样东西。\n")
       item_instance ->
-        item = Items.get!(item_instance.item_id)
+        item = Kantele.World.Item.fetch(item_instance.item_id)
         callback.(item)
     end
   rescue
@@ -181,7 +181,7 @@ defmodule Kantele.Character.HandCommand do
 
   defp find_instance(inventory, item_name) do
     Enum.find(inventory, fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = Kantele.World.Item.fetch(item_instance.item_id)
       item_instance.id == item_name or Item.matches?(item, item_name)
     end)
   rescue
@@ -190,7 +190,7 @@ defmodule Kantele.Character.HandCommand do
 
   defp equipped_item(character, expected_name) do
     Enum.find_value(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       if item.name == expected_name, do: item
     end)
   rescue

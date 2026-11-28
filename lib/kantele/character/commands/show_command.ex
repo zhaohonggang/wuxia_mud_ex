@@ -50,7 +50,7 @@ defmodule Kantele.Character.ShowCommand do
         fail(conn, "算了吧，你身上没有 #{mat} 这种东西。\n")
 
       inst ->
-        item = Items.get!(inst.item_id)
+        item = Kantele.World.Item.fetch(inst.item_id)
         meta = item.meta
 
         cond do
@@ -81,7 +81,7 @@ defmodule Kantele.Character.ShowCommand do
 
   defp find_item(character, name) do
     Enum.find(character.inventory, fn inst ->
-      item = Items.get!(inst.item_id)
+      item = Kantele.World.Item.fetch(inst.item_id)
       item.callback_module.matches?(item, name)
     end)
   end

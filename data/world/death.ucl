@@ -2478,7 +2478,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id },
+    { id = death.items.cloth1.id },
     { id = items.suolian.id }
   ]
 
@@ -2692,7 +2692,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id },
+    { id = death.items.cloth1.id },
     { id = items.suolian.id }
   ]
 
@@ -2757,9 +2757,9 @@ chats = [
 
 
   carry = [
-    { id = items.armor1.id },
+    { id = death.items.armor1.id },
     { id = items.armor2.id },
-    { id = items.blade1.id }
+    { id = death.items.blade1.id }
   ]
 
 
@@ -2865,9 +2865,9 @@ chats = [
 
 
   carry = [
-    { id = items.armor1.id },
+    { id = death.items.armor1.id },
     { id = items.armor2.id },
-    { id = items.blade1.id }
+    { id = death.items.blade1.id }
   ]
 
   ask_handler = "Kantele.NPC.Niutou"
@@ -2970,7 +2970,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth4.id },
+    { id = death.items.cloth4.id },
     { id = items.qise.id }
   ]
 
@@ -3090,7 +3090,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth4.id }
+    { id = death.items.cloth4.id }
   ]
 
 
@@ -3270,7 +3270,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth2.id }
+    { id = death.items.cloth2.id }
   ]
 
 
@@ -6488,7 +6488,7 @@ item_desc = {
   }
 
   carry = [
-    { id = items.cloth2.id },
+    { id = sky.items.cloth2.id },
     { id = items.jingzhongyue.id }
   ]
 
@@ -6531,7 +6531,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id },
+    { id = sky.items.cloth1.id },
     { id = items.renou.id }
   ]
 
@@ -6770,7 +6770,7 @@ chats = [
   }
 
   carry = [
-    { id = items.cloth1.id },
+    { id = sky.items.cloth1.id },
     { id = items.hands.id }
   ]
 

@@ -143,7 +143,7 @@ defmodule Kantele.Character.ItemUse do
   defp definition(_conn, _instance), do: :error
 
   defp fetch_item(item_id) do
-    {:ok, Items.get!(item_id)}
+    {:ok, Kantele.World.Item.fetch(item_id)}
   rescue
     _ -> :error
   end

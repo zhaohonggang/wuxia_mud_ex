@@ -66,7 +66,7 @@ defmodule Kantele.Character.WashCommand do
       end
     else
       Enum.find(character.inventory, fn instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         item.callback_module.matches?(item, name)
       end)
       |> case do
@@ -74,7 +74,7 @@ defmodule Kantele.Character.WashCommand do
           {:error, "你身上没有这样装备。"}
 
         instance ->
-          item = Items.get!(instance.item_id)
+          item = Kantele.World.Item.fetch(instance.item_id)
           attrs = Map.get(item, :attrs, %{}) || %{}
           meta = item.meta || %{}
           type = attrs["type"]

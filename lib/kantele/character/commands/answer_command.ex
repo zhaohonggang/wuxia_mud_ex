@@ -153,7 +153,7 @@ defmodule Kantele.Character.AnswerCommand do
          |> prompt(CommandView, "prompt", %{})}
 
       true ->
-        item = Items.get!(obj)
+        item = Kantele.World.Item.fetch(obj)
         instance = %Instance{
           id: Instance.generate_id(),
           item_id: item.id,

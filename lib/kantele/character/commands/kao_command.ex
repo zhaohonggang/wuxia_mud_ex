@@ -37,7 +37,7 @@ defmodule Kantele.Character.KaoCommand do
           |> prompt(CommandView, "prompt", %{})
 
         instance ->
-          item = Items.get!(instance.item_id)
+          item = Kantele.World.Item.fetch(instance.item_id)
           broil_to = broil_target(item)
 
           if is_nil(broil_to) do
@@ -59,7 +59,7 @@ defmodule Kantele.Character.KaoCommand do
 
   defp find_raw_meat(inventory, item_name) do
     Enum.find(inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       raw? = Map.get(item.meta, :raw_meat) || Map.get(item.meta, "raw_meat")
       broil? = broil_target(item)
 
@@ -129,7 +129,7 @@ defmodule Kantele.Character.KaoCommand do
   defp needfire_instance?(_), do: false
 
   defp build_instance(item_id) do
-    item = Items.get!(item_id)
+    item = Kantele.World.Item.fetch(item_id)
 
     %Instance{
       id: Instance.generate_id(),

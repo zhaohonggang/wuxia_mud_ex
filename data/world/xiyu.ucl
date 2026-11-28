@@ -1756,7 +1756,7 @@ chats = [
 
 
   carry = [
-    { id = items.pink_cloth.id }
+    { id = city.items.pink_cloth.id }
   ]
 
 

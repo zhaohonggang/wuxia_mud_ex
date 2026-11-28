@@ -1324,7 +1324,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
     }

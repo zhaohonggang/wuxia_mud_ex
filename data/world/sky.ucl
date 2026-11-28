@@ -390,7 +390,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.cloth2.id },
+    { id = sky.items.cloth2.id },
     { id = items.jingzhongyue.id },
     { id = items.heshibi.id },
     { id = items.jue.id }
@@ -454,7 +454,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id },
+    { id = sky.items.cloth1.id },
     { id = items.renou.id },
     { id = items.tianxiadan.id }
   ]
@@ -571,8 +571,11 @@ chats = [
 
   chat_chance_combat = 80
   chat_msg_combat = ["powerup", "recover"]
-    }
 
+  coagents = [
+    { id = "li xunhuan" startroom = "sky:tianmen" }
+  ]
+    }
 # Generated from C:/files/git/mud/d/sky/npc/xu.c by LPCConverter
 # Zone: sky
 
@@ -620,7 +623,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id },
+    { id = sky.items.cloth1.id },
     { id = items.hands.id },
     { id = items.yishu.id },
     { id = items.sheli.id }

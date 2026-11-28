@@ -153,7 +153,7 @@ defmodule Kantele.Character.NpcScriptEvent do
           # 查找背包中匹配的物品
           item_instance =
             Enum.find(character.inventory, fn inst ->
-              item = Items.get!(inst.item_id)
+              item = Kantele.World.Item.fetch(inst.item_id)
 
               item.name == target_name ||
                 String.contains?(item.name, target_name) ||
@@ -167,7 +167,7 @@ defmodule Kantele.Character.NpcScriptEvent do
             })
             |> prompt(CommandView, "prompt", %{})
           else
-            item = Items.get!(item_instance.item_id)
+            item = Kantele.World.Item.fetch(item_instance.item_id)
             item_path = item.id
 
             can_summon =

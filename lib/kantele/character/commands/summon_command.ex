@@ -141,7 +141,7 @@ defmodule Kantele.Character.SummonCommand do
   defp load_item_template(item_path) do
     try do
       path = item_path |> String.split("/") |> List.last()
-      Items.get!(path)
+      Kantele.World.Item.fetch(path)
     rescue
       _ -> nil
     end

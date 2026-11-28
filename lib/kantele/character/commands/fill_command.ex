@@ -60,7 +60,7 @@ defmodule Kantele.Character.FillCommand do
   end
 
   defp fill(conn, character, instance) do
-    item = Items.get!(instance.item_id)
+    item = Kantele.World.Item.fetch(instance.item_id)
 
     case Liquid.state(item, instance) do
       nil -> text_only(conn, "这个容器装不了水。\n")
@@ -107,7 +107,7 @@ defmodule Kantele.Character.FillCommand do
 
   defp find_instance(inventory, item_name) do
     Enum.find(inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       instance.id == item_name || item.callback_module.matches?(item, item_name)
     end)
   rescue

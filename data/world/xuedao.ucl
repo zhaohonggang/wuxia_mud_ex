@@ -845,6 +845,8 @@ behavior_config = {
       # LPC: kungfu/class/xuedao/baoxiang.c ask_skill1 —— 红莲刀法「流星火雨」。
       inquiries = {
         流星火雨 = {
+          kind = "sect_master_grant"
+          gate_order = "lpc_xuedao"
           perform_id = "honglian-dao/huo"
           skill = "honglian-dao"
           min_gongxian = 80
@@ -860,7 +862,10 @@ behavior_config = {
           skill_deny = "你连红莲刀法都没学，还罗嗦什么？"
           gongxian_deny = "老祖说了，咋们的绝技不传无功之人。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功修为实在太差，快去多练练再来。"
+          level_deny = {
+            force = "你的内功修为实在太差，快去多练练再来。"
+            honglian_dao = "等你把红莲刀法练熟了再来找我吧。"
+          }
           max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
           learned = "你学会了「流星火雨」。"
           msg_one = "{name}狞笑数声，伸手将{npc}招到身前，低声在{npc}耳旁嘀咕了半天。然后又拔出腰刀翻转数下，斜撩而出。似乎是一种颇为独特的刀诀。"
@@ -1005,6 +1010,8 @@ behavior_config = {
       # LPC: kungfu/class/xuedao/shengdi.c ask_skill1 —— 雪山刀法「冰河开封」。
       inquiries = {
         冰河开封 = {
+          kind = "sect_master_grant"
+          gate_order = "lpc_xuedao"
           perform_id = "xueshan-dao/kai"
           skill = "xueshan-dao"
           min_gongxian = 50
@@ -1020,7 +1027,10 @@ behavior_config = {
           skill_deny = "你连雪山刀法都没学，还罗嗦什么？"
           gongxian_deny = "老祖说了，咋们的绝技不传无功之人。"
           max_shen_deny = "你这样心慈手软，就算学会这招又有什么用？"
-          level_deny = "你的内功修为实在太差，快去多练练再来。"
+          level_deny = {
+            force = "你的内功修为实在太差，快去多练练再来。"
+            xueshan_dao = "等你把雪山刀法练熟了再来找我吧。"
+          }
           max_neili_deny = "你的内力差成这样，居然还好意思来找我？"
           learned = "你学会了「冰河开封」。"
           msg_one = "{name}微微一笑，在{npc}耳边轻声嘀咕了几句，然后顺手拔出腰间的刚刀凌空劈斩了几下，霎时只见刀光一展而过，招式煞是惊奇。{npc}看后若有所悟的点了点头。"

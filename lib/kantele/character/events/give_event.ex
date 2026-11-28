@@ -339,7 +339,7 @@ defmodule Kantele.Character.GiveEvent do
   defp from_drop_message(), do: "物品不在房间中。"
 
   defp handle_normal_give(conn, character, item_instance, data, from_name) do
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
     item_name = item.name
 
     case item_instance do

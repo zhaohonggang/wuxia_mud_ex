@@ -424,7 +424,7 @@ defmodule Kantele.Character.BackpackCommand do
   end
 
   defp safe_item(instance) do
-    Items.get!(instance.item_id)
+    Kantele.World.Item.fetch(instance.item_id)
   rescue
     _ -> nil
   end

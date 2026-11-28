@@ -22,7 +22,7 @@ defmodule Kantele.World.ForgingAccept do
   def handle(conn, npc, item_instance, data, from_name) do
     from_id = Map.get(data, :from_id)
     reply_to = Map.get(data, :reply_to)
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
 
     cond do
       KItem.is_currency?(item) ->
@@ -192,7 +192,7 @@ defmodule Kantele.World.ForgingAccept do
 
   # 乾坤石付款：给如意乾坤袋（LPC L433），不走类型选择，石头销毁
   defp accept_money(conn, npc, item_instance, _item, _data, from_id, reply_to, %{qiankun: true} = session) do
-    material = Items.get!(session.material_item_id)
+    material = Kantele.World.Item.fetch(session.material_item_id)
 
     npc = drop_material(npc, session)
     Records.save(npc)
@@ -217,7 +217,7 @@ defmodule Kantele.World.ForgingAccept do
   end
 
   defp accept_money(conn, _npc, item_instance, _item, _data, from_id, reply_to, session) do
-    material = Items.get!(session.material_item_id)
+    material = Kantele.World.Item.fetch(session.material_item_id)
 
     types = Forging.types_for(material.meta.can_make, material.meta.not_make)
 

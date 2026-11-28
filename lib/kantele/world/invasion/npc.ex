@@ -218,7 +218,7 @@ defmodule Kantele.World.Invasion.NPC do
     item_instance = Enum.find(character.inventory, fn inst -> inst.item_id == item_id end)
 
     if item_instance do
-      item = Items.get!(item_id)
+      item = Kantele.World.Item.fetch(item_id)
       slot = armor_slot(item.meta) || :weapon
 
       if slot == expected_slot or (expected_slot == :weapon and slot == :weapon) do

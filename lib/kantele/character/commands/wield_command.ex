@@ -370,7 +370,7 @@ defmodule Kantele.Character.WieldCommand do
   # 导致广播文案张冠李戴。
   defp equipped_item(character, expected_name) do
     Enum.find_value(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       if item.name == expected_name, do: item
     end)
   rescue
@@ -400,7 +400,7 @@ defmodule Kantele.Character.WieldCommand do
   defp with_item(conn, character, item_name, callback) do
     item_instance = find_instance(character.inventory, item_name)
 
-    case item_instance && Items.get!(item_instance.item_id) do
+    case item_instance && Kantele.World.Item.fetch(item_instance.item_id) do
       nil -> render_error(conn, "你的身上没有这样东西。\n")
       item -> female_only_guard(conn, character, item, callback)
     end
@@ -439,7 +439,7 @@ defmodule Kantele.Character.WieldCommand do
 
   defp find_instance(inventory, item_name) do
     Enum.find(inventory, fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = Kantele.World.Item.fetch(item_instance.item_id)
       item_instance.id == item_name || item.callback_module.matches?(item, item_name)
     end)
   rescue

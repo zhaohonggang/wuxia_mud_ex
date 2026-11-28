@@ -104,7 +104,7 @@ defmodule Kantele.Character.AskCommand do
 
       true ->
         %{"obj" => obj, "gongxian" => gongxian} = Map.get(npc.meta, :quest_gift)
-        item = Items.get!(obj)
+        item = Kantele.World.Item.fetch(obj)
         character = conn.character
 
         meta =

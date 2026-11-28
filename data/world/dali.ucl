@@ -5419,7 +5419,7 @@ behavior_config = {
 
 
   carry = [
-    { id = items.xuan_cloth.id }
+    { id = shaolin.items.xuan_cloth.id }
   ]
 
     }
@@ -6248,7 +6248,7 @@ behavior_config = {
 
 
   carry = [
-    { id = items.cheng_cloth.id }
+    { id = shaolin.items.cheng_cloth.id }
   ]
 
     }

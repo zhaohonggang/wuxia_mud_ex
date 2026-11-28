@@ -49,7 +49,7 @@ defmodule Kantele.Character.DrugCommand do
 
   defp find_poison_item(character, name) do
     Enum.find(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       item.callback_module.matches?(item, name)
     end)
     |> case do
@@ -57,7 +57,7 @@ defmodule Kantele.Character.DrugCommand do
         {:error, "你身上没有这样毒药。"}
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         attrs = Map.get(item, :attrs, %{}) || %{}
 
         if attrs["can_drug"] == true && attrs["poison_type"] do
@@ -70,7 +70,7 @@ defmodule Kantele.Character.DrugCommand do
 
   defp find_food_item(character, name) do
     Enum.find(character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       item.callback_module.matches?(item, name)
     end)
     |> case do
@@ -78,7 +78,7 @@ defmodule Kantele.Character.DrugCommand do
         {:error, "你身上没有这样食物。"}
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
 
         if Verb.has_matching_verb?(item.verbs, :eat, %Verb.Context{location: "inventory/self"}) do
           {:ok, item, instance}

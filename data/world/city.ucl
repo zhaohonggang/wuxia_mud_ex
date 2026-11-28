@@ -4621,7 +4621,7 @@ chats = [
 
   carry = [
     { id = items.flower_shoe.id },
-    { id = items.pink_cloth.id }
+    { id = city.items.pink_cloth.id }
   ]
 
 
@@ -4969,7 +4969,7 @@ chats = [
 
 
   carry = [
-    { id = items.yayifu.id }
+    { id = city.items.yayifu.id }
   ]
 
   chat_msg_combat = ["衙役说道：你当这里是什么地方，敢来这里骚扰？", "衙役说道：你要是再无理取闹，当心捕头把你抓去坐牢!", "衙役手中的刀越砍越快，让你应接不暇。", "衙役说道：衙门岂是你放肆的地方？！"]
@@ -5009,9 +5009,9 @@ chats = [
 
   carry = [
     { id = items.goldring.id },
-    { id = items.necklace.id },
+    { id = city.items.necklace.id },
     { id = items.changjian.id },
-    { id = items.pink_cloth.id },
+    { id = city.items.pink_cloth.id },
     { id = items.flower_shoe.id }
   ]
 

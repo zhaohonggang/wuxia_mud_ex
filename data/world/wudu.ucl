@@ -2628,7 +2628,7 @@ chats = [
 
 
   carry = [
-    { id = items.greenrobe.id }
+    { id = wudang.items.greenrobe.id }
   ]
 
     }

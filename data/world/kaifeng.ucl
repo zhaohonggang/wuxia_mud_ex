@@ -2990,7 +2990,7 @@ direction = ~
 
 
   carry = [
-    { id = items.cloth4.id }
+    { id = beijing.items.cloth4.id }
   ]
 
     }
@@ -3234,7 +3234,7 @@ chats = [
 
   carry = [
     { id = items.jiedao.id },
-    { id = items.xuan_cloth.id }
+    { id = kaifeng.items.xuan_cloth.id }
   ]
 
     }
@@ -3314,7 +3314,7 @@ chats = [
 
   carry = [
     { id = items.jiedao.id },
-    { id = items.cheng_cloth.id }
+    { id = kaifeng.items.cheng_cloth.id }
   ]
 
     }
@@ -3753,7 +3753,7 @@ chats = [
 
 
   carry = [
-    { id = items.xuan_cloth.id },
+    { id = kaifeng.items.xuan_cloth.id },
     { id = items.chuihuo.id }
   ]
 
@@ -3817,7 +3817,7 @@ chats = [
 
 
   carry = [
-    { id = items.xuan_cloth.id },
+    { id = kaifeng.items.xuan_cloth.id },
     { id = items.caidao.id }
   ]
 
@@ -4207,7 +4207,7 @@ chats = [
 
 
   carry = [
-    { id = items.xuan_cloth.id }
+    { id = kaifeng.items.xuan_cloth.id }
   ]
 
     }
@@ -4292,7 +4292,7 @@ chats = [
 
 
   carry = [
-    { id = items.xuan_cloth.id }
+    { id = kaifeng.items.xuan_cloth.id }
   ]
 
     }

@@ -1,5 +1,5 @@
 -- character_metadata backup (auto-generated on game start)
--- Generated at: ~U[2026-11-28 16:56:21.652692Z]
+-- Generated at: ~U[2026-11-28 20:23:46.327327Z]
 
 INSERT INTO character_metadata (id, character_id, str, dex, con, int, combat_exp, potential, learned_points, max_neili, max_jingli, coins, bank_coins, score, weiwang, gongxian, shen, family, gender, skills, mapped, performs, inventory, equipment, nickname, title, option, alias_commands, bag, quest, league, brothers, spouse, schedule, tianshu_books, jifen, marks, env, personality, per, kar, setup_done, inserted_at, updated_at) VALUES (1, 1, 20, 20, 20, 20, 120, 160, 44, 110, 0, 189057, 1300000, 0, 0, 0, 0, '{}', '男性', '{"dodge":60,"force":20,"hunting":15,"parry":60,"sword":60,"unarmed":60}', '{}', '[]', '[{"item_id":"liuxi:changjian"},{"item_id":"clone_lib:zhurou"}]', '{}', NULL, '', '{"map_hidden":1}', '{}', '{}', '{"quest_count":0,"solved":[],"todo":{}}', '{}', '[]', '{}', NULL, '{}', 0, '{"hunter":1}', '{"gender":"男性","setup_done":true,"startroom":"city:guangchang"}', NULL, 20, 0, true, '~N[2026-11-15 08:22:24]', '~N[2026-11-16 02:22:10]');
 

@@ -2925,7 +2925,7 @@ item_desc = {
 
   carry = [
     { id = items.cloth.id },
-    { id = items.tiejiang.id }
+    { id = hangzhou.items.tiejiang.id }
   ]
 
       engage = {
@@ -2981,7 +2981,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.greyrobe.id },
+    { id = wudang.items.greyrobe.id },
     { id = items.changjian.id }
   ]
 
@@ -3187,7 +3187,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.bluecloth.id },
+    { id = wudang.items.bluecloth.id },
     { id = items.changjian.id }
   ]
 
@@ -3286,7 +3286,7 @@ item_desc = {
 
   carry = [
     { id = items.changjian.id },
-    { id = items.greyrobe.id }
+    { id = wudang.items.greyrobe.id }
   ]
 
   chat_chance_combat = 80
@@ -4536,7 +4536,7 @@ chats = [
 
   carry = [
     { id = items.changjian.id },
-    { id = items.pink_cloth.id }
+    { id = fuzhou.items.pink_cloth.id }
   ]
 
     }

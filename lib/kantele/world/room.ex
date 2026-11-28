@@ -107,7 +107,7 @@ defmodule Kantele.World.Room do
     item
   end
 
-  def load_item(item_instance), do: Items.get!(item_instance.item_id)
+  def load_item(item_instance), do: Kantele.World.Item.fetch(item_instance.item_id)
 
   @doc """
   房间 flag 判定（对应 LPC `room->query("<flag>")`）
@@ -2730,7 +2730,7 @@ defmodule Kantele.World.Room.SearchRequestEvent do
             if :rand.uniform(100) < probability do
               # 发现物品，从默认物品表中随机选一个
               item_id = get_default_item(score)
-              item = Kantele.World.Items.get!(item_id)
+              item = Kantele.World.Item.fetch(item_id)
 
               context
               |> render(requester.pid, CommandView, "text", %{
@@ -3474,7 +3474,7 @@ defmodule Kantele.World.Room.ContextEvent do
   end
 
   defp handle_context(context, from_pid, item_instance) do
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
     item_instance = %{item_instance | item: item}
 
     verbs = Item.context_verbs(item, %{location: "room"})

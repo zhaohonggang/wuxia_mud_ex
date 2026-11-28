@@ -69,7 +69,7 @@ defmodule Kantele.NPC.Xiaoer do
 
   @doc "验证给予物品：返回 {:ok, action} 或 {:error, msg}"
   def validate_give(npc, item_instance) do
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
 
     cond do
       Kantele.Item.is_currency?(item) ->
@@ -123,7 +123,7 @@ defmodule Kantele.NPC.Xiaoer do
 
     # 清理房间内尸体
     Enum.each(room_snapshot.private.item_instances, fn item_instance ->
-      item = Items.get!(item_instance.item_id)
+      item = Kantele.World.Item.fetch(item_instance.item_id)
 
       if Kantele.Item.is_corpse?(item) do
         IO.puts("[Xiaoer] 清理了 #{item.name}。")

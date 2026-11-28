@@ -56,7 +56,7 @@ defmodule Kantele.Character.DrinkCommand do
         |> prompt(CommandView, "prompt", %{})
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
 
         cond do
           Liquid.state(item, instance) != nil ->
@@ -75,7 +75,7 @@ defmodule Kantele.Character.DrinkCommand do
 
   defp find_instance(inventory, item_name) do
     Enum.find(inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
       instance.id == item_name || item.callback_module.matches?(item, item_name)
     end)
   end

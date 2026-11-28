@@ -50,7 +50,7 @@ defmodule Kantele.Character.DiscardCommand do
         fail(conn, "你身上没有#{name}这种东西。\n")
 
       instance ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         meta = item.meta
 
         cond do
@@ -87,7 +87,7 @@ defmodule Kantele.Character.DiscardCommand do
 
   defp find_item(character, name) do
     Enum.find(character.inventory, fn inst ->
-      item = Items.get!(inst.item_id)
+      item = Kantele.World.Item.fetch(inst.item_id)
       item.id == name or Item.matches?(item, name)
     end)
   end

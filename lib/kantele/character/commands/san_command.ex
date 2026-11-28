@@ -40,7 +40,7 @@ defmodule Kantele.Character.SanCommand do
   defp find_weapon(character, name) do
     instance =
       Enum.find(character.inventory, fn inst ->
-        item = Items.get!(inst.item_id)
+        item = Kantele.World.Item.fetch(inst.item_id)
         item.callback_module.matches?(item, name)
       end)
 
@@ -49,7 +49,7 @@ defmodule Kantele.Character.SanCommand do
         {:error, "你身上没有这种物品"}
 
       true ->
-        item = Items.get!(instance.item_id)
+        item = Kantele.World.Item.fetch(instance.item_id)
         craft_meta = get_craft_meta(instance)
         owner = craft_meta[:owner] || craft_meta["owner"] || %{}
         is_craft = is_map(owner) and map_size(owner) > 0

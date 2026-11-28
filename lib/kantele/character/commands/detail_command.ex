@@ -231,7 +231,7 @@ defmodule Kantele.Character.DetailCommand do
   defp normalize_inventory(_other), do: []
 
   defp safe_item(instance) do
-    Items.get!(instance.item_id)
+    Kantele.World.Item.fetch(instance.item_id)
   rescue
     _ -> nil
   end

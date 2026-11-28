@@ -102,7 +102,7 @@ defmodule Kantele.Character.GiveCommand do
         |> prompt(CommandView, "prompt", %{})
 
       true ->
-        item = Items.get!(item_instance.item_id)
+        item = Kantele.World.Item.fetch(item_instance.item_id)
 
         # 特殊：任务物品上交给对应 NPC
         if is_task_item?(item) do
@@ -326,7 +326,7 @@ defmodule Kantele.Character.GiveCommand do
   end
 
   defp gift_drop_text(gift_id) do
-    item = Items.get!(gift_id)
+    item = Kantele.World.Item.fetch(gift_id)
     unit = Map.get(item.meta, :unit) || "个"
     "一#{unit}#{item.name}从天而降！"
   end
@@ -340,7 +340,7 @@ defmodule Kantele.Character.GiveCommand do
     item_name = strip_qty(item_spec)
 
     Enum.find(conn.character.inventory, fn instance ->
-      item = Items.get!(instance.item_id)
+      item = Kantele.World.Item.fetch(instance.item_id)
 
       instance.id == item_name || item.callback_module.matches?(item, item_name)
     end)
@@ -357,7 +357,7 @@ defmodule Kantele.Character.GiveCommand do
 
   # 已装备物品不能赠送：装备快照没有 instance id，按名称比对（LPC equipped worn/wielded）
   defp equipped?(conn, item_instance) do
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
     character = conn.private.update_character || conn.character
 
     character.meta.combat.equipped

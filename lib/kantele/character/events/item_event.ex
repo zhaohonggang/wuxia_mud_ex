@@ -17,7 +17,7 @@ defmodule Kantele.Character.ItemEvent do
   def drop_abort(conn, %{data: event}) do
     %{item_instance: item_instance, reason: reason} = event
 
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
 
     conn
     |> assign(:item, item)
@@ -51,7 +51,7 @@ defmodule Kantele.Character.ItemEvent do
   def pickup_abort(conn, %{data: event}) do
     %{item_instance: item_instance, reason: reason} = event
 
-    item = Items.get!(item_instance.item_id)
+    item = Kantele.World.Item.fetch(item_instance.item_id)
 
     conn
     |> assign(:item, item)
@@ -96,7 +96,7 @@ defmodule Kantele.Character.ItemEvent do
   end
 
   defp with_item(item_instance) do
-    %{item_instance | item: Items.get!(item_instance.item_id)}
+    %{item_instance | item: Kantele.World.Item.fetch(item_instance.item_id)}
   end
 
   defp tap_save(conn) do

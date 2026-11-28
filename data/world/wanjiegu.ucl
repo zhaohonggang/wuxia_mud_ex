@@ -655,7 +655,7 @@ item_desc = {
 
   carry = [
     { id = items.red_dress.id },
-    { id = items.shoes.id }
+    { id = wanjiegu.items.shoes.id }
   ]
 
     }
@@ -802,7 +802,7 @@ item_desc = {
 
   carry = [
     { id = items.pink_dress.id },
-    { id = items.shoes.id }
+    { id = wanjiegu.items.shoes.id }
   ]
 
 
@@ -841,7 +841,7 @@ item_desc = {
 
   carry = [
     { id = items.mini_dress.id },
-    { id = items.shoes.id }
+    { id = wanjiegu.items.shoes.id }
   ]
 
     }
@@ -931,7 +931,7 @@ chats = [
 
   carry = [
     { id = items.moon_dress.id },
-    { id = items.shoes.id },
+    { id = wanjiegu.items.shoes.id },
     { id = items.xiu_scarf.id }
   ]
 
@@ -1144,6 +1144,34 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 1
+      }
+    }
+
+# Generated from C:/files/git/mud/d/wanjiegu/npc/obj/shoes.c by LPCConverter
+# Zone: wanjiegu
+
+    items "shoes" {
+      name = "绣花鞋"
+      aliases = ["shoes"]
+      description = ""
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100
+        weight = 1000
+        unit = "双"
+        material = "cloth"
+        armor = 2
+        armor_type = "feet"
+        female_only = 1
+        armor_prop = {
+          personality = 1
+          armor = 2
+          dodge = 2
+        }
       }
     }
 

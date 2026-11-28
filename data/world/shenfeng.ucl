@@ -1199,7 +1199,7 @@ chats = [
 
   carry = [
     { id = items.duandao.id },
-    { id = items.ycloth.id }
+    { id = shenfeng.items.ycloth.id }
   ]
 
     }
@@ -1239,7 +1239,7 @@ chats = [
 
 
   carry = [
-    { id = items.ycloth.id }
+    { id = shenfeng.items.ycloth.id }
   ]
 
     }
@@ -1363,7 +1363,7 @@ chats = [
 
   carry = [
     { id = items.duandao.id },
-    { id = items.ycloth.id }
+    { id = shenfeng.items.ycloth.id }
   ]
 
     }

@@ -5490,8 +5490,8 @@ chats = [
 
 
   carry = [
-    { id = items.fuchen.id },
-    { id = items.cloth4.id }
+    { id = beijing.items.fuchen.id },
+    { id = beijing.items.cloth4.id }
   ]
 
 
@@ -6160,7 +6160,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth4.id },
+    { id = beijing.items.cloth4.id },
     { id = items.sword1.id }
   ]
 
@@ -6311,7 +6311,7 @@ chats = [
 
 
   carry = [
-    { id = items.blade1.id },
+    { id = beijing.items.blade1.id },
     { id = items.cloth.id }
   ]
 
@@ -6999,7 +6999,7 @@ chats = [
 
 
   carry = [
-    { id = items.blade1.id },
+    { id = beijing.items.blade1.id },
     { id = items.jiasha.id }
   ]
 
@@ -7086,7 +7086,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id },
+    { id = beijing.items.cloth1.id },
     { id = items.blade2.id }
   ]
 
@@ -7286,7 +7286,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id }
+    { id = beijing.items.cloth1.id }
   ]
 
     }
@@ -7799,7 +7799,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth4.id }
+    { id = beijing.items.cloth4.id }
   ]
 
     }
@@ -7878,7 +7878,7 @@ chats = [
 
 
   carry = [
-    { id = items.blade1.id },
+    { id = beijing.items.blade1.id },
     { id = items.guanfu6.id }
   ]
 
@@ -7912,7 +7912,7 @@ chats = [
 
 
   carry = [
-    { id = items.blade1.id },
+    { id = beijing.items.blade1.id },
     { id = items.guanfu6.id }
   ]
 
@@ -8056,7 +8056,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth1.id }
+    { id = beijing.items.cloth1.id }
   ]
 
     }
@@ -8088,7 +8088,7 @@ chats = [
 
 
   carry = [
-    { id = items.cloth2.id }
+    { id = beijing.items.cloth2.id }
   ]
 
     }

@@ -55,7 +55,7 @@ defmodule Kantele.Character.ForgingAnswer do
       room_say(conn, npc,
         "#{npc.name}看了看#{from_name}，有一搭没一搭的“嗯”了一声。\n")
     else
-      material = Items.get!(session.material_item_id)
+      material = Kantele.World.Item.fetch(session.material_item_id)
       point = div((material.meta.power_point || 0) * entry.point, 100)
 
       new_session =

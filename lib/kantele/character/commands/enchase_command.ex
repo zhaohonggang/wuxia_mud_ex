@@ -63,13 +63,13 @@ defmodule Kantele.Character.EnchaseCommand do
   defp find_items(character, tessera_name, weapon_name) do
     tessera_instance =
       Enum.find(character.inventory, fn inst ->
-        item = Items.get!(inst.item_id)
+        item = Kantele.World.Item.fetch(inst.item_id)
         item.callback_module.matches?(item, tessera_name)
       end)
 
     weapon_instance =
       Enum.find(character.inventory, fn inst ->
-        item = Items.get!(inst.item_id)
+        item = Kantele.World.Item.fetch(inst.item_id)
         item.callback_module.matches?(item, weapon_name)
       end)
 
@@ -84,8 +84,8 @@ defmodule Kantele.Character.EnchaseCommand do
         {:error, "镶嵌的物品和目标不能是同一件"}
 
       true ->
-        tessera_item = Items.get!(tessera_instance.item_id)
-        weapon_item = Items.get!(weapon_instance.item_id)
+        tessera_item = Kantele.World.Item.fetch(tessera_instance.item_id)
+        weapon_item = Kantele.World.Item.fetch(weapon_instance.item_id)
         {:ok, tessera_item, tessera_instance, weapon_item, weapon_instance}
     end
   end
@@ -157,7 +157,7 @@ defmodule Kantele.Character.EnchaseCommand do
   end
 
   defp get_tessera_meta(instance) do
-    item = Items.get!(instance.item_id)
+    item = Kantele.World.Item.fetch(instance.item_id)
 
     %{
       name: item.name,

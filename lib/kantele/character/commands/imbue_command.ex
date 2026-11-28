@@ -63,13 +63,13 @@ defmodule Kantele.Character.ImbueCommand do
   defp find_items(character, special_name, weapon_name) do
     special_instance =
       Enum.find(character.inventory, fn inst ->
-        item = Items.get!(inst.item_id)
+        item = Kantele.World.Item.fetch(inst.item_id)
         item.callback_module.matches?(item, special_name)
       end)
 
     weapon_instance =
       Enum.find(character.inventory, fn inst ->
-        item = Items.get!(inst.item_id)
+        item = Kantele.World.Item.fetch(inst.item_id)
         item.callback_module.matches?(item, weapon_name)
       end)
 
@@ -84,8 +84,8 @@ defmodule Kantele.Character.ImbueCommand do
         {:error, "浸入的物品和目标不能是同一件"}
 
       true ->
-        special_item = Items.get!(special_instance.item_id)
-        weapon_item = Items.get!(weapon_instance.item_id)
+        special_item = Kantele.World.Item.fetch(special_instance.item_id)
+        weapon_item = Kantele.World.Item.fetch(weapon_instance.item_id)
         {:ok, special_item, special_instance, weapon_item, weapon_instance}
     end
   end
@@ -153,7 +153,7 @@ defmodule Kantele.Character.ImbueCommand do
   end
 
   defp get_item_meta(instance) do
-    item = Items.get!(instance.item_id)
+    item = Kantele.World.Item.fetch(instance.item_id)
     item.meta || %{}
   end
 

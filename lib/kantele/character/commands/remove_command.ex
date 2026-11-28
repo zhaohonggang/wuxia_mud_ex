@@ -91,7 +91,7 @@ defmodule Kantele.Character.RemoveCommand do
 
       _ ->
         Enum.any?(character.inventory || [], fn instance ->
-          item = Items.get!(instance.item_id)
+          item = Kantele.World.Item.fetch(instance.item_id)
           instance.id == arg or item.callback_module.matches?(item, arg)
         end)
     end

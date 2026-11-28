@@ -2414,7 +2414,7 @@ item_desc = {
 
 
   carry = [
-    { id = items.pink_cloth.id }
+    { id = city.items.pink_cloth.id }
   ]
 
 
@@ -2527,8 +2527,8 @@ chats = [
 
 
   carry = [
-    { id = items.necklace.id },
-    { id = items.pink_cloth.id }
+    { id = jingzhou.items.necklace.id },
+    { id = jingzhou.items.pink_cloth.id }
   ]
 
 
@@ -2672,7 +2672,7 @@ chats = [
 
 
   carry = [
-    { id = items.yayifu.id }
+    { id = jingzhou.items.yayifu.id }
   ]
 
     }
@@ -2715,6 +2715,32 @@ chats = [
         unit = "件"
         material = "cloth"
         armor = 1
+      }
+    }
+
+# Generated from C:/files/git/mud/d/jingzhou/obj/pink_cloth.c by LPCConverter
+# Zone: jingzhou
+
+    items "pink_cloth" {
+      name = "粉红绸衫"
+      aliases = ["pink cloth", "cloth"]
+      description = "这件粉红色的绸衫上面绣着几只黄鹊，闻起来还有一股淡香。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 600
+        weight = 1000
+        unit = "件"
+        material = "cloth"
+        armor = 1
+        female_only = 1
+        armor_prop = {
+          armor = 1
+          personality = 3
+        }
       }
     }
 

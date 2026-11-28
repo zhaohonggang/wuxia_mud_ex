@@ -1863,7 +1863,9 @@ valid_leave = [
 
 
   carry = [
-    { id = items.changjian.id },
+    # LPC zuo.c:85-97 全服单件持有者遍历：残阳宝剑无人持有 → 自己拿并 wield；
+    # 已在他人环境 → fallback 普通长剑。
+    { id = clone_lib.items.canyang.id singleton = true fallback = items.changjian.id },
     { id = items.cloth.id }
   ]
 
