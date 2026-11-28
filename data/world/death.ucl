@@ -2558,7 +2558,7 @@ chats = [
 
     characters "dizangwang" {
       name = "地藏王"
-      aliases = ["dizang"]
+      aliases = ["dizang", "hell_dizang"]
       description = "他容貌威严，不可一世。哇！他可是掌管人间生死的神仙。"
   title = "幽冥之主"
   gender = "男性"
@@ -2583,6 +2583,11 @@ chats = [
   ]
 
   ask_handler = "Kantele.NPC.Dizangwang"
+
+  apprentice = {
+    deny_all = true
+    deny_msg = "地藏王喝道：滚！给我一边儿去！"
+  }
 
   skills = [
     { skill = "unarmed" level = 800 },

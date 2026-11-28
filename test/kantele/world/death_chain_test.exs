@@ -235,6 +235,7 @@ defmodule Kantele.World.DeathChainTest do
       assert Map.has_key?(Yanluo.ask_specs(), "转世")
       assert Map.has_key?(Lonely.ask_specs(), "精元丹")
       assert Map.has_key?(Dizangwang.ask_specs(), "转世")
+      assert Map.has_key?(Dizangwang.ask_specs(), "麒麟靴")
     end
 
     test "death.ucl 阎罗殿已放置地藏王 NPC" do

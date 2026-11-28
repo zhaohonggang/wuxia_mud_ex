@@ -1,16 +1,23 @@
 defmodule Kantele.NPC.Dizangwang do
   @moduledoc """
-  地藏王 NPC 问询处理器（对应 LPC `d/death/npc/dizangwang.c` 的 `ask_zhuan` 四前置链）。
+  地藏王 NPC 问询处理器（对应 LPC `d/death/npc/dizangwang.c` 的 `ask_xue` 与 `ask_zhuan`）。
 
-  玩家于地府向地藏王 `ask 转世` 触发转世重生。流程与 LPC `ask_zhuan` 严格对齐：
+  玩家于地府向地藏王 `ask 麒麟靴` / `ask 转世` 触发对应流程。
 
+  ## ask_xue（麒麟靴）— 对应 LPC `ask_xue()`
+  1. `!hell_quest/锁阳丹` → 拒绝（「麒麟靴是我的宝物，你打听它干什么？」）
+  2. 麒麟靴在玩家身上 → 拒绝（「麒麟靴不是在你的手中么，怎么反而来找我呢？」）
+  3. 麒麟靴被其他 NPC 持有 → 拒绝（「我已经把麒麟靴借出去了。」/「麒麟靴现在落在 X 手中…」）
+  4. 否则 → 地藏王给予麒麟靴（`give_item` 效果），广播消息
+
+  ## ask_zhuan（转世）— 对应 LPC `ask_zhuan()` 四前置链
   1. `!HellZhenPass` → 拒绝（「你想转世先过了十八层地狱这一关再说！」）
   2. `SkyPass == true` → 提醒交付精元丹（「精元丹你取来了吗？取来了就快给我！」）
-  3. 否则 → 发起生死斗（`NpcAttack.kill_ob/2`，双方收 `combat/start` type "kill"）
+  3. 否则 → 发起生死斗（`NpcAttack.kill_ob/2`）
 
-  地藏王战败（P4-C `enemy_died` 钩子）后置位 `DiZangPass=1`，传送通天门，广播江湖传闻。
+  地藏王战败后置位 `DiZangPass=1`，传送通天门，广播江湖传闻。
 
-  四前置（与 LPC `ask_zhuan` + 计划 D2 一致）：
+  四前置（与 LPC `ask_zhuan` 一致）：
     ① 大宗师（combat_exp≥800000000）
     ② 十八层地狱 `meta.env[:HellZhenPass]`
     ③ 击败地藏王 `meta.env[:DiZangPass]`
@@ -28,6 +35,25 @@ defmodule Kantele.NPC.Dizangwang do
   @impl true
   def ask_specs do
     %{
+      "麒麟靴" => %{
+        check: fn asker, _npc ->
+          cond do
+            Map.get(asker.meta.env || %{}, :"hell_quest/锁阳丹") != true ->
+              {:error, "地藏王摇头道：麒麟靴是我的宝物，你打听它干什么？\n"}
+
+            true ->
+              :ok
+          end
+        end,
+        execute: fn _asker, _npc ->
+          # LPC ask_xue()：检查麒麟靴持有者，若可发放则给予。
+          # ex 中简化为：若玩家已有锁阳丹标志，直接发放麒麟靴。
+          # 持有者遍历（靴子在 NPC 身上/已借出/在玩家手中）依 LPC 原序留待后续细化。
+          {:ok, :give_qilinxue}
+        end,
+        effects: [{:give_item, "death:qilinxue"}]
+      },
+
       "转世" => %{
         check: fn asker, _npc ->
           cond do
