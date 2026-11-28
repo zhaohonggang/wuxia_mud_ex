@@ -880,6 +880,10 @@ behavior_config = {
           msgs = {}
         }
       }
+  coagents = [
+    { id = "xuedao laozu" startroom = "xuedao:shandong3" }
+  ]
+
     }
 
     characters "shengdi" {

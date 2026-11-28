@@ -1692,7 +1692,7 @@ behavior_config = {
   gender = "男性"
   age = 38
   shen_type = 1
-  startroom = "/d/guanwai/shichang"
+  startroom = "guanwai:shichang"
 
   combat = {
     combat_exp = 500000
@@ -1887,7 +1887,7 @@ chats = [
       aliases = ["shen ke", "shen", "ke"]
       description = "他是一个参客，常年在关外经营，颇为富有。"
   age = 65
-  startroom = "/d/beijing/majiu"
+  startroom = "beijing:majiu"
 
   combat = {
     attitude = "friendly"
@@ -2624,6 +2624,10 @@ chats = [
           msgs = {}
         }
       }
+  coagents = [
+    { id = "hu fei" startroom = "guanwai:xiaowu" }
+  ]
+
     }
 
     characters "zaohongma" {

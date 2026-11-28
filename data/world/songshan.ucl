@@ -814,7 +814,9 @@ valid_leave = [
     }
   ]
   coagents = [
-    { id = "songshan:zuo" startroom = "" }
+    # LPC kungfu/class/songshan/di.c:63 startroom 是占位符 xxxxxxxx（房间不存在），
+    # 不伪造房间 → startroom 留空（无条件通知）；id 用 LPC 原始拼音 id（与 #986 形态一致）。
+    { id = "zuo lengchan" }
   ]
   chat_chance_combat = 120
   chat_msg_combat = ["sword.meng", "strike.po", "cuff.chui", "recover"]

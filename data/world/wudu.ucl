@@ -4152,7 +4152,7 @@ chats = [
 
       # LPC hehongyao.c coagents：([ "startroom" : "/d/wudu/huating1", "id" : "he tieshou" ])
       coagents = [
-        { startroom = "/d/wudu/huating1" id = "he tieshou" }
+        { startroom = "wudu:huating1" id = "he tieshou" }
       ]
 
       # LPC hehongyao.c guarder：F_GUARDER 守门拒绝文案（refuse_other/refuse_carry）。

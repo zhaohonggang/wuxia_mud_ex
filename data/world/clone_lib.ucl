@@ -10175,7 +10175,7 @@ chats = [
       aliases = ["shen ke", "shen", "ke"]
       description = "他是一个参客，常年在关外经营，颇为富有。"
   age = 65
-  startroom = "/d/beijing/majiu"
+  startroom = "beijing:majiu"
 
   combat = {
     attitude = "friendly"
@@ -21533,6 +21533,10 @@ teach = {
     { id = items.tiejiang.id }
   ]
 
+  coagents = [
+    { id = "chen jialuo" startroom = "kaifeng:hh_woshi" }
+  ]
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/honghua/lu.c
@@ -22197,6 +22201,10 @@ teach = {
     { id = wudang.items.greyrobe.id }
   ]
 
+  coagents = [
+    { id = "zhao banshan" startroom = "kaifeng:hh_houting" }
+  ]
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/honghua/yang.c
@@ -22311,6 +22319,10 @@ teach = {
   carry = [
     { id = items.cloth.id },
     { id = items.tiebian.id }
+  ]
+
+  coagents = [
+    { id = "wuchen daozhang" startroom = "kaifeng:hh_jianlou1" }
   ]
 
     }
@@ -22437,6 +22449,10 @@ teach = {
   carry = [
     { id = items.jinduan.id },
     { id = items.jindi.id }
+  ]
+
+  coagents = [
+    { id = "lu feiqing" startroom = "kaifeng:road4" }
   ]
 
     }
@@ -25723,6 +25739,10 @@ chats = [
     { id = items.gangzhang.id }
   ]
 
+  coagents = [
+    { id = "gongsun zhi" startroom = "jueqing:zizhuxuan" }
+  ]
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/jueqing/zhi.c
@@ -28228,6 +28248,10 @@ chats = [
     { id = items.qingyi.id },
     { id = items.doupeng.id },
     { id = items.changjian.id }
+  ]
+
+  coagents = [
+    { id = "xuzhu zi" startroom = "lingjiu:dating" }
   ]
 
     }
@@ -30987,6 +31011,10 @@ chats = [
     { id = items.cloth.id },
     { id = items.changjian.id },
     { id = items.yaoshi.id }
+  ]
+
+  coagents = [
+    { id = "hei baizi" startroom = "meizhuang:houting" }
   ]
 
     }
@@ -37846,7 +37874,7 @@ chats = [
   gender = "男性"
   age = 61
   score = 50000
-  startroom = "/d/heimuya/up1"
+  startroom = "heimuya:up1"
 
   combat = {
     attitude = "friendly"
@@ -38248,6 +38276,10 @@ chats = [
 
   carry = [
     { id = items.jinpao.id }
+  ]
+
+  coagents = [
+    { id = "liu zhengfeng" startroom = "hengyang:furongfeng" }
   ]
 
     }
@@ -38781,6 +38813,10 @@ chats = [
   carry = [
     { id = items.jinpao.id },
     { id = items.gangdao.id }
+  ]
+
+  coagents = [
+    { id = "ren woxing" startroom = "heimuya:chengdedian" }
   ]
 
     }
@@ -46723,6 +46759,10 @@ chats = [
   init = {
     greet_delay = 2
   }
+  coagents = [
+    { id = "hong antong" startroom = "shenlong:dating" }
+  ]
+
     }
 
 # LPC: C:/files/git/mud/kungfu/class/shenlong/shou.c
@@ -48967,6 +49007,10 @@ chats = [
   carry = [
     { id = items.cloth.id },
     { id = items.gangdao.id }
+  ]
+
+  coagents = [
+    { id = "qiu qianren" startroom = "tiezhang:wztang" }
   ]
 
     }
@@ -51765,7 +51809,7 @@ chats = [
       description = "一个白净矮胖的道士，见谁都笑眯眯的，正悠 闲的品着一杯香茶。"
   gender = "男性"
   age = 34
-  startroom = "/d/wudu/neijin"
+  startroom = "wudu:neijin"
   # brain = brains.dealer  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
@@ -52249,7 +52293,7 @@ chats = [
 
   # LPC jiaotou.c coagents：([ "startroom" : "/d/wudu/dating", "id" : "qi yunao" ])
   coagents = [
-    { startroom = "/d/wudu/dating" id = "qi yunao" }
+    { startroom = "wudu:dating" id = "qi yunao" }
   ]
 
   # LPC jiaotou.c guarder：F_GUARDER 守门拒绝文案（refuse_other/refuse_carry）。

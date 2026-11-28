@@ -1343,6 +1343,10 @@ chats = [
       init = {
         greet_delay = 2
       }
+  coagents = [
+    { id = "hong antong" startroom = "shenlong:dating" }
+  ]
+
     }
 
     characters "dushe" {

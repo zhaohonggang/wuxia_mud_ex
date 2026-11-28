@@ -2931,6 +2931,10 @@ item_desc = {
       engage = {
     fight = { accept = false }
   }
+
+  coagents = [
+    { id = "chen jialuo" startroom = "kaifeng:hh_woshi" }
+  ]
 }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/lu.c by LPCConverter
@@ -3241,6 +3245,10 @@ item_desc = {
     { id = items.cloth.id }
   ]
 
+  coagents = [
+    { id = "zhao banshan" startroom = "kaifeng:hh_houting" }
+  ]
+
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/wuchen.c by LPCConverter
@@ -3453,6 +3461,10 @@ item_desc = {
     { id = items.tiebian.id }
   ]
 
+  coagents = [
+    { id = "wuchen daozhang" startroom = "kaifeng:hh_jianlou1" }
+  ]
+
     }
 
 # Generated from C:/files/git/mud/d/hangzhou/honghua/yu.c by LPCConverter
@@ -3517,6 +3529,10 @@ item_desc = {
     { id = items.jinduan.id },
     { id = items.yaodai.id },
     { id = items.changjian.id }
+  ]
+
+  coagents = [
+    { id = "lu feiqing" startroom = "kaifeng:road4" }
   ]
 
     }
@@ -4363,7 +4379,7 @@ chats = [
   gender = "男性"
   age = 32
   shen_type = 1
-  startroom = "/d/hangzhou/kuangshan"
+  startroom = "hangzhou:kuangshan"
 
   combat = {
     combat_exp = 500000

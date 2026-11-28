@@ -1064,7 +1064,7 @@ item_desc = {
   age = 41
   shen_type = 1
   score = 200000
-  startroom = "/d/wuguan/guofu_dating"
+  startroom = "wuguan:guofu_dating"
 
   combat = {
     attitude = "peaceful"
