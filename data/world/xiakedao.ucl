@@ -2585,10 +2585,34 @@ item_desc = {
     attitude = "peaceful"
   }
 
+  # LPC renter.c:299-330 create_all_helper 按 npc_level 1..15 生成师兄弟；
+  # npcd.c levels 表给出各等级 combat_exp。
+  inquiry_state = {
+    rent_helpers = [
+      { id = "xiakedao_helper_one" name = "侠客岛弟子甲" npc_level = 1 combat_exp = 50000 family = "侠客岛" },
+      { id = "xiakedao_helper_two" name = "侠客岛弟子乙" npc_level = 2 combat_exp = 100000 family = "侠客岛" },
+      { id = "xiakedao_helper_three" name = "侠客岛弟子丙" npc_level = 3 combat_exp = 200000 family = "侠客岛" },
+      { id = "xiakedao_helper_four" name = "侠客岛弟子丁" npc_level = 4 combat_exp = 400000 family = "侠客岛" },
+      { id = "xiakedao_helper_five" name = "侠客岛弟子戊" npc_level = 5 combat_exp = 500000 family = "侠客岛" },
+      { id = "xiakedao_helper_six" name = "侠客岛弟子己" npc_level = 6 combat_exp = 800000 family = "侠客岛" },
+      { id = "xiakedao_helper_seven" name = "侠客岛弟子庚" npc_level = 7 combat_exp = 1200000 family = "侠客岛" },
+      { id = "xiakedao_helper_eight" name = "侠客岛弟子辛" npc_level = 8 combat_exp = 1600000 family = "侠客岛" },
+      { id = "xiakedao_helper_nine" name = "侠客岛弟子壬" npc_level = 9 combat_exp = 2000000 family = "侠客岛" },
+      { id = "xiakedao_helper_ten" name = "侠客岛弟子癸" npc_level = 10 combat_exp = 2500000 family = "侠客岛" },
+      { id = "xiakedao_helper_eleven" name = "侠客岛弟子十一" npc_level = 11 combat_exp = 3000000 family = "侠客岛" },
+      { id = "xiakedao_helper_twelve" name = "侠客岛弟子十二" npc_level = 12 combat_exp = 4000000 family = "侠客岛" },
+      { id = "xiakedao_helper_thirteen" name = "侠客岛弟子十三" npc_level = 13 combat_exp = 5500000 family = "侠客岛" },
+      { id = "xiakedao_helper_fourteen" name = "侠客岛弟子十四" npc_level = 14 combat_exp = 7500000 family = "侠客岛" },
+      { id = "xiakedao_helper_fifteen" name = "侠客岛弟子十五" npc_level = 15 combat_exp = 9000000 family = "侠客岛" }
+    ]
+  }
+
   inquiries = [
-    { key = "rent" value = " inquire about rent (unimplemented: GAP #801)" },
-    { key = "同门" value = " inquire about rent (unimplemented: GAP #801)" },
-    { key = "师兄" value = " inquire about rent (unimplemented: GAP #801)" }
+    { key = "rent" value = { kind = "hire_helper" mode = "list" } },
+    { key = "同门" value = { kind = "hire_helper" mode = "list" } },
+    { key = "师兄" value = { kind = "hire_helper" mode = "list" } },
+    { key = "xiakedao_helper" value = { kind = "hire_helper" mode = "hire" } },
+    { key = "侠客岛弟子" value = { kind = "hire_helper" mode = "hire" } }
   ]
 
   carry = [
@@ -2597,6 +2621,7 @@ item_desc = {
 
 
   accept = [
+    { kind = "xiakedao_rent" accept = true },
     { kind = "money" accept = true msg = "你给我钱干什么？赞助我们侠客岛么？" },
     { kind = "any" accept = false }
   ]

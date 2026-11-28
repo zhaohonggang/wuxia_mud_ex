@@ -3642,15 +3642,18 @@ defmodule Kantele.World.Room.CombatEvent do
         # （外门派 hit/kill、同门 hit/kill）
         engage(context, target, attacker, "kill")
 
-      engage_rule_deny?(target, attacker, event) ->
-        # NPC 自己写了 accept_fight/hit/kill 且 accept=false
-        # —— LPC 里这是**最优先**的：npc.c 的 accept_* 一开始就
-        # `if (is_guarder()) …`，守卫走 check_enemy；非守卫且 NPC 没自己
-        # 写 accept_* 时才轮到 query("attitude")。
-        {:deny, msg} =
-          EngageRule.decide(target.meta, Map.get(event.data, :type, "fight"), target.name)
+      # 动态 handler 的判定可能有副作用（#816 阿紫给鼎会 set("swmuding", 0)），
+      # 必须只算一次并把同一个 {:deny, msg} 用于渲染：旧代码这里再调一次
+      # 静态 decide/3，既会 MatchError（动态拒绝但静态 accept=true），也会
+      # 在第二次调用时把副作用重复执行。
+      (deny = engage_rule_deny?(target, attacker, event)) != false ->
+        {_decision, msg} = deny
 
-        render(context, attacker.pid, CommandView, "text", %{text: msg})
+        if is_binary(msg) and String.trim(msg) != "" do
+          render(context, attacker.pid, CommandView, "text", %{text: msg})
+        else
+          context
+        end
 
       true ->
         case attitude_decision(target, attacker, Map.get(event.data, :type, "fight")) do
@@ -4109,17 +4112,18 @@ defmodule Kantele.World.Room.CombatEvent do
 
   # ---- NPC 开战接受规则（accept_fight/hit/kill → engage，见 EngageRule） ----
 
+  # 返回 `{:deny, msg}`（供 cond 直接渲染同一份文案）或 false。
   defp engage_rule_deny?(target, attacker, event) do
-    match?(
-      {:deny, _},
-      EngageRule.decide(
-        target.meta,
-        Map.get(event.data, :type, "fight"),
-        target.name,
-        target,
-        attacker
-      )
-    )
+    case EngageRule.decide(
+           target.meta,
+           Map.get(event.data, :type, "fight"),
+           target.name,
+           target,
+           attacker
+         ) do
+      {:deny, _} = deny -> deny
+      _ -> false
+    end
   end
 
   defp players_in_room(context) do

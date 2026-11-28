@@ -12,6 +12,7 @@ defmodule Kantele.Character.NpcShopEvent do
 
   use Kalevala.Character.Event
 
+  alias Kantele.Character.Combat
   alias Kantele.Npc.Dealer
   alias Kantele.World.Items
 
@@ -299,6 +300,7 @@ defmodule Kantele.Character.NpcAskEvent do
   alias Kantele.World.Room
   alias Kantele.World.RoomActions.Helpers
   alias Kantele.World.NpcActions.NpcAttack
+  alias Kantele.Character.Combat
 
   def call(conn, %{data: %{reply_to: reply_to, asker_id: asker_id} = data}) do
     keyword = Map.get(data, :keyword) || ""
@@ -642,10 +644,14 @@ defmodule Kantele.Character.NpcAskEvent do
     # 向上找信物持有者，这段遍历必须在 NPC 进程完成（与 LPC 同相位）；结果以
     # owner 回执给玩家侧。两者持有者链语义相同（:asker/:object/:character/:npc），
     # 各 handler 按自己的门序解释（ask_lun 额外有 is_good/shen 前门）。
+    # #820 masterd.c:474-509 give_item 的持有者遍历与上述同形：显式开启
+    # `owner_check` 的 give_item 配置也在 NPC 侧取快照，玩家侧在技能门后、
+    # 贡献门前按五分支给不同文案。
     owner =
-      if kind in ["xiaoyao_zhihuan", "xueshan_lun", "xuedao_dao", "xuedao_book"],
-        do: zhihuan_owner(conn, data, script),
-        else: nil
+      if kind in ["xiaoyao_zhihuan", "xueshan_lun", "xuedao_dao", "xuedao_book"] or
+           (kind == "give_item" and Map.get(script, "owner_check") in [true, "true"]),
+         do: zhihuan_owner(conn, data, script),
+         else: nil
 
     send(reply_to, %Kalevala.Event{
       from_pid: self(),
@@ -658,12 +664,19 @@ defmodule Kantele.Character.NpcAskEvent do
         npc_pid: self(),
         npc_room_id: conn.character.room_id,
         npc_family: teach_family(conn.character),
+        # #814 LPC ask_xiangliao 的 `is_busy()` / `is_fighting()` 判的是 NPC 自己：
+        # 只能在 NPC 进程取快照，再交玩家侧 give_item 门控。
+        npc_busy: npc_busy?(conn.character),
+        npc_fighting: npc_fighting?(conn.character),
         asker_id: asker_id,
         asker_name: Map.get(data, :asker_name),
         perform_name: keyword,
         remaining: remaining,
         fallback_remaining: fallback_remaining,
-        owner: owner
+        owner: owner,
+        # #801 侠客岛 renter.c:149 create_all_helper 的_temp("helpers")：
+        # NPC 进程持有列表，随问询回执给玩家侧 HireHelper 渲染/定价。
+        helpers: Map.get(state, "rent_helpers") || Map.get(state, :rent_helpers)
       }
     })
 
@@ -767,6 +780,16 @@ defmodule Kantele.Character.NpcAskEvent do
 
   def inquiry_consume(conn, _event), do: conn
 
+  # #814 丁春秋 ask_xiangliao 的 `start_busy(2)`：玩家侧发放成功后回执 NPC
+  # 进程写自身 meta.combat.busy，由战斗 tick 逐轮递减（与玩家 start_busy 同原语）。
+  def inquiry_busy(conn, %{data: %{rounds: rounds}}) when is_integer(rounds) and rounds > 0 do
+    combat = conn.character.meta.combat || Combat.new()
+    meta = %{conn.character.meta | combat: Combat.start_busy(combat, rounds)}
+    Kalevala.Character.Conn.put_character(conn, %{conn.character | meta: meta})
+  end
+
+  def inquiry_busy(conn, _event), do: conn
+
   # #756 昆仑何太冲/何足道：把独特剑给予玩家后，NPC 按 LPC
   # `new("clone/weapon/changjian"); ->move(this_object()); ->wield()` 装备替代长剑。
   # 与 SpawnController.equip_carry/1 共用同一武器快照算法（wield 语义一致）。
@@ -836,4 +859,11 @@ defmodule Kantele.Character.NpcAskEvent do
       _ -> nil
     end
   end
+
+  # #814 NPC 自身战斗状态快照（LPC `is_busy()` / `is_fighting()`）。
+  defp npc_busy?(%{meta: %{combat: %Combat{} = combat}}), do: Combat.busy?(combat)
+  defp npc_busy?(_character), do: false
+
+  defp npc_fighting?(%{meta: %{combat: %Combat{} = combat}}), do: Combat.fighting?(combat)
+  defp npc_fighting?(_character), do: false
 end

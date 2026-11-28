@@ -12,7 +12,8 @@ defmodule Kantele.World.NpcGreeting do
 
   # #758：clone_lib.ucl 的角色块经 loader 生成的是 hash id（如何足道 = "90740dc0"），
   # 不是 "zone:name"，故 id 注册表无法命中。补一条**别名**注册表 `alias_handler/1`，
-  # 用 UCL 块 id 别名（如 "kunlun_hezudao"）派发，与 id 注册表并存、后者优先。
+  # 用 UCL 块 id 别名（如 "kunlun_hezudao"、"xiakedao_long"）派发，与 id 注册表
+  # 并存、后者优先。
   """
 
   @doc "按 NPC id / 块 id 别名派发问候，返回 `{:say, lines}` | `:skip` | `:fallback`。"
@@ -29,6 +30,8 @@ defmodule Kantele.World.NpcGreeting do
   defp alias_handler(%{meta: %{aliases: aliases}}) when is_list(aliases) do
     Enum.find_value(aliases, fn
       "kunlun_hezudao" -> &__MODULE__.KunlunHezudao.greet/2
+      "xiakedao_long" -> &__MODULE__.XiakedaoLong.greet/2
+      "xiakedao_mu" -> &__MODULE__.XiakedaoMu.greet/2
       _ -> nil
     end)
   end
@@ -549,5 +552,80 @@ defmodule Kantele.World.NpcGreeting do
     # LPC !is_fighting()：NPC meta.combat.enemies 非空即战斗中。
     defp fighting?(%{meta: %{combat: %Combat{} = combat}}), do: Combat.fighting?(combat)
     defp fighting?(_), do: false
+  end
+
+  defmodule XiakedaoLong do
+    @moduledoc """
+    侠客岛 龙岛主（`kungfu/class/xiakedao/long.c:69-93` GAP #802）：
+    `init()` 满足 1/3 概率且 NPC 未在战斗时，才按进屋玩家 `combat_exp`
+    选择一句打量台词。原文逐个标点照抄（低经验一句用 LPC 原文的 `”`）。
+    """
+    alias Kantele.World.NpcGreeting.XiakedaoDaozhu
+
+    @low "龙岛主抬头望了你一眼，说道：”经验尚浅。”"
+    @high "龙岛主瞟了你一眼，说道：“未到火候。”"
+
+    def greet(npc, player), do: XiakedaoDaozhu.greet(npc, player, @low, @high)
+  end
+
+  defmodule XiakedaoMu do
+    @moduledoc """
+    侠客岛 木岛主（`kungfu/class/xiakedao/mu.c:73-97` GAP #802）：
+    门控与龙岛主完全同构，仅说话人与台词中姓名不同。
+    """
+    alias Kantele.World.NpcGreeting.XiakedaoDaozhu
+
+    @low "木岛主抬头望了你一眼，说道：”经验尚浅。”"
+    @high "木岛主瞟了你一眼，说道：“未到火候。”"
+
+    def greet(npc, player), do: XiakedaoDaozhu.greet(npc, player, @low, @high)
+  end
+
+  defmodule XiakedaoDaozhu do
+    @moduledoc """
+    两位岛主共用的 greeting 门序（LPC `long.c:69-93` / `mu.c:73-97`）：
+
+        if (interactive(ob = this_player()) && ! is_fighting() && random(3) == 1)
+                call_out("greeting", 1, ob);
+        void greeting(object ob) {
+                if (! ob || environment(ob) != environment()) return;
+                if (ob->query("combat_exp") < 10000) say("<低经验文案>");
+                else if (ob->query("combat_exp") < 100000) say("<中经验文案>");
+        }
+
+    逐条落地：① 本钩子只在玩家进屋时触发，等价 `interactive(this_player())`；
+    ② `random(3) == 1` 即 1/3；③ `!is_fighting()` 读 `meta.combat`；
+    ④ 10,000 / 100,000 两个阈值严格照抄，等于 10000 走「未到火候」、
+    等于 100000 完全沉默。
+
+    近似说明：LPC 的 `remove_call_out` + `call_out("greeting", 1, ob)` 提供
+    1 拍延迟并在到期时复查玩家仍与 NPC 同房。本引擎在进屋当拍同步广播，
+    入住即视为「到期且仍在同房」；这与 #758 何足道 greeting 的既有近似同类。
+    """
+
+    alias Kantele.Character.Combat
+
+    @doc "按 LPC 门序返回 `{:say, [line]}` 或 `:skip`。"
+    def greet(npc, player, low, high) do
+      exp = combat_exp(player)
+
+      cond do
+        :rand.uniform(3) != 1 -> :skip
+        fighting?(npc) -> :skip
+        exp < 10_000 -> {:say, [low]}
+        exp < 100_000 -> {:say, [high]}
+        true -> :skip
+      end
+    end
+
+    # LPC !is_fighting()：NPC meta.combat.enemies 非空即战斗中。
+    defp fighting?(%{meta: %{combat: %Combat{} = combat}}), do: Combat.fighting?(combat)
+    defp fighting?(_), do: false
+
+    defp combat_exp(%{meta: %{stats: stats}}) when is_map(stats) do
+      Map.get(stats, :combat_exp) || Map.get(stats, "combat_exp") || 0
+    end
+
+    defp combat_exp(_), do: 0
   end
 end

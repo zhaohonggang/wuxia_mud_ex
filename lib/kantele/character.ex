@@ -409,7 +409,10 @@ defmodule Kantele.Character.NonPlayerMeta do
     # LPC `set_temp("handing", carry_object(...))`：李白手持天乙神酒。
     {:handing, nil},
     # ultra 大宗师评价配置（类别 / 技能表 / 逐字文案），AskHandler + accept 消费。
-    {:ultra, nil}
+    {:ultra, nil},
+    # LPC `startroom`：NPC 的初始/固定房间（如刘正风的 /d/hengyang/furongfeng）。
+    # NPC init() 会据此决定是否执行 startroom 专属反应（如吹曲、叹息）。
+    {:startroom, nil}
   ]
 
   defimpl Kalevala.Meta.Trim do

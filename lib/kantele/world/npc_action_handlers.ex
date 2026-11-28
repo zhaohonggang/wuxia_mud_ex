@@ -120,6 +120,10 @@ defmodule Kantele.World.NpcActionHandlers do
     须先由 `ask 清法 剃度` 置 pending，再跪拜改名/置 class=bonze/清 shen）。
     两处是不同 LPC 函数，handler 内按 room_id + NPC 身份双重校验，互不干扰。
 
+  - `flatter` 单连（xiyu:riyuedong，丁春秋）：`Kantele.World.NpcActions.XingxiuFlatter`
+    落地 `ding.c:181-200` 两步拜师的后半段；须先由 `attempt_apprentice` 落
+    `pending/flatter`，再喊话同时含「星宿老仙」与颂词之一才 recruit。
+
   - `gu` / `dapi` / `cuihuo` / `repair` / `xiuli` 五连（襄阳铁匠，
     `xiangyang:tiejiangpu`）：`Kantele.World.NpcActions.Smith`，
     LPC `/inherit/char/smith.c` 打工链完整落地——`is_busy` 守卫、
@@ -245,6 +249,38 @@ defmodule Kantele.World.NpcActionHandlers do
     },
     "xuedao:wangyougu" => %{
       "kneel" => {Kantele.World.NpcActions.XuedaoKneel, :run}
+    },
+    # #853 峨嵋九名师太共用 tobebonze.h do_kneel：每房间按 NPC 身份过滤。
+    "emei:fushouan" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:hcaguangchang" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:hcazhengdian" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:lingwenge" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:qfadadian" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:qingyinge" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:wanxingan" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:wnadian" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    "emei:woyunan" => %{
+      "kneel" => {Kantele.World.NpcActions.EmeiKneel, :run}
+    },
+    # #812 丁春秋 flatter 两步拜师：只在日月洞激活，不抢其它 NPC 的同名动词。
+    "xiyu:riyuedong" => %{
+      "flatter" => {Kantele.World.NpcActions.XingxiuFlatter, :run}
     },
     "kaifeng:yaopu" => %{
       "peiyao" => {Kantele.World.NpcActions.Peiyao, :run}

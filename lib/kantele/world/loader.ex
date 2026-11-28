@@ -654,7 +654,9 @@ defmodule Kantele.World.Loader do
         # LPC `set_temp("handing", carry_object(...))`：李白手持天乙神酒。
         handing: parse_item_ref(Map.get(character_data, :handing)),
         # ultra 大宗师配置（评价类别 / 技能表 / 逐字文案），由 AskHandler 消费。
-        ultra: parse_ultra(Map.get(character_data, :ultra))
+        ultra: parse_ultra(Map.get(character_data, :ultra)),
+        # LPC `startroom`：NPC 的初始/固定房间（如刘正风的 /d/hengyang/furongfeng）。
+        startroom: string_or_nil(Map.get(character_data, :startroom))
       }
     }
 
@@ -958,15 +960,22 @@ defmodule Kantele.World.Loader do
   # LPC create() 里 `if (random(5) > 3) set("bagua_count", 1)` 的初值掷骰。
   # UCL 写 `key = { random_sides = 5 random_threshold = 3 }`，装载时按 LPC
   # `random(n) ∈ 0..n-1` 掷一次，结果落为 0/1 整数；普通整数初值原样保留。
+  #
+  # #814 丁春秋 `set("xiangliao_count", random(10) + 10)` 用同一只骰子加基数：
+  # `key = { random_base = 10 random_sides = 10 }` → 10 + random(10) ∈ 10..19。
   defp roll_inquiry_count(value) when is_map(value) do
     sides = Map.get(value, :random_sides) || Map.get(value, "random_sides")
     threshold = Map.get(value, :random_threshold) || Map.get(value, "random_threshold")
+    base = Map.get(value, :random_base) || Map.get(value, "random_base")
 
-    case {sides, threshold} do
-      {s, t} when is_integer(s) and s > 0 and is_integer(t) ->
-        if :rand.uniform(s) - 1 > t, do: 1, else: 0
+    cond do
+      is_integer(sides) and sides > 0 and is_integer(base) ->
+        base + :rand.uniform(sides) - 1
 
-      _ ->
+      is_integer(sides) and sides > 0 and is_integer(threshold) ->
+        if :rand.uniform(sides) - 1 > threshold, do: 1, else: 0
+
+      true ->
         value
     end
   end
@@ -992,6 +1001,18 @@ defmodule Kantele.World.Loader do
   end
 
   defp normalize_inquiry_field("level_deny", denies) when is_map(denies) do
+    Enum.into(denies, %{}, fn {skill, text} ->
+      {String.replace(to_string(skill), "_", "-"), text}
+    end)
+  end
+
+  # #837 王剑英双技能存在门：技能列表与逐字未学文案表同 min_levels/level_deny
+  # 归一，确保 UCL 的下划线键能命中 Stats.skills 的连字符 id。
+  defp normalize_inquiry_field("presence_skills", skills) when is_list(skills) do
+    Enum.map(skills, &String.replace(to_string(&1), "_", "-"))
+  end
+
+  defp normalize_inquiry_field("presence_deny", denies) when is_map(denies) do
     Enum.into(denies, %{}, fn {skill, text} ->
       {String.replace(to_string(skill), "_", "-"), text}
     end)
@@ -1104,7 +1125,9 @@ defmodule Kantele.World.Loader do
            "hunter",
            "shaolin_promotion",
            "ultra",
-           "kunlun_liangji"
+           "kunlun_liangji",
+           "xiakedao_rent",
+           "zhenyuan_wangweiyang"
          ] do
         %{
           kind: kind,
@@ -1185,6 +1208,7 @@ defmodule Kantele.World.Loader do
   defp string_list(_), do: nil
 
   defp integer_or_nil(value) when is_integer(value), do: value
+
   defp integer_or_nil(value) when is_binary(value) do
     case Integer.parse(value) do
       {number, _rest} -> number
@@ -1213,7 +1237,8 @@ defmodule Kantele.World.Loader do
   end
 
   # #810 成功放行台词是一组动作/口白（sigh + say），逐条归一。
-  defp normalize_guarder_msg(texts) when is_list(texts), do: Enum.map(texts, &normalize_guarder_msg/1)
+  defp normalize_guarder_msg(texts) when is_list(texts),
+    do: Enum.map(texts, &normalize_guarder_msg/1)
 
   defp normalize_guarder_msg(other), do: other
 
@@ -1729,7 +1754,13 @@ defmodule Kantele.World.Loader do
       min_any_attribute: int_value(Map.get(apprentice, :min_any_attribute)),
       beggarlvl_deny: Map.get(apprentice, :beggarlvl_deny),
       str_deny: Map.get(apprentice, :str_deny),
-      any_attribute_deny: Map.get(apprentice, :any_attribute_deny)
+      any_attribute_deny: Map.get(apprentice, :any_attribute_deny),
+      # #832 镇远镖局王维扬 wangweiyang.c:149：
+      # `query_int() < 35 && query_con() < 35` 双低「且」门（仅两者都低于阈值才拒），
+      # 位于 permit_recruit 之后、combat_exp 之前。与 gaibang 的四属性「任一达标即过」
+      # 语义相反（此处是两项都必须达标），故单列字段，不复用 min_any_attribute。
+      min_int_con_both: int_value(Map.get(apprentice, :min_int_con_both)),
+      int_con_deny: Map.get(apprentice, :int_con_deny)
     }
 
     # 达摩祖师 11 项门槛（少林移植 #626/#636）：这些字段无法用既有 min_shen/min_exp/
@@ -1897,6 +1928,18 @@ defmodule Kantele.World.Loader do
       rename_surname_index: int_value(Map.get(apprentice, :rename_surname_index))
     }
 
+    # #812 丁春秋 flatter 两步拜师：数字门通过后不立即 recruit，而是先落
+    # `pending/<verb>` 并播提示；玩家再执行对应 NPC 私有动词、文案达标才 recruit。
+    # 未配置的 NPC 全为 nil，FamilyEvent 与 NPC action handler 都不介入。
+    pending_recruit_fields = %{
+      pending_recruit: class_value(Map.get(apprentice, :pending_recruit)),
+      pending_recruit_msg: Map.get(apprentice, :pending_recruit_msg),
+      pending_recruit_emote: Map.get(apprentice, :pending_recruit_emote),
+      pending_recruit_deny: Map.get(apprentice, :pending_recruit_deny),
+      pending_recruit_fail: Map.get(apprentice, :pending_recruit_fail),
+      pending_recruit_no_arg: Map.get(apprentice, :pending_recruit_no_arg)
+    }
+
     Map.merge(
       base,
       Map.merge(
@@ -1907,7 +1950,10 @@ defmodule Kantele.World.Loader do
             meizhuang_fields,
             Map.merge(
               taohua_fields,
-              Map.merge(dialogue_fields, Map.merge(apprentice_fields, wudang_fields))
+              Map.merge(
+                dialogue_fields,
+                Map.merge(pending_recruit_fields, Map.merge(apprentice_fields, wudang_fields))
+              )
             )
           )
         )

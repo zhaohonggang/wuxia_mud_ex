@@ -20,6 +20,8 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
         cost_gongxian = 100                  # 授予后扣除贡献
         family = "丐帮"                      # 限门派；缺省不拦
         family_deny = "..."                  # 非本门文案（自动加敬称由 inquiry_grant 回填）
+        require_master_id = true             # #852 风陵师太：仅本师亲传弟子
+        master_id_deny = "..."               # 非直传弟子文案
         skill_deny = "..."                   # 必修技能未学文案
         gongxian_deny = "..."                # 贡献不足文案
         shen_deny = "..."                    # 杀气不足文案
@@ -48,8 +50,10 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   `dex` / `max-neili` 以伪技能键出现在 `min_levels`，从而精确保留 LPC 的相对顺序。
 
   与 `npc_script_event.ex` 的 `perform_result/2` 同源：`stats_with_family/1` 把
-  `meta.family` 门派名和 `meta.vitals.max_neili` 并入 stats map 后传给
-  `inquiry_grant`，供同门校验与内力门槛使用。
+  `meta.family` 门派名、`meta.family.master_id`（#852 风陵直传弟子门）和
+  `meta.vitals.max_neili` 并入 stats map 后传给 `inquiry_grant`，供同门、直传弟子
+  与内力门槛使用。NPC 侧 `data.npc_id` 一并进入 `npc_stats`，用于 `LPC
+  query("family/master_id") != query("id")` 的精确比对。
   """
 
   import Kalevala.Character.Conn, only: [render: 4, prompt: 4, put_character: 2]
@@ -79,7 +83,7 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   def run(conn, _config, _data), do: conn
 
   defp run_for(conn, character, config, data) do
-    npc_stats = %{family: Map.get(data, :npc_family)}
+    npc_stats = %{family: Map.get(data, :npc_family), id: Map.get(data, :npc_id)}
 
     case SectMaster.inquiry_grant(stats_with_family(character), npc_stats, config) do
       {:error, msg} ->
@@ -124,6 +128,7 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
 
     base
     |> put_family(character)
+    |> put_master_id(character)
     |> put_beggarlvl(character)
     |> put_max_neili(character)
     |> put_marks(character)
@@ -160,6 +165,18 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
     end
   end
 
+  # #852 风陵师太 ask_skill1/2 的 `me->query("family/master_id") != query("id")`：
+  # 门派名之外必须把 master_id 带给 inquiry_grant；仅有显式
+  # `require_master_id = true` 的 grant 会消费它，其它配置零影响。
+  defp put_master_id(stats, character) do
+    family = character.meta.family || %{}
+
+    case Map.get(family, :master_id) || Map.get(family, "master_id") do
+      master_id when is_binary(master_id) -> Map.put(stats, :master_id, master_id)
+      _ -> stats
+    end
+  end
+
   defp put_max_neili(stats, character) do
     case Map.get(character.meta.vitals || %{}, :max_neili) do
       neili when is_integer(neili) -> Map.put(stats, :max_neili, neili)
@@ -168,15 +185,45 @@ defmodule Kantele.World.InquiryHandlers.SectMasterGrant do
   end
 
   # LPC masterd.c:214-261 `message_sort(HIY "\n" + msg1 + "\n\n" NOR, ob, who)`：
-  # 私定演示文案时向房间广播；未配置或不在房间时静默跳过（老配置零影响）。
+  # 私定演示文案时向房间广播；未配置时按 masterd.c:219-259 的 random(4)
+  # 默认演示文案向房间广播；不在房间时静默跳过（老配置零影响）。
   defp broadcast_msg1(conn, config, data) do
     case {Map.get(config, "msg_one") || Map.get(config, "msg1"), Map.get(data, :npc_room_id)} do
       {msg, room_id} when is_binary(msg) and byte_size(msg) > 0 and is_binary(room_id) ->
         Helpers.broadcast(conn, room_id, render_msg1(msg, data))
 
+      {nil, room_id} when is_binary(room_id) ->
+        Helpers.broadcast(conn, room_id, render_default_msg1(config, data))
+
       _ ->
         conn
     end
+  end
+
+  # LPC masterd.c:219-259 default 演示文案（random(4) 四分支）：
+  # $N = NPC（师父），$n = 提问者（弟子），sk1 = 必修技能 ID（ex 无 e2c_dict，原样输出），
+  # name = 绝招中文名（perform_name，缺省用 perform_id）。
+  # 每次调用随机选一段，与 LPC `random(4)` 语义一致。
+  defp render_default_msg1(config, data) do
+    sk1 = Map.get(config, "skill") || ""
+    name = Map.get(data, :perform_name) || Map.get(config, "perform_id") || ""
+
+    msg =
+      case :random.uniform(4) do
+        1 ->
+          "$N微微点了点头，伸手将$n招至身前，低声在$n耳畔讲述了半天，还不时伸手比划演示着什么，所讲全是" <> sk1 <> "的精微要诣。$n听后会心一笑，看来对$N的教导大有所悟。"
+
+        2 ->
+          "$N凝视了$n许久，方才微微点了点头，说道：“我给你演示一遍，可看清楚了。”$N话音刚落，随即起身而立拉开架势，慢慢的演示开" <> sk1 <> "的招式。$n只觉$N招式精奇，神妙非凡，实乃前所未闻，顿时大有感悟。"
+
+        3 ->
+          "$N看了看$n，颇为赞许的说道：“想不到你的" <> sk1 <> "进展如此神速，已达此般境界。不易，不易。今日我便传你这招，可记清楚了。”说完$N便将$n招至跟前，耐心讲述" <> name <> "的诸多精要，$n一边听一边不住的点头。"
+
+        _ ->
+          "$N哈哈一笑，对$n赞道：“不错，不错。依照你现在" <> sk1 <> "的造诣，我便传授你" <> name <> "又有何妨？”说完便只见$N从怀中摸出一本颇为古旧的小册子，指着其中一段对$n仔细讲解。$n听后沉思良久，若有所悟。"
+      end
+
+    render_msg1(msg, data)
   end
 
   # LPC `command("bored")` / `command("nod")`：向房间广播 NPC 动作。

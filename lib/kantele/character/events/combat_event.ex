@@ -49,6 +49,7 @@ defmodule Kantele.Character.CombatEvent do
   alias Kantele.Communication
   alias Kantele.World.Hunting
   alias Kantele.World.Items
+  alias Kantele.World.Room
   alias Kantele.World.RoomActions.Helpers
   alias Kantele.Feature.Damage
   alias Kantele.Quest
@@ -546,27 +547,40 @@ defmodule Kantele.Character.CombatEvent do
   #
   # coagents 经 loader 归一为字符串键 map 列表 `%{"id" =>, "startroom" =>}`
   # （见 loader.ex parse_coagents）；兼容历史纯字符串 id 列表。
+  #
+  # startroom 门控：仅在帮手当前身处其配置的 startroom 时才投递 coagent/help。
+  # 若 startroom 为 nil/""，则保留旧式无条件通知行为。
   defp notify_coagents(conn, character, enemy) do
     case Map.get(character.meta, :coagents) do
       entries when is_list(entries) and entries != [] ->
         entries
-        |> Enum.flat_map(&coagent_entry_id/1)
-        |> Enum.each(fn coagent_id ->
-          case coagent_pid(coagent_id) do
+        |> Enum.each(fn entry ->
+          coagent_id = Map.get(entry, "id") || Map.get(entry, :id)
+          startroom = Map.get(entry, "startroom") || Map.get(entry, :startroom)
+
+          case coagent_id do
             nil ->
               :ok
 
-            pid ->
-              send(pid, %Event{
-                from_pid: self(),
-                topic: "coagent/help",
-                data: %{
-                  attacker: ref(enemy),
-                  mate_room: character.room_id,
-                  mate_id: character.id,
-                  mate_name: character.name
-                }
-              })
+            id when is_binary(id) and id != "" ->
+              case coagent_pid(id) do
+                nil ->
+                  :ok
+
+                pid ->
+                  if coagent_in_startroom?(pid, startroom) do
+                    send(pid, %Event{
+                      from_pid: self(),
+                      topic: "coagent/help",
+                      data: %{
+                        attacker: ref(enemy),
+                        mate_room: character.room_id,
+                        mate_id: character.id,
+                        mate_name: character.name
+                      }
+                    })
+                  end
+              end
           end
         end)
 
@@ -596,6 +610,23 @@ defmodule Kantele.Character.CombatEvent do
   end
 
   defp coagent_pid(_), do: nil
+
+  # startroom 门控：若 startroom 为 nil/""，则视为旧式无条件通知，返回 true。
+  # 否则，仅当帮手 pid 出现在 startroom 的角色列表中时才返回 true。
+  defp coagent_in_startroom?(_pid, nil), do: true
+  defp coagent_in_startroom?(_pid, ""), do: true
+
+  defp coagent_in_startroom?(pid, startroom) when is_binary(startroom) do
+    case Room.npc_characters_by_id(startroom) do
+      characters when is_list(characters) ->
+        Enum.any?(characters, fn c -> Map.get(c, :pid) == pid end)
+
+      _ ->
+        false
+    end
+  end
+
+  defp coagent_in_startroom?(_pid, _other), do: true
 
   # 决斗结算（败者端）：若角色死在 competitor 手下，清掉指向胜者的 competitor，
   # 胜负文案由胜者端 announce_duel_victory 广播。

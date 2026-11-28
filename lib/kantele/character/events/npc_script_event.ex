@@ -25,7 +25,12 @@ defmodule Kantele.Character.NpcScriptEvent do
   alias Kantele.World.Items
 
   def give_result(conn, %{
-        data: %{npc_name: npc_name, item_id: item_id, asker_id: asker_id}
+        data:
+          %{
+            npc_name: npc_name,
+            item_id: item_id,
+            asker_id: asker_id
+          } = data
       }) do
     character = conn.character
 
@@ -45,12 +50,24 @@ defmodule Kantele.Character.NpcScriptEvent do
             character = %{character | inventory: [instance | character.inventory]}
             Records.save(character)
 
-            conn
-            |> put_character(character)
-            |> render(CommandView, "text", %{
-              text: "#{npc_name}取出一物，郑重递到你手中。\n"
-            })
-            |> prompt(CommandView, "prompt", %{})
+            # 可选 `text` 让 emit 方给出 LPC 原文（如 #816 阿紫 give 木鼎）；
+            # 空串表示文案已由房间侧渲染过，这里只落库不再重复输出。
+            text =
+              case Map.get(data, :text) do
+                value when is_binary(value) -> value
+                _ -> "#{npc_name}取出一物，郑重递到你手中。\n"
+              end
+
+            conn = put_character(conn, character)
+
+            conn =
+              if String.trim(text) == "" do
+                conn
+              else
+                render(conn, CommandView, "text", %{text: text})
+              end
+
+            prompt(conn, CommandView, "prompt", %{})
 
           _ ->
             conn

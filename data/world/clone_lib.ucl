@@ -7518,6 +7518,24 @@ zones "clone_lib" {
   ]
     }
 
+# 来自 LPC clone/misc/swmuding.c
+
+    items "swmuding" {
+      name = "神木王鼎"
+      description = "一只黄灿灿的木制的鼎，看上去感觉有些诡秘，细闻下却有一股腥味夹杂在香味中。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+  meta = {
+    weight = 1200
+    value = 50000
+    no_sell = 1
+    unit = "只"
+    aliases = ["shenmu wangding", "mu ding", "muding", "ding"]
+  }
+    }
+
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
 
     items "needfire" {
@@ -12212,6 +12230,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   skills = [
@@ -12294,6 +12315,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   skills = [
@@ -12382,6 +12406,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
     gender = "女性"
   }
 
@@ -12675,6 +12702,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   inquiries = [
@@ -12881,6 +12911,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
     min_shen = 50000
     min_shen_deny = "你江湖上的名声不怎么样，这样的人如何能够治好国家？"
     min_skills = {
@@ -12922,7 +12955,7 @@ chats = [
         yiyang_zhi = "你的一阳指诀功力还不够，练高了再说吧。"
       }
       learned = "你学会了「一指乾坤」。"
-      improve_skills = ["finger", "yiyang-zhi", "jingluo-xue", "martial-cognize"]
+      improve_skills = ["force", "jingluo-xue", "finger", "yiyang-zhi", "martial-cognize"]
     } },
     { key = "五绝连环" value = {
       kind = "sect_master_grant"
@@ -12950,8 +12983,64 @@ chats = [
       learned = "你学会了「五绝连环」。"
       improve_skills = ["sword", "duanjia-jian", "martial-cognize"]
     } },
-    { key = "玉颧神脉经" value = "GAP #844：脉经多状态给书（owner 遍历 + shen/exp/jingluo 门），未实现。" },
-    { key = "王叔和脉经" value = "GAP #844：脉经多状态给书（owner 遍历 + shen/exp/jingluo 门），未实现。" },
+    { key = "王叔和脉经" value = {
+      kind = "give_item"
+      item = "clone_lib:jingluoxue1"
+      match = "mai jing"
+      unique = true
+      family = "段氏皇族"
+      master_id = true
+      master_before_gates = true
+      min_shen = 10000
+      min_combat_exp = 10000
+      max_skill_levels = {
+        jingluo_xue = 149
+      }
+      family_deny = "你又不是我们段家的传人，这话是什么意思？"
+      master_deny = "…嗯…等你成为我的弟子后再说吧。"
+      min_shen_deny = "你侠义正事做得不够，这脉经我不能给你。"
+      min_exp_deny = "你现在经验太浅，不用忙着去阅读脉经。"
+      max_skill_deny = "你对经络学的了解已经很透彻，远胜脉经中所述。"
+      owner_check = true
+      owner_item_label = "我那本王叔和脉经"
+      owner_self_deny = "{item}不就是你拿着在看吗？"
+      owner_lost_deny = "…嗯…脉经现在不在我手里。"
+      owner_sect_deny = "那书现在暂时是你兄弟{name}在看，你要用就去找他吧。"
+      owner_ally_deny = "我那本脉经现在落在了{name}手中，你去找他索回吧。"
+      owner_outsider_deny = "我那本脉经现在落在了{name}手中，你去找他索回吧。"
+      npc_say = "这本脉经你就拿去看吧，可要认真研读。"
+      silent_success = true
+      vision_name = "段正明"
+    } },
+    { key = "玉颧神脉经" value = {
+      kind = "give_item"
+      item = "clone_lib:jingluoxue2"
+      match = "yuquan jing"
+      unique = true
+      family = "段氏皇族"
+      master_id = true
+      master_before_gates = true
+      min_shen = 80000
+      min_combat_exp = 300000
+      max_skill_levels = {
+        jingluo_xue = 199
+      }
+      family_deny = "你又不是我们段家的传人，这话是什么意思？"
+      master_deny = "…嗯…等你成为我的弟子后再说吧。"
+      min_shen_deny = "你侠义正事做得不够，这脉经我不能给你。"
+      min_exp_deny = "你现在经验太浅，不用忙着去阅读脉经。"
+      max_skill_deny = "你对经络学的了解已经很透彻，远胜脉经中所述。"
+      owner_check = true
+      owner_item_label = "我那本玉颧神脉经"
+      owner_self_deny = "{item}不就是你拿着在看吗？"
+      owner_lost_deny = "…嗯…脉经现在不在我手里。"
+      owner_sect_deny = "那书现在暂时是你兄弟{name}在看，你要用就去找他吧。"
+      owner_ally_deny = "我那本脉经现在落在了{name}手中，你去找他索回吧。"
+      owner_outsider_deny = "我那本脉经现在落在了{name}手中，你去找他索回吧。"
+      npc_say = "这本脉经你就拿去看吧，可要认真研读。"
+      silent_success = true
+      vision_name = "段正明"
+    } },
     { key = "神指点穴" value = {
       kind = "sect_master_grant"
       perform_id = "yiyang-zhi/dian"
@@ -12980,7 +13069,7 @@ chats = [
         yiyang_zhi = "你的一阳指诀功力还不够，练高了再说吧。"
       }
       learned = "你学会了「神指点穴」。"
-      improve_skills = ["finger", "yiyang-zhi", "jingluo-xue", "martial-cognize"]
+      improve_skills = ["force", "jingluo-xue", "finger", "yiyang-zhi", "martial-cognize"]
     } },
     { key = "起死回生" value = {
       kind = "sect_master_grant"
@@ -13008,7 +13097,7 @@ chats = [
         yiyang_zhi = "你的一阳指诀功力还不够，练高了再说吧。"
       }
       learned = "你学会了「起死回生」。"
-      improve_skills = ["finger", "yiyang-zhi", "jingluo-xue", "martial-cognize"]
+      improve_skills = ["force", "jingluo-xue", "finger", "yiyang-zhi", "martial-cognize"]
     } },
     { key = "阳关三叠" value = "唉…说来惭愧，这一招连我自己都还未领悟透彻。" }
   ]
@@ -13101,6 +13190,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   skills = [
@@ -13181,6 +13273,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   skills = [
@@ -13263,6 +13358,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   skills = [
@@ -13345,6 +13443,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   inquiries = [
@@ -13456,6 +13557,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   inquiries = [
@@ -13573,10 +13677,16 @@ chats = [
     { key = "先天功乾阳剑气" value = {
       kind = "sect_master_grant"
       perform_id = "xiantian-gong/jian"
-      gate_order = "lpc_kunlun"
+      gate_order = "lpc_duan_yideng"
       skill = "xiantian-gong"
       family = "段氏皇族"
+      allowed_families = ["全真教", "段氏皇族"]
+      presence_skills = ["yiyang-zhi", "xiantian-gong"]
       family_deny = "施主与老衲素不相识，不知施主此话从何说起？"
+      presence_deny = {
+        yiyang_zhi = "你连一阳指诀都没学，还谈什么绝招可言？"
+        xiantian_gong = "这招暂时不能传授于你，等你学会先天功再来找我吧。"
+      }
       min_levels = {
         force = 500
         max_neili = 5000
@@ -13600,7 +13710,7 @@ chats = [
         jingluo_xue = "你对经络学的了解还不透彻，研究透了再来找我吧。"
       }
       learned = "你学会了「先天功乾阳剑气」。"
-      improve_skills = ["force", "finger", "xiantian-gong", "yiyang-zhi", "martial-cognize"]
+      improve_skills = ["force", "force", "force", "finger", "finger", "finger", "xiantian-gong", "xiantian-gong", "yiyang-zhi", "yiyang-zhi", "martial-cognize"]
     } },
     { key = "周伯通" value = "呵呵，那人武功高强，可是心机却如顽童一般。" },
     { key = "王重阳" value = "中神通王重阳名动江湖，老衲很是佩服。" },
@@ -13636,7 +13746,7 @@ chats = [
         yiyang_zhi = "你的一阳指诀功力还不够，练高了再说吧。"
       }
       learned = "你学会了「阳关三叠」。"
-      improve_skills = ["force", "jingluo-xue", "finger", "yiyang-zhi", "martial-cognize"]
+      improve_skills = ["force", "force", "force", "jingluo-xue", "jingluo-xue", "jingluo-xue", "finger", "finger", "finger", "yiyang-zhi", "yiyang-zhi", "yiyang-zhi", "martial-cognize"]
     } },
     { key = "黄蓉" value = "是郭靖那憨小子的伴侣吧，人倒很是机灵。" }
   ]
@@ -13735,6 +13845,9 @@ chats = [
     betray_times_deny = "哼，我们大理段氏最痛恨的就是不忠不义之徒。"
     other_family_deny = "你当年跑出去的时候怎么就没想过要回来？"
     family_deny = "我们段家乃皇族出身，不收外人。"
+    # #843 LPC kungfu/class/duan/duan.h:17-22：born_family != 段氏皇族 逐字拒绝。
+    required_born_family = "段氏皇族"
+    born_family_deny = "我们段家乃皇族出身，不收外人。"
   }
 
   inquiries = [
@@ -14104,9 +14217,39 @@ teach = {
     min_shen = 0
     min_shen_deny = "唉，你现在正入歧途，我怎能收你为徒？"
   }
+  inquiry_state = {
+    gao_count = 4
+    jian_count = 2
+  }
+
   inquiries = [
-    { key = "伤药" value = "GAP #854：静风师太伤药 give_item 库存门（gao_count + 已持有 + 伤势），未实现。" },
-    { key = "武器" value = "GAP #854：静风师太软剑 give_item 库存门（jian_count + 已持有），未实现。" }
+    { key = "伤药" value = {
+      kind = "give_item"
+      item = "emei:tianxiang_gao"
+      match = "tianxiang gao"
+      count = "gao_count"
+      family = "峨嵋派"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+      require_wounded = true
+      wound_deny = "你未曾受伤，讨这药膏做什么？"
+      plain_already = true
+      already = "你身上不是带着本门秘药？"
+      exhausted = "你来晚了，本门秘药已尽数给了本派弟子。"
+      success = "我这里有本门秘药，你拿去疗伤吧。"
+    } },
+    { key = "武器" value = {
+      kind = "give_item"
+      item = "emei:ruanjian"
+      match = "ruanjian"
+      count = "jian_count"
+      family = "峨嵋派"
+      family_deny = "与本派素无来往，不知此话从何谈起？"
+      plain_already = true
+      exhausted_before_already = true
+      already = "你身上不是带着武器吗？怎么还来要！"
+      exhausted = "我现在没有什么武器好给，你下次在来吧。"
+      success = "我这里有一把软剑，你拿去用吧。"
+    } }
   ]
 
   skills = [
@@ -14224,7 +14367,9 @@ teach = {
       gate_order = "lpc_emei"
       skill = "piaoxue-zhang"
       family = "峨嵋派"
-      family_deny = "你是哪里来的？快给我滚开！"
+      family_deny = "我与阁下素无来往，不知阁下打听这个干嘛？"
+      require_master_id = true
+      master_id_deny = "只有我的弟子才能学习此招，你还是走吧。"
       min_levels = {
         force = 200
         max_neili = 2000
@@ -14252,7 +14397,9 @@ teach = {
       gate_order = "lpc_emei"
       skill = "piaoxue-zhang"
       family = "峨嵋派"
-      family_deny = "你是哪里来的？快给我滚开！"
+      family_deny = "我与阁下素无来往，不知阁下打听这个干嘛？"
+      require_master_id = true
+      master_id_deny = "只有我的弟子才能学习此招，你还是走吧。"
       min_levels = {
         force = 300
         max_neili = 3500
@@ -14499,8 +14646,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -14614,8 +14761,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -14729,8 +14876,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -14782,6 +14929,7 @@ teach = {
   gender = "女性"
   age = 23
   shen_type = 1
+  startroom = "emei:huayanding"
 
   combat = {
     attitude = "peaceful"
@@ -14828,8 +14976,38 @@ teach = {
     min_shen_deny = "唉，你现在正入歧途，我怎能收你为徒？"
   }
   inquiries = [
-    { key = "back" value = "GAP #855：李明霞「上山/back」带人传送状态机（age/同门/回程定时器），未实现。" },
-    { key = "上山" value = "GAP #855：李明霞「上山/back」带人传送状态机（age/同门/回程定时器），未实现。" }
+    { key = "back" value = {
+      kind = "emei_li_back"
+      target_room = "emei:jinding"
+      startroom = "emei:huayanding"
+      family = "峨嵋派"
+      family_deny = "你不是长脚了吗？难道上山还要我来抬你？"
+      room_deny = "别什么都问我，我不知道！"
+      age_deny = "我说你呀，年纪这么大了还要我带你上山么？"
+      say_text = "好吧，看在同门的分上，我就带你上山吧。"
+      vision_a = "$N拉着$n的手向山顶上走去。\n\n"
+      tell_text = "你觉得省力多了，毫不费劲的就上了金顶。\n"
+      vision_b = "{npc}一手拉着{name}快步的向山上走去，一会儿就不见影子了。\n"
+      back_delay = 5
+      back_vision_a = "$N 头也不回的急急忙忙走了。\n"
+      back_vision_b = "$N 大步流星的赶了过来。\n"
+    } },
+    { key = "上山" value = {
+      kind = "emei_li_back"
+      target_room = "emei:jinding"
+      startroom = "emei:huayanding"
+      family = "峨嵋派"
+      family_deny = "你不是长脚了吗？难道上山还要我来抬你？"
+      room_deny = "别什么都问我，我不知道！"
+      age_deny = "我说你呀，年纪这么大了还要我带你上山么？"
+      say_text = "好吧，看在同门的分上，我就带你上山吧。"
+      vision_a = "$N拉着$n的手向山顶上走去。\n\n"
+      tell_text = "你觉得省力多了，毫不费劲的就上了金顶。\n"
+      vision_b = "{npc}一手拉着{name}快步的向山上走去，一会儿就不见影子了。\n"
+      back_delay = 5
+      back_vision_a = "$N 头也不回的急急忙忙走了。\n"
+      back_vision_b = "$N 大步流星的赶了过来。\n"
+    } }
   ]
 
   skills = [
@@ -14862,6 +15040,264 @@ teach = {
     { id = items.cloth.id }
   ]
 
+    }
+
+# LPC: C:/files/git/mud/kungfu/class/emei/ding.c
+    characters "emei_ding" {
+      name = "丁敏君"
+      aliases = ["emei_ding", "ding minjun", "ding", "minjun"]
+      description = "她是峨嵋派的第四代俗家弟子。是天下最恶心，无赖的人。\n"
+    gender = "女性"
+    age = 22
+    shen_type = -1
+    class = "fighter"
+
+    combat = {
+      attitude = "peaceful"
+      combat_exp = 90000
+      con = 21
+      dex = 24
+      int = 22
+      max_jing = 800
+      max_neili = 1800
+      max_qi = 1600
+      str = 20
+    }
+
+    teach = {
+      family = "峨嵋派"
+      teach_skills = {
+        force = { max = 120 gongxian = 0 }
+        emei_xinfa = { max = 120 gongxian = 0 }
+        dodge = { max = 100 gongxian = 0 }
+        zhutian_bu = { max = 100 gongxian = 0 }
+        strike = { max = 80 gongxian = 0 }
+        sixiang_zhang = { max = 80 gongxian = 0 }
+        hand = { max = 60 gongxian = 0 }
+        jieshou_jiushi = { max = 60 gongxian = 0 }
+        parry = { max = 100 gongxian = 0 }
+        sword = { max = 120 gongxian = 0 }
+        emei_jian = { max = 120 gongxian = 0 }
+        literate = { max = 100 gongxian = 0 }
+        mahayana = { max = 100 gongxian = 0 }
+        buddhism = { max = 100 gongxian = 0 }
+        martial_cognize = { max = 20 gongxian = 0 }
+      }
+    }
+    apprentice = {
+      family = "峨嵋派"
+      permit_recruit = true
+      gate_order = "gender_first"
+      gender = "女性"
+      gender_deny = "阿弥陀佛！我峨嵋派不收男弟子。施主若想学艺，可去少林、武当投师。"
+      betray_sect_deny = "你当年既然离开了峨嵋派，今天又何必回来？"
+      betray_times_deny = "你欺师灭主，背叛师门，这种人我们峨嵋派不会收留的。"
+      other_family_deny = "你已有名师指点，为何又来峨嵋派？莫非你要判师不成？"
+      min_shen = 0
+      min_shen_deny = "唉，你现在正入歧途，我怎能收你为徒？"
+    }
+    skills = [
+      { skill = "force" level = 120 },
+      { skill = "emei-xinfa" level = 120 },
+      { skill = "dodge" level = 100 },
+      { skill = "zhutian-bu" level = 100 },
+      { skill = "strike" level = 80 },
+      { skill = "sixiang-zhang" level = 80 },
+      { skill = "hand" level = 60 },
+      { skill = "jieshou-jiushi" level = 60 },
+      { skill = "parry" level = 100 },
+      { skill = "sword" level = 120 },
+      { skill = "emei-jian" level = 120 },
+      { skill = "literate" level = 100 },
+      { skill = "mahayana" level = 100 },
+      { skill = "buddhism" level = 100 },
+      { skill = "martial-cognize" level = 20 },
+      { type = "force" skill = "emei-xinfa" },
+      { type = "hand" skill = "jieshou-jiushi" },
+      { type = "dodge" skill = "zhutian-bu" },
+      { type = "strike" skill = "sixiang-zhang" },
+      { type = "sword" skill = "emei-jian" },
+      { type = "parry" skill = "emei-jian" }
+    ]
+    carry = [
+      { id = items.changjian.id },
+      { id = items.cloth.id }
+    ]
+    }
+
+# LPC: C:/files/git/mud/kungfu/class/emei/guoxiang.c
+    characters "emei_guoxiang" {
+      name = "郭襄"
+      aliases = ["emei_guoxiang", "guo xiang", "guo", "xiang"]
+      description = "她就是峨嵋派的开山祖师郭襄，乃「北侠」郭靖的二女儿，人称「小东邪」。\n"
+    title = "峨嵋派开山祖师"
+    nickname = "小东邪"
+    gender = "女性"
+    age = 21
+    shen_type = 1
+    class = "bonze"
+
+    combat = {
+      attitude = "peaceful"
+      combat_exp = 5000000
+      con = 40
+      dex = 40
+      int = 40
+      jiali = 250
+      max_jing = 6000
+      max_neili = 8000
+      max_qi = 7000
+      str = 40
+    }
+
+    teach = {
+      family = "峨嵋派"
+      teach_skills = {
+        force = { max = 320 gongxian = 0 }
+        emei_xinfa = { max = 300 gongxian = 0 }
+        emei_jiuyang = { max = 320 gongxian = 0 }
+        linji_zhuang = { max = 320 gongxian = 0 }
+        dodge = { max = 300 gongxian = 0 }
+        zhutian_bu = { max = 300 gongxian = 0 }
+        finger = { max = 300 gongxian = 0 }
+        tiangang_zhi = { max = 300 gongxian = 0 }
+        hand = { max = 300 gongxian = 0 }
+        jieshou_jiushi = { max = 300 gongxian = 0 }
+        strike = { max = 320 gongxian = 0 }
+        jinding_zhang = { max = 300 gongxian = 0 }
+        piaoxue_zhang = { max = 320 gongxian = 0 }
+        sixiang_zhang = { max = 300 gongxian = 0 }
+        sword = { max = 320 gongxian = 0 }
+        huifeng_jian = { max = 320 gongxian = 0 }
+        emei_jian = { max = 300 gongxian = 0 }
+        blade = { max = 300 gongxian = 0 }
+        yanxing_dao = { max = 300 gongxian = 0 }
+        parry = { max = 300 gongxian = 0 }
+        martial_cognize = { max = 300 gongxian = 0 }
+        literate = { max = 280 gongxian = 0 }
+        mahayana = { max = 300 gongxian = 0 }
+        buddhism = { max = 300 gongxian = 0 }
+      }
+    }
+    apprentice = {
+      family = "峨嵋派"
+      deny_all = true
+      deny_msg = "我不收徒，你还是找别人吧。"
+    }
+    skills = [
+      { skill = "force" level = 320 },
+      { skill = "emei-xinfa" level = 300 },
+      { skill = "emei-jiuyang" level = 320 },
+      { skill = "linji-zhuang" level = 320 },
+      { skill = "dodge" level = 300 },
+      { skill = "zhutian-bu" level = 300 },
+      { skill = "finger" level = 300 },
+      { skill = "tiangang-zhi" level = 300 },
+      { skill = "hand" level = 300 },
+      { skill = "jieshou-jiushi" level = 300 },
+      { skill = "strike" level = 320 },
+      { skill = "jinding-zhang" level = 300 },
+      { skill = "piaoxue-zhang" level = 320 },
+      { skill = "sixiang-zhang" level = 300 },
+      { skill = "sword" level = 320 },
+      { skill = "huifeng-jian" level = 320 },
+      { skill = "emei-jian" level = 300 },
+      { skill = "blade" level = 300 },
+      { skill = "yanxing-dao" level = 300 },
+      { skill = "parry" level = 300 },
+      { skill = "martial-cognize" level = 300 },
+      { skill = "literate" level = 280 },
+      { skill = "mahayana" level = 300 },
+      { skill = "buddhism" level = 300 },
+      { type = "force" skill = "emei-jiuyang" },
+      { type = "dodge" skill = "zhutian-bu" },
+      { type = "finger" skill = "tiangang-zhi" },
+      { type = "hand" skill = "jieshou-jiushi" },
+      { type = "strike" skill = "piaoxue-zhang" },
+      { type = "sword" skill = "huifeng-jian" },
+      { type = "blade" skill = "yanxing-dao" },
+      { type = "parry" skill = "jinding-zhang" }
+    ]
+    carry = [
+      { id = items.cloth.id }
+    ]
+    }
+
+# LPC: C:/files/git/mud/kungfu/class/emei/ji.c
+    characters "emei_ji" {
+      name = "纪晓芙"
+      aliases = ["emei_ji", "ji xiaofu", "ji", "xiaofu"]
+      description = "她是峨嵋派的第四代俗家弟子。灭绝抛弃她，她独自在这里苦度光阴。\n"
+    gender = "女性"
+    age = 22
+    shen_type = 1
+    class = "fighter"
+
+    combat = {
+      attitude = "peaceful"
+      combat_exp = 320000
+      con = 30
+      dex = 30
+      int = 30
+      max_jing = 1200
+      max_neili = 2700
+      max_qi = 2500
+      per = 30
+      str = 30
+    }
+
+    teach = {
+      family = "峨嵋派"
+      teach_skills = {
+        force = { max = 120 gongxian = 0 }
+        emei_xinfa = { max = 120 gongxian = 0 }
+        dodge = { max = 100 gongxian = 0 }
+        zhutian_bu = { max = 100 gongxian = 0 }
+        strike = { max = 80 gongxian = 0 }
+        sixiang_zhang = { max = 80 gongxian = 0 }
+        hand = { max = 60 gongxian = 0 }
+        jieshou_jiushi = { max = 60 gongxian = 0 }
+        parry = { max = 100 gongxian = 0 }
+        sword = { max = 120 gongxian = 0 }
+        emei_jian = { max = 120 gongxian = 0 }
+        literate = { max = 100 gongxian = 0 }
+        mahayana = { max = 100 gongxian = 0 }
+        buddhism = { max = 100 gongxian = 0 }
+        martial_cognize = { max = 20 gongxian = 0 }
+      }
+    }
+    apprentice = {
+      family = "峨嵋派"
+      deny_all = true
+      deny_msg = "你找我其它师姐吧。"
+    }
+    skills = [
+      { skill = "force" level = 120 },
+      { skill = "emei-xinfa" level = 120 },
+      { skill = "dodge" level = 100 },
+      { skill = "zhutian-bu" level = 100 },
+      { skill = "strike" level = 80 },
+      { skill = "sixiang-zhang" level = 80 },
+      { skill = "hand" level = 60 },
+      { skill = "jieshou-jiushi" level = 60 },
+      { skill = "parry" level = 100 },
+      { skill = "sword" level = 120 },
+      { skill = "emei-jian" level = 120 },
+      { skill = "literate" level = 100 },
+      { skill = "mahayana" level = 100 },
+      { skill = "buddhism" level = 100 },
+      { skill = "martial-cognize" level = 20 },
+      { type = "force" skill = "emei-xinfa" },
+      { type = "hand" skill = "jieshou-jiushi" },
+      { type = "dodge" skill = "zhutian-bu" },
+      { type = "strike" skill = "sixiang-zhang" },
+      { type = "sword" skill = "emei-jian" },
+      { type = "parry" skill = "emei-jian" }
+    ]
+    carry = [
+      { id = items.changjian.id },
+      { id = items.cloth.id }
+    ]
     }
 
 # LPC: C:/files/git/mud/kungfu/class/emei/ling.c
@@ -15276,7 +15712,10 @@ teach = {
     } },
     { key = "绝技" value = "我峨眉派绝学如此之多，你到底要问什么绝技？" },
     { key = "绝招" value = "我峨眉派绝学如此之多，你到底要问什么绝招？" },
-    { key = "还俗" value = "GAP #857：峨眉还俗需 pending/quit_bonze 状态门，未实现。" }
+    { key = "还俗" value = {
+      kind = "emei_quit_bonze"
+      npc_say = "哼"
+    } }
   ]
 
   skills = [
@@ -15670,8 +16109,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -15786,8 +16225,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -15901,8 +16340,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -16016,8 +16455,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -16131,8 +16570,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -16246,8 +16685,8 @@ teach = {
     }
   }
   inquiries = [
-    { key = "出家" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
-    { key = "剃度" value = "GAP #853：峨眉剃度/出家需 kneel 多状态流程（pending/join_bonze + 法名前缀），未实现。" },
+    { key = "出家" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
+    { key = "剃度" value = { kind = "emei_tonsure" npc_say = "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。" } },
     { key = "还俗" value = "峨嵋弟子，不能还俗。你找掌门师太吧。" }
   ]
 
@@ -19352,6 +19791,7 @@ teach = {
   gender = "男性"
   age = 45
   shen_type = 1
+  startroom = "hengyang:furongfeng"
   # brain = brains.guarder  <- 转换器 infer_brain 编造，data/brains 无此定义；注释掉前后都是 NullNode（见 docs/lpc-port-gaps.zh-CN.md §一之一）
 
   combat = {
@@ -19364,6 +19804,11 @@ teach = {
     max_neili = 4000
     max_qi = 4500
     str = 28
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
   }
 
   teach = {
@@ -19416,6 +19861,12 @@ teach = {
     }
     recruit_skill_order = ["henshan-jian", "force"]
   }
+  # #865 LPC liu.c:71-76 coagents 曲洋，startroom=/d/hengyang/furongfeng。
+  coagents = [
+    { id = "qu yang" startroom = "hengyang:furongfeng" }
+  ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.luo", "strike.pai", "strike.ying", "recover", "powerup"]
   inquiries = [
     { key = "乱剑覆花" value = {
       kind = "sect_master_grant"
@@ -19679,6 +20130,11 @@ teach = {
     max_neili = 1400
     max_qi = 3000
     str = 24
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
   }
 
   teach = {
@@ -19710,6 +20166,12 @@ teach = {
     reject_master_name = "xiang danian"
     reject_master_name_deny = "你既已拜我向师兄为师，我也不便收你为徒。"
   }
+  # #865 LPC mi.c:86-89 coagents 莫大，startroom=/d/hengyang/zhurongfeng。
+  coagents = [
+    { id = "mo da" startroom = "hengyang:zhurongfeng" }
+  ]
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.huan", "cuff.riyue", "recover"]
   inquiries = [
     { key = "青天揽日月" value = {
       kind = "sect_master_grant"
@@ -19785,6 +20247,11 @@ teach = {
     max_neili = 5000
     max_qi = 5000
     str = 28
+    apply = {
+      damage = 100
+      unarmed_damage = 100
+      armor = 200
+    }
   }
 
   teach = {
@@ -19833,6 +20300,8 @@ teach = {
     }
     recruit_skill_order = ["henshan-jian", "force"]
   }
+  chat_chance_combat = 120
+  chat_msg_combat = ["sword.luo", "strike.pai", "strike.die", "recover", "powerup"]
   inquiries = [
     { key = "紫盖回翔" value = {
       kind = "sect_master_grant"
@@ -19926,10 +20395,79 @@ teach = {
       improve_skills = ["strike", "strike", "liuyun-zhang", "liuyun-zhang", "martial-cognize"]
       learned = "你学会了「排山倒海」。"
     } },
-    { key = "历练" value = "GAP #864：莫大 QUEST_D 历练问询（历练/历炼/锻炼）有状态任务分发，未实现。" },
-    { key = "历炼" value = "GAP #864：莫大 QUEST_D 历练问询（历练/历炼/锻炼）有状态任务分发，未实现。" },
-    { key = "锻炼" value = "GAP #864：莫大 QUEST_D 历练问询（历练/历炼/锻炼）有状态任务分发，未实现。" },
-    { key = "镇岳尚方" value = "GAP #863：莫大「镇岳尚方」give_item（master=1、henshan-jian 120、shen 50000、神兵持有者遍历），未实现。" }
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "衡山派"
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "衡山派"
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "衡山派"
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "镇岳尚方" value = {
+      kind = "give_item"
+      item = "clone_lib:zhenyue"
+      match = "zhenyue"
+      master_id = true
+      master_deny = "这柄镇岳尚方乃我衡山镇派之宝，仅传直传弟子，你非我门下，休要妄求。"
+      min_shen = 50000
+      min_shen_deny = "你目前所做的侠义正事不够，这柄宝剑暂时不能交给你。"
+      min_skill_levels = { henshan_jian = 120 }
+      min_skill_deny = "你的衡山剑法还不够熟练，下去练练再来吧。"
+      owner_check = true
+      owner_item_label = "那支镇岳尚方宝剑"
+      owner_self_deny = "{item}不就是你拿着在用么，怎么反倒找我了？"
+      owner_lost_deny = "{item}我已经借出去了，你还是隔段时间再来吧。"
+      owner_sect_deny = "{item}现在是我派的{name}在用，你若需要就去找他吧。"
+      owner_ally_deny = "{item}现在是你派的{name}在用，你自己去问他要吧。"
+      owner_outsider_deny = "{item}现在落在了{name}手中，你去把它取回来吧。"
+      success = "既是我门下有剑法根基之人，这柄镇岳尚方你就暂且拿去用用。"
+    } }
   ]
   skills = [
     { skill = "force" level = 240 },
@@ -22477,10 +23015,15 @@ chats = [
   }
 
   # LPC hu.h permit_recruit + born_family=关外胡家 + 拒绝胡一刀/胡斐/胡子/胡臭。
-  # 后两项当前 loader/sect_master 无字段承载，按 LPC 原文保留于此（GAP）。
+  # 姓名门当前 loader/sect_master 无字段承载，按 LPC 原文保留于此（GAP）；
+  # #843 已落地 hu.h 三条 permit_recruit 与 born_family 硬门。
   apprentice = {
     family = "关外胡家"
     permit_recruit = true
+    betray_sect_deny = "你反复无常，我不能收你为徒！"
+    required_born_family = "关外胡家"
+    born_family_deny = "我关外胡家虽然人丁稀少，但也不收纳族外之人。"
+    other_family_deny = "你既然已经离家拜师，就应有所作为，又跑回来作甚？"
     family_deny = "我关外胡家虽然人丁稀少，但也不收纳族外之人。"
   }
 
@@ -51534,7 +52077,10 @@ chats = [
       target_vision = "李四陪着{name}走了过来，说了几句话，阴着脸离去了。"
       success = "李四送你到海滩，冷冷道：“你这废物！好好练好功夫，别总麻烦我们家岛主。”\n你连忙陪了几个笑脸，李四才怏怏离去。"
     } },
-    { key = "腊八粥" value = "这是本岛特有的东西，它主要由一味“断肠独骨腐心草”构成，要开花后效力方著，但这种草每十年才开一次花，所以一般人很难得到的，小兄弟想要就要看你的缘分了！" }
+    { key = "腊八粥" value = {
+      kind = "message_sort"
+      text = "$N对$n说：“这是本岛特有的东西，它主要由一味“断肠独骨腐心草”构成，要开花后效力方著，但这种草每十年才开一次花，所以一般人很难得到的，小兄弟想要就要看你的缘分了！”"
+    } }
   ]
 
   skills = [
@@ -51608,7 +52154,10 @@ chats = [
       target_vision = "张三陪着{name}走了过来，嘱咐了几句才转身离去。"
       success = "张三一直送你到海滩，叮嘱道：“江湖险恶，活命不易，以后务必小心谨慎。”\n你连连点头，张三这才离去。"
     } },
-    { key = "腊八粥" value = "这是本岛特有的东西，它主要由一味“断肠独骨腐心草”构成，要开花后效力方著，但这种草每十年才开一次花，所以一般人很难得到的，小兄弟想要就要看你的缘分了！" }
+    { key = "腊八粥" value = {
+      kind = "message_sort"
+      text = "$N对$n说：“这是本岛特有的东西，它主要由一味“断肠独骨腐心草”构成，要开花后效力方著，但这种草每十年才开一次花，所以一般人很难得到的，小兄弟想要就要看你的缘分了！”"
+    } }
   ]
 
   skills = [
@@ -53066,6 +53615,28 @@ chats = [
     { key = "神王木鼎" value = "那是师傅用的，你找我干啥？" }
   ]
 
+  # #816 LPC azi.c:70 `set("swmuding", 1)` + azi.c:91-134 六分支阈值与逐字文案。
+  # 全部走 meta.env 的 string-key（loader parse_env/1），不再硬编码进引擎。
+  env = [
+    { key = "swmuding" value = 1 },
+    { key = "swmuding/item" value = "clone_lib:swmuding" },
+    { key = "swmuding/prototype" value = "swmuding" },
+    { key = "swmuding/exp_threshold" value = 500000 },
+    { key = "swmuding/shen_threshold" value = -10000 },
+    { key = "swmuding/msg/stolen" value = "神王木鼎原来的确在我这里，可是后来被人抢走啦！" },
+    # UCL 字符串不能含真实换行（elias 会崩），多行文案用数组逐行存放，
+    # 引擎渲染时以 "\n" 连接 —— 与 lpc_converter sanitize_ucl_sval 的约定一致。
+    { key = "swmuding/msg/inn_others" value = ["{npc}大声嚷嚷起来：我是无辜的，冤枉啊冤枉！", "{npc}满脸委屈地望着{name}，很无辜的样子。"] },
+    { key = "swmuding/msg/inn_target" value = "阿紫一副哭丧的脸，真是好委屈啊！" },
+    { key = "swmuding/msg/pitiful" value = "你看到阿紫一副楚楚可怜的样子，不禁心头一软。" },
+    { key = "swmuding/msg/denied" value = "呜呜，神王木鼎真的被人抢走啦！" },
+    { key = "swmuding/msg/sigh" value = "你看阿紫神情不象是作伪，不由得叹了一口气。" },
+    { key = "swmuding/msg/shout" value = "{npc}大叫：别动手，别动手！我给你木鼎就是！" },
+    { key = "swmuding/msg/give_others" value = ["{npc}拿出神木王鼎给{name}。", "{name}接过了{npc}的神木王鼎。"] },
+    { key = "swmuding/msg/give_self" value = ["{npc}拿出神木王鼎给你。", "你接过了{npc}的神木王鼎。"] },
+    { key = "swmuding/msg/insist" value = "我说了没有木鼎了，你怎么不信！" }
+  ]
+
   skills = [
     { skill = "force" level = 60 },
     { skill = "guixi-gong" level = 60 },
@@ -53100,7 +53671,9 @@ chats = [
 
 
   engage = {
-    kill = { accept = true msg = "神王木鼎原来的确在我这里，可是后来被人抢走啦！" spawn = ["swmuding"] }
+    # #816 accept_kill 六分支由 Kantele.NPC.XingXiuAzi 动态判定；
+    # accept/msg/spawn 保留转换器原样作为静态兜底。
+    kill = { accept = true handler = "Kantele.NPC.XingXiuAzi" msg = "神王木鼎原来的确在我这里，可是后来被人抢走啦！" spawn = ["swmuding"] }
   }
   teach = {
     family = "星宿派"
@@ -53178,6 +53751,11 @@ chats = [
 
   carry = [
     { id = items.gangzhang.id }
+  ]
+
+  # #815 coagents 助战数据：出尘子、星宿弟子、摘星子 皆召唤 ding chunqiu 在 日月洞
+  coagents = [
+    { id = "ding chunqiu" startroom = "xiyu:riyuedong" }
   ]
 
   teach = {
@@ -53280,6 +53858,8 @@ chats = [
       success = "好吧，这包毒药你拿回去善加利用吧。"
       exhausted = "你来晚了，现在没什么剩的了。"
     } },
+    # #814 LPC ding.c:260-288 完整门序：家族 → NPC 忙/战斗 → 玩家 180 秒冷却
+    # → poison≥40 → 库存；发放 random(50)+100 份、NPC start_busy(2)、写冷却。
     { key = "香料" value = {
       kind = "give_item"
       item = "clone_lib:xiangliao"
@@ -53288,6 +53868,13 @@ chats = [
       family = "星宿派"
       family_deny = "与我星宿派素无渊源，不知此话从何说起。"
       count = "xiangliao_count"
+      npc_busy_deny = "等会儿，没看我这正忙着呢么？"
+      cooldown_temp = "get_xiangliao"
+      cooldown_seconds = 180
+      cooldown_deny = "刚才不是给了你吗？不会这么快就用完了吧？"
+      amount_base = 100
+      amount_random = 50
+      npc_start_busy = 2
       min_skill_levels = {
         poison = 40
       }
@@ -53404,11 +53991,66 @@ chats = [
       success = "既然这样，那这卷柔丝索你就暂时拿去吧。"
       exhausted = ""
     } },
-    # LPC accept_ask「历练/历炼/锻炼」走 QUEST_D->accept_ask；ex 无对应门派 quest 分发。
-    # 按 GAP #813 保留，不伪造实现。
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #813)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #813)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #813)" }
+    # #813 LPC ding.c:300-307 → QUEST_D->accept_ask(questd.c:398-468)：
+    # 同门 → 未历练 → exp≥50000 → score≥100 → out_family=1 → 正/邪/中立三分支
+    # message_sort + 赠地图册 message_sort + rumor。三键共用同一份配置。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "星宿派"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "星宿派"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "星宿派"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } }
   ]
 
   skills = [
@@ -53459,7 +54101,8 @@ chats = [
     book_count = 1
     zhen_count = 1
     san_count = 1
-    xiangliao_count = 10
+    # LPC ding.c:82/292 `random(10) + 10`（装载期掷一次，10..19）
+    xiangliao_count = { random_base = 10 random_sides = 10 }
   }
 
   teach = {
@@ -53505,8 +54148,15 @@ chats = [
       poison = "你毒技都没学明白，还有脸来见我？"
     }
     accept_msg = "这还差不多。"
-    # LPC 数字门过后还需 pending/flatter + flatter 文案匹配才 recruit。
-    # ex 目前一步收徒，完整两步流程见 GAP #812，不做简化替代。
+    # LPC ding.c:168-199 两步拜师：数字门通过后先落 pending/flatter 并播
+    # 提示/等人拍马的 vision；玩家 flatter 且话中同时含「星宿老仙」与
+    # 「德配天地/威震寰宇/古今无比」之一才 smile + say + recruit。
+    pending_recruit = "flatter"
+    pending_recruit_msg = "我星宿老仙比起古往今来的圣人怎么样啊？"
+    pending_recruit_emote = "星宿老怪微闭双眼，手捻长须，一副等人拍马(flatter)的样子。"
+    pending_recruit_deny = "你如此不把老仙放在眼里，老仙怎会收你？"
+    pending_recruit_fail = "你如此不把我放在眼里，我怎能收你？"
+    pending_recruit_no_arg = "你说老仙什么？"
   }
 
     }
@@ -53560,6 +54210,11 @@ chats = [
 
   carry = [
     { id = items.changbian.id }
+  ]
+
+  # #815 coagents 助战数据：出尘子、星宿弟子、摘星子 皆召唤 ding chunqiu 在 日月洞
+  coagents = [
+    { id = "ding chunqiu" startroom = "xiyu:riyuedong" }
   ]
 
   teach = {
@@ -53995,6 +54650,11 @@ chats = [
     { id = items.lianzi.id }
   ]
 
+  # #815 coagents 助战数据：出尘子、星宿弟子、摘星子 皆召唤 ding chunqiu 在 日月洞
+  coagents = [
+    { id = "ding chunqiu" startroom = "xiyu:riyuedong" }
+  ]
+
   inquiry_state = {
     dan_count = 1
     book_count = 1
@@ -54064,11 +54724,65 @@ chats = [
   inquiries = [
     { key = "鹤笔翁" value = "他是我小徒弟。" },
     { key = "鹿杖客" value = "他是我大徒弟。" },
-    # LPC accept_ask「历练/历炼/锻炼」走 QUEST_D->accept_ask。
-    # 按 GAP #818 保留，不伪造实现。
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #818)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #818)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #818)" },
+    # #818 LPC bai.c:116-124 accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask。
+    # shen_type = -1（bai.c:16），故走 questd.c 恶人分支 bad_msg。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "玄冥谷"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "玄冥谷"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "玄冥谷"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
     { key = "蛟龙抱" value = {
       kind = "sect_master_grant"
       perform_id = "dulong-shenzhua/bao"
@@ -54274,6 +54988,12 @@ chats = [
     str = 30
   }
 
+  # #819 LPC he.c:87-90 set("coagents", ({ (["startroom":"xxxxxxxxxxxx", "id":"baisun daoren"]) }))。
+  # startroom 是 LPC 未填的占位串，按原样保留（永不匹配实际房间，等同原版不触发）。
+  coagents = [
+    { id = "baisun daoren" startroom = "xxxxxxxxxxxx" }
+  ]
+
   inquiries = [
     { key = "张无忌" value = "哼，臭小子屡次坏我大事！我非杀了他不可！" },
     { key = "赵敏" value = "那丫头诡计多端，忘恩负义，枉我兄弟为她出生入死。" },
@@ -54408,7 +55128,14 @@ chats = [
       unique = false
       family = "玄冥谷"
       family_deny = "与我玄冥谷素无渊源，不知此话从何说起。"
-      note = "masterd give_item 持有者遍历多分支文案见 GAP #820"
+      # #820 masterd.c:474-509 owner 遍历（技能门后、贡献门前）
+      owner_check = true
+      owner_item_label = "那支鹤形笔"
+      owner_self_deny = "那支鹤形笔不就是你拿着在用么，怎么反倒找我了？"
+      owner_lost_deny = "那支鹤形笔我已经借出去了，你还是隔段时间再来吧。"
+      owner_sect_deny = "那支鹤形笔现在是我派的{name}在用，你若需要就去找他吧。"
+      owner_ally_deny = "那支鹤形笔现在是你派的{name}在用，你自己去问他要吧。"
+      owner_outsider_deny = "那支鹤形笔现在落在了{name}手中，你去把它取回来吧。"
       min_skill_levels = {
         hexing_bifa = 100
       }
@@ -54511,6 +55238,12 @@ chats = [
     str = 30
   }
 
+  # #819 LPC lu.c:86-89 set("coagents", ({ (["startroom":"/d/xuanminggu/xuanmingfeng", "id":"baisun daoren"]) }))。
+  # LPC 路径按既有区域键惯例映射为 xuanminggu:xuanmingfeng（百损道人静态驻地）。
+  coagents = [
+    { id = "baisun daoren" startroom = "xuanminggu:xuanmingfeng" }
+  ]
+
   inquiries = [
     { key = "张无忌" value = "哼，臭小子屡次坏我大事！我非杀了他不可！" },
     { key = "赵敏" value = "那丫头诡计多端，忘恩负义，枉我兄弟为她出生入死。" },
@@ -54601,7 +55334,14 @@ chats = [
       unique = false
       family = "玄冥谷"
       family_deny = "与我玄冥谷素无渊源，不知此话从何说起。"
-      note = "masterd give_item 持有者遍历多分支文案见 GAP #820"
+      # #820 masterd.c:474-509 owner 遍历（技能门后、贡献门前）
+      owner_check = true
+      owner_item_label = "那根鹿头杖"
+      owner_self_deny = "那根鹿头杖不就是你拿着在用么，怎么反倒找我了？"
+      owner_lost_deny = "那根鹿头杖我已经借出去了，你还是隔段时间再来吧。"
+      owner_sect_deny = "那根鹿头杖现在是我派的{name}在用，你若需要就去找他吧。"
+      owner_ally_deny = "那根鹿头杖现在是你派的{name}在用，你自己去问他要吧。"
+      owner_outsider_deny = "那根鹿头杖现在落在了{name}手中，你去把它取回来吧。"
       master_id = true
       master_deny = "只有我的弟子才配使用，你还是走吧。"
       min_skill_levels = {
@@ -54716,6 +55456,12 @@ chats = [
     max_qi = 3000
     str = 20
   }
+
+  # #819 LPC wuwang.c:57-60 set("coagents", ({ (["startroom":"xxxxxxxxxxxxxxxxxxxxxxxx", "id":"baisun daoren"]) }))。
+  # startroom 是 LPC 未填的占位串，按原样保留（永不匹配实际房间，等同原版不触发）。
+  coagents = [
+    { id = "baisun daoren" startroom = "xxxxxxxxxxxxxxxxxxxxxxxx" }
+  ]
 
   inquiries = [
     { key = "玄冥神掌" value = "那是我师父的绝技，天下无敌。" },
@@ -56162,9 +56908,10 @@ chats = [
   }
 
   # LPC set("inquiry", ([...]))：8 键。绝招/绝技/疾电/凝血神爪 → ask_me（疾电授艺），
-  # 退会/tuihui → ask_tuihui（退会）。其余为原文直答。
-  # 注：ask_me 的 story/shenzhao 标记门控引擎暂无对应字段（marks 存在但 inquiry_grant 未接），
-  # 见移植计划 GAP（陈近南 story/shenzhao 门控）；本处先落地 maxed/min_levels/shen 门控。
+  # 退会/tuihui → ask_tuihui（#831 party 退会，读 party/party_name 并清 party/rank/level）。
+  # 其余为原文直答。
+  # #830：ask_me 的 story/shenzhao 标记门已接入专用 gate_order=lpc_yunlong_chen，
+  # 顺序为 已会 → story 标记 → 侠义 → 凝血神爪存在/等级，逐字对齐 chen.c。
   inquiries = {
     天地会 = "只要是英雄好汉，都可以入我天地会(join tiandihui)。"
     入会 = "还不快快如天地会一同反清复明。"
@@ -56172,11 +56919,12 @@ chats = [
       kind = "sect_master_grant"
       perform_id = "ningxue-shenzhao/ji"
       skill = "ningxue-shenzhao"
-      gate_order = "lpc_kunlun"
+      gate_order = "lpc_yunlong_chen"
+      required_mark = "story/shenzhao"
+      mark_deny = "你打听这个干嘛？"
       min_shen = 1000000
       min_perform_skill = "ningxue-shenzhao"
       # LPC ask_me 门控顺序：已会 → story/shenzhao 标记 → shen<1000000 → 技能<250 → 授艺。
-      # story/shenzhao 门控为 GAP（引擎 marks 未接入 inquiry_grant），其余按 kunlun 顺序落地。
       min_levels = {
         ningxue_shenzhao = 250
       }
@@ -56192,7 +56940,9 @@ chats = [
       kind = "sect_master_grant"
       perform_id = "ningxue-shenzhao/ji"
       skill = "ningxue-shenzhao"
-      gate_order = "lpc_kunlun"
+      gate_order = "lpc_yunlong_chen"
+      required_mark = "story/shenzhao"
+      mark_deny = "你打听这个干嘛？"
       min_shen = 1000000
       min_perform_skill = "ningxue-shenzhao"
       min_levels = {
@@ -56210,7 +56960,9 @@ chats = [
       kind = "sect_master_grant"
       perform_id = "ningxue-shenzhao/ji"
       skill = "ningxue-shenzhao"
-      gate_order = "lpc_kunlun"
+      gate_order = "lpc_yunlong_chen"
+      required_mark = "story/shenzhao"
+      mark_deny = "你打听这个干嘛？"
       min_shen = 1000000
       min_perform_skill = "ningxue-shenzhao"
       min_levels = {
@@ -56228,7 +56980,9 @@ chats = [
       kind = "sect_master_grant"
       perform_id = "ningxue-shenzhao/ji"
       skill = "ningxue-shenzhao"
-      gate_order = "lpc_kunlun"
+      gate_order = "lpc_yunlong_chen"
+      required_mark = "story/shenzhao"
+      mark_deny = "你打听这个干嘛？"
       min_shen = 1000000
       min_perform_skill = "ningxue-shenzhao"
       min_levels = {
@@ -56242,8 +56996,22 @@ chats = [
       learned = "你学会了「疾电」这一招。"
       improve_skills = ["claw"]
     }
-    退会 = "ask_tuihui (天地会退会：party/party_name 非天地会时提示「你还没加入我天地会呢，退什么退？」；已加入则删除 party/rank/level) · GAP（退会 party 系统未移植）"
-    tuihui = "ask_tuihui (天地会退会：party/party_name 非天地会时提示「你还没加入我天地会呢，退什么退？」；已加入则删除 party/rank/level) · GAP（退会 party 系统未移植）"
+    退会 = {
+      kind = "tiandihui_quit"
+      party_name = "天地会"
+      not_member_msg = "陈近南笑了笑，对{name}说道：你还没加入我天地会呢，退什么退？\n"
+      look_msg = "{npc}看了看{name}。"
+      sigh_msg = "{npc}叹了口气。"
+      quit_say = "反清复明，就要坚贞志士，你去吧! "
+    }
+    tuihui = {
+      kind = "tiandihui_quit"
+      party_name = "天地会"
+      not_member_msg = "陈近南笑了笑，对{name}说道：你还没加入我天地会呢，退什么退？\n"
+      look_msg = "{npc}看了看{name}。"
+      sigh_msg = "{npc}叹了口气。"
+      quit_say = "反清复明，就要坚贞志士，你去吧! "
+    }
   }
 
   skills = [
@@ -56580,6 +57348,22 @@ chats = [
     accept_msg = "居然有人拜我为师？念在你有心，我就收下你好了。"
   }
 
+  # #836 LPC tongzhaohe.c:56-67：coagents 王维扬 @ /d/beijing/shufang；
+  # F_GUARDER 两句逐字拒绝（LPC 占位符已按 loader 约定归一为 {npc}/{name}）。
+  coagents = [
+    { id = "wang weiyang" startroom = "beijing:shufang" }
+  ]
+
+  meta = {
+    guarder = {
+      family = "八卦门"
+      msgs = {
+        refuse_other = "{npc}对{name}皱眉道：喂！你这倒是往哪里走啊？"
+        refuse_carry = "{npc}对{name}嬉皮笑脸地道：你背上背的是个啥？扔下来给咱瞧瞧。"
+      }
+    }
+  }
+
   combat = {
     attitude = "peaceful"
     combat_exp = 150000
@@ -56673,6 +57457,22 @@ chats = [
     betray_times_deny = "嘿！咱镖局留着你这样的背信弃义之徒肯定是吃里爬外！"
     other_family_deny = "不妥，不妥！你已经有师承了。"
     accept_msg = "既然如此，我就收下你。你平时也要多为镖局出力。"
+  }
+
+  # #836 LPC wangjianjie.c:82-94：coagents 王维扬 @ /d/beijing/shufang；
+  # F_GUARDER 两句逐字拒绝（LPC 占位符已按 loader 约定归一为 {npc}/{name}）。
+  coagents = [
+    { id = "wang weiyang" startroom = "beijing:shufang" }
+  ]
+
+  meta = {
+    guarder = {
+      family = "八卦门"
+      msgs = {
+        refuse_other = "{npc}对{name}冷喝道：我不管你是怎么进来的，但是请你马上离开，否则休怪我无情！"
+        refuse_carry = "{npc}对着{name}剑眉一竖，喝道：你背上背的是什么？给我放下来！"
+      }
+    }
   }
 
   # LPC set("inquiry", ([...])) 3 招绝招（ask_skill1-3，内联门控顺序：已会→同门→技能存在→贡献→force→技能等级）
@@ -56858,9 +57658,9 @@ chats = [
   }
 
   # LPC set("inquiry", ([...])) 2 招绝招（ask_skill1-2）。
-  # 两招均先判 bagua-zhang < 1 再判 bagua-biao < 1（双技能存在门控，引擎 skill 单值仅取 bagua-zhang，
-  # 次级 bagua-biao 缺失的「未学」文案归入 min_levels 的 120 门槛，门控仍生效）。
-  # 顺序：已会→同门→技能存在→贡献→技能等级(掌/镖)→force。
+  # #837：两招均先判 bagua-zhang < 1 再判 bagua-biao < 1，两句「未学」文案逐字区分；
+  # presence_skills/presence_deny 由 lpc_kunlun opt-in 消费，未配置该字段的其它 grant 零影响。
+  # 顺序：已会→同门→双技能存在→贡献→技能等级(掌/镖)→force。
   inquiries = {
     掌中夹镖 = {
       kind = "sect_master_grant"
@@ -56868,6 +57668,11 @@ chats = [
       skill = "bagua-zhang"
       family = "八卦门"
       gate_order = "lpc_kunlun"
+      presence_skills = ["bagua-zhang", "bagua-biao"]
+      presence_deny = {
+        bagua_zhang = "你连八卦掌都没学，谈什么绝招？"
+        bagua_biao = "你连八卦镖都没学，谈什么绝招？"
+      }
       min_gongxian = 400
       cost_gongxian = 400
       level_order = ["bagua-zhang", "bagua-biao", "force"]
@@ -56894,6 +57699,11 @@ chats = [
       skill = "bagua-zhang"
       family = "八卦门"
       gate_order = "lpc_kunlun"
+      presence_skills = ["bagua-zhang", "bagua-biao"]
+      presence_deny = {
+        bagua_zhang = "你连八卦掌都没学，谈什么绝招？"
+        bagua_biao = "你连八卦镖都没学，谈什么绝招？"
+      }
       min_gongxian = 400
       cost_gongxian = 400
       level_order = ["bagua-zhang", "bagua-biao", "force"]
@@ -57005,11 +57815,17 @@ chats = [
   }
 
   # LPC attempt_apprentice：permit_recruit → int<35 && con<35 拒 → exp<320000 拒 → bagua-xinfa<100 拒 → recruit。
-  # int/con 双条件「且」门控引擎无对应字段（GAP 见移植计划 §5），此处先以 min_skills 的
-  # bagua_xinfa=100 与 min_exp 落地已支持部分，int/con 条件另行登记为缺口。
+  # #832 int/con 双低「且」门已实现：min_int_con_both=35（query_int 与 query_con 均派生值，
+  # 两项同时低于 35 才拒），门序在 permit 之后、exp 之前，与 LPC 逐条 return 一致。
+  # #835 zhenyuan.h permit_recruit 他派门例外：商家堡 或 师父 商剑鸣 放行；
+  # 与绝招侧相反，这里放行后仍可正常收徒（收徒/授绝招门语义不同，不可共用文案）。
   apprentice = {
     family = "八卦门"
     permit_recruit = true
+    allow_families = ["商家堡"]
+    allow_master_name = "商剑鸣"
+    min_int_con_both = 35
+    int_con_deny = "你体质孱弱，为人又不机灵，我收下你有什么用？"
     min_exp = 320000
     min_exp_deny = "你的江湖经验太差了，我收徒可是件大事，等过段日子再说吧！"
     min_skills = {
@@ -57162,13 +57978,15 @@ chats = [
       perform_id = "bagua-dao/tian"
       skill = "bagua-dao"
       family = "八卦门"
-      gate_order = "lpc_kunlun"
+      # #835 LPC skill6 family 三分支：同门放行 → 商家堡放行后专属拒绝 → 其余素无来往。
+      # lpc_kunlun 只有单向同门门，无法保留「商家堡」专属文案，故单列门序。
+      gate_order = "lpc_zhenyuan_tian"
+      family_exception = "商家堡"
+      family_exception_deny = "你虽然是商家堡的弟子，但没有你师傅同意我也不能传你这招！"
       min_gongxian = 2400
       cost_gongxian = 2400
       # LPC skill6 顺序：八卦刀/外八卦/内八卦存在→贡献→刀法→外八卦→内八卦→max_neili。
       # 内八卦存在门以 nei_bagua=1 近似（<1 时 nei_bagua=0 先命中 200 门槛）。
-      # 注：商家堡 弟子（family_name=="商家堡"）LPC 直接拒（「没有你师傅同意」），引擎同门门为
-      # 严格比较，商家堡玩家同样在 family_deny 命中（文案略异，门控一致），见 GAP。
       level_order = ["bagua-dao", "wai-bagua", "nei-bagua", "max-neili"]
       min_levels = {
         bagua_dao = 200
@@ -57215,8 +58033,9 @@ chats = [
       improve_skills = ["blade", "blade", "blade", "bagua-dao", "bagua-dao", "bagua-dao", "martial-cognize"]
     }
     # LPC ask_dao：八卦门 && 本师亲传（family/master_id == npc id）&& 八卦刀>=120 → 赠厚背紫金刀。
-    # 引擎 GiveItem 支持 family + master_id + min_skill + unique + already（持有者遍历多分支为 GAP）。
-    # 文案走 LPC 原文（owner==me / 同门师兄 / 外人持刀 三分支近似归入 already）。
+    # #833 持有者遍历已实现：owner_check 开启后 NPC 侧取 environment 链快照，
+    # 玩家侧 GiveItem 在技能门后按 LPC ask_dao 四分支给文案（无「你派」分支——
+    # asker 已限八卦门，同门 owner 一律走「同门师兄」，其余走「外人夺回」）。
     厚背紫金刀 = {
       kind = "give_item"
       item = "clone_lib:houbeidao"
@@ -57233,6 +58052,13 @@ chats = [
       family_deny = "厚背紫金八卦刀是我八卦门的至宝，你打听它干什么？"
       master_deny = "只有我的弟子才配用厚背紫金刀，你就忍了吧。"
       min_skill_deny = "你还是下去再练练你的八卦刀法吧。"
+      owner_check = true
+      owner_item_label = "厚背紫金刀"
+      owner_self_deny = "咦？厚背紫金刀现在不正是你拿着吗，怎么还反过来问我？"
+      owner_lost_deny = "你来晚了一步，我已经把厚背紫金刀借出去了。"
+      owner_sect_deny = "厚背紫金刀在暂时是你同门师兄{name}在用，你要用就去找他吧。"
+      owner_ally_deny = "厚背紫金刀在暂时是你同门师兄{name}在用，你要用就去找他吧。"
+      owner_outsider_deny = "本门的厚背紫金刀现在落在了{name}手中，你要用就去把它夺回来吧！"
     }
   }
 
@@ -57287,8 +58113,15 @@ chats = [
   ]
 
 
+  # LPC accept_object 三分支（wangweiyang.c:616-702）：
+  # 引荐信 → can_perform 门 + nod/haha/say + message_sort(me=玩家,you=王维扬) + haha
+  #          + 19 次 improve_skill + set can_perform/bagua-dao/tian；
+  # 厚背紫金刀 → 嫡传/非嫡传分文案 + destruct；
+  # 其余 → 拒收（say 你给我这种东西干什么？，return 0）。
   accept = [
-    { kind = "any" accept = true msg = ["你给我这种东西干什么？", "好，好！既然这样，我就传你这招「天刀八势」！", "很好，很好！", "{name}微笑着点了点头，对{npc}道：“你可知道何为「八卦」吗？”{npc}想也不想，随口答道：“八卦乃天居乾、地居坤、风居巽、云居震、飞龙居坎、武翼居兑、鸟翔居离、蜿盘居艮。”{name}听后颇为赞许，笑道：“你这是只知其一，不知其二。所谓「八卦」的真谛乃是一个「阵」字。”{npc}闷了好一会，默默思考这一句话，突然双目一亮，叫道：“师父，弟子终于明白什么是真正的「八卦」了！”{name}大笑道：“你只要明白了这个道理，那么这八势刀法你就已经学会了。”", "shake", "shit", "nod", "haha"] }
+    { kind = "zhenyuan_wangweiyang" id = "clone_lib:sjmletter" action = "letter" },
+    { kind = "zhenyuan_wangweiyang" id = "clone_lib:houbeidao" action = "houbei" },
+    { kind = "any" accept = false fail_msg = ["你给我这种东西干什么？"] }
   ]
 
   engage = {
@@ -58006,5 +58839,52 @@ chats = [
         material = "paper"
         no_sell = 1
         weight = 500
+      }
+    }
+
+# #844 Source: C:/files/git/mud/clone/lonely/book/jingluoxue1.c
+# HIY/HIW 颜色标记按项目既有口径不落 UCL，其余属性逐项对齐。
+    items "jingluoxue1" {
+      name = "「王叔和脉经」"
+      aliases = ["mai jing", "mai", "jing", "book"]
+      description = "这是一本精装书册，书页已然发黄，书皮上写着「王叔和脉经」五个字。"
+      verbs = ["get", "drop", "give"]
+      meta = {
+        value = 1
+        weight = 500
+        unit = "本"
+        material = "paper"
+        no_sell = "奶奶的，这本破书也能卖钱？"
+        book = {
+          skill = "jingluo-xue"
+          min_skill = 0
+          max_skill = 149
+          exp_required = 10000
+          jing_cost = 80
+          difficulty = 50
+        }
+      }
+    }
+
+# #844 Source: C:/files/git/mud/clone/lonely/book/jingluoxue2.c
+    items "jingluoxue2" {
+      name = "「玉颧神脉经」"
+      aliases = ["yuquan jing", "yuquan", "jing", "book"]
+      description = "这是一本精装书册，书页已然发黄，书皮上写着「玉颧神脉经」五个字。"
+      verbs = ["get", "drop", "give"]
+      meta = {
+        value = 1
+        weight = 500
+        unit = "本"
+        material = "paper"
+        no_sell = "奶奶的，这本破书也能卖钱？"
+        book = {
+          skill = "jingluo-xue"
+          min_skill = 149
+          max_skill = 250
+          exp_required = 600000
+          jing_cost = 90
+          difficulty = 65
+        }
       }
     }

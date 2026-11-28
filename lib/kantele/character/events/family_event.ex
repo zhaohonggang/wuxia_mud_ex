@@ -43,9 +43,118 @@ defmodule Kantele.Character.FamilyEvent do
 
       true ->
         gate_result = SectMaster.recruit_gate?(nil, character, apprentice)
-        handle_recruit_gate_result(conn, character, data, apprentice, gate_result)
+
+        case pending_recruit_result(conn, character, data, apprentice, gate_result) do
+          nil -> handle_recruit_gate_result(conn, character, data, apprentice, gate_result)
+          handled -> handled
+        end
     end
   end
+
+  def result(conn, %{data: %{ok: false, reason: reason}}), do: reject(conn, reason)
+
+  def result(conn, _event), do: conn
+
+  # #812 丁春秋 flatter：数字门通过后不直接 recruit，先落 `pending/flatter`
+  # 并播「我星宿老仙…」+ 等人拍马 vision；玩家随后执行 flatter 才由
+  # `Kantele.World.NpcActions.XingxiuFlatter` 完成 recruit。
+  # 未配置 pending_recruit 的 NPC 恒返回 nil → 原流程零影响。
+  defp pending_recruit_result(conn, character, data, apprentice, gate_result) do
+    case pending_recruit_key(apprentice) do
+      nil ->
+        nil
+
+      key ->
+        pending_recruit_result(conn, character, data, apprentice, key, gate_result)
+    end
+  end
+
+  defp pending_recruit_result(conn, character, data, apprentice, key, :ok),
+    do: maybe_defer_recruit(conn, character, data, apprentice, key)
+
+  defp pending_recruit_result(conn, character, data, apprentice, key, {:ok, _warning}),
+    do: maybe_defer_recruit(conn, character, data, apprentice, key)
+
+  defp pending_recruit_result(
+         conn,
+         character,
+         data,
+         apprentice,
+         key,
+         {:ok_with_mark, _warning, mark}
+       ) do
+    character = put_character_mark(character, mark)
+    Records.save(character)
+    maybe_defer_recruit(put_character(conn, character), character, data, apprentice, key)
+  end
+
+  defp pending_recruit_result(_conn, _character, _data, _apprentice, _key, _gate_result), do: nil
+
+  defp pending_recruit_key(apprentice) do
+    case Map.get(apprentice, :pending_recruit) do
+      verb when is_binary(verb) and byte_size(verb) > 0 -> "pending/#{verb}"
+      _ -> nil
+    end
+  end
+
+  defp maybe_defer_recruit(conn, character, data, apprentice, key) do
+    meta = character.meta || %Kantele.Character.PlayerMeta{}
+    room_id = character.room_id
+    master_name = Map.get(data, :master_name) || "#{conn.character.name}"
+
+    if truthy_temp?(meta, key) do
+      # LPC `if (me->query_temp("pending/flatter")) command("say ..."); return;`
+      deny = pending_text(apprentice, :pending_recruit_deny, "你如此不把老仙放在眼里，老仙怎会收你？")
+
+      conn
+      |> maybe_broadcast_say(room_id, master_name, deny)
+      |> prompt(CommandView, "prompt", %{})
+    else
+      prompt_text = pending_text(apprentice, :pending_recruit_msg, "我星宿老仙比起古往今来的圣人怎么样啊？")
+
+      emote =
+        pending_text(
+          apprentice,
+          :pending_recruit_emote,
+          "星宿老怪微闭双眼，手捻长须，一副等人拍马(flatter)的样子。"
+        )
+
+      updated = %{character | meta: Kantele.Character.PlayerMeta.put_temp(meta, key, 1)}
+
+      conn
+      |> put_character(updated)
+      |> maybe_broadcast_say(room_id, master_name, prompt_text)
+      |> maybe_broadcast_emote(room_id, emote)
+      |> prompt(CommandView, "prompt", %{})
+    end
+  end
+
+  defp pending_text(apprentice, key, default) do
+    case Map.get(apprentice, key) do
+      text when is_binary(text) and byte_size(text) > 0 -> text
+      _ -> default
+    end
+  end
+
+  defp truthy_temp?(meta, key) do
+    case Kantele.Character.PlayerMeta.get_temp(meta || %Kantele.Character.PlayerMeta{}, key) do
+      nil -> false
+      false -> false
+      0 -> false
+      "" -> false
+      _ -> true
+    end
+  end
+
+  defp maybe_broadcast_emote(conn, room_id, emote) when is_binary(emote) do
+    if is_binary(room_id) do
+      RoomHelpers.broadcast_vision(conn, room_id, emote <> "\n")
+    else
+      conn
+    end
+  end
+
+  defp maybe_broadcast_emote(conn, _room_id, _emote), do: conn
 
   # 提取既有 case 体，供 pass_zhenlong 分支在执行完传功后复用常规门控分支。
   defp handle_recruit_gate_result(conn, _character, _data, _apprentice, {:error, reason}) do
@@ -220,10 +329,6 @@ defmodule Kantele.Character.FamilyEvent do
       conn
     end
   end
-
-  def result(conn, %{data: %{ok: false, reason: reason}}), do: reject(conn, reason)
-
-  def result(conn, _event), do: conn
 
   defp reject(conn, reason) do
     reason =

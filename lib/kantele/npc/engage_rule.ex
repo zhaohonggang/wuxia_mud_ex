@@ -53,6 +53,11 @@ defmodule Kantele.Npc.EngageRule do
     Kantele.NPC.Ultra.engage_decide(npc, attacker, type)
   end
 
+  # #816 阿紫 accept_kill 六分支状态机（swmuding 标记 / 同门 / 全局原型 / 给鼎）。
+  defp dynamic_decide("Kantele.NPC.XingXiuAzi", npc, attacker, type) do
+    Kantele.NPC.XingXiuAzi.engage_decide(npc, attacker, type)
+  end
+
   defp dynamic_decide(_, _npc, _attacker, _type), do: :allow
 
   @doc "取战斗类型对应的 engage 规则（fight/hit/kill → engage[type]）"

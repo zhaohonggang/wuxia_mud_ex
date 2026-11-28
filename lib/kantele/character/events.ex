@@ -104,14 +104,21 @@ defmodule Kantele.Character.Events do
 
       # 猎人收捕兽夹回执（猎人进程 → 玩家进程，置位 marks/hunter 放行捕猎教学）
       event("hunter/give-trap", :hunter_give_trap)
+
       # 少林三老收黑索/赐物回执（NPC 进程 → 玩家进程，移除实例并提示「甚好，甚好。」）
       event("shaolin_du/destruct-item", :shaolin_du_destruct_item)
+
       # 昆仑何足道收还两极剑回执（NPC 进程 → 玩家进程，销毁实例 + 嫡传/非嫡传分文案）
       event("kunlun/liangji_return", :kunlun_liangji_return)
       # 武修文收还工具回执（武修文进程 → 玩家进程，落 mark/还了）
       event("wuxiuwen/returned", :wuxiuwen_returned)
+
+      # 侠客岛黄衣使者收雇金回执（NPC 进程 → 玩家进程，销毁钱币 + 生成随从）
+      event("xiakedao/rent_return", :xiakedao_rent_returned)
       # 大宗师绝招 quest 回执（独孤九剑残本 / 九阴真经上下册）
       event("ultra/give-item", :ultra_give_item)
+      # #834 王维扬收引荐信/厚背紫金刀回执（信件 inline 授天刀八势）
+      event("zhenyuan/wangweiyang_accept", :zhenyuan_wangweiyang_accept)
     end
 
     module(EnterWorldEvent) do
@@ -484,6 +491,11 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("ultra/fight-result", :fight_result)
       event("ultra/rank-result", :rank_result)
       event("ultra/init", :clear_intent)
+    end
+
+    # #816 阿紫 accept_kill 给鼎分支：NPC 进程落 set("swmuding", 0) + give。
+    module(XingXiuAziEvent) do
+      event("xingxiu_azi/revoke-swmuding", :revoke_swmuding)
     end
   end
 end

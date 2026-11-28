@@ -72,7 +72,12 @@ defmodule Kantele.World.LoaderInquiryStateTest do
     {_, npc} = Kantele.World.Loader.parse_character(%{id: "wudang"}, "wudang_zhang", data, %{})
 
     inquiry = npc.meta.inquiries["太极图"]
-    assert inquiry["min_levels"] == %{"taiji-quan" => 250, "taiji-shengong" => 300, "taoism" => 300}
+
+    assert inquiry["min_levels"] == %{
+             "taiji-quan" => 250,
+             "taiji-shengong" => 300,
+             "taoism" => 300
+           }
 
     assert inquiry["level_deny"] == %{
              "taiji-quan" => "你的太极拳法还不到家，要多练练！",
@@ -82,5 +87,35 @@ defmodule Kantele.World.LoaderInquiryStateTest do
 
     # 数字字段原样保留（int/2 容错在 handler 侧）
     assert inquiry["max_count"] == 10
+  end
+
+  test "#801 rent_helpers 列表与 hire_helper 配置原样落位" do
+    helper = %{
+      id: "xiakedao_helper_one",
+      name: "侠客岛弟子甲",
+      npc_level: 1,
+      combat_exp: 50_000,
+      family: "侠客岛"
+    }
+
+    data = %{
+      name: "黄衣使者",
+      description: "",
+      combat: %{},
+      inquiry_state: %{rent_helpers: [helper]},
+      inquiries: %{
+        rent: %{kind: "hire_helper", mode: "list"},
+        xiakedao_helper: %{kind: "hire_helper", mode: "hire"}
+      },
+      accept: [%{kind: "xiakedao_rent", accept: true}]
+    }
+
+    {_, npc} = Kantele.World.Loader.parse_character(%{id: "xiakedao"}, "renter", data, %{})
+
+    assert [parsed] = npc.meta.inquiry_state["rent_helpers"]
+    assert (parsed[:id] || parsed["id"]) == "xiakedao_helper_one"
+    assert (parsed[:npc_level] || parsed["npc_level"]) == 1
+    assert npc.meta.inquiries["rent"]["mode"] == "list"
+    assert Enum.any?(npc.meta.accept, &(&1.kind == "xiakedao_rent"))
   end
 end

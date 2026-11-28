@@ -71,6 +71,19 @@ defmodule Kantele.Character.GiveEvent do
       {:kunlun_liangji} ->
         Kantele.World.KunlunLiangjiAccept.handle(conn, npc, item_instance, data, from_name)
 
+      {:xiakedao_rent} ->
+        Kantele.World.XiakedaoRentAccept.handle(conn, npc, item_instance, data, from_name)
+
+      {:zhenyuan_wangweiyang, rule} ->
+        Kantele.World.ZhenyuanWangweiyangAccept.handle(
+          conn,
+          npc,
+          item_instance,
+          data,
+          from_name,
+          rule
+        )
+
       {:shaolin_du} ->
         Kantele.World.ShaolinDuAccept.handle(conn, npc, item_instance, data, from_name)
 
@@ -168,6 +181,12 @@ defmodule Kantele.Character.GiveEvent do
         {:kunlun_liangji} ->
           acc
 
+        {:xiakedao_rent} ->
+          acc
+
+        {:zhenyuan_wangweiyang, _rule} ->
+          acc
+
         {:shaolin_du} ->
           acc
 
@@ -186,6 +205,8 @@ defmodule Kantele.Character.GiveEvent do
             :suoyangdan -> {:suoyangdan}
             :hunter -> {:hunter}
             :kunlun_liangji -> {:kunlun_liangji}
+            :xiakedao_rent -> {:xiakedao_rent}
+            {:zhenyuan_wangweiyang, _rule} = match -> match
             {:shaolin_promotion, _rule} = match -> match
             {:ultra, _rule} = match -> match
             :miss -> acc
@@ -245,6 +266,16 @@ defmodule Kantele.Character.GiveEvent do
   # #756 昆仑何足道还剑两极剑：命中即交给 KunlunLiangjiAccept 处理。
   defp rule_hit(%{kind: "kunlun_liangji"} = rule, item) do
     if rule.id == item.id, do: :kunlun_liangji, else: :miss
+  end
+
+  # #801 侠客岛黄衣使者收雇金：命中即交给 XiakedaoRentAccept 处理。
+  defp rule_hit(%{kind: "xiakedao_rent"}, item) do
+    if KItem.is_currency?(item), do: :xiakedao_rent, else: :miss
+  end
+
+  # #834 王维扬 accept_object：引荐信 / 厚背紫金刀命中即交给专用处理器。
+  defp rule_hit(%{kind: "zhenyuan_wangweiyang"} = rule, item) do
+    if rule.id == item.id, do: {:zhenyuan_wangweiyang, rule}, else: :miss
   end
 
   # 少林三老收黑索/赐物：命中即交给 Kantele.World.ShaolinDuAccept 处理。
@@ -914,6 +945,96 @@ defmodule Kantele.Character.GiveEvent do
 
   defp hezudao_disciple?(_character), do: false
 
+  # ---- #801 侠客岛雇助回执（NPC 进程 → 玩家进程）----
+  # LPC renter.c:205-245：销毁钱币、把 helper 移进房间、置 owner/leader、
+  # 维持心跳、清 pending、从可选列表移除 helper、发江湖传闻。
+  def xiakedao_rent_returned(
+        conn,
+        %{data: %{from_id: from_id, helper: helper, instance_id: instance_id} = data}
+      ) do
+    character = conn.character
+
+    if from_id == character.id do
+      inventory = Enum.reject(character.inventory, fn inst -> inst.id == instance_id end)
+      character = %{character | inventory: inventory}
+
+      temp = character.meta.temp || %{}
+      hired = Map.get(temp, "hire") || Map.get(temp, :hire) || []
+      hired = if is_list(hired), do: hired ++ [helper], else: [helper]
+
+      temp =
+        temp
+        |> Map.put("hire", hired)
+        |> Map.delete("pending/rent")
+        |> Map.delete("pending/rent/cost")
+        |> Map.delete("pending/rent/helper")
+
+      character = %{character | meta: %{character.meta | temp: temp}}
+      Records.save(character)
+      conn = put_character(conn, character)
+
+      # LPC helper->move(environment()) + set_leader(me) + keep_heart_beat()。
+      spawn_opts =
+        case Map.get(conn.private || %{}, :xiakedao_spawn_helper) do
+          fun when is_function(fun, 2) -> [spawn_hook: fun]
+          _ -> []
+        end
+
+      helper_ref =
+        case Kantele.World.XiakedaoHiredHelper.spawn(
+               helper,
+               Map.get(data, :npc_room_id) || character.room_id,
+               spawn_opts
+             ) do
+          {:ok, ref} ->
+            ref
+
+          _ ->
+            %{
+              id: "xiakedao_helper:#{Map.get(helper, "id")}",
+              name: Map.get(helper, "name"),
+              pid: nil,
+              room_id: Map.get(data, :npc_room_id) || character.room_id
+            }
+        end
+
+      Kantele.Character.BeastState.update(helper_ref.id, fn state ->
+        Map.merge(state || Kantele.Character.BeastState.empty(), %{
+          owner_id: character.id,
+          owner_name: character.name,
+          leader_id: character.id,
+          help_time: System.system_time(:second),
+          renter: nil
+        })
+      end)
+
+      if is_pid(helper_ref.pid) do
+        send(helper_ref.pid, %Event{
+          from_pid: self(),
+          topic: "follow/set-leader",
+          data: %{leader: %{id: character.id, pid: self(), name: character.name}}
+        })
+      end
+
+      send(self(), %Event{
+        from_pid: self(),
+        topic: "follow/register",
+        data: %{
+          follower: %{
+            id: helper_ref.id,
+            pid: helper_ref.pid,
+            name: helper_ref.name
+          }
+        }
+      })
+
+      Communication.announce("rumor", "#{character.name}在南海邀请到了一名侠客岛弟子。")
+      conn
+    else
+      conn
+    end
+  end
+
   # ---- 大宗师绝招 quest 回执（NPC 进程 → 玩家进程）----
   # LPC dugu.c / huang.c accept_object：玩家交残本/九阴真经上下册，
   # 玩家进程落 can_learn flag 与练功奖励（NPC 侧看不到玩家 meta）。
@@ -943,6 +1064,12 @@ defmodule Kantele.Character.GiveEvent do
   end
 
   def ultra_give_item(conn, _event), do: conn
+
+  # ---- #834 王维扬收引荐信/厚背紫金刀回执（NPC 进程 → 玩家进程）----
+  # 具体 LPC 分支、message_sort 反向渲染与 19 次 improve_skill 全部收敛在
+  # ZhenyuanWangweiyangAccept，GiveEvent 只承担事件路由。
+  def zhenyuan_wangweiyang_accept(conn, event),
+    do: Kantele.World.ZhenyuanWangweiyangAccept.handle_player(conn, event)
 
   defp ultra_quest_result(env, stats, "dugubook") do
     cond do

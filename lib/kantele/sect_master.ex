@@ -397,6 +397,11 @@ defmodule Kantele.SectMaster do
     family_name = Map.get(config, :family)
     reject_master_name = Map.get(config, :reject_master_name)
 
+    # #832 镇远镖局王维扬 wangweiyang.c:149：`query_int() < 35 && query_con() < 35`
+    # 双低「且」门。LPC query_int/query_con 是派生值（含 tattoo/reborn/技能加成），
+    # 故用 Stats.query_int/query_con 而非裸 stats.int/con；未配置时 nil → 跳过，零回归。
+    min_int_con_both = Map.get(config, :min_int_con_both)
+
     # #879 中原苗家 miao.h：`born_family != "中原苗家"` → 不收容外人。
     # 读取 meta.env.born_family（setup_controller.ex:174）；缺 key/空 → 恒不命中。
     required_born_family = Map.get(config, :required_born_family)
@@ -504,6 +509,19 @@ defmodule Kantele.SectMaster do
         permit_recruit and betrayed_before?(student) ->
           {:error, deny_text(config, :betray_times_deny, "你大逆不道，私自判师，不能容于少林！\n")}
 
+        # #843/#879 duan.h / miao.h / murong.h 的 permit_recruit 顺序：
+        # detach/betrayer → betrayer/times → born_family → 他派。放在他派门之前，
+        # 才能在「非本家出身且已投他派」时命中 LPC 的出生门文案。
+        # 欧阳世家走 lpc_ouyang 专属门序，不受影响；老配置无 required_born_family 恒不命中。
+        permit_recruit and is_binary(required_born_family) and
+            student_born_family(student) != required_born_family ->
+          {:error,
+           deny_text(
+             config,
+             :born_family_deny,
+             "我苗家向来便不收容外人。"
+           )}
+
         permit_recruit and other_family?(student, family_name) and
             not other_family_allowed?(student, allow_families, allow_master_name) ->
           {:error,
@@ -511,6 +529,17 @@ defmodule Kantele.SectMaster do
              config,
              :other_family_deny,
              "你已经名师指点，为何不下苦功，反而来我们少林寺呢？\n"
+           )}
+
+        # #832 镇远镖局王维扬 wangweiyang.c:149-153：permit 之后先判
+        # `query_int() < 35 && query_con() < 35`（两项都低才拒，AND），再判 exp / 技能。
+        # 仅配置 min_int_con_both 时命中（缺省 nil → 跳过），其它门派零回归。
+        is_integer(min_int_con_both) and both_query_attrs_below?(student, min_int_con_both) ->
+          {:error,
+           deny_text(
+             config,
+             :int_con_deny,
+             "你体质孱弱，为人又不机灵，我收下你有什么用？"
            )}
 
         # #903 桃花岛 huang.c:205-216：int<25 与 |shen|>10000 均为带 return 的硬门，
@@ -556,18 +585,6 @@ defmodule Kantele.SectMaster do
             min_skills,
             any_min_skills
           )
-
-        # #879 中原苗家 miao.h：`born_family != "中原苗家"` → 我苗家向来便不收容外人。
-        # 位置紧随 permit_recruit 他派门之后（LPC miao.h 顺序 detach/betrayer → born_family → 他派），
-        # 未配置 required_born_family 的门派此分支恒不命中，零回归。
-        is_binary(required_born_family) and
-            student_born_family(student) != required_born_family ->
-          {:error,
-           deny_text(
-             config,
-             :born_family_deny,
-             "我苗家向来便不收容外人。"
-           )}
 
         # #804 逍遥派 xiaoyao.h permit_recruit 第四条：`query("per") < 28`。
         # 位置紧随他派门，仍是 permit_recruit 内部，早于各 NPC 自门控。
@@ -1000,6 +1017,18 @@ defmodule Kantele.SectMaster do
     case Map.get(config, "gate_order") do
       "lpc_masterd" -> inquiry_grant_lpc(player_stats, npc_stats, config)
       "lpc_kunlun" -> inquiry_grant_kunlun(player_stats, npc_stats, config)
+      # #845 一灯大师 ask_skill2「先天功乾阳剑气」：已会 → 双门派同门 → 两道技能存在门
+      # → 侠义 → force/max_neili → 贡献 → 后天等级链。贡献门在 max_neili 之后，
+      # 且同门是「全真教 OR 段氏皇族」，lpc_kunlun 无法表达，故独立门序。
+      "lpc_duan_yideng" -> inquiry_grant_duan_yideng(player_stats, npc_stats, config)
+      # #835 王维扬 ask_skill6「天刀八势」：已会 → 同门/商家堡双放行 → 商家堡专属拒绝
+      # → 技能存在 → 贡献 → 有序等级/内力。两分支文案与 lpc_kunlun 单向同门门不同，
+      # 故独立门序；仅该 grant 启用，其它配置零回归。
+      "lpc_zhenyuan_tian" -> inquiry_grant_zhenyuan_tian(player_stats, npc_stats, config)
+      # #830 陈近南 ask_me：已会 → story/shenzhao 标记 → 侠义 → 凝血神爪存在/等级。
+      # 与 lpc_kunlun 的「技能存在 → 侠义」次序不同，且 LPC 无同门/贡献门，
+      # 必须独立门序，不能把 story 门塞进昆仑路径而改变既有昆仑配置。
+      "lpc_yunlong_chen" -> inquiry_grant_yunlong_chen(player_stats, npc_stats, config)
       "lpc_duan" -> inquiry_grant_duan(player_stats, npc_stats, config)
       "lpc_emei" -> inquiry_grant_emei(player_stats, npc_stats, config)
       "lpc_meizhuang" -> inquiry_grant_meizhuang(player_stats, npc_stats, config)
@@ -1587,6 +1616,11 @@ defmodule Kantele.SectMaster do
     order = Map.get(config, "level_order") || []
     requires_perform = Map.get(config, "requires_perform")
     min_perform_skill = Map.get(config, "min_perform_skill")
+    # #837 王剑英 ask_skill1/2 的「双技能存在门」：LPC 先判 bagua-zhang < 1
+    # 再判 bagua-biao < 1，两句文案不同。缺省空列表时仍走上面单 `skill` 判定，
+    # 其它 lpc_kunlun 配置零回归。
+    presence_skills = Map.get(config, "presence_skills") || []
+    presence_denies = Map.get(config, "presence_deny") || %{}
 
     cond do
       is_nil(perform_id) ->
@@ -1598,8 +1632,8 @@ defmodule Kantele.SectMaster do
       not same_family?(player, npc) ->
         {:error, deny_lf(config, "family_deny", "和本派素无瓜葛，何出此言？\n")}
 
-      is_binary(skill) and skill_level_of(player, skill) < 1 ->
-        {:error, deny_lf(config, "skill_deny", "你连这门功夫都没学，还谈什么绝招可言？\n")}
+      failing_presence = first_missing_presence_skill(player, presence_skills, skill) ->
+        {:error, presence_skill_deny_text(config, failing_presence, presence_denies, skill)}
 
       # 陈近南 ask_me 的侠义（shen）下限：LPC `shen < 1000000` 即拒。
       # 缺省 nil 不拦；`shen_deny` 逐字覆写原文，老配置零影响。
@@ -1630,6 +1664,212 @@ defmodule Kantele.SectMaster do
 
       failing = first_failing_ordered_level(player, order, levels) ->
         {:error, ordered_level_deny(config, failing)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # #845 一灯大师 yideng.c ask_skill2「先天功乾阳剑气」的内联原序：
+  #   已会 → 双门派同门（全真教/段氏皇族）→ yiyang-zhi 存在 → xiantian-gong 存在 →
+  #   shen → force → max_neili → gongxian → xiantian-gong/yiyang-zhi/jingluo-xue 等级链。
+  # 与 lpc_kunlun 有三处实质差异：同门是 OR、两道技能存在门逐字不同、贡献门夹在
+  # max_neili 与后天等级链之间。独立门序且全部新键 opt-in，既有昆仑/段氏配置零影响。
+  defp inquiry_grant_duan_yideng(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    min_shen = Map.get(config, "min_shen")
+    levels = Map.get(config, "min_levels", %{}) || %{}
+    order = Map.get(config, "level_order") || []
+    presence_skills = Map.get(config, "presence_skills") || []
+    presence_denies = Map.get(config, "presence_deny") || %{}
+
+    # LPC 的贡献门在 max_neili 之后；level_order 仍保留完整原序，前两项固定为
+    # force/max_neili，其余留到贡献门之后，避免把 level_order 拆成两份 UCL 数据。
+    pre_gongxian_order = ["force", "max-neili"]
+    post_gongxian_order = Enum.reject(order, &(&1 in pre_gongxian_order))
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error,
+         deny_lf(
+           config,
+           "maxed",
+           "你先天功的乾阳剑气练到这种境界，老衲已没什么可教的了。\n"
+         )}
+
+      not grant_family_allowed?(player, npc, config) ->
+        {:error, deny_lf(config, "family_deny", "施主与老衲素不相识，不知施主此话从何说起？\n")}
+
+      failing_presence = first_missing_presence_skill(player, presence_skills, skill) ->
+        {:error, presence_skill_deny_text(config, failing_presence, presence_denies, skill)}
+
+      is_integer(min_shen) and stat(player, :shen) < min_shen ->
+        {:error, deny_lf(config, "shen_deny", "你的侠义正事还做得不够，这招老衲暂时还不能传你。\n")}
+
+      failing_pre = first_failing_ordered_level(player, pre_gongxian_order, levels) ->
+        {:error, ordered_level_deny(config, failing_pre)}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error, deny_lf(config, "gongxian_deny", "你的贡献值不够，这招先不忙传你。\n")}
+
+      failing_post = first_failing_ordered_level(player, post_gongxian_order, levels) ->
+        {:error, ordered_level_deny(config, failing_post)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # #845 双门派同门门：显式 allowed_families 优先（LPC `family_name != A && != B`），
+  # 未配置时回退 same_family?/2，保证新门序被误用也不会凭空放行。
+  defp grant_family_allowed?(player, npc, config) do
+    case Map.get(config, "allowed_families") do
+      families when is_list(families) and families != [] ->
+        Enum.any?(families, &(&1 == Map.get(player, :family)))
+
+      _ ->
+        same_family?(player, npc)
+    end
+  end
+
+  # #835 王维扬 wangweiyang.c:412-506 `ask_skill6()`「天刀八势」的原序：
+  #   已会 → 同门/商家堡双放行 → 商家堡专属拒绝 → 八卦刀/外八卦/内八卦存在 →
+  #   贡献 → 有序等级链（含 max_neili）。
+  # 与 lpc_kunlun 唯一实质差别是家庭三分支；其余门完全复用昆仑有序链，
+  # 使 UCL 只需为这一招声明 family_exception/family_exception_deny。
+  defp inquiry_grant_zhenyuan_tian(player_stats, npc_stats, config) do
+    player = normalize_stats(player_stats)
+    npc = normalize_stats(npc_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+    min_gongxian = Map.get(config, "min_gongxian", 0) || 0
+    levels = Map.get(config, "min_levels", %{}) || %{}
+    order = Map.get(config, "level_order") || []
+    requires_perform = Map.get(config, "requires_perform")
+    min_perform_skill = Map.get(config, "min_perform_skill")
+    family_error = zhenyuan_tian_family_error(player, npc, config)
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny_lf(config, "maxed", "你不是已经学会了吗？怎么，又给忘记了？\n")}
+
+      is_binary(family_error) ->
+        {:error, family_error}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny_lf(config, "skill_deny", "你连这门功夫都没学，还谈什么绝招可言？\n")}
+
+      stat(player, :gongxian) < min_gongxian ->
+        {:error,
+         deny_lf(
+           config,
+           "gongxian_deny",
+           "你对本派所作出的贡献不够，这一招我暂时还不能传你。\n"
+         )}
+
+      is_binary(requires_perform) and not perform_known?(player, requires_perform) ->
+        {:error, deny_lf(config, "requires_perform_deny", "要学此招，必须先通晓「乾坤劲」的奥秘。\n")}
+
+      is_binary(min_perform_skill) and
+          skill_level_of(player, min_perform_skill) <
+            (Map.get(levels, min_perform_skill) || 0) ->
+        {:error,
+         level_deny_text(config, player, %{
+           min_perform_skill => Map.get(levels, min_perform_skill)
+         })}
+
+      failing = first_failing_ordered_level(player, order, levels) ->
+        {:error, ordered_level_deny(config, failing)}
+
+      true ->
+        {:ok, perform_id, cost}
+    end
+  end
+
+  # LPC ask_skill6 的三条 family 分支（逐字 return）：
+  #   1) 同门 → 通过；2) 商家堡 → 先过「非本门」门，再吃专属拒绝；3) 其余 → 素无来往。
+  # 缺 player/npc family 时按 LPC `query()` 返回空值处理，落第三分支。
+  defp zhenyuan_tian_family_error(player, npc, config) do
+    player_family = Map.get(player, :family)
+    npc_family = Map.get(npc, :family)
+    exception_family = Map.get(config, "family_exception")
+
+    cond do
+      is_binary(player_family) and is_binary(npc_family) and player_family == npc_family ->
+        nil
+
+      is_binary(exception_family) and player_family == exception_family ->
+        deny_lf(
+          config,
+          "family_exception_deny",
+          "你虽然是商家堡的弟子，但没有你师傅同意我也不能传你这招！\n"
+        )
+
+      true ->
+        deny_lf(config, "family_deny", "大侠和本镖局素无来往，何出此言？\n")
+    end
+  end
+
+  # #830 陈近南 chen.c:115-142 的 ask_me 内联门序：
+  #   已会 → story/shenzhao 标记 → shen < 1000000 → 凝血神爪 < 1 → 凝血神爪 < 250 → 授艺。
+  # LPC 无同门、无贡献门，且 story/shen 必须早于技能门；lpc_kunlun 的
+  # 「同门 → 技能存在 → shen → 贡献」次序不能复用。缺省 required_mark=nil / min_shen=nil
+  # 时对应门不拦，保证其它配置误切到本门序也不会凭空拒绝。
+  defp inquiry_grant_yunlong_chen(player_stats, _npc_stats, config) do
+    player = normalize_stats(player_stats)
+
+    perform_id = Map.get(config, "perform_id")
+    skill = Map.get(config, "skill")
+    shen_threshold = Map.get(config, "min_shen")
+    required_mark = Map.get(config, "required_mark")
+    marks = Map.get(player, :marks) || %{}
+    min_perform_skill = Map.get(config, "min_perform_skill")
+    levels = Map.get(config, "min_levels", %{}) || %{}
+    cost = Map.get(config, "cost_gongxian", 0) || 0
+
+    cond do
+      is_nil(perform_id) ->
+        {:error, deny_lf(config, "perform_deny", "这门绝招暂不外传。\n")}
+
+      perform_known?(player, perform_id) ->
+        {:error, deny_lf(config, "maxed", "你真会开玩笑，会了还来找我。\n")}
+
+      # LPC `if (! me->query("story/shenzhao")) return "你打听这个干嘛？";`
+      is_binary(required_mark) and Map.get(marks, required_mark) in [nil, 0, false] ->
+        {:error, deny_lf(config, "mark_deny", "你打听这个干嘛？\n")}
+
+      is_integer(shen_threshold) and stat(player, :shen) < shen_threshold ->
+        {:error,
+         deny_lf(
+           config,
+           "shen_deny",
+           "习武之人最重一个“侠”字，侠义方面你还做得不够！\n"
+         )}
+
+      is_binary(skill) and skill_level_of(player, skill) < 1 ->
+        {:error, deny_lf(config, "skill_deny", "你连这门功夫都没学，还谈什么绝招可言？\n")}
+
+      is_binary(min_perform_skill) and
+          skill_level_of(player, min_perform_skill) <
+            (Map.get(levels, min_perform_skill) || 0) ->
+        {:error,
+         level_deny_text(config, player, %{
+           min_perform_skill => Map.get(levels, min_perform_skill)
+         })}
 
       true ->
         {:ok, perform_id, cost}
@@ -1681,7 +1921,9 @@ defmodule Kantele.SectMaster do
 
   # 峨眉派 emei.h 内联 ask_skill*（Task #849）：LPC 顺序为
   # 已会 → 同门 → 必修技能≥1 → 贡献 → 等级链 → shen 下限（shen 在最后）。
-  # 与 lpc_duan 的唯一区别是 shen 检查移到等级链之后；独立分支保证既有门派零影响。
+  # #852 风陵师太 fengling.c ask_skill1/2 在同门之后另有
+  # `family/master_id != query("id")` 直传弟子门；用 `require_master_id = true`
+  # 逐招开启，未配置的九条灭绝授艺零影响。
   defp inquiry_grant_emei(player_stats, npc_stats, config) do
     player = normalize_stats(player_stats)
     npc = normalize_stats(npc_stats)
@@ -1693,6 +1935,7 @@ defmodule Kantele.SectMaster do
     min_shen = Map.get(config, "min_shen")
     levels = Map.get(config, "min_levels", %{}) || %{}
     order = Map.get(config, "level_order") || []
+    require_master_id = Map.get(config, "require_master_id") in [true, "true"]
 
     cond do
       is_nil(perform_id) ->
@@ -1703,6 +1946,14 @@ defmodule Kantele.SectMaster do
 
       not same_family?(player, npc) ->
         {:error, deny_lf(config, "family_deny", "和本派素无瓜葛，何出此言？\n")}
+
+      require_master_id and not direct_disciple?(player, npc) ->
+        {:error,
+         deny_lf(
+           config,
+           "master_id_deny",
+           "只有我的弟子才能学习此招，你还是走吧。\n"
+         )}
 
       is_binary(skill) and skill_level_of(player, skill) < 1 ->
         {:error, deny_lf(config, "skill_deny", "你连这门功夫都没学，还谈什么绝招可言？\n")}
@@ -1883,6 +2134,36 @@ defmodule Kantele.SectMaster do
   end
 
   defp first_failing_ordered_level(_player, _order, _levels), do: nil
+
+  # #837 双技能存在门：presence_skills 为空时退回单一 `skill`，与旧版逐字等价。
+  defp first_missing_presence_skill(player, presence_skills, primary_skill) do
+    required =
+      case presence_skills do
+        skills when is_list(skills) and skills != [] -> Enum.map(skills, &normalize_skill/1)
+        _ -> if is_binary(primary_skill), do: [normalize_skill(primary_skill)], else: []
+      end
+
+    Enum.find(required, fn skill_id -> skill_level_of(player, skill_id) < 1 end)
+  end
+
+  # presence_deny 是「技能 id → 逐字未学文案」map；主键走 loader 归一后的连字符，
+  # 同时兼容下划线原始键。主技能且未显式配置时仍读 skill_deny，保持旧覆盖语义。
+  defp presence_skill_deny_text(config, failing, denies, primary_skill) do
+    explicit =
+      Map.get(denies, failing) ||
+        (is_binary(failing) && Map.get(denies, String.replace(failing, "-", "_")))
+
+    cond do
+      is_binary(explicit) ->
+        ensure_lf(explicit)
+
+      is_binary(primary_skill) and normalize_skill(primary_skill) == failing ->
+        deny_lf(config, "skill_deny", "你连这门功夫都没学，还谈什么绝招可言？\n")
+
+      true ->
+        ensure_lf("你连#{failing}都没学，还谈什么绝招可言？\n")
+    end
+  end
 
   # 鸠摩智两条绝授的 min_levels 混用真技能与 max_neili 伪键：
   # 显式 level_order 时走有序链；未配置时也必须按命名值取，不能退回
@@ -3064,6 +3345,25 @@ defmodule Kantele.SectMaster do
     Map.get(Map.get(meta_of(character), :stats) || %{}, :int, 0) || 0
   end
 
+  # #832 王维扬 wangweiyang.c:149 `query_int() < N && query_con() < N`。
+  # LPC 的 query_int/query_con 是派生值（base + tattoo + reborn + 技能加成 + temp），
+  # 故统一组装成 %Stats{} 后交给 Stats.query_int/query_con，避免裸 stats.int/con
+  # 丢掉 literate/force 加成。已加载的真实角色 stats 本身即 %Stats{}，逐字段透传。
+  # 两项必须「同时」低于阈值才返回 true（LPC 的 &&，不是 gaibang 的 OR 门）。
+  defp both_query_attrs_below?(student, threshold) do
+    raw = student_stats_of(student)
+
+    stats = %Stats{
+      int: Map.get(raw, :int) || Map.get(raw, "int") || 0,
+      con: Map.get(raw, :con) || Map.get(raw, "con") || 0,
+      skills: Map.get(raw, :skills) || Map.get(raw, "skills") || %{},
+      tattoo: Map.get(raw, :tattoo) || %{},
+      reborn: Map.get(raw, :reborn) || %{}
+    }
+
+    Stats.query_int(stats) < threshold and Stats.query_con(stats) < threshold
+  end
+
   # #804 逍遥派 xiaoyao.h `query("per")`：容貌取自 stats.per。
   defp student_per(character) do
     Map.get(Map.get(meta_of(character), :stats) || %{}, :per, 0) || 0
@@ -3166,13 +3466,14 @@ defmodule Kantele.SectMaster do
 
   # ---- inquiry_grant 内部（%Stats{} / map 归一为 map，family 走 Map.get） ----
 
-  # `Map.from_struct/1` 会丢掉调用方补的非结构体键（:family / :max_neili），
-  # 故归一后把这两个键显式搬回来（缺省 nil 由同门/内力门控自己判「不拦」）。
+  # `Map.from_struct/1` 会丢掉调用方补的非结构体键（:family / :max_neili /
+  # :master_id），故归一后把这些键显式搬回来（缺省 nil 由各门控自己判）。
   defp normalize_stats(%Stats{} = stats) do
     stats
     |> Map.from_struct()
     |> Map.put(:family, Map.get(stats, :family))
     |> Map.put(:max_neili, Map.get(stats, :max_neili))
+    |> Map.put(:master_id, Map.get(stats, :master_id))
   end
 
   defp normalize_stats(%{} = stats), do: stats
@@ -3204,6 +3505,16 @@ defmodule Kantele.SectMaster do
       _ ->
         true
     end
+  end
+
+  # #852 LPC `me->query("family/master_id") != query("id")`：
+  # 玩家 meta.family.master_id 由调用侧并入 stats，NPC id 由问询回执并入 npc_stats。
+  # 两者都是 binary 且相等才算直传弟子；缺失不视为通过。
+  defp direct_disciple?(player, npc) do
+    master_id = Map.get(player, :master_id)
+    npc_id = Map.get(npc, :id)
+
+    is_binary(master_id) and is_binary(npc_id) and master_id == npc_id
   end
 
   defp meets_levels?(player, min_levels) when is_map(min_levels),

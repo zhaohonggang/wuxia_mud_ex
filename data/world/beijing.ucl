@@ -1436,6 +1436,14 @@ item_desc = {
   x = 0
   y = 3
   z = 0
+# #836 LPC d/beijing/gate.c:26-35：仅 in 方向、童兆和在场时调用 permit_pass。
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "tong zhaohe"
+  guard_directions = ["in"]
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
     }
 
   room_exits "gate" {
@@ -4677,6 +4685,14 @@ item_desc = {
   x = 0
   y = 5
   z = 0
+# #836 LPC d/beijing/zhengting.c:28-39：仅 north/east/west 三方向、王剑杰在场时调用 permit_pass。
+behavior = "guarded_exit"
+behavior_config = {
+  guard_npc = "wang jianjie"
+  guard_directions = ["north", "east", "west"]
+  permit_module = "Kantele.Npc.Guarder"
+  permit_function = "permit_pass"
+}
     }
 
   room_exits "zhengting" {

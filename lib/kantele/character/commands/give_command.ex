@@ -18,9 +18,11 @@ defmodule Kantele.Character.GiveCommand do
 
   alias Kantele.Admin.Access
   alias Kantele.Character.CommandView
+  alias Kantele.Character.SpecialSkills
   alias Kantele.World.Forging
   alias Kantele.World.Items
   alias Kantele.World.MirrorDaemon
+  alias Kantele.World.NpcActions.Helpers
 
   def run(conn, %{"rest" => rest}) do
     rest = String.trim(rest || "")
@@ -117,11 +119,21 @@ defmodule Kantele.Character.GiveCommand do
             from_id: conn.character.id,
             from_name: conn.character.name,
             bag_extra: Forging.bag_extra(conn.character),
-            wizard: Access.wizardp(conn.character)
+            wizard: Access.wizardp(conn.character),
+            # #801 侠客岛 renter.c accept_object：NPC 进程读不到玩家 temp，
+            # 由给予端把 pending/rent 与特技标记随 room/give 事件带过去。
+            pending_rent: pending_rent_of(conn.character),
+            treat_skill: SpecialSkills.owned?(conn.character, "treat"),
+            respect: Helpers.respect(conn.character)
           })
           |> assign(:prompt, false)
         end
     end
+  end
+
+  defp pending_rent_of(character) do
+    temp = Map.get(character.meta || %{}, :temp) || %{}
+    Map.get(temp, "pending/rent") || Map.get(temp, :pending_rent)
   end
 
   # 判断是否为任务物品

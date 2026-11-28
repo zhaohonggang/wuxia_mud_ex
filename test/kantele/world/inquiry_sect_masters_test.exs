@@ -16,11 +16,13 @@ defmodule Kantele.World.InquirySectMastersTest do
 
   use ExUnit.Case, async: true
 
-  alias Kantele.Character.Stats
-  alias Kantele.SectMaster
-  alias Kantele.World.InquiryHandlers.BornFamilyReply
-  alias Kantele.World.Loader
-  alias Kantele.World.Zone
+alias Kantele.Character.Stats
+alias Kantele.Character.Combat
+alias Kantele.SectMaster
+alias Kantele.World.InquiryHandlers.BornFamilyReply
+alias Kantele.World.Loader
+alias Kantele.World.Zone
+alias Kantele.World.NpcInit
 
   setup_all do
     %{world: Kantele.World.Loader.load()}
@@ -2554,19 +2556,44 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert bi["min_skill_levels"] == %{"hexing_bifa" => 100}
       assert bi["max_shen"] == -10000
       refute Map.has_key?(bi, "master_id")
-      assert bi["note"] =~ "GAP #820"
+      assert bi["owner_check"] in [true, "true"]
+      assert bi["owner_item_label"] == "那支鹤形笔"
+      assert bi["owner_sect_deny"] =~ "现在是我派的{name}在用"
 
       zhang = inquiry(xm(world, "鹿杖客"), "鹿头杖")
       assert zhang["item"] == "clone_lib:lutouzhang"
       assert zhang["min_skill_levels"] == %{"lutou_zhang" => 100}
       assert zhang["max_shen"] == -20000
       assert zhang["master_id"] == "true"
-      assert zhang["note"] =~ "GAP #820"
+      assert zhang["owner_check"] in [true, "true"]
+      assert zhang["owner_item_label"] == "那根鹿头杖"
+      assert zhang["owner_outsider_deny"] =~ "现在落在了{name}手中"
 
-      assert inquiry(xm(world, "百损道人"), "历练") =~ "GAP #818"
-      assert inquiry(xm(world, "百损道人"), "历炼") =~ "GAP #818"
-      assert inquiry(xm(world, "百损道人"), "锻炼") =~ "GAP #818"
+      for key <- ["历练", "历炼", "锻炼"] do
+        quest = inquiry(xm(world, "百损道人"), key)
+        assert quest["kind"] == "quest_lilian", "#{key} 应走 QUEST_D->accept_ask"
+        assert quest["family"] == "玄冥谷"
+        assert quest["npc_shen_type"] == -1
+        assert String.contains?(quest["bad_msg"], "大侠之辈可不要手软")
+        assert String.contains?(quest["out_family_deny"], "好自为之")
+      end
+
       assert xm(world, "百损道人").meta.inquiries["鹿杖客"] == "他是我大徒弟。"
+    end
+
+    test "#819 coagents：玄冥三 NPC 呼叫百损道人，startroom 逐字对齐 LPC", %{world: world} do
+      expected = %{
+        "鹤笔翁" => "xxxxxxxxxxxx",
+        "鹿杖客" => "xuanminggu:xuanmingfeng",
+        "乌旺阿普" => "xxxxxxxxxxxxxxxxxxxxxxxx"
+      }
+
+      for {name, startroom} <- expected do
+        npc = xm(world, name)
+
+        assert npc.meta.coagents == [%{"id" => "baisun daoren", "startroom" => startroom}],
+               "#{name} coagents 应与 LPC 一致"
+      end
     end
 
     test "收徒门控：百损/鹿杖客 skills 先于 exp，鹤笔翁负神门，乌旺阿普拒收", %{world: world} do
@@ -2770,6 +2797,14 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert dao["family_deny"] =~ "厚背紫金八卦刀是我八卦门的至宝"
       assert dao["master_deny"] =~ "只有我的弟子才配用厚背紫金刀"
       assert dao["min_skill_deny"] =~ "下去再练练你的八卦刀法"
+
+      # #833 持有者遍历四分支（LPC ask_dao，asker 已限八卦门故无「你派」分支）
+      assert dao["owner_check"] in [true, "true"]
+      assert dao["owner_item_label"] == "厚背紫金刀"
+      assert dao["owner_self_deny"] == "咦？厚背紫金刀现在不正是你拿着吗，怎么还反过来问我？"
+      assert dao["owner_lost_deny"] == "你来晚了一步，我已经把厚背紫金刀借出去了。"
+      assert dao["owner_sect_deny"] == "厚背紫金刀在暂时是你同门师兄{name}在用，你要用就去找他吧。"
+      assert dao["owner_outsider_deny"] == "本门的厚背紫金刀现在落在了{name}手中，你要用就去把它夺回来吧！"
     end
 
     test "王剑杰 3 门 / 王剑英 2 门：level_order 与逐条文案落位", %{world: world} do
@@ -2837,6 +2872,9 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert wwy.min_exp == 320_000
       assert wwy.min_skills == %{"bagua-xinfa" => 100}
       assert wwy.min_exp_deny =~ "我收徒可是件大事"
+      # #832 int/con 双低「且」门（permit 之后、exp 之前）
+      assert wwy.min_int_con_both == 35
+      assert wwy.int_con_deny == "你体质孱弱，为人又不机灵，我收下你有什么用？"
 
       # 王剑杰：仅 exp 20000
       wjj = zy(world, "王剑杰", "beijing:zhengting").meta.apprentice
@@ -3054,7 +3092,10 @@ defmodule Kantele.World.InquirySectMastersTest do
         assert cfg["kind"] == "sect_master_grant", key
         assert cfg["perform_id"] == "ningxue-shenzhao/ji", key
         assert cfg["skill"] == "ningxue-shenzhao", key
-        assert cfg["gate_order"] == "lpc_kunlun", key
+        assert cfg["gate_order"] == "lpc_yunlong_chen", key
+        # LPC ask_me 第二条：`if (! me->query("story/shenzhao"))`
+        assert cfg["required_mark"] == "story/shenzhao", key
+        assert cfg["mark_deny"] == "你打听这个干嘛？", key
         # LPC `shen < 1000000` → 「侠」字文案
         assert cfg["min_shen"] == 1_000_000, key
         assert cfg["shen_deny"] == "习武之人最重一个“侠”字，侠义方面你还做得不够！", key
@@ -3073,19 +3114,26 @@ defmodule Kantele.World.InquirySectMastersTest do
       # 2 条纯文本直答 + 2 条退会说明
       assert inquiry(npc, "天地会") =~ "join tiandihui"
       assert inquiry(npc, "入会") == "还不快快如天地会一同反清复明。"
-      assert inquiry(npc, "退会") =~ "GAP"
-      assert inquiry(npc, "tuihui") =~ "GAP"
+
+      for key <- ["退会", "tuihui"] do
+        quit = inquiry(npc, key)
+        assert quit["kind"] == "tiandihui_quit", key
+        assert quit["party_name"] == "天地会", key
+        assert quit["not_member_msg"] =~ "你还没加入我天地会呢，退什么退？", key
+        assert quit["quit_say"] == "反清复明，就要坚贞志士，你去吧! ", key
+      end
     end
 
-    test "门控联验：陈近南 疾电 按 LPC 顺序（shen → 凝血神爪 → 过门）", %{
+    test "门控联验：陈近南 疾电 按 LPC 顺序（story → shen → 凝血神爪 → 过门）", %{
       world: world
     } do
       npc = yl(world, "陈近南", "beijing:qingmu_dating")
       cfg = inquiry(npc, "疾电")
 
-      # 无 family 门：外派玩家（family 非云龙门）同样只按 shen/技能判定
+      # 无 family 门：外派玩家（family 非云龙门）同样只按 story/shen/技能判定
       base = %{
         family: nil,
+        marks: %{"story/shenzhao" => 1},
         shen: 1_000_000,
         gongxian: 0,
         performs: MapSet.new(),
@@ -3095,8 +3143,13 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert {:ok, "ningxue-shenzhao/ji", 0} =
                SectMaster.inquiry_grant(disciple(base), npc_stats(npc), cfg)
 
-      # 侠义不足（shen 0）→ shen_deny
-      low_shen = disciple(%{base | shen: 0})
+      # story/shenzhao 缺失 → 即使 shen 不足、技能未学也先命中 mark_deny
+      no_mark = disciple(%{base | marks: %{}, shen: 0, skills: %{}})
+
+      assert {:error, "你打听这个干嘛？\n"} = SectMaster.inquiry_grant(no_mark, npc_stats(npc), cfg)
+
+      # 侠义不足（shen 0）→ shen_deny；LPC 的 shen 门早于技能门
+      low_shen = disciple(%{base | shen: 0, skills: %{}})
 
       assert {:error, "习武之人最重一个“侠”字，侠义方面你还做得不够！\n"} =
                SectMaster.inquiry_grant(low_shen, npc_stats(npc), cfg)
@@ -3113,18 +3166,21 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert {:error, "你连这门功夫都没学，还谈什么绝招可言？\n"} =
                SectMaster.inquiry_grant(no_skill, npc_stats(npc), cfg)
 
-      # 已学会 → maxed
-      known = disciple(%{base | performs: MapSet.new(["ningxue-shenzhao/ji"])})
+      # 已学会 → maxed（先于 story 门）
+      known = disciple(%{base | marks: %{}, performs: MapSet.new(["ningxue-shenzhao/ji"])})
       assert {:error, "你真会开玩笑，会了还来找我。\n"} = SectMaster.inquiry_grant(known, npc_stats(npc), cfg)
     end
 
-    test "天地会 4 条 join 说明文案落位（tiandihui.h do_join 为死代码 → GAP）", %{
+    test "天地会 join 为死代码；退会两条键走 tiandihui_quit（tiandihui.h do_join 首行 return）", %{
       world: world
     } do
       # LPC tiandihui.h 的 do_join 首行即 notify_fail，永不可达 → 无「入会」可移植逻辑
       chen = yl(world, "陈近南", "beijing:qingmu_dating")
       assert is_map(chen.meta.inquiries)
-      assert chen.meta.inquiries["退会"] =~ "GAP"
+      assert chen.meta.inquiries["天地会"] =~ "join tiandihui"
+      assert chen.meta.inquiries["入会"] =~ "反清复明"
+      assert chen.meta.inquiries["退会"]["kind"] == "tiandihui_quit"
+      assert chen.meta.inquiries["tuihui"]["kind"] == "tiandihui_quit"
     end
   end
 
@@ -3220,7 +3276,7 @@ defmodule Kantele.World.InquirySectMastersTest do
               "dali:qingchi",
               "先天功乾阳剑气",
               "xiantian-gong/jian",
-              "lpc_kunlun",
+              "lpc_duan_yideng",
               3000,
               3000,
               50_000,
@@ -3919,12 +3975,14 @@ defmodule Kantele.World.InquirySectMastersTest do
       assert inquiry(em(world, "风陵师太", "emei:jinding"), "佛光普照")["shen_deny"] ==
                "你行侠仗义的事情还做得不够，我暂时还不能传你此招。"
 
-      # 风陵直传弟子门（master_id）明确登记 GAP #852，不得伪装成普通同门门
+      # #852 风陵直传弟子门：master_id 门已逐招开启，文案与 LPC 原文一致
       fl = inquiry(em(world, "风陵师太", "emei:jinding"), "云海明灯")
-      refute Map.has_key?(fl, "require_master_id")
+      assert fl["require_master_id"] in [true, "true"]
+      assert fl["master_id_deny"] == "只有我的弟子才能学习此招，你还是走吧。"
+      assert fl["family_deny"] == "我与阁下素无来往，不知阁下打听这个干嘛？"
     end
 
-    test "状态类问询保留 GAP 标记，34 处 unimplemented 占位清零", %{world: world} do
+    test "状态类问询保留剩余 GAP 标记，34 处 unimplemented 占位清零", %{world: world} do
       emei_names = [
         "贝锦仪",
         "静道师太",
@@ -3961,7 +4019,28 @@ defmodule Kantele.World.InquirySectMastersTest do
         end
       end
 
-      assert em(world, "静慧师太", "emei:qfadadian").meta.inquiries["剃度"] =~ "GAP #853"
+      emei_tonsure_npcs = [
+        {"静真师太", "emei:fushouan"},
+        {"静虚师太", "emei:hcaguangchang"},
+        {"静心师太", "emei:hcazhengdian"},
+        {"静照师太", "emei:lingwenge"},
+        {"静慧师太", "emei:qfadadian"},
+        {"静闲师太", "emei:qingyinge"},
+        {"静迦师太", "emei:wanxingan"},
+        {"静空师太", "emei:wnadian"},
+        {"静玄师太", "emei:woyunan"}
+      ]
+
+      for {name, room_id} <- emei_tonsure_npcs do
+        npc = em(world, name, room_id)
+
+        for key <- ["出家", "剃度"] do
+          cfg = npc.meta.inquiries[key]
+          assert cfg["kind"] == "emei_tonsure", "#{name} 的「#{key}」未接线剃度 handler"
+          assert cfg["npc_say"] == "阿弥陀佛！善哉！善哉！施主若真心皈依我佛，请跪下(kneel)受戒。"
+        end
+      end
+
       assert em(world, "灭绝师太", "emei:hcahoudian").meta.inquiries["还俗"] =~ "GAP #857"
       assert em(world, "静风师太", "emei:chuwujian").meta.inquiries["伤药"] =~ "GAP #854"
       assert em(world, "李明霞", "emei:huayanding").meta.inquiries["back"] =~ "GAP #855"
@@ -4159,6 +4238,23 @@ defmodule Kantele.World.InquirySectMastersTest do
       end
     end
 
+    # #865：恒山派 coagents/guarder/战斗闲聊（chat_chance_combat / chat_msg_combat / combat.apply）
+    test "henshan 三 NPC 战斗闲聊与临时属性（#865）", %{world: world} do
+      for {name, room, chance, msgs, damage, unarmed_damage, armor} <- [
+        {"刘正风", "hengyang:furongfeng", 120, ["sword.luo", "strike.pai", "strike.ying", "recover", "powerup"], 100, 100, 200},
+        {"米为义", "hengyang:zhurongdian", 120, ["sword.huan", "cuff.riyue", "recover"], 100, 100, 200},
+        {"莫大", "hengyang:zhurongfeng", 120, ["sword.luo", "strike.pai", "strike.die", "recover", "powerup"], 100, 100, 200}
+      ] do
+        npc = hn(world, name, room)
+        assert npc.meta.chat_chance_combat == chance, "#{name} chat_chance_combat"
+        assert npc.meta.chat_msg_combat == msgs, "#{name} chat_msg_combat"
+        temp = npc.meta.combat.temp
+        assert Map.get(temp, :damage) == damage, "#{name} apply/damage"
+        assert Map.get(temp, :unarmed_damage) == unarmed_damage, "#{name} apply/unarmed_damage"
+        assert Map.get(temp, :armor) == armor, "#{name} apply/armor"
+      end
+    end
+
     test "10 条 sect_master_grant：perform_id / 门控字段 / masterd 逐字文案", %{world: world} do
       # 元组：NPC / 房间 / 键 / perform_id / 必修技能 / 技能等级 /
       #       force / dodge / neili / 贡献 / shen / improve
@@ -4256,14 +4352,13 @@ defmodule Kantele.World.InquirySectMastersTest do
                "你连碧罗掌法都未曾学过，何谈绝招可言？"
     end
 
-    test "状态类问询保留 GAP 标记，无 unimplemented 占位", %{world: world} do
+    test "状态类问询 GAP 标记已回填，无 unimplemented 占位", %{world: world} do
       mo = hn(world, "莫大", "hengyang:zhurongfeng")
 
-      for key <- ["历练", "历炼", "锻炼"] do
-        assert mo.meta.inquiries[key] =~ "GAP #864", "#{key} 须登记 QUEST_D 缺口"
+      # #863/#864 已实现，inquiries 应为完整 config map，不再是 GAP 字符串
+      for key <- ["历练", "历炼", "锻炼", "镇岳尚方"] do
+        assert is_map(mo.meta.inquiries[key]), "#{key} 须为已实现的 inquiry config"
       end
-
-      assert mo.meta.inquiries["镇岳尚方"] =~ "GAP #863"
 
       for {name, room} <- [
             {"刘正风", "hengyang:furongfeng"},
@@ -4795,6 +4890,63 @@ defmodule Kantele.World.InquirySectMastersTest do
 
         assert bad == [], "#{name} 有裸 unimplemented 占位（未登记 GAP）: #{inspect(bad)}"
       end
+    end
+
+    # ---- #866：sect_master_grant 无 msg_one 时走 masterd random(4) 默认演示文案 ----
+
+    test "#866 一剑落九雁 无 msg_one，应走 default 演示文案路径", %{world: world} do
+      liu = npc(world, "刘正风", "hengyang:furongfeng")
+      assert liu, "刘正风应随世界加载"
+
+      cfg = inquiry(liu, "一剑落九雁")
+      assert cfg, "刘正风应能回答「一剑落九雁」"
+      assert cfg["kind"] == "sect_master_grant"
+      assert cfg["skill"] == "luoyan-jian"
+      assert is_nil(cfg["msg_one"]), "一剑落九雁无 msg_one，应走 random(4) 默认演示文案"
+
+      # 乱剑覆花 有 msg_one，不受影响
+      luan_cfg = inquiry(liu, "乱剑覆花")
+      assert is_binary(luan_cfg["msg_one"]) and byte_size(luan_cfg["msg_one"]) > 0,
+             "乱剑覆花有私定 msg_one"
+    end
+
+    # ---- #867：刘正风 startroom + init() 吹曲/叹息 ----
+
+    test "#867 刘正风 startroom 已解析", %{world: world} do
+      liu = npc(world, "刘正风", "hengyang:furongfeng")
+      assert liu, "刘正风应随世界加载"
+      assert liu.meta.startroom == "hengyang:furongfeng"
+    end
+
+    test "#867 刘正风 init()：在 startroom 且未战斗 → 吹笑傲江湖", %{world: world} do
+      liu = npc(world, "刘正风", "hengyang:furongfeng")
+      assert liu
+
+      result = NpcInit.init(liu, %{})
+      assert match?({:vision, _}, result), "在 startroom 且未战斗应返回 {:vision, text}"
+      assert elem(result, 1) =~ "笑傲江湖", "应播报吹《笑傲江湖》"
+    end
+
+    test "#867 刘正风 init()：在战斗中 → :skip", %{world: world} do
+      liu = npc(world, "刘正风", "hengyang:furongfeng")
+      assert liu
+
+      fighting_liu = %{
+        liu | meta: %{liu.meta | combat: %Combat{enemies: [%{id: "player:1"}]}}
+      }
+      result = NpcInit.init(fighting_liu, %{})
+      assert result == :skip, "战斗中应返回 :skip"
+    end
+
+    test "#867 刘正风 init()：不在 startroom 且未战斗 → 叹息", %{world: world} do
+      liu = npc(world, "刘正风", "hengyang:furongfeng")
+      assert liu
+
+      # 把 room_id 改成非 startroom 的房间
+      away_liu = %{liu | room_id: "hengyang:tianzhu"}
+      result = NpcInit.init(away_liu, %{})
+      assert match?({:vision, _}, result)
+      assert elem(result, 1) =~ "叹了口气", "不在 startroom 时应播报叹息"
     end
   end
 

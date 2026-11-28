@@ -541,4 +541,95 @@ defmodule Kantele.World.NpcGreetingTest do
     refute_receive {:room_message, _}, 100
     refute_receive %Event{topic: "combat/start"}, 50
   end
+
+  # ---- 侠客岛岛主 greeting exp 分级（GAP #802）----
+
+  defp xiakedao_npc(alias_id, name) do
+    npc = npc_of("hash:#{alias_id}", name)
+    put_in(npc.meta.aliases, [alias_id, alias_id])
+  end
+
+  defp player_exp(exp) do
+    base = player_env_family(%{gender: "男性"}, nil)
+    %{base | meta: %{base.meta | stats: %{base.meta.stats | combat_exp: exp}}}
+  end
+
+  defp fighting(npc) do
+    combat = %{
+      Kantele.Character.Combat.new()
+      | enemies: [%{id: "enemy", pid: self(), name: "敌人", room_id: @room_id}]
+    }
+
+    put_in(npc.meta.combat, combat)
+  end
+
+  defp greet_samples(npc, player, times \\ 200) do
+    Stream.repeatedly(fn -> Kantele.World.NpcGreeting.greet(npc, player) end)
+    |> Enum.take(times)
+  end
+
+  defp first_line(npc, player) do
+    greet_samples(npc, player)
+    |> Enum.find(&match?({:say, _}, &1))
+  end
+
+  test "龙岛主：combat_exp < 10000 → 逐字播「经验尚浅」（低档上界）" do
+    assert {:say, [line]} = first_line(xiakedao_npc("xiakedao_long", "龙岛主"), player_exp(9_999))
+    assert line == "龙岛主抬头望了你一眼，说道：”经验尚浅。”"
+  end
+
+  test "龙岛主：combat_exp == 10000 → 改播「未到火候」（高档下界）" do
+    assert {:say, [line]} = first_line(xiakedao_npc("xiakedao_long", "龙岛主"), player_exp(10_000))
+    assert line == "龙岛主瞟了你一眼，说道：“未到火候。”"
+  end
+
+  test "龙岛主：combat_exp == 100000 → 恒不问候（上界）" do
+    results = greet_samples(xiakedao_npc("xiakedao_long", "龙岛主"), player_exp(100_000))
+    refute Enum.any?(results, &match?({:say, _}, &1))
+  end
+
+  test "木岛主：combat_exp < 10000 → 逐字播木岛主低档文案" do
+    assert {:say, [line]} = first_line(xiakedao_npc("xiakedao_mu", "木岛主"), player_exp(5_000))
+    assert line == "木岛主抬头望了你一眼，说道：”经验尚浅。”"
+  end
+
+  test "木岛主：combat_exp 在 10000..99999 → 逐字播木岛主高档文案" do
+    assert {:say, [line]} = first_line(xiakedao_npc("xiakedao_mu", "木岛主"), player_exp(99_999))
+    assert line == "木岛主瞟了你一眼，说道：“未到火候。”"
+  end
+
+  test "木岛主：combat_exp >= 100000 → 恒不问候" do
+    results = greet_samples(xiakedao_npc("xiakedao_mu", "木岛主"), player_exp(120_000))
+    refute Enum.any?(results, &match?({:say, _}, &1))
+  end
+
+  test "岛主：NPC 战斗中 → 不问候（LPC !is_fighting）" do
+    npc = xiakedao_npc("xiakedao_long", "龙岛主") |> fighting()
+    results = greet_samples(npc, player_exp(5_000))
+    refute Enum.any?(results, &match?({:say, _}, &1))
+  end
+
+  test "岛主：别名派发命中且 random(3) == 1 才说话（1/3 概率门）" do
+    results = greet_samples(xiakedao_npc("xiakedao_long", "龙岛主"), player_exp(5_000))
+    assert Enum.any?(results, &match?({:say, _}, &1))
+    assert Enum.any?(results, &(&1 == :skip))
+  end
+
+  test "岛主：进屋事件按选中文案向房间广播" do
+    npc = xiakedao_npc("xiakedao_mu", "木岛主")
+    player = player_exp(9_999)
+
+    spoke? =
+      Enum.any?(1..200, fn _ ->
+        MoveEvent.notice(build_conn(npc), notice_event(player))
+
+        receive do
+          {:room_message, text} -> String.contains?(text, "木岛主抬头望了你一眼")
+        after
+          10 -> false
+        end
+      end)
+
+    assert spoke?
+  end
 end

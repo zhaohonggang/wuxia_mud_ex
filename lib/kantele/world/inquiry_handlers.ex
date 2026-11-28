@@ -11,8 +11,12 @@ defmodule Kantele.World.InquiryHandlers do
 
   @handlers %{
     "give_item" => Kantele.World.InquiryHandlers.GiveItem,
+    "hire_helper" => Kantele.World.InquiryHandlers.HireHelper,
+    "message_sort" => Kantele.World.InquiryHandlers.MessageSort,
     "counter_perform" => Kantele.World.InquiryHandlers.CounterPerform,
     "teleport_service" => Kantele.World.InquiryHandlers.TeleportService,
+    # #831 天地会 ask_tuihui：party/party_name 门控 + 退会清理 party/rank/level。
+    "tiandihui_quit" => Kantele.World.InquiryHandlers.TiandihuiQuit,
     "smith_job" => Kantele.World.InquiryHandlers.SmithJob,
     "yelvqi_job" => Kantele.World.InquiryHandlers.YelvqiJob,
     "wuxiuwen_tools" => Kantele.World.InquiryHandlers.WuxiuwenTools,
@@ -23,6 +27,12 @@ defmodule Kantele.World.InquiryHandlers do
     "sect_master_unlock_perform" => Kantele.World.InquiryHandlers.SectMasterUnlockPerform,
     "meizhuang_riyue" => Kantele.World.InquiryHandlers.MeizhuangRiyue,
     "tonsure" => Kantele.World.InquiryHandlers.Tonsure,
+    # #853 峨嵋九名师太共用 tobebonze.h ask_for_join：同门/class/性别三门 + pending。
+    "emei_tonsure" => Kantele.World.InquiryHandlers.EmeiTonsure,
+    # #857 灭绝师太「还俗」ask_for_quit：同门/未出家门 + pending/quit_bonze。
+    "emei_quit_bonze" => Kantele.World.InquiryHandlers.EmeiQuitBonze,
+    # #855 李明霞「上山/back」带人传送 + 回程定时器。
+    "emei_li_back" => Kantele.World.InquiryHandlers.EmeiLiBack,
     "born_family_reply" => Kantele.World.InquiryHandlers.BornFamilyReply,
     "wudang_jiuyang" => Kantele.World.InquiryHandlers.WudangJiuyang,
     "luohan_zhen" => Kantele.World.InquiryHandlers.LuohanZhen,
@@ -36,6 +46,9 @@ defmodule Kantele.World.InquiryHandlers do
     "xuedao_dao" => Kantele.World.InquiryHandlers.XuedaoTreasure,
     "xuedao_book" => Kantele.World.InquiryHandlers.XuedaoTreasure,
     "xuedao_tonsure" => Kantele.World.InquiryHandlers.XuedaoTonsure,
+    # #813 QUEST_D->accept_ask("历练"/"历炼"/"锻炼") 通用门派历练流程；
+    # 与 #955 张无忌任务 spec 登记的 "quest" 是两套机制，不可合并。
+    "quest_lilian" => Kantele.World.InquiryHandlers.QuestLilian,
     "quest" => Kantele.World.InquiryHandlers.Quest
   }
 
