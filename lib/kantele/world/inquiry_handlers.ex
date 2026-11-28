@@ -18,10 +18,18 @@ defmodule Kantele.World.InquiryHandlers do
     # #831 天地会 ask_tuihui：party/party_name 门控 + 退会清理 party/rank/level。
     "tiandihui_quit" => Kantele.World.InquiryHandlers.TiandihuiQuit,
     "smith_job" => Kantele.World.InquiryHandlers.SmithJob,
+    # d/city/npc/smith.c ask_back()：血刀弟子「血海无边」密道回中原。
+    "city_smith_back" => Kantele.World.InquiryHandlers.CitySmithBack,
+    # d/beijing/npc/*.c ask_weiwang()：8 名北京 NPC 查询「威望/江湖威望」。
+    "weiwang" => Kantele.World.InquiryHandlers.Weiwang,
     "yelvqi_job" => Kantele.World.InquiryHandlers.YelvqiJob,
     "wuxiuwen_tools" => Kantele.World.InquiryHandlers.WuxiuwenTools,
     "hostile" => Kantele.World.InquiryHandlers.Hostile,
     "jobs_job" => Kantele.World.InquiryHandlers.JobsJob,
+    # A-5-c C4：北京领赏（康熙 ask_reward 殿试链；御前侍卫传送链为 C5 并入）。
+    "beijing_reward" => Kantele.World.InquiryHandlers.BeijingReward,
+    # A-5-b：平一指/书童/厨娘的 ask_job() 领活链（按 profile 分流）。
+    "job_ask" => Kantele.World.InquiryHandlers.JobAsk,
     "sect_master_grant" => Kantele.World.InquiryHandlers.SectMasterGrant,
     "sect_master_teach_skill" => Kantele.World.InquiryHandlers.SectMasterTeachSkill,
     "sect_master_unlock_perform" => Kantele.World.InquiryHandlers.SectMasterUnlockPerform,

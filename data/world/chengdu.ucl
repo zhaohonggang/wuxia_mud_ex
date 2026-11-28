@@ -1816,8 +1816,8 @@ direction = "up"
   ]
 
   inquiries = [
-    { key = "job" value = " inquire about job (unimplemented)" },
-    { key = "工作" value = " inquire about job (unimplemented)" }
+    { key = "job" value = { kind = "job_ask" profile = "chengdu_chuniang" } },
+    { key = "工作" value = { kind = "job_ask" profile = "chengdu_chuniang" } }
   ]
 
   skills = [

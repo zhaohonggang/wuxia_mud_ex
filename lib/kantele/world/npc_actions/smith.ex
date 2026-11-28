@@ -1,7 +1,9 @@
 defmodule Kantele.World.NpcActions.Smith do
   @moduledoc """
-  P5-9 NPC 私有动作：襄阳铁匠（`xiangyang:tiejiangpu`）的打工动词
-  `gu` / `dapi` / `cuihuo` 与修理动词 `repair` / `xiuli`。
+  P5-9 NPC 私有动作：铁匠的打工动词 `gu` / `dapi` / `cuihuo` 与修理动词
+  `repair` / `xiuli`。原落地房间为 `xiangyang:tiejiangpu`；第 56 批按
+  LPC `inherit/char/smith.c` 的多处 clone 推广到 `city:datiepu` 与
+  `suzhou:datiepu`——广播房间取 `params.room_id`，不再写死襄阳。
 
   LPC 源：`d/xiangyang/npc/smith.c` + 基类 `/inherit/char/smith.c` 的
   `do_gu` / `do_dapi` / `do_cuihuo` / `reward` / `do_repair`。派活入口
@@ -67,7 +69,9 @@ defmodule Kantele.World.NpcActions.Smith do
   alias Kantele.World.Item
   alias Kantele.World.NpcActions.Helpers
 
-  @room_id "xiangyang:tiejiangpu"
+  # LPC `inherit/char/smith.c` 被多处 clone：襄阳打铁铺 + 中原/苏州打铁铺。
+  # 注册表按 room_id 分派，本模块的消息广播必须用「当前房间」而非写死襄阳。
+  @room_ids ["xiangyang:tiejiangpu", "city:datiepu", "suzhou:datiepu"]
   @npc_name "铁匠"
 
   # LPC ask_me 派的三种活计（InquiryHandlers.SmithJob 写，本模块消费）
@@ -89,13 +93,13 @@ defmodule Kantele.World.NpcActions.Smith do
 
   @impl true
   def run(conn, %{room_id: room_id, verb: verb, trailing: trailing}) when is_binary(room_id) do
-    if room_id == @room_id do
+    if room_id in @room_ids do
       case verb do
-        "gu" -> do_gu(conn)
-        "dapi" -> do_dapi(conn)
-        "cuihuo" -> do_cuihuo(conn)
-        "repair" -> do_repair(conn, trailing)
-        "xiuli" -> do_repair(conn, trailing)
+        "gu" -> do_gu(conn, room_id)
+        "dapi" -> do_dapi(conn, room_id)
+        "cuihuo" -> do_cuihuo(conn, room_id)
+        "repair" -> do_repair(conn, trailing, room_id)
+        "xiuli" -> do_repair(conn, trailing, room_id)
         _ -> :not_handled
       end
     else
@@ -107,7 +111,7 @@ defmodule Kantele.World.NpcActions.Smith do
 
   # ---- gu：鼓风箱 ----
 
-  defp do_gu(conn) do
+  defp do_gu(conn, room_id) do
     cond do
       # LPC: if (me->is_busy()) return notify_fail("你现在正忙。\n");
       busy?(conn) ->
@@ -117,20 +121,20 @@ defmodule Kantele.World.NpcActions.Smith do
       blank_temp?(conn, "smith/gu") ->
         Helpers.broadcast(
           conn,
-          @room_id,
+          room_id,
           "\n$N刚偷偷的拉起鼓风机，鼓了几阵风。\n就听见#{@npc_name}对$N大喝道：滚开，乱搞什么。\n"
         )
 
       true ->
         conn
-        |> Helpers.broadcast(@room_id, "$N拉起鼓风机拼命鼓了起来，#{@npc_name}看了点了点头。\n")
-        |> reward()
+        |> Helpers.broadcast(room_id, "$N拉起鼓风机拼命鼓了起来，#{@npc_name}看了点了点头。\n")
+        |> reward(room_id)
     end
   end
 
   # ---- dapi：打坯 ----
 
-  defp do_dapi(conn) do
+  defp do_dapi(conn, room_id) do
     cond do
       busy?(conn) ->
         Helpers.render(conn, "你现在正忙。\n")
@@ -138,23 +142,23 @@ defmodule Kantele.World.NpcActions.Smith do
       blank_temp?(conn, "smith/dapi") ->
         Helpers.broadcast(
           conn,
-          @room_id,
+          room_id,
           "\n$N拿起几块生铁，在手里掂了掂。\n就听见#{@npc_name}对$N大喝道：放下，乱搞什么。\n"
         )
 
       true ->
         conn
         |> Helpers.broadcast(
-          @room_id,
+          room_id,
           "$N拿着锤子对刚出炉的火热的生铁用力敲打着，#{@npc_name}“嗯”了一声，看上去有些满意。\n"
         )
-        |> reward()
+        |> reward(room_id)
     end
   end
 
   # ---- cuihuo：淬火 ----
 
-  defp do_cuihuo(conn) do
+  defp do_cuihuo(conn, room_id) do
     cond do
       busy?(conn) ->
         Helpers.render(conn, "你现在正忙。\n")
@@ -162,7 +166,7 @@ defmodule Kantele.World.NpcActions.Smith do
       blank_temp?(conn, "smith/cuihuo") ->
         Helpers.broadcast(
           conn,
-          @room_id,
+          room_id,
           "\n$N刚抄起一个打造好的坯子，摆弄了几下。\n就听见#{@npc_name}对$N大喝道：放下，别给我搞坏了。\n"
         )
 
@@ -171,16 +175,16 @@ defmodule Kantele.World.NpcActions.Smith do
         # $N 即玩家，与本框架 broadcast 的 $N 语义一致，直接映射。
         conn
         |> Helpers.broadcast(
-          @room_id,
+          room_id,
           "$N用铁钳抄起一块火红的坯子，伸进了水池，“哧”的一声轻烟四冒。\n"
         )
-        |> reward()
+        |> reward(room_id)
     end
   end
 
   # ---- reward：发工钱 + 经验/潜能 + 计数 + 掉气 + 忙乱 ----
 
-  defp reward(conn) do
+  defp reward(conn, room_id) do
     character = current(conn)
     meta = character.meta || %{}
     stats = meta.stats || %Stats{}
@@ -216,7 +220,7 @@ defmodule Kantele.World.NpcActions.Smith do
       })
 
     conn
-    |> Helpers.broadcast(@room_id, "#{@npc_name}对$N道：干得不坏，这是给你的工钱。\n")
+    |> Helpers.broadcast(room_id, "#{@npc_name}对$N道：干得不坏，这是给你的工钱。\n")
     |> then(&Helpers.render(&1, "#{@npc_name}给你#{Money.money_str(coin)}。\n"))
     |> then(&Helpers.render(&1, "你获得了#{exp}点经验和#{pot}点潜能。\n"))
     |> persist()
@@ -224,7 +228,7 @@ defmodule Kantele.World.NpcActions.Smith do
 
   # ---- repair / xiuli：两段确认修理 ----
 
-  defp do_repair(conn, trailing) do
+  defp do_repair(conn, trailing, room_id) do
     arg = to_string(trailing || "") |> String.trim()
 
     cond do
@@ -236,12 +240,12 @@ defmodule Kantele.World.NpcActions.Smith do
       true ->
         case find_instance(conn, arg) do
           nil -> Helpers.render(conn, "你身上好像没有这样东西。\n")
-          inst -> repair_item(conn, inst)
+          inst -> repair_item(conn, inst, room_id)
         end
     end
   end
 
-  defp repair_item(conn, inst) do
+  defp repair_item(conn, inst, room_id) do
     item = Item.instance_item(inst)
     name = item.name || inst.item_id
     consistence = instance_consistence(inst)
@@ -257,14 +261,14 @@ defmodule Kantele.World.NpcActions.Smith do
 
       # LPC: 已有 pending 且 repair["item"] == ob → 确认付费修理
       pending_matches?(conn, inst) ->
-        confirm_repair(conn, inst, name, consistence)
+        confirm_repair(conn, inst, name, consistence, room_id)
 
       true ->
-        quote_repair(conn, inst, name, consistence)
+        quote_repair(conn, inst, name, consistence, room_id)
     end
   end
 
-  defp quote_repair(conn, inst, name, consistence) do
+  defp quote_repair(conn, inst, name, consistence, room_id) do
     item = Item.instance_item(inst)
     value = item_meta_value(item, "value") || 0
     cost = repair_cost(consistence, value)
@@ -273,7 +277,7 @@ defmodule Kantele.World.NpcActions.Smith do
       conn
       |> Helpers.put_temp(@pending_key, %{"item" => inst.id, "cost" => cost})
       |> Helpers.broadcast(
-        @room_id,
+        room_id,
         "\n$N拿出一#{unit_of(item)}#{name}，#{@npc_name}瞥了一眼，道：要修好它得要#{Money.money_str(cost)}才行。\n"
       )
       |> Helpers.render("如果你的确想修理这件物品，请再输入一次这条命令。\n")
@@ -281,7 +285,7 @@ defmodule Kantele.World.NpcActions.Smith do
     persist(conn)
   end
 
-  defp confirm_repair(conn, inst, name, consistence) do
+  defp confirm_repair(conn, inst, name, consistence, room_id) do
     character = current(conn)
     meta = character.meta || %{}
     cost = (meta.temp || %{})[@pending_key]["cost"] || 0
@@ -316,11 +320,11 @@ defmodule Kantele.World.NpcActions.Smith do
 
         conn
         |> Helpers.broadcast(
-          @room_id,
+          room_id,
           "$N把#{name}递给了#{@npc_name}。\n只见#{@npc_name}拿起工具，东敲西补，将#{name}好好修了修。\n"
         )
         |> Helpers.broadcast(
-          @room_id,
+          room_id,
           "#{@npc_name}道：“好了。”随手把#{name}还给了$N，$N看了看，满意的掏出了一些钱付了帐。\n"
         )
         |> persist()

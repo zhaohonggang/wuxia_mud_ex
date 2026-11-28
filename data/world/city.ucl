@@ -4010,10 +4010,12 @@ chats = [
 
 
   inquiries = [
-    { key = "job" value = " inquire about job (unimplemented)" },
-    { key = "工作" value = " inquire about job (unimplemented)" },
-    { key = "配药" value = " inquire about job (unimplemented)" }
+    { key = "job" value = { kind = "job_ask" profile = "city_ping" } },
+    { key = "工作" value = { kind = "job_ask" profile = "city_ping" } },
+    { key = "配药" value = { kind = "job_ask" profile = "city_ping" } }
   ]
+
+  ask_handler = "Kantele.NPC.CityPing"
 
   skills = [
     { skill = "unarmed" level = 80 },
@@ -4294,12 +4296,12 @@ chats = [
   }
 
   inquiries = [
-    { key = "job" value = " inquire about job (unimplemented)" },
+    { key = "job" value = { kind = "job_ask" profile = "city_shutong" } },
     { key = "书" value = "先生那里书多得很。" },
     { key = "买书" value = "还是找朱先生吧！我这里可不管。" },
     { key = "借书" value = "借？我可没有书借给你呀！" },
-    { key = "工作" value = " inquire about job (unimplemented)" },
-    { key = "抄书" value = " inquire about job (unimplemented)" }
+    { key = "工作" value = { kind = "job_ask" profile = "city_shutong" } },
+    { key = "抄书" value = { kind = "job_ask" profile = "city_shutong" } }
   ]
 
   skills = [
@@ -4351,11 +4353,22 @@ chats = [
     { id = clone_lib.items.tiejia.id }
   ]
 
-  inquiries = [
-    { key = "job" value = " inquire about me (unimplemented)" },
-    { key = "工作" value = " inquire about me (unimplemented)" },
-    { key = "血海无边" value = " inquire about back (unimplemented)" }
-  ]
+  # LPC `inherit/char/smith.c` setup() + d/city/npc/smith.c ask_back()：
+  # job/工作 → ask_me（SmithJob 三选一派活）；血海无边 → 血刀密道传送；
+  # repair/修理 为基类 setup() 的固定回话（原转换器漏转）。
+  inquiries = {
+    job = { kind = "smith_job" }
+    工作 = { kind = "smith_job" }
+    血海无边 = { kind = "city_smith_back" family = "血刀门" target_room = "city:xdmidao4" }
+    repair = "你想要修(repair)点什么？"
+    修理 = "你想要修(repair)点什么？"
+  }
+
+  # LPC init()：gu / dapi / cuihuo / repair(=xiuli)
+  init = {
+    greet_delay = 0
+    add_actions = ["gu", "dapi", "cuihuo", "repair", "xiuli"]
+  }
 
   carry = [
     { id = items.cloth.id }

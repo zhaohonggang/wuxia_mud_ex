@@ -184,10 +184,12 @@ defmodule Kantele.World.NpcActionHandlersTest do
       end
     end
 
-    test "铁匠五连（gu/dapi/cuihuo/repair/xiuli）→ 已注册的 Smith handler" do
-      for verb <- ["gu", "dapi", "cuihuo", "repair", "xiuli"] do
-        assert {:ok, {Kantele.World.NpcActions.Smith, :run}} =
-                 NpcActionHandlers.lookup("xiangyang:tiejiangpu", verb)
+    test "铁匠五连（gu/dapi/cuihuo/repair/xiuli）→ 三间打铁铺均注册 Smith handler" do
+      for room <- ["xiangyang:tiejiangpu", "city:datiepu", "suzhou:datiepu"] do
+        for verb <- ["gu", "dapi", "cuihuo", "repair", "xiuli"] do
+          assert {:ok, {Kantele.World.NpcActions.Smith, :run}} =
+                   NpcActionHandlers.lookup(room, verb)
+        end
       end
     end
 
@@ -240,7 +242,7 @@ defmodule Kantele.World.NpcActionHandlersTest do
     # 原名 281 字节，编译期直接让 OTP 25 的 beam_asm 崩在
     # `*** argument 1: not an iolist term`，整个测试套件无法启动。
     # 该崩溃与平台无关（Linux 容器同样复现），不是 Windows 独有。
-    test "返回已注册房间 id 列表（43 个）" do
+    test "返回已注册房间 id 列表（45 个）" do
       rooms = NpcActionHandlers.registered_rooms()
 
       assert "tulong:huichang_back" in rooms
@@ -269,6 +271,8 @@ defmodule Kantele.World.NpcActionHandlersTest do
       assert "hangzhou:liuhe9" in rooms
       assert "kaifeng:yaopu" in rooms
       assert "xiangyang:tiejiangpu" in rooms
+      assert "city:datiepu" in rooms
+      assert "suzhou:datiepu" in rooms
       assert "changan:qunyulou2" in rooms
       assert "xiyu:riyuedong" in rooms
 
@@ -287,7 +291,7 @@ defmodule Kantele.World.NpcActionHandlersTest do
         &assert(&1 in rooms)
       )
 
-      assert length(rooms) == 43
+      assert length(rooms) == 45
     end
   end
 end

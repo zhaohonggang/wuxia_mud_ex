@@ -322,6 +322,11 @@ defmodule Kantele.Character.Events do
     module(YitianEvent) do
       event("yitian/result", :result)
     end
+
+    # NPC init() 回执（#1245 庄允城威望写入 + tell）。
+    module(NpcInitEvent) do
+      event("npc/init/weiwang", :weiwang)
+    end
   end
 end
 
@@ -426,6 +431,12 @@ defmodule Kantele.Character.NonPlayerEvents do
       event("quest/ask", :call)
       event("quest/cancel", :call)
       event("npc/inquiry_consume", :inquiry_consume)
+    end
+
+    # A-5-c C4：NPC 侧瞬移（康熙 ask_reward 门 1 的 move("/d/beijing/hg")，
+    # kangxi.c:94；玩家进程无法代移 NPC，经事件发回 NPC 进程自移）。
+    module(NpcGotoEvent) do
+      event("npc/goto", :call)
     end
 
     # 收受端：玩家把物品交给 NPC（对应 LPC accept_object / 通用收受）。

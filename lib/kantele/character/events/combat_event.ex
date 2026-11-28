@@ -735,6 +735,9 @@ defmodule Kantele.Character.CombatEvent do
       # 击杀计数字段：供 enemy_died/2 累加 PKS/MKS/WPK 到杀手 meta.combat.temp
       |> Map.put(:can_speak, is_binary(victim_id) && String.starts_with?(victim_id, "player:"))
       |> Map.put(:shen, victim_shen)
+      # A-5-c C2：入侵 NPC 死亡 → 携带所属波次 born_time，供杀手侧按
+      # LPC invader.c:151-160 写 waidi/born_time + waidi/number。非入侵者为 nil。
+      |> Map.put(:waidi_born_time, invader_born_time(character))
 
     # Q3-stretch：神秘挑战者被击杀 → 通知 Story 登记处收摊（其余死亡为 no-op）
     notify_challenger_killed(character, killer)
@@ -1181,6 +1184,10 @@ defmodule Kantele.Character.CombatEvent do
 
     # 决斗胜负：若倒下的正是我 competitor，则这边是胜者，广播胜负
     conn = announce_duel_victory(conn, character, id, Map.get(reward, :name))
+
+    # A-5-c C2：击杀入侵 NPC → 按 LPC invader.c:151-160 写 waidi/born_time
+    # 与 waidi/number（跨波重置 number=1，同波累加）。非入侵击杀为 no-op。
+    character = apply_waidi_kill(character, Map.get(reward, :waidi_born_time))
 
     # 敌人已死：杀戮意图完结，从 killer/want_kills 移除
     character = clear_kill_intent(character, id)
@@ -1700,4 +1707,39 @@ defmodule Kantele.Character.CombatEvent do
   catch
     :exit, _reason -> :ok
   end
+
+  # A-5-c C2：入侵 NPC 本体携带的波次 born_time（LPC invasiond.c:84）。
+  # 非入侵 NPC 返回 nil，reward 里的 :waidi_born_time 为 nil → 杀手侧跳过。
+  defp invader_born_time(character) do
+    if Map.get(character.meta, :kind) == "invader" do
+      Map.get(character.meta, :born_time)
+    else
+      nil
+    end
+  end
+
+  # A-5-c C2：杀手侧 waidi 状态写入（LPC invader.c:151-160）。
+  #   - 杀手 waidi/born_time != 本次波次 born_time → delete("waidi") 后重置：
+  #     set born_time + number = 1；
+  #   - 同波 → number += 1。
+  # ex 落点：meta.env[:waidi] = %{born_time:, number:}（env 即 LPC set() 仓库）。
+  # born_time 为 nil（非入侵击杀）时 no-op。
+  defp apply_waidi_kill(%{meta: %Kantele.Character.PlayerMeta{}} = character, born_time)
+       when is_integer(born_time) do
+    env = character.meta.env || %{}
+    waidi = Map.get(env, :waidi) || %{}
+
+    new_waidi =
+      if Map.get(waidi, :born_time) == born_time do
+        # 同波：add("waidi/number", 1)
+        %{waidi | number: (Map.get(waidi, :number) || 0) + 1}
+      else
+        # 跨波/首次：delete("waidi") → set born_time + add number（0+1=1）
+        %{born_time: born_time, number: 1}
+      end
+
+    %{character | meta: Map.put(character.meta, :env, Map.put(env, :waidi, new_waidi))}
+  end
+
+  defp apply_waidi_kill(character, _born_time), do: character
 end

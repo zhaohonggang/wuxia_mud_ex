@@ -1871,6 +1871,25 @@ zones "clone_lib" {
       }
     }
 
+# Source: C:/files/git/mud/clone/fam/etc/va1.c
+# Zone: clone_lib
+
+    items "va1" {
+      name = "金块"
+      aliases = ["jin kuai", "jin", "kuai"]
+      description = "这是一锭黄澄澄的金块，相信可以卖个好价钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 150000
+        weight = 2000
+        unit = "锭"
+      }
+    }
+
 # Source: C:/files/git/mud/clone/fam/etc/va2.c
 # Zone: clone_lib
 
@@ -1904,6 +1923,25 @@ zones "clone_lib" {
         value = 160000
         weight = 1000
         unit = "块"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/etc/va4.c
+# Zone: clone_lib
+
+    items "va4" {
+      name = "珍珠"
+      aliases = ["zhen zhu", "zhen", "zhu"]
+      description = "这是一颗浑圆的珍珠，相信可以卖个好价钱。"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        value = 100000
+        weight = 1000
+        unit = "颗"
       }
     }
 
@@ -2383,6 +2421,31 @@ zones "clone_lib" {
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
 
+# Source: C:/files/git/mud/clone/money/gold.c
+# Zone: clone_lib
+
+    items "gold" {
+      name = "黄金"
+      aliases = ["gold", "ingot", "gold_money"]
+      description = "黄澄澄的金子，人见人爱的金子，啊~~~~金子！"
+  verbs = [
+    "get",
+    "drop"
+  ]
+
+      meta = {
+        # LPC base_value 10000 / base_unit 两 / base_weight 37；unit 取 base_unit
+        #（康熙圣旨「黄金N两」按 base_unit 取值，kangxi.c:173-176）。
+        value = 10000
+        weight = 37
+        unit = "两"
+        money_id = "gold"
+      }
+    }
+
+# Source: C:/files/git/mud/clone/fam/pill/full1.c
+# Zone: clone_lib
+
     items "full1" {
       name = "活骨灵药"
       description = "这是一粒灿金色的药丸，在武林中被喻为是疗伤圣药。"
@@ -2390,6 +2453,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "粒"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2401,6 +2468,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "枚"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2423,6 +2494,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "株"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2434,6 +2509,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "株"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2467,6 +2546,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "枚"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2478,6 +2561,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "枚"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2544,6 +2631,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "株"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2555,6 +2646,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "株"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2632,6 +2727,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "株"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -2643,6 +2742,10 @@ zones "clone_lib" {
     "get",
     "drop"
   ]
+      meta = {
+        # LPC base_unit（康熙圣旨「一{unit}」取值，kangxi.c:173-176）
+        unit = "株"
+      }
     }
 
 # 来自 LPC clone/（scripts/convert_clone_lib.py 增量追加）
@@ -9458,10 +9561,12 @@ chats = [
 
 
   inquiries = [
-    { key = "job" value = " inquire about job (unimplemented)" },
-    { key = "工作" value = " inquire about job (unimplemented)" },
-    { key = "配药" value = " inquire about job (unimplemented)" }
+    { key = "job" value = { kind = "job_ask" profile = "city_ping" } },
+    { key = "工作" value = { kind = "job_ask" profile = "city_ping" } },
+    { key = "配药" value = { kind = "job_ask" profile = "city_ping" } }
   ]
+
+  ask_handler = "Kantele.NPC.CityPing"
 
   skills = [
     { skill = "unarmed" level = 80 },
@@ -9513,11 +9618,22 @@ chats = [
     { id = clone_lib.items.tiejia.id }
   ]
 
-  inquiries = [
-    { key = "job" value = " inquire about me (unimplemented)" },
-    { key = "工作" value = " inquire about me (unimplemented)" },
-    { key = "血海无边" value = " inquire about back (unimplemented)" }
-  ]
+  # LPC `inherit/char/smith.c` setup() + d/city/npc/smith.c ask_back()：
+  # job/工作 → ask_me（SmithJob 三选一派活）；血海无边 → 血刀密道传送；
+  # repair/修理 为基类 setup() 的固定回话（原转换器漏转）。
+  inquiries = {
+    job = { kind = "smith_job" }
+    工作 = { kind = "smith_job" }
+    血海无边 = { kind = "city_smith_back" family = "血刀门" target_room = "city:xdmidao4" }
+    repair = "你想要修(repair)点什么？"
+    修理 = "你想要修(repair)点什么？"
+  }
+
+  # LPC init()：gu / dapi / cuihuo / repair(=xiuli)
+  init = {
+    greet_delay = 0
+    add_actions = ["gu", "dapi", "cuihuo", "repair", "xiuli"]
+  }
 
   carry = [
     { id = items.cloth.id }
@@ -24428,11 +24544,65 @@ chats = [
       min_shen_deny = "你目前所做的侠义正事不够，紫霞密芨暂时还不能交给你。"
       success = "既然这样，那这本紫霞密芨你就暂时拿去吧。"
     } },
-    # LPC accept_ask「历练/历炼/锻炼」走 QUEST_D->accept_ask；
-    # Elixir 无对应门派 quest 分发，按 GAP #744 保留，不伪造实现。
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #744)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #744)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #744)" }
+    # LPC accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask（questd.c:398-468）。
+    # yue-buqun.c:29 设 shen_type=1，走 questd.c 正派分支 good_msg。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "华山派"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "华山派"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "华山派"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } }
   ]
 
   skills = [
@@ -24658,10 +24828,65 @@ chats = [
       maxed = "这招你不是已经会了么，还缠着我做甚？"
       learned = "你学会了「宁氏一剑」。"
     } },
-    # LPC accept_ask「历练/历炼/锻炼」走 QUEST_D->accept_ask（GAP #744）。
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #744)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #744)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #744)" }
+    # LPC accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask（questd.c:398-468）。
+    # yue-wife.c:20 设 shen_type=1，走 questd.c 正派分支 good_msg。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "华山派"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "华山派"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "华山派"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } }
   ]
 
   teach = {
@@ -25065,9 +25290,65 @@ chats = [
       msg_one = "$N投以$n赞许的一笑，说道：“看好了！”随即只见$N猛催内力，双掌登时变得火红，趁$n惊诧之际双掌幻为一对掌刀凌空劈斩而出，只听「喀嚓」一声，一块大石应声而碎！"
       learned = "你学会了「掌心雷」。\n"
     } },
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #747)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #747)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #747)" }
+    # LPC accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask（questd.c:398-468）。
+    # chi.c:20 设 shen_type=1，走 questd.c 正派分支 good_msg。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "绝情谷"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "绝情谷"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "绝情谷"
+      npc_shen = 0
+      npc_shen_type = 1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } }
   ]
 
   carry = [
@@ -25829,9 +26110,65 @@ chats = [
       master_deny = "只有我的弟子才配使用这个，你还是走吧。"
       success = "既然这样，那这把黄金锯齿刀你就暂时拿去吧。"
     } },
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #747)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #747)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #747)" }
+    # LPC accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask（questd.c:398-468）。
+    # zhi.c:19 设 shen_type=0 且未设 shen，走 questd.c 中立分支 neutral_msg。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "绝情谷"
+      npc_shen = 0
+      npc_shen_type = 0
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "绝情谷"
+      npc_shen = 0
+      npc_shen_type = 0
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "绝情谷"
+      npc_shen = 0
+      npc_shen_type = 0
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } }
   ]
 
   carry = [
@@ -48942,9 +49279,65 @@ chats = [
       maxed = "这招你不是已经会了么，还缠着我做甚？"
       learned = "你学会了「五雷连闪」。"
     } },
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #927)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #927)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #927)" }
+    # LPC accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask（questd.c:398-468）。
+    # qiuqianren.c:19 设 shen_type=-1；UCL 顶层缺该字段，在本问询配置中逐字补齐恶人分支。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "铁掌帮"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "铁掌帮"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "铁掌帮"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    } }
   ]
 
   skills = [

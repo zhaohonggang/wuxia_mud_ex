@@ -276,6 +276,14 @@ This ensures future passes can complete the conversion without re-reading LPC.
 - **数据流 key 类型**：结构体字段 = atom；ETS / 世界动态态 = string。新增读 ETS 的
   helper 必须配一条「插入真实数据」的测试（R19）
 - **禁止**：在 `Enum.each` / `for` 里重绑定外层累加器（R20，credo 抓不到，已炸 4 次）
+- **字符编码铁律（2026-11-28 用户确立 · 永久生效）**：
+  - **ex 侧一律 UTF-8**——字符串、数据资产、运行时逻辑全部 UTF-8，**严禁**在 ex
+    运行时做 GBK/Big5 等旧编码换算；
+  - **LPC 原版用 GBK**（已核实：`mudcore/.../bitmap_font.c:30 string_encode(str, "GBK")`，
+    HZK16 字库按 GBK/GB2312 区位排布）——移植涉及旧编码的机制时，换算放在**构建期
+    一次性脚本**完成（先例：`scripts/build_hzk16_utf8_pack.py` 把 GBK 排布的 HZK16
+    转成按 Unicode 码点索引的 `priv/fonts/hzk16.pack`），ex 运行时只按 UTF-8 直查；
+  - 与 LPC 做输出比对时，字节内容必须同源一致，仅索引/编码方式可以不同。
 
 ## GenServer Patterns
 

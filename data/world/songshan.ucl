@@ -1757,9 +1757,68 @@ valid_leave = [
       success = "既然这样，那这柄残阳宝剑你就暂时拿去吧。"
     }
     },
-    { key = "历练" value = " inquire about 历练 (unimplemented: GAP #892)" },
-    { key = "历炼" value = " inquire about 历炼 (unimplemented: GAP #892)" },
-    { key = "锻炼" value = " inquire about 锻炼 (unimplemented: GAP #892)" }
+    # LPC accept_ask「历练/历炼/锻炼」→ QUEST_D->accept_ask（questd.c:398-468）。
+    # zuo.c:32 设 shen_type=-1；UCL 顶层缺该字段，在本问询配置中逐字补齐恶人分支。
+    { key = "历练" value = {
+      kind = "quest_lilian"
+      family = "嵩山派"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    }
+    },
+    { key = "历炼" value = {
+      kind = "quest_lilian"
+      family = "嵩山派"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    }
+    },
+    { key = "锻炼" value = {
+      kind = "quest_lilian"
+      family = "嵩山派"
+      npc_shen = 0
+      npc_shen_type = -1
+      min_combat_exp = 50000
+      min_score = 100
+      family_deny = "你是谁？找我有什么事情么？"
+      out_family_deny = "去吧！{name}，好自为之！"
+      exp_deny = "{npc}叹了一口气，看了看{name}道：你的武功基础还不太好，还是再好好锻炼吧。"
+      score_deny = "{npc}摆摆手道：你的江湖阅历太少，现在不可外出独自行走江湖。"
+      good_msg = "{npc}对{name}欣慰的点了点头，道：看来我们{family}又出了一位人才啊！你记住了，我辈武人，切忌不可好勇争斗，要多做行侠仗义之事！"
+      bad_msg = "{npc}对{name}哈哈大笑道：好！好！好！你可以出去走走看看了，对那些自认所谓大侠之辈可不要手软，去吧！"
+      neutral_msg = "{npc}对{name}叮嘱道：以后你行走江湖常常是孤身一人，记得要敬重前辈，不可狂妄自大，切记了，去吧！"
+      map_msg = "{npc}翻出一本小册子，对{name}道：今后你行走江湖，许多山川地理，世间风情你都可以记录在这本地图册上，以供参考，对你多少也会有些帮助。"
+      map_got = "你获得了师傅赠给你的地图册。"
+      map_help = "请参见帮助(help quest)以获得更详细的信息。"
+      rumor = "听说{name}已经开始闯荡江湖。"
+    }
+    }
   ]
   chat_chance_combat = 120
   chat_msg_combat = ["sword.long", "sword.xian", "strike.hen", "strike.han", "recover", "powerup", "freezing"]

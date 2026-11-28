@@ -40,6 +40,9 @@ defmodule Kantele.World.Invasion do
     %{
       wave_number: 0,
       wave_pid: nil,
+      # LPC invasiond.c:25 `set("record/born_time", time())`：每波统一置一次，
+      # 本波所有入侵者共享（对齐 yuqian1/kangxi ask_reward 的 born_time 门）。
+      born_time: nil,
       # number => %{pid, room_id, level, nation, born_time, alive: true}
       invaders: %{},
       total_killed: 0,
@@ -60,6 +63,8 @@ defmodule Kantele.World.Invasion do
         |> Map.put(:total_killed, 0)
         |> Map.put(:all_killed, false)
         |> Map.put(:invaders, %{})
+        # LPC invasiond.c:25：每波开始统一置 born_time，非每个 NPC 各自取值。
+        |> Map.put(:born_time, System.system_time(:second))
         |> Map.update(:wave_number, 0, &(&1 + 1))
 
       {:ok, spawn_invaders(state, opts)}
@@ -84,7 +89,38 @@ defmodule Kantele.World.Invasion do
       wave_active: state.wave_active,
       invaders_alive: Enum.count(state.invaders, fn {_, v} -> v.alive end),
       total_killed: state.total_killed,
-      all_killed: state.all_killed
+      all_killed: state.all_killed,
+      born_time: Map.get(state, :born_time)
+    }
+  end
+
+  @doc """
+  公开查询：入侵守护进程当前波次 record（对应 LPC `INVASIOND->query("record")`）。
+
+  供 `ask_reward` 问询 handler 判定门序：
+  - `exists`：LPC `find_object(INVASIOND) && INVASIOND->query("record")`；
+    流程未启动过波次时为 false。
+  - `all_killed`：LPC `record/all_killed`。
+  - `born_time`：LPC `record/born_time`，与玩家 `waidi/born_time` 比对。
+
+  守护进程未运行时安全返回 `exists: false` 全否记录，不崩溃调用方。
+  """
+  def record(server \\ __MODULE__) do
+    GenServer.call(server, :record)
+  rescue
+    _e -> empty_record()
+  catch
+    :exit, _reason -> empty_record()
+  end
+
+  defp empty_record do
+    %{
+      exists: false,
+      wave_number: 0,
+      wave_active: false,
+      born_time: nil,
+      total_killed: 0,
+      all_killed: false
     }
   end
 
@@ -238,12 +274,34 @@ defmodule Kantele.World.Invasion do
     {:reply, status(state), state}
   end
 
+  @impl true
+  def handle_call(:record, _from, state) do
+    record = %{
+      exists: not is_nil(Map.get(state, :born_time)),
+      wave_number: state.wave_number,
+      wave_active: state.wave_active,
+      born_time: Map.get(state, :born_time),
+      total_killed: state.total_killed,
+      all_killed: state.all_killed
+    }
+
+    {:reply, record, state}
+  end
+
   def handle_call(:start_wave, _from, state) do
-    {:reply, start_wave(state), state}
+    # 原实现只把 start_wave 结果回给调用方，却没写回 GenServer state，
+    # 导致 record/status 查询永远看到初始态（A-5-c C1 暴露）。这里回填新状态。
+    case start_wave(state) do
+      {:ok, new_state} -> {:reply, {:ok, new_state}, new_state}
+      {:error, reason} -> {:reply, {:error, reason}, state}
+    end
   end
 
   def handle_call(:stop_wave, _from, state) do
-    {:reply, stop_wave(state), state}
+    case stop_wave(state) do
+      {:ok, new_state} -> {:reply, {:ok, new_state}, new_state}
+      {:error, reason} -> {:reply, {:error, reason}, state}
+    end
   end
 
   # ---- 私有 ----
@@ -291,7 +349,7 @@ defmodule Kantele.World.Invasion do
 
   @impl true
   def handle_info({:spawn_one_invader, {level, nation, number, room_id}}, state) do
-    invader = Kantele.World.Invasion.NPC.build_invader(nation, level, number, room_id)
+    invader = Kantele.World.Invasion.NPC.build_invader(nation, level, number, room_id, Map.get(state, :born_time))
 
     config = [
       supervisor_name: Kalevala.World.CharacterSupervisor.global_name(invader.meta.zone_id),
@@ -307,7 +365,9 @@ defmodule Kantele.World.Invasion do
           room_id: room_id,
           level: level,
           nation: nation,
-          born_time: System.system_time(:second),
+          # LPC invasiond.c:84：所有 invader 共享 record/born_time（波次级），
+          # 而非各自 spawn 时刻；ask_reward 门据此比对玩家 waidi/born_time。
+          born_time: Map.get(state, :born_time) || System.system_time(:second),
           alive: true,
           name: invader.name
         }
@@ -342,20 +402,23 @@ defmodule Kantele.World.Invasion do
   end
 
   defp pick_spawn_rooms() do
-    zone = ZoneCache.get("liuxi")
+    # ZoneCache.get/1 返回 {:ok, zone} | {:error, :not_found}（见 world.ex 等调用点）。
+    # 原实现对裸 nil/%Zone{} 做匹配，两种返回值都不命中 → CaseClauseError，
+    # 会让 start_wave 崩溃（A-5-c C1 暴露）。这里补齐元组分支与兜底。
+    rooms =
+      case ZoneCache.get("liuxi") do
+        {:ok, %Kantele.World.Zone{rooms: rooms}} ->
+          rooms
+          |> Enum.filter(fn room ->
+            room.flags && not Enum.member?(room.flags, "no_fight")
+          end)
+          |> Enum.map(& &1.id)
 
-    case zone do
-      nil ->
-        # 兜底：仅中央广场
-        ["liuxi:guangchang"]
+        _ ->
+          []
+      end
 
-      %Kantele.World.Zone{rooms: rooms} ->
-        rooms
-        |> Enum.filter(fn room ->
-          room.flags && not Enum.member?(room.flags, "no_fight")
-        end)
-        |> Enum.map(& &1.id)
-    end
+    if Enum.empty?(rooms), do: ["liuxi:guangchang"], else: rooms
   end
 
   defp build_invader_entries() do

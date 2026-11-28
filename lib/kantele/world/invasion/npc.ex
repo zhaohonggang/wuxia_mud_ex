@@ -73,7 +73,7 @@ defmodule Kantele.World.Invasion.NPC do
   }
 
   @doc "构建入侵 NPC 角色结构（同 Challenger.build_character 路径）"
-  def build_invader(nation, level, number, room_id) do
+  def build_invader(nation, level, number, room_id, born_time \\ nil) do
     nation_cfg = Map.get(@nation_config, nation, Map.get(@nation_config, :japanese))
     level_stat = Map.get(@level_stats, level, Map.get(@level_stats, 1))
 
@@ -167,6 +167,10 @@ defmodule Kantele.World.Invasion.NPC do
       # 入侵 NPC 标记（用于死亡回调识别）
       |> Map.put(:kind, "invader")
       |> Map.put(:invader_number, number)
+      # LPC invasiond.c:84 `ob->set("born_time", record/born_time)`：
+      # NPC 本体携带所属波次 born_time，死亡结算据此写玩家 waidi/born_time
+      #（invader.c:151-160）。nil = 旧调用兼容（record 查询兜底）。
+      |> Map.put(:born_time, born_time)
 
     %Kalevala.Character{
       id: "invasion-#{number}-#{System.unique_integer([:positive])}",

@@ -37,12 +37,19 @@ defmodule Kantele.World.NpcInit do
   @ding_names ["丁春秋", "xingxiu_ding", "ding chunqiu", "ding"]
   @ding_kill_msg "丁春秋说道：好家伙，原来你偷了我的神木王鼎！受死吧！\n"
 
+  @zhuangyu_names ["庄允城", "zhuangyu", "zhuang yuncheng", "zhuang", "yuncheng"]
+  @zhuangyu_greeting "庄允城哈哈笑道：终于有人来救我了！\n" <>
+                       "这位{respect}，鳌府的宝贝可不少啊，你要有什么不明白的，尽管问我吧。\n"
+
   @doc "玩家进屋时触发 NPC 的 init()；返回 `{:vision, 文案}` 或 `:skip`。"
   def init(npc, player) do
     cond do
       ding_swmuding_kill?(npc, player) ->
         trigger_ding_kill(npc, player)
         :skip
+
+      zhuangyu_init?(npc, player) ->
+        trigger_zhuangyu_init(npc, player)
 
       liu_zhengfeng_init?(npc, player) ->
         trigger_liu_zhengfeng_init(npc, player)
@@ -137,6 +144,62 @@ defmodule Kantele.World.NpcInit do
   end
 
   defp notify_clear_intent(_player), do: :ok
+
+  # ---- #1245 庄允城 init()：入场求救 + 威望 <20 时 +10 ----
+
+  # LPC `d/beijing/npc/zhuangyu.c:45-62`：
+  #   1) interactive(ob) && !is_fighting() 才 say 求救文案（含 RANK_D 敬称）；
+  #   2) query("weiwang") < 20 时 +10 并写回，message_vision 播报；
+  #   3) 无论是否提升，都 tell 当前威望。
+  # MoveEvent 已保证只有玩家进屋会走到这里，所以只保留「NPC 是否战斗中」门。
+  defp zhuangyu_init?(npc, player) do
+    is_map(npc) and is_map(player) and zhuangyu?(npc)
+  end
+
+  defp zhuangyu?(%{name: name}) when is_binary(name), do: name in @zhuangyu_names
+
+  defp zhuangyu?(%{meta: %{aliases: aliases}}) when is_list(aliases) do
+    Enum.any?(aliases, &(&1 in @zhuangyu_names))
+  end
+
+  defp zhuangyu?(_), do: false
+
+  defp trigger_zhuangyu_init(npc, player) do
+    current = weiwang(player)
+    updated = if current < 20, do: current + 10, else: current
+
+    # NPC 进程不能直接改玩家 meta；交给玩家侧事件写 stats + 私有 tell。
+    notify_weiwang(player, updated, npc.name)
+
+    greeting = if fighting?(npc), do: "", else: @zhuangyu_greeting
+    boost = if current < 20, do: "\n{name}的江湖威望提高了！\n", else: ""
+    text = greeting <> boost
+
+    if text == "", do: :skip, else: {:vision, text}
+  end
+
+  defp notify_weiwang(%{pid: pid}, value, npc_name) when is_pid(pid) do
+    send(pid, %Event{
+      from_pid: self(),
+      topic: "npc/init/weiwang",
+      data: %{weiwang: value, npc_name: npc_name}
+    })
+  end
+
+  defp notify_weiwang(_player, _value, _npc_name), do: :ok
+
+  # 与 InquiryHandlers.Weiwang 同口径：Stats 权威，combat 兼容历史存档。
+  defp weiwang(character) do
+    meta = Map.get(character, :meta) || %{}
+    stats = Map.get(meta, :stats) || Map.get(meta, "stats") || %{}
+    combat = Map.get(meta, :combat) || Map.get(meta, "combat") || %{}
+
+    case Map.get(stats, :weiwang) || Map.get(stats, "weiwang") ||
+           Map.get(combat, :weiwang) || Map.get(combat, "weiwang") do
+      value when is_integer(value) -> value
+      _ -> 0
+    end
+  end
 
   # ---- #867 刘正风 init()：在 startroom 吹笑傲江湖，不在 startroom 则叹息 ----
 

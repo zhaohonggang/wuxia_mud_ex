@@ -291,6 +291,22 @@ defmodule Kantele.World.NpcActionHandlers do
       "cuihuo" => {Kantele.World.NpcActions.Smith, :run},
       "repair" => {Kantele.World.NpcActions.Smith, :run},
       "xiuli" => {Kantele.World.NpcActions.Smith, :run}
+    },
+    # 第 56 批：LPC `d/city/npc/smith.c` 与 `d/suzhou/datiepu.c` 的 clone
+    # 同样继承 `/inherit/char/smith.c`，打工/修理动词按 room_id 分派。
+    "city:datiepu" => %{
+      "gu" => {Kantele.World.NpcActions.Smith, :run},
+      "dapi" => {Kantele.World.NpcActions.Smith, :run},
+      "cuihuo" => {Kantele.World.NpcActions.Smith, :run},
+      "repair" => {Kantele.World.NpcActions.Smith, :run},
+      "xiuli" => {Kantele.World.NpcActions.Smith, :run}
+    },
+    "suzhou:datiepu" => %{
+      "gu" => {Kantele.World.NpcActions.Smith, :run},
+      "dapi" => {Kantele.World.NpcActions.Smith, :run},
+      "cuihuo" => {Kantele.World.NpcActions.Smith, :run},
+      "repair" => {Kantele.World.NpcActions.Smith, :run},
+      "xiuli" => {Kantele.World.NpcActions.Smith, :run}
     }
   }
 

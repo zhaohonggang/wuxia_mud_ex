@@ -851,6 +851,15 @@ alias Kantele.World.NpcInit
 
       assert yue.meta.teach.no_teach_deny["pixie-jian"] ==
                "哈哈！那是林家的家传武功，我怎么可能会呢？"
+
+      for key <- ["历练", "历炼", "锻炼"] do
+        cfg = inquiry(yue, key)
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "华山派"
+        assert cfg["npc_shen_type"] == 1
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
+      end
     end
 
     test "令狐冲琴谱/冲灵剑法与岳夫人宁氏一剑落位", %{world: world} do
@@ -872,6 +881,15 @@ alias Kantele.World.NpcInit
       assert ning["min_gongxian"] == 600
       assert ning["min_shen"] == 30_000
       assert wife.meta.apprentice.gender == "女性"
+
+      for key <- ["历练", "历炼", "锻炼"] do
+        cfg = inquiry(wife, key)
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "华山派"
+        assert cfg["npc_shen_type"] == 1
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
+      end
     end
   end
 
@@ -901,8 +919,14 @@ alias Kantele.World.NpcInit
       assert String.starts_with?(invisible["msg_one"], "$N点了点头")
       assert invisible["min_levels"] == %{"tie-zhang" => 100, "force" => 160}
 
-      assert is_binary(inquiry(chi, "历练"))
-      assert String.contains?(inquiry(chi, "历练"), "GAP #747")
+      for key <- ["历练", "历炼", "锻炼"] do
+        cfg = inquiry(chi, key)
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "绝情谷"
+        assert cfg["npc_shen_type"] == 1
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
+      end
     end
 
     test "樊一翁：20 skills / 8 grants / shen 上界 0 / LPC 顺序", %{world: world} do
@@ -951,7 +975,14 @@ alias Kantele.World.NpcInit
       assert dao["max_shen"] == -50_000
       assert dao["min_skill_levels"] == %{"yinyang_ren" => 180}
 
-      assert String.contains?(inquiry(zhi, "锻炼"), "GAP #747")
+      for key <- ["历练", "历炼", "锻炼"] do
+        cfg = inquiry(zhi, key)
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "绝情谷"
+        assert cfg["npc_shen_type"] == 0
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
+      end
     end
   end
 
@@ -2357,7 +2388,7 @@ alias Kantele.World.NpcInit
                )
     end
 
-    test "物品问询、计数库存与 GAP #813/#814 标记", %{world: world} do
+    test "物品问询、计数库存与 QUEST_D/香料随机量落位", %{world: world} do
       ding = xx(world, "丁春秋")
       zhaixing = xx(world, "摘星子")
 
@@ -2375,12 +2406,18 @@ alias Kantele.World.NpcInit
       assert inquiry(zhaixing, "炼心弹")["item"] == "xiyu:lianxindan"
       assert inquiry(zhaixing, "秘籍")["item"] == "clone_lib:throw_book"
       assert inquiry(zhaixing, "天山器法")["count"] == "book_count"
-      assert ding.meta.inquiry_state["xiangliao_count"] == 10
+      # LPC ding.c:82 random(10)+10；loader 用 random_base/random_sides 抽同一区间。
+      assert ding.meta.inquiry_state["xiangliao_count"] in 10..19
       assert zhaixing.meta.inquiry_state["dan_count"] == 1
 
-      assert inquiry(ding, "历练") =~ "GAP #813"
-      assert inquiry(ding, "历炼") =~ "GAP #813"
-      assert inquiry(ding, "锻炼") =~ "GAP #813"
+      for key <- ["历练", "历炼", "锻炼"] do
+        cfg = inquiry(ding, key)
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "星宿派"
+        assert cfg["npc_shen_type"] == -1
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
+      end
     end
 
     test "收徒门控：摘星子 shen<=0、丁春秋负神与技能链", %{world: world} do
@@ -5109,9 +5146,13 @@ alias Kantele.World.NpcInit
       assert sword["already"] == "那柄残阳宝剑不就是你拿着在用么，怎么反倒找我来了？"
       assert sword["success"] == "既然这样，那这柄残阳宝剑你就暂时拿去吧。"
 
-      # GAP 占位必须带登记编号
       for key <- ["历练", "历炼", "锻炼"] do
-        assert i[key] =~ "GAP #892", "#{key} 应登记 GAP #892"
+        cfg = i[key]
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "嵩山派"
+        assert cfg["npc_shen_type"] == -1
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
       end
     end
 
@@ -5938,6 +5979,16 @@ alias Kantele.World.NpcInit
       # 原有静态问询/战斗/携带数据不得被回填覆盖
       assert fen.meta.stats.combat_exp == 2_000_000
       assert ren.meta.inquiries["裘千尺"] == "三妹下嫁到绝情谷去了，你问这个有什么事吗？"
+
+      for key <- ["历练", "历炼", "锻炼"] do
+        cfg = ren.meta.inquiries[key]
+        assert cfg["kind"] == "quest_lilian"
+        assert cfg["family"] == "铁掌帮"
+        assert cfg["npc_shen_type"] == -1
+        assert cfg["min_combat_exp"] == 50_000
+        assert cfg["min_score"] == 100
+      end
+
       assert zhang.meta.inquiries["here"] =~ "铁掌帮的总坛所在"
       assert zhang.meta.engage.fight.accept == false
     end

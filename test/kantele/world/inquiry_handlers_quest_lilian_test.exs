@@ -226,4 +226,45 @@ defmodule Kantele.World.InquiryHandlersQuestLilianTest do
       assert String.contains?(config["map_got"], "地图册")
     end
   end
+
+  test "A-5-a 六个剩余 QUEST_D NPC 全部落 quest_lilian 配置" do
+    world = Loader.load()
+
+    npcs = [
+      {"岳不群", "华山派", 1},
+      {"岳夫人", "华山派", 1},
+      {"裘千尺", "绝情谷", 1},
+      {"公孙止", "绝情谷", 0},
+      {"左冷禅", "嵩山派", -1},
+      {"裘千仞", "铁掌帮", -1}
+    ]
+
+    for {name, family, shen_type} <- npcs do
+      npc = Enum.find(world.characters, &(&1.name == name))
+      assert npc, "#{name} 应随世界加载"
+
+      for key <- ["历练", "历炼", "锻炼"] do
+        config = Map.get(npc.meta.inquiries, key)
+
+        assert is_map(config), "#{name}/#{key} 须为已实现的 inquiry config map"
+        assert (config["kind"] || config[:kind]) == "quest_lilian"
+        assert (config["family"] || config[:family]) == family
+        assert (config["npc_shen"] || config[:npc_shen]) == 0
+        assert (config["npc_shen_type"] || config[:npc_shen_type]) == shen_type
+        assert (config["min_combat_exp"] || config[:min_combat_exp]) == 50_000
+        assert (config["min_score"] || config[:min_score]) == 100
+        assert String.contains?(config["family_deny"], "你是谁")
+        assert String.contains?(config["out_family_deny"], "好自为之")
+        assert String.contains?(config["exp_deny"], "武功基础还不太好")
+        assert String.contains?(config["score_deny"], "江湖阅历太少")
+        assert String.contains?(config["good_msg"], "欣慰的点了点头")
+        assert String.contains?(config["bad_msg"], "哈哈大笑道")
+        assert String.contains?(config["neutral_msg"], "叮嘱道")
+        assert String.contains?(config["map_msg"], "地图册")
+        assert config["map_got"] == "你获得了师傅赠给你的地图册。"
+        assert config["map_help"] == "请参见帮助(help quest)以获得更详细的信息。"
+        assert config["rumor"] == "听说{name}已经开始闯荡江湖。"
+      end
+    end
+  end
 end

@@ -61,19 +61,51 @@ ex 中需要在 clone_lib.ucl 的 items 中预先定义，或在 NPC 的 carry/i
 
 ## 3. 待处理的其他缺口（按优先级，后续批次）
 
+> 详细执行顺序、计数校正与“先检查再做”规则见 **`docs/移植缺口统一执行计划.zh-CN.md`**。本表只保留大类摘要。
+
 | # | 缺口 | 说明 | 优先级 |
 |---|------|------|--------|
-| A | unimplemented 占位符（171 个） | clone_lib.ucl 71、beijing.ucl 38、death.ucl 15 等 | P1 |
-| B | lpc-port-gaps §十五 8 NPC 闭包 | 莫邪24、干将5、苗人凤5、商剑鸣2、桑三娘1、青阳子2、平四3 | P1 |
+| A | unimplemented 占位符（183 个） | clone_lib.ucl 68、beijing.ucl 22、death.ucl 15 等；旧记 171/184 已校正 | P1 |
+| B | lpc-port-gaps §十五 8 NPC 硬闭包 | 莫邪24、干将5、苗人凤5、商剑鸣2、桑三娘1、青阳子2、平四3；另 1 NPC 为 LPC 自身缺陷不追 | P1 |
 | C | carry 引用未解引用（147 个） | NPC 出生空手 | P2 |
 | D | Items.get!/1（88 处） | 缺物品定义时崩溃 Foreman | P2 |
 | E | attitude 接线到运行时 | 未接进 room.ex | P2 |
 | F | 重复/冗余 NPC 数据 | 762/3437 处 room_characters 引用 clone_lib 独有角色 | P3 |
+| G | TaskList 172 个 pending 候选 GAP | 含状态滞后/重复项；按门派分批先检查再关单或实现 | P1–P2 |
 
-## 4. 验收标准
-- `python scripts/validate_ucl.py data/world/clone_lib.ucl` 通过
-- `mix compile` 通过
-- 地藏王 NPC 可通过定向测试验证基础属性和问询分支
+## 4. 验收标准（已达成）
+- `python scripts/validate_ucl.py data/world/death.ucl` 通过 ✅
+- `mix compile` 通过（无警告） ✅
+- `mix test test/kantele/world/death_chain_test.exs`：14 tests, 0 failures ✅
+- 提交 `1f35cabe` 已推送到远程 `kalevala` ✅
+
+## 5. 后续缺口计划（按优先级，从前到后）
+
+> 本表的逐项展开以 **`docs/移植缺口统一执行计划.zh-CN.md`** 为准。执行指针当前为 UG-03 / A-5-c（`reward` 组）；A-4 庄允城 `init()`（第 58 批）、A-5-a QUEST_D 历练问询（第 59 批）与 A-5-b `job` 问询（第 60 批）均已实现并登记待全量回归。
+
+| # | 缺口 | 说明 | 状态 |
+|---|------|------|------|
+| A | unimplemented 占位符（复核后 182 个，当前剩 153） | clone_lib.ucl 67、beijing.ucl 22、death.ucl 15 等 | P1 · 进行中 |
+| B | lpc-port-gaps §十五 8 NPC 硬闭包 | 莫邪24、干将5、苗人凤5、商剑鸣2、桑三娘1、青阳子2、平四3 | P1 · 待开始 |
+| C | carry 引用未解引用（147 个） | NPC 出生空手 | P2 · 待开始 |
+| D | Items.get!/1（88 处） | 缺物品定义时崩溃 Foreman | P2 · 待开始 |
+| E | attitude 接线到运行时 | 未接进 room.ex | P2 · 待开始 |
+| F | 重复/冗余 NPC 数据 | 762/3437 处 room_characters 引用 clone_lib 独有角色 | P3 · 待开始 |
+| G | TaskList 172 个 pending 候选 GAP | 先检查 stale，再按门派分批实现 | P1–P2 · 待检查 |
+
+### 5.1 缺口 A 分片进度（2026-11-28）
+
+| 分片 | 内容 | 批次 | 状态 |
+|---|---|---|---|
+| A-1 | `city_ping` 平一指 `ask_job()`（配药/工作/job）| 第 55 批 | ✅ 已实现 + 端到端 `AskCommand` 验证，待全量回归授权 |
+| A-2 | `city_smith` 中原铁匠 `ask_back()`（血海无边）+ 打工链推广到 city/suzhou 打铁铺 | 第 56 批 | ✅ 已实现 + 定向验证，待全量回归授权 |
+| A-3 | 北京 8 NPC `ask_weiwang()`（威望/江湖威望，16 个占位符） | 第 57 批 | ✅ 已实现 + 定向验证，待全量回归授权；庄允城 `init()` 威望 +10 另立 Task #1245 |
+| A-4 | 庄允城 `init()` 威望 +10 / 入场求救文案（Task #1245） | 第 58 批 | ✅ 已实现 + 定向验证，待全量回归授权 |
+| A-5-a | 6 NPC / 18 个 QUEST_D 历练占位（#744/#747/#892/#927） | 第 59 批 | ✅ 已实现 + 定向验证，待全量回归授权 |
+| A-5-b | 平一指 / 书童 / 厨娘共 11 个 `job` 占位 | 第 60 批 | ✅ 已实现 + 定向验证，待全量回归授权 |
+| A-5 | 剩余 153 个 `unimplemented` 占位符 | 后续批次 | ⏳ 按统一计划 §4.2 分组推进（下一片 A-5-c `reward`） |
+
+每片均按「先读 LPC 原函数 → 只补 ex 缺口 → 定向测试 → 登记 `docs/待全量回归清单.zh-CN.md`」执行；全量回归按 AGENTS.md §0.4 等待用户明确指示。
 
 ---
 *本计划按宪章「lpc 有 ex 无」主动报告 + 建立移植计划的要求编写，严禁简化。*

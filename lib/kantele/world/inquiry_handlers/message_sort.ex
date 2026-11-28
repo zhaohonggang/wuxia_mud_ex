@@ -14,7 +14,9 @@ defmodule Kantele.World.InquiryHandlers.MessageSort do
 
   - 听话人 `you`（本例为问询玩家）：`$N` → NPC 名，`$n` → "你"；
   - 说话人 `me`（岛主）：`$N` → "你"，`$n` → 玩家名（NPC 无显示端，故省略）；
-  - 同房间其他人：`$N` → NPC 名，`$n` → 玩家名。
+  - 同房间其他人：`$N` → NPC 名，`$n` → 玩家名；
+  - `$p` 与 `$n` 同理（提问者 "你" / 旁观者玩家名），供只写 `$p` 的
+    LPC 模板使用（如 `d/city/npc/smith.c:81` 的 `ask_back()`）。
 
   本模块先给问询玩家发私有 vision（`"你"` 版），再向房间广播旁观者版并用
   `:exclude_actor` 排除问询玩家，避免他收到两份不同渲染。两种占位写法都支持：
@@ -40,14 +42,14 @@ defmodule Kantele.World.InquiryHandlers.MessageSort do
         text ->
           npc_name = Map.get(data, :npc_name) || "某人"
           asker_name = Map.get(data, :asker_name) || character.name
-          conn = Helpers.render(conn, render(text, npc_name, "你"))
+          conn = Helpers.render(conn, render(text, npc_name, "你", "你"))
 
           case Map.get(data, :npc_room_id) do
             room_id when is_binary(room_id) and byte_size(room_id) > 0 ->
               Helpers.broadcast(
                 conn,
                 room_id,
-                render(text, npc_name, asker_name),
+                render(text, npc_name, asker_name, asker_name),
                 exclude_actor: true
               )
 
@@ -66,10 +68,14 @@ defmodule Kantele.World.InquiryHandlers.MessageSort do
     if is_binary(text) and byte_size(text) > 0, do: text, else: nil
   end
 
-  defp render(text, npc_name, target_name) do
+  # LPC message_sort 的 $p：提问者视角 = gender_self(you)（恒为「你」），
+  # 旁观者视角 = you->name()。与 $n 的差别在于提问者视角两者都是「你」，
+  # 但 LPC 原文可能只写 $p（如 d/city/npc/smith.c ask_back），故必须单独替换。
+  defp render(text, npc_name, target_name, target_pronoun) do
     text
     |> String.replace("$N", npc_name)
     |> String.replace("$n", target_name)
+    |> String.replace("$p", target_pronoun)
     |> String.replace("{npc}", npc_name)
     |> String.replace("{name}", target_name)
   end
