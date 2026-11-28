@@ -62,7 +62,8 @@
 ## 当前工作流
 - Task #619 **已全部完成**（39 门派全部回填并验证）。无剩余门派。无 commit/push 除非明确要求（带上 `character_metadata_backup.sql`）。
 - **GAP 已提交/推送**：#1032、#1040、#1041、#1042、#1045、昆仑 #756/#757/#758、#742、逍遥 #805/#806/#809/#810、#807 神仙环、#808 珍珑 pass_zhenlong、#798 大轮寺（95867f3a）、#796/#797 大轮寺（18d700c6）；**本次 8fa6baf6 追加**：门派批次 #1–#26（玄冥谷→少林）及其 GAP（#31–#54 侠客岛/星宿/特殊类均已随提交包含）。
-- **GAP 已实现未提交**：（本次 8fa6baf6 已全部提交推送，当前无）
+- **27–54 批次全部验证通过**：2026-11-28 按顺序逐个运行定向测试，28 个批次全部 0 失败；第 51 批（峨眉 #854 静风给物）测试 setup 缺陷已修复（补充 `setup_all` 预加载 `emei:tianxiang_gao`/`emei:ruanjian` 到 `Kantele.World.Items` ETS 缓存），重跑后 11/0 通过。
+- **GAP 已实现未提交**：（全部已随 8fa6baf6 提交推送，27–54 状态已在清单中标记 `✅ 已实现 · ⏳ 待全量回归授权`，当前无未提交 GAP）
 - 待办：恒山 #863–#867 已完成并随 8fa6baf6 提交推送；无剩余门派。
 - 坑：`give_item` 的 `owner_check` 等 UCL 布尔加载为字符串 `"true"` → 消费端须 `in [true, "true"]`；`gate_denial` 签名已改为 `/4`（多带 data 供 owner 快照）。
 - 无 DB 跑纯函数测试：`mix run --no-start /tmp/<runner>.exs`（Code.require_file 指定测试文件）；涉及 `Items.get` 须先 `Kantele.World.Items.start_link(name: ...)` 并灌 `world.items`。

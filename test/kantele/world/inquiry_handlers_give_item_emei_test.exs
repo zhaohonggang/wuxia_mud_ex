@@ -21,11 +21,27 @@ defmodule Kantele.World.InquiryHandlers.GiveItemEmeiTest do
   use ExUnit.Case, async: true
 
   alias Kalevala.Character.Conn
+  alias Kalevala.World.Item
   alias Kalevala.World.Item.Instance
   alias Kantele.Character.PlayerMeta
   alias Kantele.Character.Stats
   alias Kantele.Character.Vitals
   alias Kantele.World.InquiryHandlers.GiveItem
+  alias Kantele.World.Items
+
+  # #854 给物成功路径需要 Items.get 命中 ETS 缓存，否则 give/3 直接返回 conn，
+  # 不执行 maybe_success_reply，导致 success 文案不写入 conn.output。
+  setup_all do
+    case Items.start_link(id: Items, name: Items) do
+      {:ok, _pid} -> :ok
+      {:error, {:already_started, _pid}} -> :ok
+    end
+
+    Items.put("emei:tianxiang_gao", %Item{id: "emei:tianxiang_gao", name: "天香膏", description: "本门秘药"})
+    Items.put("emei:ruanjian", %Item{id: "emei:ruanjian", name: "软剑", description: "峨嵋派软剑"})
+
+    :ok
+  end
 
   defp medicine_config do
     %{
